@@ -1,0 +1,2 @@
+gcloud auth login
+gsutil -m cp -r gs://modis_monthly/nightlight "C:\Users\WeilunShi\IFPRI Dropbox\Weilun Shi\Google fund\Analysis\1.Source Data\DMSP_OLS\image"

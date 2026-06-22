@@ -1,0 +1,2 @@
+gcloud auth login
+gsutil -m cp -r gs://FLDAS_monthly/FLDAS_Monthly "C:\Users\WeilunShi\IFPRI Dropbox\Weilun Shi\Google fund\Analysis\1.Source Data\FEWSNET_predictors"

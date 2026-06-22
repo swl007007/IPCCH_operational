@@ -1,0 +1,50 @@
+// Define the date range
+var startDate = '2010-01-01';
+var endDate = '2024-12-01';
+
+// Load the MODIS MOD13A3 collection
+var modisCollection = ee.ImageCollection("MODIS/061/MOD13A3")
+  .filterDate(startDate, endDate);
+
+// Get the list of all images in the collection
+var imageList = modisCollection.toList(modisCollection.size());
+
+// Define export region - you can modify this to your area of interest
+// For a global export, you might want to use a smaller region
+var exportRegion = ee.Geometry.Rectangle([-180, -60, 180, 80]);  // Adjust coordinates as needed
+
+// Function to export an image
+var exportImage = function(image) {
+  var img = ee.Image(image);
+  var date = ee.Date(img.get('system:time_start'));
+  var year = date.get('year').format();
+  var month = date.get('month').format('%02d');
+  var fileName = 'MOD13A3_' + year.getInfo() + '_' + month.getInfo();
+  
+  // You can select specific bands as needed
+  // NDVI is often the most used band from MOD13A3
+  var ndvi = img.select('EVI');
+  
+  Export.image.toCloudStorage({
+    image: ndvi,
+    description: fileName,
+    bucket: 'YOUR_BUCKET_NAME',  // Replace with your bucket name
+    fileNamePrefix: 'MODIS_MOD13A3_Monthly/' + fileName,
+    region: exportRegion,
+    scale: 1000,  // MOD13A3 resolution is 1km
+    maxPixels: 1e13,
+    fileFormat: 'GeoTIFF'
+  });
+  
+  return null;
+};
+
+// Get the number of images
+var count = imageList.size().getInfo();
+print('Number of images to export:', count);
+
+// Loop through each image and trigger export
+for (var i = 0; i < count; i++) {
+  var image = ee.Image(imageList.get(i));
+  exportImage(image);
+}
