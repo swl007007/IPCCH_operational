@@ -1,6 +1,9 @@
 # Local Claude settings
 .claude/settings.local.json
 
+# Local isolated worktrees
+.worktrees/
+
 # Python cache/build artifacts
 __pycache__/
 *.py[cod]
