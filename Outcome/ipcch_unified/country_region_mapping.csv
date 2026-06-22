@@ -1,0 +1,54 @@
+iso3,country,country_code,country_en,region
+AFG,Afghanistan,AF,Afghanistan,0
+AGO,Angola,AO,Angola,3
+BGD,Bangladesh,BD,Bangladesh,0
+BEN,Benin,BJ,Benin,2
+BFA,Burkina Faso,BF,Burkina Faso,2
+BDI,Burundi,BI,Burundi,1
+CPV,Cabo Verde,CV,Cabo Verde,2
+CMR,Cameroon,CM,Cameroon,4
+CAF,Central African Republic,CF,Central African Republic,4
+TCD,Chad,TD,Chad,4
+COD,Democratic Republic of the Congo,CD,"Congo, The Democratic Republic of the",4
+,Cote d'Ivoire,CI,Côte d'Ivoire,2
+DJI,Djibouti,DJ,Djibouti,1
+DOM,Dominican Republic,DO,Dominican Republic,5
+ECU,Ecuador,EC,Ecuador,5
+SLV,El Salvador,SV,El Salvador,5
+SWZ,Eswatini,SZ,Eswatini,3
+ETH,Ethiopia,ET,Ethiopia,1
+GMB,Gambia,GM,Gambia,2
+GHA,Ghana,GH,Ghana,2
+GTM,Guatemala,GT,Guatemala,5
+GIN,Guinea,GN,Guinea,2
+GNB,Guinea-Bissau,GW,Guinea-Bissau,2
+HTI,Haiti,HT,Haiti,5
+HND,Honduras,HN,Honduras,5
+KEN,Kenya,KE,Kenya,1
+LBN,Lebanon,LB,Lebanon,0
+LSO,Lesotho,LS,Lesotho,3
+LBR,Liberia,LR,Liberia,2
+MDG,Madagascar,MG,Madagascar,3
+MWI,Malawi,MW,Malawi,3
+MLI,Mali,ML,Mali,6
+MRT,Mauritania,MR,Mauritania,2
+MOZ,Mozambique,MZ,Mozambique,3
+NAM,Namibia,,Namibia,3
+NER,Niger,NE,Niger,2
+NGA,Nigeria,NG,Nigeria,2
+PAK,Pakistan,PK,Pakistan,0
+PSE,Palestinian Territory,PS,"Palestine, State of",8
+SEN,Senegal,SN,Senegal,2
+SLE,Sierra Leone,SL,Sierra Leone,2
+SOM,Somalia,SO,Somalia,7
+ZAF,South Africa,ZA,South Africa,3
+SSD,South Sudan,SS,South Sudan,1
+SDN,Sudan,SD,Sudan,1
+TJK,Tajikistan,TJ,Tajikistan,0
+TZA,Tanzania,TZ,"Tanzania, United Republic of",1
+TLS,East Timor,TL,Timor-Leste,0
+TGO,Togo,TG,Togo,2
+UGA,Uganda,UG,Uganda,1
+YEM,Yemen,YE,Yemen,0
+ZMB,Zambia,ZM,Zambia,3
+ZWE,Zimbabwe,ZW,Zimbabwe,3

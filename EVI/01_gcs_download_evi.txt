@@ -1,0 +1,3 @@
+gcloud auth login
+REM Expected local result: C:\IPCCH_source_data\EVI\MODIS_MOD13A3_Monthly\...
+gsutil -m cp -n -r gs://operator-bucket-name/MODIS_MOD13A3_Monthly "C:\IPCCH_source_data\EVI"

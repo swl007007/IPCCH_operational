@@ -4,10 +4,10 @@
 
 | Workflow | Current/proposed output | Identifier | Shape | Downstream consumer |
 | --- | --- | --- | --- | --- |
-| EVI | `EVI_mean_extraction_results.csv`, `EVI_std_extraction_results.csv` | `region_id` mapped from ArcPy zone field | Wide monthly | Final harmonise CH/IPC combine scripts. |
-| FLDAS | `FLDAS_mean_extraction_results_p*.csv`, `FLDAS_std_extraction_results_p*.csv` | `region_id` mapped from ArcPy zone field | Wide monthly-band, split by part | Final harmonise after consistent part handling. |
-| GOSIF-GPP | `GOSIF_GPP_extraction_results_ch.csv`, `GOSIF_GPP_extraction_results_SD.csv` | `region_id` | Wide monthly | Final harmonise. |
-| VIIRS nightlight | `nightlight_sum_extraction_results.csv`, `nightlight_std_extraction_results.csv` | `region_id` | Wide monthly, usually one target feature month for production updates | Final monthly model-input assembly. |
+| EVI | `EVI_mean_extraction_results.csv`, `EVI_std_extraction_results.csv` | `region_id` mapped from ArcPy zone field | Wide monthly | Normalize with `tools/reshape_remote_sensing_wide_to_long.py`, then merge into monthly IPCCH input assembly. |
+| FLDAS | `FLDAS_mean_extraction_results_p*.csv`, `FLDAS_std_extraction_results_p*.csv` | `region_id` mapped from ArcPy zone field | Wide monthly-band, split by part | Normalize with `tools/reshape_remote_sensing_wide_to_long.py`; apply band-to-feature naming before final assembly. |
+| GOSIF-GPP | `GOSIF_GPP_extraction_results_ch.csv`, `GOSIF_GPP_extraction_results_SD.csv` | `region_id` | Wide monthly | Normalize with `tools/reshape_remote_sensing_wide_to_long.py`, then merge into monthly IPCCH input assembly. |
+| VIIRS nightlight | `nightlight_sum_extraction_results.csv`, `nightlight_std_extraction_results.csv` | `region_id` | Wide monthly, usually one target feature month for production updates | Normalize with `tools/reshape_remote_sensing_wide_to_long.py`, then merge into monthly IPCCH input assembly. |
 | ACLED | `ch_with_merged_acled_metrics.csv` or configured equivalent | scaffold spatial/time keys | Scaffold plus features | Final harmonise. |
 | FAO | `ch_with_matched_markets.csv`; `ipcch_with_matched_markets.csv` may also be written as a legacy alias | scaffold spatial/time keys | Scaffold plus features | Final harmonise. |
 | World Bank | `ch_WBG_completed.csv` or configured equivalent | country/year plus scaffold keys | Scaffold plus features | Final harmonise. |
@@ -27,12 +27,12 @@
 | `Outcome/ipcch_unified/spatial/ipcch_admin_geometry.*` | Copied from `Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.*` | Shapefile package copied with `.shp`, `.dbf`, `.shx`, `.prj`, `.cpg`; see `Outcome/ipcch_unified/MANIFEST.md` for checksums. |
 | `Outcome/ipcch_unified/country_area_id_lookup.csv` | Copied from `Google fund/Analysis/1.Source Data/assembled_IPCCH/country_area_id_lookup.csv` | 6,227 data rows; SHA-256 `e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90`. |
 | `Outcome/ipcch_unified/country_region_mapping.csv` | Copied from `Google fund/Analysis/1.Source Data/assembled_IPCCH/country_region_mapping.csv` | 53 data rows; SHA-256 `40442e0de598511e1fe379335af0d65b33b02e25a5458b79170542f6c67d1e32`. |
-| `Outcome/ipcch_unified/features/ipcch_fixed_slow_features_by_area.csv` | Generated from `Outcome/ipcch_unified/raw/IPCCH_2026_completed.csv` with `tools/build_ipcch_fixed_slow_features.py` | 6,227 data rows; 47 columns; unique `area_id`; SHA-256 `9a03da20298a58735ae52eafe7c3089c3e2110ed3165050dccd14fc22b7861a9`. |
-| `Outcome/ipcch_unified/features/ipcch_fixed_slow_features_summary.csv` | Generated with the G-03 fixed/slow feature asset | 35 data rows; 28 features verified static in source panel and 7 slow/varying features flagged; SHA-256 `17bdff8f5e782683443a340feeb97a76a55e6854e6b745213afb770cd8af2e41`. |
-| `Outcome/ipcch_unified/metadata/ipcch_fixed_slow_source_vintage_manifest.csv` | Generated with `tools/build_ipcch_source_vintage_manifest.py` from G-03 summary, IPCCH codebook, local `1.Source Data` folders, and FEWS NET paper data-section evidence | 7 data rows; one row per fixed/slow feature family; SHA-256 `4673f5baf5101fbeb97c0d28dbc7250e58730b1e084027ac93098f493bdbe204`. |
+| `Outcome/ipcch_unified/features/ipcch_fixed_slow_features_by_area.csv` | Generated from `Outcome/ipcch_unified/raw/IPCCH_2026_completed.csv` plus the coastline distance source with `tools/build_ipcch_fixed_slow_features.py` | 6,227 data rows; 48 columns; unique `area_id`; `coastline_dist` has 0 missing rows; SHA-256 `89bbda8680b98bc6edddea3fa19f863dadb52dbb0ad88ed09e15997d006ba482`. |
+| `Outcome/ipcch_unified/features/ipcch_fixed_slow_features_summary.csv` | Generated with the G-03 fixed/slow feature asset | 36 data rows; `coastline_dist` is complete for all 6,227 areas; SHA-256 `2ae4884a4e4cbfa5ff133f58a353d52249a5e248a1773f9e7b29527298ad8fb1`. |
+| `Outcome/ipcch_unified/metadata/ipcch_fixed_slow_source_vintage_manifest.csv` | Generated with `tools/build_ipcch_source_vintage_manifest.py` from G-03 summary, IPCCH codebook, local `1.Source Data` folders, coastline distance source, and FEWS NET paper data-section evidence | 8 data rows; one row per fixed/slow feature family; SHA-256 `ee94d12de508651b93817c40304249e69caf25c1dec67aaef7bdac11fc09dcb6`. |
 | `Outcome/ipcch_unified/metadata/variable_codebook_reorganized.csv` | Copied from `Google fund/Analysis/1.Source Data/assembled_IPCCH/metadata/variable_codebook_reorganized.csv` | 168 data rows; used by G-05 schema and feature-family contract; SHA-256 `4d917eee94119cf309fd66ff067262765a5c817d17d92d43343d2972f08194f6`. |
-| `Outcome/ipcch_unified/schema/ipcch_base_panel_schema.csv` | Generated with `tools/build_ipcch_schema_contract.py` | 169 data rows; field-level schema for current raw panel columns plus derived `area_id`; SHA-256 `332d1b1d9b990270aea886aedf9eaae6293b6f558a227bcd79327349c940e57f`. |
-| `Outcome/ipcch_unified/schema/ipcch_feature_family_contract.csv` | Generated with `tools/build_ipcch_schema_contract.py` | 14 data rows; feature-family contract by codebook group; SHA-256 `94d5940ede96d78c08f8155e5ed178bdeff08f60946cc0ade99bf63509da0af8`. |
+| `Outcome/ipcch_unified/schema/ipcch_base_panel_schema.csv` | Generated with `tools/build_ipcch_schema_contract.py` | 169 data rows; field-level schema for current raw panel columns plus derived `area_id`; SHA-256 `c2f477162bf17ea6377ff88916f58aa8e6d32c28a53ae99c110b99edd1182b90`. |
+| `Outcome/ipcch_unified/schema/ipcch_feature_family_contract.csv` | Generated with `tools/build_ipcch_schema_contract.py` | 14 data rows; feature-family contract by codebook group; SHA-256 `5867106f287963f9da81b8d3043c23655f9719529474ea0f9d0ce3875d31d484`. |
 | `Outcome/ipcch_unified/schema/ipcch_model_input_contract.md` | Generated with `tools/build_ipcch_schema_contract.py` | Human-readable G-05 unified long-panel contract; SHA-256 `1e30908222895fdda77bc7e1288ff409451c0c1e7aeb5afba54452d0042fda46`. |
 
 The active G-02 handover package is `Outcome/ipcch_unified/`. Large raw and
@@ -46,6 +46,30 @@ production source. Local paths still contain `DMSP_OLS` for historical reasons,
 but the current Earth Engine script exports from
 `NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG`. Set its date window to the target feature
 month, with `endDate` as the first day of the following month.
+
+Remote-sensing normalization note: ArcPy extraction scripts emit wide CSVs
+keyed by `region_id`. Use `tools/reshape_remote_sensing_wide_to_long.py` to
+convert those outputs to `area_id`, `year`, `month` rows. The tool supports
+`YYYY_MM`, GOSIF `YYYY.MMM`, and FLDAS-style `YYYY_MM_Bn` date columns. If
+`region_id` is not already the current `area_id`, pass a two-column mapping CSV
+with `region_id` and `area_id`.
+
+## Manual Raw Input Examples and Ownership Notes
+
+These source refresh notes complement the generated assets above. They are
+operator instructions, not additional required Weilun-side model assets.
+
+| Source | Example raw input | Current handling | Owner / handover note |
+| --- | --- | --- | --- |
+| ACLED | `archive/example_raw_inputs/ACLED/ACLED Data_2026-05-11_ipcch.csv` | `ACLED/00_add_acled_features.py` consumes event-level `Political violence` rows and creates battles, explosions, and violence features. | Sediqa should download only `Battles`, `Explosions/Remote violence`, and `Violence against civilians`; do not include protest rows unless the script is later extended. See `docs/08_sediqa_raw_data_download_notes.md`. |
+| WFP prices | `archive/example_raw_inputs/WFP/Prices-Export-Thu Mar 27 2025 11_30_42 GMT-0400 (Eastern Daylight Time).csv` | `WFP_indicator/00_add_wfp_price_features.py` reads `Commodity`, then drops it and aggregates staged `Trend` values by country/month. | Sediqa should download from WFP Analysis Builder and stage only ALPS-compatible commodities before running the script. Do not treat commodity crosswalk logic as implemented inside the current script. See `docs/08_sediqa_raw_data_download_notes.md`. |
+| FAO prices | `C:\Users\swl00\IFPRI Dropbox\Weilun Shi\Google fund\Analysis\1.Source Data\FAO\GOOGLE_FOOD_CRISIS_FAO_DATA.xlsx` | `FAO_price/00_add_fao_price_features.py` expects a normalized workbook schema; FAO exports may vary. | Soonho/Sediqa should normalize the refreshed FAO export or adjust the FAO script for the specific export. |
+| Bloomberg | Not required for the current base handover. | Optional external source referenced by model-ready/codebook material, not required by G-09 base monthly assembly. | Soonho can handle if Bloomberg is included in a later production feature set. |
+| Historical raw archives | Existing local `1.Source Data` folders. | Historical raw inputs do not have detailed archive manifests. | Treat existing historical raw assets as `validated_on=2026-06-22`. Future refreshes should use date-stamped folders or filenames and record source name, download date, operator, row count, filters applied, and consumed pipeline file. |
+
+Monthly release ownership: Soonho and Sediqa download raw data and run the
+pipeline; Weilun validates the final monthly model-compatible input and QA
+summaries before release.
 
 ## Validation Command Examples
 

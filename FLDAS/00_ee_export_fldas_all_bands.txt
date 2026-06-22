@@ -1,0 +1,71 @@
+// Define the date range
+var startDate = '2010-01-01';
+var endDate = '2025-01-01';
+
+// Handover settings. Keep in sync with config/ee_gcs.ini.
+var GCS_BUCKET = 'operator-bucket-name';
+var GCS_PREFIX = 'FLDAS_Monthly';
+
+// Load the FLDAS collection
+var fldasCollection = ee.ImageCollection("NASA/FLDAS/NOAH01/C/GL/M/V001")
+  .filterDate(startDate, endDate);
+
+// Print information about the collection
+print('Total images:', fldasCollection.size());
+print('First image bands:', fldasCollection.first().bandNames());
+
+// Get the list of all images in the collection
+var imageList = fldasCollection.toList(fldasCollection.size());
+
+// Define export region - global extent
+var exportRegion = ee.Geometry.Rectangle([-180, -90, 180, 90], 'EPSG:4326');
+
+// Function to export all bands in a single file with proper projection
+var exportAllBandsInOneFile = function(image) {
+  var img = ee.Image(image);
+  var date = ee.Date(img.get('system:time_start'));
+  var year = date.get('year').format();
+  var month = date.get('month').format('%02d');
+  var fileName = 'FLDAS_' + year.getInfo() + '_' + month.getInfo() + '_all_bands';
+  
+  // Export all bands at once with the specified projection transform
+  Export.image.toCloudStorage({
+    image: img,
+    description: fileName,
+    bucket: GCS_BUCKET,
+    fileNamePrefix: GCS_PREFIX + '/' + fileName,
+    crs: 'EPSG:4326',
+    crsTransform: [0.1, 0, -180, 0, -0.1, 90],  // Using the provided transform
+    maxPixels: 1e13,
+    fileFormat: 'GeoTIFF',
+    formatOptions: {
+      cloudOptimized: true
+    }
+  });
+  
+  return null;
+};
+
+// Get the number of images
+var count = imageList.size().getInfo();
+print('Number of images to export:', count);
+
+// Due to processing limitations, export in smaller batches
+var batchSize = 10;
+var batches = Math.ceil(count / batchSize);
+
+print('Will process in ' + batches + ' batches of up to ' + batchSize + ' images each');
+
+// Generate export tasks in batches
+for (var batch = 0; batch < batches; batch++) {
+  var startIdx = batch * batchSize;
+  var endIdx = Math.min((batch + 1) * batchSize, count);
+  
+  print('Processing batch ' + (batch+1) + ': images ' + startIdx + ' to ' + (endIdx-1));
+  
+  // Process each image in this batch
+  for (var i = startIdx; i < endIdx; i++) {
+    var image = ee.Image(imageList.get(i));
+    exportAllBandsInOneFile(image);
+  }
+}

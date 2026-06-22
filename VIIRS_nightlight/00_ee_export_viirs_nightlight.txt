@@ -1,0 +1,81 @@
+// Define the target feature month. Earth Engine filterDate endDate is exclusive.
+// For the 2026-04 feature month, export 2026-04-01 through 2026-05-01.
+var startDate = '2026-04-01';
+var endDate = '2026-05-01';
+
+// Handover settings. Keep in sync with config/ee_gcs.ini.
+var GCS_BUCKET = 'operator-bucket-name';
+var GCS_PREFIX = 'nightlight';
+
+// Load the VIIRS DNB MONTHLY collection
+var viirsCollection = ee.ImageCollection("NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG")
+  .filterDate(startDate, endDate);
+
+// Print collection size
+print('Number of images:', viirsCollection.size());
+
+// Get the list of all images
+var imageList = viirsCollection.toList(viirsCollection.size());
+
+// Function to export an image to Google Cloud Storage
+var exportToGCS = function(image, index) {
+  // Get date information for naming
+  var img = ee.Image(image);
+  var date = ee.Date(img.get('system:time_start'));
+  var year = date.get('year').format();
+  var month = date.get('month').format('%02d');
+  var fileName = 'nightlight_VIIRS_' + year.getInfo() + '_' + month.getInfo();
+  
+  // Create a lower resolution transform (original pixel size is ~0.004167 degrees)
+  // By multiplying the pixel size by 8, we get ~4km resolution instead of ~500m
+  var lowerResTransform = [0.0041666667 * 8, 0, -180.00208525335, 0, -0.0041666667 * 8, 75.00208393335001];
+  
+  // Reduce resolution by resampling with explicit transform
+  var reducedImage = img.select('avg_rad').resample('bilinear').reproject({
+    crs: 'EPSG:4326',
+    crsTransform: lowerResTransform
+  });
+  
+  // Export to Google Cloud Storage with compression
+  Export.image.toCloudStorage({
+    image: reducedImage,
+    description: fileName,
+    bucket: GCS_BUCKET,
+    fileNamePrefix: GCS_PREFIX + '/' + fileName,
+    crs: 'EPSG:4326',
+    crsTransform: lowerResTransform,
+    maxPixels: 1e13,
+    fileFormat: 'GeoTIFF',
+    fileDimensions: 4095,  // 4095 = 15 * 273 (multiple of 15)
+    shardSize: 15,
+    formatOptions: {
+      cloudOptimized: true
+    }
+  });
+  
+  return null;
+};
+
+// Number of images to process
+var count = imageList.size().getInfo();
+print('Total images to export:', count);
+
+// Due to processing limitations, export in smaller batches
+var batchSize = 10;
+var batches = Math.ceil(count / batchSize);
+
+print('Will process in ' + batches + ' batches of up to ' + batchSize + ' images each');
+
+// Generate export tasks in batches
+for (var batch = 0; batch < batches; batch++) {
+  var startIdx = batch * batchSize;
+  var endIdx = Math.min((batch + 1) * batchSize, count);
+  
+  print('Processing batch ' + (batch+1) + ': images ' + startIdx + ' to ' + (endIdx-1));
+  
+  // Process each image in this batch
+  for (var i = startIdx; i < endIdx; i++) {
+    var image = ee.Image(imageList.get(i));
+    exportToGCS(image, i);
+  }
+}

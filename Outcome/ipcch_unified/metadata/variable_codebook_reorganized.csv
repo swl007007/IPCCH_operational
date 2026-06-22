@@ -1,0 +1,169 @@
+group,category,variable,description,statistic_or_measure
+"01 Identifiers, location, and time",Geography / coordinate,lat,Latitude,
+"01 Identifiers, location, and time",Geography / coordinate,lon,Longitude,
+"01 Identifiers, location, and time",Identifier,ISO3,ISO 3166-1 alpha-3 country code,
+"01 Identifiers, location, and time",Time,month,Month,Time index
+"01 Identifiers, location, and time",Time,year,Year,Time index
+02 Geography and spatial linkage,Conflict / geography,distance_to_nearest_acled,Distance to nearest ACLED conflict event,
+02 Geography and spatial linkage,Data linkage / geography,wb_food_price_match_distance_km,Distance used when matching World Bank food price series to location,
+02 Geography and spatial linkage,Geography,coastline_dist,Distance to coastline source from World bank,
+02 Geography and spatial linkage,Geography / identifier,address,Place/address text,
+02 Geography and spatial linkage,Geography / identifier,admin_code,Administrative unit code,
+02 Geography and spatial linkage,Geography / identifier,country,Country name,
+02 Geography and spatial linkage,Geography / identifier,country_code,Country code,
+02 Geography and spatial linkage,Geography / identifier,country_en,English country name,
+02 Geography and spatial linkage,Geography / identifier,state,State/province/admin-1 name,
+02 Geography and spatial linkage,Hydrology / geography,distance_to_river,Distance to nearest river source from world bank,
+03 Terrain and physical geography,Terrain,elevation,Elevation above sea level,
+03 Terrain and physical geography,Terrain,ruggedness,Terrain ruggedness index,
+03 Terrain and physical geography,Terrain,slope,Terrain slope,
+"04 Agriculture, AEZ, and masks",Agriculture,crop,"Crop mask, source from ASAP",
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_4000,Indicator or share for FAO/IIASA agro-ecological zone code 4000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_7000,Indicator or share for FAO/IIASA agro-ecological zone code 7000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_9000,Indicator or share for FAO/IIASA agro-ecological zone code 9000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_10000,Indicator or share for FAO/IIASA agro-ecological zone code 10000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_12000,Indicator or share for FAO/IIASA agro-ecological zone code 12000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_17000,Indicator or share for FAO/IIASA agro-ecological zone code 17000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_19000,Indicator or share for FAO/IIASA agro-ecological zone code 19000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_20000,Indicator or share for FAO/IIASA agro-ecological zone code 20000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_25000,Indicator or share for FAO/IIASA agro-ecological zone code 25000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_28000,Indicator or share for FAO/IIASA agro-ecological zone code 28000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_30000,Indicator or share for FAO/IIASA agro-ecological zone code 30000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_31000,Indicator or share for FAO/IIASA agro-ecological zone code 31000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_32000,Indicator or share for FAO/IIASA agro-ecological zone code 32000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_33000,Indicator or share for FAO/IIASA agro-ecological zone code 33000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_34000,Indicator or share for FAO/IIASA agro-ecological zone code 34000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_35000,Indicator or share for FAO/IIASA agro-ecological zone code 35000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_36000,Indicator or share for FAO/IIASA agro-ecological zone code 36000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_38000,Indicator or share for FAO/IIASA agro-ecological zone code 38000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_40000,Indicator or share for FAO/IIASA agro-ecological zone code 40000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_42000,Indicator or share for FAO/IIASA agro-ecological zone code 42000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Agroecological zone / AEZ,AEZ_43000,Indicator or share for FAO/IIASA agro-ecological zone code 43000,AEZ code indicator/share
+"04 Agriculture, AEZ, and masks",Derived feature,range,range mask; source from ASAP,
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Evap_tavg_mean,Evapotranspiration; mean. From FLDAS product. Aggregated first on month then on zone.,Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Evap_tavg_stdDev,Evapotranspiration; standard deviation. From FLDAS product. Aggregated first on month then on zone.,Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,LWdown_f_tavg_mean,"Downward longwave radiation flux at surface, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,LWdown_f_tavg_stdDev,"Downward longwave radiation flux at surface, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Lwnet_tavg_mean,"Net longwave radiation flux at surface, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Lwnet_tavg_stdDev,"Net longwave radiation flux at surface, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Psurf_f_tavg_mean,"Surface pressure, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Psurf_f_tavg_stdDev,"Surface pressure, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qair_f_tavg_mean,"Near-surface specific humidity, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qair_f_tavg_stdDev,"Near-surface specific humidity, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qg_tavg_mean,"Ground heat flux, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qg_tavg_stdDev,"Ground heat flux, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qh_tavg_mean,"Sensible heat flux, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qh_tavg_stdDev,"Sensible heat flux, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qle_tavg_mean,"Latent heat flux, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qle_tavg_stdDev,"Latent heat flux, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qs_tavg_mean,"Surface storm runoff, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qs_tavg_stdDev,"Surface storm runoff, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qsb_tavg_mean,"Subsurface/baseflow runoff, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Qsb_tavg_stdDev,"Subsurface/baseflow runoff, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,RadT_tavg_mean,"Surface radiative temperature, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,RadT_tavg_stdDev,"Surface radiative temperature, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Rainf_f_tavg_mean,"Rainfall/precipitation rate, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Rainf_f_tavg_stdDev,"Rainfall/precipitation rate, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SnowCover_inst_mean,"Snow cover fraction, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SnowCover_inst_stdDev,"Snow cover fraction, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SnowDepth_inst_mean,"Snow depth, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SnowDepth_inst_stdDev,"Snow depth, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Snowf_tavg_mean,"Snowfall rate, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Snowf_tavg_stdDev,"Snowfall rate, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilMoi00_10cm_tavg_mean,"Soil moisture for 0-10cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilMoi00_10cm_tavg_stdDev,"Soil moisture for 0-10cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilMoi100_200cm_tavg_mean,"Soil moisture for 10-20cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilMoi100_200cm_tavg_stdDev,"Soil moisture for 10-20cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilMoi10_40cm_tavg_mean,"Soil moisture for 10-40cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilMoi10_40cm_tavg_stdDev,"Soil moisture for 10-40cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilMoi40_100cm_tavg_mean,"Soil moisture for 40-10cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilMoi40_100cm_tavg_stdDev,"Soil moisture for 40-10cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilTemp00_10cm_tavg_mean,"Soil temperature for 0-10cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilTemp00_10cm_tavg_stdDev,"Soil temperature for 0-10cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilTemp100_200cm_tavg_mean,"Soil temperature for 10-20cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilTemp100_200cm_tavg_stdDev,"Soil temperature for 10-20cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilTemp10_40cm_tavg_mean,"Soil temperature for 10-40cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilTemp10_40cm_tavg_stdDev,"Soil temperature for 10-40cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilTemp40_100cm_tavg_mean,"Soil temperature for 40-10cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SoilTemp40_100cm_tavg_stdDev,"Soil temperature for 40-10cm depth layer, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SWdown_f_tavg_mean,"Downward shortwave radiation flux at surface, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SWdown_f_tavg_stdDev,"Downward shortwave radiation flux at surface, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SWE_inst_mean,"Snow water equivalent, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,SWE_inst_stdDev,"Snow water equivalent, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Swnet_tavg_mean,"Net shortwave radiation flux at surface, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Swnet_tavg_stdDev,"Net shortwave radiation flux at surface, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Tair_f_tavg_mean,"Near-surface air temperature, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Tair_f_tavg_stdDev,"Near-surface air temperature, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Wind_f_tavg_mean,"Near-surface wind speed, From FLDAS product. Aggregated first on month then on zone.",Mean
+05 FLDAS/GLDAS land-surface climate,GLDAS land-surface model,Wind_f_tavg_stdDev,"Near-surface wind speed, From FLDAS product. Aggregated first on month then on zone.",Standard deviation
+06 Remote sensing vegetation and nightlights,Remote sensing / development proxy,nightlight_mean,Mean night-time lights intensity; source from VIIRS and DMSP/OLS,Mean
+06 Remote sensing vegetation and nightlights,Remote sensing / development proxy,nightlight_std,Standard deviation of night-time lights intensity; source from VIIRS and DMSP/OLS,Standard deviation
+06 Remote sensing vegetation and nightlights,Remote sensing / vegetation,EVI_mean,Enhanced Vegetation Index; mean. Aggregated first on month then on zone.,Mean
+06 Remote sensing vegetation and nightlights,Remote sensing / vegetation,EVI_std,Enhanced Vegetation Index; standard deviation. Aggregated first on month then on zone.,Standard deviation
+06 Remote sensing vegetation and nightlights,Remote sensing / vegetation productivity,GPP_mean,"Gross Primary Productivity, source from GOSIF-GPP, aggregated on zone.",Mean
+06 Remote sensing vegetation and nightlights,Remote sensing / vegetation productivity,GPP_std,"Gross Primary Productivity, source from GOSIF-GPP, aggregated on zone.",Standard deviation
+07 SoilGrids soil attributes,SoilGrids / soil carbon,sg_soc_5-15cm,"Soil organic carbon, 5-15 cm soil depth",
+07 SoilGrids soil attributes,SoilGrids / soil chemistry,sg_cec_5-15cm,"Cation exchange capacity, 5-15 cm soil depth",
+07 SoilGrids soil attributes,SoilGrids / soil chemistry,sg_phh2o_5-15cm,"Soil pH in water, 5-15 cm soil depth",
+07 SoilGrids soil attributes,SoilGrids / soil nutrients,sg_nitrogen_5-15cm,"Total nitrogen content, 5-15 cm soil depth",
+07 SoilGrids soil attributes,SoilGrids / soil texture,sg_cfvo_5-15cm,"Coarse fragments volumetric percentage, 5-15 cm soil depth",
+08 Conflict events and fatalities,ACLED conflict events,event_count_battles,Number of ACLED events for battles,
+08 Conflict events and fatalities,ACLED conflict events,event_count_battles_w10,Number of ACLED events for battles; reverse weighted by distance of 10 nearest stations.,Distance-weighted 10-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,event_count_battles_w5,Number of ACLED events for battles; reverse weighted by distance of 5 nearest stations.,Distance-weighted 5-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,event_count_explosions,Number of ACLED events for explosions/remote violence,
+08 Conflict events and fatalities,ACLED conflict events,event_count_explosions_w10,Number of ACLED events for explosions/remote violence; reverse weighted by distance of 10 nearest stations.,Distance-weighted 10-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,event_count_explosions_w5,Number of ACLED events for explosions/remote violence; reverse weighted by distance of 5 nearest stations.,Distance-weighted 5-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,event_count_violence,Number of ACLED events for violence against civilians or political violence,
+08 Conflict events and fatalities,ACLED conflict events,event_count_violence_w10,Number of ACLED events for violence against civilians or political violence; reverse weighted by distance of 10 nearest stations.,Distance-weighted 10-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,event_count_violence_w5,Number of ACLED events for violence against civilians or political violence; reverse weighted by distance of 5 nearest stations.,Distance-weighted 5-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,sum_fatalities_battles,Reported fatalities for battles,
+08 Conflict events and fatalities,ACLED conflict events,sum_fatalities_battles_w10,Reported fatalities for battles; reverse weighted by distance of 10 nearest stations.,Distance-weighted 10-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,sum_fatalities_battles_w5,Reported fatalities for battles; reverse weighted by distance of 5 nearest stations.,Distance-weighted 5-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,sum_fatalities_explosions,Reported fatalities for explosions/remote violence,
+08 Conflict events and fatalities,ACLED conflict events,sum_fatalities_explosions_w10,Reported fatalities for explosions/remote violence; reverse weighted by distance of 10 nearest stations.,Distance-weighted 10-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,sum_fatalities_explosions_w5,Reported fatalities for explosions/remote violence; reverse weighted by distance of 5 nearest stations.,Distance-weighted 5-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,sum_fatalities_violence,Reported fatalities for violence against civilians or political violence,
+08 Conflict events and fatalities,ACLED conflict events,sum_fatalities_violence_w10,Reported fatalities for violence against civilians or political violence; reverse weighted by distance of 10 nearest stations.,Distance-weighted 10-nearest-station aggregate
+08 Conflict events and fatalities,ACLED conflict events,sum_fatalities_violence_w5,Reported fatalities for violence against civilians or political violence; reverse weighted by distance of 5 nearest stations.,Distance-weighted 5-nearest-station aggregate
+09 Food security / IPC,Food security,overall_phase,Overall IPC/food-security phase,
+09 Food security / IPC,Food security,phase1_percent,Percent of population in IPC Phase 1: Minimal/None,
+09 Food security / IPC,Food security,phase2_percent,Percent of population in IPC Phase 2: Stressed,
+09 Food security / IPC,Food security,phase3_percent,Percent of population in IPC Phase 3: Crisis,
+09 Food security / IPC,Food security,phase4_percent,Percent of population in IPC Phase 4: Emergency,
+09 Food security / IPC,Food security,phase5_percent,Percent of population in IPC Phase 5: Catastrophe/Famine,
+"10 Demographic, socioeconomic, and macro",Demographics,estimated_population,Estimated population,
+"10 Demographic, socioeconomic, and macro",Demographics,popdensity,Population density,
+"10 Demographic, socioeconomic, and macro",Macroeconomic,CC,"Control of Corruptions percentile, source from world bank",
+"10 Demographic, socioeconomic, and macro",Macroeconomic,CPI,"Consumer Price Index, source from world bank",
+"10 Demographic, socioeconomic, and macro",Macroeconomic,GDP,"Gross Domestic Product, source from world bank.",
+"10 Demographic, socioeconomic, and macro",Socioeconomic,gini,"Gini inequality index, source from world bank",
+11 Food prices and inflation,Food price,FAO_price,Food or agricultural commodity price from FAO; FPMA domestic data-market level; matched on market level,
+11 Food prices and inflation,Food price,WFP_Price,"World Food Programme market/food price, country level ALPS product(maize, rice, corn, wheat, vegetable oil)",
+11 Food prices and inflation,Food price,WFP_Price_std,"Standard deviation of WFP price observations, country level ALPS product(maize, rice, corn, wheat, vegetable oil)",Standard deviation
+11 Food prices and inflation,Food price / macro,food_inflation_wb,World Bank food inflation rate,
+11 Food prices and inflation,Food price / macro,food_price_index_WB,World Bank food price index,
+11 Food prices and inflation,Macroeconomic / food price,Food_CPI,"Food Consumer Price Index; marco, country level. Source from FAOSTAT",
+11 Food prices and inflation,Macroeconomic / food price,Food_food_inflation,"Food price inflation rate; macro, country level, Source from FAOSTAT",
+11 Food prices and inflation,Macroeconomic / food price,inflation_food_price_index,"Food price inflation index, source from world bank",
+12 Bloomberg commodities and fertilizer/energy,Bloomberg / agricultural commodity,bbg_soybean_oil_futures_bid,Soybean oil futures,Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Bloomberg / agricultural commodity,bbg_soybean_oil_futures_last_price,Soybean oil futures,Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Bloomberg / energy commodity,bbg_oilgas_CL1_COMB_Comdty_price,"Crude oil front-month futures price, WTI CL1 generic contract",Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Bloomberg / energy commodity,bbg_oilgas_NG1_Comdty_price,"Natural gas front-month futures price, NG1 generic contract",Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Bloomberg / staple food commodity,bbg_staple_food_corn_x1_price,Front/generic contract price for corn,Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Bloomberg / staple food commodity,bbg_staple_food_hard_wheat_x1_price,Front/generic contract price for hard wheat,Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Bloomberg / staple food commodity,bbg_staple_food_rough_rice_x1_price,Front/generic contract price for rough rice,Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Bloomberg / staple food commodity,bbg_staple_food_soft_wheat_x1_price,Front/generic contract price for soft wheat,Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Bloomberg / staple food commodity,bbg_staple_food_soybeans_x1_price,Front/generic contract price for soybeans,Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Commodity market,bbg_TZTX2_Comdty,Dutch Natural Gas price,Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Energy / commodity market,bbg_NGUSHHUB,Henry Hub natural gas price,Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Food/commodity market,bbg_GCFPAMBS,"Ammonia, Black Sea",Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Food/commodity market,bbg_GCFPAMME,"Ammonia, Middle East",Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Food/commodity market,bbg_GCFPDAIN,"DAP, India",Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Food/commodity market,bbg_GCFPDANO,"DAP, US Gulf / NOLA",Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Food/commodity market,bbg_GCFPPOBA,"Potash / MOP, Brazil",Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Food/commodity market,bbg_GCFPURBS,"Urea, Black Sea",Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Food/commodity market,bbg_GCFPURGB,"Urea, granular, Brazil / Brazil import price",Bloomberg ticker/price series
+12 Bloomberg commodities and fertilizer/energy,Food/commodity market,bbg_GCFPURMG,"Urea, Middle East granular",Bloomberg ticker/price series
+13 Market access,Market access,market_access,Market accessibility score/index,
+13 Market access,Market access,market_distance,Distance to market,
+99 Other / review,Climate teleconnection,nino34_anom,Nino 3. 4 sea-surface temperature anomaly,

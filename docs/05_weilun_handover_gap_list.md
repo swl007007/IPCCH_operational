@@ -30,6 +30,10 @@ needs a one-month scaffold for the target month.
 | G-07 | Downstream feature engineering / production model transformations | Deferred | Not currently available; prepare later so the monthly IPCCH input exactly matches the exported model pipeline's expected columns. |
 | G-08 | Nightlight temporal coverage / fallback source | Resolved for handover | Use VIIRS as the production monthly source. Historical assembled panel already contains `nightlight_mean/std` through 2026-04; legacy `DMSP_OLS` path names are folder history, not the production source decision. |
 | G-09 | Final monthly model-input assembly refactor | Resolved for base assembly | Added unified monthly IPCCH base input builder that starts from the one-month scaffold, joins fixed/slow features and same-month source-level fields, and writes one long IPCCH monthly table plus QA summary. G-06 model weights/pipeline and G-07 model-specific transformations remain deferred. |
+| OI-07 | WFP commodity overlap / ALPS commodity mapping | Resolved by operator instruction | Current script aggregates by country/month and drops `Commodity`; Sediqa should download or stage only ALPS-compatible commodities before running the WFP workflow. |
+| OI-08 | FAO/Bloomberg export specification | Delegated / not Weilun blocker | Bloomberg data is optional and can be handled by Soonho. FAO exports can vary by format and should be normalized or script-adjusted by Soonho/Sediqa when refreshed. |
+| OI-09 | QA ownership and monthly release checks | Resolved by role assignment | Soonho/Sediqa download raw data and run the pipeline; Weilun validates monthly outputs before release. |
+| OI-10 | Model asset versioning | Deferred | Same deferred scope as G-06/G-07: model weights, pipeline, and model-specific feature engineering will be exported later. |
 
 ## G-01 Resolution: Country Scope
 
@@ -109,9 +113,9 @@ Generated assets:
 
 | File | Role | Check |
 | --- | --- | --- |
-| `Outcome/ipcch_unified/features/ipcch_fixed_slow_features_by_area.csv` | One row per `area_id` / `admin_code`, with AEZ, ASAP mask, river distance, terrain, ISRIC SoilGrids, market access, and population-context columns. | 6,227 data rows; 47 columns; unique `area_id`; SHA-256 `9a03da20298a58735ae52eafe7c3089c3e2110ed3165050dccd14fc22b7861a9`. |
-| `Outcome/ipcch_unified/features/ipcch_fixed_slow_features_summary.csv` | Feature-level source checksum, output checksum, missingness, and within-area stability report. | 35 data rows; SHA-256 `17bdff8f5e782683443a340feeb97a76a55e6854e6b745213afb770cd8af2e41`. |
-| `tools/build_ipcch_fixed_slow_features.py` | Rebuild script for the G-03 asset from the big panel. | SHA-256 `681d9ad099fe08bb6dc3834d42fbe12d56de9b5fd9021ca51a5b1cbd471ae014`. |
+| `Outcome/ipcch_unified/features/ipcch_fixed_slow_features_by_area.csv` | One row per `area_id` / `admin_code`, with AEZ, ASAP mask, river distance, terrain, ISRIC SoilGrids, market access, population-context, and coastline-distance columns. | 6,227 data rows; 48 columns; unique `area_id`; `coastline_dist` has 0 missing rows; SHA-256 `89bbda8680b98bc6edddea3fa19f863dadb52dbb0ad88ed09e15997d006ba482`. |
+| `Outcome/ipcch_unified/features/ipcch_fixed_slow_features_summary.csv` | Feature-level source checksum, output checksum, missingness, and within-area stability report. | 36 data rows; SHA-256 `2ae4884a4e4cbfa5ff133f58a353d52249a5e248a1773f9e7b29527298ad8fb1`. |
+| `tools/build_ipcch_fixed_slow_features.py` | Rebuild script for the G-03 asset from the big panel plus coastline source. | SHA-256 `73dd73b926006e9df9ff7019742db6978482154ab3e9bb971aac9e79fc43994a`. |
 
 Feature-family coverage:
 
@@ -124,6 +128,7 @@ Feature-family coverage:
 | ISRIC SoilGrids | 5 `sg_*_5-15cm` columns | Included; varies within 300-345 areas depending on column, so the output uses latest nonmissing source value. |
 | Market access | `market_access`, `market_distance` | `market_access` verified static; `market_distance` varies and is missing for 141 areas. |
 | Population context | `popdensity` | Included as slow-moving context; present for 1,308 of 6,227 areas. |
+| Coastline distance | `coastline_dist` | Joined from `Coastline_distance_NOAA/IPCCH_2026_price_completed_unique_lat_lon_coastline_dist.csv`; present for all 6,227 areas. |
 
 The unified source panel does not expose separate `ESA_*` columns. Under the
 current handover decision, the old ESA-specific output files remain superseded
@@ -136,8 +141,8 @@ Generated asset:
 
 | File | Role | Check |
 | --- | --- | --- |
-| `Outcome/ipcch_unified/metadata/ipcch_fixed_slow_source_vintage_manifest.csv` | Family-level provenance manifest for G-03 fixed/slow feature families. | 7 data rows; 25 columns; unique `family`; SHA-256 `4673f5baf5101fbeb97c0d28dbc7250e58730b1e084027ac93098f493bdbe204`. |
-| `tools/build_ipcch_source_vintage_manifest.py` | Rebuild script for the G-04 manifest. | SHA-256 `f50cd7b92267d0489d99108a9958ab40ecdc99bf84b3d4580a6af348f10d3919`. |
+| `Outcome/ipcch_unified/metadata/ipcch_fixed_slow_source_vintage_manifest.csv` | Family-level provenance manifest for G-03 fixed/slow feature families. | 8 data rows; 25 columns; unique `family`; SHA-256 `ee94d12de508651b93817c40304249e69caf25c1dec67aaef7bdac11fc09dcb6`. |
+| `tools/build_ipcch_source_vintage_manifest.py` | Rebuild script for the G-04 manifest. | SHA-256 `d0232b6cc0aeacbd1b94bad5a7146f3b44fccc5405d279e3bb81b381b17b9eaf`. |
 
 Evidence used:
 
@@ -147,7 +152,8 @@ Evidence used:
   from `assembled_IPCCH/metadata/variable_codebook_reorganized.csv`.
 - Local source folders under `1.Source Data`: `AEZ`, `ASAP_land_cover`,
   `Distance_to_rivers`, `Elevation`, `ISRIC`, `Market_access`,
-  `Populationdensity`, `Ruggedness`, `Slope`, and `FAO`.
+  `Populationdensity`, `Ruggedness`, `Slope`, `FAO`, and
+  `Coastline_distance_NOAA`.
 - PDF reference:
   `C:\Users\swl00\Downloads\Forecasting_FEWS_NET_Food_Security_Crises_Using_a_Geo_Aware_Spatial_Clustering_Model.pdf`.
   `pdftotext` extraction succeeded and relevant evidence is in the data section
@@ -164,6 +170,7 @@ Feature-family coverage:
 | `isric_soilgrids` | ISRIC SoilGrids; IPCCH field names and codebook use 5-15 cm depth; local processed files dated 2025. |
 | `market_access` | `market_access` from Weiss et al. travel-time-to-cities layer; `market_distance` from FAO market matching; local processed files dated 2025. |
 | `population_context` | Local population-density processed outputs; provider vintage is not explicit in available metadata, but local processed files are recorded. |
+| `coastline_distance` | Local NOAA coastline-distance raster/extraction source; `coastline_dist` matched by rounded lat/lon and is complete for the current 6,227 areas. |
 
 ## G-05 Resolution: Unified IPCCH Model Input Schema
 
@@ -172,13 +179,13 @@ Generated assets:
 | File | Role | Check |
 | --- | --- | --- |
 | `Outcome/ipcch_unified/metadata/variable_codebook_reorganized.csv` | Copied IPCCH variable codebook used to classify schema fields and feature families. | 168 data rows; SHA-256 `4d917eee94119cf309fd66ff067262765a5c817d17d92d43343d2972f08194f6`. |
-| `Outcome/ipcch_unified/schema/ipcch_base_panel_schema.csv` | Field-level schema for current raw panel columns plus the derived canonical `area_id`. | 169 data rows; 14 columns; SHA-256 `332d1b1d9b990270aea886aedf9eaae6293b6f558a227bcd79327349c940e57f`. |
-| `Outcome/ipcch_unified/schema/ipcch_feature_family_contract.csv` | Feature-family contract by codebook group, including current raw-panel coverage and fixed/slow area-asset coverage. | 14 data rows; SHA-256 `94d5940ede96d78c08f8155e5ed178bdeff08f60946cc0ade99bf63509da0af8`. |
+| `Outcome/ipcch_unified/schema/ipcch_base_panel_schema.csv` | Field-level schema for current raw panel columns plus the derived canonical `area_id`. | 169 data rows; 14 columns; SHA-256 `c2f477162bf17ea6377ff88916f58aa8e6d32c28a53ae99c110b99edd1182b90`. |
+| `Outcome/ipcch_unified/schema/ipcch_feature_family_contract.csv` | Feature-family contract by codebook group, including current raw-panel coverage and fixed/slow area-asset coverage. | 14 data rows; SHA-256 `5867106f287963f9da81b8d3043c23655f9719529474ea0f9d0ce3875d31d484`. |
 | `Outcome/ipcch_unified/interim/ipcch_scaffold_202604.csv` | One-month production scaffold example generated from the multi-month reference scaffold. | 6,227 data rows; SHA-256 `199882aae1151836efd159a2a3506d9183449b5b1b39047daee6dea5a21961f4`. |
 | `Outcome/ipcch_unified/schema/ipcch_model_input_contract.md` | Human-readable contract for the unified IPCCH monthly model-compatible input. | SHA-256 `1e30908222895fdda77bc7e1288ff409451c0c1e7aeb5afba54452d0042fda46`. |
 | `tools/build_ipcch_schema_contract.py` | Rebuild script for G-05 schema artifacts. | SHA-256 `87103afc33870998b5051911895ba1e1c691e31c06d92534049ca61077d0175b`. |
 | `tools/build_monthly_ipcch_scaffold.py` | Builds one target-month scaffold from the reference scaffold or area lookup. | SHA-256 `406131fbd31851f45131b71d0f7ea97ae97fb0d63e103961af49ec0d60fed7d0`. |
-| `tools/validate_ipcch_schema.py` | Streaming schema validator for the large raw panel, forecast scaffold, fixed/slow area asset, and future model-ready exports. | SHA-256 `ef4d8d1eee7bf0309521b6f2ecac6674ad40dbf00ed57b30129433f762ffc454`. |
+| `tools/validate_ipcch_schema.py` | Streaming schema validator for the large raw panel, forecast scaffold, fixed/slow area asset, and future model-ready exports. | SHA-256 `b5d402782e3b749211d9dfdf4c3e964f3cab9dfb445241af42b49f606a907c81`. |
 
 Canonical contract:
 
@@ -213,7 +220,7 @@ Validation checks:
 | --- | --- | --- |
 | Historical panel | `python3 tools/validate_ipcch_schema.py --mode historical-panel --csv Outcome/ipcch_unified/raw/IPCCH_2026_completed.csv` | `PASS: mode=historical-panel rows=1219868 columns=143`; date coverage 2010-01 through 2026-04. |
 | One-month forecast scaffold | `python3 tools/build_monthly_ipcch_scaffold.py --year 2026 --month 4` then `python3 tools/validate_ipcch_schema.py --mode forecast-scaffold --csv Outcome/ipcch_unified/interim/ipcch_scaffold_202604.csv` | `PASS: mode=forecast-scaffold rows=6227 columns=5`; date coverage 2026-04 through 2026-04. |
-| Fixed/slow area asset | `python3 tools/validate_ipcch_schema.py --mode fixed-slow-area --csv Outcome/ipcch_unified/features/ipcch_fixed_slow_features_by_area.csv` | `PASS: mode=fixed-slow-area rows=6227 columns=47`. |
+| Fixed/slow area asset | `python3 tools/validate_ipcch_schema.py --mode fixed-slow-area --csv Outcome/ipcch_unified/features/ipcch_fixed_slow_features_by_area.csv` | `PASS: mode=fixed-slow-area rows=6227 columns=48`. |
 
 Historical outcome nonmissing counts:
 
@@ -226,8 +233,6 @@ Historical outcome nonmissing counts:
 | `phase4_percent` | 43,636 |
 | `phase5_percent` | 43,551 |
 | `estimated_population` | 43,892 |
-
-## Remaining Assets To Collect Next
 
 ## G-08 Resolution: Nightlight Coverage and Production Source
 
@@ -276,8 +281,8 @@ Smoke test checks:
 | Check | Result |
 | --- | --- |
 | Output rows | 6,227, matching the one-month scaffold. |
-| Output columns | 147 columns: 6 identifier columns, 43 fixed/slow columns, and 98 same-month source-level columns. |
-| Schema validation | `PASS: mode=model-input-forecast rows=6227 columns=147`; coverage is 2026-04 through 2026-04. |
+| Output columns | 148 columns: 6 identifier columns, 44 fixed/slow columns, and 98 same-month source-level columns. |
+| Schema validation | `PASS: mode=model-input-forecast rows=6227 columns=148`; coverage is 2026-04 through 2026-04. |
 | Fixed/slow join | 6,227 matched rows; 0 unmatched rows. |
 | Same-month source join | 6,188 matched rows; 39 unmatched rows. |
 | Source coverage note | The raw panel has 6,188 rows for 2026-04 while the scaffold has 6,227 rows. The 39 unmatched areas are reported as a soft warning and keep scaffold rows with blank same-month source fields. |
@@ -289,6 +294,19 @@ pipeline. Those remain G-06 and G-07.
 
 Legacy split CH/IPC final harmonise scripts are archived under
 `archive/legacy_final_harmonise/` as compatibility references only.
+
+## ToR Open Issue Reclassification
+
+These items are not additional Weilun-side model-input gaps after G-09. They
+are operational handover notes for the raw-data refresh and monthly release
+process.
+
+| ToR issue | Decision | Handover instruction |
+| --- | --- | --- |
+| WFP commodity mapping | Resolved by raw-export rule | The current WFP script reads `Commodity`, then drops it and aggregates all staged commodities by country/month. Therefore the raw WFP export must already be filtered to ALPS-compatible commodities before running the workflow. Use Sediqa's download instruction to restrict the export to ALPS commodities, for example vegetable oil, wheat, sorghum, maize, and rice where those names are available in the WFP UI. Example raw input: `C:\Users\swl00\IFPRI Dropbox\Weilun Shi\Google fund\Analysis\1.Source Data\WFP\Prices-Export-Thu Mar 27 2025 11_30_42 GMT-0400 (Eastern Daylight Time).csv`. |
+| FAO/Bloomberg export spec | Delegated / optional | Bloomberg is optional for the current handover and can be handled by Soonho. FAO export formats can vary, so Soonho/Sediqa should either normalize the refreshed workbook to the script's expected columns or update the FAO script for the specific export. Example raw input: `C:\Users\swl00\IFPRI Dropbox\Weilun Shi\Google fund\Analysis\1.Source Data\FAO\GOOGLE_FOOD_CRISIS_FAO_DATA.xlsx`. |
+| QA ownership | Resolved by role assignment | Soonho and Sediqa are responsible for raw-data downloads and running the pipeline. Weilun is responsible for validating the produced monthly model-compatible input and QA summaries before release. |
+| Raw archive convention | Historical limitation accepted | Previous raw inputs do not have detailed archive manifests. For handover, existing historical raw assets should be treated as `validated_on=2026-06-22`. Future raw refreshes should use date-stamped folders or filenames and should record at minimum source name, download date, operator, row count, filters applied, and output file consumed by the pipeline. |
 
 ## Remaining Assets To Collect Next
 

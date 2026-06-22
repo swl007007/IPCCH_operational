@@ -1,1 +1,0 @@
-gsutil -m cp -r gs://modis_monthly/MODIS_MOD13A3_Monthly "C:\Users\WeilunShi\IFPRI Dropbox\Weilun Shi\Google fund\Analysis\1.Source Data\EVI"
