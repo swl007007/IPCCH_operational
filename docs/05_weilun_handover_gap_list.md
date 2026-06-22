@@ -271,6 +271,17 @@ Generated assets after running the 2026-04 smoke test:
 | `Outcome/ipcch_unified/model_input/ipcch_monthly_base_input_202604.csv` | One-month IPCCH base input surface keyed by `area_id`, `year`, and `month`. |
 | `Outcome/ipcch_unified/model_input/ipcch_monthly_base_input_202604_summary.json` | QA summary with row counts, join coverage, duplicate counts, and missingness. |
 
+Smoke test checks:
+
+| Check | Result |
+| --- | --- |
+| Output rows | 6,227, matching the one-month scaffold. |
+| Output columns | 147 columns: 6 identifier columns, 43 fixed/slow columns, and 98 same-month source-level columns. |
+| Schema validation | `PASS: mode=model-input-forecast rows=6227 columns=147`; coverage is 2026-04 through 2026-04. |
+| Fixed/slow join | 6,227 matched rows; 0 unmatched rows. |
+| Same-month source join | 6,188 matched rows; 39 unmatched rows. |
+| Source coverage note | The raw panel has 6,188 rows for 2026-04 while the scaffold has 6,227 rows. The 39 unmatched areas are reported as a soft warning and keep scaffold rows with blank same-month source fields. |
+
 The builder is intentionally conservative. It does not copy
 `assembled_IPCCH/model_ready/*`, does not create lag/rolling/scope-specific
 model features, and does not require model weights or the exported model
@@ -282,4 +293,4 @@ Legacy split CH/IPC final harmonise scripts are archived under
 ## Remaining Assets To Collect Next
 
 G-06 model weights/model pipeline and G-07 model-specific feature engineering
-remain deferred. The next actionable handover/code task is G-09.
+remain deferred. G-09 is resolved for base monthly assembly.

@@ -1030,11 +1030,12 @@ Run:
 python3 Final_harmonise/00_build_monthly_ipcch_base_input.py --year 2026 --month 4
 ```
 
-Expected:
+Expected for the current 2026-04 handover assets:
 
 ```text
 Wrote 6227 rows and 147 columns to Outcome/ipcch_unified/model_input/ipcch_monthly_base_input_202604.csv
 Wrote QA summary to Outcome/ipcch_unified/model_input/ipcch_monthly_base_input_202604_summary.json
+WARNING: source join unmatched rows: 39
 ```
 
 - [ ] **Step 2: Validate the generated model-input row grain**
@@ -1076,7 +1077,7 @@ Expected:
 rows 6227
 columns 147
 fixed_slow_join {'feature_columns': 43, 'matched_rows': 6227, 'unmatched_rows': 0}
-source_join {'duplicate_rows': 0, 'feature_columns': 98, 'matched_rows': 6227, 'scanned_rows': 1219868, 'target_month_present_in_source': True, 'target_month_rows': 6227, 'unmatched_rows': 0}
+source_join {'duplicate_rows': 0, 'feature_columns': 98, 'matched_rows': 6188, 'scanned_rows': 1219868, 'target_month_present_in_source': True, 'target_month_rows': 6188, 'unmatched_rows': 39}
 ```
 
 - [ ] **Step 4: Confirm generated data remains untracked**
