@@ -11,8 +11,14 @@ __pycache__/
 
 # Generated/downloaded outputs
 curl_IPC/outputs/
-GOSIF_GPP(yearly update)/downloads/
+GOSIF_GPP/downloads_mean/
+GOSIF_GPP/downloads_sd/
 
-# Large local reference data excluded from GitHub push
-polygons_and_identifier/geoidentifier_ipcch.csv
-polygons_and_identifier/gdf_ipc_ch_final.geojson
+# Large local handover data excluded from GitHub push
+Outcome/ipcch_unified/raw/IPCCH_2026_completed.csv
+Outcome/ipcch_unified/spatial/ipcch_admin_geometry.*
+archive/legacy_reference_assets/polygons_and_identifier/
+
+# Generated monthly IPCCH model-input handover outputs
+Outcome/ipcch_unified/model_input/*.csv
+Outcome/ipcch_unified/model_input/*.json
