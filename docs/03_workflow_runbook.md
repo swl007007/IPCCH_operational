@@ -158,6 +158,25 @@ It starts from the one-month scaffold, joins fixed/slow area features, and
 joins same-month source-level fields from the unified historical panel when
 the target month exists there.
 
+### Operational launch inference
+
+Use this only after the fixed model package has been exported from the research
+IPCCH repository and copied into `model_artifacts/launch_2026_04`.
+
+Run `--validate-only` first:
+
+```bash
+python3 model_pipeline/run_operational_launch_inference.py \
+  --input Outcome/ipcch_unified/model_input/ipcch_monthly_base_input_YYYYMM.csv \
+  --model-package model_artifacts/launch_2026_04 \
+  --spatial-path Outcome/ipcch_unified/spatial/ipcch_admin_geometry.shp \
+  --output-dir Outcome/ipcch_unified/predictions/YYYYMM \
+  --feature-month YYYY-MM \
+  --validate-only
+```
+
+Then run without `--validate-only` to generate the six primary delivery files.
+
 Legacy split CH/IPC final harmonise scripts are archived under
 `archive/legacy_final_harmonise/`. They are compatibility references, not the
 production monthly IPCCH input path.
