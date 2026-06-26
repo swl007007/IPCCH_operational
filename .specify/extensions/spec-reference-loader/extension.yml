@@ -1,0 +1,56 @@
+schema_version: "1.0"
+
+extension:
+  id: "spec-reference-loader"
+  name: "Spec Reference Loader"
+  version: "1.0.0"
+  description: "Reads the ## References section from the current feature spec and loads the listed files into context"
+  author: "KevinBrown5280"
+  repository: "https://github.com/KevinBrown5280/spec-kit-spec-reference-loader"
+  license: "MIT"
+  homepage: "https://github.com/KevinBrown5280/spec-kit-spec-reference-loader"
+
+requires:
+  speckit_version: ">=0.6.0"
+
+provides:
+  commands:
+    - name: "speckit.spec-reference-loader.load"
+      file: "commands/speckit.spec-reference-loader.load.md"
+      description: "Load reference docs listed in the feature spec's ## References section"
+
+hooks:
+  before_plan:
+    command: "speckit.spec-reference-loader.load"
+    optional: false
+    description: "Load spec references before planning"
+
+  before_tasks:
+    command: "speckit.spec-reference-loader.load"
+    optional: false
+    description: "Load spec references before task generation"
+
+  before_implement:
+    command: "speckit.spec-reference-loader.load"
+    optional: false
+    description: "Load spec references before implementation"
+
+  before_clarify:
+    command: "speckit.spec-reference-loader.load"
+    optional: false
+    description: "Load spec references before clarification"
+
+  before_checklist:
+    command: "speckit.spec-reference-loader.load"
+    optional: false
+    description: "Load spec references before checklist generation"
+
+  before_analyze:
+    command: "speckit.spec-reference-loader.load"
+    optional: false
+    description: "Load spec references before analysis"
+
+tags:
+  - "references"
+  - "context"
+  - "docs"
