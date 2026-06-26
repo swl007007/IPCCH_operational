@@ -116,6 +116,7 @@ def main(argv=None):
                     args.spatial_path,
                     map_temp,
                 )
+                map_summary["output_path"] = str(path_set["map_png"])
                 temp_to_final.append((map_temp, path_set["map_png"]))
                 summary["scope_summaries"][str(scope)]["map_summary"] = map_summary
 

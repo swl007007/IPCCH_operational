@@ -68,7 +68,7 @@ def render_scope_map(predictions, spatial_path, output_path):
         )
         ax.set_axis_off()
         fig.tight_layout()
-        fig.savefig(output_path, dpi=150)
+        fig.savefig(output_path, dpi=150, format="png")
     except Exception as exc:
         raise VisualizationError("Failed to render map: {0}".format(exc)) from exc
     finally:

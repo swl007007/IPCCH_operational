@@ -91,7 +91,7 @@ def apply_feature_contract(
         if feature not in set(requested_features)
     )
 
-    matrix = pd.DataFrame(index=monthly_input.index)
+    matrix_columns = {}
     filled_features = []
     feature_details = {}
     warnings = []
@@ -135,7 +135,7 @@ def apply_feature_contract(
                 )
             )
 
-        matrix[feature_name] = coerced
+        matrix_columns[feature_name] = coerced
         if filled:
             filled_features.append(feature_name)
         feature_details[feature_name] = {
@@ -151,6 +151,7 @@ def apply_feature_contract(
             "filled": bool(filled),
         }
 
+    matrix = pd.DataFrame(matrix_columns, index=monthly_input.index)
     report = {
         "status": "passed",
         "feature_count": len(requested_features),
