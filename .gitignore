@@ -22,3 +22,9 @@ archive/legacy_reference_assets/polygons_and_identifier/
 # Generated monthly IPCCH model-input handover outputs
 Outcome/ipcch_unified/model_input/*.csv
 Outcome/ipcch_unified/model_input/*.json
+
+# Generated operational launch inference outputs
+Outcome/ipcch_unified/predictions/
+
+# Large local operational launch model packages
+model_artifacts/
