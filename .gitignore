@@ -8,6 +8,20 @@
 __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
+.venv/
+venv/
+dist/
+*.egg-info/
+*.log
+.env*
+
+# Universal local/editor artifacts
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
 
 # Generated/downloaded outputs
 curl_IPC/outputs/

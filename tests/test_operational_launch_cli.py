@@ -94,7 +94,9 @@ class OperationalLaunchCliTests(unittest.TestCase):
             self.assertNotIn("map_png", summary["planned_outputs"]["0"])
             self.assertNotIn("map_png", summary["written_outputs"]["0"])
 
-    def test_existing_output_without_overwrite_fails_before_scoring_or_mixing_outputs(self):
+    def test_existing_output_without_overwrite_fails_before_scoring_or_mixing_outputs(
+        self,
+    ):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
             input_path = self._write_input(root / "input.csv")
@@ -165,7 +167,9 @@ class OperationalLaunchCliTests(unittest.TestCase):
             self.assertEqual({}, summary["planned_outputs"])
             self.assertEqual({}, summary["written_outputs"])
 
-    def test_input_validation_failure_writes_failed_summary_and_no_primary_outputs(self):
+    def test_input_validation_failure_writes_failed_summary_and_no_primary_outputs(
+        self,
+    ):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
             input_path = root / "input.csv"
@@ -283,7 +287,9 @@ class OperationalLaunchCliTests(unittest.TestCase):
         self.assertEqual(0, result.returncode)
         self.assertIn("--feature-month", result.stdout)
 
-    def test_commit_temp_outputs_rolls_back_old_and_new_outputs_on_replace_failure(self):
+    def test_commit_temp_outputs_rolls_back_old_and_new_outputs_on_replace_failure(
+        self,
+    ):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
             old_path = root / "old.csv"
@@ -302,7 +308,9 @@ class OperationalLaunchCliTests(unittest.TestCase):
                     raise OSError("simulated commit failure")
                 real_replace(src, dst)
 
-            with mock.patch.object(outputs.os, "replace", side_effect=fail_on_third_replace):
+            with mock.patch.object(
+                outputs.os, "replace", side_effect=fail_on_third_replace
+            ):
                 with self.assertRaisesRegex(outputs.OutputError, "commit.*failed"):
                     outputs.commit_temp_outputs(
                         [

@@ -9,7 +9,9 @@ from model_pipeline.ipcch_launch_runtime.adapters import (
 
 
 class OperationalLaunchInputContractTests(unittest.TestCase):
-    def test_valid_admin_code_only_input_creates_area_id_and_preserves_leading_zeros(self):
+    def test_valid_admin_code_only_input_creates_area_id_and_preserves_leading_zeros(
+        self,
+    ):
         source = pd.DataFrame(
             {
                 "admin_code": ["00123", "00456"],
@@ -116,7 +118,9 @@ class OperationalLaunchInputContractTests(unittest.TestCase):
             }
         )
 
-        with self.assertRaisesRegex(InputContractError, "month must be between 1 and 12"):
+        with self.assertRaisesRegex(
+            InputContractError, "month must be between 1 and 12"
+        ):
             validate_monthly_input(source, feature_month="2026-04")
 
     def test_missing_year_column_fails(self):
@@ -178,7 +182,9 @@ class OperationalLaunchInputContractTests(unittest.TestCase):
         with self.assertRaisesRegex(InputContractError, "_row_id"):
             validate_monthly_input(source, feature_month="2026-04")
 
-    def test_null_tokens_normalize_to_pandas_na_without_breaking_unrelated_columns(self):
+    def test_null_tokens_normalize_to_pandas_na_without_breaking_unrelated_columns(
+        self,
+    ):
         source = pd.DataFrame(
             {
                 "admin_code": ["001", "002"],

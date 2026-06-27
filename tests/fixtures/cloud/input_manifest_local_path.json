@@ -1,0 +1,42 @@
+{
+  "manifest_version": "ipcch-monthly-e2e-v1",
+  "feature_month": "2026-04",
+  "run_id": "run-202604-local-path",
+  "created_at_utc": "2026-06-26T00:00:00Z",
+  "deployment": {
+    "provider": "gcp",
+    "project_id": "ipcch-test-project",
+    "region": "us-central1",
+    "object_store_root_uri": "gs://ipcch-test/monthly_e2e",
+    "artifact_registry_image_uri": "us-central1-docker.pkg.dev/ipcch-test/runtime/ipcch@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "repo_git_commit": "abcdef1234567890",
+    "cloud_run_orchestrator_name": "ipcch-monthly-e2e-orchestrator",
+    "cloud_run_service_account": "cloud-run@ipcch-test.iam.gserviceaccount.com",
+    "cloud_batch_service_account": "cloud-batch@ipcch-test.iam.gserviceaccount.com",
+    "cloud_batch_job_name_prefix": "ipcch-evi",
+    "earth_engine_project_id": "ipcch-ee-test",
+    "vertex_ai_region": "us-central1",
+    "vertex_ai_inference_mode": "vertex_ai_custom_job",
+    "vertex_ai_model_package_uri": "gs://ipcch-test/model_packages/launch_2026_04/",
+    "vertex_ai_model_package_checksum_or_version": "generation:100",
+    "vertex_ai_custom_job_container_image_uri": "us-central1-docker.pkg.dev/ipcch-test/runtime/ipcch@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "vertex_ai_custom_job_container_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "vertex_ai_custom_job_service_account": "vertex-ai@ipcch-test.iam.gserviceaccount.com",
+    "vertex_ai_custom_job_staging_root_uri": "gs://ipcch-test/monthly_e2e/vertex_staging/run-202604-local-path/",
+    "vertex_ai_custom_job_output_root_uri": "gs://ipcch-test/monthly_e2e/runs/run-202604-local-path/inference/",
+    "permission_model": "split_least_privilege"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "scaffold-local",
+      "artifact_type": "scaffold",
+      "required": true,
+      "uri": "C:\\Users\\swl00\\IFPRI Dropbox\\Weilun Shi\\IPCCH_monthly_operational\\Outcome\\ipcch_unified\\interim\\ipcch_scaffold_202604.csv",
+      "source_family": "scaffold",
+      "feature_month": "2026-04",
+      "schema_contract": "forecast-scaffold-v1",
+      "generation": "1001"
+    }
+  ],
+  "waivers": []
+}

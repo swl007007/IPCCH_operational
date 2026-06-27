@@ -1,0 +1,143 @@
+{
+  "manifest_version": "ipcch-monthly-e2e-v1",
+  "feature_month": "2026-04",
+  "run_id": "run-202604-valid",
+  "created_at_utc": "2026-06-26T00:00:00Z",
+  "deployment": {
+    "provider": "gcp",
+    "project_id": "ipcch-test-project",
+    "region": "us-central1",
+    "object_store_root_uri": "gs://ipcch-test/monthly_e2e",
+    "run_root_uri": "gs://ipcch-test/monthly_e2e/runs/run-202604-valid/",
+    "staging_root_uri": "gs://ipcch-test/monthly_e2e/staging/run-202604-valid/",
+    "release_root_uri": "gs://ipcch-test/monthly_e2e/released/202604/",
+    "gee_export_root_uri": "gs://ipcch-test/monthly_e2e/runs/run-202604-valid/gee_exports/",
+    "logs_root_uri": "gs://ipcch-test/monthly_e2e/runs/run-202604-valid/logs/",
+    "artifact_registry_image_uri": "us-central1-docker.pkg.dev/ipcch-test/runtime/ipcch@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "repo_git_commit": "abcdef1234567890",
+    "cloud_run_orchestrator_name": "ipcch-monthly-e2e-orchestrator",
+    "cloud_run_service_account": "cloud-run@ipcch-test.iam.gserviceaccount.com",
+    "cloud_batch_service_account": "cloud-batch@ipcch-test.iam.gserviceaccount.com",
+    "cloud_batch_job_name_prefix": "ipcch-evi",
+    "earth_engine_project_id": "ipcch-ee-test",
+    "vertex_ai_region": "us-central1",
+    "vertex_ai_inference_mode": "vertex_ai_custom_job",
+    "vertex_ai_model_package_uri": "gs://ipcch-test/model_packages/launch_2026_04/",
+    "vertex_ai_model_package_checksum_or_version": "generation:100",
+    "vertex_ai_custom_job_container_image_uri": "us-central1-docker.pkg.dev/ipcch-test/runtime/ipcch@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "vertex_ai_custom_job_container_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "vertex_ai_custom_job_service_account": "vertex-ai@ipcch-test.iam.gserviceaccount.com",
+    "vertex_ai_custom_job_staging_root_uri": "gs://ipcch-test/monthly_e2e/vertex_staging/run-202604-valid/",
+    "vertex_ai_custom_job_output_root_uri": "gs://ipcch-test/monthly_e2e/runs/run-202604-valid/inference/",
+    "permission_model": "split_least_privilege"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "scaffold-202604",
+      "artifact_type": "scaffold",
+      "required": true,
+      "uri": "gs://ipcch-test/inputs/ipcch_scaffold_202604.csv",
+      "source_family": "scaffold",
+      "feature_month": "2026-04",
+      "schema_contract": "forecast-scaffold-v1",
+      "generation": "1001"
+    },
+    {
+      "artifact_id": "fixed-slow-202604",
+      "artifact_type": "fixed_slow_area_features",
+      "required": true,
+      "uri": "gs://ipcch-test/inputs/ipcch_fixed_slow_features_by_area.csv",
+      "source_family": "fixed_slow",
+      "vintage": "2026-04",
+      "schema_contract": "fixed-slow-area-v1",
+      "checksum": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "checksum_algorithm": "sha256"
+    },
+    {
+      "artifact_id": "source-panel-202604",
+      "artifact_type": "source_panel",
+      "required": true,
+      "uri": "gs://ipcch-test/inputs/source_panel_202604.csv",
+      "source_family": "source_panel",
+      "feature_month": "2026-04",
+      "schema_contract": "source-panel-v1",
+      "generation": "1002"
+    },
+    {
+      "artifact_id": "gee-evi-202604",
+      "artifact_type": "gee_evi_export_config",
+      "required": true,
+      "source_family": "EVI",
+      "feature_month": "2026-04",
+      "schema_contract": "gee-evi-export-config-v1",
+      "version_id": "MODIS/061/MOD13A3",
+      "earth_engine_collection": "MODIS/061/MOD13A3",
+      "band": "EVI",
+      "date_window": {
+        "start": "2026-04-01",
+        "end": "2026-05-01"
+      }
+    },
+    {
+      "artifact_id": "geometry-202604",
+      "artifact_type": "geometry",
+      "required": true,
+      "uri": "gs://ipcch-test/inputs/ipcch_admin_geometry.gpkg",
+      "source_family": "spatial",
+      "vintage": "2026-04",
+      "schema_contract": "area-geometry-v1",
+      "generation": "1003"
+    },
+    {
+      "artifact_id": "runtime-image-202604",
+      "artifact_type": "docker_image",
+      "required": true,
+      "source_family": "runtime",
+      "vintage": "2026-04",
+      "schema_contract": "single-runtime-image-v1",
+      "image_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "artifact_id": "model-package-launch-202604",
+      "artifact_type": "model_package",
+      "required": true,
+      "uri": "gs://ipcch-test/model_packages/launch_2026_04/",
+      "source_family": "model",
+      "vintage": "launch_2026_04",
+      "schema_contract": "ipcch-launch-model-package-v1",
+      "generation": "100",
+      "model_version": "launch_2026_04"
+    },
+    {
+      "artifact_id": "vertex-ai-inference-config-202604",
+      "artifact_type": "vertex_ai_inference_config",
+      "required": true,
+      "source_family": "vertex_ai",
+      "feature_month": "2026-04",
+      "schema_contract": "vertex-ai-custom-job-v1",
+      "version_id": "vertex-ai-custom-job:2026-04"
+    },
+    {
+      "artifact_id": "schema-contracts-202604",
+      "artifact_type": "schema_contract",
+      "required": true,
+      "uri": "container://schemas/ipcch-monthly-e2e-v1",
+      "source_family": "schema",
+      "vintage": "2026-04",
+      "schema_contract": "monthly-input-evi-prediction-contracts-v1",
+      "checksum": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "checksum_algorithm": "sha256"
+    },
+    {
+      "artifact_id": "validator-model-input",
+      "artifact_type": "validator",
+      "required": true,
+      "uri": "gs://ipcch-test/contracts/ipcch_model_input_contract.md",
+      "source_family": "schema",
+      "vintage": "2026-04",
+      "schema_contract": "model-input-forecast-v1",
+      "generation": "1004"
+    }
+  ],
+  "waivers": []
+}
