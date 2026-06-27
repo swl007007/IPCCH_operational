@@ -181,6 +181,21 @@ Legacy split CH/IPC final harmonise scripts are archived under
 `archive/legacy_final_harmonise/`. They are compatibility references, not the
 production monthly IPCCH input path.
 
+## Cloud Monthly E2E Run
+
+The cloud E2E path is documented in
+`specs/001-cloud-base-input/quickstart.md`. It is the GCP-only v1 path for one
+selected feature month: Cloud Run validates the manifest and run state, Cloud
+Batch handles GEE EVI export and rasterio extraction, Vertex AI custom-job
+inference writes prediction CSVs, and the release writer publishes
+`released/{YYYYMM}/release_manifest.json` last.
+
+The local ArcPy remote-sensing sections above remain reference-only for the
+cloud path. They document current source contracts and fallback handover
+behavior, but the cloud v1 run must not invoke local workstation scoring,
+prediction maps, prediction sheets, full delivery packages, model training,
+FLDAS, GOSIF-GPP, VIIRS, or undeclared non-Vertex inference.
+
 ## Smoke Tests
 
 Run these before a full monthly update. For tabular workflows, stage fixtures

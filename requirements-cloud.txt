@@ -1,0 +1,11 @@
+pandas
+numpy
+jsonschema
+pytest
+google-cloud-storage
+google-cloud-batch
+google-cloud-aiplatform
+earthengine-api
+rasterio
+fiona
+xgboost

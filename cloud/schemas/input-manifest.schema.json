@@ -1,0 +1,351 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ifpri.example/ipcch/monthly-e2e/input-manifest.schema.json",
+  "title": "IPCCH Monthly E2E Input Manifest v1",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "feature_month",
+    "run_id",
+    "created_at_utc",
+    "deployment",
+    "artifacts"
+  ],
+  "properties": {
+    "manifest_version": {
+      "const": "ipcch-monthly-e2e-v1"
+    },
+    "feature_month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}$"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deployment": {
+      "$ref": "#/$defs/deployment"
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
+    },
+    "waivers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/waiver"
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "gcs_uri": {
+      "type": "string",
+      "pattern": "^gs://[^\\s]+$"
+    },
+    "deployment": {
+      "type": "object",
+      "required": [
+        "provider",
+        "project_id",
+        "region",
+        "object_store_root_uri",
+        "artifact_registry_image_uri",
+        "repo_git_commit",
+        "cloud_run_orchestrator_name",
+        "cloud_run_service_account",
+        "cloud_batch_service_account",
+        "cloud_batch_job_name_prefix",
+        "earth_engine_project_id",
+        "vertex_ai_region",
+        "vertex_ai_inference_mode",
+        "vertex_ai_model_package_uri",
+        "vertex_ai_model_package_checksum_or_version",
+        "vertex_ai_custom_job_container_image_uri",
+        "vertex_ai_custom_job_container_digest",
+        "vertex_ai_custom_job_service_account",
+        "vertex_ai_custom_job_staging_root_uri",
+        "vertex_ai_custom_job_output_root_uri",
+        "permission_model"
+      ],
+      "properties": {
+        "provider": {
+          "const": "gcp"
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "region": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object_store_root_uri": {
+          "$ref": "#/$defs/gcs_uri"
+        },
+        "run_root_uri": {
+          "$ref": "#/$defs/gcs_uri"
+        },
+        "staging_root_uri": {
+          "$ref": "#/$defs/gcs_uri"
+        },
+        "release_root_uri": {
+          "$ref": "#/$defs/gcs_uri"
+        },
+        "gee_export_root_uri": {
+          "$ref": "#/$defs/gcs_uri"
+        },
+        "logs_root_uri": {
+          "$ref": "#/$defs/gcs_uri"
+        },
+        "artifact_registry_image_uri": {
+          "type": "string",
+          "pattern": ".+@sha256:[A-Fa-f0-9]{64}$"
+        },
+        "repo_git_commit": {
+          "type": "string",
+          "minLength": 7
+        },
+        "cloud_run_orchestrator_name": {
+          "const": "ipcch-monthly-e2e-orchestrator"
+        },
+        "cloud_run_service_account": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cloud_batch_service_account": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cloud_batch_job_name_prefix": {
+          "type": "string",
+          "minLength": 1
+        },
+        "earth_engine_project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vertex_ai_region": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vertex_ai_inference_mode": {
+          "const": "vertex_ai_custom_job"
+        },
+        "vertex_ai_model_package_uri": {
+          "$ref": "#/$defs/gcs_uri"
+        },
+        "vertex_ai_model_package_checksum_or_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vertex_ai_custom_job_container_image_uri": {
+          "type": "string",
+          "pattern": ".+@sha256:[A-Fa-f0-9]{64}$"
+        },
+        "vertex_ai_custom_job_container_digest": {
+          "type": "string",
+          "pattern": "^sha256:[A-Fa-f0-9]{64}$"
+        },
+        "vertex_ai_custom_job_service_account": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vertex_ai_custom_job_staging_root_uri": {
+          "$ref": "#/$defs/gcs_uri"
+        },
+        "vertex_ai_custom_job_output_root_uri": {
+          "$ref": "#/$defs/gcs_uri"
+        },
+        "permission_model": {
+          "const": "split_least_privilege"
+        },
+        "gee_poll_interval_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 60
+        },
+        "gee_export_timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 21600
+        },
+        "batch_job_timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 28800
+        },
+        "vertex_ai_custom_job_timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 7200
+        },
+        "retry_policy": {
+          "type": "object",
+          "properties": {
+            "max_retries": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 2
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "artifact": {
+      "type": "object",
+      "required": [
+        "artifact_id",
+        "artifact_type",
+        "required",
+        "source_family",
+        "schema_contract"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifact_type": {
+          "enum": [
+            "scaffold",
+            "fixed_slow_area_features",
+            "source_panel",
+            "gee_evi_export_config",
+            "geometry",
+            "evi_reference_sample",
+            "schema_contract",
+            "docker_image",
+            "model_package",
+            "vertex_ai_inference_config",
+            "spatial_boundary",
+            "validator"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feature_month": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}$"
+        },
+        "vintage": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_contract": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "checksum_algorithm": {
+          "const": "sha256"
+        },
+        "generation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image_digest": {
+          "type": "string",
+          "pattern": "^sha256:[A-Fa-f0-9]{64}$"
+        },
+        "model_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "earth_engine_collection": {
+          "type": "string"
+        },
+        "band": {
+          "type": "string"
+        },
+        "date_window": {
+          "type": "object"
+        },
+        "processing_params": {
+          "type": "object"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "feature_month"
+          ]
+        },
+        {
+          "required": [
+            "vintage"
+          ]
+        }
+      ],
+      "additionalProperties": true
+    },
+    "waiver": {
+      "type": "object",
+      "required": [
+        "artifact_id",
+        "waiver_type",
+        "reason",
+        "approved_by",
+        "approved_at_utc"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "waiver_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approved_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approved_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

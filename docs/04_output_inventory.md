@@ -41,6 +41,44 @@ Dropbox handover assets. Legacy or ambiguous reference files were moved to
 `archive/legacy_reference_assets/` and should not be used as production
 contracts.
 
+## Cloud Run and Release Artifact Inventory
+
+Cloud monthly E2E runs write immutable run evidence under
+`runs/{run_id}/...` and publish the stable consumer pointer at
+`released/{YYYYMM}/release_manifest.json`.
+
+Run-scoped required evidence:
+
+- `runs/{run_id}/run_summary.json`
+- `runs/{run_id}/gee_exports/gee_export_manifest.json`
+- `runs/{run_id}/gee_exports/MOD13A3_EVI_YYYY_MM_processed.tif`
+- `runs/{run_id}/evi/EVI_mean_extraction_results.csv`
+- `runs/{run_id}/evi/EVI_std_extraction_results.csv`
+- `runs/{run_id}/evi/EVI_mean_monthly_long.csv`
+- `runs/{run_id}/evi/EVI_std_monthly_long.csv`
+- `runs/{run_id}/evi/evi_extraction_manifest.json`
+- `runs/{run_id}/evi/evi_validation_report.json`
+- `runs/{run_id}/assembly/ipcch_monthly_base_input_YYYYMM.csv`
+- `runs/{run_id}/assembly/ipcch_monthly_base_input_YYYYMM_summary.json`
+- `runs/{run_id}/qa/base_input_validation_report.json`
+- `runs/{run_id}/inference/vertex_ai_job_manifest.json`
+- `runs/{run_id}/inference/inference_report.json`
+- `runs/{run_id}/inference/ipcch_launch_YYYYMM_scope_0m_predictions.csv`
+- `runs/{run_id}/inference/ipcch_launch_YYYYMM_scope_6m_predictions.csv`
+- `runs/{run_id}/inference/ipcch_launch_YYYYMM_scope_12m_predictions.csv`
+- `runs/{run_id}/release/release_step_report.json`
+
+Release-scoped artifacts:
+
+- `released/{YYYYMM}/release_manifest.json`
+- copied v1 consumer artifacts under `released/{YYYYMM}/runs/{run_id}/...`
+- large upstream evidence referenced from the manifest by immutable URI,
+  generation, version, or checksum.
+
+Forbidden cloud output families for v1 include prediction maps, prediction
+sheets, full delivery artifacts, model training artifacts, local workstation
+scoring outputs, FLDAS, GOSIF-GPP, VIIRS, and undeclared non-Vertex inference.
+
 Nightlight handover note: future monthly updates should use VIIRS as the
 production source. Local paths still contain `DMSP_OLS` for historical reasons,
 but the current Earth Engine script exports from
