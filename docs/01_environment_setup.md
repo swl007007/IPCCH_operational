@@ -33,3 +33,15 @@ Install Google Cloud SDK on the operator's Windows machine. Confirm these comman
 gcloud auth login
 gsutil ls gs://operator-bucket-name
 ```
+
+For the cloud monthly E2E smoke, set the active project and region before
+deployment checks:
+
+```powershell
+gcloud config set project food-crisis-modeling
+gcloud config set compute/region us-central1
+```
+
+If Cloud Run, Batch, Artifact Registry, Cloud Build, Compute, Earth Engine,
+Vertex AI, or Cloud Storage commands return `SERVICE_DISABLED`, enable the
+corresponding project API before debugging IAM.

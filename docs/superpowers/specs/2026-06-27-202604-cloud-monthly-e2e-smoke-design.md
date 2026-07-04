@@ -63,30 +63,110 @@ are cloud-produced:
 Those future steps must be added through later specs or accepted scope changes.
 They do not authorize changes to the current v1 smoke.
 
+## Deferred Post-Smoke Architecture Notes
+
+Record these administrator discussion points for design after the live E2E
+smoke, not for the current smoke implementation:
+
+- Consider moving durable pipeline inputs and outputs from GCS object contracts
+  into BigQuery tables. The current smoke still uses GCS for manifests,
+  immutable run evidence, model package references, and release manifests so
+  that the existing E2E contract can be tested first.
+- Consider splitting the cloud pipeline into two explicit stages:
+  data collection/process/assemble, then inference/model execution. The current
+  smoke keeps one orchestrated E2E path to prove EVI auto-processing, monthly
+  assembly, Vertex inference, and release semantics before changing stage
+  boundaries.
+- Treat `https://github.com/IFPRI/MTI-GOOGLE-FOOD-CRISIS-DATA.git` as the
+  intended data collection/process/assemble repository and
+  `https://github.com/IFPRI/MTI-GOOGLE-FOOD-CRISIS-MODEL.git` as the intended
+  inference/model repository after the smoke. The current code and artifacts
+  are still mixed, so the post-smoke split should replace the old mixed
+  artifacts with the cloud scripts and artifacts proven by the smoke instead of
+  assuming either target repo is already cleanly structured.
+
+These changes need a follow-up spec after the E2E smoke result is available,
+because they affect artifact contracts, ownership boundaries, retry semantics,
+and likely repository layout.
+
 ## Execution Design
 
 The smoke should run only after permissions and cost guardrails are ready.
 
-1. Confirm GCP project, region, bucket, Artifact Registry repo, and service
-   account names.
-2. Ask the administrator for missing IAM permissions before attempting the full
+1. Confirm GCP project, region, and required project APIs. For the current
+   project, use `food-crisis-modeling` and `us-central1`.
+2. Confirm bucket, Artifact Registry repo, and service account names.
+3. Ask the administrator for missing IAM permissions before attempting the full
    run.
-3. Build the repository Docker image, push it to Artifact Registry, and record
+4. Build the repository Docker image, push it to Artifact Registry, and record
    the immutable `@sha256:` digest.
-4. Create the `2026-04` input manifest in GCS. The manifest must use `gs://`
+5. Create the `2026-04` input manifest in GCS. The manifest must use `gs://`
    inputs only and must record immutable checksums, generations, versions, or
    explicit waivers.
-5. Execute the Cloud Run Job with `feature_month=2026-04`, the unique run id,
+6. Execute the Cloud Run Job with `feature_month=2026-04`, the unique run id,
    and the input manifest URI.
-6. Run the gated smoke validator with explicit `IPCCH_GCP_*` environment
+7. Run the gated smoke validator with explicit `IPCCH_GCP_*` environment
    variables.
-7. Manually inspect Cloud Run, Batch, Vertex AI, GCS run evidence, release
+8. Manually inspect Cloud Run, Batch, Vertex AI, GCS run evidence, release
    evidence, and unexpected-output absence.
+
+## Readiness Check on 2026-07-02
+
+Initial observations from `gcloud` using account `weilun.shi@cgiar.org`:
+
+- Project `food-crisis-modeling` is active and visible.
+- Region was switched from `us-east1` to `us-central1`.
+- Enabled API listing showed `aiplatform.googleapis.com` and
+  `storage.googleapis.com`.
+- Cloud Run Admin API returned `SERVICE_DISABLED` for `run.googleapis.com`.
+- Batch API returned `SERVICE_DISABLED` for `batch.googleapis.com`.
+- Artifact Registry API returned `SERVICE_DISABLED` for
+  `artifactregistry.googleapis.com`.
+- `gcloud config set compute/region us-central1` succeeded, but validation was
+  skipped because `compute.googleapis.com` is not enabled.
+- IAM policy, bucket listing, and service-account listing checks returned
+  permission-denied errors, so specific resource names and pass-permission
+  coverage remain unverified.
+
+After user approval, the required project APIs were enabled successfully:
+Cloud Run, Batch, Artifact Registry, Cloud Build, Compute Engine, Earth Engine,
+Vertex AI, and Cloud Storage. A follow-up enabled-service check listed all
+required APIs.
+
+Current post-API status:
+
+- Batch job listing in `us-central1` succeeds and returns no existing jobs.
+- Artifact Registry repository listing in `us-central1` succeeds and returns no
+  existing repositories.
+- Vertex AI custom-job listing in `us-central1` succeeds and returns no
+  existing jobs.
+- Cloud Run Job listing now reaches the API but fails with missing
+  `run.jobs.list`.
+- Bucket listing still fails with missing `storage.buckets.list`.
+- Service account listing still fails with missing `iam.serviceAccounts.list`.
+- Project IAM policy inspection still fails with missing `getIamPolicy`.
+
+Conclusion: the project API gate is now passed. The implementation is ready to
+move into live GCP smoke preparation, but the full EVI auto-process plus Vertex
+inference smoke still needs Cloud Run IAM and either exact pre-created bucket,
+Artifact Registry repository, and service-account names or permission to list
+and create them.
 
 ## Permission Gate
 
 Known user-held roles are not sufficient for the full smoke unless the project
 already grants equivalent permissions through service accounts or inherited IAM.
+
+Project APIs that must be enabled before diagnosing IAM:
+
+- Cloud Run Admin API: `run.googleapis.com`
+- Batch API: `batch.googleapis.com`
+- Artifact Registry API: `artifactregistry.googleapis.com`
+- Cloud Build API: `cloudbuild.googleapis.com`
+- Compute Engine API: `compute.googleapis.com`
+- Earth Engine API: `earthengine.googleapis.com`
+- Vertex AI API: `aiplatform.googleapis.com`
+- Cloud Storage API: `storage.googleapis.com`
 
 Likely deployer/admin-required permissions:
 

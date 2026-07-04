@@ -190,6 +190,11 @@ Batch handles GEE EVI export and rasterio extraction, Vertex AI custom-job
 inference writes prediction CSVs, and the release writer publishes
 `released/{YYYYMM}/release_manifest.json` last.
 
+For the first 2026-04 smoke, use project `food-crisis-modeling` and region
+`us-central1`. Enable the required project APIs in the quickstart before
+diagnosing IAM or deployment failures; `SERVICE_DISABLED` means the API gate is
+still closed, not that the pipeline code ran.
+
 The local ArcPy remote-sensing sections above remain reference-only for the
 cloud path. They document current source contracts and fallback handover
 behavior, but the cloud v1 run must not invoke local workstation scoring,
