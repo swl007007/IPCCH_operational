@@ -10,6 +10,7 @@ import pandas as pd
 
 import model_pipeline.run_operational_launch_inference as cli
 from model_pipeline.ipcch_launch_runtime import outputs
+from model_pipeline.ipcch_launch_runtime.uncertainty import UncertaintyError
 
 
 class OperationalLaunchCliTests(unittest.TestCase):
@@ -29,6 +30,23 @@ class OperationalLaunchCliTests(unittest.TestCase):
                 predictions = pd.DataFrame(
                     {
                         "area_id": monthly_rows["area_id"],
+                        "population_estimate": monthly_rows["population_estimate"],
+                        "population_reference_period": monthly_rows[
+                            "population_reference_period"
+                        ],
+                        "population_imputation_method": monthly_rows[
+                            "population_imputation_method"
+                        ],
+                        "prediction_uncertainty": ["medium", "low"],
+                        "decision_margin": [0.05, 0.10],
+                        "uncertainty_critical_boundary": [
+                            "phase2_worse",
+                            "phase3_worse",
+                        ],
+                        "uncertainty_method": [
+                            "qualitative_threshold_margin_v1",
+                            "qualitative_threshold_margin_v1",
+                        ],
                         "overall_phase_pred": [3, 2],
                         "scope_months": scope_months,
                     }
@@ -74,6 +92,18 @@ class OperationalLaunchCliTests(unittest.TestCase):
                 )
                 self.assertTrue(csv_path.exists())
                 self.assertFalse(map_path.exists())
+                written = pd.read_csv(csv_path)
+                self.assertTrue(
+                    {
+                        "population_estimate",
+                        "population_reference_period",
+                        "population_imputation_method",
+                        "prediction_uncertainty",
+                        "decision_margin",
+                        "uncertainty_critical_boundary",
+                        "uncertainty_method",
+                    }.issubset(written.columns)
+                )
 
             summary = self._read_summary(output_dir)
             self.assertEqual("passed", summary["status"])
@@ -93,6 +123,9 @@ class OperationalLaunchCliTests(unittest.TestCase):
             )
             self.assertNotIn("map_png", summary["planned_outputs"]["0"])
             self.assertNotIn("map_png", summary["written_outputs"]["0"])
+
+    def test_uncertainty_error_is_an_expected_cli_failure(self):
+        self.assertIn(UncertaintyError, cli.EXPECTED_ERRORS)
 
     def test_existing_output_without_overwrite_fails_before_scoring_or_mixing_outputs(
         self,
@@ -330,6 +363,12 @@ class OperationalLaunchCliTests(unittest.TestCase):
                 "year": [2026, 2026],
                 "month": [4, 4],
                 "feature": [1.0, 2.0],
+                "population_estimate": [100.0, 200.0],
+                "population_reference_period": ["2026-04", "2025-09"],
+                "population_imputation_method": [
+                    "observed_feature_month",
+                    "last_observation_carried_forward",
+                ],
             }
         ).to_csv(path, index=False)
         return path

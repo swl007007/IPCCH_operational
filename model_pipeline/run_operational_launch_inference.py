@@ -20,6 +20,7 @@ from model_pipeline.ipcch_launch_runtime import feature_contract
 from model_pipeline.ipcch_launch_runtime import inference
 from model_pipeline.ipcch_launch_runtime import model_package
 from model_pipeline.ipcch_launch_runtime import outputs
+from model_pipeline.ipcch_launch_runtime import uncertainty
 from model_pipeline.ipcch_launch_runtime import visualization
 
 
@@ -311,6 +312,7 @@ EXPECTED_ERRORS = (
     inference.InferenceError,
     model_package.ModelPackageError,
     outputs.OutputError,
+    uncertainty.UncertaintyError,
     visualization.VisualizationError,
 )
 
