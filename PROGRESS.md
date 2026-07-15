@@ -17,8 +17,8 @@
 - Task 3 — core qualitative uncertainty: complete; review clean through `04ee496`
 - Task 4 — Vertex/cloud prediction contract: complete; review clean through `d44c9a0`
 - Task 5 — regression, docs, and immutable-run preparation: local and
-  deterministic verification complete; live GCP run gated by recorded external
-  prerequisites
+  deterministic verification complete; review clean through `99b7681`; live
+  GCP run gated by recorded external prerequisites
 
 ## Verification Evidence
 
@@ -69,6 +69,7 @@
 - Task 5 exact old/new comparison PASSED with `check_exact=True`: `0m=6227`, `6m=6227`, and `12m=6227` rows; exact output was `enhanced outputs preserve all existing model results`. Old/new base row order and all `128` model features are exact for every scope.
 - Task 5 immutable old-output evidence: the 0m/6m/12m prediction SHA-256 values remained `2f751622a57ae90abde2873d8059d474ffa82e84f28f2eed915914e52000a0cd`, `7d1185019f28de564d69062448dd0c22e1027577cb22cb8acf90c6d888a3813c`, and `f151608ef3cabc5dc12ea834118ad907b3fdda5434c538f0ca29d021b01a4457` before and after the temporary run.
 - Task 5 live cloud run: NOT ATTEMPTED. Read-only readiness found no ADC file, all eight `IPCCH_GCP_*` smoke variables unset (including both manifest URIs and the Cloud Run Job), and no digest-pinned runtime image built from the completed Task 5 commit. Exact service accounts, bucket, job, manifest objects, and image digest therefore could not be confirmed without crossing the mandatory gate.
+- Task 5 task re-review: approved with no remaining Critical, Major, or Minor findings after the untracked report was reconciled to the final exact-comparison PASS state.
 
 ## Commits
 
@@ -83,6 +84,7 @@
 - Task 4 ledger update: `d44c9a0 docs: record task 4 cloud contract`.
 - Task 5 test/docs/blocker record: `24b3e05 docs: document enriched inference rerun`.
 - Task 5 compatibility resolution: this ledger correction (`docs: record compatible-runtime comparison pass`).
+- Task 5 compatibility-resolution commit: `99b7681 docs: record compatible-runtime comparison pass`.
 
 ## Blockers
 
@@ -90,4 +92,5 @@
 
 ## Next Step
 
+- Run the final whole-branch review and verification gate.
 - Only after the final implementation commit has a digest-pinned runtime image and all named GCP resources, ADC, and immutable manifest URIs are confirmed should a unique live smoke run ID be allocated.
