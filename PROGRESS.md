@@ -14,8 +14,8 @@
 
 - Task 1 — streaming population snapshot component: complete; review clean through `1445b30`
 - Task 2 — local/cloud assembly population fields: complete; review clean through `a08c01b`
-- Task 3 — core qualitative uncertainty: complete; review fixes committed through `6b6875a`
-- Task 4 — Vertex/cloud prediction contract: pending
+- Task 3 — core qualitative uncertainty: complete; review clean through `04ee496`
+- Task 4 — Vertex/cloud prediction contract: in progress
 - Task 5 — regression, docs, and immutable-run preparation: pending
 
 ## Verification Evidence
@@ -44,6 +44,7 @@
 - Task 3 fix-review focused GREEN: `31 passed in 1.02s`; targeted checks separately reported `1 passed` and `3 passed`.
 - Task 3 fix-review regression GREEN: `250 passed, 1 skipped in 4.44s`.
 - Task 3 fix-review result: removed the operational `0.2` fallback so missing model metadata thresholds fail explicitly, and normalized malformed uncertainty thresholds to `UncertaintyError`.
+- Task 3 task re-review: approved with no remaining Critical, Important, or Minor findings; reported focused and regression commands are preserved in `.superpowers/sdd/task-3-report.md`.
 
 ## Commits
 
@@ -53,6 +54,7 @@
 - Task 2 ledger update: `a08c01b docs: record task 2 commit in progress ledger`.
 - Task 3 implementation: `d510bab feat: add qualitative prediction uncertainty`.
 - Task 3 review fixes: `6b6875a fix: require operational model thresholds`.
+- Task 3 review-fix ledger: `04ee496 docs: record task 3 review fixes`.
 
 ## Blockers
 
