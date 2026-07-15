@@ -14,7 +14,7 @@
 
 - Task 1 — streaming population snapshot component: complete; review clean through `1445b30`
 - Task 2 — local/cloud assembly population fields: complete; review clean through `a08c01b`
-- Task 3 — core qualitative uncertainty: complete; implementation committed at `d510bab`
+- Task 3 — core qualitative uncertainty: complete; review fixes committed through `6b6875a`
 - Task 4 — Vertex/cloud prediction contract: pending
 - Task 5 — regression, docs, and immutable-run preparation: pending
 
@@ -40,6 +40,10 @@
 - Task 3 regression GREEN: `246 passed, 1 skipped in 3.80s`.
 - Task 3 regression command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_output.py tests/test_build_monthly_ipcch_base_input.py tests/test_prediction_uncertainty.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`.
 - Task 3 self-review: uncertainty uses resolved per-target thresholds with fixed phase tie order; population fields are validated and propagated unchanged; existing score and prediction assertions remain unchanged; no Spec Kit sources, model packages, weights, or Outcome artifacts changed.
+- Task 3 fix-review RED: the operational threshold-resolver test failed because `OperationalLaunchError` was not raised, and the malformed-threshold test failed in three cases with raw `TypeError`, `ValueError`, and `OverflowError`.
+- Task 3 fix-review focused GREEN: `31 passed in 1.02s`; targeted checks separately reported `1 passed` and `3 passed`.
+- Task 3 fix-review regression GREEN: `250 passed, 1 skipped in 4.44s`.
+- Task 3 fix-review result: removed the operational `0.2` fallback so missing model metadata thresholds fail explicitly, and normalized malformed uncertainty thresholds to `UncertaintyError`.
 
 ## Commits
 
@@ -48,6 +52,7 @@
 - Task 2 implementation: `ec03384 feat: add output population to monthly assembly`.
 - Task 2 ledger update: `a08c01b docs: record task 2 commit in progress ledger`.
 - Task 3 implementation: `d510bab feat: add qualitative prediction uncertainty`.
+- Task 3 review fixes: `6b6875a fix: require operational model thresholds`.
 
 ## Blockers
 
