@@ -122,7 +122,7 @@
 - Task 5 compatibility-resolution commit: `99b7681 docs: record compatible-runtime comparison pass`.
 - Final review fix-wave implementation: `caa5ad8 fix: close final population and uncertainty review findings`.
 - Final review fix-wave ledger correction: `55273f6 docs: record final review fix commit`.
-- Final verification ledger: pending (this commit).
+- Final verification ledger: `fab795a docs: record final verification evidence`.
 
 ## Blockers
 
