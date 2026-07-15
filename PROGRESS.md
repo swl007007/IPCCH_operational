@@ -79,6 +79,7 @@
 - Task 3 review-fix ledger: `04ee496 docs: record task 3 review fixes`.
 - Task 4 implementation: `b4f93d8 feat: validate enriched cloud predictions`.
 - Task 4 ledger update: `d44c9a0 docs: record task 4 cloud contract`.
+- Task 5 test/docs/blocker record: `24b3e05 docs: document enriched inference rerun`.
 
 ## Blockers
 
