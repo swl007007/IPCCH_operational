@@ -1,6 +1,8 @@
 import hashlib
 import json
+from io import StringIO
 
+import pandas as pd
 import pytest
 
 from cloud.common.object_store import LocalObjectStore
@@ -510,6 +512,48 @@ def test_release_writer_revalidates_actual_prediction_artifacts_before_copy(tmp_
     )
 
     with pytest.raises(ValueError, match="prediction"):
+        write_release(
+            store=store,
+            feature_month="2026-04",
+            run_id="run-1",
+            run_prefix_uri=run_prefix,
+            release_root_uri=release_root,
+            **_release_metadata(run_prefix),
+        )
+
+    assert store.list(release_root) == []
+
+
+@pytest.mark.parametrize(
+    ("column", "value"),
+    [
+        ("population_estimate", -1.0),
+        ("population_reference_period", "2026-05"),
+        ("population_imputation_method", "nearest_past"),
+    ],
+)
+def test_release_preflight_rejects_matching_invalid_population_semantics(
+    tmp_path, column, value
+):
+    store = LocalObjectStore(tmp_path)
+    run_prefix = "gs://bucket/monthly/runs/run-1/"
+    release_root = "gs://bucket/monthly/released/202604/"
+    _write_required_release_inputs(store, run_prefix)
+    base = pd.read_csv(StringIO(VALID_BASE_INPUT_CSV))
+    base.loc[0, column] = value
+    store.write_text(
+        run_prefix + "assembly/ipcch_monthly_base_input_202604.csv",
+        base.to_csv(index=False),
+    )
+    for scope in ("0m", "6m", "12m"):
+        prediction = pd.read_csv(StringIO(_prediction_csv(scope)))
+        prediction.loc[0, column] = value
+        store.write_text(
+            run_prefix + f"inference/ipcch_launch_202604_scope_{scope}_predictions.csv",
+            prediction.to_csv(index=False),
+        )
+
+    with pytest.raises(ValueError, match="population"):
         write_release(
             store=store,
             feature_month="2026-04",

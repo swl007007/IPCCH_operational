@@ -45,7 +45,7 @@ def calculate_qualitative_uncertainty(frame, thresholds):
             or not math.isfinite(threshold)
         ):
             raise UncertaintyError("scores and thresholds must be finite")
-        margins[target] = (scores - threshold).abs().round(12)
+        margins[target] = (scores - threshold).abs()
     margin_frame = pd.DataFrame(margins, index=frame.index)
     decision_margin = margin_frame.min(axis=1)
     critical_boundary = margin_frame.idxmin(axis=1)

@@ -13,7 +13,12 @@ import pandas as pd
 from cloud.common.object_store import GCSObjectStore, ObjectStore
 from cloud.common.reports import build_validation_report
 from cloud.common.runtime_config import RuntimeDefaults
-from model_pipeline.ipcch_launch_runtime.population import POPULATION_OUTPUT_COLUMNS
+from model_pipeline.ipcch_launch_runtime.population import (
+    POPULATION_IMPUTATION_METHODS,
+    POPULATION_OUTPUT_COLUMNS,
+    PopulationContractError,
+    validate_population_contract,
+)
 from model_pipeline.ipcch_launch_runtime.uncertainty import (
     UNCERTAINTY_METHOD,
     UNCERTAINTY_OUTPUT_COLUMNS,
@@ -154,6 +159,11 @@ def validate_prediction_outputs(
             f"{sorted(missing_threshold_scopes)}"
         )
     year, month = (int(part) for part in feature_month.split("-"))
+    if base_input is not None:
+        try:
+            validate_population_contract(base_input, feature_month=feature_month)
+        except PopulationContractError as exc:
+            raise ValueError(f"base input population contract invalid: {exc}") from exc
     enriched = {}
     advisory_warnings = []
     missing_admin_code = False
@@ -223,6 +233,8 @@ def validate_prediction_outputs(
     population_selection = {
         scope: enriched[scope]["population_imputation_method"]
         .value_counts()
+        .reindex(POPULATION_IMPUTATION_METHODS, fill_value=0)
+        .astype(int)
         .to_dict()
         for scope in PREDICTION_SCOPES
     }
@@ -289,6 +301,10 @@ def _validate_prediction_scope_contract(
     thresholds: dict[str, float],
     expected_model_package_id: str | None = None,
 ) -> None:
+    try:
+        validate_population_contract(frame, feature_month=feature_month)
+    except PopulationContractError as exc:
+        raise ValueError(f"{scope} prediction population contract invalid: {exc}") from exc
     score_columns = [
         "phase2_worse_score",
         "phase3_worse_score",

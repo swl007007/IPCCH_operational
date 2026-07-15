@@ -177,7 +177,10 @@ def test_prediction_validation_requires_three_scopes_and_adds_year_month():
     assert enriched["0m"].loc[0, "month"] == 4
     assert report["local_reference_comparison"]["status"] == "not_provided"
     assert report["population_selection"] == {
-        scope: {"observed_feature_month": 1}
+        scope: {
+            "observed_feature_month": 1,
+            "last_observation_carried_forward": 0,
+        }
         for scope in ("0m", "6m", "12m")
     }
     assert report["uncertainty_summary"]["0m"]["label_counts"] == {
@@ -278,6 +281,77 @@ def test_prediction_validation_rejects_enriched_contract_mismatches(
             base_input=_valid_base_input_frame(),
             thresholds_by_scope=_thresholds_by_scope(),
         )
+
+
+@pytest.mark.parametrize(
+    ("column", "value", "expected_error"),
+    [
+        ("population_estimate", -1.0, "population_estimate"),
+        ("population_estimate", float("inf"), "population_estimate"),
+        (
+            "population_reference_period",
+            "2026-05",
+            "population_reference_period",
+        ),
+        (
+            "population_imputation_method",
+            "nearest_past",
+            "population_imputation_method",
+        ),
+    ],
+)
+def test_prediction_validation_rejects_invalid_population_even_when_base_matches(
+    column, value, expected_error
+):
+    predictions = {
+        "0m": _prediction_frame(scope_months=0, target_period="2026-04"),
+        "6m": _prediction_frame(scope_months=6, target_period="2026-10"),
+        "12m": _prediction_frame(scope_months=12, target_period="2027-04"),
+    }
+    base_input = _valid_base_input_frame()
+    base_input.loc[0, column] = value
+    for scope in predictions:
+        predictions[scope].loc[0, column] = value
+
+    with pytest.raises(ValueError, match=expected_error):
+        inference.validate_prediction_outputs(
+            predictions,
+            feature_month="2026-04",
+            base_input=base_input,
+            expected_model_package_id="model",
+            thresholds_by_scope=_thresholds_by_scope(),
+        )
+
+
+def test_prediction_validation_uses_raw_uncertainty_precision_near_boundary_and_tie():
+    predictions = {
+        "0m": _prediction_frame(scope_months=0, target_period="2026-04"),
+        "6m": _prediction_frame(scope_months=6, target_period="2026-10"),
+        "12m": _prediction_frame(scope_months=12, target_period="2027-04"),
+    }
+    thresholds = {
+        scope: {
+            "phase2_worse": 0.0,
+            "phase3_worse": 0.0,
+            "phase4_worse": 0.0,
+            "phase5_worse": 0.0,
+        }
+        for scope in ("0m", "6m", "12m")
+    }
+    predictions["0m"].loc[0, "phase2_worse_score"] = 0.05 + 4e-13
+    predictions["0m"].loc[0, "phase3_worse_score"] = 0.05
+    for scope, frame in predictions.items():
+        uncertainty, _ = calculate_qualitative_uncertainty(frame, thresholds[scope])
+        for column in uncertainty.columns:
+            frame[column] = uncertainty[column]
+
+    _, report = inference.validate_prediction_outputs(
+        predictions,
+        feature_month="2026-04",
+        thresholds_by_scope=thresholds,
+    )
+
+    assert report["status"] == "passed"
 
 
 def test_prediction_validation_allows_missing_admin_code_as_advisory():

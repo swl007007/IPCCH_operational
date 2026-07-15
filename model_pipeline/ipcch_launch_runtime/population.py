@@ -2,16 +2,93 @@
 
 import math
 
+import pandas as pd
+
 
 POPULATION_OUTPUT_COLUMNS = (
     "population_estimate",
     "population_reference_period",
     "population_imputation_method",
 )
+POPULATION_IMPUTATION_METHODS = (
+    "observed_feature_month",
+    "last_observation_carried_forward",
+)
+
+
+class PopulationContractError(ValueError):
+    """Raised when output population provenance violates the shared contract."""
 
 
 class PopulationSelectionError(ValueError):
     """Raised when a complete no-future population snapshot cannot be built."""
+
+
+def validate_population_contract(
+    frame: pd.DataFrame, *, feature_month: str
+) -> dict[str, int]:
+    """Validate output population provenance and return both method counts.
+
+    This is the single semantic gate used by local assembly, inference, cloud
+    prediction validation, and release preflight.  It intentionally validates
+    only output population fields; the model's ``estimated_population`` feature
+    remains outside this contract.
+    """
+    missing = [
+        column for column in POPULATION_OUTPUT_COLUMNS if column not in frame.columns
+    ]
+    if missing:
+        raise PopulationContractError(
+            f"missing population output columns: {missing}"
+        )
+    try:
+        feature_year, feature_month_number = (int(part) for part in feature_month.split("-"))
+        feature_period = pd.Timestamp(
+            year=feature_year, month=feature_month_number, day=1
+        )
+    except (AttributeError, TypeError, ValueError) as exc:
+        raise PopulationContractError(
+            f"feature_month must be parseable as YYYY-MM: {feature_month!r}"
+        ) from exc
+
+    values = pd.to_numeric(frame["population_estimate"], errors="coerce")
+    finite = values.map(
+        lambda value: pd.notna(value) and math.isfinite(float(value))
+    )
+    if values.isna().any() or not finite.all() or (values < 0).any():
+        raise PopulationContractError(
+            "population_estimate must be finite and non-negative"
+        )
+
+    raw_references = frame["population_reference_period"].astype("string")
+    valid_reference_format = raw_references.str.fullmatch(r"\d{4}-\d{2}", na=False)
+    references = pd.to_datetime(
+        raw_references.where(valid_reference_format),
+        format="%Y-%m",
+        errors="coerce",
+    )
+    if references.isna().any() or (references > feature_period).any():
+        raise PopulationContractError(
+            "population_reference_period must not be later than feature_month"
+        )
+
+    expected_methods = references.map(
+        lambda value: (
+            "observed_feature_month"
+            if value == feature_period
+            else "last_observation_carried_forward"
+        )
+    ).astype("string")
+    observed_methods = frame["population_imputation_method"].astype("string")
+    if not expected_methods.equals(observed_methods):
+        raise PopulationContractError(
+            "population_imputation_method does not match reference period"
+        )
+
+    counts = observed_methods.value_counts()
+    return {
+        method: int(counts.get(method, 0)) for method in POPULATION_IMPUTATION_METHODS
+    }
 
 
 class PopulationSnapshotBuilder:

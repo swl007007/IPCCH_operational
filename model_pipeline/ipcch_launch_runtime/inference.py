@@ -5,7 +5,11 @@ from typing import Mapping
 
 import pandas as pd
 
-from model_pipeline.ipcch_launch_runtime.population import POPULATION_OUTPUT_COLUMNS
+from model_pipeline.ipcch_launch_runtime.population import (
+    POPULATION_OUTPUT_COLUMNS,
+    PopulationContractError,
+    validate_population_contract,
+)
 from model_pipeline.ipcch_launch_runtime.uncertainty import (
     UncertaintyError,
     calculate_qualitative_uncertainty,
@@ -124,35 +128,10 @@ def _validate_inputs(
             )
         )
 
-    population = pd.to_numeric(monthly_rows["population_estimate"], errors="coerce")
-    if (
-        population.isna().any()
-        or not population.map(_is_finite).all()
-        or (population < 0).any()
-    ):
-        raise InferenceError("population_estimate must be finite and non-negative")
-
-    references = pd.to_datetime(
-        monthly_rows["population_reference_period"],
-        format="%Y-%m",
-        errors="coerce",
-    )
-    feature_period = pd.Timestamp(str(feature_month) + "-01")
-    if references.isna().any() or (references > feature_period).any():
-        raise InferenceError(
-            "population_reference_period must not be later than feature_month"
-        )
-    expected_methods = references.map(
-        lambda value: (
-            "observed_feature_month"
-            if value == feature_period
-            else "last_observation_carried_forward"
-        )
-    )
-    if not expected_methods.equals(monthly_rows["population_imputation_method"]):
-        raise InferenceError(
-            "population_imputation_method does not match reference period"
-        )
+    try:
+        validate_population_contract(monthly_rows, feature_month=feature_month)
+    except PopulationContractError as exc:
+        raise InferenceError(str(exc)) from exc
 
     missing = [target for target in REQUIRED_TARGETS if target not in models]
     if missing:

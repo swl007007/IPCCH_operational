@@ -86,8 +86,13 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
             ],
             scored["population_imputation_method"].tolist(),
         )
-        self.assertEqual(["low", "low", "low"], scored["prediction_uncertainty"].tolist())
-        self.assertEqual([0.1, 0.2, 0.3], scored["decision_margin"].tolist())
+        self.assertEqual(
+            ["medium", "low", "low"], scored["prediction_uncertainty"].tolist()
+        )
+        self.assertEqual(
+            [0.09999999999999998, 0.19999999999999996, 0.30000000000000004],
+            scored["decision_margin"].tolist(),
+        )
         self.assertEqual(
             ["phase4_worse", "phase3_worse", "phase2_worse"],
             scored["uncertainty_critical_boundary"].tolist(),
@@ -135,7 +140,7 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
             summary["pred_columns"],
         )
         self.assertEqual(
-            {"high": 0, "medium": 0, "low": 3},
+            {"high": 0, "medium": 1, "low": 2},
             summary["uncertainty"]["label_counts"],
         )
 

@@ -68,6 +68,13 @@ The qualitative uncertainty rules are `high < 0.05`, `medium < 0.10`, and
 `low >= 0.10`, based on `decision_margin`. Country-level percentage calculation
 remains downstream scope.
 
+Before allocating a new `run_id`, verify that the digest-pinned runtime image
+was built from the completed implementation commit. Record the completed
+commit SHA (`git rev-parse HEAD`), inspect the image build record or attestation
+for that exact SHA, and confirm the input manifest uses the resulting immutable
+`@sha256:<digest>` reference. Allocate the new run ID only after those checks;
+keep existing released runs and run-scoped artifacts immutable.
+
 Run-scoped required evidence:
 
 - `runs/{run_id}/run_summary.json`

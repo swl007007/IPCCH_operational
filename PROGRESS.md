@@ -71,6 +71,29 @@
 - Task 5 live cloud run: NOT ATTEMPTED. Read-only readiness found no ADC file, all eight `IPCCH_GCP_*` smoke variables unset (including both manifest URIs and the Cloud Run Job), and no digest-pinned runtime image built from the completed Task 5 commit. Exact service accounts, bucket, job, manifest objects, and image digest therefore could not be confirmed without crossing the mandatory gate.
 - Task 5 task re-review: approved with no remaining Critical, Major, or Minor findings after the untracked report was reconciled to the final exact-comparison PASS state.
 
+## Final Whole-Branch Review Fix Wave
+
+- Findings fixed: shared semantic population hard gate for base and prediction
+  paths (including release preflight), semantically complete smoke validation
+  with released-base alignment and resolved thresholds, raw-margin uncertainty
+  classification/tie selection, zero-count population method summaries, and
+  digest-pinned image/implementation-commit runbook guidance.
+- TDD RED evidence: shared population validator initially failed collection with
+  `ImportError`; four matching-invalid prediction cases and three release
+  preflight cases initially reported `DID NOT RAISE`; raw-margin/tie tests
+  initially failed; the invalid released-base smoke case initially reported
+  `DID NOT RAISE`.
+- Focused GREEN command:
+  `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_contract.py tests/test_population_output.py tests/test_prediction_uncertainty.py tests/test_build_monthly_ipcch_base_input.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`
+  -> `274 passed, 1 skipped in 4.99s`.
+- Full deterministic suite:
+  `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider`
+  -> `297 passed, 1 skipped in 5.78s`.
+- Live smoke remains gated and was not executed; no cloud mutation or run ID
+  allocation was attempted. See `.superpowers/sdd/final-fix-report.md`.
+- Fix-wave implementation commit: pending; ledger correction will record the
+  final SHA after the tracked fix-wave commit.
+
 ## Commits
 
 - Task 1 implementation: `b93c08e feat: add population snapshot selector`.
@@ -92,5 +115,5 @@
 
 ## Next Step
 
-- Run the final whole-branch review and verification gate.
+- Review the final fix-wave commit and report.
 - Only after the final implementation commit has a digest-pinned runtime image and all named GCP resources, ADC, and immutable manifest URIs are confirmed should a unique live smoke run ID be allocated.
