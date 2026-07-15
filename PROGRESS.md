@@ -16,7 +16,9 @@
 - Task 2 — local/cloud assembly population fields: complete; review clean through `a08c01b`
 - Task 3 — core qualitative uncertainty: complete; review clean through `04ee496`
 - Task 4 — Vertex/cloud prediction contract: complete; review clean through `d44c9a0`
-- Task 5 — regression, docs, and immutable-run preparation: in progress
+- Task 5 — regression, docs, and immutable-run preparation: tracked changes
+  complete; exact comparison and live run blocked by recorded runtime/external
+  prerequisites
 
 ## Verification Evidence
 
@@ -55,6 +57,16 @@
 - Task 4 regression command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_output.py tests/test_build_monthly_ipcch_base_input.py tests/test_prediction_uncertainty.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`.
 - Task 4 self-review: production thresholds come only from the passed local `run_summary.json`; synthetic predictions use the explicit test-only `0.2` mapping through `calculate_qualitative_uncertainty`; population columns match the shared base input across scopes; release revalidation consumes recorded resolved thresholds; existing release/output artifacts were not edited.
 - Task 4 task review: approved with no Critical, Important, or Minor findings; reviewer focused verification reported `6 passed, 56 deselected`.
+- Task 5 smoke-validator RED: `test_live_gcp_smoke_release_validator_rejects_legacy_prediction_schema` failed with `Failed: DID NOT RAISE <class 'AssertionError'>`, proving the validator did not inspect prediction CSV contents.
+- Task 5 smoke-validator GREEN: `4 passed, 1 skipped in 0.57s` for `tests/cloud/test_gcp_smoke_monthly_e2e.py`.
+- Task 5 deterministic regression GREEN: `257 passed, 1 skipped in 4.59s`.
+- Task 5 deterministic command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_output.py tests/test_prediction_uncertainty.py tests/test_build_monthly_ipcch_base_input.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`.
+- Task 5 temporary assembly first reproduced the isolated-worktree input blocker: `FAIL: Missing historical panel: Outcome/ipcch_unified/raw/IPCCH_2026_completed.csv`.
+- Task 5 temporary assembly then used the primary checkout's immutable inputs read-only and wrote only under `/tmp/ipcch-pop-uncertainty-202604`: `6227` rows, `151` columns, and `39` unmatched source joins.
+- Task 5 temporary inference wrote three `6227`-row prediction CSVs plus `run_summary.json` under `/tmp`; all three contain the seven enriched fields, non-null population, allowed uncertainty labels, and `qualitative_threshold_margin_v1`.
+- Task 5 exact old/new comparison: FAILED with `check_exact=True`. The old and rebuilt base inputs have identical row order and all `128` model features are exact for every scope, but the available Windows inference runtime is XGBoost `3.0.0` while every immutable model JSON records version `[3, 2, 0]`. XGBoost 3.0 substitutes `0.5` for each model-specific vector `base_score`; observed score deltas equal `0.5 - base_score`, changing downstream predictions. No code, model, or old output was altered to mask this failure.
+- Task 5 immutable old-output evidence: the 0m/6m/12m prediction SHA-256 values remained `2f751622a57ae90abde2873d8059d474ffa82e84f28f2eed915914e52000a0cd`, `7d1185019f28de564d69062448dd0c22e1027577cb22cb8acf90c6d888a3813c`, and `f151608ef3cabc5dc12ea834118ad907b3fdda5434c538f0ca29d021b01a4457` before and after the temporary run.
+- Task 5 live cloud run: NOT ATTEMPTED. Read-only readiness found no ADC file, all eight `IPCCH_GCP_*` smoke variables unset (including both manifest URIs and the Cloud Run Job), and no digest-pinned runtime image built from the completed Task 5 commit. Exact service accounts, bucket, job, manifest objects, and image digest therefore could not be confirmed without crossing the mandatory gate.
 
 ## Commits
 
@@ -70,9 +82,10 @@
 
 ## Blockers
 
-- None.
+- Exact old/new equality requires a model-compatible XGBoost `3.2.0` runtime; WSL Python has no XGBoost and the available Windows runtime is `3.0.0`, which misreads the saved vector `base_score` values.
+- Live GCP smoke prerequisites are absent: ADC is missing; all required `IPCCH_GCP_*` variables and manifest URIs are unset; a digest-pinned image built from the completed implementation commit is not available; exact service accounts, bucket, Cloud Run Job, and manifests are unconfirmed. No cloud mutation or run ID allocation was attempted.
 
 ## Next Step
 
-- Execute Task 5: regression, docs, and immutable-run preparation.
-- Resume command: `bash /home/swl007007/.codex/plugins/cache/openai-curated-remote/superpowers/6.1.1/skills/subagent-driven-development/scripts/task-brief docs/superpowers/plans/2026-07-15-prediction-population-uncertainty.md 5 .superpowers/sdd/task-5-brief.md`
+- Re-run temporary inference with XGBoost `3.2.0`, then repeat the unchanged-column comparison with `check_exact=True`.
+- Only after the final implementation commit has a digest-pinned runtime image and all named GCP resources, ADC, and immutable manifest URIs are confirmed should a unique live smoke run ID be allocated.

@@ -190,6 +190,27 @@ Batch handles GEE EVI export and rasterio extraction, Vertex AI custom-job
 inference writes prediction CSVs, and the release writer publishes
 `released/{YYYYMM}/release_manifest.json` last.
 
+Enhanced population and uncertainty fields are produced only by a new complete
+monthly run. Do not edit an existing prediction CSV or released run in place.
+Use a new run_id, rerun monthly assembly, then run Vertex AI inference with the
+same immutable model package. population_estimate is output-only; the model
+continues to receive the original estimated_population feature. The uncertainty
+label is qualitative distance-to-threshold stability, not a confidence interval.
+
+Every new prediction CSV contains these seven enriched output fields:
+
+- `population_estimate`
+- `population_reference_period`
+- `population_imputation_method`
+- `prediction_uncertainty`
+- `decision_margin`
+- `uncertainty_critical_boundary`
+- `uncertainty_method`
+
+The qualitative uncertainty rules are `high < 0.05`, `medium < 0.10`, and
+`low >= 0.10`, based on `decision_margin`. Country-level percentage calculation
+remains downstream scope.
+
 For the first 2026-04 smoke, use project `food-crisis-modeling` and region
 `us-central1`. Enable the required project APIs in the quickstart before
 diagnosing IAM or deployment failures; `SERVICE_DISABLED` means the API gate is

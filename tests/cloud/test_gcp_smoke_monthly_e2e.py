@@ -1,10 +1,27 @@
 import json
 import os
 import subprocess
+from io import StringIO
 
+import pandas as pd
 import pytest
 
 from cloud.common.object_store import GCSObjectStore, LocalObjectStore
+
+
+ENRICHED_PREDICTION_COLUMNS = {
+    "population_estimate",
+    "population_reference_period",
+    "population_imputation_method",
+    "prediction_uncertainty",
+    "decision_margin",
+    "uncertainty_critical_boundary",
+    "uncertainty_method",
+}
+
+ENRICHED_PREDICTION_CSV = """area_id,year,month,population_estimate,population_reference_period,population_imputation_method,prediction_uncertainty,decision_margin,uncertainty_critical_boundary,uncertainty_method
+A,2026,4,1000,2025-01,nearest_past,low,0.20,phase2_worse,qualitative_threshold_margin_v1
+"""
 
 
 def build_cloud_run_dispatch_command(
@@ -30,7 +47,13 @@ def validate_release_manifest_after_smoke(*, store, release_manifest_uri, run_id
     assert manifest.get("accepted_run_id") == run_id
     assert manifest.get("prediction_output_paths")
     for path in manifest["prediction_output_paths"]:
-        store.read_text(path)
+        frame = pd.read_csv(StringIO(store.read_text(path)))
+        assert ENRICHED_PREDICTION_COLUMNS <= set(frame.columns)
+        assert frame["population_estimate"].notna().all()
+        assert set(frame["prediction_uncertainty"]) <= {"high", "medium", "low"}
+        assert set(frame["uncertainty_method"]) == {
+            "qualitative_threshold_margin_v1"
+        }
     for key in (
         "base_input_validation_report_reference",
         "vertex_ai_job_manifest_reference",
@@ -65,7 +88,7 @@ def test_live_gcp_smoke_release_validator_rejects_conflict_run_summary(tmp_path)
         "gs://bucket/monthly/released/202604/runs/run-1/inference/"
         "ipcch_launch_202604_scope_0m_predictions.csv"
     )
-    store.write_text(prediction_path, "area_id,year,month\nA,2026,4\n")
+    store.write_text(prediction_path, ENRICHED_PREDICTION_CSV)
     copied_path = (
         "gs://bucket/monthly/released/202604/runs/run-1/qa/"
         "base_input_validation_report.json"
@@ -135,7 +158,7 @@ def test_live_gcp_smoke_release_artifact_validator_checks_current_manifest(tmp_p
         for scope in ("0m", "6m", "12m")
     ]
     for path in prediction_paths:
-        store.write_text(path, "area_id,year,month\nA,2026,4\n")
+        store.write_text(path, ENRICHED_PREDICTION_CSV)
     copied_paths = {
         "base_input_validation_report_reference": "gs://bucket/monthly/released/202604/runs/run-1/qa/base_input_validation_report.json",
         "vertex_ai_job_manifest_reference": "gs://bucket/monthly/released/202604/runs/run-1/inference/vertex_ai_job_manifest.json",
@@ -180,6 +203,64 @@ def test_live_gcp_smoke_release_artifact_validator_checks_current_manifest(tmp_p
     )
 
     assert manifest["status"] == "current"
+
+
+def test_live_gcp_smoke_release_validator_rejects_legacy_prediction_schema(
+    tmp_path,
+):
+    store = LocalObjectStore(tmp_path)
+    manifest_uri = "gs://bucket/monthly/released/202604/release_manifest.json"
+    prediction_path = (
+        "gs://bucket/monthly/released/202604/runs/run-1/inference/"
+        "ipcch_launch_202604_scope_0m_predictions.csv"
+    )
+    store.write_text(prediction_path, "area_id,year,month\nA,2026,4\n")
+    copied_path = (
+        "gs://bucket/monthly/released/202604/runs/run-1/qa/"
+        "base_input_validation_report.json"
+    )
+    store.write_text(copied_path, '{"status":"passed"}')
+    run_summary_path = "gs://bucket/monthly/released/202604/runs/run-1/run_summary.json"
+    store.write_text(run_summary_path, '{"status":"released"}')
+    store.write_text(
+        manifest_uri,
+        json.dumps(
+            {
+                "status": "current",
+                "accepted_run_id": "run-1",
+                "prediction_output_paths": [prediction_path],
+                "base_input_validation_report_reference": {
+                    "uri": copied_path,
+                    "checksum": "a" * 64,
+                },
+                "vertex_ai_job_manifest_reference": {
+                    "uri": copied_path,
+                    "checksum": "a" * 64,
+                },
+                "inference_report_reference": {
+                    "uri": copied_path,
+                    "checksum": "a" * 64,
+                },
+                "gee_export_manifest_reference": {
+                    "uri": copied_path,
+                    "checksum": "a" * 64,
+                },
+                "evi_evidence_references": [
+                    {"uri": copied_path, "checksum": "a" * 64}
+                ],
+                "released_copied_artifacts": [
+                    {"uri": run_summary_path, "checksum": "b" * 64}
+                ],
+            }
+        ),
+    )
+
+    with pytest.raises(AssertionError):
+        validate_release_manifest_after_smoke(
+            store=store,
+            release_manifest_uri=manifest_uri,
+            run_id="run-1",
+        )
 
 
 @pytest.mark.skipif(
