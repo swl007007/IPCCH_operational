@@ -15,8 +15,8 @@
 - Task 1 — streaming population snapshot component: complete; review clean through `1445b30`
 - Task 2 — local/cloud assembly population fields: complete; review clean through `a08c01b`
 - Task 3 — core qualitative uncertainty: complete; review clean through `04ee496`
-- Task 4 — Vertex/cloud prediction contract: complete
-- Task 5 — regression, docs, and immutable-run preparation: pending
+- Task 4 — Vertex/cloud prediction contract: complete; review clean through `d44c9a0`
+- Task 5 — regression, docs, and immutable-run preparation: in progress
 
 ## Verification Evidence
 
@@ -54,6 +54,7 @@
 - Task 4 final regression GREEN: `256 passed, 1 skipped in 4.70s`.
 - Task 4 regression command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_output.py tests/test_build_monthly_ipcch_base_input.py tests/test_prediction_uncertainty.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`.
 - Task 4 self-review: production thresholds come only from the passed local `run_summary.json`; synthetic predictions use the explicit test-only `0.2` mapping through `calculate_qualitative_uncertainty`; population columns match the shared base input across scopes; release revalidation consumes recorded resolved thresholds; existing release/output artifacts were not edited.
+- Task 4 task review: approved with no Critical, Important, or Minor findings; reviewer focused verification reported `6 passed, 56 deselected`.
 
 ## Commits
 
@@ -65,6 +66,7 @@
 - Task 3 review fixes: `6b6875a fix: require operational model thresholds`.
 - Task 3 review-fix ledger: `04ee496 docs: record task 3 review fixes`.
 - Task 4 implementation: `b4f93d8 feat: validate enriched cloud predictions`.
+- Task 4 ledger update: `d44c9a0 docs: record task 4 cloud contract`.
 
 ## Blockers
 
