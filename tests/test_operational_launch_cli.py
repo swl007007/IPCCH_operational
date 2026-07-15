@@ -127,6 +127,10 @@ class OperationalLaunchCliTests(unittest.TestCase):
     def test_uncertainty_error_is_an_expected_cli_failure(self):
         self.assertIn(UncertaintyError, cli.EXPECTED_ERRORS)
 
+    def test_missing_model_metadata_thresholds_fail_explicitly(self):
+        with self.assertRaisesRegex(cli.OperationalLaunchError, "threshold"):
+            cli._thresholds_from_metadata({})
+
     def test_existing_output_without_overwrite_fails_before_scoring_or_mixing_outputs(
         self,
     ):

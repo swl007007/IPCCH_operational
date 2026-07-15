@@ -3,6 +3,7 @@ import pytest
 
 from model_pipeline.ipcch_launch_runtime.uncertainty import (
     UNCERTAINTY_METHOD,
+    UncertaintyError,
     calculate_qualitative_uncertainty,
 )
 
@@ -56,3 +57,24 @@ def test_uncertainty_uses_each_target_threshold_and_phase_order_for_ties():
 
     assert fields.loc[0, "decision_margin"] == pytest.approx(0.05)
     assert fields.loc[0, "uncertainty_critical_boundary"] == "phase2_worse"
+
+
+@pytest.mark.parametrize("malformed_threshold", [None, "not-numeric", 10**1000])
+def test_uncertainty_wraps_malformed_thresholds(malformed_threshold):
+    scores = pd.DataFrame(
+        {
+            "phase2_worse_score": [0.40],
+            "phase3_worse_score": [0.35],
+            "phase4_worse_score": [0.90],
+            "phase5_worse_score": [0.90],
+        }
+    )
+    thresholds = {
+        "phase2_worse": malformed_threshold,
+        "phase3_worse": 0.30,
+        "phase4_worse": 0.20,
+        "phase5_worse": 0.20,
+    }
+
+    with pytest.raises(UncertaintyError, match="phase2_worse.*numeric and finite"):
+        calculate_qualitative_uncertainty(scores, thresholds)

@@ -33,7 +33,12 @@ def calculate_qualitative_uncertainty(frame, thresholds):
                 "missing score or resolved threshold for {0}".format(target)
             )
         scores = pd.to_numeric(frame[score_column], errors="coerce")
-        threshold = float(thresholds[target])
+        try:
+            threshold = float(thresholds[target])
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise UncertaintyError(
+                "resolved threshold for {0} must be numeric and finite".format(target)
+            ) from exc
         if (
             scores.isna().any()
             or not scores.map(math.isfinite).all()

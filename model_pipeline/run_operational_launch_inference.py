@@ -284,7 +284,9 @@ def _thresholds_from_metadata(metadata):
         return metadata["decision_thresholds"]
     if "threshold" in metadata:
         return {"default": metadata["threshold"]}
-    return {"default": 0.2}
+    raise OperationalLaunchError(
+        "Model metadata must provide thresholds, decision_thresholds, or threshold"
+    )
 
 
 def _model_package_id(metadata, model_package_root):
