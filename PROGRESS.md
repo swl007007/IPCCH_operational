@@ -90,10 +90,21 @@
 - Full deterministic suite:
   `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider`
   -> `297 passed, 1 skipped in 5.78s`.
+- Final fresh full-suite verification:
+  `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider`
+  -> `297 passed, 1 skipped in 6.02s`.
+- Final compatible-runtime rerun used `/home/swl007007/.venvs/ipcch-xgb/bin/python`
+  (XGBoost `3.2.0`) and wrote only to `/tmp/ipcch-pop-uncertainty-final-202604`.
+  The exact unchanged-column comparison passed with `check_exact=True` for
+  `0m`, `6m`, and `12m` (`6227` rows each), printing
+  `enhanced outputs preserve all existing model results`; all seven enriched
+  fields and semantic smoke checks also passed.
 - Live smoke remains gated and was not executed; no cloud mutation or run ID
   allocation was attempted. See `.superpowers/sdd/final-fix-report.md`.
 - Fix-wave implementation commit: `caa5ad8` (`fix: close final population and
   uncertainty review findings`).
+- Final whole-branch re-review: Ready to merge with no Critical or Important
+  findings; remaining smoke scope-set hardening is Minor/non-blocking.
 
 ## Commits
 
@@ -111,6 +122,7 @@
 - Task 5 compatibility-resolution commit: `99b7681 docs: record compatible-runtime comparison pass`.
 - Final review fix-wave implementation: `caa5ad8 fix: close final population and uncertainty review findings`.
 - Final review fix-wave ledger correction: `55273f6 docs: record final review fix commit`.
+- Final verification ledger: pending (this commit).
 
 ## Blockers
 
@@ -118,6 +130,6 @@
 
 ## Next Step
 
-- Final whole-branch review: approved with no Critical or Important findings;
-  remaining Minor smoke hardening is non-blocking.
+- Final whole-branch review and verification gate passed; remaining Minor smoke
+  scope-set hardening is non-blocking.
 - Only after the final implementation commit has a digest-pinned runtime image and all named GCP resources, ADC, and immutable manifest URIs are confirmed should a unique live smoke run ID be allocated.
