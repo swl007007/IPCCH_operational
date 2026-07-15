@@ -512,6 +512,9 @@ def _validate_release_preflight(
             feature_month=f"{yyyymm[:4]}-{yyyymm[4:]}",
             base_input=base_input,
             expected_model_package_id=expected_model_package_id,
+            thresholds_by_scope=inference_report.get(
+                "resolved_thresholds_by_scope", {}
+            ),
         )
     except ValueError as exc:
         raise ValueError(f"prediction artifact validation failed: {exc}") from exc

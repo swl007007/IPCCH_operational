@@ -8,11 +8,47 @@ from cloud.orchestrator import release
 from cloud.orchestrator.release import write_release
 
 
+VALID_BASE_INPUT_CSV = (
+    "area_id,year,month,admin_code,_row_id,population_estimate,"
+    "population_reference_period,population_imputation_method\n"
+    "A,2026,4,A,0,100.0,2026-04,observed_feature_month\n"
+)
+RESOLVED_THRESHOLDS = {
+    scope: {
+        "phase2_worse": 0.2,
+        "phase3_worse": 0.2,
+        "phase4_worse": 0.2,
+        "phase5_worse": 0.2,
+    }
+    for scope in ("0m", "6m", "12m")
+}
+
+
+def _prediction_csv(scope, *, model_package_id="model"):
+    scope_months = {"0m": 0, "6m": 6, "12m": 12}[scope]
+    target_period = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}[scope]
+    return (
+        "area_id,year,month,admin_code,_row_id,population_estimate,"
+        "population_reference_period,population_imputation_method,"
+        "phase2_worse_score,phase2_worse_pred,"
+        "phase3_worse_score,phase3_worse_pred,"
+        "phase4_worse_score,phase4_worse_pred,"
+        "phase5_worse_score,phase5_worse_pred,"
+        "overall_phase_pred,feature_period,target_period,scope_months,"
+        "model_package_id,source_input,prediction_uncertainty,decision_margin,"
+        "uncertainty_critical_boundary,uncertainty_method\n"
+        f"A,2026,4,A,0,100.0,2026-04,observed_feature_month,"
+        f"0.21,0,0.8,0,0.8,0,0.8,0,1,2026-04,{target_period},"
+        f"{scope_months},{model_package_id},base,high,0.01,phase2_worse,"
+        "qualitative_threshold_margin_v1\n"
+    )
+
+
 def _write_required_release_inputs(store, run_prefix):
     store.write_text("gs://bucket/monthly/input_manifest.json", '{"run_id":"run-1"}\n')
     store.write_text(
         run_prefix + "assembly/ipcch_monthly_base_input_202604.csv",
-        "area_id,year,month\nA,2026,4\n",
+        VALID_BASE_INPUT_CSV,
     )
     store.write_text(
         run_prefix + "assembly/ipcch_monthly_base_input_202604_summary.json", "{}\n"
@@ -27,8 +63,15 @@ def _write_required_release_inputs(store, run_prefix):
     )
     store.write_text(
         run_prefix + "inference/inference_report.json",
-        '{"status":"passed","model_output_schema":{"status":"passed"},'
-        '"local_reference_comparison":{"status":"not_provided"}}\n',
+        json.dumps(
+            {
+                "status": "passed",
+                "model_output_schema": {"status": "passed"},
+                "local_reference_comparison": {"status": "not_provided"},
+                "resolved_thresholds_by_scope": RESOLVED_THRESHOLDS,
+            }
+        )
+        + "\n",
     )
     store.write_text(
         run_prefix + "gee_exports/gee_export_manifest.json",
@@ -44,21 +87,9 @@ def _write_required_release_inputs(store, run_prefix):
     )
     store.write_text(run_prefix + "run_summary.json", '{"status":"released"}\n')
     for scope in ("0m", "6m", "12m"):
-        scope_months = {"0m": 0, "6m": 6, "12m": 12}[scope]
-        target_period = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}[scope]
         store.write_text(
             run_prefix + f"inference/ipcch_launch_202604_scope_{scope}_predictions.csv",
-            (
-                "area_id,year,month,admin_code,_row_id,"
-                "phase2_worse_score,phase2_worse_pred,"
-                "phase3_worse_score,phase3_worse_pred,"
-                "phase4_worse_score,phase4_worse_pred,"
-                "phase5_worse_score,phase5_worse_pred,"
-                "overall_phase_pred,feature_period,target_period,scope_months,"
-                "model_package_id,source_input\n"
-                f"A,2026,4,A,0,0.1,0,0.2,0,0.3,0,0.4,0,1,"
-                f"2026-04,{target_period},{scope_months},model,base\n"
-            ),
+            _prediction_csv(scope),
         )
 
 
@@ -264,21 +295,9 @@ def test_release_writer_does_not_infer_model_package_id_from_uri(tmp_path):
     release_root = "gs://bucket/monthly/released/202604/"
     _write_required_release_inputs(store, run_prefix)
     for scope in ("0m", "6m", "12m"):
-        scope_months = {"0m": 0, "6m": 6, "12m": 12}[scope]
-        target_period = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}[scope]
         store.write_text(
             run_prefix + f"inference/ipcch_launch_202604_scope_{scope}_predictions.csv",
-            (
-                "area_id,year,month,admin_code,_row_id,"
-                "phase2_worse_score,phase2_worse_pred,"
-                "phase3_worse_score,phase3_worse_pred,"
-                "phase4_worse_score,phase4_worse_pred,"
-                "phase5_worse_score,phase5_worse_pred,"
-                "overall_phase_pred,feature_period,target_period,scope_months,"
-                "model_package_id,source_input\n"
-                f"A,2026,4,A,0,0.1,0,0.2,0,0.3,0,0.4,0,1,"
-                f"2026-04,{target_period},{scope_months},launch_2026_04,base\n"
-            ),
+            _prediction_csv(scope, model_package_id="launch_2026_04"),
         )
 
     manifest = write_release(
@@ -347,7 +366,7 @@ def test_release_writer_does_not_overwrite_existing_released_run_artifacts(tmp_p
     previous_released_base = store.read_text(released_base_uri)
     store.write_text(
         run_prefix + "assembly/ipcch_monthly_base_input_202604.csv",
-        "area_id,year,month\nA,2026,4\n",
+        VALID_BASE_INPUT_CSV,
     )
 
     second = write_release(

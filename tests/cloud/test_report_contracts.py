@@ -51,6 +51,32 @@ def test_validation_report_rejects_terminal_run_status():
         raise AssertionError("released must not be accepted for validation reports")
 
 
+def test_inference_validation_report_has_enriched_summary_fields():
+    report = reports.build_validation_report(
+        report_type="inference_report",
+        feature_month="2026-04",
+        run_id="run-1",
+        status="passed",
+        population_selection={"0m": {"observed_feature_month": 1}},
+        uncertainty_summary={
+            "0m": {
+                "method": "qualitative_threshold_margin_v1",
+                "label_counts": {"high": 1, "medium": 0, "low": 0},
+            }
+        },
+    )
+
+    required = {
+        "schema_version",
+        "feature_month",
+        "run_id",
+        "status",
+        "population_selection",
+        "uncertainty_summary",
+    }
+    assert required <= report.keys()
+
+
 def test_evi_extraction_manifest_has_cloud_batch_fields():
     manifest = reports.build_evi_extraction_manifest(
         feature_month="2026-04",

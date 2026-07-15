@@ -9,6 +9,49 @@ from cloud.orchestrator import main
 
 
 FIXTURE_DIR = Path(__file__).resolve().parents[1] / "fixtures" / "cloud"
+VALID_BASE_INPUT_CSV = (
+    "area_id,year,month,admin_code,_row_id,population_estimate,"
+    "population_reference_period,population_imputation_method\n"
+    "A,2026,4,A,0,100.0,2026-04,observed_feature_month\n"
+)
+RESOLVED_THRESHOLDS = {
+    scope: {
+        "phase2_worse": 0.2,
+        "phase3_worse": 0.2,
+        "phase4_worse": 0.2,
+        "phase5_worse": 0.2,
+    }
+    for scope in ("0m", "6m", "12m")
+}
+
+
+def _enriched_prediction_csv(scope, *, model_package_id="launch_2026_04"):
+    scope_months = {"0m": 0, "6m": 6, "12m": 12}[scope]
+    target_period = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}[scope]
+    return (
+        "area_id,year,month,admin_code,_row_id,population_estimate,"
+        "population_reference_period,population_imputation_method,"
+        "phase2_worse_score,phase2_worse_pred,phase3_worse_score,"
+        "phase3_worse_pred,phase4_worse_score,phase4_worse_pred,"
+        "phase5_worse_score,phase5_worse_pred,overall_phase_pred,"
+        "feature_period,target_period,scope_months,model_package_id,source_input,"
+        "prediction_uncertainty,decision_margin,uncertainty_critical_boundary,"
+        "uncertainty_method\n"
+        f"A,2026,4,A,0,100.0,2026-04,observed_feature_month,"
+        f"0.21,0,0.8,0,0.8,0,0.8,0,1,2026-04,{target_period},{scope_months},"
+        f"{model_package_id},base,high,0.01,phase2_worse,"
+        "qualitative_threshold_margin_v1\n"
+    )
+
+
+def _passed_inference_report(**extra):
+    return {
+        "status": "passed",
+        "model_output_schema": {"status": "passed"},
+        "local_reference_comparison": {"status": "not_provided"},
+        "resolved_thresholds_by_scope": RESOLVED_THRESHOLDS,
+        **extra,
+    }
 
 
 class FakeBatchClient:
@@ -710,7 +753,7 @@ def test_orchestrator_main_cli_runs_production_completion_hooks_and_releases(
             yyyymm = feature_month.replace("-", "")
             store.write_text(
                 run_prefix_uri + f"assembly/ipcch_monthly_base_input_{yyyymm}.csv",
-                "area_id,year,month\nA,2026,4\n",
+                VALID_BASE_INPUT_CSV,
             )
             store.write_text(
                 run_prefix_uri
@@ -726,31 +769,15 @@ def test_orchestrator_main_cli_runs_production_completion_hooks_and_releases(
         def vertex_waiter(*, store, run_prefix_uri, feature_month, run_id, response):
             yyyymm = feature_month.replace("-", "")
             for scope in ("0m", "6m", "12m"):
-                scope_months = {"0m": 0, "6m": 6, "12m": 12}[scope]
-                target_period = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}[
-                    scope
-                ]
                 store.write_text(
                     run_prefix_uri
                     + f"inference/ipcch_launch_{yyyymm}_scope_{scope}_predictions.csv",
-                    (
-                        "area_id,year,month,admin_code,_row_id,phase2_worse_score,"
-                        "phase2_worse_pred,phase3_worse_score,phase3_worse_pred,"
-                        "phase4_worse_score,phase4_worse_pred,phase5_worse_score,"
-                        "phase5_worse_pred,overall_phase_pred,feature_period,"
-                        "target_period,scope_months,model_package_id,source_input\n"
-                        f"A,2026,4,A,0,0.1,0,0.2,0,0.3,0,0.4,0,1,"
-                        f"2026-04,{target_period},{scope_months},launch_2026_04,base\n"
-                    ),
+                    _enriched_prediction_csv(scope),
                 )
             store.write_text(
                 run_prefix_uri + "inference/inference_report.json",
                 json.dumps(
-                    {
-                        "status": "passed",
-                        "model_output_schema": {"status": "passed"},
-                        "local_reference_comparison": {"status": "not_provided"},
-                    }
+                    _passed_inference_report()
                 ),
             )
             return {"status": "passed"}
@@ -887,7 +914,7 @@ def test_cloud_orchestrator_completes_validation_release_and_terminal_summary(
         yyyymm = feature_month.replace("-", "")
         store.write_text(
             run_prefix_uri + f"assembly/ipcch_monthly_base_input_{yyyymm}.csv",
-            "area_id,year,month\nA,2026,4\n",
+            VALID_BASE_INPUT_CSV,
         )
         store.write_text(
             run_prefix_uri + f"assembly/ipcch_monthly_base_input_{yyyymm}_summary.json",
@@ -903,29 +930,15 @@ def test_cloud_orchestrator_completes_validation_release_and_terminal_summary(
         calls.append(("vertex", response["name"]))
         yyyymm = feature_month.replace("-", "")
         for scope in ("0m", "6m", "12m"):
-            scope_months = {"0m": 0, "6m": 6, "12m": 12}[scope]
-            target_period = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}[scope]
             store.write_text(
                 run_prefix_uri
                 + f"inference/ipcch_launch_{yyyymm}_scope_{scope}_predictions.csv",
-                (
-                    "area_id,year,month,admin_code,_row_id,phase2_worse_score,"
-                    "phase2_worse_pred,phase3_worse_score,phase3_worse_pred,"
-                    "phase4_worse_score,phase4_worse_pred,phase5_worse_score,"
-                    "phase5_worse_pred,overall_phase_pred,feature_period,"
-                    "target_period,scope_months,model_package_id,source_input\n"
-                    f"A,2026,4,A,0,0.1,0,0.2,0,0.3,0,0.4,0,1,"
-                    f"2026-04,{target_period},{scope_months},launch_2026_04,base\n"
-                ),
+                _enriched_prediction_csv(scope),
             )
         store.write_text(
             run_prefix_uri + "inference/inference_report.json",
             json.dumps(
-                {
-                    "status": "passed",
-                    "model_output_schema": {"status": "passed"},
-                    "local_reference_comparison": {"status": "not_provided"},
-                }
+                _passed_inference_report()
             ),
         )
         return {"status": "passed"}
@@ -1033,7 +1046,7 @@ def test_cloud_orchestrator_reconciles_vertex_manifest_with_actual_response_name
         yyyymm = feature_month.replace("-", "")
         store.write_text(
             run_prefix_uri + f"assembly/ipcch_monthly_base_input_{yyyymm}.csv",
-            "area_id,year,month\nA,2026,4\n",
+            VALID_BASE_INPUT_CSV,
         )
         store.write_text(
             run_prefix_uri + f"assembly/ipcch_monthly_base_input_{yyyymm}_summary.json",
@@ -1048,41 +1061,29 @@ def test_cloud_orchestrator_reconciles_vertex_manifest_with_actual_response_name
     def vertex_waiter(*, store, run_prefix_uri, feature_month, run_id, response):
         yyyymm = feature_month.replace("-", "")
         for scope in ("0m", "6m", "12m"):
-            scope_months = {"0m": 0, "6m": 6, "12m": 12}[scope]
-            target_period = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}[scope]
             store.write_text(
                 run_prefix_uri
                 + f"inference/ipcch_launch_{yyyymm}_scope_{scope}_predictions.csv",
-                (
-                    "area_id,year,month,admin_code,_row_id,phase2_worse_score,"
-                    "phase2_worse_pred,phase3_worse_score,phase3_worse_pred,"
-                    "phase4_worse_score,phase4_worse_pred,phase5_worse_score,"
-                    "phase5_worse_pred,overall_phase_pred,feature_period,"
-                    "target_period,scope_months,model_package_id,source_input\n"
-                    f"A,2026,4,A,0,0.1,0,0.2,0,0.3,0,0.4,0,1,"
-                    f"2026-04,{target_period},{scope_months},launch_2026_04,base\n"
-                ),
+                _enriched_prediction_csv(scope),
             )
         store.write_text(
             run_prefix_uri + "inference/vertex_ai_job_manifest.json",
             json.dumps(
-                {
-                    "status": "passed",
-                    "vertex_ai_job_resource_name": "projects/p/locations/us-central1/customJobs/stale",
-                    "model_output_schema": {"status": "passed"},
-                    "local_reference_comparison": {"status": "not_provided"},
-                }
+                _passed_inference_report(
+                    vertex_ai_job_resource_name=(
+                        "projects/p/locations/us-central1/customJobs/stale"
+                    )
+                )
             ),
         )
         store.write_text(
             run_prefix_uri + "inference/inference_report.json",
             json.dumps(
-                {
-                    "status": "passed",
-                    "vertex_ai_job_resource_name": "projects/p/locations/us-central1/customJobs/stale",
-                    "model_output_schema": {"status": "passed"},
-                    "local_reference_comparison": {"status": "not_provided"},
-                }
+                _passed_inference_report(
+                    vertex_ai_job_resource_name=(
+                        "projects/p/locations/us-central1/customJobs/stale"
+                    )
+                )
             ),
         )
         return {"status": "passed"}

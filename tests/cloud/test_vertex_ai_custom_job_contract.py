@@ -6,6 +6,57 @@ import pytest
 from cloud.common.object_store import LocalObjectStore
 from cloud.common.runtime_config import RuntimeDefaults
 from cloud.orchestrator import inference, model_package, vertex_client
+from model_pipeline.ipcch_launch_runtime.uncertainty import (
+    calculate_qualitative_uncertainty,
+)
+
+
+VALID_BASE_INPUT_CSV = (
+    "area_id,year,month,admin_code,_row_id,population_estimate,"
+    "population_reference_period,population_imputation_method\n"
+    "A,2026,4,A,0,100.0,2026-04,observed_feature_month\n"
+)
+
+
+def _thresholds_by_scope():
+    return {
+        scope: {
+            "phase2_worse": 0.2,
+            "phase3_worse": 0.2,
+            "phase4_worse": 0.2,
+            "phase5_worse": 0.2,
+        }
+        for scope in ("0m", "6m", "12m")
+    }
+
+
+def _valid_base_input_frame():
+    return pd.read_csv(pd.io.common.StringIO(VALID_BASE_INPUT_CSV))
+
+
+def _write_local_inference_outputs(
+    output_dir, *, model_package_id="model", include_thresholds=True
+):
+    target_periods = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}
+    scope_months = {"0m": 0, "6m": 6, "12m": 12}
+    scope_summaries = {}
+    for scope in ("0m", "6m", "12m"):
+        frame = _prediction_frame(
+            scope_months=scope_months[scope],
+            target_period=target_periods[scope],
+        ).assign(model_package_id=model_package_id)
+        frame.to_csv(
+            output_dir / f"ipcch_launch_202604_scope_{scope}_predictions.csv",
+            index=False,
+        )
+        scope_summary = {}
+        if include_thresholds:
+            scope_summary["thresholds"] = _thresholds_by_scope()[scope]
+        scope_summaries[scope.removesuffix("m")] = scope_summary
+    (output_dir / "run_summary.json").write_text(
+        json.dumps({"status": "passed", "scope_summaries": scope_summaries}),
+        encoding="utf-8",
+    )
 
 
 class FakeVertexJobClient:
@@ -81,18 +132,25 @@ def test_prediction_validation_requires_three_scopes_and_adds_year_month():
         "area_id": ["A"],
         "admin_code": ["A"],
         "_row_id": [0],
-        "phase2_worse_score": [0.1],
+        "population_estimate": [100.0],
+        "population_reference_period": ["2026-04"],
+        "population_imputation_method": ["observed_feature_month"],
+        "phase2_worse_score": [0.21],
         "phase2_worse_pred": [0],
-        "phase3_worse_score": [0.2],
+        "phase3_worse_score": [0.8],
         "phase3_worse_pred": [0],
-        "phase4_worse_score": [0.3],
+        "phase4_worse_score": [0.8],
         "phase4_worse_pred": [0],
-        "phase5_worse_score": [0.4],
+        "phase5_worse_score": [0.8],
         "phase5_worse_pred": [0],
         "overall_phase_pred": [1],
         "feature_period": ["2026-04"],
         "model_package_id": ["model"],
         "source_input": ["base"],
+        "prediction_uncertainty": ["high"],
+        "decision_margin": [0.01],
+        "uncertainty_critical_boundary": ["phase2_worse"],
+        "uncertainty_method": ["qualitative_threshold_margin_v1"],
     }
     scope_months = {"0m": 0, "6m": 6, "12m": 12}
     target_periods = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}
@@ -108,7 +166,9 @@ def test_prediction_validation_requires_three_scopes_and_adds_year_month():
     }
 
     enriched, report = inference.validate_prediction_outputs(
-        predictions, feature_month="2026-04"
+        predictions,
+        feature_month="2026-04",
+        thresholds_by_scope=_thresholds_by_scope(),
     )
 
     assert report["status"] == "passed"
@@ -116,6 +176,15 @@ def test_prediction_validation_requires_three_scopes_and_adds_year_month():
     assert enriched["0m"].loc[0, "year"] == 2026
     assert enriched["0m"].loc[0, "month"] == 4
     assert report["local_reference_comparison"]["status"] == "not_provided"
+    assert report["population_selection"] == {
+        scope: {"observed_feature_month": 1}
+        for scope in ("0m", "6m", "12m")
+    }
+    assert report["uncertainty_summary"]["0m"]["label_counts"] == {
+        "high": 1,
+        "medium": 0,
+        "low": 0,
+    }
 
 
 def test_prediction_validation_rejects_scope_months_mismatching_scope_file():
@@ -126,7 +195,11 @@ def test_prediction_validation_rejects_scope_months_mismatching_scope_file():
     }
 
     with pytest.raises(ValueError, match="scope_months"):
-        inference.validate_prediction_outputs(predictions, feature_month="2026-04")
+        inference.validate_prediction_outputs(
+            predictions,
+            feature_month="2026-04",
+            thresholds_by_scope=_thresholds_by_scope(),
+        )
 
 
 def test_prediction_validation_rejects_target_period_mismatching_scope():
@@ -137,7 +210,11 @@ def test_prediction_validation_rejects_target_period_mismatching_scope():
     }
 
     with pytest.raises(ValueError, match="target_period"):
-        inference.validate_prediction_outputs(predictions, feature_month="2026-04")
+        inference.validate_prediction_outputs(
+            predictions,
+            feature_month="2026-04",
+            thresholds_by_scope=_thresholds_by_scope(),
+        )
 
 
 @pytest.mark.parametrize(
@@ -158,9 +235,7 @@ def test_prediction_validation_rejects_v1_hard_gate_violations(mutator, expected
         "12m": _prediction_frame(scope_months=12, target_period="2027-04"),
     }
     predictions["0m"] = mutator(predictions["0m"])
-    base_input = pd.DataFrame(
-        {"area_id": ["A"], "year": [2026], "month": [4], "admin_code": ["A"]}
-    )
+    base_input = _valid_base_input_frame()
 
     with pytest.raises(ValueError, match=expected_error):
         inference.validate_prediction_outputs(
@@ -168,6 +243,40 @@ def test_prediction_validation_rejects_v1_hard_gate_violations(mutator, expected
             feature_month="2026-04",
             base_input=base_input,
             expected_model_package_id="model",
+            thresholds_by_scope=_thresholds_by_scope(),
+        )
+
+
+@pytest.mark.parametrize(
+    ("scope", "column", "value", "expected_error"),
+    [
+        ("0m", "prediction_uncertainty", "low", "prediction_uncertainty"),
+        ("0m", "decision_margin", 0.02, "decision_margin"),
+        (
+            "0m",
+            "population_reference_period",
+            "2026-05",
+            "population_reference_period",
+        ),
+        ("6m", "population_estimate", 101.0, "population_estimate"),
+    ],
+)
+def test_prediction_validation_rejects_enriched_contract_mismatches(
+    scope, column, value, expected_error
+):
+    predictions = {
+        "0m": _prediction_frame(scope_months=0, target_period="2026-04"),
+        "6m": _prediction_frame(scope_months=6, target_period="2026-10"),
+        "12m": _prediction_frame(scope_months=12, target_period="2027-04"),
+    }
+    predictions[scope] = predictions[scope].assign(**{column: [value]})
+
+    with pytest.raises(ValueError, match=expected_error):
+        inference.validate_prediction_outputs(
+            predictions,
+            feature_month="2026-04",
+            base_input=_valid_base_input_frame(),
+            thresholds_by_scope=_thresholds_by_scope(),
         )
 
 
@@ -183,15 +292,14 @@ def test_prediction_validation_allows_missing_admin_code_as_advisory():
             columns=["admin_code"]
         ),
     }
-    base_input = pd.DataFrame(
-        {"area_id": ["A"], "year": [2026], "month": [4], "admin_code": ["A"]}
-    )
+    base_input = _valid_base_input_frame()
 
     _, report = inference.validate_prediction_outputs(
         predictions,
         feature_month="2026-04",
         base_input=base_input,
         expected_model_package_id="model",
+        thresholds_by_scope=_thresholds_by_scope(),
     )
 
     assert report["status"] == "passed"
@@ -219,6 +327,7 @@ def test_prediction_validation_records_reference_comparison_evidence():
         predictions,
         feature_month="2026-04",
         reference_predictions=reference_predictions,
+        thresholds_by_scope=_thresholds_by_scope(),
     )
 
     comparison = report["local_reference_comparison"]
@@ -242,6 +351,7 @@ def test_prediction_validation_rejects_reference_missing_required_rows():
             predictions,
             feature_month="2026-04",
             reference_predictions=reference_predictions,
+            thresholds_by_scope=_thresholds_by_scope(),
         )
 
 
@@ -487,7 +597,7 @@ def test_inference_wrapper_writes_three_prediction_csvs_report_and_job_manifest(
 ):
     store = LocalObjectStore(tmp_path)
     store.write_text(
-        "gs://bucket/run/assembly/base.csv", "area_id,year,month\nA,2026,4\n"
+        "gs://bucket/run/assembly/base.csv", VALID_BASE_INPUT_CSV
     )
 
     result = inference.run_inference_wrapper(
@@ -560,22 +670,16 @@ def test_inference_wrapper_reads_reference_predictions_from_uri(tmp_path):
     store = LocalObjectStore(tmp_path)
     store.write_text(
         "gs://bucket/run/assembly/base.csv",
-        "area_id,year,month\nA,2026,4\n",
+        VALID_BASE_INPUT_CSV,
     )
-    reference_header = (
-        "area_id,year,month,admin_code,_row_id,phase2_worse_score,"
-        "phase2_worse_pred,phase3_worse_score,phase3_worse_pred,"
-        "phase4_worse_score,phase4_worse_pred,phase5_worse_score,"
-        "phase5_worse_pred,overall_phase_pred,feature_period,target_period,"
-        "scope_months,model_package_id,source_input\n"
-    )
-    reference_csv = reference_header + "".join(
+    reference_csv = pd.concat(
         [
-            "A,2026,4,A,0,0.0,0,0.0,0,0.0,0,0.0,0,1,2026-04,2026-04,0,model,base\n",
-            "A,2026,4,A,0,0.0,0,0.0,0,0.0,0,0.0,0,1,2026-04,2026-10,6,model,base\n",
-            "A,2026,4,A,0,0.0,0,0.0,0,0.0,0,0.0,0,1,2026-04,2027-04,12,model,base\n",
-        ]
-    )
+            _prediction_frame(scope_months=0, target_period="2026-04"),
+            _prediction_frame(scope_months=6, target_period="2026-10"),
+            _prediction_frame(scope_months=12, target_period="2027-04"),
+        ],
+        ignore_index=True,
+    ).to_csv(index=False)
     store.write_text("gs://bucket/reference/predictions.csv", reference_csv)
 
     result = inference.run_inference_wrapper(
@@ -606,7 +710,7 @@ def test_inference_wrapper_runs_script_and_uploads_script_outputs(tmp_path):
     store = LocalObjectStore(tmp_path)
     store.write_text(
         "gs://bucket/run/assembly/base.csv",
-        "area_id,year,month,admin_code,_row_id\nA,2026,4,A,0\n",
+        VALID_BASE_INPUT_CSV,
     )
     _seed_model_package_files(store)
     commands = []
@@ -622,25 +726,7 @@ def test_inference_wrapper_runs_script_and_uploads_script_outputs(tmp_path):
             / "feature_columns.json"
         ).exists()
         assert str(tmp_path / "workspace" / "model_package") == model_package_path
-        header = (
-            "area_id,year,month,admin_code,_row_id,phase2_worse_score,"
-            "phase2_worse_pred,phase3_worse_score,phase3_worse_pred,"
-            "phase4_worse_score,phase4_worse_pred,phase5_worse_score,"
-            "phase5_worse_pred,overall_phase_pred,feature_period,target_period,"
-            "scope_months,model_package_id,source_input\n"
-        )
-        target_periods = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}
-        scope_months = {"0m": 0, "6m": 6, "12m": 12}
-        for scope in ("0m", "6m", "12m"):
-            (
-                output_dir / f"ipcch_launch_202604_scope_{scope}_predictions.csv"
-            ).write_text(
-                header
-                + "A,2026,4,A,0,0.1,0,0.2,0,0.3,0,0.4,0,1,"
-                + f"2026-04,{target_periods[scope]},{scope_months[scope]},"
-                + "model,base\n",
-                encoding="utf-8",
-            )
+        _write_local_inference_outputs(output_dir)
         return {"returncode": 0, "stdout": "ok", "stderr": ""}
 
     result = inference.run_inference_wrapper(
@@ -671,13 +757,49 @@ def test_inference_wrapper_runs_script_and_uploads_script_outputs(tmp_path):
         "gs://bucket/run/inference/ipcch_launch_202604_scope_0m_predictions.csv"
     )
     assert "phase2_worse_score" in uploaded
-    assert "prediction" not in uploaded.splitlines()[0]
+    assert "prediction" not in uploaded.splitlines()[0].split(",")
     report = store.read_text("gs://bucket/run/inference/inference_report.json")
     assert "prediction_output_paths" in report
     assert "custom_job_command" in report
     manifest = store.read_text("gs://bucket/run/inference/vertex_ai_job_manifest.json")
     assert "vertex_ai_project_id" in manifest
     assert "model_version_or_checksum" in manifest
+
+
+def test_inference_wrapper_rejects_missing_local_run_summary_thresholds(tmp_path):
+    store = LocalObjectStore(tmp_path)
+    store.write_text(
+        "gs://bucket/run/assembly/base.csv",
+        VALID_BASE_INPUT_CSV,
+    )
+    _seed_model_package_files(store)
+
+    def command_runner(command, *, output_dir):
+        _write_local_inference_outputs(output_dir, include_thresholds=False)
+        return {"returncode": 0, "stdout": "ok", "stderr": ""}
+
+    with pytest.raises((KeyError, ValueError), match="thresholds"):
+        inference.run_inference_wrapper(
+            store=store,
+            feature_month="2026-04",
+            run_id="run-missing-thresholds",
+            base_input_uri="gs://bucket/run/assembly/base.csv",
+            model_package_uri="gs://bucket/model/",
+            output_prefix_uri="gs://bucket/run/inference/",
+            job_metadata={
+                "vertex_ai_job_id": "job-1",
+                "vertex_ai_job_resource_name": "projects/p/locations/us/jobs/job-1",
+                "vertex_ai_project_id": "p",
+                "vertex_ai_region": "us-central1",
+                "vertex_ai_custom_job_container_image_uri": "image@sha256:"
+                + "a" * 64,
+                "vertex_ai_custom_job_container_digest": "sha256:" + "a" * 64,
+                "container_image_digest": "sha256:" + "a" * 64,
+                "model_version_or_checksum": "generation:1",
+            },
+            command_runner=command_runner,
+            workspace_root=tmp_path / "workspace",
+        )
 
 
 def test_inference_wrapper_uses_manifest_model_package_id_for_prediction_validation(
@@ -687,7 +809,7 @@ def test_inference_wrapper_uses_manifest_model_package_id_for_prediction_validat
     model_package_uri = "gs://bucket/model_packages/package_dir/"
     store.write_text(
         "gs://bucket/run/assembly/base.csv",
-        "area_id,year,month,admin_code,_row_id\nA,2026,4,A,0\n",
+        VALID_BASE_INPUT_CSV,
     )
     _seed_model_package_files(store, prefix=model_package_uri)
     store.write_text(
@@ -696,25 +818,9 @@ def test_inference_wrapper_uses_manifest_model_package_id_for_prediction_validat
     )
 
     def command_runner(command, *, output_dir):
-        header = (
-            "area_id,year,month,admin_code,_row_id,phase2_worse_score,"
-            "phase2_worse_pred,phase3_worse_score,phase3_worse_pred,"
-            "phase4_worse_score,phase4_worse_pred,phase5_worse_score,"
-            "phase5_worse_pred,overall_phase_pred,feature_period,target_period,"
-            "scope_months,model_package_id,source_input\n"
+        _write_local_inference_outputs(
+            output_dir, model_package_id="launch_2026_04"
         )
-        target_periods = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}
-        scope_months = {"0m": 0, "6m": 6, "12m": 12}
-        for scope in ("0m", "6m", "12m"):
-            (
-                output_dir / f"ipcch_launch_202604_scope_{scope}_predictions.csv"
-            ).write_text(
-                header
-                + "A,2026,4,A,0,0.1,0,0.2,0,0.3,0,0.4,0,1,"
-                + f"2026-04,{target_periods[scope]},{scope_months[scope]},"
-                + "launch_2026_04,base\n",
-                encoding="utf-8",
-            )
         return {"returncode": 0, "stdout": "ok", "stderr": ""}
 
     result = inference.run_inference_wrapper(
@@ -747,32 +853,14 @@ def test_inference_wrapper_uses_default_command_runner_for_production_path(
     store = LocalObjectStore(tmp_path)
     store.write_text(
         "gs://bucket/run/assembly/base.csv",
-        "area_id,year,month,admin_code,_row_id\nA,2026,4,A,0\n",
+        VALID_BASE_INPUT_CSV,
     )
     _seed_model_package_files(store)
     commands = []
 
     def default_runner(command, *, output_dir):
         commands.append(command)
-        header = (
-            "area_id,year,month,admin_code,_row_id,phase2_worse_score,"
-            "phase2_worse_pred,phase3_worse_score,phase3_worse_pred,"
-            "phase4_worse_score,phase4_worse_pred,phase5_worse_score,"
-            "phase5_worse_pred,overall_phase_pred,feature_period,target_period,"
-            "scope_months,model_package_id,source_input\n"
-        )
-        target_periods = {"0m": "2026-04", "6m": "2026-10", "12m": "2027-04"}
-        scope_months = {"0m": 0, "6m": 6, "12m": 12}
-        for scope in ("0m", "6m", "12m"):
-            (
-                output_dir / f"ipcch_launch_202604_scope_{scope}_predictions.csv"
-            ).write_text(
-                header
-                + "A,2026,4,A,0,0.1,0,0.2,0,0.3,0,0.4,0,1,"
-                + f"2026-04,{target_periods[scope]},{scope_months[scope]},"
-                + "model,base\n",
-                encoding="utf-8",
-            )
+        _write_local_inference_outputs(output_dir)
         return {"returncode": 0, "stdout": "ok", "stderr": ""}
 
     monkeypatch.setattr(
@@ -810,7 +898,7 @@ def test_inference_wrapper_writes_failure_evidence_when_command_fails(tmp_path):
     store = LocalObjectStore(tmp_path)
     store.write_text(
         "gs://bucket/run/assembly/base.csv",
-        "area_id,year,month,admin_code,_row_id\nA,2026,4,A,0\n",
+        VALID_BASE_INPUT_CSV,
     )
     _seed_model_package_files(store)
 
@@ -859,7 +947,7 @@ def test_inference_wrapper_records_effective_runtime_overrides(tmp_path):
     store = LocalObjectStore(tmp_path)
     store.write_text(
         "gs://bucket/run/assembly/base.csv",
-        "area_id,year,month\nA,2026,4\n",
+        VALID_BASE_INPUT_CSV,
     )
 
     inference.run_inference_wrapper(
@@ -902,22 +990,25 @@ def _prediction_frame(
     *,
     scope_months,
     target_period: str = "2026-04",
-    score: float = 0.1,
+    score: float = 0.21,
 ) -> pd.DataFrame:
-    return pd.DataFrame(
+    frame = pd.DataFrame(
         {
             "area_id": ["A"],
             "year": [2026],
             "month": [4],
             "admin_code": ["A"],
             "_row_id": [0],
+            "population_estimate": [100.0],
+            "population_reference_period": ["2026-04"],
+            "population_imputation_method": ["observed_feature_month"],
             "phase2_worse_score": [score],
             "phase2_worse_pred": [0],
-            "phase3_worse_score": [0.2],
+            "phase3_worse_score": [0.8],
             "phase3_worse_pred": [0],
-            "phase4_worse_score": [0.3],
+            "phase4_worse_score": [0.8],
             "phase4_worse_pred": [0],
-            "phase5_worse_score": [0.4],
+            "phase5_worse_score": [0.8],
             "phase5_worse_pred": [0],
             "overall_phase_pred": [1],
             "feature_period": ["2026-04"],
@@ -927,3 +1018,9 @@ def _prediction_frame(
             "source_input": ["base"],
         }
     )
+    uncertainty, _ = calculate_qualitative_uncertainty(
+        frame, _thresholds_by_scope()["0m"]
+    )
+    for column in uncertainty.columns:
+        frame[column] = uncertainty[column]
+    return frame

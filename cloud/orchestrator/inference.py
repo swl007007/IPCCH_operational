@@ -13,6 +13,12 @@ import pandas as pd
 from cloud.common.object_store import GCSObjectStore, ObjectStore
 from cloud.common.reports import build_validation_report
 from cloud.common.runtime_config import RuntimeDefaults
+from model_pipeline.ipcch_launch_runtime.population import POPULATION_OUTPUT_COLUMNS
+from model_pipeline.ipcch_launch_runtime.uncertainty import (
+    UNCERTAINTY_METHOD,
+    UNCERTAINTY_OUTPUT_COLUMNS,
+    calculate_qualitative_uncertainty,
+)
 
 
 PREDICTION_SCOPES = ("0m", "6m", "12m")
@@ -35,6 +41,8 @@ REQUIRED_PREDICTION_COLUMNS = (
     "scope_months",
     "model_package_id",
     "source_input",
+    *POPULATION_OUTPUT_COLUMNS,
+    *UNCERTAINTY_OUTPUT_COLUMNS,
 )
 OPTIONAL_PREDICTION_COLUMNS = ("admin_code",)
 
@@ -134,10 +142,17 @@ def validate_prediction_outputs(
     base_input: pd.DataFrame | None = None,
     reference_predictions: dict[str, pd.DataFrame] | None = None,
     expected_model_package_id: str | None = None,
+    thresholds_by_scope: dict[str, dict[str, float]],
 ) -> tuple[dict[str, pd.DataFrame], dict]:
     missing = set(PREDICTION_SCOPES) - set(predictions)
     if missing:
         raise ValueError(f"missing prediction scopes: {sorted(missing)}")
+    missing_threshold_scopes = set(PREDICTION_SCOPES) - set(thresholds_by_scope)
+    if missing_threshold_scopes:
+        raise ValueError(
+            "missing prediction threshold scopes: "
+            f"{sorted(missing_threshold_scopes)}"
+        )
     year, month = (int(part) for part in feature_month.split("-"))
     enriched = {}
     advisory_warnings = []
@@ -159,6 +174,7 @@ def validate_prediction_outputs(
             frame,
             scope=scope,
             feature_month=feature_month,
+            thresholds=thresholds_by_scope[scope],
             expected_model_package_id=expected_model_package_id,
         )
         missing_admin_code = missing_admin_code or "admin_code" not in frame.columns
@@ -202,7 +218,30 @@ def validate_prediction_outputs(
             enriched,
             reference_predictions,
             feature_month=feature_month,
+            thresholds_by_scope=thresholds_by_scope,
         )
+    population_selection = {
+        scope: enriched[scope]["population_imputation_method"]
+        .value_counts()
+        .to_dict()
+        for scope in PREDICTION_SCOPES
+    }
+    uncertainty_summary = {
+        scope: {
+            "method": UNCERTAINTY_METHOD,
+            "label_counts": enriched[scope]["prediction_uncertainty"]
+            .value_counts()
+            .reindex(["high", "medium", "low"], fill_value=0)
+            .astype(int)
+            .to_dict(),
+            "decision_margin": {
+                "min": float(enriched[scope]["decision_margin"].min()),
+                "median": float(enriched[scope]["decision_margin"].median()),
+                "max": float(enriched[scope]["decision_margin"].max()),
+            },
+        }
+        for scope in PREDICTION_SCOPES
+    }
     report = build_validation_report(
         report_type="inference_report",
         feature_month=feature_month,
@@ -235,6 +274,8 @@ def validate_prediction_outputs(
             for scope in PREDICTION_SCOPES
         },
         local_reference_comparison=comparison,
+        population_selection=population_selection,
+        uncertainty_summary=uncertainty_summary,
         advisory_warnings=advisory_warnings,
     )
     return enriched, report
@@ -245,6 +286,7 @@ def _validate_prediction_scope_contract(
     *,
     scope: str,
     feature_month: str,
+    thresholds: dict[str, float],
     expected_model_package_id: str | None = None,
 ) -> None:
     score_columns = [
@@ -316,6 +358,22 @@ def _validate_prediction_scope_contract(
             f"{scope} prediction target_period must be {expected_target_period}; "
             f"got {sorted(observed_target_periods)}"
         )
+    expected_uncertainty, _ = calculate_qualitative_uncertainty(frame, thresholds)
+    margin_delta = (
+        pd.to_numeric(frame["decision_margin"], errors="coerce")
+        - expected_uncertainty["decision_margin"]
+    ).abs()
+    if margin_delta.isna().any() or (margin_delta > 1e-12).any():
+        raise ValueError(f"{scope} prediction decision_margin is inconsistent")
+    for column in (
+        "prediction_uncertainty",
+        "uncertainty_critical_boundary",
+        "uncertainty_method",
+    ):
+        if not frame[column].astype(str).equals(
+            expected_uncertainty[column].astype(str)
+        ):
+            raise ValueError(f"{scope} prediction {column} is inconsistent")
 
 
 def _validate_prediction_base_alignment(
@@ -325,19 +383,33 @@ def _validate_prediction_base_alignment(
     base = base_input.copy()
     if "_row_id" not in base.columns:
         base["_row_id"] = range(len(base))
-    expected = base[key + ["_row_id"]].copy()
+    expected = base[key + ["_row_id", *POPULATION_OUTPUT_COLUMNS]].copy()
     expected["_row_id"] = pd.to_numeric(expected["_row_id"], errors="coerce")
+    expected["population_estimate"] = pd.to_numeric(
+        expected["population_estimate"], errors="coerce"
+    )
     if "admin_code" in base.columns:
         expected["admin_code"] = base["admin_code"].astype(str)
     for scope, frame in predictions.items():
-        observed_columns = key + ["_row_id"]
+        observed_columns = key + ["_row_id", *POPULATION_OUTPUT_COLUMNS]
         if "admin_code" in frame.columns:
             observed_columns.append("admin_code")
         observed = frame[observed_columns].copy()
         observed["_row_id"] = pd.to_numeric(observed["_row_id"], errors="coerce")
+        observed["population_estimate"] = pd.to_numeric(
+            observed["population_estimate"], errors="coerce"
+        )
         merged = observed.merge(expected, on=key, how="left", suffixes=("", "_base"))
         if not (merged["_row_id"] == merged["_row_id_base"]).all():
             raise ValueError(f"{scope} prediction _row_id must match base input")
+        for column in POPULATION_OUTPUT_COLUMNS:
+            base_column = f"{column}_base"
+            if column == "population_estimate":
+                matches = merged[column] == merged[base_column]
+            else:
+                matches = merged[column].astype(str) == merged[base_column].astype(str)
+            if not bool(matches.all()):
+                raise ValueError(f"{scope} prediction {column} must match base input")
         if "admin_code_base" in merged.columns and "admin_code" in merged.columns:
             expected_admin_code = merged["admin_code_base"]
             has_expected_admin_code = expected_admin_code.notna()
@@ -355,6 +427,7 @@ def _compare_reference_predictions(
     reference_predictions: dict[str, pd.DataFrame],
     *,
     feature_month: str,
+    thresholds_by_scope: dict[str, dict[str, float]],
 ) -> dict:
     missing = set(PREDICTION_SCOPES) - set(reference_predictions)
     if missing:
@@ -392,7 +465,10 @@ def _compare_reference_predictions(
                 f"{scope} reference prediction missing columns: {missing_columns}"
             )
         _validate_prediction_scope_contract(
-            reference, scope=scope, feature_month=feature_month
+            reference,
+            scope=scope,
+            feature_month=feature_month,
+            thresholds=thresholds_by_scope[scope],
         )
         cloud = predictions[scope].copy()
         cloud_keys = set(map(tuple, cloud[key].itertuples(index=False, name=None)))
@@ -534,6 +610,7 @@ def _run_inference_wrapper_success(
         store=store, model_package_uri=model_package_uri
     )
     if command_runner is None and allow_synthetic_predictions:
+        thresholds_by_scope = _synthetic_thresholds_by_scope()
         predictions = {
             scope: _synthetic_prediction_frame(
                 base_input=base_input,
@@ -541,6 +618,7 @@ def _run_inference_wrapper_success(
                 scope=scope,
                 model_package_uri=model_package_uri,
                 model_package_id=expected_model_package_id,
+                thresholds=thresholds_by_scope[scope],
             )
             for scope in PREDICTION_SCOPES
         }
@@ -548,7 +626,12 @@ def _run_inference_wrapper_success(
         command_result = {"returncode": 0, "stdout": "", "stderr": ""}
     else:
         effective_runner = command_runner or _default_command_runner
-        predictions, command, command_result = _run_script_and_collect_predictions(
+        (
+            predictions,
+            local_run_summary,
+            command,
+            command_result,
+        ) = _run_script_and_collect_predictions(
             store=store,
             feature_month=feature_month,
             base_input_uri=base_input_uri,
@@ -556,6 +639,7 @@ def _run_inference_wrapper_success(
             command_runner=effective_runner,
             workspace_root=workspace_root,
         )
+        thresholds_by_scope = _thresholds_from_local_run_summary(local_run_summary)
     effective_reference_predictions = reference_predictions
     if effective_reference_predictions is None and reference_sample_uri:
         effective_reference_predictions = _load_reference_predictions(
@@ -567,6 +651,7 @@ def _run_inference_wrapper_success(
         base_input=base_input,
         reference_predictions=effective_reference_predictions,
         expected_model_package_id=expected_model_package_id,
+        thresholds_by_scope=thresholds_by_scope,
     )
     report["run_id"] = run_id
     report["model_package_uri"] = model_package_uri
@@ -579,6 +664,7 @@ def _run_inference_wrapper_success(
     report["custom_job_command"] = command
     report["custom_job_exit_code"] = command_result.get("returncode", 0)
     report["custom_job_log_uri"] = job_metadata.get("custom_job_log_uri")
+    report["resolved_thresholds_by_scope"] = thresholds_by_scope
     report["retry_policy"] = {"max_retries": runtime.max_retries}
     report["vertex_ai_custom_job_timeout_seconds"] = (
         runtime.vertex_ai_custom_job_timeout_seconds
@@ -762,7 +848,7 @@ def _run_script_and_collect_predictions(
     model_package_uri: str,
     command_runner,
     workspace_root: str | Path | None,
-) -> tuple[dict[str, pd.DataFrame], list[str], dict]:
+) -> tuple[dict[str, pd.DataFrame], dict, list[str], dict]:
     workspace = Path(workspace_root or "/tmp/ipcch-vertex-inference")
     input_dir = workspace / "input"
     model_dir = workspace / "model_package"
@@ -790,11 +876,51 @@ def _run_script_and_collect_predictions(
     if result and result.get("returncode", 0) != 0:
         raise RuntimeError(f"inference command failed: {result.get('stderr', '')}")
 
+    run_summary_path = output_dir / "run_summary.json"
+    if not run_summary_path.exists():
+        raise ValueError("local inference run_summary.json is required")
+    local_run_summary = json.loads(run_summary_path.read_text(encoding="utf-8"))
+    if local_run_summary.get("status") != "passed":
+        raise ValueError("local inference run_summary.json status must be passed")
+    _thresholds_from_local_run_summary(local_run_summary)
+
     predictions = {}
     for scope in PREDICTION_SCOPES:
         path = output_dir / f"ipcch_launch_{yyyymm}_scope_{scope}_predictions.csv"
         predictions[scope] = pd.read_csv(path)
-    return predictions, command, result or {"returncode": 0}
+    return predictions, local_run_summary, command, result or {"returncode": 0}
+
+
+def _thresholds_from_local_run_summary(
+    local_run_summary: dict,
+) -> dict[str, dict[str, float]]:
+    scope_summaries = local_run_summary.get("scope_summaries")
+    if not isinstance(scope_summaries, dict):
+        raise ValueError("local inference run summary missing scope_summaries thresholds")
+    thresholds_by_scope = {}
+    for scope in PREDICTION_SCOPES:
+        scope_key = scope.removesuffix("m")
+        scope_summary = scope_summaries.get(scope_key)
+        if not isinstance(scope_summary, dict) or not isinstance(
+            scope_summary.get("thresholds"), dict
+        ):
+            raise ValueError(
+                f"local inference run summary missing thresholds for scope {scope}"
+            )
+        thresholds_by_scope[scope] = scope_summary["thresholds"]
+    return thresholds_by_scope
+
+
+def _synthetic_thresholds_by_scope() -> dict[str, dict[str, float]]:
+    return {
+        scope: {
+            "phase2_worse": 0.2,
+            "phase3_worse": 0.2,
+            "phase4_worse": 0.2,
+            "phase5_worse": 0.2,
+        }
+        for scope in PREDICTION_SCOPES
+    }
 
 
 def _localize_model_package(
@@ -838,6 +964,7 @@ def _synthetic_prediction_frame(
     scope: str,
     model_package_uri: str,
     model_package_id: str | None = None,
+    thresholds: dict[str, float],
 ) -> pd.DataFrame:
     frame = base_input.copy()
     if "admin_code" not in frame.columns:
@@ -856,6 +983,9 @@ def _synthetic_prediction_frame(
         model_package_id or model_package_uri.rstrip("/").rsplit("/", 1)[-1]
     )
     frame["source_input"] = "base"
+    uncertainty_fields, _ = calculate_qualitative_uncertainty(frame, thresholds)
+    for column in UNCERTAINTY_OUTPUT_COLUMNS:
+        frame[column] = uncertainty_fields[column]
     return frame[list(REQUIRED_PREDICTION_COLUMNS)]
 
 
