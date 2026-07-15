@@ -13,8 +13,8 @@
 ## Task Status
 
 - Task 1 — streaming population snapshot component: complete; review clean through `1445b30`
-- Task 2 — local/cloud assembly population fields: complete; implementation `ec03384`
-- Task 3 — core qualitative uncertainty: pending
+- Task 2 — local/cloud assembly population fields: complete; review clean through `a08c01b`
+- Task 3 — core qualitative uncertainty: in progress
 - Task 4 — Vertex/cloud prediction contract: pending
 - Task 5 — regression, docs, and immutable-run preparation: pending
 
@@ -32,12 +32,14 @@
 - Task 2 regression GREEN: `239 passed, 1 skipped in 3.72s`.
 - Task 2 focused command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_build_monthly_ipcch_base_input.py tests/cloud/test_monthly_assembly_wrapper.py -q -p no:cacheprovider`.
 - Task 2 regression command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_output.py tests/test_build_monthly_ipcch_base_input.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`.
+- Task 2 task review: approved with no Critical or Important findings. Minor: direct failure tests do not separately cover invalid/negative population estimates, future reference periods, and inconsistent imputation methods in `base_input_validation`; retain for final whole-branch triage.
 
 ## Commits
 
 - Task 1 implementation: `b93c08e feat: add population snapshot selector`.
 - Task 1 ledger correction: `1445b30 docs: record task 1 commit in progress ledger`.
 - Task 2 implementation: `ec03384 feat: add output population to monthly assembly`.
+- Task 2 ledger update: `a08c01b docs: record task 2 commit in progress ledger`.
 
 ## Blockers
 
