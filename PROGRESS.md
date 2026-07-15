@@ -15,7 +15,7 @@
 - Task 1 — streaming population snapshot component: complete; review clean through `1445b30`
 - Task 2 — local/cloud assembly population fields: complete; review clean through `a08c01b`
 - Task 3 — core qualitative uncertainty: complete; review clean through `04ee496`
-- Task 4 — Vertex/cloud prediction contract: in progress
+- Task 4 — Vertex/cloud prediction contract: complete
 - Task 5 — regression, docs, and immutable-run preparation: pending
 
 ## Verification Evidence
@@ -45,6 +45,15 @@
 - Task 3 fix-review regression GREEN: `250 passed, 1 skipped in 4.44s`.
 - Task 3 fix-review result: removed the operational `0.2` fallback so missing model metadata thresholds fail explicitly, and normalized malformed uncertainty thresholds to `UncertaintyError`.
 - Task 3 task re-review: approved with no remaining Critical, Important, or Minor findings; reported focused and regression commands are preserved in `.superpowers/sdd/task-3-report.md`.
+- Task 4 RED: focused Vertex/report contracts failed with `18 failed, 36 passed`; expected failures showed unsupported `thresholds_by_scope`, absent local run-summary threshold enforcement, and absent enriched report/validation behavior.
+- Task 4 RED command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/cloud/test_vertex_ai_custom_job_contract.py tests/cloud/test_report_contracts.py -q -p no:cacheprovider`.
+- Task 4 focused GREEN: `54 passed in 1.06s`.
+- Task 4 focused command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/cloud/test_vertex_ai_custom_job_contract.py tests/cloud/test_report_contracts.py -q -p no:cacheprovider`.
+- Task 4 first broad regression exposed the downstream release call-contract dependency: `18 failed, 238 passed, 1 skipped`; release preflight had not passed `inference_report.resolved_thresholds_by_scope` into the now-mandatory prediction validator.
+- Task 4 downstream consumer regression after the narrow adaptation: `47 passed in 1.43s` for orchestrator, quickstart fake-cloud, and release tests.
+- Task 4 final regression GREEN: `256 passed, 1 skipped in 4.70s`.
+- Task 4 regression command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_output.py tests/test_build_monthly_ipcch_base_input.py tests/test_prediction_uncertainty.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`.
+- Task 4 self-review: production thresholds come only from the passed local `run_summary.json`; synthetic predictions use the explicit test-only `0.2` mapping through `calculate_qualitative_uncertainty`; population columns match the shared base input across scopes; release revalidation consumes recorded resolved thresholds; existing release/output artifacts were not edited.
 
 ## Commits
 
@@ -55,6 +64,7 @@
 - Task 3 implementation: `d510bab feat: add qualitative prediction uncertainty`.
 - Task 3 review fixes: `6b6875a fix: require operational model thresholds`.
 - Task 3 review-fix ledger: `04ee496 docs: record task 3 review fixes`.
+- Task 4 implementation: `b4f93d8 feat: validate enriched cloud predictions`.
 
 ## Blockers
 
@@ -62,5 +72,5 @@
 
 ## Next Step
 
-- Execute Task 4 with TDD: Vertex/cloud prediction contract.
-- Resume command: `bash /home/swl007007/.codex/plugins/cache/openai-curated-remote/superpowers/6.1.1/skills/subagent-driven-development/scripts/task-brief docs/superpowers/plans/2026-07-15-prediction-population-uncertainty.md 4 .superpowers/sdd/task-4-brief.md`
+- Execute Task 5: regression, docs, and immutable-run preparation.
+- Resume command: `bash /home/swl007007/.codex/plugins/cache/openai-curated-remote/superpowers/6.1.1/skills/subagent-driven-development/scripts/task-brief docs/superpowers/plans/2026-07-15-prediction-population-uncertainty.md 5 .superpowers/sdd/task-5-brief.md`
