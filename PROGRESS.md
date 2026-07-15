@@ -17,7 +17,8 @@
 - Task 3 — core qualitative uncertainty: complete; review clean through `04ee496`
 - Task 4 — Vertex/cloud prediction contract: complete; review clean through `d44c9a0`
 - Task 5 — regression, docs, and immutable-run preparation: local and
-  deterministic verification complete; review clean through `99b7681`; live
+  deterministic verification complete; review clean through `99b7681`; final
+  fix-wave review clean through `55273f6`; live
   GCP run gated by recorded external prerequisites
 
 ## Verification Evidence
@@ -109,7 +110,7 @@
 - Task 5 compatibility resolution: this ledger correction (`docs: record compatible-runtime comparison pass`).
 - Task 5 compatibility-resolution commit: `99b7681 docs: record compatible-runtime comparison pass`.
 - Final review fix-wave implementation: `caa5ad8 fix: close final population and uncertainty review findings`.
-- Final review fix-wave ledger correction: pending.
+- Final review fix-wave ledger correction: `55273f6 docs: record final review fix commit`.
 
 ## Blockers
 
@@ -117,5 +118,6 @@
 
 ## Next Step
 
-- Review the final fix-wave commit and report.
+- Final whole-branch review: approved with no Critical or Important findings;
+  remaining Minor smoke hardening is non-blocking.
 - Only after the final implementation commit has a digest-pinned runtime image and all named GCP resources, ADC, and immutable manifest URIs are confirmed should a unique live smoke run ID be allocated.
