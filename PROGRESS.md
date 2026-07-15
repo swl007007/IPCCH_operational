@@ -91,8 +91,8 @@
   -> `297 passed, 1 skipped in 5.78s`.
 - Live smoke remains gated and was not executed; no cloud mutation or run ID
   allocation was attempted. See `.superpowers/sdd/final-fix-report.md`.
-- Fix-wave implementation commit: pending; ledger correction will record the
-  final SHA after the tracked fix-wave commit.
+- Fix-wave implementation commit: `caa5ad8` (`fix: close final population and
+  uncertainty review findings`).
 
 ## Commits
 
@@ -108,6 +108,8 @@
 - Task 5 test/docs/blocker record: `24b3e05 docs: document enriched inference rerun`.
 - Task 5 compatibility resolution: this ledger correction (`docs: record compatible-runtime comparison pass`).
 - Task 5 compatibility-resolution commit: `99b7681 docs: record compatible-runtime comparison pass`.
+- Final review fix-wave implementation: `caa5ad8 fix: close final population and uncertainty review findings`.
+- Final review fix-wave ledger correction: pending.
 
 ## Blockers
 
