@@ -12,8 +12,8 @@
 
 ## Task Status
 
-- Task 1 — streaming population snapshot component: complete
-- Task 2 — local/cloud assembly population fields: pending
+- Task 1 — streaming population snapshot component: complete; review clean through `1445b30`
+- Task 2 — local/cloud assembly population fields: in progress
 - Task 3 — core qualitative uncertainty: pending
 - Task 4 — Vertex/cloud prediction contract: pending
 - Task 5 — regression, docs, and immutable-run preparation: pending
@@ -26,10 +26,12 @@
 - Task 1 focused GREEN: `6 passed in 0.26s`.
 - Task 1 regression GREEN: `237 passed, 1 skipped in 3.63s`.
 - Task 1 command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_output.py tests/test_build_monthly_ipcch_base_input.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`
+- Task 1 task review: approved with no Critical, Major, or Minor findings after the ledger-only follow-up commit `1445b30`.
 
 ## Commits
 
-- Task 1: `b93c08e feat: add population snapshot selector`.
+- Task 1 implementation: `b93c08e feat: add population snapshot selector`.
+- Task 1 ledger correction: `1445b30 docs: record task 1 commit in progress ledger`.
 
 ## Blockers
 
@@ -38,4 +40,4 @@
 ## Next Step
 
 - Execute Task 2 with TDD: local/cloud assembly population fields.
-- Resume command: `python3 /home/swl007007/.codex/plugins/cache/openai-curated-remote/superpowers/6.1.1/skills/subagent-driven-development/scripts/task-brief docs/superpowers/plans/2026-07-15-prediction-population-uncertainty.md 2`
+- Resume command: `bash /home/swl007007/.codex/plugins/cache/openai-curated-remote/superpowers/6.1.1/skills/subagent-driven-development/scripts/task-brief docs/superpowers/plans/2026-07-15-prediction-population-uncertainty.md 2 .superpowers/sdd/task-2-brief.md`
