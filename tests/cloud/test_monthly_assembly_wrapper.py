@@ -27,10 +27,11 @@ def test_assembly_merges_cloud_evi_long_outputs_and_preserves_scaffold_rows():
     )
     source = pd.DataFrame(
         {
-            "area_id": ["A", "B"],
-            "year": [2026, 2026],
-            "month": [4, 4],
-            "price": [1.0, 2.0],
+            "area_id": ["A", "B", "B", "B"],
+            "year": [2026, 2026, 2026, 2026],
+            "month": [4, 4, 3, 5],
+            "price": [1.0, 2.0, 1.5, 3.0],
+            "estimated_population": [120.0, None, 80.0, 900.0],
         }
     )
     fixed = pd.DataFrame({"area_id": ["A", "B"], "admin_name": ["a", "b"]})
@@ -69,10 +70,28 @@ def test_assembly_merges_cloud_evi_long_outputs_and_preserves_scaffold_rows():
         "admin_name",
         "EVI_mean",
         "EVI_std",
+        "population_estimate",
+        "population_reference_period",
+        "population_imputation_method",
     }
+    assert base_input.loc[0, "population_estimate"] == 120.0
+    assert base_input.loc[0, "population_reference_period"] == "2026-04"
+    assert base_input.loc[0, "population_imputation_method"] == "observed_feature_month"
+    assert base_input.loc[1, "population_estimate"] == 80.0
+    assert base_input.loc[1, "population_reference_period"] == "2026-03"
+    assert (
+        base_input.loc[1, "population_imputation_method"]
+        == "last_observation_carried_forward"
+    )
+    assert pd.isna(base_input.loc[1, "estimated_population"])
     assert report["status"] == "passed"
     assert report["scaffold_row_count"] == 2
     assert report["row_count"] == 2
+    assert report["population_selection"]["observed_feature_month_rows"] == 1
+    assert (
+        report["population_selection"]["last_observation_carried_forward_rows"]
+        == 1
+    )
 
 
 def test_assembly_normalizes_admin_code_and_records_missing_selected_source_month():
@@ -85,6 +104,7 @@ def test_assembly_normalizes_admin_code_and_records_missing_selected_source_mont
             "year": [2026, 2026],
             "month": [3, 3],
             "price": [1.0, 2.0],
+            "estimated_population": [120.0, 80.0],
         }
     )
     fixed = pd.DataFrame({"admin_code": ["A", "B"], "admin_name": ["a", "b"]})
@@ -175,6 +195,7 @@ def test_assembly_excludes_source_overlap_with_fixed_and_engineered_columns():
             "year": [2026],
             "month": [4],
             "crop": [99],
+            "estimated_population": [120.0],
             "overall_phase": [3],
             "EVI_mean__l12": [0.5],
             "rain_lag1": [12.0],
@@ -214,7 +235,7 @@ def test_assembly_excludes_source_overlap_with_fixed_and_engineered_columns():
     assert "rain_lag1" not in base_input.columns
     assert report["fixed_slow_join"]["matched_rows"] == 1
     assert report["source_join"]["matched_rows"] == 1
-    assert report["source_join"]["feature_columns"] == 1
+    assert report["source_join"]["feature_columns"] == 2
 
 
 def test_assembly_matches_existing_builder_for_shared_inputs_then_appends_evi(
@@ -256,6 +277,7 @@ def test_assembly_matches_existing_builder_for_shared_inputs_then_appends_evi(
             "month": ["4"],
             "crop": ["99"],
             "overall_phase": ["3"],
+            "estimated_population": ["120"],
             "rain_lag1": ["12"],
         }
     )
@@ -309,6 +331,7 @@ def test_assembly_rejects_duplicate_selected_month_source_keys():
             "year": [2026, 2026],
             "month": [4, 4],
             "price": [1.0, 2.0],
+            "estimated_population": [120.0, 120.0],
         }
     )
     fixed = pd.DataFrame({"area_id": ["A"], "admin_name": ["a"]})
@@ -343,7 +366,13 @@ def test_assembly_rejects_blank_fixed_or_source_area_ids():
         assembly.assemble_monthly_base_input(
             scaffold=scaffold,
             source_panel=pd.DataFrame(
-                {"area_id": ["A"], "year": [2026], "month": [4], "price": [1.0]}
+                {
+                    "area_id": ["A"],
+                    "year": [2026],
+                    "month": [4],
+                    "price": [1.0],
+                    "estimated_population": [120.0],
+                }
             ),
             fixed_slow_features=pd.DataFrame({"area_id": [""], "admin_name": ["x"]}),
             evi_mean_long=evi_mean,
@@ -355,7 +384,13 @@ def test_assembly_rejects_blank_fixed_or_source_area_ids():
         assembly.assemble_monthly_base_input(
             scaffold=scaffold,
             source_panel=pd.DataFrame(
-                {"area_id": [""], "year": [2026], "month": [4], "price": [1.0]}
+                {
+                    "area_id": [""],
+                    "year": [2026],
+                    "month": [4],
+                    "price": [1.0],
+                    "estimated_population": [120.0],
+                }
             ),
             fixed_slow_features=pd.DataFrame({"area_id": ["A"], "admin_name": ["a"]}),
             evi_mean_long=evi_mean,
@@ -365,7 +400,19 @@ def test_assembly_rejects_blank_fixed_or_source_area_ids():
 
 
 def test_base_input_validation_report_checks_row_universe_and_selected_month():
-    base = pd.DataFrame({"area_id": ["A", "B"], "year": [2026, 2026], "month": [4, 4]})
+    base = pd.DataFrame(
+        {
+            "area_id": ["A", "B"],
+            "year": [2026, 2026],
+            "month": [4, 4],
+            "population_estimate": [120.0, 80.0],
+            "population_reference_period": ["2026-04", "2026-03"],
+            "population_imputation_method": [
+                "observed_feature_month",
+                "last_observation_carried_forward",
+            ],
+        }
+    )
     scaffold = pd.DataFrame(
         {"area_id": ["A", "B"], "year": [2026, 2026], "month": [4, 4]}
     )
@@ -379,6 +426,11 @@ def test_base_input_validation_report_checks_row_universe_and_selected_month():
     assert report["status"] == "passed"
     assert report["row_universe_match"] is True
     assert report["base_input_row_count"] == 2
+    assert report["population_selection"]["observed_feature_month_rows"] == 1
+    assert (
+        report["population_selection"]["last_observation_carried_forward_rows"]
+        == 1
+    )
 
 
 def test_base_input_validation_accepts_assembled_numeric_admin_code_identity():
@@ -394,7 +446,13 @@ def test_base_input_validation_accepts_assembled_numeric_admin_code_identity():
     base_input, _ = assembly.assemble_monthly_base_input(
         scaffold=scaffold,
         source_panel=pd.DataFrame(
-            {"admin_code": [101], "year": [2026], "month": [4], "price": [1.0]}
+            {
+                "admin_code": [101],
+                "year": [2026],
+                "month": [4],
+                "price": [1.0],
+                "estimated_population": [120.0],
+            }
         ),
         fixed_slow_features=pd.DataFrame(
             {"admin_code": [101], "admin_name": ["admin-101"]}
@@ -418,7 +476,16 @@ def test_base_input_validation_accepts_assembled_numeric_admin_code_identity():
 
 
 def test_base_input_validation_invokes_model_input_forecast_schema_gate():
-    base = pd.DataFrame({"area_id": [], "year": [], "month": []})
+    base = pd.DataFrame(
+        {
+            "area_id": [],
+            "year": [],
+            "month": [],
+            "population_estimate": [],
+            "population_reference_period": [],
+            "population_imputation_method": pd.Series(dtype="object"),
+        }
+    )
     scaffold = pd.DataFrame({"area_id": [], "year": [], "month": []})
 
     with pytest.raises(base_input_validation.BaseInputValidationError, match="schema"):
@@ -445,6 +512,21 @@ def test_base_input_validation_rejects_row_universe_mismatch():
         )
 
 
+def test_base_input_validation_rejects_missing_population_output_fields():
+    base = pd.DataFrame({"area_id": ["A"], "year": [2026], "month": [4]})
+    scaffold = pd.DataFrame({"area_id": ["A"], "year": [2026], "month": [4]})
+
+    with pytest.raises(
+        base_input_validation.BaseInputValidationError,
+        match="population output columns",
+    ):
+        base_input_validation.validate_base_input(
+            base_input=base,
+            scaffold=scaffold,
+            feature_month="2026-04",
+        )
+
+
 def test_base_input_validation_rejects_blank_required_keys():
     base = pd.DataFrame({"area_id": ["A", ""], "year": [2026, 2026], "month": [4, 4]})
     scaffold = pd.DataFrame(
@@ -463,7 +545,8 @@ def test_assembly_wrapper_localizes_cloud_inputs_and_writes_artifacts(tmp_path):
     store = LocalObjectStore(tmp_path)
     store.write_text("gs://bucket/scaffold.csv", "area_id,year,month\nA,2026,4\n")
     store.write_text(
-        "gs://bucket/source.csv", "area_id,year,month,price\nA,2026,4,1.0\n"
+        "gs://bucket/source.csv",
+        "area_id,year,month,price,estimated_population\nA,2026,4,1.0,120.0\n",
     )
     store.write_text("gs://bucket/fixed.csv", "area_id,admin_name\nA,admin-a\n")
     store.write_text(

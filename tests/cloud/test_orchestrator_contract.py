@@ -620,7 +620,11 @@ def test_production_assembly_hook_validates_admin_code_only_scaffold(tmp_path):
     )
     store.write_text(
         artifact_uris["source_panel"],
-        "admin_code,year,month,price\nA,2026,4,1.0\nB,2026,4,2.0\n",
+        (
+            "admin_code,year,month,price,estimated_population\n"
+            "A,2026,4,1.0,120.0\n"
+            "B,2026,4,2.0,80.0\n"
+        ),
     )
     store.write_text(
         artifact_uris["fixed_slow_area_features"],

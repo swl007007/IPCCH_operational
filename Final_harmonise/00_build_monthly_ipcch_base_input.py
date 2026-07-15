@@ -14,6 +14,11 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 import workflow_config
+from model_pipeline.ipcch_launch_runtime.population import (
+    POPULATION_OUTPUT_COLUMNS,
+    PopulationSelectionError,
+    PopulationSnapshotBuilder,
+)
 
 
 UNIFIED_ROOT = PROJECT_ROOT / "Outcome" / "ipcch_unified"
@@ -307,17 +312,25 @@ def load_fixed_slow(path):
     return feature_columns, by_area
 
 
-def load_source_slice(path, year, month, excluded_columns):
+def load_source_slice(path, year, month, excluded_columns, required_area_ids):
     require_file(path, "historical panel")
     handle, reader = open_reader(path)
-    require_columns(reader.fieldnames, ["admin_code", "year", "month"], "Historical panel")
+    require_columns(
+        reader.fieldnames,
+        ["admin_code", "year", "month", "estimated_population"],
+        "Historical panel",
+    )
     source_columns = [
         column
         for column in reader.fieldnames
         if column not in SOURCE_KEY_COLUMNS
         and column not in excluded_columns
+        and column not in POPULATION_OUTPUT_COLUMNS
         and not is_engineered_column(column)
     ]
+    population_builder = PopulationSnapshotBuilder(
+        feature_year=year, feature_month=month
+    )
     by_key = {}
     duplicate_count = 0
     scanned_rows = 0
@@ -327,16 +340,25 @@ def load_source_slice(path, year, month, excluded_columns):
             scanned_rows += 1
             row_year = parse_int(row.get("year"), "historical panel year")
             row_month = parse_int(row.get("month"), "historical panel month")
+            area_id = normalize_area_id(row.get("admin_code"))
+            population_builder.add(
+                area_id,
+                row_year,
+                row_month,
+                row.get("estimated_population"),
+            )
             if row_year != year or row_month != month:
                 continue
             matched_month_rows += 1
-            area_id = normalize_area_id(row.get("admin_code"))
             key = (area_id, str(year), str(month))
             if key in by_key:
                 duplicate_count += 1
                 continue
             by_key[key] = row
-    return source_columns, by_key, {
+    population_snapshot, population_summary = population_builder.build(
+        required_area_ids
+    )
+    return source_columns, by_key, population_snapshot, population_summary, {
         "scanned_rows": scanned_rows,
         "target_month_rows": matched_month_rows,
         "duplicate_rows": duplicate_count,
@@ -385,13 +407,29 @@ def build_monthly_base_input(
     validate_target_month(year, month)
     scaffold_rows = load_scaffold(scaffold_path, year, month)
     fixed_columns, fixed_by_area = load_fixed_slow(fixed_slow_path)
-    source_columns, source_by_key, source_stats = load_source_slice(
-        historical_panel_path, year, month, set(fixed_columns)
-    )
+    try:
+        (
+            source_columns,
+            source_by_key,
+            population_snapshot,
+            population_summary,
+            source_stats,
+        ) = load_source_slice(
+            historical_panel_path,
+            year,
+            month,
+            set(fixed_columns),
+            [row["area_id"] for row in scaffold_rows],
+        )
+    except PopulationSelectionError as exc:
+        fail(str(exc))
 
     output_header = list(ID_COLUMNS)
     output_header.extend(column for column in fixed_columns if column not in output_header)
     output_header.extend(column for column in source_columns if column not in output_header)
+    output_header.extend(
+        column for column in POPULATION_OUTPUT_COLUMNS if column not in output_header
+    )
 
     output_rows = []
     fixed_matched = 0
@@ -421,6 +459,9 @@ def build_monthly_base_input(
             source_matched += 1
             for column in source_columns:
                 output_row[column] = source_row.get(column, "")
+
+        for column in POPULATION_OUTPUT_COLUMNS:
+            output_row[column] = population_snapshot[area_id][column]
 
         output_rows.append(output_row)
 
@@ -454,6 +495,7 @@ def build_monthly_base_input(
         "duplicate_rows": source_stats["duplicate_rows"],
         "target_month_present_in_source": source_stats["target_month_present_in_source"],
     }
+    summary["population_selection"] = population_summary
     summary["missingness"] = missingness(output_rows, output_header)
 
     write_csv(output_path, output_rows, output_header)

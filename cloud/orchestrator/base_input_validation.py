@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from contextlib import redirect_stdout
 from io import StringIO
+import math
 from types import SimpleNamespace
 from tempfile import NamedTemporaryFile
 
@@ -9,6 +10,7 @@ import pandas as pd
 
 from cloud.common.reports import build_validation_report
 from cloud.orchestrator.assembly import _normalize_identifier
+from model_pipeline.ipcch_launch_runtime.population import POPULATION_OUTPUT_COLUMNS
 from tools.validate_ipcch_schema import validate as validate_ipcch_schema
 
 
@@ -46,6 +48,7 @@ def validate_base_input(
     duplicate_key_count = int(base_input.duplicated(key).sum())
     if duplicate_key_count:
         raise BaseInputValidationError("base input contains duplicate keys")
+    population_selection = _validate_population_output(base_input, feature_month)
     schema_result = _validate_model_input_forecast_schema(base_input)
     return build_validation_report(
         report_type="base_input_validation_report",
@@ -61,9 +64,53 @@ def validate_base_input(
             column: int(base_input[column].isna().sum()) for column in key
         },
         schema_result=schema_result,
+        population_selection=population_selection,
         join_coverage={},
         missingness={},
     )
+
+
+def _validate_population_output(base_input: pd.DataFrame, feature_month: str) -> dict:
+    required = list(POPULATION_OUTPUT_COLUMNS)
+    missing = [column for column in required if column not in base_input.columns]
+    if missing:
+        raise BaseInputValidationError(
+            f"base input missing population output columns: {missing}"
+        )
+    values = pd.to_numeric(base_input["population_estimate"], errors="coerce")
+    if values.isna().any() or not values.map(math.isfinite).all() or (values < 0).any():
+        raise BaseInputValidationError(
+            "population_estimate must be finite and non-negative"
+        )
+    references = pd.to_datetime(
+        base_input["population_reference_period"], format="%Y-%m", errors="coerce"
+    )
+    feature_period = pd.Timestamp(feature_month + "-01")
+    if references.isna().any() or (references > feature_period).any():
+        raise BaseInputValidationError(
+            "population_reference_period must not be later than feature_month"
+        )
+    expected_methods = references.map(
+        lambda value: (
+            "observed_feature_month"
+            if value == feature_period
+            else "last_observation_carried_forward"
+        )
+    )
+    if not base_input.empty and not expected_methods.equals(
+        base_input["population_imputation_method"]
+    ):
+        raise BaseInputValidationError(
+            "population_imputation_method does not match reference period"
+        )
+    return {
+        "observed_feature_month_rows": int(
+            (expected_methods == "observed_feature_month").sum()
+        ),
+        "last_observation_carried_forward_rows": int(
+            (expected_methods == "last_observation_carried_forward").sum()
+        ),
+    }
 
 
 def _normalize_area_id(frame: pd.DataFrame) -> pd.DataFrame:
