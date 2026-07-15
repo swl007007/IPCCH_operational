@@ -13,7 +13,7 @@
 ## Task Status
 
 - Task 1 — streaming population snapshot component: complete; review clean through `1445b30`
-- Task 2 — local/cloud assembly population fields: complete; commit pending
+- Task 2 — local/cloud assembly population fields: complete; implementation `ec03384`
 - Task 3 — core qualitative uncertainty: pending
 - Task 4 — Vertex/cloud prediction contract: pending
 - Task 5 — regression, docs, and immutable-run preparation: pending
@@ -37,7 +37,7 @@
 
 - Task 1 implementation: `b93c08e feat: add population snapshot selector`.
 - Task 1 ledger correction: `1445b30 docs: record task 1 commit in progress ledger`.
-- Task 2 implementation: pending commit.
+- Task 2 implementation: `ec03384 feat: add output population to monthly assembly`.
 
 ## Blockers
 
