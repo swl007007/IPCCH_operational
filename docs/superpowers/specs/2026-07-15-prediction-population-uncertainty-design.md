@@ -60,6 +60,34 @@ The Vertex AI wrapper continues to localize cloud artifacts into ephemeral
 container paths and run the existing operational inference entrypoint. It does
 not read the full historical panel or calculate population carry-forward values.
 
+## Existing Results and Required Rerun
+
+Existing prediction CSVs and released runs are immutable historical artifacts.
+They are not edited in place or post-processed to append the new fields.
+
+Producing enriched results requires one new complete run with a new `run_id`:
+
+1. Monthly assembly reruns for the selected feature month and produces the
+   output-only population fields from current and historical population data.
+2. Vertex AI inference reruns with the same model package and weights.
+3. During that inference run, the operational inference process calculates the
+   qualitative uncertainty fields and carries the population fields into each
+   0m, 6m, and 12m prediction CSV.
+4. Cloud validation checks the extended prediction schema and publishes a new
+   immutable run and release manifest according to the existing release rules.
+
+Rerunning only the old inference command against an unenhanced base input is
+insufficient because that input does not contain the population provenance
+fields. Conversely, population enrichment must not be performed as an offline
+edit of already-written prediction CSVs. The enhanced population and
+uncertainty fields are part of the inference output contract and must be
+produced and validated within the new pipeline run.
+
+Because model weights and the model feature matrix remain unchanged, the new
+run must reproduce the existing score and phase-prediction values row by row.
+The expected result is a new set of prediction artifacts with the same model
+results plus the seven additional population and uncertainty fields.
+
 ## Population Semantics
 
 ### Selection Rule
@@ -246,12 +274,15 @@ inference failure-report path.
 
 The change is accepted when, for one identical input and model package:
 
-1. Existing model scores and predictions are unchanged row by row.
-2. Every 0m, 6m, and 12m prediction row contains valid and traceable population
+1. A new complete assembly, Vertex inference, validation, and release run is
+   executed under a new `run_id`; no existing prediction or release artifact is
+   edited in place.
+2. Existing model scores and predictions are unchanged row by row.
+3. Every 0m, 6m, and 12m prediction row contains valid and traceable population
    fields.
-3. Every prediction row contains a reproducible qualitative uncertainty label,
+4. Every prediction row contains a reproducible qualitative uncertainty label,
    margin, critical boundary, and method.
-4. Prediction, report, fake-cloud E2E, release, and gated smoke contracts cover
+5. Prediction, report, fake-cloud E2E, release, and gated smoke contracts cover
    the extended schema.
-5. No country-level calculation, model retraining, or statistical confidence
+6. No country-level calculation, model retraining, or statistical confidence
    interval is introduced.
