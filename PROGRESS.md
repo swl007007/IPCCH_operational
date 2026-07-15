@@ -29,7 +29,7 @@
 
 ## Commits
 
-- Task 1: `feat: add population snapshot selector` (this task commit).
+- Task 1: `b93c08e feat: add population snapshot selector`.
 
 ## Blockers
 
