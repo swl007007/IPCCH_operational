@@ -20,6 +20,7 @@ from model_pipeline.ipcch_launch_runtime import feature_contract
 from model_pipeline.ipcch_launch_runtime import inference
 from model_pipeline.ipcch_launch_runtime import model_package
 from model_pipeline.ipcch_launch_runtime import outputs
+from model_pipeline.ipcch_launch_runtime import uncertainty
 from model_pipeline.ipcch_launch_runtime import visualization
 
 
@@ -283,7 +284,9 @@ def _thresholds_from_metadata(metadata):
         return metadata["decision_thresholds"]
     if "threshold" in metadata:
         return {"default": metadata["threshold"]}
-    return {"default": 0.2}
+    raise OperationalLaunchError(
+        "Model metadata must provide thresholds, decision_thresholds, or threshold"
+    )
 
 
 def _model_package_id(metadata, model_package_root):
@@ -311,6 +314,7 @@ EXPECTED_ERRORS = (
     inference.InferenceError,
     model_package.ModelPackageError,
     outputs.OutputError,
+    uncertainty.UncertaintyError,
     visualization.VisualizationError,
 )
 

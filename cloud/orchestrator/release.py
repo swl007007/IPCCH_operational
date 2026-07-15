@@ -12,6 +12,10 @@ from cloud.common.object_store import GCSObjectStore
 from cloud.common.object_store import ObjectStore
 from cloud.common.object_store import GenerationConflict
 from cloud.common.reports import build_release_manifest
+from model_pipeline.ipcch_launch_runtime.population import (
+    PopulationContractError,
+    validate_population_contract,
+)
 
 IMMUTABLE_REFERENCE_KEYS = {
     "checksum",
@@ -503,15 +507,32 @@ def _validate_release_preflight(
         )
         for scope in ("0m", "6m", "12m")
     }
+    validation_feature_month = f"{yyyymm[:4]}-{yyyymm[4:]}"
+    try:
+        validate_population_contract(
+            base_input, feature_month=validation_feature_month
+        )
+    except PopulationContractError as exc:
+        raise ValueError(f"base input population contract validation failed: {exc}") from exc
+    try:
+        for scope, frame in predictions.items():
+            validate_population_contract(frame, feature_month=validation_feature_month)
+    except PopulationContractError as exc:
+        raise ValueError(
+            f"prediction population contract validation failed: {exc}"
+        ) from exc
     expected_model_package_id = _model_package_id(model_package_reference)
     if expected_model_package_id is None:
         raise ValueError("model_package_reference.model_package_id is required")
     try:
         validate_prediction_outputs(
             predictions,
-            feature_month=f"{yyyymm[:4]}-{yyyymm[4:]}",
+            feature_month=validation_feature_month,
             base_input=base_input,
             expected_model_package_id=expected_model_package_id,
+            thresholds_by_scope=inference_report.get(
+                "resolved_thresholds_by_scope", {}
+            ),
         )
     except ValueError as exc:
         raise ValueError(f"prediction artifact validation failed: {exc}") from exc

@@ -3,6 +3,62 @@
 This quickstart describes the expected v1 operator/developer flow after the
 implementation tasks are complete. It is not an implementation script.
 
+## 0. Confirm GCP Project, Region, and APIs
+
+The cloud monthly E2E smoke is project-level infrastructure plus
+region-scoped jobs. Confirm the target project and region before creating
+deployment values:
+
+```bash
+gcloud config set project food-crisis-modeling
+gcloud config set compute/region us-central1
+```
+
+Required project APIs for the v1 smoke:
+
+- `run.googleapis.com`
+- `batch.googleapis.com`
+- `artifactregistry.googleapis.com`
+- `cloudbuild.googleapis.com`
+- `compute.googleapis.com`
+- `earthengine.googleapis.com`
+- `aiplatform.googleapis.com`
+- `storage.googleapis.com`
+
+Enable them once per project:
+
+```bash
+gcloud services enable \
+  run.googleapis.com \
+  batch.googleapis.com \
+  artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  compute.googleapis.com \
+  earthengine.googleapis.com \
+  aiplatform.googleapis.com \
+  storage.googleapis.com \
+  --project food-crisis-modeling
+```
+
+Then verify API visibility and the selected region:
+
+```bash
+gcloud services list --enabled \
+  --project food-crisis-modeling \
+  --filter 'config.name:(run.googleapis.com batch.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com compute.googleapis.com earthengine.googleapis.com aiplatform.googleapis.com storage.googleapis.com)' \
+  --format 'value(config.name)'
+
+gcloud run jobs list --project food-crisis-modeling --region us-central1
+gcloud batch jobs list --project food-crisis-modeling --location us-central1
+gcloud artifacts repositories list --project food-crisis-modeling --location us-central1
+gcloud ai custom-jobs list --project food-crisis-modeling --region us-central1
+```
+
+If an API command returns `SERVICE_DISABLED`, enable that API before treating
+IAM as the blocker. If an API is enabled but a command returns
+`PERMISSION_DENIED`, ask the administrator for the missing IAM permission or
+runtime service-account pass permission.
+
 ## 1. Prepare Deployment Values
 
 Create a deployment/input manifest that supplies GCP runtime values:

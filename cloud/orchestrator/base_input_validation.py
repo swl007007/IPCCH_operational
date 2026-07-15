@@ -9,6 +9,10 @@ import pandas as pd
 
 from cloud.common.reports import build_validation_report
 from cloud.orchestrator.assembly import _normalize_identifier
+from model_pipeline.ipcch_launch_runtime.population import (
+    PopulationContractError,
+    validate_population_contract,
+)
 from tools.validate_ipcch_schema import validate as validate_ipcch_schema
 
 
@@ -46,6 +50,7 @@ def validate_base_input(
     duplicate_key_count = int(base_input.duplicated(key).sum())
     if duplicate_key_count:
         raise BaseInputValidationError("base input contains duplicate keys")
+    population_selection = _validate_population_output(base_input, feature_month)
     schema_result = _validate_model_input_forecast_schema(base_input)
     return build_validation_report(
         report_type="base_input_validation_report",
@@ -61,9 +66,23 @@ def validate_base_input(
             column: int(base_input[column].isna().sum()) for column in key
         },
         schema_result=schema_result,
+        population_selection=population_selection,
         join_coverage={},
         missingness={},
     )
+
+
+def _validate_population_output(base_input: pd.DataFrame, feature_month: str) -> dict:
+    try:
+        counts = validate_population_contract(base_input, feature_month=feature_month)
+    except PopulationContractError as exc:
+        raise BaseInputValidationError(str(exc)) from exc
+    return {
+        "observed_feature_month_rows": counts["observed_feature_month"],
+        "last_observation_carried_forward_rows": counts[
+            "last_observation_carried_forward"
+        ],
+    }
 
 
 def _normalize_area_id(frame: pd.DataFrame) -> pd.DataFrame:

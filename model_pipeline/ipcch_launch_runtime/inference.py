@@ -5,6 +5,16 @@ from typing import Mapping
 
 import pandas as pd
 
+from model_pipeline.ipcch_launch_runtime.population import (
+    POPULATION_OUTPUT_COLUMNS,
+    PopulationContractError,
+    validate_population_contract,
+)
+from model_pipeline.ipcch_launch_runtime.uncertainty import (
+    UncertaintyError,
+    calculate_qualitative_uncertainty,
+)
+
 
 REQUIRED_TARGETS = (
     "phase2_worse",
@@ -34,7 +44,14 @@ def score_scope(
     monotonicity_policy: str,
 ) -> tuple[pd.DataFrame, dict[str, object]]:
     """Score one launch scope and decode cumulative phase predictions."""
-    _validate_inputs(monthly_rows, feature_matrix, models, thresholds, monotonicity_policy)
+    _validate_inputs(
+        monthly_rows,
+        feature_matrix,
+        models,
+        thresholds,
+        monotonicity_policy,
+        feature_month,
+    )
 
     output = _identity_frame(monthly_rows)
     applied_thresholds = {}
@@ -48,6 +65,12 @@ def score_scope(
         output[score_column] = score
         output["{0}_pred".format(target)] = (score >= threshold).astype("int64")
         applied_thresholds[target] = threshold
+
+    uncertainty_fields, uncertainty_summary = calculate_qualitative_uncertainty(
+        output, applied_thresholds
+    )
+    for column in uncertainty_fields.columns:
+        output[column] = uncertainty_fields[column]
 
     _apply_monotonicity_policy(output, monotonicity_policy)
     output["overall_phase_pred"] = _decode_overall_phase(output)
@@ -67,11 +90,19 @@ def score_scope(
         "row_count": int(len(feature_matrix)),
         "score_columns": list(SCORE_COLUMNS),
         "pred_columns": list(PRED_COLUMNS),
+        "uncertainty": uncertainty_summary,
     }
     return output, summary
 
 
-def _validate_inputs(monthly_rows, feature_matrix, models, thresholds, monotonicity_policy):
+def _validate_inputs(
+    monthly_rows,
+    feature_matrix,
+    models,
+    thresholds,
+    monotonicity_policy,
+    feature_month,
+):
     if not isinstance(monthly_rows, pd.DataFrame):
         raise InferenceError("monthly_rows must be a pandas DataFrame")
     if not isinstance(feature_matrix, pd.DataFrame):
@@ -87,6 +118,21 @@ def _validate_inputs(monthly_rows, feature_matrix, models, thresholds, monotonic
     if monotonicity_policy not in ("fail", "cummax"):
         raise InferenceError("monotonicity_policy must be 'fail' or 'cummax'")
 
+    missing_population = [
+        column for column in POPULATION_OUTPUT_COLUMNS if column not in monthly_rows.columns
+    ]
+    if missing_population:
+        raise InferenceError(
+            "Missing required population column(s): {0}".format(
+                ", ".join(missing_population)
+            )
+        )
+
+    try:
+        validate_population_contract(monthly_rows, feature_month=feature_month)
+    except PopulationContractError as exc:
+        raise InferenceError(str(exc)) from exc
+
     missing = [target for target in REQUIRED_TARGETS if target not in models]
     if missing:
         raise InferenceError("Missing required model(s): {0}".format(", ".join(missing)))
@@ -99,7 +145,12 @@ def _validate_inputs(monthly_rows, feature_matrix, models, thresholds, monotonic
 def _identity_frame(monthly_rows):
     identity_columns = [
         column
-        for column in ("area_id", "admin_code", "_row_id")
+        for column in (
+            "area_id",
+            "admin_code",
+            "_row_id",
+            *POPULATION_OUTPUT_COLUMNS,
+        )
         if column in monthly_rows.columns
     ]
     return monthly_rows.loc[:, identity_columns].reset_index(drop=True).copy()

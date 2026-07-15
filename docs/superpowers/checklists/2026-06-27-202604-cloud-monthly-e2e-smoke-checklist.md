@@ -15,6 +15,18 @@ source-of-truth artifacts.
 
 ## IAM and Admin Gate
 
+- [ ] Active account is `weilun.shi@cgiar.org` or the intended deployer.
+- [ ] Active project is `food-crisis-modeling`.
+- [ ] Active/default smoke region is `us-central1`.
+- [ ] `run.googleapis.com` is enabled.
+- [ ] `batch.googleapis.com` is enabled.
+- [ ] `artifactregistry.googleapis.com` is enabled.
+- [ ] `cloudbuild.googleapis.com` is enabled if image build/push uses Cloud
+  Build.
+- [ ] `compute.googleapis.com` is enabled for Batch-managed compute resources.
+- [ ] `earthengine.googleapis.com` is enabled for project-backed EVI export.
+- [ ] `aiplatform.googleapis.com` is enabled.
+- [ ] `storage.googleapis.com` is enabled.
 - [ ] Deployer can push to the Artifact Registry runtime repository.
 - [ ] Deployer can deploy or update the Cloud Run Job.
 - [ ] Deployer can execute the Cloud Run Job.
@@ -23,7 +35,7 @@ source-of-truth artifacts.
 - [ ] Required identities have `iam.serviceAccountUser` pass permission for only
   the declared runtime service accounts.
 - [ ] Operator can inspect Cloud Run, Batch, and Vertex AI logs.
-- [ ] Required APIs are already enabled or an admin can enable them.
+- [ ] Required APIs are enabled before IAM errors are diagnosed.
 - [ ] Earth Engine project access is confirmed for the Batch service account.
 
 ## Cost Guardrail

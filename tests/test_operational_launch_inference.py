@@ -32,6 +32,13 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
             {
                 "area_id": ["A", "B", "C"],
                 "admin_code": ["AA", "BB", "CC"],
+                "population_estimate": [100.0, 200.0, 300.0],
+                "population_reference_period": ["2026-04", "2025-09", "2026-04"],
+                "population_imputation_method": [
+                    "observed_feature_month",
+                    "last_observation_carried_forward",
+                    "observed_feature_month",
+                ],
             }
         )
         feature_matrix = pd.DataFrame({"feature": [1.0, 2.0, 3.0]})
@@ -62,6 +69,38 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
         self.assertEqual([1, 1, 0], scored["phase3_worse_pred"].tolist())
         self.assertEqual([1, 0, 0], scored["phase4_worse_pred"].tolist())
         self.assertEqual([0, 0, 0], scored["phase5_worse_pred"].tolist())
+        self.assertEqual([0.8, 0.8, 0.8], scored["phase2_worse_score"].tolist())
+        self.assertEqual([0.7, 0.7, 0.1], scored["phase3_worse_score"].tolist())
+        self.assertEqual([0.6, 0.1, 0.1], scored["phase4_worse_score"].tolist())
+        self.assertEqual([0.1, 0.1, 0.1], scored["phase5_worse_score"].tolist())
+        self.assertEqual([100.0, 200.0, 300.0], scored["population_estimate"].tolist())
+        self.assertEqual(
+            ["2026-04", "2025-09", "2026-04"],
+            scored["population_reference_period"].tolist(),
+        )
+        self.assertEqual(
+            [
+                "observed_feature_month",
+                "last_observation_carried_forward",
+                "observed_feature_month",
+            ],
+            scored["population_imputation_method"].tolist(),
+        )
+        self.assertEqual(
+            ["medium", "low", "low"], scored["prediction_uncertainty"].tolist()
+        )
+        self.assertEqual(
+            [0.09999999999999998, 0.19999999999999996, 0.30000000000000004],
+            scored["decision_margin"].tolist(),
+        )
+        self.assertEqual(
+            ["phase4_worse", "phase3_worse", "phase2_worse"],
+            scored["uncertainty_critical_boundary"].tolist(),
+        )
+        self.assertEqual(
+            ["qualitative_threshold_margin_v1"] * 3,
+            scored["uncertainty_method"].tolist(),
+        )
         self.assertEqual("2026-04", scored["feature_period"].iloc[0])
         self.assertEqual("2026-07", scored["target_period"].iloc[0])
         self.assertEqual(3, scored["scope_months"].iloc[0])
@@ -99,6 +138,10 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
                 "phase5_worse_pred",
             ],
             summary["pred_columns"],
+        )
+        self.assertEqual(
+            {"high": 0, "medium": 1, "low": 2},
+            summary["uncertainty"]["label_counts"],
         )
 
     def test_missing_model_fails(self):
@@ -185,7 +228,8 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
         self.assertEqual([1, 1], scored["phase3_worse_pred"].tolist())
 
     def test_row_id_is_preserved(self):
-        monthly_rows = pd.DataFrame({"_row_id": [10, 11], "area_id": ["A", "B"]})
+        monthly_rows = self._monthly_rows()
+        monthly_rows.insert(0, "_row_id", [10, 11])
 
         scored, _summary = self._score(monthly_rows=monthly_rows)
 
@@ -193,10 +237,8 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
         self.assertEqual(["A", "B"], scored["area_id"].tolist())
 
     def test_mismatched_monthly_and_feature_indexes_fail(self):
-        monthly_rows = pd.DataFrame(
-            {"area_id": ["A", "B"]},
-            index=[100, 101],
-        )
+        monthly_rows = self._monthly_rows()
+        monthly_rows.index = [100, 101]
         feature_matrix = pd.DataFrame(
             {"feature": [1.0, 2.0]},
             index=[101, 100],
@@ -204,6 +246,33 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
 
         with self.assertRaisesRegex(InferenceError, "index"):
             self._score(monthly_rows=monthly_rows, feature_matrix=feature_matrix)
+
+    def test_missing_population_output_columns_fail(self):
+        monthly_rows = pd.DataFrame({"area_id": ["A", "B"]})
+
+        with self.assertRaisesRegex(InferenceError, "population_estimate"):
+            self._score(monthly_rows=monthly_rows)
+
+    def test_population_estimate_must_be_finite_and_non_negative(self):
+        monthly_rows = self._monthly_rows()
+        monthly_rows.loc[1, "population_estimate"] = -1.0
+
+        with self.assertRaisesRegex(InferenceError, "finite and non-negative"):
+            self._score(monthly_rows=monthly_rows)
+
+    def test_population_reference_period_must_not_be_in_future(self):
+        monthly_rows = self._monthly_rows()
+        monthly_rows.loc[1, "population_reference_period"] = "2026-05"
+
+        with self.assertRaisesRegex(InferenceError, "later than feature_month"):
+            self._score(monthly_rows=monthly_rows)
+
+    def test_population_imputation_method_must_match_reference_period(self):
+        monthly_rows = self._monthly_rows()
+        monthly_rows.loc[1, "population_imputation_method"] = "observed_feature_month"
+
+        with self.assertRaisesRegex(InferenceError, "does not match reference period"):
+            self._score(monthly_rows=monthly_rows)
 
     def test_task2_shaped_package_loads_all_four_model_targets(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -303,7 +372,7 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
         monotonicity_policy="fail",
     ):
         if monthly_rows is None:
-            monthly_rows = pd.DataFrame({"area_id": ["A", "B"]})
+            monthly_rows = self._monthly_rows()
         if feature_matrix is None:
             feature_matrix = pd.DataFrame(
                 {"feature": [1.0, 2.0]},
@@ -324,6 +393,19 @@ class OperationalLaunchInferenceTests(unittest.TestCase):
             model_package_id="pkg-001",
             source_input="input.csv",
             monotonicity_policy=monotonicity_policy,
+        )
+
+    def _monthly_rows(self):
+        return pd.DataFrame(
+            {
+                "area_id": ["A", "B"],
+                "population_estimate": [100.0, 200.0],
+                "population_reference_period": ["2026-04", "2025-09"],
+                "population_imputation_method": [
+                    "observed_feature_month",
+                    "last_observation_carried_forward",
+                ],
+            }
         )
 
     def _models(

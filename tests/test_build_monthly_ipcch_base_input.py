@@ -37,13 +37,13 @@ class MonthlyIPCCHBaseInputTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)
         self.scaffold = self.root / "ipcch_scaffold_202604.csv"
-        self.future_scaffold = self.root / "ipcch_scaffold_202605.csv"
+        self.future_scaffold = self.root / "ipcch_scaffold_202606.csv"
         self.fixed = self.root / "fixed.csv"
         self.panel = self.root / "panel.csv"
         self.output = self.root / "ipcch_monthly_base_input_202604.csv"
         self.summary = self.root / "ipcch_monthly_base_input_202604_summary.json"
-        self.future_output = self.root / "ipcch_monthly_base_input_202605.csv"
-        self.future_summary = self.root / "ipcch_monthly_base_input_202605_summary.json"
+        self.future_output = self.root / "ipcch_monthly_base_input_202606.csv"
+        self.future_summary = self.root / "ipcch_monthly_base_input_202606_summary.json"
 
         write_csv(
             self.scaffold,
@@ -74,7 +74,7 @@ class MonthlyIPCCHBaseInputTests(unittest.TestCase):
                     "lat": "1.1",
                     "lon": "31.1",
                     "year": "2026",
-                    "month": "5",
+                    "month": "6",
                 }
             ],
         )
@@ -109,6 +109,7 @@ class MonthlyIPCCHBaseInputTests(unittest.TestCase):
                 "year",
                 "month",
                 "overall_phase",
+                "estimated_population",
                 "EVI_mean",
                 "Rainf_f_tavg_mean",
                 "EVI_mean__l12",
@@ -121,6 +122,7 @@ class MonthlyIPCCHBaseInputTests(unittest.TestCase):
                     "year": "2026",
                     "month": "4",
                     "overall_phase": "3",
+                    "estimated_population": "120",
                     "EVI_mean": "0.23",
                     "Rainf_f_tavg_mean": "12",
                     "EVI_mean__l12": "0.20",
@@ -132,6 +134,7 @@ class MonthlyIPCCHBaseInputTests(unittest.TestCase):
                     "year": "2026",
                     "month": "4",
                     "overall_phase": "2",
+                    "estimated_population": "",
                     "EVI_mean": "0.44",
                     "Rainf_f_tavg_mean": "15",
                     "EVI_mean__l12": "0.39",
@@ -143,9 +146,34 @@ class MonthlyIPCCHBaseInputTests(unittest.TestCase):
                     "year": "2026",
                     "month": "3",
                     "overall_phase": "1",
+                    "estimated_population": "",
                     "EVI_mean": "0.11",
                     "Rainf_f_tavg_mean": "7",
                     "EVI_mean__l12": "0.08",
+                },
+                {
+                    "admin_code": "102",
+                    "lat": "1.2",
+                    "lon": "31.2",
+                    "year": "2026",
+                    "month": "3",
+                    "overall_phase": "1",
+                    "estimated_population": "80",
+                    "EVI_mean": "0.12",
+                    "Rainf_f_tavg_mean": "8",
+                    "EVI_mean__l12": "0.09",
+                },
+                {
+                    "admin_code": "102",
+                    "lat": "1.2",
+                    "lon": "31.2",
+                    "year": "2026",
+                    "month": "5",
+                    "overall_phase": "4",
+                    "estimated_population": "900",
+                    "EVI_mean": "0.50",
+                    "Rainf_f_tavg_mean": "20",
+                    "EVI_mean__l12": "0.45",
                 },
             ],
         )
@@ -178,6 +206,19 @@ class MonthlyIPCCHBaseInputTests(unittest.TestCase):
         self.assertEqual("500", rows[0]["elevation"])
         self.assertEqual("3", rows[0]["overall_phase"])
         self.assertEqual("0.23", rows[0]["EVI_mean"])
+        self.assertEqual("120.0", rows[0]["population_estimate"])
+        self.assertEqual("2026-04", rows[0]["population_reference_period"])
+        self.assertEqual(
+            "observed_feature_month",
+            rows[0]["population_imputation_method"],
+        )
+        self.assertEqual("80.0", rows[1]["population_estimate"])
+        self.assertEqual("2026-03", rows[1]["population_reference_period"])
+        self.assertEqual(
+            "last_observation_carried_forward",
+            rows[1]["population_imputation_method"],
+        )
+        self.assertEqual("", rows[1]["estimated_population"])
         self.assertNotIn("EVI_mean__l12", rows[0])
 
         with self.summary.open("r", encoding="utf-8") as handle:
@@ -188,13 +229,23 @@ class MonthlyIPCCHBaseInputTests(unittest.TestCase):
         self.assertEqual(2, summary["source_join"]["matched_rows"])
         self.assertEqual(0, summary["source_join"]["unmatched_rows"])
         self.assertTrue(summary["source_join"]["target_month_present_in_source"])
+        self.assertEqual(
+            1,
+            summary["population_selection"]["observed_feature_month_rows"],
+        )
+        self.assertEqual(
+            1,
+            summary["population_selection"][
+                "last_observation_carried_forward_rows"
+            ],
+        )
 
     def test_future_month_keeps_scaffold_and_fixed_features(self):
         module = load_module()
 
         module.build_monthly_base_input(
             year=2026,
-            month=5,
+            month=6,
             scaffold_path=self.future_scaffold,
             fixed_slow_path=self.fixed,
             historical_panel_path=self.panel,
@@ -213,6 +264,35 @@ class MonthlyIPCCHBaseInputTests(unittest.TestCase):
         self.assertFalse(summary["source_join"]["target_month_present_in_source"])
         self.assertEqual(0, summary["source_join"]["matched_rows"])
         self.assertEqual(1, summary["source_join"]["unmatched_rows"])
+
+    def test_missing_current_or_prior_population_fails(self):
+        module = load_module()
+        missing_population_scaffold = self.root / "missing_population_scaffold.csv"
+        write_csv(
+            missing_population_scaffold,
+            ["admin_code", "lat", "lon", "year", "month"],
+            [
+                {
+                    "admin_code": "103",
+                    "lat": "1.3",
+                    "lon": "31.3",
+                    "year": "2026",
+                    "month": "4",
+                }
+            ],
+        )
+
+        with self.assertRaises(SystemExit) as raised:
+            module.build_monthly_base_input(
+                year=2026,
+                month=4,
+                scaffold_path=missing_population_scaffold,
+                fixed_slow_path=self.fixed,
+                historical_panel_path=self.panel,
+                output_path=self.output,
+                summary_path=self.summary,
+            )
+        self.assertIn("no current or prior population", str(raised.exception))
 
     def test_duplicate_scaffold_key_fails(self):
         module = load_module()

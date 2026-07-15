@@ -895,7 +895,12 @@ def run_fake_cloud_e2e(
         {"area_id": area_ids, "year": year, "month": month}
     ).to_csv(index=False)
     source_csv = pd.DataFrame(
-        {"area_id": area_ids, "year": year, "month": month}
+        {
+            "area_id": area_ids,
+            "year": year,
+            "month": month,
+            "estimated_population": [1.0] * len(area_ids),
+        }
     ).to_csv(index=False)
     fixed_csv = pd.DataFrame({"area_id": area_ids}).to_csv(index=False)
     store.write_text(state.run_prefix_uri + "localized/scaffold.csv", scaffold_csv)
@@ -920,7 +925,16 @@ def run_fake_cloud_e2e(
     )
     scaffold = pd.read_csv(StringIO(scaffold_csv))
     validation_report = validate_base_input(
-        base_input=base_input[["area_id", "year", "month"]],
+        base_input=base_input[
+            [
+                "area_id",
+                "year",
+                "month",
+                "population_estimate",
+                "population_reference_period",
+                "population_imputation_method",
+            ]
+        ],
         scaffold=scaffold,
         feature_month=feature_month,
     )

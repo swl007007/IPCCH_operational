@@ -7,6 +7,10 @@ import pandas as pd
 
 from cloud.common.object_store import ObjectStore
 from cloud.common.reports import build_validation_report
+from model_pipeline.ipcch_launch_runtime.population import (
+    POPULATION_OUTPUT_COLUMNS,
+    PopulationSnapshotBuilder,
+)
 
 
 ID_COLUMNS = ["area_id", "admin_code", "lat", "lon", "year", "month"]
@@ -53,11 +57,24 @@ def assemble_monthly_base_input(
     if fixed_slow_features["area_id"].duplicated().any():
         raise ValueError("fixed/slow features must be unique by area_id")
     source_scanned_rows = int(len(source_panel))
+    if source_panel["area_id"].eq("").any():
+        raise ValueError("source panel contains blank area_id")
+    population_builder = PopulationSnapshotBuilder(
+        feature_year=year, feature_month=month
+    )
+    for row in source_panel[
+        ["area_id", "year", "month", "estimated_population"]
+    ].itertuples(index=False, name=None):
+        population_builder.add(*row)
+    population_snapshot, population_summary = population_builder.build(
+        scaffold["area_id"].tolist()
+    )
+    population_frame = pd.DataFrame.from_dict(population_snapshot, orient="index")
+    population_frame.index.name = "area_id"
+    population_frame = population_frame.reset_index()
     source_panel = source_panel[
         (source_panel["year"] == year) & (source_panel["month"] == month)
     ].copy()
-    if source_panel["area_id"].eq("").any():
-        raise ValueError("source panel contains blank area_id")
     source_duplicate_rows = int(source_panel.duplicated(key).sum())
     if source_duplicate_rows:
         raise ValueError("duplicate source keys for selected feature month")
@@ -68,6 +85,7 @@ def assemble_monthly_base_input(
         for column in source_panel.columns
         if column not in SOURCE_KEY_COLUMNS
         and column not in fixed_feature_columns
+        and column not in POPULATION_OUTPUT_COLUMNS
         and not _is_engineered_column(column)
     ]
     evi_frames = [
@@ -86,6 +104,12 @@ def assemble_monthly_base_input(
         on=key,
         how="left",
         validate="one_to_one",
+    )
+    base = base.merge(
+        population_frame,
+        on="area_id",
+        how="left",
+        validate="many_to_one",
     )
     for frame in evi_frames:
         base = base.merge(frame, on=key, how="left", validate="one_to_one")
@@ -129,6 +153,7 @@ def assemble_monthly_base_input(
             "unmatched_rows": len(base) - fixed_matched,
             "feature_columns": len(fixed_feature_columns),
         },
+        population_selection=population_summary,
     )
     return base, report
 
