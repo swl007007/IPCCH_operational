@@ -14,7 +14,7 @@
 
 - Task 1 — streaming population snapshot component: complete; review clean through `1445b30`
 - Task 2 — local/cloud assembly population fields: complete; review clean through `a08c01b`
-- Task 3 — core qualitative uncertainty: in progress
+- Task 3 — core qualitative uncertainty: complete; implementation committed at `d510bab`
 - Task 4 — Vertex/cloud prediction contract: pending
 - Task 5 — regression, docs, and immutable-run preparation: pending
 
@@ -33,6 +33,13 @@
 - Task 2 focused command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_build_monthly_ipcch_base_input.py tests/cloud/test_monthly_assembly_wrapper.py -q -p no:cacheprovider`.
 - Task 2 regression command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_output.py tests/test_build_monthly_ipcch_base_input.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`.
 - Task 2 task review: approved with no Critical or Important findings. Minor: direct failure tests do not separately cover invalid/negative population estimates, future reference periods, and inconsistent imputation methods in `base_input_validation`; retain for final whole-branch triage.
+- Task 3 RED: `tests/test_prediction_uncertainty.py` failed during collection with `ModuleNotFoundError: No module named 'model_pipeline.ipcch_launch_runtime.uncertainty'`.
+- Task 3 RED command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_prediction_uncertainty.py -q -p no:cacheprovider`.
+- Task 3 focused GREEN: `27 passed in 0.76s`.
+- Task 3 focused command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_prediction_uncertainty.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py -q -p no:cacheprovider`.
+- Task 3 regression GREEN: `246 passed, 1 skipped in 3.80s`.
+- Task 3 regression command: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/test_population_output.py tests/test_build_monthly_ipcch_base_input.py tests/test_prediction_uncertainty.py tests/test_operational_launch_inference.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/cloud -q -p no:cacheprovider`.
+- Task 3 self-review: uncertainty uses resolved per-target thresholds with fixed phase tie order; population fields are validated and propagated unchanged; existing score and prediction assertions remain unchanged; no Spec Kit sources, model packages, weights, or Outcome artifacts changed.
 
 ## Commits
 
@@ -40,6 +47,7 @@
 - Task 1 ledger correction: `1445b30 docs: record task 1 commit in progress ledger`.
 - Task 2 implementation: `ec03384 feat: add output population to monthly assembly`.
 - Task 2 ledger update: `a08c01b docs: record task 2 commit in progress ledger`.
+- Task 3 implementation: `d510bab feat: add qualitative prediction uncertainty`.
 
 ## Blockers
 
@@ -47,5 +55,5 @@
 
 ## Next Step
 
-- Execute Task 3 with TDD: core qualitative uncertainty.
-- Resume command: `bash /home/swl007007/.codex/plugins/cache/openai-curated-remote/superpowers/6.1.1/skills/subagent-driven-development/scripts/task-brief docs/superpowers/plans/2026-07-15-prediction-population-uncertainty.md 3 .superpowers/sdd/task-3-brief.md`
+- Execute Task 4 with TDD: Vertex/cloud prediction contract.
+- Resume command: `bash /home/swl007007/.codex/plugins/cache/openai-curated-remote/superpowers/6.1.1/skills/subagent-driven-development/scripts/task-brief docs/superpowers/plans/2026-07-15-prediction-population-uncertainty.md 4 .superpowers/sdd/task-4-brief.md`
