@@ -14,8 +14,8 @@
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
 - Current task: Task 7 keyed horizon alignment and temporal windows
-- Current state: Tasks 1-6 are complete and independently reviewed; Task 6 controller acceptance revalidated the focused/full suites, real audit/count/checksum contract, raw-source immutability, and real-shapefile LocalArtifactStore staging; Task 7 is ready to start
-- Blockers: none; Task 7 may begin, but Task 8 must wait for Task 7 implementation and independent review
+- Current state: Tasks 1-6 are complete and independently reviewed; Task 7 implementation is complete with strict RED/GREEN evidence, focused and full regression verification, and independent review pending
+- Blockers: none for Task 7 review; Task 8 must wait for Task 7 independent review
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -28,7 +28,7 @@
 | 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review clean |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
 | 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; independent review clean through `d403c1e` |
-| 7. Implement keyed horizon alignment and temporal windows | pending |
+| 7. Implement keyed horizon alignment and temporal windows | implementation complete; independent review pending |
 | 8. Validate and route the fixed partition map | pending |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
 | 10. Train partitioned RF models and produce formal local predictions | pending |
@@ -273,10 +273,28 @@
 - Controller repeated real-boundary staging with `LocalArtifactStore` rooted at `/tmp/fewsnet-task6-controller-store.Rk2RzP`; it reproduced snapshot ID `fewsnet-202604-8511bf5e` and content SHA-256 `8511bf5e2e6ea63cf85ffdc37bfd7a3bd44715bb35b59b43eac344aab781c76a`. No `GCSArtifactStore` or cloud client was instantiated.
 - Task 6 final status: complete and independently reviewed. Task 7 is now unblocked.
 
+## Task 7 Evidence
+
+- Start state: reviewed Task 6 head plus ledger consistency commit `16233d8da342efe28ad4107c07d93e7ce267f5ed`; Task 7 adds only `core/horizons.py` and `test_horizons.py` and modifies this ledger, so no existing function, class, or method required pre-edit GitNexus impact analysis.
+- Keyed-alignment RED: the focused Task 7 command exited `2` during collection with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.core.horizons'` (`1 error in 3.99s`). Keyed-alignment GREEN: the same command -> `1 passed in 2.82s`.
+- Duplicate-key RED: the duplicate-area-month selection failed because pandas reached merge validation and emitted `Merge keys are not unique...` instead of the required explicit pre-merge duplicate contract (`1 failed, 1 deselected in 4.42s`). Duplicate-key GREEN: the complete focused file -> `2 passed in 2.73s` after explicit normalized-key rejection before merge.
+- Input-contract RED: missing/blank admin identities, invalid/missing feature months, missing required columns, and unsupported horizons produced `8 failed, 2 deselected` (`4.68s`). Input-contract GREEN: the focused file -> `10 passed in 4.09s` with canonical admin normalization, monthly `Period` normalization, clear required-column errors, and exact horizon validation for `0`, `6`, and `12`.
+- Window/split RED: collection exited `2` with the expected missing `select_training_window` import (`1 error in 5.44s`). Window/split GREEN: after correcting one test fixture's pandas datetime assignment, the focused file -> `22 passed in 4.14s`; the inclusive target window is `2023-03..2026-02`, and validation is the final six distinct target periods `2025-09..2026-02`, never a row percentage.
+- Inference RED: collection exited `2` with the expected missing `select_latest_inference_frame` import (`1 error in 5.69s`). The first universe-message check then failed `1` test with `25` passing because the error did not identify the missing authoritative area directly; GREEN -> `26 passed in 3.94s` with the complete-frame canonical admin set enforced at the exact latest feature month and no future-label merge.
+- Pandas missing-month RED: an object-typed `pd.NA` feature month raised `TypeError: boolean value of NA is ambiguous` (`1 failed, 26 deselected in 5.23s`). GREEN: explicit missing-value detection now converts it to the required clear `ValueError`; the focused file -> `27 passed in 4.38s`.
+- Final fresh Task 7 verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider` -> `27 passed in 3.96s`.
+- Relevant Task 5 preprocessing regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider` -> `10 passed in 4.26s`.
+- Fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `431 passed, 1 skipped, 24 subtests passed in 21.98s`.
+- Self-review probes: a wholly absent `2026-04` selection fails with the authoritative-area error; an empty 36-month selection remains a typed empty frame and the threshold split fails with the required minimum of seven distinct target periods; shuffled input reproduces byte-equivalent aligned rows and deterministic `{'missing_target_row': 1, 'null_target_value': 1}` counts.
+- Preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`; feature schema SHA-256 remains `6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b`; checked-in feature-contract JSON SHA-256 remains `3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b`.
+- Preliminary staged-scope gate: exact-worktree GitNexus `detect_changes(scope="staged")` reported LOW risk, `3` changed files, `5` indexed documentation symbols, and `0` affected execution processes; the two new Python files are not yet represented as symbols in the feature index. `git diff --cached --check` exited `0`, and staged paths were exactly `PROGRESS.md`, `core/horizons.py`, and `test_horizons.py`; `.superpowers/` remained unstaged.
+- No `GCSArtifactStore`, GCP/GCS client, Vertex AI job, Model Registry operation, Batch Prediction, alias mutation, release-pointer write, external data mutation, Task 8 file, or Task 8 behavior was entered.
+- Task 7 final implementation status: complete; independent review is required before Task 8 starts.
+
 ## Resume
 
-- Exact next step: dispatch a fresh Task 7 implementer from the reviewed Task 6 head after the ledger-only consistency commit; do not begin Task 8 and do not perform any GCP/Vertex write.
-- Resume command: `git status --short --branch && git log -5 --oneline && rg -n '^### Task 7:' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,90p' PROGRESS.md`
+- Exact next step: dispatch a fresh independent Task 7 reviewer against the implementation commit; do not begin Task 8 and do not perform any GCP/Vertex write until that review is clean.
+- Resume command: `git status --short --branch && git log -5 --oneline && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider && sed -n '1,110p' PROGRESS.md`
 
 ---
 
