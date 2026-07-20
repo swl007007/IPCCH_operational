@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 3 binary-safe local and GCS artifact storage is committed and self-verified; controller review pending
-- Current state: Task 3 implementation commit `05682609f35cda2a7cf0f75c143d024c34222426` is complete; Task 4 is next after the Task 3 controller review gate
+- Current task: Task 3 review fixes for local atomicity, URI confinement, and durable GCS adapter coverage are implemented and self-verified; fix commit pending
+- Current state: deterministic review RED, all 24 storage tests, and the 355-test full regression are clean; original Task 3 implementation remains `05682609f35cda2a7cf0f75c143d024c34222426`
 - Blockers: none
 
 ## Task Status
@@ -21,7 +21,7 @@
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
-| 3. Add binary-safe local and GCS artifact storage | implementation committed; controller review pending |
+| 3. Add binary-safe local and GCS artifact storage | review fixes verified; commit pending |
 | 4. Stage and validate immutable FEWSNET input snapshots | pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
@@ -114,10 +114,24 @@
 - Implementation commit: `05682609f35cda2a7cf0f75c143d024c34222426` (`0568260 feat: add FEWSNET artifact storage`).
 - Blockers: none. Controller review is pending before Task 4 starts.
 
+### Task 3 Review Fix Evidence
+
+- Review scope: make each local generation check plus filesystem read/write/copy/reference operation atomic, confine all local URI mappings below the resolved bucket root across platforms and symlinks, and replace the ad hoc GCS audit with durable stateful adapter tests.
+- GitNexus upstream impact for `LocalArtifactStore`, `_parse_gs_uri`, and every existing local-store method returned `UNKNOWN`/target not found because the main-branch index predates Task 3; each result reported zero indexed impacts. Current-tree callers are limited to the Task 3 tests, the three storage retry helpers, package exports, and the future Task 4 recording-store test subclass, so no HIGH or CRITICAL warning applies.
+- Review RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_storage.py -q -p no:cacheprovider` -> `6 failed, 17 passed in 1.48s`. The failures proved both create-only writers could succeed, an exact-generation reader could return replacement bytes, backslash object/bucket and drive-style bucket identities were accepted, and an existing symlink could write outside the bucket root. Valid `//`, `.`/`..`, bucket-root/trailing-prefix, and durable GCS behavior controls already passed.
+- Minimal fix: one shared `threading.RLock` per `LocalArtifactStore` now encloses generation check plus read/write/copy plus generation/reference completion for put/read/upload/download/get-ref/list paths; `RLock` permits list-to-get-ref nesting. URI parsing rejects backslashes, NULs, unsafe bucket identities, and exact unsafe components, while local path resolution requires every candidate to remain below the resolved bucket root.
+- GCS compatibility RED/GREEN: self-review caught an over-broad colon rejection; the valid RFC3339-style object-name test first failed `1 failed, 23 deselected in 1.23s`, then passed `1 passed, 23 deselected in 0.60s` after narrowing validation. Existing GCS object-name behavior remains intact apart from the required unsafe-identity rejection.
+- All storage tests: `24 passed in 3.75s`, including durable stateful fake-GCS coverage for SHA metadata persistence, exact byte/file upload and download generation arguments, reference listing, non-`gs://` rejection, `PreconditionFailed` conversion, missing-checksum hard failure, and valid colon-bearing object names.
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `355 passed, 1 skipped, 24 subtests passed in 17.84s`.
+- Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Preliminary review-fix staged gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 3 changed files, 6 indexed documentation symbols, and 0 affected execution processes; the Task 3 Python symbols remain absent from the main-branch index.
+- Preliminary Git staged checks: `git diff --cached --check` -> exit `0`; `git diff --cached --name-status` showed exactly `PROGRESS.md`, `vertex/storage.py`, and `test_storage.py`.
+- Blockers: none. The Task 3 review-fix commit is pending staged-scope gates.
+
 ## Resume
 
-- Exact next task: Task 4 - Stage and validate immutable FEWSNET input snapshots, after the Task 3 controller review gate.
-- Resume command: `git status --short --branch && git log -2 --oneline`
+- Exact next step: stage only `PROGRESS.md`, `storage.py`, and `test_storage.py`, run the required staged GitNexus/Git checks, and create the Task 3 review-fix commit.
+- Resume command: `git add PROGRESS.md fewsnet_partitioned_rf_pipeline/vertex/storage.py tests/fewsnet_partitioned_rf/test_storage.py && git diff --cached --name-status`
 
 ---
 

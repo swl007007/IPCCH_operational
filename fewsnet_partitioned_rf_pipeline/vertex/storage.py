@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import re
 import shutil
+import threading
 from pathlib import Path, PurePosixPath
 from typing import Any, Protocol
 
@@ -14,6 +15,7 @@ from fewsnet_partitioned_rf_pipeline.core import ObjectRef
 
 
 _SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+_SAFE_BUCKET_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 
 class GenerationConflict(RuntimeError):
@@ -69,6 +71,7 @@ class LocalArtifactStore:
     def __init__(self, root: str | Path):
         self.root = Path(root)
         self._generations: dict[str, int] = {}
+        self._lock = threading.RLock()
 
     def put_bytes(
         self,
@@ -77,22 +80,24 @@ class LocalArtifactStore:
         *,
         if_generation_match: str | int | None = None,
     ) -> ObjectRef:
-        path = self._path_for_uri(uri)
-        current = self._current_generation(uri, path)
-        _check_generation(current, if_generation_match, uri)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(data)
-        generation = current + 1
-        self._generations[uri] = generation
-        return _object_ref(uri, generation, data)
+        with self._lock:
+            path = self._path_for_uri(uri)
+            current = self._current_generation(uri, path)
+            _check_generation(current, if_generation_match, uri)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+            generation = current + 1
+            self._generations[uri] = generation
+            return _object_ref(uri, generation, data)
 
     def read_bytes(self, uri: str, generation: str | int | None = None) -> bytes:
-        path = self._path_for_uri(uri)
-        if not path.is_file():
-            raise FileNotFoundError(uri)
-        current = self._current_generation(uri, path)
-        _check_generation(current, generation, uri)
-        return path.read_bytes()
+        with self._lock:
+            path = self._path_for_uri(uri)
+            if not path.is_file():
+                raise FileNotFoundError(uri)
+            current = self._current_generation(uri, path)
+            _check_generation(current, generation, uri)
+            return path.read_bytes()
 
     def put_text(
         self,
@@ -117,15 +122,16 @@ class LocalArtifactStore:
         *,
         if_generation_match: str | int | None = None,
     ) -> ObjectRef:
-        source = Path(path)
-        target = self._path_for_uri(uri)
-        current = self._current_generation(uri, target)
-        _check_generation(current, if_generation_match, uri)
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(source, target)
-        generation = current + 1
-        self._generations[uri] = generation
-        return _file_ref(uri, generation, target)
+        with self._lock:
+            source = Path(path)
+            target = self._path_for_uri(uri)
+            current = self._current_generation(uri, target)
+            _check_generation(current, if_generation_match, uri)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, target)
+            generation = current + 1
+            self._generations[uri] = generation
+            return _file_ref(uri, generation, target)
 
     def download_file(
         self,
@@ -133,36 +139,42 @@ class LocalArtifactStore:
         path: Path,
         generation: str | int | None = None,
     ) -> None:
-        target = Path(path)
-        source = self._path_for_uri(uri)
-        if not source.is_file():
-            raise FileNotFoundError(uri)
-        current = self._current_generation(uri, source)
-        _check_generation(current, generation, uri)
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(source, target)
+        with self._lock:
+            target = Path(path)
+            source = self._path_for_uri(uri)
+            if not source.is_file():
+                raise FileNotFoundError(uri)
+            current = self._current_generation(uri, source)
+            _check_generation(current, generation, uri)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, target)
 
     def get_ref(self, uri: str) -> ObjectRef:
-        path = self._path_for_uri(uri)
-        if not path.is_file():
-            raise FileNotFoundError(uri)
-        generation = self._current_generation(uri, path)
-        return _file_ref(uri, generation, path)
+        with self._lock:
+            path = self._path_for_uri(uri)
+            if not path.is_file():
+                raise FileNotFoundError(uri)
+            generation = self._current_generation(uri, path)
+            return _file_ref(uri, generation, path)
 
     def list(self, prefix: str) -> list[ObjectRef]:
-        bucket, object_prefix = _parse_gs_uri(prefix, allow_empty_object=True)
-        bucket_root = self.root / bucket
-        if not bucket_root.is_dir():
-            return []
+        with self._lock:
+            bucket, object_prefix = _parse_gs_uri(
+                prefix, allow_empty_object=True
+            )
+            bucket_root = self._bucket_root(bucket)
+            if not bucket_root.is_dir():
+                return []
 
-        refs = []
-        for path in bucket_root.rglob("*"):
-            if not path.is_file():
-                continue
-            object_name = path.relative_to(bucket_root).as_posix()
-            if object_name.startswith(object_prefix):
-                refs.append(self.get_ref(f"gs://{bucket}/{object_name}"))
-        return sorted(refs, key=lambda ref: ref.uri)
+            refs = []
+            for path in bucket_root.rglob("*"):
+                if not path.is_file():
+                    continue
+                _require_contained(path.resolve(), bucket_root, prefix)
+                object_name = path.relative_to(bucket_root).as_posix()
+                if object_name.startswith(object_prefix):
+                    refs.append(self.get_ref(f"gs://{bucket}/{object_name}"))
+            return sorted(refs, key=lambda ref: ref.uri)
 
     def _current_generation(self, uri: str, path: Path) -> int:
         generation = self._generations.get(uri)
@@ -173,7 +185,16 @@ class LocalArtifactStore:
 
     def _path_for_uri(self, uri: str) -> Path:
         bucket, object_name = _parse_gs_uri(uri)
-        return self.root.joinpath(bucket, *PurePosixPath(object_name).parts)
+        bucket_root = self._bucket_root(bucket)
+        candidate = bucket_root.joinpath(*PurePosixPath(object_name).parts).resolve()
+        _require_contained(candidate, bucket_root, uri)
+        return candidate
+
+    def _bucket_root(self, bucket: str) -> Path:
+        root = self.root.resolve()
+        bucket_root = root.joinpath(bucket).resolve()
+        _require_contained(bucket_root, root, f"gs://{bucket}")
+        return bucket_root
 
 
 class GCSArtifactStore:
@@ -394,8 +415,10 @@ def _parse_gs_uri(
     if not uri.startswith("gs://"):
         raise ValueError(f"expected gs:// URI: {uri}")
     remainder = uri.removeprefix("gs://")
+    if "\\" in remainder or "\x00" in remainder:
+        raise ValueError(f"invalid GCS identity in URI: {uri}")
     bucket, separator, object_name = remainder.partition("/")
-    if not bucket or bucket in {".", ".."}:
+    if not _SAFE_BUCKET_PATTERN.fullmatch(bucket):
         raise ValueError(f"expected gs://bucket/object URI: {uri}")
     if not separator:
         if allow_empty_object:
@@ -410,6 +433,15 @@ def _parse_gs_uri(
     if any(part in {"", ".", ".."} for part in validated_parts):
         raise ValueError(f"invalid GCS object name in URI: {uri}")
     return bucket, object_name
+
+
+def _require_contained(candidate: Path, root: Path, uri: str) -> None:
+    try:
+        candidate.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(
+            f"URI resolves outside local artifact bucket root: {uri}"
+        ) from exc
 
 
 def _coerce_generation(value: str | int | None) -> int | None:
