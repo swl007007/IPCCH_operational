@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 2 RFC3339 follow-up committed and self-verified; controller re-review pending
-- Current state: original implementation `93d49b929d4f7578e905116e9eb3b95665bf04fb`, review fix `d65a615815c0aad956c2942c7f263e9ab830ed5b`, and RFC3339 fix `7dc06276e38ce666441d8630a2cd655cd6f9138e` are committed; Task 3 remains next after re-review
+- Current task: Task 3 binary-safe local and GCS artifact storage is implemented and self-verified; implementation commit pending
+- Current state: Task 2 is controller-review clean through ledger commit `32d7e7908758ad7c67da766467c23c199dccd3ce`; Task 3 focused and full regression gates are clean
 - Blockers: none
 
 ## Task Status
@@ -20,8 +20,8 @@
 | Task | Status |
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
-| 2. Define shared types and machine-readable contracts | RFC3339 follow-up complete; re-review pending |
-| 3. Add binary-safe local and GCS artifact storage | pending |
+| 2. Define shared types and machine-readable contracts | complete; controller review clean |
+| 3. Add binary-safe local and GCS artifact storage | implementation verified; commit pending |
 | 4. Stage and validate immutable FEWSNET input snapshots | pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
@@ -82,7 +82,7 @@
 - Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `324 passed, 1 skipped, 24 subtests passed in 15.55s`.
 - First staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, 7 changed files, 4 indexed documentation symbols, and 0 affected execution processes.
 - Review-fix commit: `d65a615815c0aad956c2942c7f263e9ab830ed5b` (`d65a615 fix: harden FEWSNET suite contracts`).
-- Controller re-review: pending.
+- Controller re-review: clean; Task 3 may proceed from frozen `ObjectRef` and strict contracts.
 - Second ledger-only staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 1 changed file (`PROGRESS.md`), 3 indexed documentation symbols, and 0 affected execution processes.
 
 ### Task 2 RFC3339 Follow-up Evidence
@@ -96,13 +96,26 @@
 - Direct public-validator audit: `+00:60` and `+24:00` reject; `Z`, `+05:30`, `-04:00`, `+23:59`, and `-23:59` validate.
 - First RFC3339 staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 3 changed files (`PROGRESS.md`, the schema validator, and Task 2 contract tests), 3 indexed documentation symbols, and 0 affected execution processes.
 - RFC3339 fix commit: `7dc06276e38ce666441d8630a2cd655cd6f9138e` (`7dc0627 fix: enforce FEWSNET RFC3339 offsets`).
-- Controller re-review: pending.
+- Controller re-review: clean; no remaining Task 2 gate blocks Task 3.
 - Second RFC3339 ledger-only staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 1 changed file (`PROGRESS.md`), 3 indexed documentation symbols, and 0 affected execution processes.
+
+## Task 3 Evidence
+
+- Start state: Task 2 controller review is clean through `32d7e7908758ad7c67da766467c23c199dccd3ce`; Task 3 started with no blocker.
+- RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_storage.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.vertex'` before storage implementation existed.
+- Mandated GREEN: the same focused command -> `6 passed in 0.77s` after the six plan tests.
+- Prefix regression RED/GREEN: a behavior audit found trailing-slash GCS-style list prefixes were rejected; the focused regression first failed `1 failed, 6 deselected in 1.38s`, then passed `1 passed, 6 deselected in 0.64s`; final storage coverage is `7 passed in 0.58s`.
+- GCS adapter audit: exact `upload_from_string`, `upload_from_filename`, `download_as_bytes`, and `download_to_filename` generation arguments; byte identity; SHA-256 custom metadata; immutable/mutable retry behavior; missing-checksum hard failure; and non-`gs://` rejection all passed against a behavior-preserving storage double.
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `338 passed, 1 skipped, 24 subtests passed in 14.49s`.
+- Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Preliminary staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 4 changed files, 5 indexed documentation symbols, and 0 affected execution processes; the new storage symbols are not present in the main-branch index.
+- Preliminary Git staged checks: `git diff --cached --check` -> exit `0`; `git diff --cached --name-status` showed exactly `PROGRESS.md`, the two new `vertex` files, and `test_storage.py`.
+- Blockers: none. Task 3 implementation commit is pending the staged-scope gates.
 
 ## Resume
 
-- Exact next task: Task 3 - Add binary-safe local and GCS artifact storage, after the Task 2 controller re-review gate.
-- Resume command: `git status --short --branch && git log -1 --oneline`
+- Exact next step: stage only Task 3 implementation/test paths plus `PROGRESS.md`, run the staged GitNexus and Git checks, and create the implementation commit.
+- Resume command: `git add fewsnet_partitioned_rf_pipeline/vertex tests/fewsnet_partitioned_rf/test_storage.py PROGRESS.md && git diff --cached --name-status`
 
 ---
 
