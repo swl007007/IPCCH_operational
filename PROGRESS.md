@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 7 keyed horizon alignment and temporal windows
-- Current state: Tasks 1-6 are complete and independently reviewed; Task 7 implementation plus the blocking independent-review fix are complete with strict RED/GREEN and full regression evidence; independent re-review is pending and one non-blocking Minor is deferred
-- Blockers: none for Task 7 re-review; Task 8 must wait for the Task 7 re-review
+- Current task: Task 8 fixed partition-map validation and routing
+- Current state: Tasks 1-7 are complete and independently reviewed; Task 7's blocking empty-inference finding is fixed through `8ff2847`, its re-review is approved, controller verification is fresh, and one non-blocking ordering Minor is deferred for final whole-branch triage
+- Blockers: none for Task 8 local implementation; Task 9 must wait for Task 8 implementation and independent review
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -28,8 +28,8 @@
 | 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review clean |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
 | 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; independent review clean through `d403c1e` |
-| 7. Implement keyed horizon alignment and temporal windows | implementation and Important review fix complete; re-review pending; one Minor deferred |
-| 8. Validate and route the fixed partition map | pending |
+| 7. Implement keyed horizon alignment and temporal windows | complete; independent re-review clean through `8ff2847`; one Minor deferred |
+| 8. Validate and route the fixed partition map | pending; ready to start |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
 | 10. Train partitioned RF models and produce formal local predictions | pending |
 | 11. Freeze reference Stage 3 parity evidence | pending |
@@ -303,12 +303,19 @@
 - Deferred Minor for final whole-branch triage: `_prepare_feature_frame` validates normalized keys without first sorting the working frame. No keyed result is wrong, `align_horizon` sorts its returned frame deterministically, and this review-fix commit intentionally does not modify the MEDIUM-impact `align_horizon` path.
 - Preliminary review-fix staged gate: exact-worktree GitNexus `detect_changes(scope="staged")` reported MEDIUM risk, `3` changed files, `10` changed indexed symbols, and `1` affected process (`Select_latest_inference_frame -> _normalize_month_values`, with the reviewed function as changed step 1). `git diff --cached --check` exited `0`; staged paths were exactly `PROGRESS.md`, `core/horizons.py`, and `test_horizons.py`. Unrelated `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` changes remained unstaged.
 - No Task 8 behavior, cloud adapter, GCP/GCS/Vertex operation, external artifact mutation, public-signature change, positional shift, or design/plan change was introduced.
-- Task 7 status after the review fix: blocking Important fixed; independent re-review pending; deferred Minor remains recorded for final whole-branch triage.
+- Implementation commit: `5f1ea50d02e88c0b8a9bce63690d6bd847145302` (`5f1ea50 feat: align FEWSNET forecast horizons`).
+- Independent-review fix commit: `8ff2847546dc666c989b9f2371f557f0b9822098` (`8ff2847 fix: reject empty FEWSNET inference universe`).
+- Independent Task 7 re-review: approved with no Critical or Important findings. The empty authoritative-universe defect is closed at its root with direct regression coverage. The only remaining Minor is the literal pre-alignment sorting invariant; keyed correctness and deterministic returned order are preserved, and the Minor is retained for final whole-branch triage.
+- Controller fresh focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider` -> `28 passed in 4.04s`.
+- Controller fresh preprocessing regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider` -> `10 passed in 4.58s`.
+- Controller fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `432 passed, 1 skipped, 24 subtests passed in 21.41s`.
+- Controller consistency gate: `git diff --check 16233d8..8ff2847` exited `0`; approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`.
+- Task 7 final status: complete and independently reviewed. Task 8 is unblocked; no cloud write is authorized at this stage.
 
 ## Resume
 
-- Exact next step: dispatch a fresh independent Task 7 re-review against the Important-fix commit; do not begin Task 8 and do not perform any GCP/Vertex write until that re-review is clean.
-- Resume command: `git status --short --branch && git log -5 --oneline && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider && sed -n '1,110p' PROGRESS.md`
+- Exact next step: after this ledger-only consistency commit, dispatch a fresh Task 8 implementer from the reviewed Task 7 head; require TDD, GitNexus impact/pre-commit gates, and an independent Task 8 review. Do not begin Task 9 or perform any GCP/Vertex write.
+- Resume command: `git status --short --branch && git log -5 --oneline && rg -n '^### Task 8:' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,120p' PROGRESS.md`
 
 ---
 
