@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FEWSNET released model suite manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "suite_version",
+    "feature_month",
+    "source_git_commit",
+    "snapshot_ref",
+    "container_image",
+    "partition",
+    "model_versions",
+    "predictions",
+    "alias_state",
+    "released_at_utc"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "fewsnet-suite-manifest-v1"
+    },
+    "suite_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "feature_month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "source_git_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "snapshot_ref": {
+      "$ref": "#/$defs/snapshotRef"
+    },
+    "container_image": {
+      "$ref": "#/$defs/containerImage"
+    },
+    "partition": {
+      "$ref": "#/$defs/partitionIdentity"
+    },
+    "model_versions": {
+      "$ref": "#/$defs/modelVersionMap"
+    },
+    "predictions": {
+      "$ref": "#/$defs/predictionMap"
+    },
+    "alias_state": {
+      "$ref": "#/$defs/aliasStateMap"
+    },
+    "released_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "objectRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri",
+        "generation",
+        "sha256",
+        "size_bytes"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "pattern": "^gs://[^/]+/.+"
+        },
+        "generation": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "snapshotRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest",
+        "snapshot_id",
+        "snapshot_content_sha256"
+      ],
+      "properties": {
+        "manifest": {
+          "$ref": "#/$defs/objectRef"
+        },
+        "snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "snapshot_content_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "containerImage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri",
+        "digest"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "pattern": "^.+@sha256:[0-9a-f]{64}$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "partitionIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri",
+        "sha256"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "registeredModelVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "horizon_key",
+        "parent_model_resource_name",
+        "version_resource_name",
+        "version_id",
+        "suite_version_alias",
+        "artifact_uri"
+      ],
+      "properties": {
+        "horizon_key": {
+          "enum": [
+            "0m",
+            "6m",
+            "12m"
+          ]
+        },
+        "parent_model_resource_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version_resource_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "suite_version_alias": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifact_uri": {
+          "type": "string",
+          "pattern": "^gs://[^/]+/.+"
+        }
+      }
+    },
+    "modelVersionMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "0m",
+        "6m",
+        "12m"
+      ],
+      "properties": {
+        "0m": {
+          "$ref": "#/$defs/registeredModelVersion"
+        },
+        "6m": {
+          "$ref": "#/$defs/registeredModelVersion"
+        },
+        "12m": {
+          "$ref": "#/$defs/registeredModelVersion"
+        }
+      }
+    },
+    "predictionMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "0m",
+        "6m",
+        "12m"
+      ],
+      "properties": {
+        "0m": {
+          "$ref": "#/$defs/objectRef"
+        },
+        "6m": {
+          "$ref": "#/$defs/objectRef"
+        },
+        "12m": {
+          "$ref": "#/$defs/objectRef"
+        }
+      }
+    },
+    "aliasState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "alias",
+        "version_resource_name"
+      ],
+      "properties": {
+        "alias": {
+          "const": "production"
+        },
+        "version_resource_name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "aliasStateMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "0m",
+        "6m",
+        "12m"
+      ],
+      "properties": {
+        "0m": {
+          "$ref": "#/$defs/aliasState"
+        },
+        "6m": {
+          "$ref": "#/$defs/aliasState"
+        },
+        "12m": {
+          "$ref": "#/$defs/aliasState"
+        }
+      }
+    }
+  }
+}

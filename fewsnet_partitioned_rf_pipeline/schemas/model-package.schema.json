@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FEWSNET partitioned RF model package manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "suite_version",
+    "snapshot_id",
+    "snapshot_content_sha256",
+    "horizon_key",
+    "horizon_months",
+    "target_month",
+    "feature_schema_sha256",
+    "partition_sha256",
+    "threshold",
+    "dependency_versions",
+    "source_git_commit",
+    "container_image_digest",
+    "files",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "fewsnet-model-package-v1"
+    },
+    "suite_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "snapshot_content_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "horizon_key": {
+      "enum": [
+        "0m",
+        "6m",
+        "12m"
+      ]
+    },
+    "horizon_months": {
+      "enum": [
+        0,
+        6,
+        12
+      ]
+    },
+    "target_month": {
+      "$ref": "#/$defs/month"
+    },
+    "feature_schema_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "partition_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "dependency_versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "python",
+        "numpy",
+        "pandas",
+        "scikit-learn",
+        "joblib",
+        "imbalanced-learn"
+      ],
+      "properties": {
+        "python": {
+          "type": "string",
+          "minLength": 1
+        },
+        "numpy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pandas": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scikit-learn": {
+          "type": "string",
+          "minLength": 1
+        },
+        "joblib": {
+          "type": "string",
+          "minLength": 1
+        },
+        "imbalanced-learn": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "source_git_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "container_image_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "validated",
+        "failed",
+        "abandoned"
+      ]
+    }
+  },
+  "$defs": {
+    "month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

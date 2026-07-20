@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FEWSNET suite training and threshold report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "suite_version",
+    "training_target_month_range",
+    "validation_target_month_range",
+    "horizon_thresholds",
+    "cluster_states",
+    "smote_results",
+    "fallback_counts"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "fewsnet-training-report-v1"
+    },
+    "suite_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "training_target_month_range": {
+      "$ref": "#/$defs/monthRange"
+    },
+    "validation_target_month_range": {
+      "$ref": "#/$defs/monthRange"
+    },
+    "horizon_thresholds": {
+      "$ref": "#/$defs/thresholdsByHorizon"
+    },
+    "cluster_states": {
+      "$ref": "#/$defs/clusterStatesByHorizon"
+    },
+    "smote_results": {
+      "$ref": "#/$defs/smoteResultsByHorizon"
+    },
+    "fallback_counts": {
+      "$ref": "#/$defs/fallbackCountsByHorizon"
+    }
+  },
+  "$defs": {
+    "month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "monthRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/month"
+        },
+        "end": {
+          "$ref": "#/$defs/month"
+        }
+      }
+    },
+    "nullableMetric": {
+      "oneOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableString": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "thresholdResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "threshold",
+        "precision",
+        "recall",
+        "f1",
+        "support",
+        "positive_cases",
+        "fallback_reason"
+      ],
+      "properties": {
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "precision": {
+          "$ref": "#/$defs/nullableMetric"
+        },
+        "recall": {
+          "$ref": "#/$defs/nullableMetric"
+        },
+        "f1": {
+          "$ref": "#/$defs/nullableMetric"
+        },
+        "support": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "positive_cases": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fallback_reason": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    },
+    "thresholdsByHorizon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "0m",
+        "6m",
+        "12m"
+      ],
+      "properties": {
+        "0m": {
+          "$ref": "#/$defs/thresholdResult"
+        },
+        "6m": {
+          "$ref": "#/$defs/thresholdResult"
+        },
+        "12m": {
+          "$ref": "#/$defs/thresholdResult"
+        }
+      }
+    },
+    "classCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "0",
+        "1"
+      ],
+      "properties": {
+        "0": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "1": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "clusterState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "sample_count",
+        "class_counts",
+        "smote_status",
+        "fallback_reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "partition_model",
+            "pooled_unmapped",
+            "pooled_small_partition",
+            "pooled_single_class",
+            "pooled_missing_partition_model"
+          ]
+        },
+        "sample_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "class_counts": {
+          "$ref": "#/$defs/classCounts"
+        },
+        "smote_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fallback_reason": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    },
+    "clusterStateMap": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^([0-9]|1[0-6])$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/clusterState"
+      }
+    },
+    "clusterStatesByHorizon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "0m",
+        "6m",
+        "12m"
+      ],
+      "properties": {
+        "0m": {
+          "$ref": "#/$defs/clusterStateMap"
+        },
+        "6m": {
+          "$ref": "#/$defs/clusterStateMap"
+        },
+        "12m": {
+          "$ref": "#/$defs/clusterStateMap"
+        }
+      }
+    },
+    "smoteResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "original_class_counts",
+        "resampled_class_counts",
+        "failure_reason"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "original_class_counts": {
+          "$ref": "#/$defs/classCounts"
+        },
+        "resampled_class_counts": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/classCounts"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "failure_reason": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    },
+    "smoteResultMap": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^([0-9]|1[0-6])$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/smoteResult"
+      }
+    },
+    "smoteResultsByHorizon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "0m",
+        "6m",
+        "12m"
+      ],
+      "properties": {
+        "0m": {
+          "$ref": "#/$defs/smoteResultMap"
+        },
+        "6m": {
+          "$ref": "#/$defs/smoteResultMap"
+        },
+        "12m": {
+          "$ref": "#/$defs/smoteResultMap"
+        }
+      }
+    },
+    "fallbackCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pooled_unmapped",
+        "pooled_small_partition",
+        "pooled_single_class",
+        "pooled_missing_partition_model"
+      ],
+      "properties": {
+        "pooled_unmapped": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pooled_small_partition": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pooled_single_class": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pooled_missing_partition_model": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "fallbackCountsByHorizon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "0m",
+        "6m",
+        "12m"
+      ],
+      "properties": {
+        "0m": {
+          "$ref": "#/$defs/fallbackCounts"
+        },
+        "6m": {
+          "$ref": "#/$defs/fallbackCounts"
+        },
+        "12m": {
+          "$ref": "#/$defs/fallbackCounts"
+        }
+      }
+    }
+  }
+}

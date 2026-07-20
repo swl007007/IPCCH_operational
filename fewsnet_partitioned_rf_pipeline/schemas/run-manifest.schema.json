@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FEWSNET suite run manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "suite_version",
+    "phase",
+    "status",
+    "snapshot_ref",
+    "model_versions",
+    "batch_jobs",
+    "hard_gates",
+    "timestamps",
+    "retry_attempts"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "fewsnet-run-manifest-v1"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "suite_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phase": {
+      "enum": [
+        "DISCOVERED",
+        "INPUT_VALIDATED",
+        "TRAINING",
+        "PACKAGED",
+        "REGISTERED_CANDIDATE",
+        "BATCH_PREDICTING",
+        "OUTPUT_VALIDATED",
+        "PROMOTING",
+        "RELEASED",
+        "NOOP",
+        "FAILED"
+      ]
+    },
+    "status": {
+      "enum": [
+        "running",
+        "candidate_validated",
+        "released",
+        "noop",
+        "failed"
+      ]
+    },
+    "snapshot_ref": {
+      "$ref": "#/$defs/snapshotRef"
+    },
+    "model_versions": {
+      "$ref": "#/$defs/modelVersionMap"
+    },
+    "batch_jobs": {
+      "$ref": "#/$defs/batchJobMap"
+    },
+    "hard_gates": {
+      "type": "object",
+      "propertyNames": {
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    },
+    "timestamps": {
+      "type": "object",
+      "propertyNames": {
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "retry_attempts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/retryAttempt"
+      }
+    },
+    "failure": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/failure"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "snapshotRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uri",
+        "generation",
+        "sha256",
+        "size_bytes",
+        "snapshot_id",
+        "snapshot_content_sha256"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "pattern": "^gs://[^/]+/.+"
+        },
+        "generation": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "snapshot_content_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "registeredModelVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "horizon_key",
+        "parent_model_resource_name",
+        "version_resource_name",
+        "version_id",
+        "suite_version_alias",
+        "artifact_uri"
+      ],
+      "properties": {
+        "horizon_key": {
+          "enum": [
+            "0m",
+            "6m",
+            "12m"
+          ]
+        },
+        "parent_model_resource_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version_resource_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "suite_version_alias": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifact_uri": {
+          "type": "string",
+          "pattern": "^gs://[^/]+/.+"
+        }
+      }
+    },
+    "modelVersionMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "0m": {
+          "$ref": "#/$defs/registeredModelVersion"
+        },
+        "6m": {
+          "$ref": "#/$defs/registeredModelVersion"
+        },
+        "12m": {
+          "$ref": "#/$defs/registeredModelVersion"
+        }
+      }
+    },
+    "batchJobRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "horizon_key",
+        "job_resource_name",
+        "model_version_resource_name",
+        "input_uri",
+        "destination_prefix",
+        "gcs_output_directory"
+      ],
+      "properties": {
+        "horizon_key": {
+          "enum": [
+            "0m",
+            "6m",
+            "12m"
+          ]
+        },
+        "job_resource_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_version_resource_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_uri": {
+          "type": "string",
+          "pattern": "^gs://[^/]+/.+"
+        },
+        "destination_prefix": {
+          "type": "string",
+          "pattern": "^gs://[^/]+/.+"
+        },
+        "gcs_output_directory": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^gs://[^/]+/.+"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "batchJobMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "0m": {
+          "$ref": "#/$defs/batchJobRef"
+        },
+        "6m": {
+          "$ref": "#/$defs/batchJobRef"
+        },
+        "12m": {
+          "$ref": "#/$defs/batchJobRef"
+        }
+      }
+    },
+    "retryAttempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "attempt",
+        "timestamp_utc",
+        "error"
+      ],
+      "properties": {
+        "operation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "error": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exception_type",
+        "message",
+        "timestamp_utc"
+      ],
+      "properties": {
+        "exception_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timestamp_utc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "fewsnet-deployment-v1",
+  "project_id": "food-crisis-modeling",
+  "region": "us-central1",
+  "object_store_root_uri": "gs://bucket/fewsnet_partitioned_rf",
+  "orchestrator_service_account": "fewsnet-orchestrator@food-crisis-modeling.iam.gserviceaccount.com",
+  "training_service_account": "fewsnet-training@food-crisis-modeling.iam.gserviceaccount.com",
+  "batch_prediction_service_account": "fewsnet-batch@food-crisis-modeling.iam.gserviceaccount.com",
+  "container_image_uri": "us-central1-docker.pkg.dev/food-crisis-modeling/fewsnet/fewsnet-partitioned-rf@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "container_image_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "source_git_commit": "0123456789abcdef0123456789abcdef01234567",
+  "parent_model_ids": {
+    "0m": "fewsnet-partitioned-rf-0m",
+    "6m": "fewsnet-partitioned-rf-6m",
+    "12m": "fewsnet-partitioned-rf-12m"
+  },
+  "training_machine_type": "n2-highmem-8",
+  "batch_machine_type": "n2-standard-8",
+  "training_timeout_seconds": 21600,
+  "batch_timeout_seconds": 7200,
+  "max_retries": 3
+}

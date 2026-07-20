@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 1 review fix complete; Task 2 is next
-- Current state: Task 1 implemented in `e1f1977d81e83159d006bbd62483fe94fb32f48a`; awaiting Task 2 start
+- Current task: Task 2 implementation, verification, and pre-commit scope review complete
+- Current state: shared types, seven Draft 2020-12 contracts, validators, fixtures, and focused/full regression evidence are complete; implementation commit pending
 - Blockers: none
 
 ## Task Status
@@ -20,7 +20,7 @@
 | Task | Status |
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
-| 2. Define shared types and machine-readable contracts | pending |
+| 2. Define shared types and machine-readable contracts | complete |
 | 3. Add binary-safe local and GCS artifact storage | pending |
 | 4. Stage and validate immutable FEWSNET input snapshots | pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
@@ -60,9 +60,20 @@
 - A fresh ext4 control venv at `/tmp/fewsnet-pip-probe-task1` had the same Python symlink layout and upgraded from pip 24.0 to pip 26.1.2 successfully with the identical command.
 - Approved workaround: rebuild `.venv` with `python3 -m venv --clear .venv`, retain bundled pip 24.0, and install the exact pinned requirements. The pinned install completed successfully; no repository code or configuration was changed for this local filesystem limitation.
 
+## Task 2 Evidence
+
+- RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_contracts.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.core'` before any Task 2 implementation or fixture existed.
+- GREEN: the same focused command -> `4 passed in 0.47s`.
+- Schema coverage: `Draft202012Validator.check_schema(...)` loaded and validated all seven contracts: `source-snapshot`, `deployment`, `model-package`, `training-report`, `prediction-record`, `run-manifest`, and `suite-manifest`.
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `303 passed, 1 skipped, 24 subtests passed in 14.95s`.
+- Contract coverage: immutable GCS object generations and SHA-256 identities, digest-pinned deployment images with exact cross-field digest matching, model package/runtime metadata, aggregate training and threshold evidence, the twelve formal prediction fields, monotonic run phases including candidate-only `candidate_validated`, and exact three-horizon suite release identities.
+- Staged-scope review: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, 14 changed files, 4 indexed documentation symbols, and 0 affected execution processes.
+- Blockers: none.
+- Implementation commit: this commit with subject `feat: define FEWSNET suite contracts`; its SHA is recorded in the Task 2 report after commit creation.
+
 ## Resume
 
-- Exact next task: Task 2 - Define shared types and machine-readable contracts.
+- Exact next task: Task 3 - Add binary-safe local and GCS artifact storage.
 - Resume command: `git status --short --branch && git log -1 --oneline`
 
 ---

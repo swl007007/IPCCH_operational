@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FEWSNET suite deployment configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "region",
+    "object_store_root_uri",
+    "orchestrator_service_account",
+    "training_service_account",
+    "batch_prediction_service_account",
+    "container_image_uri",
+    "container_image_digest",
+    "source_git_commit",
+    "parent_model_ids",
+    "training_machine_type",
+    "batch_machine_type",
+    "training_timeout_seconds",
+    "batch_timeout_seconds",
+    "max_retries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "fewsnet-deployment-v1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "region": {
+      "type": "string",
+      "minLength": 1
+    },
+    "object_store_root_uri": {
+      "type": "string",
+      "pattern": "^gs://[^/]+/.+"
+    },
+    "orchestrator_service_account": {
+      "$ref": "#/$defs/serviceAccount"
+    },
+    "training_service_account": {
+      "$ref": "#/$defs/serviceAccount"
+    },
+    "batch_prediction_service_account": {
+      "$ref": "#/$defs/serviceAccount"
+    },
+    "container_image_uri": {
+      "type": "string",
+      "pattern": "^.+@sha256:[0-9a-f]{64}$"
+    },
+    "container_image_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "source_git_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "parent_model_ids": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "0m",
+        "6m",
+        "12m"
+      ],
+      "properties": {
+        "0m": {
+          "const": "fewsnet-partitioned-rf-0m"
+        },
+        "6m": {
+          "const": "fewsnet-partitioned-rf-6m"
+        },
+        "12m": {
+          "const": "fewsnet-partitioned-rf-12m"
+        }
+      }
+    },
+    "training_machine_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "batch_machine_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "training_timeout_seconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "batch_timeout_seconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_retries": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "$defs": {
+    "serviceAccount": {
+      "type": "string",
+      "pattern": "^[^@\\s]+@[^@\\s]+\\.iam\\.gserviceaccount\\.com$"
+    }
+  }
+}

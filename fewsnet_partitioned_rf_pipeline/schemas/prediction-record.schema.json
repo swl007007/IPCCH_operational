@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FEWSNET formal prediction record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admin_code",
+    "feature_month",
+    "target_month",
+    "horizon_months",
+    "probability_crisis",
+    "predicted_crisis",
+    "threshold",
+    "cluster_id",
+    "prediction_source",
+    "suite_version",
+    "vertex_model_resource_name",
+    "vertex_model_version_id"
+  ],
+  "properties": {
+    "admin_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "feature_month": {
+      "$ref": "#/$defs/month"
+    },
+    "target_month": {
+      "$ref": "#/$defs/month"
+    },
+    "horizon_months": {
+      "enum": [
+        0,
+        6,
+        12
+      ]
+    },
+    "probability_crisis": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "predicted_crisis": {
+      "enum": [
+        0,
+        1
+      ]
+    },
+    "threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "cluster_id": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "prediction_source": {
+      "enum": [
+        "partition_model",
+        "pooled_unmapped",
+        "pooled_small_partition",
+        "pooled_single_class",
+        "pooled_missing_partition_model"
+      ]
+    },
+    "suite_version": {
+      "type": "string"
+    },
+    "vertex_model_resource_name": {
+      "type": "string"
+    },
+    "vertex_model_version_id": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    }
+  }
+}

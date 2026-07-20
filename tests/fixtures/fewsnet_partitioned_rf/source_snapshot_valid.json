@@ -1,0 +1,41 @@
+{
+  "schema_version": "fewsnet-source-snapshot-v1",
+  "snapshot_id": "fewsnet-202604-aaaaaaaa",
+  "created_at_utc": "2026-07-20T00:00:00Z",
+  "snapshot_content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "panel": {
+    "uri": "gs://bucket/inputs/snapshots/fewsnet-202604-aaaaaaaa/panel.csv",
+    "generation": "7",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "size_bytes": 1024
+  },
+  "boundaries": {
+    "uri": "gs://bucket/inputs/snapshots/fewsnet-202604-aaaaaaaa/boundaries.parquet",
+    "generation": "8",
+    "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "size_bytes": 2048
+  },
+  "admin_universe": {
+    "uri": "gs://bucket/inputs/snapshots/fewsnet-202604-aaaaaaaa/admin_universe.csv",
+    "generation": "9",
+    "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "size_bytes": 128
+  },
+  "row_count": 4,
+  "area_count": 2,
+  "spatial_feature_count": 2,
+  "crs": "EPSG:4326",
+  "latest_feature_month": "2026-04",
+  "latest_label_month": "2026-03",
+  "source_identity": {
+    "panel_bootstrap_path": "Outcome/fewsnet.csv",
+    "boundaries_bootstrap_path": "data/fewsnet_admin_boundaries_v3.shp",
+    "panel_source_type": "assembled_fewsnet_csv",
+    "boundaries_source_type": "fewsnet_admin_boundaries_v3"
+  },
+  "admin_code_mapping": {
+    "panel": "FEWSNET_admin_code",
+    "boundaries": "admin_code",
+    "canonical": "admin_code"
+  }
+}
