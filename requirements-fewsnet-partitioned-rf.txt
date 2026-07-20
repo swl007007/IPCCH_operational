@@ -1,0 +1,14 @@
+pandas==3.0.0
+numpy==2.4.2
+scikit-learn==1.8.0
+joblib==1.5.3
+imbalanced-learn==0.14.0
+geopandas==1.1.1
+pyarrow==20.0.0
+fastapi==0.116.1
+uvicorn==0.35.0
+httpx==0.28.1
+google-cloud-aiplatform==1.161.0
+google-cloud-storage==3.13.0
+jsonschema==4.26.0
+pytest==9.1.1

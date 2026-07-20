@@ -1,0 +1,10 @@
+{
+  "schema_version": "fewsnet-partition-map-v1",
+  "source_repository": "Food_Crisis_Cluster",
+  "source_git_commit": "1ecf180669568bbf9eb2129683108162902a415a",
+  "source_relative_path": "paper_reproducibility_package/stage3_results/georf_fs1/refined/cluster_mapping_k40_nc17_general_refined_contig3.csv",
+  "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+  "mapped_area_count": 5365,
+  "cluster_count": 17,
+  "cluster_ids": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+}

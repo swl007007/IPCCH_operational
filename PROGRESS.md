@@ -1,3 +1,76 @@
+# FEWSNET Partitioned RF Model Suite Progress
+
+## Authority
+
+- Approved design: `docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md`
+- Implementation plan: `docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md`
+- Design base commit: `e6afd2cebde02e14501dca52e959e395c54c30b7`
+- Initial plan SHA-256: `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`
+
+## Execution Context
+
+- Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
+- Branch: `features/fewsnet-partitioned-rf-suite`
+- Current task: Task 1 - Establish the isolated runtime package and immutable partition asset
+- Current state: complete - ready for the Task 1 commit
+- Blockers: none
+
+## Task Status
+
+| Task | Status |
+| --- | --- |
+| 1. Establish the isolated runtime package and immutable partition asset | complete |
+| 2. Define shared types and machine-readable contracts | pending |
+| 3. Add binary-safe local and GCS artifact storage | pending |
+| 4. Stage and validate immutable FEWSNET input snapshots | pending |
+| 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
+| 6. Implement keyed horizon alignment and temporal windows | pending |
+| 7. Validate and route the fixed partition map | pending |
+| 8. Implement fit-slice-only max-plus imputation and threshold selection | pending |
+| 9. Train partitioned RF models and produce formal local predictions | pending |
+| 10. Freeze reference Stage 3 parity evidence | pending |
+| 11. Write and validate Vertex-compatible model packages | pending |
+| 12. Build the three-horizon training worker and Vertex Custom Job spec | pending |
+| 13. Serve registered packages with a shared custom prediction container | pending |
+| 14. Register three stable parent models and immutable candidate versions | pending |
+| 15. Run exact-version Batch Prediction and normalize formal CSVs | pending |
+| 16. Validate three-horizon outputs and implement alias rollback publication | pending |
+| 17. Orchestrate discover -> train -> register -> Batch -> promote | pending |
+| 18. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
+
+## Task 1 Evidence
+
+- Baseline: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests -q -p no:cacheprovider` -> `297 passed, 1 skipped`
+- RED: `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest tests/fewsnet_partitioned_rf/test_runtime_foundation.py -q -p no:cacheprovider` -> `2 failed`; both failures were the expected `FileNotFoundError` for the absent requirements file and partition CSV.
+- GREEN: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_runtime_foundation.py -q -p no:cacheprovider` -> `2 passed in 0.12s`.
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `299 passed, 1 skipped, 24 subtests passed in 14.82s`.
+- Final fresh full regression before commit: the same command -> `299 passed, 1 skipped, 24 subtests passed in 17.12s`.
+- Dependency validation: `.venv/bin/python -m pip check` -> `No broken requirements found.`
+- Partition validation: copied asset is byte-identical to the approved source, SHA-256 `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`, with 5,365 mapped rows plus the header.
+- Plan validation: SHA-256 remained `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`.
+- Staged-scope review: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` failed with the known index error: `LadybugDB unavailable for /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.gitnexus/lbug. Another process may be rebuilding the index. Retry later. (Runtime exception: Couldn't replay shadow pages under read-only mode. Please re-open the database with read-write mode to replay shadow pages.)`
+- Plain `git diff --cached --check`: exit `2` because Git treated the approved CSV's CRLF terminators as trailing whitespace on all 5,366 lines. The asset was not normalized because byte identity and the approved SHA-256 are mandatory.
+- Git fallback staged-scope review: `git -c core.whitespace=cr-at-eol diff --cached --check` -> exit `0`; `git diff --cached --name-status` showed exactly `PROGRESS.md`, the unchanged implementation plan, the requirements file, the package/config/partition files, and the two foundation test files.
+- Commit: this Task 1 commit, subject `feat: establish FEWSNET partitioned RF runtime` (resolve the immutable SHA with `git rev-parse HEAD` after commit; a commit cannot contain its own SHA).
+
+### Task 1 Environment Note
+
+- `.venv/bin/python -m pip install --upgrade pip` failed on the Dropbox/DrvFs worktree after beginning pip's self-uninstall: `ERROR: Could not install packages due to an OSError: [Errno 13] Permission denied: 'commands'`.
+- The failed rename left `pip/`, `~ip/`, and `~ip-24.0.dist-info` under `site-packages`, removed `.venv/bin/pip`, and made `.venv/bin/python -m pip` fail with `ModuleNotFoundError: No module named 'pip._internal.cli'`.
+- A fresh ext4 control venv at `/tmp/fewsnet-pip-probe-task1` had the same Python symlink layout and upgraded from pip 24.0 to pip 26.1.2 successfully with the identical command.
+- Approved workaround: rebuild `.venv` with `python3 -m venv --clear .venv`, retain bundled pip 24.0, and install the exact pinned requirements. The pinned install completed successfully; no repository code or configuration was changed for this local filesystem limitation.
+
+## Resume
+
+- Exact next task: Task 2 - Define shared types and machine-readable contracts.
+- Resume command: `git status --short --branch && git log -1 --oneline`
+
+---
+
+## Prior Execution Ledger Preserved from Base Commit
+
+The completed prediction-population-and-uncertainty ledger below is retained unchanged from `e6afd2cebde02e14501dca52e959e395c54c30b7`.
+
 # Prediction Population and Uncertainty Progress
 
 ## Authority
