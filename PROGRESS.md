@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 4 independent-review fixes are committed; committed-HEAD verification and re-review are in progress
-- Current state: exact-generation manifest-reference validation, one-byte-version panel capture, and deterministic CSV/NA identifier handling landed in `55866bb846f957d783680d400ac9954081a9a5b6`; Task 5 remains blocked pending Task 4 re-review
+- Current task: Task 5 frozen Stage 3 feature contract and leak-free feature frame are ready for independent review
+- Current state: focused and full verification are green; the implementation commit is being prepared from reviewed base `f0abf6b785bc005e5f3d63bec590b879fb09fcc2`
 - Blockers: none
 
 ## Task Status
@@ -22,8 +22,8 @@
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
-| 4. Stage and validate immutable FEWSNET input snapshots | independent-review fixes committed; re-review pending |
-| 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
+| 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review clean |
+| 5. Build the frozen Stage 3 feature contract and leak-free feature frame | implementation verified; independent review pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
 | 7. Validate and route the fixed partition map | pending |
 | 8. Implement fit-slice-only max-plus imputation and threshold selection | pending |
@@ -180,12 +180,35 @@
 - Preliminary independent-review staged gate: GitNexus `detect_changes(scope="staged")` -> LOW risk, exactly 3 changed files, 3 indexed documentation symbols, and 0 affected execution processes; `git diff --cached --check` exited `0`; staged paths were exactly `PROGRESS.md`, `core/data.py`, and `test_snapshot_staging.py`; `.superpowers/` remained untracked and unstaged.
 - Final independent-review staged gate repeated the same LOW-risk, 3-file, 0-process GitNexus scope; `git diff --cached --check` remained clean, staged paths remained exact, and `.superpowers/` remained unstaged.
 - Independent-review fix commit: `55866bb846f957d783680d400ac9954081a9a5b6` (`55866bb fix: harden FEWSNET snapshot identity`).
+- Controller re-review: clean through ledger commit `f0abf6b785bc005e5f3d63bec590b879fb09fcc2`; Task 5 may proceed from the frozen snapshot interfaces.
 - Blockers: none.
+
+## Task 5 Evidence
+
+- Start state: Task 4 controller re-review is clean through `f0abf6b785bc005e5f3d63bec590b879fb09fcc2`; Task 5 started from that exact reviewed HEAD with no blocker.
+- Pre-edit GitNexus scope: Task 5 adds new production/test/asset paths and does not modify an existing function, class, or method. The `IPCCH_operational` index remains on `main` and predates the Task 5 symbols, so no indexed execution flow existed to modify.
+- RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.core.preprocessing'` before any Task 5 production code existed (`1 error in 4.19s`).
+- RED coverage: approved reference predictors and exclusions, calendar-keyed target lags and rolling/EVI features across a missing month, exact frozen output order, sorted ISO/year/month encodings, ignored undeclared raw columns, missing raw input rejection, duplicate/unknown/missing contract names, checksum drift, unseen categories, numeric coercion, infinity-to-NaN handling, explicit no-scaling behavior, and duplicate area-month rejection.
+- Focused GREEN: the mandated preprocessing command -> `9 passed in 4.41s`.
+- AEZ missing-value self-review RED: the focused `-k normalizes_aez` selection failed `1 failed, 8 deselected in 5.66s` because pandas nullable boolean masks converted a missing AEZ value to `0.0`.
+- GitNexus upstream impact for the new `_normalize_aez` helper returned `UNKNOWN`/target not found with `0` indexed impacts because the main-branch index predates Task 5. Current-tree scope is one internal caller (`Stage3FeatureBuilder.transform`) plus the focused tests, so no HIGH or CRITICAL warning applies.
+- AEZ regression GREEN: the same focused selection -> `1 passed, 8 deselected in 3.92s`; the complete preprocessing file then returned `9 passed in 4.41s`.
+- Fragmentation self-review RED: an 80-column frozen-source regression emitted pandas `PerformanceWarning` records and failed `1 failed, 9 deselected in 5.83s`; a 500-row slice of the approved panel reproduced the warnings during per-column dummy/group insertion even though values were correct.
+- GitNexus upstream impact for the new `Stage3FeatureBuilder.transform` method returned `UNKNOWN`/target not found with `0` indexed impacts because the main-branch index predates Task 5. Current-tree callers are limited to the new preprocessing tests, so no HIGH or CRITICAL warning applies.
+- Fragmentation regression GREEN: numeric, calendar-dummy, AEZ-group, and final predictor columns are assembled in consolidated DataFrames; the focused selection -> `1 passed, 9 deselected in 3.92s`, and the complete preprocessing file -> `10 passed in 4.40s`.
+- Actual-panel transform smoke: a 500-row approved-panel slice transformed with pandas `PerformanceWarning` promoted to an error, producing `500` rows, `123` ordered `float64` predictors, period-month identity, and zero infinities without warnings.
+- Actual-panel contract generation: the exact approved command read `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.csv` and printed `feature_count=123`, `required_feature_checks=passed`, and `excluded_feature_checks=passed` before writing the local JSON asset. The contract has `76` required raw columns, `22` sorted ISO codes, all `float64` feature dtypes, source-column SHA-256 `6060b8643eac62d21d67141d9cca17a2361b2b3af9d893f6fd8f7e9d5a4b1d25`, and feature-schema SHA-256 `6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b`.
+- Frozen-asset determinism: regenerating from the approved panel preserved byte-identical JSON SHA-256 `3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b`.
+- JSON/static/environment checks: `python3 -m json.tool` parsed the checked-in contract; `py_compile` passed for production and tests; `.venv/bin/python -m pip check` reported `No broken requirements found.`
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `383 passed, 1 skipped, 24 subtests passed in 19.97s`.
+- Final fresh pre-commit verification: the complete preprocessing file -> `10 passed in 4.46s`; the full repository suite -> `383 passed, 1 skipped, 24 subtests passed in 19.38s`; JSON parsing and `py_compile` both exited `0`.
+- Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Contract boundaries: runtime transform uses only the checked-in allowlist and mapping, ignores undeclared extra raw source columns, performs no fit-time statistics, scaling, standardization, or imputation, and creates no dynamic horizon-specific `*_lag{horizon}m` columns. No cloud write or external `Food_Crisis_Cluster` runtime import/invocation was added.
 
 ## Resume
 
-- Exact next step: run the ledger-only staged gate and commit this SHA record, append review-fix evidence to the untracked Task 4 report, then run fresh committed-HEAD verification and Task 4 re-review.
-- Resume command: `git status --short --branch && git diff -- PROGRESS.md && git log -3 --oneline`
+- Exact next step after the Task 5 implementation commit: run independent review; only after review is clean, add the real implementation SHA and mark Task 6 as next in a ledger-only commit.
+- Resume command: `git status --short --branch && git log -3 --oneline && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider`
 
 ---
 
