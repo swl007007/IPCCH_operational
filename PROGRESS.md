@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 1 - Establish the isolated runtime package and immutable partition asset
-- Current state: complete - ready for the Task 1 commit
+- Current task: Task 1 review fix complete; Task 2 is next
+- Current state: Task 1 implemented in `e1f1977d81e83159d006bbd62483fe94fb32f48a`; awaiting Task 2 start
 - Blockers: none
 
 ## Task Status
@@ -51,7 +51,7 @@
 - Staged-scope review: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` failed with the known index error: `LadybugDB unavailable for /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.gitnexus/lbug. Another process may be rebuilding the index. Retry later. (Runtime exception: Couldn't replay shadow pages under read-only mode. Please re-open the database with read-write mode to replay shadow pages.)`
 - Plain `git diff --cached --check`: exit `2` because Git treated the approved CSV's CRLF terminators as trailing whitespace on all 5,366 lines. The asset was not normalized because byte identity and the approved SHA-256 are mandatory.
 - Git fallback staged-scope review: `git -c core.whitespace=cr-at-eol diff --cached --check` -> exit `0`; `git diff --cached --name-status` showed exactly `PROGRESS.md`, the unchanged implementation plan, the requirements file, the package/config/partition files, and the two foundation test files.
-- Commit: this Task 1 commit, subject `feat: establish FEWSNET partitioned RF runtime` (resolve the immutable SHA with `git rev-parse HEAD` after commit; a commit cannot contain its own SHA).
+- Implementation commit: `e1f1977d81e83159d006bbd62483fe94fb32f48a` (`e1f1977 feat: establish FEWSNET partitioned RF runtime`).
 
 ### Task 1 Environment Note
 
