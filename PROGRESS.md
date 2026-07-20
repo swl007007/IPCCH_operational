@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 5 frozen Stage 3 feature contract and leak-free feature frame are ready for independent review
-- Current state: focused and full verification are green; the implementation commit is being prepared from reviewed base `f0abf6b785bc005e5f3d63bec590b879fb09fcc2`
+- Current task: Task 5 frozen Stage 3 feature contract and leak-free feature frame are committed; independent review is pending
+- Current state: implementation commit `8ce39cd56f567a416f20deb0e60b77d0b0cd722d` is focused/full verified; Task 6 is only the next candidate after a clean Task 5 review and is not in progress
 - Blockers: none
 
 ## Task Status
@@ -204,10 +204,12 @@
 - Final fresh pre-commit verification: the complete preprocessing file -> `10 passed in 4.46s`; the full repository suite -> `383 passed, 1 skipped, 24 subtests passed in 19.38s`; JSON parsing and `py_compile` both exited `0`.
 - Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
 - Contract boundaries: runtime transform uses only the checked-in allowlist and mapping, ignores undeclared extra raw source columns, performs no fit-time statistics, scaling, standardization, or imputation, and creates no dynamic horizon-specific `*_lag{horizon}m` columns. No cloud write or external `Food_Crisis_Cluster` runtime import/invocation was added.
+- Implementation commit: `8ce39cd56f567a416f20deb0e60b77d0b0cd722d` (`8ce39cd feat: freeze FEWSNET Stage 3 features`).
+- Review gate: Task 5 independent review is pending; Task 6 remains pending and may start only after that review is clean.
 
 ## Resume
 
-- Exact next step after the Task 5 implementation commit: run independent review; only after review is clean, add the real implementation SHA and mark Task 6 as next in a ledger-only commit.
+- Exact next step: independently review Task 5 commit `8ce39cd56f567a416f20deb0e60b77d0b0cd722d`; if review is clean, Task 6 is the sole next implementation candidate.
 - Resume command: `git status --short --branch && git log -3 --oneline && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider`
 
 ---
