@@ -181,6 +181,34 @@ def test_normalizer_never_overwrites_or_aliases_the_raw_source(tmp_path):
     assert raw.read_bytes() == raw_before
 
 
+def test_normalizer_rejects_raw_source_drift_after_parse(tmp_path, monkeypatch):
+    raw = write_normalization_fixture(tmp_path)
+    raw_before = raw.read_bytes()
+    output = tmp_path / "panel.normalized-v1.csv"
+    audit = tmp_path / "panel.normalized-v1.audit.json"
+    from fewsnet_partitioned_rf_pipeline.core import normalization as module
+
+    original_read_csv = module.pd.read_csv
+    mutated = False
+
+    def read_then_mutate(*args, **kwargs):
+        nonlocal mutated
+        frame = original_read_csv(*args, **kwargs)
+        if not mutated and args[0] == raw.resolve():
+            raw.write_bytes(raw_before + b"\n")
+            mutated = True
+        return frame
+
+    monkeypatch.setattr(module.pd, "read_csv", read_then_mutate)
+
+    with pytest.raises(ValueError, match="raw panel changed"):
+        normalize_panel(raw, output, audit)
+
+    assert mutated
+    assert not output.exists()
+    assert not audit.exists()
+
+
 def test_normalizer_rejects_preexisting_versioned_outputs(tmp_path):
     raw = write_normalization_fixture(tmp_path)
     output = tmp_path / "panel.normalized-v1.csv"
@@ -281,6 +309,39 @@ def test_normalization_cli_prints_sorted_json_summary(tmp_path, capsys):
     assert payload["duplicate_group_count"] == 1
     assert payload["removed_row_count"] == 1
     assert payload["output_sha256"] == hashlib.sha256(output.read_bytes()).hexdigest()
+
+
+def test_normalization_cli_returns_json_error_on_audit_hash_error(
+    tmp_path,
+    monkeypatch,
+    capsys,
+):
+    raw = write_normalization_fixture(tmp_path)
+    output = tmp_path / "panel.normalized-v1.csv"
+    audit = tmp_path / "panel.normalized-v1.audit.json"
+
+    def fail_audit_hash(path):
+        raise OSError(f"cannot hash {path.name}")
+
+    monkeypatch.setattr(normalize_panel_cli, "_sha256_file", fail_audit_hash)
+
+    result = normalize_panel_cli.main(
+        [
+            "--input-panel",
+            str(raw),
+            "--output-panel",
+            str(output),
+            "--audit-output",
+            str(audit),
+        ]
+    )
+
+    assert result == 1
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    payload = json.loads(captured.err)
+    assert list(payload) == sorted(payload)
+    assert payload == {"error": f"cannot hash {audit.name}"}
 
 
 def test_normalization_cli_returns_json_error_without_partial_outputs(tmp_path, capsys):

@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 6 bootstrap normalization and snapshot-audit binding complete; controller review next
-- Current state: Tasks 1-5 are complete and independently reviewed; Task 6 implementation, real artifact generation, real-shapefile LocalArtifactStore acceptance, final regression, staged scope gate, and implementation commit are complete
-- Blockers: none; Task 7 must not start until Task 6 controller review accepts this commit
+- Current task: Task 6 independent-review fix wave complete; controller re-review next
+- Current state: Tasks 1-5 are complete and independently reviewed; Task 6 implementation plus the raw-provenance and CLI JSON-error review fixes are implemented and verified with fresh real-source parity
+- Blockers: none; Task 7 must not start until Task 6 controller re-review accepts the fix commit
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -27,7 +27,7 @@
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
 | 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review clean |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
-| 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; self-review and final gates clean; controller review pending |
+| 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; two Important review findings fixed; fresh gates clean; controller re-review pending |
 | 7. Implement keyed horizon alignment and temporal windows | pending |
 | 8. Validate and route the fixed partition map | pending |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
@@ -252,9 +252,23 @@
 - Staged-scope gate: the required named-repository call `detect_changes(scope="staged", repo="IPCCH_operational", worktree=<feature worktree>)` reported LOW risk, `13` changed files, `3` indexed documentation symbols, and `0` affected processes because the duplicate repository name resolved to the main index. The authoritative exact-worktree-index call reported HIGH risk, `94` changed symbols, `12` affected processes, and the same `13` changed files. Every affected process is within the explicitly reviewed Task 6 normalization CLI, snapshot staging/reuse, audit validation, and local tests; there is no unrelated pipeline spread.
 - External artifacts are evidence only and are not added to Git. No `GCSArtifactStore`, GCP, GCS, Vertex AI, Model Registry, Batch Prediction, model registration, alias, or release-pointer mutation was performed.
 
+### Task 6 Independent-Review Fix Evidence
+
+- Review findings: (1) source checksum/size was collected after parsing and output publication, so a raw-file mutation could make the audit attest bytes different from those parsed; (2) the CLI audit checksum read occurred outside the JSON error boundary, so its `OSError` escaped.
+- Exact-worktree GitNexus upstream gate before edits: `normalize_panel` MEDIUM risk (`7` direct, `11` total, `1` affected CLI process, `2` modules); normalization CLI `main` LOW risk (`3` direct, `4` total, `0` affected processes). No HIGH or CRITICAL result occurred.
+- Raw-provenance RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_panel_normalization.py -q -p no:cacheprovider -k 'raw_source_drift'` -> `1 failed, 10 deselected in 5.88s`; exact failure was `Failed: DID NOT RAISE ValueError` after the test changed the raw file immediately after the parse used for output.
+- Raw-provenance GREEN: the same command -> `1 passed, 10 deselected in 3.77s`; the normalizer now captures raw checksum/size before parsing, rechecks both immediately after parsing, fails before artifact creation on drift, and writes the captured identity into the audit. The complete normalization test file then reported `11 passed in 4.67s`.
+- CLI audit-hash RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_panel_normalization.py -q -p no:cacheprovider -k 'audit_hash_error'` -> `1 failed, 11 deselected in 5.59s`; the injected `OSError: cannot hash panel.normalized-v1.audit.json` escaped from CLI `main`.
+- CLI audit-hash GREEN: the same command -> `1 passed, 11 deselected in 3.83s`; the success summary, including audit hashing, is now inside the existing `(OSError, ValueError)` JSON error boundary. The complete normalization test file then reported `12 passed in 4.47s`.
+- Fresh focused Task 6 verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_panel_normalization.py tests/fewsnet_partitioned_rf/test_contracts.py tests/fewsnet_partitioned_rf/test_snapshot_staging.py tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider` -> `81 passed in 5.98s`.
+- Fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `404 passed, 1 skipped, 24 subtests passed in 19.05s`.
+- Fresh real-source parity used `/tmp/fewsnet-normalization-review.W3PrKd`: raw SHA-256 before and after was identical at `41f02be985d86fbf64ae5d16cec262f9f11ec525fa1c013240f31299995e6178`; the regenerated normalized SHA-256 was `510375f58cd835e694b6e287cce9439bbe1b6246d752daabc8151df8ffdda61d`; `cmp` against the approved normalized-v1 CSV returned byte-identical. Audit validation confirmed `2` duplicate groups, `4` duplicate rows, `2` removed rows, `0` conflicts, keys `2996/2025-10` and `2996/2026-02`, latest feature month `2026-04`, and latest label month `2026-02`.
+- Static and staged-scope gates: `py_compile` for the two production files and normalization tests, `git diff --check`, and `git diff --cached --check` exited `0`. Exact-worktree `detect_changes(scope="staged")` reported MEDIUM risk, `4` staged files, `11` changed symbols, and `4` affected processes; all four are the expected normalization CLI paths (`main` to `_sha256_file`, `_validate_paths`, `_source_columns`, and `_values_equal`). The staged paths are exactly `PROGRESS.md`, `core/normalization.py`, `cli/normalize_panel.py`, and `test_panel_normalization.py`; `.superpowers/` and external artifacts remain unstaged.
+- No external approved artifact was overwritten, no cloud adapter was instantiated, and no Task 7 file or behavior was entered.
+
 ## Resume
 
-- Exact next step: controller review Task 6 from the committed diff and `.superpowers/sdd/task-6-report.md`; only after acceptance may Task 7 begin. Do not perform any GCP/Vertex write.
+- Exact next step: controller re-review Task 6 from the review-fix commit and `.superpowers/sdd/task-6-report.md`; only after acceptance may Task 7 begin. Do not perform any GCP/Vertex write.
 - Resume command: `git status --short --branch && git show --stat --oneline HEAD && sed -n '1,260p' .superpowers/sdd/task-6-report.md`
 
 ---

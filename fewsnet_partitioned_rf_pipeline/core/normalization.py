@@ -129,6 +129,7 @@ def normalize_panel(
         output_panel_path,
         audit_path,
     )
+    source_panel_metadata = _panel_metadata(raw, 0, 0)
     source_columns = _source_columns(raw)
     required_columns = {
         ADMIN_COLUMN,
@@ -142,6 +143,13 @@ def normalize_panel(
         raise ValueError(f"raw panel missing required columns: {missing_columns}")
 
     frame = pd.read_csv(raw, low_memory=False)
+    post_parse_sha256 = _sha256_file(raw)
+    post_parse_size_bytes = raw.stat().st_size
+    if (
+        post_parse_sha256 != source_panel_metadata["sha256"]
+        or post_parse_size_bytes != source_panel_metadata["size_bytes"]
+    ):
+        raise ValueError("raw panel changed while it was being parsed")
     if frame.empty:
         raise ValueError("raw panel must contain at least one row")
     frame[_SOURCE_ROW_COLUMN] = np.arange(1, len(frame) + 1, dtype=np.int64)
@@ -228,6 +236,8 @@ def normalize_panel(
         raise ValueError(f"raw panel has no non-null {TARGET_COLUMN} values")
     latest_label_month = str(cleaned.loc[labeled, _FEATURE_MONTH_COLUMN].max())
     output_frame = cleaned.loc[:, source_columns]
+    source_panel_metadata["row_count"] = raw_row_count
+    source_panel_metadata["column_count"] = len(source_columns)
 
     output.parent.mkdir(parents=True, exist_ok=True)
     audit.parent.mkdir(parents=True, exist_ok=True)
@@ -240,11 +250,7 @@ def normalize_panel(
         payload = {
             "schema_version": NORMALIZATION_SCHEMA_VERSION,
             "normalization_version": NORMALIZATION_VERSION,
-            "source_panel": _panel_metadata(
-                raw,
-                raw_row_count,
-                len(source_columns),
-            ),
+            "source_panel": source_panel_metadata,
             "output_panel": _panel_metadata(
                 output,
                 normalized_row_count,

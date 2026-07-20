@@ -38,25 +38,21 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.output_panel,
             args.audit_output,
         )
+        summary = {
+            "audit_path": str(result.audit_path),
+            "audit_sha256": _sha256_file(result.audit_path),
+            "duplicate_group_count": result.duplicate_group_count,
+            "normalized_row_count": result.normalized_row_count,
+            "output_panel_path": str(result.output_panel_path),
+            "output_sha256": result.output_sha256,
+            "raw_row_count": result.raw_row_count,
+            "removed_row_count": result.removed_row_count,
+        }
     except (OSError, ValueError) as exc:
         print(json.dumps({"error": str(exc)}, sort_keys=True), file=sys.stderr)
         return 1
 
-    print(
-        json.dumps(
-            {
-                "audit_path": str(result.audit_path),
-                "audit_sha256": _sha256_file(result.audit_path),
-                "duplicate_group_count": result.duplicate_group_count,
-                "normalized_row_count": result.normalized_row_count,
-                "output_panel_path": str(result.output_panel_path),
-                "output_sha256": result.output_sha256,
-                "raw_row_count": result.raw_row_count,
-                "removed_row_count": result.removed_row_count,
-            },
-            sort_keys=True,
-        )
-    )
+    print(json.dumps(summary, sort_keys=True))
     return 0
 
 
