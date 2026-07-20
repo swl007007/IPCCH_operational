@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 4 independent-review fixes are in progress
-- Current state: review identified exact-generation manifest-reference validation, one-byte-version panel capture, and deterministic CSV/NA identifier handling; Task 5 remains blocked pending Task 4 re-review
+- Current task: Task 4 independent-review fixes are committed; committed-HEAD verification and re-review are in progress
+- Current state: exact-generation manifest-reference validation, one-byte-version panel capture, and deterministic CSV/NA identifier handling landed in `55866bb846f957d783680d400ac9954081a9a5b6`; Task 5 remains blocked pending Task 4 re-review
 - Blockers: none
 
 ## Task Status
@@ -22,7 +22,7 @@
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
-| 4. Stage and validate immutable FEWSNET input snapshots | independent review needs fixes; fix wave in progress |
+| 4. Stage and validate immutable FEWSNET input snapshots | independent-review fixes committed; re-review pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
 | 7. Validate and route the fixed partition map | pending |
@@ -178,14 +178,14 @@
 - Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
 - Fresh controller pre-commit verification: the complete snapshot suite -> `18 passed in 6.55s`; the full repository suite -> `373 passed, 1 skipped, 24 subtests passed in 22.12s`; CLI help, `py_compile`, `pip check`, both preserved SHA-256 identities, and `git diff --check` all passed.
 - Preliminary independent-review staged gate: GitNexus `detect_changes(scope="staged")` -> LOW risk, exactly 3 changed files, 3 indexed documentation symbols, and 0 affected execution processes; `git diff --cached --check` exited `0`; staged paths were exactly `PROGRESS.md`, `core/data.py`, and `test_snapshot_staging.py`; `.superpowers/` remained untracked and unstaged.
-- Final independent-review staged gate: pending.
-- Independent-review fix commit: pending.
+- Final independent-review staged gate repeated the same LOW-risk, 3-file, 0-process GitNexus scope; `git diff --cached --check` remained clean, staged paths remained exact, and `.superpowers/` remained unstaged.
+- Independent-review fix commit: `55866bb846f957d783680d400ac9954081a9a5b6` (`55866bb fix: harden FEWSNET snapshot identity`).
 - Blockers: none.
 
 ## Resume
 
-- Exact next step: stage only the Task 4 review-fix code, tests, and `PROGRESS.md`; run the required staged gates; and create the focused fix commit.
-- Resume command: `git status --short --branch && git diff -- PROGRESS.md fewsnet_partitioned_rf_pipeline/core/data.py tests/fewsnet_partitioned_rf/test_snapshot_staging.py`
+- Exact next step: run the ledger-only staged gate and commit this SHA record, append review-fix evidence to the untracked Task 4 report, then run fresh committed-HEAD verification and Task 4 re-review.
+- Resume command: `git status --short --branch && git diff -- PROGRESS.md && git log -3 --oneline`
 
 ---
 
