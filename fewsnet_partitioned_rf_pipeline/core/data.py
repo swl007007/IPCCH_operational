@@ -17,10 +17,11 @@ from fewsnet_partitioned_rf_pipeline.config import (
     ADMIN_SOURCE_COLUMN,
     TARGET_COLUMN,
 )
-from fewsnet_partitioned_rf_pipeline.core import SnapshotManifest
+from fewsnet_partitioned_rf_pipeline.core import ObjectRef, SnapshotManifest
 from fewsnet_partitioned_rf_pipeline.schemas import validate_payload
 from fewsnet_partitioned_rf_pipeline.vertex.storage import (
     ArtifactStore,
+    GenerationConflict,
     put_immutable_or_verify,
     sha256_file,
     upload_file_immutable_or_verify,
@@ -166,6 +167,89 @@ def normalize_boundaries(path: Path, output_parquet: Path) -> dict:
     }
 
 
+def _snapshot_semantic_payload(payload: dict) -> dict:
+    """Return fields that must agree for an existing snapshot no-op."""
+    return {
+        "schema_version": payload["schema_version"],
+        "snapshot_id": payload["snapshot_id"],
+        "snapshot_content_sha256": payload["snapshot_content_sha256"],
+        "panel": {
+            key: value
+            for key, value in payload["panel"].items()
+            if key != "generation"
+        },
+        "boundaries": {
+            key: value
+            for key, value in payload["boundaries"].items()
+            if key != "generation"
+        },
+        "admin_universe": {
+            key: value
+            for key, value in payload["admin_universe"].items()
+            if key != "generation"
+        },
+        "row_count": payload["row_count"],
+        "area_count": payload["area_count"],
+        "spatial_feature_count": payload["spatial_feature_count"],
+        "crs": payload["crs"],
+        "latest_feature_month": payload["latest_feature_month"],
+        "latest_label_month": payload["latest_label_month"],
+        "source_types": {
+            "panel_source_type": payload["source_identity"]["panel_source_type"],
+            "boundaries_source_type": payload["source_identity"][
+                "boundaries_source_type"
+            ],
+        },
+        "admin_code_mapping": payload["admin_code_mapping"],
+    }
+
+
+def _manifest_from_payload(payload: dict) -> SnapshotManifest:
+    return SnapshotManifest(
+        snapshot_id=payload["snapshot_id"],
+        created_at_utc=payload["created_at_utc"],
+        snapshot_content_sha256=payload["snapshot_content_sha256"],
+        panel=ObjectRef(**payload["panel"]),
+        boundaries=ObjectRef(**payload["boundaries"]),
+        admin_universe=ObjectRef(**payload["admin_universe"]),
+        row_count=payload["row_count"],
+        area_count=payload["area_count"],
+        spatial_feature_count=payload["spatial_feature_count"],
+        crs=payload["crs"],
+        latest_feature_month=payload["latest_feature_month"],
+        latest_label_month=payload["latest_label_month"],
+        source_identity=payload["source_identity"],
+        admin_code_mapping=payload["admin_code_mapping"],
+    )
+
+
+def _reuse_existing_manifest(
+    store: ArtifactStore,
+    manifest_ref: ObjectRef,
+    expected_payload: dict,
+) -> SnapshotManifest:
+    try:
+        existing_payload = json.loads(
+            store.read_bytes(
+                manifest_ref.uri,
+                generation=manifest_ref.generation,
+            )
+        )
+        validate_payload("source-snapshot", existing_payload)
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+        raise GenerationConflict(
+            f"existing snapshot manifest is invalid: {manifest_ref.uri}"
+        ) from exc
+    if _snapshot_semantic_payload(existing_payload) != _snapshot_semantic_payload(
+        expected_payload
+    ):
+        raise GenerationConflict(
+            "existing snapshot manifest has different content identity: "
+            f"{manifest_ref.uri}"
+        )
+    return _manifest_from_payload(existing_payload)
+
+
 def stage_snapshot(
     *,
     panel_path: Path,
@@ -283,9 +367,23 @@ def stage_snapshot(
             sort_keys=True,
             separators=(",", ":"),
         ).encode()
-        put_immutable_or_verify(
-            store,
-            f"{snapshot_root}/source_manifest.json",
-            manifest_bytes,
+        manifest_uri = f"{snapshot_root}/source_manifest.json"
+        existing_manifest = next(
+            (ref for ref in store.list(f"{snapshot_root}/") if ref.uri == manifest_uri),
+            None,
         )
+        if existing_manifest is not None:
+            return _reuse_existing_manifest(
+                store,
+                existing_manifest,
+                manifest_payload,
+            )
+        try:
+            put_immutable_or_verify(store, manifest_uri, manifest_bytes)
+        except GenerationConflict:
+            return _reuse_existing_manifest(
+                store,
+                store.get_ref(manifest_uri),
+                manifest_payload,
+            )
         return manifest

@@ -209,6 +209,32 @@ def test_stage_snapshot_reuses_byte_identical_immutable_objects(tmp_path):
     assert len(store.write_order) == 4
 
 
+def test_stage_snapshot_reuses_existing_manifest_when_only_created_at_changes(
+    tmp_path,
+):
+    panel = _write_panel_fixture(tmp_path)
+    boundaries = _write_boundary_fixture(tmp_path)
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+    common = {
+        "panel_path": panel,
+        "boundaries_path": boundaries,
+        "destination_root": "gs://bucket/fewsnet_partitioned_rf",
+        "store": store,
+    }
+
+    first = stage_snapshot(
+        **common,
+        created_at_utc="2026-07-20T00:00:00Z",
+    )
+    second = stage_snapshot(
+        **common,
+        created_at_utc="2026-07-20T01:00:00Z",
+    )
+
+    assert second == first
+    assert len(store.write_order) == 4
+
+
 def test_inspect_panel_rejects_duplicate_area_period_keys_across_chunks(
     tmp_path,
     monkeypatch,
