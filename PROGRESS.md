@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 2 review-fix implementation and verification complete; first pre-commit scope gate pending
-- Current state: original implementation `93d49b929d4f7578e905116e9eb3b95665bf04fb` is committed; review fixes are green in the working tree and the review-fix commit is pending
+- Current task: Task 2 review fixes committed and self-verified; controller re-review pending
+- Current state: original implementation `93d49b929d4f7578e905116e9eb3b95665bf04fb` and review fix `d65a615815c0aad956c2942c7f263e9ab830ed5b` are committed; Task 3 is next after the Task 2 re-review gate
 - Blockers: none
 
 ## Task Status
@@ -20,7 +20,7 @@
 | Task | Status |
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
-| 2. Define shared types and machine-readable contracts | review fixes in progress |
+| 2. Define shared types and machine-readable contracts | review fixes complete; re-review pending |
 | 3. Add binary-safe local and GCS artifact storage | pending |
 | 4. Stage and validate immutable FEWSNET input snapshots | pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
@@ -81,12 +81,13 @@
 - Schema audit: all seven Draft 2020-12 schemas pass metaschema validation; fixed-object `additionalProperties: false` coverage is clean; cluster-state and SMOTE maps require exact keys `0..16`; the RFC 3339 `date-time` `FormatChecker` is registered.
 - Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `324 passed, 1 skipped, 24 subtests passed in 15.55s`.
 - First staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, 7 changed files, 4 indexed documentation symbols, and 0 affected execution processes.
-- Review-fix commit: pending with subject `fix: harden FEWSNET suite contracts`.
+- Review-fix commit: `d65a615815c0aad956c2942c7f263e9ab830ed5b` (`d65a615 fix: harden FEWSNET suite contracts`).
 - Controller re-review: pending.
+- Second ledger-only staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 1 changed file (`PROGRESS.md`), 3 indexed documentation symbols, and 0 affected execution processes.
 
 ## Resume
 
-- Exact next task: Task 3 - Add binary-safe local and GCS artifact storage.
+- Exact next task: Task 3 - Add binary-safe local and GCS artifact storage, after the Task 2 controller re-review gate.
 - Resume command: `git status --short --branch && git log -1 --oneline`
 
 ---
