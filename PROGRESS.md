@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 3 binary-safe local and GCS artifact storage is implemented and self-verified; implementation commit pending
-- Current state: Task 2 is controller-review clean through ledger commit `32d7e7908758ad7c67da766467c23c199dccd3ce`; Task 3 focused and full regression gates are clean
+- Current task: Task 3 binary-safe local and GCS artifact storage is committed and self-verified; controller review pending
+- Current state: Task 3 implementation commit `05682609f35cda2a7cf0f75c143d024c34222426` is complete; Task 4 is next after the Task 3 controller review gate
 - Blockers: none
 
 ## Task Status
@@ -21,7 +21,7 @@
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
-| 3. Add binary-safe local and GCS artifact storage | implementation verified; commit pending |
+| 3. Add binary-safe local and GCS artifact storage | implementation committed; controller review pending |
 | 4. Stage and validate immutable FEWSNET input snapshots | pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
@@ -110,12 +110,14 @@
 - Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
 - Preliminary staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 4 changed files, 5 indexed documentation symbols, and 0 affected execution processes; the new storage symbols are not present in the main-branch index.
 - Preliminary Git staged checks: `git diff --cached --check` -> exit `0`; `git diff --cached --name-status` showed exactly `PROGRESS.md`, the two new `vertex` files, and `test_storage.py`.
-- Blockers: none. Task 3 implementation commit is pending the staged-scope gates.
+- Final implementation staged gate repeated the same LOW-risk, 4-file, 0-process GitNexus scope; `git diff --cached --check` remained clean and staged paths remained exact.
+- Implementation commit: `05682609f35cda2a7cf0f75c143d024c34222426` (`0568260 feat: add FEWSNET artifact storage`).
+- Blockers: none. Controller review is pending before Task 4 starts.
 
 ## Resume
 
-- Exact next step: stage only Task 3 implementation/test paths plus `PROGRESS.md`, run the staged GitNexus and Git checks, and create the implementation commit.
-- Resume command: `git add fewsnet_partitioned_rf_pipeline/vertex tests/fewsnet_partitioned_rf/test_storage.py PROGRESS.md && git diff --cached --name-status`
+- Exact next task: Task 4 - Stage and validate immutable FEWSNET input snapshots, after the Task 3 controller review gate.
+- Resume command: `git status --short --branch && git log -2 --oneline`
 
 ---
 
