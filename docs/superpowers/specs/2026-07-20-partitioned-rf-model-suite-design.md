@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-20
 
-**Status:** Approved design
+**Status:** Approved design; bootstrap normalization amendment approved
 
 **Pipeline root:** `fewsnet_partitioned_rf_pipeline/`
 
@@ -35,6 +35,25 @@ Observed on 2026-07-20:
 - Latest feature month: `2026-04`.
 - Latest month with non-null `fews_ipc_crisis`: `2026-02`.
 - Native binary target: `fews_ipc_crisis`.
+
+The raw combined CSV contains two duplicate normalized
+`FEWSNET_admin_code + month` groups, both for admin `2996`:
+
+- `2025-10`: two rows differ only in the already-derived
+  `Tair_zscore` and `Rainf_zscore` values.
+- `2026-02`: two rows are identical across every audited column.
+
+The approved bootstrap normalization collapses those two groups before the
+notebook-compatible climate rolling/z-score calculation. The expected cleaned
+panel has 1,120,728 rows, 5,718 areas, latest feature month `2026-04`, and
+latest label month `2026-02`. The raw combined CSV is retained byte-for-byte;
+the normalized result and its audit are written as new versioned files, for
+example:
+
+```text
+FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv
+FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.audit.json
+```
 
 The initial spatial source is:
 
@@ -92,12 +111,14 @@ consume immutable GCS object references rather than local workstation paths.
 ```text
 fewsnet_partitioned_rf_pipeline/
 ├── cli/
+│   ├── normalize_panel.py       # one-time/versioned bootstrap normalization
 │   ├── stage_snapshot.py        # optional administrative bootstrap only
 │   ├── train.py
 │   ├── infer.py
 │   └── run_latest.py
 ├── core/
 │   ├── data.py
+│   ├── normalization.py
 │   ├── horizons.py
 │   ├── partitions.py
 │   ├── preprocessing.py
@@ -124,8 +145,8 @@ The modules are separated by contract:
 - `vertex/` contains Google Cloud and Vertex AI adapters.
 - `cli/` contains entrypoints and orchestration commands.
 - `assets/` holds the fixed partition asset and its provenance.
-- `schemas/` defines machine-readable input, package, prediction, report, and
-  suite manifest contracts.
+- `schemas/` defines machine-readable input, normalization-audit, package,
+  prediction, report, and suite manifest contracts.
 
 The new pipeline uses an environment-configured GCS root whose final path
 component is reserved for this suite, for example:
@@ -178,7 +199,8 @@ local file path:
 
 ```text
 inputs/snapshots/{snapshot_id}/
-├── assembled_fewsnet.csv
+├── assembled_fewsnet.normalized.csv
+├── panel_normalization_audit.json
 ├── admin_boundaries.parquet
 ├── admin_universe.csv
 └── source_manifest.json
@@ -191,7 +213,10 @@ Runtime validation uses normalized GeoParquet and `admin_universe.csv`.
 
 - Snapshot ID and creation timestamp.
 - Exact GCS URI and generation for every object.
-- SHA-256, size, and row count for the assembled panel.
+- SHA-256, size, and row count for the normalized assembled panel.
+- Exact normalization-audit object reference. The referenced audit records the
+  normalization version, raw input checksum/row count, cleaned output
+  checksum/row count, duplicate-group evidence, and removed-row count.
 - Unique area count.
 - Spatial feature count and CRS.
 - Source identity fields and canonical `admin_code` mapping.
@@ -200,9 +225,38 @@ Runtime validation uses normalized GeoParquet and `admin_universe.csv`.
 - Schema version.
 
 The producer that synchronizes new source data into the GCS landing area is a
-separate concern. An optional administrative staging command can bootstrap the
-initial snapshot from the approved local sources, but monthly Vertex training
-and inference do not depend on that workstation.
+separate concern. Before the initial snapshot is staged, an administrative
+normalization command writes a new versioned CSV and audit JSON without
+overwriting the raw source. It performs these operations in order:
+
+1. Read the raw CSV while preserving source column order and original row
+   identity.
+2. Normalize the admin identity and month key, then stably sort by
+   `FEWSNET_admin_code`, `date`, and original row order, matching the reference
+   notebook's admin/date ordering.
+3. For every duplicate area-month group, compare all source columns with
+   missing values treated as equal, excluding only `Tair_zscore` and
+   `Rainf_zscore` from the equality check.
+4. Collapse the group to its first stably sorted row only when every compared
+   field is equal. If any other field conflicts, fail before writing either
+   output.
+5. Recompute the notebook's climate derivations after deduplication: global
+   continuous 12-row rolling means with `min_periods=1` for
+   `Tair_f_tavg_mean` and `Rainf_f_tavg_mean`, followed by within-admin sample
+   z-scores for `Tair_zscore` and `Rainf_zscore`. The temporary `_m12` columns
+   are not retained.
+6. Write the cleaned CSV with the original source-column order and write an
+   audit JSON containing raw/output checksums and sizes, raw/output row counts,
+   duplicate keys, compared/excluded columns, removed rows, and the exact
+   derivation parameters.
+
+Snapshot staging accepts only the normalized CSV plus its matching audit. It
+verifies that the audit's output checksum and row count match the supplied
+panel, uploads the audit as an immutable snapshot member, and includes the
+audit checksum in `snapshot_content_sha256`. An optional administrative staging
+command can then bootstrap the initial snapshot from the approved local
+sources, but monthly Vertex training and inference do not depend on that
+workstation.
 
 `run_latest` selects the newest valid snapshot. If its feature month and input
 checksum already correspond to a successful production suite, the run is an
@@ -236,13 +290,18 @@ with counts and reasons recorded by horizon; rows must never be aligned by
 unkeyed positional shifting.
 
 Panels are sorted and keyed by canonical area identity plus month before
-alignment. Duplicate area-month rows are a hard input failure.
+alignment. The narrow bootstrap normalizer is the only component allowed to
+collapse approved derived-only duplicates. `inspect_panel`, snapshot staging,
+feature preparation, and horizon alignment continue to reject every duplicate
+area-month row as a hard input failure.
 
 ## 8. Feature and preprocessing contract
 
 Each horizon stores an ordered, immutable feature allowlist. Training, local
 inference, custom-container inference, and Batch Prediction must all enforce
-the same order and numeric types.
+the same order and numeric types. They consume only a snapshot whose normalized
+panel and normalization audit passed the GCS-first input contract; runtime
+feature code never performs implicit deduplication.
 
 The initial allowlist is materialized as a versioned asset such as
 `assets/feature_contracts/fewsnet_stage3_v1.json`. It is generated from the
@@ -594,6 +653,11 @@ Failure rules are:
 
 - Invalid schema, checksum, duplicate area-month rows, or invalid area identity
   fails before training.
+- A raw duplicate group with a conflict outside `Tair_zscore` and
+  `Rainf_zscore` fails bootstrap normalization before any cleaned panel or audit
+  is published.
+- A missing, mismatched, or unverifiable normalization audit fails snapshot
+  staging; raw unnormalized panels are not accepted as runtime snapshots.
 - Any horizon training or package failure prevents suite registration.
 - Any candidate registration failure prevents Batch Prediction and promotion.
 - Any Batch Prediction or output-validation failure prevents all promotion.
@@ -615,6 +679,13 @@ in outputs; it is not treated as an infrastructure failure.
 
 ### 18.1 Data and horizon tests
 
+- Derived-only duplicate collapse before rolling/z-score recomputation.
+- Conflict outside the two approved z-score columns fails closed.
+- Raw-source non-overwrite, deterministic cleaned row/column order, and audit
+  checksum/row reconciliation.
+- Notebook-order rolling/z-score parity on a frozen small fixture.
+- Snapshot identity includes the immutable normalization audit, and staging
+  rejects a cleaned panel whose bytes or row count do not match that audit.
 - True 0/6/12-month alignment by area and calendar month.
 - 36-month target-window boundaries.
 - Latest-six-month threshold split.
@@ -648,6 +719,12 @@ production corrections—0/6/12 alignment and fit-slice-only imputation—are
 tested against their own explicit contracts rather than against the legacy
 schedule or leakage-prone preprocessing order.
 
+Bootstrap climate normalization has its own parity fixture. On the same sorted,
+deduplicated rows, the new implementation must reproduce the reference
+notebook's global 12-row rolling means and within-admin z-scores within a strict
+numeric tolerance. This test does not permit general duplicate suppression in
+the recurring runtime path.
+
 ### 18.4 Package and Vertex contract tests
 
 - JSON Schema validation for all manifests and reports.
@@ -669,22 +746,31 @@ normalized outputs, and leaves production aliases untouched.
 
 The first complete production run is accepted only when:
 
-1. The input manifest resolves to the approved immutable current snapshot.
-2. The fixed partition checksum matches the approved checksum.
-3. One Custom Job produces all three valid model packages.
-4. Three new Vertex Model Versions are registered under the expected parent
+1. The raw panel remains byte-identical to its pre-normalization checksum.
+2. The versioned normalized panel contains exactly 1,120,728 rows and 5,718
+   areas, with two recorded duplicate groups and two removed rows.
+3. The normalization audit proves that only derived-only-compatible duplicates
+   were collapsed and that the cleaned panel checksum/row count match the
+   snapshot panel object.
+4. The cleaned panel passes the unchanged duplicate area-month hard gate, and a
+   real-boundary local-store staging run completes without any GCP write.
+5. The input manifest resolves to the approved immutable current snapshot and
+   includes the exact normalization-audit generation.
+6. The fixed partition checksum matches the approved checksum.
+7. One Custom Job produces all three valid model packages.
+8. Three new Vertex Model Versions are registered under the expected parent
    models.
-5. All versions use the expected custom serving image digest and artifact URI.
-6. All three candidate Batch Prediction Jobs succeed.
-7. Each current output CSV contains 5,718 unique areas.
-8. Local composite-predictor, local container, and Vertex Batch outputs agree
+9. All versions use the expected custom serving image digest and artifact URI.
+10. All three candidate Batch Prediction Jobs succeed.
+11. Each current output CSV contains 5,718 unique areas.
+12. Local composite-predictor, local container, and Vertex Batch outputs agree
    on a fixed sample.
-9. All prediction probabilities, classes, routes, and fallback totals validate.
-10. No online Endpoint, map, workbook, or future-target performance artifact is
+13. All prediction probabilities, classes, routes, and fallback totals validate.
+14. No online Endpoint, map, workbook, or future-target performance artifact is
     created.
-11. The three production aliases and final suite manifest refer to the same
+15. The three production aliases and final suite manifest refer to the same
     suite version.
-12. `released/current.json` is written last and points to the accepted immutable
+16. `released/current.json` is written last and points to the accepted immutable
     production suite manifest.
 
 ## 20. Repository safety and implementation gate

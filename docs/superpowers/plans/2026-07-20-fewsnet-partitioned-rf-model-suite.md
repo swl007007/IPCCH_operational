@@ -2,15 +2,15 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a GCS-first FEWSNET Stage 3 partitioned Random Forest pipeline that trains 0m, 6m, and 12m models, registers three versioned Vertex AI Models, runs Batch Prediction for the latest valid feature month, and promotes one internally consistent production suite.
+**Goal:** Build a GCS-first FEWSNET Stage 3 partitioned Random Forest pipeline that first creates an audited, versioned normalized bootstrap panel, then trains 0m, 6m, and 12m models, registers three versioned Vertex AI Models, runs Batch Prediction for the latest valid feature month, and promotes one internally consistent production suite.
 
-**Architecture:** Add a fully isolated `fewsnet_partitioned_rf_pipeline` package with platform-independent data/model code and narrow Vertex AI adapters. One digest-pinned image runs both the three-horizon Custom Job trainer and the custom prediction server; the orchestrator registers exact candidate versions, validates three Batch Prediction jobs, then moves production aliases and writes the authoritative GCS suite pointer last.
+**Architecture:** Add a fully isolated `fewsnet_partitioned_rf_pipeline` package with platform-independent normalization/data/model code and narrow Vertex AI adapters. A one-time administrative command writes a new cleaned CSV plus immutable audit without overwriting the raw panel; snapshot staging verifies and uploads both. One digest-pinned image runs both the three-horizon Custom Job trainer and the custom prediction server; the orchestrator registers exact candidate versions, validates three Batch Prediction jobs, then moves production aliases and writes the authoritative GCS suite pointer last.
 
 **Tech Stack:** Python 3.11, pandas, NumPy, scikit-learn RandomForestClassifier, imbalanced-learn SMOTE, joblib, GeoPandas/GeoParquet, FastAPI/Uvicorn, google-cloud-storage, google-cloud-aiplatform `1.161.0`, JSON Schema, pytest, GCS, Vertex AI Custom Jobs, Vertex AI Model Registry, Vertex AI Batch Prediction.
 
 ## Global Constraints
 
-- The authoritative design is `docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md` at commit `e6afd2c`; do not change it during implementation unless the user separately approves a design revision.
+- The authoritative design is `docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md`, including the user-approved bootstrap-normalization amendment; its current checksum is recorded in `PROGRESS.md`. Do not change it during implementation unless the user separately approves another design revision.
 - At execution start, use `superpowers:using-git-worktrees`, create a `features/*` branch, and create or reconcile repository-local `PROGRESS.md` before code edits.
 - Ensure this plan file is present unchanged in the execution worktree and include it in the first task commit; it remains the task authority throughout execution.
 - `PROGRESS.md` is an execution ledger, not approval authority. Record each task's RED/GREEN commands, commit hash, blockers, exact next task, and resume command.
@@ -18,7 +18,11 @@
 - Before every commit, run GitNexus `detect_changes(scope="staged")`. If the operational LadybugDB replay error persists, record the failure in `PROGRESS.md`, verify staged paths with Git, and do not include unrelated files.
 - Preserve the user's existing unstaged `AGENTS.md`, `CLAUDE.md`, and `.claude/` changes.
 - Runtime inputs must be immutable `gs://` objects with generation/checksum evidence. Local Dropbox paths are bootstrap inputs only.
-- Snapshot identity is the canonical content digest of the panel, normalized boundaries, admin universe, and schema-relevant metadata; do not use the panel checksum alone for no-op/revision decisions.
+- Never overwrite the raw assembled FEWSNET CSV. Bootstrap normalization writes an explicitly versioned cleaned CSV and audit JSON to different paths.
+- Automatic duplicate collapse is allowed only when rows sharing normalized `FEWSNET_admin_code + month` are equal across every column except `Tair_zscore` and `Rainf_zscore`; every other conflict fails closed.
+- Deduplicate after stable admin/date sorting and before reproducing the notebook's global 12-row climate rolling means and within-admin sample z-scores. `inspect_panel`, feature preparation, and horizon alignment retain their duplicate-key hard gates.
+- Snapshot staging accepts only a normalized panel plus a matching immutable normalization audit. The audit's output checksum/row count must equal the staged panel.
+- Snapshot identity is the canonical content digest of the normalized panel, normalization audit, normalized boundaries, admin universe, and schema-relevant metadata; do not use the panel checksum alone for no-op/revision decisions.
 - Runtime must not import or invoke the external `Food_Crisis_Cluster` checkout. The external checkout is allowed only for one-time asset copying and parity-fixture generation.
 - Use target `fews_ipc_crisis` and horizons exactly `0`, `6`, and `12` months. Horizon means keyed `feature_month=t -> target_month=t+h`; do not reuse the legacy 1/4/8/12 schedule or create horizon by positional row shifting.
 - Use one common latest labeled target month and a 36-target-month window for all horizons. Hold out the latest six target months for threshold selection.
@@ -56,6 +60,7 @@
 ### New core files
 
 - `fewsnet_partitioned_rf_pipeline/core/types.py` — shared dataclasses and literal status types.
+- `fewsnet_partitioned_rf_pipeline/core/normalization.py` — narrow duplicate resolution, notebook-order climate derivation recomputation, and audit validation.
 - `fewsnet_partitioned_rf_pipeline/core/data.py` — panel/spatial identity normalization, snapshot inspection, and loading.
 - `fewsnet_partitioned_rf_pipeline/core/preprocessing.py` — reference-compatible feature construction, feature contract enforcement, and `MaxPlusImputer`.
 - `fewsnet_partitioned_rf_pipeline/core/horizons.py` — keyed feature-target alignment and temporal splits.
@@ -75,6 +80,7 @@
 - `fewsnet_partitioned_rf_pipeline/vertex/batch_prediction.py` — exact-version Batch Prediction jobs and raw-output normalization.
 - `fewsnet_partitioned_rf_pipeline/vertex/promotion.py` — version alias movement, rollback, and final GCS publication.
 - `fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py` — optional initial local-to-GCS snapshot bootstrap.
+- `fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py` — local versioned panel normalization and audit entrypoint.
 - `fewsnet_partitioned_rf_pipeline/cli/train.py` — in-container three-horizon training worker.
 - `fewsnet_partitioned_rf_pipeline/cli/infer.py` — Batch input preparation and normalized output validation.
 - `fewsnet_partitioned_rf_pipeline/cli/run_latest.py` — Cloud Run-compatible end-to-end orchestrator.
@@ -85,6 +91,7 @@
 - `fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json`
 - `fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json`
 - `fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json`
+- `fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json`
 - `fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json`
 - `fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json`
 - `fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json`
@@ -96,6 +103,7 @@
 ### New tests, fixtures, tools, and documentation
 
 - `tests/fewsnet_partitioned_rf/` — focused unit, contract, integration, and optional live GCP tests.
+- `tests/fewsnet_partitioned_rf/test_panel_normalization.py` — deduplication, audit, parity, and real-source acceptance coverage.
 - `tests/fixtures/fewsnet_partitioned_rf/` — small panels, manifests, Batch JSONL, and frozen parity fixture.
 - `tools/build_fewsnet_stage3_parity_fixture.py` — one-time developer tool that calls the external reference checkout and writes a checked-in fixture.
 - `docs/09_fewsnet_partitioned_rf_runbook.md` — staging, training, registry, Batch, rollback, and recovery runbook.
@@ -117,7 +125,7 @@
 
 **Interfaces:**
 - Produces `HORIZON_MONTHS`, `HORIZON_KEYS`, `RF_PARAMS`, `PARTITION_MIN_SAMPLES`, `THRESHOLD_GRID`, `PARENT_MODEL_IDS`, `PARTITION_ASSET_PATH`, `PARTITION_ASSET_SHA256`, and `PROMOTION_LEASE_SECONDS` from `config.py`.
-- Produces a byte-identical fixed partition CSV and auditable JSON manifest consumed by Tasks 7, 9, and 11.
+- Produces a byte-identical fixed partition CSV and auditable JSON manifest consumed by Tasks 8, 10, and 12.
 
 - [ ] **Step 1: Create the execution ledger and write the failing foundation test**
 
@@ -307,7 +315,7 @@ git commit -m "feat: establish FEWSNET partitioned RF runtime"
 - Create: `fewsnet_partitioned_rf_pipeline/core/__init__.py`
 - Create: `fewsnet_partitioned_rf_pipeline/core/types.py`
 - Create: `fewsnet_partitioned_rf_pipeline/schemas/__init__.py`
-- Create: all seven JSON schemas listed in File Structure
+- Create: the original seven JSON schemas listed in File Structure; Task 6 adds the approved `panel-normalization` schema and extends the source-snapshot contract.
 - Create: `tests/fixtures/fewsnet_partitioned_rf/source_snapshot_valid.json`
 - Create: `tests/fixtures/fewsnet_partitioned_rf/deployment_valid.json`
 - Create: `tests/fewsnet_partitioned_rf/test_contracts.py`
@@ -512,7 +520,7 @@ def validate_deployment(payload: dict) -> None:
 Create Draft 2020-12 schemas with `additionalProperties: false` at every fixed object level and these required fields:
 
 - `source-snapshot`: `schema_version`, `snapshot_id`, `created_at_utc`, `snapshot_content_sha256`, `panel`, `boundaries`, `admin_universe`, `row_count`, `area_count`, `spatial_feature_count`, `crs`, `latest_feature_month`, `latest_label_month`, `source_identity`, `admin_code_mapping`; each object ref requires `uri`, `generation`, `sha256`, `size_bytes`. `source_identity` requires `panel_bootstrap_path`, `boundaries_bootstrap_path`, `panel_source_type`, and `boundaries_source_type`; `admin_code_mapping` requires `panel`, `boundaries`, and `canonical`.
-- `deployment`: `schema_version`, `project_id`, `region`, `object_store_root_uri`, `orchestrator_service_account`, `training_service_account`, `batch_prediction_service_account`, `container_image_uri`, `container_image_digest`, `source_git_commit`, `parent_model_ids`, `training_machine_type`, `batch_machine_type`, `training_timeout_seconds`, `batch_timeout_seconds`, `max_retries`. The schema requires a 40-character lowercase-hex source commit, requires `container_image_uri` to end in `@sha256:<64 lowercase hex>`, and requires `container_image_digest` to match `^sha256:[0-9a-f]{64}$`; `validate_deployment` then compares the two image values exactly because JSON Schema cannot express that cross-field equality.
+- `deployment`: `schema_version`, `project_id`, `region`, `object_store_root_uri`, `orchestrator_service_account`, `training_service_account`, `batch_prediction_service_account`, `container_image_uri`, `container_image_digest`, `source_git_commit`, `parent_model_ids`, `training_machine_type`, `batch_machine_type`, `training_timeout_seconds`, `batch_timeout_seconds`, `max_retries`. The schema requires a 40-character lowercase-hex source commit, requires `container_image_uri` to end in `@sha256:` followed by 64 lowercase hexadecimal characters, and requires `container_image_digest` to match `^sha256:[0-9a-f]{64}$`; `validate_deployment` then compares the two image values exactly because JSON Schema cannot express that cross-field equality.
 - `model-package`: package identity, snapshot identity, horizon, target month, feature/partition checksums, threshold, dependency versions, image digest, files, and status.
 - `training-report`: suite version, training/validation month ranges, per-horizon thresholds, cluster states, SMOTE results, and fallback counts.
 - `prediction-record`: the twelve formal CSV fields from the design, with `cluster_id` as null or integer `0..16`, probability bounds, binary class, `YYYY-MM` month patterns, and enumerated `prediction_source`.
@@ -732,6 +740,7 @@ git commit -m "feat: add FEWSNET artifact storage"
 - Produces `inspect_panel(path: Path) -> dict`, `normalize_boundaries(path: Path, output_parquet: Path) -> dict`, and `stage_snapshot(...) -> SnapshotManifest`.
 - `stage_snapshot` writes panel, GeoParquet, admin universe, and manifest under `inputs/snapshots/{snapshot_id}/`, with the manifest written last.
 - `snapshot_content_sha256` is a canonical SHA-256 over the three content checksums plus row/area/CRS/month/mapping metadata; it excludes GCS generations and `created_at_utc` so byte-identical restaging remains a no-op.
+- Task 6 preserves `inspect_panel`'s duplicate hard gate and extends the final snapshot interface to require a matching normalization-audit object, bumping the snapshot schema to v2.
 
 - [ ] **Step 1: Write failing snapshot tests**
 
@@ -876,7 +885,7 @@ git commit -m "feat: stage immutable FEWSNET snapshots"
 **Interfaces:**
 - Produces `Stage3FeatureBuilder.fit(panel) -> FeatureContract` and `transform(panel, contract) -> pandas.DataFrame`.
 - Output retains `admin_code`, `feature_month`, `fews_ipc_crisis`, and every ordered predictor from the contract.
-- Horizon is not encoded through dynamic `*_lag{horizon}m` columns; Tasks 6 and 9 express horizon only through keyed target alignment.
+- Horizon is not encoded through dynamic `*_lag{horizon}m` columns; Tasks 7 and 10 express horizon only through keyed target alignment.
 - The generated contract records `feature_schema_sha256` from ordered `(name, dtype)` pairs; the checked-in contract itself is the frozen approved feature order used by every horizon.
 
 - [ ] **Step 1: Write RED tests for feature identity, calendar lags, and frozen columns**
@@ -917,7 +926,7 @@ def test_transform_rejects_new_or_missing_contract_features():
         Stage3FeatureBuilder().transform(broken, contract)
 ```
 
-Use a fixture with a missing calendar month and assert a 4-month lag is keyed by calendar month rather than the fourth previous row. Add tests that duplicate names in `contract.feature_columns` fail, positive/negative infinity are converted to `NaN` for Task 8, and no scaler/standardizer is applied.
+Use a fixture with a missing calendar month and assert a 4-month lag is keyed by calendar month rather than the fourth previous row. Add tests that duplicate names in `contract.feature_columns` fail, positive/negative infinity are converted to `NaN` for Task 9, and no scaler/standardizer is applied.
 
 - [ ] **Step 2: Run preprocessing tests to verify RED**
 
@@ -960,7 +969,7 @@ Create `fews_ipc_crisis_lag_{4,8,12}`, `fews_ipc_lag_{4,8,12}`, then drop contem
 
 - [ ] **Step 4: Freeze the contract and reject automatic feature drift**
 
-`fit` is an administrative contract-generation operation only. It records ordered feature columns, all feature dtypes as `float64`, required raw columns, sorted ISO mapping, source column checksum, feature schema checksum, and transformation version `stage3-direct-alignment-v1`. Before computing checksums, encode `ISO` and drop it, build then exclude `AEZ_group`, `ISO_encoded`, and `AEZ_country_group` exactly as the reference path does, and create the approved year/month dummy columns in sorted numeric order. Runtime training/inference always loads the checked-in contract and calls `transform`; it never refits the allowlist or ISO mapping from a new snapshot. `transform` rejects duplicate contract names, reindexes to exactly `contract.feature_columns`, raises for missing required raw inputs, unseen ISO values, unseen year/month dummy categories, or non-coercible predictors, ignores undeclared extra source columns, verifies the contract checksums, converts infinity to `NaN`, and leaves missing values for Task 8's imputer. No scaler is fitted or serialized.
+`fit` is an administrative contract-generation operation only. It records ordered feature columns, all feature dtypes as `float64`, required raw columns, sorted ISO mapping, source column checksum, feature schema checksum, and transformation version `stage3-direct-alignment-v1`. Before computing checksums, encode `ISO` and drop it, build then exclude `AEZ_group`, `ISO_encoded`, and `AEZ_country_group` exactly as the reference path does, and create the approved year/month dummy columns in sorted numeric order. Runtime training/inference always loads the checked-in contract and calls `transform`; it never refits the allowlist or ISO mapping from a new snapshot. `transform` rejects duplicate contract names, reindexes to exactly `contract.feature_columns`, raises for missing required raw inputs, unseen ISO values, unseen year/month dummy categories, or non-coercible predictors, ignores undeclared extra source columns, verifies the contract checksums, converts infinity to `NaN`, and leaves missing values for Task 9's imputer. No scaler is fitted or serialized.
 
 Generate the initial contract from the approved panel:
 
@@ -991,7 +1000,507 @@ git commit -m "feat: freeze FEWSNET Stage 3 features"
 
 ---
 
-### Task 6: Implement keyed horizon alignment and temporal windows
+### Task 6: Normalize the bootstrap panel and bind its audit into snapshots
+
+**Files:**
+- Create: `fewsnet_partitioned_rf_pipeline/core/normalization.py`
+- Create: `fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py`
+- Create: `fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json`
+- Create: `tests/fewsnet_partitioned_rf/test_panel_normalization.py`
+- Create: `tests/fixtures/fewsnet_partitioned_rf/panel_normalization_valid.json`
+- Modify: `fewsnet_partitioned_rf_pipeline/core/types.py`
+- Modify: `fewsnet_partitioned_rf_pipeline/core/data.py`
+- Modify: `fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py`
+- Modify: `fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json`
+- Modify: `tests/fixtures/fewsnet_partitioned_rf/source_snapshot_valid.json`
+- Modify: `tests/fewsnet_partitioned_rf/test_contracts.py`
+- Modify: `tests/fewsnet_partitioned_rf/test_snapshot_staging.py`
+- Update: `PROGRESS.md`
+- Generate outside Git without overwriting the raw source:
+  `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv`
+- Generate outside Git:
+  `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.audit.json`
+
+**Interfaces:**
+- Approved real-source contract: 1,120,730 raw rows become 1,120,728 normalized rows across 5,718 areas by collapsing exactly two compatible duplicate groups for admin `2996` (`2025-10` and `2026-02`).
+- Produces `PanelNormalizationResult(output_panel_path, audit_path, raw_row_count, normalized_row_count, duplicate_group_count, removed_row_count, latest_feature_month, latest_label_month, output_sha256)`.
+- Produces `normalize_panel(raw_panel_path, output_panel_path, audit_path) -> PanelNormalizationResult` and `validate_normalization_audit(audit_path, panel_path) -> dict`.
+- Extends `SnapshotManifest` with required `normalization_audit: ObjectRef` and bumps the snapshot contract to `fewsnet-source-snapshot-v2`.
+- Extends `stage_snapshot(..., normalization_audit_path: Path)` so the normalized panel, matching audit, boundaries, and admin universe are immutable snapshot members; `source_manifest.json` remains the final write.
+- Preserves `inspect_panel` as a hard duplicate-key gate. No recurring training, inference, feature, or horizon function is allowed to deduplicate rows.
+
+- [ ] **Step 1: Write RED normalization and audit-contract tests**
+
+Create `tests/fewsnet_partitioned_rf/test_panel_normalization.py` with a
+notebook-order reference helper and these exact behaviors:
+
+```python
+import hashlib
+import json
+
+import numpy as np
+import pandas as pd
+import pytest
+from pandas.testing import assert_series_equal
+
+from fewsnet_partitioned_rf_pipeline.core.normalization import (
+    normalize_panel,
+    validate_normalization_audit,
+)
+
+
+def _reference_notebook_zscore(frame, source_column):
+    rolling = pd.to_numeric(frame[source_column]).rolling(
+        window=12,
+        min_periods=1,
+    ).mean()
+    grouped = rolling.groupby(frame["FEWSNET_admin_code"], sort=False)
+    return (rolling - grouped.transform("mean")) / grouped.transform(
+        "std",
+        ddof=1,
+    )
+
+
+def test_normalizer_collapses_derived_only_duplicates_before_climate_recompute(tmp_path):
+    raw = write_normalization_fixture(
+        tmp_path,
+        duplicate_key=(2996, "2025-10-01"),
+        duplicate_changes={"Tair_zscore": -99.0, "Rainf_zscore": 99.0},
+    )
+    output = tmp_path / "panel.normalized-v1.csv"
+    audit = tmp_path / "panel.normalized-v1.audit.json"
+
+    result = normalize_panel(raw, output, audit)
+    normalized = pd.read_csv(output)
+    payload = validate_normalization_audit(audit, output)
+
+    assert result.raw_row_count == len(normalized) + 1
+    assert result.duplicate_group_count == 1
+    assert result.removed_row_count == 1
+    assert payload["comparison_excluded_columns"] == [
+        "Tair_zscore",
+        "Rainf_zscore",
+    ]
+    assert payload["duplicate_groups"][0]["disposition"] == (
+        "collapsed_identical_or_derived_only"
+    )
+    assert normalized.columns.tolist() == pd.read_csv(raw, nrows=0).columns.tolist()
+    normalized_keys = normalized.assign(
+        feature_month=pd.to_datetime(normalized["date"]).dt.to_period("M")
+    )
+    assert not normalized_keys.duplicated(
+        ["FEWSNET_admin_code", "feature_month"]
+    ).any()
+    assert_series_equal(
+        normalized["Tair_zscore"],
+        _reference_notebook_zscore(normalized, "Tair_f_tavg_mean"),
+        check_names=False,
+        rtol=1e-12,
+        atol=1e-12,
+    )
+    assert_series_equal(
+        normalized["Rainf_zscore"],
+        _reference_notebook_zscore(normalized, "Rainf_f_tavg_mean"),
+        check_names=False,
+        rtol=1e-12,
+        atol=1e-12,
+    )
+
+
+def test_normalizer_rejects_any_non_derived_duplicate_conflict(tmp_path):
+    raw = write_normalization_fixture(
+        tmp_path,
+        duplicate_key=(2996, "2025-10-01"),
+        duplicate_changes={"lat": 123.0},
+    )
+    output = tmp_path / "panel.normalized-v1.csv"
+    audit = tmp_path / "panel.normalized-v1.audit.json"
+
+    with pytest.raises(ValueError, match="2996.*2025-10.*lat"):
+        normalize_panel(raw, output, audit)
+    assert not output.exists()
+    assert not audit.exists()
+
+
+def test_normalizer_never_overwrites_or_aliases_the_raw_source(tmp_path):
+    raw = write_normalization_fixture(tmp_path)
+    raw_before = raw.read_bytes()
+    audit = tmp_path / "panel.audit.json"
+
+    with pytest.raises(ValueError, match="different from raw"):
+        normalize_panel(raw, raw, audit)
+    assert raw.read_bytes() == raw_before
+
+
+def test_audit_validation_rejects_panel_byte_or_row_count_drift(tmp_path):
+    raw = write_normalization_fixture(tmp_path)
+    output = tmp_path / "panel.normalized-v1.csv"
+    audit = tmp_path / "panel.normalized-v1.audit.json"
+    normalize_panel(raw, output, audit)
+    output.write_bytes(output.read_bytes() + b"\n")
+
+    with pytest.raises(ValueError, match="checksum|size|row_count"):
+        validate_normalization_audit(audit, output)
+```
+
+The fixture must include at least 13 stably sorted rows across two admin codes,
+the six required climate/admin/date columns, one exact duplicate case, one
+derived-only-different case, missing climate values, and the original 88-column
+ordering behavior. Add schema tests for the checked-in
+`panel_normalization_valid.json` and for rejection when a required audit field
+is absent.
+
+- [ ] **Step 2: Run normalization tests to verify RED**
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest \
+  tests/fewsnet_partitioned_rf/test_panel_normalization.py \
+  tests/fewsnet_partitioned_rf/test_contracts.py \
+  -q -p no:cacheprovider
+```
+
+Expected: collection/import or missing-schema failures; no production file is
+edited.
+
+- [ ] **Step 3: Implement deterministic, fail-closed panel normalization**
+
+Create `core/normalization.py` with these constants and public result:
+
+```python
+NORMALIZATION_SCHEMA_VERSION = "fewsnet-panel-normalization-v1"
+NORMALIZATION_VERSION = "deduplicate-before-global-rolling-zscore-v1"
+ADMIN_COLUMN = "FEWSNET_admin_code"
+DATE_COLUMN = "date"
+COMPARISON_EXCLUDED_COLUMNS = ("Tair_zscore", "Rainf_zscore")
+CLIMATE_DERIVATIONS = {
+    "Tair_f_tavg_mean": "Tair_zscore",
+    "Rainf_f_tavg_mean": "Rainf_zscore",
+}
+ROLLING_WINDOW = 12
+ROLLING_MIN_PERIODS = 1
+ZSCORE_DDOF = 1
+
+
+@dataclass(frozen=True)
+class PanelNormalizationResult:
+    output_panel_path: Path
+    audit_path: Path
+    raw_row_count: int
+    normalized_row_count: int
+    duplicate_group_count: int
+    removed_row_count: int
+    latest_feature_month: str
+    latest_label_month: str
+    output_sha256: str
+```
+
+`normalize_panel` must:
+
+1. Resolve all three paths and reject an output/audit path equal to the raw
+   path or to each other. Reject pre-existing output/audit files; versioned
+   bootstrap artifacts are immutable.
+2. Read the raw CSV once with source column order intact and require unique
+   column names plus `FEWSNET_admin_code`, `date`, `fews_ipc_crisis`, both
+   climate base columns, and both z-score columns.
+3. Add internal original row numbers, parse `date`, create normalized
+   `admin_code + monthly Period` keys with Task 4's `normalize_admin_code`, and
+   stably sort by source `FEWSNET_admin_code`, parsed `date`, then original row
+   number using `kind="mergesort"`.
+4. For each duplicate normalized key, compare every source column except the
+   two z-scores, treating missing values as equal. Report the exact key and
+   conflicting column names and raise before any write if a conflict exists.
+5. Keep the first stably sorted row from every safe duplicate group. Record all
+   one-based source data-row numbers and which excluded z-score columns differed.
+6. Recompute each z-score with the notebook's global rolling order:
+
+```python
+for source_name, output_name in CLIMATE_DERIVATIONS.items():
+    rolling = pd.to_numeric(cleaned[source_name], errors="coerce").rolling(
+        window=ROLLING_WINDOW,
+        min_periods=ROLLING_MIN_PERIODS,
+    ).mean()
+    grouped = rolling.groupby(cleaned["_normalized_admin_code"], sort=False)
+    cleaned[output_name] = (
+        rolling - grouped.transform("mean")
+    ) / grouped.transform("std", ddof=ZSCORE_DDOF)
+```
+
+7. Remove internal columns, restore the exact raw source-column order, and
+   write the cleaned CSV only after every conflict gate passes. Do not persist
+   temporary `_m12` columns.
+8. Compute raw/output SHA-256 and sizes, then write a schema-valid audit JSON
+   only after the CSV is complete. The audit contains exactly these top-level
+   fields: `schema_version`, `normalization_version`, `source_panel`,
+   `output_panel`, `key_columns`, `sort_columns`,
+   `comparison_excluded_columns`, `climate_derivation`,
+   `latest_feature_month`, `latest_label_month`,
+   `duplicate_group_count`, `duplicate_row_count`, `removed_row_count`,
+   `conflict_group_count`, and `duplicate_groups`.
+
+`source_panel` and `output_panel` each require `path`, `sha256`, `size_bytes`,
+`row_count`, and `column_count`. `climate_derivation` records the two source to
+output mappings, `rolling_order="global_after_stable_admin_date_sort"`, window
+`12`, minimum periods `1`, grouping column `FEWSNET_admin_code`, and `std_ddof=1`.
+Every `duplicate_groups` entry requires `admin_code`, `feature_month`,
+`source_row_numbers`, `group_size`, `differing_excluded_columns`, and
+`disposition="collapsed_identical_or_derived_only"`. Successful audits require
+`conflict_group_count=0` and
+`removed_row_count == duplicate_row_count - duplicate_group_count`.
+
+`validate_normalization_audit` validates the JSON Schema, then recomputes the
+supplied panel's SHA-256, size, CSV row count, and column count and compares all
+four values to `output_panel`. It also enforces the version constants and audit
+count invariants.
+
+- [ ] **Step 4: Add the local normalization CLI and verify core GREEN**
+
+Create `cli/normalize_panel.py` with required arguments:
+
+```text
+--input-panel
+--output-panel
+--audit-output
+```
+
+It calls `normalize_panel`, prints one sorted JSON object with both output paths,
+checksums, raw/normalized row counts, duplicate-group count, and removed-row
+count, and returns nonzero with a JSON error on any validation or filesystem
+failure.
+
+Run:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest \
+  tests/fewsnet_partitioned_rf/test_panel_normalization.py \
+  tests/fewsnet_partitioned_rf/test_contracts.py \
+  -q -p no:cacheprovider
+.venv/bin/python -m fewsnet_partitioned_rf_pipeline.cli.normalize_panel --help
+```
+
+Expected: focused normalization/contract tests pass and CLI prints `usage:`.
+
+- [ ] **Step 5: Run GitNexus impact before changing existing snapshot symbols**
+
+Run upstream impact with `repo="IPCCH_operational"` and the feature worktree
+for each existing production symbol that Task 6 changes:
+
+```text
+impact(target="SnapshotManifest", direction="upstream", file_path="fewsnet_partitioned_rf_pipeline/core/types.py")
+impact(target="_snapshot_semantic_payload", direction="upstream", file_path="fewsnet_partitioned_rf_pipeline/core/data.py")
+impact(target="_manifest_from_payload", direction="upstream", file_path="fewsnet_partitioned_rf_pipeline/core/data.py")
+impact(target="_validate_exact_artifact_references", direction="upstream", file_path="fewsnet_partitioned_rf_pipeline/core/data.py")
+impact(target="stage_snapshot", direction="upstream", file_path="fewsnet_partitioned_rf_pipeline/core/data.py")
+impact(target="_parser", direction="upstream", file_path="fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py")
+impact(target="main", direction="upstream", file_path="fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py")
+```
+
+Record direct callers, affected processes, and risk in `PROGRESS.md`. If any
+result is HIGH or CRITICAL, warn the user and stop before editing.
+
+- [ ] **Step 6: Write RED snapshot-audit integration tests**
+
+Extend contract/staging tests to require:
+
+```python
+def test_source_snapshot_requires_normalization_audit_object():
+    payload = load_source_snapshot_fixture()
+    payload.pop("normalization_audit")
+    with pytest.raises(ValueError, match="normalization_audit"):
+        validate_payload("source-snapshot", payload)
+
+
+def test_stage_snapshot_uploads_verified_normalization_audit_before_manifest(tmp_path):
+    normalized_panel, audit = write_matching_normalized_fixture(tmp_path)
+    manifest = stage_snapshot(
+        panel_path=normalized_panel,
+        normalization_audit_path=audit,
+        boundaries_path=_write_boundary_fixture(tmp_path),
+        destination_root="gs://bucket/fewsnet_partitioned_rf",
+        store=RecordingLocalArtifactStore(tmp_path / "store"),
+        created_at_utc="2026-07-20T00:00:00Z",
+    )
+    assert manifest.normalization_audit.sha256 == hashlib.sha256(
+        audit.read_bytes()
+    ).hexdigest()
+    assert manifest.panel.uri.endswith("assembled_fewsnet.normalized.csv")
+    assert manifest.normalization_audit.uri.endswith(
+        "panel_normalization_audit.json"
+    )
+
+
+def test_stage_snapshot_rejects_audit_for_different_panel(tmp_path):
+    normalized_panel, audit = write_matching_normalized_fixture(tmp_path)
+    normalized_panel.write_bytes(normalized_panel.read_bytes() + b"\n")
+    with pytest.raises(ValueError, match="normalization.*checksum|size"):
+        stage_snapshot(
+            panel_path=normalized_panel,
+            normalization_audit_path=audit,
+            boundaries_path=_write_boundary_fixture(tmp_path),
+            destination_root="gs://bucket/fewsnet_partitioned_rf",
+            store=RecordingLocalArtifactStore(tmp_path / "store"),
+            created_at_utc="2026-07-20T00:00:00Z",
+        )
+```
+
+Retain and explicitly re-run the existing test that passes a duplicate panel
+to `stage_snapshot`; it must still fail through `inspect_panel`.
+
+- [ ] **Step 7: Extend snapshot identity, schema, staging, and CLI**
+
+Make these exact contract changes:
+
+- Add `normalization_audit: ObjectRef` immediately after `panel` in
+  `SnapshotManifest`.
+- Change `SNAPSHOT_SCHEMA_VERSION` and the source schema constant to
+  `fewsnet-source-snapshot-v2`.
+- Require `normalization_audit` in `source-snapshot.schema.json` using the same
+  immutable object-ref definition as other snapshot members.
+- Add the audit object excluding only `generation` to
+  `_snapshot_semantic_payload`.
+- Construct the new field in `_manifest_from_payload`.
+- Verify exact generation/checksum bytes for
+  `("panel", "normalization_audit", "boundaries", "admin_universe")`.
+- Require `normalization_audit_path` in `stage_snapshot`, call
+  `validate_normalization_audit` before `inspect_panel`, upload the normalized
+  CSV as `assembled_fewsnet.normalized.csv`, upload the audit as
+  `panel_normalization_audit.json`, and write both refs into the manifest.
+- Add `normalization_audit_sha256` and `normalization_version` to the canonical
+  snapshot identity payload so any audit drift changes the snapshot ID.
+- Set `source_identity.panel_source_type` to
+  `assembled_fewsnet_normalized_v1_csv`; keep `panel_bootstrap_path` as the
+  normalized CSV path because the audit is authoritative for the raw path and
+  checksum.
+- Add required CLI argument `--normalization-audit` and pass it unchanged to
+  `stage_snapshot`.
+
+Update the source fixture, schema tests, staging fixtures, immutable-retry
+tests, semantic no-op tests, exact-reference tests, expected write count/order,
+and identity hash helper for the fourth snapshot artifact. The manifest must
+still be written last.
+
+- [ ] **Step 8: Verify all Task 6 tests and the full local regression**
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest \
+  tests/fewsnet_partitioned_rf/test_panel_normalization.py \
+  tests/fewsnet_partitioned_rf/test_contracts.py \
+  tests/fewsnet_partitioned_rf/test_snapshot_staging.py \
+  tests/fewsnet_partitioned_rf/test_preprocessing.py \
+  -q -p no:cacheprovider
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest \
+  tests -q -p no:cacheprovider
+```
+
+Expected: all focused tests pass; the full suite remains green; Task 4 and Task
+5 duplicate hard gates remain intact.
+
+- [ ] **Step 9: Generate the approved real cleaned panel and audit**
+
+First record the raw checksum, then run the local-only normalizer:
+
+```bash
+RAW_PANEL="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.csv"
+NORMALIZED_PANEL="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+NORMALIZATION_AUDIT="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.audit.json"
+
+sha256sum "$RAW_PANEL"
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m \
+  fewsnet_partitioned_rf_pipeline.cli.normalize_panel \
+  --input-panel "$RAW_PANEL" \
+  --output-panel "$NORMALIZED_PANEL" \
+  --audit-output "$NORMALIZATION_AUDIT"
+sha256sum "$RAW_PANEL"
+```
+
+The two raw checksums must be identical. The CLI/audit must report exactly:
+
+```text
+raw_row_count = 1120730
+normalized_row_count = 1120728
+duplicate_group_count = 2
+duplicate_row_count = 4
+removed_row_count = 2
+conflict_group_count = 0
+duplicate keys = 2996/2025-10 and 2996/2026-02
+latest feature month = 2026-04
+latest label month = 2026-02
+```
+
+If the versioned output files already exist, do not delete or overwrite them.
+Validate their bytes/audit and either reuse an exact valid pair or choose a new
+explicit normalization version after user approval.
+
+- [ ] **Step 10: Prove real normalized-panel staging with no GCP write**
+
+Use the real shapefile and `LocalArtifactStore` only:
+
+```bash
+export LOCAL_STORE="$(mktemp -d /tmp/fewsnet-normalized-v1-local-store.XXXXXX)"
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python - <<'PY'
+import os
+from pathlib import Path
+
+from fewsnet_partitioned_rf_pipeline.core.data import inspect_panel, stage_snapshot
+from fewsnet_partitioned_rf_pipeline.vertex.storage import LocalArtifactStore
+
+panel = Path("/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv")
+audit = Path("/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.audit.json")
+boundaries = Path("/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.shp")
+
+info = inspect_panel(panel)
+assert info["row_count"] == 1_120_728
+assert info["area_count"] == 5_718
+assert info["latest_feature_month"] == "2026-04"
+assert info["latest_label_month"] == "2026-02"
+
+manifest = stage_snapshot(
+    panel_path=panel,
+    normalization_audit_path=audit,
+    boundaries_path=boundaries,
+    destination_root="gs://local-only/fewsnet_partitioned_rf",
+    store=LocalArtifactStore(Path(os.environ["LOCAL_STORE"])),
+    created_at_utc="2026-07-20T00:00:00Z",
+)
+assert manifest.row_count == 1_120_728
+assert manifest.area_count == 5_718
+assert manifest.normalization_audit.sha256
+print(manifest.snapshot_id, manifest.snapshot_content_sha256)
+PY
+```
+
+Record the raw, normalized, and audit SHA-256 values plus the resulting local
+snapshot ID in `PROGRESS.md`. Do not instantiate `GCSArtifactStore`, submit a
+Vertex job, register a model, or mutate any cloud resource in Task 6.
+
+- [ ] **Step 11: Run pre-commit gates and commit Task 6**
+
+Run focused/full tests again, `git diff --check`, and GitNexus
+`detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")`.
+Confirm staged paths contain only Task 6 production/tests/schema/fixture files
+and `PROGRESS.md`; the external normalized CSV/audit are evidence and are not
+added to Git.
+
+```bash
+git add \
+  fewsnet_partitioned_rf_pipeline/core/normalization.py \
+  fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py \
+  fewsnet_partitioned_rf_pipeline/core/types.py \
+  fewsnet_partitioned_rf_pipeline/core/data.py \
+  fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py \
+  fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json \
+  fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json \
+  tests/fewsnet_partitioned_rf/test_panel_normalization.py \
+  tests/fewsnet_partitioned_rf/test_contracts.py \
+  tests/fewsnet_partitioned_rf/test_snapshot_staging.py \
+  tests/fixtures/fewsnet_partitioned_rf/panel_normalization_valid.json \
+  tests/fixtures/fewsnet_partitioned_rf/source_snapshot_valid.json \
+  PROGRESS.md
+git commit -m "feat: normalize FEWSNET bootstrap panel"
+```
+
+---
+
+### Task 7: Implement keyed horizon alignment and temporal windows
 
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/core/horizons.py`
@@ -1083,7 +1592,7 @@ git commit -m "feat: align FEWSNET forecast horizons"
 
 ---
 
-### Task 7: Validate and route the fixed partition map
+### Task 8: Validate and route the fixed partition map
 
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/core/partitions.py`
@@ -1141,7 +1650,7 @@ git commit -m "feat: add fixed FEWSNET partition routing"
 
 ---
 
-### Task 8: Implement fit-slice-only max-plus imputation and threshold selection
+### Task 9: Implement fit-slice-only max-plus imputation and threshold selection
 
 **Files:**
 - Modify: `fewsnet_partitioned_rf_pipeline/core/preprocessing.py`
@@ -1213,7 +1722,7 @@ git commit -m "feat: add FEWSNET imputation and thresholds"
 
 ---
 
-### Task 9: Train partitioned RF models and produce formal local predictions
+### Task 10: Train partitioned RF models and produce formal local predictions
 
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/core/training.py`
@@ -1223,7 +1732,7 @@ git commit -m "feat: add FEWSNET imputation and thresholds"
 **Interfaces:**
 - Produces `train_horizon_model(aligned_frame, feature_contract, partition_map, horizon_key) -> HorizonTrainingResult`.
 - Produces serializable `PartitionedRFPredictor.predict_frame(frame) -> pandas.DataFrame`.
-- Produces `train_partition_models(X, y, cluster_ids, min_samples=50) -> PartitionModels` and `predict_partition_probabilities(partition_models, pooled_model, X, cluster_ids) -> numpy.ndarray` for Task 10 parity.
+- Produces `train_partition_models(X, y, cluster_ids, min_samples=50) -> PartitionModels` and `predict_partition_probabilities(partition_models, pooled_model, X, cluster_ids) -> numpy.ndarray` for Task 11 parity.
 
 - [ ] **Step 1: Write RED tests for all partition states and probability routing**
 
@@ -1320,7 +1829,7 @@ git commit -m "feat: train partitioned FEWSNET RF models"
 
 ---
 
-### Task 10: Freeze reference Stage 3 parity evidence
+### Task 11: Freeze reference Stage 3 parity evidence
 
 **Files:**
 - Create: `tools/build_fewsnet_stage3_parity_fixture.py`
@@ -1388,7 +1897,7 @@ Require the generator to verify reference commit `1ecf180669568bbf9eb21296831081
 
 - [ ] **Step 5: Verify GREEN and commit**
 
-Run the parity test and Task 9 tests together, then:
+Run the parity test and Task 10 tests together, then:
 
 ```bash
 git add \
@@ -1401,7 +1910,7 @@ git commit -m "test: freeze Stage 3 RF parity fixture"
 
 ---
 
-### Task 11: Write and validate Vertex-compatible model packages
+### Task 12: Write and validate Vertex-compatible model packages
 
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/core/package.py`
@@ -1466,7 +1975,7 @@ git commit -m "feat: package Vertex-compatible FEWSNET models"
 
 ---
 
-### Task 12: Build the three-horizon training worker and Vertex Custom Job spec
+### Task 13: Build the three-horizon training worker and Vertex Custom Job spec
 
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/cli/train.py`
@@ -1526,7 +2035,7 @@ git commit -m "feat: add FEWSNET Vertex training job"
 
 ---
 
-### Task 13: Serve registered packages with a shared custom prediction container
+### Task 14: Serve registered packages with a shared custom prediction container
 
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py`
@@ -1536,7 +2045,7 @@ git commit -m "feat: add FEWSNET Vertex training job"
 
 **Interfaces:**
 - Produces `create_app(environ=None, store=None) -> FastAPI`.
-- Container default command starts Uvicorn; Vertex training overrides the command with Task 12's trainer.
+- Container default command starts Uvicorn; Vertex training overrides the command with Task 13's trainer.
 
 - [ ] **Step 1: Write RED health/predict tests**
 
@@ -1623,7 +2132,7 @@ git commit -m "feat: serve FEWSNET models in Vertex"
 
 ---
 
-### Task 14: Register three stable parent models and immutable candidate versions
+### Task 15: Register three stable parent models and immutable candidate versions
 
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/vertex/registry.py`
@@ -1636,7 +2145,7 @@ git commit -m "feat: serve FEWSNET models in Vertex"
 
 - [ ] **Step 1: Write RED upload-argument tests**
 
-Assert each horizon uses the expected stable model ID, exact artifact URI, shared image digest URI, predict/health routes, port 8080, `FEWSNET_CONTAINER_IMAGE_DIGEST`, `FEWSNET_SOURCE_GIT_COMMIT`, lifecycle label `candidate`, no `production` alias, and the deterministic suite alias. Assert first-parent upload uses `model_id=<stable-id>`, `parent_model=None`, `is_default_version=True`; later upload uses `model_id=None`, the full parent resource, and `is_default_version=False`.
+Assert each horizon uses the expected stable model ID, exact artifact URI, shared image digest URI, predict/health routes, port 8080, `FEWSNET_CONTAINER_IMAGE_DIGEST`, `FEWSNET_SOURCE_GIT_COMMIT`, lifecycle label `candidate`, no `production` alias, and the deterministic suite alias. Assert first-parent upload uses `model_id=PARENT_MODEL_IDS[horizon_key]`, `parent_model=None`, `is_default_version=True`; later upload uses `model_id=None`, the full parent resource, and `is_default_version=False`.
 
 - [ ] **Step 2: Run registry tests to verify RED**
 
@@ -1690,7 +2199,7 @@ git commit -m "feat: register FEWSNET Vertex model versions"
 
 ---
 
-### Task 15: Run exact-version Batch Prediction and normalize formal CSVs
+### Task 16: Run exact-version Batch Prediction and normalize formal CSVs
 
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/vertex/batch_prediction.py`
@@ -1761,7 +2270,7 @@ git commit -m "feat: run FEWSNET Vertex batch prediction"
 
 ---
 
-### Task 16: Validate three-horizon outputs and implement alias rollback publication
+### Task 17: Validate three-horizon outputs and implement alias rollback publication
 
 **Files:**
 - Modify: `fewsnet_partitioned_rf_pipeline/core/validation.py`
@@ -1799,8 +2308,8 @@ Define an alias backend with `current_version(parent, alias)`, `move_alias(paren
 Before alias movement, call `get_ref` and generation-specific `read_bytes` to capture both `released/{feature_month}/production_suite_manifest.json` and `released/current.json` bytes/generations (`0` when absent). After all aliases move:
 
 1. Write the immutable suite manifest under `suites/{suite_version}/suite_manifest.json` with `put_immutable_or_verify`.
-2. Replace the feature-month production manifest with `put_mutable_or_verify(..., expected_generation=<captured month generation>)`; it identifies the immutable suite-manifest URI and generation and therefore supports an explicit same-month revision.
-3. Replace `released/current.json` with `put_mutable_or_verify(..., expected_generation=<captured current generation>)` and make this the final write.
+2. Replace the feature-month production manifest with `put_mutable_or_verify(..., expected_generation=previous_month_generation)`; it identifies the immutable suite-manifest URI and generation and therefore supports an explicit same-month revision.
+3. Replace `released/current.json` with `put_mutable_or_verify(..., expected_generation=previous_current_generation)` and make this the final write.
 
 If either mutable write fails, roll back aliases, leave the old current pointer unchanged, and best-effort restore the previous month manifest using the generation produced by Step 2. If no previous month manifest existed, an unattached month manifest may remain as non-authoritative evidence; `released/current.json` is the only entrypoint operators treat as current. Never overwrite the immutable suite manifest with different bytes. In `finally`, release only the lease whose `lease_id` still matches by writing `status="released"` with its current generation; a lost/mismatched lease is a hard warning recorded in the run manifest.
 
@@ -1819,7 +2328,7 @@ git commit -m "feat: promote FEWSNET model suites safely"
 
 ---
 
-### Task 17: Orchestrate discover -> train -> register -> Batch -> promote
+### Task 18: Orchestrate discover -> train -> register -> Batch -> promote
 
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/cli/run_latest.py`
@@ -1874,7 +2383,7 @@ run_id = suite_version
 
 - [ ] **Step 5: Implement monotonic orchestration and evidence writes**
 
-Call `validate_deployment` and require `deployment["source_git_commit"] == os.environ["FEWSNET_SOURCE_GIT_COMMIT"]` before discovery. Write `input_snapshot_ref.json`, then advance through every `RunPhase`, updating `run_manifest.json` with generation preconditions after each transition. Use a bounded `retry_transient` helper that retries only `TooManyRequests`, `ServiceUnavailable`, `DeadlineExceeded`, and retryable transport failures, recording each attempt. Submit/wait for one training job, verify `training_job_result.json`, register in horizon order with idempotent suite aliases, build the three inference frames from exactly `snapshot.latest_feature_month`, run/wait/normalize three exact-version Batch jobs, validate the suite, then call Task 16 promotion when `promote=True`. For `--candidate-only`, stop successfully after `OUTPUT_VALIDATED` and do not read or mutate production aliases/pointers. Catch exceptions once at the top, mark any registered candidates `abandoned`, write `error.json`, set phase `FAILED`, and return nonzero from CLI.
+Call `validate_deployment` and require `deployment["source_git_commit"] == os.environ["FEWSNET_SOURCE_GIT_COMMIT"]` before discovery. Write `input_snapshot_ref.json`, then advance through every `RunPhase`, updating `run_manifest.json` with generation preconditions after each transition. Use a bounded `retry_transient` helper that retries only `TooManyRequests`, `ServiceUnavailable`, `DeadlineExceeded`, and retryable transport failures, recording each attempt. Submit/wait for one training job, verify `training_job_result.json`, register in horizon order with idempotent suite aliases, build the three inference frames from exactly `snapshot.latest_feature_month`, run/wait/normalize three exact-version Batch jobs, validate the suite, then call Task 17 promotion when `promote=True`. For `--candidate-only`, stop successfully after `OUTPUT_VALIDATED` and do not read or mutate production aliases/pointers. Catch exceptions once at the top, mark any registered candidates `abandoned`, write `error.json`, set phase `FAILED`, and return nonzero from CLI.
 
 The retry helper preserves operation identity:
 
@@ -1893,7 +2402,7 @@ The runtime `on_retry` records the exception and sleeps `min(60, 2 ** retry_numb
 
 - [ ] **Step 6: Verify GREEN and commit**
 
-Run Step 3 plus Tasks 12-16 tests, then:
+Run Step 3 plus Tasks 13-17 tests, then:
 
 ```bash
 git add \
@@ -1905,7 +2414,7 @@ git commit -m "feat: orchestrate FEWSNET model suite releases"
 
 ---
 
-### Task 18: Add runbook, gated GCP smoke coverage, and full acceptance verification
+### Task 19: Add runbook, gated GCP smoke coverage, and full acceptance verification
 
 **Files:**
 - Create: `docs/09_fewsnet_partitioned_rf_runbook.md`
@@ -1936,7 +2445,8 @@ Call `run_latest` with `snapshot_manifest_uri=FEWSNET_GCP_TEST_SNAPSHOT_MANIFEST
 Document exact commands for:
 
 1. Building and pushing `docker/Dockerfile.fewsnet-partitioned-rf` by digest.
-2. Staging the initial local CSV/shapefile snapshot.
+2. Generating the versioned normalized CSV/audit without overwriting the raw
+   panel, then staging that verified CSV/audit with the local shapefile.
 3. Creating a deployment manifest with three service accounts and stable model IDs, including the submitter's `iam.serviceAccounts.actAs` grants and least-privilege GCS, Artifact Registry Reader, Vertex Custom Job, Model Registry/version-alias, and Batch Prediction permissions for each runtime identity.
 4. Running `run_latest` and locating run/model/prediction/suite artifacts.
 5. Interpreting fallback counts and threshold reports.
@@ -1984,7 +2494,7 @@ Expected: one disposable training job, three candidate versions, and three Batch
 
 - [ ] **Step 6: Run initial production acceptance only after smoke approval**
 
-Run `run_latest` against the approved current snapshot and production deployment manifest. Verify all twelve acceptance criteria from design section 19, including three registered production versions, 5,718 rows per CSV, the approved partition checksum, consistent fallback totals, no Endpoint, and `released/current.json` written last.
+Run `run_latest` against the approved current snapshot and production deployment manifest. Verify all sixteen acceptance criteria from design section 19, including raw-source checksum preservation, the 1,120,728-row normalized panel and audit, local-store staging evidence, three registered production versions, 5,718 rows per CSV, the approved partition checksum, consistent fallback totals, no Endpoint, and `released/current.json` written last.
 
 - [ ] **Step 7: Run final GitNexus and staged-scope verification**
 
@@ -1996,7 +2506,7 @@ detect_changes(scope="compare", base_ref="main")
 
 Review every affected process. Stage only the intended FEWSNET files, run `git diff --cached --check`, and record the final evidence in `PROGRESS.md`.
 
-- [ ] **Step 8: Commit Task 18**
+- [ ] **Step 8: Commit Task 19**
 
 ```bash
 git add \

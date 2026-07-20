@@ -6,14 +6,17 @@
 - Implementation plan: `docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md`
 - Design base commit: `e6afd2cebde02e14501dca52e959e395c54c30b7`
 - Initial plan SHA-256: `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`
+- Current approved design SHA-256: `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`
+- Current normalized plan SHA-256: `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`
 
 ## Execution Context
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 5 frozen Stage 3 feature contract and leak-free feature frame are complete; independent review is clean
-- Current state: Task 5 is approved through `8ce39cd56f567a416f20deb0e60b77d0b0cd722d`; Task 6 remains pending and is not in progress
-- Blockers: before Task 6, the approved raw panel requires an explicit deduplication/source-normalization design decision for duplicate normalized keys at admin `2996` in `2025-10` and `2026-02`
+- Current task: docs-only normalization amendment synchronization before implementation
+- Current state: Tasks 1-5 are complete and independently reviewed; the approved bootstrap-normalization policy is now encoded in the design and plan; new Task 6 is pending and not yet in progress
+- Blockers: none; Task 6 must complete normalization, audit binding, and real local-store staging before Task 7 starts
+- Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
 
@@ -24,19 +27,20 @@
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
 | 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review clean |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
-| 6. Implement keyed horizon alignment and temporal windows | pending; blocked on duplicate-key source decision |
-| 7. Validate and route the fixed partition map | pending |
-| 8. Implement fit-slice-only max-plus imputation and threshold selection | pending |
-| 9. Train partitioned RF models and produce formal local predictions | pending |
-| 10. Freeze reference Stage 3 parity evidence | pending |
-| 11. Write and validate Vertex-compatible model packages | pending |
-| 12. Build the three-horizon training worker and Vertex Custom Job spec | pending |
-| 13. Serve registered packages with a shared custom prediction container | pending |
-| 14. Register three stable parent models and immutable candidate versions | pending |
-| 15. Run exact-version Batch Prediction and normalize formal CSVs | pending |
-| 16. Validate three-horizon outputs and implement alias rollback publication | pending |
-| 17. Orchestrate discover -> train -> register -> Batch -> promote | pending |
-| 18. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
+| 6. Normalize the bootstrap panel and bind its audit into snapshots | pending; approved and unblocked |
+| 7. Implement keyed horizon alignment and temporal windows | pending |
+| 8. Validate and route the fixed partition map | pending |
+| 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
+| 10. Train partitioned RF models and produce formal local predictions | pending |
+| 11. Freeze reference Stage 3 parity evidence | pending |
+| 12. Write and validate Vertex-compatible model packages | pending |
+| 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
+| 14. Serve registered packages with a shared custom prediction container | pending |
+| 15. Register three stable parent models and immutable candidate versions | pending |
+| 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
+| 17. Validate three-horizon outputs and implement alias rollback publication | pending |
+| 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
+| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
 ## Task 1 Evidence
 
@@ -206,12 +210,28 @@
 - Contract boundaries: runtime transform uses only the checked-in allowlist and mapping, ignores undeclared extra raw source columns, performs no fit-time statistics, scaling, standardization, or imputation, and creates no dynamic horizon-specific `*_lag{horizon}m` columns. No cloud write or external `Food_Crisis_Cluster` runtime import/invocation was added.
 - Implementation commit: `8ce39cd56f567a416f20deb0e60b77d0b0cd722d` (`8ce39cd feat: freeze FEWSNET Stage 3 features`).
 - Independent review: Approved with no Critical or Important findings. One Minor is deferred to final whole-branch review: add a direct regression that loads the checked-in feature-contract asset and asserts its schema SHA-256 identity.
-- Cross-task blocker: the approved raw panel has duplicate normalized `FEWSNET_admin_code + month` keys for admin `2996` at `2025-10` and `2026-02`. Task 4 `inspect_panel` hard-fails first at `duplicate FEWSNET_admin_code + date month: 2996 + 2025-10`. The `2025-10` pair differs only in `Tair_zscore` and `Rainf_zscore`; the `2026-02` pair is identical for those audited fields. A deduplication/source-normalization design decision is required before Task 6; Task 6 remains pending and is not in progress.
+- Cross-task blocker at Task 5 completion: the approved raw panel has duplicate normalized `FEWSNET_admin_code + month` keys for admin `2996` at `2025-10` and `2026-02`. Task 4 `inspect_panel` hard-fails first at `duplicate FEWSNET_admin_code + date month: 2996 + 2025-10`. The `2025-10` pair differs only in `Tair_zscore` and `Rainf_zscore`; the `2026-02` pair is identical for those audited fields. The user subsequently approved the narrow Task 6 normalization policy recorded below; this blocker is resolved at design level but not yet implemented.
+
+## Bootstrap Normalization Design and Plan Synchronization
+
+- User-approved policy: preserve the raw combined CSV; deduplicate after stable admin/date ordering and before the reference notebook's climate derivations; collapse a duplicate group only when all columns except `Tair_zscore` and `Rainf_zscore` are equal; fail closed on every other conflict; recompute the global 12-row climate rolling means and within-admin sample z-scores; write a new versioned normalized CSV and audit JSON.
+- Approved real-source expectations: raw `1,120,730` rows; normalized `1,120,728` rows; `5,718` areas; two duplicate groups and two removed rows; latest feature month `2026-04`; latest label month `2026-02`.
+- Snapshot contract decision: Task 6 adds `normalization_audit: ObjectRef`, bumps the source snapshot contract to `fewsnet-source-snapshot-v2`, includes the audit in snapshot identity/exact-generation validation, and leaves Task 4's duplicate hard gate unchanged.
+- Implementation order decision: docs-only synchronization and commit must finish before any Task 6 production/test implementation. Task 6 then follows TDD, GitNexus upstream impact for every existing symbol changed, full regression, real normalized-file generation, and real shapefile/local-store staging with no GCP write.
+- Design SHA-256 after synchronization: `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`.
+- Plan SHA-256 after inserting Task 6 and renumbering the former Tasks 6-18 to Tasks 7-19: `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`.
+- Fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Feature schema SHA-256 remains `6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b`; checked-in feature-contract JSON SHA-256 remains `3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b`.
+- No implementation file or external source artifact was changed during this synchronization step.
+- Cross-artifact consistency gate: PASS. The design and plan SHA-256 values match this ledger; plan headings and status rows are sequential `1..19`; the approved raw/normalized counts, area count, duplicate keys, excluded z-score columns, snapshot-v2 audit interface, and no-cloud-write boundary are present in all three artifacts.
+- Placeholder/contradiction scan: no `TBD`, `TODO`, `implement later`, `fill in details`, or `similar to Task` residue in the synchronized design, plan, or FEWSNET ledger.
+- Git whitespace/scope gate: `git diff --check` and `git diff --cached --check` both exited `0`; the staged set contains exactly `PROGRESS.md`, the FEWSNET implementation plan, and the FEWSNET design; `.superpowers/` remains untracked and unstaged.
+- GitNexus staged gate: LOW risk, three changed documentation files, 38 indexed documentation sections, and zero affected execution processes. The index is based on the pre-amendment headings, but no code symbol or execution flow is affected.
 
 ## Resume
 
-- Exact next step: resolve and approve the duplicate-key deduplication/source-normalization policy for admin `2996` at `2025-10` and `2026-02`, then restage/validate the immutable source snapshot before Task 6 starts.
-- Resume command: `git status --short --branch && git log -4 --oneline && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -c 'from pathlib import Path; from fewsnet_partitioned_rf_pipeline.core.data import inspect_panel; inspect_panel(Path("/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.csv"))'`
+- Exact next step: after the docs-only consistency gate and commit, start new Task 6 at its RED tests; do not begin Task 7 and do not perform any GCP/Vertex write.
+- Resume command: `git status --short --branch && git log -5 --oneline && sha256sum docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && rg -n '^### Task 6:' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md`
 
 ---
 
