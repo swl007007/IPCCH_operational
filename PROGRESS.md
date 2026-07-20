@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 2 RFC3339 follow-up implementation and verification complete; first pre-commit gate pending
-- Current state: original implementation `93d49b929d4f7578e905116e9eb3b95665bf04fb` and review fix `d65a615815c0aad956c2942c7f263e9ab830ed5b` are committed; the numeric-offset fix is green in the working tree and its commit is pending
+- Current task: Task 2 RFC3339 follow-up committed and self-verified; controller re-review pending
+- Current state: original implementation `93d49b929d4f7578e905116e9eb3b95665bf04fb`, review fix `d65a615815c0aad956c2942c7f263e9ab830ed5b`, and RFC3339 fix `7dc06276e38ce666441d8630a2cd655cd6f9138e` are committed; Task 3 remains next after re-review
 - Blockers: none
 
 ## Task Status
@@ -20,7 +20,7 @@
 | Task | Status |
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
-| 2. Define shared types and machine-readable contracts | RFC3339 follow-up in progress |
+| 2. Define shared types and machine-readable contracts | RFC3339 follow-up complete; re-review pending |
 | 3. Add binary-safe local and GCS artifact storage | pending |
 | 4. Stage and validate immutable FEWSNET input snapshots | pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
@@ -95,8 +95,9 @@
 - Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `331 passed, 1 skipped, 24 subtests passed in 18.03s`.
 - Direct public-validator audit: `+00:60` and `+24:00` reject; `Z`, `+05:30`, `-04:00`, `+23:59`, and `-23:59` validate.
 - First RFC3339 staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 3 changed files (`PROGRESS.md`, the schema validator, and Task 2 contract tests), 3 indexed documentation symbols, and 0 affected execution processes.
-- RFC3339 fix commit: pending with subject `fix: enforce FEWSNET RFC3339 offsets`.
+- RFC3339 fix commit: `7dc06276e38ce666441d8630a2cd655cd6f9138e` (`7dc0627 fix: enforce FEWSNET RFC3339 offsets`).
 - Controller re-review: pending.
+- Second RFC3339 ledger-only staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 1 changed file (`PROGRESS.md`), 3 indexed documentation symbols, and 0 affected execution processes.
 
 ## Resume
 
