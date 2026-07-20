@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 6 independent-review fix wave complete; controller re-review next
-- Current state: Tasks 1-5 are complete and independently reviewed; Task 6 implementation plus the raw-provenance and CLI JSON-error review fixes are implemented and verified with fresh real-source parity
-- Blockers: none; Task 7 must not start until Task 6 controller re-review accepts the fix commit
+- Current task: Task 7 keyed horizon alignment and temporal windows
+- Current state: Tasks 1-6 are complete and independently reviewed; Task 6 controller acceptance revalidated the focused/full suites, real audit/count/checksum contract, raw-source immutability, and real-shapefile LocalArtifactStore staging; Task 7 is ready to start
+- Blockers: none; Task 7 may begin, but Task 8 must wait for Task 7 implementation and independent review
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -27,7 +27,7 @@
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
 | 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review clean |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
-| 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; two Important review findings fixed; fresh gates clean; controller re-review pending |
+| 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; independent review clean through `d403c1e` |
 | 7. Implement keyed horizon alignment and temporal windows | pending |
 | 8. Validate and route the fixed partition map | pending |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
@@ -265,11 +265,18 @@
 - Fresh real-source parity used `/tmp/fewsnet-normalization-review.W3PrKd`: raw SHA-256 before and after was identical at `41f02be985d86fbf64ae5d16cec262f9f11ec525fa1c013240f31299995e6178`; the regenerated normalized SHA-256 was `510375f58cd835e694b6e287cce9439bbe1b6246d752daabc8151df8ffdda61d`; `cmp` against the approved normalized-v1 CSV returned byte-identical. Audit validation confirmed `2` duplicate groups, `4` duplicate rows, `2` removed rows, `0` conflicts, keys `2996/2025-10` and `2996/2026-02`, latest feature month `2026-04`, and latest label month `2026-02`.
 - Static and staged-scope gates: `py_compile` for the two production files and normalization tests, `git diff --check`, and `git diff --cached --check` exited `0`. Exact-worktree `detect_changes(scope="staged")` reported MEDIUM risk, `4` staged files, `11` changed symbols, and `4` affected processes; all four are the expected normalization CLI paths (`main` to `_sha256_file`, `_validate_paths`, `_source_columns`, and `_values_equal`). The staged paths are exactly `PROGRESS.md`, `core/normalization.py`, `cli/normalize_panel.py`, and `test_panel_normalization.py`; `.superpowers/` and external artifacts remain unstaged.
 - No external approved artifact was overwritten, no cloud adapter was instantiated, and no Task 7 file or behavior was entered.
+- Review-fix commit: `d403c1e6cb873eaa6e0b8c05b4543b1db0e6c97f` (`d403c1e fix: harden FEWSNET normalization provenance`).
+- Independent Task 6 re-review: approved with no Critical, Important, or Minor findings; both original Important findings are closed. The reviewer independently ran the two focused regressions -> `2 passed, 10 deselected in 3.87s`.
+- Controller fresh focused gate: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_panel_normalization.py tests/fewsnet_partitioned_rf/test_contracts.py tests/fewsnet_partitioned_rf/test_snapshot_staging.py tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider` -> `81 passed in 7.49s`.
+- Controller fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `404 passed, 1 skipped, 24 subtests passed in 20.69s`.
+- Controller real-artifact acceptance revalidated raw SHA-256 `41f02be985d86fbf64ae5d16cec262f9f11ec525fa1c013240f31299995e6178`, normalized SHA-256 `510375f58cd835e694b6e287cce9439bbe1b6246d752daabc8151df8ffdda61d`, audit SHA-256 `1c37232629dd11f657e77c361a033f9a30e910441e5d8c73ea703f3b22ef1166`, the exact `1,120,730 -> 1,120,728` row contract, `5,718` areas, the two approved duplicate keys, and unchanged raw bytes before/after validation.
+- Controller repeated real-boundary staging with `LocalArtifactStore` rooted at `/tmp/fewsnet-task6-controller-store.Rk2RzP`; it reproduced snapshot ID `fewsnet-202604-8511bf5e` and content SHA-256 `8511bf5e2e6ea63cf85ffdc37bfd7a3bd44715bb35b59b43eac344aab781c76a`. No `GCSArtifactStore` or cloud client was instantiated.
+- Task 6 final status: complete and independently reviewed. Task 7 is now unblocked.
 
 ## Resume
 
-- Exact next step: controller re-review Task 6 from the review-fix commit and `.superpowers/sdd/task-6-report.md`; only after acceptance may Task 7 begin. Do not perform any GCP/Vertex write.
-- Resume command: `git status --short --branch && git show --stat --oneline HEAD && sed -n '1,260p' .superpowers/sdd/task-6-report.md`
+- Exact next step: dispatch a fresh Task 7 implementer from the reviewed Task 6 head after the ledger-only consistency commit; do not begin Task 8 and do not perform any GCP/Vertex write.
+- Resume command: `git status --short --branch && git log -5 --oneline && rg -n '^### Task 7:' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,90p' PROGRESS.md`
 
 ---
 
