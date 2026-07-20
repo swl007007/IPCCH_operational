@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 3 review fixes for local atomicity, URI confinement, and durable GCS adapter coverage are implemented and self-verified; fix commit pending
-- Current state: deterministic review RED, all 24 storage tests, and the 355-test full regression are clean; original Task 3 implementation remains `05682609f35cda2a7cf0f75c143d024c34222426`
+- Current task: Task 3 atomicity, URI-confinement, and durable GCS test review fixes are committed and self-verified; controller re-review pending
+- Current state: original Task 3 implementation `05682609f35cda2a7cf0f75c143d024c34222426` plus review fix `5b8df8008a486e8a1ed6ceb0eea41b1032c20842` are complete; Task 4 is next after the Task 3 re-review gate
 - Blockers: none
 
 ## Task Status
@@ -21,7 +21,7 @@
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
-| 3. Add binary-safe local and GCS artifact storage | review fixes verified; commit pending |
+| 3. Add binary-safe local and GCS artifact storage | review fixes committed; controller re-review pending |
 | 4. Stage and validate immutable FEWSNET input snapshots | pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
@@ -126,12 +126,15 @@
 - Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
 - Preliminary review-fix staged gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 3 changed files, 6 indexed documentation symbols, and 0 affected execution processes; the Task 3 Python symbols remain absent from the main-branch index.
 - Preliminary Git staged checks: `git diff --cached --check` -> exit `0`; `git diff --cached --name-status` showed exactly `PROGRESS.md`, `vertex/storage.py`, and `test_storage.py`.
-- Blockers: none. The Task 3 review-fix commit is pending staged-scope gates.
+- Final review-fix staged gate repeated the same LOW-risk, 3-file, 0-process GitNexus scope; `git diff --cached --check` remained clean and staged paths remained exact.
+- Original implementation commit: `05682609f35cda2a7cf0f75c143d024c34222426` (`0568260 feat: add FEWSNET artifact storage`).
+- Review-fix commit: `5b8df8008a486e8a1ed6ceb0eea41b1032c20842` (`5b8df80 fix: make FEWSNET storage atomic and confined`).
+- Blockers: none. Controller re-review is pending before Task 4 starts.
 
 ## Resume
 
-- Exact next step: stage only `PROGRESS.md`, `storage.py`, and `test_storage.py`, run the required staged GitNexus/Git checks, and create the Task 3 review-fix commit.
-- Resume command: `git add PROGRESS.md fewsnet_partitioned_rf_pipeline/vertex/storage.py tests/fewsnet_partitioned_rf/test_storage.py && git diff --cached --name-status`
+- Exact next task: Task 4 - Stage and validate immutable FEWSNET input snapshots, after the Task 3 controller re-review gate.
+- Resume command: `git status --short --branch && git log -3 --oneline`
 
 ---
 
