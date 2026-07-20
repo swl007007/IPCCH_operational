@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 4 content-no-op self-review fix is implemented and verified; fix commit pending
-- Current state: original Task 4 implementation remains `c7bd125f5e969fd6d699b368cdb038872d8370f2`; the follow-up preserves no-op restaging when only administrative timestamp/bootstrap provenance changes
+- Current task: Task 4 immutable FEWSNET snapshot staging and content-no-op review fix are committed and self-verified; independent review pending
+- Current state: Task 4 implementation `c7bd125f5e969fd6d699b368cdb038872d8370f2` plus no-op fix `86937a961a87eb50711a70daf723cdebb73f500f` are complete; Task 5 is next only after the Task 4 review gate
 - Blockers: none
 
 ## Task Status
@@ -22,7 +22,7 @@
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
-| 4. Stage and validate immutable FEWSNET input snapshots | self-review fix verified; commit pending |
+| 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
 | 7. Validate and route the fixed partition map | pending |
@@ -159,7 +159,8 @@
 - Follow-up GREEN: the focused regression -> `1 passed, 12 deselected in 4.86s`; all Task 4 snapshot tests -> `13 passed in 4.88s`.
 - Follow-up full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `368 passed, 1 skipped, 24 subtests passed in 18.96s`; `py_compile` for the modified production/test files exited `0`.
 - Preliminary follow-up staged gate: GitNexus `detect_changes(scope="staged")` -> LOW risk, exactly 3 changed files, 3 indexed documentation symbols, and 0 affected execution processes; the Task 4 Python symbols remain absent from the main index. `git diff --cached --check` exited `0`, and staged paths were exactly `PROGRESS.md`, `core/data.py`, and `test_snapshot_staging.py`.
-- Follow-up fix commit: pending.
+- Final follow-up staged gate repeated the same LOW-risk, 3-file, 0-process GitNexus scope; `git diff --cached --check` remained clean and staged paths remained exact.
+- Follow-up fix commit: `86937a961a87eb50711a70daf723cdebb73f500f` (`86937a9 fix: preserve FEWSNET snapshot restaging no-op`).
 - Blockers: none.
 
 ## Resume
