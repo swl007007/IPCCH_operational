@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 4 immutable FEWSNET input snapshot staging is in progress from reviewed Task 3 HEAD `0b09ff199e8feed9c959b615a13af6657546db1b`
-- Current state: Task 3 implementation `05682609f35cda2a7cf0f75c143d024c34222426`, review fix `5b8df8008a486e8a1ed6ceb0eea41b1032c20842`, and ledger commit `0b09ff199e8feed9c959b615a13af6657546db1b` passed independent review; Task 4 began with no blocker
+- Current task: Task 4 immutable FEWSNET input snapshot staging is committed and self-verified; independent review pending
+- Current state: Task 4 implementation commit `c7bd125f5e969fd6d699b368cdb038872d8370f2` is complete; Task 5 is next only after the Task 4 review gate
 - Blockers: none
 
 ## Task Status
@@ -22,7 +22,7 @@
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
-| 4. Stage and validate immutable FEWSNET input snapshots | in progress |
+| 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
 | 7. Validate and route the fixed partition map | pending |
@@ -142,16 +142,18 @@
 - CLI help: `.venv/bin/python -m fewsnet_partitioned_rf_pipeline.cli.stage_snapshot --help` -> exit `0` and `usage:` with exactly `--panel`, `--boundaries`, `--destination-root`, and `--created-at-utc` plus standard help.
 - Snapshot coverage: streaming three-column panel reads; normalized monthly duplicate detection across chunks; latest feature/label discovery; integer-like admin-code normalization; exact panel/spatial area equality; strict EPSG:4326 input; one non-null geometry per unique normalized boundary code; sorted GeoParquet/admin universe; canonical content SHA/snapshot ID; schema-valid manifest; manifest-last ordering; byte-identical immutable retry/no-op; and CLI success/error behavior.
 - Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `367 passed, 1 skipped, 24 subtests passed in 18.78s`.
+- Final fresh pre-commit regression: the same full-suite command -> `367 passed, 1 skipped, 24 subtests passed in 18.03s`; CLI help and `py_compile` also repeated with exit `0`.
 - Static/environment checks: `py_compile` completed for all three new production files and the snapshot test; `.venv/bin/python -m pip check` -> `No broken requirements found.`
 - Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
 - Preliminary staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 5 changed files, 4 indexed documentation symbols, and 0 affected execution processes; the new Task 4 Python symbols are absent from the main-branch index. `git diff --cached --check` exited `0`, and `git diff --cached --name-status` showed exactly `PROGRESS.md`, the two new `cli` files, `core/data.py`, and `test_snapshot_staging.py`.
-- Implementation commit: pending.
+- Final implementation staged gate repeated the same LOW-risk, 5-file, 0-process GitNexus scope; `git diff --cached --check` remained clean and staged paths remained exact.
+- Implementation commit: `c7bd125f5e969fd6d699b368cdb038872d8370f2` (`c7bd125 feat: stage immutable FEWSNET snapshots`).
 - Blockers: none.
 
 ## Resume
 
-- Exact next task: Task 4 - Stage and validate immutable FEWSNET input snapshots (in progress).
-- Resume command: `git status --short --branch && git log -3 --oneline && sed -n '1,220p' .superpowers/sdd/task-4-brief.md`
+- Exact next task: Task 5 - Build the frozen Stage 3 feature contract and leak-free feature frame, after Task 4 independent review.
+- Resume command: `git status --short --branch && git log -3 --oneline && sed -n '1,260p' .superpowers/sdd/task-5-brief.md`
 
 ---
 
