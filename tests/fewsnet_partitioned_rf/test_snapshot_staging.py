@@ -1,3 +1,4 @@
+import csv
 import hashlib
 import json
 from dataclasses import asdict
@@ -233,6 +234,177 @@ def test_stage_snapshot_reuses_existing_manifest_when_only_created_at_changes(
 
     assert second == first
     assert len(store.write_order) == 4
+
+
+def test_stage_snapshot_rejects_manifest_with_stale_exact_artifact_generation(
+    tmp_path,
+):
+    panel = _write_panel_fixture(tmp_path)
+    boundaries = _write_boundary_fixture(tmp_path)
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+    common = {
+        "panel_path": panel,
+        "boundaries_path": boundaries,
+        "destination_root": "gs://bucket/fewsnet_partitioned_rf",
+        "store": store,
+    }
+    first = stage_snapshot(
+        **common,
+        created_at_utc="2026-07-20T00:00:00Z",
+    )
+    panel_bytes = store.read_bytes(
+        first.panel.uri,
+        generation=first.panel.generation,
+    )
+    replacement = store.put_bytes(
+        first.panel.uri,
+        panel_bytes,
+        if_generation_match=first.panel.generation,
+    )
+    assert replacement.generation != first.panel.generation
+
+    with pytest.raises(GenerationConflict, match="exact artifact reference"):
+        stage_snapshot(
+            **common,
+            created_at_utc="2026-07-20T01:00:00Z",
+        )
+
+
+def test_stage_snapshot_rejects_unreadable_generation_in_existing_manifest(
+    tmp_path,
+):
+    panel = _write_panel_fixture(tmp_path)
+    boundaries = _write_boundary_fixture(tmp_path)
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+    common = {
+        "panel_path": panel,
+        "boundaries_path": boundaries,
+        "destination_root": "gs://bucket/fewsnet_partitioned_rf",
+        "store": store,
+    }
+    manifest = stage_snapshot(
+        **common,
+        created_at_utc="2026-07-20T00:00:00Z",
+    )
+    manifest_uri = (
+        "gs://bucket/fewsnet_partitioned_rf/inputs/snapshots/"
+        f"{manifest.snapshot_id}/source_manifest.json"
+    )
+    manifest_ref = store.get_ref(manifest_uri)
+    payload = json.loads(
+        store.read_text(manifest_uri, generation=manifest_ref.generation)
+    )
+    payload["panel"]["generation"] = "999"
+    store.put_bytes(
+        manifest_uri,
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode(),
+        if_generation_match=manifest_ref.generation,
+    )
+
+    with pytest.raises(GenerationConflict, match="exact artifact reference"):
+        stage_snapshot(
+            **common,
+            created_at_utc="2026-07-20T01:00:00Z",
+        )
+
+
+def test_stage_snapshot_inspects_hashes_and_uploads_one_captured_panel_version(
+    tmp_path,
+    monkeypatch,
+):
+    panel = _write_panel_fixture(tmp_path)
+    original_panel_bytes = panel.read_bytes()
+    boundaries = _write_boundary_fixture(tmp_path)
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+    original_inspect_panel = data_module.inspect_panel
+    mutated = False
+
+    def inspect_then_mutate_bootstrap(path):
+        nonlocal mutated
+        result = original_inspect_panel(path)
+        if not mutated:
+            with panel.open("ab") as handle:
+                handle.write(b"XYZ,2026-05-01,1,50\n")
+            mutated = True
+        return result
+
+    monkeypatch.setattr(data_module, "inspect_panel", inspect_then_mutate_bootstrap)
+
+    manifest = stage_snapshot(
+        panel_path=panel,
+        boundaries_path=boundaries,
+        destination_root="gs://bucket/fewsnet_partitioned_rf",
+        store=store,
+        created_at_utc="2026-07-20T00:00:00Z",
+    )
+
+    assert panel.read_bytes() != original_panel_bytes
+    assert store.read_bytes(manifest.panel.uri) == original_panel_bytes
+    assert manifest.panel.sha256 == hashlib.sha256(original_panel_bytes).hexdigest()
+    assert manifest.row_count == 4
+    assert manifest.area_count == 2
+    assert manifest.latest_feature_month == "2026-04"
+
+
+def test_inspect_panel_preserves_na_admin_identifier(tmp_path):
+    panel = _write_panel_fixture(
+        tmp_path,
+        rows=[
+            {
+                "FEWSNET_admin_code": "NA",
+                "date": "2026-03-01",
+                "fews_ipc_crisis": 1,
+            },
+            {
+                "FEWSNET_admin_code": "A,B",
+                "date": "2026-03-01",
+                "fews_ipc_crisis": 0,
+            },
+        ],
+    )
+
+    info = data_module.inspect_panel(panel)
+
+    assert info["admin_codes"] == ("A,B", "NA")
+
+
+def test_stage_snapshot_quotes_admin_universe_csv_identifiers(tmp_path):
+    panel = _write_panel_fixture(
+        tmp_path,
+        rows=[
+            {
+                "FEWSNET_admin_code": "A,B",
+                "date": "2026-03-01",
+                "fews_ipc_crisis": 1,
+            },
+            {
+                "FEWSNET_admin_code": "XYZ",
+                "date": "2026-03-01",
+                "fews_ipc_crisis": 0,
+            },
+        ],
+    )
+    boundaries = _write_boundary_fixture(
+        tmp_path,
+        admin_codes=("XYZ", "A,B"),
+    )
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+
+    manifest = stage_snapshot(
+        panel_path=panel,
+        boundaries_path=boundaries,
+        destination_root="gs://bucket/fewsnet_partitioned_rf",
+        store=store,
+        created_at_utc="2026-07-20T00:00:00Z",
+    )
+
+    admin_universe_csv = store.read_text(manifest.admin_universe.uri)
+    assert admin_universe_csv == 'admin_code\n"A,B"\nXYZ\n'
+    assert list(csv.reader(admin_universe_csv.splitlines())) == [
+        ["admin_code"],
+        ["A,B"],
+        ["XYZ"],
+    ]
 
 
 def test_inspect_panel_rejects_duplicate_area_period_keys_across_chunks(

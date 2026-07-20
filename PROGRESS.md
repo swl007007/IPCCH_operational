@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 4 immutable FEWSNET snapshot staging and content-no-op review fix are committed and self-verified; independent review pending
-- Current state: Task 4 implementation `c7bd125f5e969fd6d699b368cdb038872d8370f2` plus no-op fix `86937a961a87eb50711a70daf723cdebb73f500f` are complete; Task 5 is next only after the Task 4 review gate
+- Current task: Task 4 independent-review fixes are in progress
+- Current state: review identified exact-generation manifest-reference validation, one-byte-version panel capture, and deterministic CSV/NA identifier handling; Task 5 remains blocked pending Task 4 re-review
 - Blockers: none
 
 ## Task Status
@@ -22,7 +22,7 @@
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
-| 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review pending |
+| 4. Stage and validate immutable FEWSNET input snapshots | independent review needs fixes; fix wave in progress |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
 | 7. Validate and route the fixed partition map | pending |
@@ -163,10 +163,29 @@
 - Follow-up fix commit: `86937a961a87eb50711a70daf723cdebb73f500f` (`86937a9 fix: preserve FEWSNET snapshot restaging no-op`).
 - Blockers: none.
 
+### Task 4 Independent-Review Fix Evidence
+
+- Review findings: existing-manifest reuse did not prove that each recorded artifact generation remained exactly readable; panel inspection preceded the later hash/upload and could describe different bytes; default pandas NA parsing and manual CSV construction did not preserve valid identifiers such as `NA` and `A,B`.
+- GitNexus upstream impact for `inspect_panel`, `_reuse_existing_manifest`, and `stage_snapshot` returned `UNKNOWN`/target not found with `0` indexed impacts because the main-branch index predates Task 4. Current-tree callers are limited to the Task 4 CLI, tests, and internal calls, so no HIGH or CRITICAL warning applies.
+- Exact-generation RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_snapshot_staging.py -q -p no:cacheprovider -k "stale_exact_artifact_generation or unreadable_generation_in_existing_manifest"` -> `2 failed, 16 deselected in 6.09s`; both failures were `Failed: DID NOT RAISE GenerationConflict` for stale generation `1` after an identical-byte generation `2` replacement and schema-valid generation `999`.
+- Captured-panel RED: the same test file with `-k "one_captured_panel_version"` -> `1 failed, 17 deselected in 6.23s`; the uploaded CSV contained the appended `2026-05` fifth row even though the manifest still recorded four rows through `2026-04`.
+- Identifier REDs: `-k "preserves_na_admin_identifier"` -> `1 failed, 17 deselected in 6.09s` because `NA` became missing; `-k "quotes_admin_universe_csv_identifiers"` -> `1 failed, 17 deselected in 6.23s` because the output contained unquoted `A,B`.
+- Minimal fixes: capture the bootstrap panel with `shutil.copyfile` into the task temp directory before inspection, then inspect/hash/upload only that captured path; preserve identifier strings with `keep_default_na=False` while treating blank target cells as unlabeled; write the sorted one-column admin universe with `csv.writer(..., lineterminator="\\n")`; and before manifest reuse stream-download all three artifact refs at their recorded generations and verify recorded SHA-256 plus size.
+- Focused GREEN: exact-generation selection -> `2 passed, 16 deselected in 4.02s`; captured-panel selection -> `1 passed, 17 deselected in 3.94s`; `NA` selection -> `1 passed, 17 deselected in 3.51s`; CSV quoting selection -> `1 passed, 17 deselected in 3.28s`.
+- Complete Task 4 GREEN: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_snapshot_staging.py -q -p no:cacheprovider` -> `18 passed in 5.24s`.
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `373 passed, 1 skipped, 24 subtests passed in 18.35s`.
+- CLI/static/environment checks: stage-snapshot `--help` exited `0` with the same four required options; `py_compile` exited `0`; `.venv/bin/python -m pip check` -> `No broken requirements found.`
+- Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Fresh controller pre-commit verification: the complete snapshot suite -> `18 passed in 6.55s`; the full repository suite -> `373 passed, 1 skipped, 24 subtests passed in 22.12s`; CLI help, `py_compile`, `pip check`, both preserved SHA-256 identities, and `git diff --check` all passed.
+- Preliminary independent-review staged gate: GitNexus `detect_changes(scope="staged")` -> LOW risk, exactly 3 changed files, 3 indexed documentation symbols, and 0 affected execution processes; `git diff --cached --check` exited `0`; staged paths were exactly `PROGRESS.md`, `core/data.py`, and `test_snapshot_staging.py`; `.superpowers/` remained untracked and unstaged.
+- Final independent-review staged gate: pending.
+- Independent-review fix commit: pending.
+- Blockers: none.
+
 ## Resume
 
-- Exact next task: Task 5 - Build the frozen Stage 3 feature contract and leak-free feature frame, after Task 4 independent review.
-- Resume command: `git status --short --branch && git log -3 --oneline && sed -n '1,260p' .superpowers/sdd/task-5-brief.md`
+- Exact next step: stage only the Task 4 review-fix code, tests, and `PROGRESS.md`; run the required staged gates; and create the focused fix commit.
+- Resume command: `git status --short --branch && git diff -- PROGRESS.md fewsnet_partitioned_rf_pipeline/core/data.py tests/fewsnet_partitioned_rf/test_snapshot_staging.py`
 
 ---
 

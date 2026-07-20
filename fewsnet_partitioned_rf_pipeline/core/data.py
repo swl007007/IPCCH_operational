@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import csv
 import hashlib
 import json
+import shutil
 import tempfile
 from dataclasses import asdict
 from decimal import Decimal, InvalidOperation
@@ -66,6 +68,7 @@ def inspect_panel(path: Path) -> dict:
             usecols=required_columns,
             chunksize=PANEL_CHUNK_SIZE,
             dtype={ADMIN_SOURCE_COLUMN: "string"},
+            keep_default_na=False,
         )
     except ValueError as exc:
         raise ValueError(
@@ -87,7 +90,13 @@ def inspect_panel(path: Path) -> dict:
         if dates.isna().any():
             raise ValueError(f"panel contains invalid {PANEL_DATE_COLUMN} values")
         monthly_periods = dates.dt.to_period("M")
-        labeled = chunk[TARGET_COLUMN].notna()
+        labeled = (
+            chunk[TARGET_COLUMN]
+            .fillna("")
+            .astype(str)
+            .str.strip()
+            .ne("")
+        )
 
         for code, period, has_label in zip(
             codes,
@@ -223,10 +232,39 @@ def _manifest_from_payload(payload: dict) -> SnapshotManifest:
     )
 
 
+def _validate_exact_artifact_references(
+    store: ArtifactStore,
+    payload: dict,
+    verification_root: Path,
+) -> None:
+    for field in ("panel", "boundaries", "admin_universe"):
+        reference = ObjectRef(**payload[field])
+        verification_path = verification_root / f"{field}.artifact"
+        try:
+            store.download_file(
+                reference.uri,
+                verification_path,
+                generation=reference.generation,
+            )
+        except (FileNotFoundError, GenerationConflict, ValueError) as exc:
+            raise GenerationConflict(
+                "existing snapshot manifest exact artifact reference is "
+                f"unreadable: {reference.uri}@{reference.generation}"
+            ) from exc
+        actual_size = verification_path.stat().st_size
+        actual_sha256 = sha256_file(verification_path)
+        if actual_size != reference.size_bytes or actual_sha256 != reference.sha256:
+            raise GenerationConflict(
+                "existing snapshot manifest exact artifact reference does not "
+                f"match recorded bytes: {reference.uri}@{reference.generation}"
+            )
+
+
 def _reuse_existing_manifest(
     store: ArtifactStore,
     manifest_ref: ObjectRef,
     expected_payload: dict,
+    verification_root: Path,
 ) -> SnapshotManifest:
     try:
         existing_payload = json.loads(
@@ -247,6 +285,11 @@ def _reuse_existing_manifest(
             "existing snapshot manifest has different content identity: "
             f"{manifest_ref.uri}"
         )
+    _validate_exact_artifact_references(
+        store,
+        existing_payload,
+        verification_root,
+    )
     return _manifest_from_payload(existing_payload)
 
 
@@ -261,12 +304,14 @@ def stage_snapshot(
     """Validate local bootstrap inputs and stage one immutable snapshot."""
     panel_path = Path(panel_path)
     boundaries_path = Path(boundaries_path)
-    panel_info = inspect_panel(panel_path)
 
     with tempfile.TemporaryDirectory(prefix="fewsnet-source-snapshot-") as temp_dir:
         temp_root = Path(temp_dir)
+        captured_panel_path = temp_root / "assembled_fewsnet.csv"
         normalized_boundaries_path = temp_root / "admin_boundaries.parquet"
         admin_universe_path = temp_root / "admin_universe.csv"
+        shutil.copyfile(panel_path, captured_panel_path)
+        panel_info = inspect_panel(captured_panel_path)
         boundary_info = normalize_boundaries(
             boundaries_path,
             normalized_boundaries_path,
@@ -285,12 +330,11 @@ def stage_snapshot(
                 f"missing_from_panel={missing_from_panel}"
             )
 
-        admin_universe_path.write_text(
-            "admin_code\n" + "\n".join(boundary_info["admin_codes"]) + "\n",
-            encoding="utf-8",
-            newline="",
-        )
-        panel_sha256 = sha256_file(panel_path)
+        with admin_universe_path.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.writer(handle, lineterminator="\n")
+            writer.writerow([ADMIN_CANONICAL_COLUMN])
+            writer.writerows((code,) for code in boundary_info["admin_codes"])
+        panel_sha256 = sha256_file(captured_panel_path)
         boundaries_sha256 = sha256_file(normalized_boundaries_path)
         admin_universe_sha256 = sha256_file(admin_universe_path)
         identity_payload = {
@@ -323,7 +367,7 @@ def stage_snapshot(
 
         panel_ref = upload_file_immutable_or_verify(
             store,
-            panel_path,
+            captured_panel_path,
             f"{snapshot_root}/assembled_fewsnet.csv",
         )
         boundaries_ref = upload_file_immutable_or_verify(
@@ -377,6 +421,7 @@ def stage_snapshot(
                 store,
                 existing_manifest,
                 manifest_payload,
+                temp_root / "existing-manifest-artifacts",
             )
         try:
             put_immutable_or_verify(store, manifest_uri, manifest_bytes)
@@ -385,5 +430,6 @@ def stage_snapshot(
                 store,
                 store.get_ref(manifest_uri),
                 manifest_payload,
+                temp_root / "existing-manifest-artifacts",
             )
         return manifest
