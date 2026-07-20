@@ -1,7 +1,30 @@
 import json
+import re
+from datetime import datetime
 from importlib.resources import files
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
+
+
+DATE_TIME_PATTERN = re.compile(
+    r"^[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt]"
+    r"[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?"
+    r"(?:[Zz]|[+-][0-9]{2}:[0-9]{2})$"
+)
+FORMAT_CHECKER = FormatChecker()
+
+
+@FORMAT_CHECKER.checks("date-time", raises=ValueError)
+def _is_rfc3339_date_time(value: object) -> bool:
+    if not isinstance(value, str):
+        return True
+    if DATE_TIME_PATTERN.fullmatch(value) is None:
+        return False
+    normalized = value[:10] + "T" + value[11:]
+    if normalized.endswith(("Z", "z")):
+        normalized = normalized[:-1] + "+00:00"
+    datetime.fromisoformat(normalized)
+    return True
 
 
 def load_schema(name: str) -> dict:
@@ -10,8 +33,12 @@ def load_schema(name: str) -> dict:
 
 
 def validate_payload(name: str, payload: dict) -> None:
+    validator = Draft202012Validator(
+        load_schema(name),
+        format_checker=FORMAT_CHECKER,
+    )
     errors = sorted(
-        Draft202012Validator(load_schema(name)).iter_errors(payload),
+        validator.iter_errors(payload),
         key=lambda error: list(error.path),
     )
     if errors:

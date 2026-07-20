@@ -199,11 +199,78 @@
     },
     "clusterStateMap": {
       "type": "object",
-      "propertyNames": {
-        "pattern": "^([0-9]|1[0-6])$"
-      },
-      "additionalProperties": {
-        "$ref": "#/$defs/clusterState"
+      "additionalProperties": false,
+      "required": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16"
+      ],
+      "properties": {
+        "0": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "1": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "2": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "3": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "4": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "5": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "6": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "7": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "8": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "9": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "10": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "11": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "12": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "13": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "14": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "15": {
+          "$ref": "#/$defs/clusterState"
+        },
+        "16": {
+          "$ref": "#/$defs/clusterState"
+        }
       }
     },
     "clusterStatesByHorizon": {
@@ -260,11 +327,78 @@
     },
     "smoteResultMap": {
       "type": "object",
-      "propertyNames": {
-        "pattern": "^([0-9]|1[0-6])$"
-      },
-      "additionalProperties": {
-        "$ref": "#/$defs/smoteResult"
+      "additionalProperties": false,
+      "required": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16"
+      ],
+      "properties": {
+        "0": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "1": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "2": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "3": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "4": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "5": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "6": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "7": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "8": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "9": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "10": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "11": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "12": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "13": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "14": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "15": {
+          "$ref": "#/$defs/smoteResult"
+        },
+        "16": {
+          "$ref": "#/$defs/smoteResult"
+        }
       }
     },
     "smoteResultsByHorizon": {

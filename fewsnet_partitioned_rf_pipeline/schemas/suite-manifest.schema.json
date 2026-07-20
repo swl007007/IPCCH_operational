@@ -194,13 +194,46 @@
       ],
       "properties": {
         "0m": {
-          "$ref": "#/$defs/registeredModelVersion"
+          "allOf": [
+            {
+              "$ref": "#/$defs/registeredModelVersion"
+            },
+            {
+              "properties": {
+                "horizon_key": {
+                  "const": "0m"
+                }
+              }
+            }
+          ]
         },
         "6m": {
-          "$ref": "#/$defs/registeredModelVersion"
+          "allOf": [
+            {
+              "$ref": "#/$defs/registeredModelVersion"
+            },
+            {
+              "properties": {
+                "horizon_key": {
+                  "const": "6m"
+                }
+              }
+            }
+          ]
         },
         "12m": {
-          "$ref": "#/$defs/registeredModelVersion"
+          "allOf": [
+            {
+              "$ref": "#/$defs/registeredModelVersion"
+            },
+            {
+              "properties": {
+                "horizon_key": {
+                  "const": "12m"
+                }
+              }
+            }
+          ]
         }
       }
     },

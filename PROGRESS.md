@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 2 implementation, verification, and pre-commit scope review complete
-- Current state: shared types, seven Draft 2020-12 contracts, validators, fixtures, and focused/full regression evidence are complete; implementation commit pending
+- Current task: Task 2 review-fix implementation and verification complete; first pre-commit scope gate pending
+- Current state: original implementation `93d49b929d4f7578e905116e9eb3b95665bf04fb` is committed; review fixes are green in the working tree and the review-fix commit is pending
 - Blockers: none
 
 ## Task Status
@@ -20,7 +20,7 @@
 | Task | Status |
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
-| 2. Define shared types and machine-readable contracts | complete |
+| 2. Define shared types and machine-readable contracts | review fixes in progress |
 | 3. Add binary-safe local and GCS artifact storage | pending |
 | 4. Stage and validate immutable FEWSNET input snapshots | pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
@@ -69,7 +69,20 @@
 - Contract coverage: immutable GCS object generations and SHA-256 identities, digest-pinned deployment images with exact cross-field digest matching, model package/runtime metadata, aggregate training and threshold evidence, the twelve formal prediction fields, monotonic run phases including candidate-only `candidate_validated`, and exact three-horizon suite release identities.
 - Staged-scope review: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, 14 changed files, 4 indexed documentation symbols, and 0 affected execution processes.
 - Blockers: none.
-- Implementation commit: this commit with subject `feat: define FEWSNET suite contracts`; its SHA is recorded in the Task 2 report after commit creation.
+- Implementation commit: `93d49b929d4f7578e905116e9eb3b95665bf04fb` (`93d49b9 feat: define FEWSNET suite contracts`).
+
+### Task 2 Review Fix Evidence
+
+- Systematic reproduction: candidate-only run manifests with the wrong phase/empty evidence, training reports with empty fixed-cluster maps, invalid source/release timestamps, contradictory package horizons, and map-key/model-horizon mismatches were all accepted by the committed contracts.
+- GitNexus upstream impact for `validate_payload` returned `UNKNOWN`/target not found because the main-branch index does not contain Task 2; current-tree caller search found only `validate_deployment` and the focused contract tests, so the present blast radius is low.
+- Review RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_contracts.py -q -p no:cacheprovider` -> `15 failed, 10 passed in 1.39s`; every failure was the expected `Failed: DID NOT RAISE ValueError` for an accepted-invalid payload.
+- Review-focused GREEN: the same file with `-k "candidate_validated or early_run_manifest or training_report or invalid_date_time or horizon_identity"` -> `21 passed, 4 deselected in 0.59s`.
+- All Task 2 tests: the full contract-test file -> `25 passed in 0.56s`.
+- Schema audit: all seven Draft 2020-12 schemas pass metaschema validation; fixed-object `additionalProperties: false` coverage is clean; cluster-state and SMOTE maps require exact keys `0..16`; the RFC 3339 `date-time` `FormatChecker` is registered.
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `324 passed, 1 skipped, 24 subtests passed in 15.55s`.
+- First staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, 7 changed files, 4 indexed documentation symbols, and 0 affected execution processes.
+- Review-fix commit: pending with subject `fix: harden FEWSNET suite contracts`.
+- Controller re-review: pending.
 
 ## Resume
 

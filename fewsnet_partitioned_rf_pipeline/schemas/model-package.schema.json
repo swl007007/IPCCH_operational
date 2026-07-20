@@ -127,6 +127,65 @@
       ]
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "horizon_key": {
+            "const": "0m"
+          }
+        },
+        "required": [
+          "horizon_key"
+        ]
+      },
+      "then": {
+        "properties": {
+          "horizon_months": {
+            "const": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "horizon_key": {
+            "const": "6m"
+          }
+        },
+        "required": [
+          "horizon_key"
+        ]
+      },
+      "then": {
+        "properties": {
+          "horizon_months": {
+            "const": 6
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "horizon_key": {
+            "const": "12m"
+          }
+        },
+        "required": [
+          "horizon_key"
+        ]
+      },
+      "then": {
+        "properties": {
+          "horizon_months": {
+            "const": 12
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "month": {
       "type": "string",

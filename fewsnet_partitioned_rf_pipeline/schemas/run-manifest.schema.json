@@ -97,6 +97,41 @@
       ]
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "candidate_validated"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "phase": {
+            "const": "OUTPUT_VALIDATED"
+          },
+          "model_versions": {
+            "required": [
+              "0m",
+              "6m",
+              "12m"
+            ]
+          },
+          "batch_jobs": {
+            "required": [
+              "0m",
+              "6m",
+              "12m"
+            ]
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "sha256": {
       "type": "string",
@@ -184,13 +219,46 @@
       "additionalProperties": false,
       "properties": {
         "0m": {
-          "$ref": "#/$defs/registeredModelVersion"
+          "allOf": [
+            {
+              "$ref": "#/$defs/registeredModelVersion"
+            },
+            {
+              "properties": {
+                "horizon_key": {
+                  "const": "0m"
+                }
+              }
+            }
+          ]
         },
         "6m": {
-          "$ref": "#/$defs/registeredModelVersion"
+          "allOf": [
+            {
+              "$ref": "#/$defs/registeredModelVersion"
+            },
+            {
+              "properties": {
+                "horizon_key": {
+                  "const": "6m"
+                }
+              }
+            }
+          ]
         },
         "12m": {
-          "$ref": "#/$defs/registeredModelVersion"
+          "allOf": [
+            {
+              "$ref": "#/$defs/registeredModelVersion"
+            },
+            {
+              "properties": {
+                "horizon_key": {
+                  "const": "12m"
+                }
+              }
+            }
+          ]
         }
       }
     },
@@ -247,13 +315,46 @@
       "additionalProperties": false,
       "properties": {
         "0m": {
-          "$ref": "#/$defs/batchJobRef"
+          "allOf": [
+            {
+              "$ref": "#/$defs/batchJobRef"
+            },
+            {
+              "properties": {
+                "horizon_key": {
+                  "const": "0m"
+                }
+              }
+            }
+          ]
         },
         "6m": {
-          "$ref": "#/$defs/batchJobRef"
+          "allOf": [
+            {
+              "$ref": "#/$defs/batchJobRef"
+            },
+            {
+              "properties": {
+                "horizon_key": {
+                  "const": "6m"
+                }
+              }
+            }
+          ]
         },
         "12m": {
-          "$ref": "#/$defs/batchJobRef"
+          "allOf": [
+            {
+              "$ref": "#/$defs/batchJobRef"
+            },
+            {
+              "properties": {
+                "horizon_key": {
+                  "const": "12m"
+                }
+              }
+            }
+          ]
         }
       }
     },
