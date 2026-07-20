@@ -11,9 +11,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 5 frozen Stage 3 feature contract and leak-free feature frame are committed; independent review is pending
-- Current state: implementation commit `8ce39cd56f567a416f20deb0e60b77d0b0cd722d` is focused/full verified; Task 6 is only the next candidate after a clean Task 5 review and is not in progress
-- Blockers: none
+- Current task: Task 5 frozen Stage 3 feature contract and leak-free feature frame are complete; independent review is clean
+- Current state: Task 5 is approved through `8ce39cd56f567a416f20deb0e60b77d0b0cd722d`; Task 6 remains pending and is not in progress
+- Blockers: before Task 6, the approved raw panel requires an explicit deduplication/source-normalization design decision for duplicate normalized keys at admin `2996` in `2025-10` and `2026-02`
 
 ## Task Status
 
@@ -23,8 +23,8 @@
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
 | 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review clean |
-| 5. Build the frozen Stage 3 feature contract and leak-free feature frame | implementation verified; independent review pending |
-| 6. Implement keyed horizon alignment and temporal windows | pending |
+| 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
+| 6. Implement keyed horizon alignment and temporal windows | pending; blocked on duplicate-key source decision |
 | 7. Validate and route the fixed partition map | pending |
 | 8. Implement fit-slice-only max-plus imputation and threshold selection | pending |
 | 9. Train partitioned RF models and produce formal local predictions | pending |
@@ -205,12 +205,13 @@
 - Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
 - Contract boundaries: runtime transform uses only the checked-in allowlist and mapping, ignores undeclared extra raw source columns, performs no fit-time statistics, scaling, standardization, or imputation, and creates no dynamic horizon-specific `*_lag{horizon}m` columns. No cloud write or external `Food_Crisis_Cluster` runtime import/invocation was added.
 - Implementation commit: `8ce39cd56f567a416f20deb0e60b77d0b0cd722d` (`8ce39cd feat: freeze FEWSNET Stage 3 features`).
-- Review gate: Task 5 independent review is pending; Task 6 remains pending and may start only after that review is clean.
+- Independent review: Approved with no Critical or Important findings. One Minor is deferred to final whole-branch review: add a direct regression that loads the checked-in feature-contract asset and asserts its schema SHA-256 identity.
+- Cross-task blocker: the approved raw panel has duplicate normalized `FEWSNET_admin_code + month` keys for admin `2996` at `2025-10` and `2026-02`. Task 4 `inspect_panel` hard-fails first at `duplicate FEWSNET_admin_code + date month: 2996 + 2025-10`. The `2025-10` pair differs only in `Tair_zscore` and `Rainf_zscore`; the `2026-02` pair is identical for those audited fields. A deduplication/source-normalization design decision is required before Task 6; Task 6 remains pending and is not in progress.
 
 ## Resume
 
-- Exact next step: independently review Task 5 commit `8ce39cd56f567a416f20deb0e60b77d0b0cd722d`; if review is clean, Task 6 is the sole next implementation candidate.
-- Resume command: `git status --short --branch && git log -3 --oneline && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider`
+- Exact next step: resolve and approve the duplicate-key deduplication/source-normalization policy for admin `2996` at `2025-10` and `2026-02`, then restage/validate the immutable source snapshot before Task 6 starts.
+- Resume command: `git status --short --branch && git log -4 --oneline && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -c 'from pathlib import Path; from fewsnet_partitioned_rf_pipeline.core.data import inspect_panel; inspect_panel(Path("/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.csv"))'`
 
 ---
 
