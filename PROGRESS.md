@@ -14,8 +14,8 @@
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
 - Current task: Task 8 fixed partition-map validation and routing
-- Current state: Tasks 1-7 are complete and independently reviewed; Task 7's blocking empty-inference finding is fixed through `8ff2847`, its re-review is approved, controller verification is fresh, and one non-blocking ordering Minor is deferred for final whole-branch triage
-- Blockers: none for Task 8 local implementation; Task 9 must wait for Task 8 implementation and independent review
+- Current state: Tasks 1-7 are complete and independently reviewed; Task 8 implementation is complete with fresh focused, related, and full verification, and independent Task 8 review is pending
+- Blockers: Task 9 must wait for independent Task 8 review; the previously deferred Task 7 ordering Minor remains queued for final whole-branch triage
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -29,7 +29,7 @@
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
 | 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; independent review clean through `d403c1e` |
 | 7. Implement keyed horizon alignment and temporal windows | complete; independent re-review clean through `8ff2847`; one Minor deferred |
-| 8. Validate and route the fixed partition map | pending; ready to start |
+| 8. Validate and route the fixed partition map | implementation complete; independent review pending |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
 | 10. Train partitioned RF models and produce formal local predictions | pending |
 | 11. Freeze reference Stage 3 parity evidence | pending |
@@ -312,10 +312,29 @@
 - Controller consistency gate: `git diff --check 16233d8..8ff2847` exited `0`; approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`.
 - Task 7 final status: complete and independently reviewed. Task 8 is unblocked; no cloud write is authorized at this stage.
 
+## Task 8 Evidence
+
+- Start state: reviewed Task 7 head plus ledger consistency commit `43677cfb7b8ce2a25cbebfdf67bcfbeff5862c64`; Task 8 creates only `core/partitions.py` and `test_partitions.py` and modifies this ledger, so no existing function, class, or method required pre-edit GitNexus impact analysis.
+- Baseline full regression before Task 8 edits: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `432 passed, 1 skipped, 24 subtests passed in 20.19s`.
+- RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_partitions.py -q -p no:cacheprovider` exited `2` during collection with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.core.partitions'` (`1 error in 3.76s`).
+- GREEN: the same focused command -> `13 passed in 4.20s`.
+- Public method signatures: `PartitionMap.load(path: str | Path, expected_sha256: str) -> PartitionMap`; `PartitionMap.from_frame(frame: pandas.DataFrame) -> PartitionMap`; `route(admin_codes: Iterable[object]) -> pandas.Series`; `coverage(admin_codes: Iterable[object]) -> float`; `assert_release_coverage(admin_codes: Iterable[object], *, baseline_pct: float = 5365 / 5718 * 100, max_drop_percentage_points: float = 2.0) -> float`.
+- Map validation: SHA-256 is computed and compared before CSV parsing; the source `FEWSNET_admin_code` is normalized through the shared `normalize_admin_code`; missing/blank map identities, duplicates after normalization, and non-integer cluster values fail closed; the stored mapping is read-only.
+- Real fixed-asset acceptance: SHA-256 `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`, `5,365` unique normalized admin-code mappings, and sorted cluster IDs exactly `0..16`.
+- Routing contract: input order and duplicate rows are preserved; identities are normalized at lookup time; mapped values are Python integers and unmapped, missing, or blank identities return `None`, including the required exact `.tolist()` behavior.
+- Coverage contract: the return value is `100 * mapped_unique_normalized_admin_codes / unique_normalized_admin_codes`; repeated identities are counted once after normalization, while an empty iterable raises `ValueError` rather than creating a zero denominator. Missing/blank supplied identities normalize to one unmapped identity.
+- Release gate: default baseline is exactly `5365 / 5718 * 100`; default maximum drop is `2.0` percentage points; the implementation raises only when `baseline_pct - current_pct > max_drop_percentage_points`. Direct tests prove an exact `2.0`-point drop passes and `2.0001` points fails.
+- Relevant runtime/data regression: partitions, runtime foundation, panel normalization, snapshot staging, preprocessing, and horizons -> `88 passed in 6.76s`.
+- Fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `445 passed, 1 skipped, 24 subtests passed in 19.96s`.
+- Preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`; fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Preliminary staged gate: `git diff --cached --check` exited `0`; staged paths were exactly `PROGRESS.md`, `core/partitions.py`, and `test_partitions.py`. Exact-worktree GitNexus `detect_changes(scope="staged")` reported LOW risk, `3` changed files, `3` indexed documentation sections, and `0` affected execution processes; the two new Python files are not yet represented as symbols in the current index.
+- Scope boundary: no Task 9 file or behavior, GCP/GCS/Vertex operation, Model Registry call, Batch Prediction, alias mutation, release-pointer write, or external artifact mutation was introduced.
+- Task 8 final implementation status: complete; independent review is required before Task 9 starts.
+
 ## Resume
 
-- Exact next step: after this ledger-only consistency commit, dispatch a fresh Task 8 implementer from the reviewed Task 7 head; require TDD, GitNexus impact/pre-commit gates, and an independent Task 8 review. Do not begin Task 9 or perform any GCP/Vertex write.
-- Resume command: `git status --short --branch && git log -5 --oneline && rg -n '^### Task 8:' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,120p' PROGRESS.md`
+- Exact next step: dispatch a fresh independent reviewer for the Task 8 commit containing this ledger. Task 9 remains blocked until that review is clean; do not perform any GCP/Vertex write.
+- Resume command: `git status --short --branch && git show --stat --oneline HEAD && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_partitions.py -q -p no:cacheprovider`
 
 ---
 
