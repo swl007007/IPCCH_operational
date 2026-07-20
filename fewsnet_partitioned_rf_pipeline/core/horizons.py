@@ -252,6 +252,8 @@ def select_latest_inference_frame(
     )
     working = _prepare_feature_frame(feature_frame, require_target=False)
     authoritative_admin_codes = set(working[ADMIN_CANONICAL_COLUMN].unique())
+    if not authoritative_admin_codes:
+        raise ValueError("authoritative admin_code universe is empty")
     selected = working.loc[
         working[FEATURE_MONTH_COLUMN].eq(latest)
     ].copy()

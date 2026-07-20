@@ -14,8 +14,8 @@
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
 - Current task: Task 7 keyed horizon alignment and temporal windows
-- Current state: Tasks 1-6 are complete and independently reviewed; Task 7 implementation is complete with strict RED/GREEN evidence, focused and full regression verification, and independent review pending
-- Blockers: none for Task 7 review; Task 8 must wait for Task 7 independent review
+- Current state: Tasks 1-6 are complete and independently reviewed; Task 7 implementation plus the blocking independent-review fix are complete with strict RED/GREEN and full regression evidence; independent re-review is pending and one non-blocking Minor is deferred
+- Blockers: none for Task 7 re-review; Task 8 must wait for the Task 7 re-review
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -28,7 +28,7 @@
 | 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review clean |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
 | 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; independent review clean through `d403c1e` |
-| 7. Implement keyed horizon alignment and temporal windows | implementation complete; independent review pending |
+| 7. Implement keyed horizon alignment and temporal windows | implementation and Important review fix complete; re-review pending; one Minor deferred |
 | 8. Validate and route the fixed partition map | pending |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
 | 10. Train partitioned RF models and produce formal local predictions | pending |
@@ -291,9 +291,23 @@
 - No `GCSArtifactStore`, GCP/GCS client, Vertex AI job, Model Registry operation, Batch Prediction, alias mutation, release-pointer write, external data mutation, Task 8 file, or Task 8 behavior was entered.
 - Task 7 final implementation status: complete; independent review is required before Task 8 starts.
 
+### Task 7 Independent-Review Fix Evidence
+
+- Review findings: blocking Important — `select_latest_inference_frame` accepted a completely empty but correctly shaped `feature_frame` because both authoritative and selected admin sets were empty; non-blocking Minor — `_prepare_feature_frame` does not literally sort before alignment, although keyed correctness is unaffected and aligned output is sorted after the merge.
+- Pre-edit exact-worktree GitNexus gate supplied by the independent review: `select_latest_inference_frame` LOW risk (`4` direct callers, all Task 7 tests, `0` affected processes, `1` module); `align_horizon` MEDIUM risk (`6` direct callers, all Task 7 tests, `0` affected processes) and was not edited by this fix.
+- Empty-universe RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider -k empty_authoritative_universe` -> `1 failed, 27 deselected in 5.45s`; exact failure was `Failed: DID NOT RAISE ValueError`, confirming the zero-row return.
+- Empty-universe GREEN: the same command -> `1 passed, 27 deselected in 3.65s` after the smallest change in `select_latest_inference_frame`: reject an empty authoritative admin universe with a clear `ValueError`. Public signatures and all alignment behavior remain unchanged.
+- Fresh complete Task 7 file: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider` -> `28 passed in 3.81s`.
+- Fresh relevant preprocessing regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider` -> `10 passed in 4.35s`.
+- Fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `432 passed, 1 skipped, 24 subtests passed in 20.06s`.
+- Deferred Minor for final whole-branch triage: `_prepare_feature_frame` validates normalized keys without first sorting the working frame. No keyed result is wrong, `align_horizon` sorts its returned frame deterministically, and this review-fix commit intentionally does not modify the MEDIUM-impact `align_horizon` path.
+- Preliminary review-fix staged gate: exact-worktree GitNexus `detect_changes(scope="staged")` reported MEDIUM risk, `3` changed files, `10` changed indexed symbols, and `1` affected process (`Select_latest_inference_frame -> _normalize_month_values`, with the reviewed function as changed step 1). `git diff --cached --check` exited `0`; staged paths were exactly `PROGRESS.md`, `core/horizons.py`, and `test_horizons.py`. Unrelated `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` changes remained unstaged.
+- No Task 8 behavior, cloud adapter, GCP/GCS/Vertex operation, external artifact mutation, public-signature change, positional shift, or design/plan change was introduced.
+- Task 7 status after the review fix: blocking Important fixed; independent re-review pending; deferred Minor remains recorded for final whole-branch triage.
+
 ## Resume
 
-- Exact next step: dispatch a fresh independent Task 7 reviewer against the implementation commit; do not begin Task 8 and do not perform any GCP/Vertex write until that review is clean.
+- Exact next step: dispatch a fresh independent Task 7 re-review against the Important-fix commit; do not begin Task 8 and do not perform any GCP/Vertex write until that re-review is clean.
 - Resume command: `git status --short --branch && git log -5 --oneline && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider && sed -n '1,110p' PROGRESS.md`
 
 ---

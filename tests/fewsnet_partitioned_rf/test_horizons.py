@@ -256,6 +256,23 @@ def test_latest_inference_frame_requires_the_complete_snapshot_admin_universe():
         select_latest_inference_frame(incomplete, "2026-04", 6)
 
 
+def test_latest_inference_frame_rejects_empty_authoritative_universe():
+    empty = pd.DataFrame(
+        columns=[
+            "admin_code",
+            "feature_month",
+            "fews_ipc_crisis",
+            "predictor",
+        ]
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="authoritative admin_code universe is empty",
+    ):
+        select_latest_inference_frame(empty, "2026-04", 6)
+
+
 def test_latest_inference_frame_rejects_duplicate_area_month_keys():
     frame = feature_frame_fixture()
     latest_row = frame.loc[
