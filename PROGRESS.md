@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 3 atomicity, URI-confinement, and durable GCS test review fixes are committed and self-verified; controller re-review pending
-- Current state: original Task 3 implementation `05682609f35cda2a7cf0f75c143d024c34222426` plus review fix `5b8df8008a486e8a1ed6ceb0eea41b1032c20842` are complete; Task 4 is next after the Task 3 re-review gate
+- Current task: Task 4 immutable FEWSNET input snapshot staging is in progress from reviewed Task 3 HEAD `0b09ff199e8feed9c959b615a13af6657546db1b`
+- Current state: Task 3 implementation `05682609f35cda2a7cf0f75c143d024c34222426`, review fix `5b8df8008a486e8a1ed6ceb0eea41b1032c20842`, and ledger commit `0b09ff199e8feed9c959b615a13af6657546db1b` passed independent review; Task 4 began with no blocker
 - Blockers: none
 
 ## Task Status
@@ -21,8 +21,8 @@
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
 | 2. Define shared types and machine-readable contracts | complete; controller review clean |
-| 3. Add binary-safe local and GCS artifact storage | review fixes committed; controller re-review pending |
-| 4. Stage and validate immutable FEWSNET input snapshots | pending |
+| 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
+| 4. Stage and validate immutable FEWSNET input snapshots | in progress |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
 | 6. Implement keyed horizon alignment and temporal windows | pending |
 | 7. Validate and route the fixed partition map | pending |
@@ -129,12 +129,29 @@
 - Final review-fix staged gate repeated the same LOW-risk, 3-file, 0-process GitNexus scope; `git diff --cached --check` remained clean and staged paths remained exact.
 - Original implementation commit: `05682609f35cda2a7cf0f75c143d024c34222426` (`0568260 feat: add FEWSNET artifact storage`).
 - Review-fix commit: `5b8df8008a486e8a1ed6ceb0eea41b1032c20842` (`5b8df80 fix: make FEWSNET storage atomic and confined`).
-- Blockers: none. Controller re-review is pending before Task 4 starts.
+- Controller re-review: clean through ledger commit `0b09ff199e8feed9c959b615a13af6657546db1b`; Task 4 may consume the frozen storage interfaces.
+- Blockers: none.
+
+## Task 4 Evidence
+
+- Start state: Task 3 independent review is clean through `0b09ff199e8feed9c959b615a13af6657546db1b`; Task 4 started with no blocker and consumes the frozen `SnapshotManifest`, source-snapshot schema, `ArtifactStore`, and immutable upload helpers without modifying them.
+- Pre-edit GitNexus scope: Task 4 adds new files only. The `IPCCH_operational` index is on `main` and predates the new FEWSNET package symbols; concept query found no existing snapshot-staging execution flow to modify, so no existing function/class/method required an upstream impact call.
+- RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_snapshot_staging.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.core.data'` before Task 4 production files existed (`1 error in 4.61s`).
+- First GREEN run: `11 passed, 1 failed in 6.64s`; the only failure was a test-side GeoParquet CRS string assumption because GeoPandas read standards-compliant PROJJSON instead of the literal authority string. The assertion was corrected to `crs.to_epsg() == 4326` without changing production code.
+- Focused GREEN: the mandated snapshot command -> `12 passed in 4.66s`.
+- CLI help: `.venv/bin/python -m fewsnet_partitioned_rf_pipeline.cli.stage_snapshot --help` -> exit `0` and `usage:` with exactly `--panel`, `--boundaries`, `--destination-root`, and `--created-at-utc` plus standard help.
+- Snapshot coverage: streaming three-column panel reads; normalized monthly duplicate detection across chunks; latest feature/label discovery; integer-like admin-code normalization; exact panel/spatial area equality; strict EPSG:4326 input; one non-null geometry per unique normalized boundary code; sorted GeoParquet/admin universe; canonical content SHA/snapshot ID; schema-valid manifest; manifest-last ordering; byte-identical immutable retry/no-op; and CLI success/error behavior.
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `367 passed, 1 skipped, 24 subtests passed in 18.78s`.
+- Static/environment checks: `py_compile` completed for all three new production files and the snapshot test; `.venv/bin/python -m pip check` -> `No broken requirements found.`
+- Preservation: implementation-plan SHA-256 remains `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`; partition-asset SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Preliminary staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 5 changed files, 4 indexed documentation symbols, and 0 affected execution processes; the new Task 4 Python symbols are absent from the main-branch index. `git diff --cached --check` exited `0`, and `git diff --cached --name-status` showed exactly `PROGRESS.md`, the two new `cli` files, `core/data.py`, and `test_snapshot_staging.py`.
+- Implementation commit: pending.
+- Blockers: none.
 
 ## Resume
 
-- Exact next task: Task 4 - Stage and validate immutable FEWSNET input snapshots, after the Task 3 controller re-review gate.
-- Resume command: `git status --short --branch && git log -3 --oneline`
+- Exact next task: Task 4 - Stage and validate immutable FEWSNET input snapshots (in progress).
+- Resume command: `git status --short --branch && git log -3 --oneline && sed -n '1,220p' .superpowers/sdd/task-4-brief.md`
 
 ---
 
