@@ -11,8 +11,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 2 review fixes committed and self-verified; controller re-review pending
-- Current state: original implementation `93d49b929d4f7578e905116e9eb3b95665bf04fb` and review fix `d65a615815c0aad956c2942c7f263e9ab830ed5b` are committed; Task 3 is next after the Task 2 re-review gate
+- Current task: Task 2 RFC3339 follow-up implementation and verification complete; first pre-commit gate pending
+- Current state: original implementation `93d49b929d4f7578e905116e9eb3b95665bf04fb` and review fix `d65a615815c0aad956c2942c7f263e9ab830ed5b` are committed; the numeric-offset fix is green in the working tree and its commit is pending
 - Blockers: none
 
 ## Task Status
@@ -20,7 +20,7 @@
 | Task | Status |
 | --- | --- |
 | 1. Establish the isolated runtime package and immutable partition asset | complete |
-| 2. Define shared types and machine-readable contracts | review fixes complete; re-review pending |
+| 2. Define shared types and machine-readable contracts | RFC3339 follow-up in progress |
 | 3. Add binary-safe local and GCS artifact storage | pending |
 | 4. Stage and validate immutable FEWSNET input snapshots | pending |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | pending |
@@ -84,6 +84,19 @@
 - Review-fix commit: `d65a615815c0aad956c2942c7f263e9ab830ed5b` (`d65a615 fix: harden FEWSNET suite contracts`).
 - Controller re-review: pending.
 - Second ledger-only staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 1 changed file (`PROGRESS.md`), 3 indexed documentation symbols, and 0 affected execution processes.
+
+### Task 2 RFC3339 Follow-up Evidence
+
+- Systematic reproduction: public `validate_payload("source-snapshot", ...)` accepted `2026-07-20T00:00:00+00:60` because `datetime.fromisoformat` normalized it to offset `+01:00`; `+24:00` was already rejected, while `Z`, `+05:30`, and boundary `-23:59` remained valid and timezone-aware.
+- GitNexus upstream impact for `_is_rfc3339_date_time` returned `UNKNOWN`/target not found because the main-branch index predates the review-fix symbol; current-tree search shows the helper is registered only on the local `FORMAT_CHECKER`, which is consumed by `validate_payload`, so the current blast radius is narrow and low.
+- RFC3339 RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_contracts.py -q -p no:cacheprovider -k "rfc3339_numeric_offsets or valid_rfc3339_timezone_offsets"` -> `1 failed, 6 passed, 25 deselected in 1.03s`; only `+00:60` produced the expected `Failed: DID NOT RAISE ValueError`.
+- RFC3339 GREEN: the same focused command -> `7 passed, 25 deselected in 0.50s`.
+- All Task 2 tests: the full contract-test file -> `32 passed in 0.56s`.
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `331 passed, 1 skipped, 24 subtests passed in 18.03s`.
+- Direct public-validator audit: `+00:60` and `+24:00` reject; `Z`, `+05:30`, `-04:00`, `+23:59`, and `-23:59` validate.
+- First RFC3339 staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree="/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite")` -> LOW risk, exactly 3 changed files (`PROGRESS.md`, the schema validator, and Task 2 contract tests), 3 indexed documentation symbols, and 0 affected execution processes.
+- RFC3339 fix commit: pending with subject `fix: enforce FEWSNET RFC3339 offsets`.
+- Controller re-review: pending.
 
 ## Resume
 

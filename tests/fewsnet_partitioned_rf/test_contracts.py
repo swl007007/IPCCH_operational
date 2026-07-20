@@ -295,6 +295,36 @@ def test_contracts_reject_invalid_date_time_values(schema_name, payload, field):
         validate_payload(schema_name, payload)
 
 
+@pytest.mark.parametrize(
+    "timestamp",
+    [
+        "2026-07-20T00:00:00+00:60",
+        "2026-07-20T00:00:00+24:00",
+    ],
+)
+def test_contracts_reject_invalid_rfc3339_numeric_offsets(timestamp):
+    payload = json.loads((FIXTURES / "source_snapshot_valid.json").read_text())
+    payload["created_at_utc"] = timestamp
+    with pytest.raises(ValueError, match="date-time"):
+        validate_payload("source-snapshot", payload)
+
+
+@pytest.mark.parametrize(
+    "timestamp",
+    [
+        "2026-07-20T00:00:00Z",
+        "2026-07-20T00:00:00+05:30",
+        "2026-07-20T00:00:00-04:00",
+        "2026-07-20T00:00:00+23:59",
+        "2026-07-20T00:00:00-23:59",
+    ],
+)
+def test_contracts_accept_valid_rfc3339_timezone_offsets(timestamp):
+    payload = json.loads((FIXTURES / "source_snapshot_valid.json").read_text())
+    payload["created_at_utc"] = timestamp
+    validate_payload("source-snapshot", payload)
+
+
 @pytest.mark.parametrize("horizon_key", HORIZONS)
 def test_model_package_accepts_matching_horizon_identity(horizon_key):
     validate_payload("model-package", _model_package(horizon_key))

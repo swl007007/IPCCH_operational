@@ -9,7 +9,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 DATE_TIME_PATTERN = re.compile(
     r"^[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt]"
     r"[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?"
-    r"(?:[Zz]|[+-][0-9]{2}:[0-9]{2})$"
+    r"(?:[Zz]|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$"
 )
 FORMAT_CHECKER = FormatChecker()
 
