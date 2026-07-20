@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: docs-only normalization amendment synchronization before implementation
-- Current state: Tasks 1-5 are complete and independently reviewed; the approved bootstrap-normalization policy is now encoded in the design and plan; new Task 6 is pending and not yet in progress
-- Blockers: none; Task 6 must complete normalization, audit binding, and real local-store staging before Task 7 starts
+- Current task: Task 6 bootstrap normalization and snapshot-audit binding complete; controller review next
+- Current state: Tasks 1-5 are complete and independently reviewed; Task 6 implementation, real artifact generation, real-shapefile LocalArtifactStore acceptance, final regression, staged scope gate, and implementation commit are complete
+- Blockers: none; Task 7 must not start until Task 6 controller review accepts this commit
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -27,7 +27,7 @@
 | 3. Add binary-safe local and GCS artifact storage | complete; independent review clean |
 | 4. Stage and validate immutable FEWSNET input snapshots | complete; independent review clean |
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
-| 6. Normalize the bootstrap panel and bind its audit into snapshots | pending; approved and unblocked |
+| 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; self-review and final gates clean; controller review pending |
 | 7. Implement keyed horizon alignment and temporal windows | pending |
 | 8. Validate and route the fixed partition map | pending |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
@@ -228,10 +228,34 @@
 - Git whitespace/scope gate: `git diff --check` and `git diff --cached --check` both exited `0`; the staged set contains exactly `PROGRESS.md`, the FEWSNET implementation plan, and the FEWSNET design; `.superpowers/` remains untracked and unstaged.
 - GitNexus staged gate: LOW risk, three changed documentation files, 38 indexed documentation sections, and zero affected execution processes. The index is based on the pre-amendment headings, but no code symbol or execution flow is affected.
 
+## Task 6 Evidence
+
+- Start state: the docs-only normalization amendment is committed at `7e961b3815a39b5089f10b1f8005b108501078b5`; the raw assembled FEWSNET CSV was preserved and neither approved normalized-v1 artifact existed.
+- Normalization RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_panel_normalization.py tests/fewsnet_partitioned_rf/test_contracts.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.cli.normalize_panel'` before production normalization code or schema existed (`1 error in 4.12s`).
+- Core normalization GREEN: the same focused command -> `42 passed in 4.29s`; `.venv/bin/python -m fewsnet_partitioned_rf_pipeline.cli.normalize_panel --help` exited `0` and printed the three required arguments.
+- Exact-worktree GitNexus impact gate after refreshing the feature index: `SnapshotManifest` MEDIUM (`16` impacted, `8` direct); `_snapshot_semantic_payload` HIGH (`14` impacted, `1` direct caller, `2` affected process groups, `3` modules); `_manifest_from_payload` HIGH with the same counts; `_validate_exact_artifact_references` HIGH with the same counts; `stage_snapshot` MEDIUM (`16` impacted, `12` direct, `1` affected process group); CLI `_parser` LOW (`5` impacted, `1` direct); CLI `main` LOW (`4` impacted, `3` direct). The three HIGH results all converge on the single direct caller `_reuse_existing_manifest` and the intended FEWSNET snapshot/CLI/test chain. Work stopped before snapshot edits, the controller independently reproduced and reviewed the blast radius, and explicit GO authorization was recorded before implementation continued.
+- Snapshot integration RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_contracts.py tests/fewsnet_partitioned_rf/test_snapshot_staging.py -k 'normalization_audit or audit_for_different_panel or duplicate_panel_hard_gate' -q -p no:cacheprovider` -> `4 failed, 52 deselected in 6.89s`; failures were the expected source-snapshot-v1 mismatch and missing `normalization_audit_path` interface.
+- Snapshot integration GREEN: the same selection -> `4 passed, 52 deselected in 5.15s`. The audit is validated against the captured panel before `inspect_panel`; the duplicate area-month hard gate remains active; snapshot identity and exact-generation reuse include the audit; normalized panel, audit, boundaries, and admin universe are written before `source_manifest.json`.
+- Mandated focused Task 6 regression: normalization, contracts, snapshot staging, and preprocessing -> `77 passed in 6.23s`.
+- First full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `400 passed, 1 skipped, 24 subtests passed in 22.00s`.
+- Raw source SHA-256 before and after normalization: `41f02be985d86fbf64ae5d16cec262f9f11ec525fa1c013240f31299995e6178`; the raw file remained byte-identical.
+- Approved normalized CSV: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv`; SHA-256 `510375f58cd835e694b6e287cce9439bbe1b6246d752daabc8151df8ffdda61d`.
+- Approved normalization audit: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.audit.json`; SHA-256 `1c37232629dd11f657e77c361a033f9a30e910441e5d8c73ea703f3b22ef1166`.
+- Real-source audit contract: `1,120,730` raw rows, `1,120,728` normalized rows, `88` columns, `2` duplicate groups, `4` duplicate rows, `2` removed rows, `0` conflict groups, latest feature month `2026-04`, and latest label month `2026-02`. Duplicate group `2996/2025-10` uses source data rows `587406` and `587407` and differs only in `Tair_zscore` and `Rainf_zscore`; `2996/2026-02` uses rows `587411` and `587412` and is exact across the excluded fields.
+- Real local-store staging acceptance used the approved normalized pair, the real `FEWS_Admin_LZ_v3.shp`, destination identity `gs://local-only/fewsnet_partitioned_rf`, and `LocalArtifactStore` rooted at `/tmp/fewsnet-normalized-v1-local-store.VerJNk`. It produced `1,120,728` rows across `5,718` areas, snapshot ID `fewsnet-202604-8511bf5e`, and snapshot content SHA-256 `8511bf5e2e6ea63cf85ffdc37bfd7a3bd44715bb35b59b43eac344aab781c76a`.
+- Self-review RED: mixed-source warning and concurrent-audit cleanup selection -> `2 failed, 8 deselected in 5.99s`; the real root causes were pandas chunked mixed-type inference emitting `DtypeWarning` and cleanup treating any audit at the target path as self-created.
+- Self-review GREEN: a whole-file type inference read removes the warning; exclusive output/audit handles mark ownership before writing and cleanup unlinks only self-created artifacts. The concurrent-audit regression -> `1 passed, 9 deselected in 3.86s`; the mixed-source warning regression -> `1 passed, 9 deselected in 4.49s`.
+- Real-source post-fix parity: a fresh `/tmp` normalization rerun produced normalized SHA-256 `510375f58cd835e694b6e287cce9439bbe1b6246d752daabc8151df8ffdda61d`; `cmp` reported `byte_identical=true` against the approved normalized-v1 CSV.
+- Final fresh focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_panel_normalization.py tests/fewsnet_partitioned_rf/test_contracts.py tests/fewsnet_partitioned_rf/test_snapshot_staging.py tests/fewsnet_partitioned_rf/test_preprocessing.py -q -p no:cacheprovider` -> `79 passed in 6.83s`.
+- Final fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `402 passed, 1 skipped, 24 subtests passed in 21.25s`.
+- Final static/environment gates: `git diff --check`, `py_compile`, JSON parsing, Draft 2020-12 metaschema validation for all eight FEWSNET schemas, both CLI help commands, and `.venv/bin/python -m pip check` all exited `0`; pip reported `No broken requirements found.`
+- Staged-scope gate: the required named-repository call `detect_changes(scope="staged", repo="IPCCH_operational", worktree=<feature worktree>)` reported LOW risk, `13` changed files, `3` indexed documentation symbols, and `0` affected processes because the duplicate repository name resolved to the main index. The authoritative exact-worktree-index call reported HIGH risk, `94` changed symbols, `12` affected processes, and the same `13` changed files. Every affected process is within the explicitly reviewed Task 6 normalization CLI, snapshot staging/reuse, audit validation, and local tests; there is no unrelated pipeline spread.
+- External artifacts are evidence only and are not added to Git. No `GCSArtifactStore`, GCP, GCS, Vertex AI, Model Registry, Batch Prediction, model registration, alias, or release-pointer mutation was performed.
+
 ## Resume
 
-- Exact next step: after the docs-only consistency gate and commit, start new Task 6 at its RED tests; do not begin Task 7 and do not perform any GCP/Vertex write.
-- Resume command: `git status --short --branch && git log -5 --oneline && sha256sum docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && rg -n '^### Task 6:' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md`
+- Exact next step: controller review Task 6 from the committed diff and `.superpowers/sdd/task-6-report.md`; only after acceptance may Task 7 begin. Do not perform any GCP/Vertex write.
+- Resume command: `git status --short --branch && git show --stat --oneline HEAD && sed -n '1,260p' .superpowers/sdd/task-6-report.md`
 
 ---
 

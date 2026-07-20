@@ -9,6 +9,7 @@
     "created_at_utc",
     "snapshot_content_sha256",
     "panel",
+    "normalization_audit",
     "boundaries",
     "admin_universe",
     "row_count",
@@ -22,7 +23,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "fewsnet-source-snapshot-v1"
+      "const": "fewsnet-source-snapshot-v2"
     },
     "snapshot_id": {
       "type": "string",
@@ -36,6 +37,9 @@
       "$ref": "#/$defs/sha256"
     },
     "panel": {
+      "$ref": "#/$defs/objectRef"
+    },
+    "normalization_audit": {
       "$ref": "#/$defs/objectRef"
     },
     "boundaries": {

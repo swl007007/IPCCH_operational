@@ -1,5 +1,5 @@
 {
-  "schema_version": "fewsnet-source-snapshot-v1",
+  "schema_version": "fewsnet-source-snapshot-v2",
   "snapshot_id": "fewsnet-202604-aaaaaaaa",
   "created_at_utc": "2026-07-20T00:00:00Z",
   "snapshot_content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -9,15 +9,21 @@
     "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
     "size_bytes": 1024
   },
+  "normalization_audit": {
+    "uri": "gs://bucket/inputs/snapshots/fewsnet-202604-aaaaaaaa/panel_normalization_audit.json",
+    "generation": "8",
+    "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "size_bytes": 512
+  },
   "boundaries": {
     "uri": "gs://bucket/inputs/snapshots/fewsnet-202604-aaaaaaaa/boundaries.parquet",
-    "generation": "8",
+    "generation": "9",
     "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
     "size_bytes": 2048
   },
   "admin_universe": {
     "uri": "gs://bucket/inputs/snapshots/fewsnet-202604-aaaaaaaa/admin_universe.csv",
-    "generation": "9",
+    "generation": "10",
     "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
     "size_bytes": 128
   },
@@ -30,7 +36,7 @@
   "source_identity": {
     "panel_bootstrap_path": "Outcome/fewsnet.csv",
     "boundaries_bootstrap_path": "data/fewsnet_admin_boundaries_v3.shp",
-    "panel_source_type": "assembled_fewsnet_csv",
+    "panel_source_type": "assembled_fewsnet_normalized_v1_csv",
     "boundaries_source_type": "fewsnet_admin_boundaries_v3"
   },
   "admin_code_mapping": {

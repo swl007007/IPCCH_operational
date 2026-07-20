@@ -1,0 +1,59 @@
+{
+  "schema_version": "fewsnet-panel-normalization-v1",
+  "normalization_version": "deduplicate-before-global-rolling-zscore-v1",
+  "source_panel": {
+    "path": "/data/assembled_fewsnet.csv",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "size_bytes": 2048,
+    "row_count": 14,
+    "column_count": 88
+  },
+  "output_panel": {
+    "path": "/data/assembled_fewsnet.normalized-v1.csv",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "size_bytes": 1984,
+    "row_count": 13,
+    "column_count": 88
+  },
+  "key_columns": [
+    "FEWSNET_admin_code",
+    "feature_month"
+  ],
+  "sort_columns": [
+    "FEWSNET_admin_code",
+    "date",
+    "source_row_number"
+  ],
+  "comparison_excluded_columns": [
+    "Tair_zscore",
+    "Rainf_zscore"
+  ],
+  "climate_derivation": {
+    "Tair_f_tavg_mean": "Tair_zscore",
+    "Rainf_f_tavg_mean": "Rainf_zscore",
+    "rolling_order": "global_after_stable_admin_date_sort",
+    "window": 12,
+    "minimum_periods": 1,
+    "grouping_column": "FEWSNET_admin_code",
+    "std_ddof": 1
+  },
+  "latest_feature_month": "2025-12",
+  "latest_label_month": "2025-11",
+  "duplicate_group_count": 1,
+  "duplicate_row_count": 2,
+  "removed_row_count": 1,
+  "conflict_group_count": 0,
+  "duplicate_groups": [
+    {
+      "admin_code": "2996",
+      "feature_month": "2025-10",
+      "source_row_numbers": [
+        11,
+        14
+      ],
+      "group_size": 2,
+      "differing_excluded_columns": [],
+      "disposition": "collapsed_identical_or_derived_only"
+    }
+  ]
+}

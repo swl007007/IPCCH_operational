@@ -31,7 +31,7 @@ from fewsnet_partitioned_rf_pipeline.vertex.storage import (
 
 
 PANEL_CHUNK_SIZE = 100_000
-SNAPSHOT_SCHEMA_VERSION = "fewsnet-source-snapshot-v1"
+SNAPSHOT_SCHEMA_VERSION = "fewsnet-source-snapshot-v2"
 BOUNDARY_SOURCE_COLUMN = "admin_code"
 PANEL_DATE_COLUMN = "date"
 ADMIN_CODE_MAPPING = {
@@ -187,6 +187,11 @@ def _snapshot_semantic_payload(payload: dict) -> dict:
             for key, value in payload["panel"].items()
             if key != "generation"
         },
+        "normalization_audit": {
+            key: value
+            for key, value in payload["normalization_audit"].items()
+            if key != "generation"
+        },
         "boundaries": {
             key: value
             for key, value in payload["boundaries"].items()
@@ -219,6 +224,7 @@ def _manifest_from_payload(payload: dict) -> SnapshotManifest:
         created_at_utc=payload["created_at_utc"],
         snapshot_content_sha256=payload["snapshot_content_sha256"],
         panel=ObjectRef(**payload["panel"]),
+        normalization_audit=ObjectRef(**payload["normalization_audit"]),
         boundaries=ObjectRef(**payload["boundaries"]),
         admin_universe=ObjectRef(**payload["admin_universe"]),
         row_count=payload["row_count"],
@@ -237,7 +243,12 @@ def _validate_exact_artifact_references(
     payload: dict,
     verification_root: Path,
 ) -> None:
-    for field in ("panel", "boundaries", "admin_universe"):
+    for field in (
+        "panel",
+        "normalization_audit",
+        "boundaries",
+        "admin_universe",
+    ):
         reference = ObjectRef(**payload[field])
         verification_path = verification_root / f"{field}.artifact"
         try:
@@ -296,6 +307,7 @@ def _reuse_existing_manifest(
 def stage_snapshot(
     *,
     panel_path: Path,
+    normalization_audit_path: Path,
     boundaries_path: Path,
     destination_root: str,
     store: ArtifactStore,
@@ -303,14 +315,25 @@ def stage_snapshot(
 ) -> SnapshotManifest:
     """Validate local bootstrap inputs and stage one immutable snapshot."""
     panel_path = Path(panel_path)
+    normalization_audit_path = Path(normalization_audit_path)
     boundaries_path = Path(boundaries_path)
+
+    from fewsnet_partitioned_rf_pipeline.core.normalization import (
+        validate_normalization_audit,
+    )
 
     with tempfile.TemporaryDirectory(prefix="fewsnet-source-snapshot-") as temp_dir:
         temp_root = Path(temp_dir)
-        captured_panel_path = temp_root / "assembled_fewsnet.csv"
+        captured_panel_path = temp_root / "assembled_fewsnet.normalized.csv"
+        captured_audit_path = temp_root / "panel_normalization_audit.json"
         normalized_boundaries_path = temp_root / "admin_boundaries.parquet"
         admin_universe_path = temp_root / "admin_universe.csv"
         shutil.copyfile(panel_path, captured_panel_path)
+        shutil.copyfile(normalization_audit_path, captured_audit_path)
+        normalization_audit = validate_normalization_audit(
+            captured_audit_path,
+            captured_panel_path,
+        )
         panel_info = inspect_panel(captured_panel_path)
         boundary_info = normalize_boundaries(
             boundaries_path,
@@ -335,11 +358,14 @@ def stage_snapshot(
             writer.writerow([ADMIN_CANONICAL_COLUMN])
             writer.writerows((code,) for code in boundary_info["admin_codes"])
         panel_sha256 = sha256_file(captured_panel_path)
+        normalization_audit_sha256 = sha256_file(captured_audit_path)
         boundaries_sha256 = sha256_file(normalized_boundaries_path)
         admin_universe_sha256 = sha256_file(admin_universe_path)
         identity_payload = {
             "schema_version": SNAPSHOT_SCHEMA_VERSION,
             "panel_sha256": panel_sha256,
+            "normalization_audit_sha256": normalization_audit_sha256,
+            "normalization_version": normalization_audit["normalization_version"],
             "boundaries_sha256": boundaries_sha256,
             "admin_universe_sha256": admin_universe_sha256,
             "row_count": panel_info["row_count"],
@@ -368,7 +394,12 @@ def stage_snapshot(
         panel_ref = upload_file_immutable_or_verify(
             store,
             captured_panel_path,
-            f"{snapshot_root}/assembled_fewsnet.csv",
+            f"{snapshot_root}/assembled_fewsnet.normalized.csv",
+        )
+        normalization_audit_ref = upload_file_immutable_or_verify(
+            store,
+            captured_audit_path,
+            f"{snapshot_root}/panel_normalization_audit.json",
         )
         boundaries_ref = upload_file_immutable_or_verify(
             store,
@@ -385,6 +416,7 @@ def stage_snapshot(
             created_at_utc=created_at_utc,
             snapshot_content_sha256=snapshot_content_sha256,
             panel=panel_ref,
+            normalization_audit=normalization_audit_ref,
             boundaries=boundaries_ref,
             admin_universe=admin_universe_ref,
             row_count=panel_info["row_count"],
@@ -396,7 +428,7 @@ def stage_snapshot(
             source_identity={
                 "panel_bootstrap_path": str(panel_path),
                 "boundaries_bootstrap_path": str(boundaries_path),
-                "panel_source_type": "assembled_fewsnet_csv",
+                "panel_source_type": "assembled_fewsnet_normalized_v1_csv",
                 "boundaries_source_type": "fewsnet_admin_boundaries_v3",
             },
             admin_code_mapping=dict(ADMIN_CODE_MAPPING),

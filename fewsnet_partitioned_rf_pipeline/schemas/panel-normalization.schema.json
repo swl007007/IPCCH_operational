@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FEWSNET panel normalization audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "normalization_version",
+    "source_panel",
+    "output_panel",
+    "key_columns",
+    "sort_columns",
+    "comparison_excluded_columns",
+    "climate_derivation",
+    "latest_feature_month",
+    "latest_label_month",
+    "duplicate_group_count",
+    "duplicate_row_count",
+    "removed_row_count",
+    "conflict_group_count",
+    "duplicate_groups"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "fewsnet-panel-normalization-v1"
+    },
+    "normalization_version": {
+      "const": "deduplicate-before-global-rolling-zscore-v1"
+    },
+    "source_panel": {
+      "$ref": "#/$defs/panelFile"
+    },
+    "output_panel": {
+      "$ref": "#/$defs/panelFile"
+    },
+    "key_columns": {
+      "const": [
+        "FEWSNET_admin_code",
+        "feature_month"
+      ]
+    },
+    "sort_columns": {
+      "const": [
+        "FEWSNET_admin_code",
+        "date",
+        "source_row_number"
+      ]
+    },
+    "comparison_excluded_columns": {
+      "const": [
+        "Tair_zscore",
+        "Rainf_zscore"
+      ]
+    },
+    "climate_derivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Tair_f_tavg_mean",
+        "Rainf_f_tavg_mean",
+        "rolling_order",
+        "window",
+        "minimum_periods",
+        "grouping_column",
+        "std_ddof"
+      ],
+      "properties": {
+        "Tair_f_tavg_mean": {
+          "const": "Tair_zscore"
+        },
+        "Rainf_f_tavg_mean": {
+          "const": "Rainf_zscore"
+        },
+        "rolling_order": {
+          "const": "global_after_stable_admin_date_sort"
+        },
+        "window": {
+          "const": 12
+        },
+        "minimum_periods": {
+          "const": 1
+        },
+        "grouping_column": {
+          "const": "FEWSNET_admin_code"
+        },
+        "std_ddof": {
+          "const": 1
+        }
+      }
+    },
+    "latest_feature_month": {
+      "$ref": "#/$defs/month"
+    },
+    "latest_label_month": {
+      "$ref": "#/$defs/month"
+    },
+    "duplicate_group_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "duplicate_row_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "removed_row_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "conflict_group_count": {
+      "const": 0
+    },
+    "duplicate_groups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/duplicateGroup"
+      }
+    }
+  },
+  "$defs": {
+    "month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "panelFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "size_bytes",
+        "row_count",
+        "column_count"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "row_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "column_count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "duplicateGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admin_code",
+        "feature_month",
+        "source_row_numbers",
+        "group_size",
+        "differing_excluded_columns",
+        "disposition"
+      ],
+      "properties": {
+        "admin_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feature_month": {
+          "$ref": "#/$defs/month"
+        },
+        "source_row_numbers": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "group_size": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "differing_excluded_columns": {
+          "type": "array",
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "Tair_zscore",
+              "Rainf_zscore"
+            ]
+          }
+        },
+        "disposition": {
+          "const": "collapsed_identical_or_derived_only"
+        }
+      }
+    }
+  }
+}

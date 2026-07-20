@@ -20,6 +20,7 @@ def _parser() -> argparse.ArgumentParser:
         description="Stage an immutable FEWSNET source snapshot."
     )
     parser.add_argument("--panel", required=True, type=Path)
+    parser.add_argument("--normalization-audit", required=True, type=Path)
     parser.add_argument("--boundaries", required=True, type=Path)
     parser.add_argument("--destination-root", required=True)
     parser.add_argument("--created-at-utc", required=True)
@@ -31,6 +32,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         manifest = stage_snapshot(
             panel_path=args.panel,
+            normalization_audit_path=args.normalization_audit,
             boundaries_path=args.boundaries,
             destination_root=args.destination_root,
             store=GCSArtifactStore.from_default(),

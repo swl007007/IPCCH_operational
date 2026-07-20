@@ -16,6 +16,7 @@ from fewsnet_partitioned_rf_pipeline.core.data import (
     normalize_admin_code,
     stage_snapshot,
 )
+from fewsnet_partitioned_rf_pipeline.core.normalization import normalize_panel
 from fewsnet_partitioned_rf_pipeline.schemas import validate_payload
 from fewsnet_partitioned_rf_pipeline.vertex.storage import (
     GenerationConflict,
@@ -104,10 +105,76 @@ def _write_boundary_fixture(
     return path
 
 
+def write_matching_normalized_fixture(tmp_path):
+    source_frame = pd.read_csv(_write_panel_fixture(tmp_path))
+    source_frame["Tair_f_tavg_mean"] = [20.0, 25.0, 21.0, 26.0]
+    source_frame["Tair_zscore"] = 0.0
+    source_frame["Rainf_f_tavg_mean"] = [40.0, 45.0, 41.0, 46.0]
+    source_frame["Rainf_zscore"] = 0.0
+    raw = tmp_path / "assembled_fewsnet.raw.csv"
+    source_frame.to_csv(raw, index=False)
+    normalized = tmp_path / "assembled_fewsnet.normalized.csv"
+    audit = tmp_path / "panel_normalization_audit.json"
+    normalize_panel(raw, normalized, audit)
+    return normalized, audit
+
+
+def _write_matching_audit(panel, tmp_path):
+    frame = pd.read_csv(panel)
+    periods = pd.to_datetime(frame["date"]).dt.to_period("M")
+    labeled = frame["fews_ipc_crisis"].fillna("").astype(str).str.strip().ne("")
+    panel_sha256 = hashlib.sha256(panel.read_bytes()).hexdigest()
+    payload = {
+        "schema_version": "fewsnet-panel-normalization-v1",
+        "normalization_version": "deduplicate-before-global-rolling-zscore-v1",
+        "source_panel": {
+            "path": str(panel) + ".raw",
+            "sha256": panel_sha256,
+            "size_bytes": panel.stat().st_size,
+            "row_count": len(frame),
+            "column_count": len(frame.columns),
+        },
+        "output_panel": {
+            "path": str(panel),
+            "sha256": panel_sha256,
+            "size_bytes": panel.stat().st_size,
+            "row_count": len(frame),
+            "column_count": len(frame.columns),
+        },
+        "key_columns": ["FEWSNET_admin_code", "feature_month"],
+        "sort_columns": ["FEWSNET_admin_code", "date", "source_row_number"],
+        "comparison_excluded_columns": ["Tair_zscore", "Rainf_zscore"],
+        "climate_derivation": {
+            "Tair_f_tavg_mean": "Tair_zscore",
+            "Rainf_f_tavg_mean": "Rainf_zscore",
+            "rolling_order": "global_after_stable_admin_date_sort",
+            "window": 12,
+            "minimum_periods": 1,
+            "grouping_column": "FEWSNET_admin_code",
+            "std_ddof": 1,
+        },
+        "latest_feature_month": str(periods.max()),
+        "latest_label_month": str(periods.loc[labeled].max()),
+        "duplicate_group_count": 0,
+        "duplicate_row_count": 0,
+        "removed_row_count": 0,
+        "conflict_group_count": 0,
+        "duplicate_groups": [],
+    }
+    audit = tmp_path / f"{panel.stem}.normalization.audit.json"
+    audit.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return audit
+
+
 def _identity_payload(manifest):
     return {
-        "schema_version": "fewsnet-source-snapshot-v1",
+        "schema_version": "fewsnet-source-snapshot-v2",
         "panel_sha256": manifest.panel.sha256,
+        "normalization_audit_sha256": manifest.normalization_audit.sha256,
+        "normalization_version": "deduplicate-before-global-rolling-zscore-v1",
         "boundaries_sha256": manifest.boundaries.sha256,
         "admin_universe_sha256": manifest.admin_universe.sha256,
         "row_count": manifest.row_count,
@@ -126,13 +193,87 @@ def test_normalize_admin_code_preserves_identifiers_and_canonicalizes_integer_li
     assert normalize_admin_code("  ABC-01  ") == "ABC-01"
 
 
+def test_stage_snapshot_uploads_verified_normalization_audit_before_manifest(tmp_path):
+    normalized_panel, audit = write_matching_normalized_fixture(tmp_path)
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+
+    manifest = stage_snapshot(
+        panel_path=normalized_panel,
+        normalization_audit_path=audit,
+        boundaries_path=_write_boundary_fixture(tmp_path),
+        destination_root="gs://bucket/fewsnet_partitioned_rf",
+        store=store,
+        created_at_utc="2026-07-20T00:00:00Z",
+    )
+
+    assert manifest.normalization_audit.sha256 == hashlib.sha256(
+        audit.read_bytes()
+    ).hexdigest()
+    assert manifest.panel.uri.endswith("assembled_fewsnet.normalized.csv")
+    assert manifest.normalization_audit.uri.endswith(
+        "panel_normalization_audit.json"
+    )
+    assert store.write_order[-1].endswith("source_manifest.json")
+
+
+def test_stage_snapshot_rejects_audit_for_different_panel(tmp_path):
+    normalized_panel, audit = write_matching_normalized_fixture(tmp_path)
+    normalized_panel.write_bytes(normalized_panel.read_bytes() + b"\n")
+
+    with pytest.raises(ValueError, match="normalization.*checksum|size"):
+        stage_snapshot(
+            panel_path=normalized_panel,
+            normalization_audit_path=audit,
+            boundaries_path=_write_boundary_fixture(tmp_path),
+            destination_root="gs://bucket/fewsnet_partitioned_rf",
+            store=RecordingLocalArtifactStore(tmp_path / "store"),
+            created_at_utc="2026-07-20T00:00:00Z",
+        )
+
+
+def test_stage_snapshot_keeps_duplicate_panel_hard_gate_after_audit_validation(
+    tmp_path,
+):
+    normalized_panel, audit = write_matching_normalized_fixture(tmp_path)
+    frame = pd.read_csv(normalized_panel)
+    pd.concat([frame, frame.iloc[[0]]], ignore_index=True).to_csv(
+        normalized_panel,
+        index=False,
+    )
+    payload = json.loads(audit.read_text(encoding="utf-8"))
+    payload["source_panel"]["row_count"] = len(frame) + 1
+    payload["output_panel"].update(
+        {
+            "sha256": hashlib.sha256(normalized_panel.read_bytes()).hexdigest(),
+            "size_bytes": normalized_panel.stat().st_size,
+            "row_count": len(frame) + 1,
+        }
+    )
+    audit.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="duplicate FEWSNET_admin_code"):
+        stage_snapshot(
+            panel_path=normalized_panel,
+            normalization_audit_path=audit,
+            boundaries_path=_write_boundary_fixture(tmp_path),
+            destination_root="gs://bucket/fewsnet_partitioned_rf",
+            store=RecordingLocalArtifactStore(tmp_path / "store"),
+            created_at_utc="2026-07-20T00:00:00Z",
+        )
+
+
 def test_stage_snapshot_writes_manifest_last_and_preserves_area_identity(tmp_path):
     panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(tmp_path)
     store = RecordingLocalArtifactStore(tmp_path / "store")
 
     manifest = stage_snapshot(
         panel_path=panel,
+        normalization_audit_path=audit,
         boundaries_path=boundaries,
         destination_root="gs://bucket/fewsnet_partitioned_rf",
         store=store,
@@ -154,11 +295,11 @@ def test_stage_snapshot_writes_manifest_last_and_preserves_area_identity(tmp_pat
     assert manifest.source_identity == {
         "panel_bootstrap_path": str(panel),
         "boundaries_bootstrap_path": str(boundaries),
-        "panel_source_type": "assembled_fewsnet_csv",
+        "panel_source_type": "assembled_fewsnet_normalized_v1_csv",
         "boundaries_source_type": "fewsnet_admin_boundaries_v3",
     }
     assert store.write_order[-1].endswith("source_manifest.json")
-    assert len(store.write_order) == 4
+    assert len(store.write_order) == 5
 
     canonical_identity = json.dumps(
         _identity_payload(manifest),
@@ -170,6 +311,7 @@ def test_stage_snapshot_writes_manifest_last_and_preserves_area_identity(tmp_pat
     assert manifest.snapshot_id == f"fewsnet-202604-{expected_content_sha256[:8]}"
 
     assert store.read_bytes(manifest.panel.uri) == panel.read_bytes()
+    assert store.read_bytes(manifest.normalization_audit.uri) == audit.read_bytes()
     assert store.read_text(manifest.admin_universe.uri) == "admin_code\n12\nABC\n"
 
     normalized_boundaries = tmp_path / "normalized.parquet"
@@ -186,17 +328,19 @@ def test_stage_snapshot_writes_manifest_last_and_preserves_area_identity(tmp_pat
     manifest_payload = json.loads(store.read_text(manifest_uri))
     validate_payload("source-snapshot", manifest_payload)
     assert manifest_payload == {
-        "schema_version": "fewsnet-source-snapshot-v1",
+        "schema_version": "fewsnet-source-snapshot-v2",
         **asdict(manifest),
     }
 
 
 def test_stage_snapshot_reuses_byte_identical_immutable_objects(tmp_path):
     panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(tmp_path)
     store = RecordingLocalArtifactStore(tmp_path / "store")
     kwargs = {
         "panel_path": panel,
+        "normalization_audit_path": audit,
         "boundaries_path": boundaries,
         "destination_root": "gs://bucket/fewsnet_partitioned_rf",
         "store": store,
@@ -207,17 +351,19 @@ def test_stage_snapshot_reuses_byte_identical_immutable_objects(tmp_path):
     second = stage_snapshot(**kwargs)
 
     assert second == first
-    assert len(store.write_order) == 4
+    assert len(store.write_order) == 5
 
 
 def test_stage_snapshot_reuses_existing_manifest_when_only_created_at_changes(
     tmp_path,
 ):
     panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(tmp_path)
     store = RecordingLocalArtifactStore(tmp_path / "store")
     common = {
         "panel_path": panel,
+        "normalization_audit_path": audit,
         "boundaries_path": boundaries,
         "destination_root": "gs://bucket/fewsnet_partitioned_rf",
         "store": store,
@@ -233,17 +379,19 @@ def test_stage_snapshot_reuses_existing_manifest_when_only_created_at_changes(
     )
 
     assert second == first
-    assert len(store.write_order) == 4
+    assert len(store.write_order) == 5
 
 
 def test_stage_snapshot_rejects_manifest_with_stale_exact_artifact_generation(
     tmp_path,
 ):
     panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(tmp_path)
     store = RecordingLocalArtifactStore(tmp_path / "store")
     common = {
         "panel_path": panel,
+        "normalization_audit_path": audit,
         "boundaries_path": boundaries,
         "destination_root": "gs://bucket/fewsnet_partitioned_rf",
         "store": store,
@@ -270,14 +418,78 @@ def test_stage_snapshot_rejects_manifest_with_stale_exact_artifact_generation(
         )
 
 
-def test_stage_snapshot_rejects_unreadable_generation_in_existing_manifest(
-    tmp_path,
-):
+def test_stage_snapshot_rejects_stale_normalization_audit_generation(tmp_path):
     panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(tmp_path)
     store = RecordingLocalArtifactStore(tmp_path / "store")
     common = {
         "panel_path": panel,
+        "normalization_audit_path": audit,
+        "boundaries_path": boundaries,
+        "destination_root": "gs://bucket/fewsnet_partitioned_rf",
+        "store": store,
+    }
+    first = stage_snapshot(
+        **common,
+        created_at_utc="2026-07-20T00:00:00Z",
+    )
+    audit_bytes = store.read_bytes(
+        first.normalization_audit.uri,
+        generation=first.normalization_audit.generation,
+    )
+    replacement = store.put_bytes(
+        first.normalization_audit.uri,
+        audit_bytes,
+        if_generation_match=first.normalization_audit.generation,
+    )
+    assert replacement.generation != first.normalization_audit.generation
+
+    with pytest.raises(GenerationConflict, match="exact artifact reference"):
+        stage_snapshot(
+            **common,
+            created_at_utc="2026-07-20T01:00:00Z",
+        )
+
+
+def test_stage_snapshot_audit_drift_changes_snapshot_identity(tmp_path):
+    panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
+    boundaries = _write_boundary_fixture(tmp_path)
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+    common = {
+        "panel_path": panel,
+        "boundaries_path": boundaries,
+        "destination_root": "gs://bucket/fewsnet_partitioned_rf",
+        "store": store,
+        "created_at_utc": "2026-07-20T00:00:00Z",
+    }
+    first = stage_snapshot(normalization_audit_path=audit, **common)
+    changed_payload = json.loads(audit.read_text(encoding="utf-8"))
+    changed_payload["source_panel"]["path"] += ".relocated"
+    changed_audit = tmp_path / "changed-normalization-audit.json"
+    changed_audit.write_text(
+        json.dumps(changed_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    second = stage_snapshot(normalization_audit_path=changed_audit, **common)
+
+    assert second.normalization_audit.sha256 != first.normalization_audit.sha256
+    assert second.snapshot_content_sha256 != first.snapshot_content_sha256
+    assert second.snapshot_id != first.snapshot_id
+
+
+def test_stage_snapshot_rejects_unreadable_generation_in_existing_manifest(
+    tmp_path,
+):
+    panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
+    boundaries = _write_boundary_fixture(tmp_path)
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+    common = {
+        "panel_path": panel,
+        "normalization_audit_path": audit,
         "boundaries_path": boundaries,
         "destination_root": "gs://bucket/fewsnet_partitioned_rf",
         "store": store,
@@ -314,6 +526,7 @@ def test_stage_snapshot_inspects_hashes_and_uploads_one_captured_panel_version(
 ):
     panel = _write_panel_fixture(tmp_path)
     original_panel_bytes = panel.read_bytes()
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(tmp_path)
     store = RecordingLocalArtifactStore(tmp_path / "store")
     original_inspect_panel = data_module.inspect_panel
@@ -332,6 +545,7 @@ def test_stage_snapshot_inspects_hashes_and_uploads_one_captured_panel_version(
 
     manifest = stage_snapshot(
         panel_path=panel,
+        normalization_audit_path=audit,
         boundaries_path=boundaries,
         destination_root="gs://bucket/fewsnet_partitioned_rf",
         store=store,
@@ -388,10 +602,12 @@ def test_stage_snapshot_quotes_admin_universe_csv_identifiers(tmp_path):
         tmp_path,
         admin_codes=("XYZ", "A,B"),
     )
+    audit = _write_matching_audit(panel, tmp_path)
     store = RecordingLocalArtifactStore(tmp_path / "store")
 
     manifest = stage_snapshot(
         panel_path=panel,
+        normalization_audit_path=audit,
         boundaries_path=boundaries,
         destination_root="gs://bucket/fewsnet_partitioned_rf",
         store=store,
@@ -439,12 +655,14 @@ def test_inspect_panel_rejects_duplicate_area_period_keys_across_chunks(
 
 def test_stage_snapshot_rejects_panel_spatial_area_set_mismatch(tmp_path):
     panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(tmp_path, admin_codes=("12", "XYZ"))
     store = RecordingLocalArtifactStore(tmp_path / "store")
 
     with pytest.raises(ValueError, match="area set mismatch"):
         stage_snapshot(
             panel_path=panel,
+            normalization_audit_path=audit,
             boundaries_path=boundaries,
             destination_root="gs://bucket/fewsnet_partitioned_rf",
             store=store,
@@ -456,11 +674,13 @@ def test_stage_snapshot_rejects_panel_spatial_area_set_mismatch(tmp_path):
 
 def test_stage_snapshot_rejects_boundaries_missing_admin_code(tmp_path):
     panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(tmp_path, include_admin_code=False)
 
     with pytest.raises(ValueError, match="admin_code"):
         stage_snapshot(
             panel_path=panel,
+            normalization_audit_path=audit,
             boundaries_path=boundaries,
             destination_root="gs://bucket/fewsnet_partitioned_rf",
             store=RecordingLocalArtifactStore(tmp_path / "store"),
@@ -470,11 +690,13 @@ def test_stage_snapshot_rejects_boundaries_missing_admin_code(tmp_path):
 
 def test_stage_snapshot_rejects_non_wgs84_boundaries(tmp_path):
     panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(tmp_path, crs="EPSG:3857")
 
     with pytest.raises(ValueError, match="EPSG:4326"):
         stage_snapshot(
             panel_path=panel,
+            normalization_audit_path=audit,
             boundaries_path=boundaries,
             destination_root="gs://bucket/fewsnet_partitioned_rf",
             store=RecordingLocalArtifactStore(tmp_path / "store"),
@@ -495,6 +717,7 @@ def test_stage_snapshot_requires_one_non_null_geometry_per_normalized_admin_code
     geometries,
 ):
     panel = _write_panel_fixture(tmp_path)
+    audit = _write_matching_audit(panel, tmp_path)
     boundaries = _write_boundary_fixture(
         tmp_path,
         admin_codes=admin_codes,
@@ -504,6 +727,7 @@ def test_stage_snapshot_requires_one_non_null_geometry_per_normalized_admin_code
     with pytest.raises(ValueError, match="one non-null geometry"):
         stage_snapshot(
             panel_path=panel,
+            normalization_audit_path=audit,
             boundaries_path=boundaries,
             destination_root="gs://bucket/fewsnet_partitioned_rf",
             store=RecordingLocalArtifactStore(tmp_path / "store"),
@@ -513,21 +737,24 @@ def test_stage_snapshot_requires_one_non_null_geometry_per_normalized_admin_code
 
 def test_stage_snapshot_cli_prints_manifest_uri_as_json(monkeypatch, capsys):
     store = object()
+    captured = {}
     monkeypatch.setattr(
         stage_snapshot_cli.GCSArtifactStore,
         "from_default",
         lambda: store,
     )
-    monkeypatch.setattr(
-        stage_snapshot_cli,
-        "stage_snapshot",
-        lambda **kwargs: SimpleNamespace(snapshot_id="fewsnet-202604-deadbeef"),
-    )
+    def fake_stage_snapshot(**kwargs):
+        captured.update(kwargs)
+        return SimpleNamespace(snapshot_id="fewsnet-202604-deadbeef")
+
+    monkeypatch.setattr(stage_snapshot_cli, "stage_snapshot", fake_stage_snapshot)
 
     result = stage_snapshot_cli.main(
         [
             "--panel",
             "panel.csv",
+            "--normalization-audit",
+            "panel.audit.json",
             "--boundaries",
             "boundaries.shp",
             "--destination-root",
@@ -538,6 +765,7 @@ def test_stage_snapshot_cli_prints_manifest_uri_as_json(monkeypatch, capsys):
     )
 
     assert result == 0
+    assert captured["normalization_audit_path"] == Path("panel.audit.json")
     assert json.loads(capsys.readouterr().out) == {
         "manifest_uri": (
             "gs://bucket/root/inputs/snapshots/"
@@ -566,6 +794,8 @@ def test_stage_snapshot_cli_returns_nonzero_for_validation_or_generation_conflic
         [
             "--panel",
             "panel.csv",
+            "--normalization-audit",
+            "panel.audit.json",
             "--boundaries",
             "boundaries.shp",
             "--destination-root",

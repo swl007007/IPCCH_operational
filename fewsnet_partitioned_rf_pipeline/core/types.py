@@ -17,6 +17,7 @@ class SnapshotManifest:
     created_at_utc: str
     snapshot_content_sha256: str
     panel: ObjectRef
+    normalization_audit: ObjectRef
     boundaries: ObjectRef
     admin_universe: ObjectRef
     row_count: int

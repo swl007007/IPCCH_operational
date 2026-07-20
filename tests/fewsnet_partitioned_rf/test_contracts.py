@@ -219,6 +219,32 @@ def test_source_snapshot_requires_immutable_object_generation():
         validate_payload("source-snapshot", payload)
 
 
+def test_source_snapshot_requires_normalization_audit_object():
+    payload = json.loads((FIXTURES / "source_snapshot_valid.json").read_text())
+    payload.pop("normalization_audit")
+    with pytest.raises(ValueError, match="normalization_audit"):
+        validate_payload("source-snapshot", payload)
+
+
+def test_source_snapshot_requires_normalization_audit_generation():
+    payload = json.loads((FIXTURES / "source_snapshot_valid.json").read_text())
+    payload["normalization_audit"].pop("generation")
+    with pytest.raises(ValueError, match="generation"):
+        validate_payload("source-snapshot", payload)
+
+
+def test_panel_normalization_fixture_validates():
+    payload = json.loads((FIXTURES / "panel_normalization_valid.json").read_text())
+    validate_payload("panel-normalization", payload)
+
+
+def test_panel_normalization_requires_complete_audit_fields():
+    payload = json.loads((FIXTURES / "panel_normalization_valid.json").read_text())
+    payload.pop("comparison_excluded_columns")
+    with pytest.raises(ValueError, match="comparison_excluded_columns"):
+        validate_payload("panel-normalization", payload)
+
+
 def test_shared_types_freeze_object_identity_and_run_phases():
     ref = ObjectRef("gs://bucket/object", "7", "a" * 64, 12)
     assert ref.generation == "7"
