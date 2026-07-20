@@ -85,6 +85,28 @@ def test_coverage_rejects_an_empty_area_universe():
         mapping.coverage([])
 
 
+def test_coverage_rejects_invalid_authoritative_identities_before_deduplication():
+    mapping = PartitionMap.from_frame(
+        pd.DataFrame({"admin_code": ["A"], "cluster_id": [4]})
+    )
+
+    with pytest.raises(ValueError, match="missing or blank admin code"):
+        mapping.coverage(["A", None, None, "", " ", "\t"])
+
+
+def test_release_gate_rejects_invalid_authoritative_identities_before_deduplication():
+    mapping = PartitionMap.from_frame(
+        pd.DataFrame({"admin_code": ["A"], "cluster_id": [4]})
+    )
+
+    with pytest.raises(ValueError, match="missing or blank admin code"):
+        mapping.assert_release_coverage(
+            ["A", None, None, "", " ", "\t"],
+            baseline_pct=52.0,
+            max_drop_percentage_points=2.0,
+        )
+
+
 def test_default_release_gate_uses_approved_baseline_and_two_point_limit():
     admin_codes = [f"A{index}" for index in range(100)]
     mapping_within_limit = PartitionMap.from_frame(

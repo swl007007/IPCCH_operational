@@ -117,11 +117,14 @@ class PartitionMap:
 
     def coverage(self, admin_codes: Iterable[object]) -> float:
         """Return mapped unique normalized identities as a percentage."""
-        unique_admin_codes = tuple(
-            dict.fromkeys(normalize_admin_code(value) for value in admin_codes)
+        normalized_admin_codes = tuple(
+            normalize_admin_code(value) for value in admin_codes
         )
-        if not unique_admin_codes:
+        if not normalized_admin_codes:
             raise ValueError("coverage requires at least one admin code")
+        if "" in normalized_admin_codes:
+            raise ValueError("coverage contains missing or blank admin code")
+        unique_admin_codes = tuple(dict.fromkeys(normalized_admin_codes))
         mapped_count = sum(
             admin_code in self._clusters_by_admin
             for admin_code in unique_admin_codes

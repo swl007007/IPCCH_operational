@@ -14,8 +14,8 @@
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
 - Current task: Task 8 fixed partition-map validation and routing
-- Current state: Tasks 1-7 are complete and independently reviewed; Task 8 implementation is complete with fresh focused, related, and full verification, and independent Task 8 review is pending
-- Blockers: Task 9 must wait for independent Task 8 review; the previously deferred Task 7 ordering Minor remains queued for final whole-branch triage
+- Current state: Tasks 1-7 are complete and independently reviewed; Task 8 implementation and its blocking Important coverage-universe fix are complete with fresh verification, and independent Task 8 re-review is pending
+- Blockers: Task 9 must wait for independent Task 8 re-review; the previously deferred Task 7 ordering Minor remains queued for final whole-branch triage
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -29,7 +29,7 @@
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
 | 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; independent review clean through `d403c1e` |
 | 7. Implement keyed horizon alignment and temporal windows | complete; independent re-review clean through `8ff2847`; one Minor deferred |
-| 8. Validate and route the fixed partition map | implementation complete; independent review pending |
+| 8. Validate and route the fixed partition map | implementation and Important fix complete; independent re-review pending |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
 | 10. Train partitioned RF models and produce formal local predictions | pending |
 | 11. Freeze reference Stage 3 parity evidence | pending |
@@ -322,7 +322,7 @@
 - Map validation: SHA-256 is computed and compared before CSV parsing; the source `FEWSNET_admin_code` is normalized through the shared `normalize_admin_code`; missing/blank map identities, duplicates after normalization, and non-integer cluster values fail closed; the stored mapping is read-only.
 - Real fixed-asset acceptance: SHA-256 `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`, `5,365` unique normalized admin-code mappings, and sorted cluster IDs exactly `0..16`.
 - Routing contract: input order and duplicate rows are preserved; identities are normalized at lookup time; mapped values are Python integers and unmapped, missing, or blank identities return `None`, including the required exact `.tolist()` behavior.
-- Coverage contract: the return value is `100 * mapped_unique_normalized_admin_codes / unique_normalized_admin_codes`; repeated identities are counted once after normalization, while an empty iterable raises `ValueError` rather than creating a zero denominator. Missing/blank supplied identities normalize to one unmapped identity.
+- Coverage contract: the return value is `100 * mapped_unique_normalized_admin_codes / unique_normalized_admin_codes`; repeated valid identities are counted once after normalization, while an empty iterable or any identity that normalizes to blank raises `ValueError` before deduplication.
 - Release gate: default baseline is exactly `5365 / 5718 * 100`; default maximum drop is `2.0` percentage points; the implementation raises only when `baseline_pct - current_pct > max_drop_percentage_points`. Direct tests prove an exact `2.0`-point drop passes and `2.0001` points fails.
 - Relevant runtime/data regression: partitions, runtime foundation, panel normalization, snapshot staging, preprocessing, and horizons -> `88 passed in 6.76s`.
 - Fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `445 passed, 1 skipped, 24 subtests passed in 19.96s`.
@@ -331,9 +331,25 @@
 - Scope boundary: no Task 9 file or behavior, GCP/GCS/Vertex operation, Model Registry call, Batch Prediction, alias mutation, release-pointer write, or external artifact mutation was introduced.
 - Task 8 final implementation status: complete; independent review is required before Task 9 starts.
 
+### Task 8 Independent-Review Fix Evidence
+
+- Blocking Important: `coverage()` normalized identities inside `dict.fromkeys`, so multiple `None`, empty-string, and whitespace authoritative identities collapsed into one blank denominator entry. The malformed universe returned `50.0`, and `assert_release_coverage(..., baseline_pct=52.0, max_drop_percentage_points=2.0)` also returned `50.0` instead of failing closed.
+- Controller-resolved exact-worktree GitNexus pre-edit gate after index repair: `PartitionMap.coverage` LOW risk (`6` total impacted, `3` direct, `1` affected `assert_release_coverage` process, `1` module); `PartitionMap.assert_release_coverage` LOW risk (`3` direct test callers, `0` affected processes, `1` module). No HIGH or CRITICAL result occurred.
+- Review RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_partitions.py -q -p no:cacheprovider -k invalid_authoritative_identities` -> `2 failed, 13 deselected in 5.43s`; both direct real-behavior regressions failed with `Failed: DID NOT RAISE ValueError`.
+- Smallest fix: materialize the normalized authoritative sequence once, preserve the existing empty-iterable error, reject `""` before `dict.fromkeys`, and deduplicate only valid normalized identities. Public signatures and valid unique-area percentage semantics are unchanged.
+- Review GREEN: the same focused selection -> `2 passed, 13 deselected in 3.62s`.
+- Complete Task 8 verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_partitions.py -q -p no:cacheprovider` -> `15 passed in 3.77s`.
+- Related runtime/data regression: partitions, runtime foundation, panel normalization, snapshot staging, preprocessing, and horizons -> `90 passed in 6.71s`.
+- Fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `447 passed, 1 skipped, 24 subtests passed in 20.19s`.
+- Preserved valid behavior: repeated nonblank identities still deduplicate after normalization; routing still returns `None` for unmapped/missing requested rows; the default baseline remains `5365 / 5718 * 100`; an exact `2.0`-point drop still passes and only a strictly larger drop fails.
+- Preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`; fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Preliminary fix staged gate: `git diff --cached --check` exited `0`; staged paths were exactly `PROGRESS.md`, `core/partitions.py`, and `test_partitions.py`. Exact-worktree GitNexus `detect_changes(scope="staged")` reported LOW risk, `3` changed files, `3` indexed documentation sections, and `0` affected execution processes; the modified Python symbols were not surfaced in this staged result despite the controller's successful symbol-specific pre-edit impact checks.
+- Scope remains limited to `coverage()` validation, two direct regressions, this ledger, and the uncommitted Task 8 report. No Task 9 or cloud behavior was entered.
+- Task 8 Important-fix status: implementation complete; independent re-review is required before Task 9 starts.
+
 ## Resume
 
-- Exact next step: dispatch a fresh independent reviewer for the Task 8 commit containing this ledger. Task 9 remains blocked until that review is clean; do not perform any GCP/Vertex write.
+- Exact next step: dispatch a fresh independent re-review for the Task 8 fix commit containing this ledger. Task 9 remains blocked until that re-review is clean; do not perform any GCP/Vertex write.
 - Resume command: `git status --short --branch && git show --stat --oneline HEAD && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_partitions.py -q -p no:cacheprovider`
 
 ---
