@@ -71,6 +71,18 @@ def _rewrite_json_and_checksum(
     _write_json(checksums_path, checksums)
 
 
+def _rewrite_model_and_checksum(
+    package_dir: Path,
+    predictor: PartitionedRFPredictor,
+) -> None:
+    model_path = package_dir / "model.joblib"
+    joblib.dump(predictor, model_path, compress=3, protocol=5)
+    checksums_path = package_dir / "checksums.json"
+    checksums = json.loads(checksums_path.read_text(encoding="utf-8"))
+    checksums["model.joblib"] = hashlib.sha256(model_path.read_bytes()).hexdigest()
+    _write_json(checksums_path, checksums)
+
+
 def _cluster_state() -> dict:
     return {
         "status": "pooled_small_partition",
@@ -87,6 +99,18 @@ def _smote_result() -> dict:
         "original_class_counts": {"0": 2, "1": 2},
         "resampled_class_counts": None,
         "failure_reason": None,
+    }
+
+
+def _partition_metadata() -> dict:
+    cluster_state = _cluster_state()
+    smote_result = _smote_result()
+    return {
+        **cluster_state,
+        "original_class_counts": smote_result["original_class_counts"],
+        "resampled_class_counts": smote_result["resampled_class_counts"],
+        "smote_k_neighbors": None,
+        "smote_failure_reason": smote_result["failure_reason"],
     }
 
 
@@ -122,7 +146,7 @@ def model_inputs():
             cluster_id: "pooled_small_partition" for cluster_id in cluster_ids
         },
         partition_metadata={
-            cluster_id: _cluster_state() for cluster_id in cluster_ids
+            cluster_id: _partition_metadata() for cluster_id in cluster_ids
         },
         partition_map=dict(partition_map._clusters_by_admin),
         feature_contract=feature_contract,
@@ -341,6 +365,133 @@ def test_load_rejects_manifest_report_range_mismatch_before_unpickling(
         load_model_package(package_dir)
 
 
+def _assert_training_report_rejected_before_unpickling(
+    package_dir: Path,
+    monkeypatch,
+    training_report: dict,
+    match: str,
+) -> None:
+    _rewrite_json_and_checksum(
+        package_dir,
+        "training_report.json",
+        training_report,
+    )
+
+    def fail_if_unpickled(*_args, **_kwargs):
+        raise AssertionError("joblib.load must not run before report validation")
+
+    monkeypatch.setattr(
+        "fewsnet_partitioned_rf_pipeline.core.package.joblib.load",
+        fail_if_unpickled,
+    )
+    with pytest.raises(PackageValidationError, match=match):
+        load_model_package(package_dir)
+
+
+def test_load_rejects_training_report_extra_field_before_unpickling(
+    package_dir,
+    monkeypatch,
+):
+    training_report = json.loads(
+        (package_dir / "training_report.json").read_text(encoding="utf-8")
+    )
+    training_report["unexpected"] = True
+
+    _assert_training_report_rejected_before_unpickling(
+        package_dir,
+        monkeypatch,
+        training_report,
+        "training_report fields differ",
+    )
+
+
+def test_load_rejects_string_cluster_state_before_unpickling(
+    package_dir,
+    monkeypatch,
+):
+    training_report = json.loads(
+        (package_dir / "training_report.json").read_text(encoding="utf-8")
+    )
+    training_report["cluster_states"]["0"] = "not an object"
+
+    _assert_training_report_rejected_before_unpickling(
+        package_dir,
+        monkeypatch,
+        training_report,
+        r"training_report\.cluster_states\.0 must be an object",
+    )
+
+
+def test_load_rejects_malformed_smote_result_before_unpickling(
+    package_dir,
+    monkeypatch,
+):
+    training_report = json.loads(
+        (package_dir / "training_report.json").read_text(encoding="utf-8")
+    )
+    training_report["smote_results"]["0"]["original_class_counts"]["1"] = "2"
+
+    _assert_training_report_rejected_before_unpickling(
+        package_dir,
+        monkeypatch,
+        training_report,
+        r"training_report\.smote_results\.0\.original_class_counts\.1",
+    )
+
+
+@pytest.mark.parametrize(
+    ("section", "field"),
+    (
+        ("cluster_states", "status"),
+        ("cluster_states", "smote_status"),
+        ("smote_results", "status"),
+    ),
+)
+def test_load_rejects_non_string_training_report_status_before_unpickling(
+    package_dir,
+    monkeypatch,
+    section,
+    field,
+):
+    training_report = json.loads(
+        (package_dir / "training_report.json").read_text(encoding="utf-8")
+    )
+    training_report[section]["0"][field] = []
+
+    _assert_training_report_rejected_before_unpickling(
+        package_dir,
+        monkeypatch,
+        training_report,
+        rf"training_report\.{section}\.0\.{field}",
+    )
+
+
+@pytest.mark.parametrize(
+    ("mismatch", "match"),
+    (
+        ("partition_status", "predictor partition_status"),
+        ("cluster_states", "predictor partition_metadata cluster_states"),
+        ("smote_results", "predictor partition_metadata smote_results"),
+    ),
+)
+def test_load_rejects_predictor_report_mismatch_after_unpickling(
+    package_dir,
+    mismatch,
+    match,
+):
+    predictor = joblib.load(package_dir / "model.joblib")
+    if mismatch == "partition_status":
+        predictor.partition_status[0] = "pooled_single_class"
+    elif mismatch == "cluster_states":
+        predictor.partition_metadata[0]["sample_count"] = 5
+    else:
+        predictor.partition_metadata[0]["smote_failure_reason"] = "unexpected"
+    _rewrite_model_and_checksum(package_dir, predictor)
+
+    with pytest.raises(PackageValidationError, match=match):
+        load_model_package(package_dir)
+
+
 def test_load_rejects_threshold_report_tamper_before_unpickling(
     package_dir,
     monkeypatch,
@@ -383,10 +534,84 @@ def test_runtime_drift_is_rejected_before_unpickling(package_dir, monkeypatch):
         load_model_package(package_dir)
 
 
+@pytest.mark.parametrize("operation", ("write", "load"))
+def test_missing_runtime_dependency_fails_closed(
+    tmp_path,
+    package_dir,
+    model_inputs,
+    monkeypatch,
+    operation,
+):
+    import fewsnet_partitioned_rf_pipeline.core.validation as package_validation
+
+    installed_version = package_validation.metadata.version
+
+    def version_with_missing_dependency(name):
+        if name == "imbalanced-learn":
+            raise package_validation.metadata.PackageNotFoundError(name)
+        return installed_version(name)
+
+    monkeypatch.setattr(
+        package_validation.metadata,
+        "version",
+        version_with_missing_dependency,
+    )
+
+    if operation == "write":
+        predictor, _, metadata, reports = model_inputs
+        action = lambda: write_model_package(
+            tmp_path / "missing-dependency-package",
+            predictor,
+            copy.deepcopy(metadata),
+            copy.deepcopy(reports),
+        )
+    else:
+        action = lambda: load_model_package(package_dir)
+
+    with pytest.raises(
+        PackageValidationError,
+        match="required runtime dependency imbalanced-learn is not installed",
+    ):
+        action()
+
+
 def test_load_requires_every_package_file(package_dir):
     (package_dir / "training_report.json").unlink()
 
     with pytest.raises(PackageValidationError, match="training_report.json"):
+        load_model_package(package_dir)
+
+
+@pytest.mark.parametrize("member_type", ("directory", "symlink"))
+def test_load_rejects_non_regular_package_member_before_hashing(
+    package_dir,
+    monkeypatch,
+    member_type,
+):
+    member = package_dir / "training_report.json"
+    if member_type == "directory":
+        member.unlink()
+        member.mkdir()
+    else:
+        target = package_dir.parent / "training-report-target.json"
+        target.write_bytes(member.read_bytes())
+        member.unlink()
+        try:
+            member.symlink_to(target)
+        except OSError as exc:
+            pytest.skip(f"symlink creation unavailable: {exc}")
+
+    def fail_if_hashed(*_args, **_kwargs):
+        raise AssertionError("package members must be type-checked before hashing")
+
+    monkeypatch.setattr(
+        "fewsnet_partitioned_rf_pipeline.core.package._sha256",
+        fail_if_hashed,
+    )
+    with pytest.raises(
+        PackageValidationError,
+        match="training_report.json must be a regular non-symlink file",
+    ):
         load_model_package(package_dir)
 
 

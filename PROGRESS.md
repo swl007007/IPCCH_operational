@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 12 Vertex-compatible local model package implementation and verification are complete; independent review is next
-- Current state: Tasks 1-11 remain independently reviewed; Task 12 now writes and defensively loads the exact seven-file local package, enforces the amended closed manifest contract, and has fresh focused, related, full-suite, static, schema, and dependency verification
-- Blockers: none for Task 12 local implementation or review; Task 13 and every cloud mutation remain unauthorized
+- Current task: Task 12 independent-review fixes are implemented and verified; independent re-review is next
+- Current state: Tasks 1-11 remain independently reviewed; Task 12 now validates the complete horizon-report structure, binds loaded predictor state to the inspectable report, fails closed on missing runtime dependencies, and rejects non-regular package members before hashing
+- Blockers: none for Task 12 review fixes or re-review; Task 13 and every cloud mutation remain unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -33,7 +33,7 @@
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | complete; independent review clean through `b91e24a`; one Minor deferred |
 | 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
-| 12. Write and validate Vertex-compatible model packages | implementation verified; independent review pending |
+| 12. Write and validate Vertex-compatible model packages | review fixes verified; independent re-review pending |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
 | 14. Serve registered packages with a shared custom prediction container | pending |
 | 15. Register three stable parent models and immutable candidate versions | pending |
@@ -492,9 +492,27 @@
 - Static/schema/dependency gates: all four touched Python files parse with `ast`; every FEWSNET JSON schema passes Draft 2020-12 metaschema validation; `.venv/bin/python -m pip check` -> `No broken requirements found.`; `git diff --check` -> exit `0` before the final ledger/staging gate.
 - Scope boundary: no Task 13 file or behavior, GCP/GCS/Vertex API call, Model Registry or Batch operation, Endpoint, alias, release pointer, preserved IPCCH pipeline, external checkout, frozen design, suite-level `training-report.schema.json`, or dependency file was changed. The implementation commit subject is `feat: package Vertex-compatible FEWSNET models`; the exact hash is recorded in `.superpowers/sdd/task-12-report.md` after commit.
 
+### Task 12 Independent-Review Fix Evidence
+
+- Review scope: close the three Important findings only — validate exact horizon-report and nested evidence, bind the unpickled predictor to that report, fail closed when a required runtime distribution is absent, and reject directory/symlink package members before hashing. Whole-file hashing and checksum-authenticity documentation remain deferred Minor findings for final branch review.
+- Pre-edit exact-worktree GitNexus impacts supplied and confirmed for this fix: `validate_horizon_training_report` HIGH with two direct internal callers confined to Task 12 package writer/loader flows; `runtime_dependency_versions` LOW; `_require_package_files` LOW; `load_model_package` MEDIUM with ten direct Task 12 test callers and zero existing runtime processes. The test fixture symbol was not resolvable (`UNKNOWN`); exact-tree search found four package-test consumers and no runtime path.
+- Report/model-binding RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_model_package.py -q -p no:cacheprovider -k "training_report_extra_field or string_cluster_state or malformed_smote_result or predictor_report_mismatch"` -> `6 failed, 21 deselected in 10.62s`. Checksum-valid malformed reports reached the failing `joblib.load` sentinel, while three checksum-valid model/report mismatches loaded without rejection.
+- Report/model-binding GREEN: the same command -> `6 passed, 21 deselected in 7.54s`. A follow-up status-type RED exposed three raw `TypeError` paths (`3 failed, 31 deselected in 10.41s`); the focused GREEN was `3 passed, 31 deselected in 7.01s` with every malformed status normalized to `PackageValidationError` before unpickling.
+- Missing-dependency RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_model_package.py -q -p no:cacheprovider -k missing_runtime_dependency_fails_closed` -> `2 failed, 27 deselected in 10.08s`; writing emitted `not-installed`, and loading reported only a version mismatch. GREEN: `2 passed, 27 deselected in 6.84s`; both paths now raise a direct required-dependency `PackageValidationError` and never emit or accept `not-installed`.
+- Member-type RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_model_package.py -q -p no:cacheprovider -k non_regular_package_member_before_hashing` -> `2 failed, 29 deselected in 9.85s`; both directory and symlink replacements reached the failing hash sentinel. GREEN: `2 passed, 29 deselected in 6.87s`; every exact package member must now be a regular, non-symlink file before hashing.
+- Minimal implementation: the horizon validator enforces exact top-level and nested fields, binary non-negative class-count maps, nullable strings, Task 10 status vocabularies, per-state/SMOTE/fallback-count consistency, and sample-count totals. The loader retains the validated training report, then compares `partition_status` and the Task 10 metadata projections for `cluster_states` and `smote_results` after unpickling. Runtime version discovery raises on an absent required distribution, and the exact-member gate rejects directories, symlinks, and other non-regular file types.
+- Fresh focused package verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_model_package.py -q -p no:cacheprovider` -> `34 passed in 8.29s`.
+- Fresh related FEWSNET verification: package, contracts, training/inference, preprocessing, partitions, imputer/thresholds, and reference parity -> `130 passed in 18.89s`.
+- Fresh full repository verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `516 passed, 1 skipped, 24 subtests passed in 34.69s`.
+- Task 10 integration probe: trained a real 36-month horizon with the approved feature contract and fixed 17-cluster partition asset, validated its generated report, wrote the seven-file package, and loaded it through the hardened path -> `TASK10_PACKAGE_PROBE_OK 17 ['pooled_small_partition']`.
+- Static/schema/dependency/diff gates: all three touched Python files parse with `ast`; all eight FEWSNET schemas pass Draft 2020-12 metaschema validation; exact runtime discovery returns all six required entries with no `not-installed`; `.venv/bin/python -m pip check` reports `No broken requirements found.`; `git diff --check` exits `0`.
+- Preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; amended plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Preliminary staged gate: exact-worktree GitNexus `detect_changes(scope="staged")` reports LOW risk, exactly four changed files, three indexed `PROGRESS.md` documentation symbols, and zero affected execution processes; the three changed Python files were not surfaced as symbols in this staged result. `git diff --cached --check` exits `0`, and staged paths are exactly `PROGRESS.md`, `core/package.py`, `core/validation.py`, and `test_model_package.py`.
+- Scope boundary: only `core/validation.py`, `core/package.py`, the focused package test, and this ledger are tracked changes. The untracked Task 12 report is updated separately. No schema, Task 10 training code, contract test, design, plan, Task 13 behavior, cloud operation, registry/batch/alias/release-pointer action, or deferred Minor was entered. Planned review-fix commit subject: `fix: harden FEWSNET model package validation`.
+
 ## Resume
 
-- Exact next step: independently review the Task 12 implementation commit against the amended brief and frozen design before authorizing Task 13.
+- Exact next step: independently re-review the Task 12 implementation plus review-fix commit against the amended brief and frozen design before authorizing Task 13.
 - Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1,140p' .superpowers/sdd/task-12-report.md && sed -n '472,540p' PROGRESS.md`
 
 ---

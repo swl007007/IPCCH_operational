@@ -119,6 +119,84 @@ def _validate_predictor_partition(
         )
 
 
+def _validate_predictor_reports(
+    predictor: PartitionedRFPredictor,
+    training_report: Mapping,
+) -> None:
+    expected_cluster_ids = {
+        int(cluster_id) for cluster_id in training_report["cluster_states"]
+    }
+    partition_status = _mapping(
+        predictor.partition_status,
+        "predictor.partition_status",
+    )
+    expected_status = {
+        int(cluster_id): state["status"]
+        for cluster_id, state in training_report["cluster_states"].items()
+    }
+    if (
+        set(partition_status) != expected_cluster_ids
+        or partition_status != expected_status
+    ):
+        raise PackageValidationError(
+            "predictor partition_status does not match training_report.json"
+        )
+
+    partition_metadata = _mapping(
+        predictor.partition_metadata,
+        "predictor.partition_metadata",
+    )
+    if set(partition_metadata) != expected_cluster_ids:
+        raise PackageValidationError(
+            "predictor partition_metadata cluster IDs do not match training_report.json"
+        )
+
+    cluster_state_fields = {
+        "status",
+        "sample_count",
+        "class_counts",
+        "smote_status",
+        "fallback_reason",
+    }
+    smote_result_fields = {
+        "smote_status",
+        "original_class_counts",
+        "resampled_class_counts",
+        "smote_failure_reason",
+    }
+    projected_cluster_states: dict[str, dict] = {}
+    projected_smote_results: dict[str, dict] = {}
+    for cluster_id in sorted(expected_cluster_ids):
+        metadata = _mapping(
+            partition_metadata[cluster_id],
+            f"predictor.partition_metadata.{cluster_id}",
+        )
+        required_fields = cluster_state_fields | smote_result_fields
+        missing = sorted(required_fields - set(metadata))
+        if missing:
+            raise PackageValidationError(
+                "predictor partition_metadata fields differ; "
+                f"cluster={cluster_id}, missing={missing}"
+            )
+        projected_cluster_states[str(cluster_id)] = {
+            field: metadata[field] for field in cluster_state_fields
+        }
+        projected_smote_results[str(cluster_id)] = {
+            "status": metadata["smote_status"],
+            "original_class_counts": metadata["original_class_counts"],
+            "resampled_class_counts": metadata["resampled_class_counts"],
+            "failure_reason": metadata["smote_failure_reason"],
+        }
+    if projected_cluster_states != training_report["cluster_states"]:
+        raise PackageValidationError(
+            "predictor partition_metadata cluster_states do not match training_report.json"
+        )
+    if projected_smote_results != training_report["smote_results"]:
+        raise PackageValidationError(
+            "predictor partition_metadata smote_results do not match training_report.json"
+        )
+
+
 def _validated_reports(
     predictor: PartitionedRFPredictor,
     reports: object,
@@ -266,6 +344,12 @@ def _require_package_files(package_dir: Path) -> None:
         raise PackageValidationError(
             f"package files differ; missing={missing}, extra={extra}"
         )
+    for filename in PACKAGE_FILES:
+        member = package_dir / filename
+        if member.is_symlink() or not member.is_file():
+            raise PackageValidationError(
+                f"{filename} must be a regular non-symlink file"
+            )
 
 
 def _verify_checksums(package_dir: Path) -> dict[str, str]:
@@ -379,7 +463,9 @@ def load_model_package(
     package_path = Path(package_dir)
     _require_package_files(package_path)
     _verify_checksums(package_path)
-    manifest, _, _, partition_map = _validate_manifest_and_reports(package_path)
+    manifest, training_report, _, partition_map = _validate_manifest_and_reports(
+        package_path
+    )
 
     if (
         expected_image_digest is not None
@@ -425,4 +511,5 @@ def load_model_package(
         raise PackageValidationError(
             "predictor partition map does not match partition_map.csv"
         )
+    _validate_predictor_reports(predictor, training_report)
     return predictor
