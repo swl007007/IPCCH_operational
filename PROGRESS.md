@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 12 second-review fixes are implemented and verified; independent second re-review is next
-- Current state: Tasks 1-11 remain independently reviewed; Task 12 now also binds every partition-model presence decision to the validated routing status and rejects malformed predictor report keys/values before comparison
-- Blockers: none for Task 12 second-review fixes or re-review; Task 13 and every cloud mutation remain unauthorized
+- Current task: Task 12 Vertex-compatible model packaging is complete and independently approved; Task 13 remains pending and has not started
+- Current state: Tasks 1-12 are complete; Task 12 writes and defensively loads exact seven-file packages, binds report and predictor routing evidence, and passed independent re-review plus fresh controller verification
+- Blockers: none for Task 12; Task 13 and every cloud mutation remain unauthorized in this task handoff
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -33,7 +33,7 @@
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | complete; independent review clean through `b91e24a`; one Minor deferred |
 | 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
-| 12. Write and validate Vertex-compatible model packages | second-review fixes verified; independent second re-review pending |
+| 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
 | 14. Serve registered packages with a shared custom prediction container | pending |
 | 15. Register three stable parent models and immutable candidate versions | pending |
@@ -527,10 +527,20 @@
 - Staged GitNexus gate: `detect_changes(scope="staged")` reported HIGH for three changed files and eleven affected package write/load validation processes. Controller audit confirms the staged HIGH is line-shift over-attribution: zero-context diff changes only `_integer_keyed_mapping`, `_validate_predictor_reports`, one writer binding call, new focused tests, and `PROGRESS.md`; the reported unchanged helpers/processes have no content edits. Staged paths/check are exact and pre-edit impacts remain LOW/LOW/MEDIUM with zero runtime callers.
 - Scope boundary: only `PROGRESS.md`, `core/package.py`, and `test_model_package.py` are authorized tracked changes; `.superpowers/sdd/task-12-report.md` remains untracked. `core/validation.py`, schemas, frozen design/plan, Task 10, Task 13, dependency files, cloud paths, and deferred Minors remain untouched. Planned commit subject: `fix: bind FEWSNET package routing evidence`.
 
+### Task 12 Final Review and Controller Acceptance
+
+- Second review-fix commit: `27742aa02de55f1876c9fd8ecc991726b3699f30` (`fix: bind FEWSNET package routing evidence`). The commit binds exact `partition_models` keys and model presence to the validated report status on both write and load, and normalizes predictor report keys/values before comparison.
+- Final independent re-review: approved with no Critical or Important findings. Two non-blocking Minors remain deferred for final branch review: stream SHA-256 instead of loading whole artifacts into memory, and document or externally bind the trusted-source/authenticity boundary because package-local checksums establish consistency rather than authenticity.
+- GitNexus reconciliation: the second fix staged gate reported HIGH for three files and eleven generated package flows. Zero-context diff and symbol-specific impacts confirmed line-shift over-attribution: actual production edits were `_integer_keyed_mapping`, `_validate_predictor_reports`, and one writer binding call; pre-edit impacts were LOW/LOW/MEDIUM and all direct `load_model_package` callers were Task 12 tests with zero runtime processes.
+- Fresh controller focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_model_package.py -q -p no:cacheprovider` -> `54 passed in 9.49s`.
+- Fresh controller related verification: package, contracts, training/inference, preprocessing, partitions, imputer/thresholds, and reference parity -> `150 passed in 20.26s`.
+- Fresh controller full verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `536 passed, 1 skipped, 24 subtests passed in 35.54s`.
+- Authority preservation: design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; amended plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`; no Task 13 or cloud write was attempted.
+
 ## Resume
 
-- Exact next step: independently re-review the Task 12 second-review fix commit against the amended brief and frozen design before authorizing Task 13.
-- Resume command: `git status --short --branch && git log -5 --oneline && tail -n 180 .superpowers/sdd/task-12-report.md && sed -n '472,555p' PROGRESS.md`
+- Exact next step: Task 12 is complete. Before starting Task 13, read this ledger and the approved plan, verify branch/worktree status, generate a fresh Task 13 brief, and preserve the no-cloud-write boundary until the task explicitly reaches a gated cloud smoke step.
+- Resume command: `git status --short --branch && git log -6 --oneline && tail -n 220 .superpowers/sdd/task-12-report.md && sed -n '472,585p' PROGRESS.md`
 
 ---
 
