@@ -688,13 +688,13 @@ class FakeBatchBackend:
         *,
         fail_horizon: str | None = None,
         output_failure_horizon: str | None = None,
-        transient_commit_horizon: str | None = None,
+        transient_failure_horizon: str | None = None,
     ) -> None:
         self.store = store
         self.fail_horizon = fail_horizon
         self.output_failure_horizon = output_failure_horizon
-        self.transient_commit_horizon = transient_commit_horizon
-        self.transient_raised: set[str] = set()
+        self.transient_failure_horizon = transient_failure_horizon
+        self.transient_failed: set[str] = set()
         self.submit_calls: list[dict[str, object]] = []
         self.get_calls: list[str] = []
         self.cancel_calls: list[str] = []
@@ -711,6 +711,14 @@ class FakeBatchBackend:
         input_ref = self.store.get_ref(input_uri)
         self.submitted_input_refs[horizon_key].append(input_ref)
         display_name = str(normalized["job_display_name"])
+        if (
+            horizon_key == self.transient_failure_horizon
+            and horizon_key not in self.transient_failed
+        ):
+            self.transient_failed.add(horizon_key)
+            raise ServiceUnavailable(
+                f"transient Batch submit before commit for {horizon_key}"
+            )
         job = self.jobs_by_display.get(display_name)
         if job is None:
             job_id = {"0m": "2001", "6m": "2002", "12m": "2003"}[
@@ -729,14 +737,6 @@ class FakeBatchBackend:
             }
             self.jobs_by_display[display_name] = job
             self._seed_output(job, input_ref)
-        if (
-            horizon_key == self.transient_commit_horizon
-            and horizon_key not in self.transient_raised
-        ):
-            self.transient_raised.add(horizon_key)
-            raise ServiceUnavailable(
-                f"transient Batch submit response for {horizon_key}"
-            )
         return SimpleNamespace(resource_name=job["name"])
 
     def get(self, job_resource_name):
@@ -960,7 +960,19 @@ def test_run_latest_selects_newest_snapshot_and_releases_only_after_validation(
     assert result["run_id"] == result["suite_version"]
     assert len(training.submit_requests) == 1
     training_args = _custom_job_args(training.submit_requests[0])
-    assert training_args["--snapshot-manifest-uri"] == new_snapshot["uri"]
+    immutable_manifest_uri = (
+        f"{ROOT_URI}/runs/{result['run_id']}/inputs/"
+        "selected_source_manifest.json"
+    )
+    assert training_args["--snapshot-manifest-uri"] == immutable_manifest_uri
+    immutable_manifest_ref = store.get_ref(immutable_manifest_uri)
+    assert store.read_bytes(
+        immutable_manifest_uri,
+        generation=immutable_manifest_ref.generation,
+    ) == store.read_bytes(
+        new_snapshot["uri"],
+        generation=new_snapshot["ref"].generation,
+    )
     assert training_args["--suite-version"] == result["suite_version"]
     assert len(registry.upload_calls) == 3
     assert [call["labels"]["horizon"] for call in registry.upload_calls] == [
@@ -1188,6 +1200,89 @@ def test_identical_manifest_restage_at_new_generation_is_still_noop(
     assert batch.submit_calls == []
 
 
+def test_training_retries_use_run_immutable_manifest_after_source_restage(
+    tmp_path,
+    monkeypatch,
+):
+    store = RecordingStore(tmp_path / "store")
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    _seed_current_pointer(
+        store,
+        feature_month="2024-11",
+        snapshot_digest="f" * 64,
+    )
+    source_ref = store.get_ref(snapshot["uri"])
+    selected_manifest_bytes = store.read_bytes(
+        snapshot["uri"],
+        generation=source_ref.generation,
+    )
+
+    class RestagingTrainingBackend(FakeTrainingBackend):
+        def __init__(self):
+            super().__init__(
+                store,
+                transient_failures=1,
+                commit_before_transient=False,
+            )
+            self.restaged_manifest_bytes: bytes | None = None
+
+        def submit(self, request):
+            if self.restaged_manifest_bytes is None:
+                current_ref = store.get_ref(snapshot["uri"])
+                changed_manifest = json.loads(selected_manifest_bytes)
+                changed_manifest["snapshot_content_sha256"] = "e" * 64
+                self.restaged_manifest_bytes = json.dumps(
+                    changed_manifest,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode()
+                store.put_bytes(
+                    snapshot["uri"],
+                    self.restaged_manifest_bytes,
+                    if_generation_match=current_ref.generation,
+                )
+            return super().submit(request)
+
+    training = RestagingTrainingBackend()
+    registry = FakeRegistrySDK()
+    batch = FakeBatchBackend(store)
+    aliases = FakeAliasBackend(store)
+    store.clear_events()
+
+    result = _run(
+        monkeypatch,
+        _deployment(),
+        store,
+        (training, registry, batch, aliases),
+    )
+
+    assert result["status"] == "RELEASED"
+    assert len(training.submit_requests) == 2
+    assert training.submit_requests[0] == training.submit_requests[1]
+    submitted_manifest_uris = {
+        _custom_job_args(request)["--snapshot-manifest-uri"]
+        for request in training.submit_requests
+    }
+    immutable_manifest_uri = (
+        f"{ROOT_URI}/runs/{result['run_id']}/inputs/"
+        "selected_source_manifest.json"
+    )
+    assert submitted_manifest_uris == {immutable_manifest_uri}
+    immutable_ref = store.get_ref(immutable_manifest_uri)
+    assert store.read_bytes(
+        immutable_manifest_uri,
+        generation=immutable_ref.generation,
+    ) == selected_manifest_bytes
+    assert training.restaged_manifest_bytes is not None
+    assert store.read_bytes(snapshot["uri"]) == training.restaged_manifest_bytes
+    assert training.restaged_manifest_bytes != selected_manifest_bytes
+
+
 def test_training_failure_writes_terminal_evidence_without_registration(
     tmp_path,
     monkeypatch,
@@ -1220,11 +1315,13 @@ def test_training_failure_writes_terminal_evidence_without_registration(
         (training, registry, batch, aliases),
     )
 
-    assert snapshot["uri"] in [
-        _custom_job_args(request)["--snapshot-manifest-uri"]
-        for request in training.submit_requests
-    ]
     assert len(training.submit_requests) == 1
+    assert _custom_job_args(training.submit_requests[0])[
+        "--snapshot-manifest-uri"
+    ] == (
+        f"{ROOT_URI}/runs/{result['run_id']}/inputs/"
+        "selected_source_manifest.json"
+    )
     assert registry.upload_calls == []
     assert batch.submit_calls == []
     assert aliases.current_calls == []
@@ -1459,9 +1556,13 @@ def test_transient_retries_preserve_snapshot_image_artifacts_and_candidates(
         snapshot_digest="f" * 64,
     )
     store.clear_events()
-    training = FakeTrainingBackend(store, transient_failures=1)
+    training = FakeTrainingBackend(
+        store,
+        transient_failures=1,
+        commit_before_transient=False,
+    )
     registry = FakeRegistrySDK(transient_commit_horizon="6m")
-    batch = FakeBatchBackend(store, transient_commit_horizon="12m")
+    batch = FakeBatchBackend(store, transient_failure_horizon="12m")
     aliases = FakeAliasBackend(store)
     delays: list[float] = []
     promotion_calls: list[dict[str, object]] = []
@@ -1528,6 +1629,8 @@ def test_transient_retries_preserve_snapshot_image_artifacts_and_candidates(
     assert batch.submitted_input_refs["12m"][0] == (
         batch.submitted_input_refs["12m"][1]
     )
+    assert batch.transient_failed == {"12m"}
+    assert len(batch.jobs_by_display) == 3
     assert len(promotion_calls) == 2
     assert promotion_calls[0] == promotion_calls[1]
     assert promotion_calls[0]["snapshot_digest"] == snapshot["manifest"][
@@ -1655,14 +1758,54 @@ def test_promotion_indeterminate_is_terminal_without_destructive_recovery(
         feature_month="2024-11",
         snapshot_digest="f" * 64,
     )
-    prior_pointer = _read_json(store, f"{ROOT_URI}/released/current.json")
     store.clear_events()
     training, registry, batch, aliases = _backends(store)
 
-    def indeterminate(**_kwargs):
+    def indeterminate(**kwargs):
+        registered_versions = kwargs["registered_versions"]
+        for horizon_key in HORIZON_ORDER:
+            version = registered_versions[horizon_key]
+            aliases.move_alias(
+                version.parent_model_resource_name,
+                "production",
+                version.version_resource_name,
+            )
+        suite_manifest = kwargs["suite_manifest"]
+        suite_manifest_ref = put_immutable_or_verify(
+            store,
+            (
+                f"{ROOT_URI}/suites/{suite_manifest['suite_version']}/"
+                "suite_manifest.json"
+            ),
+            json.dumps(
+                suite_manifest,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode(),
+        )
+        current_uri = f"{ROOT_URI}/released/current.json"
+        current_ref = store.get_ref(current_uri)
+        store.put_bytes(
+            current_uri,
+            json.dumps(
+                {
+                    "schema_version": "fewsnet-production-suite-pointer-v1",
+                    "suite_version": suite_manifest["suite_version"],
+                    "feature_month": suite_manifest["feature_month"],
+                    "snapshot_content_sha256": suite_manifest[
+                        "snapshot_ref"
+                    ]["snapshot_content_sha256"],
+                    "suite_manifest": asdict(suite_manifest_ref),
+                    "released_at_utc": NOW.isoformat().replace("+00:00", "Z"),
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode(),
+            if_generation_match=current_ref.generation,
+        )
         raise PromotionIndeterminate(
             "current pointer may have committed",
-            uri=f"{ROOT_URI}/released/current.json",
+            uri=current_uri,
         )
 
     monkeypatch.setenv("FEWSNET_SOURCE_GIT_COMMIT", SOURCE_COMMIT)
@@ -1680,12 +1823,200 @@ def test_promotion_indeterminate_is_terminal_without_destructive_recovery(
     )
 
     assert result["status"] == "FAILED"
-    assert result["indeterminate"] is True
+    assert result["indeterminate"] is True, result["error"]
     assert result["error"]["indeterminate"] is True
     assert aliases.restore_calls == []
-    assert len(registry.abandoned_versions) == 3
-    assert _read_json(store, f"{ROOT_URI}/released/current.json") == prior_pointer
+    assert registry.abandoned_versions == []
+    assert len(aliases.move_calls) == 3
+    assert _read_json(
+        store,
+        f"{ROOT_URI}/released/current.json",
+    )["suite_version"] == result["suite_version"]
     _assert_failed_evidence(store, result)
+
+
+def test_released_promotion_evidence_failure_preserves_live_candidates(
+    tmp_path,
+    monkeypatch,
+):
+    module = _module()
+    store = RecordingStore(tmp_path / "store")
+    _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    _seed_current_pointer(
+        store,
+        feature_month="2024-11",
+        snapshot_digest="f" * 64,
+    )
+    store.clear_events()
+    training, registry, batch, aliases = _backends(store)
+    original_put_bytes = store.put_bytes
+    released_manifest_failure_injected = False
+
+    def fail_released_run_manifest(uri, data, *, if_generation_match=None):
+        nonlocal released_manifest_failure_injected
+        if (
+            not released_manifest_failure_injected
+            and uri.endswith("/run_manifest.json")
+            and json.loads(data)["phase"] == "RELEASED"
+        ):
+            released_manifest_failure_injected = True
+            raise OSError("injected RELEASED run-manifest write failure")
+        return original_put_bytes(
+            uri,
+            data,
+            if_generation_match=if_generation_match,
+        )
+
+    monkeypatch.setattr(store, "put_bytes", fail_released_run_manifest)
+    monkeypatch.setenv("FEWSNET_SOURCE_GIT_COMMIT", SOURCE_COMMIT)
+    monkeypatch.setattr(module, "_utc_now", lambda: NOW)
+    monkeypatch.setattr(module, "_sleep", lambda _seconds: None)
+
+    result = module.run_latest(
+        _deployment(),
+        store,
+        training,
+        registry,
+        batch,
+        aliases,
+    )
+
+    assert released_manifest_failure_injected is True
+    assert registry.abandoned_versions == []
+    assert result["status"] == "FAILED"
+    assert result["indeterminate"] is False
+    assert result["evidence_warning"] is True
+    assert result["release_status"] == "RELEASED"
+    assert result["error"]["evidence_warning"] is True
+    assert len(aliases.move_calls) == 3
+    assert aliases.restore_calls == []
+    assert _read_json(
+        store,
+        f"{ROOT_URI}/released/current.json",
+    )["suite_version"] == result["suite_version"]
+    _assert_failed_evidence(store, result)
+
+
+@pytest.mark.parametrize(
+    "failure_kind",
+    [
+        "invalid_deployment_json",
+        "invalid_deployment",
+        "source_commit_mismatch",
+        "discovery_failure",
+    ],
+)
+def test_cli_preflight_failures_are_structured_and_create_no_run_artifacts(
+    tmp_path,
+    monkeypatch,
+    capsys,
+    failure_kind,
+):
+    module = _module()
+    store = RecordingStore(tmp_path / "store")
+    deployment = _deployment()
+    deployment_bytes = json.dumps(
+        deployment,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode()
+    if failure_kind == "invalid_deployment_json":
+        deployment_bytes = b"{not-json"
+    elif failure_kind == "invalid_deployment":
+        deployment.pop("region")
+        deployment_bytes = json.dumps(
+            deployment,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    deployment_uri = f"{ROOT_URI}/config/deployment.json"
+    put_immutable_or_verify(store, deployment_uri, deployment_bytes)
+    if failure_kind == "source_commit_mismatch":
+        monkeypatch.setenv("FEWSNET_SOURCE_GIT_COMMIT", "2" * 40)
+    else:
+        monkeypatch.setenv("FEWSNET_SOURCE_GIT_COMMIT", SOURCE_COMMIT)
+    monkeypatch.setattr(
+        module.GCSArtifactStore,
+        "from_default",
+        classmethod(lambda _cls: store),
+    )
+    monkeypatch.setattr(
+        module,
+        "_default_backends",
+        lambda _region: _backends(store),
+    )
+
+    exit_code = module.main(["--deployment-manifest-uri", deployment_uri])
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert captured.out == ""
+    error = json.loads(captured.err)
+    assert error["status"] == "FAILED"
+    assert error["preflight"] is True
+    assert error["error"]["exception_type"]
+    assert error["error"]["message"]
+    assert "run_id" not in error
+    assert "suite_version" not in error
+    assert "phase" not in error
+    assert "run_manifest" not in error
+    assert store.list(f"{ROOT_URI}/runs/") == []
+
+
+def test_first_post_discovery_evidence_failure_writes_terminal_artifacts(
+    tmp_path,
+    monkeypatch,
+):
+    module = _module()
+    store = RecordingStore(tmp_path / "store")
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    store.clear_events()
+    backends = _backends(store)
+    original_put_bytes = store.put_bytes
+    evidence_failure_injected = False
+
+    def fail_selected_manifest_once(uri, data, *, if_generation_match=None):
+        nonlocal evidence_failure_injected
+        if (
+            not evidence_failure_injected
+            and uri.endswith("/inputs/selected_source_manifest.json")
+        ):
+            evidence_failure_injected = True
+            raise OSError("injected selected-manifest evidence failure")
+        return original_put_bytes(
+            uri,
+            data,
+            if_generation_match=if_generation_match,
+        )
+
+    monkeypatch.setattr(store, "put_bytes", fail_selected_manifest_once)
+    monkeypatch.setenv("FEWSNET_SOURCE_GIT_COMMIT", SOURCE_COMMIT)
+    monkeypatch.setattr(module, "_utc_now", lambda: NOW)
+
+    result = module.run_latest(
+        _deployment(),
+        store,
+        *backends,
+        snapshot_manifest_uri=snapshot["uri"],
+    )
+
+    assert evidence_failure_injected is True
+    assert result["status"] == "FAILED"
+    assert result.get("preflight") is not True
+    assert result["run_id"] == result["suite_version"]
+    manifest = _assert_failed_evidence(store, result)
+    for key, value in asdict(snapshot["ref"]).items():
+        assert manifest["snapshot_ref"][key] == value
 
 
 def test_cli_candidate_only_uses_injected_boundaries_and_returns_zero(

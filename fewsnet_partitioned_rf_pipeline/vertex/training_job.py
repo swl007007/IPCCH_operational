@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import asdict, dataclass, is_dataclass
+import hashlib
 import json
 import re
 import time
@@ -17,6 +18,7 @@ from fewsnet_partitioned_rf_pipeline.vertex.storage import (
 
 _DIGEST_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 _COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
+_OPERATION_LABEL = "fewsnet_operation"
 _TERMINAL_STATES = {
     "JOB_STATE_SUCCEEDED",
     "JOB_STATE_FAILED",
@@ -147,6 +149,7 @@ def submit_and_persist_training_custom_job(
         ),
         "custom_job": custom_job,
     }
+    custom_job["labels"][_OPERATION_LABEL] = _operation_identity(request)
     resource = _normalize_mapping(backend.submit(request), "submitted resource")
     name = resource.get("name")
     if not isinstance(name, str) or not name:
@@ -168,6 +171,16 @@ def submit_and_persist_training_custom_job(
         evidence_bytes,
     )
     return resource
+
+
+def _operation_identity(request: Mapping[str, Any]) -> str:
+    return hashlib.sha256(
+        json.dumps(
+            request,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()[:63]
 
 
 def wait_for_training_custom_job(

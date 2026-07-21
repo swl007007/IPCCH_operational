@@ -10,7 +10,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import pytest
+from google.api_core.exceptions import ServiceUnavailable
 
+from fewsnet_partitioned_rf_pipeline.cli.run_latest import retry_transient
 from fewsnet_partitioned_rf_pipeline.core.horizons import (
     select_latest_inference_frame,
 )
@@ -176,9 +178,152 @@ class FakeJobService:
         self.events.append(("get", name))
         return next(self.resources)
 
+    def list_batch_prediction_jobs(self, *, request):
+        return []
+
     def cancel_batch_prediction_job(self, *, name: str):
         self.events.append(("cancel", name))
         return {"name": name, "cancel_requested": True}
+
+
+def _submitted_resource(
+    kwargs: dict[str, object],
+    index: int,
+    *,
+    mismatched: bool = False,
+) -> dict[str, object]:
+    resource = {
+        "name": (
+            "projects/food-crisis-modeling/locations/us-central1/"
+            f"batchPredictionJobs/{index}"
+        ),
+        "display_name": kwargs["job_display_name"],
+        "model": kwargs["model_name"],
+        "state": "JOB_STATE_PENDING",
+        "input_config": {
+            "instances_format": kwargs["instances_format"],
+            "gcs_source": {"uris": [kwargs["gcs_source"]]},
+        },
+        "output_config": {
+            "predictions_format": kwargs["predictions_format"],
+            "gcs_destination": {
+                "output_uri_prefix": kwargs["gcs_destination_prefix"]
+            },
+        },
+        "dedicated_resources": {
+            "machine_spec": {"machine_type": kwargs["machine_type"]},
+            "starting_replica_count": kwargs["starting_replica_count"],
+            "max_replica_count": kwargs["max_replica_count"],
+        },
+        "service_account": kwargs["service_account"],
+        "manual_batch_tuning_parameters": {"batch_size": 64},
+        "generate_explanation": False,
+        "labels": kwargs["labels"],
+        "create_time": "2026-07-21T12:00:00Z",
+        "start_time": None,
+        "end_time": None,
+        "update_time": "2026-07-21T12:00:00Z",
+        "error": {},
+        "partial_failures": [],
+        "output_info": {},
+    }
+    if mismatched:
+        resource = json.loads(json.dumps(resource))
+        resource["model"] = _model_ref().parent_model_resource_name + "@999"
+    return resource
+
+
+def _expected_batch_submit_kwargs(operation_id: str) -> dict[str, object]:
+    return {
+        "job_display_name": "fewsnet-batch-run-001-6m",
+        "model_name": _model_ref().version_resource_name,
+        "instances_format": "jsonl",
+        "predictions_format": "jsonl",
+        "gcs_source": f"{RUN_ROOT_URI}/batch_prediction/6m/input.jsonl",
+        "gcs_destination_prefix": f"{RUN_ROOT_URI}/batch_prediction/6m/raw",
+        "machine_type": "n2-standard-8",
+        "starting_replica_count": 1,
+        "max_replica_count": 1,
+        "service_account": (
+            "fewsnet-batch@food-crisis-modeling.iam.gserviceaccount.com"
+        ),
+        "labels": {
+            "fewsnet_mode": "batch-prediction",
+            "fewsnet_run": "run-001",
+            "fewsnet_horizon": "6m",
+            "fewsnet_operation": operation_id,
+        },
+        "project": "food-crisis-modeling",
+        "location": "us-central1",
+    }
+
+
+class FakeReconcileBatchService:
+    def __init__(
+        self,
+        *,
+        preexisting_count: int = 0,
+        mismatched: bool = False,
+    ) -> None:
+        self.preexisting_count = preexisting_count
+        self.mismatched = mismatched
+        self.jobs: list[dict[str, object]] = []
+        self.list_calls: list[dict[str, object]] = []
+
+    def list_batch_prediction_jobs(self, *, request):
+        self.list_calls.append(dict(request))
+        operation_id = str(request["filter"]).rsplit(
+            "labels.fewsnet_operation=", 1
+        )[1]
+        if self.preexisting_count:
+            kwargs = _expected_batch_submit_kwargs(operation_id)
+            return [
+                _submitted_resource(
+                    kwargs,
+                    index,
+                    mismatched=self.mismatched,
+                )
+                for index in range(1, self.preexisting_count + 1)
+            ]
+        return list(self.jobs)
+
+    def get_batch_prediction_job(self, *, name: str):
+        return next(job for job in self.jobs if job["name"] == name)
+
+    def cancel_batch_prediction_job(self, *, name: str):
+        return {"name": name, "cancel_requested": True}
+
+
+class FakeReconcileBatchBoundary:
+    def __init__(
+        self,
+        service: FakeReconcileBatchService,
+        *,
+        commit_then_raise: bool = False,
+        zero_after_ambiguous: bool = False,
+    ) -> None:
+        self.service = service
+        self.commit_then_raise = commit_then_raise
+        self.zero_after_ambiguous = zero_after_ambiguous
+        self.calls: list[dict[str, object]] = []
+
+    def submit(self, **kwargs):
+        self.calls.append(dict(kwargs))
+        resource = _submitted_resource(kwargs, len(self.calls))
+        if not self.zero_after_ambiguous:
+            self.service.jobs.append(resource)
+        if self.commit_then_raise or self.zero_after_ambiguous:
+            raise ServiceUnavailable("lost Batch Prediction create response")
+        return FakeSubmittedBatchJob(
+            resource_name=str(resource["name"]),
+            display_name=str(resource["display_name"]),
+            gca_resource=resource,
+        )
+
+
+class FakeReconcileBatchSDK:
+    def __init__(self, boundary: FakeReconcileBatchBoundary) -> None:
+        self.BatchPredictionJob = boundary
 
 
 class FakeClock:
@@ -396,6 +541,10 @@ def test_submit_batch_prediction_uses_async_exact_version_sdk_contract():
     job_ref = batch.submit_batch_prediction(_submission_config(), backend)
 
     assert job_ref == _job_ref()
+    operation_id = sdk.BatchPredictionJob.calls[0]["labels"][
+        "fewsnet_operation"
+    ]
+    assert len(operation_id) == 63
     assert sdk.BatchPredictionJob.calls == [
         {
             "job_display_name": "fewsnet-batch-run-001-6m",
@@ -410,15 +559,94 @@ def test_submit_batch_prediction_uses_async_exact_version_sdk_contract():
             "service_account": (
                 "fewsnet-batch@food-crisis-modeling.iam.gserviceaccount.com"
             ),
-            "labels": {
-                "fewsnet_mode": "batch-prediction",
-                "fewsnet_run": "run-001",
-                "fewsnet_horizon": "6m",
-            },
+                "labels": {
+                    "fewsnet_mode": "batch-prediction",
+                    "fewsnet_run": "run-001",
+                    "fewsnet_horizon": "6m",
+                    "fewsnet_operation": operation_id,
+                },
             "project": "food-crisis-modeling",
             "location": "us-central1",
         }
     ]
+
+
+def test_vertex_batch_adapter_reconciles_commit_then_raise_without_duplicate():
+    batch = _batch_module()
+    service = FakeReconcileBatchService()
+    boundary = FakeReconcileBatchBoundary(service, commit_then_raise=True)
+    backend = batch.VertexBatchBackend(
+        sdk=FakeReconcileBatchSDK(boundary),
+        job_service=service,
+    )
+    retries: list[int] = []
+
+    job_ref = retry_transient(
+        lambda: batch.submit_batch_prediction(_submission_config(), backend),
+        max_retries=1,
+        on_retry=retries.append,
+    )
+
+    assert job_ref.job_resource_name.endswith("/batchPredictionJobs/1")
+    assert len(boundary.calls) == 1
+    assert len(service.list_calls) == 2
+    assert retries == [1]
+    assert len(boundary.calls[0]["labels"]["fewsnet_operation"]) == 63
+
+
+def test_vertex_batch_adapter_refuses_resubmit_after_ambiguous_zero_match():
+    batch = _batch_module()
+    service = FakeReconcileBatchService()
+    boundary = FakeReconcileBatchBoundary(
+        service,
+        zero_after_ambiguous=True,
+    )
+    backend = batch.VertexBatchBackend(
+        sdk=FakeReconcileBatchSDK(boundary),
+        job_service=service,
+    )
+
+    with pytest.raises(ValueError, match="no matching Batch Prediction job"):
+        retry_transient(
+            lambda: batch.submit_batch_prediction(
+                _submission_config(),
+                backend,
+            ),
+            max_retries=1,
+            on_retry=lambda _attempt: None,
+        )
+
+    assert len(boundary.calls) == 1
+    assert len(service.list_calls) == 2
+
+
+@pytest.mark.parametrize(
+    ("preexisting_count", "mismatched", "message"),
+    [
+        (2, False, "multiple matching Batch Prediction jobs"),
+        (1, True, "does not match the submitted Batch Prediction request"),
+    ],
+)
+def test_vertex_batch_adapter_fails_closed_on_conflicting_matches(
+    preexisting_count,
+    mismatched,
+    message,
+):
+    batch = _batch_module()
+    service = FakeReconcileBatchService(
+        preexisting_count=preexisting_count,
+        mismatched=mismatched,
+    )
+    boundary = FakeReconcileBatchBoundary(service)
+    backend = batch.VertexBatchBackend(
+        sdk=FakeReconcileBatchSDK(boundary),
+        job_service=service,
+    )
+
+    with pytest.raises(ValueError, match=message):
+        batch.submit_batch_prediction(_submission_config(), backend)
+
+    assert boundary.calls == []
 
 
 @pytest.mark.parametrize(

@@ -8,8 +8,13 @@ from pathlib import Path
 import geopandas as gpd
 import pandas as pd
 import pytest
+from google.api_core.exceptions import ServiceUnavailable
 from shapely.geometry import Point
 
+from fewsnet_partitioned_rf_pipeline.cli.run_latest import (
+    _VertexTrainingBackend,
+    retry_transient,
+)
 from fewsnet_partitioned_rf_pipeline.cli.train import (
     TrainingWorkerConfig,
     run_training_worker,
@@ -432,6 +437,87 @@ class FakeTrainingBackend:
         self.events.append(("cancel", job_name))
 
 
+class FakeCustomJobServiceClient:
+    def __init__(
+        self,
+        config: TrainingCustomJobConfig,
+        *,
+        commit_then_raise: bool = False,
+        zero_after_ambiguous: bool = False,
+        preexisting_count: int = 0,
+        mismatched: bool = False,
+    ) -> None:
+        self.config = config
+        self.commit_then_raise = commit_then_raise
+        self.zero_after_ambiguous = zero_after_ambiguous
+        self.preexisting_count = preexisting_count
+        self.mismatched = mismatched
+        self.create_calls: list[dict[str, object]] = []
+        self.list_calls: list[dict[str, object]] = []
+        self.jobs: list[dict[str, object]] = []
+
+    def _resource(
+        self,
+        operation_id: str,
+        index: int,
+        custom_job: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        if custom_job is None:
+            custom_job = build_training_custom_job_spec(self.config)
+            custom_job["labels"] = {
+                **custom_job["labels"],
+                "fewsnet_operation": operation_id,
+            }
+        resource = {
+            "name": (
+                "projects/food-crisis-modeling/locations/us-central1/"
+                f"customJobs/{index}"
+            ),
+            "display_name": custom_job["display_name"],
+            "job_spec": custom_job["job_spec"],
+            "state": "JOB_STATE_QUEUED",
+            "create_time": "2026-07-21T12:00:00Z",
+            "start_time": None,
+            "end_time": None,
+            "update_time": "2026-07-21T12:00:00Z",
+            "error": {},
+            "labels": custom_job["labels"],
+            "web_access_uris": {},
+        }
+        if self.mismatched:
+            resource = json.loads(json.dumps(resource))
+            resource["job_spec"]["service_account"] = (
+                "other@food-crisis-modeling.iam.gserviceaccount.com"
+            )
+        return resource
+
+    def list_custom_jobs(self, *, request):
+        self.list_calls.append(dict(request))
+        operation_id = str(request["filter"]).rsplit(
+            "labels.fewsnet_operation=", 1
+        )[1]
+        if self.preexisting_count:
+            return [
+                self._resource(operation_id, index)
+                for index in range(1, self.preexisting_count + 1)
+            ]
+        return list(self.jobs)
+
+    def create_custom_job(self, *, request):
+        self.create_calls.append(json.loads(json.dumps(request)))
+        operation_id = request["custom_job"]["labels"]["fewsnet_operation"]
+        resource = self._resource(
+            operation_id,
+            len(self.create_calls),
+            custom_job=request["custom_job"],
+        )
+        if not self.zero_after_ambiguous:
+            self.jobs.append(resource)
+        if self.commit_then_raise or self.zero_after_ambiguous:
+            raise ServiceUnavailable("lost Custom Job create response")
+        return resource
+
+
 class FakeClock:
     def __init__(self):
         self.now = 0.0
@@ -472,6 +558,91 @@ def test_submit_persists_normalized_request_and_resource_before_polling(tmp_path
     )
     assert terminal["state"] == "JOB_STATE_SUCCEEDED"
     assert all(event[0] != "cancel" for event in backend.events)
+
+
+def test_vertex_training_adapter_reconciles_commit_then_raise_without_duplicate(
+    tmp_path,
+):
+    config = _custom_job_config()
+    client = FakeCustomJobServiceClient(config, commit_then_raise=True)
+    backend = _VertexTrainingBackend(client)
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+    retries: list[int] = []
+
+    submitted = retry_transient(
+        lambda: submit_and_persist_training_custom_job(
+            config,
+            backend=backend,
+            store=store,
+        ),
+        max_retries=1,
+        on_retry=retries.append,
+    )
+
+    assert submitted["name"].endswith("/customJobs/1")
+    assert len(client.create_calls) == 1
+    assert len(client.list_calls) == 2
+    assert retries == [1]
+    evidence = json.loads(
+        store.read_text(f"{RUN_ROOT_URI}/training/custom_job.json")
+    )
+    operation_id = evidence["request"]["custom_job"]["labels"][
+        "fewsnet_operation"
+    ]
+    assert len(operation_id) == 63
+    assert evidence["resource"] == submitted
+
+
+def test_vertex_training_adapter_refuses_resubmit_after_ambiguous_zero_match(
+    tmp_path,
+):
+    config = _custom_job_config()
+    client = FakeCustomJobServiceClient(config, zero_after_ambiguous=True)
+    backend = _VertexTrainingBackend(client)
+
+    with pytest.raises(ValueError, match="no matching Custom Job"):
+        retry_transient(
+            lambda: submit_and_persist_training_custom_job(
+                config,
+                backend=backend,
+                store=RecordingLocalArtifactStore(tmp_path / "store"),
+            ),
+            max_retries=1,
+            on_retry=lambda _attempt: None,
+        )
+
+    assert len(client.create_calls) == 1
+    assert len(client.list_calls) == 2
+
+
+@pytest.mark.parametrize(
+    ("preexisting_count", "mismatched", "message"),
+    [
+        (2, False, "multiple matching Custom Jobs"),
+        (1, True, "does not match the submitted Custom Job request"),
+    ],
+)
+def test_vertex_training_adapter_fails_closed_on_conflicting_matches(
+    tmp_path,
+    preexisting_count,
+    mismatched,
+    message,
+):
+    config = _custom_job_config()
+    client = FakeCustomJobServiceClient(
+        config,
+        preexisting_count=preexisting_count,
+        mismatched=mismatched,
+    )
+
+    with pytest.raises(ValueError, match=message):
+        submit_and_persist_training_custom_job(
+            config,
+            backend=_VertexTrainingBackend(client),
+            store=RecordingLocalArtifactStore(tmp_path / "store"),
+        )
+
+    assert client.create_calls == []
 
 
 def test_wait_timeout_cancels_exact_job_then_waits_for_cancelled_terminal_state():

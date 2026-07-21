@@ -310,6 +310,7 @@ def promote_and_publish(
     suite_manifest: Mapping[str, Any],
     lease_id: str,
     utc_now: Callable[[], datetime],
+    revision_id: str | None = None,
     lease_seconds: int = PROMOTION_LEASE_SECONDS,
 ) -> dict[str, Any]:
     """Move all production aliases reversibly and publish current last."""
@@ -356,6 +357,14 @@ def promote_and_publish(
             elif current_payload["feature_month"] > snapshot.latest_feature_month:
                 raise PromotionError(
                     "current production has a newer feature month"
+                )
+            elif (
+                current_payload["feature_month"] == snapshot.latest_feature_month
+                and revision_id is None
+            ):
+                raise PromotionError(
+                    "same feature month has a different snapshot checksum; "
+                    "revision_id is required"
                 )
         if result is None:
             feature_month = snapshot.latest_feature_month

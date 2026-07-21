@@ -1351,6 +1351,59 @@ def test_alias_movement_is_idempotent_when_targets_are_already_production(
     assert aliases.restore_calls == []
 
 
+def test_same_month_changed_digest_requires_revision_inside_lease(tmp_path):
+    first_snapshot = _snapshot(snapshot_digest="6" * 64)
+    first_versions = _registered_versions("suite-first")
+    first_manifest = _suite_manifest(
+        first_snapshot,
+        first_versions,
+        suite_version="suite-first",
+    )
+    store = RecordingStore(tmp_path)
+    first_aliases = FakeAliasBackend(
+        {
+            version.parent_model_resource_name: None
+            for version in first_versions.values()
+        }
+    )
+
+    first_result = promote_and_publish(
+        **_promotion_args(
+            store,
+            first_aliases,
+            first_snapshot,
+            first_versions,
+            first_manifest,
+        )
+    )
+    assert first_result["status"] == "RELEASED"
+
+    second_snapshot = _snapshot(snapshot_digest="7" * 64)
+    second_versions = _registered_versions("suite-second")
+    second_manifest = _suite_manifest(
+        second_snapshot,
+        second_versions,
+        suite_version="suite-second",
+    )
+    second_aliases = FakeAliasBackend(dict(first_aliases.versions))
+
+    with pytest.raises(PromotionError, match="revision_id is required"):
+        promote_and_publish(
+            **_promotion_args(
+                store,
+                second_aliases,
+                second_snapshot,
+                second_versions,
+                second_manifest,
+            )
+        )
+
+    current = json.loads(store.read_text(f"{ROOT_URI}/released/current.json"))
+    assert current["suite_version"] == "suite-first"
+    assert second_aliases.current_calls == []
+    assert second_aliases.move_calls == []
+
+
 def test_same_month_revision_replaces_month_pointer_by_generation(tmp_path):
     snapshot = _snapshot()
     versions = _registered_versions()
@@ -1380,7 +1433,8 @@ def test_same_month_revision_replaces_month_pointer_by_generation(tmp_path):
     store.write_order.clear()
 
     result = promote_and_publish(
-        **_promotion_args(store, aliases, snapshot, versions, manifest)
+        revision_id="corrected-input",
+        **_promotion_args(store, aliases, snapshot, versions, manifest),
     )
 
     assert result["month_pointer"].generation == "2"
@@ -1425,7 +1479,8 @@ def test_current_pointer_failure_restores_aliases_and_previous_month_pointer(
 
     with pytest.raises(PromotionError, match="injected write failure") as exc_info:
         promote_and_publish(
-            **_promotion_args(store, aliases, snapshot, versions, manifest)
+            revision_id="corrected-input",
+            **_promotion_args(store, aliases, snapshot, versions, manifest),
         )
 
     assert exc_info.value.original_error is not None
@@ -1471,7 +1526,8 @@ def test_current_pointer_commit_then_raise_keeps_candidate_authoritative(
     store.commit_then_fail_uri = current_uri
 
     result = promote_and_publish(
-        **_promotion_args(store, aliases, snapshot, versions, manifest)
+        revision_id="corrected-input",
+        **_promotion_args(store, aliases, snapshot, versions, manifest),
     )
 
     assert result["status"] == "RELEASED"
@@ -1524,7 +1580,8 @@ def test_current_pointer_reconciliation_retries_transient_read_failure(tmp_path)
     store.fail_reads_after_commit[current_uri] = 1
 
     result = promote_and_publish(
-        **_promotion_args(store, aliases, snapshot, versions, manifest)
+        revision_id="corrected-input",
+        **_promotion_args(store, aliases, snapshot, versions, manifest),
     )
 
     assert result["status"] == "RELEASED"
@@ -1572,7 +1629,8 @@ def test_persistently_unreadable_current_pointer_is_indeterminate_without_rollba
 
     with pytest.raises(PromotionError) as exc_info:
         promote_and_publish(
-            **_promotion_args(store, aliases, snapshot, versions, manifest)
+            revision_id="corrected-input",
+            **_promotion_args(store, aliases, snapshot, versions, manifest),
         )
 
     assert getattr(exc_info.value, "indeterminate", False) is True

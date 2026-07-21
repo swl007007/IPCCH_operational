@@ -4,11 +4,13 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, is_dataclass, replace
+import hashlib
 import json
 import math
 from numbers import Real
 from pathlib import Path
 import time
+from types import SimpleNamespace
 from typing import Any, Callable, Protocol
 
 import pandas as pd
@@ -46,6 +48,7 @@ _HORIZON_MONTHS_BY_KEY = {
     horizon_key: horizon_months
     for horizon_months, horizon_key in HORIZON_KEYS.items()
 }
+_OPERATION_LABEL = "fewsnet_operation"
 
 
 class BatchPredictionBackend(Protocol):
@@ -64,6 +67,7 @@ class VertexBatchBackend:
     def __init__(self, *, sdk: Any, job_service: Any) -> None:
         self.sdk = sdk
         self.job_service = job_service
+        self._ambiguous_operations: set[str] = set()
 
     @classmethod
     def from_default(
@@ -83,7 +87,64 @@ class VertexBatchBackend:
         return cls(sdk=sdk, job_service=job_service)
 
     def submit(self, **kwargs: object) -> object:
-        return self.sdk.BatchPredictionJob.submit(**kwargs)
+        project = _required_string("Batch project", kwargs.get("project"))
+        location = _required_string("Batch location", kwargs.get("location"))
+        display_name = _required_string(
+            "Batch job_display_name",
+            kwargs.get("job_display_name"),
+        )
+        labels = _string_mapping(kwargs.get("labels"), "Batch labels")
+        operation_id = _required_string(
+            "Batch operation identity",
+            labels.get(_OPERATION_LABEL),
+        )
+        parent = f"projects/{project}/locations/{location}"
+        candidates = list(
+            self.job_service.list_batch_prediction_jobs(
+                request={
+                    "parent": parent,
+                    "filter": (
+                        f'display_name="{display_name}" AND '
+                        f"labels.{_OPERATION_LABEL}={operation_id}"
+                    ),
+                }
+            )
+        )
+        if len(candidates) > 1:
+            raise ValueError(
+                "multiple matching Batch Prediction jobs exist for operation "
+                f"identity {operation_id}"
+            )
+        if candidates:
+            candidate = _validate_batch_candidate(
+                candidates[0],
+                kwargs=kwargs,
+                parent=parent,
+            )
+            return SimpleNamespace(
+                resource_name=candidate["name"],
+                display_name=candidate["display_name"],
+                gca_resource=candidate,
+            )
+        if operation_id in self._ambiguous_operations:
+            raise ValueError(
+                "ambiguous Batch Prediction submit has no matching Batch "
+                "Prediction job; refusing to resubmit"
+            )
+        try:
+            created = self.sdk.BatchPredictionJob.submit(**kwargs)
+        except Exception:
+            self._ambiguous_operations.add(operation_id)
+            raise
+        resource_name = getattr(created, "resource_name", None)
+        if (
+            not isinstance(resource_name, str)
+            or not resource_name.startswith(f"{parent}/batchPredictionJobs/")
+        ):
+            raise ValueError(
+                "submitted Batch Prediction job has an invalid resource name"
+            )
+        return created
 
     def get(self, job_resource_name: str) -> object:
         return self.job_service.get_batch_prediction_job(
@@ -277,21 +338,23 @@ def submit_batch_prediction(
     labels_value = _optional_config_value(config, "labels")
     labels = {} if labels_value is None else _string_mapping(labels_value, "labels")
 
-    job = backend.submit(
-        job_display_name=job_display_name,
-        model_name=model_ref.version_resource_name,
-        instances_format="jsonl",
-        predictions_format="jsonl",
-        gcs_source=input_uri,
-        gcs_destination_prefix=destination_prefix,
-        machine_type=deployment["batch_machine_type"],
-        starting_replica_count=1,
-        max_replica_count=1,
-        service_account=deployment["batch_prediction_service_account"],
-        labels=labels,
-        project=deployment["project_id"],
-        location=deployment["region"],
-    )
+    submission = {
+        "job_display_name": job_display_name,
+        "model_name": model_ref.version_resource_name,
+        "instances_format": "jsonl",
+        "predictions_format": "jsonl",
+        "gcs_source": input_uri,
+        "gcs_destination_prefix": destination_prefix,
+        "machine_type": deployment["batch_machine_type"],
+        "starting_replica_count": 1,
+        "max_replica_count": 1,
+        "service_account": deployment["batch_prediction_service_account"],
+        "labels": dict(labels),
+        "project": deployment["project_id"],
+        "location": deployment["region"],
+    }
+    submission["labels"][_OPERATION_LABEL] = _operation_identity(submission)
+    job = backend.submit(**submission)
     job_resource_name = getattr(job, "resource_name", None)
     if not isinstance(job_resource_name, str) or not job_resource_name:
         raise ValueError("submitted Batch Prediction job must expose resource_name")
@@ -302,6 +365,60 @@ def submit_batch_prediction(
         input_uri=input_uri,
         destination_prefix=destination_prefix,
     )
+
+
+def _validate_batch_candidate(
+    value: object,
+    *,
+    kwargs: Mapping[str, object],
+    parent: str,
+) -> dict[str, Any]:
+    candidate = _normalize_mapping(value, "Batch Prediction job resource")
+    name = candidate.get("name")
+    if not isinstance(name, str) or not name.startswith(
+        f"{parent}/batchPredictionJobs/"
+    ):
+        raise ValueError(
+            "matching Batch Prediction job has an invalid resource name"
+        )
+    expected = {
+        "display_name": kwargs["job_display_name"],
+        "model": kwargs["model_name"],
+        "input_config": {
+            "instances_format": kwargs["instances_format"],
+            "gcs_source": {"uris": [kwargs["gcs_source"]]},
+        },
+        "output_config": {
+            "predictions_format": kwargs["predictions_format"],
+            "gcs_destination": {
+                "output_uri_prefix": kwargs["gcs_destination_prefix"]
+            },
+        },
+        "dedicated_resources": {
+            "machine_spec": {"machine_type": kwargs["machine_type"]},
+            "starting_replica_count": kwargs["starting_replica_count"],
+            "max_replica_count": kwargs["max_replica_count"],
+        },
+        "service_account": kwargs["service_account"],
+        "labels": kwargs["labels"],
+    }
+    for field, expected_value in expected.items():
+        if candidate.get(field) != expected_value:
+            raise ValueError(
+                "matching Batch Prediction job does not match the submitted "
+                f"Batch Prediction request field: {field}"
+            )
+    return candidate
+
+
+def _operation_identity(submission: Mapping[str, object]) -> str:
+    return hashlib.sha256(
+        json.dumps(
+            submission,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()[:63]
 
 
 def wait_batch_prediction(

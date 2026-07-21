@@ -275,6 +275,7 @@ def run_latest(
     state: _RunState | None = None
     registered: dict[str, RegisteredModelVersion] = {}
     root_uri: str | None = None
+    release_committed = False
     try:
         if not isinstance(deployment, Mapping):
             raise TypeError("deployment must be a mapping")
@@ -312,6 +313,22 @@ def run_latest(
         run_id = suite_version
         run_root_uri = f"{root_uri}/runs/{run_id}"
         suite_root_uri = f"{root_uri}/suites/{suite_version}"
+        state = _RunState(
+            store=store,
+            uri=f"{run_root_uri}/run_manifest.json",
+            run_id=run_id,
+            suite_version=suite_version,
+            selected=selected,
+        )
+        state.transition(
+            RunPhase.DISCOVERED,
+            gates={"deployment_validated": True, "snapshot_discovered": True},
+        )
+        selected_manifest_ref = put_immutable_or_verify(
+            store,
+            f"{run_root_uri}/inputs/selected_source_manifest.json",
+            selected.manifest_bytes,
+        )
         snapshot_evidence = _canonical_json(
             {
                 "manifest": asdict(selected.manifest_ref),
@@ -325,17 +342,6 @@ def run_latest(
             store,
             f"{run_root_uri}/input_snapshot_ref.json",
             snapshot_evidence,
-        )
-        state = _RunState(
-            store=store,
-            uri=f"{run_root_uri}/run_manifest.json",
-            run_id=run_id,
-            suite_version=suite_version,
-            selected=selected,
-        )
-        state.transition(
-            RunPhase.DISCOVERED,
-            gates={"deployment_validated": True, "snapshot_discovered": True},
         )
 
         if promote:
@@ -394,7 +400,7 @@ def run_latest(
                 region=str(deployment_payload["region"]),
                 run_id=run_id,
                 job_id=f"fewsnet-train-{run_id}",
-                snapshot_manifest_uri=selected.manifest_ref.uri,
+                snapshot_manifest_uri=selected_manifest_ref.uri,
                 suite_version=suite_version,
                 run_root_uri=run_root_uri,
                 model_root_uri=f"{suite_root_uri}/models",
@@ -669,6 +675,7 @@ def run_latest(
                     suite_manifest=suite_manifest,
                     lease_id=lease_id,
                     utc_now=_utc_now,
+                    revision_id=revision_id,
                 ),
             )
             if promotion_result["status"] == "NOOP":
@@ -694,6 +701,7 @@ def run_latest(
                 raise RuntimeError(
                     "promotion returned an unsupported terminal status"
                 )
+            release_committed = True
             state.transition(
                 RunPhase.RELEASED,
                 status="released",
@@ -707,7 +715,13 @@ def run_latest(
             )
     except Exception as exc:
         abandonment_error: str | None = None
-        if registered and isinstance(deployment, Mapping):
+        promotion_indeterminate = isinstance(exc, PromotionIndeterminate)
+        preserve_live_candidates = promotion_indeterminate or release_committed
+        if (
+            registered
+            and isinstance(deployment, Mapping)
+            and not preserve_live_candidates
+        ):
             try:
                 mark_registered_versions_abandoned(
                     list(registered.values()),
@@ -726,8 +740,11 @@ def run_latest(
                 "timestamp_utc": _timestamp(_utc_now()),
                 "run_id": state.run_id,
                 "suite_version": state.suite_version,
-                "indeterminate": isinstance(exc, PromotionIndeterminate),
+                "indeterminate": promotion_indeterminate,
             }
+            if release_committed:
+                error_payload["evidence_warning"] = True
+                error_payload["release_status"] = "RELEASED"
             if abandonment_error is not None:
                 error_payload["abandonment_error"] = abandonment_error
             put_immutable_or_verify(
@@ -740,16 +757,11 @@ def run_latest(
                 state,
                 "FAILED",
                 error=error_payload,
-                indeterminate=isinstance(exc, PromotionIndeterminate),
+                indeterminate=promotion_indeterminate,
+                evidence_warning=release_committed,
+                release_status=("RELEASED" if release_committed else None),
             )
-        return {
-            "status": "FAILED",
-            "error": {
-                "exception_type": type(exc).__name__,
-                "message": str(exc) or type(exc).__name__,
-            },
-            "indeterminate": isinstance(exc, PromotionIndeterminate),
-        }
+        return _preflight_failure(exc)
 
 
 def _retry(
@@ -1098,6 +1110,17 @@ def _result(state: _RunState, status: str, **extra: Any) -> dict[str, Any]:
     return result
 
 
+def _preflight_failure(error: BaseException) -> dict[str, Any]:
+    return {
+        "status": "FAILED",
+        "preflight": True,
+        "error": {
+            "exception_type": type(error).__name__,
+            "message": str(error) or type(error).__name__,
+        },
+    }
+
+
 def _canonical_json(payload: object) -> bytes:
     return json.dumps(
         payload,
@@ -1121,6 +1144,7 @@ def _required_string(name: str, value: object) -> str:
 class _VertexTrainingBackend:
     def __init__(self, client: Any) -> None:
         self.client = client
+        self._ambiguous_operations: set[str] = set()
 
     @classmethod
     def from_default(cls, region: str) -> _VertexTrainingBackend:
@@ -1136,13 +1160,123 @@ class _VertexTrainingBackend:
         )
 
     def submit(self, request: dict[str, Any]) -> object:
-        return self.client.create_custom_job(request=request)
+        parent = _required_string("Custom Job parent", request.get("parent"))
+        custom_job = request.get("custom_job")
+        if not isinstance(custom_job, Mapping):
+            raise ValueError("Custom Job request must contain custom_job")
+        display_name = _required_string(
+            "Custom Job display_name",
+            custom_job.get("display_name"),
+        )
+        labels = custom_job.get("labels")
+        if not isinstance(labels, Mapping):
+            raise ValueError("Custom Job request must contain labels")
+        operation_id = _required_string(
+            "Custom Job operation identity",
+            labels.get("fewsnet_operation"),
+        )
+        candidates = list(
+            self.client.list_custom_jobs(
+                request={
+                    "parent": parent,
+                    "filter": (
+                        f'display_name="{display_name}" AND '
+                        f"labels.fewsnet_operation={operation_id}"
+                    ),
+                }
+            )
+        )
+        if len(candidates) > 1:
+            raise ValueError(
+                "multiple matching Custom Jobs exist for operation identity "
+                f"{operation_id}"
+            )
+        if candidates:
+            return _validate_training_job_candidate(
+                candidates[0],
+                request=request,
+            )
+        if operation_id in self._ambiguous_operations:
+            raise ValueError(
+                "ambiguous Custom Job submit has no matching Custom Job; "
+                "refusing to resubmit"
+            )
+        try:
+            created = self.client.create_custom_job(request=request)
+        except Exception:
+            self._ambiguous_operations.add(operation_id)
+            raise
+        return _validate_training_job_candidate(created, request=request)
 
     def get(self, job_name: str) -> object:
         return self.client.get_custom_job(name=job_name)
 
     def cancel(self, job_name: str) -> object:
         return self.client.cancel_custom_job(name=job_name)
+
+
+def _validate_training_job_candidate(
+    value: object,
+    *,
+    request: Mapping[str, Any],
+) -> dict[str, Any]:
+    candidate = _normalize_vertex_mapping(value, "Custom Job resource")
+    parent = str(request["parent"])
+    expected = request["custom_job"]
+    name = candidate.get("name")
+    if not isinstance(name, str) or not name.startswith(f"{parent}/customJobs/"):
+        raise ValueError("matching Custom Job has an invalid resource name")
+    for field in ("display_name", "job_spec", "labels"):
+        if candidate.get(field) != expected.get(field):
+            raise ValueError(
+                "matching Custom Job does not match the submitted Custom Job "
+                f"request field: {field}"
+            )
+    return candidate
+
+
+def _normalize_vertex_mapping(value: object, name: str) -> dict[str, Any]:
+    if isinstance(value, Mapping):
+        normalized = {
+            str(key): _normalize_vertex_value(item)
+            for key, item in value.items()
+        }
+    else:
+        to_dict = getattr(type(value), "to_dict", None)
+        if not callable(to_dict):
+            raise ValueError(f"{name} must be a mapping or proto resource")
+        try:
+            normalized = _normalize_vertex_value(
+                to_dict(value, use_integers_for_enums=False)
+            )
+        except TypeError:
+            normalized = _normalize_vertex_value(to_dict(value))
+    if not isinstance(normalized, dict):
+        raise ValueError(f"{name} must normalize to an object")
+    return normalized
+
+
+def _normalize_vertex_value(value: object) -> Any:
+    if isinstance(value, Mapping):
+        return {
+            str(key): _normalize_vertex_value(item)
+            for key, item in value.items()
+        }
+    if isinstance(value, (list, tuple)):
+        return [_normalize_vertex_value(item) for item in value]
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+    to_dict = getattr(type(value), "to_dict", None)
+    if callable(to_dict):
+        try:
+            return _normalize_vertex_value(
+                to_dict(value, use_integers_for_enums=False)
+            )
+        except TypeError:
+            return _normalize_vertex_value(to_dict(value))
+    raise ValueError(
+        f"Vertex resource value is not JSON-normalizable: {type(value).__name__}"
+    )
 
 
 def _default_backends(region: str) -> tuple[Any, Any, Any, Any]:
@@ -1187,14 +1321,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
     except Exception as exc:
         print(
-            json.dumps(
-                {
-                    "status": "FAILED",
-                    "exception_type": type(exc).__name__,
-                    "message": str(exc) or type(exc).__name__,
-                },
-                sort_keys=True,
-            ),
+            json.dumps(_preflight_failure(exc), sort_keys=True),
             file=sys.stderr,
         )
         return 1
