@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 17 is controller-accepted through `751ad4d`; the ledger-only acceptance commit is in progress before Task 18 kickoff
-- Current state: Tasks 1-17 are complete; Task 18 deterministic end-to-end orchestration is next
+- Current task: Task 18 deterministic end-to-end orchestration implementation is verified from base `4234084`
+- Current state: Tasks 1-17 are complete; Task 18 implementation and local verification are complete, with independent review pending
 - Blockers: none; implementation remains fake/local only, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -39,7 +39,7 @@
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
+| 18. Orchestrate discover -> train -> register -> Batch -> promote | implementation complete from `4234084`; focused/related/full verification clean; independent review pending |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
 ## Task 1 Evidence
@@ -906,10 +906,36 @@
 - GitNexus refreshed successfully at `751ad4d` to `4,096` nodes, `8,813` edges, `175` clusters, and `261` flows. Exact-worktree compare reported HIGH across six files because it also included the preserved uncommitted `AGENTS.md` and `CLAUDE.md`; the exact Git commit range `f3a02ab..751ad4d` contains only `PROGRESS.md`, `core/validation.py`, new `vertex/promotion.py`, and new `test_promotion.py`. Context inspection shows the validation callers are Task 17 tests with no mapped process, while `promote_and_publish` participates only in the intended promotion flow.
 - Controller acceptance: Task 17 is complete with final review `0 Critical, 0 Important, 0 Minor`. No real cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, alias, lease, release-pointer, image, or smoke operation occurred.
 
+## Task 18 Kickoff
+
+- Implementation base: `4234084` (`docs: record FEWSNET task 17 review`) in the existing linked worktree on `features/fewsnet-partitioned-rf-suite`; the preserved `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` state remains outside tracked implementation commits.
+- Fresh requirements handoff: `.superpowers/sdd/task-18-brief.md`, generated directly from the approved 86-line Task 18 plan block. Implementer report target: `.superpowers/sdd/task-18-report.md`.
+- Frozen authority remains exact: design SHA-256 `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`, plan SHA-256 `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`, and fixed-partition SHA-256 `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Fresh baseline immediately before kickoff: focused Task 17 `56 passed`, related Tasks 2/3/8/10/12/15/16 `229 passed`, and full repository `701 passed, 1 skipped, 24 subtests`.
+- Pre-flight found no conflict between Task 18 and the existing snapshot, one-job training, candidate registration, exact-version Batch, suite-validation, or generation-fenced promotion contracts. Task 18 must consume Task 17's exact generation-read snapshot/admin bytes, independently submitted Batch input ref, completed unique `BatchJobRef`, canonical run/suite prediction refs and bytes, and indeterminate-promotion semantics rather than reconstructing weaker evidence.
+- GitNexus concept discovery identified the existing training, registration, Batch, validation, and promotion composition points. Fresh upstream impact is LOW for `validate_deployment`, `submit_and_persist_training_custom_job`, `register_candidate_version`, `submit_batch_prediction`, `validate_prediction_suite`, and `promote_and_publish`. No existing symbol is scheduled for edit; any discovered need to modify one requires a fresh upstream impact report before editing.
+- Strict RED command: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py -q -p no:cacheprovider`; expected initial failure is the absent Task 18 test/module/interface.
+- Scope boundary: use only `LocalArtifactStore` and injected fake training, registry, Batch, and alias backends. Do not perform any real cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, alias, lease, release-pointer, image, or smoke operation.
+
+### Task 18 Implementation Evidence
+
+- Strict TDD RED: after creating only `tests/fewsnet_partitioned_rf/test_run_latest.py`, `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py -q -p no:cacheprovider` failed exactly as expected with `1 failed in 1.40s` and `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.cli.run_latest'`; the production module did not exist.
+- Focused GREEN: the exact RED command now reports `17 passed in 22.06s`. Coverage includes newest schema-valid exact-generation discovery, prior-pointer NOOP, same-month revision gating, byte-identical manifest restaging at a new generation, candidate-only isolation, training/registration/Batch/output/validation failures, terminal evidence, bounded transient retries with stable identity, `PromotionBusy`, `PromotionIndeterminate`, generation-preconditioned run-manifest updates, and CLI injection.
+- Related Tasks 13-18 verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py tests/fewsnet_partitioned_rf/test_training_job.py tests/fewsnet_partitioned_rf/test_predictor_server.py tests/fewsnet_partitioned_rf/test_registry.py tests/fewsnet_partitioned_rf/test_batch_prediction.py tests/fewsnet_partitioned_rf/test_promotion.py -q -p no:cacheprovider` -> `179 passed in 28.14s`.
+- Fresh full repository verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `718 passed, 1 skipped, 24 subtests passed in 62.12s`.
+- Deterministic evidence: the orchestrator preserves the selected manifest `ObjectRef` and bytes, exact snapshot-admin bytes, one immutable `input_snapshot_ref.json`, one suite identity created before retries, one training job identity, idempotent suite aliases and candidate versions, exact submitted Batch input refs, completed unique Batch job refs, and canonical run/suite prediction bytes. Every run-manifest write uses the prior exact generation as its precondition.
+- Failure behavior: training failure prevents registration; registration failure abandons earlier returned candidates; Batch/output/suite-validation failures prevent all alias reads or moves and abandon all returned candidates; retries are limited to the named transient classes and `PromotionBusy`; `PromotionIndeterminate` remains an indeterminate `FAILED` terminal result without Task 18 alias/pointer recovery.
+- Static/dependency gates: both new Python files pass AST parsing, built-in compilation, redirected `py_compile`, and public import. Maximum line lengths are `86` for `cli/run_latest.py` and `82` for `test_run_latest.py`. `.venv/bin/python -m pip check` reports `No broken requirements found.` and `git diff --check` exits `0`.
+- Frozen authority remains exact: design SHA-256 `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`, plan SHA-256 `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`, and fixed-partition SHA-256 `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Self-review: `run_latest.py` is additive and does not edit any Task 13-17 symbol. Candidate-only skips production pointer and alias reads. Production default adapters are defined only for the CLI and were not instantiated in verification; every test used `LocalArtifactStore` plus injected fakes. The 1,207-line orchestrator and 1,739-line focused test are large because the approved task fixes both production and test scope to one file each; helpers remain single-purpose and no unrelated refactor was introduced.
+- Scope/no-cloud confirmation: tracked implementation scope is only new `cli/run_latest.py`, new `test_run_latest.py`, and this ledger. Preserved `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` state remains outside the commit. No real cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, alias, lease, release-pointer, image, release, or smoke operation occurred.
+- Exact-worktree staged GitNexus gate: LOW risk across exactly three changed files, eight mapped `PROGRESS.md` documentation symbols, and zero affected execution processes. The current index does not map the two additive Python files as changed symbols, so staged path review, focused/related/full runtime verification, and static import/compile evidence provide the executable-scope check.
+- Planned implementation commit subject: `feat: orchestrate FEWSNET model suite releases`.
+
 ## Resume
 
-- Exact next step: commit this ledger-only Task 17 acceptance update, then generate the fresh Task 18 brief and start strict-TDD orchestration work from `751ad4d` plus the ledger commit.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '885,940p' PROGRESS.md`
+- Exact next step: stage only the three authorized Task 18 tracked paths, run the exact-worktree staged GitNexus gate, record the result, commit with the approved subject, and hand off for independent review.
+- Resume command: `git status --short --branch && git diff --check && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py -q -p no:cacheprovider && sed -n '909,990p' PROGRESS.md`
 
 ---
 
