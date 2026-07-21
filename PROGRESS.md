@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 12 Vertex-compatible model packaging is complete and independently approved; Task 13 remains pending and has not started
-- Current state: Tasks 1-12 are complete; Task 12 writes and defensively loads exact seven-file packages, binds report and predictor routing evidence, and passed independent re-review plus fresh controller verification
-- Blockers: none for Task 12; Task 13 and every cloud mutation remain unauthorized in this task handoff
+- Current task: Task 13 three-horizon training worker and Vertex Custom Job spec implementation and verification are complete from base commit `ecf6863d1b68e2daa718397c268987a6f9ee6efc`; the commit gate is in progress
+- Current state: Tasks 1-12 are complete; Task 13 now localizes and validates one immutable snapshot, trains/packages all three horizons, writes immutable aggregate/result evidence, and exposes the thin Custom Job submit/persist/wait/cancel boundary
+- Blockers: none; Task 13 independent review remains next, while every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation stayed outside this implementation step
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -34,7 +34,7 @@
 | 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
 | 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
-| 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
+| 13. Build the three-horizon training worker and Vertex Custom Job spec | implementation complete; independent review pending |
 | 14. Serve registered packages with a shared custom prediction container | pending |
 | 15. Register three stable parent models and immutable candidate versions | pending |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
@@ -537,10 +537,35 @@
 - Fresh controller full verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `536 passed, 1 skipped, 24 subtests passed in 35.54s`.
 - Authority preservation: design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; amended plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`; no Task 13 or cloud write was attempted.
 
+## Task 13 Kickoff
+
+- Implementation base: `ecf6863d1b68e2daa718397c268987a6f9ee6efc`; branch `features/fewsnet-partitioned-rf-suite`; linked worktree `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`.
+- Authority check: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`, and normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Fresh requirements handoff: `.superpowers/sdd/task-13-brief.md`, generated directly from the approved Task 13 plan text before implementation.
+- Pre-flight result: no conflict was found between Task 13, the frozen design, Task 12's seven-file package API, or the immutable storage boundary. The task creates only `cli/train.py`, `vertex/training_job.py`, and `test_training_job.py`, plus this execution ledger.
+- TDD RED command: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_job.py -q -p no:cacheprovider`; expected initial failure is the absent Task 13 worker/job-spec modules or missing required behavior.
+- GREEN/related verification: rerun the focused command, then `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_job.py tests/fewsnet_partitioned_rf/test_model_package.py -q -p no:cacheprovider`, followed by the complete repository suite before commit.
+- Scope boundary: tests use local/fake storage and fake Vertex backends only. No real Custom Job submission, GCS object creation, Model Registry write, Batch Prediction, alias mutation, release-pointer mutation, or gated cloud smoke is authorized in Task 13.
+
+### Task 13 Implementation Evidence
+
+- Strict RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_job.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.cli.train'`; summary `1 error in 4.44s`. Neither production module existed at this point.
+- First GREEN attempt: `6 passed, 1 failed in 10.97s`; the one failure proved that GeoParquet deserializes the exact EPSG:4326 CRS as structured PROJ metadata rather than the literal string. The worker now compares semantic CRS identity, not serialization text.
+- Focused GREEN: the exact RED command -> `7 passed in 10.96s`.
+- Task 13 plus Task 12 package integration: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_job.py tests/fewsnet_partitioned_rf/test_model_package.py -q -p no:cacheprovider` -> `61 passed in 14.40s`.
+- Relevant FEWSNET regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf -q -p no:cacheprovider` -> `246 passed in 29.80s`.
+- Fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `543 passed, 1 skipped, 24 subtests passed in 40.81s`.
+- Static/dependency checks: all three Task 13 Python files parse with `ast`; public imports succeed; no line exceeds 100 characters; `.venv/bin/python -m pip check` -> `No broken requirements found.` Ruff and Black are not installed in the pinned environment, so no dependency was added for formatting-only verification.
+- Exact-worktree GitNexus was refreshed after the known incremental FTS inconsistency required one forced rebuild. Final indexed public-symbol impacts are LOW: `run_training_worker` has three direct callers and one new CLI process; `build_training_custom_job_spec` has three direct callers and one new Vertex process; `wait_for_training_custom_job` has two direct test callers and no affected process. No HIGH or CRITICAL result occurred.
+- Staged GitNexus reconciliation: the required named-repo call with the exact `worktree` argument reports LOW risk, four changed files, three indexed `PROGRESS.md` sections, and zero affected processes, but under-attributes the three new Python files because the registry contains duplicate `IPCCH_operational` names. The exact worktree-path variant sees 120 new/touched symbols and 16 Task 13 flows and labels the additive change CRITICAL by count. Controller audit confirmed all 16 flows are newly introduced Task 13 flows, the four staged paths are exact, and the separate public upstream impacts are LOW; this is count-based over-attribution rather than an existing blast-radius break.
+- Self-review: the worker verifies the manifest and every object at exact generations/checksums/sizes, revalidates normalization/row/area/month/CRS/content identity, loads the frozen feature contract without fitting it, preserves `HORIZON_MONTHS` order, uses the seven-file package and immutable-store APIs unchanged, writes identical aggregate report bytes twice, and writes `training_job_result.json` last. The Vertex module does not import the existing IPCCH client and contains no Task 18 phases or retry policy.
+- Maintainability note: `cli/train.py` is 535 lines and `vertex/training_job.py` is 319 lines. The size reflects explicit validation and the mandated two-file boundary; helpers are single-purpose, but further lifecycle growth should move into Task 18 orchestration rather than expanding these modules.
+- Authority/no-cloud confirmation: design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`. Tests used only `LocalArtifactStore` and a fake backend; no real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer write occurred.
+
 ## Resume
 
-- Exact next step: Task 12 is complete. Before starting Task 13, read this ledger and the approved plan, verify branch/worktree status, generate a fresh Task 13 brief, and preserve the no-cloud-write boundary until the task explicitly reaches a gated cloud smoke step.
-- Resume command: `git status --short --branch && git log -6 --oneline && tail -n 220 .superpowers/sdd/task-12-report.md && sed -n '472,585p' PROGRESS.md`
+- Exact next step: complete the exact staged-scope Git/GitNexus gate, commit with `feat: add FEWSNET Vertex training job`, then dispatch independent Task 13 review from the implementation commit.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '538,610p' PROGRESS.md && cat .superpowers/sdd/task-13-report.md`
 
 ---
 
