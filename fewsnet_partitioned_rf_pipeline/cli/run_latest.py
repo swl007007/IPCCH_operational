@@ -252,11 +252,26 @@ class _RunState:
         expected_generation: str | int = (
             0 if self.ref is None else self.ref.generation
         )
-        self.ref = self.store.put_bytes(
-            self.uri,
-            _canonical_json(self.payload),
-            if_generation_match=expected_generation,
-        )
+        payload_bytes = _canonical_json(self.payload)
+        try:
+            self.ref = self.store.put_bytes(
+                self.uri,
+                payload_bytes,
+                if_generation_match=expected_generation,
+            )
+        except Exception:
+            try:
+                committed_ref = self.store.get_ref(self.uri)
+                if int(committed_ref.generation) > int(expected_generation):
+                    committed_bytes = self.store.read_bytes(
+                        self.uri,
+                        generation=committed_ref.generation,
+                    )
+                    if committed_bytes == payload_bytes:
+                        self.ref = committed_ref
+            except Exception:
+                pass
+            raise
 
 
 def run_latest(

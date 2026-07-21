@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 18 review-fix contract synchronization and strict RED/GREEN fix wave
-- Current state: Tasks 1-17 are complete; Task 18 has 3 Critical and 2 Important review findings; user decision A resolved the final contract ambiguity and the fix wave is in progress
+- Current task: Task 18 final re-review closure
+- Current state: Tasks 1-17 are complete; both remaining Task 18 Important findings are fixed and locally verified, with independent re-review still required
 - Blockers: none for local/fake implementation; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -39,7 +39,7 @@
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 18. Orchestrate discover -> train -> register -> Batch -> promote | in progress through `7689b73`; independent review found 3 Critical/2 Important and fix wave is required |
+| 18. Orchestrate discover -> train -> register -> Batch -> promote | final re-review fixes locally complete in this commit; independent re-review remains required |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
 ## Task 1 Evidence
@@ -965,10 +965,63 @@
 - Final exact-worktree staged GitNexus gate reported CRITICAL aggregate risk across exactly `9` expected staged files, `67` mapped changed symbols, and `24` affected flows. Context review confirmed the executable surface is the intended `run_latest`, lease-protected `promote_and_publish`, persisted training submit, and Vertex Batch adapter boundaries; GitNexus also broadly attributed unchanged neighbors inside the large amended files. The warning was reported before commit, and the `142` amended-file, `195` related, and `734` full-suite gates directly cover the affected execution surface.
 - Planned fix commit subject: `fix: harden FEWSNET release orchestration`.
 
-## Resume
+### Task 18 Final Re-review Closure Evidence
 
-- Task 18 fix-wave implementation and local verification are complete. Exact next step: stage only the eight reviewed production/test files plus `PROGRESS.md`, run exact-worktree staged GitNexus and staged diff checks, commit the separate fix, then request independent re-review before Task 19.
-- Resume command: `git status --short --branch && git diff --check && sed -n '935,1015p' PROGRESS.md && sed -n '1,260p' .superpowers/sdd/task-18-report.md`
+- Re-review baseline at `4964da1`: full Task 18 plus promotion tests reported
+  `81 passed in 23.79s`; preserved user-owned `AGENTS.md`, `CLAUDE.md`,
+  `.claude/`, and `.superpowers/` remained outside implementation scope.
+- Root A strict RED: the three run-manifest ambiguity probes reported
+  `3 failed, 24 deselected in 30.65s`. The exact commit-then-raise regression
+  escaped with `GenerationConflict: expected 0, current 1`; mismatch and
+  unreadable probes proved no generation-pinned readback occurred.
+- Root A GREEN: the same selection reported
+  `3 passed, 24 deselected in 18.69s`. `_RunState._write` retains canonical
+  bytes, reads the current exact generation after an ambiguous exception,
+  advances its generation fence only when the generation advanced and bytes
+  are identical, and re-raises the original exception so the top-level handler
+  writes terminal `error.json` and `run_manifest.json`. Mismatched or
+  unreadable state remains unreconciled.
+- Root B strict RED: the real `promote_and_publish` path with an injected
+  `ServiceUnavailable` during alias movement reported
+  `1 failed, 27 deselected in 30.87s`; the required `RELEASED` result was
+  `FAILED` because the transient root was wrapped in non-retryable
+  `PromotionError`.
+- Root B GREEN: the same selection reported
+  `1 passed, 27 deselected in 19.21s`. Promotion now re-raises an approved
+  transient root only after verifying complete alias rollback, authoritative
+  month-pointer rollback, live lease ownership, and exact unchanged current
+  pointer generation and bytes. Rollback failure, lost lease, pointer
+  uncertainty, validation failures, and `PromotionIndeterminate` remain
+  non-retryable.
+- Combined new regressions: `4 passed, 81 deselected in 18.73s`.
+- Full Task 18 plus promotion files: `85 passed in 22.99s`.
+- Amended Task 18/training/Batch/promotion set: `146 passed in 27.15s`.
+- Related Tasks 13-18 set: `199 passed in 28.74s`.
+- Fresh full repository suite: `738 passed, 1 skipped, 24 subtests passed in
+  56.74s`.
+- Static/dependency gates: all three changed Python files passed AST parsing
+  and redirected compilation; both production modules imported; `.venv/bin/python
+  -m pip check` reported `No broken requirements found.`; `git diff --check`
+  passed.
+- Frozen authority remains exact: design SHA-256
+  `71a5f93b19ee612560c31ae0f884dd762414471f9f720ad2dad6c1a95c55158a`,
+  plan SHA-256
+  `f80ea13e14d7dbda5f5f42ee50d9d45ede4174dbe61e269a8bad88489716628a`,
+  and fixed partition SHA-256
+  `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Exact-worktree staged GitNexus reported LOW risk across exactly four staged
+  files, three mapped `PROGRESS.md` section symbols, and zero affected
+  processes. The index under-attributed the two production files and focused
+  test; the `85`, `146`, `199`, and `738` runtime gates plus static/import
+  checks cover their executable surface. Staged path and whitespace checks
+  confirmed only the reviewed files plus this ledger are staged.
+- Scope/no-cloud confirmation: all verification used local stores and fake
+  training, registry, Batch, alias, and SDK/service boundaries. No network,
+  authentication, real GCP/GCS/Vertex/Registry/Batch/alias/lease/pointer
+  operation, Task 19 work, image build, or smoke run occurred.
+- Planned commit subject: `fix: close Task 18 terminal evidence gaps`.
+- Next action after this commit: request independent Task 18 re-review; do not
+  start Task 19 until that gate is clean.
 
 ---
 

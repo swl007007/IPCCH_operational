@@ -9,8 +9,27 @@ import json
 import re
 from typing import Any, Protocol
 
-from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import (
+    DeadlineExceeded,
+    NotFound,
+    ServiceUnavailable,
+    TooManyRequests,
+)
 from google.cloud import aiplatform
+
+try:
+    from google.auth.exceptions import TransportError as GoogleTransportError
+except ImportError:  # pragma: no cover - google-auth is pinned.
+    GoogleTransportError = ConnectionError  # type: ignore[misc,assignment]
+
+try:
+    from requests.exceptions import (
+        ConnectionError as RequestsConnectionError,
+        Timeout as RequestsTimeout,
+    )
+except ImportError:  # pragma: no cover - requests ships with google clients.
+    RequestsConnectionError = ConnectionError  # type: ignore[misc,assignment]
+    RequestsTimeout = TimeoutError  # type: ignore[misc,assignment]
 
 from fewsnet_partitioned_rf_pipeline.config import (
     HORIZON_KEYS,
@@ -46,6 +65,14 @@ LEASE_FIELDS = {
 }
 MONTH_PATTERN = re.compile(r"^[0-9]{4}-(0[1-9]|1[0-2])$")
 VERSION_RESOURCE_PATTERN = re.compile(r"^(.+)@([0-9]+)$")
+RETRYABLE_PROMOTION_EXCEPTIONS = (
+    TooManyRequests,
+    ServiceUnavailable,
+    DeadlineExceeded,
+    GoogleTransportError,
+    RequestsConnectionError,
+    RequestsTimeout,
+)
 
 
 class PromotionBusy(RuntimeError):
@@ -330,13 +357,14 @@ def promote_and_publish(
     )
     warnings: list[str] = []
     result: dict[str, Any] | None = None
-    failure: PromotionError | None = None
+    failure: BaseException | None = None
     previous_aliases: dict[str, str | None] = {}
     attempted_aliases: list[str] = []
     previous_month: _CapturedObject | None = None
+    current_uri = f"{root}/{CURRENT_RELATIVE_URI}"
+    previous_current: _CapturedObject | None = None
     written_month_ref: ObjectRef | None = None
     try:
-        current_uri = f"{root}/{CURRENT_RELATIVE_URI}"
         previous_current = _capture_optional(store, current_uri)
         current_payload = _optional_pointer_json(previous_current.data)
         if current_payload is not None:
@@ -464,7 +492,60 @@ def promote_and_publish(
                         "month pointer restore skipped or failed: "
                         f"{restore_exc}"
                     )
-            failure = PromotionError(exc, tuple(rollback_failures))
+            retry_safe = False
+            if (
+                isinstance(exc, RETRYABLE_PROMOTION_EXCEPTIONS)
+                and not rollback_failures
+            ):
+                try:
+                    lease = _renew_promotion_lease(store, lease, utc_now)
+                    for horizon_key in attempted_aliases:
+                        version = registered_versions[horizon_key]
+                        current_alias = alias_backend.current_version(
+                            version.parent_model_resource_name,
+                            "production",
+                        )
+                        _validate_optional_alias_version(
+                            version.parent_model_resource_name,
+                            current_alias,
+                        )
+                        if current_alias != previous_aliases[horizon_key]:
+                            raise PromotionError(
+                                f"{horizon_key} alias rollback is incomplete"
+                            )
+                    if (
+                        previous_month is not None
+                        and not _captured_object_matches(
+                            store,
+                            previous_month,
+                            require_generation=False,
+                        )
+                    ):
+                        raise PromotionError(
+                            "month pointer rollback is not authoritative"
+                        )
+                    if (
+                        previous_current is None
+                        or not _captured_object_matches(
+                            store,
+                            previous_current,
+                            require_generation=True,
+                        )
+                    ):
+                        raise PromotionError(
+                            "current pointer is not definitively unchanged"
+                        )
+                    retry_safe = True
+                except Exception as safety_exc:
+                    rollback_failures.append(
+                        "promotion retry suppressed: "
+                        f"{safety_exc}"
+                    )
+            failure = (
+                exc
+                if retry_safe
+                else PromotionError(exc, tuple(rollback_failures))
+            )
     finally:
         try:
             release_promotion_lease(store=store, lease=lease)
@@ -479,11 +560,16 @@ def promote_and_publish(
                         rollback_failures=failure.rollback_failures,
                         warnings=tuple(warnings),
                     )
-                else:
+                elif isinstance(failure, PromotionError):
                     failure = PromotionError(
                         failure.original_error,
                         failure.rollback_failures,
                         tuple(warnings),
+                    )
+                else:
+                    failure = PromotionError(
+                        failure,
+                        warnings=tuple(warnings),
                     )
     if failure is not None:
         raise failure
@@ -732,6 +818,32 @@ def _capture_optional(store: ArtifactStore, uri: str) -> _CapturedObject:
         return _CapturedObject(uri=uri, generation="0", data=None)
     data = store.read_bytes(uri, generation=ref.generation)
     return _CapturedObject(uri=uri, generation=ref.generation, data=data)
+
+
+def _captured_object_matches(
+    store: ArtifactStore,
+    captured: _CapturedObject,
+    *,
+    require_generation: bool,
+) -> bool:
+    try:
+        ref = store.get_ref(captured.uri)
+    except (FileNotFoundError, NotFound):
+        return captured.data is None and captured.generation == "0"
+    except Exception:
+        return False
+    if captured.data is None:
+        return False
+    if require_generation and ref.generation != captured.generation:
+        return False
+    try:
+        current_data = store.read_bytes(
+            captured.uri,
+            generation=ref.generation,
+        )
+    except Exception:
+        return False
+    return current_data == captured.data
 
 
 def _lease_json(data: bytes) -> dict[str, str]:

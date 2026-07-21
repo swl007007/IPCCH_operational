@@ -129,6 +129,53 @@ class RecordingStore(LocalArtifactStore):
         self.list_order.clear()
 
 
+class AmbiguousRunManifestStore(RecordingStore):
+    def __init__(
+        self,
+        root: Path,
+        *,
+        committed_bytes: bytes | None = None,
+        fail_readback: bool = False,
+    ) -> None:
+        super().__init__(root)
+        self.committed_bytes = committed_bytes
+        self.fail_readback = fail_readback
+        self.ambiguous_write_committed = False
+        self.manifest_read_generations: list[str | int | None] = []
+
+    def put_bytes(self, uri, data, *, if_generation_match=None):
+        if (
+            not self.ambiguous_write_committed
+            and uri.endswith("/run_manifest.json")
+        ):
+            self.ambiguous_write_committed = True
+            super().put_bytes(
+                uri,
+                self.committed_bytes
+                if self.committed_bytes is not None
+                else data,
+                if_generation_match=if_generation_match,
+            )
+            raise ServiceUnavailable(
+                "run manifest response lost after commit"
+            )
+        return super().put_bytes(
+            uri,
+            data,
+            if_generation_match=if_generation_match,
+        )
+
+    def read_bytes(self, uri, generation=None):
+        if (
+            self.ambiguous_write_committed
+            and uri.endswith("/run_manifest.json")
+        ):
+            self.manifest_read_generations.append(generation)
+            if self.fail_readback:
+                raise ServiceUnavailable("run manifest readback unavailable")
+        return super().read_bytes(uri, generation=generation)
+
+
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -854,6 +901,20 @@ class FakeAliasBackend:
         self.versions[parent] = previous_version
 
 
+class TransientPromotionAliasBackend(FakeAliasBackend):
+    def __init__(self, store: RecordingStore) -> None:
+        super().__init__(store)
+        self.transient_failures = 1
+        self.move_attempts: list[tuple[str, str, str]] = []
+
+    def move_alias(self, parent: str, alias: str, target_version: str):
+        self.move_attempts.append((parent, alias, target_version))
+        if self.transient_failures:
+            self.transient_failures -= 1
+            raise ServiceUnavailable("transient promotion alias move")
+        return super().move_alias(parent, alias, target_version)
+
+
 def _backends(
     store: RecordingStore,
     *,
@@ -1019,6 +1080,144 @@ def test_run_latest_selects_newest_snapshot_and_releases_only_after_validation(
         if "/locks/" not in uri and not uri.endswith("/run_manifest.json")
     ]
     assert authoritative_writes[-1] == current_uri
+
+
+def test_ambiguous_initial_run_manifest_write_still_records_terminal_failure(
+    tmp_path,
+    monkeypatch,
+):
+    store = AmbiguousRunManifestStore(tmp_path / "store")
+    _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    store.clear_events()
+    training, registry, batch, aliases = _backends(store)
+
+    result = _run(
+        monkeypatch,
+        _deployment(),
+        store,
+        (training, registry, batch, aliases),
+    )
+
+    assert result["status"] == "FAILED"
+    assert result.get("preflight") is not True
+    assert result["error"]["exception_type"] == "ServiceUnavailable"
+    manifest = _assert_failed_evidence(store, result)
+    assert manifest["phase"] == "FAILED"
+    assert manifest["status"] == "failed"
+    assert store.manifest_read_generations[0] == "1"
+    assert training.submit_requests == []
+    assert registry.upload_calls == []
+    assert batch.submit_calls == []
+    assert aliases.move_calls == []
+
+
+def test_run_manifest_write_does_not_reconcile_mismatched_committed_bytes(
+    tmp_path,
+):
+    store = AmbiguousRunManifestStore(
+        tmp_path / "store",
+        committed_bytes=b'{"different":"payload"}',
+    )
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    module = _module()
+    selected = module._discover_snapshot(
+        store,
+        root_uri=ROOT_URI,
+        explicit_uri=snapshot["uri"],
+    )
+    run_id = (
+        f"fewsnet-prf-202412-{SOURCE_COMMIT[:8]}-"
+        f"{selected.snapshot.snapshot_content_sha256[:8]}-"
+        "20260721T203000Z"
+    )
+    manifest_uri = f"{ROOT_URI}/runs/{run_id}/run_manifest.json"
+    state = module._RunState(
+        store=store,
+        uri=manifest_uri,
+        run_id=run_id,
+        suite_version=run_id,
+        selected=selected,
+    )
+
+    with pytest.raises(
+        ServiceUnavailable,
+        match="run manifest response lost after commit",
+    ):
+        state.transition(
+            module.RunPhase.DISCOVERED,
+            gates={
+                "deployment_validated": True,
+                "snapshot_discovered": True,
+            },
+        )
+
+    committed_ref = store.get_ref(manifest_uri)
+    assert state.ref is None
+    assert store.manifest_read_generations == [committed_ref.generation]
+    assert store.read_bytes(
+        manifest_uri,
+        generation=committed_ref.generation,
+    ) == b'{"different":"payload"}'
+
+
+def test_run_manifest_write_does_not_reconcile_unreadable_committed_bytes(
+    tmp_path,
+):
+    store = AmbiguousRunManifestStore(
+        tmp_path / "store",
+        fail_readback=True,
+    )
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    module = _module()
+    selected = module._discover_snapshot(
+        store,
+        root_uri=ROOT_URI,
+        explicit_uri=snapshot["uri"],
+    )
+    run_id = (
+        f"fewsnet-prf-202412-{SOURCE_COMMIT[:8]}-"
+        f"{selected.snapshot.snapshot_content_sha256[:8]}-"
+        "20260721T203000Z"
+    )
+    manifest_uri = f"{ROOT_URI}/runs/{run_id}/run_manifest.json"
+    state = module._RunState(
+        store=store,
+        uri=manifest_uri,
+        run_id=run_id,
+        suite_version=run_id,
+        selected=selected,
+    )
+
+    with pytest.raises(
+        ServiceUnavailable,
+        match="run manifest response lost after commit",
+    ):
+        state.transition(
+            module.RunPhase.DISCOVERED,
+            gates={
+                "deployment_validated": True,
+                "snapshot_discovered": True,
+            },
+        )
+
+    committed_ref = store.get_ref(manifest_uri)
+    assert state.ref is None
+    assert store.manifest_read_generations == [committed_ref.generation]
 
 
 def test_same_feature_month_and_snapshot_digest_is_noop_before_cloud_jobs(
@@ -1636,6 +1835,89 @@ def test_transient_retries_preserve_snapshot_image_artifacts_and_candidates(
     assert promotion_calls[0]["snapshot_digest"] == snapshot["manifest"][
         "snapshot_content_sha256"
     ]
+    assert all(
+        version["artifact_uri"].startswith(
+            f"{ROOT_URI}/suites/{result['suite_version']}/models/"
+        )
+        for version in promotion_calls[0]["versions"].values()
+    )
+
+
+def test_real_promotion_transient_retries_with_identical_release_identity(
+    tmp_path,
+    monkeypatch,
+):
+    module = _module()
+    store = RecordingStore(tmp_path / "store")
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    _seed_current_pointer(
+        store,
+        feature_month="2024-11",
+        snapshot_digest="f" * 64,
+    )
+    store.clear_events()
+    training = FakeTrainingBackend(store)
+    registry = FakeRegistrySDK()
+    batch = FakeBatchBackend(store)
+    aliases = TransientPromotionAliasBackend(store)
+    delays: list[float] = []
+    promotion_calls: list[dict[str, object]] = []
+    original_promotion = module.promote_and_publish
+
+    def recording_promotion(**kwargs):
+        promotion_calls.append(
+            {
+                "run_id": kwargs["run_id"],
+                "snapshot_digest": kwargs[
+                    "snapshot"
+                ].snapshot_content_sha256,
+                "versions": {
+                    key: asdict(value)
+                    for key, value in kwargs["registered_versions"].items()
+                },
+                "suite_manifest": json.loads(
+                    json.dumps(kwargs["suite_manifest"], sort_keys=True)
+                ),
+            }
+        )
+        return original_promotion(**kwargs)
+
+    monkeypatch.setenv("FEWSNET_SOURCE_GIT_COMMIT", SOURCE_COMMIT)
+    monkeypatch.setattr(module, "_utc_now", lambda: NOW)
+    monkeypatch.setattr(module, "_sleep", delays.append)
+    monkeypatch.setattr(module, "promote_and_publish", recording_promotion)
+
+    result = module.run_latest(
+        _deployment(max_retries=2),
+        store,
+        training,
+        registry,
+        batch,
+        aliases,
+    )
+
+    assert result["status"] == "RELEASED"
+    assert [item["operation"] for item in result["retry_attempts"]] == [
+        "promotion"
+    ]
+    assert delays == [2]
+    assert len(promotion_calls) == 2
+    assert promotion_calls[0] == promotion_calls[1]
+    assert promotion_calls[0]["run_id"] == result["run_id"]
+    assert promotion_calls[0]["snapshot_digest"] == snapshot["manifest"][
+        "snapshot_content_sha256"
+    ]
+    assert len(training.submit_requests) == 1
+    assert len(registry.upload_calls) == 3
+    assert len(batch.submit_calls) == 3
+    assert aliases.transient_failures == 0
+    assert aliases.move_attempts[0] == aliases.move_attempts[1]
+    assert aliases.restore_calls == []
     assert all(
         version["artifact_uri"].startswith(
             f"{ROOT_URI}/suites/{result['suite_version']}/models/"
