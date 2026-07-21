@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 16 is controller-accepted through `35b96c5`; final independent review is clean, and Task 17 kickoff is next
-- Current state: Tasks 1-16 are complete; exact parent/instance/dtype/schema gates, suite/model/admin identity, deadline polling, and canonical run/suite publication-root binding are all closed
-- Blockers: none; Task 17 remains pending until its brief and pre-edit impact gate are recorded, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
+- Current task: Task 17 is in progress from base `f3a02ab`; brief, authority, baseline, pre-flight, and code-intelligence gates are recorded
+- Current state: Tasks 1-16 are complete; Task 17 now owns three-horizon release validation, serialized production-alias rollback, and generation-safe pointer publication
+- Blockers: none; implementation remains fake/local only, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -38,7 +38,7 @@
 | 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
-| 17. Validate three-horizon outputs and implement alias rollback publication | pending |
+| 17. Validate three-horizon outputs and implement alias rollback publication | in progress; kickoff and brief complete |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
@@ -822,10 +822,36 @@
 - GitNexus recovery and reconciliation: the first post-commit incremental refresh hit the known inconsistent `file_fts` error; the required retry detected the incomplete run and completed a full rebuild with `3,840` nodes, `8,075` edges, `166` clusters, and `253` flows. Exact-worktree compare against `651057e` reports CRITICAL over seven working-tree files and 22 Task 16 flows because it includes preserved user edits in `AGENTS.md`/`CLAUDE.md` and maps the complete new Task 16 boundary. Commit-range Git evidence proves the accepted range contains exactly the five authorized paths: `PROGRESS.md`, `cli/infer.py`, `vertex/batch_prediction.py`, `test_batch_prediction.py`, and the Batch fixture.
 - Scope/no-cloud confirmation: no live cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, alias, release-pointer, image, release, or smoke operation occurred.
 
+## Task 17 Kickoff
+
+- Implementation base: `f3a02ab` (`docs: record FEWSNET task 16 review`) on branch `features/fewsnet-partitioned-rf-suite` in the existing linked worktree.
+- Fresh requirements handoff: `.superpowers/sdd/task-17-brief.md`, generated directly from the approved 58-line Task 17 plan block with the script invoked through `bash` and an explicit output path.
+- Authority verification: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Fresh inherited baseline: the immediately preceding controller gate ran `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `645 passed, 1 skipped, 24 subtests passed in 55.70s`; no tracked production change followed before this kickoff.
+- Pre-flight result: no conflict was found among the Task 17 brief, authoritative two-phase promotion design, `SnapshotManifest`, `RegisteredModelVersion`, immutable `ObjectRef`, suite/model schemas, fixed-partition release gate, storage generation helpers, or Task 18 orchestration boundary.
+- Validation carrier decision: each horizon's `predictions` entry must explicitly bundle the formal prediction frame, exact Batch input `ObjectRef`, the snapshot-content digest recorded for that Batch input, and the validated package manifest. This is the narrow carrier required for the approved three-argument `validate_prediction_suite(predictions, snapshot, registered_versions)` interface to enforce Batch input URI/generation/checksum plus Batch/package snapshot-digest identity without repeating them in each CSV row.
+- GitNexus concept query found no existing FEWSNET promotion/rollback flow to modify. `core/validation.py` currently contains package/training validators used by package-write processes; Task 17 must add the new suite validator and helpers without changing existing function/class/method bodies. File-level impact lookup is unsupported (`UNKNOWN`); if implementation discovers a need to edit any existing symbol, it must run exact-worktree upstream impact first and stop for any HIGH/CRITICAL warning.
+- Strict RED command: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_promotion.py -q -p no:cacheprovider`; expected initial failure is the absent Task 17 test/module/interfaces.
+- Scope boundary: use `LocalArtifactStore` and fake alias/Vertex adapters only. Do not acquire a real lease, read/write real GCS, move a real Vertex alias, mutate a Registry/Endpoint, publish a release pointer, or start Task 18.
+
+## Task 17 Implementation Evidence
+
+- Strict TDD RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_promotion.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ImportError` for absent `PredictionSuiteEntry`; no production file had changed (`1 error in 11.24s`).
+- Focused GREEN: the same command -> `26 passed in 20.65s` after adding the explicit four-part `PredictionSuiteEntry` carrier, additive three-horizon validation, fake/local promotion coverage, the pinned Vertex alias adapter, lease serialization, alias rollback, immutable suite evidence, same-month generation replacement, and current-pointer-last publication.
+- Related Task 2/3/8/10/12/15/16 regression: contracts, storage, partitions, training/inference, model packages, registry, and Batch Prediction -> `229 passed in 42.48s`.
+- Full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `671 passed, 1 skipped, 24 subtests passed in 57.48s`.
+- Final fresh pre-commit verification: focused Task 17 -> `26 passed in 22.57s`; full repository -> `671 passed, 1 skipped, 24 subtests passed in 57.99s`.
+- Validation preservation gate: AST comparison against `f3a02ab` found all `16` pre-existing functions/classes in `core/validation.py` present with body-identical ASTs; Task 17 only adds imports, constants, the carrier, the public suite validator, and new helpers.
+- Static/dependency/SDK gates: all three Task 17 Python files parse with `ast`, import, and compile with redirected bytecode; maximum line lengths are `87`, `84`, and `85`; `.venv/bin/python -m pip check` reports `No broken requirements found.`; `google-cloud-aiplatform==1.161.0` exposes the required `ModelRegistry.get_version_info(self, version)`, `add_version_aliases(self, new_aliases, version)`, and `remove_version_aliases(self, target_aliases, version)` signatures.
+- Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`; fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Exact-worktree staged GitNexus gate: MEDIUM risk, `4` changed files, `14` mapped changed symbols, and `2` affected package/container validation flows. The index mapped line-shifted pre-existing `core/validation.py` symbols as touched; the independent AST comparison proves all `16` pre-existing function/class bodies are identical to `f3a02ab`. Git staging contains exactly `PROGRESS.md`, `core/validation.py`, new `vertex/promotion.py`, and new `test_promotion.py`; preserved `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` changes remain unstaged.
+- Scope/no-cloud confirmation: tests used only `LocalArtifactStore`, fake alias/SDK backends, and injected UTC/lease identities. No real GCP, GCS, Vertex AI, Model Registry, Batch Prediction, Endpoint, alias, lease, release-pointer, image, network, or authentication operation occurred; Task 18 was not started.
+- Implementation commit: `feat: promote FEWSNET model suites safely` (this commit). Independent review and controller acceptance remain required before Task 18.
+
 ## Resume
 
-- Exact next step: generate the Task 17 brief, run pre-edit GitNexus upstream impact for every existing `core/validation.py` symbol scheduled for modification, record Task 17 kickoff, and dispatch a fresh strict-TDD implementer with fake/local backends only.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '800,900p' PROGRESS.md`
+- Exact next step: dispatch a fresh Task 17 implementer using `.superpowers/sdd/task-17-brief.md` and strict TDD; then run independent review/fix loops and controller verification before Task 18.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '814,875p' PROGRESS.md`
 
 ---
 

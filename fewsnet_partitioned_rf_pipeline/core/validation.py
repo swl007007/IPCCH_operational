@@ -5,11 +5,28 @@ from __future__ import annotations
 import math
 import re
 import sys
+from dataclasses import dataclass
 from importlib import metadata
 from numbers import Integral, Real
-from typing import Mapping
+from typing import Any, Mapping
 
-from fewsnet_partitioned_rf_pipeline.config import HORIZON_KEYS
+import pandas as pd
+
+from fewsnet_partitioned_rf_pipeline.config import (
+    HORIZON_KEYS,
+    PARTITION_ASSET_SHA256,
+)
+from fewsnet_partitioned_rf_pipeline.core.data import normalize_admin_code
+from fewsnet_partitioned_rf_pipeline.core.inference import (
+    FORMAL_PREDICTION_COLUMNS,
+)
+from fewsnet_partitioned_rf_pipeline.core.partitions import PartitionMap
+from fewsnet_partitioned_rf_pipeline.core.types import (
+    ObjectRef,
+    RegisteredModelVersion,
+    SnapshotManifest,
+)
+from fewsnet_partitioned_rf_pipeline.schemas import validate_payload
 
 
 RUNTIME_DEPENDENCIES = (
@@ -54,6 +71,28 @@ SMOTE_STATUSES = {
     "resampled",
     "failed",
 }
+PREDICTION_SOURCES = (
+    "partition_model",
+    "pooled_unmapped",
+    "pooled_small_partition",
+    "pooled_single_class",
+    "pooled_missing_partition_model",
+)
+HORIZON_ORDER = tuple(HORIZON_KEYS[months] for months in sorted(HORIZON_KEYS))
+HORIZON_MONTHS_BY_KEY = {
+    horizon_key: months for months, horizon_key in HORIZON_KEYS.items()
+}
+OBJECT_URI_PATTERN = re.compile(r"^gs://[^/]+/.+")
+
+
+@dataclass(frozen=True)
+class PredictionSuiteEntry:
+    """Validation carrier for one formal horizon output and its provenance."""
+
+    frame: pd.DataFrame
+    batch_input: ObjectRef
+    batch_snapshot_content_sha256: str
+    package_manifest: Mapping[str, Any]
 
 
 class PackageValidationError(ValueError):
@@ -485,3 +524,391 @@ def validate_horizon_training_report(value: object) -> dict:
             "training_report.fallback_counts do not match cluster_states"
         )
     return dict(report)
+
+
+def validate_prediction_suite(
+    predictions: Mapping[str, PredictionSuiteEntry],
+    snapshot: SnapshotManifest,
+    registered_versions: Mapping[str, RegisteredModelVersion],
+) -> dict[str, Any]:
+    """Validate one exact, provenance-bound prediction frame per horizon."""
+    if not isinstance(predictions, Mapping):
+        raise TypeError("predictions must be a mapping")
+    if not isinstance(snapshot, SnapshotManifest):
+        raise TypeError("snapshot must be a SnapshotManifest")
+    if not isinstance(registered_versions, Mapping):
+        raise TypeError("registered_versions must be a mapping")
+    _require_horizon_keys(predictions, "predictions")
+    _require_horizon_keys(registered_versions, "registered_versions")
+    validate_sha256(
+        snapshot.snapshot_content_sha256,
+        "snapshot.snapshot_content_sha256",
+    )
+    if snapshot.area_count <= 0:
+        raise ValueError("snapshot.area_count must be positive")
+    if MONTH_PATTERN.fullmatch(snapshot.latest_feature_month) is None:
+        raise ValueError("snapshot.latest_feature_month must be YYYY-MM")
+
+    suite_version: str | None = None
+    authoritative_admin_universe: set[str] | None = None
+    horizon_summaries: dict[str, dict[str, Any]] = {}
+    for horizon_key in HORIZON_ORDER:
+        entry = predictions[horizon_key]
+        if not isinstance(entry, PredictionSuiteEntry):
+            raise TypeError(
+                "predictions entries must be PredictionSuiteEntry instances"
+            )
+        version = registered_versions[horizon_key]
+        _validate_registered_version(version, horizon_key)
+        _validate_object_ref(
+            entry.batch_input,
+            f"predictions.{horizon_key}.batch_input",
+        )
+        validate_sha256(
+            entry.batch_snapshot_content_sha256,
+            f"predictions.{horizon_key}.batch_snapshot_content_sha256",
+        )
+        if (
+            entry.batch_snapshot_content_sha256
+            != snapshot.snapshot_content_sha256
+        ):
+            raise ValueError(
+                f"{horizon_key} Batch input snapshot digest does not match "
+                "the selected snapshot"
+            )
+        package = _validate_suite_package(
+            entry.package_manifest,
+            snapshot=snapshot,
+            version=version,
+            horizon_key=horizon_key,
+        )
+        frame_summary = _validate_prediction_frame(
+            entry.frame,
+            snapshot=snapshot,
+            version=version,
+            package=package,
+            horizon_key=horizon_key,
+        )
+        frame_suite_version = frame_summary.pop("suite_version")
+        admin_universe = frame_summary.pop("admin_universe")
+        if suite_version is None:
+            suite_version = frame_suite_version
+        elif frame_suite_version != suite_version:
+            raise ValueError("prediction suite_version differs across horizons")
+        if authoritative_admin_universe is None:
+            authoritative_admin_universe = admin_universe
+        elif admin_universe != authoritative_admin_universe:
+            raise ValueError("prediction admin universe differs across horizons")
+        horizon_summaries[horizon_key] = frame_summary
+
+    if suite_version is None:
+        raise ValueError("prediction suite is empty")
+    return {
+        "suite_version": suite_version,
+        "snapshot_id": snapshot.snapshot_id,
+        "snapshot_content_sha256": snapshot.snapshot_content_sha256,
+        "feature_month": snapshot.latest_feature_month,
+        "area_count": snapshot.area_count,
+        "horizons": horizon_summaries,
+    }
+
+
+def _require_horizon_keys(value: Mapping, name: str) -> None:
+    expected = set(HORIZON_ORDER)
+    actual = set(value)
+    if actual != expected:
+        missing = sorted(expected - actual)
+        extra = sorted(actual - expected)
+        raise ValueError(
+            f"{name} horizon keys differ; missing={missing}, extra={extra}"
+        )
+
+
+def _validate_registered_version(
+    version: object,
+    horizon_key: str,
+) -> None:
+    if not isinstance(version, RegisteredModelVersion):
+        raise TypeError(
+            "registered_versions must contain RegisteredModelVersion instances"
+        )
+    if version.horizon_key != horizon_key:
+        raise ValueError("registered model version horizon does not match its key")
+    if not version.parent_model_resource_name:
+        raise ValueError("registered model parent resource is required")
+    if not version.version_id.isdigit():
+        raise ValueError("registered model version ID must be numeric")
+    expected_resource = (
+        f"{version.parent_model_resource_name}@{version.version_id}"
+    )
+    if version.version_resource_name != expected_resource:
+        raise ValueError(
+            "registered model version resource must use the exact numeric version"
+        )
+
+
+def _validate_object_ref(value: object, name: str) -> None:
+    if not isinstance(value, ObjectRef):
+        raise TypeError(f"{name} must be an ObjectRef")
+    if OBJECT_URI_PATTERN.fullmatch(value.uri) is None:
+        raise ValueError(f"{name}.uri must be a gs://bucket/object URI")
+    if not value.generation.isdigit():
+        raise ValueError(f"{name} must contain a numeric generation")
+    if int(value.generation) <= 0:
+        raise ValueError(f"{name} generation must be positive")
+    validate_sha256(value.sha256, f"{name}.sha256")
+    if (
+        isinstance(value.size_bytes, bool)
+        or not isinstance(value.size_bytes, Integral)
+        or int(value.size_bytes) < 0
+    ):
+        raise ValueError(f"{name} must contain a non-negative size")
+
+
+def _validate_suite_package(
+    value: object,
+    *,
+    snapshot: SnapshotManifest,
+    version: RegisteredModelVersion,
+    horizon_key: str,
+) -> dict[str, Any]:
+    if not isinstance(value, Mapping):
+        raise TypeError("package_manifest must be a mapping")
+    package = dict(value)
+    try:
+        validate_payload("model-package", package)
+    except ValueError as exc:
+        raise ValueError(f"{horizon_key} package manifest is invalid: {exc}") from exc
+    if package["status"] != "validated":
+        raise ValueError(f"{horizon_key} package manifest must be validated")
+    if package["snapshot_id"] != snapshot.snapshot_id:
+        raise ValueError(f"{horizon_key} package snapshot ID does not match")
+    if package["snapshot_content_sha256"] != snapshot.snapshot_content_sha256:
+        raise ValueError(f"{horizon_key} package snapshot digest does not match")
+    if package["horizon_key"] != horizon_key:
+        raise ValueError(f"{horizon_key} package horizon key does not match")
+    expected_months = HORIZON_MONTHS_BY_KEY[horizon_key]
+    if package["horizon_months"] != expected_months:
+        raise ValueError(f"{horizon_key} package horizon months do not match")
+    expected_target = str(
+        pd.Period(snapshot.latest_feature_month, freq="M") + expected_months
+    )
+    if package["target_month"] != expected_target:
+        raise ValueError(f"{horizon_key} package target month does not match")
+    if package["partition_sha256"] != PARTITION_ASSET_SHA256:
+        raise ValueError(f"{horizon_key} package partition identity does not match")
+    expected_artifact_suffix = (
+        f"/suites/{package['suite_version']}/models/{horizon_key}"
+    )
+    if not version.artifact_uri.endswith(expected_artifact_suffix):
+        raise ValueError(
+            f"{horizon_key} registered model artifact URI does not match the package"
+        )
+    return package
+
+
+def _validate_prediction_frame(
+    frame: object,
+    *,
+    snapshot: SnapshotManifest,
+    version: RegisteredModelVersion,
+    package: Mapping[str, Any],
+    horizon_key: str,
+) -> dict[str, Any]:
+    if not isinstance(frame, pd.DataFrame):
+        raise TypeError(f"{horizon_key} prediction frame must be a DataFrame")
+    columns = [str(column) for column in frame.columns]
+    duplicate_columns = sorted(
+        {column for column in columns if columns.count(column) > 1}
+    )
+    if duplicate_columns:
+        raise ValueError(
+            f"{horizon_key} prediction frame has duplicate columns: "
+            f"{duplicate_columns}"
+        )
+    if tuple(columns) != FORMAL_PREDICTION_COLUMNS:
+        raise ValueError(
+            f"{horizon_key} prediction frame must use the formal prediction columns"
+        )
+    if len(frame) != snapshot.area_count:
+        raise ValueError(
+            f"{horizon_key} prediction row count must equal snapshot.area_count"
+        )
+
+    admin_codes = frame["admin_code"].map(normalize_admin_code)
+    if admin_codes.eq("").any():
+        raise ValueError(f"{horizon_key} prediction admin_code is blank")
+    if admin_codes.duplicated(keep=False).any():
+        raise ValueError(f"{horizon_key} prediction contains duplicate admin_code")
+    admin_universe = set(admin_codes.tolist())
+    if len(admin_universe) != snapshot.area_count:
+        raise ValueError(
+            f"{horizon_key} prediction admin universe does not match "
+            "snapshot area count"
+        )
+
+    feature_months = _prediction_months(
+        frame["feature_month"],
+        f"{horizon_key}.feature_month",
+    )
+    if set(feature_months) != {snapshot.latest_feature_month}:
+        raise ValueError(
+            f"{horizon_key} feature_month must equal the selected snapshot month"
+        )
+    expected_months = HORIZON_MONTHS_BY_KEY[horizon_key]
+    horizon_months = _integral_values(
+        frame["horizon_months"],
+        f"{horizon_key}.horizon_months",
+    )
+    if set(horizon_months) != {expected_months}:
+        raise ValueError(f"{horizon_key} horizon_months does not match its key")
+    expected_target = str(
+        pd.Period(snapshot.latest_feature_month, freq="M") + expected_months
+    )
+    target_months = _prediction_months(
+        frame["target_month"],
+        f"{horizon_key}.target_month",
+    )
+    if set(target_months) != {expected_target}:
+        raise ValueError(
+            f"{horizon_key} target_month must equal feature_month plus horizon"
+        )
+
+    probabilities = _bounded_prediction_numbers(
+        frame["probability_crisis"],
+        f"{horizon_key}.probability_crisis",
+    )
+    thresholds = _bounded_prediction_numbers(
+        frame["threshold"],
+        f"{horizon_key}.threshold",
+    )
+    classes = _binary_prediction_classes(
+        frame["predicted_crisis"],
+        f"{horizon_key}.predicted_crisis",
+    )
+    expected_classes = [
+        int(probability >= threshold)
+        for probability, threshold in zip(
+            probabilities,
+            thresholds,
+            strict=True,
+        )
+    ]
+    if classes != expected_classes:
+        raise ValueError(
+            f"{horizon_key} predicted class must equal probability >= threshold"
+        )
+    if set(thresholds) != {float(package["threshold"])}:
+        raise ValueError(f"{horizon_key} threshold does not match package")
+
+    cluster_ids = _prediction_cluster_ids(
+        frame["cluster_id"],
+        horizon_key,
+    )
+    sources = frame["prediction_source"].tolist()
+    if any(source not in PREDICTION_SOURCES for source in sources):
+        raise ValueError(f"{horizon_key} prediction_source is invalid")
+    for cluster_id, source in zip(cluster_ids, sources, strict=True):
+        if (cluster_id is None) != (source == "pooled_unmapped"):
+            raise ValueError(f"{horizon_key} prediction route/source pair is invalid")
+
+    mapped_rows = [
+        (admin_code, cluster_id)
+        for admin_code, cluster_id in zip(
+            admin_codes,
+            cluster_ids,
+            strict=True,
+        )
+        if cluster_id is not None
+    ]
+    mapped_frame = pd.DataFrame(
+        mapped_rows,
+        columns=["admin_code", "cluster_id"],
+    )
+    coverage = PartitionMap.from_frame(mapped_frame).assert_release_coverage(
+        admin_codes
+    )
+
+    suite_versions = frame["suite_version"].tolist()
+    if any(
+        not isinstance(value, str) or not value
+        for value in suite_versions
+    ) or set(suite_versions) != {package["suite_version"]}:
+        raise ValueError(f"{horizon_key} suite_version does not match package")
+    resources = frame["vertex_model_resource_name"].tolist()
+    version_ids = frame["vertex_model_version_id"].tolist()
+    if set(resources) != {version.version_resource_name} or set(version_ids) != {
+        version.version_id
+    }:
+        raise ValueError(
+            f"{horizon_key} formal output does not match registered model version"
+        )
+
+    source_counts = {
+        source: int(sum(value == source for value in sources))
+        for source in PREDICTION_SOURCES
+    }
+    if sum(source_counts.values()) != snapshot.area_count:
+        raise ValueError(f"{horizon_key} fallback totals do not reconcile")
+    return {
+        "suite_version": package["suite_version"],
+        "admin_universe": admin_universe,
+        "row_count": len(frame),
+        "partition_coverage_pct": coverage,
+        "source_counts": source_counts,
+    }
+
+
+def _prediction_months(values: pd.Series, name: str) -> list[str]:
+    months: list[str] = []
+    for value in values:
+        if not isinstance(value, str) or MONTH_PATTERN.fullmatch(value) is None:
+            raise ValueError(f"{name} must contain YYYY-MM strings")
+        months.append(value)
+    return months
+
+
+def _integral_values(values: pd.Series, name: str) -> list[int]:
+    result: list[int] = []
+    for value in values:
+        if isinstance(value, bool) or not isinstance(value, Integral):
+            raise ValueError(f"{name} must contain integers")
+        result.append(int(value))
+    return result
+
+
+def _bounded_prediction_numbers(values: pd.Series, name: str) -> list[float]:
+    result: list[float] = []
+    for value in values:
+        if isinstance(value, bool) or not isinstance(value, Real):
+            raise ValueError(f"{name} must contain numbers between 0 and 1")
+        number = float(value)
+        if not math.isfinite(number) or not 0.0 <= number <= 1.0:
+            raise ValueError(f"{name} must contain numbers between 0 and 1")
+        result.append(number)
+    return result
+
+
+def _binary_prediction_classes(values: pd.Series, name: str) -> list[int]:
+    result = _integral_values(values, name)
+    if any(value not in {0, 1} for value in result):
+        raise ValueError(f"{name} must contain only 0 or 1")
+    return result
+
+
+def _prediction_cluster_ids(
+    values: pd.Series,
+    horizon_key: str,
+) -> list[int | None]:
+    result: list[int | None] = []
+    for value in values:
+        if value is None or pd.isna(value):
+            result.append(None)
+            continue
+        if isinstance(value, bool) or not isinstance(value, Integral):
+            raise ValueError(f"{horizon_key} cluster_id must be integer or null")
+        cluster_id = int(value)
+        if not 0 <= cluster_id <= 16:
+            raise ValueError(f"{horizon_key} cluster_id must be between 0 and 16")
+        result.append(cluster_id)
+    return result
