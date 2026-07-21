@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 15 stable parent-model and immutable candidate-version registration is implemented and locally verified in the current commit; independent review is pending
-- Current state: Tasks 1-14 are complete; Task 15 now has a fake-only Vertex registry adapter, immutable per-horizon evidence, exact-retry validation, and lifecycle cleanup with a clean full regression
-- Blockers: none for Task 15 independent review; Task 16 remains pending, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
+- Current task: Task 15 independent-review findings and the exact-version lifecycle-update follow-up are fixed, verified, and recorded in `fix: harden FEWSNET registry retries` (this commit); controller acceptance is pending
+- Current state: Tasks 1-14 are complete; Task 15 now fails closed on invalid retry identity/state and uses `ModelRegistry.update_version` so lifecycle changes target only the exact numeric candidate version
+- Blockers: none for the Task 15 review fix; Task 16 remains pending, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -36,7 +36,7 @@
 | 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
 | 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
-| 15. Register three stable parent models and immutable candidate versions | implementation complete; independent review pending |
+| 15. Register three stable parent models and immutable candidate versions | complete; Important findings and exact-version Critical fixed, re-review clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
 | 17. Validate three-horizon outputs and implement alias rollback publication | pending |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
@@ -683,10 +683,44 @@
 - Implementation commit: `feat: register FEWSNET Vertex model versions` (this commit). Independent Task 15 review remains required before controller acceptance or Task 16 implementation.
 - Scope/no-cloud confirmation: no real GCP, GCS, Vertex Custom Job, Model Registry, Batch Prediction, Endpoint, alias, release-pointer, image build/push, or gated cloud smoke operation was performed.
 
+## Task 15 Independent Review Fix Evidence
+
+- Independent review result: `0 Critical, 2 Important, 0 Minor`. The two valid findings were that exact retry did not compare `FEWSNET_SOURCE_GIT_COMMIT`, and that retry neither rejected `production` in `VersionInfo.version_aliases` nor constrained lifecycle restoration and structural validation ordering.
+- Root cause: `_validate_existing_candidate` checked artifact, image, digest, horizon, and suite identity but omitted the source commit. `register_candidate_version` ignored the resolved version aliases and changed every non-candidate lifecycle to `candidate` before constructing the structurally validated `RegisteredModelVersion`.
+- Pre-edit exact-worktree GitNexus impacts were LOW: `register_candidate_version` had two direct test callers and zero affected existing processes; `_validate_existing_candidate` remained confined to the new Task 15 internal flow. No HIGH or CRITICAL warning applied.
+- Review RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_registry.py -q -p no:cacheprovider` -> `8 failed, 27 passed in 19.42s`. The failures were the expected accepted source-commit mismatch, accepted `production` alias, accepted missing/unsupported lifecycle values, and lifecycle mutation before each parent/version/`@version` structural failure.
+- Minimal fix: pass and exactly compare `source_git_commit`; reject only the `production` version alias while retaining `default`; allow existing lifecycle values only in `{candidate, abandoned}`; construct and structurally validate the registered version before any label update; and restore only `abandoned` to `candidate`.
+- Focused GREEN: the exact review RED command -> `35 passed in 11.07s`.
+- Full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `597 passed, 1 skipped, 24 subtests passed in 50.44s`.
+- Static and environment checks: both changed Python files parse with `ast`; no line exceeds 88 characters; `.venv/bin/python -m pip check` reports `No broken requirements found.`; and `git diff --check` exits `0`.
+- Preliminary staged GitNexus reconciliation before completion review: `repo="IPCCH_operational"` plus the exact worktree reported LOW risk, exactly three changed files, three documentation symbols, and zero affected processes because the duplicate name resolves to the canonical-root index. The authoritative exact-worktree-path call reported MEDIUM risk, exactly three changed files, 18 touched/adjacent symbols, and one affected process: the existing Task 15 internal `register_candidate_version -> _required_string` flow.
+- Exact-worktree context confirms `register_candidate_version` still has only two incoming callers, both in `test_registry.py`, and participates only in the one Task 15 internal process. Zero-context staged diff confirms the only production bodies changed are the pre-authorized `register_candidate_version` and `_validate_existing_candidate`; neighboring helper/test symbols reported by hunk attribution were not edited.
+- Pre-completion-review staged scope: `git diff --cached --check` exited `0`; `git diff --cached --name-status` contained exactly `PROGRESS.md`, `fewsnet_partitioned_rf_pipeline/vertex/registry.py`, and `tests/fewsnet_partitioned_rf/test_registry.py`. Pre-existing `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` changes remained unstaged.
+- Fix-wave self-review: mismatched source commits and production-aliased versions fail before upload, lifecycle update, evidence persistence, or callback; `default` remains allowed; `candidate` is reused without mutation; only `abandoned` is restored; missing or any other lifecycle fails closed; and structural identity validation precedes lifecycle mutation.
+- Scope/no-cloud confirmation: only the Task 15 registry adapter, focused tests, and this ledger are tracked fix-wave changes. No GCP, GCS, Vertex, Model Registry, Batch Prediction, Endpoint, alias, release-pointer, image, release, or smoke operation occurred.
+- Review-fix commit: `fix: harden FEWSNET registry retries` (this commit).
+
+## Task 15 Exact-Version Lifecycle Follow-up
+
+- Completion review found one Critical SDK-boundary defect: pinned `google-cloud-aiplatform==1.161.0` implements `Model.update()` by replacing the request name with `self.resource_name`, the unversioned parent model. Both abandoned-to-candidate retry restoration and `mark_registered_versions_abandoned` therefore risked updating parent/default labels instead of the intended numeric version.
+- Installed-source verification: `Model.update` explicitly sets `copied_model_proto.name = self.resource_name`; `ModelRegistry.update_version(version, labels=...)` loads and updates the requested version resource. No network or live Vertex call was used.
+- Additional exact-worktree impacts were LOW: `mark_registered_versions_abandoned` has one direct focused-test caller and zero affected processes; `FakeRegistry` has zero upstream impact. No HIGH or CRITICAL blast-radius warning applied.
+- SDK-boundary RED: the focused registry command -> `2 failed, 35 passed in 21.86s`. Both failures proved `ModelRegistry.update_version` was not called and a fake parent/default sentinel received the direct `Model.update` path.
+- The first GREEN attempt produced `1 failed, 36 passed in 20.15s`; the sole `NameError` was a test-placement mistake where three pre-existing assertions were left in the new test. The zero-upstream test assertions were restored without a production change.
+- Minimal fix: after structural identity validation, retry restoration now calls the already-resolved registry's `update_version(version=registered.version_id, labels=...)`; abandonment creates the stable parent registry and calls `update_version(version=version.version_id, labels=...)`. Both merge the existing exact-version labels and preserve provenance.
+- Exact-version focused GREEN: the registry command -> `37 passed in 10.99s`.
+- Fresh full regression after the exact-version fix: `599 passed, 1 skipped, 24 subtests passed in 51.26s`.
+- Static/environment rerun: both changed Python files parse with `ast`; no line exceeds 88 characters; `.venv/bin/python -m pip check` reports `No broken requirements found.`; and `git diff --check` exits `0`.
+- Exact-version self-review: abandoned-to-candidate restoration and later abandonment pass the exact numeric version ID to `ModelRegistry.update_version`; candidate labels change as intended, while another/default version under the same stable parent remains unchanged.
+- Completion re-review: `0 Critical, 0 Important, 0 Minor`; the prior Critical is closed at both version-specific lifecycle call sites, sentinel tests protect parent/default labels, and the staged patch is assessed ready to merge.
+- Final staged GitNexus reconciliation: `repo="IPCCH_operational"` plus the exact worktree remains LOW risk with exactly three changed files, three documentation symbols, and zero affected processes. The authoritative exact-worktree-path view is MEDIUM with exactly three changed files, 22 touched/adjacent symbols, and two Task 15 internal processes: `register_candidate_version -> _required_string` and `resolve_parent_model -> _required_string`.
+- Final attribution review: zero-context staged diff confirms the production edits are limited to `register_candidate_version`, `mark_registered_versions_abandoned`, and `_validate_existing_candidate`. The reported `_resolve_parent_registry`, neighboring helpers, and later test bodies are unchanged and surfaced through line-hunk adjacency.
+- Final staged scope: `git diff --cached --check` exits `0`; the staged path list is exactly `PROGRESS.md`, `fewsnet_partitioned_rf_pipeline/vertex/registry.py`, and `tests/fewsnet_partitioned_rf/test_registry.py`. Pre-existing `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` changes remain unstaged.
+
 ## Resume
 
-- Exact next step: independently review the Task 15 implementation and `.superpowers/sdd/task-15-report.md`; reproduce and fix every Critical or Important finding before controller acceptance. Do not start Task 16 yet.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '650,760p' PROGRESS.md && sed -n '1,320p' .superpowers/sdd/task-15-report.md`
+- Exact next step: controller acceptance of the Task 15 review fix; do not start Task 16 before that acceptance.
+- Resume command: `git status --short --branch && git diff --check && sed -n '650,760p' PROGRESS.md && tail -120 .superpowers/sdd/task-15-report.md`
 
 ---
 

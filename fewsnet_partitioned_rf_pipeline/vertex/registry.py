@@ -121,6 +121,11 @@ def register_candidate_version(
                 raise ValueError(
                     "existing suite alias resolved to a different parent model"
                 )
+            version_aliases = getattr(version_info, "version_aliases", ())
+            if "production" in (version_aliases or ()):
+                raise ValueError(
+                    "existing candidate must not have the production alias"
+                )
             existing_model = sdk.Model(
                 model_name=version_info.model_resource_name,
                 version=str(version_info.version_id),
@@ -132,14 +137,11 @@ def register_candidate_version(
             artifact_uri=artifact_uri,
             image_uri=image_uri,
             image_digest=image_digest,
+            source_git_commit=source_git_commit,
             horizon_key=horizon_key,
             suite_label=suite_label,
         )
         existing_labels = _model_labels(existing_model)
-        if existing_labels.get("lifecycle") != "candidate":
-            existing_model.update(
-                labels={**existing_labels, "lifecycle": "candidate"}
-            )
         registered = _registered_model_version(
             existing_model,
             horizon_key=horizon_key,
@@ -147,6 +149,11 @@ def register_candidate_version(
             artifact_uri=artifact_uri,
             expected_parent_resource_name=parent_resource_name,
         )
+        if existing_labels["lifecycle"] == "abandoned":
+            registry.update_version(
+                version=registered.version_id,
+                labels={**existing_labels, "lifecycle": "candidate"}
+            )
     else:
         uploaded = sdk.Model.upload(
             display_name=PARENT_MODEL_IDS[horizon_key],
@@ -216,7 +223,9 @@ def mark_registered_versions_abandoned(
             version=version.version_id,
         )
         _validate_loaded_model_identity(model, version)
-        model.update(
+        registry = sdk.ModelRegistry(version.parent_model_resource_name)
+        registry.update_version(
+            version=version.version_id,
             labels={**_model_labels(model), "lifecycle": "abandoned"}
         )
 
@@ -285,6 +294,7 @@ def _validate_existing_candidate(
     artifact_uri: str,
     image_uri: str,
     image_digest: str,
+    source_git_commit: str,
     horizon_key: str,
     suite_label: str,
 ) -> None:
@@ -297,11 +307,17 @@ def _validate_existing_candidate(
     environment = _container_environment(container_spec)
     if environment.get("FEWSNET_CONTAINER_IMAGE_DIGEST") != image_digest:
         raise ValueError("existing candidate image digest does not match")
+    if environment.get("FEWSNET_SOURCE_GIT_COMMIT") != source_git_commit:
+        raise ValueError("existing candidate source Git commit does not match")
     labels = _model_labels(model)
     if labels.get("horizon") != horizon_key:
         raise ValueError("existing candidate horizon label does not match")
     if labels.get("suite") != suite_label:
         raise ValueError("existing candidate suite label does not match")
+    if labels.get("lifecycle") not in {"candidate", "abandoned"}:
+        raise ValueError(
+            "existing candidate lifecycle must be candidate or abandoned"
+        )
 
 
 def _container_environment(container_spec: object) -> dict[str, str]:

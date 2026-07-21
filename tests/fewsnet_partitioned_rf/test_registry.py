@@ -129,6 +129,22 @@ class FakeRegistry:
         except KeyError as exc:
             raise NotFound("version alias does not exist") from exc
 
+    def update_version(
+        self,
+        version: str,
+        version_description: str | None = None,
+        labels: dict[str, str] | None = None,
+    ) -> None:
+        assert version_description is None
+        assert labels is not None
+        version_resource_name = f"{self._parent_resource_name}@{version}"
+        self._sdk.event_log.append(
+            ("update_version", version_resource_name)
+        )
+        model = self._sdk.models[(self._parent_resource_name, version)]
+        model.update_calls.append(dict(labels))
+        model.labels = dict(labels)
+
 
 class FakeModelBoundary:
     def __init__(self, sdk: FakeSDK) -> None:
@@ -515,6 +531,214 @@ def test_exact_retry_reuses_version_and_restores_candidate_lifecycle(
     assert callback_results == [result]
 
 
+def test_retry_restores_lifecycle_through_exact_version_registry_api(
+    tmp_path,
+):
+    horizon_key = "6m"
+    sdk = FakeSDK()
+    parent = _model(
+        sdk,
+        horizon_key,
+        version_id="1",
+        labels=_candidate_labels(horizon_key, lifecycle="production"),
+    )
+    candidate = _model(
+        sdk,
+        horizon_key,
+        version_id="7",
+        labels=_candidate_labels(horizon_key, lifecycle="abandoned"),
+    )
+    sdk.models[(parent.resource_name, parent.version_id)] = parent
+    sdk.add_existing_version(model=candidate, version_alias=SUITE_ALIAS)
+
+    def update_parent(*, labels):
+        sdk.event_log.append(("parent_update", parent.resource_name))
+        parent.update_calls.append(dict(labels))
+        parent.labels = dict(labels)
+        return candidate
+
+    candidate.update = update_parent
+
+    result, _ = _register(
+        tmp_path=tmp_path,
+        sdk=sdk,
+        horizon_key=horizon_key,
+        callback=lambda registered: None,
+    )
+
+    assert (
+        "update_version",
+        candidate.versioned_resource_name,
+    ) in sdk.event_log
+    assert candidate.update_calls == [_candidate_labels(horizon_key)]
+    assert candidate.labels["lifecycle"] == "candidate"
+    assert parent.update_calls == []
+    assert parent.labels["lifecycle"] == "production"
+    assert result.version_resource_name == candidate.versioned_resource_name
+
+
+def test_retry_rejects_source_git_commit_mismatch_before_side_effects(
+    tmp_path,
+):
+    horizon_key = "6m"
+    sdk = FakeSDK()
+    existing = _model(sdk, horizon_key)
+    environment = existing.gca_resource.container_spec.env
+    source_commit = next(
+        item
+        for item in environment
+        if item.name == "FEWSNET_SOURCE_GIT_COMMIT"
+    )
+    source_commit.value = "f" * 40
+    sdk.add_existing_version(model=existing, version_alias=SUITE_ALIAS)
+    callback_results = []
+
+    with pytest.raises(ValueError, match="source Git commit"):
+        _register(
+            tmp_path=tmp_path,
+            sdk=sdk,
+            horizon_key=horizon_key,
+            callback=callback_results.append,
+        )
+
+    assert sdk.upload_calls == []
+    assert existing.update_calls == []
+    assert callback_results == []
+    store = LocalArtifactStore(tmp_path / "store")
+    with pytest.raises(FileNotFoundError):
+        store.read_text(f"{RUN_ROOT_URI}/registry/{horizon_key}.json")
+
+
+def test_retry_rejects_production_aliased_version_before_side_effects(
+    tmp_path,
+):
+    horizon_key = "6m"
+    sdk = FakeSDK()
+    existing = _model(
+        sdk,
+        horizon_key,
+        labels=_candidate_labels(horizon_key, lifecycle="abandoned"),
+    )
+    sdk.add_existing_version(model=existing, version_alias=SUITE_ALIAS)
+    version_info = sdk.parent_versions[existing.resource_name][SUITE_ALIAS]
+    version_info.version_aliases = [SUITE_ALIAS, "default", "production"]
+    callback_results = []
+
+    with pytest.raises(ValueError, match="production alias"):
+        _register(
+            tmp_path=tmp_path,
+            sdk=sdk,
+            horizon_key=horizon_key,
+            callback=callback_results.append,
+        )
+
+    assert sdk.load_calls == []
+    assert sdk.upload_calls == []
+    assert existing.update_calls == []
+    assert callback_results == []
+    store = LocalArtifactStore(tmp_path / "store")
+    with pytest.raises(FileNotFoundError):
+        store.read_text(f"{RUN_ROOT_URI}/registry/{horizon_key}.json")
+
+
+def test_retry_allows_default_alias_without_lifecycle_update(tmp_path):
+    horizon_key = "6m"
+    sdk = FakeSDK()
+    existing = _model(sdk, horizon_key)
+    sdk.add_existing_version(model=existing, version_alias=SUITE_ALIAS)
+
+    result, _ = _register(
+        tmp_path=tmp_path,
+        sdk=sdk,
+        horizon_key=horizon_key,
+        callback=lambda registered: None,
+    )
+
+    version_info = sdk.parent_versions[existing.resource_name][SUITE_ALIAS]
+    assert "default" in version_info.version_aliases
+    assert "production" not in version_info.version_aliases
+    assert sdk.upload_calls == []
+    assert existing.update_calls == []
+    assert result.version_resource_name == existing.versioned_resource_name
+
+
+@pytest.mark.parametrize("lifecycle", [None, "production", "retired"])
+def test_retry_rejects_missing_or_unsupported_lifecycle_before_side_effects(
+    tmp_path,
+    lifecycle,
+):
+    horizon_key = "12m"
+    sdk = FakeSDK()
+    labels = _candidate_labels(horizon_key)
+    if lifecycle is None:
+        labels.pop("lifecycle")
+    else:
+        labels["lifecycle"] = lifecycle
+    existing = _model(sdk, horizon_key, labels=labels)
+    sdk.add_existing_version(model=existing, version_alias=SUITE_ALIAS)
+    callback_results = []
+
+    with pytest.raises(ValueError, match="lifecycle"):
+        _register(
+            tmp_path=tmp_path,
+            sdk=sdk,
+            horizon_key=horizon_key,
+            callback=callback_results.append,
+        )
+
+    assert sdk.upload_calls == []
+    assert existing.update_calls == []
+    assert callback_results == []
+    store = LocalArtifactStore(tmp_path / "store")
+    with pytest.raises(FileNotFoundError):
+        store.read_text(f"{RUN_ROOT_URI}/registry/{horizon_key}.json")
+
+
+@pytest.mark.parametrize(
+    ("mismatch", "expected_message"),
+    [
+        ("parent", "unexpected parent model resource"),
+        ("version", "non-numeric model version ID"),
+        ("versioned_resource", "inconsistent version resource name"),
+    ],
+)
+def test_retry_validates_structural_identity_before_lifecycle_update(
+    tmp_path,
+    mismatch,
+    expected_message,
+):
+    horizon_key = "0m"
+    sdk = FakeSDK()
+    existing = _model(
+        sdk,
+        horizon_key,
+        labels=_candidate_labels(horizon_key, lifecycle="abandoned"),
+    )
+    sdk.add_existing_version(model=existing, version_alias=SUITE_ALIAS)
+    if mismatch == "parent":
+        existing.resource_name = f"{existing.resource_name}-other"
+    elif mismatch == "version":
+        existing.version_id = "not-numeric"
+    else:
+        existing.versioned_resource_name = f"{existing.resource_name}@999"
+    callback_results = []
+
+    with pytest.raises(ValueError, match=expected_message):
+        _register(
+            tmp_path=tmp_path,
+            sdk=sdk,
+            horizon_key=horizon_key,
+            callback=callback_results.append,
+        )
+
+    assert sdk.upload_calls == []
+    assert existing.update_calls == []
+    assert callback_results == []
+    store = LocalArtifactStore(tmp_path / "store")
+    with pytest.raises(FileNotFoundError):
+        store.read_text(f"{RUN_ROOT_URI}/registry/{horizon_key}.json")
+
+
 @pytest.mark.parametrize(
     ("mismatch", "expected_message"),
     [
@@ -642,3 +866,67 @@ def test_mark_registered_versions_abandoned_merges_existing_labels():
         assert model.labels["horizon"] in {"0m", "6m"}
         assert model.labels["suite"] == SUITE_ALIAS
         assert model.update_calls == [model.labels]
+
+
+def test_mark_abandoned_updates_exact_versions_not_parent_models():
+    sdk = FakeSDK()
+    refs: list[RegisteredModelVersion] = []
+    parents: list[FakeModel] = []
+    candidates: list[FakeModel] = []
+    for index, horizon_key in enumerate(("0m", "6m"), start=1):
+        parent = _model(
+            sdk,
+            horizon_key,
+            version_id="1",
+            labels=_candidate_labels(horizon_key, lifecycle="production"),
+        )
+        candidate = _model(
+            sdk,
+            horizon_key,
+            version_id=str(index + 6),
+        )
+        sdk.models[(parent.resource_name, parent.version_id)] = parent
+        sdk.models[(candidate.resource_name, candidate.version_id)] = candidate
+
+        def update_parent(
+            *,
+            labels,
+            parent_model=parent,
+            loaded_model=candidate,
+        ):
+            sdk.event_log.append(
+                ("parent_update", parent_model.resource_name)
+            )
+            parent_model.update_calls.append(dict(labels))
+            parent_model.labels = dict(labels)
+            return loaded_model
+
+        candidate.update = update_parent
+        parents.append(parent)
+        candidates.append(candidate)
+        refs.append(
+            RegisteredModelVersion(
+                horizon_key=horizon_key,
+                parent_model_resource_name=candidate.resource_name,
+                version_resource_name=candidate.versioned_resource_name,
+                version_id=candidate.version_id,
+                suite_version_alias=SUITE_ALIAS,
+                artifact_uri=candidate.uri,
+            )
+        )
+
+    mark_registered_versions_abandoned(
+        refs,
+        project_id=PROJECT_ID,
+        region=REGION,
+        sdk=sdk,
+    )
+
+    for parent, candidate in zip(parents, candidates, strict=True):
+        assert (
+            "update_version",
+            candidate.versioned_resource_name,
+        ) in sdk.event_log
+        assert candidate.labels["lifecycle"] == "abandoned"
+        assert parent.update_calls == []
+        assert parent.labels["lifecycle"] == "production"
