@@ -329,13 +329,6 @@ def wait_batch_prediction(
     started_at = monotonic()
     cancellation_requested = False
     while True:
-        if (
-            not cancellation_requested
-            and monotonic() - started_at >= timeout_seconds
-        ):
-            backend.cancel(job_ref.job_resource_name)
-            cancellation_requested = True
-
         resource = _normalize_mapping(
             backend.get(job_ref.job_resource_name),
             "Batch Prediction job resource",
@@ -374,6 +367,12 @@ def wait_batch_prediction(
             )
         elif state in _TERMINAL_STATES:
             raise BatchPredictionJobError(job_ref, resource)
+        if (
+            not cancellation_requested
+            and monotonic() - started_at >= timeout_seconds
+        ):
+            backend.cancel(job_ref.job_resource_name)
+            cancellation_requested = True
         sleep(poll_interval_seconds)
 
 

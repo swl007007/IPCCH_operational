@@ -517,6 +517,37 @@ def test_wait_batch_prediction_polls_exact_name_and_records_success_output():
     assert service.events == [("get", JOB_NAME)] * 3
 
 
+def test_wait_batch_prediction_accepts_success_returned_on_deadline_without_cancel():
+    batch = _batch_module()
+    service = FakeJobService(
+        [
+            _job_resource("JOB_STATE_QUEUED"),
+            _job_resource("JOB_STATE_RUNNING"),
+            _job_resource(
+                "JOB_STATE_SUCCEEDED",
+                output_directory=OUTPUT_DIRECTORY,
+            ),
+        ]
+    )
+    backend = batch.VertexBatchBackend(sdk=FakeBatchSDK(), job_service=service)
+    clock = FakeClock()
+
+    terminal = batch.wait_batch_prediction(
+        _job_ref(),
+        2,
+        backend,
+        poll_interval_seconds=1,
+        monotonic=clock.monotonic,
+        sleep=clock.sleep,
+    )
+
+    assert terminal == replace(
+        _job_ref(),
+        gcs_output_directory=OUTPUT_DIRECTORY,
+    )
+    assert service.events == [("get", JOB_NAME)] * 3
+
+
 def test_wait_batch_prediction_timeout_cancels_exact_name_then_waits_for_terminal():
     batch = _batch_module()
     service = FakeJobService(
