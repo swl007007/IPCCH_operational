@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 10 implementation complete; independent review pending
-- Current state: Tasks 1-9 are complete and independently reviewed; Task 10 passed fresh focused, related, and full regression verification, while the non-blocking Task 7 ordering Minor and Task 9 sklearn `NotFittedError` idiom Minor remain deferred for final whole-branch triage
-- Blockers: none for Task 10 independent review
+- Current task: Task 10 Important review fixes complete; independent re-review pending
+- Current state: Tasks 1-9 are complete and independently reviewed; both Task 10 Important findings were reproduced and fixed with fresh focused, related, and full regression verification, while the non-blocking Task 7 ordering Minor and Task 9 sklearn `NotFittedError` idiom Minor remain deferred for final whole-branch triage
+- Blockers: Task 11 remains blocked until the Task 10 fix commit passes independent re-review
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -31,7 +31,7 @@
 | 7. Implement keyed horizon alignment and temporal windows | complete; independent re-review clean through `8ff2847`; one Minor deferred |
 | 8. Validate and route the fixed partition map | complete; independent re-review clean through `20a6e0e` |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | complete; independent review clean through `b91e24a`; one Minor deferred |
-| 10. Train partitioned RF models and produce formal local predictions | complete; implementation verification green; independent review pending |
+| 10. Train partitioned RF models and produce formal local predictions | complete; two Important review fixes verified; independent re-review pending |
 | 11. Freeze reference Stage 3 parity evidence | pending |
 | 12. Write and validate Vertex-compatible model packages | pending |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
@@ -399,9 +399,25 @@
 - Implementation commit: this Task 10 commit; the exact hash is recorded in `.superpowers/sdd/task-10-report.md` after commit.
 - Task 10 implementation status: complete; independent review is required before Task 11 starts.
 
+### Task 10 Important Review Fix
+
+- Independent review result: `Needs fixes`; no Critical or Minor findings and exactly two Important findings: the supplied `PartitionMap` was not bound to the checksum-approved asset, and the sklearn/imblearn compatibility bridge was not protected from its first mutation or from post-thread startup use.
+- Pre-edit exact-worktree GitNexus impact supplied by the controller: `_assert_partition_asset_identity` -> LOW, one direct caller (`train_horizon_model`), one affected training process; `_load_smote_type` -> LOW, module-import caller only, zero affected processes; `train_horizon_model` -> LOW, zero upstream callers/processes. No HIGH or CRITICAL result occurred.
+- Exact RED command: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_inference.py -q -p no:cacheprovider -k 'restores_after_first_mutation_failure or rejects_after_worker_threads_start or accepts_map_loaded_from_approved_asset or rejects_same_count_high_coverage_unrelated_map'` -> `3 failed, 1 passed, 11 deselected in 12.38s`.
+- Expected RED reasons: injected signature inspection failure leaked `_is_pandas_df`; a live worker thread did not block the process-global bridge; an unrelated map with the same mapped count, the same cluster set, and 100% training-frame coverage was accepted; the map loaded from the explicit checksum-approved synthetic asset was accepted.
+- Fixed partition binding: production reloads `PARTITION_ASSET_PATH` through `PartitionMap.load(..., PARTITION_ASSET_SHA256)`, then requires the supplied immutable map to match the approved mapped count, sorted cluster set, deterministic normalized mapping SHA-256, and exact normalized mapping dictionary. The existing release-coverage gate remains unchanged and runs before this identity gate; training and predictor serialization begin only after both pass.
+- Bridge safety: `_load_smote_type` now requires the main thread with no live worker threads before any mutation, protects the first `_is_pandas_df` assignment inside `try/finally`, and restores the exact prior `_is_pandas_df` and `AdaBoostClassifier` objects on every success/failure path. The real `imblearn.over_sampling.SMOTE` remains in use and dependency requirements are unchanged.
+- Targeted GREEN for the four review regressions: `4 passed, 11 deselected in 7.96s`.
+- Fresh focused Task 10 GREEN: `15 passed in 15.86s`.
+- Fresh related Task 2/5/7/8/9/10 GREEN: `118 passed in 19.63s`.
+- Fresh full repository GREEN: `476 passed, 1 skipped, 24 subtests passed in 32.74s`.
+- Static/dependency/preservation audit: both changed Python files parse with `ast`; `.venv/bin/python -m pip check` reports `No broken requirements found.`; approved design, plan, and fixed partition SHA-256 values remain unchanged.
+- Scope boundary: only `PROGRESS.md`, `core/training.py`, and `test_training_inference.py` are intended for the separate fix commit. No `PartitionMap`, inference, frozen design/plan, Task 11, cloud, alias, release-pointer, IPCCH pipeline, or external artifact change was made.
+- Fix status: implementation and local verification complete; exact fix commit and staged GitNexus evidence are recorded in `.superpowers/sdd/task-10-report.md`. Independent re-review remains mandatory before Task 11 starts.
+
 ## Resume
 
-- Exact next step: independently review the Task 10 implementation commit and its report. Task 11 remains blocked until that review is clean; do not perform any GCP/Vertex write.
+- Exact next step: independently re-review the separate Task 10 Important-fix commit and updated report. Task 11 remains blocked until that re-review is clean; do not perform any GCP/Vertex write.
 - Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1725,1912p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,460p' PROGRESS.md`
 
 ---

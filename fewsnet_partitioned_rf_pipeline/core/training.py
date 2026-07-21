@@ -6,6 +6,7 @@ from dataclasses import asdict, dataclass
 import hashlib
 import inspect
 from numbers import Integral
+import threading
 from typing import Iterable
 
 import numpy as np
@@ -50,48 +51,66 @@ from fewsnet_partitioned_rf_pipeline.core.types import (
 
 def _load_smote_type():
     """Import the pinned imbalanced-learn against sklearn 1.8 compatibly."""
+    current_thread = threading.current_thread()
+    other_threads = tuple(
+        thread
+        for thread in threading.enumerate()
+        if thread is not current_thread and thread.is_alive()
+    )
+    if current_thread is not threading.main_thread() or other_threads:
+        raise RuntimeError(
+            "SMOTE compatibility import must run on the main thread "
+            "before worker threads start"
+        )
+
     validation_module = sklearn.utils.validation
-    had_private_dataframe_helper = hasattr(
+    missing = object()
+    original_private_dataframe_helper = getattr(
         validation_module,
         "_is_pandas_df",
+        missing,
     )
-    if not had_private_dataframe_helper:
-        validation_module._is_pandas_df = is_pandas_df
-
     original_adaboost = sklearn.ensemble.AdaBoostClassifier
-    needs_algorithm_bridge = "algorithm" not in inspect.signature(
-        original_adaboost
-    ).parameters
-    if needs_algorithm_bridge:
-
-        class CompatAdaBoostClassifier(original_adaboost):
-            def __init__(
-                self,
-                estimator=None,
-                *,
-                n_estimators=50,
-                learning_rate=1.0,
-                algorithm=None,
-                random_state=None,
-            ):
-                self.algorithm = algorithm
-                super().__init__(
-                    estimator=estimator,
-                    n_estimators=n_estimators,
-                    learning_rate=learning_rate,
-                    random_state=random_state,
-                )
-
-        sklearn.ensemble.AdaBoostClassifier = CompatAdaBoostClassifier
-
     try:
-        from imblearn.over_sampling import SMOTE as smote_type
-    finally:
+        if original_private_dataframe_helper is missing:
+            validation_module._is_pandas_df = is_pandas_df
+
+        needs_algorithm_bridge = "algorithm" not in inspect.signature(
+            original_adaboost
+        ).parameters
         if needs_algorithm_bridge:
-            sklearn.ensemble.AdaBoostClassifier = original_adaboost
-        if not had_private_dataframe_helper:
-            del validation_module._is_pandas_df
-    return smote_type
+
+            class CompatAdaBoostClassifier(original_adaboost):
+                def __init__(
+                    self,
+                    estimator=None,
+                    *,
+                    n_estimators=50,
+                    learning_rate=1.0,
+                    algorithm=None,
+                    random_state=None,
+                ):
+                    self.algorithm = algorithm
+                    super().__init__(
+                        estimator=estimator,
+                        n_estimators=n_estimators,
+                        learning_rate=learning_rate,
+                        random_state=random_state,
+                    )
+
+            sklearn.ensemble.AdaBoostClassifier = CompatAdaBoostClassifier
+
+        from imblearn.over_sampling import SMOTE as smote_type
+        return smote_type
+    finally:
+        sklearn.ensemble.AdaBoostClassifier = original_adaboost
+        if original_private_dataframe_helper is missing:
+            if hasattr(validation_module, "_is_pandas_df"):
+                del validation_module._is_pandas_df
+        else:
+            validation_module._is_pandas_df = (
+                original_private_dataframe_helper
+            )
 
 
 SMOTE = _load_smote_type()
@@ -331,12 +350,38 @@ def _with_expected_clusters(
     )
 
 
-def _assert_partition_asset_identity() -> None:
-    actual_sha256 = hashlib.sha256(PARTITION_ASSET_PATH.read_bytes()).hexdigest()
-    if actual_sha256 != PARTITION_ASSET_SHA256:
+def _assert_partition_asset_identity(partition_map: PartitionMap) -> None:
+    approved_map = PartitionMap.load(
+        PARTITION_ASSET_PATH,
+        PARTITION_ASSET_SHA256,
+    )
+    supplied_mapping = dict(partition_map._clusters_by_admin)
+    approved_mapping = dict(approved_map._clusters_by_admin)
+    if partition_map.mapped_area_count != approved_map.mapped_area_count:
         raise ValueError(
-            "partition asset SHA-256 mismatch: "
-            f"expected {PARTITION_ASSET_SHA256}, got {actual_sha256}"
+            "supplied partition map mapped count does not match the "
+            "checksum-validated approved partition asset"
+        )
+    if partition_map.cluster_ids != approved_map.cluster_ids:
+        raise ValueError(
+            "supplied partition map cluster set does not match the "
+            "checksum-validated approved partition asset"
+        )
+
+    def mapping_sha256(mapping: dict[str, int]) -> str:
+        normalized_rows = "".join(
+            f"{admin_code}\t{cluster_id}\n"
+            for admin_code, cluster_id in sorted(mapping.items())
+        )
+        return hashlib.sha256(normalized_rows.encode("utf-8")).hexdigest()
+
+    if (
+        mapping_sha256(supplied_mapping) != mapping_sha256(approved_mapping)
+        or supplied_mapping != approved_mapping
+    ):
+        raise ValueError(
+            "supplied partition map mapping content does not match the "
+            "checksum-validated approved partition asset"
         )
 
 
@@ -409,7 +454,6 @@ def train_horizon_model(
 ) -> HorizonTrainingResult:
     """Select a threshold on 30 months and refit the final 36-month model."""
     horizon_months = _validate_horizon_key(horizon_key)
-    _assert_partition_asset_identity()
     if not isinstance(aligned_frame, pd.DataFrame):
         raise TypeError("aligned_frame must be a pandas.DataFrame")
     if not isinstance(feature_contract, FeatureContract):
@@ -445,6 +489,7 @@ def train_horizon_model(
     coverage_pct = partition_map.assert_release_coverage(
         training[ADMIN_CANONICAL_COLUMN]
     )
+    _assert_partition_asset_identity(partition_map)
 
     fit_X_raw = fit.loc[:, list(feature_columns)].to_numpy()
     fit_y = _as_binary_target(fit[TARGET_COLUMN], expected_rows=len(fit))

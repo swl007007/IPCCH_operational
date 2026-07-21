@@ -1,7 +1,9 @@
 from importlib import import_module
+import hashlib
 import pickle
 import subprocess
 import sys
+import threading
 
 import numpy as np
 import pandas as pd
@@ -57,6 +59,21 @@ def _partition_map() -> PartitionMap:
             }
         )
     )
+
+
+@pytest.fixture(autouse=True)
+def _use_synthetic_approved_partition_asset(monkeypatch, tmp_path):
+    training = _training_module()
+    asset_path = tmp_path / "approved_partition.csv"
+    pd.DataFrame(
+        {
+            "FEWSNET_admin_code": ["C0A", "C0B", "C1", "C2A", "C2B"],
+            "cluster_id": [0, 0, 1, 2, 2],
+        }
+    ).to_csv(asset_path, index=False)
+    asset_sha256 = hashlib.sha256(asset_path.read_bytes()).hexdigest()
+    monkeypatch.setattr(training, "PARTITION_ASSET_PATH", asset_path)
+    monkeypatch.setattr(training, "PARTITION_ASSET_SHA256", asset_sha256)
 
 
 def _aligned_training_frame() -> pd.DataFrame:
@@ -142,6 +159,69 @@ def test_smote_import_bridge_restores_sklearn_globals():
     )
 
     assert probe.returncode == 0, probe.stderr
+
+
+def test_smote_import_bridge_restores_after_first_mutation_failure(monkeypatch):
+    training = _training_module()
+    validation_module = training.sklearn.utils.validation
+    original_adaboost = training.sklearn.ensemble.AdaBoostClassifier
+    had_private = hasattr(validation_module, "_is_pandas_df")
+    original_private = getattr(validation_module, "_is_pandas_df", None)
+
+    class SyntheticSignatureFailure(RuntimeError):
+        pass
+
+    def fail_after_first_mutation(_classifier):
+        raise SyntheticSignatureFailure("synthetic signature failure")
+
+    monkeypatch.setattr(training.inspect, "signature", fail_after_first_mutation)
+    try:
+        with pytest.raises(SyntheticSignatureFailure):
+            training._load_smote_type()
+
+        assert training.sklearn.ensemble.AdaBoostClassifier is original_adaboost
+        assert hasattr(validation_module, "_is_pandas_df") is had_private
+        if had_private:
+            assert validation_module._is_pandas_df is original_private
+    finally:
+        training.sklearn.ensemble.AdaBoostClassifier = original_adaboost
+        if had_private:
+            validation_module._is_pandas_df = original_private
+        elif hasattr(validation_module, "_is_pandas_df"):
+            del validation_module._is_pandas_df
+
+
+def test_smote_import_bridge_rejects_after_worker_threads_start():
+    training = _training_module()
+    validation_module = training.sklearn.utils.validation
+    original_adaboost = training.sklearn.ensemble.AdaBoostClassifier
+    had_private = hasattr(validation_module, "_is_pandas_df")
+    original_private = getattr(validation_module, "_is_pandas_df", None)
+    worker_started = threading.Event()
+    release_worker = threading.Event()
+
+    def wait_for_release():
+        worker_started.set()
+        release_worker.wait(timeout=10)
+
+    worker = threading.Thread(target=wait_for_release)
+    worker.start()
+    assert worker_started.wait(timeout=10)
+    try:
+        with pytest.raises(
+            RuntimeError,
+            match="main thread before worker threads start",
+        ):
+            training._load_smote_type()
+        assert training.sklearn.ensemble.AdaBoostClassifier is original_adaboost
+        assert hasattr(validation_module, "_is_pandas_df") is had_private
+        if had_private:
+            assert validation_module._is_pandas_df is original_private
+    finally:
+        release_worker.set()
+        worker.join(timeout=10)
+
+    assert not worker.is_alive()
 
 
 def test_partition_training_records_all_states_and_is_byte_repeatable():
@@ -239,6 +319,48 @@ def test_train_horizon_model_routes_formal_rows_and_survives_pickle_round_trip()
         "probability_crisis"
     ].to_numpy().tobytes()
     pd.testing.assert_frame_equal(predictions, restored)
+
+
+def test_train_horizon_model_accepts_map_loaded_from_approved_asset():
+    training = _training_module()
+    approved_map = PartitionMap.load(
+        training.PARTITION_ASSET_PATH,
+        training.PARTITION_ASSET_SHA256,
+    )
+
+    result = training.train_horizon_model(
+        _aligned_training_frame(),
+        _feature_contract(),
+        approved_map,
+        "0m",
+    )
+
+    assert result.predictor.partition_map == dict(
+        approved_map._clusters_by_admin
+    )
+
+
+def test_train_horizon_model_rejects_same_count_high_coverage_unrelated_map():
+    training = _training_module()
+    unrelated_map = PartitionMap.from_frame(
+        pd.DataFrame(
+            {
+                "admin_code": ["C0A", "C0B", "C1", "C2A", "C2B"],
+                "cluster_id": [1, 1, 2, 0, 0],
+            }
+        )
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="mapping content.*approved partition asset",
+    ):
+        training.train_horizon_model(
+            _aligned_training_frame(),
+            _feature_contract(),
+            unrelated_map,
+            "0m",
+        )
 
 
 def test_predictor_rejects_a_target_month_that_conflicts_with_its_horizon():
