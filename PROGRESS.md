@@ -14,8 +14,8 @@
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
 - Current task: Task 9 fit-slice-only max-plus imputation and threshold selection
-- Current state: Tasks 1-8 are complete and independently reviewed; Task 8's malformed coverage-universe finding is fixed through `20a6e0e`, its re-review is approved, controller verification and fixed-asset identity checks are fresh, and the non-blocking Task 7 ordering Minor remains deferred
-- Blockers: none for Task 9 local implementation; Task 10 must wait for Task 9 implementation and independent review
+- Current state: Tasks 1-8 are complete and independently reviewed; Task 9 implementation is complete locally with strict RED/GREEN evidence and fresh focused, related, and full regression passes; independent Task 9 review is pending, and the non-blocking Task 7 ordering Minor remains deferred
+- Blockers: none for Task 9 independent review; Task 10 must wait for a clean Task 9 review
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -30,7 +30,7 @@
 | 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; independent review clean through `d403c1e` |
 | 7. Implement keyed horizon alignment and temporal windows | complete; independent re-review clean through `8ff2847`; one Minor deferred |
 | 8. Validate and route the fixed partition map | complete; independent re-review clean through `20a6e0e` |
-| 9. Implement fit-slice-only max-plus imputation and threshold selection | pending; ready to start |
+| 9. Implement fit-slice-only max-plus imputation and threshold selection | implementation complete; independent review pending |
 | 10. Train partitioned RF models and produce formal local predictions | pending |
 | 11. Freeze reference Stage 3 parity evidence | pending |
 | 12. Write and validate Vertex-compatible model packages | pending |
@@ -355,10 +355,27 @@
 - Controller consistency gate: `git diff --check 43677cf..20a6e0e` exited `0`; approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`.
 - Task 8 final status: complete and independently reviewed. Task 9 is unblocked; no cloud write is authorized at this stage.
 
+## Task 9 Evidence
+
+- Base: `edab524` (`docs: record FEWSNET task 8 review`).
+- RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_imputer_thresholds.py -q -p no:cacheprovider` -> `13 failed in 5.80s`; all failures were the expected missing Task 9 APIs (`MaxPlusImputer` absent and `core.thresholds` absent) before any production implementation.
+- Sklearn-style keyword RED: the focused `-k sklearn_style` selection -> `1 failed, 13 deselected in 5.62s` with the expected `TypeError` for the absent `X=` keyword contract; only the new Task 9 method parameter names were then corrected.
+- Focused GREEN: the complete Task 9 file -> `14 passed in 7.06s`.
+- Imputer contract: `fit` replaces both infinities with missing values and alone records `n_features_in_`, `feature_mins_`, `feature_maxs_`, and `impute_values_`; all evidence arrays are deterministic `float64`. All-missing columns use `0.0`, zero maxima use `100.0`, other maxima use `max * 100.0` including negative maxima, and `transform` never derives imputation values from transform rows.
+- Transform contract: inputs and outputs are two-dimensional `float64` NumPy arrays; transform-time infinities are imputed from the stored fit-slice values; a different feature count fails closed; `fit(X, y=None)`, `transform(X)`, and `fit_transform(X, y=None)` accept the minimal sklearn-style signatures.
+- Threshold contract: finite probabilities alone define support and positive-case counts; the shared exact `THRESHOLD_GRID` is scored with `probability >= threshold`; sklearn precision, recall, and F1 use `zero_division=0`; `(f1, threshold)` maximization selects the higher threshold on ties.
+- Fallback coverage: exact reasons `no_validation_observations`, `no_validation_positive_cases`, and `no_finite_validation_f1` all return threshold `0.50` with `None` metrics and finite-slice counts. The nonfinite-F1 branch requires a narrow `f1_score` monkeypatch because valid binary labels with sklearn `zero_division=0` cannot naturally produce a nonfinite F1; every other metric, grid, tie, filtering, and fallback test uses real sklearn behavior.
+- Related regression: preprocessing, horizons, partitions, and Task 9 -> `67 passed in 7.75s`.
+- Fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `461 passed, 1 skipped, 24 subtests passed in 23.36s`.
+- Preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`; fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Staged-scope gate: `git diff --cached --check` exited `0`; staged paths were exactly `PROGRESS.md`, `core/preprocessing.py`, `core/thresholds.py`, and `test_imputer_thresholds.py`; no tracked Task 9 unstaged remainder existed. Exact-worktree GitNexus `detect_changes(scope="staged")` reported LOW risk, `4` changed files, `3` indexed documentation sections, and `0` affected execution processes. The index surfaced only existing `PROGRESS.md` sections, not the new Python symbols, so this is staged file/process evidence rather than call-graph coverage for the new APIs; no HIGH or CRITICAL result occurred.
+- Scope boundary: no existing function, class, or method was changed; no Task 10 training/inference code, GCP/GCS/Vertex operation, Model Registry call, Batch Prediction, alias mutation, release-pointer write, or external artifact mutation was introduced.
+- Task 9 implementation status: complete locally; independent review is required before Task 10 begins.
+
 ## Resume
 
-- Exact next step: after this ledger-only consistency commit, dispatch a fresh Task 9 implementer from the reviewed Task 8 head; require TDD, GitNexus impact/pre-commit gates, and an independent Task 9 review. Do not begin Task 10 or perform any GCP/Vertex write.
-- Resume command: `git status --short --branch && git log -5 --oneline && rg -n '^### Task 9:' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,130p' PROGRESS.md`
+- Exact next step: dispatch an independent Task 9 review against the implementation commit recorded in this ledger and `.superpowers/sdd/task-9-report.md`; Task 10 must not begin until that review is clean. Do not perform any GCP/Vertex write.
+- Resume command: `git status --short --branch && git log -5 --oneline && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_imputer_thresholds.py -q -p no:cacheprovider && sed -n '1,390p' PROGRESS.md`
 
 ---
 

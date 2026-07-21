@@ -619,6 +619,76 @@ class Stage3FeatureBuilder:
         return result.reset_index(drop=True)
 
 
+class MaxPlusImputer:
+    """Impute missing numeric values from per-column fit-slice maxima."""
+
+    def __init__(self, multiplier: float = 100.0) -> None:
+        self.multiplier = multiplier
+
+    @staticmethod
+    def _as_float64_2d(X: object) -> np.ndarray:
+        try:
+            array = np.asarray(X, dtype=np.float64)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("X must be a 2-D numeric array") from exc
+        if array.ndim != 2:
+            raise ValueError("X must be a 2-D numeric array")
+        return array.copy()
+
+    def fit(self, X: object, y: object | None = None) -> MaxPlusImputer:
+        del y
+        fit_values = self._as_float64_2d(X)
+        fit_values[np.isinf(fit_values)] = np.nan
+
+        feature_count = fit_values.shape[1]
+        feature_mins = np.full(feature_count, np.nan, dtype=np.float64)
+        feature_maxs = np.full(feature_count, np.nan, dtype=np.float64)
+        impute_values = np.zeros(feature_count, dtype=np.float64)
+        multiplier = float(self.multiplier)
+
+        for index in range(feature_count):
+            finite_values = fit_values[~np.isnan(fit_values[:, index]), index]
+            if finite_values.size == 0:
+                continue
+            minimum = float(np.min(finite_values))
+            maximum = float(np.max(finite_values))
+            feature_mins[index] = minimum
+            feature_maxs[index] = maximum
+            impute_values[index] = (
+                multiplier if maximum == 0.0 else maximum * multiplier
+            )
+
+        self.n_features_in_ = feature_count
+        self.feature_mins_ = feature_mins
+        self.feature_maxs_ = feature_maxs
+        self.impute_values_ = impute_values
+        return self
+
+    def transform(self, X: object) -> np.ndarray:
+        if not hasattr(self, "n_features_in_"):
+            raise RuntimeError("MaxPlusImputer must be fitted before transform")
+
+        transformed = self._as_float64_2d(X)
+        if transformed.shape[1] != self.n_features_in_:
+            raise ValueError(
+                "feature count differs from fitted data: "
+                f"expected {self.n_features_in_}, got {transformed.shape[1]}"
+            )
+        transformed[np.isinf(transformed)] = np.nan
+        return np.where(
+            np.isnan(transformed),
+            self.impute_values_,
+            transformed,
+        ).astype(np.float64, copy=False)
+
+    def fit_transform(
+        self,
+        X: object,
+        y: object | None = None,
+    ) -> np.ndarray:
+        return self.fit(X, y).transform(X)
+
+
 def feature_contract_to_payload(contract: FeatureContract) -> dict[str, object]:
     return asdict(contract)
 
