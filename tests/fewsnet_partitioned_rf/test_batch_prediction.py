@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 from dataclasses import dataclass, replace
 from importlib import import_module
 import io
@@ -339,6 +340,54 @@ def test_write_batch_input_jsonl_serializes_missing_numeric_features_as_json_nul
     assert first["signal"] is None
 
 
+@pytest.mark.parametrize("invalid_value", ["3.5", True, np.inf, -np.inf])
+def test_write_batch_input_jsonl_rejects_non_float64_values_before_replacing_output(
+    tmp_path,
+    invalid_value,
+):
+    output_path = tmp_path / "input.jsonl"
+    output_path.write_bytes(b"preserve-existing-bytes\n")
+    frame = _latest_input_frame()
+    frame["signal"] = frame["signal"].astype(object)
+    frame.at[0, "signal"] = invalid_value
+
+    with pytest.raises(ValueError):
+        _batch_module().write_batch_input_jsonl(
+            frame,
+            _feature_contract(),
+            output_path,
+        )
+
+    assert output_path.read_bytes() == b"preserve-existing-bytes\n"
+
+
+def test_write_batch_input_jsonl_enforces_declared_dtype_and_emits_native_float(
+    tmp_path,
+):
+    batch = _batch_module()
+    invalid_contract = replace(
+        _feature_contract(),
+        feature_dtypes=("int64", "float64"),
+    )
+    output_path = tmp_path / "input.jsonl"
+
+    with pytest.raises(ValueError, match="float64"):
+        batch.write_batch_input_jsonl(
+            _latest_input_frame(),
+            invalid_contract,
+            output_path,
+        )
+    assert not output_path.exists()
+
+    frame = _latest_input_frame()
+    frame["signal"] = frame["signal"].astype(object)
+    frame.at[0, "signal"] = np.int64(3)
+    batch.write_batch_input_jsonl(frame, _feature_contract(), output_path)
+    first = json.loads(output_path.read_text().splitlines()[0])
+    assert type(first["signal"]) is float
+    assert first["signal"] == 3.0
+
+
 def test_submit_batch_prediction_uses_async_exact_version_sdk_contract():
     batch = _batch_module()
     sdk = FakeBatchSDK()
@@ -396,6 +445,42 @@ def test_submit_batch_prediction_rejects_non_numeric_or_inexact_model_versions(
     backend = batch.VertexBatchBackend(sdk=sdk, job_service=FakeJobService([]))
 
     with pytest.raises(ValueError, match="version"):
+        batch.submit_batch_prediction(_submission_config(model_ref), backend)
+
+    assert sdk.BatchPredictionJob.calls == []
+
+
+@pytest.mark.parametrize(
+    "wrong_parent",
+    [
+        (
+            "projects/wrong-project/locations/us-central1/models/"
+            "fewsnet-partitioned-rf-6m"
+        ),
+        (
+            "projects/food-crisis-modeling/locations/europe-west1/models/"
+            "fewsnet-partitioned-rf-6m"
+        ),
+        (
+            "projects/food-crisis-modeling/locations/us-central1/models/"
+            "fewsnet-partitioned-rf-12m"
+        ),
+    ],
+    ids=["wrong-project", "wrong-region", "wrong-stable-parent"],
+)
+def test_submit_batch_prediction_binds_model_parent_to_deployment(
+    wrong_parent,
+):
+    batch = _batch_module()
+    model_ref = replace(
+        _model_ref(),
+        parent_model_resource_name=wrong_parent,
+        version_resource_name=f"{wrong_parent}@17",
+    )
+    sdk = FakeBatchSDK()
+    backend = batch.VertexBatchBackend(sdk=sdk, job_service=FakeJobService([]))
+
+    with pytest.raises(ValueError, match="parent"):
         batch.submit_batch_prediction(_submission_config(model_ref), backend)
 
     assert sdk.BatchPredictionJob.calls == []
@@ -507,6 +592,49 @@ def test_normalize_batch_output_restores_input_order_and_sets_exact_identity():
         validate_payload("prediction-record", _json_record(record))
 
 
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "feature-value-drift",
+        "feature-type-drift",
+        "horizon-leak",
+        "target-leak",
+        "extra-field",
+    ],
+)
+def test_normalize_batch_output_requires_exact_echoed_input_instance(
+    tmp_path,
+    mutation,
+):
+    lines = RAW_OUTPUT_FIXTURE.read_text(encoding="utf-8").splitlines()
+    payload = json.loads(lines[0])
+    if mutation == "feature-value-drift":
+        payload["instance"]["signal"] = 99.0
+    elif mutation == "feature-type-drift":
+        payload["instance"]["signal"] = "1.5"
+    elif mutation == "horizon-leak":
+        payload["instance"]["horizon_months"] = 6
+    elif mutation == "target-leak":
+        payload["instance"]["target_month"] = "2026-10"
+    elif mutation == "extra-field":
+        payload["instance"]["unexpected"] = "leak"
+    else:
+        raise AssertionError(mutation)
+    lines[0] = json.dumps(payload, separators=(",", ":"))
+    raw_path = tmp_path / "predictions_0001.jsonl"
+    raw_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    input_frame = _latest_input_frame()
+    input_frame["fews_ipc_crisis"] = [0, 1]
+
+    with pytest.raises(ValueError, match="instance"):
+        _batch_module().normalize_batch_output(
+            [raw_path],
+            input_frame,
+            _model_ref(),
+            SUITE_VERSION,
+        )
+
+
 def _mutated_raw_file(tmp_path: Path, mutation: str) -> list[Path]:
     lines = RAW_OUTPUT_FIXTURE.read_text(encoding="utf-8").splitlines()
     if mutation == "error_file":
@@ -603,6 +731,38 @@ def test_normalize_and_publish_batch_output_writes_one_canonical_csv_to_both_uri
     csv = pd.read_csv(io.BytesIO(store.read_bytes(run_uri)))
     assert csv.columns.tolist() == list(FORMAL_PREDICTION_COLUMNS)
     assert csv["admin_code"].tolist() == ["B", "A"]
+
+
+def test_normalized_cluster_id_remains_nullable_integer_in_frame_and_csv(tmp_path):
+    predictions = _batch_module().normalize_batch_output(
+        [RAW_OUTPUT_FIXTURE],
+        _latest_input_frame(),
+        _model_ref(),
+        SUITE_VERSION,
+    )
+
+    assert str(predictions["cluster_id"].dtype) == "Int64"
+    records = predictions.astype(object).where(predictions.notna(), None)
+    for record in records.to_dict(orient="records"):
+        validate_payload("prediction-record", record)
+
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+    run_uri = f"{RUN_ROOT_URI}/predictions/6m.csv"
+    _cli_module().normalize_and_publish_batch_output(
+        raw_paths=[RAW_OUTPUT_FIXTURE],
+        input_frame=_latest_input_frame(),
+        model_ref=_model_ref(),
+        suite_version=SUITE_VERSION,
+        run_csv_uri=run_uri,
+        suite_csv_uri=f"{SUITE_ROOT_URI}/predictions/6m.csv",
+        store=store,
+    )
+    rows = list(
+        csv.reader(io.StringIO(store.read_bytes(run_uri).decode("utf-8")))
+    )
+    cluster_index = rows[0].index("cluster_id")
+    assert rows[1][cluster_index] == ""
+    assert rows[2][cluster_index] == "3"
 
 
 def test_normalize_and_publish_batch_output_writes_nothing_when_any_gate_fails(

@@ -5,6 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, is_dataclass, replace
 import json
+import math
+from numbers import Real
 from pathlib import Path
 import time
 from typing import Any, Callable, Protocol
@@ -12,7 +14,7 @@ from typing import Any, Callable, Protocol
 import pandas as pd
 from google.cloud import aiplatform
 
-from fewsnet_partitioned_rf_pipeline.config import HORIZON_KEYS
+from fewsnet_partitioned_rf_pipeline.config import HORIZON_KEYS, TARGET_COLUMN
 from fewsnet_partitioned_rf_pipeline.core.data import normalize_admin_code
 from fewsnet_partitioned_rf_pipeline.core.inference import (
     FORMAL_PREDICTION_COLUMNS,
@@ -156,6 +158,22 @@ def write_batch_input_jsonl(
         raise ValueError(
             f"batch input frame is missing required columns: {missing_columns}"
         )
+    if len(contract.feature_dtypes) != len(contract.feature_columns):
+        raise ValueError(
+            "batch feature contract must pair every feature with one dtype"
+        )
+    unsupported_dtypes = sorted(
+        {
+            dtype
+            for dtype in contract.feature_dtypes
+            if dtype != "float64"
+        }
+    )
+    if unsupported_dtypes:
+        raise ValueError(
+            "batch feature contract supports only float64 values; "
+            f"got {unsupported_dtypes}"
+        )
 
     admin_codes = frame["admin_code"].map(normalize_admin_code)
     if admin_codes.eq("").any():
@@ -178,8 +196,15 @@ def write_batch_input_jsonl(
             "admin_code": admin_codes.iloc[row_index],
             "feature_month": feature_months[row_index],
         }
-        for feature_name in contract.feature_columns:
-            instance[feature_name] = _json_scalar(row[feature_name])
+        for feature_name, feature_dtype in zip(
+            contract.feature_columns,
+            contract.feature_dtypes,
+            strict=True,
+        ):
+            instance[feature_name] = _json_scalar(
+                row[feature_name],
+                feature_dtype,
+            )
         lines.append(
             json.dumps(
                 instance,
@@ -215,7 +240,16 @@ def submit_batch_prediction(
     if horizon_key not in _HORIZON_MONTHS_BY_KEY:
         raise ValueError(f"unsupported horizon_key: {horizon_key}")
     model_ref = _config_value(config, "model_ref")
-    _validate_model_ref(model_ref, expected_horizon_key=horizon_key)
+    expected_parent_resource_name = (
+        f"projects/{deployment['project_id']}/locations/"
+        f"{deployment['region']}/models/"
+        f"{deployment['parent_model_ids'][horizon_key]}"
+    )
+    _validate_model_ref(
+        model_ref,
+        expected_horizon_key=horizon_key,
+        expected_parent_resource_name=expected_parent_resource_name,
+    )
 
     object_store_root = str(deployment["object_store_root_uri"]).rstrip("/")
     input_uri = (
@@ -353,6 +387,10 @@ def normalize_batch_output(
     suite_version = _required_string("suite_version", suite_version)
     expected_horizon_months = _HORIZON_MONTHS_BY_KEY[model_ref.horizon_key]
     input_identities = _input_identities(input_frame)
+    expected_instances = _expected_input_instances(
+        input_frame,
+        input_identities,
+    )
     expected_keys = set(input_identities)
 
     if isinstance(raw_paths, (str, bytes, Path)):
@@ -420,6 +458,11 @@ def normalize_batch_output(
                     "Batch Prediction instance identity is absent from the "
                     f"input frame: {instance_key}"
                 )
+            _require_exact_instance(
+                instance,
+                expected_instances[instance_key],
+                instance_key,
+            )
             prediction_key = _identity_from_mapping(prediction, "prediction")
             if prediction_key != instance_key:
                 raise ValueError(
@@ -472,10 +515,14 @@ def normalize_batch_output(
             f"Batch Prediction output is missing input identities: {missing_keys}"
         )
     ordered_records = [records_by_key[key] for key in input_identities]
-    return pd.DataFrame(
+    output = pd.DataFrame(
         ordered_records,
         columns=list(FORMAL_PREDICTION_COLUMNS),
     )
+    output["cluster_id"] = pd.array(output["cluster_id"], dtype="Int64")
+    for record in _formal_records(output):
+        validate_payload("prediction-record", record)
+    return output
 
 
 def _input_identities(input_frame: pd.DataFrame) -> list[tuple[str, str]]:
@@ -513,6 +560,59 @@ def _input_identities(input_frame: pd.DataFrame) -> list[tuple[str, str]]:
     return identities
 
 
+def _expected_input_instances(
+    input_frame: pd.DataFrame,
+    identities: Sequence[tuple[str, str]],
+) -> dict[tuple[str, str], dict[str, object]]:
+    excluded_columns = {TARGET_COLUMN, "target_month"}
+    instance_columns = [
+        str(column)
+        for column in input_frame.columns
+        if str(column) not in excluded_columns
+    ]
+    expected: dict[tuple[str, str], dict[str, object]] = {}
+    for row_index, (_, row) in enumerate(input_frame.iterrows()):
+        identity = identities[row_index]
+        instance: dict[str, object] = {}
+        for column in instance_columns:
+            if column == "admin_code":
+                instance[column] = identity[0]
+            elif column == "feature_month":
+                instance[column] = identity[1]
+            else:
+                instance[column] = _expected_feature_scalar(
+                    row[column],
+                    column,
+                )
+        expected[identity] = instance
+    return expected
+
+
+def _require_exact_instance(
+    actual: Mapping[object, object],
+    expected: Mapping[str, object],
+    identity: tuple[str, str],
+) -> None:
+    actual_fields = set(actual)
+    expected_fields = set(expected)
+    if actual_fields != expected_fields:
+        raise ValueError(
+            "Batch Prediction instance fields differ from the submitted "
+            f"input for {identity}; missing={sorted(expected_fields - actual_fields)}, "
+            f"extra={sorted(actual_fields - expected_fields)}"
+        )
+    for field, expected_value in expected.items():
+        actual_value = actual[field]
+        if (
+            type(actual_value) is not type(expected_value)
+            or actual_value != expected_value
+        ):
+            raise ValueError(
+                "Batch Prediction instance value differs from the submitted "
+                f"input for {identity} at {field}"
+            )
+
+
 def _identity_from_mapping(
     payload: Mapping[object, object],
     name: str,
@@ -546,6 +646,7 @@ def _validate_model_ref(
     model_ref: object,
     *,
     expected_horizon_key: str | None = None,
+    expected_parent_resource_name: str | None = None,
 ) -> None:
     if not isinstance(model_ref, RegisteredModelVersion):
         raise TypeError("model_ref must be a RegisteredModelVersion")
@@ -558,6 +659,15 @@ def _validate_model_ref(
         and model_ref.horizon_key != expected_horizon_key
     ):
         raise ValueError("model version horizon differs from the requested horizon")
+    if (
+        expected_parent_resource_name is not None
+        and model_ref.parent_model_resource_name
+        != expected_parent_resource_name
+    ):
+        raise ValueError(
+            "model version parent differs from the deployment's exact stable "
+            "parent resource"
+        )
     if not model_ref.version_id.isdigit():
         raise ValueError("model version ID must be numeric")
     expected_resource_name = (
@@ -588,7 +698,11 @@ def _normalize_month_value(value: object, name: str) -> str:
         raise ValueError(f"{name} contains invalid or missing values") from exc
 
 
-def _json_scalar(value: object) -> object:
+def _json_scalar(value: object, declared_dtype: str) -> object:
+    if declared_dtype != "float64":
+        raise ValueError(
+            f"batch feature dtype must be float64, got {declared_dtype}"
+        )
     try:
         if bool(pd.isna(value)):
             return None
@@ -597,12 +711,63 @@ def _json_scalar(value: object) -> object:
     item = getattr(value, "item", None)
     if callable(item):
         value = item()
-    if isinstance(value, pd.Period):
-        return str(value)
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError(
+            "batch float64 feature values must be numeric or missing"
+        )
+    numeric = float(value)
+    if not math.isfinite(numeric):
+        raise ValueError("batch float64 feature values must be finite or missing")
+    return numeric
+
+
+def _expected_feature_scalar(value: object, name: str) -> float | None:
+    try:
+        if bool(pd.isna(value)):
+            return None
+    except (TypeError, ValueError):
+        pass
+    item = getattr(value, "item", None)
+    if callable(item):
+        value = item()
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise ValueError(
+            f"input_frame feature {name} must be numeric or missing"
+        )
+    numeric = float(value)
+    if not math.isfinite(numeric):
+        raise ValueError(
+            f"input_frame feature {name} must be finite or missing"
+        )
+    return numeric
+
+
+def _formal_records(frame: pd.DataFrame) -> list[dict[str, object]]:
+    records: list[dict[str, object]] = []
+    for record in frame.to_dict(orient="records"):
+        records.append(
+            {
+                str(name): _python_scalar(value)
+                for name, value in record.items()
+            }
+        )
+    return records
+
+
+def _python_scalar(value: object) -> object:
+    try:
+        if bool(pd.isna(value)):
+            return None
+    except (TypeError, ValueError):
+        pass
+    item = getattr(value, "item", None)
+    if callable(item):
+        value = item()
     if value is None or isinstance(value, (str, int, float, bool)):
         return value
     raise ValueError(
-        f"batch input value is not JSON scalar-compatible: {type(value).__name__}"
+        "formal prediction value is not JSON scalar-compatible: "
+        f"{type(value).__name__}"
     )
 
 
