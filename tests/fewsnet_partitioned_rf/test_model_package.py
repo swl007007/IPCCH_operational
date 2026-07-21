@@ -492,6 +492,127 @@ def test_load_rejects_predictor_report_mismatch_after_unpickling(
         load_model_package(package_dir)
 
 
+@pytest.mark.parametrize("operation", ("write", "load"))
+@pytest.mark.parametrize(
+    ("mismatch", "match"),
+    (
+        ("pooled_has_model", "predictor partition_models model presence"),
+        ("missing_key", "predictor partition_models cluster IDs"),
+        ("extra_key", "predictor partition_models cluster IDs"),
+    ),
+)
+def test_package_rejects_partition_model_routing_evidence_mismatch(
+    tmp_path,
+    package_dir,
+    model_inputs,
+    operation,
+    mismatch,
+    match,
+):
+    predictor = joblib.load(package_dir / "model.joblib")
+    if mismatch == "pooled_has_model":
+        predictor.partition_models[0] = predictor.pooled_model
+    elif mismatch == "missing_key":
+        predictor.partition_models.pop(0)
+    else:
+        predictor.partition_models[99] = None
+
+    output_dir = tmp_path / f"bad-routing-{mismatch}"
+    with pytest.raises(PackageValidationError, match=match):
+        if operation == "write":
+            _, _, metadata, reports = model_inputs
+            write_model_package(
+                output_dir,
+                predictor,
+                copy.deepcopy(metadata),
+                copy.deepcopy(reports),
+            )
+        else:
+            _rewrite_model_and_checksum(package_dir, predictor)
+            load_model_package(package_dir)
+    if operation == "write":
+        assert not output_dir.exists()
+
+
+@pytest.mark.parametrize("operation", ("write", "load"))
+@pytest.mark.parametrize("value_count", (1, 2))
+@pytest.mark.parametrize(
+    ("location", "match"),
+    (
+        ("partition_status", r"predictor\.partition_status\.0"),
+        ("partition_metadata", r"predictor\.partition_metadata\.0\.status"),
+    ),
+)
+def test_package_rejects_non_scalar_predictor_report_values(
+    tmp_path,
+    package_dir,
+    model_inputs,
+    operation,
+    value_count,
+    location,
+    match,
+):
+    predictor = joblib.load(package_dir / "model.joblib")
+    value = np.asarray(["pooled_small_partition"] * value_count, dtype=object)
+    if location == "partition_status":
+        predictor.partition_status[0] = value
+    else:
+        predictor.partition_metadata[0]["status"] = value
+
+    output_dir = tmp_path / f"bad-{location}-{value_count}"
+    with pytest.raises(PackageValidationError, match=match):
+        if operation == "write":
+            _, _, metadata, reports = model_inputs
+            write_model_package(
+                output_dir,
+                predictor,
+                copy.deepcopy(metadata),
+                copy.deepcopy(reports),
+            )
+        else:
+            _rewrite_model_and_checksum(package_dir, predictor)
+            load_model_package(package_dir)
+    if operation == "write":
+        assert not output_dir.exists()
+
+
+@pytest.mark.parametrize("operation", ("write", "load"))
+@pytest.mark.parametrize(
+    "mapping_name",
+    ("partition_status", "partition_models", "partition_metadata"),
+)
+def test_package_rejects_non_integer_predictor_cluster_keys(
+    tmp_path,
+    package_dir,
+    model_inputs,
+    operation,
+    mapping_name,
+):
+    predictor = joblib.load(package_dir / "model.joblib")
+    cluster_mapping = getattr(predictor, mapping_name)
+    value = cluster_mapping.pop(0)
+    cluster_mapping[0.0] = value
+
+    output_dir = tmp_path / f"bad-key-{mapping_name}"
+    with pytest.raises(
+        PackageValidationError,
+        match=rf"predictor\.{mapping_name} cluster IDs must be integers",
+    ):
+        if operation == "write":
+            _, _, metadata, reports = model_inputs
+            write_model_package(
+                output_dir,
+                predictor,
+                copy.deepcopy(metadata),
+                copy.deepcopy(reports),
+            )
+        else:
+            _rewrite_model_and_checksum(package_dir, predictor)
+            load_model_package(package_dir)
+    if operation == "write":
+        assert not output_dir.exists()
+
+
 def test_load_rejects_threshold_report_tamper_before_unpickling(
     package_dir,
     monkeypatch,

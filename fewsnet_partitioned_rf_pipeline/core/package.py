@@ -6,6 +6,7 @@ import hashlib
 import json
 from collections.abc import Mapping
 from dataclasses import replace
+from numbers import Integral
 from pathlib import Path
 
 import joblib
@@ -21,6 +22,8 @@ from fewsnet_partitioned_rf_pipeline.core.preprocessing import (
     write_feature_contract,
 )
 from fewsnet_partitioned_rf_pipeline.core.validation import (
+    CLUSTER_STATE_FIELDS,
+    SMOTE_RESULT_FIELDS,
     PackageValidationError,
     assert_runtime_compatible,
     runtime_dependency_versions,
@@ -90,6 +93,21 @@ def _mapping(value: object, name: str) -> dict:
     return dict(value)
 
 
+def _integer_keyed_mapping(value: object, name: str) -> dict[int, object]:
+    mapping = _mapping(value, name)
+    normalized: dict[int, object] = {}
+    for cluster_id, item in mapping.items():
+        if isinstance(cluster_id, bool) or not isinstance(cluster_id, Integral):
+            raise PackageValidationError(f"{name} cluster IDs must be integers")
+        normalized_cluster_id = int(cluster_id)
+        if normalized_cluster_id in normalized:
+            raise PackageValidationError(
+                f"{name} contains duplicate cluster ID {normalized_cluster_id}"
+            )
+        normalized[normalized_cluster_id] = item
+    return normalized
+
+
 def _exact_fields(value: Mapping, expected: set[str], name: str) -> None:
     actual = set(value)
     if actual != expected:
@@ -126,10 +144,15 @@ def _validate_predictor_reports(
     expected_cluster_ids = {
         int(cluster_id) for cluster_id in training_report["cluster_states"]
     }
-    partition_status = _mapping(
+    partition_status = _integer_keyed_mapping(
         predictor.partition_status,
         "predictor.partition_status",
     )
+    for cluster_id, status in partition_status.items():
+        if not isinstance(status, str):
+            raise PackageValidationError(
+                f"predictor.partition_status.{cluster_id} must be a string"
+            )
     expected_status = {
         int(cluster_id): state["status"]
         for cluster_id, state in training_report["cluster_states"].items()
@@ -142,7 +165,23 @@ def _validate_predictor_reports(
             "predictor partition_status does not match training_report.json"
         )
 
-    partition_metadata = _mapping(
+    partition_models = _integer_keyed_mapping(
+        predictor.partition_models,
+        "predictor.partition_models",
+    )
+    if set(partition_models) != expected_cluster_ids:
+        raise PackageValidationError(
+            "predictor partition_models cluster IDs do not match training_report.json"
+        )
+    for cluster_id, status in expected_status.items():
+        has_partition_model = partition_models[cluster_id] is not None
+        if has_partition_model != (status == "partition_model"):
+            raise PackageValidationError(
+                "predictor partition_models model presence does not match "
+                f"training_report.json for cluster {cluster_id}"
+            )
+
+    partition_metadata = _integer_keyed_mapping(
         predictor.partition_metadata,
         "predictor.partition_metadata",
     )
@@ -151,18 +190,11 @@ def _validate_predictor_reports(
             "predictor partition_metadata cluster IDs do not match training_report.json"
         )
 
-    cluster_state_fields = {
-        "status",
-        "sample_count",
-        "class_counts",
-        "smote_status",
-        "fallback_reason",
-    }
-    smote_result_fields = {
-        "smote_status",
-        "original_class_counts",
-        "resampled_class_counts",
-        "smote_failure_reason",
+    smote_metadata_fields = {
+        "status": "smote_status",
+        "original_class_counts": "original_class_counts",
+        "resampled_class_counts": "resampled_class_counts",
+        "failure_reason": "smote_failure_reason",
     }
     projected_cluster_states: dict[str, dict] = {}
     projected_smote_results: dict[str, dict] = {}
@@ -171,7 +203,7 @@ def _validate_predictor_reports(
             partition_metadata[cluster_id],
             f"predictor.partition_metadata.{cluster_id}",
         )
-        required_fields = cluster_state_fields | smote_result_fields
+        required_fields = CLUSTER_STATE_FIELDS | set(smote_metadata_fields.values())
         missing = sorted(required_fields - set(metadata))
         if missing:
             raise PackageValidationError(
@@ -179,18 +211,43 @@ def _validate_predictor_reports(
                 f"cluster={cluster_id}, missing={missing}"
             )
         projected_cluster_states[str(cluster_id)] = {
-            field: metadata[field] for field in cluster_state_fields
+            field: metadata[field] for field in CLUSTER_STATE_FIELDS
         }
         projected_smote_results[str(cluster_id)] = {
-            "status": metadata["smote_status"],
-            "original_class_counts": metadata["original_class_counts"],
-            "resampled_class_counts": metadata["resampled_class_counts"],
-            "failure_reason": metadata["smote_failure_reason"],
+            field: metadata[smote_metadata_fields[field]]
+            for field in SMOTE_RESULT_FIELDS
         }
+
+    projected_report = dict(training_report)
+    projected_report["cluster_states"] = projected_cluster_states
+    try:
+        validate_horizon_training_report(projected_report)
+    except PackageValidationError as exc:
+        detail = str(exc).replace(
+            "training_report.cluster_states.",
+            "predictor.partition_metadata.",
+        )
+        raise PackageValidationError(
+            f"predictor partition_metadata cluster_states failed validation: {detail}"
+        ) from exc
     if projected_cluster_states != training_report["cluster_states"]:
         raise PackageValidationError(
             "predictor partition_metadata cluster_states do not match training_report.json"
         )
+
+    projected_report["smote_results"] = projected_smote_results
+    try:
+        validate_horizon_training_report(projected_report)
+    except PackageValidationError as exc:
+        detail = str(exc).replace(
+            "training_report.smote_results.",
+            "predictor.partition_metadata.",
+        )
+        detail = detail.replace(".status", ".smote_status")
+        detail = detail.replace(".failure_reason", ".smote_failure_reason")
+        raise PackageValidationError(
+            f"predictor partition_metadata smote_results failed validation: {detail}"
+        ) from exc
     if projected_smote_results != training_report["smote_results"]:
         raise PackageValidationError(
             "predictor partition_metadata smote_results do not match training_report.json"
@@ -289,6 +346,7 @@ def write_model_package(
     approved_partition = _approved_partition_map()
     _validate_predictor_partition(predictor, approved_partition)
     training_report, threshold_report = _validated_reports(predictor, reports)
+    _validate_predictor_reports(predictor, training_report)
     manifest = _manifest(predictor, metadata, training_report)
 
     suite_version = str(manifest["suite_version"])
