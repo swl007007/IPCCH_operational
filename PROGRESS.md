@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 15 independent-review findings and the exact-version lifecycle-update follow-up are fixed, verified, and recorded in `fix: harden FEWSNET registry retries` (this commit); controller acceptance is pending
-- Current state: Tasks 1-14 are complete; Task 15 now fails closed on invalid retry identity/state and uses `ModelRegistry.update_version` so lifecycle changes target only the exact numeric candidate version
-- Blockers: none for the Task 15 review fix; Task 16 remains pending, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
+- Current task: Task 15 is controller-accepted through `4d9f0099b0e995a7505f1d7e9be3463a2ddc018b`; Task 16 exact-version Batch Prediction is next
+- Current state: Tasks 1-15 are complete; Task 15 fails closed on invalid retry identity/state and uses `ModelRegistry.update_version` so lifecycle changes target only the exact numeric candidate version
+- Blockers: none; Task 16 remains pending, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -36,7 +36,7 @@
 | 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
 | 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
-| 15. Register three stable parent models and immutable candidate versions | complete; Important findings and exact-version Critical fixed, re-review clean |
+| 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
 | 17. Validate three-horizon outputs and implement alias rollback publication | pending |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
@@ -717,10 +717,22 @@
 - Final attribution review: zero-context staged diff confirms the production edits are limited to `register_candidate_version`, `mark_registered_versions_abandoned`, and `_validate_existing_candidate`. The reported `_resolve_parent_registry`, neighboring helpers, and later test bodies are unchanged and surfaced through line-hunk adjacency.
 - Final staged scope: `git diff --cached --check` exits `0`; the staged path list is exactly `PROGRESS.md`, `fewsnet_partitioned_rf_pipeline/vertex/registry.py`, and `tests/fewsnet_partitioned_rf/test_registry.py`. Pre-existing `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` changes remain unstaged.
 
+## Task 15 Controller Acceptance
+
+- Accepted implementation range: `680161f3e0a9f4f35ca7d1f57f1b477b2718049f..4d9f0099b0e995a7505f1d7e9be3463a2ddc018b`, including `2bcd227` (`feat: register FEWSNET Vertex model versions`) and `4d9f009` (`fix: harden FEWSNET registry retries`).
+- Independent completion re-review: `0 Critical, 0 Important, 0 Minor`; both lifecycle mutation paths use `ModelRegistry.update_version` with the exact numeric version ID, and parent/default sentinel labels remain unchanged.
+- Fresh controller focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_registry.py -q -p no:cacheprovider` -> `37 passed in 18.63s`.
+- Fresh controller related verification: contracts, storage, model-package, training-job, predictor-server, runtime-image, and registry tests -> `177 passed in 37.02s`.
+- Fresh controller full repository verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `599 passed, 1 skipped, 24 subtests passed in 52.04s`.
+- Static/dependency gates: registry implementation and tests parse with `ast`; approved registry imports succeed; `.venv/bin/python -m pip check` reports `No broken requirements found.`; production `registry.py` contains no `Model.update(...)` lifecycle call; and the complete fix commit plus staged state pass `git diff --check`.
+- Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Post-commit GitNexus comparison remains below the warning threshold: the named duplicate index reports LOW; the authoritative exact-worktree view reports MEDIUM with only the two Task 15 internal processes. The comparison also surfaces preserved user edits in `AGENTS.md` and `CLAUDE.md`; `git show 4d9f009` confirms the accepted commit itself contains exactly `PROGRESS.md`, `vertex/registry.py`, and `test_registry.py`.
+- Scope/no-cloud confirmation: no real GCP, GCS, Vertex Custom Job, Model Registry, Batch Prediction, Endpoint, alias, release-pointer, image build/push, or gated cloud smoke operation was performed.
+
 ## Resume
 
-- Exact next step: controller acceptance of the Task 15 review fix; do not start Task 16 before that acceptance.
-- Resume command: `git status --short --branch && git diff --check && sed -n '650,760p' PROGRESS.md && tail -120 .superpowers/sdd/task-15-report.md`
+- Exact next step: generate a fresh Task 16 brief, reconcile the frozen design/plan hashes and current branch/worktree, run the fresh baseline, then implement exact-version Batch Prediction with fake/local backends under strict TDD.
+- Resume command: `git status --short --branch && sha256sum docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '2207,2277p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md`
 
 ---
 
