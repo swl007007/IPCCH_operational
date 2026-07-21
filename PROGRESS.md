@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 14 shared custom prediction container is complete and independently approved through `6ea587343a8a31076d929a1401f47fa74b2545ce`
-- Current state: Tasks 1-14 are complete; the shared image contract and fail-closed Vertex prediction server are verified, including single package localization under the real module entrypoint
-- Blockers: none for Task 14; Task 15 has not started, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains outside the completed local/fake work
+- Current task: Task 15 stable parent-model and immutable candidate-version registration is implemented and locally verified in the current commit; independent review is pending
+- Current state: Tasks 1-14 are complete; Task 15 now has a fake-only Vertex registry adapter, immutable per-horizon evidence, exact-retry validation, and lifecycle cleanup with a clean full regression
+- Blockers: none for Task 15 independent review; Task 16 remains pending, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -36,7 +36,7 @@
 | 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
 | 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
-| 15. Register three stable parent models and immutable candidate versions | pending |
+| 15. Register three stable parent models and immutable candidate versions | implementation complete; independent review pending |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
 | 17. Validate three-horizon outputs and implement alias rollback publication | pending |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
@@ -650,10 +650,43 @@
 - Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
 - Scope/no-cloud confirmation: the dedicated Dockerfile was not built or pushed; no real GCP/GCS/Vertex Custom Job/Model Registry/Batch Prediction/Endpoint, alias, release-pointer, or gated cloud smoke action occurred; Task 15 was not started.
 
+## Task 15 Kickoff
+
+- Implementation base: `680161f3e0a9f4f35ca7d1f57f1b477b2718049f`; branch `features/fewsnet-partitioned-rf-suite`; linked worktree `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`.
+- Authority verification: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Fresh requirements handoff: `.superpowers/sdd/task-15-brief.md`, generated directly from the approved Task 15 plan text before implementation.
+- Pre-flight result: no conflict was found between Task 15, the frozen design, Task 14's custom prediction-container contract, Task 16's exact-version Batch boundary, the existing `PARENT_MODEL_IDS`, or the existing `RegisteredModelVersion` type. Task 15 creates only `vertex/registry.py`, its focused test file, and this ledger.
+- Resolved implementation detail: registry labels reserve `horizon`, `suite`, and `lifecycle`; the suite label uses the sanitized alias when it fits Vertex's 63-character label-value limit and otherwise uses a deterministic readable prefix plus hash suffix. The complete suite identity remains authoritative in the version alias, registration evidence, and later manifests.
+- Run-manifest boundary: `register_candidate_version` receives a required injected updater callback, persists immutable `runs/{run_id}/registry/{horizon}.json` evidence first, then invokes the callback with the exact `RegisteredModelVersion`. Task 18 remains the sole owner of generation-guarded run-manifest serialization.
+- GitNexus readiness: the exact-worktree index was refreshed successfully at `680161f` (`3,549` nodes, `7,370` edges, `151` clusters, `232` flows). No existing function, class, or method is scheduled for modification; any such discovery requires upstream impact analysis before editing.
+- Fresh baseline: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider` -> `562 passed, 1 skipped, 24 subtests passed in 41.72s`; installed `google-cloud-aiplatform` version is exactly `1.161.0`.
+- Strict RED command: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_registry.py -q -p no:cacheprovider`; expected initial failure is the absent Task 15 registry adapter or missing required behavior.
+- Scope boundary: tests must use a complete fake/mock SDK adapter and local/fake artifact persistence only. No real model lookup/upload, GCS write, Batch Prediction, Endpoint, alias mutation, release-pointer mutation, or gated cloud smoke is authorized in Task 15.
+
+## Task 15 Implementation Evidence
+
+- Start state: exact linked worktree and branch matched the kickoff at `680161f3e0a9f4f35ca7d1f57f1b477b2718049f`; pre-existing user changes in `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` were preserved and excluded from staging.
+- Existing-symbol scope: Task 15 added only `fewsnet_partitioned_rf_pipeline/vertex/registry.py` and `tests/fewsnet_partitioned_rf/test_registry.py`, then updated this ledger. It consumes `PARENT_MODEL_IDS`, `RegisteredModelVersion`, `ArtifactStore`, and `put_immutable_or_verify` unchanged; no existing function, class, or method required an edit.
+- Strict RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_registry.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.vertex.registry'` before production registry code existed (`1 error in 1.18s`).
+- Focused GREEN: the exact RED command -> `26 passed in 12.35s` after adding the narrow adapter. The six horizon/parent-state upload cases assert the exact stable model IDs, artifact/image identities, `/predict` and `/health`, port `8080`, both required environment variables, candidate labels, deterministic suite alias, no `production` alias, first-parent defaults, later-parent resource names, and absence of any caller-supplied `version_id`.
+- Alias and label contract: suite identities are lowercased, non-`[a-z0-9-]` characters become collapsed hyphens, leading/trailing hyphens are removed, non-letter starts receive `v-`, and empty or over-128-character results fail. Reserved labels are exactly `horizon`, `suite`, and `lifecycle`; caller conflicts fail before upload. Suite label values preserve the alias through 63 characters and otherwise use a deterministic 50-character readable prefix plus a 12-hex SHA-256 suffix.
+- Parent and retry contract: `aiplatform.init(project=..., location=...)` precedes deterministic parent resolution; only `NotFound` from `ModelRegistry.list_versions()` is treated as parent absence. Existing suite aliases are loaded by exact numeric version through `Model(model_name=..., version=...)`, and reuse fails closed on artifact URI, serving image URI, digest environment, horizon label, or suite label mismatch. An exact retry may merge `lifecycle=candidate` while preserving all other labels and never uploads a duplicate.
+- Evidence and failure ordering: normalized `RegisteredModelVersion` JSON is written immutably at `runs/{run_id}/registry/{horizon}.json` before the required injected run-manifest callback. Callback exceptions propagate after evidence persistence so the orchestrator can retry the same exact version. Later suite-stage cleanup loads every recorded exact version and merges only `lifecycle=abandoned`, retaining provenance labels and deleting nothing.
+- Fake-only coverage: all registry tests use a complete in-memory SDK double plus `LocalArtifactStore`. The doubles mirror every SDK field consumed by production (`VersionInfo`, model resource/version/artifact identities, labels, container image, and environment entries). No authentication, real parent lookup/upload/update, GCS write, Batch Prediction, Endpoint, alias mutation, release pointer, or cloud smoke action occurred.
+- Fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `588 passed, 1 skipped, 24 subtests passed in 52.64s`.
+- Final fresh focused verification: the exact Task 15 command -> `26 passed in 11.94s`.
+- Static/dependency/authority gates: both changed Python files parse with `ast`; maximum line lengths are `81` and `82`; `.venv/bin/python -m pip check` -> `No broken requirements found.`; `google-cloud-aiplatform==1.161.0` remains pinned; approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`; partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- GitNexus refresh: the first exact-worktree `analyze --index-only` hit the known inconsistent `file_fts` deletion error. The immediate retry detected the incomplete incremental flag, forced a full rebuild, and succeeded with `3,646` nodes, `7,560` edges, `152` clusters, and `234` flows without rewriting agent-context files.
+- Staged GitNexus reconciliation: the required duplicate-name lookup with `repo="IPCCH_operational"` and the exact worktree reports LOW risk, exactly three changed files, three documentation symbols, and zero affected processes because it resolves to the canonical-root duplicate index. The authoritative exact-worktree-path lookup reports MEDIUM risk with `100` additive/touched symbols and two affected processes; both are wholly new Task 15 internal flows (`register_candidate_version -> _required_string` and `resolve_parent_model -> _required_string`). No pre-existing production symbol body changed.
+- Final staged scope: `git diff --cached --name-status` contains exactly `PROGRESS.md`, `fewsnet_partitioned_rf_pipeline/vertex/registry.py`, and `tests/fewsnet_partitioned_rf/test_registry.py`; `.superpowers/` remains untracked and unstaged; `git diff --cached --check` exits `0`.
+- Self-review: all Task 15 plan statements are represented directly in tests; no existing production interface was changed; the first stable parent remains default only because Vertex requires version 1 to be default; later candidates cannot move `default` or `production`; service-assigned numeric version IDs are returned and persisted without invention; failed/retried candidates remain recoverable evidence rather than being deleted.
+- Implementation commit: `feat: register FEWSNET Vertex model versions` (this commit). Independent Task 15 review remains required before controller acceptance or Task 16 implementation.
+- Scope/no-cloud confirmation: no real GCP, GCS, Vertex Custom Job, Model Registry, Batch Prediction, Endpoint, alias, release-pointer, image build/push, or gated cloud smoke operation was performed.
+
 ## Resume
 
-- Exact next step: Task 14 is complete. Task 15 is pending; before starting it, verify the exact worktree/branch, read this ledger and the approved Task 15 plan text, generate a fresh Task 15 brief, and preserve the no-cloud-write boundary.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '640,735p' PROGRESS.md && tail -n 100 .superpowers/sdd/task-14-report.md`
+- Exact next step: independently review the Task 15 implementation and `.superpowers/sdd/task-15-report.md`; reproduce and fix every Critical or Important finding before controller acceptance. Do not start Task 16 yet.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '650,760p' PROGRESS.md && sed -n '1,320p' .superpowers/sdd/task-15-report.md`
 
 ---
 
