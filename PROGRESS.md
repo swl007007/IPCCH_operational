@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 8 fixed partition-map validation and routing
-- Current state: Tasks 1-7 are complete and independently reviewed; Task 8 implementation and its blocking Important coverage-universe fix are complete with fresh verification, and independent Task 8 re-review is pending
-- Blockers: Task 9 must wait for independent Task 8 re-review; the previously deferred Task 7 ordering Minor remains queued for final whole-branch triage
+- Current task: Task 9 fit-slice-only max-plus imputation and threshold selection
+- Current state: Tasks 1-8 are complete and independently reviewed; Task 8's malformed coverage-universe finding is fixed through `20a6e0e`, its re-review is approved, controller verification and fixed-asset identity checks are fresh, and the non-blocking Task 7 ordering Minor remains deferred
+- Blockers: none for Task 9 local implementation; Task 10 must wait for Task 9 implementation and independent review
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -29,8 +29,8 @@
 | 5. Build the frozen Stage 3 feature contract and leak-free feature frame | complete; independent review clean |
 | 6. Normalize the bootstrap panel and bind its audit into snapshots | complete; independent review clean through `d403c1e` |
 | 7. Implement keyed horizon alignment and temporal windows | complete; independent re-review clean through `8ff2847`; one Minor deferred |
-| 8. Validate and route the fixed partition map | implementation and Important fix complete; independent re-review pending |
-| 9. Implement fit-slice-only max-plus imputation and threshold selection | pending |
+| 8. Validate and route the fixed partition map | complete; independent re-review clean through `20a6e0e` |
+| 9. Implement fit-slice-only max-plus imputation and threshold selection | pending; ready to start |
 | 10. Train partitioned RF models and produce formal local predictions | pending |
 | 11. Freeze reference Stage 3 parity evidence | pending |
 | 12. Write and validate Vertex-compatible model packages | pending |
@@ -345,12 +345,20 @@
 - Preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`; fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
 - Preliminary fix staged gate: `git diff --cached --check` exited `0`; staged paths were exactly `PROGRESS.md`, `core/partitions.py`, and `test_partitions.py`. Exact-worktree GitNexus `detect_changes(scope="staged")` reported LOW risk, `3` changed files, `3` indexed documentation sections, and `0` affected execution processes; the modified Python symbols were not surfaced in this staged result despite the controller's successful symbol-specific pre-edit impact checks.
 - Scope remains limited to `coverage()` validation, two direct regressions, this ledger, and the uncommitted Task 8 report. No Task 9 or cloud behavior was entered.
-- Task 8 Important-fix status: implementation complete; independent re-review is required before Task 9 starts.
+- Implementation commit: `656429f4d2c9d5c994be522ebe19b9515971b732` (`656429f feat: add fixed FEWSNET partition routing`).
+- Independent-review fix commit: `20a6e0e7cda67b0b9ca04177fa43d7d86ad2d410` (`20a6e0e fix: reject invalid FEWSNET coverage universe`).
+- Independent Task 8 re-review: approved with no Critical, Important, or Minor findings. The malformed-authoritative-universe defect is closed before denominator deduplication, with direct coverage and release-guard regressions; valid routing, percentage, checksum-before-parse, and strict release-boundary behavior remain unchanged.
+- Controller fresh Task 8 verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_partitions.py -q -p no:cacheprovider` -> `15 passed in 3.90s`.
+- Controller fresh related regression: the six-file runtime/data selection -> `90 passed in 6.81s`.
+- Controller fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `447 passed, 1 skipped, 24 subtests passed in 20.44s`.
+- Controller fixed-asset acceptance: configured and actual SHA-256 both equal `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`; the asset has exactly `5,365` data rows and cluster IDs exactly `0..16` (`17` clusters).
+- Controller consistency gate: `git diff --check 43677cf..20a6e0e` exited `0`; approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`.
+- Task 8 final status: complete and independently reviewed. Task 9 is unblocked; no cloud write is authorized at this stage.
 
 ## Resume
 
-- Exact next step: dispatch a fresh independent re-review for the Task 8 fix commit containing this ledger. Task 9 remains blocked until that re-review is clean; do not perform any GCP/Vertex write.
-- Resume command: `git status --short --branch && git show --stat --oneline HEAD && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_partitions.py -q -p no:cacheprovider`
+- Exact next step: after this ledger-only consistency commit, dispatch a fresh Task 9 implementer from the reviewed Task 8 head; require TDD, GitNexus impact/pre-commit gates, and an independent Task 9 review. Do not begin Task 10 or perform any GCP/Vertex write.
+- Resume command: `git status --short --branch && git log -5 --oneline && rg -n '^### Task 9:' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,130p' PROGRESS.md`
 
 ---
 
