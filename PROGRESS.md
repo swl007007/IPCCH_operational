@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 14 independent-review findings are fixed and verified in this commit; independent re-review/controller acceptance is pending
-- Current state: Tasks 1-13 are complete; Task 14 now also prevents module-entrypoint double loading, default-route health shadowing, and falsy injected-store replacement
-- Blockers: none for the Task 14 review fix; Task 15 has not started, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains outside the authorized local/fake boundary
+- Current task: Task 14 shared custom prediction container is complete and independently approved through `6ea587343a8a31076d929a1401f47fa74b2545ce`
+- Current state: Tasks 1-14 are complete; the shared image contract and fail-closed Vertex prediction server are verified, including single package localization under the real module entrypoint
+- Blockers: none for Task 14; Task 15 has not started, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains outside the completed local/fake work
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -35,7 +35,7 @@
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
 | 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
-| 14. Serve registered packages with a shared custom prediction container | independent-review fixes verified in this commit; independent re-review pending |
+| 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
 | 15. Register three stable parent models and immutable candidate versions | pending |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
 | 17. Validate three-horizon outputs and implement alias rollback publication | pending |
@@ -639,10 +639,21 @@
 - Review-fix commit: `fix: harden FEWSNET predictor startup` (this commit). Only the predictor server, its focused tests, and this ledger are authorized for the commit.
 - Scope/no-cloud confirmation: the Dockerfile and its exact command remain unchanged; Task 15 was not started; no image build/push or real GCP/GCS/Vertex/Registry/Batch/Endpoint/alias/release-pointer action occurred.
 
+### Task 14 Final Review and Controller Acceptance
+
+- Review-fix commit: `6ea587343a8a31076d929a1401f47fa74b2545ce` (`fix: harden FEWSNET predictor startup`). The complete Task 14 implementation range is `9c6df4ab07a59a0260153e46b43d56d4db948b30..6ea587343a8a31076d929a1401f47fa74b2545ce`.
+- Independent re-review: spec compliant and approved with no Critical, Important, or Minor findings. The reviewer confirmed exactly seven downloads under the real `python -m`/canonical-Uvicorn path, fail-closed configured health routes for `/docs`, `/redoc`, and `/openapi.json`, and correct handling of a valid falsy injected store.
+- Fresh controller focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_predictor_server.py tests/fewsnet_partitioned_rf/test_runtime_image.py -q -p no:cacheprovider` -> `17 passed in 7.59s`.
+- Fresh controller related verification: model-package, training/inference, storage, runtime-foundation, and training-job tests -> `104 passed in 25.04s`.
+- Fresh controller full repository verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `562 passed, 1 skipped, 24 subtests passed in 40.14s`.
+- Controller static/dependency gates: approved import smoke exits `0`; all three Task 14 Python files parse with `ast`; `.venv/bin/python -m pip check` reports `No broken requirements found.`; the complete Task 14 range passes `git diff --check`.
+- Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Scope/no-cloud confirmation: the dedicated Dockerfile was not built or pushed; no real GCP/GCS/Vertex Custom Job/Model Registry/Batch Prediction/Endpoint, alias, release-pointer, or gated cloud smoke action occurred; Task 15 was not started.
+
 ## Resume
 
-- Exact next step: independently re-review the Task 14 fix commit and obtain controller acceptance before beginning Task 15.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '585,680p' PROGRESS.md && tail -n 120 .superpowers/sdd/task-14-report.md`
+- Exact next step: Task 14 is complete. Task 15 is pending; before starting it, verify the exact worktree/branch, read this ledger and the approved Task 15 plan text, generate a fresh Task 15 brief, and preserve the no-cloud-write boundary.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '640,735p' PROGRESS.md && tail -n 100 .superpowers/sdd/task-14-report.md`
 
 ---
 
