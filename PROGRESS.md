@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 17 is in progress from base `f3a02ab`; brief, authority, baseline, pre-flight, and code-intelligence gates are recorded
-- Current state: Tasks 1-16 are complete; Task 17 now owns three-horizon release validation, serialized production-alias rollback, and generation-safe pointer publication
+- Current task: Task 17 second independent re-review fixes are implemented and verified from base `6a8a4bd`; staged-scope and commit gates are in progress
+- Current state: Tasks 1-16 are complete; Task 17 now binds completed Batch evidence, fences every promotion mutation, and preserves indeterminate current-pointer outcomes without destructive rollback
 - Blockers: none; implementation remains fake/local only, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -38,7 +38,7 @@
 | 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
-| 17. Validate three-horizon outputs and implement alias rollback publication | in progress; kickoff and brief complete |
+| 17. Validate three-horizon outputs and implement alias rollback publication | in progress; second re-review fixes implemented and verified, final re-review/controller acceptance pending |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
@@ -865,10 +865,41 @@
 - Scope/no-cloud confirmation: all review-fix tests used only local stores and fake backends. No cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, production alias, lease, release-pointer, image, release, or smoke operation occurred; Task 18 was not started.
 - Review-fix commit: `fix: harden FEWSNET suite promotion` (this commit). Independent re-review remains required before Task 17 is controller-accepted.
 
+### Task 17 Second Independent Re-review Fix Evidence
+
+- Fix-wave base: `6a8a4bdc69520f0f4b123b3f54ab7edda3a6acdb` (`fix: harden FEWSNET suite promotion`). The second independent re-review reported three Critical gaps: self-asserted Batch provenance, forward/recovery lease TOCTOU windows, and single-read ambiguous current-pointer reconciliation.
+- Pre-edit GitNexus impact recorded before this wave: `promote_and_publish` MEDIUM; carrier/validation/lease/reconciliation helpers LOW; shared `vertex/storage.py::put_mutable_or_verify` HIGH and explicitly unchanged.
+- Strict second-wave RED: the exact focused command -> `19 failed, 33 passed in 29.82s`. Failures were the expected missing completed-`BatchJobRef`/canonical artifact bindings, acceptance of non-900-second leases, flat lease generation across forward mutations, unsafe alias recovery over newer ownership, absent recovery state read/fence, missing transient readback retry, and missing indeterminate no-rollback outcome.
+- Additional strict TDD probes: horizon-neutral Batch bytes first failed `1 failed, 52 deselected in 27.99s` and then passed `1 passed, 52 deselected in 17.23s`; cross-horizon snapshot `ObjectRef` drift first failed `1 failed, 53 deselected in 29.28s` and then passed `1 passed, 53 deselected in 17.54s`.
+- Provenance fix: `PredictionSuiteEntry` now carries the completed `BatchJobRef`, immutable run/suite prediction refs and canonical CSV bytes, plus the canonical run-level input-snapshot ref and bytes. Validation derives the publication root from each exact registered artifact path; enforces `run_id == suite_version`; reconciles numeric Batch job/model/horizon/input/destination/output identity; rejects non-canonical input and prediction URIs; requires identical horizon-neutral Batch bytes; binds snapshot evidence to the selected snapshot/package; and requires both prediction refs to match the one canonical serialization of the formal frame.
+- Lease fix: acquisition rejects every duration other than exactly 900 seconds. A generation-preconditioned renewal preserves lease owner/status and extends expiry by 900 seconds immediately before every alias, immutable manifest, month pointer, and current pointer mutation. Rollback renews before reading alias state, restores only an alias still on this run's candidate, renews again immediately before restore, returns the latest lease generation, and skips all mutation after a takeover between state read and restore.
+- Ambiguous-write fix: Task 17-local pointer reconciliation performs three generation-specific readback attempts. A committed current write with one transient read failure returns `RELEASED`; persistent unreadability raises `PromotionIndeterminate(indeterminate=True)` and retains candidate aliases plus the candidate month pointer without destructive rollback.
+- Fresh focused GREEN: exact command -> `54 passed in 19.04s`.
+- Related Task 2/3/8/10/12/15/16 regression: contracts, storage, partitions, training/inference, model packages, registry, and Batch Prediction -> `229 passed in 35.29s`.
+- Fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `699 passed, 1 skipped, 24 subtests passed in 54.09s`.
+- Static/dependency/SDK gates: all three changed Python files parse, import, and compile with redirected bytecode; maximum line lengths are validation `87`, promotion `84`, and tests `85`; `.venv/bin/python -m pip check` reports `No broken requirements found.`; pinned Model Registry method signatures remain unchanged; `git diff --check` passes.
+- Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`; fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Scope/no-cloud confirmation: all tests used `LocalArtifactStore` and fake alias/SDK backends only. No cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, production alias, lease, pointer, image, release, or smoke operation occurred; Task 18 was not started.
+- Second-wave fix commit: `fix: close Task 17 promotion re-review findings` (this commit). Final independent re-review and controller acceptance remain required before Task 18.
+
+### Task 17 Final Provenance Closure Evidence
+
+- Final re-review found one remaining Critical provenance gap: a valid Batch input `ObjectRef` generation could be replaced by another positive integer, and one completed Vertex Batch job resource name could be reused across horizons.
+- Exact-worktree pre-edit impact for `validate_prediction_suite` was HIGH with `15` direct upstream dependents in the FEWSNET module and no mapped execution process; the warning was reported before the controller authorized the two narrow probes. `PredictionSuiteEntry`, `_prediction_entries`, and `_with_batch_bytes` were LOW.
+- Strict RED: the two narrow tests failed exactly as expected with `2 failed, 54 deselected in 28.96s`; both failures were `DID NOT RAISE`, proving generation drift and duplicate completed-job reuse were accepted before production edits.
+- Provenance closure: `PredictionSuiteEntry` now carries the independently named submitted Batch input `ObjectRef`. Validation checks both refs and requires exact dataclass equality, including URI, generation, SHA-256, and size. It also requires the three completed `job_resource_name` values to be unique.
+- Narrow GREEN: the exact two probes passed with `2 passed, 54 deselected in 17.63s`. The first focused rerun exposed only an existing attack-test ordering mismatch (`1 failed, 55 passed`); updating that test to mutate both attacker-controlled refs preserved its canonical-root assertion, after which focused Task 17 passed with `56 passed in 17.98s`.
+- Fresh related Task 2/3/8/10/12/15/16 regression: `229 passed in 32.69s`.
+- Fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider` -> `701 passed, 1 skipped, 24 subtests passed in 52.87s`.
+- Static/dependency/SDK gates: all three changed Python files parse, import, and compile with redirected bytecode; maximum line lengths remain validation `87`, promotion `84`, and tests `85`; `.venv/bin/python -m pip check` reports `No broken requirements found.`; pinned Model Registry method signatures remain unchanged; `git diff --check` passes.
+- Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`; fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Final independent narrow re-review: `0 Critical, 0 Important, 0 Minor`; exact input-ref equality and cross-horizon completed-job uniqueness were accepted statically. No cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, production alias, lease, pointer, image, release, or smoke operation occurred; Task 18 was not started.
+- Final closure commit: `fix: close Task 17 promotion re-review findings` (this commit).
+
 ## Resume
 
-- Exact next step: dispatch a fresh Task 17 implementer using `.superpowers/sdd/task-17-brief.md` and strict TDD; then run independent review/fix loops and controller verification before Task 18.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '814,875p' PROGRESS.md`
+- Exact next step: complete the exact four-file staged scope/GitNexus gate and commit the final Task 17 closure; do not start Task 18.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '851,930p' PROGRESS.md`
 
 ---
 

@@ -76,6 +76,23 @@ class PromotionError(RuntimeError):
         )
 
 
+class PromotionIndeterminate(PromotionError):
+    """Promotion write may have committed but cannot be read authoritatively."""
+
+    indeterminate = True
+
+    def __init__(
+        self,
+        original_error: BaseException | str,
+        *,
+        uri: str,
+        rollback_failures: tuple[str, ...] = (),
+        warnings: tuple[str, ...] = (),
+    ) -> None:
+        self.uri = uri
+        super().__init__(original_error, rollback_failures, warnings)
+
+
 @dataclass(frozen=True)
 class PromotionLease:
     """One generation-pinned ownership record for production publication."""
@@ -184,8 +201,10 @@ def acquire_promotion_lease(
         raise TypeError("utc_now must be callable")
     if isinstance(lease_seconds, bool) or not isinstance(lease_seconds, int):
         raise TypeError("lease_seconds must be an integer")
-    if lease_seconds <= 0:
-        raise ValueError("lease_seconds must be positive")
+    if lease_seconds != PROMOTION_LEASE_SECONDS:
+        raise ValueError(
+            f"lease_seconds must be exactly {PROMOTION_LEASE_SECONDS}"
+        )
     now = _utc_datetime(utc_now(), "utc_now")
     uri = f"{root}/{LEASE_RELATIVE_URI}"
     existing = _capture_optional(store, uri)
@@ -244,17 +263,23 @@ def release_promotion_lease(
     """Release only the lease whose current generation still names this owner."""
     if not isinstance(lease, PromotionLease):
         raise TypeError("lease must be a PromotionLease")
-    current = _capture_optional(store, lease.uri)
-    if current.data is None:
-        raise PromotionError("promotion lease ownership was lost: object missing")
-    payload = _lease_json(current.data)
+    try:
+        data = store.read_bytes(
+            lease.uri,
+            generation=lease.ref.generation,
+        )
+        payload = _lease_json(data)
+    except Exception as exc:
+        raise PromotionError(
+            "promotion lease ownership was lost: object is unreadable"
+        ) from exc
     if (
         payload["lease_id"] != lease.payload["lease_id"]
         or payload["run_id"] != lease.payload["run_id"]
     ):
         raise PromotionError("promotion lease ownership was lost")
     if payload["status"] == "released":
-        return store.get_ref(lease.uri)
+        return lease.ref
     if payload["status"] != "acquired":
         raise PromotionError(
             f"promotion lease has invalid status: {payload['status']}"
@@ -266,7 +291,7 @@ def release_promotion_lease(
             store,
             lease.uri,
             _canonical_json(released),
-            expected_generation=current.generation,
+            expected_generation=lease.ref.generation,
         )
     except GenerationConflict as exc:
         raise PromotionError(
@@ -355,6 +380,7 @@ def promote_and_publish(
                 if previous_aliases[horizon_key] == version.version_resource_name:
                     continue
                 attempted_aliases.append(horizon_key)
+                lease = _renew_promotion_lease(store, lease, utc_now)
                 alias_backend.move_alias(
                     version.parent_model_resource_name,
                     "production",
@@ -364,6 +390,7 @@ def promote_and_publish(
             suite_uri = (
                 f"{root}/suites/{manifest['suite_version']}/suite_manifest.json"
             )
+            lease = _renew_promotion_lease(store, lease, utc_now)
             suite_ref = put_immutable_or_verify(
                 store,
                 suite_uri,
@@ -371,12 +398,14 @@ def promote_and_publish(
             )
             pointer = _production_pointer(manifest, suite_ref)
             pointer_bytes = _canonical_json(pointer)
+            lease = _renew_promotion_lease(store, lease, utc_now)
             written_month_ref = _put_mutable_or_reconcile(
                 store,
                 month_uri,
                 pointer_bytes,
                 expected_generation=previous_month.generation,
             )
+            lease = _renew_promotion_lease(store, lease, utc_now)
             current_ref = _put_mutable_or_reconcile(
                 store,
                 current_uri,
@@ -392,34 +421,41 @@ def promote_and_publish(
                 "warnings": warnings,
             }
     except Exception as exc:
-        rollback_failures = _rollback_aliases(
-            store,
-            lease,
-            utc_now,
-            alias_backend,
-            registered_versions,
-            previous_aliases,
-            attempted_aliases,
+        current_indeterminate = (
+            isinstance(exc, PromotionIndeterminate)
+            and exc.uri == current_uri
         )
-        if (
-            previous_month is not None
-            and previous_month.data is not None
-            and written_month_ref is not None
-        ):
-            try:
-                _assert_active_lease_owner(store, lease, utc_now)
-                _put_mutable_or_reconcile(
-                    store,
-                    previous_month.uri,
-                    previous_month.data,
-                    expected_generation=written_month_ref.generation,
-                )
-            except Exception as restore_exc:
-                rollback_failures.append(
-                    "month pointer restore skipped or failed: "
-                    f"{restore_exc}"
-                )
-        failure = PromotionError(exc, tuple(rollback_failures))
+        if current_indeterminate:
+            failure = exc
+        else:
+            lease, rollback_failures = _rollback_aliases(
+                store,
+                lease,
+                utc_now,
+                alias_backend,
+                registered_versions,
+                previous_aliases,
+                attempted_aliases,
+            )
+            if (
+                previous_month is not None
+                and previous_month.data is not None
+                and written_month_ref is not None
+            ):
+                try:
+                    lease = _renew_promotion_lease(store, lease, utc_now)
+                    _put_mutable_or_reconcile(
+                        store,
+                        previous_month.uri,
+                        previous_month.data,
+                        expected_generation=written_month_ref.generation,
+                    )
+                except Exception as restore_exc:
+                    rollback_failures.append(
+                        "month pointer restore skipped or failed: "
+                        f"{restore_exc}"
+                    )
+            failure = PromotionError(exc, tuple(rollback_failures))
     finally:
         try:
             release_promotion_lease(store=store, lease=lease)
@@ -427,11 +463,19 @@ def promote_and_publish(
             warning = f"promotion lease release warning: {release_exc}"
             warnings.append(warning)
             if failure is not None:
-                failure = PromotionError(
-                    failure.original_error,
-                    failure.rollback_failures,
-                    tuple(warnings),
-                )
+                if isinstance(failure, PromotionIndeterminate):
+                    failure = PromotionIndeterminate(
+                        failure.original_error,
+                        uri=failure.uri,
+                        rollback_failures=failure.rollback_failures,
+                        warnings=tuple(warnings),
+                    )
+                else:
+                    failure = PromotionError(
+                        failure.original_error,
+                        failure.rollback_failures,
+                        tuple(warnings),
+                    )
     if failure is not None:
         raise failure
     if result is None:
@@ -503,12 +547,35 @@ def _rollback_aliases(
     registered_versions: Mapping[str, RegisteredModelVersion],
     previous_aliases: Mapping[str, str | None],
     attempted_aliases: list[str],
-) -> list[str]:
+) -> tuple[PromotionLease, list[str]]:
     failures: list[str] = []
     for horizon_key in reversed(attempted_aliases):
         version = registered_versions[horizon_key]
         try:
-            _assert_active_lease_owner(store, lease, utc_now)
+            lease = _renew_promotion_lease(store, lease, utc_now)
+        except Exception as exc:
+            failures.append(
+                f"{horizon_key} alias restore skipped: {exc}"
+            )
+            break
+        try:
+            current = alias_backend.current_version(
+                version.parent_model_resource_name,
+                "production",
+            )
+            _validate_optional_alias_version(
+                version.parent_model_resource_name,
+                current,
+            )
+        except Exception as exc:
+            failures.append(
+                f"{horizon_key} alias restore skipped: state read failed: {exc}"
+            )
+            continue
+        if current != version.version_resource_name:
+            continue
+        try:
+            lease = _renew_promotion_lease(store, lease, utc_now)
         except Exception as exc:
             failures.append(
                 f"{horizon_key} alias restore skipped: {exc}"
@@ -522,7 +589,58 @@ def _rollback_aliases(
             )
         except Exception as exc:
             failures.append(f"{horizon_key} alias restore failed: {exc}")
-    return failures
+    return lease, failures
+
+
+def _renew_promotion_lease(
+    store: ArtifactStore,
+    lease: PromotionLease,
+    utc_now: Callable[[], datetime],
+) -> PromotionLease:
+    try:
+        data = store.read_bytes(
+            lease.uri,
+            generation=lease.ref.generation,
+        )
+        payload = _lease_json(data)
+    except Exception as exc:
+        raise PromotionError(
+            "promotion lease ownership was lost: object is unreadable"
+        ) from exc
+    if (
+        payload["lease_id"] != lease.payload["lease_id"]
+        or payload["run_id"] != lease.payload["run_id"]
+    ):
+        raise PromotionError("promotion lease ownership was lost")
+    if payload["status"] != "acquired":
+        raise PromotionError(
+            "promotion lease ownership was lost: lease is not acquired"
+        )
+    now = _utc_datetime(utc_now(), "utc_now")
+    expires_at = _parse_timestamp(
+        payload["expires_at_utc"],
+        "lease.expires_at_utc",
+    )
+    if expires_at <= now:
+        raise PromotionError(
+            "promotion lease ownership was lost: lease expired"
+        )
+    renewed = dict(payload)
+    renewed["expires_at_utc"] = _timestamp(
+        now + timedelta(seconds=PROMOTION_LEASE_SECONDS)
+    )
+    try:
+        ref = put_mutable_or_verify(
+            store,
+            lease.uri,
+            _canonical_json(renewed),
+            expected_generation=lease.ref.generation,
+        )
+    except Exception as exc:
+        raise PromotionError(
+            "promotion lease ownership was lost during renewal"
+        ) from exc
+    return PromotionLease(uri=lease.uri, ref=ref, payload=renewed)
 
 
 def _assert_active_lease_owner(
@@ -574,14 +692,28 @@ def _put_mutable_or_reconcile(
             expected_generation=expected_generation,
         )
     except Exception as write_exc:
-        try:
-            ref = store.get_ref(uri)
-            observed = store.read_bytes(uri, generation=ref.generation)
-        except Exception:
+        read_errors: list[Exception] = []
+        for _ in range(3):
+            try:
+                ref = store.get_ref(uri)
+                observed = store.read_bytes(
+                    uri,
+                    generation=ref.generation,
+                )
+            except Exception as read_exc:
+                read_errors.append(read_exc)
+                continue
+            if observed == data:
+                return ref
             raise write_exc
-        if observed == data:
-            return ref
-        raise write_exc
+        raise PromotionIndeterminate(
+            write_exc,
+            uri=uri,
+            warnings=(
+                "authoritative pointer readback failed after 3 attempts: "
+                f"{read_errors[-1]}",
+            ),
+        ) from write_exc
 
 
 def _capture_optional(store: ArtifactStore, uri: str) -> _CapturedObject:

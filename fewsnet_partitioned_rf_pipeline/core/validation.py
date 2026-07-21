@@ -27,6 +27,7 @@ from fewsnet_partitioned_rf_pipeline.core.inference import (
 )
 from fewsnet_partitioned_rf_pipeline.core.partitions import PartitionMap
 from fewsnet_partitioned_rf_pipeline.core.types import (
+    BatchJobRef,
     ObjectRef,
     RegisteredModelVersion,
     SnapshotManifest,
@@ -88,6 +89,9 @@ HORIZON_MONTHS_BY_KEY = {
     horizon_key: months for months, horizon_key in HORIZON_KEYS.items()
 }
 OBJECT_URI_PATTERN = re.compile(r"^gs://[^/]+/.+")
+BATCH_JOB_RESOURCE_PATTERN = re.compile(
+    r"^(projects/[^/]+/locations/[^/]+)/batchPredictionJobs/([0-9]+)$"
+)
 
 
 @dataclass(frozen=True)
@@ -96,10 +100,17 @@ class PredictionSuiteEntry:
 
     frame: pd.DataFrame
     batch_input: ObjectRef
+    submitted_batch_input: ObjectRef
     batch_snapshot_content_sha256: str
     package_manifest: Mapping[str, Any]
     admin_universe_bytes: bytes
     batch_input_bytes: bytes
+    batch_job: BatchJobRef
+    run_prediction: ObjectRef
+    suite_prediction: ObjectRef
+    prediction_csv_bytes: bytes
+    input_snapshot_ref: ObjectRef
+    input_snapshot_ref_bytes: bytes
 
 
 class PackageValidationError(ValueError):
@@ -562,8 +573,13 @@ def validate_prediction_suite(
     )
 
     suite_version: str | None = None
+    publication_root: str | None = None
     snapshot_admin_universe: set[str] | None = None
     prediction_admin_universe: set[str] | None = None
+    canonical_batch_input: bytes | None = None
+    batch_job_resource_names: set[str] = set()
+    canonical_snapshot_ref: ObjectRef | None = None
+    canonical_snapshot_evidence: bytes | None = None
     horizon_summaries: dict[str, dict[str, Any]] = {}
     for horizon_key in HORIZON_ORDER:
         entry = predictions[horizon_key]
@@ -577,6 +593,14 @@ def validate_prediction_suite(
             entry.batch_input,
             f"predictions.{horizon_key}.batch_input",
         )
+        _validate_object_ref(
+            entry.submitted_batch_input,
+            f"predictions.{horizon_key}.submitted_batch_input",
+        )
+        if entry.batch_input != entry.submitted_batch_input:
+            raise ValueError(
+                f"{horizon_key} Batch input does not match submitted Batch input"
+            )
         _validate_ref_bytes(
             entry.admin_universe_bytes,
             snapshot.admin_universe,
@@ -627,6 +651,53 @@ def validate_prediction_suite(
             version=version,
             horizon_key=horizon_key,
         )
+        entry_root = _suite_publication_root(
+            version,
+            package["suite_version"],
+            horizon_key,
+        )
+        if publication_root is None:
+            publication_root = entry_root
+        elif entry_root != publication_root:
+            raise ValueError(
+                "registered model publication root differs across horizons"
+            )
+        _validate_batch_job_evidence(
+            entry,
+            version=version,
+            suite_version=package["suite_version"],
+            publication_root=entry_root,
+            horizon_key=horizon_key,
+        )
+        job_resource_name = entry.batch_job.job_resource_name
+        if job_resource_name in batch_job_resource_names:
+            raise ValueError(
+                "Batch job resource names must be unique across horizons"
+            )
+        batch_job_resource_names.add(job_resource_name)
+        if canonical_batch_input is None:
+            canonical_batch_input = entry.batch_input_bytes
+        elif entry.batch_input_bytes != canonical_batch_input:
+            raise ValueError(
+                "Batch input bytes must be horizon-neutral and identical"
+            )
+        _validate_input_snapshot_evidence(
+            entry,
+            snapshot=snapshot,
+            suite_version=package["suite_version"],
+            publication_root=entry_root,
+            horizon_key=horizon_key,
+        )
+        if canonical_snapshot_ref is None:
+            canonical_snapshot_ref = entry.input_snapshot_ref
+        elif entry.input_snapshot_ref != canonical_snapshot_ref:
+            raise ValueError(
+                "input snapshot evidence ObjectRef differs across horizons"
+            )
+        if canonical_snapshot_evidence is None:
+            canonical_snapshot_evidence = entry.input_snapshot_ref_bytes
+        elif entry.input_snapshot_ref_bytes != canonical_snapshot_evidence:
+            raise ValueError("input snapshot evidence differs across horizons")
         frame_summary = _validate_prediction_frame(
             entry.frame,
             snapshot=snapshot,
@@ -635,6 +706,12 @@ def validate_prediction_suite(
             horizon_key=horizon_key,
             snapshot_admin_universe=snapshot_admin_universe,
             fixed_partition=fixed_partition,
+        )
+        _validate_prediction_artifacts(
+            entry,
+            suite_version=package["suite_version"],
+            publication_root=entry_root,
+            horizon_key=horizon_key,
         )
         frame_suite_version = frame_summary.pop("suite_version")
         admin_universe = frame_summary.pop("admin_universe")
@@ -691,6 +768,195 @@ def _validate_registered_version(
     if version.version_resource_name != expected_resource:
         raise ValueError(
             "registered model version resource must use the exact numeric version"
+        )
+
+
+def _suite_publication_root(
+    version: RegisteredModelVersion,
+    suite_version: str,
+    horizon_key: str,
+) -> str:
+    expected_suffix = f"/suites/{suite_version}/models/{horizon_key}"
+    if not version.artifact_uri.endswith(expected_suffix):
+        raise ValueError(
+            f"{horizon_key} registered model artifact URI does not match "
+            "the exact suite layout"
+        )
+    root = version.artifact_uri[: -len(expected_suffix)]
+    if OBJECT_URI_PATTERN.fullmatch(f"{root}/root") is None:
+        raise ValueError(
+            f"{horizon_key} registered model artifact URI must use gs://"
+        )
+    return root
+
+
+def _validate_batch_job_evidence(
+    entry: PredictionSuiteEntry,
+    *,
+    version: RegisteredModelVersion,
+    suite_version: str,
+    publication_root: str,
+    horizon_key: str,
+) -> None:
+    job = entry.batch_job
+    if not isinstance(job, BatchJobRef):
+        raise TypeError(f"{horizon_key} Batch job must be a BatchJobRef")
+    if job.horizon_key != horizon_key:
+        raise ValueError(f"{horizon_key} Batch job horizon does not match")
+    if job.model_version_resource_name != version.version_resource_name:
+        raise ValueError(
+            f"{horizon_key} Batch job model version does not match"
+        )
+    job_match = BATCH_JOB_RESOURCE_PATTERN.fullmatch(job.job_resource_name)
+    if job_match is None:
+        raise ValueError(
+            f"{horizon_key} Batch job resource name must end in a numeric ID"
+        )
+    model_location_root = version.parent_model_resource_name.rsplit(
+        "/models/", 1
+    )[0]
+    if job_match.group(1) != model_location_root:
+        raise ValueError(
+            f"{horizon_key} Batch job resource location does not match model"
+        )
+    expected_input = (
+        f"{publication_root}/runs/{suite_version}/batch_prediction/"
+        f"{horizon_key}/input.jsonl"
+    )
+    expected_destination = (
+        f"{publication_root}/runs/{suite_version}/batch_prediction/"
+        f"{horizon_key}/raw"
+    )
+    if job.input_uri != expected_input:
+        raise ValueError(
+            f"{horizon_key} Batch job input URI does not match canonical Batch input"
+        )
+    if entry.batch_input.uri != expected_input:
+        raise ValueError(
+            f"{horizon_key} canonical Batch input ObjectRef URI does not match"
+        )
+    if entry.batch_input.uri != job.input_uri:
+        raise ValueError(
+            f"{horizon_key} Batch job input URI differs from its ObjectRef"
+        )
+    if job.destination_prefix != expected_destination:
+        raise ValueError(
+            f"{horizon_key} Batch job destination does not match canonical layout"
+        )
+    output_directory = job.gcs_output_directory
+    if (
+        not isinstance(output_directory, str)
+        or not output_directory.startswith(expected_destination + "/")
+    ):
+        raise ValueError(
+            f"{horizon_key} Batch job output directory is outside its destination"
+        )
+
+
+def _validate_input_snapshot_evidence(
+    entry: PredictionSuiteEntry,
+    *,
+    snapshot: SnapshotManifest,
+    suite_version: str,
+    publication_root: str,
+    horizon_key: str,
+) -> None:
+    _validate_object_ref(
+        entry.input_snapshot_ref,
+        f"predictions.{horizon_key}.input_snapshot_ref",
+    )
+    _validate_ref_bytes(
+        entry.input_snapshot_ref_bytes,
+        entry.input_snapshot_ref,
+        f"predictions.{horizon_key}.input_snapshot_ref_bytes",
+    )
+    expected_uri = (
+        f"{publication_root}/runs/{suite_version}/input_snapshot_ref.json"
+    )
+    if entry.input_snapshot_ref.uri != expected_uri:
+        raise ValueError(
+            f"{horizon_key} input snapshot evidence URI is not canonical"
+        )
+    try:
+        payload = json.loads(entry.input_snapshot_ref_bytes)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError(
+            f"{horizon_key} input snapshot evidence must be valid UTF-8 JSON"
+        ) from exc
+    if not isinstance(payload, dict) or set(payload) != {
+        "manifest",
+        "snapshot_id",
+        "snapshot_content_sha256",
+    }:
+        raise ValueError(
+            f"{horizon_key} input snapshot evidence fields differ"
+        )
+    manifest = payload["manifest"]
+    if not isinstance(manifest, Mapping):
+        raise ValueError(
+            f"{horizon_key} input snapshot manifest reference is invalid"
+        )
+    try:
+        manifest_ref = ObjectRef(**dict(manifest))
+    except (TypeError, ValueError) as exc:
+        raise ValueError(
+            f"{horizon_key} input snapshot manifest reference is invalid"
+        ) from exc
+    _validate_object_ref(
+        manifest_ref,
+        f"predictions.{horizon_key}.input_snapshot_manifest",
+    )
+    expected_manifest_uri = (
+        f"{publication_root}/inputs/snapshots/{snapshot.snapshot_id}/"
+        "source_manifest.json"
+    )
+    if manifest_ref.uri != expected_manifest_uri:
+        raise ValueError(
+            f"{horizon_key} input snapshot manifest URI does not match snapshot"
+        )
+    if payload["snapshot_id"] != snapshot.snapshot_id:
+        raise ValueError(f"{horizon_key} input snapshot ID does not match")
+    if (
+        payload["snapshot_content_sha256"]
+        != snapshot.snapshot_content_sha256
+    ):
+        raise ValueError(f"{horizon_key} input snapshot digest does not match")
+
+
+def _validate_prediction_artifacts(
+    entry: PredictionSuiteEntry,
+    *,
+    suite_version: str,
+    publication_root: str,
+    horizon_key: str,
+) -> None:
+    expected_run_uri = (
+        f"{publication_root}/runs/{suite_version}/predictions/{horizon_key}.csv"
+    )
+    expected_suite_uri = (
+        f"{publication_root}/suites/{suite_version}/predictions/"
+        f"{horizon_key}.csv"
+    )
+    for name, ref, expected_uri in (
+        ("run", entry.run_prediction, expected_run_uri),
+        ("suite", entry.suite_prediction, expected_suite_uri),
+    ):
+        _validate_object_ref(ref, f"predictions.{horizon_key}.{name}_prediction")
+        if ref.uri != expected_uri:
+            raise ValueError(
+                f"{horizon_key} {name} prediction URI is not canonical"
+            )
+        _validate_ref_bytes(
+            entry.prediction_csv_bytes,
+            ref,
+            f"predictions.{horizon_key}.{name}_prediction_bytes",
+        )
+    buffer = io.StringIO(newline="")
+    entry.frame.to_csv(buffer, index=False, lineterminator="\n")
+    canonical_bytes = buffer.getvalue().encode("utf-8")
+    if entry.prediction_csv_bytes != canonical_bytes:
+        raise ValueError(
+            f"{horizon_key} prediction CSV differs from the formal frame"
         )
 
 

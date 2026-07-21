@@ -16,6 +16,7 @@ from fewsnet_partitioned_rf_pipeline.config import (
     PARTITION_ASSET_SHA256,
 )
 from fewsnet_partitioned_rf_pipeline.core import (
+    BatchJobRef,
     ObjectRef,
     RegisteredModelVersion,
     SnapshotManifest,
@@ -135,6 +136,28 @@ def _batch_input_bytes(admin_codes: list[str], feature_month: str) -> bytes:
         for admin_code in admin_codes
     ]
     return ("\n".join(lines) + "\n").encode("utf-8")
+
+
+def _prediction_csv_bytes(frame: pd.DataFrame) -> bytes:
+    buffer = io.StringIO(newline="")
+    frame.to_csv(buffer, index=False, lineterminator="\n")
+    return buffer.getvalue().encode("utf-8")
+
+
+def _input_snapshot_ref_bytes(snapshot: SnapshotManifest) -> bytes:
+    return _json_bytes(
+        {
+            "manifest": asdict(
+                _ref(
+                    f"{ROOT_URI}/inputs/snapshots/{snapshot.snapshot_id}/"
+                    "source_manifest.json",
+                    "9" * 64,
+                )
+            ),
+            "snapshot_id": snapshot.snapshot_id,
+            "snapshot_content_sha256": snapshot.snapshot_content_sha256,
+        }
+    )
 
 
 def _snapshot(
@@ -299,26 +322,71 @@ def _prediction_entries(
         admin_codes = _admin_codes(snapshot.area_count)
     admin_bytes = _admin_universe_bytes(admin_codes)
     entries: dict[str, PredictionSuiteEntry] = {}
-    for horizon_key in HORIZON_ORDER:
+    snapshot_ref_bytes = _input_snapshot_ref_bytes(snapshot)
+    snapshot_ref = _ref_for_bytes(
+        f"{ROOT_URI}/runs/{SUITE_VERSION}/input_snapshot_ref.json",
+        snapshot_ref_bytes,
+    )
+    for job_id, horizon_key in enumerate(HORIZON_ORDER, start=1001):
         batch_bytes = _batch_input_bytes(
             admin_codes,
             snapshot.latest_feature_month,
         )
+        batch_input_uri = (
+            f"{ROOT_URI}/runs/{SUITE_VERSION}/batch_prediction/"
+            f"{horizon_key}/input.jsonl"
+        )
+        destination_prefix = (
+            f"{ROOT_URI}/runs/{SUITE_VERSION}/batch_prediction/"
+            f"{horizon_key}/raw"
+        )
+        frame = _prediction_frame(
+            snapshot,
+            versions[horizon_key],
+            admin_codes,
+        )
+        prediction_bytes = _prediction_csv_bytes(frame)
+        batch_job = BatchJobRef(
+            horizon_key=horizon_key,
+            job_resource_name=(
+                "projects/test/locations/us-central1/"
+                f"batchPredictionJobs/{job_id}"
+            ),
+            model_version_resource_name=(
+                versions[horizon_key].version_resource_name
+            ),
+            input_uri=batch_input_uri,
+            destination_prefix=destination_prefix,
+            gcs_output_directory=f"{destination_prefix}/job-{job_id}",
+        )
+        run_prediction = _ref_for_bytes(
+            f"{ROOT_URI}/runs/{SUITE_VERSION}/predictions/"
+            f"{horizon_key}.csv",
+            prediction_bytes,
+        )
+        suite_prediction = _ref_for_bytes(
+            f"{ROOT_URI}/suites/{SUITE_VERSION}/predictions/"
+            f"{horizon_key}.csv",
+            prediction_bytes,
+        )
+        batch_input_ref = _ref_for_bytes(
+            batch_input_uri,
+            batch_bytes,
+        )
         entry = PredictionSuiteEntry(
-            frame=_prediction_frame(
-                snapshot,
-                versions[horizon_key],
-                admin_codes,
-            ),
-            batch_input=_ref_for_bytes(
-                f"{ROOT_URI}/runs/{RUN_ID}/batch_prediction/"
-                f"{horizon_key}/input.jsonl",
-                batch_bytes,
-            ),
+            frame=frame,
+            batch_input=batch_input_ref,
+            submitted_batch_input=batch_input_ref,
             batch_snapshot_content_sha256=snapshot.snapshot_content_sha256,
             package_manifest=_package_manifest(snapshot, horizon_key),
             admin_universe_bytes=admin_bytes,
             batch_input_bytes=batch_bytes,
+            batch_job=batch_job,
+            run_prediction=run_prediction,
+            suite_prediction=suite_prediction,
+            prediction_csv_bytes=prediction_bytes,
+            input_snapshot_ref=snapshot_ref,
+            input_snapshot_ref_bytes=snapshot_ref_bytes,
         )
         entries[horizon_key] = entry
     return entries
@@ -348,13 +416,15 @@ def _with_batch_bytes(
     entry: PredictionSuiteEntry,
     batch_bytes: bytes,
 ) -> PredictionSuiteEntry:
+    batch_input_ref = _ref_for_bytes(
+        entry.batch_input.uri,
+        batch_bytes,
+        entry.batch_input.generation,
+    )
     updated = replace(
         entry,
-        batch_input=_ref_for_bytes(
-            entry.batch_input.uri,
-            batch_bytes,
-            entry.batch_input.generation,
-        ),
+        batch_input=batch_input_ref,
+        submitted_batch_input=batch_input_ref,
         batch_input_bytes=batch_bytes,
     )
     return updated
@@ -497,6 +567,20 @@ def test_validation_binds_batch_bytes_to_snapshot_feature_month():
         validate_prediction_suite(entries, snapshot, versions)
 
 
+def test_validation_requires_identical_horizon_neutral_batch_bytes():
+    snapshot, versions, entries = _validated_suite()
+    reversed_admins = list(
+        reversed(entries["6m"].frame["admin_code"].tolist())
+    )
+    entries["6m"] = _with_batch_bytes(
+        entries["6m"],
+        _batch_input_bytes(reversed_admins, snapshot.latest_feature_month),
+    )
+
+    with pytest.raises(ValueError, match="horizon-neutral"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
 @pytest.mark.parametrize(
     ("field", "value", "message"),
     [
@@ -522,6 +606,18 @@ def test_validation_rejects_invalid_batch_input_object_identity(
         validate_prediction_suite(entries, snapshot, versions)
 
 
+def test_validation_rejects_batch_input_generation_not_bound_to_submission():
+    snapshot, versions, entries = _validated_suite()
+    entry = entries["0m"]
+    entries["0m"] = replace(
+        entry,
+        batch_input=replace(entry.batch_input, generation="8"),
+    )
+
+    with pytest.raises(ValueError, match="submitted Batch input"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
 def test_validation_rejects_batch_snapshot_digest_mismatch():
     snapshot, versions, entries = _validated_suite()
     entries["0m"] = replace(
@@ -543,16 +639,167 @@ def test_validation_rejects_package_snapshot_digest_mismatch():
         validate_prediction_suite(entries, snapshot, versions)
 
 
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("horizon_key", "6m"),
+        (
+            "job_resource_name",
+            "projects/test/locations/us-central1/"
+            "batchPredictionJobs/not-numeric",
+        ),
+        (
+            "model_version_resource_name",
+            "projects/test/locations/us-central1/models/"
+            "fewsnet-partitioned-rf-0m@999",
+        ),
+        (
+            "input_uri",
+            f"{ROOT_URI}/runs/{SUITE_VERSION}/batch_prediction/"
+            "6m/input.jsonl",
+        ),
+        (
+            "destination_prefix",
+            f"{ROOT_URI}/runs/{SUITE_VERSION}/batch_prediction/6m/raw",
+        ),
+        (
+            "gcs_output_directory",
+            f"{ROOT_URI}/runs/{SUITE_VERSION}/batch_prediction/6m/raw/job",
+        ),
+    ],
+)
+def test_validation_rejects_completed_batch_job_identity_drift(field, value):
+    snapshot, versions, entries = _validated_suite()
+    object.__setattr__(
+        entries["0m"],
+        "batch_job",
+        replace(entries["0m"].batch_job, **{field: value}),
+    )
+
+    with pytest.raises(ValueError, match="Batch job"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
+def test_validation_requires_unique_completed_batch_jobs_across_horizons():
+    snapshot, versions, entries = _validated_suite()
+    six_month = entries["6m"]
+    entries["6m"] = replace(
+        six_month,
+        batch_job=replace(
+            six_month.batch_job,
+            job_resource_name=entries["0m"].batch_job.job_resource_name,
+        ),
+    )
+
+    with pytest.raises(ValueError, match="unique across horizons"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
+def test_validation_rejects_self_consistent_batch_input_outside_canonical_root():
+    snapshot, versions, entries = _validated_suite()
+    entry = entries["0m"]
+    wrong_uri = "gs://other-bucket/arbitrary/input.jsonl"
+    object.__setattr__(
+        entry,
+        "batch_input",
+        _ref_for_bytes(wrong_uri, entry.batch_input_bytes),
+    )
+    object.__setattr__(
+        entry,
+        "submitted_batch_input",
+        entry.batch_input,
+    )
+    object.__setattr__(
+        entry,
+        "batch_job",
+        replace(entry.batch_job, input_uri=wrong_uri),
+    )
+
+    with pytest.raises(ValueError, match="canonical Batch input"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
+def test_validation_rejects_snapshot_evidence_with_recomputed_object_ref():
+    snapshot, versions, entries = _validated_suite()
+    entry = entries["0m"]
+    payload = json.loads(entry.input_snapshot_ref_bytes)
+    payload["snapshot_content_sha256"] = "e" * 64
+    drifted_bytes = _json_bytes(payload)
+    object.__setattr__(entry, "input_snapshot_ref_bytes", drifted_bytes)
+    object.__setattr__(
+        entry,
+        "input_snapshot_ref",
+        _ref_for_bytes(entry.input_snapshot_ref.uri, drifted_bytes),
+    )
+
+    with pytest.raises(ValueError, match="input snapshot"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
+def test_validation_rejects_snapshot_object_ref_drift_across_horizons():
+    snapshot, versions, entries = _validated_suite()
+    object.__setattr__(
+        entries["6m"],
+        "input_snapshot_ref",
+        replace(entries["6m"].input_snapshot_ref, generation="8"),
+    )
+
+    with pytest.raises(ValueError, match="input snapshot.*ObjectRef"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
+@pytest.mark.parametrize("field", ["run_prediction", "suite_prediction"])
+def test_validation_rejects_prediction_output_uri_drift(field):
+    snapshot, versions, entries = _validated_suite()
+    entry = entries["0m"]
+    original = getattr(entry, field)
+    object.__setattr__(
+        entry,
+        field,
+        replace(original, uri=f"gs://other-bucket/{field}/0m.csv"),
+    )
+
+    with pytest.raises(ValueError, match="prediction.*URI"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
+def test_validation_rejects_prediction_artifacts_that_differ_from_formal_frame():
+    snapshot, versions, entries = _validated_suite()
+    entry = entries["0m"]
+    different_frame = entry.frame.copy()
+    different_frame.loc[0, "probability_crisis"] = 0.65
+    different_bytes = _prediction_csv_bytes(different_frame)
+    object.__setattr__(entry, "prediction_csv_bytes", different_bytes)
+    object.__setattr__(
+        entry,
+        "run_prediction",
+        _ref_for_bytes(entry.run_prediction.uri, different_bytes),
+    )
+    object.__setattr__(
+        entry,
+        "suite_prediction",
+        _ref_for_bytes(entry.suite_prediction.uri, different_bytes),
+    )
+
+    with pytest.raises(ValueError, match="prediction CSV.*formal frame"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
 class RecordingStore(LocalArtifactStore):
     def __init__(self, root):
         super().__init__(root)
         self.write_order: list[str] = []
         self.fail_uri: str | None = None
         self.commit_then_fail_uri: str | None = None
+        self.fail_reads_after_commit: dict[str, int] = {}
+        self._remaining_read_failures: dict[str, int] = {}
+        self.before_non_lease_write = None
 
     def put_bytes(self, uri, data, *, if_generation_match=None):
         if uri == self.fail_uri:
             raise RuntimeError(f"injected write failure for {uri}")
+        if "/locks/" not in uri and self.before_non_lease_write is not None:
+            self.before_non_lease_write(uri)
         ref = super().put_bytes(
             uri,
             data,
@@ -560,8 +807,18 @@ class RecordingStore(LocalArtifactStore):
         )
         self.write_order.append(uri)
         if uri == self.commit_then_fail_uri:
+            self._remaining_read_failures[uri] = (
+                self.fail_reads_after_commit.get(uri, 0)
+            )
             raise RuntimeError(f"injected post-commit failure for {uri}")
         return ref
+
+    def read_bytes(self, uri, *, generation=None):
+        remaining = self._remaining_read_failures.get(uri, 0)
+        if remaining > 0:
+            self._remaining_read_failures[uri] = remaining - 1
+            raise RuntimeError(f"injected read failure for {uri}")
+        return super().read_bytes(uri, generation=generation)
 
 
 class FakeAliasBackend:
@@ -572,21 +829,30 @@ class FakeAliasBackend:
         fail_parent=None,
         fail_after_commit=False,
         on_fail=None,
+        on_current=None,
+        on_move=None,
     ):
         self.versions = dict(versions)
         self.fail_parent = fail_parent
         self.fail_after_commit = fail_after_commit
         self.on_fail = on_fail
+        self.on_current = on_current
+        self.on_move = on_move
         self.current_calls: list[tuple[str, str]] = []
         self.move_calls: list[tuple[str, str, str]] = []
         self.restore_calls: list[tuple[str, str, str | None]] = []
 
     def current_version(self, parent, alias):
         self.current_calls.append((parent, alias))
-        return self.versions.get(parent)
+        current = self.versions.get(parent)
+        if self.on_current is not None:
+            self.on_current(parent, alias, current)
+        return current
 
     def move_alias(self, parent, alias, target_version):
         self.move_calls.append((parent, alias, target_version))
+        if self.on_move is not None:
+            self.on_move(parent, alias, target_version)
         if parent == self.fail_parent:
             if self.fail_after_commit:
                 self.versions[parent] = target_version
@@ -739,6 +1005,21 @@ def test_acquire_rejects_unexpired_competing_lease(tmp_path):
     assert exc_info.value.retryable is True
 
 
+@pytest.mark.parametrize("lease_seconds", [1, 899, 901])
+def test_acquire_requires_exact_900_second_lease(tmp_path, lease_seconds):
+    store = RecordingStore(tmp_path)
+
+    with pytest.raises(ValueError, match="900"):
+        acquire_promotion_lease(
+            store=store,
+            root_uri=ROOT_URI,
+            run_id=RUN_ID,
+            lease_id="lease-17",
+            utc_now=lambda: NOW,
+            lease_seconds=lease_seconds,
+        )
+
+
 @pytest.mark.parametrize(
     "existing_payload",
     [
@@ -826,6 +1107,36 @@ def test_promotion_moves_initially_absent_aliases_and_writes_current_last(
     assert lease_payload["status"] == "released"
 
 
+def test_promotion_renews_lease_before_each_forward_mutation(tmp_path):
+    snapshot = _snapshot()
+    versions = _registered_versions()
+    manifest = _suite_manifest(snapshot, versions)
+    store = RecordingStore(tmp_path)
+    lease_uri = f"{ROOT_URI}/locks/production-promotion.json"
+    observed_generations: list[int] = []
+
+    def record_lease_generation(*_args):
+        observed_generations.append(
+            int(store.get_ref(lease_uri).generation)
+        )
+
+    store.before_non_lease_write = record_lease_generation
+    aliases = FakeAliasBackend(
+        {version.parent_model_resource_name: None for version in versions.values()},
+        on_move=record_lease_generation,
+    )
+
+    result = promote_and_publish(
+        **_promotion_args(store, aliases, snapshot, versions, manifest)
+    )
+
+    assert result["status"] == "RELEASED"
+    assert len(observed_generations) == 6
+    assert observed_generations == list(
+        range(observed_generations[0], observed_generations[0] + 6)
+    )
+
+
 def test_second_alias_failure_restores_first_alias(tmp_path):
     snapshot = _snapshot()
     versions = _registered_versions()
@@ -847,11 +1158,6 @@ def test_second_alias_failure_restores_first_alias(tmp_path):
 
     assert aliases.versions == previous
     assert aliases.restore_calls == [
-        (
-            versions["6m"].parent_model_resource_name,
-            "production",
-            previous[versions["6m"].parent_model_resource_name],
-        ),
         (
             versions["0m"].parent_model_resource_name,
             "production",
@@ -888,6 +1194,96 @@ def test_alias_commit_then_raise_restores_the_attempted_alias(tmp_path):
         versions["6m"].parent_model_resource_name,
         versions["0m"].parent_model_resource_name,
     ]
+
+
+def test_alias_recovery_restores_only_aliases_still_on_candidate_target(
+    tmp_path,
+):
+    snapshot = _snapshot()
+    versions = _registered_versions()
+    manifest = _suite_manifest(snapshot, versions)
+    previous = {
+        version.parent_model_resource_name: (
+            f"{version.parent_model_resource_name}@9"
+        )
+        for version in versions.values()
+    }
+    zero_parent = versions["0m"].parent_model_resource_name
+    failing_parent = versions["6m"].parent_model_resource_name
+    newer_target = f"{zero_parent}@777"
+    aliases = None
+
+    def move_zero_alias_to_newer_owner():
+        aliases.versions[zero_parent] = newer_target
+
+    aliases = FakeAliasBackend(
+        previous,
+        fail_parent=failing_parent,
+        fail_after_commit=True,
+        on_fail=move_zero_alias_to_newer_owner,
+    )
+    store = RecordingStore(tmp_path)
+
+    with pytest.raises(PromotionError, match="injected alias failure"):
+        promote_and_publish(
+            **_promotion_args(store, aliases, snapshot, versions, manifest)
+        )
+
+    assert aliases.restore_calls == [
+        (failing_parent, "production", previous[failing_parent])
+    ]
+    assert aliases.versions[zero_parent] == newer_target
+
+
+def test_takeover_after_alias_state_check_prevents_restore_mutation(tmp_path):
+    snapshot = _snapshot()
+    versions = _registered_versions()
+    manifest = _suite_manifest(snapshot, versions)
+    previous = {
+        version.parent_model_resource_name: (
+            f"{version.parent_model_resource_name}@9"
+        )
+        for version in versions.values()
+    }
+    failing_parent = versions["6m"].parent_model_resource_name
+    newer_target = f"{failing_parent}@888"
+    store = RecordingStore(tmp_path)
+    lease_uri = f"{ROOT_URI}/locks/production-promotion.json"
+    takeover_triggered = False
+    aliases = None
+
+    def take_over_after_recovery_read(parent, _alias, _current):
+        nonlocal takeover_triggered
+        reads_for_parent = sum(
+            called_parent == parent
+            for called_parent, _ in aliases.current_calls
+        )
+        if parent != failing_parent or reads_for_parent != 2:
+            return
+        takeover_triggered = True
+        aliases.versions[parent] = newer_target
+        current_lease = store.get_ref(lease_uri)
+        store.put_bytes(
+            lease_uri,
+            _json_bytes(_lease_payload(lease_id="replacement")),
+            if_generation_match=current_lease.generation,
+        )
+
+    aliases = FakeAliasBackend(
+        previous,
+        fail_parent=failing_parent,
+        fail_after_commit=True,
+        on_current=take_over_after_recovery_read,
+    )
+
+    with pytest.raises(PromotionError):
+        promote_and_publish(
+            **_promotion_args(store, aliases, snapshot, versions, manifest)
+        )
+
+    assert takeover_triggered is True
+    assert aliases.restore_calls == []
+    assert aliases.versions[failing_parent] == newer_target
 
 
 def test_lost_lease_prevents_all_alias_recovery_mutations(tmp_path):
@@ -1092,6 +1488,106 @@ def test_current_pointer_commit_then_raise_keeps_candidate_authoritative(
             versions[horizon_key].version_resource_name
         )
     assert aliases.restore_calls == []
+
+
+def test_current_pointer_reconciliation_retries_transient_read_failure(tmp_path):
+    snapshot = _snapshot()
+    versions = _registered_versions()
+    manifest = _suite_manifest(snapshot, versions)
+    store = RecordingStore(tmp_path)
+    month_uri = (
+        f"{ROOT_URI}/released/{snapshot.latest_feature_month}/"
+        "production_suite_manifest.json"
+    )
+    current_uri = f"{ROOT_URI}/released/current.json"
+    old_pointer = _pointer_payload(
+        suite_version="old-suite",
+        feature_month=snapshot.latest_feature_month,
+        snapshot_digest="7" * 64,
+        suite_manifest_ref=_ref(
+            f"{ROOT_URI}/suites/old-suite/suite_manifest.json",
+            "8" * 64,
+            "1",
+        ),
+    )
+    old_bytes = _json_bytes(old_pointer)
+    store.put_bytes(month_uri, old_bytes, if_generation_match=0)
+    store.put_bytes(current_uri, old_bytes, if_generation_match=0)
+    previous = {
+        version.parent_model_resource_name: (
+            f"{version.parent_model_resource_name}@9"
+        )
+        for version in versions.values()
+    }
+    aliases = FakeAliasBackend(previous)
+    store.commit_then_fail_uri = current_uri
+    store.fail_reads_after_commit[current_uri] = 1
+
+    result = promote_and_publish(
+        **_promotion_args(store, aliases, snapshot, versions, manifest)
+    )
+
+    assert result["status"] == "RELEASED"
+    assert result["current_pointer"].generation == "2"
+    assert json.loads(store.read_text(current_uri))["suite_version"] == (
+        SUITE_VERSION
+    )
+    assert aliases.restore_calls == []
+
+
+def test_persistently_unreadable_current_pointer_is_indeterminate_without_rollback(
+    tmp_path,
+):
+    snapshot = _snapshot()
+    versions = _registered_versions()
+    manifest = _suite_manifest(snapshot, versions)
+    store = RecordingStore(tmp_path)
+    month_uri = (
+        f"{ROOT_URI}/released/{snapshot.latest_feature_month}/"
+        "production_suite_manifest.json"
+    )
+    current_uri = f"{ROOT_URI}/released/current.json"
+    old_pointer = _pointer_payload(
+        suite_version="old-suite",
+        feature_month=snapshot.latest_feature_month,
+        snapshot_digest="7" * 64,
+        suite_manifest_ref=_ref(
+            f"{ROOT_URI}/suites/old-suite/suite_manifest.json",
+            "8" * 64,
+            "1",
+        ),
+    )
+    old_bytes = _json_bytes(old_pointer)
+    store.put_bytes(month_uri, old_bytes, if_generation_match=0)
+    store.put_bytes(current_uri, old_bytes, if_generation_match=0)
+    previous = {
+        version.parent_model_resource_name: (
+            f"{version.parent_model_resource_name}@9"
+        )
+        for version in versions.values()
+    }
+    aliases = FakeAliasBackend(previous)
+    store.commit_then_fail_uri = current_uri
+    store.fail_reads_after_commit[current_uri] = 10
+
+    with pytest.raises(PromotionError) as exc_info:
+        promote_and_publish(
+            **_promotion_args(store, aliases, snapshot, versions, manifest)
+        )
+
+    assert getattr(exc_info.value, "indeterminate", False) is True
+    assert aliases.restore_calls == []
+    for horizon_key, version in versions.items():
+        assert aliases.versions[version.parent_model_resource_name] == (
+            versions[horizon_key].version_resource_name
+        )
+    assert json.loads(store.read_text(month_uri))["suite_version"] == (
+        SUITE_VERSION
+    )
+    store._remaining_read_failures[current_uri] = 0
+    assert json.loads(store.read_text(current_uri))["suite_version"] == (
+        SUITE_VERSION
+    )
 
 
 def test_same_snapshot_current_pointer_returns_noop_before_alias_reads(tmp_path):
