@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 16 second independent re-review fixes are locally complete; six total Important findings are closed, one Minor is deferred, and another independent re-review is pending
-- Current state: Tasks 1-16 are complete through the pending second Task 16 review-fix commit; model suite/artifact identity and exact prediction admin identity now join the prior exact-parent, strict-echo, dtype-safe JSONL, and nullable-integer publication gates
-- Blockers: none; Task 17 remains pending, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
+- Current task: Task 16 is controller-accepted through `35b96c5`; final independent review is clean, and Task 17 kickoff is next
+- Current state: Tasks 1-16 are complete; exact parent/instance/dtype/schema gates, suite/model/admin identity, deadline polling, and canonical run/suite publication-root binding are all closed
+- Blockers: none; Task 17 remains pending until its brief and pre-edit impact gate are recorded, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -37,7 +37,7 @@
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
 | 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
-| 16. Run exact-version Batch Prediction and normalize formal CSVs | second re-review fixes complete; independent re-review pending; one Minor deferred |
+| 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | pending |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
@@ -798,10 +798,34 @@
 - Scope/no-cloud confirmation: changes are limited to the Task 16 inference CLI, Batch normalization adapter, focused tests, and this ledger. No cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, alias, release-pointer, image, release, or smoke operation occurred; Task 17 was not started.
 - Second review-fix commit: `fix: bind FEWSNET inference identities` (this commit). Independent re-review remains required before Task 16 can be controller-accepted.
 
+### Task 16 Third and Fourth Re-review Fix Evidence
+
+- The next independent re-review reclassified the timeout-order observation as one Important finding: `wait_batch_prediction` could cancel before refreshing a job that had already succeeded within the deadline. GitNexus upstream impact for `wait_batch_prediction` was LOW, with no indexed upstream caller or unrelated process reach.
+- Strict timeout RED: the focused Task 16 command -> `1 failed, 42 passed in 34.08s`; the new deadline-success regression reproduced cancellation before the third authoritative `get()`.
+- Timeout GREEN: the same command -> `43 passed in 20.51s`; current state is now refreshed and processed before timeout cancellation, while genuine timeout still cancels once and drains to terminal cancellation/failure.
+- Timeout fix commit: `b33e8217a08538e3ffb528f6c5f77521d87ddc74` (`fix: poll FEWSNET batch state before timeout`). Its exact commit scope is `vertex/batch_prediction.py` plus `test_batch_prediction.py`.
+- The following independent re-review confirmed the timeout fix but found one new Important URI-boundary defect: `run_csv_uri` could use another bucket/root or a nested/empty run path while the suite CSV and model artifact remained under the canonical publication root.
+- GitNexus upstream impact for `_validate_prediction_uris` was LOW: one direct caller and only the existing Task 16 normalize/publish and CLI chains.
+- Strict publication-root RED: the focused Task 16 command -> `3 failed, 43 passed in 32.39s`; wrong-root and nested run paths were accepted, and the empty run ID reached storage instead of failing the URI gate.
+- Publication-root GREEN: the same command -> `46 passed in 19.67s`. `suite_csv_uri` now determines the exact publication root, and `run_csv_uri` must equal that root plus `runs/<one nonempty run-id segment>/predictions/{horizon}.csv`; all malformed variants reject before any write.
+- Publication-root fix commit: `35b96c5f679d87574598c32424cfe54d7d648b8a` (`fix: bind FEWSNET run publication root`). Its exact commit scope is `cli/infer.py` plus `test_batch_prediction.py`.
+- Final independent re-review at `35b96c5`: `0 Critical, 0 Important, 0 Minor`; spec compliance approved and task quality approved. Reviewer-focused verification was `46 passed in 21.28s`.
+
+## Task 16 Controller Acceptance
+
+- Accepted implementation range: `651057e743eb87d656eefd2e040da045229ad473..35b96c5f679d87574598c32424cfe54d7d648b8a`, comprising the initial implementation and four strict-TDD fix commits.
+- Fresh controller focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_batch_prediction.py -q -p no:cacheprovider` -> `46 passed in 21.87s`.
+- Fresh controller related verification: horizons, training inference, predictor server, registry, storage, contracts, and training-job tests -> `165 passed in 37.46s`.
+- Fresh controller full repository verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `645 passed, 1 skipped, 24 subtests passed in 55.70s`.
+- Static/dependency gates: Task 16 production/tests parse with `ast`, import successfully, compile with redirected bytecode, and preserve all required `google-cloud-aiplatform==1.161.0` `BatchPredictionJob.submit` parameters; `.venv/bin/python -m pip check` reports `No broken requirements found.`; `git diff --check 651057e..HEAD` exits `0`.
+- Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- GitNexus recovery and reconciliation: the first post-commit incremental refresh hit the known inconsistent `file_fts` error; the required retry detected the incomplete run and completed a full rebuild with `3,840` nodes, `8,075` edges, `166` clusters, and `253` flows. Exact-worktree compare against `651057e` reports CRITICAL over seven working-tree files and 22 Task 16 flows because it includes preserved user edits in `AGENTS.md`/`CLAUDE.md` and maps the complete new Task 16 boundary. Commit-range Git evidence proves the accepted range contains exactly the five authorized paths: `PROGRESS.md`, `cli/infer.py`, `vertex/batch_prediction.py`, `test_batch_prediction.py`, and the Batch fixture.
+- Scope/no-cloud confirmation: no live cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, alias, release-pointer, image, release, or smoke operation occurred.
+
 ## Resume
 
-- Exact next step: independent Task 16 re-review of both review-fix commits against `.superpowers/sdd/task-16-brief.md`; do not start Task 17 before controller acceptance.
-- Resume command: `git status --short --branch && sed -n '760,840p' PROGRESS.md && git show --stat --oneline HEAD`
+- Exact next step: generate the Task 17 brief, run pre-edit GitNexus upstream impact for every existing `core/validation.py` symbol scheduled for modification, record Task 17 kickoff, and dispatch a fresh strict-TDD implementer with fake/local backends only.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '800,900p' PROGRESS.md`
 
 ---
 
