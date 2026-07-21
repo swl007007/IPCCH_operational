@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 16 independent-review fixes are locally complete; four Important findings are closed, one Minor is deferred, and independent re-review is pending
-- Current state: Tasks 1-16 are complete through the pending Task 16 review-fix commit; exact-version parent binding, strict input/output echo validation, dtype-safe JSONL, and nullable-integer CSV publication are covered by focused and full regression
+- Current task: Task 16 second independent re-review fixes are locally complete; six total Important findings are closed, one Minor is deferred, and another independent re-review is pending
+- Current state: Tasks 1-16 are complete through the pending second Task 16 review-fix commit; model suite/artifact identity and exact prediction admin identity now join the prior exact-parent, strict-echo, dtype-safe JSONL, and nullable-integer publication gates
 - Blockers: none; Task 17 remains pending, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -37,7 +37,7 @@
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
 | 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
-| 16. Run exact-version Batch Prediction and normalize formal CSVs | review fixes complete; independent re-review pending; one Minor deferred |
+| 16. Run exact-version Batch Prediction and normalize formal CSVs | second re-review fixes complete; independent re-review pending; one Minor deferred |
 | 17. Validate three-horizon outputs and implement alias rollback publication | pending |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
@@ -779,11 +779,29 @@
 - Deferred Minor: `wait_batch_prediction` checks elapsed timeout before fetching the current job state, so a job that became terminal exactly at the deadline may receive an unnecessary cancellation request. This non-blocking ordering improvement is recorded but intentionally not changed in this fix wave.
 - Scope/no-cloud confirmation: changes remain limited to the Task 16 Batch adapter, focused tests, and this ledger. No cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, alias, release-pointer, image, release, or smoke operation occurred.
 - Review-fix commit: `fix: harden FEWSNET batch prediction contracts` (this commit). Independent re-review remains required before Task 17 starts.
+- Controller GitNexus reconciliation: a later exact-worktree `detect_changes(scope="staged")` repeat returned the false-negative `No changes detected` while Git still showed the exact three staged review-fix paths. The fallback exact-worktree comparison against `d22c6d6` reported HIGH risk, five working-tree files, 41 touched/adjacent symbols, and nine Task 16 internal flows; the five-file view included preserved user `AGENTS.md` and `CLAUDE.md` edits. `git diff --cached --name-status`, `git diff --cached --check`, and commit `33b2bc1` prove the actual fix commit contains only `PROGRESS.md`, `vertex/batch_prediction.py`, and `test_batch_prediction.py`.
+
+### Task 16 Second Independent Re-review Fix Evidence
+
+- Second re-review result: `0 Critical, 2 Important`; the previously deferred timeout-order Minor remains open and was not changed.
+- Review-fix base: `33b2bc170e7688232ed46a350429010221e5c4f9` (`fix: harden FEWSNET batch prediction contracts`).
+- Verified gaps: normalization/publication did not bind the requested suite to `RegisteredModelVersion.suite_version_alias` and `artifact_uri`; prediction identity comparison used lossy canonical keys and then retained the raw drifted `admin_code` representation.
+- Pre-authorized exact-worktree impact: `normalize_batch_output`, `_validate_prediction_uris`, and `_set_exact_identity` were LOW risk, each with one direct caller and two affected Task 16 CLI processes. No other existing function, class, or method was edited.
+- Strict RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_batch_prediction.py -q -p no:cacheprovider` -> `6 failed, 36 passed in 32.45s`. All six failures were expected `DID NOT RAISE` results for a wrong deterministic suite alias, wrong artifact suite, wrong artifact horizon, whitespace admin drift, leading-zero admin drift, and an artifact rooted outside the exact suite publication URI.
+- Suite/model binding: normalization now uses Task 15 `suite_version_alias(suite_version)` and requires the registered alias to match. It also requires the model artifact path to end exactly at `suites/{suite_version}/models/{horizon}`. Publication derives the complete expected artifact URI from `suite_csv_uri` and rejects any other bucket/root before immutable writes.
+- Exact prediction identity: after canonical-key reconciliation, normalization requires the raw prediction `admin_code` and `feature_month` to equal the echoed/submitted canonical identity exactly, then writes those canonical values into the formal record. Whitespace, leading zeros, type drift, and other lossy representations fail closed.
+- Focused GREEN: the exact RED command -> `42 passed in 19.60s`.
+- Related regression: horizons, training inference, predictor server, registry, storage, contracts, and training-job tests -> `165 passed in 40.68s`.
+- Fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `641 passed, 1 skipped, 24 subtests passed in 58.74s`.
+- Static/environment gates: all three changed Python files parse with `ast`; production imports and the reused Task 15 alias helper succeed; installed SDK `BatchPredictionJob.submit` still exposes every required keyword; no changed Python line exceeds 88 characters; `.venv/bin/python -m pip check` reports `No broken requirements found.`; and `git diff --check` exits `0`.
+- Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Scope/no-cloud confirmation: changes are limited to the Task 16 inference CLI, Batch normalization adapter, focused tests, and this ledger. No cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, alias, release-pointer, image, release, or smoke operation occurred; Task 17 was not started.
+- Second review-fix commit: `fix: bind FEWSNET inference identities` (this commit). Independent re-review remains required before Task 16 can be controller-accepted.
 
 ## Resume
 
-- Exact next step: independent Task 16 re-review of the review-fix commit against `.superpowers/sdd/task-16-brief.md`; do not start Task 17 before controller acceptance.
-- Resume command: `git status --short --branch && sed -n '732,810p' PROGRESS.md && git show --stat --oneline HEAD`
+- Exact next step: independent Task 16 re-review of both review-fix commits against `.superpowers/sdd/task-16-brief.md`; do not start Task 17 before controller acceptance.
+- Resume command: `git status --short --branch && sed -n '760,840p' PROGRESS.md && git show --stat --oneline HEAD`
 
 ---
 

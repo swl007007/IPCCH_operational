@@ -191,16 +191,23 @@ def _validate_prediction_uris(
         raise ValueError(
             "run_csv_uri must be runs/{run_id}/predictions/{horizon}.csv"
         )
-    expected_suite_segment = f"/suites/{suite_version}/"
+    expected_suite_suffix = f"/suites/{suite_version}{expected_suffix}"
     if (
         not isinstance(suite_csv_uri, str)
         or not suite_csv_uri.startswith("gs://")
-        or expected_suite_segment not in suite_csv_uri
-        or not suite_csv_uri.endswith(expected_suffix)
+        or not suite_csv_uri.endswith(expected_suite_suffix)
     ):
         raise ValueError(
             "suite_csv_uri must be "
             "suites/{suite_version}/predictions/{horizon}.csv"
+        )
+    suite_root_uri = suite_csv_uri[: -len(expected_suite_suffix)]
+    expected_artifact_uri = (
+        f"{suite_root_uri}/suites/{suite_version}/models/{horizon_key}"
+    )
+    if model_ref.artifact_uri != expected_artifact_uri:
+        raise ValueError(
+            "model artifact URI must match the exact suite publication root"
         )
 
 

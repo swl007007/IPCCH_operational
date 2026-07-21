@@ -635,6 +635,90 @@ def test_normalize_batch_output_requires_exact_echoed_input_instance(
         )
 
 
+@pytest.mark.parametrize(
+    ("model_ref", "message"),
+    [
+        (
+            replace(
+                _model_ref(),
+                suite_version_alias="fewsnet-prf-202604-other",
+            ),
+            "suite",
+        ),
+        (
+            replace(
+                _model_ref(),
+                artifact_uri=(
+                    "gs://bucket/fewsnet_partitioned_rf/suites/"
+                    "fewsnet-prf-202604-other/models/6m"
+                ),
+            ),
+            "artifact",
+        ),
+        (
+            replace(
+                _model_ref(),
+                artifact_uri=f"{SUITE_ROOT_URI}/models/12m",
+            ),
+            "artifact",
+        ),
+    ],
+    ids=["wrong-alias", "wrong-artifact-suite", "wrong-artifact-horizon"],
+)
+def test_normalize_batch_output_binds_model_to_suite_and_horizon(
+    model_ref,
+    message,
+):
+    with pytest.raises(ValueError, match=message):
+        _batch_module().normalize_batch_output(
+            [RAW_OUTPUT_FIXTURE],
+            _latest_input_frame(),
+            model_ref,
+            SUITE_VERSION,
+        )
+
+
+@pytest.mark.parametrize("drift", ["whitespace", "leading-zero"])
+def test_normalize_batch_output_rejects_lossy_prediction_admin_identity(
+    tmp_path,
+    drift,
+):
+    payloads = [
+        json.loads(line)
+        for line in RAW_OUTPUT_FIXTURE.read_text(encoding="utf-8").splitlines()
+    ]
+    input_frame = _latest_input_frame()
+    if drift == "whitespace":
+        payloads[0]["prediction"]["admin_code"] = " A "
+    elif drift == "leading-zero":
+        replacements = {"A": "1", "B": "2"}
+        input_frame["admin_code"] = input_frame["admin_code"].map(replacements)
+        for payload in payloads:
+            canonical = replacements[payload["instance"]["admin_code"]]
+            payload["instance"]["admin_code"] = canonical
+            payload["prediction"]["admin_code"] = canonical
+        payloads[0]["prediction"]["admin_code"] = "001"
+    else:
+        raise AssertionError(drift)
+    raw_path = tmp_path / "predictions_0001.jsonl"
+    raw_path.write_text(
+        "\n".join(
+            json.dumps(payload, separators=(",", ":"))
+            for payload in payloads
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="admin_code"):
+        _batch_module().normalize_batch_output(
+            [raw_path],
+            input_frame,
+            _model_ref(),
+            SUITE_VERSION,
+        )
+
+
 def _mutated_raw_file(tmp_path: Path, mutation: str) -> list[Path]:
     lines = RAW_OUTPUT_FIXTURE.read_text(encoding="utf-8").splitlines()
     if mutation == "error_file":
@@ -731,6 +815,32 @@ def test_normalize_and_publish_batch_output_writes_one_canonical_csv_to_both_uri
     csv = pd.read_csv(io.BytesIO(store.read_bytes(run_uri)))
     assert csv.columns.tolist() == list(FORMAL_PREDICTION_COLUMNS)
     assert csv["admin_code"].tolist() == ["B", "A"]
+
+
+def test_normalize_and_publish_binds_artifact_to_exact_suite_uri_before_writes(
+    tmp_path,
+):
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+    model_ref = replace(
+        _model_ref(),
+        artifact_uri=(
+            "gs://other-bucket/fewsnet_partitioned_rf/suites/"
+            f"{SUITE_VERSION}/models/6m"
+        ),
+    )
+
+    with pytest.raises(ValueError, match="artifact"):
+        _cli_module().normalize_and_publish_batch_output(
+            raw_paths=[RAW_OUTPUT_FIXTURE],
+            input_frame=_latest_input_frame(),
+            model_ref=model_ref,
+            suite_version=SUITE_VERSION,
+            run_csv_uri=f"{RUN_ROOT_URI}/predictions/6m.csv",
+            suite_csv_uri=f"{SUITE_ROOT_URI}/predictions/6m.csv",
+            store=store,
+        )
+
+    assert store.events == []
 
 
 def test_normalized_cluster_id_remains_nullable_integer_in_frame_and_csv(tmp_path):

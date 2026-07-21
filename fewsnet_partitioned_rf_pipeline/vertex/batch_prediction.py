@@ -28,6 +28,7 @@ from fewsnet_partitioned_rf_pipeline.schemas import (
     validate_deployment,
     validate_payload,
 )
+from fewsnet_partitioned_rf_pipeline.vertex.registry import suite_version_alias
 
 
 _TERMINAL_STATES = {
@@ -385,6 +386,7 @@ def normalize_batch_output(
     """Fail closed while restoring one formal record per input identity."""
     _validate_model_ref(model_ref)
     suite_version = _required_string("suite_version", suite_version)
+    _validate_model_suite_identity(model_ref, suite_version)
     expected_horizon_months = _HORIZON_MONTHS_BY_KEY[model_ref.horizon_key]
     input_identities = _input_identities(input_frame)
     expected_instances = _expected_input_instances(
@@ -470,13 +472,15 @@ def normalize_batch_output(
                     f"instance identity: instance={instance_key}, "
                     f"prediction={prediction_key}"
                 )
+            record = dict(prediction)
+            _set_exact_identity(record, "admin_code", instance_key[0])
+            _set_exact_identity(record, "feature_month", instance_key[1])
             if instance_key in records_by_key:
                 raise ValueError(
                     f"Batch Prediction output contains duplicate identity: "
                     f"{instance_key}"
                 )
 
-            record = dict(prediction)
             _set_exact_identity(
                 record,
                 "suite_version",
@@ -677,6 +681,28 @@ def _validate_model_ref(
         raise ValueError(
             "model version resource name must contain the exact numeric "
             "@version_id"
+        )
+
+
+def _validate_model_suite_identity(
+    model_ref: RegisteredModelVersion,
+    suite_version: str,
+) -> None:
+    expected_alias = suite_version_alias(suite_version)
+    if model_ref.suite_version_alias != expected_alias:
+        raise ValueError(
+            "model suite version alias differs from the requested suite"
+        )
+    expected_artifact_suffix = (
+        f"/suites/{suite_version}/models/{model_ref.horizon_key}"
+    )
+    if (
+        not isinstance(model_ref.artifact_uri, str)
+        or not model_ref.artifact_uri.startswith("gs://")
+        or not model_ref.artifact_uri.endswith(expected_artifact_suffix)
+    ):
+        raise ValueError(
+            "model artifact URI differs from the requested suite/horizon"
         )
 
 
