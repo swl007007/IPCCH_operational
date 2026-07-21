@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import csv
+import hashlib
+import io
+import json
 import math
 import re
 import sys
@@ -14,6 +18,7 @@ import pandas as pd
 
 from fewsnet_partitioned_rf_pipeline.config import (
     HORIZON_KEYS,
+    PARTITION_ASSET_PATH,
     PARTITION_ASSET_SHA256,
 )
 from fewsnet_partitioned_rf_pipeline.core.data import normalize_admin_code
@@ -93,6 +98,8 @@ class PredictionSuiteEntry:
     batch_input: ObjectRef
     batch_snapshot_content_sha256: str
     package_manifest: Mapping[str, Any]
+    admin_universe_bytes: bytes
+    batch_input_bytes: bytes
 
 
 class PackageValidationError(ValueError):
@@ -548,9 +555,15 @@ def validate_prediction_suite(
         raise ValueError("snapshot.area_count must be positive")
     if MONTH_PATTERN.fullmatch(snapshot.latest_feature_month) is None:
         raise ValueError("snapshot.latest_feature_month must be YYYY-MM")
+    _validate_object_ref(snapshot.admin_universe, "snapshot.admin_universe")
+    fixed_partition = PartitionMap.load(
+        PARTITION_ASSET_PATH,
+        PARTITION_ASSET_SHA256,
+    )
 
     suite_version: str | None = None
-    authoritative_admin_universe: set[str] | None = None
+    snapshot_admin_universe: set[str] | None = None
+    prediction_admin_universe: set[str] | None = None
     horizon_summaries: dict[str, dict[str, Any]] = {}
     for horizon_key in HORIZON_ORDER:
         entry = predictions[horizon_key]
@@ -564,6 +577,38 @@ def validate_prediction_suite(
             entry.batch_input,
             f"predictions.{horizon_key}.batch_input",
         )
+        _validate_ref_bytes(
+            entry.admin_universe_bytes,
+            snapshot.admin_universe,
+            f"predictions.{horizon_key}.admin_universe_bytes",
+        )
+        entry_snapshot_admins = _admin_universe_from_csv(
+            entry.admin_universe_bytes,
+            f"predictions.{horizon_key}.admin_universe_bytes",
+        )
+        if len(entry_snapshot_admins) != snapshot.area_count:
+            raise ValueError(
+                "snapshot admin universe row count must equal snapshot.area_count"
+            )
+        if snapshot_admin_universe is None:
+            snapshot_admin_universe = entry_snapshot_admins
+        elif entry_snapshot_admins != snapshot_admin_universe:
+            raise ValueError("snapshot admin universe differs across horizons")
+        _validate_ref_bytes(
+            entry.batch_input_bytes,
+            entry.batch_input,
+            f"predictions.{horizon_key}.batch_input_bytes",
+        )
+        batch_admin_universe = _batch_admin_universe_from_jsonl(
+            entry.batch_input_bytes,
+            horizon_key=horizon_key,
+            expected_feature_month=snapshot.latest_feature_month,
+        )
+        if batch_admin_universe != snapshot_admin_universe:
+            raise ValueError(
+                f"{horizon_key} Batch input admin universe does not match "
+                "the selected snapshot"
+            )
         validate_sha256(
             entry.batch_snapshot_content_sha256,
             f"predictions.{horizon_key}.batch_snapshot_content_sha256",
@@ -588,6 +633,8 @@ def validate_prediction_suite(
             version=version,
             package=package,
             horizon_key=horizon_key,
+            snapshot_admin_universe=snapshot_admin_universe,
+            fixed_partition=fixed_partition,
         )
         frame_suite_version = frame_summary.pop("suite_version")
         admin_universe = frame_summary.pop("admin_universe")
@@ -595,9 +642,9 @@ def validate_prediction_suite(
             suite_version = frame_suite_version
         elif frame_suite_version != suite_version:
             raise ValueError("prediction suite_version differs across horizons")
-        if authoritative_admin_universe is None:
-            authoritative_admin_universe = admin_universe
-        elif admin_universe != authoritative_admin_universe:
+        if prediction_admin_universe is None:
+            prediction_admin_universe = admin_universe
+        elif admin_universe != prediction_admin_universe:
             raise ValueError("prediction admin universe differs across horizons")
         horizon_summaries[horizon_key] = frame_summary
 
@@ -665,6 +712,98 @@ def _validate_object_ref(value: object, name: str) -> None:
         raise ValueError(f"{name} must contain a non-negative size")
 
 
+def _validate_ref_bytes(data: object, ref: ObjectRef, name: str) -> None:
+    if not isinstance(data, bytes):
+        raise TypeError(f"{name} must be bytes")
+    actual_sha256 = hashlib.sha256(data).hexdigest()
+    if actual_sha256 != ref.sha256:
+        raise ValueError(f"{name} SHA-256 does not match its ObjectRef")
+    if len(data) != ref.size_bytes:
+        raise ValueError(f"{name} size does not match its ObjectRef")
+
+
+def _admin_universe_from_csv(data: bytes, name: str) -> set[str]:
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError(f"{name} must be UTF-8 CSV") from exc
+    try:
+        rows = list(csv.reader(io.StringIO(text, newline="")))
+    except csv.Error as exc:
+        raise ValueError(f"{name} must be valid CSV") from exc
+    if not rows or rows[0] != ["admin_code"]:
+        raise ValueError(f"{name} must contain exactly one admin_code column")
+    if any(len(row) != 1 for row in rows[1:]):
+        raise ValueError(f"{name} must contain exactly one admin_code column")
+    admin_codes = [normalize_admin_code(row[0]) for row in rows[1:]]
+    if any(not admin_code for admin_code in admin_codes):
+        raise ValueError(f"{name} contains blank admin_code values")
+    if len(set(admin_codes)) != len(admin_codes):
+        raise ValueError(f"{name} contains duplicate admin_code values")
+    return set(admin_codes)
+
+
+def _batch_admin_universe_from_jsonl(
+    data: bytes,
+    *,
+    horizon_key: str,
+    expected_feature_month: str,
+) -> set[str]:
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError(f"{horizon_key} Batch input must be UTF-8 JSONL") from exc
+    lines = text.splitlines()
+    if not lines:
+        raise ValueError(f"{horizon_key} Batch input JSONL must not be empty")
+    admin_codes: list[str] = []
+    feature_months: list[str] = []
+    for line_number, line in enumerate(lines, start=1):
+        if not line.strip():
+            raise ValueError(
+                f"{horizon_key} Batch input row {line_number} is blank"
+            )
+        try:
+            payload = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ValueError(
+                f"{horizon_key} Batch input row {line_number} is invalid JSON"
+            ) from exc
+        if not isinstance(payload, dict):
+            raise ValueError(
+                f"{horizon_key} Batch input row {line_number} must be an object"
+            )
+        if "admin_code" not in payload or "feature_month" not in payload:
+            raise ValueError(
+                f"{horizon_key} Batch input row {line_number} lacks identity fields"
+            )
+        admin_code = normalize_admin_code(payload["admin_code"])
+        if not admin_code:
+            raise ValueError(
+                f"{horizon_key} Batch input contains blank admin_code values"
+            )
+        feature_month = payload["feature_month"]
+        if (
+            not isinstance(feature_month, str)
+            or MONTH_PATTERN.fullmatch(feature_month) is None
+        ):
+            raise ValueError(
+                f"{horizon_key} Batch input feature_month must be YYYY-MM"
+            )
+        admin_codes.append(admin_code)
+        feature_months.append(feature_month)
+    if len(set(admin_codes)) != len(admin_codes):
+        raise ValueError(
+            f"{horizon_key} Batch input contains duplicate admin_code values"
+        )
+    if set(feature_months) != {expected_feature_month}:
+        raise ValueError(
+            f"{horizon_key} Batch input feature_month must equal "
+            "the selected snapshot month"
+        )
+    return set(admin_codes)
+
+
 def _validate_suite_package(
     value: object,
     *,
@@ -714,6 +853,8 @@ def _validate_prediction_frame(
     version: RegisteredModelVersion,
     package: Mapping[str, Any],
     horizon_key: str,
+    snapshot_admin_universe: set[str],
+    fixed_partition: PartitionMap,
 ) -> dict[str, Any]:
     if not isinstance(frame, pd.DataFrame):
         raise TypeError(f"{horizon_key} prediction frame must be a DataFrame")
@@ -745,6 +886,11 @@ def _validate_prediction_frame(
         raise ValueError(
             f"{horizon_key} prediction admin universe does not match "
             "snapshot area count"
+        )
+    if admin_universe != snapshot_admin_universe:
+        raise ValueError(
+            f"{horizon_key} prediction admin universe does not match "
+            "snapshot admin universe"
         )
 
     feature_months = _prediction_months(
@@ -808,26 +954,20 @@ def _validate_prediction_frame(
     sources = frame["prediction_source"].tolist()
     if any(source not in PREDICTION_SOURCES for source in sources):
         raise ValueError(f"{horizon_key} prediction_source is invalid")
-    for cluster_id, source in zip(cluster_ids, sources, strict=True):
-        if (cluster_id is None) != (source == "pooled_unmapped"):
+    expected_clusters = fixed_partition.route(admin_codes).tolist()
+    for cluster_id, expected_cluster, source in zip(
+        cluster_ids,
+        expected_clusters,
+        sources,
+        strict=True,
+    ):
+        if cluster_id != expected_cluster:
+            raise ValueError(
+                f"{horizon_key} cluster_id does not match the fixed partition"
+            )
+        if (expected_cluster is None) != (source == "pooled_unmapped"):
             raise ValueError(f"{horizon_key} prediction route/source pair is invalid")
-
-    mapped_rows = [
-        (admin_code, cluster_id)
-        for admin_code, cluster_id in zip(
-            admin_codes,
-            cluster_ids,
-            strict=True,
-        )
-        if cluster_id is not None
-    ]
-    mapped_frame = pd.DataFrame(
-        mapped_rows,
-        columns=["admin_code", "cluster_id"],
-    )
-    coverage = PartitionMap.from_frame(mapped_frame).assert_release_coverage(
-        admin_codes
-    )
+    coverage = fixed_partition.assert_release_coverage(admin_codes)
 
     suite_versions = frame["suite_version"].tolist()
     if any(

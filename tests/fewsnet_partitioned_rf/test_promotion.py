@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import csv
 from dataclasses import asdict, replace
 from datetime import datetime, timedelta, timezone
+import hashlib
+import io
 import json
 from types import SimpleNamespace
 
@@ -9,6 +12,7 @@ import pandas as pd
 import pytest
 
 from fewsnet_partitioned_rf_pipeline.config import (
+    PARTITION_ASSET_PATH,
     PARTITION_ASSET_SHA256,
 )
 from fewsnet_partitioned_rf_pipeline.core import (
@@ -49,21 +53,88 @@ IMAGE_URI = f"us-central1-docker.pkg.dev/p/r/i@{IMAGE_DIGEST}"
 NOW = datetime(2026, 7, 21, 12, 0, tzinfo=timezone.utc)
 HORIZON_MONTHS = {"0m": 0, "6m": 6, "12m": 12}
 HORIZON_ORDER = ("0m", "6m", "12m")
-BATCH_DIGESTS = {"0m": "6" * 64, "6m": "7" * 64, "12m": "8" * 64}
 PREDICTION_DIGESTS = {
     "0m": "d" * 64,
     "6m": "e" * 64,
     "12m": "f" * 64,
 }
 
+_PARTITION_FRAME = pd.read_csv(
+    PARTITION_ASSET_PATH,
+    dtype={"FEWSNET_admin_code": "string"},
+    keep_default_na=False,
+)
+_APPROVED_ADMIN_CODES = _PARTITION_FRAME["FEWSNET_admin_code"].tolist()
+_APPROVED_CLUSTERS = dict(
+    zip(
+        _APPROVED_ADMIN_CODES,
+        _PARTITION_FRAME["cluster_id"].astype(int).tolist(),
+        strict=True,
+    )
+)
 
-def _ref(uri: str, digest: str = "d" * 64, generation: str = "7") -> ObjectRef:
+
+def _ref(
+    uri: str,
+    digest: str = "d" * 64,
+    generation: str = "7",
+    size_bytes: int = 123,
+) -> ObjectRef:
     return ObjectRef(
         uri=uri,
         generation=generation,
         sha256=digest,
-        size_bytes=123,
+        size_bytes=size_bytes,
     )
+
+
+def _ref_for_bytes(
+    uri: str,
+    data: bytes,
+    generation: str = "7",
+) -> ObjectRef:
+    return _ref(
+        uri,
+        hashlib.sha256(data).hexdigest(),
+        generation,
+        len(data),
+    )
+
+
+def _admin_codes(area_count: int, mapped_count: int | None = None) -> list[str]:
+    if mapped_count is None:
+        mapped_count = min(area_count, len(_APPROVED_ADMIN_CODES))
+    if not 0 <= mapped_count <= min(area_count, len(_APPROVED_ADMIN_CODES)):
+        raise ValueError("mapped_count is outside the available partition map")
+    mapped = _APPROVED_ADMIN_CODES[:mapped_count]
+    unmapped = [
+        f"UNMAPPED-{index:04d}"
+        for index in range(area_count - mapped_count)
+    ]
+    return [*mapped, *unmapped]
+
+
+def _admin_universe_bytes(admin_codes: list[str]) -> bytes:
+    buffer = io.StringIO(newline="")
+    writer = csv.writer(buffer, lineterminator="\n")
+    writer.writerow(["admin_code"])
+    writer.writerows([admin_code] for admin_code in admin_codes)
+    return buffer.getvalue().encode("utf-8")
+
+
+def _batch_input_bytes(admin_codes: list[str], feature_month: str) -> bytes:
+    lines = [
+        json.dumps(
+            {
+                "admin_code": admin_code,
+                "feature_month": feature_month,
+            },
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        for admin_code in admin_codes
+    ]
+    return ("\n".join(lines) + "\n").encode("utf-8")
 
 
 def _snapshot(
@@ -71,7 +142,11 @@ def _snapshot(
     area_count: int = 3,
     latest_feature_month: str = "2026-04",
     snapshot_digest: str = SNAPSHOT_DIGEST,
+    admin_codes: list[str] | None = None,
 ) -> SnapshotManifest:
+    if admin_codes is None:
+        admin_codes = _admin_codes(area_count)
+    admin_bytes = _admin_universe_bytes(admin_codes)
     return SnapshotManifest(
         snapshot_id="fewsnet-202604-test",
         created_at_utc="2026-07-20T00:00:00Z",
@@ -82,9 +157,9 @@ def _snapshot(
             "2" * 64,
         ),
         boundaries=_ref(f"{ROOT_URI}/inputs/boundaries.parquet", "3" * 64),
-        admin_universe=_ref(
+        admin_universe=_ref_for_bytes(
             f"{ROOT_URI}/inputs/admin-universe.csv",
-            "4" * 64,
+            admin_bytes,
         ),
         row_count=area_count * 24,
         area_count=area_count,
@@ -177,18 +252,15 @@ def _prediction_frame(
     snapshot: SnapshotManifest,
     version: RegisteredModelVersion,
     admin_codes: list[str],
-    *,
-    mapped_count: int | None = None,
 ) -> pd.DataFrame:
-    if mapped_count is None:
-        mapped_count = len(admin_codes)
     clusters = pd.array(
-        [0] * mapped_count + [None] * (len(admin_codes) - mapped_count),
+        [_APPROVED_CLUSTERS.get(admin_code) for admin_code in admin_codes],
         dtype="Int64",
     )
-    sources = ["partition_model"] * mapped_count + [
-        "pooled_unmapped"
-    ] * (len(admin_codes) - mapped_count)
+    sources = [
+        "pooled_unmapped" if pd.isna(cluster_id) else "partition_model"
+        for cluster_id in clusters
+    ]
     probabilities = [
         0.75 if index % 2 == 0 else 0.25
         for index in range(len(admin_codes))
@@ -222,27 +294,33 @@ def _prediction_entries(
     versions: dict[str, RegisteredModelVersion],
     *,
     admin_codes: list[str] | None = None,
-    mapped_count: int | None = None,
 ) -> dict[str, PredictionSuiteEntry]:
     if admin_codes is None:
-        admin_codes = [f"A{index}" for index in range(snapshot.area_count)]
+        admin_codes = _admin_codes(snapshot.area_count)
+    admin_bytes = _admin_universe_bytes(admin_codes)
     entries: dict[str, PredictionSuiteEntry] = {}
     for horizon_key in HORIZON_ORDER:
-        entries[horizon_key] = PredictionSuiteEntry(
+        batch_bytes = _batch_input_bytes(
+            admin_codes,
+            snapshot.latest_feature_month,
+        )
+        entry = PredictionSuiteEntry(
             frame=_prediction_frame(
                 snapshot,
                 versions[horizon_key],
                 admin_codes,
-                mapped_count=mapped_count,
             ),
-            batch_input=_ref(
+            batch_input=_ref_for_bytes(
                 f"{ROOT_URI}/runs/{RUN_ID}/batch_prediction/"
                 f"{horizon_key}/input.jsonl",
-                digest=BATCH_DIGESTS[horizon_key],
+                batch_bytes,
             ),
             batch_snapshot_content_sha256=snapshot.snapshot_content_sha256,
             package_manifest=_package_manifest(snapshot, horizon_key),
+            admin_universe_bytes=admin_bytes,
+            batch_input_bytes=batch_bytes,
         )
+        entries[horizon_key] = entry
     return entries
 
 
@@ -255,14 +333,31 @@ def _validated_suite(
     dict[str, RegisteredModelVersion],
     dict[str, PredictionSuiteEntry],
 ]:
-    snapshot = _snapshot(area_count=area_count)
+    admin_codes = _admin_codes(area_count, mapped_count)
+    snapshot = _snapshot(area_count=area_count, admin_codes=admin_codes)
     versions = _registered_versions()
     entries = _prediction_entries(
         snapshot,
         versions,
-        mapped_count=mapped_count,
+        admin_codes=admin_codes,
     )
     return snapshot, versions, entries
+
+
+def _with_batch_bytes(
+    entry: PredictionSuiteEntry,
+    batch_bytes: bytes,
+) -> PredictionSuiteEntry:
+    updated = replace(
+        entry,
+        batch_input=_ref_for_bytes(
+            entry.batch_input.uri,
+            batch_bytes,
+            entry.batch_input.generation,
+        ),
+        batch_input_bytes=batch_bytes,
+    )
+    return updated
 
 
 def test_validation_requires_exactly_three_horizons():
@@ -315,6 +410,17 @@ def test_validation_rejects_different_same_size_admin_universe_across_horizons()
         validate_prediction_suite(entries, snapshot, versions)
 
 
+def test_validation_binds_all_predictions_to_snapshot_admin_universe_bytes():
+    snapshot, versions, entries = _validated_suite()
+    for horizon_key in HORIZON_ORDER:
+        frame = entries[horizon_key].frame.copy()
+        frame.loc[0, "admin_code"] = "WRONG-BUT-SAME-SIZED"
+        entries[horizon_key] = replace(entries[horizon_key], frame=frame)
+
+    with pytest.raises(ValueError, match="snapshot admin universe"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
 def test_validation_rejects_invalid_probability_class_relationship():
     snapshot, versions, entries = _validated_suite()
     frame = entries["0m"].frame.copy()
@@ -345,6 +451,17 @@ def test_validation_rejects_partition_coverage_regression():
         validate_prediction_suite(entries, snapshot, versions)
 
 
+def test_validation_rejects_self_declared_cluster_outside_fixed_partition():
+    snapshot, versions, entries = _validated_suite()
+    frame = entries["0m"].frame.copy()
+    actual_cluster = int(frame.loc[0, "cluster_id"])
+    frame.loc[0, "cluster_id"] = (actual_cluster + 1) % 17
+    entries["0m"] = replace(entries["0m"], frame=frame)
+
+    with pytest.raises(ValueError, match="fixed partition"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
 def test_validation_rejects_exact_registered_model_version_mismatch():
     snapshot, versions, entries = _validated_suite()
     frame = entries["12m"].frame.copy()
@@ -352,6 +469,31 @@ def test_validation_rejects_exact_registered_model_version_mismatch():
     entries["12m"] = replace(entries["12m"], frame=frame)
 
     with pytest.raises(ValueError, match="registered model version"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
+def test_validation_binds_batch_bytes_to_prediction_admin_universe():
+    snapshot, versions, entries = _validated_suite()
+    wrong_admins = entries["0m"].frame["admin_code"].tolist()
+    wrong_admins[0] = "WRONG-BATCH-ADMIN"
+    entries["0m"] = _with_batch_bytes(
+        entries["0m"],
+        _batch_input_bytes(wrong_admins, snapshot.latest_feature_month),
+    )
+
+    with pytest.raises(ValueError, match="Batch input admin universe"):
+        validate_prediction_suite(entries, snapshot, versions)
+
+
+def test_validation_binds_batch_bytes_to_snapshot_feature_month():
+    snapshot, versions, entries = _validated_suite()
+    admins = entries["0m"].frame["admin_code"].tolist()
+    entries["0m"] = _with_batch_bytes(
+        entries["0m"],
+        _batch_input_bytes(admins, "2026-03"),
+    )
+
+    with pytest.raises(ValueError, match="Batch input feature_month"):
         validate_prediction_suite(entries, snapshot, versions)
 
 
@@ -406,6 +548,7 @@ class RecordingStore(LocalArtifactStore):
         super().__init__(root)
         self.write_order: list[str] = []
         self.fail_uri: str | None = None
+        self.commit_then_fail_uri: str | None = None
 
     def put_bytes(self, uri, data, *, if_generation_match=None):
         if uri == self.fail_uri:
@@ -416,13 +559,24 @@ class RecordingStore(LocalArtifactStore):
             if_generation_match=if_generation_match,
         )
         self.write_order.append(uri)
+        if uri == self.commit_then_fail_uri:
+            raise RuntimeError(f"injected post-commit failure for {uri}")
         return ref
 
 
 class FakeAliasBackend:
-    def __init__(self, versions, *, fail_parent=None):
+    def __init__(
+        self,
+        versions,
+        *,
+        fail_parent=None,
+        fail_after_commit=False,
+        on_fail=None,
+    ):
         self.versions = dict(versions)
         self.fail_parent = fail_parent
+        self.fail_after_commit = fail_after_commit
+        self.on_fail = on_fail
         self.current_calls: list[tuple[str, str]] = []
         self.move_calls: list[tuple[str, str, str]] = []
         self.restore_calls: list[tuple[str, str, str | None]] = []
@@ -434,6 +588,10 @@ class FakeAliasBackend:
     def move_alias(self, parent, alias, target_version):
         self.move_calls.append((parent, alias, target_version))
         if parent == self.fail_parent:
+            if self.fail_after_commit:
+                self.versions[parent] = target_version
+            if self.on_fail is not None:
+                self.on_fail()
             raise RuntimeError(f"injected alias failure for {parent}")
         self.versions[parent] = target_version
 
@@ -690,12 +848,88 @@ def test_second_alias_failure_restores_first_alias(tmp_path):
     assert aliases.versions == previous
     assert aliases.restore_calls == [
         (
+            versions["6m"].parent_model_resource_name,
+            "production",
+            previous[versions["6m"].parent_model_resource_name],
+        ),
+        (
             versions["0m"].parent_model_resource_name,
             "production",
             previous[versions["0m"].parent_model_resource_name],
         )
     ]
     assert not store.list(f"{ROOT_URI}/suites/{SUITE_VERSION}/")
+
+
+def test_alias_commit_then_raise_restores_the_attempted_alias(tmp_path):
+    snapshot = _snapshot()
+    versions = _registered_versions()
+    manifest = _suite_manifest(snapshot, versions)
+    previous = {
+        version.parent_model_resource_name: (
+            f"{version.parent_model_resource_name}@9"
+        )
+        for version in versions.values()
+    }
+    aliases = FakeAliasBackend(
+        previous,
+        fail_parent=versions["6m"].parent_model_resource_name,
+        fail_after_commit=True,
+    )
+    store = RecordingStore(tmp_path)
+
+    with pytest.raises(PromotionError, match="injected alias failure"):
+        promote_and_publish(
+            **_promotion_args(store, aliases, snapshot, versions, manifest)
+        )
+
+    assert aliases.versions == previous
+    assert [call[0] for call in aliases.restore_calls] == [
+        versions["6m"].parent_model_resource_name,
+        versions["0m"].parent_model_resource_name,
+    ]
+
+
+def test_lost_lease_prevents_all_alias_recovery_mutations(tmp_path):
+    snapshot = _snapshot()
+    versions = _registered_versions()
+    manifest = _suite_manifest(snapshot, versions)
+    store = RecordingStore(tmp_path)
+    lease_uri = f"{ROOT_URI}/locks/production-promotion.json"
+
+    def replace_lease_owner():
+        current = store.get_ref(lease_uri)
+        store.put_bytes(
+            lease_uri,
+            _json_bytes(_lease_payload(lease_id="replacement")),
+            if_generation_match=current.generation,
+        )
+
+    previous = {
+        version.parent_model_resource_name: (
+            f"{version.parent_model_resource_name}@9"
+        )
+        for version in versions.values()
+    }
+    aliases = FakeAliasBackend(
+        previous,
+        fail_parent=versions["6m"].parent_model_resource_name,
+        on_fail=replace_lease_owner,
+    )
+
+    with pytest.raises(PromotionError) as exc_info:
+        promote_and_publish(
+            **_promotion_args(store, aliases, snapshot, versions, manifest)
+        )
+
+    assert aliases.restore_calls == []
+    assert aliases.versions[versions["0m"].parent_model_resource_name] == (
+        versions["0m"].version_resource_name
+    )
+    failure_text = " ".join(
+        (*exc_info.value.rollback_failures, *exc_info.value.warnings)
+    )
+    assert "lease ownership was lost" in failure_text
 
 
 def test_alias_movement_is_idempotent_when_targets_are_already_production(
@@ -803,6 +1037,61 @@ def test_current_pointer_failure_restores_aliases_and_previous_month_pointer(
     assert store.read_bytes(current_uri) == old_bytes
     assert store.read_bytes(month_uri) == old_bytes
     assert store.get_ref(month_uri).generation == "3"
+
+
+def test_current_pointer_commit_then_raise_keeps_candidate_authoritative(
+    tmp_path,
+):
+    snapshot = _snapshot()
+    versions = _registered_versions()
+    manifest = _suite_manifest(snapshot, versions)
+    store = RecordingStore(tmp_path)
+    month_uri = (
+        f"{ROOT_URI}/released/{snapshot.latest_feature_month}/"
+        "production_suite_manifest.json"
+    )
+    current_uri = f"{ROOT_URI}/released/current.json"
+    old_suite_ref = _ref(
+        f"{ROOT_URI}/suites/old-suite/suite_manifest.json",
+        "8" * 64,
+        "1",
+    )
+    old_pointer = _pointer_payload(
+        suite_version="old-suite",
+        feature_month=snapshot.latest_feature_month,
+        snapshot_digest="7" * 64,
+        suite_manifest_ref=old_suite_ref,
+    )
+    old_bytes = _json_bytes(old_pointer)
+    store.put_bytes(month_uri, old_bytes, if_generation_match=0)
+    store.put_bytes(current_uri, old_bytes, if_generation_match=0)
+    previous = {
+        version.parent_model_resource_name: (
+            f"{version.parent_model_resource_name}@9"
+        )
+        for version in versions.values()
+    }
+    aliases = FakeAliasBackend(previous)
+    store.commit_then_fail_uri = current_uri
+
+    result = promote_and_publish(
+        **_promotion_args(store, aliases, snapshot, versions, manifest)
+    )
+
+    assert result["status"] == "RELEASED"
+    assert result["current_pointer"].generation == "2"
+    assert result["month_pointer"].generation == "2"
+    assert json.loads(store.read_text(current_uri))["suite_version"] == (
+        SUITE_VERSION
+    )
+    assert json.loads(store.read_text(month_uri))["suite_version"] == (
+        SUITE_VERSION
+    )
+    for horizon_key, version in versions.items():
+        assert aliases.versions[version.parent_model_resource_name] == (
+            versions[horizon_key].version_resource_name
+        )
+    assert aliases.restore_calls == []
 
 
 def test_same_snapshot_current_pointer_returns_noop_before_alias_reads(tmp_path):
