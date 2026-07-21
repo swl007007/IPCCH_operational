@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 13 three-horizon training worker and Vertex Custom Job spec is complete and independently approved through `f0da32afa95aaecc61aacdfed8a1cdcfd0fcf3bc`
-- Current state: Tasks 1-13 are complete; Task 13 trains/packages all three horizons, exposes the thin Custom Job lifecycle boundary, and verifies actual bytes at the exact existing generation before accepting immutable retries
-- Blockers: none for Task 13; Task 14 remains pending and has not started, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains outside the completed work
+- Current task: Task 14 shared custom prediction container implementation is complete in this commit; independent review is pending
+- Current state: Tasks 1-13 are complete; Task 14 now provides the fail-closed Vertex HTTP server, exact shared-image Docker contract, and local package-serving regression coverage
+- Blockers: none for Task 14 implementation; Task 15 has not started, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains outside the authorized local/fake boundary
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -35,7 +35,7 @@
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
 | 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
-| 14. Serve registered packages with a shared custom prediction container | pending |
+| 14. Serve registered packages with a shared custom prediction container | implementation committed in this commit; independent review pending |
 | 15. Register three stable parent models and immutable candidate versions | pending |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
 | 17. Validate three-horizon outputs and implement alias rollback publication | pending |
@@ -588,10 +588,42 @@
 - Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
 - Scope/no-cloud confirmation: Task 14 was not started; no real Custom Job, GCS write, Model Registry, Batch Prediction, Endpoint, alias, release pointer, or gated cloud smoke action occurred.
 
+## Task 14 Kickoff
+
+- Implementation base: `9c6df4ab07a59a0260153e46b43d56d4db948b30`; branch `features/fewsnet-partitioned-rf-suite`; linked worktree `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`.
+- Authority check: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`, and normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Fresh requirements handoff: `.superpowers/sdd/task-14-brief.md`, generated directly from the approved Task 14 plan text before implementation.
+- Pre-flight result: no conflict was found between Task 14, the frozen design, Task 13's shared image/trainer command, Task 12's seven-file package loader, or Task 15's future registry inputs. Task 14 creates only the predictor server, dedicated Dockerfile, two focused test files, and this ledger.
+- Existing-symbol blast radius: no existing function, class, or method is scheduled for modification. The additive server composes `load_model_package`, `PartitionedRFPredictor.predict_frame`, and the existing artifact-store protocol unchanged. Any discovered need to edit an existing symbol requires a fresh exact-worktree upstream impact report before the edit; HIGH or CRITICAL risk must be reported before proceeding.
+- GitNexus recovery: the first incremental refresh failed because the exact-worktree FTS index was inconsistent. A second run detected the incomplete incremental flag, forced a full rebuild, and succeeded at current HEAD with `3,480` nodes, `7,181` edges, `145` clusters, and `230` flows.
+- Fresh baseline: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `545 passed, 1 skipped, 24 subtests passed in 41.51s`.
+- Strict RED command: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_predictor_server.py tests/fewsnet_partitioned_rf/test_runtime_image.py -q -p no:cacheprovider`; expected initial failure is the absent Task 14 server and image contract.
+- GREEN/related verification: rerun the focused command, run the import smoke from the approved plan, then run package/inference/storage-related regressions and one fresh full repository suite before commit.
+- Scope boundary: tests use temporary packages, `LocalArtifactStore`, and FastAPI's local test client only. No image build/push, real GCS read/write, Model Registry upload, Batch Prediction, Endpoint, alias mutation, release-pointer mutation, or gated cloud smoke is authorized in Task 14.
+
+## Task 14 Implementation Evidence
+
+- Start state: exact linked worktree and branch matched the kickoff at `9c6df4ab07a59a0260153e46b43d56d4db948b30`; pre-existing user changes in `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` were preserved and excluded from staging.
+- Existing-symbol scope: Task 14 added new symbols only. `load_model_package`, `PartitionedRFPredictor.predict_frame`, `ArtifactStore`, `LocalArtifactStore`, and `GCSArtifactStore` are consumed unchanged; no existing function, class, or method required an edit.
+- Strict RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_predictor_server.py tests/fewsnet_partitioned_rf/test_runtime_image.py -q -p no:cacheprovider` -> `12 failed in 12.50s`. Eleven tests failed with the expected absent `predictor_server` module and the image contract failed with the expected absent Dockerfile.
+- Minimal GREEN: `create_app` resolves the mandated Vertex environment values inside a guarded load block, localizes exactly `PACKAGE_FILES` once per app creation, validates image digest/source commit plus the package contract through `load_model_package`, stores either the predictor or startup error, and installs fail-closed health/predict routes. Requests must contain only `instances`; every instance must contain exactly `admin_code`, `feature_month`, and the package feature allowlist. The model-fixed horizon cannot be supplied by the request.
+- Shared image: `docker/Dockerfile.fewsnet-partitioned-rf` matches the approved Python 3.11 image, labels the training/predictor/orchestrator entrypoints, installs only `requirements-fewsnet-partitioned-rf.txt`, records `FEWSNET_SOURCE_GIT_COMMIT`, exposes `8080`, and defaults to the predictor module. No image build, push, or registry action was performed.
+- Final focused GREEN after the green-state response/test-constant refactors: the exact RED command -> `12 passed in 8.06s`.
+- Approved import smoke: `.venv/bin/python -c "from fewsnet_partitioned_rf_pipeline.vertex.predictor_server import create_app; assert callable(create_app)"` -> exit `0`.
+- Related regression: model-package, training/inference, storage, runtime-foundation, and training-job tests -> `104 passed in 27.29s`.
+- Final fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `557 passed, 1 skipped, 24 subtests passed in 40.81s`.
+- Static/dependency gates: all three changed Python files parse with `ast`; no changed Python line exceeds 100 characters; the only longer changed line is the mandated predictor Docker label; `.venv/bin/python -m pip check` -> `No broken requirements found.`
+- GitNexus refresh: post-code incremental analysis first succeeded with `3,534` nodes, `7,334` edges, `152` clusters, and `232` flows. The ledger-only incremental refresh then hit the known FTS inconsistency; the immediate retry detected the incomplete flag, forced a full rebuild, and succeeded. The final test-constant refresh completed incrementally at `3,536` nodes, `7,336` edges, `152` clusters, and `232` flows.
+- Staged GitNexus reconciliation: the duplicate-name `repo="IPCCH_operational"` lookup reports LOW risk, five changed files, three documentation symbols, and zero processes, under-attributing the new files. The exact-worktree-path lookup reports HIGH by additive count: 46 newly indexed symbols and ten flows, all starting at the new `create_app` and descending through existing package-validation/download paths. New public-symbol upstream checks are LOW (`create_app`, `_localize_package`, and `_validated_instances` have no indexed upstream production impact; `main` has one direct module-guard caller). Zero-context staged diff confirms no existing production symbol body changed.
+- Self-review: missing environment or any localization/package/checksum/dependency/image-digest/source-commit failure produces health and predict `503`; a valid package produces health `200`; prediction preserves instance order and JSON-safe formal rows; missing or undeclared features and request-level horizon fields produce `400`. Tests use temporary packages, `LocalArtifactStore`, and `TestClient`; no real cloud client or backend is invoked.
+- Authority preservation: design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Implementation commit: `feat: serve FEWSNET models in Vertex` (this commit). Task 15 was not started.
+- Scope/no-cloud confirmation: no real GCP/GCS/Vertex Custom Job/Model Registry/Batch Prediction/Endpoint, image build/push, alias mutation, release-pointer mutation, or gated cloud smoke action occurred.
+
 ## Resume
 
-- Exact next step: Task 13 is complete. Task 14 is pending; before starting it, verify the exact worktree/branch, read this ledger and the approved Task 14 plan text, generate a fresh Task 14 brief, and preserve the no-cloud-write boundary.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '540,640p' PROGRESS.md && tail -n 160 .superpowers/sdd/task-13-report.md`
+- Exact next step: run an independent Task 14 review against this implementation commit; fix and re-review every Critical or Important finding before controller acceptance. Do not begin Task 15 yet.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '585,680p' PROGRESS.md && tail -n 120 .superpowers/sdd/task-14-report.md`
 
 ---
 
