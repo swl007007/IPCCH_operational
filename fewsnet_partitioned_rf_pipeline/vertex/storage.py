@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import re
 import shutil
+import tempfile
 import threading
 from pathlib import Path, PurePosixPath
 from typing import Any, Protocol
@@ -320,6 +321,14 @@ def put_immutable_or_verify(store: ArtifactStore, uri: str, data: bytes) -> Obje
             raise GenerationConflict(
                 f"immutable object already exists with different bytes: {uri}"
             )
+        existing_data = store.read_bytes(uri, generation=existing.generation)
+        if (
+            len(existing_data) != len(data)
+            or hashlib.sha256(existing_data).hexdigest() != intended_sha256
+        ):
+            raise GenerationConflict(
+                f"immutable object already exists with different bytes: {uri}"
+            )
         return existing
 
 
@@ -336,6 +345,20 @@ def upload_file_immutable_or_verify(
             raise GenerationConflict(
                 f"immutable object already exists with different bytes: {uri}"
             )
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            existing_path = Path(temporary_directory) / "existing"
+            store.download_file(
+                uri,
+                existing_path,
+                generation=existing.generation,
+            )
+            if (
+                existing_path.stat().st_size != intended_size
+                or sha256_file(existing_path) != intended_sha256
+            ):
+                raise GenerationConflict(
+                    f"immutable object already exists with different bytes: {uri}"
+                )
         return existing
 
 

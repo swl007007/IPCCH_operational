@@ -424,6 +424,47 @@ def test_gcs_store_never_reuses_object_missing_checksum_metadata():
         put_immutable_or_verify(store, "gs://bucket/legacy/object", b"same")
 
 
+def test_gcs_immutable_byte_retry_rehashes_exact_existing_generation():
+    intended = b"same"
+    stored = b"evil"
+    assert len(stored) == len(intended)
+    uri = "gs://bucket/forged/bytes.bin"
+    client = _StatefulFakeStorageClient()
+    client.seed(
+        uri,
+        stored,
+        metadata={"sha256": hashlib.sha256(intended).hexdigest()},
+    )
+    store = GCSArtifactStore(client)
+
+    with pytest.raises(GenerationConflict, match="different bytes"):
+        put_immutable_or_verify(store, uri, intended)
+
+    assert client.download_bytes_preconditions == [1]
+
+
+def test_gcs_immutable_file_retry_rehashes_exact_existing_generation(tmp_path):
+    intended = b"same"
+    stored = b"evil"
+    assert len(stored) == len(intended)
+    source = tmp_path / "intended.bin"
+    source.write_bytes(intended)
+    uri = "gs://bucket/forged/file.bin"
+    client = _StatefulFakeStorageClient()
+    client.seed(
+        uri,
+        stored,
+        metadata={"sha256": hashlib.sha256(intended).hexdigest()},
+    )
+    store = GCSArtifactStore(client)
+
+    with pytest.raises(GenerationConflict, match="different bytes"):
+        upload_file_immutable_or_verify(store, source, uri)
+
+    assert len(client.download_filename_arguments) == 1
+    assert client.download_filename_arguments[0][1] == 1
+
+
 def test_gcs_store_preserves_valid_colon_object_names():
     store = GCSArtifactStore(_StatefulFakeStorageClient())
     uri = "gs://bucket/reports/2026-07-20T00:00:00Z.json"

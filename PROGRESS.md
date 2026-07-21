@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 13 three-horizon training worker and Vertex Custom Job spec implementation and verification are complete from base commit `ecf6863d1b68e2daa718397c268987a6f9ee6efc`; the commit gate is in progress
-- Current state: Tasks 1-12 are complete; Task 13 now localizes and validates one immutable snapshot, trains/packages all three horizons, writes immutable aggregate/result evidence, and exposes the thin Custom Job submit/persist/wait/cancel boundary
-- Blockers: none; Task 13 independent review remains next, while every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation stayed outside this implementation step
+- Current task: Task 13 implementation is committed at `d08bbdb1964e026118bcf6ecc688cb2a17d14abf`; its Important immutable-retry review finding is fixed and verified, with independent re-review next
+- Current state: Tasks 1-12 are complete; Task 13 now also verifies the bytes of the exact existing object generation before accepting an immutable retry, rather than trusting checksum metadata and size alone
+- Blockers: none; the narrow Task 13 review-fix commit and independent re-review remain next, while every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation stayed outside this implementation step
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -34,7 +34,7 @@
 | 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
 | 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
-| 13. Build the three-horizon training worker and Vertex Custom Job spec | implementation complete; independent review pending |
+| 13. Build the three-horizon training worker and Vertex Custom Job spec | implementation committed; Important review finding fixed and verified; independent re-review pending |
 | 14. Serve registered packages with a shared custom prediction container | pending |
 | 15. Register three stable parent models and immutable candidate versions | pending |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
@@ -562,10 +562,26 @@
 - Maintainability note: `cli/train.py` is 535 lines and `vertex/training_job.py` is 319 lines. The size reflects explicit validation and the mandated two-file boundary; helpers are single-purpose, but further lifecycle growth should move into Task 18 orchestration rather than expanding these modules.
 - Authority/no-cloud confirmation: design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`. Tests used only `LocalArtifactStore` and a fake backend; no real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer write occurred.
 
+### Task 13 Independent-Review Fix Evidence
+
+- Review finding: after a create-only `GenerationConflict`, `put_immutable_or_verify` and `upload_file_immutable_or_verify` trusted `ObjectRef.sha256` plus `size_bytes`. Forged or stale metadata could therefore claim the intended identity while same-size stored bytes differed.
+- Authorized blast radius: `put_immutable_or_verify` was HIGH risk with six direct callers, 31 total impacts, and three process families; `upload_file_immutable_or_verify` had a degraded LOW result, while exact context showed four direct callers. The controller reviewed the shared-storage scope and authorized this narrow fix before edits.
+- Strict review RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_storage.py -q -p no:cacheprovider -k 'immutable_byte_retry_rehashes or immutable_file_retry_rehashes'` -> `2 failed, 24 deselected in 1.37s`; both failures were the expected `Failed: DID NOT RAISE GenerationConflict` when forged SHA-256 metadata and same-size stored bytes differed from the intended bytes.
+- Minimal fix: retain metadata and size as fail-fast gates, then read bytes at `existing.generation` for the byte helper or download that exact generation into `TemporaryDirectory` for the file helper. The byte helper recomputes SHA-256 from returned bytes; the file helper uses streaming `sha256_file`. Content mismatch and generation replacement fail closed, while byte-identical retry and missing-metadata behavior remain unchanged.
+- Focused review GREEN: the exact RED command -> `2 passed, 24 deselected in 0.67s`; assertions also prove the GCS double received generation `1` for both exact-generation downloads.
+- Full storage regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_storage.py -q -p no:cacheprovider` -> `26 passed in 3.68s`.
+- Snapshot staging regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_snapshot_staging.py -q -p no:cacheprovider` -> `23 passed in 4.37s`.
+- Task 13 plus Task 12 package regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_job.py tests/fewsnet_partitioned_rf/test_model_package.py -q -p no:cacheprovider` -> `61 passed in 12.88s`.
+- Complete FEWSNET regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf -q -p no:cacheprovider` -> `248 passed in 29.54s`.
+- Fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `545 passed, 1 skipped, 24 subtests passed in 39.92s`.
+- Static/dependency gates: both changed Python files parse with `ast`; storage public imports succeed; no changed line exceeds 100 characters; `.venv/bin/python -m pip check` reports `No broken requirements found.`; focused `git diff --check` is clean.
+- Final staged GitNexus reconciliation: the required named-repo call with the exact `worktree` argument reports LOW risk, three changed documentation symbols, and zero affected processes, but under-attributes both Python files because duplicate `IPCCH_operational` registrations select the canonical-root index. The exact worktree-path call reports MEDIUM risk, eleven changed symbols, and four processes, but hunk attribution labels unchanged adjacent bodies (`put_mutable_or_verify`, `sha256_file`, and the following colon-name test). Zero-context staged diff confirms the only production bodies changed are the two authorized immutable helpers; the four reported processes are existing `sha256_file` users reached through line-shift attribution, not unrelated behavior changes.
+- Authority/scope preservation: design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`. No worker/job API, Task 14+, frozen design/plan, dependency, real cloud object, or external service was changed.
+
 ## Resume
 
-- Exact next step: complete the exact staged-scope Git/GitNexus gate, commit with `feat: add FEWSNET Vertex training job`, then dispatch independent Task 13 review from the implementation commit.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '538,610p' PROGRESS.md && cat .superpowers/sdd/task-13-report.md`
+- Exact next step: commit the narrow immutable-retry fix with subject `fix: verify FEWSNET immutable retry bytes`, then run independent Task 13 re-review across `d08bbdb..HEAD`; do not start Task 14 before acceptance.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '540,620p' PROGRESS.md && tail -n 120 .superpowers/sdd/task-13-report.md`
 
 ---
 
