@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 10 Important review fixes complete; independent re-review pending
-- Current state: Tasks 1-9 are complete and independently reviewed; both Task 10 Important findings were reproduced and fixed with fresh focused, related, and full regression verification, while the non-blocking Task 7 ordering Minor and Task 9 sklearn `NotFittedError` idiom Minor remain deferred for final whole-branch triage
-- Blockers: Task 11 remains blocked until the Task 10 fix commit passes independent re-review
+- Current task: Task 11 frozen Stage 3 parity evidence
+- Current state: Tasks 1-10 are complete and independently reviewed; both Task 10 Important findings are closed with a clean re-review and fresh controller focused, related, and full regression verification, while the non-blocking Task 7 ordering Minor and Task 9 sklearn `NotFittedError` idiom Minor remain deferred for final whole-branch triage
+- Blockers: none for Task 11 implementation
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -31,7 +31,7 @@
 | 7. Implement keyed horizon alignment and temporal windows | complete; independent re-review clean through `8ff2847`; one Minor deferred |
 | 8. Validate and route the fixed partition map | complete; independent re-review clean through `20a6e0e` |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | complete; independent review clean through `b91e24a`; one Minor deferred |
-| 10. Train partitioned RF models and produce formal local predictions | complete; two Important review fixes verified; independent re-review pending |
+| 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
 | 11. Freeze reference Stage 3 parity evidence | pending |
 | 12. Write and validate Vertex-compatible model packages | pending |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
@@ -396,8 +396,8 @@
 - GitNexus: the exact-worktree index was refreshed at base `06941e4`; exact-worktree query/context confirmed Task 2/5/7/8/9 consumers. No existing function, class, or method was modified, so no pre-edit symbol impact gate was triggered. Exact-worktree staged `detect_changes` reported LOW risk, four changed files, three indexed `PROGRESS.md` documentation sections, and zero affected execution processes; the new Python symbols were not surfaced in the staged symbol list.
 - Preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`; fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
 - Scope boundary: only the two additive core modules, the Task 10 focused test, and this ledger are tracked Task 10 changes. The pre-existing `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` changes remain unstaged. No Task 11 parity fixture/tool, GCP/GCS/Vertex operation, Model Registry call, Batch Prediction, alias mutation, release-pointer write, IPCCH pipeline edit, or external artifact mutation was introduced.
-- Implementation commit: this Task 10 commit; the exact hash is recorded in `.superpowers/sdd/task-10-report.md` after commit.
-- Task 10 implementation status: complete; independent review is required before Task 11 starts.
+- Implementation commit: `dc627331942536ca5dd084e83a24cd6f41e40f5d` (`dc62733 feat: train partitioned FEWSNET RF models`).
+- Task 10 implementation status after the first review: complete but blocked by two Important findings before Task 11.
 
 ### Task 10 Important Review Fix
 
@@ -413,12 +413,18 @@
 - Fresh full repository GREEN: `476 passed, 1 skipped, 24 subtests passed in 32.74s`.
 - Static/dependency/preservation audit: both changed Python files parse with `ast`; `.venv/bin/python -m pip check` reports `No broken requirements found.`; approved design, plan, and fixed partition SHA-256 values remain unchanged.
 - Scope boundary: only `PROGRESS.md`, `core/training.py`, and `test_training_inference.py` are intended for the separate fix commit. No `PartitionMap`, inference, frozen design/plan, Task 11, cloud, alias, release-pointer, IPCCH pipeline, or external artifact change was made.
-- Fix status: implementation and local verification complete; exact fix commit and staged GitNexus evidence are recorded in `.superpowers/sdd/task-10-report.md`. Independent re-review remains mandatory before Task 11 starts.
+- Fix commit: `891b0f928f07f08f6930b8d148564c2fda1c55bf` (`891b0f9 fix: bind FEWSNET partition identity`).
+- Independent Task 10 re-review: approved with no Critical, Important, or Minor findings. The supplied map is now bound to the checksum-loaded approved asset by mapped count, cluster set, deterministic normalized digest, and exact content before fit/serialization; the sklearn bridge rejects non-main/post-worker startup before mutation and restores every process-global change from the first assignment onward.
+- Reviewer focused re-review: the four original-finding regressions -> `4 passed, 11 deselected`.
+- Controller fresh focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_inference.py -q -p no:cacheprovider` -> `15 passed in 18.20s`.
+- Controller fresh related regression: Task 2 contracts plus Tasks 5, 7, 8, 9, and 10 -> `118 passed in 18.60s`.
+- Controller fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `476 passed, 1 skipped, 24 subtests passed in 33.83s`.
+- Task 10 final status: complete and independently re-reviewed. Task 11 is unblocked; no cloud write is authorized at this stage.
 
 ## Resume
 
-- Exact next step: independently re-review the separate Task 10 Important-fix commit and updated report. Task 11 remains blocked until that re-review is clean; do not perform any GCP/Vertex write.
-- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1725,1912p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,460p' PROGRESS.md`
+- Exact next step: after committing this Task 10 review ledger, dispatch a fresh Task 11 implementer from the resulting ledger-consistency commit using `.superpowers/sdd/task-11-brief.md`; Task 11 may read the approved external reference checkout only through its developer fixture generator and must perform no cloud write.
+- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1832,1912p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,475p' PROGRESS.md`
 
 ---
 
