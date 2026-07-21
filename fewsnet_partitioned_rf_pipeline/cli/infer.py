@@ -182,15 +182,6 @@ def _validate_prediction_uris(
 ) -> None:
     horizon_key = model_ref.horizon_key
     expected_suffix = f"/predictions/{horizon_key}.csv"
-    if (
-        not isinstance(run_csv_uri, str)
-        or not run_csv_uri.startswith("gs://")
-        or "/runs/" not in run_csv_uri
-        or not run_csv_uri.endswith(expected_suffix)
-    ):
-        raise ValueError(
-            "run_csv_uri must be runs/{run_id}/predictions/{horizon}.csv"
-        )
     expected_suite_suffix = f"/suites/{suite_version}{expected_suffix}"
     if (
         not isinstance(suite_csv_uri, str)
@@ -201,9 +192,23 @@ def _validate_prediction_uris(
             "suite_csv_uri must be "
             "suites/{suite_version}/predictions/{horizon}.csv"
         )
-    suite_root_uri = suite_csv_uri[: -len(expected_suite_suffix)]
+    publication_root = suite_csv_uri[: -len(expected_suite_suffix)]
+    expected_run_prefix = f"{publication_root}/runs/"
+    if (
+        not isinstance(run_csv_uri, str)
+        or not run_csv_uri.startswith(expected_run_prefix)
+        or not run_csv_uri.endswith(expected_suffix)
+    ):
+        raise ValueError(
+            "run_csv_uri must be runs/{run_id}/predictions/{horizon}.csv"
+        )
+    run_id = run_csv_uri[len(expected_run_prefix) : -len(expected_suffix)]
+    if not run_id or "/" in run_id:
+        raise ValueError(
+            "run_csv_uri must be runs/{run_id}/predictions/{horizon}.csv"
+        )
     expected_artifact_uri = (
-        f"{suite_root_uri}/suites/{suite_version}/models/{horizon_key}"
+        f"{publication_root}/suites/{suite_version}/models/{horizon_key}"
     )
     if model_ref.artifact_uri != expected_artifact_uri:
         raise ValueError(

@@ -848,6 +848,68 @@ def test_normalize_and_publish_batch_output_writes_one_canonical_csv_to_both_uri
     assert csv["admin_code"].tolist() == ["B", "A"]
 
 
+def test_normalize_and_publish_rejects_run_uri_outside_suite_publication_root(
+    tmp_path,
+):
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+
+    with pytest.raises(ValueError, match="run_csv_uri"):
+        _cli_module().normalize_and_publish_batch_output(
+            raw_paths=[RAW_OUTPUT_FIXTURE],
+            input_frame=_latest_input_frame(),
+            model_ref=_model_ref(),
+            suite_version=SUITE_VERSION,
+            run_csv_uri=(
+                "gs://wrong-bucket/unrelated/runs/run-001/predictions/6m.csv"
+            ),
+            suite_csv_uri=f"{SUITE_ROOT_URI}/predictions/6m.csv",
+            store=store,
+        )
+
+    assert store.events == []
+
+
+def test_normalize_and_publish_rejects_empty_run_id_before_writes(tmp_path):
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+
+    with pytest.raises(ValueError, match="run_csv_uri"):
+        _cli_module().normalize_and_publish_batch_output(
+            raw_paths=[RAW_OUTPUT_FIXTURE],
+            input_frame=_latest_input_frame(),
+            model_ref=_model_ref(),
+            suite_version=SUITE_VERSION,
+            run_csv_uri=(
+                "gs://bucket/fewsnet_partitioned_rf/runs//predictions/6m.csv"
+            ),
+            suite_csv_uri=f"{SUITE_ROOT_URI}/predictions/6m.csv",
+            store=store,
+        )
+
+    assert store.events == []
+
+
+def test_normalize_and_publish_rejects_nested_run_id_segments_before_writes(
+    tmp_path,
+):
+    store = RecordingLocalArtifactStore(tmp_path / "store")
+
+    with pytest.raises(ValueError, match="run_csv_uri"):
+        _cli_module().normalize_and_publish_batch_output(
+            raw_paths=[RAW_OUTPUT_FIXTURE],
+            input_frame=_latest_input_frame(),
+            model_ref=_model_ref(),
+            suite_version=SUITE_VERSION,
+            run_csv_uri=(
+                "gs://bucket/fewsnet_partitioned_rf/runs/"
+                "run-001/run-002/predictions/6m.csv"
+            ),
+            suite_csv_uri=f"{SUITE_ROOT_URI}/predictions/6m.csv",
+            store=store,
+        )
+
+    assert store.events == []
+
+
 def test_normalize_and_publish_binds_artifact_to_exact_suite_uri_before_writes(
     tmp_path,
 ):
