@@ -16,7 +16,10 @@
     "threshold",
     "dependency_versions",
     "source_git_commit",
+    "container_image_uri",
     "container_image_digest",
+    "training_target_month_range",
+    "validation_target_month_range",
     "files",
     "status"
   ],
@@ -105,9 +108,19 @@
       "type": "string",
       "pattern": "^[0-9a-f]{40}$"
     },
+    "container_image_uri": {
+      "type": "string",
+      "pattern": "^.+@sha256:[0-9a-f]{64}$"
+    },
     "container_image_digest": {
       "type": "string",
       "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "training_target_month_range": {
+      "$ref": "#/$defs/monthRange"
+    },
+    "validation_target_month_range": {
+      "$ref": "#/$defs/monthRange"
     },
     "files": {
       "type": "array",
@@ -190,6 +203,22 @@
     "month": {
       "type": "string",
       "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "monthRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/month"
+        },
+        "end": {
+          "$ref": "#/$defs/month"
+        }
+      }
     },
     "sha256": {
       "type": "string",

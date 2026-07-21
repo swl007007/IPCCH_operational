@@ -163,7 +163,16 @@ def _model_package(horizon_key: str = "0m") -> dict:
             "imbalanced-learn": "0.14.0",
         },
         "source_git_commit": "1" * 40,
+        "container_image_uri": "registry/image@sha256:" + SHA256,
         "container_image_digest": "sha256:" + SHA256,
+        "training_target_month_range": {
+            "start": "2023-05",
+            "end": "2026-04",
+        },
+        "validation_target_month_range": {
+            "start": "2025-11",
+            "end": "2026-04",
+        },
         "files": ["model.joblib"],
         "status": "validated",
     }

@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 12 Vertex-compatible local model package writing and defensive loading; user-approved manifest-schema amendment is synchronized and implementation is ready to resume
-- Current state: Tasks 1-11 are complete and independently reviewed through ledger commit `bf85afd`; design-first option A and its required existing contract-fixture update are aligned across the Task 12 plan, regenerated brief, and both progress ledgers before any production-code edit
-- Blockers: none for Task 12 implementation; no production code, tests, staging, or Task 12 implementation commit has been created yet
+- Current task: Task 12 Vertex-compatible local model package implementation and verification are complete; independent review is next
+- Current state: Tasks 1-11 remain independently reviewed; Task 12 now writes and defensively loads the exact seven-file local package, enforces the amended closed manifest contract, and has fresh focused, related, full-suite, static, schema, and dependency verification
+- Blockers: none for Task 12 local implementation or review; Task 13 and every cloud mutation remain unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -33,7 +33,7 @@
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | complete; independent review clean through `b91e24a`; one Minor deferred |
 | 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
-| 12. Write and validate Vertex-compatible model packages | in progress; option A schema amendment synchronized before code |
+| 12. Write and validate Vertex-compatible model packages | implementation verified; independent review pending |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
 | 14. Serve registered packages with a shared custom prediction container | pending |
 | 15. Register three stable parent models and immutable candidate versions | pending |
@@ -478,10 +478,24 @@
 - Shape resolution retained: package `training_report.json` remains the Task 10 horizon-level `fewsnet-horizon-training-report-v1` report and `threshold_report.json` remains the per-horizon threshold dictionary. The existing suite-level `training-report.schema.json` is reserved for Task 13's separate aggregate `training_threshold_report.json`; Task 12 does not change it.
 - The amended plan, regenerated Task 12 brief, and both progress ledgers are synchronized before implementation resumes. No cloud write is authorized.
 
+## Task 12 Evidence
+
+- Authority-consistent base: `aaa55599647163c6d8890e99059df2bff8597dee`; approved design SHA-256 `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; amended plan SHA-256 `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Exact-worktree GitNexus pre-edit impact: the JSON schema was not resolvable as a code symbol (`UNKNOWN`, zero indexed impacts); `_model_package` was LOW risk with exactly two direct test callers and zero affected execution processes. No HIGH or CRITICAL result occurred.
+- TDD RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_model_package.py -q -p no:cacheprovider` -> collection exit `2`, `1 error in 10.69s`; expected cause was `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.core.package'` before either Task 12 runtime module existed.
+- Implementation: `write_model_package(...)` writes exactly `model.joblib`, `model_manifest.json`, `feature_contract.json`, the byte-identical approved `partition_map.csv`, horizon `threshold_report.json`, horizon `training_report.json`, and `checksums.json`; `checksums.json` is written last and contains SHA-256 identities for the prior six files. Joblib uses `compress=3, protocol=5`.
+- Manifest/identity contract: the closed schema now requires the digest-pinned `container_image_uri`, matching `container_image_digest`, and copied training/validation target-month ranges. Writer and loader cross-check URI/digest equality, ranges, horizon, threshold, feature schema, approved partition digest, suite identity, optional image/source pins, and exact package membership.
+- Defensive load order: exact files, every checksum, manifest schema, URI/digest, feature/partition identities, horizon reports and ranges, optional pins, and exact Python major/minor plus NumPy/pandas/scikit-learn/joblib/imbalanced-learn versions all validate before `joblib.load`; the loaded object must then be a matching `PartitionedRFPredictor`.
+- Focused GREEN: the exact RED command -> `21 passed in 7.66s`.
+- Related package/contract/preprocessing/partition/imputer/training/inference/parity regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_model_package.py tests/fewsnet_partitioned_rf/test_contracts.py tests/fewsnet_partitioned_rf/test_training_inference.py tests/fewsnet_partitioned_rf/test_preprocessing.py tests/fewsnet_partitioned_rf/test_partitions.py tests/fewsnet_partitioned_rf/test_imputer_thresholds.py tests/fewsnet_partitioned_rf/test_reference_parity.py -q -p no:cacheprovider` -> `117 passed in 19.08s`.
+- Fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `503 passed, 1 skipped, 24 subtests passed in 35.07s`.
+- Static/schema/dependency gates: all four touched Python files parse with `ast`; every FEWSNET JSON schema passes Draft 2020-12 metaschema validation; `.venv/bin/python -m pip check` -> `No broken requirements found.`; `git diff --check` -> exit `0` before the final ledger/staging gate.
+- Scope boundary: no Task 13 file or behavior, GCP/GCS/Vertex API call, Model Registry or Batch operation, Endpoint, alias, release pointer, preserved IPCCH pipeline, external checkout, frozen design, suite-level `training-report.schema.json`, or dependency file was changed. The implementation commit subject is `feat: package Vertex-compatible FEWSNET models`; the exact hash is recorded in `.superpowers/sdd/task-12-report.md` after commit.
+
 ## Resume
 
-- Exact next step: record the final Task 12 authority-consistency commit in `.superpowers/sdd/progress.md`, then resume the paused Task 12 implementer with strict schema/package RED tests and no cloud write.
-- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1913,1985p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,130p' .superpowers/sdd/task-12-brief.md && sed -n '445,510p' PROGRESS.md`
+- Exact next step: independently review the Task 12 implementation commit against the amended brief and frozen design before authorizing Task 13.
+- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1,140p' .superpowers/sdd/task-12-report.md && sed -n '472,540p' PROGRESS.md`
 
 ---
 
