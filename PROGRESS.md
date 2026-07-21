@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 11 frozen Stage 3 parity evidence
-- Current state: Tasks 1-10 are complete and independently reviewed; both Task 10 Important findings are closed with a clean re-review and fresh controller focused, related, and full regression verification, while the non-blocking Task 7 ordering Minor and Task 9 sklearn `NotFittedError` idiom Minor remain deferred for final whole-branch triage
-- Blockers: none for Task 11 implementation
+- Current task: Task 11 frozen Stage 3 parity evidence; implementation verification complete and controller review pending
+- Current state: Tasks 1-10 are complete and independently reviewed; Task 11 now has a commit-pinned checked-in parity fixture with focused, related, and full local verification green, while the non-blocking Task 7 ordering Minor and Task 9 sklearn `NotFittedError` idiom Minor remain deferred for final whole-branch triage
+- Blockers: none for Task 11 review
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -32,7 +32,7 @@
 | 8. Validate and route the fixed partition map | complete; independent re-review clean through `20a6e0e` |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | complete; independent review clean through `b91e24a`; one Minor deferred |
 | 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
-| 11. Freeze reference Stage 3 parity evidence | pending |
+| 11. Freeze reference Stage 3 parity evidence | complete; controller review pending |
 | 12. Write and validate Vertex-compatible model packages | pending |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
 | 14. Serve registered packages with a shared custom prediction container | pending |
@@ -421,10 +421,31 @@
 - Controller fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `476 passed, 1 skipped, 24 subtests passed in 33.83s`.
 - Task 10 final status: complete and independently re-reviewed. Task 11 is unblocked; no cloud write is authorized at this stage.
 
+## Task 11 Evidence
+
+- Base: `b802ace01ef67dca1350f50c0c79af35b7983b01` (`docs: record FEWSNET task 10 review`). The exact worktree and branch were `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite` and `features/fewsnet-partitioned-rf-suite`.
+- Scope: Task 11 adds only `tools/build_fewsnet_stage3_parity_fixture.py`, `tests/fixtures/fewsnet_partitioned_rf/stage3_reference_parity.json`, and `tests/fewsnet_partitioned_rf/test_reference_parity.py`, plus this ledger. No existing function, class, or method was modified, so no pre-edit GitNexus symbol-impact gate was required.
+- TDD RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_reference_parity.py -q -p no:cacheprovider` -> `1 failed in 11.57s`; the expected failure was `FileNotFoundError` for the absent checked-in `stage3_reference_parity.json`, before the generator or fixture existed.
+- Reference identity: the read-only provenance checkout resolved to exact commit `1ecf180669568bbf9eb2129683108162902a415a` on clean `main`. GitNexus context confirmed the required reference symbols in `scripts/compare_partitioned_vs_pooled_rf_k40_nc4.py`: `train_pooled_model`, `train_partitioned_model`, and `predict_partitioned_probability`, with the probability router calling `predict_class1_probability`.
+- Commit guard: running the generator against this Task worktree intentionally observed `b802ace01ef67dca1350f50c0c79af35b7983b01`, exited `1` with the exact expected/observed mismatch, and left the requested output absent. The approved commit check occurs before output-path creation or writing.
+- Developer dependency preparation: the first reference import failed on missing `polars`. `polars==1.41.2` was installed only into the existing untracked Task worktree `.venv`, matching the reference checkout's `polars>=0.19.0` developer requirement; no tracked or production requirement changed. A fresh requirements-only FEWSNET runtime venv can run the checked-in parity test without Polars or the external checkout, but regenerating the developer fixture requires installing the reference checkout's import dependencies first; the generator emits a direct missing-dependency error.
+- Generator command: `.venv/bin/python tools/build_fewsnet_stage3_parity_fixture.py --reference-root "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/Food_Crisis_Cluster" --output tests/fixtures/fewsnet_partitioned_rf/stage3_reference_parity.json` -> exit `0`, printed exact reference commit `1ecf180669568bbf9eb2129683108162902a415a`, and wrote only the local checked-in fixture.
+- Frozen fixture: SHA-256 `2d5e17c3addc573e11fabb6ca26076abe4c39f52ab6ae6ec1bcf12900e9fdd27`; `15` deterministic training rows, `6` test rows, `2` features, `min_samples=5`, threshold `0.50`, RF parameters `{n_estimators: 100, max_depth: null, random_state: 5, n_jobs: 1}`, probabilities `[0.04, 1.0, 0.85, 1.0, 1.0, 0.7]`, classes `[0, 1, 1, 1, 1, 1]`, model-presence flags `{0: true, 1: false, 2: false}`, and statuses `{0: partition_model, 1: pooled_small_partition, 2: pooled_single_class}`. Test groups also exercise pooled fallback for unseen group `99` and reference-unmapped sentinel `-1`.
+- Parity construction: the eligible partition is class-balanced, so reference SMOTE availability does not change its training matrix. In the pinned local Task environment the reference module reports SMOTE unavailable after its guarded import, while the Task 10 implementation uses its reviewed compatibility bridge; direct exploratory comparison and the checked-in runtime test both produced zero probability delta.
+- Fixture determinism: a second `PYTHONDONTWRITEBYTECODE=1` generation into `/tmp` was byte-identical by `cmp` and reproduced SHA-256 `2d5e17c3addc573e11fabb6ca26076abe4c39f52ab6ae6ec1bcf12900e9fdd27`.
+- Focused GREEN with Task 10: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_reference_parity.py tests/fewsnet_partitioned_rf/test_training_inference.py -q -p no:cacheprovider` -> `16 passed in 15.82s`.
+- Related FEWSNET regression: Task 2 contracts plus Tasks 5, 7, 8, 9, 10, and 11 -> `119 passed in 17.92s`.
+- Fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `477 passed, 1 skipped, 24 subtests passed in 32.92s`.
+- Static/dependency audit: both new Python files parse with `ast`; the fixture parses as JSON and contains the exact source commit, RF parameters, model-presence flags, and status vocabulary; `.venv/bin/python -m pip check` -> `No broken requirements found.`
+- Preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`.
+- External-checkout hygiene concern: a dependency-diagnosis probe executed the ignored external `.venv-geodt-diagnostic/bin/python` and refreshed/created ignored `.pyc` caches inside that external virtual environment. Per controller direction, no cleanup or further mutation was attempted because deletion would be less safe. Normal external Git status remains clean, exact HEAD remains approved, and no recent non-venv/source `.pyc` was found; every later reference invocation used `PYTHONDONTWRITEBYTECODE=1`.
+- GitNexus: the exact worktree index was refreshed successfully at the Task 11 checkout (`3,205` nodes, `6,484` edges, `195` flows). Exact-worktree staged `detect_changes(scope="staged")` reported MEDIUM risk, exactly `4` changed files, `22` changed symbols, and `3` affected processes; all three are the isolated developer-generator flows `Main -> _reference_functions`, `Main -> _synthetic_matrix`, and `Main -> _expected_partition_status`. Context confirmed generator `main` is entered only by its own file and calls only its parser, commit verifier, and payload builder; no existing FEWSNET runtime or IPCCH process is affected.
+- Scope boundary: the runtime parity test reads only the checked-in JSON fixture and local Task 10 APIs. No runtime absolute import of `Food_Crisis_Cluster`, existing IPCCH-pipeline edit, Task 12 file or behavior, GCP/GCS/Vertex operation, Model Registry call, Batch Prediction, alias mutation, or release-pointer write was introduced.
+
 ## Resume
 
-- Exact next step: after committing this Task 10 review ledger, dispatch a fresh Task 11 implementer from the resulting ledger-consistency commit using `.superpowers/sdd/task-11-brief.md`; Task 11 may read the approved external reference checkout only through its developer fixture generator and must perform no cloud write.
-- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1832,1912p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,475p' PROGRESS.md`
+- Exact next step: independently review Task 11 from its implementation commit and `.superpowers/sdd/task-11-report.md`. Task 12 remains blocked until the controller records the Task 11 review result; no cloud write is authorized.
+- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1832,1912p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '450,535p' PROGRESS.md`
 
 ---
 
