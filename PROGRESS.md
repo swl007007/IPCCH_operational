@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 18 third narrow independent-review fix wave
-- Current state: Tasks 1-17 are complete; the formal-run evidence-indeterminate and production GCS missing-pointer contracts are synchronized, with Phase B strict RED/GREEN implementation pending
+- Current task: Task 18 later-generation manifest-evidence fix wave
+- Current state: Tasks 1-17 are complete; the final stale nonterminal manifest-reference finding is locally fixed and verified, with commit and independent re-review pending
 - Blockers: none for local/fake implementation; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -39,7 +39,7 @@
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 18. Orchestrate discover -> train -> register -> Batch -> promote | third narrow review authority synchronized; Phase B implementation and independent re-review pending |
+| 18. Orchestrate discover -> train -> register -> Batch -> promote | final later-generation manifest-evidence fix verified locally; commit and independent re-review pending |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
 ## Task 1 Evidence
@@ -1117,6 +1117,67 @@
   `.superpowers/` remain outside the tracked implementation commit.
 - Planned commit subject: `fix: preserve Task 18 formal failure evidence`.
   Independent Task 18 re-review remains mandatory before Task 19.
+
+### Task 18 Later-generation Manifest Evidence Fix
+
+- Review baseline: `3577d5155d06eeb89aa8f3b05d5ec72419e476b6`
+  (`fix: preserve Task 18 formal failure evidence`). Independent re-review
+  returned `0 Critical, 1 Important, 0 Minor`: later-write mismatch or
+  unreadability correctly returned formal evidence-indeterminate failure but
+  leaked the last proven nonterminal generation through `run_manifest`.
+- Exact strict RED:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py -q -p no:cacheprovider -k 'later_manifest_write_indeterminate'`
+  -> `4 failed, 34 deselected in 35.42s`. Both full `run_latest` and CLI cases,
+  for mismatch and unreadable readback, passed every classification, error,
+  and storage-safety assertion before failing only because `run_manifest`
+  advertised the stale proven generation `1` instead of `None`.
+- Regression setup: a dedicated test store proves generation `1` as a
+  nonterminal `DISCOVERED` manifest, then commits ambiguous generation `2` on
+  the next manifest write. Tests assert generation `2` and its bytes remain
+  current and untouched, only two manifest writes committed, original
+  `ServiceUnavailable` plus terminal `GenerationConflict` are returned,
+  `error.json` persists, CLI exits `1`, and no terminal reference is claimed.
+- Minimal production fix: the evidence-indeterminate `_result` call explicitly
+  passes `run_manifest=None`. `_result` itself and every normal proven-result
+  path are unchanged; no stored generation is cleared, adopted, or overwritten.
+- The first GREEN attempt advanced past the stale-reference assertion and
+  exposed only a test-harness assumption: `LocalArtifactStore` retains the
+  current generation rather than historical bytes. The new helper now proves
+  generation `1` from its recorded successful write event and still reads the
+  current generation `2` directly. No production follow-up was required.
+- Exact GREEN: `4 passed, 34 deselected in 20.51s`.
+- Broader runtime gates: full Task 18 plus promotion `99 passed in 29.23s`;
+  amended Task 18/training/Batch/promotion `160 passed in 31.17s`; related
+  Tasks 13-18 `213 passed in 33.78s`; full repository
+  `752 passed, 1 skipped, 24 subtests passed in 63.93s`.
+- Static/dependency gates: both changed Python files parse by AST and compile
+  in memory; the production module imports; `pip check` reports
+  `No broken requirements found.`; `git diff --check` passes.
+- Authority hashes remain exact: design
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`,
+  normalized plan
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`,
+  and fixed partition
+  `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Pre-edit exact-worktree impact for `run_latest` was LOW with one direct
+  caller and one affected process; the warning was accepted before this
+  single-line production edit. No other existing production symbol changed.
+- GitNexus refreshed incrementally to `4,381` nodes, `9,709` edges, `191`
+  clusters, and `272` flows. Exact-worktree staged
+  `detect_changes(scope="staged")` reports MEDIUM risk across exactly the three
+  authorized tracked files, 16 mapped symbols, and three internal `run_latest`
+  flows (`Load_schema`, `_canonical_json`, and `_timestamp`). Context confirms
+  CLI `main` is the sole direct production caller. Cached path and whitespace
+  checks are clean; mapped neighboring test symbols are line-shift attribution
+  inside the single amended test file.
+- Scope/no-cloud confirmation: tests used local stores and fake/injected
+  training, registry, Batch, alias, and SDK/service boundaries only. No
+  network, authentication, real GCP/GCS/Vertex/Registry/Batch/alias/lease/
+  pointer operation, Task 19 work, image build, or smoke run occurred.
+  Preserved user-owned `AGENTS.md`, `CLAUDE.md`, `.claude/`, and
+  `.superpowers/` remain outside the tracked implementation commit.
+- Planned commit subject: `fix: null indeterminate Task 18 manifest evidence`.
+  Independent re-review remains mandatory before Task 19.
 
 ---
 

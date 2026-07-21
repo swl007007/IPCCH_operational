@@ -782,6 +782,7 @@ def run_latest(
                 return _result(
                     state,
                     "FAILED",
+                    run_manifest=None,
                     preflight=False,
                     evidence_indeterminate=True,
                     error=error_payload,

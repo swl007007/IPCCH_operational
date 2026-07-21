@@ -176,6 +176,43 @@ class AmbiguousRunManifestStore(RecordingStore):
         return super().read_bytes(uri, generation=generation)
 
 
+class LaterAmbiguousRunManifestStore(AmbiguousRunManifestStore):
+    def __init__(
+        self,
+        root: Path,
+        *,
+        committed_bytes: bytes | None = None,
+        fail_readback: bool = False,
+    ) -> None:
+        super().__init__(
+            root,
+            committed_bytes=committed_bytes,
+            fail_readback=fail_readback,
+        )
+        self.proven_manifest_generation: str | None = None
+        self._initial_manifest_write_pending = True
+
+    def put_bytes(self, uri, data, *, if_generation_match=None):
+        if (
+            self._initial_manifest_write_pending
+            and uri.endswith("/run_manifest.json")
+        ):
+            self._initial_manifest_write_pending = False
+            ref = RecordingStore.put_bytes(
+                self,
+                uri,
+                data,
+                if_generation_match=if_generation_match,
+            )
+            self.proven_manifest_generation = ref.generation
+            return ref
+        return super().put_bytes(
+            uri,
+            data,
+            if_generation_match=if_generation_match,
+        )
+
+
 class GCSNotFoundStore(RecordingStore):
     def get_ref(self, uri):
         try:
@@ -1392,6 +1429,168 @@ def test_cli_preserves_formal_indeterminate_failure_classification(
         manifest_uri,
         generation=manifest_ref.generation,
     ) == manifest_writes[0][1]
+
+
+def _assert_later_manifest_indeterminate_evidence(
+    store,
+    result,
+    committed_bytes,
+):
+    assert result["status"] == "FAILED"
+    assert result["preflight"] is False
+    assert result["evidence_indeterminate"] is True
+    assert result["run_id"] == result["suite_version"]
+    assert result["phase"] == "FAILED"
+    assert result["error"]["exception_type"] == "ServiceUnavailable"
+    assert result["terminal_manifest_error"]["exception_type"] == (
+        "GenerationConflict"
+    )
+    assert result["run_manifest"] is None
+
+    error = _read_json(
+        store,
+        f"{ROOT_URI}/runs/{result['run_id']}/error.json",
+    )
+    assert error["exception_type"] == "ServiceUnavailable"
+    manifest_uri = (
+        f"{ROOT_URI}/runs/{result['run_id']}/run_manifest.json"
+    )
+    assert store.proven_manifest_generation == "1"
+    manifest_ref = store.get_ref(manifest_uri)
+    assert manifest_ref.generation == "2"
+    manifest_writes = [
+        event
+        for event in store.write_events
+        if event[0] == manifest_uri
+    ]
+    assert len(manifest_writes) == 2
+    assert manifest_writes[0][2] == 0
+    assert manifest_writes[1][2] == "1"
+    proven_bytes = manifest_writes[0][1]
+    proven_manifest = json.loads(proven_bytes)
+    assert proven_manifest["phase"] == "DISCOVERED"
+    assert proven_manifest["status"] == "running"
+    unknown_bytes = LocalArtifactStore.read_bytes(
+        store,
+        manifest_uri,
+        generation=manifest_ref.generation,
+    )
+    assert unknown_bytes == manifest_writes[1][1]
+    if committed_bytes is not None:
+        assert unknown_bytes == committed_bytes
+    assert store.manifest_read_generations
+    assert set(store.manifest_read_generations) == {"2"}
+
+
+@pytest.mark.parametrize(
+    ("committed_bytes", "fail_readback"),
+    [
+        (b'{"different":"later-payload"}', False),
+        (None, True),
+    ],
+    ids=("mismatched", "unreadable"),
+)
+def test_run_latest_nulls_ref_when_later_manifest_write_indeterminate(
+    tmp_path,
+    monkeypatch,
+    committed_bytes,
+    fail_readback,
+):
+    store = LaterAmbiguousRunManifestStore(
+        tmp_path / "store",
+        committed_bytes=committed_bytes,
+        fail_readback=fail_readback,
+    )
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    store.clear_events()
+
+    result = _run(
+        monkeypatch,
+        _deployment(),
+        store,
+        _backends(store),
+        snapshot_manifest_uri=snapshot["uri"],
+    )
+
+    _assert_later_manifest_indeterminate_evidence(
+        store,
+        result,
+        committed_bytes,
+    )
+
+
+@pytest.mark.parametrize(
+    ("committed_bytes", "fail_readback"),
+    [
+        (b'{"different":"later-payload"}', False),
+        (None, True),
+    ],
+    ids=("mismatched", "unreadable"),
+)
+def test_cli_nulls_ref_when_later_manifest_write_indeterminate(
+    tmp_path,
+    monkeypatch,
+    capsys,
+    committed_bytes,
+    fail_readback,
+):
+    module = _module()
+    store = LaterAmbiguousRunManifestStore(
+        tmp_path / "store",
+        committed_bytes=committed_bytes,
+        fail_readback=fail_readback,
+    )
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    deployment_uri = f"{ROOT_URI}/config/deployment.json"
+    put_immutable_or_verify(
+        store,
+        deployment_uri,
+        json.dumps(
+            _deployment(),
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode(),
+    )
+    backends = _backends(store)
+    store.clear_events()
+    monkeypatch.setenv("FEWSNET_SOURCE_GIT_COMMIT", SOURCE_COMMIT)
+    monkeypatch.setattr(module, "_utc_now", lambda: NOW)
+    monkeypatch.setattr(module, "_sleep", lambda _seconds: None)
+    monkeypatch.setattr(
+        module.GCSArtifactStore,
+        "from_default",
+        classmethod(lambda _cls: store),
+    )
+    monkeypatch.setattr(module, "_default_backends", lambda _region: backends)
+
+    exit_code = module.main(
+        [
+            "--deployment-manifest-uri",
+            deployment_uri,
+            "--snapshot-manifest-uri",
+            snapshot["uri"],
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert captured.out == ""
+    result = json.loads(captured.err)
+    _assert_later_manifest_indeterminate_evidence(
+        store,
+        result,
+        committed_bytes,
+    )
 
 
 def test_read_current_pointer_treats_gcs_not_found_as_initial_absence(
