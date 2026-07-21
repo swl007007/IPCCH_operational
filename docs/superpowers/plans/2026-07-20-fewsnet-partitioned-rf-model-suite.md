@@ -23,6 +23,7 @@
 - Deduplicate after stable admin/date sorting and before reproducing the notebook's global 12-row climate rolling means and within-admin sample z-scores. `inspect_panel`, feature preparation, and horizon alignment retain their duplicate-key hard gates.
 - Snapshot staging accepts only a normalized panel plus a matching immutable normalization audit. The audit's output checksum/row count must equal the staged panel.
 - Snapshot identity is the canonical content digest of the normalized panel, normalization audit, normalized boundaries, admin universe, and schema-relevant metadata; do not use the panel checksum alone for no-op/revision decisions.
+- Deployment/source validation and snapshot discovery are preflight. Formal `run_id`/`suite_version` identity and required `error.json`/`run_manifest.json` evidence begin only after successful discovery selects exact-generation snapshot evidence. Earlier failures return/log a structured preflight error and exit nonzero without inventing run or snapshot identity.
 - Runtime must not import or invoke the external `Food_Crisis_Cluster` checkout. The external checkout is allowed only for one-time asset copying and parity-fixture generation.
 - Use target `fews_ipc_crisis` and horizons exactly `0`, `6`, and `12` months. Horizon means keyed `feature_month=t -> target_month=t+h`; do not reuse the legacy 1/4/8/12 schedule or create horizon by positional row shifting.
 - Use one common latest labeled target month and a 36-target-month window for all horizons. Hold out the latest six target months for threshold selection.
@@ -41,6 +42,9 @@
 - Runtime inference covers exactly the snapshot's latest valid feature month; all earlier rows are training/history inputs only.
 - The production suite pointer is authoritative across horizons and must be written last. Any failed horizon blocks all promotion; partial alias changes must be rolled back.
 - Serialize only the alias/pointer publication stage with a 900-second generation-safe GCS promotion lease so concurrent rollback cannot clobber another successful suite.
+- Re-read the authoritative pointer and repeat the same-month changed-digest revision authorization inside that promotion lease before any alias mutation.
+- Real Vertex training and Batch submission retries must reconcile deterministic operation identity after an ambiguous commit-then-raise response: reuse exactly one matching created job, submit only when none exists, and fail closed on multiple or mismatched matches.
+- Mark versions `abandoned` only when they are definitively not live production. `PromotionIndeterminate`, or evidence failure after `RELEASED`, preserves lifecycle labels and surfaces an indeterminate/evidence-warning outcome without destructive recovery.
 - Immutable writes are retry-safe: on a generation conflict, accept an existing object only when its bytes/checksum exactly match the intended object; otherwise fail closed.
 - The four primary v1 deliverable families are one three-model suite, three per-area CSVs, one aggregate training/threshold report, and one run/suite manifest. Do not add maps, workbooks, pooled benchmark reports, or future-target metrics.
 - Use `PYTHONDONTWRITEBYTECODE=1` and `-p no:cacheprovider` for tests.
@@ -2361,7 +2365,10 @@ Cover:
 - output failure -> no alias movement;
 - transient API failure or `PromotionBusy` retries no more than `max_retries` while reusing exact snapshot content digest, image digest, artifact URIs, and candidate versions;
 - non-transient validation failure is never retried;
-- terminal `error.json` and `run_manifest.json` on every failure.
+- an ambiguous commit-then-raise training or Batch create reconciles exactly one matching job through the real production adapter over fake SDK/service clients, and fails closed on zero-after-retry, multiple, or mismatched matches;
+- a same-month changed-digest race is rejected by the revision gate rechecked inside the promotion lease;
+- `PromotionIndeterminate` and failures after an authoritative `RELEASED` result never mark possibly/live versions `abandoned`;
+- preflight deployment/source/discovery failure returns a structured error and CLI nonzero exit without formal run artifacts; every failure after successful discovery writes terminal `error.json` and `run_manifest.json`.
 
 - [ ] **Step 3: Run orchestrator tests to verify RED**
 
@@ -2386,9 +2393,14 @@ suite_version = (
 run_id = suite_version
 ```
 
+Copy the exact-generation-read selected manifest bytes to a run-specific
+immutable object under `runs/{run_id}/inputs/selected_source_manifest.json`.
+Pass only that immutable URI to the training worker so source restaging cannot
+change worker input or retry identity.
+
 - [ ] **Step 5: Implement monotonic orchestration and evidence writes**
 
-Call `validate_deployment` and require `deployment["source_git_commit"] == os.environ["FEWSNET_SOURCE_GIT_COMMIT"]` before discovery. Write `input_snapshot_ref.json`, then advance through every `RunPhase`, updating `run_manifest.json` with generation preconditions after each transition. Use a bounded `retry_transient` helper that retries only `TooManyRequests`, `ServiceUnavailable`, `DeadlineExceeded`, and retryable transport failures, recording each attempt. Submit/wait for one training job, verify `training_job_result.json`, register in horizon order with idempotent suite aliases, build the three inference frames from exactly `snapshot.latest_feature_month`, run/wait/normalize three exact-version Batch jobs, validate the suite, then call Task 17 promotion when `promote=True`. For `--candidate-only`, stop successfully after `OUTPUT_VALIDATED` and do not read or mutate production aliases/pointers. Catch exceptions once at the top, mark any registered candidates `abandoned`, write `error.json`, set phase `FAILED`, and return nonzero from CLI.
+Call `validate_deployment` and require `deployment["source_git_commit"] == os.environ["FEWSNET_SOURCE_GIT_COMMIT"]` before discovery. Preflight exceptions return/log a structured error and cause a nonzero CLI exit without creating formal run artifacts. After successful discovery establishes `run_id`, `suite_version`, and exact snapshot evidence, write `input_snapshot_ref.json`, then advance through every `RunPhase`, updating `run_manifest.json` with generation preconditions after each transition. Use a bounded `retry_transient` helper that retries only `TooManyRequests`, `ServiceUnavailable`, `DeadlineExceeded`, and retryable transport failures, recording each attempt. Training and Batch production adapters must reconcile deterministic operation identity before any retry after an ambiguous submit: return one exact matching created job, submit only when none exists, and fail closed on multiple or mismatched matches. Submit/wait for one training job, verify `training_job_result.json`, register in horizon order with idempotent suite aliases, build the three inference frames from exactly `snapshot.latest_feature_month`, run/wait/normalize three exact-version Batch jobs, validate the suite, then call Task 17 promotion when `promote=True`. Task 17 rechecks same-month revision authorization inside its promotion lease. For `--candidate-only`, stop successfully after `OUTPUT_VALIDATED` and do not read or mutate production aliases/pointers. Catch post-discovery exceptions once at the top, mark registered candidates `abandoned` only when they are definitively not live production, write terminal evidence, set phase `FAILED`, and return nonzero from CLI. Preserve lifecycle labels and surface an indeterminate/evidence-warning outcome for `PromotionIndeterminate` or any failure after promotion returned `RELEASED`.
 
 The retry helper preserves operation identity:
 

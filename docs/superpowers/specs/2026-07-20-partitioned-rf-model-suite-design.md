@@ -581,22 +581,29 @@ The pipeline therefore uses a two-phase suite promotion:
 2. Register all three candidate Model Versions.
 3. Run and validate all three Batch Prediction Jobs.
 4. Capture the previous production version of each parent model.
-5. Move each horizon's `production` alias to its validated candidate.
-6. If any alias operation fails, restore every alias already changed.
-7. Write the immutable suite manifest.
-8. Write the production suite pointer last.
+5. Under the generation-safe promotion lease, re-read the authoritative
+   production pointer and repeat the same-month digest/revision authorization.
+6. Move each horizon's `production` alias to its validated candidate.
+7. If any alias operation fails, restore every alias already changed.
+8. Write the immutable suite manifest.
+9. Write the production suite pointer last.
 
 The authoritative cross-model production state is the production suite
 manifest, not the eventual state of any one alias in isolation.
 
-Candidate versions and evidence from failed runs are retained and marked
-`failed` or `abandoned`; they are not automatically deleted.
+Candidate versions and evidence from failed runs are retained and are not
+automatically deleted. Only versions known not to be live production may be
+marked `failed` or `abandoned`. If publication is indeterminate, or the
+authoritative pointer may already reference the suite, lifecycle labels remain
+unchanged until production state is reconciled.
 
 ## 16. GCS run and release layout
 
 ```text
 runs/{run_id}/
 ├── input_snapshot_ref.json
+├── inputs/
+│   └── selected_source_manifest.json # exact-generation bytes copied immutably
 ├── training/
 ├── registry/
 ├── batch_prediction/
@@ -633,6 +640,14 @@ operational evidence but are not primary delivery artifacts.
 
 ## 17. Run states and failure handling
 
+Deployment/source validation and snapshot discovery are preflight operations.
+The formal run identity begins only after discovery has selected schema-valid,
+exact-generation snapshot evidence and the pipeline can derive `run_id` and
+`suite_version`. A preflight failure returns and logs a structured error and
+causes a nonzero CLI exit, but does not create `error.json` or
+`run_manifest.json`, invent placeholder snapshot evidence, or allocate a fake
+run identity.
+
 The run manifest records a monotonic state transition such as:
 
 ```text
@@ -651,6 +666,8 @@ Terminal non-success states are `NOOP` and `FAILED`.
 
 Failure rules are:
 
+- After formal run identity exists, every terminal failure writes `error.json`
+  and a terminal `run_manifest.json` using generation preconditions.
 - Invalid schema, checksum, duplicate area-month rows, or invalid area identity
   fails before training.
 - A raw duplicate group with a conflict outside `Tair_zscore` and
@@ -670,7 +687,15 @@ Failure rules are:
 - Retries are limited to transient cloud/API failures and must reuse the exact
   same input generation, image digest, artifact URI, and candidate model
   version.
+- Training and Batch submission retries reconcile a deterministic operation
+  identity through the production adapter: reuse one exact matching created
+  job, submit only when none exists, and fail closed on multiple or mismatched
+  matches after an ambiguous commit-then-raise response.
 - No retry silently switches to another model or source snapshot.
+- A failure before promotion may mark only definitively non-production
+  candidates abandoned. `PromotionIndeterminate`, or an evidence-write failure
+  after `RELEASED`, must preserve candidate lifecycle labels and surface the
+  indeterminate/evidence-warning state without destructive recovery.
 
 Row-level pooled fallback is an expected model behavior and must remain visible
 in outputs; it is not treated as an infrastructure failure.

@@ -6,16 +6,16 @@
 - Implementation plan: `docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md`
 - Design base commit: `e6afd2cebde02e14501dca52e959e395c54c30b7`
 - Initial plan SHA-256: `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`
-- Current approved design SHA-256: `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`
-- Current normalized plan SHA-256: `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`
+- Current approved design SHA-256: `71a5f93b19ee612560c31ae0f884dd762414471f9f720ad2dad6c1a95c55158a`
+- Current normalized plan SHA-256: `f80ea13e14d7dbda5f5f42ee50d9d45ede4174dbe61e269a8bad88489716628a`
 
 ## Execution Context
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 18 deterministic end-to-end orchestration implementation is verified from base `4234084`
-- Current state: Tasks 1-17 are complete; Task 18 implementation and local verification are complete, with independent review pending
-- Blockers: none; implementation remains fake/local only, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
+- Current task: Task 18 review-fix contract synchronization and strict RED/GREEN fix wave
+- Current state: Tasks 1-17 are complete; Task 18 has 3 Critical and 2 Important review findings; user decision A resolved the final contract ambiguity and the fix wave is in progress
+- Blockers: none for local/fake implementation; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -39,7 +39,7 @@
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 18. Orchestrate discover -> train -> register -> Batch -> promote | implementation complete from `4234084`; focused/related/full verification clean; independent review pending |
+| 18. Orchestrate discover -> train -> register -> Batch -> promote | in progress through `7689b73`; independent review found 3 Critical/2 Important and fix wave is required |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
 ## Task 1 Evidence
@@ -932,10 +932,25 @@
 - Exact-worktree staged GitNexus gate: LOW risk across exactly three changed files, eight mapped `PROGRESS.md` documentation symbols, and zero affected execution processes. The current index does not map the two additive Python files as changed symbols, so staged path review, focused/related/full runtime verification, and static import/compile evidence provide the executable-scope check.
 - Planned implementation commit subject: `feat: orchestrate FEWSNET model suite releases`.
 
+### Task 18 Independent Review Findings
+
+- Implementation commit: `7689b73a3c1955d912751868a7e19e614616b6e3` (`feat: orchestrate FEWSNET model suite releases`). Independent task review returned spec non-compliance and `Needs fixes`: `3 Critical`, `2 Important`, `0 Minor`.
+- Critical: the same-month changed-snapshot revision authorization is checked before long-running work but not rechecked inside Task 17's promotion lease, so two no-revision same-month runs can race and the later one can overwrite the first.
+- Critical: real training and Batch submit boundaries have no commit-then-raise reconciliation. Outer retries can create duplicate Custom Jobs or Batch Jobs; the focused fakes currently hide that by deduplicating submissions internally.
+- Critical: `PromotionIndeterminate` and failures after an authoritative `RELEASED` promotion can still mark live production versions `abandoned`.
+- Important: the training job receives only the selected manifest URI, not immutable exact-generation bytes or a run-specific immutable manifest object, so a restage can change what the worker reads after discovery.
+- Important: failures before `_RunState` initialization return a bare failure without terminal artifacts. This must be reconciled against the approved ordering that validates deployment/source identity before discovery and the run-manifest schema whose first normal phase is `DISCOVERED`; do not invent placeholder snapshot evidence or silently change the schema.
+- Controller verification of review: the revision lease recheck lacks revision context; the pinned Vertex `CreateCustomJobRequest` and `CreateBatchPredictionJobRequest` expose no request-id field; submission helpers call create/submit directly; failure cleanup is unconditional; and the training CLI resolves the bare manifest URI later. The findings are technically grounded.
+- Fresh post-review GitNexus rebuild recovered from the known incremental `file_fts` inconsistency by forcing a full rebuild to `4,291` nodes, `9,364` edges, `180` clusters, and `274` flows. Upstream impact is LOW for `run_latest`, `_VertexTrainingBackend.submit`, `promote_and_publish`, `submit_and_persist_training_custom_job`, and both Batch submit candidates. Any additional existing symbol discovered during the fix wave still requires its own upstream impact before edit.
+- Fix-wave design gate: the exact-worktree impact for the required narrow `promote_and_publish` edit is HIGH with `18` upstream dependents (`16` direct tests) and `2` Task 18 orchestration processes; the warning was reported before edits. No production or test fix has yet been made.
+- Pre-discovery evidence conflict: deployment/source validation must run before discovery, while `fewsnet-run-manifest-v1` requires exact snapshot evidence, feature month, suite version, and run ID. An invalid deployment may also lack a valid object-store root. Honest options are: (A) clarify that terminal run artifacts apply after successful discovery and return/log structured preflight errors before that boundary; or (B) authorize a new preflight-attempt identity/artifact contract or run-manifest v2 with a preflight phase and nullable snapshot evidence.
+- Contract resolution: the user selected A on 2026-07-21. Formal run identity and required `error.json`/`run_manifest.json` begin only after successful discovery selects exact snapshot evidence. Deployment/source/discovery failures return/log a structured preflight error and exit nonzero without a preflight-attempt contract, `PREFLIGHT` phase, schema v2, nullable snapshot evidence, or fabricated run identity. The design, Task 18 plan/brief, review handoff, and both execution ledgers were synchronized before production edits resumed.
+- Contract-resolution staged gate: GitNexus `detect_changes(scope="staged")` reported LOW risk across exactly three tracked documentation/ledger files, 13 mapped documentation symbols, and zero affected execution processes; staged diff/path checks were clean and preserved `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` outside the commit.
+
 ## Resume
 
-- Exact next step: stage only the three authorized Task 18 tracked paths, run the exact-worktree staged GitNexus gate, record the result, commit with the approved subject, and hand off for independent review.
-- Resume command: `git status --short --branch && git diff --check && PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py -q -p no:cacheprovider && sed -n '909,990p' PROGRESS.md`
+- Exact next step: verify the synchronized authority hashes, commit the tracked contract-resolution docs/ledger, then re-dispatch the same Task 18 implementer for the five strict RED/GREEN root fixes and independent re-review.
+- Resume command: `git status --short --branch && git diff --check && sed -n '925,1025p' PROGRESS.md && sed -n '1,180p' .superpowers/sdd/task-18-review.md`
 
 ---
 
