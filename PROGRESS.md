@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 13 implementation is committed at `d08bbdb1964e026118bcf6ecc688cb2a17d14abf`; its Important immutable-retry review finding is fixed and verified, with independent re-review next
-- Current state: Tasks 1-12 are complete; Task 13 now also verifies the bytes of the exact existing object generation before accepting an immutable retry, rather than trusting checksum metadata and size alone
-- Blockers: none; the narrow Task 13 review-fix commit and independent re-review remain next, while every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation stayed outside this implementation step
+- Current task: Task 13 three-horizon training worker and Vertex Custom Job spec is complete and independently approved through `f0da32afa95aaecc61aacdfed8a1cdcfd0fcf3bc`
+- Current state: Tasks 1-13 are complete; Task 13 trains/packages all three horizons, exposes the thin Custom Job lifecycle boundary, and verifies actual bytes at the exact existing generation before accepting immutable retries
+- Blockers: none for Task 13; Task 14 remains pending and has not started, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains outside the completed work
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -34,7 +34,7 @@
 | 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
 | 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
-| 13. Build the three-horizon training worker and Vertex Custom Job spec | implementation committed; Important review finding fixed and verified; independent re-review pending |
+| 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
 | 14. Serve registered packages with a shared custom prediction container | pending |
 | 15. Register three stable parent models and immutable candidate versions | pending |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
@@ -578,10 +578,20 @@
 - Final staged GitNexus reconciliation: the required named-repo call with the exact `worktree` argument reports LOW risk, three changed documentation symbols, and zero affected processes, but under-attributes both Python files because duplicate `IPCCH_operational` registrations select the canonical-root index. The exact worktree-path call reports MEDIUM risk, eleven changed symbols, and four processes, but hunk attribution labels unchanged adjacent bodies (`put_mutable_or_verify`, `sha256_file`, and the following colon-name test). Zero-context staged diff confirms the only production bodies changed are the two authorized immutable helpers; the four reported processes are existing `sha256_file` users reached through line-shift attribution, not unrelated behavior changes.
 - Authority/scope preservation: design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`. No worker/job API, Task 14+, frozen design/plan, dependency, real cloud object, or external service was changed.
 
+### Task 13 Final Review and Controller Acceptance
+
+- Review-fix commit: `f0da32afa95aaecc61aacdfed8a1cdcfd0fcf3bc` (`fix: verify FEWSNET immutable retry bytes`). The complete Task 13 implementation range is `ecf6863d1b68e2daa718397c268987a6f9ee6efc..f0da32afa95aaecc61aacdfed8a1cdcfd0fcf3bc`.
+- Independent re-review: spec compliant and approved with no Critical or Important findings. The prior GCS byte-identity finding is closed for both byte and file retries at the exact existing generation without weakening metadata, size, missing-metadata, or generation-race safeguards.
+- Fresh controller focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_job.py tests/fewsnet_partitioned_rf/test_storage.py -q -p no:cacheprovider` -> `33 passed in 14.08s`.
+- Fresh controller related verification: Task 13 worker/job, storage, snapshot staging, and Task 12 package tests -> `110 passed in 18.53s`.
+- Fresh controller full repository verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `545 passed, 1 skipped, 24 subtests passed in 39.85s`.
+- Authority preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; normalized plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Scope/no-cloud confirmation: Task 14 was not started; no real Custom Job, GCS write, Model Registry, Batch Prediction, Endpoint, alias, release pointer, or gated cloud smoke action occurred.
+
 ## Resume
 
-- Exact next step: commit the narrow immutable-retry fix with subject `fix: verify FEWSNET immutable retry bytes`, then run independent Task 13 re-review across `d08bbdb..HEAD`; do not start Task 14 before acceptance.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '540,620p' PROGRESS.md && tail -n 120 .superpowers/sdd/task-13-report.md`
+- Exact next step: Task 13 is complete. Task 14 is pending; before starting it, verify the exact worktree/branch, read this ledger and the approved Task 14 plan text, generate a fresh Task 14 brief, and preserve the no-cloud-write boundary.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '540,640p' PROGRESS.md && tail -n 160 .superpowers/sdd/task-13-report.md`
 
 ---
 
