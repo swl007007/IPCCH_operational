@@ -591,6 +591,13 @@ The pipeline therefore uses a two-phase suite promotion:
 The authoritative cross-model production state is the production suite
 manifest, not the eventual state of any one alias in isolation.
 
+The current pointer, feature-month pointer, and promotion lease are optional
+state during an initial release. At those explicit optional-read boundaries,
+both local `FileNotFoundError` and production GCS
+`google.api_core.exceptions.NotFound` mean that no prior object exists and its
+captured generation is zero. Permission, checksum, generation, and every other
+storage failure remain hard errors.
+
 Candidate versions and evidence from failed runs are retained and are not
 automatically deleted. Only versions known not to be live production may be
 marked `failed` or `abandoned`. If publication is indeterminate, or the
@@ -667,7 +674,16 @@ Terminal non-success states are `NOOP` and `FAILED`.
 Failure rules are:
 
 - After formal run identity exists, every terminal failure writes `error.json`
-  and a terminal `run_manifest.json` using generation preconditions.
+  and attempts a terminal `run_manifest.json` using generation preconditions.
+  An ambiguous manifest write may be adopted only after an advanced generation
+  is read exactly and its bytes match the intended canonical payload.
+- If an ambiguous `run_manifest.json` readback is mismatched or unreadable, the
+  pipeline must not adopt or overwrite that unknown generation. It returns a
+  structured formal-run `FAILED` result with `preflight: false`,
+  `evidence_indeterminate: true`, `run_id`, `suite_version`, the original
+  failure, and an explicit terminal-manifest evidence warning/error. It must
+  not claim that the terminal manifest was persisted, and the CLI still exits
+  nonzero without reclassifying the established run as preflight.
 - Invalid schema, checksum, duplicate area-month rows, or invalid area identity
   fails before training.
 - A raw duplicate group with a conflict outside `Tair_zscore` and

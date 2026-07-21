@@ -6,15 +6,15 @@
 - Implementation plan: `docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md`
 - Design base commit: `e6afd2cebde02e14501dca52e959e395c54c30b7`
 - Initial plan SHA-256: `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`
-- Current approved design SHA-256: `71a5f93b19ee612560c31ae0f884dd762414471f9f720ad2dad6c1a95c55158a`
-- Current normalized plan SHA-256: `f80ea13e14d7dbda5f5f42ee50d9d45ede4174dbe61e269a8bad88489716628a`
+- Current approved design SHA-256: `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`
+- Current normalized plan SHA-256: `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`
 
 ## Execution Context
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 18 final re-review closure
-- Current state: Tasks 1-17 are complete; both remaining Task 18 Important findings are fixed and locally verified, with independent re-review still required
+- Current task: Task 18 third narrow independent-review fix wave
+- Current state: Tasks 1-17 are complete; the formal-run evidence-indeterminate and production GCS missing-pointer contracts are synchronized, with Phase B strict RED/GREEN implementation pending
 - Blockers: none for local/fake implementation; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -39,7 +39,7 @@
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 18. Orchestrate discover -> train -> register -> Batch -> promote | final re-review fixes locally complete in this commit; independent re-review remains required |
+| 18. Orchestrate discover -> train -> register -> Batch -> promote | third narrow review authority synchronized; Phase B implementation and independent re-review pending |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
 ## Task 1 Evidence
@@ -1022,6 +1022,43 @@
 - Planned commit subject: `fix: close Task 18 terminal evidence gaps`.
 - Next action after this commit: request independent Task 18 re-review; do not
   start Task 19 until that gate is clean.
+
+### Task 18 Third Narrow Re-review Authority Synchronization
+
+- Review baseline: `45b8db1f59ac5707ab9d296648188f8aaad54524`
+  (`fix: close Task 18 terminal evidence gaps`). The independent re-review is
+  `0 Critical, 2 Important, 0 Minor`.
+- Formal-run contract resolution: discovery already establishes `run_id` and
+  `suite_version`, so mismatched or unreadable ambiguous `run_manifest.json`
+  readback must never adopt or overwrite the unknown generation and must never
+  route through preflight handling. `error.json` remains required; terminal
+  manifest persistence is attempted but not falsely claimed. When it cannot be
+  proven, the returned result is formal-run `FAILED` with `preflight: false`,
+  `evidence_indeterminate: true`, preserved run/suite identity, the original
+  failure, and an explicit terminal-manifest evidence warning/error.
+- Initial-release contract resolution: missing optional current, feature-month,
+  and promotion-lease objects are generation zero whether the local boundary
+  raises `FileNotFoundError` or production GCS raises
+  `google.api_core.exceptions.NotFound`. Other storage failures remain hard
+  errors.
+- Pre-authorized exact-worktree impacts remain: `run_latest` LOW, CLI `main`
+  LOW, `_read_current_pointer` LOW, and `_capture_optional` HIGH. The HIGH
+  `_capture_optional` warning is accepted for only the missing-exception-shape
+  fix. `GCSArtifactStore.get_ref` is HIGH and remains explicitly out of scope.
+  Any other existing symbol requires fresh upstream impact before editing.
+- Authority synchronization changed only the approved design, Task 18 plan,
+  this tracked ledger, and the untracked Task 18 handoff/review/report ledgers.
+  No production or test file was edited, and no network, authentication, real
+  GCP/GCS/Vertex/Registry/Batch/alias/lease/pointer operation or Task 19 work
+  occurred.
+- Synchronized authority hashes: design
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`;
+  plan `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`;
+  fixed partition
+  `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Next action: commit the tracked authority synchronization separately as
+  `docs: resolve Task 18 indeterminate evidence contract`, then write and run
+  the exact full-path RED regressions before any production edit.
 
 ---
 
