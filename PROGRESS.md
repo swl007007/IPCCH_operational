@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 17 second independent re-review fixes are implemented and verified from base `6a8a4bd`; staged-scope and commit gates are in progress
-- Current state: Tasks 1-16 are complete; Task 17 now binds completed Batch evidence, fences every promotion mutation, and preserves indeterminate current-pointer outcomes without destructive rollback
+- Current task: Task 17 is controller-accepted through `751ad4d`; the ledger-only acceptance commit is in progress before Task 18 kickoff
+- Current state: Tasks 1-17 are complete; Task 18 deterministic end-to-end orchestration is next
 - Blockers: none; implementation remains fake/local only, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -38,7 +38,7 @@
 | 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
-| 17. Validate three-horizon outputs and implement alias rollback publication | in progress; second re-review fixes implemented and verified, final re-review/controller acceptance pending |
+| 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
@@ -896,10 +896,20 @@
 - Final independent narrow re-review: `0 Critical, 0 Important, 0 Minor`; exact input-ref equality and cross-horizon completed-job uniqueness were accepted statically. No cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, production alias, lease, pointer, image, release, or smoke operation occurred; Task 18 was not started.
 - Final closure commit: `fix: close Task 17 promotion re-review findings` (this commit).
 
+### Task 17 Controller Acceptance
+
+- Fresh focused controller verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_promotion.py -q -p no:cacheprovider` -> `56 passed in 16.28s`.
+- Fresh related controller verification for contracts, storage, partitions, training/inference, model packages, registry, and Batch Prediction -> `229 passed in 30.42s`.
+- Fresh full repository verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `701 passed, 1 skipped, 24 subtests passed in 52.31s`.
+- Static/controller gates passed: all three Task 17 Python files parse, import, and compile with redirected bytecode; `.venv/bin/python -m pip check` reports no broken requirements; pinned `ModelRegistry` alias method signatures remain compatible; `git diff --check f3a02ab..HEAD` is clean; and all `16` pre-existing function/class bodies in `core/validation.py` remain AST-identical to `f3a02ab`.
+- Frozen authority remains exact: design SHA-256 `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`, plan SHA-256 `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`, and fixed-partition SHA-256 `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- GitNexus refreshed successfully at `751ad4d` to `4,096` nodes, `8,813` edges, `175` clusters, and `261` flows. Exact-worktree compare reported HIGH across six files because it also included the preserved uncommitted `AGENTS.md` and `CLAUDE.md`; the exact Git commit range `f3a02ab..751ad4d` contains only `PROGRESS.md`, `core/validation.py`, new `vertex/promotion.py`, and new `test_promotion.py`. Context inspection shows the validation callers are Task 17 tests with no mapped process, while `promote_and_publish` participates only in the intended promotion flow.
+- Controller acceptance: Task 17 is complete with final review `0 Critical, 0 Important, 0 Minor`. No real cloud, network, authentication, GCP, GCS, Vertex, Registry, Batch, Endpoint, alias, lease, release-pointer, image, or smoke operation occurred.
+
 ## Resume
 
-- Exact next step: complete the exact four-file staged scope/GitNexus gate and commit the final Task 17 closure; do not start Task 18.
-- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '851,930p' PROGRESS.md`
+- Exact next step: commit this ledger-only Task 17 acceptance update, then generate the fresh Task 18 brief and start strict-TDD orchestration work from `751ad4d` plus the ledger commit.
+- Resume command: `git status --short --branch && git log -6 --oneline && sed -n '885,940p' PROGRESS.md`
 
 ---
 
