@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 15 is controller-accepted through `4d9f0099b0e995a7505f1d7e9be3463a2ddc018b`; Task 16 exact-version Batch Prediction is next
-- Current state: Tasks 1-15 are complete; Task 15 fails closed on invalid retry identity/state and uses `ModelRegistry.update_version` so lifecycle changes target only the exact numeric candidate version
-- Blockers: none; Task 16 remains pending, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
+- Current task: Task 16 exact-version Batch Prediction implementation is complete and locally verified; independent review is next
+- Current state: Tasks 1-16 are complete through the pending Task 16 commit; exact-version submit/poll/cancel, raw-output gates, and immutable run/suite CSV publication are covered by focused and full regression
+- Blockers: none; Task 17 remains pending, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -37,7 +37,7 @@
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
 | 14. Serve registered packages with a shared custom prediction container | complete; independent re-review clean through `6ea5873`; controller verification clean |
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
-| 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
+| 16. Run exact-version Batch Prediction and normalize formal CSVs | complete; focused and full regression green; independent review pending |
 | 17. Validate three-horizon outputs and implement alias rollback publication | pending |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | pending |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
@@ -729,10 +729,41 @@
 - Post-commit GitNexus comparison remains below the warning threshold: the named duplicate index reports LOW; the authoritative exact-worktree view reports MEDIUM with only the two Task 15 internal processes. The comparison also surfaces preserved user edits in `AGENTS.md` and `CLAUDE.md`; `git show 4d9f009` confirms the accepted commit itself contains exactly `PROGRESS.md`, `vertex/registry.py`, and `test_registry.py`.
 - Scope/no-cloud confirmation: no real GCP, GCS, Vertex Custom Job, Model Registry, Batch Prediction, Endpoint, alias, release-pointer, image build/push, or gated cloud smoke operation was performed.
 
+## Task 16 Kickoff
+
+- Implementation base: `651057e743eb87d656eefd2e040da045229ad473`; branch `features/fewsnet-partitioned-rf-suite`; linked worktree `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`.
+- Authority verification: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Fresh requirements handoff: `.superpowers/sdd/task-16-brief.md`, generated directly from the approved Task 16 plan text before implementation. The packaged script lacked executable bits, so the same script was invoked through `bash` with an explicit output path; the resulting brief contains the exact 71-line Task 16 block.
+- Pre-flight result: no conflict was found between Task 16, the frozen design, `select_latest_inference_frame`, `FeatureContract`, `RegisteredModelVersion`, `BatchJobRef`, `ArtifactStore`, `put_immutable_or_verify`, the formal prediction schema, or Task 18's orchestration boundary. Task 16 creates only the approved Batch adapter, inference CLI, focused fixture/test, and updates this ledger.
+- Pinned SDK boundary: local `google-cloud-aiplatform==1.161.0` confirms `BatchPredictionJob.submit(...)` delegates with `wait_for_completion=False`; the public `JobServiceClient` exposes exact-name `get_batch_prediction_job` and `cancel_batch_prediction_job`. Tests and implementation must preserve that asynchronous submit/poll/cancel contract and exact numeric `@version_id` model resource.
+- GitNexus readiness: the exact-worktree index was refreshed at `651057e` with `3,661` nodes, `7,613` edges, `152` clusters, and `234` flows. Query/context review identified the existing latest-month, Batch reference, storage, and schema boundaries; no existing function, class, or method is scheduled for modification, and any discovered need requires upstream impact analysis before editing.
+- Fresh baseline inherited from the immediately preceding controller gate: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `599 passed, 1 skipped, 24 subtests passed in 52.04s`; the only subsequent tracked commit was the Task 15 documentation ledger.
+- Strict RED command: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_batch_prediction.py -q -p no:cacheprovider`; expected initial failure is the absent Task 16 test/module/fixture contract.
+- Scope boundary: use fake SDK/job-service backends and `LocalArtifactStore` only. Do not submit or cancel a real Batch job, read/write real GCS, mutate Registry/Endpoint/aliases/release pointers, or run gated cloud smoke coverage.
+
+## Task 16 Completion
+
+- Strict minimal RED: the exact focused command failed as intended with `1 failed in 1.10s`; `test_batch_prediction_module_exposes_task_16_interfaces` raised `ModuleNotFoundError` for the absent `fewsnet_partitioned_rf_pipeline.vertex.batch_prediction` module.
+- Expanded RED before production code: the same exact focused command produced `22 failed in 10.82s`; all failures were the expected absent `vertex.batch_prediction` or `cli.infer` modules, with no collection or test-design error.
+- Batch input contract: `write_batch_input_jsonl` emits one UTF-8 JSON object per supplied latest-month area, preserves `FeatureContract.feature_columns` order, normalizes identity, serializes missing numeric predictors as JSON `null`, and excludes target/horizon fields.
+- Exact-version submit contract: `submit_batch_prediction` derives `runs/{run_id}/batch_prediction/{horizon}/input.jsonl` and the matching `raw` prefix from the validated deployment root, rejects non-numeric or inconsistent `@version_id` identities, and calls SDK `1.161.0` `BatchPredictionJob.submit(...)` with JSONL formats, the configured machine/service account, one starting/max replica, labels, project, and region.
+- Public JobService contract: `wait_batch_prediction` polls `get_batch_prediction_job` by the exact submitted resource, records `output_info.gcs_output_directory` only on success, surfaces complete failed resources, and on deadline calls `cancel_batch_prediction_job` for the exact name before waiting for terminal cancellation/failure and raising `BatchPredictionTimeoutError`.
+- Output gates: normalization rejects `errors_*.jsonl`, line-level errors, invalid UTF-8/JSON, absent instance/prediction objects, malformed/duplicate/missing identities, prediction-to-instance/input mismatches, horizon/target drift, conflicting suite/model identity, and every formal-schema violation. It restores supplied input order and validates each completed `prediction-record` before returning.
+- Canonical publication: `cli.infer` rebuilds the latest inference frame from the immutable snapshot, localizes only `predictions_*.jsonl`, serializes the validated formal frame once, and immutable-writes the identical byte sequence to the exact run and suite prediction URIs only after all row gates pass.
+- Focused GREEN: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_batch_prediction.py -q -p no:cacheprovider` -> `22 passed in 18.75s`.
+- Related regression: horizons, training inference, predictor server, registry, storage, contracts, and training-job tests -> `165 passed in 34.87s`.
+- Full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `621 passed, 1 skipped, 24 subtests passed in 53.69s`.
+- Static/dependency gates: installed SDK signature exposes every submitted keyword; the new implementation and test files compile; no changed Python line exceeds 88 characters; `.venv/bin/python -m pip check` reports `No broken requirements found.`; and `git diff --check` exits `0`.
+- Self-review: fake SDK and JobService objects carry complete documented request/resource structures; assertions verify production behavior rather than mock existence; no test-only production API was added; input/output identity and immutable-write ordering are fail closed.
+- Staged GitNexus reconciliation: both `repo="IPCCH_operational"` with the exact linked worktree and the exact-worktree-path repository report LOW risk, exactly five changed files, and zero affected execution processes. Because the four Python/fixture/test paths are new relative to the indexed base, changed-symbol mapping reports only existing `PROGRESS.md` sections; their executable behavior is covered by the focused, related, and full regression gates above.
+- Final staged scope: the staged path list is exactly `PROGRESS.md`, `fewsnet_partitioned_rf_pipeline/cli/infer.py`, `fewsnet_partitioned_rf_pipeline/vertex/batch_prediction.py`, `tests/fewsnet_partitioned_rf/test_batch_prediction.py`, and `tests/fixtures/fewsnet_partitioned_rf/vertex_batch_output.jsonl`. Pre-existing user `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` changes remain unstaged.
+- Scope/no-cloud confirmation: tracked Task 16 work is limited to the approved Batch adapter, inference CLI, raw-output fixture, focused tests, and this ledger. No live cloud, network, authentication, GCS, Vertex, Registry, Endpoint, alias, release-pointer, or smoke operation occurred.
+- Task commit: `feat: run FEWSNET Vertex batch prediction` (this commit).
+
 ## Resume
 
-- Exact next step: generate a fresh Task 16 brief, reconcile the frozen design/plan hashes and current branch/worktree, run the fresh baseline, then implement exact-version Batch Prediction with fake/local backends under strict TDD.
-- Resume command: `git status --short --branch && sha256sum docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '2207,2277p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md`
+- Exact next step: independent Task 16 review against `.superpowers/sdd/task-16-brief.md`, followed by any evidence-backed fix wave before Task 17 begins.
+- Resume command: `git status --short --branch && sed -n '720,820p' PROGRESS.md && git show --stat --oneline HEAD`
 
 ---
 
