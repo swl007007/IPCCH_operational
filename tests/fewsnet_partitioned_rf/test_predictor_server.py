@@ -4,10 +4,13 @@ import copy
 import hashlib
 import importlib
 import json
+import runpy
+import sys
 from pathlib import Path
 
 import numpy as np
 import pytest
+import uvicorn
 from fastapi.testclient import TestClient
 from sklearn.ensemble import RandomForestClassifier
 
@@ -26,7 +29,10 @@ from fewsnet_partitioned_rf_pipeline.core.preprocessing import (
     MaxPlusImputer,
     load_feature_contract,
 )
-from fewsnet_partitioned_rf_pipeline.vertex.storage import LocalArtifactStore
+from fewsnet_partitioned_rf_pipeline.vertex.storage import (
+    GCSArtifactStore,
+    LocalArtifactStore,
+)
 
 
 SHA256_A = "a" * 64
@@ -35,6 +41,7 @@ SOURCE_COMMIT = "1" * 40
 IMAGE_DIGEST = f"sha256:{SHA256_A}"
 IMAGE_URI = f"us-central1-docker.pkg.dev/project/repo/fewsnet@{IMAGE_DIGEST}"
 ARTIFACT_URI = "gs://test-models/suite-v1/models/0m"
+PREDICTOR_MODULE = "fewsnet_partitioned_rf_pipeline.vertex.predictor_server"
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -272,11 +279,106 @@ def _instances(model_inputs) -> list[dict]:
     ]
 
 
+def test_module_entrypoint_localizes_exactly_seven_package_files(
+    tmp_path,
+    model_inputs,
+    monkeypatch,
+):
+    class CountingLocalArtifactStore(LocalArtifactStore):
+        def __init__(self, root: Path):
+            super().__init__(root)
+            self.download_count = 0
+
+        def download_file(
+            self,
+            uri: str,
+            path: Path,
+            generation: str | int | None = None,
+        ) -> None:
+            self.download_count += 1
+            super().download_file(uri, path, generation=generation)
+
+    package_dir = _write_package(tmp_path, model_inputs)
+    store = CountingLocalArtifactStore(tmp_path / "store")
+    _upload_package(package_dir, store)
+    for name, value in _environment().items():
+        monkeypatch.setenv(name, value)
+    monkeypatch.setattr(
+        GCSArtifactStore,
+        "from_default",
+        classmethod(lambda cls: store),
+    )
+
+    def import_configured_application(app_reference: str, **_kwargs) -> None:
+        importlib.import_module(app_reference.split(":", 1)[0])
+
+    monkeypatch.setattr(uvicorn, "run", import_configured_application)
+    previous_module = sys.modules.pop(PREDICTOR_MODULE, None)
+    try:
+        runpy.run_module(
+            PREDICTOR_MODULE,
+            run_name="__main__",
+            alter_sys=True,
+        )
+    finally:
+        sys.modules.pop(PREDICTOR_MODULE, None)
+        if previous_module is not None:
+            sys.modules[PREDICTOR_MODULE] = previous_module
+
+    assert store.download_count == len(PACKAGE_FILES)
+
+
 def test_missing_environment_creates_unhealthy_app_without_raising(tmp_path):
     client = _create_client({}, LocalArtifactStore(tmp_path / "store"))
 
     assert client.get("/health").status_code == 503
     assert client.post("/predict", json={"instances": []}).status_code == 503
+
+
+@pytest.mark.parametrize(
+    "health_route",
+    ["/docs", "/redoc", "/openapi.json"],
+)
+def test_configured_health_route_is_not_shadowed_by_fastapi_defaults(
+    tmp_path,
+    health_route,
+):
+    client = _create_client(
+        {"AIP_HEALTH_ROUTE": health_route},
+        LocalArtifactStore(tmp_path / "store"),
+    )
+
+    assert client.get(health_route).status_code == 503
+
+
+def test_falsy_injected_store_does_not_use_default_gcs_store(
+    tmp_path,
+    model_inputs,
+    monkeypatch,
+):
+    class FalsyLocalArtifactStore(LocalArtifactStore):
+        def __bool__(self) -> bool:
+            return False
+
+    package_dir = _write_package(tmp_path, model_inputs)
+    store = FalsyLocalArtifactStore(tmp_path / "store")
+    _upload_package(package_dir, store)
+    default_calls: list[bool] = []
+
+    def default_store(_cls):
+        default_calls.append(True)
+        return LocalArtifactStore(tmp_path / "unexpected-default-store")
+
+    monkeypatch.setattr(
+        GCSArtifactStore,
+        "from_default",
+        classmethod(default_store),
+    )
+
+    client = _create_client(_environment(), store)
+
+    assert default_calls == []
+    assert client.get("/ready").status_code == 200
 
 
 @pytest.mark.parametrize(

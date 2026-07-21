@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import sys
 import tempfile
 from collections.abc import Mapping
 from pathlib import Path
@@ -84,7 +85,7 @@ def create_app(
 ) -> FastAPI:
     """Create a fail-closed Vertex prediction app without raising on startup."""
     env = os.environ if environ is None else environ
-    api = FastAPI()
+    api = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
     predictor: PartitionedRFPredictor | None = None
     startup_error: Exception | None = None
     port = 8080
@@ -98,7 +99,7 @@ def create_app(
         artifact_uri = env["AIP_STORAGE_URI"]
         expected_image_digest = env["FEWSNET_CONTAINER_IMAGE_DIGEST"]
         expected_source_git_commit = env["FEWSNET_SOURCE_GIT_COMMIT"]
-        artifact_store = store or GCSArtifactStore.from_default()
+        artifact_store = store if store is not None else GCSArtifactStore.from_default()
         with tempfile.TemporaryDirectory(prefix="fewsnet-predictor-") as temp_dir:
             package_dir = Path(temp_dir) / "model-package"
             _localize_package(artifact_uri, artifact_store, package_dir)
@@ -147,6 +148,12 @@ app = create_app()
 
 
 def main() -> None:
+    if __name__ == "__main__":
+        # `python -m` starts as __main__; alias it so Uvicorn does not load twice.
+        sys.modules.setdefault(
+            "fewsnet_partitioned_rf_pipeline.vertex.predictor_server",
+            sys.modules[__name__],
+        )
     uvicorn.run(
         "fewsnet_partitioned_rf_pipeline.vertex.predictor_server:app",
         host="0.0.0.0",

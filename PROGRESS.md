@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 14 shared custom prediction container implementation is complete in this commit; independent review is pending
-- Current state: Tasks 1-13 are complete; Task 14 now provides the fail-closed Vertex HTTP server, exact shared-image Docker contract, and local package-serving regression coverage
-- Blockers: none for Task 14 implementation; Task 15 has not started, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains outside the authorized local/fake boundary
+- Current task: Task 14 independent-review findings are fixed and verified in this commit; independent re-review/controller acceptance is pending
+- Current state: Tasks 1-13 are complete; Task 14 now also prevents module-entrypoint double loading, default-route health shadowing, and falsy injected-store replacement
+- Blockers: none for the Task 14 review fix; Task 15 has not started, and every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains outside the authorized local/fake boundary
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -35,7 +35,7 @@
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
 | 12. Write and validate Vertex-compatible model packages | complete; independent re-review approved through `27742aa`; two Minor findings deferred |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | complete; independent re-review clean through `f0da32a`; controller verification clean |
-| 14. Serve registered packages with a shared custom prediction container | implementation committed in this commit; independent review pending |
+| 14. Serve registered packages with a shared custom prediction container | independent-review fixes verified in this commit; independent re-review pending |
 | 15. Register three stable parent models and immutable candidate versions | pending |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | pending |
 | 17. Validate three-horizon outputs and implement alias rollback publication | pending |
@@ -617,12 +617,31 @@
 - Staged GitNexus reconciliation: the duplicate-name `repo="IPCCH_operational"` lookup reports LOW risk, five changed files, three documentation symbols, and zero processes, under-attributing the new files. The exact-worktree-path lookup reports HIGH by additive count: 46 newly indexed symbols and ten flows, all starting at the new `create_app` and descending through existing package-validation/download paths. New public-symbol upstream checks are LOW (`create_app`, `_localize_package`, and `_validated_instances` have no indexed upstream production impact; `main` has one direct module-guard caller). Zero-context staged diff confirms no existing production symbol body changed.
 - Self-review: missing environment or any localization/package/checksum/dependency/image-digest/source-commit failure produces health and predict `503`; a valid package produces health `200`; prediction preserves instance order and JSON-safe formal rows; missing or undeclared features and request-level horizon fields produce `400`. Tests use temporary packages, `LocalArtifactStore`, and `TestClient`; no real cloud client or backend is invoked.
 - Authority preservation: design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
-- Implementation commit: `feat: serve FEWSNET models in Vertex` (this commit). Task 15 was not started.
+- Implementation commit: `963eea0029e47887f6b735e0984d3a994b355d9a` (`feat: serve FEWSNET models in Vertex`). Task 15 was not started.
 - Scope/no-cloud confirmation: no real GCP/GCS/Vertex Custom Job/Model Registry/Batch Prediction/Endpoint, image build/push, alias mutation, release-pointer mutation, or gated cloud smoke action occurred.
+
+### Task 14 Independent Review Fix Evidence
+
+- Review base: `963eea0029e47887f6b735e0984d3a994b355d9a` (`feat: serve FEWSNET models in Vertex`). The review reproduced all three reported defects before production edits: module execution localized 14 rather than seven package files, configured health paths `/docs`, `/redoc`, and `/openapi.json` returned FastAPI default-route `200` responses during startup failure, and a valid falsy injected store was replaced by the default GCS factory.
+- Entry-point RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_predictor_server.py -q -p no:cacheprovider -k module_entrypoint_localizes_exactly_seven_package_files` -> `1 failed, 11 deselected in 11.63s`; observed download count was 14 instead of seven.
+- Entry-point GREEN: the same selector -> `1 passed, 11 deselected in 7.56s`. `main()` aliases the active `python -m` module under the canonical import name before calling the unchanged approved Uvicorn import string, preventing a second module-level `create_app()` execution.
+- Health-route RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_predictor_server.py -q -p no:cacheprovider -k configured_health_route_is_not_shadowed_by_fastapi_defaults` -> `3 failed, 12 deselected in 11.06s`; all three reserved paths returned `200`.
+- Health-route GREEN: the same selector -> `3 passed, 12 deselected in 7.21s`. FastAPI's default docs, ReDoc, and OpenAPI routes are disabled so the configured fail-closed health handler owns those paths.
+- Injected-store RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_predictor_server.py -q -p no:cacheprovider -k falsy_injected_store_does_not_use_default_gcs_store` -> `1 failed, 15 deselected in 11.06s`; the default factory was called once.
+- Injected-store GREEN: the same selector -> `1 passed, 15 deselected in 7.37s`. Store selection now distinguishes only `None`, preserving any injected `ArtifactStore` regardless of truthiness.
+- Combined Task 14 verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_predictor_server.py tests/fewsnet_partitioned_rf/test_runtime_image.py -q -p no:cacheprovider` -> `17 passed in 7.98s`.
+- Approved import smoke: `.venv/bin/python -c "from fewsnet_partitioned_rf_pipeline.vertex.predictor_server import create_app; assert callable(create_app)"` -> exit `0`.
+- Related package/inference/storage/runtime/training regression -> `104 passed in 24.71s`.
+- Fresh full repository regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `562 passed, 1 skipped, 24 subtests passed in 40.14s`.
+- Static/dependency gates: both changed Python files parse with `ast`; maximum line lengths are 88 and 81; `.venv/bin/python -m pip check` -> `No broken requirements found.`; unstaged `git diff --check` is clean.
+- GitNexus reconciliation: the duplicate-name staged lookup is LOW with three documentation symbols and zero processes. The incremental exact-worktree refresh hit the known inconsistent `file_fts` deletion error; the immediate retry forced a successful full rebuild at 3,548 nodes, 7,369 edges, 151 clusters, and 232 flows. The final exact-worktree staged lookup is HIGH by additive count with 22 changed/touched symbols and ten existing flows, every one marking `create_app` as the changed first step. Fresh exact-worktree upstream impact remains LOW for both edited production functions: `create_app` has zero direct callers/processes, and `main` has one direct module-guard caller and zero processes. The zero-context staged diff confirms that only `create_app`, `main`, and the focused tests changed, so the HIGH staged label reflects the number of existing package-load flows descending from the edited `create_app` entrypoint rather than a high upstream caller blast radius.
+- Authority preservation: design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; plan SHA-256 remains `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Review-fix commit: `fix: harden FEWSNET predictor startup` (this commit). Only the predictor server, its focused tests, and this ledger are authorized for the commit.
+- Scope/no-cloud confirmation: the Dockerfile and its exact command remain unchanged; Task 15 was not started; no image build/push or real GCP/GCS/Vertex/Registry/Batch/Endpoint/alias/release-pointer action occurred.
 
 ## Resume
 
-- Exact next step: run an independent Task 14 review against this implementation commit; fix and re-review every Critical or Important finding before controller acceptance. Do not begin Task 15 yet.
+- Exact next step: independently re-review the Task 14 fix commit and obtain controller acceptance before beginning Task 15.
 - Resume command: `git status --short --branch && git log -6 --oneline && sed -n '585,680p' PROGRESS.md && tail -n 120 .superpowers/sdd/task-14-report.md`
 
 ---
