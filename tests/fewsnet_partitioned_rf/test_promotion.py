@@ -10,6 +10,7 @@ from types import SimpleNamespace
 
 import pandas as pd
 import pytest
+from google.api_core.exceptions import NotFound
 
 from fewsnet_partitioned_rf_pipeline.config import (
     PARTITION_ASSET_PATH,
@@ -32,6 +33,7 @@ from fewsnet_partitioned_rf_pipeline.vertex.promotion import (
     PromotionBusy,
     PromotionError,
     VertexAliasBackend,
+    _capture_optional,
     acquire_promotion_lease,
     promote_and_publish,
     release_promotion_lease,
@@ -821,6 +823,14 @@ class RecordingStore(LocalArtifactStore):
         return super().read_bytes(uri, generation=generation)
 
 
+class GCSNotFoundStore(RecordingStore):
+    def get_ref(self, uri):
+        try:
+            return super().get_ref(uri)
+        except FileNotFoundError as exc:
+            raise NotFound(uri) from exc
+
+
 class FakeAliasBackend:
     def __init__(
         self,
@@ -1005,6 +1015,25 @@ def test_acquire_rejects_unexpired_competing_lease(tmp_path):
     assert exc_info.value.retryable is True
 
 
+@pytest.mark.parametrize(
+    "uri",
+    [
+        f"{ROOT_URI}/released/current.json",
+        f"{ROOT_URI}/released/2026-04/production_suite_manifest.json",
+        f"{ROOT_URI}/locks/production-promotion.json",
+    ],
+)
+def test_capture_optional_treats_gcs_not_found_as_generation_zero(
+    tmp_path,
+    uri,
+):
+    captured = _capture_optional(GCSNotFoundStore(tmp_path), uri)
+
+    assert captured.uri == uri
+    assert captured.generation == "0"
+    assert captured.data is None
+
+
 @pytest.mark.parametrize("lease_seconds", [1, 899, 901])
 def test_acquire_requires_exact_900_second_lease(tmp_path, lease_seconds):
     store = RecordingStore(tmp_path)
@@ -1105,6 +1134,37 @@ def test_promotion_moves_initially_absent_aliases_and_writes_current_last(
         store.read_text(f"{ROOT_URI}/locks/production-promotion.json")
     )
     assert lease_payload["status"] == "released"
+
+
+def test_real_promotion_first_release_accepts_gcs_not_found_optional_state(
+    tmp_path,
+):
+    snapshot = _snapshot()
+    versions = _registered_versions()
+    manifest = _suite_manifest(snapshot, versions)
+    store = GCSNotFoundStore(tmp_path)
+    aliases = FakeAliasBackend(
+        {
+            version.parent_model_resource_name: None
+            for version in versions.values()
+        }
+    )
+
+    result = promote_and_publish(
+        **_promotion_args(store, aliases, snapshot, versions, manifest)
+    )
+
+    assert result["status"] == "RELEASED"
+    assert store.get_ref(
+        f"{ROOT_URI}/released/current.json"
+    ).generation == "1"
+    assert store.get_ref(
+        f"{ROOT_URI}/released/{snapshot.latest_feature_month}/"
+        "production_suite_manifest.json"
+    ).generation == "1"
+    assert json.loads(
+        store.read_text(f"{ROOT_URI}/locks/production-promotion.json")
+    )["status"] == "released"
 
 
 def test_promotion_renews_lease_before_each_forward_mutation(tmp_path):

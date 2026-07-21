@@ -19,6 +19,7 @@ import uuid
 
 from google.api_core.exceptions import (
     DeadlineExceeded,
+    NotFound,
     ServiceUnavailable,
     TooManyRequests,
 )
@@ -767,7 +768,30 @@ def run_latest(
                 f"{root_uri}/runs/{state.run_id}/error.json",
                 _canonical_json(error_payload),
             )
-            state.fail(exc)
+            try:
+                state.fail(exc)
+            except Exception as terminal_manifest_exc:
+                terminal_manifest_error = {
+                    "exception_type": type(terminal_manifest_exc).__name__,
+                    "message": (
+                        str(terminal_manifest_exc)
+                        or type(terminal_manifest_exc).__name__
+                    ),
+                    "timestamp_utc": _timestamp(_utc_now()),
+                }
+                return _result(
+                    state,
+                    "FAILED",
+                    preflight=False,
+                    evidence_indeterminate=True,
+                    error=error_payload,
+                    terminal_manifest_error=terminal_manifest_error,
+                    indeterminate=promotion_indeterminate,
+                    evidence_warning=release_committed,
+                    release_status=(
+                        "RELEASED" if release_committed else None
+                    ),
+                )
             return _result(
                 state,
                 "FAILED",
@@ -892,7 +916,7 @@ def _read_current_pointer(
     uri = f"{root_uri}/released/current.json"
     try:
         ref = store.get_ref(uri)
-    except FileNotFoundError:
+    except (FileNotFoundError, NotFound):
         return None
     data = _read_ref_bytes(store, ref)
     try:

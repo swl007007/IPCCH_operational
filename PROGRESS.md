@@ -1060,6 +1060,64 @@
   `docs: resolve Task 18 indeterminate evidence contract`, then write and run
   the exact full-path RED regressions before any production edit.
 
+### Task 18 Third Narrow Re-review Fix Evidence
+
+- Strict formal-evidence RED:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py -q -p no:cacheprovider -k 'formal_indeterminate_failure'`
+  -> `4 failed, 30 deselected in 22.87s`. Both full-run cases escaped from
+  `state.fail(exc)` with `GenerationConflict: expected 0, current 1`; both CLI
+  cases were consequently misclassified as `preflight: true`.
+- Strict initial-release RED:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py tests/fewsnet_partitioned_rf/test_promotion.py -q -p no:cacheprovider -k 'gcs_not_found'`
+  -> `6 failed, 89 deselected in 22.86s`. Production-style GCS `NotFound`
+  escaped from `_read_current_pointer` and `_capture_optional` instead of
+  representing absent optional state as generation zero.
+- Minimal fix: `run_latest` guards terminal `state.fail(exc)` separately. If
+  the terminal manifest cannot be proven, it returns formal-run `FAILED` with
+  `preflight: false`, `evidence_indeterminate: true`, preserved run/suite
+  identity and original `error`, explicit `terminal_manifest_error`, and no
+  run-manifest reference. The unknown generation remains untouched and the
+  CLI exits nonzero. `_read_current_pointer` and `_capture_optional` now catch
+  only `(FileNotFoundError, google.api_core.exceptions.NotFound)` as absence;
+  `GCSArtifactStore.get_ref` remains unchanged.
+- Exact GREEN reruns: formal evidence `4 passed, 30 deselected in 12.74s`;
+  GCS missing-object behavior `6 passed, 89 deselected in 13.00s`.
+- Broader runtime gates: full Task 18 plus promotion `95 passed in 24.66s`;
+  amended Task 18/training/Batch/promotion `156 passed in 27.81s`; related
+  Tasks 13-18 `209 passed in 29.87s`; full repository
+  `748 passed, 1 skipped, 24 subtests passed in 58.16s`.
+- Static/dependency gates: all four changed Python files parse by AST and
+  compile in memory; both production modules import; `pip check` reports
+  `No broken requirements found.`; `git diff --check` passes.
+- Authority hashes remain exact: design
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`,
+  normalized plan
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`,
+  and fixed partition
+  `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Fresh exact-worktree upstream impact is LOW for `run_latest` (one direct,
+  four total), CLI `main` (one direct, three total), `_read_current_pointer`
+  (one direct, three total), and `_capture_optional` (two direct, 24 total).
+  The two direct `_capture_optional` consumers are `acquire_promotion_lease`
+  and `promote_and_publish`; all required runtime surfaces are covered above.
+- GitNexus recovered from the interrupted incremental `file_fts` refresh by
+  forcing a full rebuild: `4,373` nodes, `9,672` edges, `190` clusters, and
+  `272` flows. Exact-worktree staged `detect_changes(scope="staged")` reports
+  MEDIUM risk across exactly five intended tracked files, 23 mapped symbols,
+  and three internal `run_latest` flows (`Load_schema`, `_canonical_json`, and
+  `_timestamp`). Context confirms `main` is the sole direct production caller;
+  cached path and whitespace checks are clean. Neighboring mapped test symbols
+  outside the added cases are line-shift attribution inside the two amended
+  focused test files.
+- Scope/no-cloud confirmation: verification used local stores and fake
+  training, registry, Batch, alias, and SDK/service boundaries only. No
+  network, authentication, real GCP/GCS/Vertex/Registry/Batch/alias/lease/
+  pointer operation, Task 19 work, image build, or smoke run occurred.
+  Preserved user-owned `AGENTS.md`, `CLAUDE.md`, `.claude/`, and
+  `.superpowers/` remain outside the tracked implementation commit.
+- Planned commit subject: `fix: preserve Task 18 formal failure evidence`.
+  Independent Task 18 re-review remains mandatory before Task 19.
+
 ---
 
 ## Prior Execution Ledger Preserved from Base Commit

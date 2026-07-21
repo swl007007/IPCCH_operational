@@ -176,6 +176,14 @@ class AmbiguousRunManifestStore(RecordingStore):
         return super().read_bytes(uri, generation=generation)
 
 
+class GCSNotFoundStore(RecordingStore):
+    def get_ref(self, uri):
+        try:
+            return super().get_ref(uri)
+        except FileNotFoundError as exc:
+            raise NotFound(uri) from exc
+
+
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -1218,6 +1226,214 @@ def test_run_manifest_write_does_not_reconcile_unreadable_committed_bytes(
     committed_ref = store.get_ref(manifest_uri)
     assert state.ref is None
     assert store.manifest_read_generations == [committed_ref.generation]
+
+
+@pytest.mark.parametrize(
+    ("committed_bytes", "fail_readback"),
+    [
+        (b'{"different":"payload"}', False),
+        (None, True),
+    ],
+    ids=("mismatched", "unreadable"),
+)
+def test_run_latest_returns_formal_indeterminate_failure_when_terminal_manifest_unprovable(
+    tmp_path,
+    monkeypatch,
+    committed_bytes,
+    fail_readback,
+):
+    store = AmbiguousRunManifestStore(
+        tmp_path / "store",
+        committed_bytes=committed_bytes,
+        fail_readback=fail_readback,
+    )
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    store.clear_events()
+
+    result = _run(
+        monkeypatch,
+        _deployment(),
+        store,
+        _backends(store),
+        snapshot_manifest_uri=snapshot["uri"],
+    )
+
+    assert result["status"] == "FAILED"
+    assert result["preflight"] is False
+    assert result["evidence_indeterminate"] is True
+    assert result["run_id"] == result["suite_version"]
+    assert result["phase"] == "FAILED"
+    assert result["run_manifest"] is None
+    assert result["error"]["exception_type"] == "ServiceUnavailable"
+    assert result["terminal_manifest_error"]["exception_type"] == (
+        "GenerationConflict"
+    )
+    error = _read_json(
+        store,
+        f"{ROOT_URI}/runs/{result['run_id']}/error.json",
+    )
+    assert error["exception_type"] == "ServiceUnavailable"
+    manifest_uri = (
+        f"{ROOT_URI}/runs/{result['run_id']}/run_manifest.json"
+    )
+    manifest_ref = store.get_ref(manifest_uri)
+    manifest_writes = [
+        event
+        for event in store.write_events
+        if event[0] == manifest_uri
+    ]
+    assert manifest_ref.generation == "1"
+    assert len(manifest_writes) == 1
+    assert LocalArtifactStore.read_bytes(
+        store,
+        manifest_uri,
+        generation=manifest_ref.generation,
+    ) == manifest_writes[0][1]
+    if committed_bytes is not None:
+        assert manifest_writes[0][1] == committed_bytes
+    assert store.manifest_read_generations
+    assert set(store.manifest_read_generations) == {"1"}
+
+
+@pytest.mark.parametrize(
+    ("committed_bytes", "fail_readback"),
+    [
+        (b'{"different":"payload"}', False),
+        (None, True),
+    ],
+    ids=("mismatched", "unreadable"),
+)
+def test_cli_preserves_formal_indeterminate_failure_classification(
+    tmp_path,
+    monkeypatch,
+    capsys,
+    committed_bytes,
+    fail_readback,
+):
+    module = _module()
+    store = AmbiguousRunManifestStore(
+        tmp_path / "store",
+        committed_bytes=committed_bytes,
+        fail_readback=fail_readback,
+    )
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    deployment_uri = f"{ROOT_URI}/config/deployment.json"
+    put_immutable_or_verify(
+        store,
+        deployment_uri,
+        json.dumps(
+            _deployment(),
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode(),
+    )
+    backends = _backends(store)
+    store.clear_events()
+    monkeypatch.setenv("FEWSNET_SOURCE_GIT_COMMIT", SOURCE_COMMIT)
+    monkeypatch.setattr(module, "_utc_now", lambda: NOW)
+    monkeypatch.setattr(module, "_sleep", lambda _seconds: None)
+    monkeypatch.setattr(
+        module.GCSArtifactStore,
+        "from_default",
+        classmethod(lambda _cls: store),
+    )
+    monkeypatch.setattr(module, "_default_backends", lambda _region: backends)
+
+    exit_code = module.main(
+        [
+            "--deployment-manifest-uri",
+            deployment_uri,
+            "--snapshot-manifest-uri",
+            snapshot["uri"],
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert captured.out == ""
+    result = json.loads(captured.err)
+    assert result["status"] == "FAILED"
+    assert result["preflight"] is False
+    assert result["evidence_indeterminate"] is True
+    assert result["run_id"] == result["suite_version"]
+    assert result["run_manifest"] is None
+    assert result["error"]["exception_type"] == "ServiceUnavailable"
+    assert result["terminal_manifest_error"]["exception_type"] == (
+        "GenerationConflict"
+    )
+    error = _read_json(
+        store,
+        f"{ROOT_URI}/runs/{result['run_id']}/error.json",
+    )
+    assert error["exception_type"] == "ServiceUnavailable"
+    manifest_uri = (
+        f"{ROOT_URI}/runs/{result['run_id']}/run_manifest.json"
+    )
+    manifest_ref = store.get_ref(manifest_uri)
+    manifest_writes = [
+        event
+        for event in store.write_events
+        if event[0] == manifest_uri
+    ]
+    assert manifest_ref.generation == "1"
+    assert len(manifest_writes) == 1
+    assert LocalArtifactStore.read_bytes(
+        store,
+        manifest_uri,
+        generation=manifest_ref.generation,
+    ) == manifest_writes[0][1]
+
+
+def test_read_current_pointer_treats_gcs_not_found_as_initial_absence(
+    tmp_path,
+):
+    module = _module()
+    store = GCSNotFoundStore(tmp_path / "store")
+
+    assert module._read_current_pointer(store, ROOT_URI) is None
+
+
+def test_run_latest_first_release_accepts_gcs_not_found_current_pointer(
+    tmp_path,
+    monkeypatch,
+):
+    store = GCSNotFoundStore(tmp_path / "store")
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    store.clear_events()
+    training, registry, batch, aliases = _backends(store)
+
+    result = _run(
+        monkeypatch,
+        _deployment(),
+        store,
+        (training, registry, batch, aliases),
+        snapshot_manifest_uri=snapshot["uri"],
+    )
+
+    assert result["status"] == "RELEASED"
+    assert len(training.submit_requests) == 1
+    assert len(registry.upload_calls) == 3
+    assert len(batch.submit_calls) == 3
+    assert len(aliases.move_calls) == 3
+    assert _read_json(
+        store,
+        f"{ROOT_URI}/released/current.json",
+    )["suite_version"] == result["suite_version"]
 
 
 def test_same_feature_month_and_snapshot_digest_is_noop_before_cloud_jobs(

@@ -814,7 +814,7 @@ def _put_mutable_or_reconcile(
 def _capture_optional(store: ArtifactStore, uri: str) -> _CapturedObject:
     try:
         ref = store.get_ref(uri)
-    except FileNotFoundError:
+    except (FileNotFoundError, NotFound):
         return _CapturedObject(uri=uri, generation="0", data=None)
     data = store.read_bytes(uri, generation=ref.generation)
     return _CapturedObject(uri=uri, generation=ref.generation, data=data)
