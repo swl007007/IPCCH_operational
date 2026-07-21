@@ -7,15 +7,15 @@
 - Design base commit: `e6afd2cebde02e14501dca52e959e395c54c30b7`
 - Initial plan SHA-256: `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`
 - Current approved design SHA-256: `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`
-- Current normalized plan SHA-256: `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`
+- Current normalized plan SHA-256: `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`
 
 ## Execution Context
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 11 frozen Stage 3 parity evidence is accepted; ledger consistency is being recorded before Task 12
-- Current state: Tasks 1-11 are complete and independently reviewed; Task 11 spans `b802ace..932cfd5`, enforces strict absolute-only parity and reference-checkout bytecode hygiene, and has clean independent re-review plus fresh controller focused, related, and full-suite verification
-- Blockers: none for local Task 12 implementation; no cloud mutation is authorized by the Task 11 acceptance step
+- Current task: Task 12 Vertex-compatible local model package writing and defensive loading; user-approved manifest-schema amendment is synchronized and implementation is ready to resume
+- Current state: Tasks 1-11 are complete and independently reviewed through ledger commit `bf85afd`; design-first option A and its required existing contract-fixture update are aligned across the Task 12 plan, regenerated brief, and both progress ledgers before any production-code edit
+- Blockers: none for Task 12 implementation; no production code, tests, staging, or Task 12 implementation commit has been created yet
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -33,7 +33,7 @@
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | complete; independent review clean through `b91e24a`; one Minor deferred |
 | 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
 | 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
-| 12. Write and validate Vertex-compatible model packages | pending |
+| 12. Write and validate Vertex-compatible model packages | in progress; option A schema amendment synchronized before code |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
 | 14. Serve registered packages with a shared custom prediction container | pending |
 | 15. Register three stable parent models and immutable candidate versions | pending |
@@ -467,12 +467,21 @@
 - Fresh controller focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_reference_parity.py tests/fewsnet_partitioned_rf/test_training_inference.py -q -p no:cacheprovider` -> `21 passed in 15.91s`.
 - Fresh controller related verification across contracts, preprocessing, horizons, partitions, imputer/thresholds, training/inference, and reference parity -> `124 passed in 17.95s`.
 - Fresh controller full repository verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `482 passed, 1 skipped, 24 subtests passed in 33.71s`.
-- Frozen authority remains unchanged: design SHA-256 `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`, plan SHA-256 `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`, fixture SHA-256 `2d5e17c3addc573e11fabb6ca26076abe4c39f52ab6ae6ec1bcf12900e9fdd27`.
+- At Task 11 acceptance, authority was design SHA-256 `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`, then-current plan SHA-256 `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`, and fixture SHA-256 `2d5e17c3addc573e11fabb6ca26076abe4c39f52ab6ae6ec1bcf12900e9fdd27`; the user-approved Task 12 amendment below subsequently updates only the plan authority.
+
+## Task 12 Authority Amendment
+
+- Conflict found before implementation: design section 11 requires `model_manifest.json` to pin the shared container image URI/digest and training/validation target-month ranges, while the closed `model-package.schema.json` omitted `container_image_uri`, `training_target_month_range`, and `validation_target_month_range`.
+- User resolution: option A, design contract governs. Task 12 now explicitly modifies `fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json`; the design remains unchanged at SHA-256 `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`.
+- Plan amendment: require the three manifest fields, require the image URI suffix to equal `@{container_image_digest}`, copy the two ranges from the horizon `training_report.json`, reject range mismatches during loading, and include schema plus existing contract-fixture modification in the Task 12 commit. Updated plan SHA-256: `b500910639b2d3fd6b2bbc973a80f903589cefef73e8d5e6c3a5ccb2dc0be33f`.
+- Existing-test scope consequence: expanding the closed schema makes `tests/fewsnet_partitioned_rf/test_contracts.py::_model_package()` invalid until its fixture includes the three required fields. Exact-worktree upstream impact is LOW, limited to the two model-package schema tests in that file, with no affected execution process; the plan now authorizes this narrow fixture update.
+- Shape resolution retained: package `training_report.json` remains the Task 10 horizon-level `fewsnet-horizon-training-report-v1` report and `threshold_report.json` remains the per-horizon threshold dictionary. The existing suite-level `training-report.schema.json` is reserved for Task 13's separate aggregate `training_threshold_report.json`; Task 12 does not change it.
+- The amended plan, regenerated Task 12 brief, and both progress ledgers are synchronized before implementation resumes. No cloud write is authorized.
 
 ## Resume
 
-- Exact next step: commit this Task 11 review ledger update, record that commit in `.superpowers/sdd/progress.md`, then generate the Task 12 brief and dispatch a fresh implementer for Vertex-compatible local package writing/loading. Task 12 remains local-only at this gate; no GCP, GCS, Vertex, Registry, Batch, alias, or release-pointer write is authorized.
-- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1913,1977p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '424,485p' PROGRESS.md && sed -n '1,120p' .superpowers/sdd/progress.md`
+- Exact next step: record the final Task 12 authority-consistency commit in `.superpowers/sdd/progress.md`, then resume the paused Task 12 implementer with strict schema/package RED tests and no cloud write.
+- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1913,1985p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,130p' .superpowers/sdd/task-12-brief.md && sed -n '445,510p' PROGRESS.md`
 
 ---
 

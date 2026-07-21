@@ -1915,15 +1915,18 @@ git commit -m "test: freeze Stage 3 RF parity fixture"
 **Files:**
 - Create: `fewsnet_partitioned_rf_pipeline/core/package.py`
 - Create: `fewsnet_partitioned_rf_pipeline/core/validation.py`
+- Modify: `fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json`
+- Modify: `tests/fewsnet_partitioned_rf/test_contracts.py`
 - Create: `tests/fewsnet_partitioned_rf/test_model_package.py`
 
 **Interfaces:**
 - Produces `write_model_package(output_dir, predictor, metadata, reports) -> dict`.
 - Produces `load_model_package(package_dir, expected_image_digest=None, expected_source_git_commit=None) -> PartitionedRFPredictor`.
+- `metadata` supplies the digest-pinned shared `container_image_uri`, matching `container_image_digest`, while `reports["training_report"]` supplies the horizon training and validation target-month ranges copied into the manifest.
 
 - [ ] **Step 1: Write RED package round-trip and tamper tests**
 
-Assert the exact seven package files, prediction equivalence before/after joblib round trip, dependency metadata, rejection after altering `threshold_report.json` without updating `checksums.json`, and rejection when the current Python/model-stack versions differ from the manifest.
+Update the existing model-package contract fixture for the three newly required manifest fields. Assert the exact seven package files, prediction equivalence before/after joblib round trip, dependency metadata, and the design-required manifest fields `container_image_uri`, `training_target_month_range`, and `validation_target_month_range`. Assert rejection when any required manifest field is absent, when the image URI does not end with `@{container_image_digest}`, when manifest month ranges disagree with `training_report.json`, after altering `threshold_report.json` without updating `checksums.json`, and when the current Python/model-stack versions differ from the manifest.
 
 - [ ] **Step 2: Run package tests to verify RED**
 
@@ -1941,11 +1944,11 @@ Write `model.joblib` with:
 joblib.dump(predictor, model_path, compress=3, protocol=5)
 ```
 
-Write feature contract, fixed partition CSV, threshold report, training report, and model manifest. Compute SHA-256 after all six content files exist, then write `checksums.json` last. Record runtime versions with `importlib.metadata.version`.
+Write feature contract, fixed partition CSV, threshold report, training report, and model manifest. The manifest copies `training_target_month_range` and `validation_target_month_range` from the horizon training report and records both the shared `container_image_uri` and its digest; reject a URI whose suffix is not `@{container_image_digest}`. Compute SHA-256 after all six content files exist, then write `checksums.json` last. Record runtime versions with `importlib.metadata.version`.
 
 - [ ] **Step 4: Implement defensive loading**
 
-Require all seven files, validate JSON schemas, verify every checksum, verify feature and partition checksums against the manifest, optionally verify the image digest and source Git commit, and compare exact runtime versions for Python major/minor, NumPy, pandas, scikit-learn, joblib, and imbalanced-learn before loading `model.joblib`. Reject an object that is not `PartitionedRFPredictor`.
+Require all seven files, validate the expanded model-package JSON schema, verify every checksum, verify feature and partition checksums against the manifest, require `container_image_uri` to end with `@{container_image_digest}`, and require the manifest training/validation target-month ranges to equal those in `training_report.json`. Optionally verify the image digest and source Git commit, and compare exact runtime versions for Python major/minor, NumPy, pandas, scikit-learn, joblib, and imbalanced-learn before loading `model.joblib`. Reject an object that is not `PartitionedRFPredictor`.
 
 Use this compatibility helper so the predictor container fails before unpickling under a drifted stack:
 
@@ -1968,6 +1971,8 @@ Run Step 2, then:
 git add \
   fewsnet_partitioned_rf_pipeline/core/package.py \
   fewsnet_partitioned_rf_pipeline/core/validation.py \
+  fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json \
+  tests/fewsnet_partitioned_rf/test_contracts.py \
   tests/fewsnet_partitioned_rf/test_model_package.py \
   PROGRESS.md
 git commit -m "feat: package Vertex-compatible FEWSNET models"
