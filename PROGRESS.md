@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 18 later-generation manifest-evidence fix wave
-- Current state: Tasks 1-17 are complete; the final stale nonterminal manifest-reference finding is locally fixed and verified, with commit and independent re-review pending
+- Current task: Task 18 controller acceptance and Task 19 kickoff
+- Current state: Tasks 1-18 are complete; Task 18 passed final independent review and fresh controller verification, and Task 19 is the next local-only implementation step
 - Blockers: none for local/fake implementation; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -39,7 +39,7 @@
 | 15. Register three stable parent models and immutable candidate versions | complete through `4d9f009`; independent re-review and controller verification clean |
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 18. Orchestrate discover -> train -> register -> Batch -> promote | final later-generation manifest-evidence fix verified locally; commit and independent re-review pending |
+| 18. Orchestrate discover -> train -> register -> Batch -> promote | complete through `5ef66c5`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
 | 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
 
 ## Task 1 Evidence
@@ -1178,6 +1178,54 @@
   `.superpowers/` remain outside the tracked implementation commit.
 - Planned commit subject: `fix: null indeterminate Task 18 manifest evidence`.
   Independent re-review remains mandatory before Task 19.
+
+### Task 18 Final Independent Review and Controller Acceptance
+
+- Final implementation commit: `5ef66c508efa007d5443a9caed9b899c66df5a6a`
+  (`fix: null indeterminate Task 18 manifest evidence`). The complete Task 18
+  range is `4234084..5ef66c5` and contains seven commits after the Task 17
+  acceptance base.
+- Final independent re-review: `PASS / APPROVED`, `0 Critical`, `0 Important`,
+  `0 Minor`. The reviewer rechecked later-generation mismatch and unreadable
+  ambiguity, exact-byte reconciliation, production-shaped optional GCS
+  `NotFound`, first release, and promotion transient rollback safety across the
+  complete Task 18 range. Focused reviewer gates were `4`, `14`, and `160`
+  passed; `git diff --check 4234084..5ef66c5` was clean.
+- Fresh controller focused verification:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py -q -p no:cacheprovider`
+  -> `38 passed in 19.23s`.
+- Fresh controller amended-surface verification for Task 18, promotion,
+  training-job, and Batch Prediction tests -> `160 passed in 24.25s`.
+- Fresh controller Tasks 13-18 verification for orchestration, training,
+  prediction server, registry, Batch Prediction, and promotion -> `213 passed
+  in 26.21s`.
+- Fresh controller full repository verification:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider`
+  -> `752 passed, 1 skipped, 24 subtests passed in 63.07s`.
+- Static/controller gates: all eight Python files changed in the Task 18 range
+  parse by AST and compile with redirected bytecode; all four production
+  modules import; `.venv/bin/python -m pip check` reports no broken
+  requirements; and `git diff --check 4234084..HEAD` is clean.
+- Frozen authority is exact: design SHA-256
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`,
+  normalized plan SHA-256
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`,
+  and fixed-partition SHA-256
+  `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Exact-worktree GitNexus compare against `4234084` reports CRITICAL aggregate
+  risk across `307` mapped symbols, `30` affected processes, and `13` files.
+  The compare also includes preserved uncommitted `AGENTS.md` and `CLAUDE.md`;
+  the exact committed Task 18 range contains the intended eleven tracked
+  design/plan/ledger/production/test paths. The final independent review plus
+  the fresh `38`/`160`/`213`/`752` controller gates cover the mapped
+  orchestration, manifest, promotion, training-submit, and Batch-submit flows.
+- Scope/no-cloud confirmation: no network, authentication, real
+  GCP/GCS/Vertex/Registry/Batch/alias/lease/release-pointer operation, image
+  build, smoke run, or Task 19 implementation occurred during Task 18.
+- Controller acceptance: Task 18 is complete. Exact next action is to generate
+  the Task 19 brief, perform its pre-flight conflict scan, and implement only
+  the runbook, default-skipped GCP smoke contract, and authorized local
+  verification. Live GCP smoke and production acceptance remain unauthorized.
 
 ---
 
