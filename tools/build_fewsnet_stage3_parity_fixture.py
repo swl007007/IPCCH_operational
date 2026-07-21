@@ -54,13 +54,18 @@ def _verified_reference_root(reference_root: Path) -> tuple[Path, str]:
 
 def _reference_functions(reference_root: Path) -> tuple[Any, Any, Any, dict]:
     sys.path.insert(0, str(reference_root))
+    prior_dont_write_bytecode = sys.dont_write_bytecode
     try:
-        module = importlib.import_module(REFERENCE_MODULE)
-    except ModuleNotFoundError as exc:
-        raise RuntimeError(
-            "reference import dependency is missing; install the reference "
-            f"checkout's developer requirements ({exc.name})"
-        ) from exc
+        sys.dont_write_bytecode = True
+        try:
+            module = importlib.import_module(REFERENCE_MODULE)
+        except ModuleNotFoundError as exc:
+            raise RuntimeError(
+                "reference import dependency is missing; install the reference "
+                f"checkout's developer requirements ({exc.name})"
+            ) from exc
+    finally:
+        sys.dont_write_bytecode = prior_dont_write_bytecode
     module_path = Path(module.__file__).resolve()
     expected_path = (reference_root / REFERENCE_SCRIPT).resolve()
     if module_path != expected_path:
