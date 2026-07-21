@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 11 frozen Stage 3 parity evidence; independent-review fixes are implemented and verified, with independent re-review pending
-- Current state: Tasks 1-10 are complete and independently reviewed; Task 11 implementation commit `cc97b4b` now has strict absolute-only parity plus generator-internal bytecode suppression and exact interpreter-state restoration, with focused, related, full-suite, and real-regeneration verification green
-- Blockers: none for Task 11 implementation; Task 12 remains intentionally blocked until independent re-review and controller acceptance are clean
+- Current task: Task 11 frozen Stage 3 parity evidence is accepted; ledger consistency is being recorded before Task 12
+- Current state: Tasks 1-11 are complete and independently reviewed; Task 11 spans `b802ace..932cfd5`, enforces strict absolute-only parity and reference-checkout bytecode hygiene, and has clean independent re-review plus fresh controller focused, related, and full-suite verification
+- Blockers: none for local Task 12 implementation; no cloud mutation is authorized by the Task 11 acceptance step
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -32,7 +32,7 @@
 | 8. Validate and route the fixed partition map | complete; independent re-review clean through `20a6e0e` |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | complete; independent review clean through `b91e24a`; one Minor deferred |
 | 10. Train partitioned RF models and produce formal local predictions | complete; independent re-review clean through `891b0f9` |
-| 11. Freeze reference Stage 3 parity evidence | review fixes complete; independent re-review pending |
+| 11. Freeze reference Stage 3 parity evidence | complete; independent re-review clean through `932cfd5` |
 | 12. Write and validate Vertex-compatible model packages | pending |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
 | 14. Serve registered packages with a shared custom prediction container | pending |
@@ -461,10 +461,18 @@
 - Final staged gate: `git diff --cached --check` exited `0`; staged paths are exactly `PROGRESS.md`, the parity test, and the generator. Exact-worktree GitNexus `detect_changes(scope="staged")` reported MEDIUM risk, `3` changed files, `10` changed indexed symbols, and one affected process (`Main -> _reference_functions`, changed at its terminal import step); no FEWSNET runtime or IPCCH process is affected.
 - Existing ignored bytecode inside the external diagnostic virtual environment remains untouched. No fixture-content change, production dependency change, Task 12 behavior, cloud operation, external source edit, or deferred Task 7/9 Minor was introduced.
 
+### Task 11 Controller Acceptance
+
+- Independent re-review of the complete two-commit range `b802ace..932cfd5` approved Task 11 with no Critical, Important, or Minor findings. It confirmed strict `atol=1e-12, rtol=0.0`, internal bytecode suppression/restoration, fail-before-write commit verification, deterministic fixture output, runtime isolation from the external checkout, and exact Task 11 scope.
+- Fresh controller focused verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_reference_parity.py tests/fewsnet_partitioned_rf/test_training_inference.py -q -p no:cacheprovider` -> `21 passed in 15.91s`.
+- Fresh controller related verification across contracts, preprocessing, horizons, partitions, imputer/thresholds, training/inference, and reference parity -> `124 passed in 17.95s`.
+- Fresh controller full repository verification: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `482 passed, 1 skipped, 24 subtests passed in 33.71s`.
+- Frozen authority remains unchanged: design SHA-256 `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`, plan SHA-256 `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`, fixture SHA-256 `2d5e17c3addc573e11fabb6ca26076abe4c39f52ab6ae6ec1bcf12900e9fdd27`.
+
 ## Resume
 
-- Exact next step: independently re-review the complete Task 11 range `b802ace..HEAD`, including the two Important review fixes and `.superpowers/sdd/task-11-report.md`. Task 12 remains blocked until independent re-review and controller acceptance are clean; no cloud write is authorized.
-- Resume command: `git status --short --branch && git log -5 --oneline && git diff b802ace..HEAD -- tools/build_fewsnet_stage3_parity_fixture.py tests/fewsnet_partitioned_rf/test_reference_parity.py tests/fixtures/fewsnet_partitioned_rf/stage3_reference_parity.json PROGRESS.md && sed -n '1,420p' .superpowers/sdd/task-11-report.md`
+- Exact next step: commit this Task 11 review ledger update, record that commit in `.superpowers/sdd/progress.md`, then generate the Task 12 brief and dispatch a fresh implementer for Vertex-compatible local package writing/loading. Task 12 remains local-only at this gate; no GCP, GCS, Vertex, Registry, Batch, alias, or release-pointer write is authorized.
+- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1913,1977p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '424,485p' PROGRESS.md && sed -n '1,120p' .superpowers/sdd/progress.md`
 
 ---
 
