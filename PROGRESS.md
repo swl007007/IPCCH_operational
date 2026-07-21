@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 10 partitioned RF training and formal local prediction
-- Current state: Tasks 1-9 are complete and independently reviewed; Task 9 passed fresh controller focused, related, and full regression verification, while the non-blocking Task 7 ordering Minor and Task 9 sklearn `NotFittedError` idiom Minor remain deferred for final whole-branch triage
-- Blockers: none for Task 10 implementation
+- Current task: Task 10 implementation complete; independent review pending
+- Current state: Tasks 1-9 are complete and independently reviewed; Task 10 passed fresh focused, related, and full regression verification, while the non-blocking Task 7 ordering Minor and Task 9 sklearn `NotFittedError` idiom Minor remain deferred for final whole-branch triage
+- Blockers: none for Task 10 independent review
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -31,7 +31,7 @@
 | 7. Implement keyed horizon alignment and temporal windows | complete; independent re-review clean through `8ff2847`; one Minor deferred |
 | 8. Validate and route the fixed partition map | complete; independent re-review clean through `20a6e0e` |
 | 9. Implement fit-slice-only max-plus imputation and threshold selection | complete; independent review clean through `b91e24a`; one Minor deferred |
-| 10. Train partitioned RF models and produce formal local predictions | pending |
+| 10. Train partitioned RF models and produce formal local predictions | complete; implementation verification green; independent review pending |
 | 11. Freeze reference Stage 3 parity evidence | pending |
 | 12. Write and validate Vertex-compatible model packages | pending |
 | 13. Build the three-horizon training worker and Vertex Custom Job spec | pending |
@@ -377,10 +377,32 @@
 - Controller fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `461 passed, 1 skipped, 24 subtests passed in 24.69s`.
 - Task 9 final status: complete and independently reviewed. Task 10 is unblocked; no cloud write is authorized at this stage.
 
+## Task 10 Evidence
+
+- Base: `06941e4ba2101c4be26782cfb13a80198699c94b` (`docs: record FEWSNET task 9 review`).
+- Pre-change related baseline: preprocessing, horizons, partitions, and Task 9 -> `67 passed in 8.07s`.
+- Initial RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_inference.py -q -p no:cacheprovider` -> `9 failed in 6.65s`; every failure was the expected `ModuleNotFoundError` for the absent `core.training` API before production implementation.
+- Pooled/partition contract: every fit uses `RandomForestClassifier(**RF_PARAMS)`; the pooled model receives every supplied row; nullable/unmapped cluster IDs are excluded only from the partition loop; eligible partitions use dynamic SMOTE neighbors; small and single-class partitions use their exact pooled fallback states; failed SMOTE records the exception class/message and trains the partition RF on original rows.
+- Threshold/refit contract: the aligned input must contain one contiguous inclusive 36-target-month window; a temporary imputer and temporary models see only the first 30 target months; partition-routed probabilities select the shared global threshold on the final six target months; a new imputer and new pooled/partition models are then fitted on all 36 months.
+- Formal inference contract: `PartitionedRFPredictor` is pickle-serializable, preserves input row order, applies the frozen feature order and stored imputer, derives or validates the target month from its fixed horizon, routes every fallback source explicitly, handles single-column `predict_proba` by inspecting `classes_`, and emits exactly the twelve formal prediction columns with empty pre-registration identity fields.
+- Exact pinned-stack compatibility finding: `imbalanced-learn==0.14.0` and `scikit-learn==1.8.0` pass package metadata and `pip check`, but a normal `imblearn` import fails because sklearn 1.8 removed private `validation._is_pandas_df` and the `AdaBoostClassifier(algorithm=...)` argument still used while importing imbalanced-learn. The new Task 10 module applies a temporary import-only bridge for those two exact API removals, imports the real `imblearn.over_sampling.SMOTE`, and restores both sklearn globals immediately.
+- Import-restoration mutation RED: after temporarily suppressing both restoration statements, `-k smote_import_bridge` -> `1 failed, 9 deselected in 12.15s`; the fresh-interpreter regression detected the leaked sklearn global. Restoring the implementation produced `1 passed, 9 deselected in 9.91s`.
+- First focused GREEN after the compatibility bridge: the complete Task 10 file -> `10 passed in 16.95s`.
+- Self-review boundary RED: formal inference without a supplied `target_month` and with a contradictory supplied target produced `2 failed, 9 deselected in 12.09s`; the predictor now derives the fixed-horizon target when absent and rejects a mismatch. Focused boundary GREEN -> `2 passed, 9 deselected in 8.45s`.
+- Final focused GREEN: the complete Task 10 file -> `11 passed in 15.79s`.
+- Final related regression: Task 2 contracts plus Tasks 5, 7, 8, 9, and 10 -> `114 passed in 17.14s`.
+- Final fresh full regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider` -> `472 passed, 1 skipped, 24 subtests passed in 32.56s`.
+- Static/API audit: all three Task 10 Python files parse with `ast`; the public signatures match the frozen brief; `.venv/bin/python -m pip check` reports `No broken requirements found.`
+- GitNexus: the exact-worktree index was refreshed at base `06941e4`; exact-worktree query/context confirmed Task 2/5/7/8/9 consumers. No existing function, class, or method was modified, so no pre-edit symbol impact gate was triggered. Exact-worktree staged `detect_changes` reported LOW risk, four changed files, three indexed `PROGRESS.md` documentation sections, and zero affected execution processes; the new Python symbols were not surfaced in the staged symbol list.
+- Preservation: approved design SHA-256 remains `3ab8522823e79ef2f7085c4c4f50a34f18c1319902b3a7cdcf945ab4222eac53`; approved plan SHA-256 remains `977a88cd4b00e0bd9c560ffc2bb9aa752a0f76adaff59128d63b66a6745f176f`; fixed partition SHA-256 remains `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Scope boundary: only the two additive core modules, the Task 10 focused test, and this ledger are tracked Task 10 changes. The pre-existing `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` changes remain unstaged. No Task 11 parity fixture/tool, GCP/GCS/Vertex operation, Model Registry call, Batch Prediction, alias mutation, release-pointer write, IPCCH pipeline edit, or external artifact mutation was introduced.
+- Implementation commit: this Task 10 commit; the exact hash is recorded in `.superpowers/sdd/task-10-report.md` after commit.
+- Task 10 implementation status: complete; independent review is required before Task 11 starts.
+
 ## Resume
 
-- Exact next step: after committing this Task 9 review ledger, dispatch a fresh Task 10 implementer from the resulting ledger-consistency commit using `.superpowers/sdd/task-10-brief.md`; do not perform any GCP/Vertex write.
-- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1725,1831p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,410p' PROGRESS.md`
+- Exact next step: independently review the Task 10 implementation commit and its report. Task 11 remains blocked until that review is clean; do not perform any GCP/Vertex write.
+- Resume command: `git status --short --branch && git log -5 --oneline && sed -n '1725,1912p' docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md && sed -n '1,460p' PROGRESS.md`
 
 ---
 
