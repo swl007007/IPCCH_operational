@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 19 Wave 2 independent-review fixes and staged-scope verification
-- Current state: Tasks 1-18 are complete and reviewed; the five findings from the Task 19 final independent re-review are fixed locally with fresh deterministic verification, while another independent re-review, Docker execution, live GCP smoke, and production acceptance remain outstanding gates
+- Current task: Task 19 Wave 3 independent-review fixes and staged-scope verification
+- Current state: Tasks 1-18 are complete and reviewed; the two findings from the final review of `14ad3fa..dc78242` are fixed locally with fresh deterministic verification, while another independent re-review, Docker execution, live GCP smoke, and production acceptance remain outstanding gates
 - Blockers: Docker Desktop WSL integration is disabled and no daemon is available; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -40,7 +40,7 @@
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | complete through `5ef66c5`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | Wave 2 independent-review fixes complete locally; another independent re-review required; Docker, live GCP smoke, and production acceptance unexecuted |
+| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | Wave 3 independent-review fixes complete locally; another independent re-review required; Docker, live GCP smoke, and production acceptance unexecuted |
 
 ## Task 1 Evidence
 
@@ -1466,6 +1466,56 @@
 - External gates are unchanged: Docker Desktop WSL integration is disabled, so
   `docker version` and `docker info` exit `1`; all three live-smoke variables
   are unset. No image build, authentication, live GCP smoke, production
+  acceptance, GCS write, Vertex/Registry/Batch mutation, alias mutation, lease
+  mutation, or release-pointer mutation occurred.
+
+### Task 19 Wave 3 Independent-Review Fix Evidence
+
+- The final review of `14ad3fa..dc78242` returned
+  `0 Critical / 2 Important / 0 Minor` and kept Task 19 at FAIL. Wave 3 closes
+  both Important findings locally; another independent re-review remains
+  mandatory.
+- Root cause I1: the separate production verifier used a same-quote nested
+  f-string accepted by the host Python 3.12 parser but rejected by the approved
+  Python 3.11 runtime. The expression now uses Python-3.11-compatible quoting.
+- Root cause I2: `object_ref_dict` existed only in the fixed-sample generator's
+  Python process, while the separate production verifier called it three times.
+  The verifier now defines its own ObjectRef normalizer before parity checks.
+- New regressions parse both marked runbook programs with
+  `ast.parse(..., feature_version=(3, 11))` and an actual CPython 3.11
+  interpreter, recursively audit every verifier global with `symtable`, and
+  execute the verifier-local ObjectRef normalizer against a fake ObjectRef.
+- TDD RED:
+  `3 failed, 1 passed, 21 deselected in 20.64s`. The failures were the exact
+  Python 3.11 f-string `SyntaxError`, unresolved global
+  `{'object_ref_dict'}`, and missing-helper `KeyError`.
+- Focused GREEN: `4 passed, 21 deselected in 20.77s`.
+- Complete smoke file with all live/source variables explicitly unset:
+  `24 passed, 1 skipped in 12.61s`.
+- Explicit static probe: both marked programs parse under the explicit Python
+  3.11 grammar and CPython 3.11.15; verifier unresolved globals are exactly
+  zero; fake ObjectRef normalization passes.
+- Runbook structure: `27` complete Markdown fences, all `25` Bash fences pass
+  `bash -n`, and all `8` Python heredocs compile.
+- Fresh FEWSNET regression: `479 passed, 1 skipped in 51.38s`.
+- Fresh cloud/IPCCH regression: `228 passed, 1 skipped in 12.09s`.
+- Fresh full repository gate:
+  `776 passed, 2 skipped, 24 subtests passed in 61.35s`.
+- Command/dependency/authority gates: all five current FEWSNET CLI help commands
+  print `usage:`; `.venv/bin/python -m pip check` reports
+  `No broken requirements found.`; `git diff --check` is silent; design,
+  normalized-plan, and partition SHA-256 values remain respectively
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`,
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`,
+  and `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- GitNexus scope note: Wave 3 adds new test/helper symbols and modifies only
+  documentation-embedded Python; no existing production function, class, or
+  method changed. Exact-worktree staged `detect_changes(scope="staged")`
+  reports LOW risk across exactly `3` changed files, `3` mapped documentation
+  sections, and `0` affected execution processes.
+- External gates remain unchanged: Docker Desktop WSL integration is disabled,
+  so `docker version` and `docker info` exit `1`; all three live-smoke variables
+  are unset. No Docker build, authentication, live GCP smoke, production
   acceptance, GCS write, Vertex/Registry/Batch mutation, alias mutation, lease
   mutation, or release-pointer mutation occurred.
 

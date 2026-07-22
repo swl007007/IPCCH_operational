@@ -1605,6 +1605,15 @@ def allowed_object_uri(root_uri: str, uri: str) -> bool:
     return any(pattern.fullmatch(relative) for pattern in ALLOWED_OBJECT_PATTERNS)
 
 
+def object_ref_dict(ref: object) -> dict:
+    return {
+        "uri": str(getattr(ref, "uri")),
+        "generation": str(getattr(ref, "generation")),
+        "sha256": str(getattr(ref, "sha256")),
+        "size_bytes": int(getattr(ref, "size_bytes")),
+    }
+
+
 def read_ref(store: GCSArtifactStore, ref: dict, name: str) -> bytes:
     required_fields = {"uri", "generation", "sha256", "size_bytes"}
     if not isinstance(ref, dict) or set(ref) != required_fields:
@@ -2046,7 +2055,7 @@ for horizon in HORIZONS:
         'acceptance condition failed at verifier source line 607',
     )
     require(
-        version['version_resource_name'] == f'{expected_parent}@{version['version_id']}',
+        version['version_resource_name'] == f"{expected_parent}@{version['version_id']}",
         'acceptance condition failed at verifier source line 608',
     )
     model = model_service.get_model(

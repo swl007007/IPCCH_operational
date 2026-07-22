@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ast
+import builtins
 import hashlib
 import json
 import math
@@ -10,8 +11,10 @@ import os
 from collections.abc import Mapping
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
+import symtable
 from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
@@ -522,6 +525,59 @@ def _production_verifier_source() -> str:
     )
 
 
+def _python_311_executable() -> str:
+    if sys.version_info[:2] == (3, 11):
+        return sys.executable
+    candidates = [
+        os.environ.get("FEWSNET_PYTHON311"),
+        shutil.which("python3.11"),
+        *(
+            str(path)
+            for path in sorted(
+                Path.home().glob(
+                    ".local/share/uv/python/cpython-3.11.*/bin/python3.11"
+                )
+            )
+        ),
+    ]
+    for candidate in candidates:
+        if candidate and Path(candidate).is_file():
+            return candidate
+    raise AssertionError("a Python 3.11 interpreter is required for runbook linting")
+
+
+def _unresolved_global_names(source: str) -> set[str]:
+    module = symtable.symtable(source, "<fewsnet-acceptance-verifier>", "exec")
+    module_definitions = {
+        symbol.get_name()
+        for symbol in module.get_symbols()
+        if symbol.is_assigned() or symbol.is_imported() or symbol.is_namespace()
+    }
+    permitted = set(dir(builtins)) | {
+        "__builtins__",
+        "__name__",
+        "__package__",
+        "__spec__",
+    }
+    unresolved: set[str] = set()
+
+    def visit(table: symtable.SymbolTable) -> None:
+        for symbol in table.get_symbols():
+            name = symbol.get_name()
+            if (
+                symbol.is_referenced()
+                and symbol.is_global()
+                and name not in module_definitions
+                and name not in permitted
+            ):
+                unresolved.add(name)
+        for child in table.get_children():
+            visit(child)
+
+    visit(module)
+    return unresolved
+
+
 def _verifier_helpers() -> dict[str, Any]:
     source = _production_verifier_source()
     prefix = source.split("\nraw_panel = required_env(", 1)[0]
@@ -654,6 +710,59 @@ def test_acceptance_verifier_rejects_optimized_python_before_cloud_bootstrap() -
 def test_acceptance_verifier_uses_no_optimization_sensitive_asserts() -> None:
     tree = ast.parse(_production_verifier_source())
     assert [node for node in ast.walk(tree) if isinstance(node, ast.Assert)] == []
+
+
+@pytest.mark.parametrize(
+    ("begin_marker", "end_marker"),
+    (
+        (
+            "# BEGIN FEWSNET_FIXED_SAMPLE_PARITY_GENERATOR",
+            "# END FEWSNET_FIXED_SAMPLE_PARITY_GENERATOR",
+        ),
+        (
+            "# BEGIN FEWSNET_PRODUCTION_ACCEPTANCE_VERIFIER",
+            "# END FEWSNET_PRODUCTION_ACCEPTANCE_VERIFIER",
+        ),
+    ),
+)
+def test_marked_runbook_programs_parse_with_python_311(
+    begin_marker: str,
+    end_marker: str,
+) -> None:
+    source = _marked_python_source(begin_marker, end_marker)
+    ast.parse(source, "<fewsnet-runbook>", "exec", feature_version=(3, 11))
+    completed = subprocess.run(
+        [
+            _python_311_executable(),
+            "-c",
+            "import ast,sys; ast.parse(sys.stdin.read(), '<fewsnet-runbook>', 'exec')",
+        ],
+        input=source,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 0, completed.stderr
+
+
+def test_acceptance_verifier_has_no_unresolved_global_names() -> None:
+    assert _unresolved_global_names(_production_verifier_source()) == set()
+
+
+def test_acceptance_verifier_normalizes_fake_object_refs() -> None:
+    class FakeObjectRef:
+        uri = "gs://bucket/root/object.json"
+        generation = 7
+        sha256 = "a" * 64
+        size_bytes = "12"
+
+    normalizer = _verifier_helpers()["object_ref_dict"]
+    assert normalizer(FakeObjectRef()) == {
+        "uri": "gs://bucket/root/object.json",
+        "generation": "7",
+        "sha256": "a" * 64,
+        "size_bytes": 12,
+    }
 
 
 def test_runbook_has_executable_generation_bound_fixed_sample_parity_workflow() -> None:
