@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 19 local completion and staged-scope verification
-- Current state: Tasks 1-18 are complete and reviewed; Task 19 runbook, gated smoke harness, and all authorized local verification are complete, while Docker execution, live GCP smoke, and production acceptance remain unexecuted external gates
+- Current task: Task 19 independent-review fixes and staged-scope verification
+- Current state: Tasks 1-18 are complete and reviewed; all Task 19 review findings are fixed locally with fresh deterministic verification, while independent re-review, Docker execution, live GCP smoke, and production acceptance remain outstanding gates
 - Blockers: Docker Desktop WSL integration is disabled and no daemon is available; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -40,7 +40,7 @@
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | complete through `5ef66c5`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | complete locally; Docker, live GCP smoke, and production acceptance unexecuted |
+| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | independent-review fixes complete locally; independent re-review required; Docker, live GCP smoke, and production acceptance unexecuted |
 
 ## Task 1 Evidence
 
@@ -1299,6 +1299,112 @@
   Prediction, Endpoint mutation, promotion lease, or release-pointer mutation
   was attempted. Step 5 live smoke and Step 6 production acceptance remain
   explicitly unauthorized and unexecuted.
+
+### Task 19 Independent-Review Fix Evidence
+
+- Independent review gate: `0 Critical / 5 Important / 2 Minor`, with a FAIL
+  disposition until all findings were corrected and independently re-reviewed.
+  The fix wave closes I1-I5 and M1-M2 locally; independent re-review remains
+  mandatory before Task 19 can pass its review gate.
+- Exact-worktree GitNexus pre-edit gates: `_skip_reason` was LOW risk with one
+  direct file caller and zero affected processes; the live smoke test was LOW
+  risk with zero upstream dependents and zero affected processes. No HIGH or
+  CRITICAL warning occurred. The runbook changes are documentation-only and do
+  not modify a production function, class, or method.
+- Review RED evidence: a whitespace deployment URI plus a malformed snapshot
+  URI produced no smoke skip reason, and the live smoke had no checked-out
+  source-commit equality gate before its direct `run_latest` call.
+- Smoke fix: both manifest values must now be trimmed canonical
+  `gs://bucket/object` URIs without whitespace, query, fragment, empty/dot path
+  segments, or a noncanonical reconstruction; the snapshot must end in
+  `/source_manifest.json`. The checked-out `HEAD` must be exactly forty
+  lowercase hexadecimal characters and equal the validated deployment
+  `source_git_commit` before `FEWSNET_SOURCE_GIT_COMMIT` is set. Local contract
+  tests are no longer covered by the live skip marker.
+- Runbook authority fix: gcloud and Python ADC both explicitly impersonate
+  `ORCHESTRATOR_SA`; the submitter receives Token Creator on only that account;
+  the orchestrator receives Service Account User on only the training and
+  Batch accounts; and the two-principal preflight must prove both toolchains
+  resolve to the intended orchestration identity.
+- Storage isolation fix: no command grants bucket-wide
+  `roles/storage.objectUser`, `roles/storage.admin`, Owner, or Editor. Training
+  and Batch identities receive only conditioned exact-object reads and
+  create-only writes, with no list/delete permission and no `locks/` or
+  `released/` condition. Only the orchestrator receives the unavoidable
+  bucket-level list permission and the conditioned generation-safe mutator.
+- Deployment and inventory fixes: the immutable deployment object name now
+  includes a canonical SHA-256 of the complete validated deployment payload;
+  local-stage evidence is persisted explicitly; and
+  `inputs/selected_source_manifest.json` is documented alongside the canonical
+  generation-bound `input_snapshot_ref.json`.
+- Acceptance-verifier fix: one read-only Python command now emits evidence for
+  every acceptance item 1-16 and compares the selected source bytes, normalized
+  audit, local-stage identity, live Custom Job, three exact Model Versions,
+  three exact-version Batch jobs, three formal CSVs, parity evidence, validator
+  summaries, aliases, Endpoint inventory, forbidden-object inventory, and GCS
+  generation-specific update times. Suite/pointer/source/image identities,
+  validator keys, fallback-source keys, and parity schemas are checked exactly.
+- Verifier semantic hardening: removed the temporary `if False else` construct
+  in favor of a direct generation-bound prediction `ObjectRef`. Pandas dtypes
+  now preserve numeric Vertex version IDs as strings and nullable integral
+  formal fields before per-record JSON Schema validation. A local probe proved
+  that a valid `@27` CSV record remains a string-valued version identity and
+  passes `prediction-record` validation.
+- Snapshot identity audit: direct implementation review confirmed the snapshot
+  content digest excludes destination URI and creation time. A local two-store
+  probe staged the same normalized panel/audit/boundaries under different
+  destination roots and creation times and produced the identical snapshot ID
+  and SHA-256 (`14feb36244b14a02a33de9743bc20e85792c2f59135027628e9e47e80e38d160`).
+- Installed Vertex proto audit: the installed Custom Job, Model, Batch
+  Prediction Job, and Custom Job Spec expose every field used by the verifier,
+  including `job_spec.service_account`, `worker_pool_specs`, `artifact_uri`,
+  `container_spec`, `version_id`, `version_aliases`, `model`,
+  `input_config.gcs_source`, `output_config.gcs_destination`, `output_info`,
+  `service_account`, and `dedicated_resources`.
+- Embedded-code gate: all `52` Markdown fence lines form `26` complete fenced
+  blocks; all `24` Bash blocks pass `bash -n`; all `7` embedded Python heredocs
+  compile in memory; and the temporary verifier construct is absent.
+- Static policy gate: all required IAM, impersonation, deployment-digest,
+  selected-manifest, and sixteen-item verifier strings are present; worker IAM
+  prefix isolation passes; forbidden broad role grants are absent; and neither
+  the runbook nor smoke harness contains `Food_Crisis_Cluster`, an IFPRI
+  Dropbox source path, `/mnt/c`, or `/mnt/d`.
+- Fresh smoke collection with all four smoke/source variables explicitly unset:
+  `11 tests collected in 0.18s`. Fresh default execution:
+  `10 passed, 1 skipped in 0.37s`; only the authorized live GCP test skipped.
+- Fresh FEWSNET regression:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf -q -p no:cacheprovider`
+  -> `465 passed, 1 skipped in 53.69s`.
+- Fresh cloud/IPCCH regression:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/cloud tests/test_operational_launch_inference.py -q -p no:cacheprovider`
+  -> `228 passed, 1 skipped in 13.01s`.
+- Fresh full repository gate:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider`
+  -> `762 passed, 2 skipped, 24 subtests passed in 63.06s`.
+- Command/dependency/authority gates: all four FEWSNET CLI help commands printed
+  `usage:`; the smoke file compiles in memory; `.venv/bin/python -m pip check`
+  reports `No broken requirements found.`; design SHA-256 remains
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`;
+  normalized plan SHA-256 remains
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`;
+  and fixed-partition SHA-256 remains
+  `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Docker preflight remains externally blocked: `command -v docker` resolves
+  `/mnt/c/Program Files/Docker/Docker/resources/bin/docker`, while both
+  `docker version` and `docker info` exit `1` with Docker Desktop's message that
+  the command is unavailable in this WSL 2 distro and WSL integration must be
+  enabled. No Dockerfile or requirements change was made to bypass it.
+- Final exact-worktree staged GitNexus `detect_changes(scope="staged")`
+  reported LOW risk across exactly `3` changed files, `35` mapped changed
+  symbols/sections, and `0` affected execution processes. The staged paths are
+  exactly `PROGRESS.md`, `docs/09_fewsnet_partitioned_rf_runbook.md`, and
+  `tests/fewsnet_partitioned_rf/test_gcp_smoke.py`; `git diff --cached --check`
+  is silent, and the Dockerfile plus FEWSNET requirements are unchanged from
+  `HEAD`.
+- Scope/no-cloud confirmation: only `PROGRESS.md`, the runbook, and the smoke
+  harness are intended for the tracked review-fix commit. No production module,
+  Dockerfile, requirements file, existing IPCCH prediction/model artifact, live
+  cloud resource, alias, lease, release pointer, or external state was changed.
 
 ---
 
