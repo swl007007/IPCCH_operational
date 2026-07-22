@@ -13,9 +13,9 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 18 controller acceptance and Task 19 kickoff
-- Current state: Tasks 1-18 are complete; Task 18 passed final independent review and fresh controller verification, and Task 19 is the next local-only implementation step
-- Blockers: none for local/fake implementation; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
+- Current task: Task 19 local completion and staged-scope verification
+- Current state: Tasks 1-18 are complete and reviewed; Task 19 runbook, gated smoke harness, and all authorized local verification are complete, while Docker execution, live GCP smoke, and production acceptance remain unexecuted external gates
+- Blockers: Docker Desktop WSL integration is disabled and no daemon is available; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
 ## Task Status
@@ -40,7 +40,7 @@
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | complete through `5ef66c5`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | pending |
+| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | complete locally; Docker, live GCP smoke, and production acceptance unexecuted |
 
 ## Task 1 Evidence
 
@@ -1226,6 +1226,79 @@
   the Task 19 brief, perform its pre-flight conflict scan, and implement only
   the runbook, default-skipped GCP smoke contract, and authorized local
   verification. Live GCP smoke and production acceptance remain unauthorized.
+
+### Task 19 Local Completion Evidence
+
+- Base: `14ad3fa4c2039ef31fd7ae543be99b23fd66a827` (`docs: record
+  FEWSNET task 18 acceptance`) on
+  `features/fewsnet-partitioned-rf-suite` in the existing linked worktree.
+- Validation-only exception: the new operator runbook and standalone gated
+  smoke harness are validation artifacts approved by the Task 19 controller
+  brief. No existing production function, class, or method changed, so no
+  pre-edit symbol impact call was required. `requirements-fewsnet-partitioned-rf.txt`
+  and `docker/Dockerfile.fewsnet-partitioned-rf` remain unchanged.
+- Added `docs/09_fewsnet_partitioned_rf_runbook.md`, covering the exact
+  repository image, normalization, staging, deployment, `run_latest`,
+  revision, artifact-inspection, threshold/fallback, recovery/rollback,
+  Endpoint-zero, and sixteen-item production acceptance commands.
+- Added `tests/fewsnet_partitioned_rf/test_gcp_smoke.py`. The enabled path
+  calls `run_latest(..., snapshot_manifest_uri=..., promote=False)` against a
+  required dedicated non-production project/root and asserts one succeeded
+  Custom Job, three retained candidate Model Versions with no `production`
+  alias, three succeeded Batch Prediction Jobs, exact horizon row/source-count
+  reconciliation to the snapshot `area_count`, unchanged Endpoint inventory,
+  unchanged production aliases, and unchanged `released/current.json`.
+- Smoke gate environment: `FEWSNET_GCP_SMOKE_ENABLED`,
+  `FEWSNET_GCP_DEPLOYMENT_MANIFEST_URI`, and
+  `FEWSNET_GCP_TEST_SNAPSHOT_MANIFEST_URI` were all explicitly confirmed
+  unset. Default collection reported one test; default execution reported
+  `1 skipped in 0.13s`. In-memory compile/import validation was clean.
+- Worktree baseline before Task 19 edits:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider`
+  -> `752 passed, 1 skipped, 24 subtests passed in 59.65s`.
+- Required FEWSNET regression:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf -q -p no:cacheprovider`
+  -> `455 passed, 1 skipped in 59.27s` after the final production-alias
+  preservation assertion was added to the live smoke.
+- Required IPCCH/cloud regression:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/cloud tests/test_operational_launch_inference.py -q -p no:cacheprovider`
+  -> `228 passed, 1 skipped in 13.77s`.
+- Fresh full repository gate after Task 19 edits:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests -q -p no:cacheprovider`
+  -> `752 passed, 2 skipped, 24 subtests passed in 58.94s`; the additional
+  skip is the new explicitly gated FEWSNET live smoke.
+- Docker daemon preflight: `command -v docker` resolved the Windows Docker
+  Desktop client path, but both `docker version` and `docker info` returned
+  `The command 'docker' could not be found in this WSL 2 distro.` followed by
+  `We recommend to activate the WSL integration in Docker Desktop settings.`
+  The image build and training-help container gates were therefore not run;
+  no Dockerfile or dependency change was made to bypass the environment.
+- Static/command/path gates: all four repository CLI `--help` commands printed
+  `usage:`; the smoke file compiles in memory; Markdown fences and required
+  command strings pass the Task 19 audit; `git diff --check` is clean; and the
+  new artifacts contain no `Food_Crisis_Cluster`, Dropbox source-directory,
+  or `/mnt/c`/`/mnt/d` runtime paths.
+- Dependency gate: `.venv/bin/python -m pip check` ->
+  `No broken requirements found.`
+- Frozen authority remains exact: design SHA-256
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`,
+  normalized plan SHA-256
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`,
+  and fixed-partition SHA-256
+  `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- GitNexus preflight: the stale incremental refresh reproduced the known
+  inconsistent `file_fts` index failure. The supported forced full rebuild
+  recovered the exact worktree index to `4,382` nodes, `9,710` edges, `191`
+  clusters, and `272` flows; `run_latest` context then resolved correctly.
+- Exact-worktree staged GitNexus gate: `detect_changes(scope="staged")`
+  reported LOW risk across exactly three staged files, ten mapped documentation
+  sections, and zero affected execution processes. The new runbook and smoke
+  harness are standalone validation files and no production flow changed.
+- No-cloud statement: no live smoke, production acceptance, networked GCP job,
+  GCS write, Vertex Custom Job, Model Registry/version/alias mutation, Batch
+  Prediction, Endpoint mutation, promotion lease, or release-pointer mutation
+  was attempted. Step 5 live smoke and Step 6 production acceptance remain
+  explicitly unauthorized and unexecuted.
 
 ---
 
