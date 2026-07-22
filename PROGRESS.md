@@ -13,11 +13,12 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: final branch re-review fix wave for I1-I2
-- Current state: both re-review findings and the exact-UTF-8 report boundary are
-  fixed with fresh local verification; the controller's first exact staged
-  GitNexus flow review is complete, while the required post-ledger staged
-  re-detect and the single fix-wave commit remain before handoff. Docker
+- Current task: final local acceptance and branch-integration handoff
+- Current state: integration-complete locally through production-code fix commit
+  `72de75a`; final whole-branch re-review is clean with `0 Critical / 0
+  Important / 0 Minor`, and controller-owned focused, related, FEWSNET,
+  cloud/IPCCH, full-repository, static, runbook, CLI, dependency, authority,
+  whitespace, runtime-path, and Endpoint-zero gates are fresh and clean. Docker
   execution, live GCP smoke, and production acceptance remain outstanding
   external gates
 - Blockers: Docker Desktop WSL integration is disabled and no daemon is available; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
@@ -45,7 +46,7 @@
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | complete through `5ef66c5`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | local artifacts/contracts complete through `bfd8fd8`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean; Docker, live GCP smoke, and production acceptance unexecuted |
+| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | local artifacts/contracts and final re-review fixes complete through `72de75a`; final whole-branch review 0 Critical/0 Important/0 Minor and fresh controller local verification clean; Docker, live GCP smoke, and production acceptance unexecuted |
 
 ## Task 1 Evidence
 
@@ -1730,6 +1731,63 @@
   alias, lease, Endpoint, or release-pointer operation was performed.
 - Planned unified commit subject after staged approval: `fix: close FEWSNET
   final re-review findings`.
+
+## Final Local Acceptance and Whole-Branch Re-review
+
+- Production-code closure commit:
+  `72de75a1733658cf0eb2268409d675daefdc9234` (`fix: close FEWSNET final
+  re-review findings`), containing exactly tracked `PROGRESS.md`, three
+  production files, and two focused test files. Modified `AGENTS.md`,
+  `CLAUDE.md`, and untracked `.claude/`/`.superpowers/` remained excluded.
+- Independent whole-branch re-review over
+  `e6afd2cebde02e14501dca52e959e395c54c30b7..72de75a1733658cf0eb2268409d675daefdc9234`
+  is recorded in `.superpowers/sdd/final-branch-rereview-clean.md`: `0
+  Critical / 0 Important / 0 Minor`, `Ready-to-merge: Yes`. The reviewer
+  independently passed all `151` affected tests plus RFC3339 and
+  cluster-state/source-binding probes.
+- Controller fresh affected-file gate:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest
+  tests/fewsnet_partitioned_rf/test_run_latest.py
+  tests/fewsnet_partitioned_rf/test_promotion.py
+  tests/fewsnet_partitioned_rf/test_contracts.py -q -p no:cacheprovider` ->
+  `151 passed in 27.26s`.
+- Controller fresh Tasks 13-18 gate over orchestration, training, prediction
+  server, Registry, Batch Prediction, and promotion -> `230 passed in 31.85s`.
+- Controller fresh complete FEWSNET gate -> `501 passed, 1 skipped in 50.31s`.
+  Controller fresh cloud/IPCCH gate -> `228 passed, 1 skipped in 11.19s`.
+  Controller fresh complete repository gate -> `798 passed, 2 skipped, 24
+  subtests passed in 60.42s`.
+- Controller fresh static/runbook gates: all `49` FEWSNET production/test
+  Python files pass AST parsing and redirected `py_compile`; the runbook has
+  exactly `27` complete Markdown blocks, all `25` Bash blocks pass `bash -n`,
+  and all `8` Python heredocs parse and compile. All five CLI `--help` commands
+  print `usage:` and `.venv/bin/python -m pip check` reports `No broken
+  requirements found.`
+- Frozen authority remains exact: design
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`, plan
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`, fixed
+  partition `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`,
+  feature-contract file
+  `3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b`, and
+  validated embedded feature-schema
+  `6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b`.
+- Exact fix-range whitespace, CRLF-aware whole-branch whitespace, empty cached
+  diff, unchanged IPCCH `model_pipeline`/`cloud`/`Final_harmonise`/root
+  Dockerfile paths, runtime absolute-path exclusions, and Endpoint-creation
+  exclusions all pass. Current worktree residue remains only the preserved
+  user-owned `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` state.
+- No Docker build/run, network authentication, GCP/GCS write, Vertex Custom
+  Job, Model Registry/version/alias mutation, Batch Prediction submission,
+  Endpoint mutation, promotion lease, or release-pointer mutation was
+  attempted. Docker Desktop WSL integration and the three live-smoke variables
+  remain absent, so live smoke and initial production acceptance are external
+  gates rather than claimed results.
+- Ledger-only staged GitNexus reports LOW risk across exactly one tracked file,
+  three documentation sections, and zero affected execution processes; cached
+  name-status and whitespace checks contain only `PROGRESS.md` and are clean.
+- Next action: commit this acceptance record, then use the standard
+  development-branch integration menu. Do not merge or push without the user's
+  explicit option selection.
 
 ---
 
