@@ -13,8 +13,8 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 19 independent-review fixes and staged-scope verification
-- Current state: Tasks 1-18 are complete and reviewed; all Task 19 review findings are fixed locally with fresh deterministic verification, while independent re-review, Docker execution, live GCP smoke, and production acceptance remain outstanding gates
+- Current task: Task 19 Wave 2 independent-review fixes and staged-scope verification
+- Current state: Tasks 1-18 are complete and reviewed; the five findings from the Task 19 final independent re-review are fixed locally with fresh deterministic verification, while another independent re-review, Docker execution, live GCP smoke, and production acceptance remain outstanding gates
 - Blockers: Docker Desktop WSL integration is disabled and no daemon is available; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -40,7 +40,7 @@
 | 16. Run exact-version Batch Prediction and normalize formal CSVs | complete through `35b96c5`; final independent review and controller verification clean |
 | 17. Validate three-horizon outputs and implement alias rollback publication | complete through `751ad4d`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
 | 18. Orchestrate discover -> train -> register -> Batch -> promote | complete through `5ef66c5`; final independent review 0 Critical/0 Important/0 Minor and controller verification clean |
-| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | independent-review fixes complete locally; independent re-review required; Docker, live GCP smoke, and production acceptance unexecuted |
+| 19. Add runbook, gated GCP smoke coverage, and full acceptance verification | Wave 2 independent-review fixes complete locally; another independent re-review required; Docker, live GCP smoke, and production acceptance unexecuted |
 
 ## Task 1 Evidence
 
@@ -1405,6 +1405,69 @@
   harness are intended for the tracked review-fix commit. No production module,
   Dockerfile, requirements file, existing IPCCH prediction/model artifact, live
   cloud resource, alias, lease, release pointer, or external state was changed.
+
+### Task 19 Wave 2 Independent-Review Fix Evidence
+
+- The final independent re-review of `14ad3fa..300266f` returned
+  `0 Critical / 5 Important / 0 Minor` and kept the gate at FAIL. Wave 2 closes
+  I1-I5 locally; another independent re-review remains mandatory.
+- I1 storage authority: immutable objects use create-only authority. Delete/get
+  replacement authority is restricted to exactly
+  `locks/production-promotion.json`, `released/current.json`,
+  `released/{feature_month}/production_suite_manifest.json`, and
+  `runs/{run_id}/run_manifest.json`.
+- I2 optimized verification: the production acceptance command uses
+  `env -u PYTHONOPTIMIZE`, fails immediately when `not __debug__`, and the
+  verifier AST contains zero `assert` nodes; every condition raises through an
+  explicit `require(...)` gate.
+- I3 fixed-sample parity: the runbook now provides the executable
+  `fewsnet-fixed-sample-parity-v2` generator and a generation-bound verifier.
+  It reads Batch inputs, model-package objects, and Vertex outputs; runs local
+  composite and prediction-server paths; recomputes hashes, sizes, generations,
+  deltas, and mismatch counts; and rejects forged hashes, negative deltas,
+  NaN, and infinities.
+- I4 panel identity: acceptance reads `snapshot["panel"]` at its exact
+  generation, compares the staged bytes with the validated local normalized
+  panel, verifies row/area dimensions, and binds raw SHA-256/size to
+  `normalization_audit["source_panel"]`.
+- I5 artifact inventory: the former blacklist is replaced by an explicit
+  allowed-path inventory. Map, PDF, workbook variants, future-performance, and
+  arbitrary object paths fail acceptance.
+- TDD RED: the Wave 2 review-focused selection reported
+  `10 failed, 11 deselected`; each failure mapped to one missing I1-I5 behavior.
+- TDD GREEN: the same selection reported
+  `10 passed, 11 deselected in 20.90s`.
+- Fresh complete smoke-file gate with all smoke/source variables explicitly
+  unset: `20 passed, 1 skipped in 19.67s`.
+- Fresh FEWSNET regression from the completed Wave 2 tree:
+  `475 passed, 1 skipped in 51.98s`.
+- Fresh cloud/IPCCH regression:
+  `228 passed, 1 skipped in 12.01s`.
+- Fresh full repository gate:
+  `772 passed, 2 skipped, 24 subtests passed in 64.95s`.
+- Embedded-code/static gate: `27` complete Markdown fences, all `25` Bash
+  fences pass `bash -n`, and all `8` Python heredocs compile. An optimized
+  interpreter probe exits `1`, emits no PASS marker, and reports the optimized
+  Python guard.
+- Command/dependency/authority gates: all five current FEWSNET CLI modules
+  (`normalize_panel`, `stage_snapshot`, `train`, `infer`, and `run_latest`)
+  print `usage:` for `--help`; `.venv/bin/python -m pip check` reports
+  `No broken requirements found.`; design, normalized-plan, and partition
+  SHA-256 values remain respectively
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`,
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`,
+  and `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- GitNexus scope note: Wave 2 adds standalone smoke-contract test helpers and
+  documentation-only verifier commands; it changes no existing production
+  function, class, or method. The final exact-worktree staged
+  `detect_changes(scope="staged")` reports LOW risk across exactly `3` changed
+  files, `3` mapped documentation sections, and `0` affected execution
+  processes.
+- External gates are unchanged: Docker Desktop WSL integration is disabled, so
+  `docker version` and `docker info` exit `1`; all three live-smoke variables
+  are unset. No image build, authentication, live GCP smoke, production
+  acceptance, GCS write, Vertex/Registry/Batch mutation, alias mutation, lease
+  mutation, or release-pointer mutation occurred.
 
 ---
 

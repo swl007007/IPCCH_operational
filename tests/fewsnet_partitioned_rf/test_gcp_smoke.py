@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+import ast
 import hashlib
 import json
+import math
 import os
 from collections.abc import Mapping
 from pathlib import Path
 import re
 import subprocess
+import sys
 from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
@@ -26,6 +29,7 @@ PRODUCTION_OBJECT_ROOT = (
     "gs://food-crisis-modeling-artifacts/fewsnet_partitioned_rf"
 )
 _REPO_ROOT = Path(__file__).resolve().parents[2]
+_RUNBOOK_PATH = _REPO_ROOT / "docs" / "09_fewsnet_partitioned_rf_runbook.md"
 _GIT_COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 _GCS_BUCKET_PATTERN = re.compile(
     r"^[a-z0-9][a-z0-9._-]{1,61}[a-z0-9]$"
@@ -483,3 +487,304 @@ def test_source_commit_match_uses_exact_checked_out_identity() -> None:
     assert checked_out_commit == checked_out_commit.lower()
     assert all(character in "0123456789abcdef" for character in checked_out_commit)
     assert verify_helper(checked_out_commit) == checked_out_commit
+
+
+def _runbook_text() -> str:
+    return _RUNBOOK_PATH.read_text(encoding="utf-8")
+
+
+def _marked_python_source(begin_marker: str, end_marker: str) -> str:
+    text = _runbook_text()
+    try:
+        marked = text.split(begin_marker, 1)[1].split(end_marker, 1)[0]
+    except IndexError as exc:
+        raise AssertionError(f"runbook marker is missing: {begin_marker}") from exc
+    lines = marked.splitlines()
+    start = next(
+        (index + 1 for index, line in enumerate(lines) if "<<'PY'" in line),
+        None,
+    )
+    if start is None:
+        raise AssertionError(f"marked block has no Python heredoc: {begin_marker}")
+    end = next(
+        (index for index in range(start, len(lines)) if lines[index] == "PY"),
+        None,
+    )
+    if end is None:
+        raise AssertionError(f"marked Python heredoc is unterminated: {begin_marker}")
+    return "\n".join(lines[start:end]) + "\n"
+
+
+def _production_verifier_source() -> str:
+    return _marked_python_source(
+        "# BEGIN FEWSNET_PRODUCTION_ACCEPTANCE_VERIFIER",
+        "# END FEWSNET_PRODUCTION_ACCEPTANCE_VERIFIER",
+    )
+
+
+def _verifier_helpers() -> dict[str, Any]:
+    source = _production_verifier_source()
+    prefix = source.split("\nraw_panel = required_env(", 1)[0]
+    namespace: dict[str, Any] = {}
+    exec(compile(prefix, "<fewsnet-acceptance-helpers>", "exec"), namespace)
+    return namespace
+
+
+def _shell_export(text: str, name: str) -> str:
+    match = re.search(rf'^export {re.escape(name)}="(.*)"$', text, re.MULTILINE)
+    if match is None:
+        raise AssertionError(f"runbook export is missing: {name}")
+    return match.group(1).replace(r'\"', '"')
+
+
+def _condition_allows(condition: str, resource_name: str) -> bool:
+    def atom_allows(atom: str) -> bool:
+        atom = atom.strip()
+        equality = re.fullmatch(r'resource\.name == "([^"]+)"', atom)
+        if equality is not None:
+            return resource_name == equality.group(1)
+        starts = re.fullmatch(
+            r'resource\.name\.startsWith\("([^"]+)"\)',
+            atom,
+        )
+        if starts is not None:
+            return resource_name.startswith(starts.group(1))
+        ends = re.fullmatch(
+            r'resource\.name\.endsWith\("([^"]+)"\)',
+            atom,
+        )
+        if ends is not None:
+            return resource_name.endswith(ends.group(1))
+        raise AssertionError(f"unsupported documented IAM condition atom: {atom}")
+
+    for disjunction in condition.split(" || "):
+        conjunction = disjunction.strip()
+        if conjunction.startswith("(") and conjunction.endswith(")"):
+            conjunction = conjunction[1:-1]
+        if all(atom_allows(atom) for atom in conjunction.split(" && ")):
+            return True
+    return False
+
+
+def _role_permissions(text: str, role_id_variable: str) -> set[str]:
+    command = re.search(
+        re.escape(f'gcloud iam roles create "${role_id_variable}"')
+        + r'.*?--permissions="([^"]+)"',
+        text,
+        re.DOTALL,
+    )
+    if command is None:
+        raise AssertionError(f"custom role command is missing: {role_id_variable}")
+    return set(command.group(1).split(","))
+
+
+def test_runbook_limits_orchestrator_replacement_to_exact_mutable_objects() -> None:
+    text = _runbook_text()
+    base = "projects/_/buckets/example/objects/fewsnet"
+    create_condition = _shell_export(text, "ORCHESTRATOR_CREATE_CONDITION").replace(
+        "${OBJECT_RESOURCE_BASE}", base
+    )
+    replace_condition = _shell_export(
+        text,
+        "ORCHESTRATOR_REPLACE_CONDITION",
+    ).replace("${OBJECT_RESOURCE_BASE}", base)
+
+    assert _role_permissions(text, "OBJECT_CREATOR_ROLE_ID") == {
+        "storage.objects.create"
+    }
+    assert _role_permissions(text, "OBJECT_REPLACER_ROLE_ID") == {
+        "storage.objects.get",
+        "storage.objects.delete",
+    }
+    assert '--role="$OBJECT_CREATOR_ROLE"' in text
+    assert "expression=${ORCHESTRATOR_CREATE_CONDITION}" in text
+    assert '--role="$OBJECT_REPLACER_ROLE"' in text
+    assert "expression=${ORCHESTRATOR_REPLACE_CONDITION}" in text
+
+    immutable_objects = (
+        f"{base}/inputs/snapshots/s1/assembled_fewsnet.normalized.csv",
+        f"{base}/deployments/deployment-deadbeef.json",
+        f"{base}/runs/r1/predictions/0m.csv",
+        f"{base}/suites/s1/models/0m/model.joblib",
+        f"{base}/suites/s1/suite_manifest.json",
+    )
+    for resource_name in immutable_objects:
+        assert _condition_allows(create_condition, resource_name)
+        assert not _condition_allows(replace_condition, resource_name)
+
+    mutable_objects = (
+        f"{base}/locks/production-promotion.json",
+        f"{base}/released/current.json",
+        f"{base}/released/2026-04/production_suite_manifest.json",
+        f"{base}/runs/r1/run_manifest.json",
+    )
+    for resource_name in mutable_objects:
+        assert _condition_allows(create_condition, resource_name)
+        assert _condition_allows(replace_condition, resource_name)
+
+    assert not _condition_allows(
+        replace_condition,
+        f"{base}/runs/r1/error.json",
+    )
+    assert not _condition_allows(
+        replace_condition,
+        f"{base}/released/2026-04/map.png",
+    )
+
+
+def test_acceptance_verifier_rejects_optimized_python_before_cloud_bootstrap() -> None:
+    source = _production_verifier_source()
+    guard_prefix = source.split("\nfrom datetime", 1)[0]
+    environment = dict(os.environ)
+    environment["PYTHONOPTIMIZE"] = "1"
+    completed = subprocess.run(
+        [sys.executable, "-c", guard_prefix],
+        check=False,
+        capture_output=True,
+        text=True,
+        env=environment,
+    )
+
+    combined = completed.stdout + completed.stderr
+    assert completed.returncode != 0
+    assert "all_16_acceptance_items=PASS" not in combined
+    assert "optimized Python" in combined
+
+
+def test_acceptance_verifier_uses_no_optimization_sensitive_asserts() -> None:
+    tree = ast.parse(_production_verifier_source())
+    assert [node for node in ast.walk(tree) if isinstance(node, ast.Assert)] == []
+
+
+def test_runbook_has_executable_generation_bound_fixed_sample_parity_workflow() -> None:
+    source = _marked_python_source(
+        "# BEGIN FEWSNET_FIXED_SAMPLE_PARITY_GENERATOR",
+        "# END FEWSNET_FIXED_SAMPLE_PARITY_GENERATOR",
+    )
+    tree = ast.parse(source)
+    names = {node.id for node in ast.walk(tree) if isinstance(node, ast.Name)}
+    attributes = {
+        node.attr for node in ast.walk(tree) if isinstance(node, ast.Attribute)
+    }
+    required_tokens = {
+        "GCSArtifactStore",
+        "LocalArtifactStore",
+        "PACKAGE_FILES",
+        "load_model_package",
+        "create_app",
+        "TestClient",
+    }
+    assert required_tokens <= names | attributes
+    for field in (
+        "batch_input",
+        "package_objects",
+        "vertex_output_objects",
+        "local_output",
+        "container_output",
+        "vertex_output",
+        "sample_sha256",
+        "size_bytes",
+        "sha256",
+        "generation",
+    ):
+        assert field in source
+
+
+@pytest.mark.parametrize("invalid_delta", (-1.0, math.nan, math.inf, -math.inf))
+def test_acceptance_parity_helpers_reject_invalid_deltas_and_forged_hashes(
+    invalid_delta: float,
+) -> None:
+    helpers = _verifier_helpers()
+    validate_delta = helpers["validate_probability_delta"]
+    require_fingerprint = helpers["require_fingerprint"]
+    object_fingerprint = helpers["object_fingerprint"]
+
+    assert validate_delta(0.0, 1e-12, "zero delta") == 0.0
+    with pytest.raises(ValueError):
+        validate_delta(invalid_delta, 1e-12, "invalid delta")
+
+    actual = b'{"predictions":[]}\n'
+    evidence = object_fingerprint(actual)
+    require_fingerprint(actual, evidence, "actual output")
+    forged = {**evidence, "sha256": "0" * 64}
+    with pytest.raises(ValueError):
+        require_fingerprint(actual, forged, "forged zero report")
+
+
+def test_acceptance_verifier_binds_staged_panel_and_raw_source_identity() -> None:
+    helpers = _verifier_helpers()
+    read_ref = helpers["read_ref"]
+    panel_csv_dimensions = helpers["panel_csv_dimensions"]
+    require_source_panel_identity = helpers["require_source_panel_identity"]
+
+    panel_bytes = b"admin_code,value\nA,1\nB,2\n"
+    panel_ref = {
+        "uri": "gs://bucket/root/inputs/snapshots/s1/panel.csv",
+        "generation": "7",
+        "sha256": hashlib.sha256(panel_bytes).hexdigest(),
+        "size_bytes": len(panel_bytes),
+    }
+
+    class FakeStore:
+        def __init__(self, data: bytes):
+            self.data = data
+
+        def read_bytes(self, uri: str, generation: str) -> bytes:
+            assert uri == panel_ref["uri"]
+            assert generation == panel_ref["generation"]
+            return self.data
+
+    assert read_ref(FakeStore(panel_bytes), panel_ref, "staged panel") == panel_bytes
+    assert panel_csv_dimensions(panel_bytes, "staged panel") == (2, 2)
+    with pytest.raises(ValueError, match="size|checksum"):
+        read_ref(FakeStore(panel_bytes + b"C,3\n"), panel_ref, "staged panel")
+
+    source_panel = {
+        "sha256": hashlib.sha256(b"raw").hexdigest(),
+        "size_bytes": 3,
+    }
+    require_source_panel_identity(
+        source_panel,
+        source_panel["sha256"],
+        source_panel["size_bytes"],
+    )
+    with pytest.raises(ValueError):
+        require_source_panel_identity(source_panel, "0" * 64, 3)
+
+
+def test_acceptance_inventory_allows_only_documented_object_paths() -> None:
+    allowed_object_uri = _verifier_helpers()["allowed_object_uri"]
+    root = "gs://bucket/fewsnet"
+    approved = (
+        f"{root}/inputs/snapshots/s1/source_manifest.json",
+        f"{root}/deployments/deployment-{'a' * 12}-{'b' * 64}.json",
+        f"{root}/runs/r1/run_manifest.json",
+        f"{root}/runs/r1/inputs/selected_source_manifest.json",
+        f"{root}/runs/r1/training/custom_job.json",
+        f"{root}/runs/r1/registry/0m.json",
+        f"{root}/runs/r1/batch_prediction/12m/input.jsonl",
+        (
+            f"{root}/runs/r1/batch_prediction/12m/raw/"
+            "prediction.results-1/predictions_0001.jsonl"
+        ),
+        f"{root}/runs/r1/predictions/6m.csv",
+        f"{root}/runs/r1/error.json",
+        f"{root}/suites/s1/models/0m/model.joblib",
+        f"{root}/suites/s1/predictions/12m.csv",
+        f"{root}/suites/s1/suite_manifest.json",
+        f"{root}/locks/production-promotion.json",
+        f"{root}/released/2026-04/production_suite_manifest.json",
+        f"{root}/released/current.json",
+    )
+    assert all(allowed_object_uri(root, uri) for uri in approved)
+
+    forbidden = (
+        f"{root}/runs/r1/map.png",
+        f"{root}/runs/r1/forecast-map.pdf",
+        f"{root}/runs/r1/forecast.xls",
+        f"{root}/runs/r1/forecast.xlsx",
+        f"{root}/runs/r1/forecast.xlsb",
+        f"{root}/runs/r1/future-performance.json",
+        f"{root}/runs/r1/arbitrary-new-output.json",
+    )
+    assert all(not allowed_object_uri(root, uri) for uri in forbidden)

@@ -280,15 +280,18 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
 ```
 
 Do not grant bucket-wide `roles/storage.objectUser`. Create four narrow custom
-roles: exact-object reader, create-only writer, mutable object writer, and
-bucket lister. Object replacement requires `storage.objects.delete`; workers
-never receive that permission, so their writes remain create-only when the
-repository also supplies `if_generation_match=0`.
+roles: exact-object reader, create-only writer, exact mutable-object replacer,
+and bucket lister. Object replacement requires both `storage.objects.create`
+and `storage.objects.delete`. The orchestrator receives create-only authority
+over the documented namespaces, while delete authority is a separate binding
+covering only the promotion lease, release pointers, and generation-updated run
+manifests. Workers never receive delete authority, so their writes remain
+create-only when the repository also supplies `if_generation_match=0`.
 
 ```bash
 export OBJECT_READER_ROLE_ID="fewsnetObjectReaderV1"
 export OBJECT_CREATOR_ROLE_ID="fewsnetObjectCreatorV1"
-export OBJECT_MUTATOR_ROLE_ID="fewsnetObjectMutatorV1"
+export OBJECT_REPLACER_ROLE_ID="fewsnetObjectReplacerV1"
 export OBJECT_LISTER_ROLE_ID="fewsnetObjectListerV1"
 
 gcloud iam roles create "$OBJECT_READER_ROLE_ID" \
@@ -301,10 +304,10 @@ gcloud iam roles create "$OBJECT_CREATOR_ROLE_ID" \
   --title="FEWSNET create-only object writer v1" \
   --permissions="storage.objects.create" \
   --stage=GA
-gcloud iam roles create "$OBJECT_MUTATOR_ROLE_ID" \
+gcloud iam roles create "$OBJECT_REPLACER_ROLE_ID" \
   --project="$PROJECT_ID" \
-  --title="FEWSNET generation-safe object mutator v1" \
-  --permissions="storage.objects.get,storage.objects.create,storage.objects.delete" \
+  --title="FEWSNET exact mutable-object replacer v1" \
+  --permissions="storage.objects.get,storage.objects.delete" \
   --stage=GA
 gcloud iam roles create "$OBJECT_LISTER_ROLE_ID" \
   --project="$PROJECT_ID" \
@@ -314,7 +317,7 @@ gcloud iam roles create "$OBJECT_LISTER_ROLE_ID" \
 
 export OBJECT_READER_ROLE="projects/${PROJECT_ID}/roles/${OBJECT_READER_ROLE_ID}"
 export OBJECT_CREATOR_ROLE="projects/${PROJECT_ID}/roles/${OBJECT_CREATOR_ROLE_ID}"
-export OBJECT_MUTATOR_ROLE="projects/${PROJECT_ID}/roles/${OBJECT_MUTATOR_ROLE_ID}"
+export OBJECT_REPLACER_ROLE="projects/${PROJECT_ID}/roles/${OBJECT_REPLACER_ROLE_ID}"
 export OBJECT_LISTER_ROLE="projects/${PROJECT_ID}/roles/${OBJECT_LISTER_ROLE_ID}"
 export OBJECT_STORE_PREFIX="${OBJECT_STORE_ROOT_URI#gs://${ARTIFACT_BUCKET}/}"
 test "$OBJECT_STORE_PREFIX" != "$OBJECT_STORE_ROOT_URI"
@@ -324,7 +327,8 @@ export TRAINING_READ_CONDITION="resource.name.startsWith(\"${OBJECT_RESOURCE_BAS
 export TRAINING_CREATE_CONDITION="resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/runs/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/suites/\")"
 export BATCH_RUN_CONDITION="resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/runs/\")"
 export ORCHESTRATOR_READ_CONDITION="resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/\")"
-export ORCHESTRATOR_MUTATE_CONDITION="resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/inputs/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/deployments/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/runs/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/suites/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/locks/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/released/\")"
+export ORCHESTRATOR_CREATE_CONDITION="resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/inputs/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/deployments/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/runs/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/suites/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/locks/\") || resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/released/\")"
+export ORCHESTRATOR_REPLACE_CONDITION="resource.name == \"${OBJECT_RESOURCE_BASE}/locks/production-promotion.json\" || resource.name == \"${OBJECT_RESOURCE_BASE}/released/current.json\" || (resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/released/\") && resource.name.endsWith(\"/production_suite_manifest.json\")) || (resource.name.startsWith(\"${OBJECT_RESOURCE_BASE}/runs/\") && resource.name.endsWith(\"/run_manifest.json\"))"
 
 gcloud storage buckets add-iam-policy-binding "gs://${ARTIFACT_BUCKET}" \
   --member="serviceAccount:${TRAINING_SA}" \
@@ -350,8 +354,12 @@ gcloud storage buckets add-iam-policy-binding "gs://${ARTIFACT_BUCKET}" \
   --condition="expression=${ORCHESTRATOR_READ_CONDITION},title=fewsnet_orchestrator_read_v1,description=Read suite objects"
 gcloud storage buckets add-iam-policy-binding "gs://${ARTIFACT_BUCKET}" \
   --member="serviceAccount:${ORCHESTRATOR_SA}" \
-  --role="$OBJECT_MUTATOR_ROLE" \
-  --condition="expression=${ORCHESTRATOR_MUTATE_CONDITION},title=fewsnet_orchestrator_mutate_v1,description=Generation-safe suite namespace mutation"
+  --role="$OBJECT_CREATOR_ROLE" \
+  --condition="expression=${ORCHESTRATOR_CREATE_CONDITION},title=fewsnet_orchestrator_create_v1,description=Create immutable suite objects and initial mutable objects"
+gcloud storage buckets add-iam-policy-binding "gs://${ARTIFACT_BUCKET}" \
+  --member="serviceAccount:${ORCHESTRATOR_SA}" \
+  --role="$OBJECT_REPLACER_ROLE" \
+  --condition="expression=${ORCHESTRATOR_REPLACE_CONDITION},title=fewsnet_orchestrator_replace_v1,description=Replace only lease release pointers and run manifests"
 gcloud storage buckets add-iam-policy-binding "gs://${ARTIFACT_BUCKET}" \
   --member="serviceAccount:${ORCHESTRATOR_SA}" \
   --role="$OBJECT_LISTER_ROLE"
@@ -363,6 +371,13 @@ object-prefix condition. Only `ORCHESTRATOR_SA` receives that unavoidable list
 permission; repository code still lists only configured `inputs/`, `runs/`,
 and `suites/` prefixes. Training and Batch identities receive neither list nor
 delete authority and have no binding covering `locks/` or `released/`.
+`ORCHESTRATOR_SA` cannot delete or replace snapshot inputs, deployment
+manifests, model packages, predictions, suite manifests, or immutable run
+evidence. Its replacement binding is limited to
+`locks/production-promotion.json`, `released/current.json`,
+`released/{feature_month}/production_suite_manifest.json`, and
+`runs/{run_id}/run_manifest.json`; every replacement still supplies the
+verified prior generation.
 
 Grant image-read access on only the runtime repository:
 
@@ -664,7 +679,7 @@ restage is a no-op and does not need a revision ID.
 
 ## 9. Locate run, model, prediction, and release artifacts
 
-For a successful non-noop run, the immutable paths are:
+For a successful non-noop run, the complete allowed object inventory is:
 
 ```text
 runs/{run_id}/run_manifest.json
@@ -684,6 +699,16 @@ suites/{suite_version}/suite_manifest.json
 released/{feature_month}/production_suite_manifest.json
 released/current.json
 ```
+
+Every listed input, deployment, training, registry, Batch input/output,
+prediction, model-package, and suite-manifest object is create-only. The only
+generation-replaced objects are `runs/{run_id}/run_manifest.json`,
+`locks/production-promotion.json`,
+`released/{feature_month}/production_suite_manifest.json`, and
+`released/current.json`. A failed run may additionally create the immutable
+`runs/{run_id}/error.json`. No other object path or file family is approved;
+in particular, maps, workbooks, and future-target performance outputs are not
+part of this inventory.
 
 `input_snapshot_ref.json` is the canonical generation-bound pointer containing
 the selected source-manifest `ObjectRef`, snapshot ID, and snapshot content
@@ -873,22 +898,403 @@ operator identity for every item.
 16. `released/current.json` points to that immutable suite manifest and has an
     update time no earlier than the suite and feature-month pointer objects.
 
-The approved fixed-sample parity run must write
-`FEWSNET_FIXED_SAMPLE_PARITY_JSON` with schema
-`fewsnet-fixed-sample-parity-v1`, the suite/snapshot/image identities, a
-64-character `sample_sha256`, a `probability_tolerance` no larger than
-`1e-12`, and exact `0m`/`6m`/`12m` entries containing the numeric model-version
-resource, compared row count, local-versus-container and local-versus-Vertex
-maximum probability deltas, and both class-mismatch counts. The verifier below
-rejects missing or self-inconsistent evidence.
+Generate the fixed-sample evidence from the released run; do not hand-author
+it. The generator reads each exact-generation Batch input and every exact
+Vertex output object, requires the three input byte streams to match, and uses
+the first 32 already sorted input records as the deterministic sample. It then
+loads the exact package objects into the composite predictor, invokes the local
+custom prediction application through its `/predict` interface, and selects the
+same records from the exact Vertex Batch output. Canonical JSONL bytes, object
+generations, sizes, SHA-256 values, finite nonnegative deltas, and mismatch
+counts are written to `FEWSNET_FIXED_SAMPLE_PARITY_JSON`.
+
+```bash
+export FEWSNET_FIXED_SAMPLE_PARITY_JSON="/operator-selected/output/fewsnet-fixed-sample-parity.json"
+
+: "${DEPLOYMENT_MANIFEST_URI:?}"
+: "${OBJECT_STORE_ROOT_URI:?}"
+: "${RUN_ID:?}"
+: "${FEWSNET_FIXED_SAMPLE_PARITY_JSON:?}"
+
+# BEGIN FEWSNET_FIXED_SAMPLE_PARITY_GENERATOR
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python - <<'PY'
+from __future__ import annotations
+
+import hashlib
+import json
+import math
+import os
+from pathlib import Path
+import tempfile
+
+import pandas as pd
+from fastapi.testclient import TestClient
+
+from fewsnet_partitioned_rf_pipeline.core.inference import (
+    FORMAL_PREDICTION_COLUMNS,
+)
+from fewsnet_partitioned_rf_pipeline.core.package import (
+    PACKAGE_FILES,
+    load_model_package,
+)
+from fewsnet_partitioned_rf_pipeline.schemas import (
+    validate_deployment,
+    validate_payload,
+)
+from fewsnet_partitioned_rf_pipeline.vertex.predictor_server import create_app
+from fewsnet_partitioned_rf_pipeline.vertex.storage import (
+    GCSArtifactStore,
+    LocalArtifactStore,
+)
+
+
+HORIZONS = ("0m", "6m", "12m")
+SAMPLE_SIZE = 32
+PROBABILITY_TOLERANCE = 1e-12
+
+
+def require(condition: object, message: str) -> None:
+    if not condition:
+        raise ValueError(message)
+
+
+def ref_dict(ref: object) -> dict:
+    payload = {
+        "uri": str(getattr(ref, "uri")),
+        "generation": str(getattr(ref, "generation")),
+        "sha256": str(getattr(ref, "sha256")),
+        "size_bytes": int(getattr(ref, "size_bytes")),
+    }
+    require(len(payload["sha256"]) == 64, "ObjectRef SHA-256 is invalid")
+    return payload
+
+
+def read_ref(store: GCSArtifactStore, ref: dict, name: str) -> bytes:
+    data = store.read_bytes(ref["uri"], generation=ref["generation"])
+    require(len(data) == ref["size_bytes"], f"{name} size differs")
+    require(
+        hashlib.sha256(data).hexdigest() == ref["sha256"],
+        f"{name} checksum differs",
+    )
+    return data
+
+
+def object_ref_dict(ref: object) -> dict:
+    return {
+        "uri": str(getattr(ref, "uri")),
+        "generation": str(getattr(ref, "generation")),
+        "sha256": str(getattr(ref, "sha256")),
+        "size_bytes": int(getattr(ref, "size_bytes")),
+    }
+
+
+def live_json(store: GCSArtifactStore, uri: str, name: str) -> tuple[dict, dict]:
+    ref = ref_dict(store.get_ref(uri))
+    payload = json.loads(read_ref(store, ref, name))
+    require(isinstance(payload, dict), f"{name} must be a JSON object")
+    return payload, ref
+
+
+def canonical_jsonl(records: list[dict]) -> bytes:
+    return (
+        "\n".join(
+            json.dumps(
+                record,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+                allow_nan=False,
+            )
+            for record in records
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def object_fingerprint(data: bytes) -> dict:
+    return {
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "size_bytes": len(data),
+    }
+
+
+def parse_jsonl(data: bytes, name: str) -> list[dict]:
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError(f"{name} is not UTF-8 JSONL") from exc
+    lines = text.splitlines()
+    require(lines and all(line.strip() for line in lines), f"{name} is empty")
+    records = [json.loads(line) for line in lines]
+    require(all(isinstance(record, dict) for record in records), f"{name} differs")
+    return records
+
+
+def json_scalar(value: object) -> object:
+    if value is None:
+        return None
+    try:
+        if bool(pd.isna(value)):
+            return None
+    except (TypeError, ValueError):
+        pass
+    item = getattr(value, "item", None)
+    return item() if callable(item) else value
+
+
+def prediction_records(records: list[dict], name: str) -> list[dict]:
+    normalized: list[dict] = []
+    expected = set(FORMAL_PREDICTION_COLUMNS)
+    for index, record in enumerate(records):
+        require(isinstance(record, dict), f"{name}[{index}] is not an object")
+        require(set(record) == expected, f"{name}[{index}] fields differ")
+        normalized.append(
+            {
+                field: json_scalar(record[field])
+                for field in FORMAL_PREDICTION_COLUMNS
+            }
+        )
+    return normalized
+
+
+def identity(record: dict) -> tuple[str, str]:
+    return str(record["admin_code"]), str(record["feature_month"])
+
+
+def select_vertex_predictions(
+    raw_objects: list[tuple[dict, bytes]],
+    sample: list[dict],
+) -> list[dict]:
+    expected_instances = {identity(instance): instance for instance in sample}
+    selected: dict[tuple[str, str], dict] = {}
+    for ref, data in raw_objects:
+        for payload in parse_jsonl(data, ref["uri"]):
+            require(set(payload) == {"instance", "prediction"}, "Vertex row differs")
+            instance = payload["instance"]
+            prediction = payload["prediction"]
+            require(isinstance(instance, dict), "Vertex instance is invalid")
+            require(isinstance(prediction, dict), "Vertex prediction is invalid")
+            key = identity(instance)
+            if key not in expected_instances:
+                continue
+            require(instance == expected_instances[key], "Vertex sample instance drifted")
+            require(key not in selected, "Vertex sample prediction is duplicated")
+            selected[key] = prediction
+    missing = [identity(instance) for instance in sample if identity(instance) not in selected]
+    require(not missing, f"Vertex output is missing sample identities: {missing}")
+    return [selected[identity(instance)] for instance in sample]
+
+
+def maximum_delta(left: list[dict], right: list[dict], name: str) -> float:
+    require(len(left) == len(right) and left, f"{name} row counts differ")
+    deltas = [
+        abs(float(a["probability_crisis"]) - float(b["probability_crisis"]))
+        for a, b in zip(left, right, strict=True)
+    ]
+    require(all(math.isfinite(value) and value >= 0.0 for value in deltas), name)
+    return max(deltas)
+
+
+def mismatch_count(left: list[dict], right: list[dict]) -> int:
+    require(len(left) == len(right), "class comparison row counts differ")
+    return sum(
+        int(a["predicted_crisis"]) != int(b["predicted_crisis"])
+        for a, b in zip(left, right, strict=True)
+    )
+
+
+store = GCSArtifactStore.from_default()
+root_uri = os.environ["OBJECT_STORE_ROOT_URI"].rstrip("/")
+run_id = os.environ["RUN_ID"]
+deployment, _ = live_json(
+    store,
+    os.environ["DEPLOYMENT_MANIFEST_URI"],
+    "deployment manifest",
+)
+validate_deployment(deployment)
+run_manifest, _ = live_json(
+    store,
+    f"{root_uri}/runs/{run_id}/run_manifest.json",
+    "run manifest",
+)
+validate_payload("run-manifest", run_manifest)
+require(run_manifest["status"] == "released", "run is not released")
+suite_version = run_manifest["suite_version"]
+suite_manifest, _ = live_json(
+    store,
+    f"{root_uri}/suites/{suite_version}/suite_manifest.json",
+    "suite manifest",
+)
+validate_payload("suite-manifest", suite_manifest)
+
+sample_bytes: bytes | None = None
+horizon_evidence: dict[str, dict] = {}
+with tempfile.TemporaryDirectory(prefix="fewsnet-fixed-sample-parity-") as temp:
+    temp_root = Path(temp)
+    for horizon in HORIZONS:
+        job = run_manifest["batch_jobs"][horizon]
+        input_ref = ref_dict(store.get_ref(job["input_uri"]))
+        input_bytes = read_ref(store, input_ref, f"{horizon} Batch input")
+        instances = parse_jsonl(input_bytes, f"{horizon} Batch input")
+        require(len(instances) >= SAMPLE_SIZE, "Batch input is smaller than sample")
+        sample = instances[:SAMPLE_SIZE]
+        candidate_sample_bytes = canonical_jsonl(sample)
+        if sample_bytes is None:
+            sample_bytes = candidate_sample_bytes
+        else:
+            require(candidate_sample_bytes == sample_bytes, "horizon samples differ")
+
+        version = run_manifest["model_versions"][horizon]
+        package_dir = temp_root / "packages" / horizon
+        package_dir.mkdir(parents=True)
+        package_refs: dict[str, dict] = {}
+        for filename in PACKAGE_FILES:
+            ref = ref_dict(store.get_ref(f"{version['artifact_uri']}/{filename}"))
+            package_refs[filename] = ref
+            (package_dir / filename).write_bytes(
+                read_ref(store, ref, f"{horizon} package {filename}")
+            )
+        predictor = load_model_package(
+            package_dir,
+            expected_image_digest=deployment["container_image_digest"],
+            expected_source_git_commit=deployment["source_git_commit"],
+        )
+        frame = pd.DataFrame(sample)
+        local_records = prediction_records(
+            predictor.predict_frame(frame).to_dict(orient="records"),
+            f"{horizon} local predictions",
+        )
+
+        local_store = LocalArtifactStore(temp_root / "container-store" / horizon)
+        local_artifact_uri = f"gs://parity-package/{horizon}"
+        for filename in PACKAGE_FILES:
+            local_store.upload_file(
+                package_dir / filename,
+                f"{local_artifact_uri}/{filename}",
+            )
+        app = create_app(
+            environ={
+                "AIP_HTTP_PORT": "8080",
+                "AIP_HEALTH_ROUTE": "/health",
+                "AIP_PREDICT_ROUTE": "/predict",
+                "AIP_STORAGE_URI": local_artifact_uri,
+                "FEWSNET_CONTAINER_IMAGE_DIGEST": deployment[
+                    "container_image_digest"
+                ],
+                "FEWSNET_SOURCE_GIT_COMMIT": deployment["source_git_commit"],
+            },
+            store=local_store,
+        )
+        with TestClient(app) as client:
+            response = client.post("/predict", json={"instances": sample})
+        require(response.status_code == 200, f"{horizon} container prediction failed")
+        container_payload = response.json()
+        require(set(container_payload) == {"predictions"}, "container response differs")
+        container_records = prediction_records(
+            container_payload["predictions"],
+            f"{horizon} container predictions",
+        )
+
+        output_prefix = str(job["gcs_output_directory"]).rstrip("/") + "/"
+        output_refs = sorted(store.list(output_prefix), key=lambda ref: ref.uri)
+        require(output_refs, f"{horizon} Vertex output objects are missing")
+        require(
+            all(
+                Path(ref.uri).name.startswith("predictions_")
+                and Path(ref.uri).suffix == ".jsonl"
+                for ref in output_refs
+            ),
+            f"{horizon} Vertex output inventory differs",
+        )
+        raw_objects = [
+            (
+                ref_dict(ref),
+                read_ref(store, ref_dict(ref), f"{horizon} Vertex output"),
+            )
+            for ref in output_refs
+        ]
+        vertex_records = prediction_records(
+            select_vertex_predictions(raw_objects, sample),
+            f"{horizon} Vertex predictions",
+        )
+
+        local_bytes = canonical_jsonl(local_records)
+        container_bytes = canonical_jsonl(container_records)
+        vertex_bytes = canonical_jsonl(vertex_records)
+        local_container_delta = maximum_delta(
+            local_records,
+            container_records,
+            f"{horizon} local/container delta",
+        )
+        local_vertex_delta = maximum_delta(
+            local_records,
+            vertex_records,
+            f"{horizon} local/Vertex delta",
+        )
+        require(
+            local_container_delta <= PROBABILITY_TOLERANCE,
+            f"{horizon} local/container probability parity failed",
+        )
+        require(
+            local_vertex_delta <= PROBABILITY_TOLERANCE,
+            f"{horizon} local/Vertex probability parity failed",
+        )
+        local_container_mismatches = mismatch_count(local_records, container_records)
+        local_vertex_mismatches = mismatch_count(local_records, vertex_records)
+        require(local_container_mismatches == 0, "local/container classes differ")
+        require(local_vertex_mismatches == 0, "local/Vertex classes differ")
+        horizon_evidence[horizon] = {
+            "model_version_resource_name": version["version_resource_name"],
+            "row_count": len(sample),
+            "batch_input": input_ref,
+            "package_objects": package_refs,
+            "vertex_output_objects": [ref for ref, _ in raw_objects],
+            "local_output": object_fingerprint(local_bytes),
+            "container_output": object_fingerprint(container_bytes),
+            "vertex_output": object_fingerprint(vertex_bytes),
+            "local_vs_container_max_abs_probability_delta": (
+                local_container_delta
+            ),
+            "local_vs_vertex_max_abs_probability_delta": local_vertex_delta,
+            "local_vs_container_class_mismatch_count": (
+                local_container_mismatches
+            ),
+            "local_vs_vertex_class_mismatch_count": local_vertex_mismatches,
+        }
+
+require(sample_bytes is not None, "fixed sample was not generated")
+report = {
+    "schema_version": "fewsnet-fixed-sample-parity-v2",
+    "suite_version": suite_version,
+    "snapshot_content_sha256": run_manifest["snapshot_ref"][
+        "snapshot_content_sha256"
+    ],
+    "container_image_digest": deployment["container_image_digest"],
+    "sample_sha256": hashlib.sha256(sample_bytes).hexdigest(),
+    "sample_size": SAMPLE_SIZE,
+    "probability_tolerance": PROBABILITY_TOLERANCE,
+    "horizons": horizon_evidence,
+}
+Path(os.environ["FEWSNET_FIXED_SAMPLE_PARITY_JSON"]).write_text(
+    json.dumps(report, indent=2, sort_keys=True) + "\n",
+    encoding="utf-8",
+)
+print(json.dumps(report, indent=2, sort_keys=True))
+PY
+# END FEWSNET_FIXED_SAMPLE_PARITY_GENERATOR
+```
+
+The resulting `fewsnet-fixed-sample-parity-v2` report is not accepted merely
+because it reports zero deltas. The verifier below re-reads the recorded input,
+package, and Vertex output generations, reconstructs the same sample, reruns the
+local composite and custom prediction application, recomputes every output
+fingerprint and delta, and rejects negative or nonfinite numeric evidence.
 
 Run this single read-only verifier under the preflighted impersonation state.
 It performs no create, update, alias, job, Endpoint, or pointer operation and
 exits nonzero on any missing or inconsistent acceptance item:
 
 ```bash
-export FEWSNET_FIXED_SAMPLE_PARITY_JSON="/operator-selected/output/fewsnet-fixed-sample-parity.json"
-
 : "${FEWSNET_RAW_PANEL_PATH:?}"
 : "${RAW_PANEL_SHA256_BEFORE:?}"
 : "${NORMALIZED_PANEL:?}"
@@ -906,20 +1312,26 @@ test "$GCLOUD_IMPERSONATION_TARGET" = "$ORCHESTRATOR_SA"
 test "$ADC_IMPERSONATION_TARGET" = "$ORCHESTRATOR_SA"
 
 # BEGIN FEWSNET_PRODUCTION_ACCEPTANCE_VERIFIER
-PYTHONDONTWRITEBYTECODE=1 .venv/bin/python - <<'PY'
+env -u PYTHONOPTIMIZE PYTHONDONTWRITEBYTECODE=1 .venv/bin/python - <<'PY'
 from __future__ import annotations
+
+if not __debug__:
+    raise RuntimeError("production acceptance verifier forbids optimized Python")
 
 from datetime import datetime, timezone
 import hashlib
 from io import BytesIO
 import json
+import math
 import os
 from pathlib import Path
 import re
+import tempfile
 from urllib.parse import urlsplit
 
 import google.auth
 import pandas as pd
+from fastapi.testclient import TestClient
 from google.api_core.client_options import ClientOptions
 from google.cloud import aiplatform, aiplatform_v1, storage
 
@@ -927,15 +1339,26 @@ from fewsnet_partitioned_rf_pipeline.config import (
     PARTITION_ASSET_PATH,
     PARTITION_ASSET_SHA256,
 )
+from fewsnet_partitioned_rf_pipeline.core.inference import (
+    FORMAL_PREDICTION_COLUMNS,
+)
 from fewsnet_partitioned_rf_pipeline.core.normalization import (
     validate_normalization_audit,
+)
+from fewsnet_partitioned_rf_pipeline.core.package import (
+    PACKAGE_FILES,
+    load_model_package,
 )
 from fewsnet_partitioned_rf_pipeline.core.partitions import PartitionMap
 from fewsnet_partitioned_rf_pipeline.schemas import (
     validate_deployment,
     validate_payload,
 )
-from fewsnet_partitioned_rf_pipeline.vertex.storage import GCSArtifactStore
+from fewsnet_partitioned_rf_pipeline.vertex.predictor_server import create_app
+from fewsnet_partitioned_rf_pipeline.vertex.storage import (
+    GCSArtifactStore,
+    LocalArtifactStore,
+)
 
 
 HORIZONS = ("0m", "6m", "12m")
@@ -948,19 +1371,44 @@ PREDICTION_SOURCES = (
     "pooled_missing_partition_model",
 )
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
-FORBIDDEN_OBJECT_TOKENS = (
-    "/maps/",
-    ".geojson",
-    ".gpkg",
-    ".shp",
-    ".shx",
-    ".dbf",
-    ".xlsx",
-    ".xlsm",
-    "future_target",
-    "future-target",
-    "performance_artifact",
+PARITY_SAMPLE_SIZE = 32
+ALLOWED_OBJECT_PATTERNS = tuple(
+    re.compile(pattern)
+    for pattern in (
+        (
+            r"inputs/snapshots/[A-Za-z0-9._-]+/"
+            r"(?:assembled_fewsnet\.normalized\.csv|"
+            r"panel_normalization_audit\.json|admin_boundaries\.parquet|"
+            r"admin_universe\.csv|source_manifest\.json)"
+        ),
+        r"deployments/deployment-[0-9a-f]{12}-[0-9a-f]{64}\.json",
+        (
+            r"runs/[A-Za-z0-9._-]+/(?:run_manifest\.json|"
+            r"input_snapshot_ref\.json|inputs/selected_source_manifest\.json|"
+            r"training/custom_job\.json|training_job_result\.json|"
+            r"training_threshold_report\.json|registry/(?:0m|6m|12m)\.json|"
+            r"batch_prediction/(?:0m|6m|12m)/input\.jsonl|"
+            r"batch_prediction/(?:0m|6m|12m)/raw/"
+            r"(?:[^/]+/)*predictions_[^/]+\.jsonl|"
+            r"predictions/(?:0m|6m|12m)\.csv|error\.json)"
+        ),
+        (
+            r"suites/[A-Za-z0-9._-]+/(?:models/(?:0m|6m|12m)/"
+            r"(?:model\.joblib|model_manifest\.json|feature_contract\.json|"
+            r"partition_map\.csv|threshold_report\.json|training_report\.json|"
+            r"checksums\.json)|training_threshold_report\.json|"
+            r"predictions/(?:0m|6m|12m)\.csv|suite_manifest\.json)"
+        ),
+        r"locks/production-promotion\.json",
+        r"released/[0-9]{4}-(?:0[1-9]|1[0-2])/production_suite_manifest\.json",
+        r"released/current\.json",
+    )
 )
+
+
+def require(condition: object, message: str) -> None:
+    if not condition:
+        raise ValueError(message)
 
 
 def required_env(name: str) -> str:
@@ -985,6 +1433,176 @@ def sha256_file(path: str | Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def object_fingerprint(data: bytes) -> dict:
+    return {
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "size_bytes": len(data),
+    }
+
+
+def require_fingerprint(data: bytes, expected: dict, name: str) -> None:
+    require(
+        isinstance(expected, dict) and set(expected) == {"sha256", "size_bytes"},
+        f"{name} fingerprint fields differ",
+    )
+    require(expected["size_bytes"] == len(data), f"{name} size differs")
+    require(
+        expected["sha256"] == hashlib.sha256(data).hexdigest(),
+        f"{name} checksum differs",
+    )
+
+
+def validate_probability_delta(value: object, tolerance: float, name: str) -> float:
+    try:
+        delta = float(value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{name} must be numeric") from exc
+    require(math.isfinite(delta), f"{name} must be finite")
+    require(0.0 <= delta <= tolerance, f"{name} is outside [0, tolerance]")
+    return delta
+
+
+def canonical_jsonl(records: list[dict]) -> bytes:
+    return (
+        "\n".join(
+            json.dumps(
+                record,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+                allow_nan=False,
+            )
+            for record in records
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def parse_jsonl(data: bytes, name: str) -> list[dict]:
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError(f"{name} is not UTF-8 JSONL") from exc
+    lines = text.splitlines()
+    require(lines and all(line.strip() for line in lines), f"{name} is empty")
+    records = [json.loads(line) for line in lines]
+    require(all(isinstance(record, dict) for record in records), f"{name} differs")
+    return records
+
+
+def json_scalar(value: object) -> object:
+    if value is None:
+        return None
+    try:
+        if bool(pd.isna(value)):
+            return None
+    except (TypeError, ValueError):
+        pass
+    item = getattr(value, "item", None)
+    return item() if callable(item) else value
+
+
+def prediction_records(records: list[dict], name: str) -> list[dict]:
+    expected = set(FORMAL_PREDICTION_COLUMNS)
+    normalized: list[dict] = []
+    for index, record in enumerate(records):
+        require(isinstance(record, dict), f"{name}[{index}] is not an object")
+        require(set(record) == expected, f"{name}[{index}] fields differ")
+        normalized.append(
+            {
+                field: json_scalar(record[field])
+                for field in FORMAL_PREDICTION_COLUMNS
+            }
+        )
+    return normalized
+
+
+def identity(record: dict) -> tuple[str, str]:
+    return str(record["admin_code"]), str(record["feature_month"])
+
+
+def select_vertex_predictions(
+    raw_objects: list[tuple[dict, bytes]],
+    sample: list[dict],
+) -> list[dict]:
+    expected_instances = {identity(instance): instance for instance in sample}
+    selected: dict[tuple[str, str], dict] = {}
+    for ref, data in raw_objects:
+        for payload in parse_jsonl(data, ref["uri"]):
+            require(set(payload) == {"instance", "prediction"}, "Vertex row differs")
+            instance = payload["instance"]
+            prediction = payload["prediction"]
+            require(isinstance(instance, dict), "Vertex instance is invalid")
+            require(isinstance(prediction, dict), "Vertex prediction is invalid")
+            key = identity(instance)
+            if key not in expected_instances:
+                continue
+            require(instance == expected_instances[key], "Vertex sample instance drifted")
+            require(key not in selected, "Vertex sample prediction is duplicated")
+            selected[key] = prediction
+    missing = [identity(instance) for instance in sample if identity(instance) not in selected]
+    require(not missing, f"Vertex output is missing sample identities: {missing}")
+    return [selected[identity(instance)] for instance in sample]
+
+
+def maximum_delta(left: list[dict], right: list[dict], name: str) -> float:
+    require(len(left) == len(right) and left, f"{name} row counts differ")
+    deltas = [
+        abs(float(a["probability_crisis"]) - float(b["probability_crisis"]))
+        for a, b in zip(left, right, strict=True)
+    ]
+    require(all(math.isfinite(value) and value >= 0.0 for value in deltas), name)
+    return max(deltas)
+
+
+def mismatch_count(left: list[dict], right: list[dict]) -> int:
+    require(len(left) == len(right), "class comparison row counts differ")
+    return sum(
+        int(a["predicted_crisis"]) != int(b["predicted_crisis"])
+        for a, b in zip(left, right, strict=True)
+    )
+
+
+def panel_csv_dimensions(data: bytes, name: str) -> tuple[int, int]:
+    try:
+        frame = pd.read_csv(
+            BytesIO(data),
+            usecols=lambda column: column in {"admin_code", "FEWSNET_admin_code"},
+            low_memory=False,
+        )
+    except Exception as exc:
+        raise ValueError(f"{name} cannot be parsed as the normalized panel") from exc
+    require(not frame.empty, f"{name} is empty")
+    require(len(frame.columns) == 1, f"{name} admin-code column differs")
+    return len(frame), frame.iloc[:, 0].astype(str).nunique()
+
+
+def require_source_panel_identity(
+    source_panel: dict,
+    raw_sha256: str,
+    raw_size_bytes: int,
+) -> None:
+    require(isinstance(source_panel, dict), "audit source_panel is invalid")
+    require(
+        source_panel.get("sha256") == raw_sha256,
+        "raw panel checksum differs from audit source_panel",
+    )
+    require(
+        source_panel.get("size_bytes") == raw_size_bytes,
+        "raw panel size differs from audit source_panel",
+    )
+
+
+def allowed_object_uri(root_uri: str, uri: str) -> bool:
+    prefix = root_uri.rstrip("/") + "/"
+    if not isinstance(uri, str) or not uri.startswith(prefix):
+        return False
+    relative = uri[len(prefix):]
+    if not relative or relative.startswith("/") or "//" in relative:
+        return False
+    return any(pattern.fullmatch(relative) for pattern in ALLOWED_OBJECT_PATTERNS)
 
 
 def read_ref(store: GCSArtifactStore, ref: dict, name: str) -> bytes:
@@ -1055,14 +1673,32 @@ if getattr(credentials, "service_account_email", "") != orchestrator_sa:
 store = GCSArtifactStore.from_default()
 deployment, deployment_ref = live_json(store, deployment_uri, "deployment")
 validate_deployment(deployment)
-assert deployment["project_id"] == project_id
-assert deployment["region"] == region
-assert deployment["object_store_root_uri"].rstrip("/") == root_uri
-assert deployment["orchestrator_service_account"] == orchestrator_sa
+require(
+    deployment['project_id'] == project_id,
+    'acceptance condition failed at verifier source line 361',
+)
+require(
+    deployment['region'] == region,
+    'acceptance condition failed at verifier source line 362',
+)
+require(
+    deployment['object_store_root_uri'].rstrip('/') == root_uri,
+    'acceptance condition failed at verifier source line 363',
+)
+require(
+    deployment['orchestrator_service_account'] == orchestrator_sa,
+    'acceptance condition failed at verifier source line 364',
+)
 
 run_result = load_json_file(run_result_path, "RUN_RESULT")
-assert run_result["status"] == "RELEASED"
-assert run_result["run_id"] == run_id
+require(
+    run_result['status'] == 'RELEASED',
+    'acceptance condition failed at verifier source line 367',
+)
+require(
+    run_result['run_id'] == run_id,
+    'acceptance condition failed at verifier source line 368',
+)
 run_root = f"{root_uri}/runs/{run_id}"
 run_manifest, run_manifest_ref = live_json(
     store,
@@ -1070,123 +1706,223 @@ run_manifest, run_manifest_ref = live_json(
     "run manifest",
 )
 validate_payload("run-manifest", run_manifest)
-assert run_manifest["phase"] == "RELEASED"
-assert run_manifest["status"] == "released"
-assert run_manifest["hard_gates"]["outputs_validated"] is True
-assert run_manifest["hard_gates"]["promotion_released"] is True
+require(
+    run_manifest['phase'] == 'RELEASED',
+    'acceptance condition failed at verifier source line 376',
+)
+require(
+    run_manifest['status'] == 'released',
+    'acceptance condition failed at verifier source line 377',
+)
+require(
+    run_manifest['hard_gates']['outputs_validated'] is True,
+    'acceptance condition failed at verifier source line 378',
+)
+require(
+    run_manifest['hard_gates']['promotion_released'] is True,
+    'acceptance condition failed at verifier source line 379',
+)
 
 current_uri = f"{root_uri}/released/current.json"
 current, current_ref = live_json(store, current_uri, "current pointer")
-assert set(current) == {
-    "schema_version",
-    "suite_version",
-    "feature_month",
-    "snapshot_content_sha256",
-    "suite_manifest",
-    "released_at_utc",
-}
-assert current["schema_version"] == "fewsnet-production-suite-pointer-v1"
+require(
+    set(current) == {'schema_version', 'suite_version', 'feature_month', 'snapshot_content_sha256', 'suite_manifest', 'released_at_utc'},
+    'acceptance condition failed at verifier source line 383',
+)
+require(
+    current['schema_version'] == 'fewsnet-production-suite-pointer-v1',
+    'acceptance condition failed at verifier source line 391',
+)
 suite_manifest = json.loads(
     read_ref(store, current["suite_manifest"], "suite manifest")
 )
 validate_payload("suite-manifest", suite_manifest)
 suite_version = suite_manifest["suite_version"]
-assert suite_version == run_manifest["suite_version"] == run_result["suite_version"]
-assert current["suite_version"] == suite_version
-assert current["feature_month"] == suite_manifest["feature_month"]
-assert current["released_at_utc"] == suite_manifest["released_at_utc"]
-assert current["snapshot_content_sha256"] == suite_manifest["snapshot_ref"][
-    "snapshot_content_sha256"
-]
-assert suite_manifest["source_git_commit"] == deployment["source_git_commit"]
-assert suite_manifest["container_image"] == {
-    "uri": deployment["container_image_uri"],
-    "digest": deployment["container_image_digest"],
-}
+require(
+    suite_version == run_manifest['suite_version'] == run_result['suite_version'],
+    'acceptance condition failed at verifier source line 397',
+)
+require(
+    current['suite_version'] == suite_version,
+    'acceptance condition failed at verifier source line 398',
+)
+require(
+    current['feature_month'] == suite_manifest['feature_month'],
+    'acceptance condition failed at verifier source line 399',
+)
+require(
+    current['released_at_utc'] == suite_manifest['released_at_utc'],
+    'acceptance condition failed at verifier source line 400',
+)
+require(
+    current['snapshot_content_sha256'] == suite_manifest['snapshot_ref']['snapshot_content_sha256'],
+    'acceptance condition failed at verifier source line 401',
+)
+require(
+    suite_manifest['source_git_commit'] == deployment['source_git_commit'],
+    'acceptance condition failed at verifier source line 404',
+)
+require(
+    suite_manifest['container_image'] == {'uri': deployment['container_image_uri'], 'digest': deployment['container_image_digest']},
+    'acceptance condition failed at verifier source line 405',
+)
 
 month_uri = (
     f"{root_uri}/released/{suite_manifest['feature_month']}/"
     "production_suite_manifest.json"
 )
 month_pointer, month_ref = live_json(store, month_uri, "month pointer")
-assert month_pointer == current
+require(
+    month_pointer == current,
+    'acceptance condition failed at verifier source line 415',
+)
 
 snapshot_ref = suite_manifest["snapshot_ref"]["manifest"]
 snapshot_bytes = read_ref(store, snapshot_ref, "source snapshot")
 snapshot = json.loads(snapshot_bytes)
 validate_payload("source-snapshot", snapshot)
-assert snapshot["snapshot_id"] == suite_manifest["snapshot_ref"]["snapshot_id"]
-assert snapshot["snapshot_content_sha256"] == current[
-    "snapshot_content_sha256"
-]
-assert snapshot["latest_feature_month"] == suite_manifest["feature_month"]
+require(
+    snapshot['snapshot_id'] == suite_manifest['snapshot_ref']['snapshot_id'],
+    'acceptance condition failed at verifier source line 421',
+)
+require(
+    snapshot['snapshot_content_sha256'] == current['snapshot_content_sha256'],
+    'acceptance condition failed at verifier source line 422',
+)
+require(
+    snapshot['latest_feature_month'] == suite_manifest['feature_month'],
+    'acceptance condition failed at verifier source line 425',
+)
 
 selected_copy, selected_copy_ref = live_json(
     store,
     f"{run_root}/inputs/selected_source_manifest.json",
     "selected source manifest copy",
 )
-assert json.dumps(selected_copy, sort_keys=True) == json.dumps(snapshot, sort_keys=True)
-assert read_ref(store, selected_copy_ref, "selected source manifest copy") == snapshot_bytes
+require(
+    json.dumps(selected_copy, sort_keys=True) == json.dumps(snapshot, sort_keys=True),
+    'acceptance condition failed at verifier source line 432',
+)
+require(
+    read_ref(store, selected_copy_ref, 'selected source manifest copy') == snapshot_bytes,
+    'acceptance condition failed at verifier source line 433',
+)
 input_snapshot, input_snapshot_ref = live_json(
     store,
     f"{run_root}/input_snapshot_ref.json",
     "input snapshot reference",
 )
-assert input_snapshot == {
-    "manifest": snapshot_ref,
-    "snapshot_id": snapshot["snapshot_id"],
-    "snapshot_content_sha256": snapshot["snapshot_content_sha256"],
-}
+require(
+    input_snapshot == {'manifest': snapshot_ref, 'snapshot_id': snapshot['snapshot_id'], 'snapshot_content_sha256': snapshot['snapshot_content_sha256']},
+    'acceptance condition failed at verifier source line 439',
+)
 
-assert SHA256_PATTERN.fullmatch(raw_sha256_before)
-assert sha256_file(raw_panel) == raw_sha256_before
+require(
+    SHA256_PATTERN.fullmatch(raw_sha256_before) is not None,
+    "RAW_PANEL_SHA256_BEFORE is not a SHA-256 value",
+)
+raw_size_bytes = Path(raw_panel).stat().st_size
+require(
+    sha256_file(raw_panel) == raw_sha256_before,
+    "raw panel checksum changed after normalization",
+)
 normalization_audit = validate_normalization_audit(
     Path(normalization_audit_path),
     Path(normalized_panel),
 )
-assert json.loads(
+require_source_panel_identity(
+    normalization_audit["source_panel"],
+    raw_sha256_before,
+    raw_size_bytes,
+)
+remote_audit = json.loads(
     read_ref(store, snapshot["normalization_audit"], "normalization audit")
-) == normalization_audit
-assert normalization_audit["output_panel"]["sha256"] == snapshot["panel"]["sha256"]
-assert normalization_audit["output_panel"]["row_count"] == snapshot["row_count"]
-assert normalization_audit["duplicate_group_count"] == 2
-assert normalization_audit["duplicate_row_count"] == 4
-assert normalization_audit["removed_row_count"] == 2
-assert normalization_audit["conflict_group_count"] == 0
-assert all(
-    group["disposition"] == "collapsed_identical_or_derived_only"
-    for group in normalization_audit["duplicate_groups"]
+)
+require(remote_audit == normalization_audit, "staged normalization audit differs")
+normalized_bytes = Path(normalized_panel).read_bytes()
+staged_panel_bytes = read_ref(store, snapshot["panel"], "staged normalized panel")
+require(
+    staged_panel_bytes == normalized_bytes,
+    "staged normalized panel bytes differ from the validated local panel",
+)
+output_panel = normalization_audit["output_panel"]
+require(
+    output_panel["sha256"] == snapshot["panel"]["sha256"],
+    "normalization audit checksum differs from staged panel",
+)
+require(
+    output_panel["size_bytes"] == snapshot["panel"]["size_bytes"],
+    "normalization audit size differs from staged panel",
+)
+require(
+    output_panel["row_count"] == snapshot["row_count"],
+    "normalization audit row count differs from snapshot",
+)
+require(normalization_audit["duplicate_group_count"] == 2, "duplicate groups differ")
+require(normalization_audit["duplicate_row_count"] == 4, "duplicate rows differ")
+require(normalization_audit["removed_row_count"] == 2, "removed rows differ")
+require(normalization_audit["conflict_group_count"] == 0, "conflicts were recorded")
+require(
+    all(
+        group["disposition"] == "collapsed_identical_or_derived_only"
+        for group in normalization_audit["duplicate_groups"]
+    ),
+    "normalization audit contains a disallowed duplicate disposition",
 )
 
-normalized_rows = 0
-normalized_areas: set[str] = set()
-for chunk in pd.read_csv(
-    normalized_panel,
-    usecols=["FEWSNET_admin_code"],
-    dtype={"FEWSNET_admin_code": "string"},
-    chunksize=100_000,
-):
-    normalized_rows += len(chunk)
-    normalized_areas.update(chunk["FEWSNET_admin_code"].dropna().astype(str))
-assert normalized_rows == snapshot["row_count"] == 1_120_728
-assert len(normalized_areas) == snapshot["area_count"] == 5_718
+normalized_rows, normalized_area_count = panel_csv_dimensions(
+    staged_panel_bytes,
+    "staged normalized panel",
+)
+require(
+    normalized_rows == snapshot["row_count"] == 1_120_728,
+    "staged normalized panel row count differs",
+)
+require(
+    normalized_area_count == snapshot["area_count"] == 5_718,
+    "staged normalized panel area count differs",
+)
 
 local_stage = load_json_file(local_stage_path, "local-stage evidence")
-assert local_stage["schema_version"] == "fewsnet-local-stage-evidence-v1"
-assert local_stage["store_type"] == "LocalArtifactStore"
-assert local_stage["destination_root"].startswith("gs://local-preflight/")
-assert local_stage["duplicate_area_month_gate"] == "passed"
-assert local_stage["gcp_write_performed"] is False
+require(
+    local_stage['schema_version'] == 'fewsnet-local-stage-evidence-v1',
+    'acceptance condition failed at verifier source line 512',
+)
+require(
+    local_stage['store_type'] == 'LocalArtifactStore',
+    'acceptance condition failed at verifier source line 513',
+)
+require(
+    local_stage['destination_root'].startswith('gs://local-preflight/'),
+    'acceptance condition failed at verifier source line 514',
+)
+require(
+    local_stage['duplicate_area_month_gate'] == 'passed',
+    'acceptance condition failed at verifier source line 515',
+)
+require(
+    local_stage['gcp_write_performed'] is False,
+    'acceptance condition failed at verifier source line 516',
+)
 local_manifest = local_stage["manifest"]
-assert local_manifest["row_count"] == snapshot["row_count"]
-assert local_manifest["area_count"] == snapshot["area_count"]
-assert local_manifest["snapshot_content_sha256"] == snapshot[
-    "snapshot_content_sha256"
-]
+require(
+    local_manifest['row_count'] == snapshot['row_count'],
+    'acceptance condition failed at verifier source line 518',
+)
+require(
+    local_manifest['area_count'] == snapshot['area_count'],
+    'acceptance condition failed at verifier source line 519',
+)
+require(
+    local_manifest['snapshot_content_sha256'] == snapshot['snapshot_content_sha256'],
+    'acceptance condition failed at verifier source line 520',
+)
 
 partition_map = PartitionMap.load(PARTITION_ASSET_PATH, PARTITION_ASSET_SHA256)
-assert suite_manifest["partition"]["sha256"] == PARTITION_ASSET_SHA256
+require(
+    suite_manifest['partition']['sha256'] == PARTITION_ASSET_SHA256,
+    'acceptance condition failed at verifier source line 525',
+)
 
 client_options = ClientOptions(
     api_endpoint=f"{region}-aiplatform.googleapis.com"
@@ -1217,30 +1953,62 @@ matching_custom_jobs = list(
         }
     )
 )
-assert len(matching_custom_jobs) == 1
+require(
+    len(matching_custom_jobs) == 1,
+    'acceptance condition failed at verifier source line 556',
+)
 custom_job = job_service.get_custom_job(request={"name": custom_name})
-assert matching_custom_jobs[0].name == custom_job.name == custom_name
-assert state_name(custom_job.state) == "JOB_STATE_SUCCEEDED"
-assert custom_job.job_spec.service_account == deployment["training_service_account"]
+require(
+    matching_custom_jobs[0].name == custom_job.name == custom_name,
+    'acceptance condition failed at verifier source line 558',
+)
+require(
+    state_name(custom_job.state) == 'JOB_STATE_SUCCEEDED',
+    'acceptance condition failed at verifier source line 559',
+)
+require(
+    custom_job.job_spec.service_account == deployment['training_service_account'],
+    'acceptance condition failed at verifier source line 560',
+)
 worker = custom_job.job_spec.worker_pool_specs[0]
-assert worker.container_spec.image_uri == deployment["container_image_uri"]
+require(
+    worker.container_spec.image_uri == deployment['container_image_uri'],
+    'acceptance condition failed at verifier source line 562',
+)
 
 training_result, _ = live_json(
     store,
     f"{run_root}/training_job_result.json",
     "training job result",
 )
-assert set(training_result["packages"]) == set(HORIZONS)
-assert training_result["suite_version"] == suite_version
-assert training_result["snapshot_id"] == snapshot["snapshot_id"]
-assert training_result["snapshot_content_sha256"] == snapshot[
-    "snapshot_content_sha256"
-]
-assert training_result["source_git_commit"] == deployment["source_git_commit"]
-assert training_result["container_image_uri"] == deployment["container_image_uri"]
-assert training_result["container_image_digest"] == deployment[
-    "container_image_digest"
-]
+require(
+    set(training_result['packages']) == set(HORIZONS),
+    'acceptance condition failed at verifier source line 569',
+)
+require(
+    training_result['suite_version'] == suite_version,
+    'acceptance condition failed at verifier source line 570',
+)
+require(
+    training_result['snapshot_id'] == snapshot['snapshot_id'],
+    'acceptance condition failed at verifier source line 571',
+)
+require(
+    training_result['snapshot_content_sha256'] == snapshot['snapshot_content_sha256'],
+    'acceptance condition failed at verifier source line 572',
+)
+require(
+    training_result['source_git_commit'] == deployment['source_git_commit'],
+    'acceptance condition failed at verifier source line 575',
+)
+require(
+    training_result['container_image_uri'] == deployment['container_image_uri'],
+    'acceptance condition failed at verifier source line 576',
+)
+require(
+    training_result['container_image_digest'] == deployment['container_image_digest'],
+    'acceptance condition failed at verifier source line 577',
+)
 
 training_report, training_report_ref = live_json(
     store,
@@ -1248,14 +2016,16 @@ training_report, training_report_ref = live_json(
     "training threshold report",
 )
 validate_payload("training-report", training_report)
-assert training_report["suite_version"] == suite_version
+require(
+    training_report['suite_version'] == suite_version,
+    'acceptance condition failed at verifier source line 587',
+)
 suite_training_report_ref = store.get_ref(
     f"{root_uri}/suites/{suite_version}/training_threshold_report.json"
 )
-assert read_ref(store, vars(suite_training_report_ref), "suite training report") == read_ref(
-    store,
-    training_report_ref,
-    "run training report",
+require(
+    read_ref(store, vars(suite_training_report_ref), 'suite training report') == read_ref(store, training_report_ref, 'run training report'),
+    'acceptance condition failed at verifier source line 591',
 )
 
 aiplatform.init(project=project_id, location=region)
@@ -1264,13 +2034,20 @@ package_manifests: dict[str, dict] = {}
 production_aliases: dict[str, str] = {}
 for horizon in HORIZONS:
     version = suite_manifest["model_versions"][horizon]
-    assert version == run_manifest["model_versions"][horizon]
+    require(
+        version == run_manifest['model_versions'][horizon],
+        'acceptance condition failed at verifier source line 603',
+    )
     expected_parent = (
         f"{parent}/models/{deployment['parent_model_ids'][horizon]}"
     )
-    assert version["parent_model_resource_name"] == expected_parent
-    assert version["version_resource_name"] == (
-        f"{expected_parent}@{version['version_id']}"
+    require(
+        version['parent_model_resource_name'] == expected_parent,
+        'acceptance condition failed at verifier source line 607',
+    )
+    require(
+        version['version_resource_name'] == f'{expected_parent}@{version['version_id']}',
+        'acceptance condition failed at verifier source line 608',
     )
     model = model_service.get_model(
         request={"name": version["version_resource_name"]}
@@ -1278,25 +2055,54 @@ for horizon in HORIZONS:
     observed_resource = (
         model.name if "@" in model.name else f"{model.name}@{model.version_id}"
     )
-    assert observed_resource == version["version_resource_name"]
-    assert model.name == expected_parent
-    assert str(model.version_id) == version["version_id"]
-    assert model.artifact_uri == version["artifact_uri"]
-    assert model.container_spec.image_uri == deployment["container_image_uri"]
+    require(
+        observed_resource == version['version_resource_name'],
+        'acceptance condition failed at verifier source line 617',
+    )
+    require(
+        model.name == expected_parent,
+        'acceptance condition failed at verifier source line 618',
+    )
+    require(
+        str(model.version_id) == version['version_id'],
+        'acceptance condition failed at verifier source line 619',
+    )
+    require(
+        model.artifact_uri == version['artifact_uri'],
+        'acceptance condition failed at verifier source line 620',
+    )
+    require(
+        model.container_spec.image_uri == deployment['container_image_uri'],
+        'acceptance condition failed at verifier source line 621',
+    )
     container_env = {item.name: item.value for item in model.container_spec.env}
-    assert container_env["FEWSNET_CONTAINER_IMAGE_DIGEST"] == deployment[
-        "container_image_digest"
-    ]
-    assert container_env["FEWSNET_SOURCE_GIT_COMMIT"] == deployment[
-        "source_git_commit"
-    ]
-    assert version["suite_version_alias"] in set(model.version_aliases)
-    assert "production" in set(model.version_aliases)
+    require(
+        container_env['FEWSNET_CONTAINER_IMAGE_DIGEST'] == deployment['container_image_digest'],
+        'acceptance condition failed at verifier source line 623',
+    )
+    require(
+        container_env['FEWSNET_SOURCE_GIT_COMMIT'] == deployment['source_git_commit'],
+        'acceptance condition failed at verifier source line 626',
+    )
+    require(
+        version['suite_version_alias'] in set(model.version_aliases),
+        'acceptance condition failed at verifier source line 629',
+    )
+    require(
+        'production' in set(model.version_aliases),
+        'acceptance condition failed at verifier source line 630',
+    )
     alias_info = aiplatform.ModelRegistry(expected_parent).get_version_info(
         "production"
     )
-    assert alias_info.model_resource_name == expected_parent
-    assert str(alias_info.version_id) == version["version_id"]
+    require(
+        alias_info.model_resource_name == expected_parent,
+        'acceptance condition failed at verifier source line 634',
+    )
+    require(
+        str(alias_info.version_id) == version['version_id'],
+        'acceptance condition failed at verifier source line 635',
+    )
     production_aliases[horizon] = version["version_resource_name"]
 
     package_manifest, _ = live_json(
@@ -1305,23 +2111,42 @@ for horizon in HORIZONS:
         f"{horizon} model package manifest",
     )
     validate_payload("model-package", package_manifest)
-    assert package_manifest["horizon_key"] == horizon
-    assert package_manifest["suite_version"] == suite_version
-    assert package_manifest["snapshot_id"] == snapshot["snapshot_id"]
-    assert package_manifest["snapshot_content_sha256"] == snapshot[
-        "snapshot_content_sha256"
-    ]
-    assert package_manifest["partition_sha256"] == PARTITION_ASSET_SHA256
-    assert package_manifest["source_git_commit"] == deployment["source_git_commit"]
-    assert package_manifest["container_image_uri"] == deployment[
-        "container_image_uri"
-    ]
-    assert package_manifest["container_image_digest"] == deployment[
-        "container_image_digest"
-    ]
-    assert package_manifest["threshold"] == training_report[
-        "horizon_thresholds"
-    ][horizon]["threshold"]
+    require(
+        package_manifest['horizon_key'] == horizon,
+        'acceptance condition failed at verifier source line 644',
+    )
+    require(
+        package_manifest['suite_version'] == suite_version,
+        'acceptance condition failed at verifier source line 645',
+    )
+    require(
+        package_manifest['snapshot_id'] == snapshot['snapshot_id'],
+        'acceptance condition failed at verifier source line 646',
+    )
+    require(
+        package_manifest['snapshot_content_sha256'] == snapshot['snapshot_content_sha256'],
+        'acceptance condition failed at verifier source line 647',
+    )
+    require(
+        package_manifest['partition_sha256'] == PARTITION_ASSET_SHA256,
+        'acceptance condition failed at verifier source line 650',
+    )
+    require(
+        package_manifest['source_git_commit'] == deployment['source_git_commit'],
+        'acceptance condition failed at verifier source line 651',
+    )
+    require(
+        package_manifest['container_image_uri'] == deployment['container_image_uri'],
+        'acceptance condition failed at verifier source line 652',
+    )
+    require(
+        package_manifest['container_image_digest'] == deployment['container_image_digest'],
+        'acceptance condition failed at verifier source line 655',
+    )
+    require(
+        package_manifest['threshold'] == training_report['horizon_thresholds'][horizon]['threshold'],
+        'acceptance condition failed at verifier source line 658',
+    )
     package_manifests[horizon] = package_manifest
     model_evidence[horizon] = {
         "parent": expected_parent,
@@ -1329,7 +2154,10 @@ for horizon in HORIZONS:
         "artifact_uri": model.artifact_uri,
         "image_uri": model.container_spec.image_uri,
     }
-assert len(set(production_aliases.values())) == 3
+require(
+    len(set(production_aliases.values())) == 3,
+    'acceptance condition failed at verifier source line 668',
+)
 
 batch_run_label = hashlib.sha256(run_id.encode("utf-8")).hexdigest()[:16]
 listed_batch_jobs = list(
@@ -1344,28 +2172,48 @@ expected_batch_names = {
     run_manifest["batch_jobs"][horizon]["job_resource_name"]
     for horizon in HORIZONS
 }
-assert len(listed_batch_jobs) == 3
-assert {job.name for job in listed_batch_jobs} == expected_batch_names
+require(
+    len(listed_batch_jobs) == 3,
+    'acceptance condition failed at verifier source line 683',
+)
+require(
+    {job.name for job in listed_batch_jobs} == expected_batch_names,
+    'acceptance condition failed at verifier source line 684',
+)
 batch_evidence: dict[str, dict] = {}
 for horizon in HORIZONS:
     expected = run_manifest["batch_jobs"][horizon]
     job = job_service.get_batch_prediction_job(
         request={"name": expected["job_resource_name"]}
     )
-    assert state_name(job.state) == "JOB_STATE_SUCCEEDED"
-    assert job.model == expected["model_version_resource_name"]
-    assert list(job.input_config.gcs_source.uris) == [expected["input_uri"]]
-    assert (
-        job.output_config.gcs_destination.output_uri_prefix
-        == expected["destination_prefix"]
+    require(
+        state_name(job.state) == 'JOB_STATE_SUCCEEDED',
+        'acceptance condition failed at verifier source line 691',
     )
-    assert job.output_info.gcs_output_directory == expected[
-        "gcs_output_directory"
-    ]
-    assert job.service_account == deployment["batch_prediction_service_account"]
-    assert job.dedicated_resources.machine_spec.machine_type == deployment[
-        "batch_machine_type"
-    ]
+    require(
+        job.model == expected['model_version_resource_name'],
+        'acceptance condition failed at verifier source line 692',
+    )
+    require(
+        list(job.input_config.gcs_source.uris) == [expected['input_uri']],
+        'acceptance condition failed at verifier source line 693',
+    )
+    require(
+        job.output_config.gcs_destination.output_uri_prefix == expected['destination_prefix'],
+        'acceptance condition failed at verifier source line 694',
+    )
+    require(
+        job.output_info.gcs_output_directory == expected['gcs_output_directory'],
+        'acceptance condition failed at verifier source line 698',
+    )
+    require(
+        job.service_account == deployment['batch_prediction_service_account'],
+        'acceptance condition failed at verifier source line 701',
+    )
+    require(
+        job.dedicated_resources.machine_spec.machine_type == deployment['batch_machine_type'],
+        'acceptance condition failed at verifier source line 702',
+    )
     batch_evidence[horizon] = {
         "job": job.name,
         "model": job.model,
@@ -1374,22 +2222,34 @@ for horizon in HORIZONS:
     }
 
 validation = run_result["validation"]
-assert set(validation) == {
-    "suite_version",
-    "snapshot_id",
-    "snapshot_content_sha256",
-    "feature_month",
-    "area_count",
-    "horizons",
-}
-assert validation["suite_version"] == suite_version
-assert validation["snapshot_id"] == snapshot["snapshot_id"]
-assert validation["snapshot_content_sha256"] == snapshot[
-    "snapshot_content_sha256"
-]
-assert validation["feature_month"] == snapshot["latest_feature_month"]
-assert validation["area_count"] == snapshot["area_count"]
-assert set(validation["horizons"]) == set(HORIZONS)
+require(
+    set(validation) == {'suite_version', 'snapshot_id', 'snapshot_content_sha256', 'feature_month', 'area_count', 'horizons'},
+    'acceptance condition failed at verifier source line 713',
+)
+require(
+    validation['suite_version'] == suite_version,
+    'acceptance condition failed at verifier source line 721',
+)
+require(
+    validation['snapshot_id'] == snapshot['snapshot_id'],
+    'acceptance condition failed at verifier source line 722',
+)
+require(
+    validation['snapshot_content_sha256'] == snapshot['snapshot_content_sha256'],
+    'acceptance condition failed at verifier source line 723',
+)
+require(
+    validation['feature_month'] == snapshot['latest_feature_month'],
+    'acceptance condition failed at verifier source line 726',
+)
+require(
+    validation['area_count'] == snapshot['area_count'],
+    'acceptance condition failed at verifier source line 727',
+)
+require(
+    set(validation['horizons']) == set(HORIZONS),
+    'acceptance condition failed at verifier source line 728',
+)
 prediction_evidence: dict[str, dict] = {}
 canonical_admins: set[str] | None = None
 for horizon in HORIZONS:
@@ -1402,7 +2262,10 @@ for horizon in HORIZONS:
     run_prediction_ref = vars(
         store.get_ref(f"{run_root}/predictions/{horizon}.csv")
     )
-    assert read_ref(store, run_prediction_ref, f"{horizon} run prediction") == prediction_bytes
+    require(
+        read_ref(store, run_prediction_ref, f'{horizon} run prediction') == prediction_bytes,
+        'acceptance condition failed at verifier source line 741',
+    )
     frame = pd.read_csv(
         BytesIO(prediction_bytes),
         dtype={
@@ -1418,61 +2281,97 @@ for horizon in HORIZONS:
             "vertex_model_version_id": "string",
         },
     )
-    assert len(frame) == 5_718
-    assert frame["admin_code"].nunique() == 5_718
-    assert not frame["admin_code"].duplicated().any()
+    require(
+        len(frame) == 5718,
+        'acceptance condition failed at verifier source line 757',
+    )
+    require(
+        frame['admin_code'].nunique() == 5718,
+        'acceptance condition failed at verifier source line 758',
+    )
+    require(
+        not frame['admin_code'].duplicated().any(),
+        'acceptance condition failed at verifier source line 759',
+    )
     records = json.loads(frame.to_json(orient="records"))
     for record in records:
         validate_payload("prediction-record", record)
     expected_threshold = package_manifests[horizon]["threshold"]
-    assert set(frame["threshold"].astype(float)) == {expected_threshold}
-    assert (
-        frame["predicted_crisis"].astype(int)
-        == (frame["probability_crisis"].astype(float) >= expected_threshold).astype(int)
-    ).all()
-    assert set(frame["suite_version"]) == {suite_version}
-    assert set(frame["horizon_months"].astype(int)) == {HORIZON_MONTHS[horizon]}
-    assert set(frame["vertex_model_resource_name"]) == {
-        suite_manifest["model_versions"][horizon]["version_resource_name"]
-    }
-    assert set(frame["vertex_model_version_id"].astype(str)) == {
-        suite_manifest["model_versions"][horizon]["version_id"]
-    }
+    require(
+        set(frame['threshold'].astype(float)) == {expected_threshold},
+        'acceptance condition failed at verifier source line 764',
+    )
+    require(
+        (frame['predicted_crisis'].astype(int) == (frame['probability_crisis'].astype(float) >= expected_threshold).astype(int)).all(),
+        'acceptance condition failed at verifier source line 765',
+    )
+    require(
+        set(frame['suite_version']) == {suite_version},
+        'acceptance condition failed at verifier source line 769',
+    )
+    require(
+        set(frame['horizon_months'].astype(int)) == {HORIZON_MONTHS[horizon]},
+        'acceptance condition failed at verifier source line 770',
+    )
+    require(
+        set(frame['vertex_model_resource_name']) == {suite_manifest['model_versions'][horizon]['version_resource_name']},
+        'acceptance condition failed at verifier source line 771',
+    )
+    require(
+        set(frame['vertex_model_version_id'].astype(str)) == {suite_manifest['model_versions'][horizon]['version_id']},
+        'acceptance condition failed at verifier source line 774',
+    )
     routed = partition_map.route(frame["admin_code"].tolist()).tolist()
     observed_clusters = [
         None if pd.isna(value) else int(value)
         for value in frame["cluster_id"].tolist()
     ]
-    assert observed_clusters == routed
-    assert all(
-        (cluster is None) == (source == "pooled_unmapped")
-        for cluster, source in zip(
-            observed_clusters,
-            frame["prediction_source"].tolist(),
-            strict=True,
-        )
+    require(
+        observed_clusters == routed,
+        'acceptance condition failed at verifier source line 782',
+    )
+    require(
+        all(((cluster is None) == (source == 'pooled_unmapped') for cluster, source in zip(observed_clusters, frame['prediction_source'].tolist(), strict=True))),
+        'acceptance condition failed at verifier source line 783',
     )
     coverage = partition_map.assert_release_coverage(frame["admin_code"].tolist())
     source_counts = {
         source: int(frame["prediction_source"].eq(source).sum())
         for source in PREDICTION_SOURCES
     }
-    assert sum(source_counts.values()) == 5_718
+    require(
+        sum(source_counts.values()) == 5718,
+        'acceptance condition failed at verifier source line 796',
+    )
     horizon_validation = validation["horizons"][horizon]
-    assert set(horizon_validation) == {
-        "row_count",
-        "partition_coverage_pct",
-        "source_counts",
-    }
-    assert set(horizon_validation["source_counts"]) == set(PREDICTION_SOURCES)
-    assert source_counts == horizon_validation["source_counts"]
-    assert horizon_validation["row_count"] == 5_718
-    assert horizon_validation["partition_coverage_pct"] == coverage
+    require(
+        set(horizon_validation) == {'row_count', 'partition_coverage_pct', 'source_counts'},
+        'acceptance condition failed at verifier source line 798',
+    )
+    require(
+        set(horizon_validation['source_counts']) == set(PREDICTION_SOURCES),
+        'acceptance condition failed at verifier source line 803',
+    )
+    require(
+        source_counts == horizon_validation['source_counts'],
+        'acceptance condition failed at verifier source line 804',
+    )
+    require(
+        horizon_validation['row_count'] == 5718,
+        'acceptance condition failed at verifier source line 805',
+    )
+    require(
+        horizon_validation['partition_coverage_pct'] == coverage,
+        'acceptance condition failed at verifier source line 806',
+    )
     admins = set(frame["admin_code"].astype(str))
     if canonical_admins is None:
         canonical_admins = admins
     else:
-        assert admins == canonical_admins
+        require(
+            admins == canonical_admins,
+            'acceptance condition failed at verifier source line 811',
+        )
     prediction_evidence[horizon] = {
         "rows": len(frame),
         "areas": len(admins),
@@ -1481,79 +2380,305 @@ for horizon in HORIZONS:
     }
 
 parity = load_json_file(parity_path, "fixed-sample parity evidence")
-assert set(parity) == {
-    "schema_version",
-    "suite_version",
-    "snapshot_content_sha256",
-    "container_image_digest",
-    "sample_sha256",
-    "probability_tolerance",
-    "horizons",
-}
-assert parity["schema_version"] == "fewsnet-fixed-sample-parity-v1"
-assert SHA256_PATTERN.fullmatch(parity["sample_sha256"])
-assert parity["suite_version"] == suite_version
-assert parity["snapshot_content_sha256"] == snapshot["snapshot_content_sha256"]
-assert parity["container_image_digest"] == deployment["container_image_digest"]
+require(
+    set(parity)
+    == {
+        "schema_version",
+        "suite_version",
+        "snapshot_content_sha256",
+        "container_image_digest",
+        "sample_sha256",
+        "sample_size",
+        "probability_tolerance",
+        "horizons",
+    },
+    "fixed-sample parity report fields differ",
+)
+require(
+    parity["schema_version"] == "fewsnet-fixed-sample-parity-v2",
+    "fixed-sample parity schema differs",
+)
+require(
+    SHA256_PATTERN.fullmatch(parity["sample_sha256"]) is not None,
+    "fixed-sample SHA-256 is invalid",
+)
+require(parity["sample_size"] == PARITY_SAMPLE_SIZE, "fixed-sample size differs")
+require(parity["suite_version"] == suite_version, "parity suite differs")
+require(
+    parity["snapshot_content_sha256"] == snapshot["snapshot_content_sha256"],
+    "parity snapshot differs",
+)
+require(
+    parity["container_image_digest"] == deployment["container_image_digest"],
+    "parity image digest differs",
+)
 tolerance = float(parity["probability_tolerance"])
-assert 0.0 <= tolerance <= 1e-12
-assert set(parity["horizons"]) == set(HORIZONS)
-parity_row_count: int | None = None
-for horizon in HORIZONS:
-    item = parity["horizons"][horizon]
-    assert set(item) == {
-        "model_version_resource_name",
-        "row_count",
-        "local_vs_container_max_abs_probability_delta",
-        "local_vs_vertex_max_abs_probability_delta",
-        "local_vs_container_class_mismatch_count",
-        "local_vs_vertex_class_mismatch_count",
-    }
-    assert item["row_count"] > 0
-    if parity_row_count is None:
-        parity_row_count = item["row_count"]
-    else:
-        assert item["row_count"] == parity_row_count
-    assert item["model_version_resource_name"] == suite_manifest[
-        "model_versions"
-    ][horizon]["version_resource_name"]
-    assert item["local_vs_container_max_abs_probability_delta"] <= tolerance
-    assert item["local_vs_vertex_max_abs_probability_delta"] <= tolerance
-    assert item["local_vs_container_class_mismatch_count"] == 0
-    assert item["local_vs_vertex_class_mismatch_count"] == 0
+require(math.isfinite(tolerance), "probability tolerance must be finite")
+require(0.0 <= tolerance <= 1e-12, "probability tolerance is too large")
+require(set(parity["horizons"]) == set(HORIZONS), "parity horizons differ")
+
+verified_sample_bytes: bytes | None = None
+verified_parity: dict[str, dict] = {}
+with tempfile.TemporaryDirectory(prefix="fewsnet-acceptance-parity-") as temp:
+    temp_root = Path(temp)
+    for horizon in HORIZONS:
+        item = parity["horizons"][horizon]
+        require(
+            set(item)
+            == {
+                "model_version_resource_name",
+                "row_count",
+                "batch_input",
+                "package_objects",
+                "vertex_output_objects",
+                "local_output",
+                "container_output",
+                "vertex_output",
+                "local_vs_container_max_abs_probability_delta",
+                "local_vs_vertex_max_abs_probability_delta",
+                "local_vs_container_class_mismatch_count",
+                "local_vs_vertex_class_mismatch_count",
+            },
+            f"{horizon} parity fields differ",
+        )
+        require(item["row_count"] == PARITY_SAMPLE_SIZE, f"{horizon} sample differs")
+        version = suite_manifest["model_versions"][horizon]
+        require(
+            item["model_version_resource_name"] == version["version_resource_name"],
+            f"{horizon} parity model version differs",
+        )
+
+        job = run_manifest["batch_jobs"][horizon]
+        input_ref = item["batch_input"]
+        require(
+            input_ref["uri"] == job["input_uri"],
+            f"{horizon} parity Batch input URI differs",
+        )
+        require(
+            object_ref_dict(store.get_ref(input_ref["uri"])) == input_ref,
+            f"{horizon} parity Batch input generation is not current",
+        )
+        input_bytes = read_ref(store, input_ref, f"{horizon} parity Batch input")
+        instances = parse_jsonl(input_bytes, f"{horizon} parity Batch input")
+        require(
+            len(instances) >= PARITY_SAMPLE_SIZE,
+            f"{horizon} Batch input is smaller than the fixed sample",
+        )
+        sample = instances[:PARITY_SAMPLE_SIZE]
+        sample_bytes = canonical_jsonl(sample)
+        if verified_sample_bytes is None:
+            verified_sample_bytes = sample_bytes
+        else:
+            require(sample_bytes == verified_sample_bytes, "horizon samples differ")
+
+        package_refs = item["package_objects"]
+        require(
+            isinstance(package_refs, dict) and set(package_refs) == set(PACKAGE_FILES),
+            f"{horizon} package ObjectRefs differ",
+        )
+        package_dir = temp_root / "packages" / horizon
+        package_dir.mkdir(parents=True)
+        for filename in PACKAGE_FILES:
+            package_ref = package_refs[filename]
+            expected_uri = f"{version['artifact_uri']}/{filename}"
+            require(
+                package_ref["uri"] == expected_uri,
+                f"{horizon} package URI differs for {filename}",
+            )
+            require(
+                object_ref_dict(store.get_ref(expected_uri)) == package_ref,
+                f"{horizon} package generation differs for {filename}",
+            )
+            (package_dir / filename).write_bytes(
+                read_ref(store, package_ref, f"{horizon} package {filename}")
+            )
+        predictor = load_model_package(
+            package_dir,
+            expected_image_digest=deployment["container_image_digest"],
+            expected_source_git_commit=deployment["source_git_commit"],
+        )
+        frame = pd.DataFrame(sample)
+        local_records = prediction_records(
+            predictor.predict_frame(frame).to_dict(orient="records"),
+            f"{horizon} local predictions",
+        )
+
+        local_store = LocalArtifactStore(temp_root / "container-store" / horizon)
+        local_artifact_uri = f"gs://parity-package/{horizon}"
+        for filename in PACKAGE_FILES:
+            local_store.upload_file(
+                package_dir / filename,
+                f"{local_artifact_uri}/{filename}",
+            )
+        app = create_app(
+            environ={
+                "AIP_HTTP_PORT": "8080",
+                "AIP_HEALTH_ROUTE": "/health",
+                "AIP_PREDICT_ROUTE": "/predict",
+                "AIP_STORAGE_URI": local_artifact_uri,
+                "FEWSNET_CONTAINER_IMAGE_DIGEST": deployment[
+                    "container_image_digest"
+                ],
+                "FEWSNET_SOURCE_GIT_COMMIT": deployment["source_git_commit"],
+            },
+            store=local_store,
+        )
+        with TestClient(app) as client:
+            response = client.post("/predict", json={"instances": sample})
+        require(response.status_code == 200, f"{horizon} container prediction failed")
+        response_payload = response.json()
+        require(
+            set(response_payload) == {"predictions"},
+            f"{horizon} container response fields differ",
+        )
+        container_records = prediction_records(
+            response_payload["predictions"],
+            f"{horizon} container predictions",
+        )
+
+        output_prefix = str(job["gcs_output_directory"]).rstrip("/") + "/"
+        live_output_refs = [
+            object_ref_dict(ref)
+            for ref in sorted(store.list(output_prefix), key=lambda ref: ref.uri)
+        ]
+        output_refs = item["vertex_output_objects"]
+        require(
+            isinstance(output_refs, list) and output_refs,
+            f"{horizon} Vertex output ObjectRefs are missing",
+        )
+        require(
+            output_refs == live_output_refs,
+            f"{horizon} Vertex output inventory or generations differ",
+        )
+        raw_objects = [
+            (ref, read_ref(store, ref, f"{horizon} Vertex output"))
+            for ref in output_refs
+        ]
+        vertex_records = prediction_records(
+            select_vertex_predictions(raw_objects, sample),
+            f"{horizon} Vertex predictions",
+        )
+
+        local_bytes = canonical_jsonl(local_records)
+        container_bytes = canonical_jsonl(container_records)
+        vertex_bytes = canonical_jsonl(vertex_records)
+        require_fingerprint(local_bytes, item["local_output"], f"{horizon} local output")
+        require_fingerprint(
+            container_bytes,
+            item["container_output"],
+            f"{horizon} container output",
+        )
+        require_fingerprint(
+            vertex_bytes,
+            item["vertex_output"],
+            f"{horizon} Vertex output",
+        )
+
+        local_container_delta = maximum_delta(
+            local_records,
+            container_records,
+            f"{horizon} local/container delta",
+        )
+        local_vertex_delta = maximum_delta(
+            local_records,
+            vertex_records,
+            f"{horizon} local/Vertex delta",
+        )
+        reported_local_container_delta = validate_probability_delta(
+            item["local_vs_container_max_abs_probability_delta"],
+            tolerance,
+            f"{horizon} reported local/container delta",
+        )
+        reported_local_vertex_delta = validate_probability_delta(
+            item["local_vs_vertex_max_abs_probability_delta"],
+            tolerance,
+            f"{horizon} reported local/Vertex delta",
+        )
+        require(
+            reported_local_container_delta == local_container_delta,
+            f"{horizon} local/container delta was not recomputed",
+        )
+        require(
+            reported_local_vertex_delta == local_vertex_delta,
+            f"{horizon} local/Vertex delta was not recomputed",
+        )
+        local_container_mismatches = mismatch_count(local_records, container_records)
+        local_vertex_mismatches = mismatch_count(local_records, vertex_records)
+        require(
+            item["local_vs_container_class_mismatch_count"]
+            == local_container_mismatches
+            == 0,
+            f"{horizon} local/container classes differ",
+        )
+        require(
+            item["local_vs_vertex_class_mismatch_count"]
+            == local_vertex_mismatches
+            == 0,
+            f"{horizon} local/Vertex classes differ",
+        )
+        verified_parity[horizon] = {
+            "batch_input": input_ref,
+            "package_objects": package_refs,
+            "vertex_output_objects": output_refs,
+            "local_output": object_fingerprint(local_bytes),
+            "container_output": object_fingerprint(container_bytes),
+            "vertex_output": object_fingerprint(vertex_bytes),
+            "local_vs_container_max_abs_probability_delta": (
+                local_container_delta
+            ),
+            "local_vs_vertex_max_abs_probability_delta": local_vertex_delta,
+            "local_vs_container_class_mismatch_count": local_container_mismatches,
+            "local_vs_vertex_class_mismatch_count": local_vertex_mismatches,
+        }
+
+require(verified_sample_bytes is not None, "fixed sample was not verified")
+require(
+    hashlib.sha256(verified_sample_bytes).hexdigest() == parity["sample_sha256"],
+    "fixed-sample SHA-256 was not recomputed from Batch input bytes",
+)
 
 endpoint_names = [
     endpoint.name
     for endpoint in endpoint_service.list_endpoints(request={"parent": parent})
 ]
-assert endpoint_names == []
+require(
+    endpoint_names == [],
+    'acceptance condition failed at verifier source line 1081',
+)
 object_uris = [ref.uri for ref in store.list(f"{root_uri}/")]
-forbidden_uris = [
-    uri
-    for uri in object_uris
-    if any(token in uri.lower() for token in FORBIDDEN_OBJECT_TOKENS)
+unexpected_uris = [
+    uri for uri in object_uris if not allowed_object_uri(root_uri, uri)
 ]
-assert forbidden_uris == []
+require(
+    unexpected_uris == [],
+    f"object store contains paths outside the allowed inventory: {unexpected_uris}",
+)
 
 for horizon in HORIZONS:
     alias_state = suite_manifest["alias_state"][horizon]
-    assert alias_state == {
-        "alias": "production",
-        "version_resource_name": production_aliases[horizon],
-    }
+    require(
+        alias_state == {'alias': 'production', 'version_resource_name': production_aliases[horizon]},
+        'acceptance condition failed at verifier source line 1093',
+    )
 
 storage_client = storage.Client()
 suite_updated = object_updated(storage_client, current["suite_manifest"])
 month_updated = object_updated(storage_client, month_ref)
 current_updated = object_updated(storage_client, current_ref)
-assert suite_updated <= month_updated <= current_updated
-assert timestamp(current["released_at_utc"]) <= current_updated
+require(
+    suite_updated <= month_updated <= current_updated,
+    'acceptance condition failed at verifier source line 1102',
+)
+require(
+    timestamp(current['released_at_utc']) <= current_updated,
+    'acceptance condition failed at verifier source line 1103',
+)
 
 evidence = {
     "acceptance_01_raw_panel_unchanged": raw_sha256_before,
     "acceptance_02_normalized_panel": {
         "rows": normalized_rows,
-        "areas": len(normalized_areas),
+        "areas": normalized_area_count,
         "duplicate_groups": normalization_audit["duplicate_group_count"],
         "removed_rows": normalization_audit["removed_row_count"],
     },
@@ -1570,11 +2695,15 @@ evidence = {
     "acceptance_09_model_bindings": model_evidence,
     "acceptance_10_batch_jobs": batch_evidence,
     "acceptance_11_predictions": prediction_evidence,
-    "acceptance_12_fixed_sample_parity": parity,
+    "acceptance_12_fixed_sample_parity": {
+        "report": parity,
+        "recomputed": verified_parity,
+    },
     "acceptance_13_validator": validation,
-    "acceptance_14_forbidden_artifacts": {
+    "acceptance_14_allowed_artifact_inventory": {
         "endpoint_count": len(endpoint_names),
-        "forbidden_objects": forbidden_uris,
+        "approved_object_count": len(object_uris),
+        "unexpected_objects": unexpected_uris,
     },
     "acceptance_15_alias_suite_identity": production_aliases,
     "acceptance_16_write_order": {
