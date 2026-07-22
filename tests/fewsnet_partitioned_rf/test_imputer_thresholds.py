@@ -2,6 +2,7 @@ from importlib import import_module
 
 import numpy as np
 import pytest
+from sklearn.exceptions import NotFittedError
 
 
 def _max_plus_imputer_type():
@@ -21,6 +22,11 @@ def test_max_plus_imputer_uses_fit_rows_only():
     transformed = imputer.transform([[1000.0], [None]])
 
     assert transformed[:, 0].tolist() == [1000.0, 200.0]
+
+
+def test_max_plus_imputer_raises_sklearn_not_fitted_error_before_fit():
+    with pytest.raises(NotFittedError, match="MaxPlusImputer"):
+        _max_plus_imputer_type()().transform([[1.0]])
 
 
 def test_max_plus_imputer_records_float64_fit_evidence_and_exact_edge_rules():

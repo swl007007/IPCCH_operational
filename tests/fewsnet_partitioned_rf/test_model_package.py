@@ -12,6 +12,7 @@ import pytest
 from pandas.testing import assert_frame_equal
 from sklearn.ensemble import RandomForestClassifier
 
+import fewsnet_partitioned_rf_pipeline.core.package as package_module
 from fewsnet_partitioned_rf_pipeline.config import (
     FEATURE_CONTRACT_PATH,
     PARTITION_ASSET_PATH,
@@ -701,6 +702,20 @@ def test_load_requires_every_package_file(package_dir):
 
     with pytest.raises(PackageValidationError, match="training_report.json"):
         load_model_package(package_dir)
+
+
+def test_package_sha256_streams_without_path_read_bytes(tmp_path, monkeypatch):
+    payload = (b"bounded-package-hash\n" * 4096) + b"end"
+    target = tmp_path / "artifact.bin"
+    target.write_bytes(payload)
+    expected = hashlib.sha256(payload).hexdigest()
+
+    def fail_read_bytes(_path):
+        raise AssertionError("package hashing must not call Path.read_bytes")
+
+    monkeypatch.setattr(Path, "read_bytes", fail_read_bytes)
+
+    assert package_module._sha256(target) == expected
 
 
 @pytest.mark.parametrize("member_type", ("directory", "symlink"))

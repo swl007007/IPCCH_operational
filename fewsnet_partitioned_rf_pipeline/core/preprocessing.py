@@ -10,6 +10,7 @@ from typing import Iterable, Sequence
 
 import numpy as np
 import pandas as pd
+from sklearn.exceptions import NotFittedError
 
 from fewsnet_partitioned_rf_pipeline.config import (
     ADMIN_CANONICAL_COLUMN,
@@ -459,6 +460,10 @@ class Stage3FeatureBuilder:
                 "duplicate admin_code + feature_month keys are not allowed: "
                 f"{examples}"
             )
+        working = working.sort_values(
+            [ADMIN_CANONICAL_COLUMN, FEATURE_MONTH_COLUMN],
+            kind="stable",
+        ).reset_index(drop=True)
 
         iso_values = working[ISO_SOURCE_COLUMN].map(_normalize_iso)
         unseen_iso = sorted(set(iso_values) - set(contract.iso_mapping))
@@ -666,7 +671,10 @@ class MaxPlusImputer:
 
     def transform(self, X: object) -> np.ndarray:
         if not hasattr(self, "n_features_in_"):
-            raise RuntimeError("MaxPlusImputer must be fitted before transform")
+            raise NotFittedError(
+                "This MaxPlusImputer instance is not fitted yet. "
+                "Call 'fit' before transform."
+            )
 
         transformed = self._as_float64_2d(X)
         if transformed.shape[1] != self.n_features_in_:

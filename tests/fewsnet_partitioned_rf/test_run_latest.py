@@ -213,6 +213,51 @@ class LaterAmbiguousRunManifestStore(AmbiguousRunManifestStore):
         )
 
 
+class ErrorArtifactFailureStore(RecordingStore):
+    def __init__(self, root: Path) -> None:
+        super().__init__(root)
+        self.primary_failure_injected = False
+        self.error_artifact_attempts = 0
+
+    def put_bytes(self, uri, data, *, if_generation_match=None):
+        if (
+            not self.primary_failure_injected
+            and uri.endswith("/inputs/selected_source_manifest.json")
+        ):
+            self.primary_failure_injected = True
+            raise OSError("injected post-discovery primary failure")
+        if uri.endswith("/error.json"):
+            self.error_artifact_attempts += 1
+            raise OSError("injected error artifact failure")
+        return super().put_bytes(
+            uri,
+            data,
+            if_generation_match=if_generation_match,
+        )
+
+
+class ErrorArtifactAndTerminalFailureStore(LaterAmbiguousRunManifestStore):
+    def __init__(self, root: Path, *, fail_readback: bool) -> None:
+        super().__init__(
+            root,
+            committed_bytes=(
+                None if fail_readback else b'{"different":"later-payload"}'
+            ),
+            fail_readback=fail_readback,
+        )
+        self.error_artifact_attempts = 0
+
+    def put_bytes(self, uri, data, *, if_generation_match=None):
+        if uri.endswith("/error.json"):
+            self.error_artifact_attempts += 1
+            raise OSError("injected error artifact failure")
+        return super().put_bytes(
+            uri,
+            data,
+            if_generation_match=if_generation_match,
+        )
+
+
 class GCSNotFoundStore(RecordingStore):
     def get_ref(self, uri):
         try:
@@ -1125,6 +1170,80 @@ def test_run_latest_selects_newest_snapshot_and_releases_only_after_validation(
         if "/locks/" not in uri and not uri.endswith("/run_manifest.json")
     ]
     assert authoritative_writes[-1] == current_uri
+
+
+def test_snapshot_discovery_ranks_mixed_offsets_by_utc_instant(tmp_path):
+    store = RecordingStore(tmp_path / "store")
+    older = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00+14:00",
+        variant=0,
+    )
+    newer = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-20T23:30:00Z",
+        variant=1,
+    )
+
+    selected = _module()._discover_snapshot(
+        store,
+        root_uri=ROOT_URI,
+        explicit_uri=None,
+    )
+
+    assert selected.snapshot.snapshot_id == newer["manifest"]["snapshot_id"]
+    assert selected.snapshot.snapshot_id != older["manifest"]["snapshot_id"]
+
+
+def test_snapshot_discovery_uses_snapshot_id_for_equal_utc_instants(tmp_path):
+    store = RecordingStore(tmp_path / "store")
+    first = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+        variant=0,
+    )
+    second = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+        variant=1,
+    )
+    higher_id, lower_id = sorted(
+        (first, second),
+        key=lambda item: item["manifest"]["snapshot_id"],
+        reverse=True,
+    )
+    for snapshot, created_at_utc in (
+        (higher_id, "2026-07-21T00:00:00+00:00"),
+        (lower_id, "2026-07-21T02:00:00+02:00"),
+    ):
+        manifest = {**snapshot["manifest"], "created_at_utc": created_at_utc}
+        validate_payload("source-snapshot", manifest)
+        snapshot["ref"] = store.put_bytes(
+            snapshot["uri"],
+            json.dumps(
+                manifest,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode(),
+            if_generation_match=snapshot["ref"].generation,
+        )
+        snapshot["manifest"] = manifest
+
+    selected = _module()._discover_snapshot(
+        store,
+        root_uri=ROOT_URI,
+        explicit_uri=None,
+    )
+
+    assert selected.snapshot.snapshot_id == higher_id["manifest"]["snapshot_id"]
 
 
 def test_ambiguous_initial_run_manifest_write_still_records_terminal_failure(
@@ -2663,6 +2782,154 @@ def test_cli_preflight_failures_are_structured_and_create_no_run_artifacts(
     assert "phase" not in error
     assert "run_manifest" not in error
     assert store.list(f"{ROOT_URI}/runs/") == []
+
+
+def test_error_artifact_failure_still_returns_formal_failure_and_terminal_manifest(
+    tmp_path,
+    monkeypatch,
+):
+    store = ErrorArtifactFailureStore(tmp_path / "store")
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    store.clear_events()
+
+    result = _run(
+        monkeypatch,
+        _deployment(),
+        store,
+        _backends(store),
+        snapshot_manifest_uri=snapshot["uri"],
+    )
+
+    assert store.primary_failure_injected is True
+    assert store.error_artifact_attempts == 1
+    assert result["status"] == "FAILED"
+    assert result["preflight"] is False
+    assert result["run_id"] == result["suite_version"]
+    assert result["error"]["message"] == "injected post-discovery primary failure"
+    assert result["error_artifact_error"]["message"] == (
+        "injected error artifact failure"
+    )
+    manifest = _read_json(
+        store,
+        f"{ROOT_URI}/runs/{result['run_id']}/run_manifest.json",
+    )
+    assert manifest["phase"] == "FAILED"
+    assert manifest["failure"]["message"] == (
+        "injected post-discovery primary failure"
+    )
+
+
+def test_cli_error_artifact_failure_is_not_reclassified_as_preflight(
+    tmp_path,
+    monkeypatch,
+    capsys,
+):
+    module = _module()
+    store = ErrorArtifactFailureStore(tmp_path / "store")
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    deployment_uri = f"{ROOT_URI}/config/deployment.json"
+    put_immutable_or_verify(
+        store,
+        deployment_uri,
+        json.dumps(
+            _deployment(),
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode(),
+    )
+    store.clear_events()
+    monkeypatch.setenv("FEWSNET_SOURCE_GIT_COMMIT", SOURCE_COMMIT)
+    monkeypatch.setattr(module, "_utc_now", lambda: NOW)
+    monkeypatch.setattr(module, "_sleep", lambda _seconds: None)
+    monkeypatch.setattr(
+        module.GCSArtifactStore,
+        "from_default",
+        classmethod(lambda _cls: store),
+    )
+    monkeypatch.setattr(
+        module,
+        "_default_backends",
+        lambda _region: _backends(store),
+    )
+
+    exit_code = module.main(
+        [
+            "--deployment-manifest-uri",
+            deployment_uri,
+            "--snapshot-manifest-uri",
+            snapshot["uri"],
+        ]
+    )
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert captured.out == ""
+    result = json.loads(captured.err)
+    assert result["status"] == "FAILED"
+    assert result["preflight"] is False
+    assert result["run_id"] == result["suite_version"]
+    assert result["error"]["message"] == "injected post-discovery primary failure"
+    assert result["error_artifact_error"]["message"] == (
+        "injected error artifact failure"
+    )
+    assert store.error_artifact_attempts == 1
+
+
+@pytest.mark.parametrize(
+    "fail_readback",
+    (False, True),
+    ids=("mismatched", "unreadable"),
+)
+def test_error_artifact_and_terminal_manifest_failures_remain_formal_and_indeterminate(
+    tmp_path,
+    monkeypatch,
+    fail_readback,
+):
+    store = ErrorArtifactAndTerminalFailureStore(
+        tmp_path / "store",
+        fail_readback=fail_readback,
+    )
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    store.clear_events()
+
+    result = _run(
+        monkeypatch,
+        _deployment(),
+        store,
+        _backends(store),
+        snapshot_manifest_uri=snapshot["uri"],
+    )
+
+    assert result["status"] == "FAILED"
+    assert result["preflight"] is False
+    assert result["evidence_indeterminate"] is True
+    assert result["run_id"] == result["suite_version"]
+    assert result["run_manifest"] is None
+    assert result["error"]["exception_type"] == "ServiceUnavailable"
+    assert result["error_artifact_error"]["message"] == (
+        "injected error artifact failure"
+    )
+    assert result["terminal_manifest_error"]["exception_type"] == (
+        "GenerationConflict"
+    )
+    assert store.error_artifact_attempts == 1
+    manifest_uri = f"{ROOT_URI}/runs/{result['run_id']}/run_manifest.json"
+    assert store.get_ref(manifest_uri).generation == "2"
 
 
 def test_first_post_discovery_evidence_failure_writes_terminal_artifacts(

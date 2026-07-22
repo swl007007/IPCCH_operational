@@ -207,13 +207,6 @@ def wait_for_training_custom_job(
     started_at = monotonic()
     cancellation_requested = False
     while True:
-        if (
-            not cancellation_requested
-            and monotonic() - started_at >= training_timeout_seconds
-        ):
-            backend.cancel(job_name)
-            cancellation_requested = True
-
         resource = _normalize_mapping(backend.get(job_name), "Custom Job resource")
         resource_name = resource.get("name")
         if resource_name != job_name:
@@ -234,6 +227,12 @@ def wait_for_training_custom_job(
                 )
         elif state in _TERMINAL_STATES:
             return resource
+        if (
+            not cancellation_requested
+            and monotonic() - started_at >= training_timeout_seconds
+        ):
+            backend.cancel(job_name)
+            cancellation_requested = True
         sleep(poll_interval_seconds)
 
 

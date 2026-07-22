@@ -21,6 +21,10 @@ with the existing IPCCH model or release roots.
   its build context.
 - Use a digest-pinned image URI. Tags are build conveniences, not deployment
   identities.
+- Checksums prove integrity and consistency, not authenticity. Establish
+  authenticity through a trusted digest-pinned image and source commit, a
+  least-privilege producer identity, immutable object generations, and
+  restricted write authority.
 - `released/current.json` is authoritative and is written only after all three
   candidate outputs and aliases validate.
 - Do not manually move one production alias or overwrite one release pointer.

@@ -675,3 +675,26 @@ def test_wait_timeout_cancels_exact_job_then_waits_for_cancelled_terminal_state(
         event == ("get", backend.job_name)
         for event in backend.events[cancel_index + 1 :]
     )
+
+
+def test_wait_accepts_training_success_returned_exactly_on_deadline_without_cancel():
+    backend = FakeTrainingBackend(
+        [
+            "JOB_STATE_QUEUED",
+            "JOB_STATE_RUNNING",
+            "JOB_STATE_SUCCEEDED",
+        ]
+    )
+    clock = FakeClock()
+
+    terminal = wait_for_training_custom_job(
+        backend.job_name,
+        backend=backend,
+        training_timeout_seconds=2,
+        poll_interval_seconds=1,
+        monotonic=clock.monotonic,
+        sleep=clock.sleep,
+    )
+
+    assert terminal["state"] == "JOB_STATE_SUCCEEDED"
+    assert backend.events == [("get", backend.job_name)] * 3

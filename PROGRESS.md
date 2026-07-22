@@ -13,8 +13,11 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: Task 19 local acceptance ledger and final whole-branch review preparation
-- Current state: Tasks 1-19 local artifacts and contracts are implemented and independently reviewed; Task 19 controller verification is clean, while final whole-branch review, Docker execution, live GCP smoke, and production acceptance remain outstanding gates
+- Current task: final whole-branch review fix wave for I1-I3 and M1-M5
+- Current state: all eight final-review findings are fixed and locally verified;
+  exact-path staging, staged GitNexus review, and the single fix-wave commit
+  remain before handoff. Docker execution, live GCP smoke, and production
+  acceptance remain outstanding external gates
 - Blockers: Docker Desktop WSL integration is disabled and no daemon is available; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -1556,6 +1559,87 @@
   remain unauthorized and unexecuted; no cloud or production state was
   mutated. This is local implementation acceptance, not a production-ready or
   production-accepted claim.
+
+## Final Whole-Branch Review Fix Wave
+
+- Review authority: `.superpowers/sdd/final-branch-review.md` over
+  `e6afd2c..5bbb357`, with `0 Critical / 3 Important / 5 Minor`. The approved
+  design and implementation plan remain unchanged and no scope conflict was
+  found.
+- Findings closed locally: formal-run failure evidence survives an
+  `error.json` write failure; snapshot discovery ranks RFC3339 timestamps by
+  UTC instant with deterministic `snapshot_id` ties; training observes a
+  deadline success before cancellation; the checked-in feature contract has a
+  direct identity pin; feature derivation receives canonical key order while
+  output order is restored; unfitted imputation raises sklearn
+  `NotFittedError`; package hashing is chunked; and the runbook distinguishes
+  checksum integrity from artifact authenticity.
+- GitNexus pre-change authority from the review handoff: `run_latest`,
+  `_discover_snapshot`, `wait_for_training_custom_job`, and package `_sha256`
+  were LOW/partial; `Stage3FeatureBuilder.transform` was MEDIUM;
+  `MaxPlusImputer.transform` was HIGH. The HIGH-risk edit is restricted to the
+  pre-fit exception type; fitted numeric logic, class inheritance, serialized
+  attributes, and transform output are unchanged.
+- Focused RED I1-I2:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_run_latest.py -q -p no:cacheprovider -k 'error_artifact or snapshot_discovery_ranks_mixed_offsets or snapshot_discovery_uses_snapshot_id'`
+  -> `6 failed, 38 deselected in 29.75s`. The failures were the expected
+  escaped error-artifact write, CLI `preflight:true` misclassification,
+  unattempted terminal evidence, and raw-string timestamp ordering.
+- Focused RED I3: the deadline-success selection in `test_training_job.py` ->
+  `1 failed, 11 deselected in 27.97s`; the waiter cancelled and raised on
+  `JOB_STATE_SUCCEEDED` at exactly two seconds.
+- Focused RED M1-M4: the four identity/order/unfitted/hash tests ->
+  `4 failed, 80 deselected in 11.61s`, each for the expected missing contract.
+  Focused RED M5 -> `1 failed, 25 deselected in 0.92s` for the absent
+  integrity-versus-authenticity guidance.
+- Focused GREEN I1-I2: `6 passed, 38 deselected in 17.71s`. Focused GREEN I3
+  plus the existing timeout/cancel/drain regression: `2 passed, 10 deselected
+  in 16.45s`. Focused GREEN M1-M4: `4 passed, 80 deselected in 7.12s`.
+  Focused GREEN M5: `1 passed, 25 deselected in 0.15s`.
+- Sklearn compatibility note: `check_is_fitted` in pinned sklearn `1.8.0`
+  requires `BaseEstimator` tags. Adding inheritance would broaden the HIGH-risk
+  serialized boundary, so the final minimal fix raises sklearn
+  `NotFittedError` directly at the existing `hasattr` gate. The complete
+  imputer/threshold file reports `15 passed in 7.05s`.
+- Changed-test surface: `165 passed, 1 skipped in 33.72s`. Complete FEWSNET
+  suite: `491 passed, 1 skipped in 48.98s`. Cloud/IPCCH regression:
+  `228 passed, 1 skipped in 11.33s`. Full repository gate:
+  `788 passed, 2 skipped, 24 subtests passed in 59.74s`.
+- Static/dependency/authority gates: `49` FEWSNET Python files pass both AST
+  parsing and `py_compile`; all `27` Markdown fences are complete, all `25`
+  Bash fences pass `bash -n`, and all `8` Python heredocs compile under CPython
+  `3.11.15`; all five CLI help commands print `usage:`; `pip check` reports no
+  broken requirements; and `git diff --check` is clean.
+- Frozen hashes remain: design
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`, plan
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`,
+  partition
+  `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`,
+  feature-contract file
+  `3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b`,
+  and feature-schema
+  `6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b`.
+- Scope/no-cloud confirmation: intended tracked scope is the four reviewed
+  production modules, seven focused test files, the runbook, and this ledger.
+  Preserved `AGENTS.md`, `CLAUDE.md`, `.claude/`, and `.superpowers/` controller
+  state remains outside the commit. No network, authentication, Docker,
+  Registry, Custom Job, Batch, GCS, alias, lease, or release-pointer operation
+  was performed.
+- Exact-worktree staged GitNexus `detect_changes(scope="staged")` reported
+  HIGH aggregate risk across exactly `13` intended files, `33` mapped symbols,
+  and `8` affected flows. Every flow was reviewed: three `run_latest` manifest/
+  timestamp flows, three unchanged `on_retry` flows attributed through adjacent
+  hunks, the fitted `predict_frame -> MaxPlusImputer.transform` path, and the
+  training wait/normalization path. Exact diff review confirms `_retry`,
+  `on_retry`, `record_retry`, `_write`, `_canonical_json`, schema loading,
+  `_as_float64_2d`, and JSON normalization are unchanged. The HIGH rating is
+  driven by the known imputer reach; focused fitted-imputer, orchestration,
+  training timeout, package, FEWSNET, cloud/IPCCH, and full-repository gates
+  cover the actual changed surface.
+- Final staged path audit names only the four reviewed production modules,
+  seven focused test files, the runbook, and this ledger; `git diff --cached
+  --check` is clean. Final fix-wave commit: this commit (`fix: close FEWSNET
+  final branch review findings`).
 
 ---
 

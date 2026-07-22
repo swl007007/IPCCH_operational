@@ -763,11 +763,22 @@ def run_latest(
                 error_payload["release_status"] = "RELEASED"
             if abandonment_error is not None:
                 error_payload["abandonment_error"] = abandonment_error
-            put_immutable_or_verify(
-                store,
-                f"{root_uri}/runs/{state.run_id}/error.json",
-                _canonical_json(error_payload),
-            )
+            evidence_errors: dict[str, dict[str, str]] = {}
+            try:
+                put_immutable_or_verify(
+                    store,
+                    f"{root_uri}/runs/{state.run_id}/error.json",
+                    _canonical_json(error_payload),
+                )
+            except Exception as error_artifact_exc:
+                evidence_errors["error_artifact_error"] = {
+                    "exception_type": type(error_artifact_exc).__name__,
+                    "message": (
+                        str(error_artifact_exc)
+                        or type(error_artifact_exc).__name__
+                    ),
+                    "timestamp_utc": _timestamp(_utc_now()),
+                }
             try:
                 state.fail(exc)
             except Exception as terminal_manifest_exc:
@@ -792,14 +803,17 @@ def run_latest(
                     release_status=(
                         "RELEASED" if release_committed else None
                     ),
+                    **evidence_errors,
                 )
             return _result(
                 state,
                 "FAILED",
+                preflight=False,
                 error=error_payload,
                 indeterminate=promotion_indeterminate,
                 evidence_warning=release_committed,
                 release_status=("RELEASED" if release_committed else None),
+                **evidence_errors,
             )
         return _preflight_failure(exc)
 
@@ -847,7 +861,9 @@ def _discover_snapshot(
         candidates,
         key=lambda item: (
             item.snapshot.latest_feature_month,
-            item.snapshot.created_at_utc,
+            datetime.fromisoformat(
+                item.snapshot.created_at_utc.replace("Z", "+00:00")
+            ).astimezone(timezone.utc),
             item.snapshot.snapshot_id,
         ),
     )

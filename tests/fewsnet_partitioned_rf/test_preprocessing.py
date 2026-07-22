@@ -7,6 +7,7 @@ import pandas as pd
 import pytest
 from pandas.testing import assert_frame_equal
 
+import fewsnet_partitioned_rf_pipeline.core.preprocessing as preprocessing
 from fewsnet_partitioned_rf_pipeline.core.preprocessing import Stage3FeatureBuilder
 
 
@@ -268,6 +269,62 @@ def test_transform_rejects_duplicate_area_month_keys():
 
     with pytest.raises(ValueError, match="duplicate.*admin_code.*feature_month"):
         builder.transform(duplicate_panel, contract)
+
+
+def test_transform_sorts_canonical_keys_before_derivation_and_restores_input_order(
+    monkeypatch,
+):
+    panel = raw_panel_fixture().sample(frac=1, random_state=5).reset_index(drop=True)
+    builder = Stage3FeatureBuilder()
+    contract = builder.fit(panel)
+    observed_derivation_keys: list[list[tuple[str, pd.Period]]] = []
+    original_add_calendar_lag = preprocessing.add_calendar_lag
+    original_add_calendar_rolling_sum = preprocessing._add_calendar_rolling_sum
+
+    def record_lag_keys(frame, value_column, months, output_column):
+        observed_derivation_keys.append(
+            list(zip(frame["admin_code"], frame["feature_month"], strict=True))
+        )
+        return original_add_calendar_lag(
+            frame,
+            value_column,
+            months,
+            output_column,
+        )
+
+    def record_rolling_keys(frame, value_column, window, output_column):
+        observed_derivation_keys.append(
+            list(zip(frame["admin_code"], frame["feature_month"], strict=True))
+        )
+        return original_add_calendar_rolling_sum(
+            frame,
+            value_column,
+            window,
+            output_column,
+        )
+
+    monkeypatch.setattr(preprocessing, "add_calendar_lag", record_lag_keys)
+    monkeypatch.setattr(
+        preprocessing,
+        "_add_calendar_rolling_sum",
+        record_rolling_keys,
+    )
+
+    result = builder.transform(panel, contract)
+
+    assert observed_derivation_keys
+    for keys in observed_derivation_keys:
+        assert keys == sorted(keys)
+    expected_identity = pd.DataFrame(
+        {
+            "admin_code": panel["FEWSNET_admin_code"].astype(str),
+            "feature_month": pd.to_datetime(panel["date"]).dt.to_period("M"),
+        }
+    )
+    assert_frame_equal(
+        result[["admin_code", "feature_month"]],
+        expected_identity,
+    )
 
 
 def test_transform_does_not_emit_dataframe_fragmentation_warnings():

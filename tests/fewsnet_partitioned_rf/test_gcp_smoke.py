@@ -688,6 +688,18 @@ def test_runbook_limits_orchestrator_replacement_to_exact_mutable_objects() -> N
     )
 
 
+def test_runbook_distinguishes_integrity_from_artifact_authenticity() -> None:
+    text = _runbook_text().lower()
+    for phrase in (
+        "checksums prove integrity and consistency, not authenticity",
+        "trusted digest-pinned image and source commit",
+        "least-privilege producer identity",
+        "immutable object generations",
+        "restricted write authority",
+    ):
+        assert phrase in text
+
+
 def test_acceptance_verifier_rejects_optimized_python_before_cloud_bootstrap() -> None:
     source = _production_verifier_source()
     guard_prefix = source.split("\nfrom datetime", 1)[0]
