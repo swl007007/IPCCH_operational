@@ -11,16 +11,17 @@
 
 ## Execution Context
 
-- Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
-- Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: final local acceptance and branch-integration handoff
-- Current state: integration-complete locally through production-code fix commit
-  `72de75a`; final whole-branch re-review is clean with `0 Critical / 0
-  Important / 0 Minor`, and controller-owned focused, related, FEWSNET,
-  cloud/IPCCH, full-repository, static, runbook, CLI, dependency, authority,
-  whitespace, runtime-path, and Endpoint-zero gates are fresh and clean. Docker
-  execution, live GCP smoke, and production acceptance remain outstanding
-  external gates
+- Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational`
+- Branch: `main`
+- Current task: local main integration complete; external deployment gates pending
+- Current state: integration-complete locally. User-selected option 1
+  fast-forwarded `main` from `e6afd2c` to accepted feature head `394a76d`
+  without an extra merge commit; the merged tree passed the complete repository
+  suite, the owned feature worktree was removed/pruned, and the feature branch
+  was deleted. Original main user residue was restored exactly, while both the
+  pre-merge main plan and feature-worktree review artifacts remain recoverable
+  in labeled stashes. Docker execution, live GCP smoke, production acceptance,
+  and any push remain outstanding external or separately authorized steps
 - Blockers: Docker Desktop WSL integration is disabled and no daemon is available; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -1788,6 +1789,49 @@
 - Next action: commit this acceptance record, then use the standard
   development-branch integration menu. Do not merge or push without the user's
   explicit option selection.
+
+## Main Integration Completion
+
+- On 2026-07-22 the user selected finishing option 1, local merge to `main`.
+  `git pull --ff-only` reported the local `main` was already up to date with its
+  upstream state, then `git merge --ff-only
+  features/fewsnet-partitioned-rf-suite` advanced
+  `e6afd2cebde02e14501dca52e959e395c54c30b7` to
+  `394a76de4e47e151eeaaf553d5fa16689878cbe2` without creating a merge commit.
+- Merged-main verification used the same Python 3.12 virtual environment that
+  passed the feature gate, with the primary `main` checkout as cwd so imports
+  resolved from the merged tree: `798 passed, 2 skipped, 24 subtests passed in
+  67.38s`. The primary checkout itself has no repository-local `.venv`; the
+  initial `.venv/bin/python` command therefore exited `127` before collection
+  and was correctly classified as an environment-path issue, not a test
+  failure.
+- Before integration, the primary checkout's unrelated changes were preserved
+  in stash `a9f3d852137de54dd56d754ac7a09c4f1d5205a8`
+  (`codex-pre-fewsnet-main-merge-20260722`). Its original untracked plan has
+  SHA-256 `46688dbc82ecd99169a0e63aedfbbb1f7451b2a6e23a9fa187c23f24d630937c`
+  and remains recoverable there; the final approved plan now tracked on `main`
+  retains SHA-256
+  `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`.
+  Main's `AGENTS.md`, `CLAUDE.md`, and seven `.claude/` files were restored to
+  their exact pre-merge hashes/state.
+- Feature-worktree residue is preserved in stash
+  `f756b1184f5069f7b50004c701fba26478a76519`
+  (`codex-preserve-fewsnet-worktree-residue-20260722`), including its modified
+  `AGENTS.md`/`CLAUDE.md`, six `.claude/` files, and 102 `.superpowers/` files.
+  The `.worktrees/fewsnet-partitioned-rf-suite` worktree was then removed,
+  `git worktree prune` completed, and branch
+  `features/fewsnet-partitioned-rf-suite` was deleted normally.
+- The primary checkout's expected remaining status is only the restored
+  user-owned modified `AGENTS.md`, modified `CLAUDE.md`, and untracked
+  `.claude/`. No merge/pull step pushed commits, and no Docker, GCP/GCS,
+  Vertex, Registry, Batch, alias, Endpoint, lease, or release-pointer mutation
+  was performed.
+- Ledger-only staged GitNexus reports LOW risk across exactly one tracked file,
+  three documentation sections, and zero affected execution processes; cached
+  name-status and whitespace checks contain only `PROGRESS.md` and are clean.
+- Next action: commit this main integration record. Any push, Docker execution,
+  live smoke, or initial production acceptance requires a separate user
+  instruction and environment readiness.
 
 ---
 
