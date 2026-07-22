@@ -14,16 +14,23 @@ DATE_TIME_PATTERN = re.compile(
 FORMAT_CHECKER = FormatChecker()
 
 
+def parse_rfc3339_date_time(value: object) -> datetime:
+    if not isinstance(value, str) or DATE_TIME_PATTERN.fullmatch(value) is None:
+        raise ValueError("value must match the accepted RFC3339 date-time grammar")
+    normalized = value[:10] + "T" + value[11:]
+    if normalized.endswith(("Z", "z")):
+        normalized = normalized[:-1] + "+00:00"
+    parsed = datetime.fromisoformat(normalized)
+    if parsed.tzinfo is None:
+        raise ValueError("RFC3339 date-time values must include a timezone")
+    return parsed
+
+
 @FORMAT_CHECKER.checks("date-time", raises=ValueError)
 def _is_rfc3339_date_time(value: object) -> bool:
     if not isinstance(value, str):
         return True
-    if DATE_TIME_PATTERN.fullmatch(value) is None:
-        return False
-    normalized = value[:10] + "T" + value[11:]
-    if normalized.endswith(("Z", "z")):
-        normalized = normalized[:-1] + "+00:00"
-    datetime.fromisoformat(normalized)
+    parse_rfc3339_date_time(value)
     return True
 
 

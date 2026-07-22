@@ -72,6 +72,7 @@ from fewsnet_partitioned_rf_pipeline.core.validation import (
     validate_prediction_suite,
 )
 from fewsnet_partitioned_rf_pipeline.schemas import (
+    parse_rfc3339_date_time,
     validate_deployment,
     validate_payload,
 )
@@ -470,13 +471,15 @@ def run_latest(
                     "FEWSNET training Custom Job did not succeed: "
                     f"{completed_training.get('state')}"
                 )
-            training_result, package_manifests = _verified_training_result(
-                store,
-                run_root_uri=run_root_uri,
-                suite_root_uri=suite_root_uri,
-                suite_version=suite_version,
-                snapshot=selected.snapshot,
-                deployment=deployment_payload,
+            training_result, package_manifests, training_report = (
+                _verified_training_result(
+                    store,
+                    run_root_uri=run_root_uri,
+                    suite_root_uri=suite_root_uri,
+                    suite_version=suite_version,
+                    snapshot=selected.snapshot,
+                    deployment=deployment_payload,
+                )
             )
             state.transition(
                 RunPhase.PACKAGED,
@@ -640,6 +643,7 @@ def run_latest(
                         selected.snapshot.snapshot_content_sha256
                     ),
                     package_manifest=package_manifests[horizon_key],
+                    cluster_states=training_report["cluster_states"][horizon_key],
                     admin_universe_bytes=admin_universe_bytes,
                     batch_input_bytes=input_bytes,
                     batch_job=completed_job,
@@ -861,8 +865,8 @@ def _discover_snapshot(
         candidates,
         key=lambda item: (
             item.snapshot.latest_feature_month,
-            datetime.fromisoformat(
-                item.snapshot.created_at_utc.replace("Z", "+00:00")
+            parse_rfc3339_date_time(
+                item.snapshot.created_at_utc
             ).astimezone(timezone.utc),
             item.snapshot.snapshot_id,
         ),
@@ -986,7 +990,11 @@ def _verified_training_result(
     suite_version: str,
     snapshot: SnapshotManifest,
     deployment: Mapping[str, Any],
-) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
+) -> tuple[
+    dict[str, Any],
+    dict[str, dict[str, Any]],
+    dict[str, Any],
+]:
     result_uri = f"{run_root_uri}/training_job_result.json"
     result_ref = store.get_ref(result_uri)
     result_bytes = _read_ref_bytes(store, result_ref)
@@ -1099,7 +1107,23 @@ def _verified_training_result(
         raise ValueError("run and suite training threshold reports differ")
     if hashlib.sha256(run_report_bytes).hexdigest() != report["sha256"]:
         raise ValueError("training threshold report checksum differs")
-    return result, manifests
+    try:
+        training_report = json.loads(run_report_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError(
+            "training threshold report must be valid UTF-8 JSON"
+        ) from exc
+    if not isinstance(training_report, dict):
+        raise ValueError("training threshold report must be an object")
+    validate_payload("training-report", training_report)
+    if training_report["suite_version"] != suite_version:
+        raise ValueError("training threshold report suite_version differs")
+    cluster_states = training_report["cluster_states"]
+    if not isinstance(cluster_states, Mapping) or set(cluster_states) != set(
+        _HORIZON_ORDER
+    ):
+        raise ValueError("training threshold report cluster-state horizons differ")
+    return result, manifests, training_report
 
 
 def _suite_manifest(

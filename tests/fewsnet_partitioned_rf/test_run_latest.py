@@ -547,6 +547,65 @@ def _package_manifest(
     }
 
 
+def _training_threshold_report(suite_version: str) -> dict[str, object]:
+    def cluster_state() -> dict[str, object]:
+        return {
+            "status": "partition_model",
+            "sample_count": 50,
+            "class_counts": {"0": 25, "1": 25},
+            "smote_status": "resampled",
+            "fallback_reason": None,
+        }
+
+    def smote_result() -> dict[str, object]:
+        return {
+            "status": "resampled",
+            "original_class_counts": {"0": 25, "1": 25},
+            "resampled_class_counts": {"0": 25, "1": 25},
+            "failure_reason": None,
+        }
+
+    return {
+        "schema_version": "fewsnet-training-report-v1",
+        "suite_version": suite_version,
+        "training_target_month_range": {"start": "2023-01", "end": "2024-12"},
+        "validation_target_month_range": {"start": "2024-01", "end": "2024-12"},
+        "horizon_thresholds": {
+            horizon_key: {
+                "threshold": 0.5,
+                "precision": 0.8,
+                "recall": 0.7,
+                "f1": 0.75,
+                "support": 20,
+                "positive_cases": 8,
+                "fallback_reason": None,
+            }
+            for horizon_key in HORIZON_ORDER
+        },
+        "cluster_states": {
+            horizon_key: {
+                str(cluster_id): cluster_state() for cluster_id in range(17)
+            }
+            for horizon_key in HORIZON_ORDER
+        },
+        "smote_results": {
+            horizon_key: {
+                str(cluster_id): smote_result() for cluster_id in range(17)
+            }
+            for horizon_key in HORIZON_ORDER
+        },
+        "fallback_counts": {
+            horizon_key: {
+                "pooled_unmapped": 0,
+                "pooled_small_partition": 0,
+                "pooled_single_class": 0,
+                "pooled_missing_partition_model": 0,
+            }
+            for horizon_key in HORIZON_ORDER
+        },
+    }
+
+
 def _custom_job_args(request: dict[str, object]) -> dict[str, str]:
     args = request["custom_job"]["job_spec"]["worker_pool_specs"][0][
         "container_spec"
@@ -620,7 +679,7 @@ class FakeTrainingBackend:
             )
             packages[horizon_key] = {"uri": package_uri, "checksums": {}}
         report_bytes = json.dumps(
-            {"suite_version": suite_version},
+            _training_threshold_report(suite_version),
             sort_keys=True,
             separators=(",", ":"),
         ).encode()
@@ -648,6 +707,76 @@ class FakeTrainingBackend:
             self.store,
             f"{run_root}/training_job_result.json",
             json.dumps(result, sort_keys=True, separators=(",", ":")).encode(),
+        )
+
+
+class MismatchedTrainingReportBackend(FakeTrainingBackend):
+    def _seed_training_outputs(self, args: dict[str, str]) -> None:
+        super()._seed_training_outputs(args)
+        run_root = args["--run-root-uri"]
+        suite_root = args["--model-root-uri"].removesuffix("/models")
+        report_bytes = json.dumps(
+            _training_threshold_report("wrong-suite-version"),
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+        for report_uri in (
+            f"{run_root}/training_threshold_report.json",
+            f"{suite_root}/training_threshold_report.json",
+        ):
+            report_ref = self.store.get_ref(report_uri)
+            self.store.put_bytes(
+                report_uri,
+                report_bytes,
+                if_generation_match=report_ref.generation,
+            )
+        result_uri = f"{run_root}/training_job_result.json"
+        result_ref = self.store.get_ref(result_uri)
+        result = json.loads(
+            self.store.read_bytes(result_uri, generation=result_ref.generation)
+        )
+        result["training_threshold_report"]["sha256"] = hashlib.sha256(
+            report_bytes
+        ).hexdigest()
+        self.store.put_bytes(
+            result_uri,
+            json.dumps(result, sort_keys=True, separators=(",", ":")).encode(),
+            if_generation_match=result_ref.generation,
+        )
+
+
+class NonUtf8TrainingReportBackend(FakeTrainingBackend):
+    def _seed_training_outputs(self, args: dict[str, str]) -> None:
+        super()._seed_training_outputs(args)
+        run_root = args["--run-root-uri"]
+        suite_root = args["--model-root-uri"].removesuffix("/models")
+        report_bytes = json.dumps(
+            _training_threshold_report(args["--suite-version"]),
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-16")
+        for report_uri in (
+            f"{run_root}/training_threshold_report.json",
+            f"{suite_root}/training_threshold_report.json",
+        ):
+            report_ref = self.store.get_ref(report_uri)
+            self.store.put_bytes(
+                report_uri,
+                report_bytes,
+                if_generation_match=report_ref.generation,
+            )
+        result_uri = f"{run_root}/training_job_result.json"
+        result_ref = self.store.get_ref(result_uri)
+        result = json.loads(
+            self.store.read_bytes(result_uri, generation=result_ref.generation)
+        )
+        result["training_threshold_report"]["sha256"] = hashlib.sha256(
+            report_bytes
+        ).hexdigest()
+        self.store.put_bytes(
+            result_uri,
+            json.dumps(result, sort_keys=True, separators=(",", ":")).encode(),
+            if_generation_match=result_ref.generation,
         )
 
 
@@ -1199,6 +1328,81 @@ def test_snapshot_discovery_ranks_mixed_offsets_by_utc_instant(tmp_path):
     assert selected.snapshot.snapshot_id != older["manifest"]["snapshot_id"]
 
 
+def test_snapshot_discovery_accepts_lowercase_t_and_z(tmp_path):
+    store = RecordingStore(tmp_path / "store")
+    snapshot = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21t00:00:00z",
+    )
+
+    selected = _module()._discover_snapshot(
+        store,
+        root_uri=ROOT_URI,
+        explicit_uri=None,
+    )
+
+    assert selected.snapshot.snapshot_id == snapshot["manifest"]["snapshot_id"]
+
+
+def test_snapshot_discovery_ranks_mixed_accepted_casing_by_utc_instant(tmp_path):
+    store = RecordingStore(tmp_path / "store")
+    older = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21t00:00:00+14:00",
+        variant=0,
+    )
+    newer = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-20T23:30:00z",
+        variant=1,
+    )
+
+    selected = _module()._discover_snapshot(
+        store,
+        root_uri=ROOT_URI,
+        explicit_uri=None,
+    )
+
+    assert selected.snapshot.snapshot_id == newer["manifest"]["snapshot_id"]
+    assert selected.snapshot.snapshot_id != older["manifest"]["snapshot_id"]
+
+
+def test_snapshot_discovery_uses_snapshot_id_for_equal_mixed_case_instants(tmp_path):
+    store = RecordingStore(tmp_path / "store")
+    first = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21t00:00:00z",
+        variant=0,
+    )
+    second = _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T02:00:00+02:00",
+        variant=1,
+    )
+    higher_id = max(
+        (first, second),
+        key=lambda item: item["manifest"]["snapshot_id"],
+    )
+
+    selected = _module()._discover_snapshot(
+        store,
+        root_uri=ROOT_URI,
+        explicit_uri=None,
+    )
+
+    assert selected.snapshot.snapshot_id == higher_id["manifest"]["snapshot_id"]
+
+
 def test_snapshot_discovery_uses_snapshot_id_for_equal_utc_instants(tmp_path):
     store = RecordingStore(tmp_path / "store")
     first = _seed_snapshot(
@@ -1244,6 +1448,70 @@ def test_snapshot_discovery_uses_snapshot_id_for_equal_utc_instants(tmp_path):
     )
 
     assert selected.snapshot.snapshot_id == higher_id["manifest"]["snapshot_id"]
+
+
+def test_run_latest_rejects_checksum_bound_training_report_suite_mismatch(
+    tmp_path,
+    monkeypatch,
+):
+    store = RecordingStore(tmp_path / "store")
+    _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    training = MismatchedTrainingReportBackend(store)
+    registry = FakeRegistrySDK()
+    batch = FakeBatchBackend(store)
+    aliases = FakeAliasBackend(store)
+
+    result = _run(
+        monkeypatch,
+        _deployment(),
+        store,
+        (training, registry, batch, aliases),
+        promote=False,
+    )
+
+    assert result["status"] == "FAILED"
+    assert result["preflight"] is False
+    assert result["error"]["message"] == (
+        "training threshold report suite_version differs"
+    )
+    assert registry.upload_calls == []
+
+
+def test_run_latest_rejects_checksum_bound_non_utf8_training_report(
+    tmp_path,
+    monkeypatch,
+):
+    store = RecordingStore(tmp_path / "store")
+    _seed_snapshot(
+        tmp_path,
+        store,
+        latest_feature_month="2024-12",
+        created_at_utc="2026-07-21T00:00:00Z",
+    )
+    training = NonUtf8TrainingReportBackend(store)
+    registry = FakeRegistrySDK()
+    batch = FakeBatchBackend(store)
+    aliases = FakeAliasBackend(store)
+
+    result = _run(
+        monkeypatch,
+        _deployment(),
+        store,
+        (training, registry, batch, aliases),
+        promote=False,
+    )
+
+    assert result["status"] == "FAILED"
+    assert result["preflight"] is False
+    assert result["error"]["message"] == (
+        "training threshold report must be valid UTF-8 JSON"
+    )
+    assert registry.upload_calls == []
 
 
 def test_ambiguous_initial_run_manifest_write_still_records_terminal_failure(

@@ -146,6 +146,41 @@ def _prediction_csv_bytes(frame: pd.DataFrame) -> bytes:
     return buffer.getvalue().encode("utf-8")
 
 
+def _cluster_state(status: str = "partition_model") -> dict[str, object]:
+    if status == "partition_model":
+        return {
+            "status": status,
+            "sample_count": 50,
+            "class_counts": {"0": 25, "1": 25},
+            "smote_status": "resampled",
+            "fallback_reason": None,
+        }
+    if status == "pooled_small_partition":
+        return {
+            "status": status,
+            "sample_count": 10,
+            "class_counts": {"0": 5, "1": 5},
+            "smote_status": "not_applicable_small_partition",
+            "fallback_reason": "partition below minimum sample count",
+        }
+    if status == "pooled_single_class":
+        return {
+            "status": status,
+            "sample_count": 50,
+            "class_counts": {"0": 50, "1": 0},
+            "smote_status": "not_applicable_single_class",
+            "fallback_reason": "partition contains one class",
+        }
+    raise ValueError(f"unsupported test cluster state: {status}")
+
+
+def _cluster_states() -> dict[str, dict[str, object]]:
+    return {
+        str(cluster_id): _cluster_state()
+        for cluster_id in range(17)
+    }
+
+
 def _input_snapshot_ref_bytes(snapshot: SnapshotManifest) -> bytes:
     return _json_bytes(
         {
@@ -381,6 +416,7 @@ def _prediction_entries(
             submitted_batch_input=batch_input_ref,
             batch_snapshot_content_sha256=snapshot.snapshot_content_sha256,
             package_manifest=_package_manifest(snapshot, horizon_key),
+            cluster_states=_cluster_states(),
             admin_universe_bytes=admin_bytes,
             batch_input_bytes=batch_bytes,
             batch_job=batch_job,
@@ -430,6 +466,115 @@ def _with_batch_bytes(
         batch_input_bytes=batch_bytes,
     )
     return updated
+
+
+def _with_prediction_frame(
+    entry: PredictionSuiteEntry,
+    frame: pd.DataFrame,
+) -> PredictionSuiteEntry:
+    prediction_bytes = _prediction_csv_bytes(frame)
+    return replace(
+        entry,
+        frame=frame,
+        run_prediction=_ref_for_bytes(
+            entry.run_prediction.uri,
+            prediction_bytes,
+            entry.run_prediction.generation,
+        ),
+        suite_prediction=_ref_for_bytes(
+            entry.suite_prediction.uri,
+            prediction_bytes,
+            entry.suite_prediction.generation,
+        ),
+        prediction_csv_bytes=prediction_bytes,
+    )
+
+
+def _admin_for_cluster(cluster_id: int) -> str:
+    return next(
+        admin_code
+        for admin_code, observed_cluster in _APPROVED_CLUSTERS.items()
+        if observed_cluster == cluster_id
+    )
+
+
+def _mixed_source_suite():
+    authority_admins = [
+        _admin_for_cluster(0),
+        _admin_for_cluster(1),
+        _admin_for_cluster(2),
+    ]
+    other_mapped = [
+        admin_code
+        for admin_code in _APPROVED_ADMIN_CODES
+        if _APPROVED_CLUSTERS[admin_code] not in {0, 1, 2}
+    ][:95]
+    admin_codes = [
+        *authority_admins,
+        *other_mapped,
+        "UNMAPPED-ROUTE-1",
+        "UNMAPPED-ROUTE-2",
+    ]
+    snapshot = _snapshot(area_count=len(admin_codes), admin_codes=admin_codes)
+    versions = _registered_versions()
+    entries = _prediction_entries(snapshot, versions, admin_codes=admin_codes)
+    cluster_states = _cluster_states()
+    cluster_states["0"] = _cluster_state("partition_model")
+    cluster_states["1"] = _cluster_state("pooled_small_partition")
+    cluster_states["2"] = _cluster_state("pooled_single_class")
+    expected_sources = [
+        "partition_model",
+        "pooled_small_partition",
+        "pooled_single_class",
+        *(["partition_model"] * len(other_mapped)),
+        "pooled_unmapped",
+        "pooled_unmapped",
+    ]
+    for horizon_key in HORIZON_ORDER:
+        frame = entries[horizon_key].frame.copy()
+        frame["prediction_source"] = expected_sources
+        entries[horizon_key] = _with_prediction_frame(
+            replace(entries[horizon_key], cluster_states=cluster_states),
+            frame,
+        )
+    return snapshot, versions, entries
+
+
+def test_validation_derives_source_totals_from_cluster_states():
+    snapshot, versions, entries = _mixed_source_suite()
+
+    result = validate_prediction_suite(entries, snapshot, versions)
+
+    for horizon_key in HORIZON_ORDER:
+        assert result["horizons"][horizon_key]["source_counts"] == {
+            "partition_model": 96,
+            "pooled_unmapped": 2,
+            "pooled_small_partition": 1,
+            "pooled_single_class": 1,
+            "pooled_missing_partition_model": 0,
+        }
+
+
+@pytest.mark.parametrize(
+    ("row_index", "wrong_source"),
+    (
+        (0, "pooled_missing_partition_model"),
+        (1, "partition_model"),
+        (2, "pooled_small_partition"),
+        (98, "pooled_single_class"),
+    ),
+)
+def test_validation_rejects_self_consistent_source_drift_from_cluster_state(
+    row_index,
+    wrong_source,
+):
+    snapshot, versions, entries = _mixed_source_suite()
+    frame = entries["0m"].frame.copy()
+    frame.loc[row_index, "prediction_source"] = wrong_source
+    entries["0m"] = _with_prediction_frame(entries["0m"], frame)
+
+    with pytest.raises(ValueError, match="route/source"):
+        validate_prediction_suite(entries, snapshot, versions)
 
 
 def test_validation_requires_exactly_three_horizons():

@@ -103,6 +103,7 @@ class PredictionSuiteEntry:
     submitted_batch_input: ObjectRef
     batch_snapshot_content_sha256: str
     package_manifest: Mapping[str, Any]
+    cluster_states: Mapping[str, Any]
     admin_universe_bytes: bytes
     batch_input_bytes: bytes
     batch_job: BatchJobRef
@@ -703,6 +704,7 @@ def validate_prediction_suite(
             snapshot=snapshot,
             version=version,
             package=package,
+            cluster_states=entry.cluster_states,
             horizon_key=horizon_key,
             snapshot_admin_universe=snapshot_admin_universe,
             fixed_partition=fixed_partition,
@@ -1118,6 +1120,7 @@ def _validate_prediction_frame(
     snapshot: SnapshotManifest,
     version: RegisteredModelVersion,
     package: Mapping[str, Any],
+    cluster_states: Mapping[str, Any],
     horizon_key: str,
     snapshot_admin_universe: set[str],
     fixed_partition: PartitionMap,
@@ -1217,10 +1220,26 @@ def _validate_prediction_frame(
         frame["cluster_id"],
         horizon_key,
     )
+    states = _mapping(
+        cluster_states,
+        f"predictions.{horizon_key}.cluster_states",
+    )
+    if set(states) != EXPECTED_CLUSTER_KEYS:
+        raise ValueError(
+            f"{horizon_key} cluster-state authority must contain clusters 0 through 16"
+        )
+    validated_states = {
+        int(cluster_id): _validate_cluster_state(
+            states[cluster_id],
+            f"predictions.{horizon_key}.cluster_states.{cluster_id}",
+        )
+        for cluster_id in sorted(EXPECTED_CLUSTER_KEYS, key=int)
+    }
     sources = frame["prediction_source"].tolist()
     if any(source not in PREDICTION_SOURCES for source in sources):
         raise ValueError(f"{horizon_key} prediction_source is invalid")
     expected_clusters = fixed_partition.route(admin_codes).tolist()
+    expected_sources: list[str] = []
     for cluster_id, expected_cluster, source in zip(
         cluster_ids,
         expected_clusters,
@@ -1231,7 +1250,13 @@ def _validate_prediction_frame(
             raise ValueError(
                 f"{horizon_key} cluster_id does not match the fixed partition"
             )
-        if (expected_cluster is None) != (source == "pooled_unmapped"):
+        expected_source = (
+            "pooled_unmapped"
+            if expected_cluster is None
+            else str(validated_states[int(expected_cluster)]["status"])
+        )
+        expected_sources.append(expected_source)
+        if source != expected_source:
             raise ValueError(f"{horizon_key} prediction route/source pair is invalid")
     coverage = fixed_partition.assert_release_coverage(admin_codes)
 
@@ -1254,7 +1279,11 @@ def _validate_prediction_frame(
         source: int(sum(value == source for value in sources))
         for source in PREDICTION_SOURCES
     }
-    if sum(source_counts.values()) != snapshot.area_count:
+    expected_source_counts = {
+        source: int(sum(value == source for value in expected_sources))
+        for source in PREDICTION_SOURCES
+    }
+    if source_counts != expected_source_counts:
         raise ValueError(f"{horizon_key} fallback totals do not reconcile")
     return {
         "suite_version": package["suite_version"],

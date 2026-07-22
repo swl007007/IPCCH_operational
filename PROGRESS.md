@@ -13,11 +13,13 @@
 
 - Worktree: `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-partitioned-rf-suite`
 - Branch: `features/fewsnet-partitioned-rf-suite`
-- Current task: final whole-branch review fix wave for I1-I3 and M1-M5
-- Current state: all eight final-review findings are fixed and locally verified;
-  exact-path staging, staged GitNexus review, and the single fix-wave commit
-  remain before handoff. Docker execution, live GCP smoke, and production
-  acceptance remain outstanding external gates
+- Current task: final branch re-review fix wave for I1-I2
+- Current state: both re-review findings and the exact-UTF-8 report boundary are
+  fixed with fresh local verification; the controller's first exact staged
+  GitNexus flow review is complete, while the required post-ledger staged
+  re-detect and the single fix-wave commit remain before handoff. Docker
+  execution, live GCP smoke, and production acceptance remain outstanding
+  external gates
 - Blockers: Docker Desktop WSL integration is disabled and no daemon is available; every real GCP/GCS/Vertex/Registry/Batch/alias/release-pointer mutation remains unauthorized
 - Cloud mutation status: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction, alias, or release-pointer write has been attempted
 
@@ -1640,6 +1642,94 @@
   seven focused test files, the runbook, and this ledger; `git diff --cached
   --check` is clean. Final fix-wave commit: this commit (`fix: close FEWSNET
   final branch review findings`).
+
+## Final Branch Re-review I1-I2 Fix Wave
+
+- Review authority: `.superpowers/sdd/final-branch-rereview.md` and
+  `.superpowers/sdd/final-branch-rereview-fix-brief.md` at starting HEAD
+  `683995a27b0ea61907d6b680f64c8da489029e21`; verdict was `0 Critical / 2
+  Important / 0 Minor`. The approved design and plan were not changed.
+- I1 root cause: schema validation and snapshot discovery parsed the same
+  admitted RFC3339 grammar independently. Discovery normalized uppercase `Z`
+  only, so lowercase/mixed accepted `t/z` forms could validate and then raise.
+  One shared `parse_rfc3339_date_time` parser now enforces the existing grammar;
+  discovery compares its timezone-aware results as UTC instants and preserves
+  the deterministic `snapshot_id` tie-breaker.
+- I2 root cause: aggregate training-report bytes were checksum-bound but never
+  parsed into promotion authority. The orchestrator now explicitly decodes the
+  exact bytes as UTF-8, validates the existing `training-report` schema, binds
+  `suite_version` and exact horizon keys, and supplies each horizon's required
+  `cluster_states` through `PredictionSuiteEntry`. Prediction validation
+  semantically validates all 17 states, derives the only allowed row source from
+  the fixed partition plus authoritative state, rejects fabricated
+  `pooled_missing_partition_model`, and reconciles observed totals against
+  row-derived totals.
+- Initial I1/report RED: the focused discovery/report selection reported `4
+  failed, 44 deselected`; the three lowercase/mixed-case discovery cases raised
+  `Invalid isoformat string`, while a checksum-consistent wrong-suite report was
+  incorrectly accepted as `CANDIDATE_VALIDATED`.
+- Initial I2 RED: the corrected 98%-mapped route fixture reported `3 failed, 1
+  passed, 61 deselected`; three mapped source mutations were accepted, while the
+  existing unmapped mismatch was already rejected.
+- Focused GREEN: discovery/report `4 passed, 44 deselected`; four route
+  mutations `4 passed, 61 deselected`; positive derived totals plus the four
+  mutations `5 passed, 61 deselected`.
+- Exact-UTF-8 self-review RED/GREEN: Python's `json.loads(bytes)` accepted
+  UTF-16 and UTF-32 despite the brief and error contract requiring UTF-8. A
+  checksum-consistent UTF-16 aggregate report first produced `1 failed, 48
+  deselected` because the run reached `CANDIDATE_VALIDATED`; after the minimal
+  explicit UTF-8 decode, the same selection reported `1 passed, 48 deselected`.
+- Fresh affected-file gate (`test_run_latest.py`, `test_promotion.py`, and
+  `test_contracts.py`): `151 passed in 26.47s`. Fresh Tasks 13-18 surface:
+  `230 passed in 31.67s`. The controller repeated the exact affected-file
+  command after staging: `151 passed in 27.70s`, exit `0`.
+- Fresh broad verification: complete FEWSNET `501 passed, 1 skipped in 50.25s`;
+  cloud/IPCCH `228 passed, 1 skipped in 11.10s`; complete repository `798
+  passed, 2 skipped, 24 subtests passed in 60.67s`.
+- Fresh static/command/dependency gates: all `49` FEWSNET production/test Python
+  files pass AST parsing and redirected `py_compile`; all `27` Markdown fences
+  are complete, all `25` Bash fences pass `bash -n`, and all `8` Python
+  heredocs compile under CPython `3.11.15`; all five CLI help commands print
+  `usage:`; `.venv/bin/python -m pip check` reports no broken requirements.
+- Frozen hashes remain exact: design
+  `44ef7a355ff16fc953b663d1770312da2200ff040e9129b9e9f203082aae346a`, normalized
+  plan `981c6508f6fd182a3deca2e4186a19db4a36caa65bf6616f27232466a4fcbf3e`, fixed
+  partition `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`,
+  feature-contract file
+  `3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b`, and
+  embedded feature-schema
+  `6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b`.
+- Whitespace gates are clean for the exact fix range; the required CRLF-aware
+  whole-branch `e6afd2c..HEAD` check is also clean. Exact staged path and cached
+  whitespace audits passed before the controller review.
+- GitNexus forced `--index-only` rebuild completed with `4,522` nodes, `10,047`
+  edges, `201` clusters, and `271` flows. The duplicate named-repository lookup
+  under-attributed the staged code as LOW with only two documentation symbols;
+  it was not used as authority. The exact-worktree staged call reported HIGH
+  across `40` mapped symbols and `6` affected flows. Every flow was reviewed:
+  `run_latest -> Load_schema/_canonical_json/_timestamp`,
+  `_discover_snapshot -> Read_bytes/Load_schema`, and
+  `_validate_prediction_frame -> Normalize_admin_code`; no unplanned production
+  consumer was found.
+- Fresh exact-worktree upstream impact after rebuild: `run_latest` LOW (`2`
+  direct), `_discover_snapshot` LOW (`1` direct), `_verified_training_result`
+  LOW (`1` direct), `validate_prediction_suite` HIGH (`27` direct / `30` total),
+  `_validate_prediction_frame` MEDIUM (`1` direct / `30` total),
+  `PredictionSuiteEntry` LOW (`4` direct), and `parse_rfc3339_date_time` HIGH
+  (`2` direct / `5` total across `3` processes). The HIGH reach is confined to
+  the reviewed schema/discovery and prediction-release flows covered by the
+  focused, related, FEWSNET, cloud/IPCCH, and full-repository gates above.
+- Because this ledger now records the staged review, `PROGRESS.md` must be
+  restaged and exact-worktree staged detection repeated once more before
+  commit. Commit remains prohibited until that final call explicitly releases
+  it.
+- Scope/no-cloud confirmation: intended tracked scope is exactly three
+  production files, two focused test files, and this ledger. Modified
+  `AGENTS.md`, `CLAUDE.md`, and untracked `.claude/`/`.superpowers/` remain
+  excluded. No Docker, network, authentication, GCP/GCS/Vertex/Registry/Batch,
+  alias, lease, Endpoint, or release-pointer operation was performed.
+- Planned unified commit subject after staged approval: `fix: close FEWSNET
+  final re-review findings`.
 
 ---
 
