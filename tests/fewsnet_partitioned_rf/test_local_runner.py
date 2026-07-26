@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 import subprocess
@@ -27,6 +28,40 @@ def seed_existing_suite(
     report_parent = staged.report_files["run_manifest"].parent
     final_report_parent = output_root / "reports" / staged.suite_version
     shutil.copytree(report_parent, final_report_parent)
+
+
+def rewrite_with_semantically_equal_noncanonical_json(path: Path) -> None:
+    canonical_bytes = path.read_bytes()
+    payload = json.loads(canonical_bytes)
+    reversed_payload = dict(reversed(tuple(payload.items())))
+    noncanonical_bytes = (
+        json.dumps(
+            reversed_payload,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        + b"\n"
+    )
+    assert json.loads(noncanonical_bytes) == payload
+    assert noncanonical_bytes != canonical_bytes
+    path.write_bytes(noncanonical_bytes)
+
+
+def refresh_staged_report_reference(
+    staged: runner.StagedLocalExperiment,
+    report_key: str,
+    report_path: Path,
+) -> None:
+    summary = json.loads(staged.run_summary_path.read_text(encoding="utf-8"))
+    report_bytes = report_path.read_bytes()
+    summary["reports"][report_key]["sha256"] = hashlib.sha256(
+        report_bytes
+    ).hexdigest()
+    summary["reports"][report_key]["size_bytes"] = len(report_bytes)
+    staged.run_summary_path.write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
 
 def local_config(
@@ -106,6 +141,67 @@ def test_publication_refuses_prediction_overwrite_before_expensive_build(
     monkeypatch.setattr(runner, "build_staged_local_experiment", forbidden_builder)
     with pytest.raises(FileExistsError, match="--overwrite"):
         runner.run_local_experiment(local_config(output_root, overwrite=False))
+
+
+def test_run_local_experiment_ignores_cleanup_failure_after_publication(
+    tmp_path,
+    monkeypatch,
+):
+    panel, audit, _ = write_normalized_local_panel_fixture(tmp_path / "source")
+    monkeypatch.setattr(runner, "EXPECTED_AREA_COUNT", 4)
+    monkeypatch.setattr(
+        runner,
+        "resolve_clean_git_commit",
+        lambda root: "1" * 40,
+    )
+    original_temporary_directory = runner.tempfile.TemporaryDirectory
+    observed_ignore_cleanup_errors: list[bool] = []
+
+    class CleanupFailingTemporaryDirectory:
+        def __init__(
+            self,
+            *args,
+            ignore_cleanup_errors: bool = False,
+            **kwargs,
+        ):
+            observed_ignore_cleanup_errors.append(ignore_cleanup_errors)
+            self._ignore_cleanup_errors = ignore_cleanup_errors
+            self._temporary_directory = original_temporary_directory(
+                *args,
+                **kwargs,
+            )
+
+        def __enter__(self):
+            return self._temporary_directory.__enter__()
+
+        def __exit__(self, exc_type, exc_value, traceback):
+            result = self._temporary_directory.__exit__(
+                exc_type,
+                exc_value,
+                traceback,
+            )
+            if exc_type is None and not self._ignore_cleanup_errors:
+                raise OSError("synthetic staging cleanup failure")
+            return result
+
+    monkeypatch.setattr(
+        runner.tempfile,
+        "TemporaryDirectory",
+        CleanupFailingTemporaryDirectory,
+    )
+    config = runner.LocalExperimentConfig(
+        panel_path=panel,
+        normalization_audit_path=audit,
+        feature_month="2026-04",
+        output_root=tmp_path / "Outcome/fewsnet_partitioned_rf",
+    )
+
+    result = runner.run_local_experiment(config)
+
+    assert observed_ignore_cleanup_errors == [True]
+    assert json.loads(result.run_summary_path.read_text(encoding="utf-8"))[
+        "status"
+    ] == "passed"
 
 
 def test_overwrite_failure_never_leaves_passed_summary(tmp_path, monkeypatch):
@@ -308,6 +404,56 @@ def test_staged_engine_reuses_only_a_fully_valid_existing_suite(
     checksums.write_text("{}\n", encoding="utf-8")
     with pytest.raises(ValueError, match="checksum"):
         runner.build_staged_local_experiment(config, tmp_path / "stage-four")
+
+
+@pytest.mark.parametrize(
+    "report_key",
+    ["training_threshold_report", "run_manifest"],
+)
+def test_existing_suite_rejects_semantically_equal_noncanonical_report_bytes(
+    tmp_path,
+    monkeypatch,
+    report_key,
+):
+    staged, config = staged_fixture(tmp_path, monkeypatch, overwrite=True)
+    seed_existing_suite(staged, config.output_root)
+    report_path = (
+        config.output_root
+        / "reports"
+        / staged.suite_version
+        / runner._REPORT_FILENAMES[report_key]
+    )
+    rewrite_with_semantically_equal_noncanonical_json(report_path)
+
+    with pytest.raises(ValueError, match="canonical JSON bytes"):
+        runner.build_staged_local_experiment(
+            config,
+            tmp_path / f"stage-noncanonical-{report_key}",
+        )
+
+
+@pytest.mark.parametrize(
+    "report_key",
+    ["training_threshold_report", "run_manifest"],
+)
+def test_publication_rejects_reused_noncanonical_report_with_matching_reference(
+    tmp_path,
+    monkeypatch,
+    report_key,
+):
+    first, config = staged_fixture(tmp_path, monkeypatch, overwrite=True)
+    seed_existing_suite(first, config.output_root)
+    reused = runner.build_staged_local_experiment(
+        config,
+        tmp_path / "stage-reused",
+    )
+    assert reused.reused_model_suite is True
+    report_path = reused.report_files[report_key]
+    rewrite_with_semantically_equal_noncanonical_json(report_path)
+    refresh_staged_report_reference(reused, report_key, report_path)
+
+    with pytest.raises(ValueError, match="canonical JSON bytes"):
+        runner.publish_staged_local_experiment(reused, config)
 
 
 @pytest.mark.parametrize("escaped_parent", ["model_artifacts", "reports"])

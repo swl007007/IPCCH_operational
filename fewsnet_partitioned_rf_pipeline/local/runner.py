@@ -278,11 +278,35 @@ def _resolve_safe_existing_output_path(
     return resolved
 
 
+def _canonical_json_bytes(payload: Mapping[str, object]) -> bytes:
+    return (
+        json.dumps(
+            dict(payload),
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
 def _write_json(path: Path, payload: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(dict(payload), stream, ensure_ascii=False, indent=2, sort_keys=True)
-        stream.write("\n")
+    with path.open("xb") as stream:
+        stream.write(_canonical_json_bytes(payload))
+
+
+def _require_canonical_json_bytes(
+    path: Path,
+    payload: Mapping[str, object],
+    name: str,
+) -> None:
+    try:
+        observed = path.read_bytes()
+    except OSError as exc:
+        raise ValueError(f"{name} could not be read") from exc
+    if observed != _canonical_json_bytes(payload):
+        raise ValueError(f"{name} must use canonical JSON bytes")
 
 
 def _read_json_object(path: Path, name: str) -> dict[str, object]:
@@ -891,6 +915,11 @@ def _validate_existing_reports(
         raise ValueError(
             "existing training_threshold_report.json does not match packages"
         )
+    _require_canonical_json_bytes(
+        training_report_path,
+        aggregate_report,
+        "existing training_threshold_report.json",
+    )
 
     run_manifest_path = _resolve_safe_existing_output_path(
         report_root / _REPORT_FILENAMES["run_manifest"],
@@ -924,6 +953,11 @@ def _validate_existing_reports(
     )
     if observed_manifest != expected_manifest:
         raise ValueError("existing run_manifest.json does not match packages")
+    _require_canonical_json_bytes(
+        run_manifest_path,
+        expected_manifest,
+        "existing run_manifest.json",
+    )
     return {
         "training_threshold_report": training_report_path,
         "run_manifest": run_manifest_path,
@@ -1566,6 +1600,11 @@ def _validate_suite_reports(
     validate_payload("training-report", training_report)
     if training_report != aggregate:
         raise ValueError("published training report does not match packages")
+    _require_canonical_json_bytes(
+        report_paths["training_threshold_report"],
+        aggregate,
+        "published training_threshold_report.json",
+    )
 
     manifest = _read_json_object(
         report_paths["run_manifest"],
@@ -1596,6 +1635,9 @@ def _validate_suite_reports(
         for key in _HORIZON_ORDER
     }
     expected = {
+        "schema_version": "fewsnet-local-suite-run-manifest-v1",
+        "run_id": str(manifest["run_id"]),
+        "created_at_utc": created_at_utc,
         "suite_version": staged.suite_version,
         "runtime_backend": "local_python",
         "gcp_write_performed": False,
@@ -1636,6 +1678,11 @@ def _validate_suite_reports(
         raise ValueError(
             f"published run manifest references differ: {mismatches}"
         )
+    _require_canonical_json_bytes(
+        report_paths["run_manifest"],
+        expected,
+        "published run_manifest.json",
+    )
 
 
 def _prediction_metrics_match(
@@ -2117,6 +2164,7 @@ def run_local_experiment(config: LocalExperimentConfig) -> LocalExperimentResult
     with tempfile.TemporaryDirectory(
         prefix=f".{output_root.name}.staging-",
         dir=output_root.parent,
+        ignore_cleanup_errors=True,
     ) as staging_root:
         staged = build_staged_local_experiment(config, staging_root)
         return publish_staged_local_experiment(staged, config)

@@ -7,7 +7,7 @@
 - Design commit: `179c8348121e5c9e5ac77e43860662d89dee44be`
 - Design SHA-256: `b91c81d15b53233d5e8cf958ac1702db6b17fed4f452c54d75f9ada3168374c9`
 - Branch/worktree: `feat/fewsnet-local-202604` at `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-local-202604`
-- Current task: Task 4 component-complete; pre-commit gate in progress
+- Current task: Task 4 Fix Round 1 verified; independent re-review pending
 - Cloud mutation status: none authorized or attempted
 - Output mutation status: no `Outcome/fewsnet_partitioned_rf/` artifacts published yet
 
@@ -16,7 +16,7 @@
 | 1. Truthful local model package | component-complete; Fix Round 1 verified |
 | 2. Population and prediction output contract | component-complete; implementation verified |
 | 3. Three-horizon staged engine | component-complete; Fix Round 1 verified |
-| 4. Publication, CLI, docs, and ignore rule | component-complete; implementation verified |
+| 4. Publication, CLI, docs, and ignore rule | component-complete; Fix Round 1 verified; re-review pending |
 | 5. Full 2026-04 acceptance run | pending |
 
 ### Active Feature Task 1 Evidence
@@ -88,6 +88,19 @@
 - Staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree=<Task 4 worktree>)` reported LOW risk, exactly `9` changed files, `10` indexed documentation symbols, and `0` affected execution processes. The main index predates the new Task 4 Python symbols, so their absence from the changed-symbol list is recorded without claiming indexed coverage.
 - Staged Git checks: `git diff --cached --stat` showed exactly the nine Task 4 files with `1325 insertions` and `2 deletions`; `git diff --cached --check` exited `0`.
 - Commit subject: `feat: publish FEWSNET local experiment artifacts`.
+
+### Active Feature Task 4 Fix Round 1 Evidence
+
+- Review-fix base: `a3e72188e27a0555a05d414be4b6d2d4cd79c400` (`feat: publish FEWSNET local experiment artifacts`). The review found two blocking integrity gaps: reused suite reports accepted parsed-equal but byte-different JSON, and a temporary-directory cleanup error after successful publication could convert a passed run into a CLI failure while leaving the passed final summary in place.
+- Pre-edit GitNexus impact for `_write_json`, `_validate_existing_reports`, `_validate_suite_reports`, and `run_local_experiment` returned target-not-found, risk `UNKNOWN`, and `0` indexed impacts because the index predates Task 4. Current-tree callers are limited to three local JSON writes, one existing-suite reuse path, four local publication validation points, and the local CLI/tests; no HIGH or CRITICAL result occurred.
+- Strict RED: the focused report-byte and cleanup selection reported `5 failed in 26.48s`. Both `training_threshold_report.json` and `run_manifest.json` were accepted after semantically identical compact/reordered rewrites at the reuse boundary and again when a hand-adjusted staged checksum matched the drifted report; the cleanup case raised `OSError: synthetic staging cleanup failure` after publication.
+- Minimal fix: one canonical UTF-8 JSON-byte serializer now drives new local report/summary writes and the expected-byte checks for both existing-suite validation and final publication validation. `run_local_experiment` now requests `TemporaryDirectory(ignore_cleanup_errors=True)`, preserving ordinary cleanup while preventing cleanup-only failure from overriding a successfully verified publication.
+- Focused GREEN: the exact five RED cases reported `5 passed in 20.41s`. Ordinary fully valid suite reuse remains covered by the existing runner tests.
+- Required regressions: runner plus CLI -> `29 passed in 42.73s`; runner, CLI, package, and local outputs -> `86 passed in 44.82s`; the complete FEWSNET suite -> `587 passed, 1 skipped in 100.16s`.
+- CLI smoke: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m fewsnet_partitioned_rf_pipeline.cli.run_local_experiment --help` exited `0` with only the approved local arguments. `git diff --check` also exited `0` before the ledger update.
+- Staged-scope gate: GitNexus reported LOW risk across exactly three changed files, six mapped documentation symbols, and zero affected execution processes; the stale main index again did not map the Task 4 Python symbols. `git diff --cached --stat` reported `212 insertions` and `5 deletions`, `git diff --cached --name-status` listed only the ledger, runner, and focused test, and `git diff --cached --check` exited `0`.
+- Scope boundary: Fix Round 1 changes only `local/runner.py`, its focused test file, this tracked ledger, and the ignored Task 4 report. No real FEWSNET output, IPCCH artifact, dependency pin, model mathematics, GCP, GCS, Vertex, Registry, Batch, network, or Task 5 operation was changed or executed.
+- Review-fix commit: this commit (`fix: harden FEWSNET local publication integrity`). Exact next gate: independent Task 4 re-review; Task 5 must not start until that review is clean.
 
 ## Authority
 
