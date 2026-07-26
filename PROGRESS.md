@@ -7,14 +7,14 @@
 - Design commit: `179c8348121e5c9e5ac77e43860662d89dee44be`
 - Design SHA-256: `b91c81d15b53233d5e8cf958ac1702db6b17fed4f452c54d75f9ada3168374c9`
 - Branch/worktree: `feat/fewsnet-local-202604` at `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-local-202604`
-- Current task: Task 2 in progress
+- Current task: Task 2 component-complete; independent review pending
 - Cloud mutation status: none authorized or attempted
 - Output mutation status: no `Outcome/fewsnet_partitioned_rf/` artifacts published yet
 
 | Task | Status |
 | --- | --- |
 | 1. Truthful local model package | component-complete; Fix Round 1 verified |
-| 2. Population and prediction output contract | in progress |
+| 2. Population and prediction output contract | component-complete; implementation verified |
 | 3. Three-horizon staged engine | pending |
 | 4. Publication, CLI, docs, and ignore rule | pending |
 | 5. Full 2026-04 acceptance run | pending |
@@ -38,6 +38,17 @@
 - Required GREEN/regression: local package, production model package, and contracts -> `106 passed in 13.15s`; the existing training/inference compatibility bridge regression -> `15 passed in 20.58s`.
 - Environment/static checks: `UV_CACHE_DIR=/tmp/ipcch-fewsnet-uv-cache uv pip check --python .venv/bin/python` -> `All installed packages are compatible`; `py_compile` exited `0`; the frozen feature-contract SHA-256 matched the mandated digest; `git diff --check` exited `0`.
 - Plan/brief synchronization: Task 1 Step 1 now records the user-ruled acceptance boundary. The task-brief script was invoked through `bash` because its installed file lacked execute permission, with the explicit output `.superpowers/sdd/2026-07-26-fewsnet-local-202604-prediction-experiment/task-1-brief.md`; it regenerated `435` lines and contains the amended runtime acceptance text.
+
+### Active Feature Task 2 Evidence
+
+- Frozen baseline before Task 2 edits: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_training_inference.py tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider` -> `43 passed in 17.86s`.
+- Strict RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_outputs.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.local.outputs'` before the output module and local prediction schema existed.
+- Focused GREEN: the initial Task 2 output test file -> `16 passed in 6.50s`. One intermediate rerun exposed only a pandas 3 fixture-assignment dtype error (`15 passed, 1 failed`); making the raw `pop` fixture explicitly object-typed preserved the intended invalid-text behavior test. The post-refactor rerun reported `16 passed in 5.85s`.
+- Self-review target-semantics RED/GREEN: a frame whose caller-supplied `target_month` did not equal `feature_month + horizon_months` was initially accepted (`1 failed, 16 deselected in 17.97s`, `Failed: DID NOT RAISE ValueError`). The narrow predictive-horizon check then passed (`1 passed, 16 deselected in 5.18s`), and the complete focused file reported `17 passed in 5.80s`.
+- Required focused regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_outputs.py tests/fewsnet_partitioned_rf/test_training_inference.py tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider` -> `60 passed in 18.63s`; the frozen formal predictor output remains unchanged.
+- Static/schema/API checks: both new Python files parse with `ast`; the local prediction schema passes Draft 2020-12 metaschema validation with exactly 22 required fields and `additionalProperties: false`; all seven approved public interfaces, including the exact 22-column constant and frozen population summary, import with the planned signatures; no Python line exceeds 88 characters.
+- Scale sanity check: a synthetic 5,718-row frame with two `missing_raw` areas passed the complete per-record JSON Schema and semantic validator in `0.681` seconds after import, without any model, output, cloud, or network mutation.
+- Scope boundary: Task 2 adds only `local/outputs.py`, the local prediction record schema, focused behavior tests, and this ledger update. It does not modify an existing function, class, or method; core model mathematics, formal prediction columns, package behavior, dependency pins, GCP/Vertex paths, IPCCH fields, and `Outcome/` artifacts remain unchanged.
 
 ## Authority
 

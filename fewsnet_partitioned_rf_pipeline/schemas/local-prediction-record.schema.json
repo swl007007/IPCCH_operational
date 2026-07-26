@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FEWSNET Local Prediction Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "admin_code",
+    "ADMIN0",
+    "ADMIN1",
+    "ADMIN2",
+    "ADMIN3",
+    "ISO3",
+    "lat",
+    "lon",
+    "population",
+    "population_reference_period",
+    "population_source",
+    "probability_crisis",
+    "predicted_crisis",
+    "threshold",
+    "cluster_id",
+    "prediction_source",
+    "feature_month",
+    "target_month",
+    "horizon_months",
+    "suite_version",
+    "model_artifact_path",
+    "source_input"
+  ],
+  "properties": {
+    "admin_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ADMIN0": {
+      "type": ["string", "null"]
+    },
+    "ADMIN1": {
+      "type": ["string", "null"]
+    },
+    "ADMIN2": {
+      "type": ["string", "null"]
+    },
+    "ADMIN3": {
+      "type": ["string", "null"]
+    },
+    "ISO3": {
+      "type": ["string", "null"]
+    },
+    "lat": {
+      "type": "number"
+    },
+    "lon": {
+      "type": "number"
+    },
+    "population": {
+      "oneOf": [
+        {
+          "type": "number",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "population_reference_period": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "population_source": {
+      "enum": ["raw_last_observed", "missing_raw"]
+    },
+    "probability_crisis": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "predicted_crisis": {
+      "type": "integer",
+      "enum": [0, 1]
+    },
+    "threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "cluster_id": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "prediction_source": {
+      "enum": [
+        "partition_model",
+        "pooled_unmapped",
+        "pooled_small_partition",
+        "pooled_single_class",
+        "pooled_missing_partition_model"
+      ]
+    },
+    "feature_month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "target_month": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+    },
+    "horizon_months": {
+      "enum": [0, 6, 12]
+    },
+    "suite_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_artifact_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_input": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
