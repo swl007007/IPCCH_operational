@@ -62,6 +62,16 @@
 - GitNexus pre-edit impact: `_preflight`, `_reject_ipcch_path`, and `_prepare_staging_root` were not yet indexed, so each returned target-not-found, risk `UNKNOWN`, and `0` registered impacts; live current-tree callers are confined to `build_staged_local_experiment` plus focused test monkeypatching, with no HIGH or CRITICAL result.
 - Static/scope checks: all three Task 3 Python files compile from source and contain no line longer than 88 characters. Task 3 changes only `PROGRESS.md`, `local/runner.py`, `test_local_runner.py`, and new helpers in `local_test_support.py`; core model mathematics, dependency pins, cloud/Vertex paths, IPCCH artifacts, and published FEWSNET outputs remain unchanged.
 
+### Active Feature Task 3 Fix Round 2 Evidence
+
+- Formal whole-task review found that existing-suite reuse rejected only directly symlinked suite/report roots, so symlinked `model_artifacts`, `reports`, or horizon components could resolve outside the output root and into an `Outcome/ipcch_unified` tree.
+- Pre-edit GitNexus impact for `_load_package_suite`, `_validate_existing_reports`, and `_resolve_or_train_suite` returned target-not-found, risk `UNKNOWN`, and `0` registered impacts because the index predates the Task 3 symbols; no HIGH or CRITICAL result occurred.
+- Strict RED: focused regressions for symlinked `model_artifacts`, symlinked `reports`, and a symlinked `6m` horizon all failed with accepted-invalid behavior: `3 failed, 14 deselected in 20.24s`.
+- Minimal fix: every derived existing-suite package, report, report-file, and horizon path now rejects symlink or junction components before reads, resolves physically, reapplies the IPCCH guard, and must remain inside the resolved output root. Ordinary validated suite reuse remains unchanged.
+- Focused GREEN: the exact containment selection reported `3 passed, 14 deselected in 15.38s`; the complete runner file reported `17 passed in 22.42s`.
+- Required regression: runner, local package, local outputs, and training job reported `86 passed in 47.11s` with the required no-bytecode/no-cache flags.
+- Scope boundary: Fix Round 2 changes only `runner.py`, its focused test file, this ledger, and the ignored Task 3 report. No generated output, IPCCH artifact, dependency, core mathematics, GCP, or Vertex state was mutated.
+
 ## Authority
 
 - Approved design: `docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md`

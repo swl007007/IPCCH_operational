@@ -204,6 +204,93 @@ def test_staged_engine_reuses_only_a_fully_valid_existing_suite(
         runner.build_staged_local_experiment(config, tmp_path / "stage-four")
 
 
+@pytest.mark.parametrize("escaped_parent", ["model_artifacts", "reports"])
+def test_existing_suite_rejects_symlinked_package_or_report_ancestor(
+    tmp_path,
+    monkeypatch,
+    escaped_parent,
+):
+    panel, audit, _ = write_normalized_local_panel_fixture(tmp_path / "source")
+    monkeypatch.setattr(runner, "EXPECTED_AREA_COUNT", 4)
+    monkeypatch.setattr(
+        runner,
+        "resolve_clean_git_commit",
+        lambda root: "1" * 40,
+    )
+    config = runner.LocalExperimentConfig(
+        panel_path=panel,
+        normalization_audit_path=audit,
+        feature_month="2026-04",
+        output_root=tmp_path / "final",
+        overwrite=True,
+    )
+    first = runner.build_staged_local_experiment(config, tmp_path / "stage-one")
+    seed_existing_suite(first, config.output_root)
+
+    unsafe_root = tmp_path / "unsafe" / "Outcome" / "ipcch_unified"
+    unsafe_root.mkdir(parents=True)
+    escaped_path = unsafe_root / escaped_parent
+    shutil.move(config.output_root / escaped_parent, escaped_path)
+    (config.output_root / escaped_parent).symlink_to(
+        escaped_path,
+        target_is_directory=True,
+    )
+
+    monkeypatch.setattr(
+        runner,
+        "train_horizon_model",
+        lambda *args, **kwargs: pytest.fail("existing suite must not retrain"),
+    )
+    with pytest.raises(ValueError, match="symlink or junction"):
+        runner.build_staged_local_experiment(
+            config,
+            tmp_path / f"stage-{escaped_parent}",
+        )
+
+
+def test_existing_suite_rejects_symlinked_horizon_directory(tmp_path, monkeypatch):
+    panel, audit, _ = write_normalized_local_panel_fixture(tmp_path / "source")
+    monkeypatch.setattr(runner, "EXPECTED_AREA_COUNT", 4)
+    monkeypatch.setattr(
+        runner,
+        "resolve_clean_git_commit",
+        lambda root: "1" * 40,
+    )
+    config = runner.LocalExperimentConfig(
+        panel_path=panel,
+        normalization_audit_path=audit,
+        feature_month="2026-04",
+        output_root=tmp_path / "final",
+        overwrite=True,
+    )
+    first = runner.build_staged_local_experiment(config, tmp_path / "stage-one")
+    seed_existing_suite(first, config.output_root)
+
+    package_root = (
+        config.output_root / "model_artifacts" / first.suite_version
+    )
+    unsafe_horizon = (
+        tmp_path / "unsafe" / "Outcome" / "ipcch_unified" / "6m"
+    )
+    unsafe_horizon.parent.mkdir(parents=True)
+    shutil.move(package_root / "6m", unsafe_horizon)
+    (package_root / "6m").symlink_to(
+        unsafe_horizon,
+        target_is_directory=True,
+    )
+
+    monkeypatch.setattr(
+        runner,
+        "train_horizon_model",
+        lambda *args, **kwargs: pytest.fail("existing suite must not retrain"),
+    )
+    with pytest.raises(ValueError, match="symlink or junction"):
+        runner.build_staged_local_experiment(
+            config,
+            tmp_path / "stage-horizon-symlink",
+        )
+
+
 def test_staged_engine_rejects_panel_audit_drift_and_nonlatest_month(
     tmp_path,
     monkeypatch,

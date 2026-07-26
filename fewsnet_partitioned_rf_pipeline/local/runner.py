@@ -164,6 +164,11 @@ def _resolved_casefolded_parts(path: str | Path) -> tuple[str, ...]:
     return tuple(part.casefold() for part in resolved.parts)
 
 
+def _absolute_casefolded_parts(path: str | Path) -> tuple[str, ...]:
+    absolute = Path(path).expanduser().absolute()
+    return tuple(part.casefold() for part in absolute.parts)
+
+
 def _paths_equal(left: str | Path, right: str | Path) -> bool:
     return _resolved_casefolded_parts(left) == _resolved_casefolded_parts(right)
 
@@ -175,6 +180,46 @@ def _path_is_equal_or_within(path: str | Path, root: str | Path) -> bool:
         len(path_parts) >= len(root_parts)
         and path_parts[: len(root_parts)] == root_parts
     )
+
+
+def _is_symlink_or_junction(path: Path) -> bool:
+    return path.is_symlink() or path.is_junction()
+
+
+def _resolve_safe_existing_output_path(
+    path: Path,
+    output_root: Path,
+    name: str,
+) -> Path:
+    requested = Path(path).expanduser().absolute()
+    resolved_root = Path(output_root).expanduser().resolve()
+    requested_key = _absolute_casefolded_parts(requested)
+    root_key = _absolute_casefolded_parts(resolved_root)
+    if (
+        len(requested_key) < len(root_key)
+        or requested_key[: len(root_key)] != root_key
+    ):
+        raise ValueError(f"{name} must remain inside output_root")
+
+    requested_parts = requested.parts
+    root_parts = resolved_root.parts
+    relative_parts = requested_parts[len(root_parts) :]
+    current = resolved_root
+    for part in relative_parts:
+        current = current / part
+        if _is_symlink_or_junction(current):
+            raise ValueError(
+                f"{name} must not contain symlink or junction components"
+            )
+
+    try:
+        resolved = requested.resolve(strict=True)
+    except OSError as exc:
+        raise ValueError(f"{name} must be an existing path") from exc
+    _reject_ipcch_path(resolved, name)
+    if not _path_is_equal_or_within(resolved, resolved_root):
+        raise ValueError(f"{name} must remain physically inside output_root")
+    return resolved
 
 
 def _write_json(path: Path, payload: Mapping[str, object]) -> None:
@@ -605,7 +650,12 @@ def _load_package_suite(
     package_root: Path,
     preflight: _PreflightResult,
 ) -> tuple[dict[str, Path], dict[str, LoadedLocalModelPackage]]:
-    if package_root.is_symlink() or not package_root.is_dir():
+    package_root = _resolve_safe_existing_output_path(
+        package_root,
+        preflight.output_root,
+        "existing model suite",
+    )
+    if not package_root.is_dir():
         raise ValueError("existing model suite must be a regular directory")
     actual_members = {path.name for path in package_root.iterdir()}
     if actual_members != set(_HORIZON_ORDER):
@@ -617,7 +667,11 @@ def _load_package_suite(
     package_dirs: dict[str, Path] = {}
     loaded_packages: dict[str, LoadedLocalModelPackage] = {}
     for horizon_key in _HORIZON_ORDER:
-        package_dir = package_root / horizon_key
+        package_dir = _resolve_safe_existing_output_path(
+            package_root / horizon_key,
+            preflight.output_root,
+            f"existing {horizon_key} model package",
+        )
         loaded = load_local_model_package(
             package_dir,
             expected_suite_version=preflight.suite_version,
@@ -748,7 +802,12 @@ def _validate_existing_reports(
     preflight: _PreflightResult,
     loaded_packages: Mapping[str, LoadedLocalModelPackage],
 ) -> tuple[dict[str, Path], dict[str, object]]:
-    if report_root.is_symlink() or not report_root.is_dir():
+    report_root = _resolve_safe_existing_output_path(
+        report_root,
+        preflight.output_root,
+        "existing suite reports",
+    )
+    if not report_root.is_dir():
         raise ValueError("existing suite reports must be a regular directory")
     actual_members = {path.name for path in report_root.iterdir()}
     expected_members = set(_REPORT_FILENAMES.values())
@@ -762,9 +821,11 @@ def _validate_existing_reports(
         preflight.suite_version,
         loaded_packages,
     )
-    training_report_path = report_root / _REPORT_FILENAMES[
-        "training_threshold_report"
-    ]
+    training_report_path = _resolve_safe_existing_output_path(
+        report_root / _REPORT_FILENAMES["training_threshold_report"],
+        preflight.output_root,
+        "existing training threshold report",
+    )
     observed_training_report = _read_json_object(
         training_report_path,
         "training_threshold_report.json",
@@ -775,7 +836,11 @@ def _validate_existing_reports(
             "existing training_threshold_report.json does not match packages"
         )
 
-    run_manifest_path = report_root / _REPORT_FILENAMES["run_manifest"]
+    run_manifest_path = _resolve_safe_existing_output_path(
+        report_root / _REPORT_FILENAMES["run_manifest"],
+        preflight.output_root,
+        "existing suite run manifest",
+    )
     observed_manifest = _read_json_object(
         run_manifest_path,
         "run_manifest.json",
@@ -921,6 +986,16 @@ def _resolve_or_train_suite(
         preflight.output_root / "reports" / preflight.suite_version
     )
     if final_package_root.exists() or final_report_root.exists():
+        _resolve_safe_existing_output_path(
+            final_package_root,
+            preflight.output_root,
+            "existing model suite",
+        )
+        _resolve_safe_existing_output_path(
+            final_report_root,
+            preflight.output_root,
+            "existing suite reports",
+        )
         package_dirs, loaded_packages = _load_package_suite(
             final_package_root,
             preflight,
