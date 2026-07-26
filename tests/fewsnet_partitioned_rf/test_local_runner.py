@@ -29,6 +29,112 @@ def seed_existing_suite(
     shutil.copytree(report_parent, final_report_parent)
 
 
+def local_config(
+    output_root: Path,
+    *,
+    overwrite: bool = False,
+) -> runner.LocalExperimentConfig:
+    source = output_root.parent / "synthetic-source"
+    return runner.LocalExperimentConfig(
+        panel_path=source / "panel.normalized-v1.csv",
+        normalization_audit_path=source / "panel.normalized-v1.audit.json",
+        feature_month="2026-04",
+        output_root=output_root,
+        overwrite=overwrite,
+    )
+
+
+def staged_fixture(
+    tmp_path: Path,
+    monkeypatch,
+    *,
+    overwrite: bool = False,
+) -> tuple[runner.StagedLocalExperiment, runner.LocalExperimentConfig]:
+    panel, audit, _ = write_normalized_local_panel_fixture(tmp_path / "source")
+    monkeypatch.setattr(runner, "EXPECTED_AREA_COUNT", 4)
+    monkeypatch.setattr(runner, "resolve_clean_git_commit", lambda root: "1" * 40)
+    config = runner.LocalExperimentConfig(
+        panel_path=panel,
+        normalization_audit_path=audit,
+        feature_month="2026-04",
+        output_root=tmp_path / "Outcome/fewsnet_partitioned_rf",
+        overwrite=overwrite,
+    )
+    staged = runner.build_staged_local_experiment(config, tmp_path / "staging")
+    return staged, config
+
+
+def test_publication_copies_three_csvs_and_writes_summary_last(
+    tmp_path,
+    monkeypatch,
+):
+    staged, config = staged_fixture(tmp_path, monkeypatch)
+    copied: list[str] = []
+    original_copy = runner.shutil.copy2
+
+    def recording_copy(source, destination):
+        copied.append(Path(destination).name)
+        return original_copy(source, destination)
+
+    monkeypatch.setattr(runner.shutil, "copy2", recording_copy)
+    result = runner.publish_staged_local_experiment(staged, config)
+
+    assert copied[-1] == "run_summary.json"
+    assert result.run_summary_path.exists()
+    assert json.loads(result.run_summary_path.read_text())["status"] == "passed"
+
+
+def test_publication_refuses_prediction_overwrite_before_expensive_build(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "Outcome/fewsnet_partitioned_rf"
+    prediction_dir = output_root / "predictions/202604"
+    prediction_dir.mkdir(parents=True)
+    prediction_path = (
+        prediction_dir
+        / "fewsnet_partitioned_rf_202604_scope_0m_predictions.csv"
+    )
+    prediction_path.write_text(
+        "sentinel\n",
+        encoding="utf-8",
+    )
+
+    def forbidden_builder(*args, **kwargs):
+        raise AssertionError((args, kwargs))
+
+    monkeypatch.setattr(runner, "build_staged_local_experiment", forbidden_builder)
+    with pytest.raises(FileExistsError, match="--overwrite"):
+        runner.run_local_experiment(local_config(output_root, overwrite=False))
+
+
+def test_overwrite_failure_never_leaves_passed_summary(tmp_path, monkeypatch):
+    staged, config = staged_fixture(tmp_path, monkeypatch, overwrite=True)
+    final_summary = config.output_root / "predictions/202604/run_summary.json"
+    final_summary.parent.mkdir(parents=True, exist_ok=True)
+    final_summary.write_text('{"status":"passed"}\n', encoding="utf-8")
+    original_copy = runner.shutil.copy2
+
+    def fail_on_6m(source, destination):
+        if "scope_6m" in str(destination):
+            raise OSError("synthetic copy failure")
+        return original_copy(source, destination)
+
+    monkeypatch.setattr(runner.shutil, "copy2", fail_on_6m)
+    with pytest.raises(OSError, match="synthetic copy failure"):
+        runner.publish_staged_local_experiment(staged, config)
+    assert not final_summary.exists()
+
+
+def test_publication_never_touches_ipcch_unified(tmp_path, monkeypatch):
+    ipcch = tmp_path / "Outcome/ipcch_unified/predictions/sentinel.txt"
+    ipcch.parent.mkdir(parents=True)
+    ipcch.write_text("keep", encoding="utf-8")
+    staged, config = staged_fixture(tmp_path, monkeypatch)
+    runner.publish_staged_local_experiment(staged, config)
+    assert ipcch.read_text(encoding="utf-8") == "keep"
+
+
 def test_staged_engine_trains_reloads_and_predicts_all_three_horizons(
     tmp_path,
     monkeypatch,

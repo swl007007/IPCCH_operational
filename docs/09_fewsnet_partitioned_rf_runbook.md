@@ -2736,3 +2736,118 @@ PY
 Do not call the first production run accepted until all sixteen items are
 recorded. Local implementation tests, a skipped smoke, or a successful image
 build are not production acceptance.
+
+## 14. Run the local 2026-04 prediction experiment
+
+This local-only experiment trains, reloads, and runs the approved fixed-
+partition Random Forest suite for `0m`, `6m`, and `12m`. It is a workstation
+reproducibility and output-contract check before any Vertex AI activity. It
+does not call GCS, Vertex AI Custom Jobs, Model Registry, Batch Prediction,
+online Endpoints, or the IPCCH release workflow, and it does not require a
+shapefile.
+
+### 14.1 Create or verify the Python environment
+
+Use Python 3.12 and the already approved dependency file. The reviewed runtime
+keeps `scikit-learn==1.8.0` and `imbalanced-learn==0.14.0`; do not alter those
+pins or the existing compatibility bridge in `core.training`.
+
+```bash
+uv venv --python 3.12 .venv
+UV_CACHE_DIR=/tmp/ipcch-fewsnet-uv-cache \
+  uv pip install --python .venv/bin/python \
+  -r requirements-fewsnet-partitioned-rf.txt
+UV_CACHE_DIR=/tmp/ipcch-fewsnet-uv-cache \
+  uv pip check --python .venv/bin/python
+```
+
+Run from a clean tracked worktree. The runner records `git rev-parse HEAD` and
+rejects staged or unstaged tracked changes. The generated output root is
+ignored and does not make the tracked worktree dirty.
+
+### 14.2 Run the approved source pair
+
+The full initial command is:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m \
+  fewsnet_partitioned_rf_pipeline.cli.run_local_experiment \
+  --panel "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv" \
+  --normalization-audit "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.audit.json" \
+  --feature-month 2026-04 \
+  --output-root "Outcome/fewsnet_partitioned_rf"
+```
+
+Success prints exactly one JSON object to stdout. Runtime failure prints one
+JSON object to stderr and returns a nonzero exit code. The CLI intentionally
+has no GCS, Vertex, registry, endpoint, Batch Prediction, or shapefile option.
+
+### 14.3 Interpret the local artifact tree
+
+```text
+Outcome/fewsnet_partitioned_rf/
+├── model_artifacts/{suite_version}/
+│   ├── 0m/
+│   ├── 6m/
+│   └── 12m/
+├── reports/{suite_version}/
+│   ├── training_threshold_report.json
+│   └── run_manifest.json
+└── predictions/202604/
+    ├── fewsnet_partitioned_rf_202604_scope_0m_predictions.csv
+    ├── fewsnet_partitioned_rf_202604_scope_6m_predictions.csv
+    ├── fewsnet_partitioned_rf_202604_scope_12m_predictions.csv
+    └── run_summary.json
+```
+
+Each horizon directory is a seven-file
+`fewsnet-local-model-package-v1` package for the local Python runtime. A local
+package truthfully records local dependencies and blank Vertex identities. It
+is not the digest-pinned `fewsnet-model-package-v1` used by the production
+container and must not be registered or promoted as a production package.
+
+Each prediction CSV has exactly 5,718 rows and the approved 22-column local
+contract. `probability_crisis` is the continuous binary crisis probability.
+`threshold` is the learned horizon-specific decision threshold, and
+`predicted_crisis` is `1` exactly when `probability_crisis >= threshold`.
+These files do not contain an IPC phase forecast, a categorical severity
+forecast, a confidence interval, or a qualitative uncertainty label.
+
+Population is copied from the raw last observation at or before `2026-04`; it
+is not model-imputed. For the approved panel, 5,716 areas use a raw value from
+`2024-10` and two areas remain null with `population_source=missing_raw`. The
+run summary records that expected `5716 + 2` provenance split and the two
+missing administrative codes.
+
+The target months `2026-10` and `2027-04` are forecast horizons derived from
+the `2026-04` feature frame. They are not observed evaluation labels. Do not
+report future-horizon accuracy until matching observed labels exist.
+
+### 14.4 Rerun and recover safely
+
+Publication is no-overwrite by default. If any exact prediction CSV or
+`run_summary.json` already exists, the runner fails before loading the large
+panel. To replace the three prediction CSVs explicitly, rerun the full command
+with `--overwrite`:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m \
+  fewsnet_partitioned_rf_pipeline.cli.run_local_experiment \
+  --panel "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv" \
+  --normalization-audit "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.audit.json" \
+  --feature-month 2026-04 \
+  --output-root "Outcome/fewsnet_partitioned_rf" \
+  --overwrite
+```
+
+Model packages and suite reports remain create-only. A fully valid existing
+suite is reloaded and reused; a missing, differing, symlinked, or checksum-
+invalid immutable artifact fails closed and is never overwritten.
+
+On an overwrite attempt, the accepted summary is removed before any CSV is
+copied. The runner verifies each copied CSV, then copies and reopens
+`run_summary.json` last and rechecks every recorded package, report, and
+prediction checksum. Trust a run only when the final summary has
+`status: passed` and all referenced files still match those checksums. If a
+run fails or the summary is absent, rerun the complete command; do not patch,
+splice, or hand-edit one CSV or its checksum metadata.

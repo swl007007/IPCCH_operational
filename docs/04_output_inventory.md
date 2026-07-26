@@ -14,6 +14,34 @@
 | WFP | `ch_WFP_prices.csv` or configured equivalent | country/month plus scaffold keys | Scaffold plus features | Final harmonise. |
 | IPC API | `areas_*.geojson`, `analyses_*.json`, combined files | IPC API identifiers | Per-year and combined JSON/GeoJSON | IPC reference processing. |
 | Unified IPCCH monthly model input | `Outcome/ipcch_unified/model_input/ipcch_monthly_base_input_YYYYMM.csv` plus `_summary.json` | `area_id`, `year`, `month` | Long monthly base input surface | Combined with exported model weights, model pipeline, and G-07 transformations when those assets are exported. |
+| FEWSNET local partitioned-RF experiment | `Outcome/fewsnet_partitioned_rf/` | `admin_code`, one row per authoritative FEWSNET area and horizon | Three 22-column prediction CSVs plus local model packages, reports, and a final run summary | Local reproducibility and pre-Vertex model/output validation only. This is neither an IPCCH release artifact nor a GCS/Vertex production suite. |
+
+## FEWSNET Local Experiment Artifacts
+
+The local `2026-04` FEWSNET experiment writes only below the ignored
+`Outcome/fewsnet_partitioned_rf/` root:
+
+```text
+Outcome/fewsnet_partitioned_rf/
+├── model_artifacts/{suite_version}/
+│   ├── 0m/{seven local package files}
+│   ├── 6m/{seven local package files}
+│   └── 12m/{seven local package files}
+├── reports/{suite_version}/
+│   ├── training_threshold_report.json
+│   └── run_manifest.json
+└── predictions/202604/
+    ├── fewsnet_partitioned_rf_202604_scope_0m_predictions.csv
+    ├── fewsnet_partitioned_rf_202604_scope_6m_predictions.csv
+    ├── fewsnet_partitioned_rf_202604_scope_12m_predictions.csv
+    └── run_summary.json
+```
+
+These packages use the truthful local-Python package contract. They do not
+contain a digest-pinned production container identity and must not be uploaded,
+registered, promoted, or presented as `fewsnet-model-package-v1` production
+packages. The prediction tree is also separate from `Outcome/ipcch_unified/`
+and from all cloud `runs/`, `suites/`, and `released/` namespaces.
 
 ## Required Local Reference Files
 

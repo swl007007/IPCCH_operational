@@ -42,3 +42,6 @@ Outcome/ipcch_unified/predictions/
 
 # Large local operational launch model packages
 model_artifacts/
+
+# Generated FEWSNET local partitioned-RF experiments
+Outcome/fewsnet_partitioned_rf/

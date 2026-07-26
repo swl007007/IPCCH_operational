@@ -7,7 +7,7 @@
 - Design commit: `179c8348121e5c9e5ac77e43860662d89dee44be`
 - Design SHA-256: `b91c81d15b53233d5e8cf958ac1702db6b17fed4f452c54d75f9ada3168374c9`
 - Branch/worktree: `feat/fewsnet-local-202604` at `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-local-202604`
-- Current task: Task 3 component-complete; independent review clean
+- Current task: Task 4 component-complete; pre-commit gate in progress
 - Cloud mutation status: none authorized or attempted
 - Output mutation status: no `Outcome/fewsnet_partitioned_rf/` artifacts published yet
 
@@ -16,7 +16,7 @@
 | 1. Truthful local model package | component-complete; Fix Round 1 verified |
 | 2. Population and prediction output contract | component-complete; implementation verified |
 | 3. Three-horizon staged engine | component-complete; Fix Round 1 verified |
-| 4. Publication, CLI, docs, and ignore rule | pending |
+| 4. Publication, CLI, docs, and ignore rule | component-complete; implementation verified |
 | 5. Full 2026-04 acceptance run | pending |
 
 ### Active Feature Task 1 Evidence
@@ -71,6 +71,23 @@
 - Focused GREEN: the exact containment selection reported `3 passed, 14 deselected in 15.38s`; the complete runner file reported `17 passed in 22.42s`.
 - Required regression: runner, local package, local outputs, and training job reported `86 passed in 47.11s` with the required no-bytecode/no-cache flags.
 - Scope boundary: Fix Round 2 changes only `runner.py`, its focused test file, this ledger, and the ignored Task 3 report. No generated output, IPCCH artifact, dependency, core mathematics, GCP, or Vertex state was mutated.
+
+### Active Feature Task 4 Evidence
+
+- Start state: Task 3 safety hardening is clean through base commit `e3520fb73639884ffcbdadcac34fa1bb2aaea934`; the full FEWSNET baseline before Task 4 edits was `575 passed, 1 skipped in 85.10s`.
+- Strict RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_runner.py tests/fewsnet_partitioned_rf/test_local_cli.py -q -p no:cacheprovider` exited `2` during collection with the expected missing `fewsnet_partitioned_rf_pipeline.cli.run_local_experiment` import before publication/result/CLI production code existed.
+- Publication behavior: new local suites copy each `0m`, `6m`, and `12m` package create-only and reload it; fully valid existing suites are reloaded without package/report mutation; suite reports are create-only; exact prediction targets fail before expensive build unless `--overwrite` is explicit; and `run_summary.json` is removed before overwrite CSV copies, copied last, reopened, and accepted only after all recorded checksums and frame contracts revalidate.
+- Systematic-debugging evidence: the first GREEN attempt reported `3 failed, 21 passed` because a new report-reference helper rejected the prediction reference's required `row_count`. GitNexus impact for that new helper was target-not-found/`UNKNOWN` with `0` indexed callers or processes; current-tree search showed exactly two direct callers. The narrow contract split then produced `24 passed in 30.35s`, and the maintainability refactor repeated `24 passed in 31.42s`.
+- Required focused GREEN: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_runner.py tests/fewsnet_partitioned_rf/test_local_cli.py tests/fewsnet_partitioned_rf/test_local_package.py tests/fewsnet_partitioned_rf/test_local_outputs.py -q -p no:cacheprovider` -> `81 passed in 31.80s`.
+- Full FEWSNET regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf -q -p no:cacheprovider` -> `582 passed, 1 skipped in 90.22s`.
+- CLI smoke: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m fewsnet_partitioned_rf_pipeline.cli.run_local_experiment --help` exited `0` with only `--panel`, `--normalization-audit`, `--feature-month`, `--output-root`, and `--overwrite` plus standard help.
+- Recovery assessment: ordinary copy or post-write verification failures remove touched prediction CSVs and never leave a passed summary; newly created immutable suite roots are cleaned if their own copy/validation fails. An external hard termination can still leave a partial CSV without a summary, so operator guidance treats only a checksum-valid passed summary as authoritative and requires a complete `--overwrite` rerun rather than manual patching.
+- Documentation and inventory: the runbook records Python setup, the exact quoted Dropbox command, local-versus-production package meaning, binary probability/threshold semantics, no phase/categorical uncertainty, the expected `5716 + 2` raw-population split, no-overwrite/rerun/recovery behavior, and the future-horizon warning. The output inventory separates this ignored local tree from IPCCH release artifacts and GCS/Vertex production suites.
+- Maintainability review: publication remains in the plan-mandated `local/runner.py` and reuses the existing package loader, output validators, report aggregation, path guards, and checksum helpers without modifying Task 3 safety symbols. The residual concern is module size; a later separately designed refactor could split publication mechanics, but Task 4 does not introduce a new architecture or duplicate model mathematics.
+- Scope boundary: no dependency pin, `core.training` bridge, core model mathematics, GCP/Vertex/network state, IPCCH artifact, generated FEWSNET output, or real final `2026-04` run was changed or executed.
+- Staged-scope gate: GitNexus `detect_changes(scope="staged", repo="IPCCH_operational", worktree=<Task 4 worktree>)` reported LOW risk, exactly `9` changed files, `10` indexed documentation symbols, and `0` affected execution processes. The main index predates the new Task 4 Python symbols, so their absence from the changed-symbol list is recorded without claiming indexed coverage.
+- Staged Git checks: `git diff --cached --stat` showed exactly the nine Task 4 files with `1325 insertions` and `2 deletions`; `git diff --cached --check` exited `0`.
+- Commit subject: `feat: publish FEWSNET local experiment artifacts`.
 
 ## Authority
 

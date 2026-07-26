@@ -5,7 +5,9 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import shutil
 import subprocess
+import tempfile
 from collections import Counter
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -47,9 +49,12 @@ from fewsnet_partitioned_rf_pipeline.core.validation import (
     runtime_dependency_versions,
 )
 from fewsnet_partitioned_rf_pipeline.local.outputs import (
+    LOCAL_PREDICTION_COLUMNS,
     PopulationSummary,
+    _read_local_prediction_csv,
     build_identity_population_frame,
     enrich_local_predictions,
+    validate_local_prediction_frame,
     validate_local_prediction_suite,
     write_local_prediction_csv,
 )
@@ -106,6 +111,28 @@ _RUN_MANIFEST_FIELDS = {
     "model_packages",
     "status",
 }
+_RUN_SUMMARY_FIELDS = {
+    "schema_version",
+    "run_id",
+    "suite_version",
+    "started_at_utc",
+    "completed_at_utc",
+    "status",
+    "runtime_backend",
+    "gcp_write_performed",
+    "source_git_commit",
+    "dependency_versions",
+    "panel",
+    "normalization_audit",
+    "latest_feature_month",
+    "latest_label_month",
+    "training_target_month_range",
+    "validation_target_month_range",
+    "population",
+    "horizons",
+    "model_packages",
+    "reports",
+}
 
 
 @dataclass(frozen=True)
@@ -129,6 +156,35 @@ class StagedLocalExperiment:
     prediction_files: dict[str, Path]
     report_files: dict[str, Path]
     run_summary_path: Path
+
+
+@dataclass(frozen=True)
+class LocalExperimentResult:
+    run_id: str
+    suite_version: str
+    output_root: Path
+    run_summary_path: Path
+    prediction_paths: dict[str, Path]
+    model_package_paths: dict[str, Path]
+    report_paths: dict[str, Path]
+
+    def to_payload(self) -> dict[str, object]:
+        return {
+            "status": "passed",
+            "run_id": self.run_id,
+            "suite_version": self.suite_version,
+            "output_root": str(self.output_root),
+            "run_summary_path": str(self.run_summary_path),
+            "prediction_paths": {
+                key: str(path) for key, path in self.prediction_paths.items()
+            },
+            "model_package_paths": {
+                key: str(path) for key, path in self.model_package_paths.items()
+            },
+            "report_paths": {
+                key: str(path) for key, path in self.report_paths.items()
+            },
+        }
 
 
 @dataclass(frozen=True)
@@ -1231,3 +1287,836 @@ def build_staged_local_experiment(
         report_files=report_files,
         run_summary_path=run_summary_path,
     )
+
+
+def _require_mapping(value: object, name: str) -> dict[str, object]:
+    if not isinstance(value, Mapping):
+        raise ValueError(f"{name} must be a mapping")
+    return dict(value)
+
+
+def _safe_publication_path(
+    output_root: Path,
+    relative_path: str,
+    name: str,
+) -> Path:
+    relative = Path(relative_path)
+    if relative.is_absolute() or not relative.parts or ".." in relative.parts:
+        raise ValueError(f"{name} must use a safe relative path")
+    resolved_root = output_root.expanduser().resolve()
+    target = resolved_root / relative
+    _reject_ipcch_path(target, name)
+
+    current = resolved_root
+    for part in relative.parts:
+        current = current / part
+        if _is_symlink_or_junction(current):
+            raise ValueError(
+                f"{name} must not contain symlink or junction components"
+            )
+        if current.exists() and not _path_is_equal_or_within(
+            current.resolve(),
+            resolved_root,
+        ):
+            raise ValueError(
+                f"{name} must remain physically inside output_root"
+            )
+    if not _path_is_equal_or_within(target, resolved_root):
+        raise ValueError(f"{name} must remain inside output_root")
+    return target
+
+
+def _safe_existing_file(path: Path, root: Path, name: str) -> Path:
+    resolved = _resolve_safe_existing_output_path(path, root, name)
+    if not resolved.is_file():
+        raise ValueError(f"{name} must be an existing regular file")
+    return resolved
+
+
+def _safe_existing_dir(path: Path, root: Path, name: str) -> Path:
+    resolved = _resolve_safe_existing_output_path(path, root, name)
+    if not resolved.is_dir():
+        raise ValueError(f"{name} must be an existing directory")
+    return resolved
+
+
+def _final_prediction_paths(output_root: Path) -> dict[str, Path]:
+    return {
+        key: _safe_publication_path(
+            output_root,
+            _prediction_relative_path(key),
+            f"final {key} prediction",
+        )
+        for key in _HORIZON_ORDER
+    }
+
+
+def _final_summary_path(output_root: Path) -> Path:
+    return _safe_publication_path(
+        output_root,
+        "predictions/202604/run_summary.json",
+        "final run summary",
+    )
+
+
+def _check_prediction_overwrite(
+    output_root: Path,
+    *,
+    overwrite: bool,
+) -> None:
+    targets = [
+        *_final_prediction_paths(output_root).values(),
+        _final_summary_path(output_root),
+    ]
+    existing = [path for path in targets if path.exists() or path.is_symlink()]
+    if existing and not overwrite:
+        raise FileExistsError(
+            "local prediction output already exists; rerun with --overwrite: "
+            + ", ".join(str(path) for path in existing)
+        )
+
+
+def _load_staged_summary(
+    staged: StagedLocalExperiment,
+    config: LocalExperimentConfig,
+    output_root: Path,
+) -> tuple[Path, Path, dict[str, object]]:
+    staging_root = Path(staged.staging_root).expanduser().resolve()
+    _reject_ipcch_path(staging_root, "staging_root")
+    if _path_is_equal_or_within(staging_root, output_root):
+        raise ValueError("staging_root must remain outside output_root")
+    summary_path = _safe_existing_file(
+        staged.run_summary_path,
+        staging_root,
+        "staged run summary",
+    )
+    summary = _read_json_object(summary_path, "staged run_summary.json")
+    if set(summary) != _RUN_SUMMARY_FIELDS:
+        raise ValueError("staged run_summary.json fields differ")
+
+    expected = {
+        "schema_version": "fewsnet-local-run-summary-v1",
+        "run_id": staged.run_id,
+        "suite_version": staged.suite_version,
+        "status": "passed",
+        "runtime_backend": "local_python",
+        "gcp_write_performed": False,
+        "source_git_commit": staged.source_git_commit,
+        "latest_feature_month": _ACCEPTED_FEATURE_MONTH,
+        "latest_label_month": _ACCEPTED_LATEST_LABEL_MONTH,
+    }
+    mismatches = [
+        key for key, value in expected.items() if summary.get(key) != value
+    ]
+    if mismatches:
+        raise ValueError(
+            f"staged run_summary.json identities differ: {mismatches}"
+        )
+    if _RUN_ID_PATTERN.fullmatch(staged.run_id) is None:
+        raise ValueError("staged run_id is invalid")
+    if _COMMIT_PATTERN.fullmatch(staged.source_git_commit) is None:
+        raise ValueError("staged source_git_commit is invalid")
+    started = _parse_utc(summary["started_at_utc"], "started_at_utc")
+    completed = _parse_utc(summary["completed_at_utc"], "completed_at_utc")
+    if completed < started:
+        raise ValueError("completed_at_utc precedes started_at_utc")
+    if staged.run_id != _run_id(
+        _ACCEPTED_FEATURE_MONTH,
+        str(summary["started_at_utc"]),
+    ):
+        raise ValueError("staged run_id does not match started_at_utc")
+    if _normalize_feature_month(config.feature_month) != _ACCEPTED_FEATURE_MONTH:
+        raise ValueError("config feature_month does not match staged summary")
+
+    panel = _require_mapping(summary["panel"], "run summary panel")
+    audit = _require_mapping(
+        summary["normalization_audit"],
+        "run summary normalization audit",
+    )
+    if (
+        panel.get("sha256") != staged.panel_sha256
+        or panel.get("path")
+        != str(Path(config.panel_path).expanduser().resolve())
+    ):
+        raise ValueError("config panel identity does not match staged summary")
+    if audit.get("path") != str(
+        Path(config.normalization_audit_path).expanduser().resolve()
+    ):
+        raise ValueError(
+            "config normalization audit path does not match staged summary"
+        )
+
+    horizons = _require_mapping(summary["horizons"], "run summary horizons")
+    packages = _require_mapping(
+        summary["model_packages"],
+        "run summary model packages",
+    )
+    reports = _require_mapping(summary["reports"], "run summary reports")
+    if set(horizons) != set(_HORIZON_ORDER):
+        raise ValueError("run summary horizons differ")
+    if set(packages) != set(_HORIZON_ORDER):
+        raise ValueError("run summary model packages differ")
+    if set(reports) != set(_REPORT_FILENAMES):
+        raise ValueError("run summary reports differ")
+    for key in _HORIZON_ORDER:
+        horizon = _require_mapping(horizons[key], f"run summary horizon {key}")
+        package = _require_mapping(packages[key], f"run summary package {key}")
+        horizon_package = _require_mapping(
+            horizon.get("model_package"),
+            f"run summary horizon package {key}",
+        )
+        if package != horizon_package:
+            raise ValueError(f"run summary package references differ for {key}")
+        if package.get("relative_path") != _package_relative_path(
+            staged.suite_version,
+            key,
+        ):
+            raise ValueError(f"run summary package path differs for {key}")
+        _require_mapping(
+            package.get("member_checksums"),
+            f"run summary package checksums {key}",
+        )
+        prediction = _require_mapping(
+            horizon.get("prediction"),
+            f"run summary prediction {key}",
+        )
+        if prediction.get("relative_path") != _prediction_relative_path(key):
+            raise ValueError(f"run summary prediction path differs for {key}")
+    for key in _REPORT_FILENAMES:
+        report = _require_mapping(reports[key], f"run summary report {key}")
+        if report.get("relative_path") != _report_relative_path(
+            staged.suite_version,
+            key,
+        ):
+            raise ValueError(f"run summary report path differs for {key}")
+    return staging_root, summary_path, summary
+
+
+def _verify_file_reference(
+    path: Path,
+    reference: Mapping[str, object],
+    expected_relative_path: str,
+    name: str,
+    *,
+    include_row_count: bool = False,
+) -> None:
+    fields = {"relative_path", "sha256", "size_bytes"}
+    if include_row_count:
+        fields.add("row_count")
+    if set(reference) != fields:
+        raise ValueError(f"{name} reference fields differ")
+    if reference["relative_path"] != expected_relative_path:
+        raise ValueError(f"{name} relative path differs")
+    if reference["size_bytes"] != path.stat().st_size:
+        raise ValueError(f"{name} size differs")
+    if reference["sha256"] != _sha256(path):
+        raise ValueError(f"{name} checksum differs")
+
+
+def _load_publication_package(
+    package_dir: Path,
+    staged: StagedLocalExperiment,
+    summary: Mapping[str, object],
+    horizon_key: str,
+) -> LoadedLocalModelPackage:
+    loaded = load_local_model_package(
+        package_dir,
+        expected_suite_version=staged.suite_version,
+        expected_source_git_commit=staged.source_git_commit,
+        expected_panel_sha256=staged.panel_sha256,
+    )
+    if loaded.predictor.horizon_key != horizon_key:
+        raise ValueError(f"published package {horizon_key} has wrong horizon")
+    packages = _require_mapping(summary["model_packages"], "model packages")
+    reference = _require_mapping(packages[horizon_key], horizon_key)
+    checksums = _require_mapping(
+        reference["member_checksums"],
+        f"{horizon_key} package checksums",
+    )
+    if checksums != loaded.checksums:
+        raise ValueError(
+            f"published {horizon_key} package checksums differ from summary"
+        )
+    return loaded
+
+
+def _validate_suite_reports(
+    report_paths: Mapping[str, Path],
+    loaded_packages: Mapping[str, LoadedLocalModelPackage],
+    summary: Mapping[str, object],
+    staged: StagedLocalExperiment,
+) -> None:
+    references = _require_mapping(summary["reports"], "run summary reports")
+    for key in _REPORT_FILENAMES:
+        _verify_file_reference(
+            report_paths[key],
+            _require_mapping(references[key], key),
+            _report_relative_path(staged.suite_version, key),
+            key,
+        )
+
+    aggregate = _aggregate_training_report(
+        staged.suite_version,
+        loaded_packages,
+    )
+    training_report = _read_json_object(
+        report_paths["training_threshold_report"],
+        "training_threshold_report.json",
+    )
+    validate_payload("training-report", training_report)
+    if training_report != aggregate:
+        raise ValueError("published training report does not match packages")
+
+    manifest = _read_json_object(
+        report_paths["run_manifest"],
+        "run_manifest.json",
+    )
+    if set(manifest) != _RUN_MANIFEST_FIELDS:
+        raise ValueError("published run_manifest.json fields differ")
+    created_at_utc = str(manifest["created_at_utc"])
+    _parse_utc(created_at_utc, "created_at_utc")
+    if (
+        _RUN_ID_PATTERN.fullmatch(str(manifest["run_id"])) is None
+        or manifest["run_id"]
+        != _run_id(_ACCEPTED_FEATURE_MONTH, created_at_utc)
+    ):
+        raise ValueError("published run manifest run_id is invalid")
+
+    panel = _require_mapping(summary["panel"], "run summary panel")
+    audit = _require_mapping(
+        summary["normalization_audit"],
+        "run summary normalization audit",
+    )
+    expected_horizons = {
+        key: {
+            "horizon_months": loaded_packages[key].predictor.horizon_months,
+            "target_month": loaded_packages[key].manifest["target_month"],
+            "threshold": float(loaded_packages[key].predictor.threshold),
+        }
+        for key in _HORIZON_ORDER
+    }
+    expected = {
+        "suite_version": staged.suite_version,
+        "runtime_backend": "local_python",
+        "gcp_write_performed": False,
+        "source_git_commit": staged.source_git_commit,
+        "dependency_versions": summary["dependency_versions"],
+        "panel": {
+            "sha256": panel["sha256"],
+            "size_bytes": panel["size_bytes"],
+            "row_count": panel["row_count"],
+        },
+        "normalization_audit": {
+            "sha256": audit["sha256"],
+            "size_bytes": audit["size_bytes"],
+        },
+        "feature_contract": {
+            "sha256": FEATURE_CONTRACT_FILE_SHA256,
+            "feature_schema_sha256": loaded_packages[
+                _HORIZON_ORDER[0]
+            ].manifest["feature_schema_sha256"],
+        },
+        "partition_asset": {"sha256": PARTITION_ASSET_SHA256},
+        "latest_feature_month": _ACCEPTED_FEATURE_MONTH,
+        "latest_label_month": _ACCEPTED_LATEST_LABEL_MONTH,
+        "training_target_month_range": aggregate[
+            "training_target_month_range"
+        ],
+        "validation_target_month_range": aggregate[
+            "validation_target_month_range"
+        ],
+        "horizons": expected_horizons,
+        "model_packages": summary["model_packages"],
+        "status": "validated",
+    }
+    mismatches = [
+        key for key, value in expected.items() if manifest.get(key) != value
+    ]
+    if mismatches:
+        raise ValueError(
+            f"published run manifest references differ: {mismatches}"
+        )
+
+
+def _prediction_metrics_match(
+    observed: Mapping[str, object],
+    expected: Mapping[str, object],
+    horizon_key: str,
+) -> None:
+    fields = (
+        "row_count",
+        "probability_min",
+        "probability_max",
+        "probability_mean",
+        "threshold",
+        "positive_label_count",
+        "fallback_counts",
+    )
+    if any(observed[field] != expected[field] for field in fields):
+        raise ValueError(
+            f"published {horizon_key} prediction metrics differ from summary"
+        )
+
+
+def _validate_prediction_file(
+    path: Path,
+    summary: Mapping[str, object],
+    horizon_key: str,
+    expected_admin_codes: tuple[object, ...],
+) -> pd.DataFrame:
+    horizons = _require_mapping(summary["horizons"], "run summary horizons")
+    horizon = _require_mapping(horizons[horizon_key], horizon_key)
+    prediction = _require_mapping(
+        horizon["prediction"],
+        f"{horizon_key} prediction",
+    )
+    _verify_file_reference(
+        path,
+        prediction,
+        _prediction_relative_path(horizon_key),
+        f"{horizon_key} prediction",
+        include_row_count=True,
+    )
+    frame = _read_local_prediction_csv(path)
+    if list(frame.columns) != list(LOCAL_PREDICTION_COLUMNS):
+        raise ValueError(f"published {horizon_key} columns differ")
+    if len(frame) != prediction["row_count"]:
+        raise ValueError(f"published {horizon_key} row count differs")
+    observed = validate_local_prediction_frame(
+        frame,
+        expected_admin_codes=expected_admin_codes,
+        feature_month=str(summary["latest_feature_month"]),
+        target_month=str(horizon["target_month"]),
+        horizon_months=int(horizon["horizon_months"]),
+        suite_version=str(summary["suite_version"]),
+    )
+    _prediction_metrics_match(observed, horizon, horizon_key)
+    return frame
+
+
+def _validate_prediction_suite_summary(
+    frames: Mapping[str, pd.DataFrame],
+    summary: Mapping[str, object],
+    expected_admin_codes: tuple[object, ...],
+) -> None:
+    observed = validate_local_prediction_suite(
+        frames,
+        expected_admin_codes=expected_admin_codes,
+        feature_month=str(summary["latest_feature_month"]),
+        suite_version=str(summary["suite_version"]),
+    )
+    horizons = _require_mapping(summary["horizons"], "run summary horizons")
+    for key in _HORIZON_ORDER:
+        horizon = _require_mapping(horizons[key], key)
+        if observed["target_months"][key] != horizon["target_month"]:
+            raise ValueError(f"published {key} target month differs")
+        _prediction_metrics_match(
+            observed["horizon_summaries"][key],
+            horizon,
+            key,
+        )
+    population = _require_mapping(summary["population"], "run population")
+    baseline = observed["horizon_summaries"][_HORIZON_ORDER[0]]
+    if baseline["population_counts"] != {
+        "raw_last_observed": population["raw_last_observed_count"],
+        "missing_raw": population["missing_raw_count"],
+    }:
+        raise ValueError("published population counts differ from summary")
+    if baseline["missing_admin_codes"] != population["missing_admin_codes"]:
+        raise ValueError("published missing population areas differ")
+
+
+def _copy_create_only(source: Path, destination: Path) -> None:
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    created = False
+    try:
+        with source.open("rb") as source_stream:
+            with destination.open("xb") as destination_stream:
+                created = True
+                shutil.copyfileobj(source_stream, destination_stream)
+        shutil.copystat(source, destination)
+    except Exception:
+        if created and (destination.is_file() or destination.is_symlink()):
+            destination.unlink(missing_ok=True)
+        raise
+
+
+def _remove_files(paths: list[Path]) -> None:
+    for path in reversed(paths):
+        try:
+            if path.is_file() or path.is_symlink():
+                path.unlink()
+        except OSError:
+            continue
+
+
+def _load_staged_inputs(
+    staged: StagedLocalExperiment,
+    config: LocalExperimentConfig,
+    output_root: Path,
+) -> tuple[
+    Path,
+    dict[str, object],
+    dict[str, Path],
+    dict[str, LoadedLocalModelPackage],
+    dict[str, Path],
+    dict[str, Path],
+    tuple[object, ...],
+]:
+    staging_root, summary_path, summary = _load_staged_summary(
+        staged,
+        config,
+        output_root,
+    )
+    if set(staged.package_dirs) != set(_HORIZON_ORDER):
+        raise ValueError("staged package set differs")
+    if set(staged.report_files) != set(_REPORT_FILENAMES):
+        raise ValueError("staged report set differs")
+    if set(staged.prediction_files) != set(_HORIZON_ORDER):
+        raise ValueError("staged prediction set differs")
+
+    source_root = output_root if staged.reused_model_suite else staging_root
+    package_paths: dict[str, Path] = {}
+    loaded_packages: dict[str, LoadedLocalModelPackage] = {}
+    for key in _HORIZON_ORDER:
+        source = _safe_existing_dir(
+            staged.package_dirs[key],
+            source_root,
+            f"staged {key} model package",
+        )
+        final = _safe_publication_path(
+            output_root,
+            _package_relative_path(staged.suite_version, key),
+            f"final {key} model package",
+        )
+        if staged.reused_model_suite and not _paths_equal(source, final):
+            raise ValueError("reused packages must remain at final paths")
+        package_paths[key] = source
+        loaded_packages[key] = _load_publication_package(
+            source,
+            staged,
+            summary,
+            key,
+        )
+
+    report_paths: dict[str, Path] = {}
+    for key in _REPORT_FILENAMES:
+        source = _safe_existing_file(
+            staged.report_files[key],
+            source_root,
+            f"staged {key}",
+        )
+        final = _safe_publication_path(
+            output_root,
+            _report_relative_path(staged.suite_version, key),
+            f"final {key}",
+        )
+        if staged.reused_model_suite and not _paths_equal(source, final):
+            raise ValueError("reused reports must remain at final paths")
+        report_paths[key] = source
+    _validate_suite_reports(report_paths, loaded_packages, summary, staged)
+
+    prediction_paths = {
+        key: _safe_existing_file(
+            staged.prediction_files[key],
+            staging_root,
+            f"staged {key} prediction",
+        )
+        for key in _HORIZON_ORDER
+    }
+    first = _read_local_prediction_csv(prediction_paths[_HORIZON_ORDER[0]])
+    expected_admin_codes = tuple(first["admin_code"].tolist())
+    frames = {
+        key: _validate_prediction_file(
+            prediction_paths[key],
+            summary,
+            key,
+            expected_admin_codes,
+        )
+        for key in _HORIZON_ORDER
+    }
+    _validate_prediction_suite_summary(
+        frames,
+        summary,
+        expected_admin_codes,
+    )
+    return (
+        summary_path,
+        summary,
+        package_paths,
+        loaded_packages,
+        report_paths,
+        prediction_paths,
+        expected_admin_codes,
+    )
+
+
+def _publish_immutable_suite(
+    staged: StagedLocalExperiment,
+    output_root: Path,
+    summary: Mapping[str, object],
+    source_packages: Mapping[str, Path],
+    loaded_packages: Mapping[str, LoadedLocalModelPackage],
+    source_reports: Mapping[str, Path],
+) -> tuple[dict[str, Path], dict[str, Path]]:
+    final_packages = {
+        key: _safe_publication_path(
+            output_root,
+            _package_relative_path(staged.suite_version, key),
+            f"final {key} model package",
+        )
+        for key in _HORIZON_ORDER
+    }
+    final_reports = {
+        key: _safe_publication_path(
+            output_root,
+            _report_relative_path(staged.suite_version, key),
+            f"final {key}",
+        )
+        for key in _REPORT_FILENAMES
+    }
+    package_root = final_packages[_HORIZON_ORDER[0]].parent
+    report_root = final_reports["run_manifest"].parent
+
+    if staged.reused_model_suite:
+        reloaded = {
+            key: _load_publication_package(
+                _safe_existing_dir(
+                    final_packages[key],
+                    output_root,
+                    f"final {key} model package",
+                ),
+                staged,
+                summary,
+                key,
+            )
+            for key in _HORIZON_ORDER
+        }
+        _validate_suite_reports(final_reports, reloaded, summary, staged)
+        return final_packages, final_reports
+
+    if package_root.exists() or package_root.is_symlink():
+        raise FileExistsError(
+            f"local model suite is create-only: {package_root}"
+        )
+    if report_root.exists() or report_root.is_symlink():
+        raise FileExistsError(
+            f"local suite reports are create-only: {report_root}"
+        )
+    try:
+        for key in _HORIZON_ORDER:
+            shutil.copytree(source_packages[key], final_packages[key])
+            copied = _load_publication_package(
+                final_packages[key],
+                staged,
+                summary,
+                key,
+            )
+            if (
+                copied.manifest != loaded_packages[key].manifest
+                or copied.training_report
+                != loaded_packages[key].training_report
+                or copied.threshold_report
+                != loaded_packages[key].threshold_report
+                or copied.checksums != loaded_packages[key].checksums
+            ):
+                raise ValueError(f"published {key} package identity differs")
+        for key in _REPORT_FILENAMES:
+            _copy_create_only(source_reports[key], final_reports[key])
+        _validate_suite_reports(
+            final_reports,
+            loaded_packages,
+            summary,
+            staged,
+        )
+    except Exception:
+        if report_root.exists() and not report_root.is_symlink():
+            shutil.rmtree(report_root)
+        if package_root.exists() and not package_root.is_symlink():
+            shutil.rmtree(package_root)
+        raise
+    return final_packages, final_reports
+
+
+def _verify_final_publication(
+    staged: StagedLocalExperiment,
+    output_root: Path,
+    summary: Mapping[str, object],
+    prediction_paths: Mapping[str, Path],
+    report_paths: Mapping[str, Path],
+    expected_admin_codes: tuple[object, ...],
+) -> None:
+    loaded_packages = {
+        key: _load_publication_package(
+            _safe_existing_dir(
+                _safe_publication_path(
+                    output_root,
+                    _package_relative_path(staged.suite_version, key),
+                    f"final {key} model package",
+                ),
+                output_root,
+                f"final {key} model package",
+            ),
+            staged,
+            summary,
+            key,
+        )
+        for key in _HORIZON_ORDER
+    }
+    final_reports = {
+        key: _safe_existing_file(
+            report_paths[key],
+            output_root,
+            f"final {key}",
+        )
+        for key in _REPORT_FILENAMES
+    }
+    _validate_suite_reports(
+        final_reports,
+        loaded_packages,
+        summary,
+        staged,
+    )
+    frames = {
+        key: _validate_prediction_file(
+            _safe_existing_file(
+                prediction_paths[key],
+                output_root,
+                f"final {key} prediction",
+            ),
+            summary,
+            key,
+            expected_admin_codes,
+        )
+        for key in _HORIZON_ORDER
+    }
+    _validate_prediction_suite_summary(
+        frames,
+        summary,
+        expected_admin_codes,
+    )
+
+
+def publish_staged_local_experiment(
+    staged: StagedLocalExperiment,
+    config: LocalExperimentConfig,
+) -> LocalExperimentResult:
+    """Copy, reload, and verify one staged local experiment fail-closed."""
+    if not isinstance(staged, StagedLocalExperiment):
+        raise TypeError("staged must be a StagedLocalExperiment")
+    if not isinstance(config, LocalExperimentConfig):
+        raise TypeError("config must be a LocalExperimentConfig")
+    output_root = _resolve_output_root(config.output_root)
+    output_root.mkdir(parents=True, exist_ok=True)
+    output_root = _resolve_output_root(output_root)
+
+    (
+        summary_source,
+        summary,
+        source_packages,
+        loaded_packages,
+        source_reports,
+        staged_predictions,
+        expected_admin_codes,
+    ) = _load_staged_inputs(staged, config, output_root)
+    final_packages, final_reports = _publish_immutable_suite(
+        staged,
+        output_root,
+        summary,
+        source_packages,
+        loaded_packages,
+        source_reports,
+    )
+
+    _check_prediction_overwrite(
+        output_root,
+        overwrite=config.overwrite,
+    )
+    final_predictions = _final_prediction_paths(output_root)
+    final_summary = _final_summary_path(output_root)
+    final_summary.parent.mkdir(parents=True, exist_ok=True)
+    if config.overwrite and (final_summary.exists() or final_summary.is_symlink()):
+        if final_summary.is_symlink() or not final_summary.is_file():
+            raise ValueError("existing final run summary must be a regular file")
+        final_summary.unlink()
+
+    touched: list[Path] = []
+    frames: dict[str, pd.DataFrame] = {}
+    try:
+        for key in _HORIZON_ORDER:
+            destination = final_predictions[key]
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            touched.append(destination)
+            shutil.copy2(staged_predictions[key], destination)
+            frames[key] = _validate_prediction_file(
+                _safe_existing_file(
+                    destination,
+                    output_root,
+                    f"final {key} prediction",
+                ),
+                summary,
+                key,
+                expected_admin_codes,
+            )
+        _validate_prediction_suite_summary(
+            frames,
+            summary,
+            expected_admin_codes,
+        )
+    except Exception:
+        _remove_files(touched)
+        raise
+
+    try:
+        shutil.copy2(summary_source, final_summary)
+        published = _read_json_object(
+            _safe_existing_file(
+                final_summary,
+                output_root,
+                "final run summary",
+            ),
+            "final run_summary.json",
+        )
+        if published.get("status") != "passed" or published != summary:
+            raise ValueError("final run summary failed verification")
+        _verify_final_publication(
+            staged,
+            output_root,
+            published,
+            final_predictions,
+            final_reports,
+            expected_admin_codes,
+        )
+    except Exception:
+        if final_summary.is_file() or final_summary.is_symlink():
+            final_summary.unlink(missing_ok=True)
+        _remove_files(touched)
+        raise
+
+    return LocalExperimentResult(
+        run_id=staged.run_id,
+        suite_version=staged.suite_version,
+        output_root=output_root,
+        run_summary_path=final_summary,
+        prediction_paths=final_predictions,
+        model_package_paths=final_packages,
+        report_paths=final_reports,
+    )
+
+
+def run_local_experiment(config: LocalExperimentConfig) -> LocalExperimentResult:
+    """Build and publish one local experiment from a temporary sibling stage."""
+    if not isinstance(config, LocalExperimentConfig):
+        raise TypeError("config must be a LocalExperimentConfig")
+    output_root = _resolve_output_root(config.output_root)
+    _check_prediction_overwrite(
+        output_root,
+        overwrite=config.overwrite,
+    )
+    output_root.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(
+        prefix=f".{output_root.name}.staging-",
+        dir=output_root.parent,
+    ) as staging_root:
+        staged = build_staged_local_experiment(config, staging_root)
+        return publish_staged_local_experiment(staged, config)
