@@ -207,10 +207,25 @@ def select_training_window(
 ) -> pd.DataFrame:
     month_count = _validate_positive_integer(months, "months")
     end = _normalize_month_value(latest_label_month, "latest_label_month")
-    start = end - (month_count - 1)
     working = _prepare_aligned_frame(aligned)
-    selected = working.loc[
-        working[TARGET_MONTH_COLUMN].between(start, end)
+    eligible = working.loc[
+        working[TARGET_MONTH_COLUMN].le(end)
+    ].copy()
+    target_periods = sorted(eligible[TARGET_MONTH_COLUMN].unique())
+    if end not in target_periods:
+        raise ValueError(
+            "latest_label_month must be represented by labeled "
+            "target_month rows"
+        )
+    if len(target_periods) < month_count:
+        raise ValueError(
+            "training requires at least "
+            f"{month_count} distinct labeled target_month periods at or "
+            "before latest_label_month"
+        )
+    selected_periods = set(target_periods[-month_count:])
+    selected = eligible.loc[
+        eligible[TARGET_MONTH_COLUMN].isin(selected_periods)
     ].copy()
     return _sort_aligned_rows(selected)
 

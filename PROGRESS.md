@@ -1,5 +1,44 @@
 # FEWSNET Partitioned RF Model Suite Progress
 
+## Active Correction: FEWSNET Sparse-Label Training Window
+
+- Approved design:
+  `docs/superpowers/specs/2026-07-26-fewsnet-sparse-label-training-window-design.md`
+- Implementation plan:
+  `docs/superpowers/plans/2026-07-26-fewsnet-sparse-label-training-window.md`
+- Branch/worktree: `feat/fewsnet-local-202604` at
+  `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-local-202604`
+- Task 1 status: implementation verified; commit pending.
+- Fresh exact-worktree impact for `select_training_window`: `CRITICAL`,
+  with 5 direct dependents, 11 impacted symbols, 5 affected process groups,
+  and 3 affected modules. Direct dependents include `run_training_worker`,
+  `_train_new_package_suite`, and three horizon tests.
+- The task initially stopped as required. The user then explicitly authorized
+  this shared-core edit after the warning; that ruling did not broaden cloud,
+  output, IPCCH, dependency, Task 2, or model-mathematics scope.
+- Strict RED: the three new sparse-selector tests reported `3 failed in
+  7.15s`. The current selector returned only 18 sparse periods instead of 36,
+  accepted an absent latest-label boundary, and accepted only 35 distinct
+  periods without raising.
+- Minimal GREEN: `select_training_window` now chooses the latest requested
+  distinct labeled periods at or before the represented boundary, retains all
+  their rows, and fails closed for an absent boundary or insufficient history.
+  `split_threshold_window` is unchanged.
+- Focused GREEN: the exact RED selection reported `3 passed in 4.59s`.
+- Complete horizon regression:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest
+  tests/fewsnet_partitioned_rf/test_horizons.py -q -p no:cacheprovider`
+  -> `31 passed in 4.84s`, including the unchanged dense-cadence and split
+  regressions.
+- Files changed: `core/horizons.py`, `test_horizons.py`, and this ledger.
+- Implementation commit: this commit
+  (`fix: select sparse FEWSNET label periods`).
+- Clean-state boundary: `Outcome/fewsnet_partitioned_rf/` remains absent;
+  no cloud, network, output, dependency-pin, IPCCH, Task 2, or unrelated
+  mutation occurred.
+- Next task: Task 2 — accept sparse 36-period training while preserving the
+  existing 30/6 threshold reports.
+
 ## Active Feature: FEWSNET Local 202604 Prediction Experiment
 
 - Approved design: `docs/superpowers/specs/2026-07-26-fewsnet-local-202604-prediction-experiment-design.md`

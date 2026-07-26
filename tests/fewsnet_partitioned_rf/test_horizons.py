@@ -45,6 +45,26 @@ def aligned_fixture() -> pd.DataFrame:
     return pd.DataFrame(reversed(rows))
 
 
+def sparse_aligned_fixture() -> tuple[pd.DataFrame, list[pd.Period]]:
+    rows: list[dict[str, object]] = []
+    target_months = [
+        pd.Period("2018-01", freq="M") + 2 * index
+        for index in range(42)
+    ]
+    for admin_code in ("B", "A"):
+        for month_index, target_month in enumerate(target_months):
+            rows.append(
+                {
+                    "admin_code": admin_code,
+                    "feature_month": str(target_month),
+                    "target_month": target_month.start_time,
+                    "fews_ipc_crisis": float(month_index % 2),
+                    "predictor": float(target_month.ordinal),
+                }
+            )
+    return pd.DataFrame(reversed(rows)), target_months
+
+
 def test_horizon_alignment_uses_keyed_feature_and_target_months():
     result = align_horizon(feature_frame_fixture(), horizon_months=6)
 
@@ -150,6 +170,72 @@ def test_current_36_month_and_six_month_windows_are_exact():
     assert training["target_month"].dtype == pd.PeriodDtype(freq="M")
     assert validation["target_month"].nunique() == 6
     assert len(validation) == 12
+
+
+def test_training_window_selects_latest_36_sparse_labeled_periods():
+    frame, target_months = sparse_aligned_fixture()
+    latest_label_month = target_months[-2]
+    eligible_periods = [
+        period for period in target_months if period <= latest_label_month
+    ]
+    expected_periods = eligible_periods[-36:]
+
+    training = select_training_window(
+        frame,
+        latest_label_month=latest_label_month,
+        months=36,
+    )
+
+    assert sorted(training["target_month"].unique()) == expected_periods
+    assert len(training) == 72
+    assert training["target_month"].nunique() == 36
+    assert not training["target_month"].eq(target_months[-1]).any()
+    assert list(
+        training[["admin_code", "feature_month"]].itertuples(
+            index=False,
+            name=None,
+        )
+    ) == sorted(
+        training[["admin_code", "feature_month"]].itertuples(
+            index=False,
+            name=None,
+        )
+    )
+
+
+def test_training_window_requires_the_latest_label_boundary_period():
+    frame, target_months = sparse_aligned_fixture()
+    unlabeled_boundary = target_months[-2] + 1
+
+    with pytest.raises(
+        ValueError,
+        match="latest_label_month must be represented",
+    ):
+        select_training_window(
+            frame,
+            latest_label_month=unlabeled_boundary,
+            months=36,
+        )
+
+
+def test_training_window_requires_requested_distinct_period_count():
+    frame, target_months = sparse_aligned_fixture()
+    retained_periods = set(target_months[-35:])
+    only_35 = frame.loc[
+        pd.to_datetime(frame["target_month"])
+        .dt.to_period("M")
+        .isin(retained_periods)
+    ]
+
+    with pytest.raises(
+        ValueError,
+        match="at least 36 distinct labeled target_month periods",
+    ):
+        select_training_window(
+            only_35,
+            latest_label_month=target_months[-1],
+            months=36,
+        )
 
 
 @pytest.mark.parametrize("months", [0, -1, True, 6.5])
