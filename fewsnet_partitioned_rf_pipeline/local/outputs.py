@@ -88,6 +88,50 @@ _FALLBACK_SOURCES = (
     "pooled_missing_partition_model",
 )
 _PREDICTION_SOURCES = ("partition_model", *_FALLBACK_SOURCES)
+_LOCAL_CSV_STRING_COLUMNS = (
+    "admin_code",
+    "ADMIN0",
+    "ADMIN1",
+    "ADMIN2",
+    "ADMIN3",
+    "ISO3",
+    "population_reference_period",
+    "population_source",
+    "prediction_source",
+    "feature_month",
+    "target_month",
+    "suite_version",
+    "model_artifact_path",
+    "source_input",
+)
+_LOCAL_CSV_INTEGER_COLUMNS = (
+    "predicted_crisis",
+    "cluster_id",
+    "horizon_months",
+)
+_LOCAL_CSV_FLOAT_COLUMNS = (
+    "lat",
+    "lon",
+    "population",
+    "probability_crisis",
+    "threshold",
+)
+_LOCAL_CSV_NULLABLE_COLUMNS = (
+    "ADMIN0",
+    "ADMIN1",
+    "ADMIN2",
+    "ADMIN3",
+    "ISO3",
+    "population",
+    "population_reference_period",
+    "cluster_id",
+)
+_LOCAL_CSV_NULL_REPRESENTATION = ""
+_LOCAL_CSV_DTYPES = {
+    **{column: "string" for column in _LOCAL_CSV_STRING_COLUMNS},
+    **{column: "Int64" for column in _LOCAL_CSV_INTEGER_COLUMNS},
+    **{column: "Float64" for column in _LOCAL_CSV_FLOAT_COLUMNS},
+}
 _LOCAL_PREDICTION_VALIDATOR = Draft202012Validator(
     load_schema("local-prediction-record")
 )
@@ -685,36 +729,26 @@ def _sha256(path: Path) -> str:
 
 
 def _read_local_prediction_csv(path: Path) -> pd.DataFrame:
-    string_columns = {
-        "admin_code",
-        "ADMIN0",
-        "ADMIN1",
-        "ADMIN2",
-        "ADMIN3",
-        "ISO3",
-        "population_reference_period",
-        "population_source",
-        "prediction_source",
-        "feature_month",
-        "target_month",
-        "suite_version",
-        "model_artifact_path",
-        "source_input",
-    }
-    nullable_integer_columns = {"predicted_crisis", "cluster_id", "horizon_months"}
-    float_columns = {
-        "lat",
-        "lon",
-        "population",
-        "probability_crisis",
-        "threshold",
-    }
-    dtypes: dict[str, str] = {
-        column: "string" for column in string_columns
-    }
-    dtypes.update({column: "Int64" for column in nullable_integer_columns})
-    dtypes.update({column: "Float64" for column in float_columns})
-    return pd.read_csv(path, dtype=dtypes)
+    return pd.read_csv(
+        path,
+        dtype=_LOCAL_CSV_DTYPES,
+        keep_default_na=False,
+        na_values={
+            column: [_LOCAL_CSV_NULL_REPRESENTATION]
+            for column in _LOCAL_CSV_NULLABLE_COLUMNS
+        },
+    )
+
+
+def _canonicalize_local_prediction_csv_frame(frame: pd.DataFrame) -> pd.DataFrame:
+    canonical = frame.copy().reset_index(drop=True)
+    for column in _LOCAL_CSV_STRING_COLUMNS:
+        canonical[column] = canonical[column].astype("string")
+    for column in _LOCAL_CSV_INTEGER_COLUMNS:
+        canonical[column] = canonical[column].astype("Int64")
+    for column in _LOCAL_CSV_FLOAT_COLUMNS:
+        canonical[column] = canonical[column].astype("Float64")
+    return canonical.loc[:, list(LOCAL_PREDICTION_COLUMNS)]
 
 
 def write_local_prediction_csv(
@@ -734,13 +768,25 @@ def write_local_prediction_csv(
         encoding="utf-8",
         lineterminator="\n",
         mode="x",
+        na_rep=_LOCAL_CSV_NULL_REPRESENTATION,
     )
     reloaded = _read_local_prediction_csv(output_path)
     _require_exact_columns(reloaded, LOCAL_PREDICTION_COLUMNS, "written CSV")
     if len(reloaded) != len(candidate):
         raise ValueError("written CSV row count differs from the source frame")
-    if reloaded["admin_code"].tolist() != candidate["admin_code"].tolist():
-        raise ValueError("written CSV admin_code values differ after stable readback")
+    canonical_source = _canonicalize_local_prediction_csv_frame(candidate)
+    canonical_reloaded = _canonicalize_local_prediction_csv_frame(reloaded)
+    try:
+        pd.testing.assert_frame_equal(
+            canonical_reloaded,
+            canonical_source,
+            check_dtype=True,
+            check_exact=True,
+        )
+    except AssertionError as exc:
+        raise ValueError(
+            "written CSV values differ after stable readback"
+        ) from exc
     return {
         "path": str(output_path),
         "sha256": _sha256(output_path),

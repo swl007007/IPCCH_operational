@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from fewsnet_partitioned_rf_pipeline.local import outputs as local_outputs
 from fewsnet_partitioned_rf_pipeline.local.outputs import (
     LOCAL_PREDICTION_COLUMNS,
     build_identity_population_frame,
@@ -351,3 +352,80 @@ def test_local_prediction_csv_is_create_only_and_reports_verified_bytes(tmp_path
     with pytest.raises(FileExistsError, match="already exists"):
         write_local_prediction_csv(frame, output)
     assert output.read_bytes() == before
+
+
+def test_local_prediction_csv_readback_preserves_literal_na_identity_values(
+    tmp_path,
+):
+    frame = enriched_prediction_fixture(0)
+    frame.loc[0, "ADMIN1"] = "NA"
+    frame.loc[1, "ADMIN2"] = "N/A"
+    output = tmp_path / "predictions.csv"
+
+    write_local_prediction_csv(frame, output)
+
+    reloaded = local_outputs._read_local_prediction_csv(output)
+    assert isinstance(reloaded.loc[0, "ADMIN1"], str)
+    assert reloaded.loc[0, "ADMIN1"] == "NA"
+    assert reloaded.loc[1, "ADMIN2"] == "N/A"
+
+
+def test_local_prediction_csv_readback_preserves_genuine_nullable_values(tmp_path):
+    frame = enriched_prediction_fixture(0)
+    frame.loc[2, "ADMIN1"] = pd.NA
+    output = tmp_path / "predictions.csv"
+
+    write_local_prediction_csv(frame, output)
+
+    reloaded = local_outputs._read_local_prediction_csv(output)
+    assert pd.isna(reloaded.loc[2, "ADMIN1"])
+    assert pd.isna(reloaded.loc[2, "population"])
+    assert pd.isna(reloaded.loc[2, "population_reference_period"])
+    assert pd.isna(reloaded.loc[3, "cluster_id"])
+
+
+@pytest.mark.parametrize(
+    ("column", "replacement"),
+    (
+        ("ADMIN0", "drifted-admin0"),
+        ("ADMIN1", "drifted-admin1"),
+        ("ADMIN2", "drifted-admin2"),
+        ("ADMIN3", "drifted-admin3"),
+        ("ISO3", "DRF"),
+        ("lat", 6.0),
+        ("lon", 26.0),
+        ("population", 999.0),
+        ("population_reference_period", "2024-09"),
+        ("population_source", "missing_raw"),
+        ("probability_crisis", 0.3),
+        ("predicted_crisis", 1),
+        ("threshold", 0.6),
+        ("cluster_id", 6),
+        ("prediction_source", "pooled_small_partition"),
+        ("feature_month", "2026-05"),
+        ("target_month", "2026-05"),
+        ("horizon_months", 6),
+        ("suite_version", "drifted-suite"),
+        ("model_artifact_path", "model_artifacts/drifted/0m"),
+        ("source_input", "/tmp/drifted-panel.csv"),
+    ),
+)
+def test_local_prediction_csv_rejects_non_admin_readback_drift(
+    tmp_path,
+    monkeypatch,
+    column,
+    replacement,
+):
+    frame = enriched_prediction_fixture(0)
+    output = tmp_path / "predictions.csv"
+    stable_read = local_outputs._read_local_prediction_csv
+
+    def read_with_drift(path):
+        reloaded = stable_read(path)
+        reloaded.loc[0, column] = replacement
+        return reloaded
+
+    monkeypatch.setattr(local_outputs, "_read_local_prediction_csv", read_with_drift)
+
+    with pytest.raises(ValueError, match="values differ after stable readback"):
+        write_local_prediction_csv(frame, output)
