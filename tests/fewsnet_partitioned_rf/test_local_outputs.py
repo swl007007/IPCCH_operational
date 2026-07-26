@@ -384,6 +384,40 @@ def test_local_prediction_csv_readback_preserves_genuine_nullable_values(tmp_pat
     assert pd.isna(reloaded.loc[3, "cluster_id"])
 
 
+def test_local_prediction_csv_readback_preserves_difficult_float_bits(tmp_path):
+    expected = np.float64(0.15667971109871537)
+    frame = enriched_prediction_fixture(0)
+    frame.loc[0, "probability_crisis"] = expected
+    output = tmp_path / "predictions.csv"
+
+    write_local_prediction_csv(frame, output)
+
+    reloaded = local_outputs._read_local_prediction_csv(output)
+    actual = np.float64(reloaded.loc[0, "probability_crisis"])
+    assert actual.view(np.uint64) == expected.view(np.uint64)
+
+
+def test_local_prediction_csv_rejects_single_ulp_float_readback_drift(
+    tmp_path,
+    monkeypatch,
+):
+    frame = enriched_prediction_fixture(0)
+    frame.loc[0, "probability_crisis"] = np.float64(0.15667971109871537)
+    output = tmp_path / "predictions.csv"
+    stable_read = local_outputs._read_local_prediction_csv
+
+    def read_with_drift(path):
+        reloaded = stable_read(path)
+        value = np.float64(reloaded.loc[0, "probability_crisis"])
+        reloaded.loc[0, "probability_crisis"] = np.nextafter(value, 0.0)
+        return reloaded
+
+    monkeypatch.setattr(local_outputs, "_read_local_prediction_csv", read_with_drift)
+
+    with pytest.raises(ValueError, match="values differ after stable readback"):
+        write_local_prediction_csv(frame, output)
+
+
 @pytest.mark.parametrize(
     ("column", "replacement"),
     (

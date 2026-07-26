@@ -116,6 +116,11 @@ _LOCAL_CSV_FLOAT_COLUMNS = (
     "probability_crisis",
     "threshold",
 )
+_LOCAL_CSV_NON_FLOAT_COLUMNS = tuple(
+    column
+    for column in LOCAL_PREDICTION_COLUMNS
+    if column not in _LOCAL_CSV_FLOAT_COLUMNS
+)
 _LOCAL_CSV_NULLABLE_COLUMNS = (
     "ADMIN0",
     "ADMIN1",
@@ -130,7 +135,7 @@ _LOCAL_CSV_NULL_REPRESENTATION = ""
 _LOCAL_CSV_DTYPES = {
     **{column: "string" for column in _LOCAL_CSV_STRING_COLUMNS},
     **{column: "Int64" for column in _LOCAL_CSV_INTEGER_COLUMNS},
-    **{column: "Float64" for column in _LOCAL_CSV_FLOAT_COLUMNS},
+    **{column: "float64" for column in _LOCAL_CSV_FLOAT_COLUMNS},
 }
 _LOCAL_PREDICTION_VALIDATOR = Draft202012Validator(
     load_schema("local-prediction-record")
@@ -737,6 +742,7 @@ def _read_local_prediction_csv(path: Path) -> pd.DataFrame:
             column: [_LOCAL_CSV_NULL_REPRESENTATION]
             for column in _LOCAL_CSV_NULLABLE_COLUMNS
         },
+        float_precision="round_trip",
     )
 
 
@@ -747,8 +753,39 @@ def _canonicalize_local_prediction_csv_frame(frame: pd.DataFrame) -> pd.DataFram
     for column in _LOCAL_CSV_INTEGER_COLUMNS:
         canonical[column] = canonical[column].astype("Int64")
     for column in _LOCAL_CSV_FLOAT_COLUMNS:
-        canonical[column] = canonical[column].astype("Float64")
+        numeric = pd.to_numeric(canonical[column], errors="raise")
+        canonical[column] = numeric.to_numpy(
+            dtype=np.float64,
+            na_value=np.nan,
+        )
     return canonical.loc[:, list(LOCAL_PREDICTION_COLUMNS)]
+
+
+def _require_local_prediction_csv_values_equal(
+    actual: pd.DataFrame,
+    expected: pd.DataFrame,
+) -> None:
+    non_float_columns = list(_LOCAL_CSV_NON_FLOAT_COLUMNS)
+    if not actual.loc[:, non_float_columns].equals(
+        expected.loc[:, non_float_columns]
+    ):
+        raise ValueError("written CSV values differ after stable readback")
+
+    for column in _LOCAL_CSV_FLOAT_COLUMNS:
+        actual_missing = actual[column].isna().to_numpy(dtype=bool)
+        expected_missing = expected[column].isna().to_numpy(dtype=bool)
+        if not np.array_equal(actual_missing, expected_missing):
+            raise ValueError("written CSV values differ after stable readback")
+
+        non_missing = ~actual_missing
+        actual_bits = actual.loc[non_missing, column].to_numpy(
+            dtype=np.float64
+        ).view(np.uint64)
+        expected_bits = expected.loc[non_missing, column].to_numpy(
+            dtype=np.float64
+        ).view(np.uint64)
+        if not np.array_equal(actual_bits, expected_bits):
+            raise ValueError("written CSV values differ after stable readback")
 
 
 def write_local_prediction_csv(
@@ -776,17 +813,10 @@ def write_local_prediction_csv(
         raise ValueError("written CSV row count differs from the source frame")
     canonical_source = _canonicalize_local_prediction_csv_frame(candidate)
     canonical_reloaded = _canonicalize_local_prediction_csv_frame(reloaded)
-    try:
-        pd.testing.assert_frame_equal(
-            canonical_reloaded,
-            canonical_source,
-            check_dtype=True,
-            check_exact=True,
-        )
-    except AssertionError as exc:
-        raise ValueError(
-            "written CSV values differ after stable readback"
-        ) from exc
+    _require_local_prediction_csv_values_equal(
+        canonical_reloaded,
+        canonical_source,
+    )
     return {
         "path": str(output_path),
         "sha256": _sha256(output_path),
