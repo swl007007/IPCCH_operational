@@ -1,5 +1,32 @@
 # FEWSNET Partitioned RF Model Suite Progress
 
+## Active Feature: FEWSNET Local 202604 Prediction Experiment
+
+- Approved design: `docs/superpowers/specs/2026-07-26-fewsnet-local-202604-prediction-experiment-design.md`
+- Implementation plan: `docs/superpowers/plans/2026-07-26-fewsnet-local-202604-prediction-experiment.md`
+- Design commit: `179c8348121e5c9e5ac77e43860662d89dee44be`
+- Design SHA-256: `b91c81d15b53233d5e8cf958ac1702db6b17fed4f452c54d75f9ada3168374c9`
+- Branch/worktree: `feat/fewsnet-local-202604` at `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-local-202604`
+- Current task: Task 2 in progress
+- Cloud mutation status: none authorized or attempted
+- Output mutation status: no `Outcome/fewsnet_partitioned_rf/` artifacts published yet
+
+| Task | Status |
+| --- | --- |
+| 1. Truthful local model package | component-complete |
+| 2. Population and prediction output contract | in progress |
+| 3. Three-horizon staged engine | pending |
+| 4. Publication, CLI, docs, and ignore rule | pending |
+| 5. Full 2026-04 acceptance run | pending |
+
+### Active Feature Task 1 Evidence
+
+- Environment: `UV_CACHE_DIR=/tmp/ipcch-fewsnet-uv-cache uv pip check --python .venv/bin/python` -> `All installed packages are compatible`; the accepted bare-`imblearn` incompatibility remains unchanged, while the approved project bridge loaded the real `imblearn.over_sampling.SMOTE` and `tests/fewsnet_partitioned_rf/test_training_inference.py` passed `15 passed in 24.15s`.
+- RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_package.py -q -p no:cacheprovider` -> collection exit `2` with the expected `ModuleNotFoundError: No module named 'fewsnet_partitioned_rf_pipeline.local'` before local package production code or schema existed.
+- GREEN and focused regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_package.py tests/fewsnet_partitioned_rf/test_model_package.py tests/fewsnet_partitioned_rf/test_contracts.py -q -p no:cacheprovider` -> `95 passed in 15.21s`.
+- Static/schema/API checks: the new Python files passed `py_compile`; the local schema passed `Draft202012Validator.check_schema`; `LOCAL_PACKAGE_FILES`, both dataclass signatures, and both public function signatures match the approved Task 1 contract.
+- Scope boundary: Task 1 adds a local-only adapter, schema, test support, and focused tests; no existing function, class, or method, dependency pin, core model mathematics, GCP path, Vertex path, or output artifact was changed.
+
 ## Authority
 
 - Approved design: `docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md`

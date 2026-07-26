@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FEWSNET Local Model Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "runtime_backend",
+    "suite_version",
+    "feature_month",
+    "target_month",
+    "latest_label_month",
+    "horizon_key",
+    "horizon_months",
+    "source_panel",
+    "normalization_audit",
+    "feature_schema_sha256",
+    "partition_sha256",
+    "threshold",
+    "dependency_versions",
+    "source_git_commit",
+    "training_target_month_range",
+    "validation_target_month_range",
+    "files",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {"const": "fewsnet-local-model-package-v1"},
+    "runtime_backend": {"const": "local_python"},
+    "suite_version": {"type": "string", "pattern": "^local-[0-9]{6}-[0-9a-f]{12}-[0-9a-f]{12}$"},
+    "feature_month": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"},
+    "target_month": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"},
+    "latest_label_month": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"},
+    "horizon_key": {"enum": ["0m", "6m", "12m"]},
+    "horizon_months": {"enum": [0, 6, 12]},
+    "source_panel": {"$ref": "#/$defs/panelRef"},
+    "normalization_audit": {"$ref": "#/$defs/fileRef"},
+    "feature_schema_sha256": {"$ref": "#/$defs/sha256"},
+    "partition_sha256": {"$ref": "#/$defs/sha256"},
+    "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+    "dependency_versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["python", "numpy", "pandas", "scikit-learn", "joblib", "imbalanced-learn"],
+      "properties": {
+        "python": {"type": "string", "minLength": 1},
+        "numpy": {"type": "string", "minLength": 1},
+        "pandas": {"type": "string", "minLength": 1},
+        "scikit-learn": {"type": "string", "minLength": 1},
+        "joblib": {"type": "string", "minLength": 1},
+        "imbalanced-learn": {"type": "string", "minLength": 1}
+      }
+    },
+    "source_git_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "training_target_month_range": {"$ref": "#/$defs/monthRange"},
+    "validation_target_month_range": {"$ref": "#/$defs/monthRange"},
+    "files": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "enum": [
+          "model.joblib",
+          "feature_contract.json",
+          "partition_map.csv",
+          "threshold_report.json",
+          "training_report.json",
+          "local_model_manifest.json",
+          "checksums.json"
+        ]
+      }
+    },
+    "status": {"const": "validated"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "fileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size_bytes"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "size_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "panelRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size_bytes", "row_count"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "row_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "monthRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"},
+        "end": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"}
+      }
+    }
+  }
+}
