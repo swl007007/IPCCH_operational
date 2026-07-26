@@ -1,5 +1,10 @@
+import hashlib
+import json
+from pathlib import Path
+
 import pytest
 
+import fewsnet_partitioned_rf_pipeline.local.package as package_module
 from fewsnet_partitioned_rf_pipeline.local.package import (
     LOCAL_PACKAGE_FILES,
     load_local_model_package,
@@ -7,6 +12,49 @@ from fewsnet_partitioned_rf_pipeline.local.package import (
 )
 from fewsnet_partitioned_rf_pipeline.schemas import validate_payload
 from tests.fewsnet_partitioned_rf.local_test_support import build_package_fixture
+
+
+def _write_json(path: Path, payload: dict[str, object]) -> None:
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _refresh_checksum(package_dir: Path, filename: str) -> None:
+    target = package_dir / filename
+    checksums_path = package_dir / "checksums.json"
+    checksums = json.loads(checksums_path.read_text(encoding="utf-8"))
+    checksums[filename] = hashlib.sha256(target.read_bytes()).hexdigest()
+    _write_json(checksums_path, checksums)
+
+
+def _rewrite_json_and_checksum(
+    package_dir: Path,
+    filename: str,
+    payload: dict[str, object],
+) -> None:
+    _write_json(package_dir / filename, payload)
+    _refresh_checksum(package_dir, filename)
+
+
+def _forbid_joblib_load(monkeypatch) -> dict[str, bool]:
+    state = {"called": False}
+
+    def forbidden_joblib_load(path):
+        state["called"] = True
+        raise AssertionError(path)
+
+    monkeypatch.setattr(package_module.joblib, "load", forbidden_joblib_load)
+    return state
+
+
+@pytest.fixture
+def written_local_package(tmp_path):
+    predictor, metadata, reports = build_package_fixture()
+    package_dir = tmp_path / "0m"
+    write_local_model_package(package_dir, predictor, metadata, reports)
+    return package_dir, metadata
 
 
 def test_local_model_package_schema_rejects_vertex_identity():
@@ -121,3 +169,189 @@ def test_local_model_package_rejects_runtime_and_source_identity_drift(tmp_path)
             package_dir,
             expected_panel_sha256="e" * 64,
         )
+
+
+def test_write_rejects_approved_feature_contract_byte_drift_before_parsing(
+    tmp_path,
+    monkeypatch,
+):
+    predictor, metadata, reports = build_package_fixture()
+    payload = json.loads(package_module.FEATURE_CONTRACT_PATH.read_text(encoding="utf-8"))
+    drifted_contract = tmp_path / "feature_contract.json"
+    drifted_contract.write_text(
+        json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )
+    assert hashlib.sha256(drifted_contract.read_bytes()).hexdigest() != (
+        "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b"
+    )
+
+    called = False
+
+    def forbidden_contract_parse(path):
+        nonlocal called
+        called = True
+        raise AssertionError(path)
+
+    monkeypatch.setattr(package_module, "FEATURE_CONTRACT_PATH", drifted_contract)
+    monkeypatch.setattr(package_module, "load_feature_contract", forbidden_contract_parse)
+    with pytest.raises(ValueError, match="approved feature contract SHA-256"):
+        write_local_model_package(
+            tmp_path / "package",
+            predictor,
+            metadata,
+            reports,
+        )
+    assert called is False
+
+
+def test_load_rejects_semantic_feature_contract_byte_drift_before_joblib_load(
+    written_local_package,
+    monkeypatch,
+):
+    package_dir, _ = written_local_package
+    contract_path = package_dir / "feature_contract.json"
+    payload = json.loads(contract_path.read_text(encoding="utf-8"))
+    contract_path.write_text(
+        json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )
+    _refresh_checksum(package_dir, "feature_contract.json")
+    state = _forbid_joblib_load(monkeypatch)
+
+    with pytest.raises(ValueError, match="approved feature contract SHA-256"):
+        load_local_model_package(package_dir)
+    assert state["called"] is False
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_error"),
+    (
+        ("extra", "package files differ"),
+        ("directory", "regular non-symlink file"),
+    ),
+)
+def test_load_rejects_inventory_or_nonregular_member_before_joblib_load(
+    written_local_package,
+    monkeypatch,
+    case,
+    expected_error,
+):
+    package_dir, _ = written_local_package
+    if case == "extra":
+        (package_dir / "unexpected.txt").write_text("unexpected\n", encoding="utf-8")
+    else:
+        model_path = package_dir / "model.joblib"
+        model_path.unlink()
+        model_path.mkdir()
+    state = _forbid_joblib_load(monkeypatch)
+
+    with pytest.raises(ValueError, match=expected_error):
+        load_local_model_package(package_dir)
+    assert state["called"] is False
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_error"),
+    (
+        ("fields", "checksums.json fields differ"),
+        ("content", "checksum mismatch"),
+    ),
+)
+def test_load_rejects_checksum_fields_or_content_drift_before_joblib_load(
+    written_local_package,
+    monkeypatch,
+    case,
+    expected_error,
+):
+    package_dir, _ = written_local_package
+    if case == "fields":
+        checksums_path = package_dir / "checksums.json"
+        checksums = json.loads(checksums_path.read_text(encoding="utf-8"))
+        checksums.pop("training_report.json")
+        _write_json(checksums_path, checksums)
+    else:
+        (package_dir / "training_report.json").write_text("{}\n", encoding="utf-8")
+    state = _forbid_joblib_load(monkeypatch)
+
+    with pytest.raises(ValueError, match=expected_error):
+        load_local_model_package(package_dir)
+    assert state["called"] is False
+
+
+def test_load_rejects_manifest_schema_drift_before_joblib_load(
+    written_local_package,
+    monkeypatch,
+):
+    package_dir, _ = written_local_package
+    manifest_path = package_dir / "local_model_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["runtime_backend"] = "vertex_ai"
+    _rewrite_json_and_checksum(package_dir, "local_model_manifest.json", manifest)
+    state = _forbid_joblib_load(monkeypatch)
+
+    with pytest.raises(ValueError, match="local_python"):
+        load_local_model_package(package_dir)
+    assert state["called"] is False
+
+
+def test_load_rejects_expected_identity_before_joblib_load(
+    written_local_package,
+    monkeypatch,
+):
+    package_dir, _ = written_local_package
+    state = _forbid_joblib_load(monkeypatch)
+
+    with pytest.raises(ValueError, match="expected suite version"):
+        load_local_model_package(
+            package_dir,
+            expected_suite_version="local-202604-aaaaaaaaaaaa-bbbbbbbbbbbb",
+        )
+    assert state["called"] is False
+
+
+def test_load_rejects_partition_asset_drift_before_joblib_load(
+    written_local_package,
+    monkeypatch,
+):
+    package_dir, _ = written_local_package
+    partition_path = package_dir / "partition_map.csv"
+    partition_path.write_bytes(partition_path.read_bytes() + b"\n")
+    _refresh_checksum(package_dir, "partition_map.csv")
+    state = _forbid_joblib_load(monkeypatch)
+
+    with pytest.raises(ValueError, match="partition_sha256 does not match"):
+        load_local_model_package(package_dir)
+    assert state["called"] is False
+
+
+def test_load_rejects_invalid_report_before_joblib_load(
+    written_local_package,
+    monkeypatch,
+):
+    package_dir, _ = written_local_package
+    report_path = package_dir / "training_report.json"
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    report.pop("schema_version")
+    _rewrite_json_and_checksum(package_dir, "training_report.json", report)
+    state = _forbid_joblib_load(monkeypatch)
+
+    with pytest.raises(ValueError, match="training_report fields differ"):
+        load_local_model_package(package_dir)
+    assert state["called"] is False
+
+
+def test_load_rejects_runtime_compatibility_drift_before_joblib_load(
+    written_local_package,
+    monkeypatch,
+):
+    package_dir, _ = written_local_package
+    manifest_path = package_dir / "local_model_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["dependency_versions"]["numpy"] = "0.0.0"
+    _rewrite_json_and_checksum(package_dir, "local_model_manifest.json", manifest)
+    state = _forbid_joblib_load(monkeypatch)
+
+    with pytest.raises(ValueError, match="runtime dependency mismatch for numpy"):
+        load_local_model_package(package_dir)
+    assert state["called"] is False

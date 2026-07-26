@@ -13,7 +13,7 @@
 
 | Task | Status |
 | --- | --- |
-| 1. Truthful local model package | component-complete |
+| 1. Truthful local model package | component-complete; Fix Round 1 verified |
 | 2. Population and prediction output contract | in progress |
 | 3. Three-horizon staged engine | pending |
 | 4. Publication, CLI, docs, and ignore rule | pending |
@@ -26,6 +26,18 @@
 - GREEN and focused regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_package.py tests/fewsnet_partitioned_rf/test_model_package.py tests/fewsnet_partitioned_rf/test_contracts.py -q -p no:cacheprovider` -> `95 passed in 15.21s`.
 - Static/schema/API checks: the new Python files passed `py_compile`; the local schema passed `Draft202012Validator.check_schema`; `LOCAL_PACKAGE_FILES`, both dataclass signatures, and both public function signatures match the approved Task 1 contract.
 - Scope boundary: Task 1 adds a local-only adapter, schema, test support, and focused tests; no existing function, class, or method, dependency pin, core model mathematics, GCP path, Vertex path, or output artifact was changed.
+
+### Active Feature Task 1 Fix Round 1 Evidence
+
+- User ruling: `scikit-learn==1.8.0` and `imbalanced-learn==0.14.0` remain authoritative; `uv pip check` plus the reviewed `core.training._load_smote_type()` bridge returning the real `imblearn` `SMOTE` define runtime acceptance; bare `import imblearn` is explicitly not an acceptance condition. No dependency pin or `core.training` code changed.
+- Pre-edit GitNexus: upstream impact for `write_local_model_package`, `load_local_model_package`, `_approved_feature_contract`, and `_validate_contract_partition_and_reports` returned target-not-found, risk `UNKNOWN`, and `0` registered impacts because the named MCP index predates Task 1. Current-tree usage is limited to local exports/tests and later plan references; no HIGH or CRITICAL result occurred.
+- Byte-drift RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_package.py -q -p no:cacheprovider -k 'approved_feature_contract_byte_drift or semantic_feature_contract_byte_drift'` -> `2 failed, 13 deselected in 12.13s`; write parsed the drifted file before byte validation, and load reached the forbidden `joblib.load` after a semantically identical reserialization and checksum refresh.
+- Complete expanded local-package RED: the full local-package file -> `2 failed, 13 passed in 11.49s`; only the two missing approved-byte-identity behaviors failed, while the new inventory, non-regular member, checksum, manifest, expected identity, partition, report, and runtime pre-unpickle cases already passed.
+- Minimal fix: bind `feature_contract.json` to approved SHA-256 `3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b` through a streaming byte check immediately before parsing on both write and load.
+- Focused byte-drift GREEN: the exact RED selection -> `2 passed, 13 deselected in 5.77s`; the complete local-package file -> `15 passed in 7.37s`.
+- Required GREEN/regression: local package, production model package, and contracts -> `106 passed in 13.15s`; the existing training/inference compatibility bridge regression -> `15 passed in 20.58s`.
+- Environment/static checks: `UV_CACHE_DIR=/tmp/ipcch-fewsnet-uv-cache uv pip check --python .venv/bin/python` -> `All installed packages are compatible`; `py_compile` exited `0`; the frozen feature-contract SHA-256 matched the mandated digest; `git diff --check` exited `0`.
+- Plan/brief synchronization: Task 1 Step 1 now records the user-ruled acceptance boundary. The task-brief script was invoked through `bash` because its installed file lacked execute permission, with the explicit output `.superpowers/sdd/2026-07-26-fewsnet-local-202604-prediction-experiment/task-1-brief.md`; it regenerated `435` lines and contains the amended runtime acceptance text.
 
 ## Authority
 

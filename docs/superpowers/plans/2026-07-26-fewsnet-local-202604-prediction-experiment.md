@@ -105,7 +105,13 @@ UV_CACHE_DIR=/tmp/ipcch-fewsnet-uv-cache \
   -r requirements-fewsnet-partitioned-rf.txt
 ```
 
-Expected: `.venv/bin/python` imports `pandas`, `numpy`, `sklearn`, `joblib`, `imblearn`, and `jsonschema`; no tracked dependency file changes.
+Expected runtime acceptance:
+
+- The exact approved pins remain authoritative, including `scikit-learn==1.8.0` and `imbalanced-learn==0.14.0`; do not change dependency pins.
+- `UV_CACHE_DIR=/tmp/ipcch-fewsnet-uv-cache uv pip check --python .venv/bin/python` passes.
+- `.venv/bin/python -c 'import fewsnet_partitioned_rf_pipeline.core.training as training; smote = training._load_smote_type(); print(smote.__module__, smote.__name__)'` imports the reviewed project path and returns the real `imblearn` `SMOTE` through the existing temporary compatibility bridge.
+- Bare `import imblearn` is not an acceptance condition for this pinned pair; do not change the already reviewed bridge in `core.training`.
+- No tracked dependency file changes.
 
 Update `PROGRESS.md` with a new top-level active feature section containing:
 

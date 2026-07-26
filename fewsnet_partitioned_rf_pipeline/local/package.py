@@ -45,6 +45,9 @@ _CONTENT_FILES = tuple(
     filename for filename in LOCAL_PACKAGE_FILES if filename != "checksums.json"
 )
 _REPORT_FIELDS = {"training_report", "threshold_report"}
+_APPROVED_FEATURE_CONTRACT_SHA256 = (
+    "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b"
+)
 
 
 @dataclass(frozen=True)
@@ -143,7 +146,20 @@ def _approved_partition_map() -> PartitionMap:
         ) from exc
 
 
+def _require_approved_feature_contract_bytes(path: Path, name: str) -> None:
+    observed = _sha256(path)
+    if observed != _APPROVED_FEATURE_CONTRACT_SHA256:
+        raise PackageValidationError(
+            f"{name} does not match the approved feature contract SHA-256: "
+            f"expected {_APPROVED_FEATURE_CONTRACT_SHA256}, observed {observed}"
+        )
+
+
 def _approved_feature_contract():
+    _require_approved_feature_contract_bytes(
+        FEATURE_CONTRACT_PATH,
+        "approved feature contract",
+    )
     try:
         return load_feature_contract(FEATURE_CONTRACT_PATH)
     except (OSError, ValueError) as exc:
@@ -564,8 +580,13 @@ def _validate_contract_partition_and_reports(
     package_dir: Path,
     manifest: Mapping[str, object],
 ) -> tuple[object, PartitionMap, dict[str, object], dict[str, object]]:
+    feature_contract_path = package_dir / "feature_contract.json"
+    _require_approved_feature_contract_bytes(
+        feature_contract_path,
+        "feature_contract.json",
+    )
     try:
-        feature_contract = load_feature_contract(package_dir / "feature_contract.json")
+        feature_contract = load_feature_contract(feature_contract_path)
     except (OSError, ValueError) as exc:
         raise PackageValidationError(f"feature contract failed validation: {exc}") from exc
     if feature_contract.feature_schema_sha256 != manifest["feature_schema_sha256"]:
