@@ -8,7 +8,56 @@
   `docs/superpowers/plans/2026-07-26-fewsnet-sparse-label-training-window.md`
 - Branch/worktree: `feat/fewsnet-local-202604` at
   `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-local-202604`
-- Task 1 status: implementation verified; commit pending.
+- Task 1 status: complete and review-approved at
+  `0198909016bda0f6cf5b9c7ff77dfa35faf69eed`
+  (`fix: select sparse FEWSNET label periods`).
+- Task 2 status: implementation verified; independent review pending.
+- Fresh exact-worktree impact for `_validate_exact_training_window`: `HIGH`,
+  with 1 direct caller, 7 impacted symbols, 4 affected process groups, and 3
+  affected modules. The direct caller is `train_horizon_model`; transitive
+  reach is confined to the training CLI/worker and local suite paths.
+- Fresh exact-worktree impact for `train_horizon_model`: `CRITICAL`, with 2
+  direct callers, 8 impacted symbols, 5 affected process groups, and 3 affected
+  modules. Direct callers are `run_training_worker` and
+  `_train_new_package_suite`; transitive reach is confined to the training CLI
+  and local experiment/suite paths.
+- The fresh Task 2 impact results match the previously authorized shared-core
+  local/Vertex training scope and introduce no unrelated process, so the user
+  authorization resolves the risk gate.
+- Strict RED:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest
+  tests/fewsnet_partitioned_rf/test_training_inference.py::test_train_horizon_model_accepts_sparse_periods_and_reports_bounds
+  tests/fewsnet_partitioned_rf/test_training_inference.py::test_train_horizon_model_rejects_35_sparse_periods
+  -q -p no:cacheprovider` -> `2 failed in 12.71s`. The sparse 36-period
+  case reached the obsolete contiguous-window rejection, and the 35-period
+  case raised the old inclusive-window message instead of the required
+  distinct-period contract.
+- Minimal GREEN: `_validate_exact_training_window` still requires exactly 36
+  distinct target periods and still consumes the unchanged chronological 30/6
+  splitter, but no longer requires intervening calendar months. The public
+  trainer signature, model path, and report schema are unchanged.
+- Focused GREEN: the exact RED command -> `2 passed in 9.51s`.
+- Sparse report assertions prove training bounds `2014-04..2025-12`, fit
+  bounds `2014-04..2023-12`, validation bounds `2024-04..2025-12`, and sample
+  counts `180/150/30` across 36/30/6 observed periods.
+- Focused shared-core/local-runner regression:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest
+  tests/fewsnet_partitioned_rf/test_horizons.py
+  tests/fewsnet_partitioned_rf/test_training_inference.py
+  tests/fewsnet_partitioned_rf/test_training_job.py
+  tests/fewsnet_partitioned_rf/test_model_package.py
+  tests/fewsnet_partitioned_rf/test_local_runner.py
+  -q -p no:cacheprovider` -> `141 passed in 81.20s`.
+- Static parsing: the planned four-file `.venv/bin/python -m py_compile`
+  command exited `0`.
+- Files changed: `core/training.py`, `test_training_inference.py`, the FEWSNET
+  runbook, and this ledger. `core/horizons.py`, `test_horizons.py`, dependency
+  pins, SMOTE bridge, RF/imputer/partition/threshold math, schemas, outputs,
+  cloud state, and IPCCH artifacts are unchanged.
+- Implementation commit: this commit
+  (`fix: support sparse FEWSNET label periods`).
+- Next task: Task 3 — full regression and real `2026-04` acceptance, only after
+  Task 2 independent review approves the shared-core correction.
 - Fresh exact-worktree impact for `select_training_window`: `CRITICAL`,
   with 5 direct dependents, 11 impacted symbols, 5 affected process groups,
   and 3 affected modules. Direct dependents include `run_training_worker`,

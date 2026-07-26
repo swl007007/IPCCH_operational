@@ -101,6 +101,22 @@ def _aligned_training_frame() -> pd.DataFrame:
     return pd.DataFrame(reversed(rows)).reset_index(drop=True)
 
 
+def _sparse_aligned_training_frame() -> tuple[
+    pd.DataFrame,
+    list[pd.Period],
+]:
+    frame = _aligned_training_frame()
+    dense_periods = sorted(frame["target_month"].unique())
+    sparse_periods = [
+        pd.Period("2014-04", freq="M") + 4 * index
+        for index in range(36)
+    ]
+    period_mapping = dict(zip(dense_periods, sparse_periods, strict=True))
+    frame["feature_month"] = frame["feature_month"].map(period_mapping)
+    frame["target_month"] = frame["target_month"].map(period_mapping)
+    return frame, sparse_periods
+
+
 def _inference_frame() -> pd.DataFrame:
     return pd.DataFrame(
         {
@@ -478,6 +494,52 @@ def test_class_one_probability_handles_single_column_predict_proba(
     )
 
     np.testing.assert_array_equal(probability, np.full(2, expected))
+
+
+def test_train_horizon_model_accepts_sparse_periods_and_reports_bounds():
+    training = _training_module()
+    frame, target_periods = _sparse_aligned_training_frame()
+
+    result = training.train_horizon_model(
+        frame,
+        _feature_contract(),
+        _partition_map(),
+        "0m",
+    )
+
+    report = result.training_report
+    assert report["training_target_month_range"] == {
+        "start": str(target_periods[0]),
+        "end": str(target_periods[-1]),
+    }
+    assert report["fit_target_month_range"] == {
+        "start": str(target_periods[0]),
+        "end": str(target_periods[29]),
+    }
+    assert report["validation_target_month_range"] == {
+        "start": str(target_periods[30]),
+        "end": str(target_periods[-1]),
+    }
+    assert report["sample_count"] == 180
+    assert report["fit_sample_count"] == 150
+    assert report["validation_sample_count"] == 30
+
+
+def test_train_horizon_model_rejects_35_sparse_periods():
+    training = _training_module()
+    frame, target_periods = _sparse_aligned_training_frame()
+    only_35 = frame.loc[frame["target_month"].ne(target_periods[0])]
+
+    with pytest.raises(
+        ValueError,
+        match="exactly 36 distinct target_month periods",
+    ):
+        training.train_horizon_model(
+            only_35,
+            _feature_contract(),
+            _partition_map(),
+            "0m",
+        )
 
 
 def test_train_horizon_model_rejects_invalid_window_horizon_features_and_coverage():

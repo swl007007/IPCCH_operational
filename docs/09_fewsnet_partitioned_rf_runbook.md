@@ -2778,6 +2778,14 @@ PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m \
   --output-root "Outcome/fewsnet_partitioned_rf"
 ```
 
+Training uses the latest 36 distinct target periods with non-null labels at or
+before the audited `latest_label_month`. The periods may contain calendar
+gaps. The first 30 observed periods fit the temporary threshold-selection
+model, the last six validate the threshold, and the final model refits on all
+36. Training and validation start/end fields are bounds over those observed
+period sets; they do not assert that every intervening calendar month is
+labeled.
+
 Success prints exactly one JSON object to stdout. Runtime failure prints one
 JSON object to stderr and returns a nonzero exit code. The CLI intentionally
 has no GCS, Vertex, registry, endpoint, Batch Prediction, or shapefile option.

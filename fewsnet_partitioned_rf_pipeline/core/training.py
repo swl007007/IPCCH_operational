@@ -406,20 +406,8 @@ def _validate_exact_training_window(
     target_periods = sorted(combined[TARGET_MONTH_COLUMN].unique())
     if len(target_periods) != TRAIN_WINDOW_MONTHS:
         raise ValueError(
-            "training frame must contain exactly one inclusive "
-            f"{TRAIN_WINDOW_MONTHS}-target_month window"
-        )
-    expected_periods = list(
-        pd.period_range(
-            target_periods[0],
-            periods=TRAIN_WINDOW_MONTHS,
-            freq="M",
-        )
-    )
-    if target_periods != expected_periods:
-        raise ValueError(
-            "training frame must contain one contiguous inclusive "
-            f"{TRAIN_WINDOW_MONTHS}-target_month window"
+            "training frame must contain exactly "
+            f"{TRAIN_WINDOW_MONTHS} distinct target_month periods"
         )
     return fit, validation, combined
 
@@ -452,7 +440,7 @@ def train_horizon_model(
     partition_map: PartitionMap,
     horizon_key: str,
 ) -> HorizonTrainingResult:
-    """Select a threshold on 30 months and refit the final 36-month model."""
+    """Select a threshold on 30 labeled periods and refit on all 36."""
     horizon_months = _validate_horizon_key(horizon_key)
     if not isinstance(aligned_frame, pd.DataFrame):
         raise TypeError("aligned_frame must be a pandas.DataFrame")
