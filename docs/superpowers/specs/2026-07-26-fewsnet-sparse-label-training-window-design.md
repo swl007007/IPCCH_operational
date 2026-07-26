@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-26
 
-**Status:** Approved concept; written-spec review pending
+**Status:** Approved design
 
 **Pipeline root:** `fewsnet_partitioned_rf_pipeline/`
 
