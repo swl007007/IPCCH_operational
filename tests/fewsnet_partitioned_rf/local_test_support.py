@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
 from fewsnet_partitioned_rf_pipeline.config import (
@@ -9,6 +12,7 @@ from fewsnet_partitioned_rf_pipeline.config import (
     PARTITION_ASSET_SHA256,
 )
 from fewsnet_partitioned_rf_pipeline.core.inference import PartitionedRFPredictor
+from fewsnet_partitioned_rf_pipeline.core.normalization import normalize_panel
 from fewsnet_partitioned_rf_pipeline.core.partitions import PartitionMap
 from fewsnet_partitioned_rf_pipeline.core.preprocessing import (
     MaxPlusImputer,
@@ -159,3 +163,83 @@ def build_package_fixture() -> tuple[
         "threshold_report": threshold_report,
     }
     return predictor, metadata, reports
+
+
+def write_normalized_local_panel_fixture(
+    root: Path,
+) -> tuple[Path, Path, pd.DataFrame]:
+    root.mkdir(parents=True, exist_ok=False)
+    contract = load_feature_contract(FEATURE_CONTRACT_PATH)
+    source_columns = list(contract.required_source_columns)
+    periods = pd.period_range("2022-03", "2026-04", freq="M")
+    rows: list[dict[str, object]] = []
+    admin_rows = (
+        ("0", 9.551002, 29.130297, "Country A", "A1", "A2", "A3"),
+        ("1", 9.786447, 28.414507, "Country A", "A1", "B2", "B3"),
+        ("2", 7.799214, 32.853080, "Country B", "C1", "C2", "C3"),
+        ("3", 8.417933, 26.895620, "Country B", "C1", "D2", "D3"),
+    )
+    for area_index, values in enumerate(admin_rows):
+        admin_code, lat, lon, admin0, admin1, admin2, admin3 = values
+        for month_index, period in enumerate(periods):
+            row = {
+                name: float((column_index % 13) + 1) + month_index / 1000
+                for column_index, name in enumerate(source_columns)
+            }
+            has_label = period <= pd.Period("2026-02", freq="M")
+            row.update(
+                {
+                    "FEWSNET_admin_code": admin_code,
+                    "ISO": "SS",
+                    "lat": lat,
+                    "lon": lon,
+                    "month": period.month,
+                    "fews_ipc": float(2 + ((month_index + area_index) % 2)),
+                    "fews_ipc_crisis": (
+                        float((month_index + area_index) % 2)
+                        if has_label
+                        else None
+                    ),
+                    "date": period.to_timestamp().strftime("%Y-%m-%d"),
+                    "pop": (
+                        float(1000 + area_index * 100)
+                        if area_index < 2
+                        and period <= pd.Period("2024-10", freq="M")
+                        else None
+                    ),
+                    "ADMIN0": admin0,
+                    "ADMIN1": admin1,
+                    "ADMIN2": admin2,
+                    "ADMIN3": admin3,
+                    "ISO3": "SSD",
+                }
+            )
+            rows.append(row)
+
+    raw_identity_columns = (
+        "FEWSNET_admin_code",
+        "ISO",
+        "lat",
+        "lon",
+        "month",
+        "fews_ipc",
+        "fews_ipc_crisis",
+        "date",
+        "pop",
+        "ADMIN0",
+        "ADMIN1",
+        "ADMIN2",
+        "ADMIN3",
+        "ISO3",
+    )
+    raw_columns = [
+        *raw_identity_columns,
+        *(name for name in source_columns if name not in raw_identity_columns),
+    ]
+    raw_frame = pd.DataFrame(rows, columns=raw_columns)
+    raw_path = root / "panel.raw.csv"
+    normalized_path = root / "panel.normalized-v1.csv"
+    audit_path = root / "panel.normalized-v1.audit.json"
+    raw_frame.to_csv(raw_path, index=False, lineterminator="\n")
+    normalize_panel(raw_path, normalized_path, audit_path)
+    return normalized_path, audit_path, raw_frame

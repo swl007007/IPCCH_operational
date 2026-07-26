@@ -7,7 +7,7 @@
 - Design commit: `179c8348121e5c9e5ac77e43860662d89dee44be`
 - Design SHA-256: `b91c81d15b53233d5e8cf958ac1702db6b17fed4f452c54d75f9ada3168374c9`
 - Branch/worktree: `feat/fewsnet-local-202604` at `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-local-202604`
-- Current task: Task 2 component-complete; independent review pending
+- Current task: Task 3 component-complete; independent review clean
 - Cloud mutation status: none authorized or attempted
 - Output mutation status: no `Outcome/fewsnet_partitioned_rf/` artifacts published yet
 
@@ -15,7 +15,7 @@
 | --- | --- |
 | 1. Truthful local model package | component-complete; Fix Round 1 verified |
 | 2. Population and prediction output contract | component-complete; implementation verified |
-| 3. Three-horizon staged engine | pending |
+| 3. Three-horizon staged engine | component-complete; Fix Round 1 verified |
 | 4. Publication, CLI, docs, and ignore rule | pending |
 | 5. Full 2026-04 acceptance run | pending |
 
@@ -49,6 +49,18 @@
 - Static/schema/API checks: both new Python files parse with `ast`; the local prediction schema passes Draft 2020-12 metaschema validation with exactly 22 required fields and `additionalProperties: false`; all seven approved public interfaces, including the exact 22-column constant and frozen population summary, import with the planned signatures; no Python line exceeds 88 characters.
 - Scale sanity check: a synthetic 5,718-row frame with two `missing_raw` areas passed the complete per-record JSON Schema and semantic validator in `0.681` seconds after import, without any model, output, cloud, or network mutation.
 - Scope boundary: Task 2 adds only `local/outputs.py`, the local prediction record schema, focused behavior tests, and this ledger update. It does not modify an existing function, class, or method; core model mathematics, formal prediction columns, package behavior, dependency pins, GCP/Vertex paths, IPCCH fields, and `Outcome/` artifacts remain unchanged.
+
+### Active Feature Task 3 Evidence
+
+- Strict RED: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_runner.py -q -p no:cacheprovider` initially exited `2` with the expected missing `fewsnet_partitioned_rf_pipeline.local.runner`; the first complete implementation reached `8 passed`, then expanded hardening reached `9 passed` before review.
+- Three-horizon behavior: the staged engine validates the normalized panel/audit, clean Git/runtime identities, frozen feature and partition assets, trains or fully validates/reuses all `0m`, `6m`, and `12m` packages, reloads packages before prediction, writes cross-scope-validated CSVs, stages aggregate reports, and creates the passed summary last without GCP or network mutation.
+- Review-fix RED: the focused safety selection for a panel change during preflight, an audit rewrite after parsing, mixed-case IPCCH output, and mixed-case staging containment produced `4 failed, 10 deselected in 15.55s`; each failure was the expected accepted-invalid behavior.
+- Minimal safety fix: one resolved case-folded path-component primitive now governs path equality and containment, including IPCCH rejection and staging isolation; preflight binds the initial audit SHA-256/size and requires final panel bytes to match the audit-validated output identity before staging.
+- Focused GREEN: the exact four-test safety selection reported `4 passed, 10 deselected in 8.35s`; the complete runner file reported `14 passed in 14.63s`.
+- Required focused regression: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest tests/fewsnet_partitioned_rf/test_local_runner.py tests/fewsnet_partitioned_rf/test_local_package.py tests/fewsnet_partitioned_rf/test_local_outputs.py tests/fewsnet_partitioned_rf/test_training_job.py -q -p no:cacheprovider` -> `83 passed in 38.97s`.
+- Independent re-review: both Important findings were `ADDRESSED`, no new Critical or Important issue was found, and the reviewer independently reran `test_local_runner.py` with `14 passed in 14.59s`.
+- GitNexus pre-edit impact: `_preflight`, `_reject_ipcch_path`, and `_prepare_staging_root` were not yet indexed, so each returned target-not-found, risk `UNKNOWN`, and `0` registered impacts; live current-tree callers are confined to `build_staged_local_experiment` plus focused test monkeypatching, with no HIGH or CRITICAL result.
+- Static/scope checks: all three Task 3 Python files compile from source and contain no line longer than 88 characters. Task 3 changes only `PROGRESS.md`, `local/runner.py`, `test_local_runner.py`, and new helpers in `local_test_support.py`; core model mathematics, dependency pins, cloud/Vertex paths, IPCCH artifacts, and published FEWSNET outputs remain unchanged.
 
 ## Authority
 
