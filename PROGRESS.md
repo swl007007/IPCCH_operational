@@ -11,7 +11,11 @@
 - Task 1 status: complete and review-approved at
   `0198909016bda0f6cf5b9c7ff77dfa35faf69eed`
   (`fix: select sparse FEWSNET label periods`).
-- Task 2 status: implementation verified; independent review pending.
+- Task 2 status: complete and review-approved at
+  `57cb3b98119813abfc4bf15267270457a4727224`
+  (`fix: support sparse FEWSNET label periods`); no review findings.
+- Task 3 status: real `2026-04` acceptance verified; evidence commit is this
+  commit (`docs: record FEWSNET local 202604 acceptance`).
 - Fresh exact-worktree impact for `_validate_exact_training_window`: `HIGH`,
   with 1 direct caller, 7 impacted symbols, 4 affected process groups, and 3
   affected modules. The direct caller is `train_horizon_model`; transitive
@@ -56,8 +60,8 @@
   cloud state, and IPCCH artifacts are unchanged.
 - Implementation commit: this commit
   (`fix: support sparse FEWSNET label periods`).
-- Next task: Task 3 — full regression and real `2026-04` acceptance, only after
-  Task 2 independent review approves the shared-core correction.
+- Historical Task 2 next task: full regression and real `2026-04` acceptance,
+  only after independent review approved the shared-core correction.
 - Fresh exact-worktree impact for `select_training_window`: `CRITICAL`,
   with 5 direct dependents, 11 impacted symbols, 5 affected process groups,
   and 3 affected modules. Direct dependents include `run_training_worker`,
@@ -85,8 +89,111 @@
 - Clean-state boundary: `Outcome/fewsnet_partitioned_rf/` remains absent;
   no cloud, network, output, dependency-pin, IPCCH, Task 2, or unrelated
   mutation occurred.
-- Next task: Task 2 — accept sparse 36-period training while preserving the
-  existing 30/6 threshold reports.
+- Historical Task 1 next task: accept sparse 36-period training while
+  preserving the existing 30/6 threshold reports.
+
+### Active Correction Task 3 Acceptance Evidence
+
+- Sequencing ruling: tracked `PROGRESS.md` remained byte-clean through
+  dependency checks, the complete regression, source preflight, the real run,
+  the independent verifier, and IPCCH comparison because the runner requires a
+  clean tracked commit. Active progress was recorded only in the ignored
+  controller ledger until those gates passed.
+- Reviewed baseline: exact HEAD
+  `57cb3b98119813abfc4bf15267270457a4727224`; Task 1 commit
+  `0198909016bda0f6cf5b9c7ff77dfa35faf69eed` and Task 2 commit
+  `57cb3b98119813abfc4bf15267270457a4727224` are present and independently
+  approved. Tracked status was empty and `Outcome/fewsnet_partitioned_rf/`
+  was absent before the run.
+- Dependency/SMOTE gate:
+  `UV_CACHE_DIR=/tmp/ipcch-fewsnet-uv-cache uv pip check --python
+  .venv/bin/python` checked 68 packages and reported all compatible. The
+  reviewed bridge returned `imblearn.over_sampling._smote.base SMOTE`.
+- Complete FEWSNET regression:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest
+  tests/fewsnet_partitioned_rf -q -p no:cacheprovider` -> `592 passed, 1
+  skipped in 105.37s (0:01:45)`, exit 0.
+- Approved input identities: normalized panel size `773553094`, SHA-256
+  `510375f58cd835e694b6e287cce9439bbe1b6246d752daabc8151df8ffdda61d`;
+  normalization audit size `2150`, SHA-256
+  `1c37232629dd11f657e77c361a033f9a30e910441e5d8c73ea703f3b22ef1166`.
+  The panel has `1120728` rows, latest feature month `2026-04`, and latest
+  label month `2026-02`.
+- IPCCH before-manifest: all 18 files, size `2190`, SHA-256
+  `9417c236cbe5286d86d5797b46ede3475b47b2edcd79723d5f4ddf5b09e6c4d3`.
+- Exact real command: complete normalized panel, `--feature-month 2026-04`,
+  `--output-root Outcome/fewsnet_partitioned_rf`, no sampling option, and no
+  `--overwrite`. It ran in one persistent terminal from
+  `2026-07-26T23:39:52Z` to `2026-07-26T23:54:27Z`, elapsed `875` seconds,
+  and exited `0`. Progress was reported at intervals no greater than 60
+  seconds using elapsed time and output-root/summary existence; activity alone
+  was never treated as success.
+- CLI evidence: stdout is exactly one passed JSON object, size `2249`, SHA-256
+  `166d372cc7ebcb3de3ba0ca2e25c9394eadb4a9deac3e2aae196b195350f2f65`;
+  stderr is empty, size `0`, SHA-256
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+  Run ID is `local-202604-20260726T234026991270Z`; suite version is
+  `local-202604-57cb3b981198-510375f58cd8`; source commit is
+  `57cb3b98119813abfc4bf15267270457a4727224`; runtime backend is
+  `local_python`; `gcp_write_performed=false`.
+- Sparse training geometry: exactly 36 observed labeled periods bounded by
+  `2014-04..2026-02`; exactly 30 fit periods bounded by
+  `2014-04..2023-06`; validation periods are exactly `2023-10`, `2024-02`,
+  `2024-06`, `2024-10`, `2025-10`, and `2026-02`. Every horizon reports
+  `188643` training rows, `155067` fit rows, and `33576` validation rows. No
+  missing calendar month was filled, interpolated, synthesized, or weighted.
+- Independent verifier: the exact prescribed Python verifier exited `0` and
+  printed one `status: passed` JSON object. It reloaded all three packages
+  against the expected suite version, source commit, and panel SHA-256;
+  validated every referenced prediction/report size and checksum; and proved
+  5,718 unique administrative rows per horizon. Prediction targets are
+  `0m=2026-04`, `6m=2026-10`, and `12m=2027-04`.
+- Prediction CSVs: `0m` size `2402322`, SHA-256
+  `7c21f94485a5fdcab7088828ded2269dd25d706cd4b25957af4194552071dcb6`;
+  `6m` size `2402248`, SHA-256
+  `1961d0cfc01d5352dfedcc158e395e1a8ec2c0b7d698aa1ba48ca3ac22fceb68`;
+  `12m` size `2413776`, SHA-256
+  `e9f53600dab0cad14674b40e4586caf6d3a5a8e71874d6f4c18102b64458b3d1`.
+  Each has 5,718 rows and 22 columns.
+- Reloadable package inventory: each package has seven files. `0m` total size
+  `64963367`, `checksums.json` SHA-256
+  `03e4fb673c898e5c4f3ef58badab98b257db4e349c27204c9e656ff19f88e4d8`;
+  `6m` total size `84987388`, checksum-file SHA-256
+  `1a53d74e0aaa98ad81a653121d3910a1c02d34dcdfc6e27471a02a079822cbd0`;
+  `12m` total size `76696798`, checksum-file SHA-256
+  `b973b5f3d429af6ee5685a30cb74c56e8fddb3dfb1047d6e9605fe9d9af8bc29`.
+  All contain feature-contract SHA-256
+  `3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b`
+  and partition-map SHA-256
+  `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
+- Suite reports: run manifest size `3982`, SHA-256
+  `b141f968a144c3e452206ed2b3d5d99164638a3b42f8b792ee8afeddd1809a9b`;
+  training-threshold report size `27040`, SHA-256
+  `542b7731246f48fbd923b7f5cc8594bf35b43ef512af2087c726b85eac59470b`;
+  passed run summary size `8972`, SHA-256
+  `e574aac26fa2630dd46e9efad95bdc428dd91b9230de42dd9f34de4eba7abb1e`.
+  The complete ignored output root has 27 files; its sorted checksum-manifest
+  SHA-256 is
+  `fed32b48b19ef7d9a71f6fdd38b1948b555c4019938af3f9f6dd3bde1984a83c`.
+- Population provenance in every horizon: 5,716 `raw_last_observed` rows from
+  reference period `2024-10`, plus two `missing_raw` rows for admin codes
+  `216` and `2786`.
+- IPCCH after-manifest: all 18 files, size `2190`, SHA-256
+  `9417c236cbe5286d86d5797b46ede3475b47b2edcd79723d5f4ddf5b09e6c4d3`;
+  exact `cmp` against the before-manifest exited `0`. Tracked status was empty
+  before evidence-document updates.
+- Mutation boundary: no GCP, GCS, Vertex AI, Model Registry, Batch Prediction,
+  endpoint, alias, network service, production-pointer, overwrite, or IPCCH
+  mutation was attempted. Generated FEWSNET artifacts remain ignored and
+  outside Git.
+- Evidence files updated: the ignored sparse-label controller ledger, earlier
+  prediction-experiment ledger, earlier Task 5 report, and Task 3 operator
+  report, plus tracked `PROGRESS.md`. Stage and commit only `PROGRESS.md`.
+- Staged acceptance gate: exact-worktree GitNexus detection reports `LOW` risk
+  across one tracked file, 12 mapped documentation sections, and zero affected
+  execution processes. The staged path is exactly `PROGRESS.md`; staged
+  whitespace validation exits `0`. Generated FEWSNET outputs and ignored SDD
+  evidence files remain outside the commit.
 
 ## Active Feature: FEWSNET Local 202604 Prediction Experiment
 
@@ -95,17 +202,18 @@
 - Design commit: `179c8348121e5c9e5ac77e43860662d89dee44be`
 - Design SHA-256: `b91c81d15b53233d5e8cf958ac1702db6b17fed4f452c54d75f9ada3168374c9`
 - Branch/worktree: `feat/fewsnet-local-202604` at `/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.worktrees/fewsnet-local-202604`
-- Current task: Task 4 Fix Round 1 verified; independent re-review pending
+- Current task: Task 5 real-source acceptance complete
 - Cloud mutation status: none authorized or attempted
-- Output mutation status: no `Outcome/fewsnet_partitioned_rf/` artifacts published yet
+- Output mutation status: accepted ignored local artifacts published under
+  `Outcome/fewsnet_partitioned_rf/`; no cloud or IPCCH mutation
 
 | Task | Status |
 | --- | --- |
-| 1. Truthful local model package | component-complete; Fix Round 1 verified |
-| 2. Population and prediction output contract | component-complete; implementation verified |
-| 3. Three-horizon staged engine | component-complete; Fix Round 1 verified |
-| 4. Publication, CLI, docs, and ignore rule | component-complete; Fix Round 1 verified; re-review pending |
-| 5. Full 2026-04 acceptance run | pending |
+| 1. Truthful local model package | component-complete; review clean |
+| 2. Population and prediction output contract | component-complete; review clean |
+| 3. Three-horizon staged engine | component-complete; review clean |
+| 4. Publication, CLI, docs, and ignore rule | component-complete; review clean |
+| 5. Full 2026-04 acceptance run | integration-complete; PASSED |
 
 ### Active Feature Task 1 Evidence
 
