@@ -148,33 +148,68 @@
   validated every referenced prediction/report size and checksum; and proved
   5,718 unique administrative rows per horizon. Prediction targets are
   `0m=2026-04`, `6m=2026-10`, and `12m=2027-04`.
-- Prediction CSVs: `0m` size `2402322`, SHA-256
-  `7c21f94485a5fdcab7088828ded2269dd25d706cd4b25957af4194552071dcb6`;
-  `6m` size `2402248`, SHA-256
-  `1961d0cfc01d5352dfedcc158e395e1a8ec2c0b7d698aa1ba48ca3ac22fceb68`;
-  `12m` size `2413776`, SHA-256
-  `e9f53600dab0cad14674b40e4586caf6d3a5a8e71874d6f4c18102b64458b3d1`.
+- Prediction CSV paths and identities, relative to
+  `Outcome/fewsnet_partitioned_rf/`:
+  - `0m`:
+    `predictions/202604/fewsnet_partitioned_rf_202604_scope_0m_predictions.csv`;
+    size `2402322`; SHA-256
+    `7c21f94485a5fdcab7088828ded2269dd25d706cd4b25957af4194552071dcb6`.
+  - `6m`:
+    `predictions/202604/fewsnet_partitioned_rf_202604_scope_6m_predictions.csv`;
+    size `2402248`; SHA-256
+    `1961d0cfc01d5352dfedcc158e395e1a8ec2c0b7d698aa1ba48ca3ac22fceb68`.
+  - `12m`:
+    `predictions/202604/fewsnet_partitioned_rf_202604_scope_12m_predictions.csv`;
+    size `2413776`; SHA-256
+    `e9f53600dab0cad14674b40e4586caf6d3a5a8e71874d6f4c18102b64458b3d1`.
   Each has 5,718 rows and 22 columns.
-- Reloadable package inventory: each package has seven files. `0m` total size
-  `64963367`, `checksums.json` SHA-256
-  `03e4fb673c898e5c4f3ef58badab98b257db4e349c27204c9e656ff19f88e4d8`;
-  `6m` total size `84987388`, checksum-file SHA-256
-  `1a53d74e0aaa98ad81a653121d3910a1c02d34dcdfc6e27471a02a079822cbd0`;
-  `12m` total size `76696798`, checksum-file SHA-256
-  `b973b5f3d429af6ee5685a30cb74c56e8fddb3dfb1047d6e9605fe9d9af8bc29`.
-  All contain feature-contract SHA-256
+- Reloadable package paths and checksum-manifest identities, relative to
+  `Outcome/fewsnet_partitioned_rf/`; each package has seven files:
+  - `0m` root:
+    `model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m`; total size
+    `64963367`. Checksum manifest:
+    `model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/checksums.json`;
+    size `563`; SHA-256
+    `03e4fb673c898e5c4f3ef58badab98b257db4e349c27204c9e656ff19f88e4d8`.
+  - `6m` root:
+    `model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m`; total size
+    `84987388`. Checksum manifest:
+    `model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/checksums.json`;
+    size `563`; SHA-256
+    `1a53d74e0aaa98ad81a653121d3910a1c02d34dcdfc6e27471a02a079822cbd0`.
+  - `12m` root:
+    `model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m`; total size
+    `76696798`. Checksum manifest:
+    `model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/checksums.json`;
+    size `563`; SHA-256
+    `b973b5f3d429af6ee5685a30cb74c56e8fddb3dfb1047d6e9605fe9d9af8bc29`.
+  All packages contain feature-contract SHA-256
   `3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b`
   and partition-map SHA-256
   `4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b`.
-- Suite reports: run manifest size `3982`, SHA-256
-  `b141f968a144c3e452206ed2b3d5d99164638a3b42f8b792ee8afeddd1809a9b`;
-  training-threshold report size `27040`, SHA-256
-  `542b7731246f48fbd923b7f5cc8594bf35b43ef512af2087c726b85eac59470b`;
-  passed run summary size `8972`, SHA-256
-  `e574aac26fa2630dd46e9efad95bdc428dd91b9230de42dd9f34de4eba7abb1e`.
+- Suite-report and summary paths and identities, relative to
+  `Outcome/fewsnet_partitioned_rf/`:
+  - Run manifest:
+    `reports/local-202604-57cb3b981198-510375f58cd8/run_manifest.json`;
+    size `3982`; SHA-256
+    `b141f968a144c3e452206ed2b3d5d99164638a3b42f8b792ee8afeddd1809a9b`.
+  - Training-threshold report:
+    `reports/local-202604-57cb3b981198-510375f58cd8/training_threshold_report.json`;
+    size `27040`; SHA-256
+    `542b7731246f48fbd923b7f5cc8594bf35b43ef512af2087c726b85eac59470b`.
+  - Passed summary: `predictions/202604/run_summary.json`; size `8972`;
+    SHA-256
+    `e574aac26fa2630dd46e9efad95bdc428dd91b9230de42dd9f34de4eba7abb1e`.
   The complete ignored output root has 27 files; its sorted checksum-manifest
   SHA-256 is
   `fed32b48b19ef7d9a71f6fdd38b1948b555c4019938af3f9f6dd3bde1984a83c`.
+- Task 3 Fix Round 1 focused audit: all nine newly named file paths and all
+  three package roots resolve inside `Outcome/fewsnet_partitioned_rf/`; every
+  recorded size and SHA-256 matches `run_summary.json` or a direct streaming
+  SHA-256. Each prediction has 5,718 rows, `probability_crisis` is within
+  `[0,1]`, `predicted_crisis` is binary and equals
+  `(probability_crisis >= threshold).astype(int)`, and no column name contains
+  `phase` or `uncertainty`. The audit exited `0` with `status: passed`.
 - Population provenance in every horizon: 5,716 `raw_last_observed` rows from
   reference period `2024-10`, plus two `missing_raw` rows for admin codes
   `216` and `2786`.
