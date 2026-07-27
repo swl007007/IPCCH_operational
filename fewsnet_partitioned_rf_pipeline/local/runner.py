@@ -1393,16 +1393,31 @@ def _final_summary_path(output_root: Path) -> Path:
     )
 
 
+def _existing_publication_target_is_regular(path: Path, name: str) -> bool:
+    if not (path.exists() or path.is_symlink()):
+        return False
+    if _is_symlink_or_junction(path) or not path.is_file():
+        raise ValueError(f"existing {name} must be a regular file")
+    return True
+
+
 def _check_prediction_overwrite(
     output_root: Path,
     *,
     overwrite: bool,
 ) -> None:
-    targets = [
-        *_final_prediction_paths(output_root).values(),
-        _final_summary_path(output_root),
+    targets = {
+        **{
+            f"final {key} prediction": path
+            for key, path in _final_prediction_paths(output_root).items()
+        },
+        "final run summary": _final_summary_path(output_root),
+    }
+    existing = [
+        path
+        for name, path in targets.items()
+        if _existing_publication_target_is_regular(path, name)
     ]
-    existing = [path for path in targets if path.exists() or path.is_symlink()]
     if existing and not overwrite:
         raise FileExistsError(
             "local prediction output already exists; rerun with --overwrite: "
@@ -1788,11 +1803,41 @@ def _copy_create_only(source: Path, destination: Path) -> None:
         raise
 
 
+def _copy_publication_file(
+    source: Path,
+    destination: Path,
+    *,
+    overwrite: bool,
+    name: str,
+) -> None:
+    if not overwrite:
+        _copy_create_only(source, destination)
+        return
+    if not _existing_publication_target_is_regular(destination, name):
+        _copy_create_only(source, destination)
+        return
+    try:
+        shutil.copy2(source, destination)
+    except Exception:
+        if destination.is_file() or destination.is_symlink():
+            destination.unlink(missing_ok=True)
+        raise
+
+
 def _remove_files(paths: list[Path]) -> None:
     for path in reversed(paths):
         try:
             if path.is_file() or path.is_symlink():
                 path.unlink()
+        except OSError:
+            continue
+
+
+def _remove_owned_roots(paths: list[Path]) -> None:
+    for path in reversed(paths):
+        try:
+            if path.is_dir() and not _is_symlink_or_junction(path):
+                shutil.rmtree(path)
         except OSError:
             continue
 
@@ -1942,15 +1987,24 @@ def _publish_immutable_suite(
         _validate_suite_reports(final_reports, reloaded, summary, staged)
         return final_packages, final_reports
 
-    if package_root.exists() or package_root.is_symlink():
-        raise FileExistsError(
-            f"local model suite is create-only: {package_root}"
-        )
-    if report_root.exists() or report_root.is_symlink():
-        raise FileExistsError(
-            f"local suite reports are create-only: {report_root}"
-        )
+    claimed_roots: list[Path] = []
     try:
+        claims = (
+            (
+                package_root,
+                f"local model suite is create-only: {package_root}",
+            ),
+            (
+                report_root,
+                f"local suite reports are create-only: {report_root}",
+            ),
+        )
+        for root, message in claims:
+            try:
+                root.mkdir(parents=True, exist_ok=False)
+            except FileExistsError as exc:
+                raise FileExistsError(message) from exc
+            claimed_roots.append(root)
         for key in _HORIZON_ORDER:
             shutil.copytree(source_packages[key], final_packages[key])
             copied = _load_publication_package(
@@ -1977,10 +2031,7 @@ def _publish_immutable_suite(
             staged,
         )
     except Exception:
-        if report_root.exists() and not report_root.is_symlink():
-            shutil.rmtree(report_root)
-        if package_root.exists() and not package_root.is_symlink():
-            shutil.rmtree(package_root)
+        _remove_owned_roots(claimed_roots)
         raise
     return final_packages, final_reports
 
@@ -2066,6 +2117,19 @@ def publish_staged_local_experiment(
         staged_predictions,
         expected_admin_codes,
     ) = _load_staged_inputs(staged, config, output_root)
+    _check_prediction_overwrite(
+        output_root,
+        overwrite=config.overwrite,
+    )
+    final_predictions = _final_prediction_paths(output_root)
+    final_summary = _final_summary_path(output_root)
+    final_summary.parent.mkdir(parents=True, exist_ok=True)
+    if config.overwrite and (final_summary.exists() or final_summary.is_symlink()):
+        _existing_publication_target_is_regular(
+            final_summary,
+            "final run summary",
+        )
+        final_summary.unlink()
     final_packages, final_reports = _publish_immutable_suite(
         staged,
         output_root,
@@ -2075,26 +2139,18 @@ def publish_staged_local_experiment(
         source_reports,
     )
 
-    _check_prediction_overwrite(
-        output_root,
-        overwrite=config.overwrite,
-    )
-    final_predictions = _final_prediction_paths(output_root)
-    final_summary = _final_summary_path(output_root)
-    final_summary.parent.mkdir(parents=True, exist_ok=True)
-    if config.overwrite and (final_summary.exists() or final_summary.is_symlink()):
-        if final_summary.is_symlink() or not final_summary.is_file():
-            raise ValueError("existing final run summary must be a regular file")
-        final_summary.unlink()
-
     touched: list[Path] = []
     frames: dict[str, pd.DataFrame] = {}
     try:
         for key in _HORIZON_ORDER:
             destination = final_predictions[key]
-            destination.parent.mkdir(parents=True, exist_ok=True)
+            _copy_publication_file(
+                staged_predictions[key],
+                destination,
+                overwrite=config.overwrite,
+                name=f"final {key} prediction",
+            )
             touched.append(destination)
-            shutil.copy2(staged_predictions[key], destination)
             frames[key] = _validate_prediction_file(
                 _safe_existing_file(
                     destination,
@@ -2114,8 +2170,32 @@ def publish_staged_local_experiment(
         _remove_files(touched)
         raise
 
+    publication_summary_source: Path | None = None
+    summary_touched = False
     try:
-        shutil.copy2(summary_source, final_summary)
+        published_summary = dict(summary)
+        published_summary["completed_at_utc"] = utc_now()
+        if _parse_utc(
+            published_summary["completed_at_utc"],
+            "completed_at_utc",
+        ) < _parse_utc(published_summary["started_at_utc"], "started_at_utc"):
+            raise ValueError("completed_at_utc precedes started_at_utc")
+        with tempfile.NamedTemporaryFile(
+            mode="wb",
+            prefix=".run-summary-",
+            suffix=".json",
+            dir=summary_source.parent,
+            delete=False,
+        ) as stream:
+            publication_summary_source = Path(stream.name)
+            stream.write(_canonical_json_bytes(published_summary))
+        _copy_publication_file(
+            publication_summary_source,
+            final_summary,
+            overwrite=config.overwrite,
+            name="final run summary",
+        )
+        summary_touched = True
         published = _read_json_object(
             _safe_existing_file(
                 final_summary,
@@ -2124,8 +2204,16 @@ def publish_staged_local_experiment(
             ),
             "final run_summary.json",
         )
-        if published.get("status") != "passed" or published != summary:
+        if (
+            published.get("status") != "passed"
+            or published != published_summary
+        ):
             raise ValueError("final run summary failed verification")
+        _require_canonical_json_bytes(
+            final_summary,
+            published_summary,
+            "final run_summary.json",
+        )
         _verify_final_publication(
             staged,
             output_root,
@@ -2135,10 +2223,13 @@ def publish_staged_local_experiment(
             expected_admin_codes,
         )
     except Exception:
-        if final_summary.is_file() or final_summary.is_symlink():
-            final_summary.unlink(missing_ok=True)
+        if summary_touched or config.overwrite:
+            _remove_files([final_summary])
         _remove_files(touched)
         raise
+    finally:
+        if publication_summary_source is not None:
+            publication_summary_source.unlink(missing_ok=True)
 
     return LocalExperimentResult(
         run_id=staged.run_id,

@@ -4,7 +4,7 @@
 
 **Goal:** Add a truthful local-only execution path around the existing `fewsnet_partitioned_rf_pipeline` core that trains or safely reuses 0m, 6m, and 12m Random Forest packages, predicts the full `2026-04` FEWSNET area universe, and publishes three probability CSVs plus reloadable local model artifacts under `Outcome/fewsnet_partitioned_rf/`.
 
-**Architecture:** Add an isolated `fewsnet_partitioned_rf_pipeline.local` adapter without changing the existing feature, horizon, partition, training, inference, Vertex, or production model-package mathematics. A staged local engine validates the normalized panel and audit, records a clean Git/runtime identity, trains and reloads one truthful local package per horizon, enriches predictions with raw last-observed population, validates the three scopes together, and then a copy-based publisher makes accepted files visible with `run_summary.json` last.
+**Architecture:** Add an isolated `fewsnet_partitioned_rf_pipeline.local` adapter without changing the existing feature, horizon, partition, training, inference, Vertex, or production model-package mathematics. A staged local engine validates the normalized panel and audit, records a clean Git/runtime identity, trains and reloads one truthful local package per horizon, enriches predictions with raw last-observed population, validates the three scopes together, and then an ownership-claimed publisher makes accepted files visible with `run_summary.json` last.
 
 **Tech Stack:** Python 3.12, pandas 3.0.0, NumPy 2.4.2, scikit-learn 1.8.0, joblib 1.5.3, imbalanced-learn 0.14.0, JSON Schema Draft 2020-12, pytest 9.1.1, existing FEWSNET Stage 3/core APIs, local filesystem only.
 
@@ -34,7 +34,7 @@
 - The final root is `Outcome/fewsnet_partitioned_rf/`, independent of `Outcome/ipcch_unified/`. No local experiment operation may read, write, rename, remove, or overwrite `Outcome/ipcch_unified/` artifacts.
 - Model package directories are versioned and create-only. An existing deterministic suite is reusable only after all three packages and existing suite reports validate against the same suite, source commit, panel digest, member inventory, checksums, dependency versions, feature contract, partition asset, and reports.
 - Prediction files refuse overwrite by default. `--overwrite` applies only to the exact supplied FEWSNET output root and never grants authority over IPCCH paths.
-- Publication is copy-based for WSL/Dropbox paths. Remove an existing accepted `run_summary.json` only after explicit `--overwrite`, copy and verify the three CSVs, then copy the new passed summary last.
+- Publication remains WSL/Dropbox-safe, but create-only mode uses exclusive file creation and atomically claimed suite roots. `shutil.copy2` is limited to explicit overwrite of a target that is still a validated regular file. Remove an existing accepted `run_summary.json` only after explicit `--overwrite`, publish and verify the three CSVs, stamp completion, then publish the new passed summary last.
 - A failed run may leave temporary staging evidence, but it must not leave a passed final summary or a partial final suite that can be mistaken for accepted output.
 - The full real-source acceptance run must use the complete normalized panel and frozen RF parameters. Sampling is allowed only in checked-in tests.
 - No GCP, GCS, Vertex AI Custom Job, Model Registry, Batch Prediction, alias, production pointer, or network mutation is part of this plan.
@@ -1720,13 +1720,13 @@ class LocalExperimentResult:
 `publish_staged_local_experiment` must:
 
 1. Re-run the safe-output-root guard.
-2. For a new model suite, `shutil.copytree` each staged package to its create-only final directory, then reload every final package and compare expected identities/checksums.
+2. For a new model suite, atomically claim the package root and then the report root in that deterministic order before copying any members. Copy each staged package below the claimed package root, then reload every final package and compare expected identities/checksums. Cleanup may remove only roots successfully claimed by this publisher.
 3. For a reused suite, do not copy or modify packages; validate them again from final paths.
 4. Publish suite reports create-only. If already present for a reused suite, require byte-identical expected files and valid references; never overwrite a differing report.
-5. Before prediction publication, fail if any exact target exists and `overwrite` is false.
+5. Before prediction publication, reject any existing non-regular prediction or summary target in all modes. If a regular exact target exists and `overwrite` is false, fail early; the authoritative create-only write must still use exclusive creation so a target inserted after preflight is preserved.
 6. With explicit overwrite, unlink the existing final `run_summary.json` before copying any CSV, so a partial replacement cannot retain `status: passed`.
-7. Copy the three CSVs in `0m`, `6m`, `12m` order with `shutil.copy2`; after each copy, verify SHA-256, size, row count, columns, and frame contract against the staged summary.
-8. Copy `run_summary.json` last, reopen it, require `status == "passed"`, and verify all recorded final package/report/prediction checksums.
+7. Publish the three CSVs in `0m`, `6m`, `12m` order. Use exclusive creation by default; under explicit overwrite, `shutil.copy2` may replace only a target revalidated as a regular file. Track a create-only target for cleanup only after its exclusive copy succeeds. After each publication, verify SHA-256, size, row count, columns, and frame contract against the staged summary.
+8. After final packages, reports, and predictions are published and verified, stamp `completed_at_utc` and publish canonical `run_summary.json` last using the same exclusive-versus-explicit-overwrite rule. Reopen it, require `status == "passed"`, and verify all recorded final package/report/prediction checksums.
 9. Return `LocalExperimentResult` only after final verification.
 
 `run_local_experiment` must perform the no-overwrite check before expensive panel loading, create a temporary sibling staging directory with `tempfile.TemporaryDirectory`, call the staged engine, publish, and return the result.

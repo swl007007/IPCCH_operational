@@ -230,6 +230,78 @@
   whitespace validation exits `0`. Generated FEWSNET outputs and ignored SDD
   evidence files remain outside the commit.
 
+### Final Whole-Branch Publication Fix Wave
+
+- User ruling: the stronger immutable/create-only contract supersedes the
+  older unconditional-`shutil.copy2` plan wording. The user was warned that
+  `_copy_create_only` has `HIGH` blast radius and explicitly authorized this
+  fix wave.
+- Baseline: exact branch/worktree at
+  `1cb2e97e469f6faca766f717a8d21792e90e2a6c`, tracked status clean, accepted
+  27-file FEWSNET tree present, and complete 18-file IPCCH tree present.
+  Pre-change `test_local_runner.py` reported `26 passed in 59.28s`.
+- Approved pre-edit GitNexus evidence: `_copy_create_only` `HIGH` (1 direct
+  caller, 3 affected processes); `_publish_immutable_suite` `LOW`;
+  `publish_staged_local_experiment` `MEDIUM`; `_remove_files` `LOW`;
+  `_check_prediction_overwrite` `LOW`; `_run_summary` `LOW`. A fresh rebuilt
+  exact-worktree index again reported `_copy_create_only` `HIGH` and no new
+  `HIGH` or `CRITICAL` existing symbol. The two adapted legacy test functions
+  each had zero upstream dependents and `LOW` risk.
+- Confirmed root cause: no-overwrite prediction/summary publication used an
+  existence precheck followed by overwrite-capable `copy2`; new-suite cleanup
+  recursively removed package/report roots without proving ownership;
+  overwrite accepted a directory prediction target and left a nested CSV; and
+  the accepted summary retained its staging-time completion timestamp.
+- Strict RED command selected the five deterministic filesystem tests for
+  prediction insertion, summary insertion, interleaved suite publishers,
+  directory targets, and final completion timing. Against unmodified
+  production code it reported `5 failed in 34.95s`: both insertion cases did
+  not raise, the losing suite publisher deleted the winner's roots, the
+  directory target retained a nested CSV, and the final timestamp remained
+  `2026-07-26T12:00:00Z` instead of the controlled `12:05:00Z` publication
+  time.
+- Minimal GREEN: create-only predictions and the final summary now use
+  exclusive creation; `copy2` is limited to explicit overwrite of a target
+  revalidated as a regular file; cleanup records a create-only file only after
+  exclusive copy succeeds; new suites claim package root then report root and
+  remove only roots claimed by the current run; all non-regular publication
+  targets fail before copying; and canonical final-summary completion is
+  stamped only after packages, reports, and predictions are published and
+  verified.
+- Exact focused GREEN: the five-test RED command reported `5 passed in
+  26.95s`. Complete local-runner regression reported `31 passed in 64.98s
+  (0:01:04)`. Complete FEWSNET regression reported `597 passed, 1 skipped in
+  154.97s (0:02:34)`. The required two-file `py_compile` command exited `0`
+  with no output.
+- Preservation gate: the complete repository-relative FEWSNET manifest is 27
+  files, 4,657 bytes, SHA-256
+  `fed32b48b19ef7d9a71f6fdd38b1948b555c4019938af3f9f6dd3bde1984a83c`;
+  exact before/after `cmp` exited `0`. The complete IPCCH manifest is 18 files,
+  2,190 bytes, SHA-256
+  `9417c236cbe5286d86d5797b46ede3475b47b2edcd79723d5f4ddf5b09e6c4d3`;
+  exact before/after `cmp` exited `0`. The accepted summary remains SHA-256
+  `e574aac26fa2630dd46e9efad95bdc428dd91b9230de42dd9f34de4eba7abb1e`.
+- Intended tracked files: local runner, local-runner tests, the original local
+  experiment plan, the FEWSNET runbook, and this ledger. RF, SMOTE, imputation,
+  horizon/partition/threshold mathematics, package/prediction/report schemas,
+  dependency pins, cloud/Vertex code, generated FEWSNET artifacts, and all
+  IPCCH artifacts remain unchanged.
+- Mutation boundary: no real experiment, `--overwrite` against accepted
+  artifacts, GCP/GCS/Vertex/registry/Batch/endpoint/alias/network operation, or
+  production-pointer mutation was attempted.
+- Staged gate: the exact five intended tracked files produced `504 insertions,
+  50 deletions`; `git diff --cached --check` exited `0`. Exact-worktree
+  GitNexus staged detection reported aggregate `CRITICAL` across 5 files, 40
+  mapped symbols, and 22 affected flows. Exact zero-context hunk reconciliation
+  distinguishes the actual body diffs (`_check_prediction_overwrite`,
+  `_publish_immutable_suite`, `publish_staged_local_experiment`, two adapted
+  legacy tests, and new helpers/tests) from adjacency mappings whose bodies have
+  no diff (`_load_staged_summary`, `_load_staged_inputs`,
+  `_verify_final_publication`, neighboring tests, and removed local helper
+  symbols). No existing symbol outside the approved impact table required a
+  new `HIGH` or `CRITICAL` edit.
+- Implementation commit: this commit (`fix: harden FEWSNET local publication`).
+
 ## Active Feature: FEWSNET Local 202604 Prediction Experiment
 
 - Approved design: `docs/superpowers/specs/2026-07-26-fewsnet-local-202604-prediction-experiment-design.md`

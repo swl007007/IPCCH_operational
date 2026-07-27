@@ -2852,10 +2852,29 @@ Model packages and suite reports remain create-only. A fully valid existing
 suite is reloaded and reused; a missing, differing, symlinked, or checksum-
 invalid immutable artifact fails closed and is never overwritten.
 
+For a new suite, the publisher atomically claims the versioned package root
+first and the matching report root second before copying any member. A
+concurrent publisher that loses either claim fails without altering those
+roots. Cleanup recursively removes only roots that the current publisher
+successfully claimed. If an owning process is hard-killed, a partial claimed
+root may remain without a passed summary; that state is deliberately
+fail-closed and is not accepted or reused as a complete result.
+
+The early no-overwrite check is only an optimization. Each default-mode CSV
+and the final summary is authoritatively published with exclusive creation, so
+a rival file inserted after preflight is neither overwritten nor deleted by
+the losing run. With `--overwrite`, `shutil.copy2` is used only when the exact
+target is revalidated as an existing regular file; an absent target is still
+created exclusively. A directory, symlink, junction, socket, device, or other
+non-regular prediction/summary target is rejected in both modes, and the
+runner never copies a CSV inside a directory target.
+
 On an overwrite attempt, the accepted summary is removed before any CSV is
-copied. The runner verifies each copied CSV, then copies and reopens
-`run_summary.json` last and rechecks every recorded package, report, and
-prediction checksum. Trust a run only when the final summary has
+copied. The runner verifies each published CSV, stamps `completed_at_utc` only
+after final packages, reports, and predictions have been published and
+verified, then publishes canonical `run_summary.json` last and rechecks every
+recorded package, report, and prediction checksum. Trust a run only when the
+final summary has
 `status: passed` and all referenced files still match those checksums. If a
 run fails or the summary is absent, rerun the complete command; do not patch,
 splice, or hand-edit one CSV or its checksum metadata.

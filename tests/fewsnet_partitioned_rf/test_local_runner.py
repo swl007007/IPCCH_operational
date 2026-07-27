@@ -4,6 +4,7 @@ import hashlib
 import json
 import shutil
 import subprocess
+import threading
 from pathlib import Path
 
 import pandas as pd
@@ -99,24 +100,291 @@ def staged_fixture(
     return staged, config
 
 
+def tree_bytes_by_relative_path(root: Path) -> dict[str, bytes]:
+    return {
+        path.relative_to(root).as_posix(): path.read_bytes()
+        for path in sorted(root.rglob("*"))
+        if path.is_file()
+    }
+
+
 def test_publication_copies_three_csvs_and_writes_summary_last(
     tmp_path,
     monkeypatch,
 ):
     staged, config = staged_fixture(tmp_path, monkeypatch)
-    copied: list[str] = []
-    original_copy = runner.shutil.copy2
+    prediction_paths = {
+        key: (
+            config.output_root
+            / "predictions/202604"
+            / runner.PREDICTION_FILENAMES[key]
+        )
+        for key in ("0m", "6m", "12m")
+    }
+    final_summary = config.output_root / "predictions/202604/run_summary.json"
+    original_validate = runner._validate_prediction_suite_summary
+    observed_summary_absent = False
 
-    def recording_copy(source, destination):
-        copied.append(Path(destination).name)
-        return original_copy(source, destination)
+    def observe_final_prediction_validation(*args, **kwargs):
+        nonlocal observed_summary_absent
+        result = original_validate(*args, **kwargs)
+        if (
+            not observed_summary_absent
+            and all(path.is_file() for path in prediction_paths.values())
+        ):
+            assert not final_summary.exists()
+            observed_summary_absent = True
+        return result
 
-    monkeypatch.setattr(runner.shutil, "copy2", recording_copy)
+    monkeypatch.setattr(
+        runner,
+        "_validate_prediction_suite_summary",
+        observe_final_prediction_validation,
+    )
     result = runner.publish_staged_local_experiment(staged, config)
 
-    assert copied[-1] == "run_summary.json"
+    assert observed_summary_absent is True
     assert result.run_summary_path.exists()
     assert json.loads(result.run_summary_path.read_text())["status"] == "passed"
+
+
+def test_no_overwrite_preserves_prediction_inserted_after_preflight(
+    tmp_path,
+    monkeypatch,
+):
+    staged, config = staged_fixture(tmp_path, monkeypatch)
+    prediction_path = (
+        config.output_root
+        / "predictions/202604"
+        / runner.PREDICTION_FILENAMES["0m"]
+    )
+    rival_bytes = b"rival prediction\n"
+    original_mkdir = Path.mkdir
+    inserted = False
+
+    def insert_after_preflight(path, *args, **kwargs):
+        nonlocal inserted
+        result = original_mkdir(path, *args, **kwargs)
+        if path == prediction_path.parent and not inserted:
+            prediction_path.write_bytes(rival_bytes)
+            inserted = True
+        return result
+
+    monkeypatch.setattr(Path, "mkdir", insert_after_preflight)
+
+    with pytest.raises(FileExistsError):
+        runner.publish_staged_local_experiment(staged, config)
+
+    assert inserted is True
+    assert prediction_path.read_bytes() == rival_bytes
+
+
+def test_no_overwrite_preserves_rival_summary_and_cleans_owned_predictions(
+    tmp_path,
+    monkeypatch,
+):
+    staged, config = staged_fixture(tmp_path, monkeypatch)
+    prediction_paths = {
+        key: (
+            config.output_root
+            / "predictions/202604"
+            / runner.PREDICTION_FILENAMES[key]
+        )
+        for key in ("0m", "6m", "12m")
+    }
+    summary_path = config.output_root / "predictions/202604/run_summary.json"
+    rival_bytes = b'{"publisher":"rival"}\n'
+    original_validate = runner._validate_prediction_suite_summary
+    inserted = False
+
+    def insert_summary_after_prediction_validation(*args, **kwargs):
+        nonlocal inserted
+        result = original_validate(*args, **kwargs)
+        if (
+            not inserted
+            and all(path.is_file() for path in prediction_paths.values())
+        ):
+            assert not summary_path.exists()
+            summary_path.write_bytes(rival_bytes)
+            inserted = True
+        return result
+
+    monkeypatch.setattr(
+        runner,
+        "_validate_prediction_suite_summary",
+        insert_summary_after_prediction_validation,
+    )
+
+    with pytest.raises(FileExistsError):
+        runner.publish_staged_local_experiment(staged, config)
+
+    assert inserted is True
+    assert summary_path.read_bytes() == rival_bytes
+    assert all(not path.exists() for path in prediction_paths.values())
+
+
+def test_interleaved_new_suite_publishers_preserve_owner_roots(
+    tmp_path,
+    monkeypatch,
+):
+    paused_staged, config = staged_fixture(tmp_path, monkeypatch)
+    contender_staged = runner.build_staged_local_experiment(
+        config,
+        tmp_path / "staging-contender",
+    )
+    assert paused_staged.reused_model_suite is False
+    assert contender_staged.reused_model_suite is False
+
+    owner_reached_first_copy = threading.Event()
+    release_owner = threading.Event()
+    blocked_once = False
+    original_copytree = runner.shutil.copytree
+
+    def pause_first_package_copy(source, destination, *args, **kwargs):
+        nonlocal blocked_once
+        if (
+            threading.current_thread().name == "paused-suite-owner"
+            and Path(destination).name == "0m"
+            and not blocked_once
+        ):
+            blocked_once = True
+            owner_reached_first_copy.set()
+            if not release_owner.wait(timeout=30):
+                raise AssertionError("timed out waiting to release suite owner")
+        return original_copytree(source, destination, *args, **kwargs)
+
+    monkeypatch.setattr(runner.shutil, "copytree", pause_first_package_copy)
+    outcomes: dict[str, object] = {}
+
+    def publish_paused_owner() -> None:
+        try:
+            outcomes["paused"] = runner.publish_staged_local_experiment(
+                paused_staged,
+                config,
+            )
+        except BaseException as exc:  # pragma: no branch - captured for assertion
+            outcomes["paused"] = exc
+
+    owner_thread = threading.Thread(
+        target=publish_paused_owner,
+        name="paused-suite-owner",
+    )
+    owner_thread.start()
+    assert owner_reached_first_copy.wait(timeout=30)
+    try:
+        try:
+            outcomes["contender"] = runner.publish_staged_local_experiment(
+                contender_staged,
+                config,
+            )
+        except BaseException as exc:  # pragma: no branch - captured for assertion
+            outcomes["contender"] = exc
+    finally:
+        release_owner.set()
+    owner_thread.join(timeout=30)
+    assert not owner_thread.is_alive()
+
+    successful = {
+        name: outcome
+        for name, outcome in outcomes.items()
+        if isinstance(outcome, runner.LocalExperimentResult)
+    }
+    failed = {
+        name: outcome
+        for name, outcome in outcomes.items()
+        if isinstance(outcome, BaseException)
+    }
+    assert len(successful) == 1
+    assert len(failed) == 1
+    assert isinstance(next(iter(failed.values())), FileExistsError)
+
+    winner_name, winner_result = next(iter(successful.items()))
+    winner_staged = {
+        "paused": paused_staged,
+        "contender": contender_staged,
+    }[winner_name]
+    for key, final_package in winner_result.model_package_paths.items():
+        assert final_package.is_dir()
+        assert tree_bytes_by_relative_path(final_package) == (
+            tree_bytes_by_relative_path(winner_staged.package_dirs[key])
+        )
+    for key, final_report in winner_result.report_paths.items():
+        assert final_report.read_bytes() == winner_staged.report_files[
+            key
+        ].read_bytes()
+
+
+def test_overwrite_rejects_prediction_directory_without_nested_copy(
+    tmp_path,
+    monkeypatch,
+):
+    staged, config = staged_fixture(tmp_path, monkeypatch, overwrite=True)
+    prediction_target = (
+        config.output_root
+        / "predictions/202604"
+        / runner.PREDICTION_FILENAMES["0m"]
+    )
+    prediction_target.mkdir(parents=True)
+    sentinel = prediction_target / "sentinel.txt"
+    sentinel.write_bytes(b"keep\n")
+    nested_copy = prediction_target / staged.prediction_files["0m"].name
+
+    with pytest.raises(ValueError, match="regular file"):
+        runner.publish_staged_local_experiment(staged, config)
+
+    assert sentinel.read_bytes() == b"keep\n"
+    assert not nested_copy.exists()
+
+
+def test_final_summary_completion_is_stamped_after_prediction_verification(
+    tmp_path,
+    monkeypatch,
+):
+    staging_time = "2026-07-26T12:00:00Z"
+    publication_time = "2026-07-26T12:05:00Z"
+    clock = {"value": staging_time}
+    monkeypatch.setattr(runner, "utc_now", lambda: clock["value"])
+    staged, config = staged_fixture(tmp_path, monkeypatch)
+    staged_summary = json.loads(
+        staged.run_summary_path.read_text(encoding="utf-8")
+    )
+    prediction_paths = {
+        key: (
+            config.output_root
+            / "predictions/202604"
+            / runner.PREDICTION_FILENAMES[key]
+        )
+        for key in ("0m", "6m", "12m")
+    }
+    final_summary = config.output_root / "predictions/202604/run_summary.json"
+    original_validate = runner._validate_prediction_suite_summary
+    observed_summary_absent = False
+
+    def advance_clock_after_prediction_validation(*args, **kwargs):
+        nonlocal observed_summary_absent
+        result = original_validate(*args, **kwargs)
+        if (
+            not observed_summary_absent
+            and all(path.is_file() for path in prediction_paths.values())
+        ):
+            assert not final_summary.exists()
+            observed_summary_absent = True
+            clock["value"] = publication_time
+        return result
+
+    monkeypatch.setattr(
+        runner,
+        "_validate_prediction_suite_summary",
+        advance_clock_after_prediction_validation,
+    )
+
+    result = runner.publish_staged_local_experiment(staged, config)
+    published = json.loads(result.run_summary_path.read_text(encoding="utf-8"))
+
+    assert observed_summary_absent is True
+    assert staged_summary["completed_at_utc"] == staging_time
+    assert published["completed_at_utc"] == publication_time
+    assert published["completed_at_utc"] > staged_summary["completed_at_utc"]
 
 
 def test_publication_refuses_prediction_overwrite_before_expensive_build(
@@ -209,6 +477,10 @@ def test_overwrite_failure_never_leaves_passed_summary(tmp_path, monkeypatch):
     final_summary = config.output_root / "predictions/202604/run_summary.json"
     final_summary.parent.mkdir(parents=True, exist_ok=True)
     final_summary.write_text('{"status":"passed"}\n', encoding="utf-8")
+    final_6m = (
+        final_summary.parent / runner.PREDICTION_FILENAMES["6m"]
+    )
+    final_6m.write_text("old 6m prediction\n", encoding="utf-8")
     original_copy = runner.shutil.copy2
 
     def fail_on_6m(source, destination):
