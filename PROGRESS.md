@@ -2379,3 +2379,54 @@ The completed prediction-population-and-uncertainty ledger below is retained unc
 - Final whole-branch review and verification gate passed; remaining Minor smoke
   scope-set hardening is non-blocking.
 - Only after the final implementation commit has a digest-pinned runtime image and all named GCP resources, ADC, and immutable manifest URIs are confirmed should a unique live smoke run ID be allocated.
+
+## FEWSNET 202604 Country Aggregation and Non-negative Score Correction
+
+- User scope: apply the IPCCH post-processing concepts to
+  `Outcome/fewsnet_partitioned_rf/predictions/202604`: clip negative area
+  scores, aggregate to country level with area population weights, calculate
+  country-level area dispersion, and attach country names, ISO3, and an online
+  Census-derived referenced population without summing area populations.
+- FEWSNET semantic mapping: the only continuous score is
+  `probability_crisis`; no `phase2_worse_score` through
+  `phase5_worse_score` columns exist. Country score is the positive-population
+  weighted mean, and area dispersion is the matching weighted population SD.
+  Missing and zero area populations contribute no weight but remain explicitly
+  counted. No `country_predicted_crisis` field is generated.
+- Additive implementation:
+  `tools/build_fewsnet_country_level_predictions.py`; focused tests:
+  `tests/test_build_fewsnet_country_level_predictions.py`. No FEWSNET model,
+  training, inference, IPCCH builder, or existing production symbol was edited.
+- Strict RED: the initial focused command reported `3 failed` because the new
+  builder did not exist. The real country-scope preflight exposed one unused
+  `NAM` row with a blank `country_code`; a focused regression reproduced the
+  over-broad validation before it was narrowed to required country identity
+  fields. A separate threshold RED proved values outside `[0,1]` were accepted.
+- Final focused GREEN:
+  `PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q
+  tests/test_build_fewsnet_country_level_predictions.py` -> `4 passed in
+  1.23s`.
+- Real execution used the three accepted 5,718-row FEWSNET area CSVs, the
+  repository country scope, and the existing online Census IDB-derived table at
+  `Outcome/ipcch_unified/predictions/202604/country_level/census_idb_2026_ipcch_country_population.csv`.
+  It produced three 22-country scope tables, one 66-row combined table, a
+  22-country Census subset, and `country_level_run_summary.json` under
+  `Outcome/fewsnet_partitioned_rf/predictions/202604/country_level/`.
+- Real correction summary: negative `probability_crisis` cells clipped `0`;
+  inconsistent `predicted_crisis` cells recomputed `0`; each scope reports two
+  missing-population areas and seven zero-population areas. Because no real
+  correction was needed, all three area CSVs remain byte-identical to the
+  pre-run backup at
+  `/tmp/fewsnet-country-aggregation-202604-before.9rBkX0/202604`.
+- Independent recomputation found maximum absolute differences of
+  `2.220446049250313e-16` for country means and
+  `9.71445146547012e-17` for weighted SDs. Census fields matched for all
+  `22/22` countries, combined records exactly matched the three ordered scope
+  tables, and all scores and dispersion values were finite and non-negative.
+- Fresh final verification ran both the FEWSNET and IPCCH country-builder tests
+  (`7 passed in 2.53s`), compiled the new FEWSNET script/test successfully,
+  passed `git diff --check`, and repeated the full real-artifact recomputation.
+  GitNexus reported LOW aggregate risk with zero affected execution processes;
+  the new additive untracked script/test are not yet represented in its index.
+- No commit, push, cloud call, model rerun, or external service mutation was
+  performed.
