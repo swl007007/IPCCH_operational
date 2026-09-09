@@ -4,11 +4,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import numpy as np
 import pandas as pd
-from tools.refresh_h5_inputs import monthly_price_change, replace_sources, WFP_COLUMNS, CONFLICT_COLUMNS
+from tools.refresh_h5_inputs import monthly_price_change, replace_sources, source_iso3, WFP_COLUMNS, CONFLICT_COLUMNS
 from fewsnet_partitioned_rf_pipeline.core.horizons import align_horizon
 
 
 def check():
+    assert source_iso3(pd.DataFrame({"ISO3": [None], "country_en": ["Côte d'Ivoire"]})).tolist() == ["CIV"]
     frame = pd.DataFrame({"admin_code": ["A"] * 3,
         "feature_month": ["2025-11", "2026-03", "2026-04"], "fews_ipc_crisis": [0, 0, 1], "x": [11, 3, 4]})
     aligned = align_horizon(frame, 5).frame

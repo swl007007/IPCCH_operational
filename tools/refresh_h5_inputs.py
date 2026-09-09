@@ -46,6 +46,16 @@ def periods(frame: pd.DataFrame) -> pd.Series:
     return dates.dt.to_period("M").astype(str)
 
 
+def source_iso3(frame: pd.DataFrame) -> pd.Series:
+    if "ISO" in frame:
+        return frame.ISO.map(lambda x: pycountry.countries.get(alpha_2=x).alpha_3)
+    codes = frame.ISO3.copy()
+    missing = codes.isna() | codes.astype(str).str.strip().eq("")
+    if missing.any():
+        codes.loc[missing] = frame.loc[missing, "country_en"].map(country_iso3)
+    return codes
+
+
 def monthly_price_change(frame: pd.DataFrame, keys: list[str], price: str) -> pd.DataFrame:
     """Join previous calendar month of the same market/commodity/unit series."""
     if frame.duplicated(keys + ["period"]).any():
@@ -124,8 +134,7 @@ def conflict_aggregates(path: Path) -> tuple[pd.DataFrame, dict]:
 def replace_sources(frame: pd.DataFrame, wfp: pd.DataFrame, acled: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     out = frame.copy()
     month = periods(out)
-    codes = (out.ISO.map(lambda x: pycountry.countries.get(alpha_2=x).alpha_3)
-             if "ISO" in out else out.ISO3)
+    codes = source_iso3(out)
     lookup = pd.MultiIndex.from_arrays([codes, month], names=["ISO3", "period"])
     covered = lookup.isin(wfp.index)
     new_values = wfp.reindex(lookup)
@@ -160,6 +169,7 @@ def replace_sources(frame: pd.DataFrame, wfp: pd.DataFrame, acled: pd.DataFrame)
     preserved = [c for c in frame if c not in WFP_COLUMNS + CONFLICT_COLUMNS]
     pd.testing.assert_frame_equal(out[preserved], frame[preserved], check_exact=True)
     return out, {"rows": len(out), "wfp_covered_rows": int(covered.sum()),
+                 "wfp_country_codes_resolved_from_name_rows": int(out.ISO3.isna().sum()) if "ISO3" in out else 0,
                  "acled_covered_rows": conflict_rows, "changed_columns": changed,
                  "non_source_columns_exactly_preserved": True}
 
