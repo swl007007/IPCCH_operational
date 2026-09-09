@@ -45,3 +45,4 @@ model_artifacts/
 
 # Generated FEWSNET local partitioned-RF experiments
 Outcome/fewsnet_partitioned_rf/
+Outcome/model_delivery/

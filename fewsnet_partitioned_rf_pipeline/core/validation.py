@@ -434,7 +434,7 @@ def validate_horizon_training_report(value: object) -> dict:
     if (
         isinstance(horizon_months, bool)
         or not isinstance(horizon_months, Integral)
-        or HORIZON_KEYS.get(int(horizon_months)) != report["horizon_key"]
+        or {**HORIZON_KEYS, 5: "5m"}.get(int(horizon_months)) != report["horizon_key"]
     ):
         raise PackageValidationError(
             "training_report horizon_key and horizon_months do not match"

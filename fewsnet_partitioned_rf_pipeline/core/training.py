@@ -387,6 +387,7 @@ def _assert_partition_asset_identity(partition_map: PartitionMap) -> None:
 
 def _validate_horizon_key(horizon_key: str) -> int:
     months_by_key = {key: months for months, key in HORIZON_KEYS.items()}
+    months_by_key["5m"] = 5
     if horizon_key not in months_by_key:
         raise ValueError(
             "horizon_key must be one of "

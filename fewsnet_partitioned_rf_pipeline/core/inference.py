@@ -192,7 +192,7 @@ class PartitionedRFPredictor:
     vertex_model_version_id: str = ""
 
     def __post_init__(self) -> None:
-        expected_key = HORIZON_KEYS.get(self.horizon_months)
+        expected_key = {**HORIZON_KEYS, 5: "5m"}.get(self.horizon_months)
         if expected_key is None or self.horizon_key != expected_key:
             raise ValueError("horizon_key and horizon_months do not match")
         threshold = float(self.threshold)

@@ -498,8 +498,8 @@ def validate_local_prediction_frame(
 
     expected_feature_month = str(_parse_month(feature_month, "feature_month"))
     expected_target_month = str(_parse_month(target_month, "target_month"))
-    if horizon_months not in {0, 6, 12}:
-        raise ValueError("horizon_months must be 0, 6, or 12")
+    if horizon_months not in {0, 5, 6, 12}:
+        raise ValueError("horizon_months must be 0, 5, 6, or 12")
     derived_target_month = str(
         pd.Period(expected_feature_month, freq="M") + horizon_months
     )

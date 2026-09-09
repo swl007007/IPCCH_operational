@@ -27,9 +27,9 @@ def _validate_horizon(horizon_months: int) -> int:
     if (
         isinstance(horizon_months, bool)
         or not isinstance(horizon_months, Integral)
-        or int(horizon_months) not in HORIZON_MONTHS
+        or int(horizon_months) not in (*HORIZON_MONTHS, 5)
     ):
-        raise ValueError("horizon_months must be one of 0, 6, and 12")
+        raise ValueError("horizon_months must be one of 0, 5, 6, and 12")
     return int(horizon_months)
 
 
