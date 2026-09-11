@@ -42,6 +42,7 @@ def score_scope(
     model_package_id: str,
     source_input: str,
     monotonicity_policy: str,
+    include_uncertainty: bool = True,
 ) -> tuple[pd.DataFrame, dict[str, object]]:
     """Score one launch scope and decode cumulative phase predictions."""
     _validate_inputs(
@@ -66,11 +67,13 @@ def score_scope(
         output["{0}_pred".format(target)] = (score >= threshold).astype("int64")
         applied_thresholds[target] = threshold
 
-    uncertainty_fields, uncertainty_summary = calculate_qualitative_uncertainty(
-        output, applied_thresholds
-    )
-    for column in uncertainty_fields.columns:
-        output[column] = uncertainty_fields[column]
+    uncertainty_summary = None
+    if include_uncertainty:
+        uncertainty_fields, uncertainty_summary = calculate_qualitative_uncertainty(
+            output, applied_thresholds
+        )
+        for column in uncertainty_fields.columns:
+            output[column] = uncertainty_fields[column]
 
     _apply_monotonicity_policy(output, monotonicity_policy)
     output["overall_phase_pred"] = _decode_overall_phase(output)
@@ -90,8 +93,9 @@ def score_scope(
         "row_count": int(len(feature_matrix)),
         "score_columns": list(SCORE_COLUMNS),
         "pred_columns": list(PRED_COLUMNS),
-        "uncertainty": uncertainty_summary,
     }
+    if include_uncertainty:
+        summary["uncertainty"] = uncertainty_summary
     return output, summary
 
 

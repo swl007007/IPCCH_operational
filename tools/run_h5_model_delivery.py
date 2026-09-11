@@ -153,7 +153,8 @@ def score(root, out):
     monthly, _ = validate_monthly_input(read_csv(root / "inputs/ipcch_april_panel.csv"), FEATURE_MONTH)
     ipcch, summary = run_scope(monthly_rows=monthly, model_package_root=root / "ipcch/model_package",
         feature_month=FEATURE_MONTH, scope_months=HORIZON, target_month=TARGET_MONTH,
-        source_input="inputs/ipcch_april_panel.csv")
+        source_input="inputs/ipcch_april_panel.csv",
+        include_uncertainty=not (root / "reports/training_confidence_policy.json").exists())
     ipcch.insert(0, "polygon_id", ipcch.area_id.astype(str))
     save_csv(ipcch, out / "ipcch/polygon_predictions.csv")
     write_json(out / "reports/ipcch_scoring.json", summary)
@@ -197,6 +198,9 @@ def export_tables(root):
         assert not geometry.polygon_id.duplicated().any()
         assert set(mapping.polygon_id) == set(geometry.polygon_id)
         save_csv(mapping, root / f"{system}/polygon_model_mapping.csv")
+        if (root / "reports/training_confidence_policy.json").exists():
+            from tools.revise_h5_confidence import append_country_confidence
+            country = append_country_confidence(country, read_csv(root / f"{system}/country_training_confidence.csv"))
         save_csv(country, root / f"{system}/country_predictions.csv")
         geometry = geometry[["polygon_id", "geometry"]].to_crs(4326)
         payload = json.loads(geometry.to_json(na="null", drop_id=True))

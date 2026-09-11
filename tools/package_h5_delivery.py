@@ -12,6 +12,8 @@ from tools.refresh_h5_inputs import sha256, write_json
 
 
 def package(root):
+    if (root / "reports/training_confidence_policy.json").exists():
+        assert json.loads((root / "reports/training_confidence_verification.json").read_text())["status"] == "passed"
     verification = json.loads((root / "reports/final_verification.json").read_text())
     assert verification["status"] == "passed"
     assert json.loads((root / "reports/saved_input_preservation.json").read_text())["status"] == "passed"

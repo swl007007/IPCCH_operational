@@ -162,6 +162,7 @@ def run_scope(
     scope_months,
     target_month,
     source_input,
+    include_uncertainty=True,
 ):
     package = model_package.load_scope_package(model_package_root, scope_months)
     metadata = package.get("metadata", {})
@@ -187,6 +188,7 @@ def run_scope(
         model_package_id=model_package_id,
         source_input=source_input,
         monotonicity_policy=monotonicity_policy,
+        include_uncertainty=include_uncertainty,
     )
     scope_summary = dict(score_summary)
     scope_summary["feature_contract"] = contract_report

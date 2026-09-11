@@ -15,6 +15,7 @@ from tools.refresh_h5_inputs import write_json
 
 
 def verify(root):
+    revised = (root / "reports/training_confidence_policy.json").exists()
     report = {"status": "passed", "tests": "focused artifact checks and independent arithmetic; no regression suite", "models": {}}
     for system, count in [("fewsnet", 5718), ("ipcch", 6227)]:
         p = read_csv(root / f"{system}/polygon_predictions.csv")
@@ -70,6 +71,8 @@ def verify(root):
             model_report["threshold"] = loaded.predictor.threshold
             grouped = p.groupby("ISO3")
         else:
+            if revised:
+                assert not {"prediction_uncertainty", "decision_margin", "uncertainty_critical_boundary", "uncertainty_method"}.intersection(p.columns)
             scores, weight = [f"{v}_score" for v in TARGETS], "population_estimate"
             population_input = inputs.set_index(identity)
             values = p[scores].to_numpy()
@@ -108,12 +111,17 @@ def verify(root):
                 mean = np.dot(s, weights) / weights.sum()
                 sd = np.sqrt(np.dot((s - mean) ** 2, weights) / weights.sum())
                 dispersion = "probability_crisis_area_dispersion" if system == "fewsnet" else f"{score}_aggregation_uncertainty"
+                if revised and system == "ipcch":
+                    dispersion = f"{score}_area_dispersion"
                 np.testing.assert_allclose([row[score], row[dispersion]], [mean, sd], rtol=0, atol=1e-12)
         report["models"][system] = model_report
     # Relocate only the self-contained scoring delivery; histories and geometries are not scoring dependencies.
     with tempfile.TemporaryDirectory(prefix="h5-reload-") as tmp:
         moved = Path(tmp) / "delivery"; moved.mkdir()
         shutil.copytree(root / "runtime", moved / "runtime")
+        if revised:
+            (moved / "reports").mkdir()
+            shutil.copy2(root / "reports/training_confidence_policy.json", moved / "reports/training_confidence_policy.json")
         for system in ["fewsnet", "ipcch"]:
             shutil.copytree(root / f"{system}/model_package", moved / f"{system}/model_package")
         (moved / "inputs").mkdir()
