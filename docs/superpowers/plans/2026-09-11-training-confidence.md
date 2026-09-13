@@ -18,7 +18,7 @@
 - [x] Add `tools/revise_h5_confidence.py`: reconstruct exact training rows, load existing RF/XGB packages, save row evidence, polygon counts and country macro rates/flags; create immutable revision and update docs/runtime.
 - [x] Focused synthetic checks: unequal area sample counts, exact quota ceiling, boundary ties, Phase3 threshold. Independent check of actual rows/area/country aggregates and model provenance.
 - [x] Adapt `tools/verify_h5_model_delivery.py` for renamed dispersion/policy relocation, preserve every original scientific check. Gate `tools/package_h5_delivery.py` on revision verification when policy exists.
-- [ ] Execute full training rescore (no fitting), independently verify saved results, run relocated scoring and compare unchanged predictions/model bytes, update manifest/archive and report final paths.
+- [x] Execute full training rescore (no fitting), independently verify saved results, run relocated scoring and compare unchanged predictions/model bytes, update manifest/archive and report final paths.
 
 ## Verified execution evidence
 
@@ -29,3 +29,4 @@
 - Actual loaded IPCCH focused check replaces the old uncertainty callback with a failure: revised scoring passes without invoking it, retains numerical scores/classes.
 - Independent read-only agents verified code paths and actual tables. Boundary tie field corrected to require multiple countries; neither model has a real cutoff tie.16 inherited IPCCH cumulative labels above1 and230 training scores outside[0,1] retained/documented. FEWS near-zero in-sample error is explicitly not a generalization estimate.
 - New delivery directory: `Outcome/model_delivery/202609_h5/20260911_training_confidence_v2`. Original `20260909_refresh_v1` untouched. New manifest/archive gate runs after code commit; no cloud, remote push, TDD or regression suite.
+- Packaging completed: `webapp_model_bundle.tar.gz` is236149289 bytes; root manifest reports `status=passed`, `archive_verified=true`, run ID `20260911_training_confidence_v2`, implementation commit `f485b0fdf9ea117af4eb84cda84ae8f10b4672d8`. Final confidence and relocated-delivery verification reports both passed.
