@@ -17,6 +17,6 @@ Status: remediation of a major close-audit finding on archived task `country-unc
 
 ## Acceptance criteria
 
-- [ ] Relocated bundle-only export (from the extracted archive, no repository paths, PYTHONPATH cleared) succeeds and its country tables, mapping and GeoJSON equal the delivered ones (country tables exact within atol 1e-12; mapping/GeoJSON byte- or value-equal).
-- [ ] This relocated export check is part of `tools/verify_h5_model_delivery.py` and recorded in `reports/final_verification.json`.
-- [ ] README documents the working command; v3 delivery repackaged with manifest `passed` bound to the repair commit; v2 manifest still verifies; protected artifacts unchanged.
+- [x] Relocated bundle-only export (from the extracted archive, no repository paths, PYTHONPATH cleared) succeeds and its country tables, mapping and GeoJSON equal the delivered ones (country tables exact within atol 1e-12; mapping/GeoJSON byte- or value-equal).
+- [x] This relocated export check is part of `tools/verify_h5_model_delivery.py` and recorded in `reports/final_verification.json`.
+- [x] README documents the working command; v3 delivery repackaged with manifest `passed` bound to the repair commit; v2 manifest still verifies; protected artifacts unchanged.
