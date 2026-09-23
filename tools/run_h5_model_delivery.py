@@ -162,71 +162,105 @@ def score(root, out):
     print(f"Reloaded scoring complete: FEWSNET={len(predictions)}, IPCCH={len(ipcch)}", flush=True)
 
 
-def export_tables(root):
-    import geopandas as gpd
+def polygon_mapping(system, predictions):
+    if system == "fewsnet":
+        mapping = predictions[["admin_code", "cluster_id", "prediction_source", "suite_version"]].copy()
+        mapping.insert(0, "polygon_id", mapping.admin_code)
+        mapping["actual_model"] = [f"partition_models[{int(c)}]" if s == "partition_model" else "pooled_model"
+                                   for c, s in zip(mapping.cluster_id, mapping.prediction_source)]
+        mapping["fallback_reason"] = mapping.prediction_source.where(mapping.prediction_source.ne("partition_model"), "")
+    else:
+        mapping = predictions[["polygon_id", "area_id", "admin_code", "model_package_id"]].copy()
+        mapping["cluster_id"] = pd.NA
+        mapping["actual_model"] = "scope_5m:phase2_worse,phase3_worse,phase4_worse,phase5_worse"
+        mapping["fallback_reason"] = ""
+    mapping["model_system"] = system
+    mapping["model_package"] = f"{system}/model_package"
+    mapping["feature_month"], mapping["target_month"], mapping["horizon_months"] = FEATURE_MONTH, TARGET_MONTH, HORIZON
+    assert not mapping.polygon_id.duplicated().any()
+    return mapping
+
+
+def country_table(system, root, predictions, census):
+    """Country aggregation plus any revision diagnostics recorded in the delivery at root."""
     import pycountry
     from tools.build_fewsnet_country_level_predictions import aggregate_country_probabilities
     from tools.build_ipcch_country_level_predictions import aggregate_country_scores
+    monthly = read_csv(root / "inputs/ipcch_april_panel.csv") if system == "ipcch" else None
+    if system == "fewsnet":
+        scope = census[["ISO3", "country", "country_en"]].copy()
+        scope["country_code"] = scope.ISO3.map(lambda x: pycountry.countries.get(alpha_3=x).alpha_2)
+        country = aggregate_country_probabilities(predictions, scope, census)
+    else:
+        country = aggregate_country_scores(predictions, monthly[["area_id", "country", "country_en"]], census)
+    if (root / "reports/country_confidence_v3_policy.json").exists():
+        from tools.revise_h5_country_v3 import append_country_v3, check_forecast_fields
+        country = append_country_v3(country, read_csv(root / f"{system}/country_confidence.csv"))
+        if system == "fewsnet":
+            check_forecast_fields(system, country)
+        else:
+            iso = monthly[["area_id", "country"]].merge(census[["country", "ISO3"]], on="country", validate="many_to_one")
+            check_forecast_fields(system, country, predictions.merge(iso[["area_id", "ISO3"]], on="area_id", validate="one_to_one"))
+    elif (root / "reports/training_confidence_policy.json").exists():
+        from tools.revise_h5_confidence import append_country_confidence
+        country = append_country_confidence(country, read_csv(root / f"{system}/country_training_confidence.csv"))
+    return country
+
+
+def export_bundle(root, out, predictions_root=None):
+    """Portable export from delivered assets only (create-only in a fresh output directory)."""
+    predictions_root = predictions_root or root
+    for system in ["fewsnet", "ipcch"]:
+        predictions = read_csv(predictions_root / f"{system}/polygon_predictions.csv")
+        census = read_csv(root / f"{system}/country_population_reference.csv")
+        mapping = polygon_mapping(system, predictions)
+        geometry = json.loads((root / f"{system}/polygons.geojson").read_text())
+        geo_ids = [f["properties"]["polygon_id"] for f in geometry["features"]]
+        assert len(set(geo_ids)) == len(geo_ids) and set(geo_ids) == set(mapping.polygon_id)
+        country = country_table(system, root, predictions, census)
+        save_csv(mapping, out / f"{system}/polygon_model_mapping.csv")
+        save_csv(country, out / f"{system}/country_predictions.csv")
+        write_json(out / f"{system}/polygons.geojson", geometry)
+        print(f"{system}: {len(mapping)} polygons, {len(country)} countries exported to {out}", flush=True)
+
+
+def export_tables(root):
+    """Initial delivery build from repository-only Census and source geometry assets."""
+    import geopandas as gpd
     for system in ["fewsnet", "ipcch"]:
         predictions = read_csv(root / f"{system}/polygon_predictions.csv")
         census_path = ROOT / f"Outcome/{'fewsnet_partitioned_rf' if system == 'fewsnet' else 'ipcch_unified'}/predictions/202604/country_level/census_idb_2026_{system}_country_population.csv"
         census = read_csv(census_path)
         shutil.copy2(census_path, root / f"{system}/country_population_reference.csv")
+        country = country_table(system, root, predictions, census)
+        mapping = polygon_mapping(system, predictions)
         if system == "fewsnet":
-            scope = census[["ISO3", "country", "country_en"]].copy()
-            scope["country_code"] = scope.ISO3.map(lambda x: pycountry.countries.get(alpha_3=x).alpha_2)
-            country = aggregate_country_probabilities(predictions, scope, census)
-            mapping = predictions[["admin_code", "cluster_id", "prediction_source", "suite_version"]].copy()
-            mapping.insert(0, "polygon_id", mapping.admin_code)
-            mapping["actual_model"] = [f"partition_models[{int(c)}]" if s == "partition_model" else "pooled_model"
-                                       for c, s in zip(mapping.cluster_id, mapping.prediction_source)]
-            mapping["fallback_reason"] = mapping.prediction_source.where(mapping.prediction_source.ne("partition_model"), "")
             geometry = gpd.read_file(ROOT / "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry_plot.gpkg")
-            geometry["polygon_id"] = geometry.admin_code.astype(str)
         else:
-            monthly = read_csv(root / "inputs/ipcch_april_panel.csv")
-            country = aggregate_country_scores(predictions, monthly[["area_id", "country", "country_en"]], census)
-            mapping = predictions[["polygon_id", "area_id", "admin_code", "model_package_id"]].copy()
-            mapping["cluster_id"] = pd.NA
-            mapping["actual_model"] = "scope_5m:phase2_worse,phase3_worse,phase4_worse,phase5_worse"
-            mapping["fallback_reason"] = ""
             geometry = gpd.read_file(ROOT / "Outcome/ipcch_unified/spatial/ipcch_admin_geometry.shp")
-            geometry["polygon_id"] = geometry.admin_code.astype(str)
-        mapping["model_system"] = system
-        mapping["model_package"] = f"{system}/model_package"
-        mapping["feature_month"], mapping["target_month"], mapping["horizon_months"] = FEATURE_MONTH, TARGET_MONTH, HORIZON
-        assert not mapping.polygon_id.duplicated().any()
+        geometry["polygon_id"] = geometry.admin_code.astype(str)
         assert not geometry.polygon_id.duplicated().any()
         assert set(mapping.polygon_id) == set(geometry.polygon_id)
         save_csv(mapping, root / f"{system}/polygon_model_mapping.csv")
-        if (root / "reports/country_confidence_v3_policy.json").exists():
-            from tools.revise_h5_country_v3 import append_country_v3, check_forecast_fields
-            country = append_country_v3(country, read_csv(root / f"{system}/country_confidence.csv"))
-            if system == "fewsnet":
-                check_forecast_fields(system, country)
-            else:
-                iso = monthly[["area_id", "country"]].merge(census[["country", "ISO3"]], on="country", validate="many_to_one")
-                check_forecast_fields(system, country, predictions.merge(iso[["area_id", "ISO3"]], on="area_id", validate="one_to_one"))
-        elif (root / "reports/training_confidence_policy.json").exists():
-            from tools.revise_h5_confidence import append_country_confidence
-            country = append_country_confidence(country, read_csv(root / f"{system}/country_training_confidence.csv"))
         save_csv(country, root / f"{system}/country_predictions.csv")
         geometry = geometry[["polygon_id", "geometry"]].to_crs(4326)
         payload = json.loads(geometry.to_json(na="null", drop_id=True))
         write_json(root / f"{system}/polygons.geojson", payload)
         print(f"{system}: {len(mapping)} polygons, {len(country)} countries exported", flush=True)
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["train-fewsnet", "train-ipcch", "score", "export"])
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--predictions", type=Path, help="export: polygon predictions root (default --root)")
     args = parser.parse_args()
     if args.action.startswith("train-"):
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
         {"train-fewsnet": train_fewsnet, "train-ipcch": train_ipcch}[args.action](args.root, commit)
     elif args.action == "score":
         score(args.root, args.output or args.root)
+    elif args.output:
+        export_bundle(args.root, args.output, args.predictions)
     else:
         export_tables(args.root)

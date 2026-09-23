@@ -127,6 +127,11 @@ def verify(root):
                 shutil.copy2(root / "reports" / name, moved / "reports" / name)
         for system in ["fewsnet", "ipcch"]:
             shutil.copytree(root / f"{system}/model_package", moved / f"{system}/model_package")
+            names = ["polygons.geojson", "country_population_reference.csv"]
+            if (root / "reports/country_confidence_v3_policy.json").exists():
+                names.append("country_confidence.csv")
+            for name in names:
+                shutil.copy2(root / system / name, moved / system / name)
         (moved / "inputs").mkdir()
         for name in ["fewsnet_april_features.csv", "fewsnet_identity_population.csv", "ipcch_april_panel.csv"]:
             shutil.copy2(root / "inputs" / name, moved / "inputs" / name)
@@ -138,6 +143,17 @@ def verify(root):
             rescored = read_csv(moved / f"rescored/{system}/polygon_predictions.csv")
             pd.testing.assert_frame_equal(original, rescored, check_exact=False, rtol=0, atol=1e-12)
             report["models"][system]["relocated_reload_all_fields_equal"] = True
+        if (root / "reports/country_confidence_v3_policy.json").exists():
+            # Portable export from bundle contents only, on the relocated rescoring output.
+            subprocess.run([sys.executable, "-B", str(moved / "runtime/tools/run_h5_model_delivery.py"), "export",
+                            "--root", str(moved), "--predictions", str(moved / "rescored"), "--output", str(moved / "exported")],
+                           cwd=tmp, env=env, check=True)
+            for system in ["fewsnet", "ipcch"]:
+                for name in ["country_predictions.csv", "polygon_model_mapping.csv"]:
+                    pd.testing.assert_frame_equal(read_csv(moved / "exported" / system / name), read_csv(root / system / name),
+                                                  check_exact=False, rtol=0, atol=1e-12)
+                assert json.loads((moved / "exported" / system / "polygons.geojson").read_text()) == json.loads((root / system / "polygons.geojson").read_text())
+                report["models"][system]["relocated_bundle_export_equal"] = True
     write_json(root / "reports/final_verification.json", report)
     print(json.dumps(report, indent=2), flush=True)
 
