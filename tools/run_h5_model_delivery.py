@@ -154,7 +154,8 @@ def score(root, out):
     ipcch, summary = run_scope(monthly_rows=monthly, model_package_root=root / "ipcch/model_package",
         feature_month=FEATURE_MONTH, scope_months=HORIZON, target_month=TARGET_MONTH,
         source_input="inputs/ipcch_april_panel.csv",
-        include_uncertainty=not (root / "reports/training_confidence_policy.json").exists())
+        include_uncertainty=not any((root / f"reports/{name}").exists()
+                                    for name in ["training_confidence_policy.json", "country_confidence_v3_policy.json"]))
     ipcch.insert(0, "polygon_id", ipcch.area_id.astype(str))
     save_csv(ipcch, out / "ipcch/polygon_predictions.csv")
     write_json(out / "reports/ipcch_scoring.json", summary)
@@ -198,7 +199,15 @@ def export_tables(root):
         assert not geometry.polygon_id.duplicated().any()
         assert set(mapping.polygon_id) == set(geometry.polygon_id)
         save_csv(mapping, root / f"{system}/polygon_model_mapping.csv")
-        if (root / "reports/training_confidence_policy.json").exists():
+        if (root / "reports/country_confidence_v3_policy.json").exists():
+            from tools.revise_h5_country_v3 import append_country_v3, check_forecast_fields
+            country = append_country_v3(country, read_csv(root / f"{system}/country_confidence.csv"))
+            if system == "fewsnet":
+                check_forecast_fields(system, country)
+            else:
+                iso = monthly[["area_id", "country"]].merge(census[["country", "ISO3"]], on="country", validate="many_to_one")
+                check_forecast_fields(system, country, predictions.merge(iso[["area_id", "ISO3"]], on="area_id", validate="one_to_one"))
+        elif (root / "reports/training_confidence_policy.json").exists():
             from tools.revise_h5_confidence import append_country_confidence
             country = append_country_confidence(country, read_csv(root / f"{system}/country_training_confidence.csv"))
         save_csv(country, root / f"{system}/country_predictions.csv")

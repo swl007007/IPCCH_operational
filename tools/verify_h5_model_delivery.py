@@ -15,7 +15,9 @@ from tools.refresh_h5_inputs import write_json
 
 
 def verify(root):
-    revised = (root / "reports/training_confidence_policy.json").exists()
+    policies = [name for name in ["training_confidence_policy.json", "country_confidence_v3_policy.json"]
+                if (root / "reports" / name).exists()]
+    revised = bool(policies)
     report = {"status": "passed", "tests": "focused artifact checks and independent arithmetic; no regression suite", "models": {}}
     for system, count in [("fewsnet", 5718), ("ipcch", 6227)]:
         p = read_csv(root / f"{system}/polygon_predictions.csv")
@@ -121,7 +123,8 @@ def verify(root):
         shutil.copytree(root / "runtime", moved / "runtime")
         if revised:
             (moved / "reports").mkdir()
-            shutil.copy2(root / "reports/training_confidence_policy.json", moved / "reports/training_confidence_policy.json")
+            for name in policies:
+                shutil.copy2(root / "reports" / name, moved / "reports" / name)
         for system in ["fewsnet", "ipcch"]:
             shutil.copytree(root / f"{system}/model_package", moved / f"{system}/model_package")
         (moved / "inputs").mkdir()
