@@ -1,3 +1,16 @@
+# Completed: delivery closure layout
+
+Task: `.trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/`.
+
+- User authorized implementation of the two-entry design; no cloud calls, replay, training, close audit or spot audit in this task.
+- Maintained entrypoints: `september_manual/` and `cloud_pipeline/`. Runtime, compatible raw converters, operator CLI, setup and packaging are self-contained under cloud_pipeline.
+- 690 legacy files (5,213,890,698 bytes) renamed into `../legacy_archive/IPCCH_monthly_operational/2026-10-08-two-entry-handover/`; path/size/mtime/file-id verified. Restore maps reside with the archive. Git/Trellis/agent controls retained.
+- Relocated runtime tests: 410 passed / 1 skipped (PyYAML unavailable); archive/setup 7 passed; remaining retained contract tests 47 passed. New operator/setup/packaging code passes Ruff. Full actual bootstrap preview: 64 files, six accepted scopes; no prediction or cloud client.
+- September retained inventory and October original loose members + pinned archive/manifest verified. Compact October wrapper explains that original manifest describes the historical full tree.
+- Final handover: 209 member hashes verified, 65 exported modules imported, actual exported init preview passed. Archive 1,665,570,362 bytes; SHA-256 in public companion file and task handover-receipt.json. The YAML test also passed separately: 465 passing tests overall. No push or destination deployment.
+
+---
+
 # Completed Task: October Cloud Delivery (Trellis `10-07-october-cloud-delivery`)
 
 Operational ledger only; it does not grant authority. Authority: `.trellis/tasks/archive/2026-10/10-07-october-cloud-delivery/{supervision,prd,design,implement}.md`.

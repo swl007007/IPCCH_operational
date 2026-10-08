@@ -1,0 +1,4913 @@
+{
+  "schema_version": "external-archive-move-v1",
+  "source_root": "C:\\users\\swl00\\ifpri dropbox\\weilun shi\\ipcch_monthly_operational",
+  "archive_root": "C:\\users\\swl00\\ifpri dropbox\\weilun shi\\legacy_archive\\IPCCH_monthly_operational\\2026-10-08-two-entry-handover",
+  "cleanup_id": "2026-10-08-two-entry-handover",
+  "entries": [
+    ".pytest_cache",
+    ".ruff_cache",
+    "ACLED",
+    "archive",
+    "cloud",
+    "config",
+    "curl_IPC",
+    "deploy",
+    "desktop.ini",
+    "docker",
+    "docs",
+    "EVI",
+    "FAO_price",
+    "fewsnet_partitioned_rf_pipeline",
+    "Final_harmonise",
+    "FLDAS",
+    "GOSIF_GPP",
+    "implementation-delta.md",
+    "model_artifacts",
+    "model_pipeline",
+    "Outcome",
+    "polygons_and_identifier",
+    "requirements-cloud.txt",
+    "requirements-fewsnet-partitioned-rf.txt",
+    "specs",
+    "structured_TOR_from_variable_note.xlsx",
+    "tests",
+    "tools",
+    "VIIRS_nightlight",
+    "WB_indicator",
+    "WFP_indicator",
+    "workflow_config.py",
+    "__pycache__"
+  ],
+  "files": [
+    {
+      "path": ".pytest_cache/.gitignore",
+      "size_bytes": 37,
+      "mtime_ns": 1782518508698453200,
+      "file_id": 3096224744951099,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".pytest_cache/CACHEDIR.TAG",
+      "size_bytes": 191,
+      "mtime_ns": 1782518508699453400,
+      "file_id": 3096224744951100,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".pytest_cache/README.md",
+      "size_bytes": 302,
+      "mtime_ns": 1782518508697452700,
+      "file_id": 3096224744951095,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".pytest_cache/v/cache/lastfailed",
+      "size_bytes": 2,
+      "mtime_ns": 1785458780879502300,
+      "file_id": 49258120924760467,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".pytest_cache/v/cache/nodeids",
+      "size_bytes": 12748,
+      "mtime_ns": 1791431020015579000,
+      "file_id": 3096224744951102,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".pytest_cache/v/cache/stepwise",
+      "size_bytes": 2,
+      "mtime_ns": 1791431020019603600,
+      "file_id": 3096224744951103,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/.gitignore",
+      "size_bytes": 35,
+      "mtime_ns": 1782502970840489200,
+      "file_id": 12947848929026636,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/CACHEDIR.TAG",
+      "size_bytes": 43,
+      "mtime_ns": 1782502970838491000,
+      "file_id": 24769797950869486,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/0.15.16/11167911731583087978",
+      "size_bytes": 96,
+      "mtime_ns": 1791500429402949400,
+      "file_id": 50946970785190120,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/0.15.16/14523331838477935057",
+      "size_bytes": 1192,
+      "mtime_ns": 1791476284322366900,
+      "file_id": 7318349395343782,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/0.15.16/14710997723080378008",
+      "size_bytes": 185,
+      "mtime_ns": 1791474687026253300,
+      "file_id": 38562071809778494,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/0.15.16/15275745149900525672",
+      "size_bytes": 86,
+      "mtime_ns": 1791492638314281300,
+      "file_id": 25895697857945291,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/0.15.16/16667355927174933944",
+      "size_bytes": 138,
+      "mtime_ns": 1791492638313281000,
+      "file_id": 23643898044256612,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/0.15.16/17792510518273374755",
+      "size_bytes": 52,
+      "mtime_ns": 1791500429404453000,
+      "file_id": 28710447625049904,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/0.15.16/4325102969161497021",
+      "size_bytes": 1979,
+      "mtime_ns": 1791476284321293100,
+      "file_id": 47850746041224000,
+      "git_state": "ignored"
+    },
+    {
+      "path": ".ruff_cache/0.15.16/592734201473097759",
+      "size_bytes": 67,
+      "mtime_ns": 1791500429401952600,
+      "file_id": 48132221017604573,
+      "git_state": "ignored"
+    },
+    {
+      "path": "ACLED/00_add_acled_features.py",
+      "size_bytes": 18496,
+      "mtime_ns": 1782164896439691700,
+      "file_id": 4785074605236887,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/example_raw_inputs/MANIFEST.md",
+      "size_bytes": 1012,
+      "mtime_ns": 1782167297735396800,
+      "file_id": 16044073672925372,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/legacy_final_harmonise/00_combine_all_ch.py",
+      "size_bytes": 40107,
+      "mtime_ns": 1782150088837302100,
+      "file_id": 7881299348469936,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/legacy_final_harmonise/00_combine_all_IPC.py",
+      "size_bytes": 17077,
+      "mtime_ns": 1782149862453872700,
+      "file_id": 13792273859395098,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/legacy_final_harmonise/01_CH_final_process.py",
+      "size_bytes": 14514,
+      "mtime_ns": 1782149862456873000,
+      "file_id": 25332747904532527,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/legacy_final_harmonise/01_IPC_final_process.py",
+      "size_bytes": 13814,
+      "mtime_ns": 1782149862459873300,
+      "file_id": 14073748836106553,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/legacy_final_harmonise/MANIFEST.md",
+      "size_bytes": 635,
+      "mtime_ns": 1782161756463644200,
+      "file_id": 29554872554999152,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/legacy_reference_assets/MANIFEST.md",
+      "size_bytes": 1190,
+      "mtime_ns": 1782156620407808500,
+      "file_id": 3096224744933712,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/notebooks/MANIFEST.md",
+      "size_bytes": 2194,
+      "mtime_ns": 1782164459979759100,
+      "file_id": 123286039799308133,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/example_raw_inputs/ACLED/ACLED Data_2026-05-11_ipcch.csv",
+      "size_bytes": 14318668,
+      "mtime_ns": 1778532617000000000,
+      "file_id": 7318349394903972,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/example_raw_inputs/WFP/Prices-Export-Thu Mar 27 2025 11_30_42 GMT-0400 (Eastern Daylight Time).csv",
+      "size_bytes": 7628496,
+      "mtime_ns": 1782441255976414500,
+      "file_id": 10696049115427441,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/legacy_reference_assets/polygons_and_identifier/gdf_ipc_ch_final.geojson",
+      "size_bytes": 432492442,
+      "mtime_ns": 1763072944919404400,
+      "file_id": 14073748835761950,
+      "git_state": "ignored"
+    },
+    {
+      "path": "archive/legacy_reference_assets/polygons_and_identifier/gdf_ipc_ch_final_country_count.csv",
+      "size_bytes": 831,
+      "mtime_ns": 1763073512657331100,
+      "file_id": 15199648742931245,
+      "git_state": "ignored"
+    },
+    {
+      "path": "archive/legacy_reference_assets/polygons_and_identifier/geoidentifier_ipcch.csv",
+      "size_bytes": 356604419,
+      "mtime_ns": 1770834552577830700,
+      "file_id": 43347146414023436,
+      "git_state": "ignored"
+    },
+    {
+      "path": "archive/legacy_reference_assets/polygons_and_identifier/IPC_scaffold_example.csv",
+      "size_bytes": 59276951,
+      "mtime_ns": 1744057318000000000,
+      "file_id": 163818436445609668,
+      "git_state": "ignored"
+    },
+    {
+      "path": "archive/notebooks/ACLED/00_add_ACLED_IPCCH.ipynb",
+      "size_bytes": 28985,
+      "mtime_ns": 1778533743545971900,
+      "file_id": 31525197391791068,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/notebooks/FAO_price/00_add_FAO_ipcch_update.ipynb",
+      "size_bytes": 11503,
+      "mtime_ns": 1778530981110962600,
+      "file_id": 7318349395520616,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/notebooks/Final_harmonise/00_combine_all_ch.ipynb",
+      "size_bytes": 58594,
+      "mtime_ns": 1765393505810194200,
+      "file_id": 6473924465388718,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/notebooks/Final_harmonise/00_combine_all_IPC.ipynb",
+      "size_bytes": 26235,
+      "mtime_ns": 1746079711107294700,
+      "file_id": 5629499535256751,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/notebooks/Final_harmonise/01_CH_final_process.ipynb",
+      "size_bytes": 44304,
+      "mtime_ns": 1765396791760657200,
+      "file_id": 7036874418810033,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/notebooks/Final_harmonise/01_IPC_final_process.ipynb",
+      "size_bytes": 42032,
+      "mtime_ns": 1746185788427071100,
+      "file_id": 11821949022891178,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/notebooks/WB_indicator/00_add_WBG_ch.ipynb",
+      "size_bytes": 14227,
+      "mtime_ns": 1764708097140461900,
+      "file_id": 6755399442066563,
+      "git_state": "tracked"
+    },
+    {
+      "path": "archive/notebooks/WFP_indicator/00_add_WFP_ch.ipynb",
+      "size_bytes": 18087,
+      "mtime_ns": 1764709496509218300,
+      "file_id": 24206847997518247,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/__init__.py",
+      "size_bytes": 61,
+      "mtime_ns": 1782526364751843900,
+      "file_id": 29836347531478466,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/batch/evi_extract.py",
+      "size_bytes": 2012,
+      "mtime_ns": 1782526364760844100,
+      "file_id": 33495522228746697,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/batch/evi_outputs.py",
+      "size_bytes": 917,
+      "mtime_ns": 1782526364765844600,
+      "file_id": 18858823439800167,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/batch/evi_reference.py",
+      "size_bytes": 1711,
+      "mtime_ns": 1782526364770845100,
+      "file_id": 18858823439808295,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/batch/evi_service.py",
+      "size_bytes": 15636,
+      "mtime_ns": 1782526364775584900,
+      "file_id": 27021597764440628,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/batch/evi_validation.py",
+      "size_bytes": 3082,
+      "mtime_ns": 1782526364778586600,
+      "file_id": 87538717757292304,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/batch/evi_worker.py",
+      "size_bytes": 14932,
+      "mtime_ns": 1782526364783585200,
+      "file_id": 61924494876672503,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/batch/gee_export.py",
+      "size_bytes": 2745,
+      "mtime_ns": 1782526364788088300,
+      "file_id": 50946970784963051,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/batch/remote_sources.py",
+      "size_bytes": 18931,
+      "mtime_ns": 1791461631980702900,
+      "file_id": 18295873486754961,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/batch/__init__.py",
+      "size_bytes": 34,
+      "mtime_ns": 1782526364756844200,
+      "file_id": 20266198323336628,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/common/forbidden_side_effects.py",
+      "size_bytes": 1695,
+      "mtime_ns": 1782526364797091400,
+      "file_id": 114841790498314323,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/common/manifest.py",
+      "size_bytes": 8757,
+      "mtime_ns": 1782526364801091800,
+      "file_id": 40250921669996039,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/common/object_refs.py",
+      "size_bytes": 1878,
+      "mtime_ns": 1782526364805091900,
+      "file_id": 19140298416697085,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/common/object_store.py",
+      "size_bytes": 7075,
+      "mtime_ns": 1791483357530739900,
+      "file_id": 20266198323543731,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/common/release_reader.py",
+      "size_bytes": 731,
+      "mtime_ns": 1782526364813092000,
+      "file_id": 43347146413820435,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/common/reports.py",
+      "size_bytes": 5617,
+      "mtime_ns": 1782526364817091400,
+      "file_id": 29554872555007971,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/common/runtime_config.py",
+      "size_bytes": 1037,
+      "mtime_ns": 1782526364821091800,
+      "file_id": 13229323905789924,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/common/__init__.py",
+      "size_bytes": 36,
+      "mtime_ns": 1782526364793093100,
+      "file_id": 68398419341054162,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/assembly.py",
+      "size_bytes": 9413,
+      "mtime_ns": 1784156274457068600,
+      "file_id": 34058472182378848,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/base_input_validation.py",
+      "size_bytes": 5264,
+      "mtime_ns": 1784156274463070100,
+      "file_id": 12384898975658417,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/batch_client.py",
+      "size_bytes": 4318,
+      "mtime_ns": 1791465937710801700,
+      "file_id": 14355223812633131,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/causal_fill.py",
+      "size_bytes": 13352,
+      "mtime_ns": 1791464619795679500,
+      "file_id": 5066549581923588,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/deliver.py",
+      "size_bytes": 24390,
+      "mtime_ns": 1791474999862035700,
+      "file_id": 42502721483786221,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/delivery_bundle.py",
+      "size_bytes": 38570,
+      "mtime_ns": 1791476518384670600,
+      "file_id": 128634064356915849,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/delivery_inputs.py",
+      "size_bytes": 27171,
+      "mtime_ns": 1791473991614976800,
+      "file_id": 99079191802169629,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/delivery_job.py",
+      "size_bytes": 24913,
+      "mtime_ns": 1791483368303396300,
+      "file_id": 226587356252273022,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/delivery_manifest.py",
+      "size_bytes": 19431,
+      "mtime_ns": 1791429557290167600,
+      "file_id": 5348024558633969,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/delivery_outputs.py",
+      "size_bytes": 37713,
+      "mtime_ns": 1791474999848035000,
+      "file_id": 9007199255467796,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/delivery_run.py",
+      "size_bytes": 6914,
+      "mtime_ns": 1791474775610790200,
+      "file_id": 26740122788069004,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/delivery_scoring.py",
+      "size_bytes": 10643,
+      "mtime_ns": 1791469851394336100,
+      "file_id": 130885864170521485,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/deliver_job.py",
+      "size_bytes": 6861,
+      "mtime_ns": 1791475364827269300,
+      "file_id": 50665495808163057,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/inference.py",
+      "size_bytes": 39420,
+      "mtime_ns": 1784156274470070200,
+      "file_id": 8725724278421071,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/main.py",
+      "size_bytes": 40431,
+      "mtime_ns": 1784156274476071400,
+      "file_id": 11821949022238308,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/model_package.py",
+      "size_bytes": 3854,
+      "mtime_ns": 1782526364853135300,
+      "file_id": 12384898975659622,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/prepare.py",
+      "size_bytes": 44148,
+      "mtime_ns": 1791465937714823300,
+      "file_id": 292733975779124927,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/release.py",
+      "size_bytes": 27178,
+      "mtime_ns": 1784156274482313400,
+      "file_id": 12384898975660974,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/release_manifest.py",
+      "size_bytes": 1128,
+      "mtime_ns": 1782526364863134900,
+      "file_id": 8162774325001187,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/roots.py",
+      "size_bytes": 1426,
+      "mtime_ns": 1782526364868136100,
+      "file_id": 19703248370138224,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/run_state.py",
+      "size_bytes": 3326,
+      "mtime_ns": 1782526364875136300,
+      "file_id": 13792273859214522,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/vertex_client.py",
+      "size_bytes": 3820,
+      "mtime_ns": 1782526364881137400,
+      "file_id": 10414574138686856,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/orchestrator/__init__.py",
+      "size_bytes": 39,
+      "mtime_ns": 1782526364827095300,
+      "file_id": 26458647811191114,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/schemas/input-manifest.schema.json",
+      "size_bytes": 8620,
+      "mtime_ns": 1782526364896136000,
+      "file_id": 14355223812636703,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/schemas/__init__.py",
+      "size_bytes": 39,
+      "mtime_ns": 1782526364889136900,
+      "file_id": 14636698789347137,
+      "git_state": "tracked"
+    },
+    {
+      "path": "cloud/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 253,
+      "mtime_ns": 1791430900578202300,
+      "file_id": 16888498602964113,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/batch/__pycache__/evi_service.cpython-312.pyc",
+      "size_bytes": 21797,
+      "mtime_ns": 1791431019926867500,
+      "file_id": 21110623253803828,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/batch/__pycache__/remote_sources.cpython-312.pyc",
+      "size_bytes": 25616,
+      "mtime_ns": 1791461632019812700,
+      "file_id": 21110623253834705,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/batch/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 232,
+      "mtime_ns": 1791430900597273700,
+      "file_id": 29836347531656301,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/common/__pycache__/object_refs.cpython-312.pyc",
+      "size_bytes": 3376,
+      "mtime_ns": 1791431019476131700,
+      "file_id": 23925373020910284,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/common/__pycache__/object_store.cpython-312.pyc",
+      "size_bytes": 11129,
+      "mtime_ns": 1791431019425458900,
+      "file_id": 19703248370228105,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/common/__pycache__/runtime_config.cpython-312.pyc",
+      "size_bytes": 1653,
+      "mtime_ns": 1791431019459131900,
+      "file_id": 7881299348402201,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/common/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 235,
+      "mtime_ns": 1791431019414439500,
+      "file_id": 22517998137331991,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/batch_client.cpython-312.pyc",
+      "size_bytes": 5814,
+      "mtime_ns": 1791465937755498500,
+      "file_id": 2533274792187141,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/causal_fill.cpython-312.pyc",
+      "size_bytes": 18171,
+      "mtime_ns": 1791466115466488700,
+      "file_id": 32088147345686912,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/deliver.cpython-312.pyc",
+      "size_bytes": 27620,
+      "mtime_ns": 1791469564500751900,
+      "file_id": 429249339483761567,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/delivery_bundle.cpython-312.pyc",
+      "size_bytes": 53733,
+      "mtime_ns": 1791476503426013900,
+      "file_id": 127508164450603316,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/delivery_inputs.cpython-312.pyc",
+      "size_bytes": 34070,
+      "mtime_ns": 1791473343414626700,
+      "file_id": 30680772462453287,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/delivery_job.cpython-312.pyc",
+      "size_bytes": 33875,
+      "mtime_ns": 1791483385295031600,
+      "file_id": 79375943432942733,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/delivery_manifest.cpython-312.pyc",
+      "size_bytes": 23309,
+      "mtime_ns": 1791429557341270500,
+      "file_id": 32369622322123249,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/delivery_outputs.cpython-312.pyc",
+      "size_bytes": 37154,
+      "mtime_ns": 1791475713562230900,
+      "file_id": 562949955225558,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/delivery_scoring.cpython-312.pyc",
+      "size_bytes": 8336,
+      "mtime_ns": 1791466979807978600,
+      "file_id": 3659174699031823,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/deliver_job.cpython-312.pyc",
+      "size_bytes": 9745,
+      "mtime_ns": 1791475364871297700,
+      "file_id": 54043195529017585,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/prepare.cpython-312.pyc",
+      "size_bytes": 53336,
+      "mtime_ns": 1791465937778738900,
+      "file_id": 14636698789458089,
+      "git_state": "ignored"
+    },
+    {
+      "path": "cloud/orchestrator/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 244,
+      "mtime_ns": 1791431019434756700,
+      "file_id": 13229323905891522,
+      "git_state": "ignored"
+    },
+    {
+      "path": "config/ee_gcs_template.ini",
+      "size_bytes": 740,
+      "mtime_ns": 1782160189994300400,
+      "file_id": 3096224744466802,
+      "git_state": "tracked"
+    },
+    {
+      "path": "config/paths_template.ini",
+      "size_bytes": 5617,
+      "mtime_ns": 1782166204215154100,
+      "file_id": 45880421204208155,
+      "git_state": "tracked"
+    },
+    {
+      "path": "curl_IPC/00_download_ipc_api.py",
+      "size_bytes": 7288,
+      "mtime_ns": 1782149583668419700,
+      "file_id": 58265320179301943,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/build_context.sh",
+      "size_bytes": 509,
+      "mtime_ns": 1791461424592564200,
+      "file_id": 106679016173389778,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/config.env.example",
+      "size_bytes": 425,
+      "mtime_ns": 1791492167878243700,
+      "file_id": 297519050383195619,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/deploy_delivery.sh",
+      "size_bytes": 2446,
+      "mtime_ns": 1791477145056882500,
+      "file_id": 37154696926185313,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/Dockerfile",
+      "size_bytes": 807,
+      "mtime_ns": 1791461424590056700,
+      "file_id": 81064793292710069,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/MIGRATION.md",
+      "size_bytes": 6592,
+      "mtime_ns": 1791492696953716800,
+      "file_id": 154529762214168930,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/migration_destination.py",
+      "size_bytes": 13452,
+      "mtime_ns": 1791492650434121500,
+      "file_id": 11821949023119432,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/migration_package.py",
+      "size_bytes": 10284,
+      "mtime_ns": 1791492650420093900,
+      "file_id": 26458647811542582,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/QUICKSTART.en.md",
+      "size_bytes": 8059,
+      "mtime_ns": 1791492461896620800,
+      "file_id": 16888498603204812,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/QUICKSTART.zh-CN.md",
+      "size_bytes": 3396,
+      "mtime_ns": 1791492461896620800,
+      "file_id": 118219490218946325,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/README.md",
+      "size_bytes": 9676,
+      "mtime_ns": 1791492461895621600,
+      "file_id": 44754521297669710,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/requirements.lock.txt",
+      "size_bytes": 1373,
+      "mtime_ns": 1791461424581053400,
+      "file_id": 94857067151532139,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/wind_down.py",
+      "size_bytes": 10467,
+      "mtime_ns": 1791477616286866700,
+      "file_id": 9570149209621618,
+      "git_state": "tracked"
+    },
+    {
+      "path": "deploy/october_delivery/workflow.yaml",
+      "size_bytes": 2800,
+      "mtime_ns": 1791483357563248400,
+      "file_id": 63331869760276293,
+      "git_state": "tracked"
+    },
+    {
+      "path": "desktop.ini",
+      "size_bytes": 178,
+      "mtime_ns": 1782441448566165500,
+      "file_id": 56857945295920524,
+      "git_state": "ignored"
+    },
+    {
+      "path": "docker/Dockerfile",
+      "size_bytes": 782,
+      "mtime_ns": 1782526364901136100,
+      "file_id": 24488322974220407,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docker/Dockerfile.fewsnet-partitioned-rf",
+      "size_bytes": 784,
+      "mtime_ns": 1784716109034994400,
+      "file_id": 148337312726567321,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/00_handover_overview.md",
+      "size_bytes": 2463,
+      "mtime_ns": 1782159522379968900,
+      "file_id": 11821949022411753,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/01_environment_setup.md",
+      "size_bytes": 1667,
+      "mtime_ns": 1784156274491313100,
+      "file_id": 101330991615929990,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/02_ee_gcs_account_setup.md",
+      "size_bytes": 1215,
+      "mtime_ns": 1784156274500315100,
+      "file_id": 31806672368449638,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/03_workflow_runbook.md",
+      "size_bytes": 14374,
+      "mtime_ns": 1784156274505314600,
+      "file_id": 54887620458611493,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/04_output_inventory.md",
+      "size_bytes": 17219,
+      "mtime_ns": 1785116256399648600,
+      "file_id": 100205091709013951,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/05_weilun_handover_gap_list.md",
+      "size_bytes": 23255,
+      "mtime_ns": 1782164214228431900,
+      "file_id": 2533274791512418,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/06_weilun_deliverable_gap_audit.md",
+      "size_bytes": 14899,
+      "mtime_ns": 1782167297753905400,
+      "file_id": 109212290963933779,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/07_handover_email_archive.md",
+      "size_bytes": 2298,
+      "mtime_ns": 1782166204220606000,
+      "file_id": 68116944363990663,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/08_sediqa_raw_data_download_notes.md",
+      "size_bytes": 2672,
+      "mtime_ns": 1782167297731397000,
+      "file_id": 66709569480505167,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "size_bytes": 114401,
+      "mtime_ns": 1785116256413650700,
+      "file_id": 86975767803627852,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/checklists/2026-06-27-202604-cloud-monthly-e2e-smoke-checklist.md",
+      "size_bytes": 5885,
+      "mtime_ns": 1784156274525314500,
+      "file_id": 12947848929261855,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-06-22-g09-monthly-ipcch-base-input-implementation.md",
+      "size_bytes": 39914,
+      "mtime_ns": 1782441255993056700,
+      "file_id": 41376821576508544,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-06-22-ipcch-handover-implementation.md",
+      "size_bytes": 48560,
+      "mtime_ns": 1782441256001760600,
+      "file_id": 65865144550353764,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-06-22-ipcch-notebook-archive-plan.md",
+      "size_bytes": 2150,
+      "mtime_ns": 1782441256008778200,
+      "file_id": 64739244643511227,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-15-prediction-population-uncertainty.md",
+      "size_bytes": 45938,
+      "mtime_ns": 1784156274536314200,
+      "file_id": 3377699722131838,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md",
+      "size_bytes": 125865,
+      "mtime_ns": 1784716109050993400,
+      "file_id": 20547673299938234,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-26-fewsnet-local-202604-prediction-experiment.md",
+      "size_bytes": 87887,
+      "mtime_ns": 1785116256433647800,
+      "file_id": 122441614869168797,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-07-26-fewsnet-sparse-label-training-window.md",
+      "size_bytes": 29867,
+      "mtime_ns": 1785116256442652600,
+      "file_id": 96827391988499567,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-09-09-local-202609-h5-model-refresh.md",
+      "size_bytes": 9678,
+      "mtime_ns": 1788987331040624600,
+      "file_id": 105553116266533883,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-09-11-training-confidence.md",
+      "size_bytes": 4179,
+      "mtime_ns": 1789153567846549600,
+      "file_id": 31525197391972803,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-06-22-g09-monthly-ipcch-base-input-design.md",
+      "size_bytes": 7415,
+      "mtime_ns": 1782441256016794400,
+      "file_id": 78250043525628482,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-06-22-ipcch-handover-design.md",
+      "size_bytes": 24854,
+      "mtime_ns": 1782441256022794600,
+      "file_id": 193091834023576133,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-06-23-evi-cloud-batch-extraction-design.md",
+      "size_bytes": 11978,
+      "mtime_ns": 1782441256033811300,
+      "file_id": 156218612074484026,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-06-26-ipcch-cloud-monthly-base-input-design.md",
+      "size_bytes": 15120,
+      "mtime_ns": 1782483504270026300,
+      "file_id": 26458647811502257,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-06-27-202604-cloud-monthly-e2e-smoke-design.md",
+      "size_bytes": 10148,
+      "mtime_ns": 1784156274547316300,
+      "file_id": 8162774325180888,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-15-prediction-population-uncertainty-design.md",
+      "size_bytes": 11896,
+      "mtime_ns": 1784156274556314700,
+      "file_id": 4785074605685375,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md",
+      "size_bytes": 32814,
+      "mtime_ns": 1784716109058994500,
+      "file_id": 147211412819736046,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-26-fewsnet-local-202604-prediction-experiment-design.md",
+      "size_bytes": 16911,
+      "mtime_ns": 1785079055799467700,
+      "file_id": 67835469387273649,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-26-fewsnet-sparse-label-training-window-design.md",
+      "size_bytes": 9966,
+      "mtime_ns": 1785116256453164000,
+      "file_id": 81627743246128296,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+      "size_bytes": 19039,
+      "mtime_ns": 1788985919586777100,
+      "file_id": 59391220086013213,
+      "git_state": "tracked"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-11-training-confidence.md",
+      "size_bytes": 3098,
+      "mtime_ns": 1789152240695217600,
+      "file_id": 14918173766043428,
+      "git_state": "tracked"
+    },
+    {
+      "path": "EVI/00_ee_export_evi.txt",
+      "size_bytes": 1704,
+      "mtime_ns": 1782441255670146500,
+      "file_id": 3377699720935539,
+      "git_state": "tracked"
+    },
+    {
+      "path": "EVI/01_gcs_download_evi.txt",
+      "size_bytes": 190,
+      "mtime_ns": 1782148032855645900,
+      "file_id": 9570149209205863,
+      "git_state": "tracked"
+    },
+    {
+      "path": "EVI/02_arcpy_extract_evi.py",
+      "size_bytes": 6312,
+      "mtime_ns": 1782441255675156000,
+      "file_id": 7881299348307983,
+      "git_state": "tracked"
+    },
+    {
+      "path": "FAO_price/00_add_fao_price_features.py",
+      "size_bytes": 8161,
+      "mtime_ns": 1782164896445246300,
+      "file_id": 34339947158755041,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/config.py",
+      "size_bytes": 1033,
+      "mtime_ns": 1784716109123061200,
+      "file_id": 68961369294212292,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/__init__.py",
+      "size_bytes": 109,
+      "mtime_ns": 1784716109064995600,
+      "file_id": 163818436445670205,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/cli/infer.py",
+      "size_bytes": 9395,
+      "mtime_ns": 1784716109099999600,
+      "file_id": 53198770598407955,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py",
+      "size_bytes": 1896,
+      "mtime_ns": 1784716109104060700,
+      "file_id": 34339947158794493,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+      "size_bytes": 53244,
+      "mtime_ns": 1784716109109060900,
+      "file_id": 54324670505252626,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/cli/run_local_experiment.py",
+      "size_bytes": 1756,
+      "mtime_ns": 1785116256463162300,
+      "file_id": 153403862307354994,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py",
+      "size_bytes": 1751,
+      "mtime_ns": 1784716109114061100,
+      "file_id": 53480245575125516,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/cli/train.py",
+      "size_bytes": 19933,
+      "mtime_ns": 1784716109119061500,
+      "file_id": 56576470318943058,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/cli/__init__.py",
+      "size_bytes": 75,
+      "mtime_ns": 1784716109094998000,
+      "file_id": 356910270469201253,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/data.py",
+      "size_bytes": 17241,
+      "mtime_ns": 1784716109134063600,
+      "file_id": 71213169107916499,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/horizons.py",
+      "size_bytes": 9975,
+      "mtime_ns": 1788985287445765400,
+      "file_id": 33776997205332105,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/inference.py",
+      "size_bytes": 10701,
+      "mtime_ns": 1788985287456274500,
+      "file_id": 15481123719215660,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/normalization.py",
+      "size_bytes": 13844,
+      "mtime_ns": 1784716109147061500,
+      "file_id": 67272519433981853,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/package.py",
+      "size_bytes": 22117,
+      "mtime_ns": 1784716109152061600,
+      "file_id": 16325548649353781,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/partitions.py",
+      "size_bytes": 5457,
+      "mtime_ns": 1784716109156061400,
+      "file_id": 151152062493762917,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/preprocessing.py",
+      "size_bytes": 28684,
+      "mtime_ns": 1784716109161062800,
+      "file_id": 87257242780444008,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/thresholds.py",
+      "size_bytes": 2739,
+      "mtime_ns": 1784716109165061900,
+      "file_id": 100486566685845199,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/training.py",
+      "size_bytes": 21064,
+      "mtime_ns": 1788985287451273700,
+      "file_id": 8162774324685593,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/types.py",
+      "size_bytes": 2177,
+      "mtime_ns": 1784716109174061600,
+      "file_id": 40532396646480128,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/validation.py",
+      "size_bytes": 49990,
+      "mtime_ns": 1788985287462782200,
+      "file_id": 25051272927394160,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__init__.py",
+      "size_bytes": 438,
+      "mtime_ns": 1784716109129061300,
+      "file_id": 13792273858934606,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/local/outputs.py",
+      "size_bytes": 29205,
+      "mtime_ns": 1788985287467782800,
+      "file_id": 48976645947752480,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/local/package.py",
+      "size_bytes": 27417,
+      "mtime_ns": 1785116256507164200,
+      "file_id": 21955048183529900,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/local/runner.py",
+      "size_bytes": 78062,
+      "mtime_ns": 1785116256516164100,
+      "file_id": 42784196460120985,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/local/__init__.py",
+      "size_bytes": 544,
+      "mtime_ns": 1785116256492164000,
+      "file_id": 74027918874996622,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json",
+      "size_bytes": 2463,
+      "mtime_ns": 1784716109189065100,
+      "file_id": 86694292827038942,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/local-model-package.schema.json",
+      "size_bytes": 3792,
+      "mtime_ns": 1788985287471855800,
+      "file_id": 42784196460121773,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/local-prediction-record.schema.json",
+      "size_bytes": 2702,
+      "mtime_ns": 1788985287476856100,
+      "file_id": 35747322042356071,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json",
+      "size_bytes": 4413,
+      "mtime_ns": 1784716109193065400,
+      "file_id": 18577348463068094,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json",
+      "size_bytes": 4577,
+      "mtime_ns": 1784716109198065100,
+      "file_id": 98516241848894613,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/prediction-record.schema.json",
+      "size_bytes": 1731,
+      "mtime_ns": 1784716109202143800,
+      "file_id": 66428094503880849,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/run-manifest.schema.json",
+      "size_bytes": 8554,
+      "mtime_ns": 1784716109206142400,
+      "file_id": 18577348463069869,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json",
+      "size_bytes": 3435,
+      "mtime_ns": 1784716109211142400,
+      "file_id": 19421773393202103,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/suite-manifest.schema.json",
+      "size_bytes": 6304,
+      "mtime_ns": 1784716109215142300,
+      "file_id": 157907461934844990,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json",
+      "size_bytes": 9936,
+      "mtime_ns": 1784716109219142700,
+      "file_id": 20266198323334252,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/__init__.py",
+      "size_bytes": 2067,
+      "mtime_ns": 1784716109184062100,
+      "file_id": 81064793292819993,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/vertex/batch_prediction.py",
+      "size_bytes": 35532,
+      "mtime_ns": 1784716109230142800,
+      "file_id": 21955048183598520,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py",
+      "size_bytes": 5568,
+      "mtime_ns": 1784716109234142700,
+      "file_id": 33495522228735440,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/vertex/promotion.py",
+      "size_bytes": 33893,
+      "mtime_ns": 1784716109239143800,
+      "file_id": 77405618595597841,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/vertex/registry.py",
+      "size_bytes": 15398,
+      "mtime_ns": 1784716109243144000,
+      "file_id": 27303072741101239,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/vertex/storage.py",
+      "size_bytes": 15836,
+      "mtime_ns": 1784716109248143100,
+      "file_id": 83035118129811142,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/vertex/training_job.py",
+      "size_bytes": 11304,
+      "mtime_ns": 1784716109252143000,
+      "file_id": 43065671436900830,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/vertex/__init__.py",
+      "size_bytes": 480,
+      "mtime_ns": 1784716109225143300,
+      "file_id": 43065671436897545,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/__pycache__/config.cpython-312.pyc",
+      "size_bytes": 1668,
+      "mtime_ns": 1785116962808577700,
+      "file_id": 15762598696353358,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 333,
+      "mtime_ns": 1784716137220695000,
+      "file_id": 28991922601588747,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json",
+      "size_bytes": 6564,
+      "mtime_ns": 1784716109072994300,
+      "file_id": 60517119992863613,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv",
+      "size_bytes": 193190,
+      "mtime_ns": 1784716109083994900,
+      "file_id": 173670060630552312,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json",
+      "size_bytes": 518,
+      "mtime_ns": 1784716109088997900,
+      "file_id": 146929937843042292,
+      "git_state": "tracked"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/data.cpython-312.pyc",
+      "size_bytes": 17907,
+      "mtime_ns": 1785116962840684500,
+      "file_id": 24488322974378369,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/horizons.cpython-312.pyc",
+      "size_bytes": 12532,
+      "mtime_ns": 1790189021425511800,
+      "file_id": 6755399442539755,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/inference.cpython-312.pyc",
+      "size_bytes": 14250,
+      "mtime_ns": 1790189020543451300,
+      "file_id": 7036874419250409,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/normalization.cpython-312.pyc",
+      "size_bytes": 17917,
+      "mtime_ns": 1790189021436510800,
+      "file_id": 10414574138850958,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/partitions.cpython-312.pyc",
+      "size_bytes": 8038,
+      "mtime_ns": 1785116963330261800,
+      "file_id": 3940649674507888,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/preprocessing.cpython-312.pyc",
+      "size_bytes": 39085,
+      "mtime_ns": 1785116963318548700,
+      "file_id": 5348024558060968,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/thresholds.cpython-312.pyc",
+      "size_bytes": 3256,
+      "mtime_ns": 1785116963344492200,
+      "file_id": 5910974511482490,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/training.cpython-312.pyc",
+      "size_bytes": 23617,
+      "mtime_ns": 1790189021452510200,
+      "file_id": 7036874419250412,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/types.cpython-312.pyc",
+      "size_bytes": 3955,
+      "mtime_ns": 1785116961577174700,
+      "file_id": 57420895249075136,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/validation.cpython-312.pyc",
+      "size_bytes": 55996,
+      "mtime_ns": 1790189021390498500,
+      "file_id": 7881299348456817,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/core/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 548,
+      "mtime_ns": 1785116961553467300,
+      "file_id": 42784196460484512,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/local/__pycache__/outputs.cpython-312.pyc",
+      "size_bytes": 39108,
+      "mtime_ns": 1790189021520472600,
+      "file_id": 19140298416875998,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/local/__pycache__/package.cpython-312.pyc",
+      "size_bytes": 29496,
+      "mtime_ns": 1790189020331445000,
+      "file_id": 7318349395961062,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/local/__pycache__/runner.cpython-312.pyc",
+      "size_bytes": 83302,
+      "mtime_ns": 1790189021411510700,
+      "file_id": 6755399442539754,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/local/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 643,
+      "mtime_ns": 1790189020316445400,
+      "file_id": 7318349395961060,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/schemas/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 3811,
+      "mtime_ns": 1785116963054113900,
+      "file_id": 10977524092272465,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/vertex/__pycache__/storage.cpython-312.pyc",
+      "size_bytes": 23676,
+      "mtime_ns": 1785116963180992800,
+      "file_id": 7036874418324806,
+      "git_state": "ignored"
+    },
+    {
+      "path": "fewsnet_partitioned_rf_pipeline/vertex/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 566,
+      "mtime_ns": 1785116963163486700,
+      "file_id": 22236523160700105,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Final_harmonise/00_build_monthly_ipcch_base_input.py",
+      "size_bytes": 17356,
+      "mtime_ns": 1784156274441067100,
+      "file_id": 32651097299254293,
+      "git_state": "tracked"
+    },
+    {
+      "path": "FLDAS/00_ee_export_fldas_all_bands.txt",
+      "size_bytes": 2340,
+      "mtime_ns": 1782441255683158800,
+      "file_id": 3377699720937850,
+      "git_state": "tracked"
+    },
+    {
+      "path": "FLDAS/01_gcs_download_fldas.txt",
+      "size_bytes": 204,
+      "mtime_ns": 1782148033159881700,
+      "file_id": 20829148277179876,
+      "git_state": "tracked"
+    },
+    {
+      "path": "FLDAS/02_arcpy_extract_fldas_part1.py",
+      "size_bytes": 9225,
+      "mtime_ns": 1782441255689799700,
+      "file_id": 5348024557913000,
+      "git_state": "tracked"
+    },
+    {
+      "path": "FLDAS/02_arcpy_extract_fldas_part2.py",
+      "size_bytes": 9225,
+      "mtime_ns": 1782441255696513600,
+      "file_id": 3940649674360213,
+      "git_state": "tracked"
+    },
+    {
+      "path": "FLDAS/02_arcpy_extract_fldas_part3.py",
+      "size_bytes": 9225,
+      "mtime_ns": 1782441255702514400,
+      "file_id": 3377699720938948,
+      "git_state": "tracked"
+    },
+    {
+      "path": "FLDAS/02_arcpy_extract_fldas_part4.py",
+      "size_bytes": 9225,
+      "mtime_ns": 1782441255709521400,
+      "file_id": 31243722415293906,
+      "git_state": "tracked"
+    },
+    {
+      "path": "GOSIF_GPP/00_download_gosif_gpp_mean.py",
+      "size_bytes": 2009,
+      "mtime_ns": 1782441255717545300,
+      "file_id": 27866022694766193,
+      "git_state": "tracked"
+    },
+    {
+      "path": "GOSIF_GPP/00_download_gosif_gpp_sd.py",
+      "size_bytes": 2003,
+      "mtime_ns": 1782441255725050700,
+      "file_id": 12384898975683040,
+      "git_state": "tracked"
+    },
+    {
+      "path": "GOSIF_GPP/01_unzip_gosif_gpp_mean.py",
+      "size_bytes": 1005,
+      "mtime_ns": 1782151108330462600,
+      "file_id": 59391220085994740,
+      "git_state": "tracked"
+    },
+    {
+      "path": "GOSIF_GPP/01_unzip_gosif_gpp_sd.py",
+      "size_bytes": 1001,
+      "mtime_ns": 1782151108927887500,
+      "file_id": 3659174698353905,
+      "git_state": "tracked"
+    },
+    {
+      "path": "GOSIF_GPP/02_arcpy_extract_gosif_gpp_mean.py",
+      "size_bytes": 5468,
+      "mtime_ns": 1782441255732551600,
+      "file_id": 2533274790810110,
+      "git_state": "tracked"
+    },
+    {
+      "path": "GOSIF_GPP/02_arcpy_extract_gosif_gpp_sd.py",
+      "size_bytes": 5462,
+      "mtime_ns": 1782441255739089700,
+      "file_id": 19421773393450478,
+      "git_state": "tracked"
+    },
+    {
+      "path": "implementation-delta.md",
+      "size_bytes": 126615,
+      "mtime_ns": 1782526364923136300,
+      "file_id": 33495522228961440,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/model_package_manifest.json",
+      "size_bytes": 897,
+      "mtime_ns": 1782439841000000000,
+      "file_id": 14355223813097321,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/training_export_summary.json",
+      "size_bytes": 1976,
+      "mtime_ns": 1782439841000000000,
+      "file_id": 10977524092569443,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_0m/feature_columns.json",
+      "size_bytes": 2801,
+      "mtime_ns": 1782439830000000000,
+      "file_id": 19703248370601392,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_0m/feature_contract.csv",
+      "size_bytes": 30968,
+      "mtime_ns": 1782439830000000000,
+      "file_id": 21955048184286668,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_0m/model_metadata.json",
+      "size_bytes": 6802,
+      "mtime_ns": 1782439830000000000,
+      "file_id": 35747322043108543,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_0m/phase2_worse_model.json",
+      "size_bytes": 1261233,
+      "mtime_ns": 1782439827000000000,
+      "file_id": 36028797019819145,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_0m/phase3_worse_model.json",
+      "size_bytes": 1247443,
+      "mtime_ns": 1782439828000000000,
+      "file_id": 2814749767962059,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_0m/phase4_worse_model.json",
+      "size_bytes": 1240235,
+      "mtime_ns": 1782439829000000000,
+      "file_id": 38843546786925839,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_0m/phase5_worse_model.json",
+      "size_bytes": 1064455,
+      "mtime_ns": 1782439830000000000,
+      "file_id": 13229323906256258,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_12m/feature_columns.json",
+      "size_bytes": 2801,
+      "mtime_ns": 1782439841000000000,
+      "file_id": 5629499535067007,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_12m/feature_contract.csv",
+      "size_bytes": 31096,
+      "mtime_ns": 1782439841000000000,
+      "file_id": 5348024558356353,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_12m/model_metadata.json",
+      "size_bytes": 6797,
+      "mtime_ns": 1782439841000000000,
+      "file_id": 5629499535067003,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_12m/phase2_worse_model.json",
+      "size_bytes": 1260034,
+      "mtime_ns": 1782439838000000000,
+      "file_id": 5629499535067031,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_12m/phase3_worse_model.json",
+      "size_bytes": 1263362,
+      "mtime_ns": 1782439839000000000,
+      "file_id": 5629499535067004,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_12m/phase4_worse_model.json",
+      "size_bytes": 1236727,
+      "mtime_ns": 1782439840000000000,
+      "file_id": 5629499535067000,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_12m/phase5_worse_model.json",
+      "size_bytes": 991893,
+      "mtime_ns": 1782439841000000000,
+      "file_id": 5629499535067019,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_6m/feature_columns.json",
+      "size_bytes": 2801,
+      "mtime_ns": 1782439835000000000,
+      "file_id": 5629499535067054,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_6m/feature_contract.csv",
+      "size_bytes": 30968,
+      "mtime_ns": 1782439835000000000,
+      "file_id": 13792273859597875,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_6m/model_metadata.json",
+      "size_bytes": 6788,
+      "mtime_ns": 1782439835000000000,
+      "file_id": 20829148277442926,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_6m/phase2_worse_model.json",
+      "size_bytes": 1250168,
+      "mtime_ns": 1782439832000000000,
+      "file_id": 35747322043108095,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_6m/phase3_worse_model.json",
+      "size_bytes": 1276945,
+      "mtime_ns": 1782439833000000000,
+      "file_id": 37436171903371727,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_6m/phase4_worse_model.json",
+      "size_bytes": 1230312,
+      "mtime_ns": 1782439834000000000,
+      "file_id": 31806672369158984,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_artifacts/launch_2026_04/scope_6m/phase5_worse_model.json",
+      "size_bytes": 959655,
+      "mtime_ns": 1782439835000000000,
+      "file_id": 23362423067838780,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_pipeline/run_operational_launch_inference.py",
+      "size_bytes": 11639,
+      "mtime_ns": 1789152383757764100,
+      "file_id": 35465847065967145,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/adapters.py",
+      "size_bytes": 5717,
+      "mtime_ns": 1782441263298922300,
+      "file_id": 69524319247904892,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/feature_contract.py",
+      "size_bytes": 17567,
+      "mtime_ns": 1782441263303921800,
+      "file_id": 32651097298809872,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/inference.py",
+      "size_bytes": 8270,
+      "mtime_ns": 1789152383319175200,
+      "file_id": 30399297485124736,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/model_package.py",
+      "size_bytes": 3251,
+      "mtime_ns": 1782441263311968100,
+      "file_id": 35184372089253708,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/outputs.py",
+      "size_bytes": 4868,
+      "mtime_ns": 1782441263317136900,
+      "file_id": 19703248370168507,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/population.py",
+      "size_bytes": 5922,
+      "mtime_ns": 1784156274568318400,
+      "file_id": 2251799815289684,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/uncertainty.py",
+      "size_bytes": 2558,
+      "mtime_ns": 1784156274571319600,
+      "file_id": 2814749768710997,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/visualization.py",
+      "size_bytes": 3457,
+      "mtime_ns": 1782441263321137200,
+      "file_id": 148055837750227926,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/__init__.py",
+      "size_bytes": 217,
+      "mtime_ns": 1782441263293203400,
+      "file_id": 106397541196999534,
+      "git_state": "tracked"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/__pycache__/adapters.cpython-312.pyc",
+      "size_bytes": 8740,
+      "mtime_ns": 1784161122382746500,
+      "file_id": 56294995342328459,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/__pycache__/feature_contract.cpython-312.pyc",
+      "size_bytes": 20478,
+      "mtime_ns": 1790189795779238500,
+      "file_id": 34621422135608650,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/__pycache__/model_package.cpython-312.pyc",
+      "size_bytes": 4715,
+      "mtime_ns": 1790189795766236800,
+      "file_id": 4222124652161503,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/__pycache__/population.cpython-312.pyc",
+      "size_bytes": 8249,
+      "mtime_ns": 1784161123027712800,
+      "file_id": 79938893386026044,
+      "git_state": "ignored"
+    },
+    {
+      "path": "model_pipeline/ipcch_launch_runtime/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 422,
+      "mtime_ns": 1784161122346561400,
+      "file_id": 55732045388906289,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/README.md",
+      "size_bytes": 1971,
+      "mtime_ns": 1791492461895621600,
+      "file_id": 247135029551982592,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/DATASET_INDEX.csv",
+      "size_bytes": 3509,
+      "mtime_ns": 1785118222506280300,
+      "file_id": 89227567617406272,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/MANIFEST.md",
+      "size_bytes": 4749,
+      "mtime_ns": 1785118253815965000,
+      "file_id": 15762598696171719,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/country_area_id_lookup.csv",
+      "size_bytes": 214996,
+      "mtime_ns": 1779893654000000000,
+      "file_id": 9288674231875782,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/country_region_mapping.csv",
+      "size_bytes": 1611,
+      "mtime_ns": 1780500142000000000,
+      "file_id": 15199648742822600,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/DATASET_INDEX.csv",
+      "size_bytes": 9473,
+      "mtime_ns": 1779830951000000000,
+      "file_id": 82753643153042679,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/MANIFEST.md",
+      "size_bytes": 5813,
+      "mtime_ns": 1782164214210703900,
+      "file_id": 7036874418882886,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery.tar.gz",
+      "size_bytes": 1184481791,
+      "mtime_ns": 1791492857485385900,
+      "file_id": 27584547717894572,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery.tar.gz.sha256",
+      "size_bytes": 97,
+      "mtime_ns": 1791492941522182400,
+      "file_id": 96545917011767169,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.audit.json",
+      "size_bytes": 2150,
+      "mtime_ns": 1784585346000000000,
+      "file_id": 52354345668814924,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+      "size_bytes": 773553094,
+      "mtime_ns": 1784585343000000000,
+      "file_id": 7881299348478121,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry.cpg",
+      "size_bytes": 5,
+      "mtime_ns": 1704997020000000000,
+      "file_id": 19140298416958162,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry.dbf",
+      "size_bytes": 7942848,
+      "mtime_ns": 1744393664000000000,
+      "file_id": 23362423067619361,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry.prj",
+      "size_bytes": 306,
+      "mtime_ns": 1704997020000000000,
+      "file_id": 20266198323802653,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry.sbn",
+      "size_bytes": 54572,
+      "mtime_ns": 1704998287000000000,
+      "file_id": 14073748836168503,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry.sbx",
+      "size_bytes": 1684,
+      "mtime_ns": 1704998287000000000,
+      "file_id": 21392098230645827,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry.shp",
+      "size_bytes": 98094620,
+      "mtime_ns": 1744393664000000000,
+      "file_id": 12103423999198419,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry.shp.xml",
+      "size_bytes": 37881,
+      "mtime_ns": 1744416204000000000,
+      "file_id": 53761720552032786,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry.shx",
+      "size_bytes": 45844,
+      "mtime_ns": 1744393664000000000,
+      "file_id": 70368744177994117,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/fewsnet_admin_geometry_plot.gpkg",
+      "size_bytes": 104153088,
+      "mtime_ns": 1785118166533657300,
+      "file_id": 16888498603286922,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/spatial/unique_admin_code_lat_lon.csv",
+      "size_bytes": 831313,
+      "mtime_ns": 1785118172070091000,
+      "file_id": 32088147345201426,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/checksums.json",
+      "size_bytes": 563,
+      "mtime_ns": 1785109507000000000,
+      "file_id": 14918173766205879,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/feature_contract.json",
+      "size_bytes": 6564,
+      "mtime_ns": 1785109506000000000,
+      "file_id": 18577348463454652,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/local_model_manifest.json",
+      "size_bytes": 1807,
+      "mtime_ns": 1785109506000000000,
+      "file_id": 28991922601737934,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/model.joblib",
+      "size_bytes": 64752378,
+      "mtime_ns": 1785109506000000000,
+      "file_id": 20829148277128954,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/partition_map.csv",
+      "size_bytes": 193190,
+      "mtime_ns": 1785109506000000000,
+      "file_id": 14636698789508005,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/threshold_report.json",
+      "size_bytes": 193,
+      "mtime_ns": 1785109506000000000,
+      "file_id": 13229323905941799,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/training_report.json",
+      "size_bytes": 8672,
+      "mtime_ns": 1785109506000000000,
+      "file_id": 24206847997670480,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/checksums.json",
+      "size_bytes": 563,
+      "mtime_ns": 1785109989000000000,
+      "file_id": 22236523160664786,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/feature_contract.json",
+      "size_bytes": 6564,
+      "mtime_ns": 1785109988000000000,
+      "file_id": 45598946227630258,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/local_model_manifest.json",
+      "size_bytes": 1809,
+      "mtime_ns": 1785109988000000000,
+      "file_id": 12666373952502560,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/model.joblib",
+      "size_bytes": 76485805,
+      "mtime_ns": 1785109988000000000,
+      "file_id": 26177172834602013,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/partition_map.csv",
+      "size_bytes": 193190,
+      "mtime_ns": 1785109988000000000,
+      "file_id": 52072870691945825,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/threshold_report.json",
+      "size_bytes": 193,
+      "mtime_ns": 1785109988000000000,
+      "file_id": 9570149208679878,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/training_report.json",
+      "size_bytes": 8674,
+      "mtime_ns": 1785109988000000000,
+      "file_id": 32369622322163346,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/checksums.json",
+      "size_bytes": 563,
+      "mtime_ns": 1785109745000000000,
+      "file_id": 10414574138834113,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/feature_contract.json",
+      "size_bytes": 6564,
+      "mtime_ns": 1785109745000000000,
+      "file_id": 39406496740029391,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/local_model_manifest.json",
+      "size_bytes": 1807,
+      "mtime_ns": 1785109745000000000,
+      "file_id": 32932572275673246,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/model.joblib",
+      "size_bytes": 84776400,
+      "mtime_ns": 1785109745000000000,
+      "file_id": 25051272927771911,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/partition_map.csv",
+      "size_bytes": 193190,
+      "mtime_ns": 1785109745000000000,
+      "file_id": 32369622322265543,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/threshold_report.json",
+      "size_bytes": 192,
+      "mtime_ns": 1785109745000000000,
+      "file_id": 15199648742915339,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/training_report.json",
+      "size_bytes": 8672,
+      "mtime_ns": 1785109745000000000,
+      "file_id": 14636698789489672,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/fewsnet_partitioned_rf_202604_scope_0m_predictions.csv",
+      "size_bytes": 2402322,
+      "mtime_ns": 1785110023000000000,
+      "file_id": 145241087983072609,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/fewsnet_partitioned_rf_202604_scope_12m_predictions.csv",
+      "size_bytes": 2413776,
+      "mtime_ns": 1785110023000000000,
+      "file_id": 19140298416699433,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/fewsnet_partitioned_rf_202604_scope_6m_predictions.csv",
+      "size_bytes": 2402248,
+      "mtime_ns": 1785110023000000000,
+      "file_id": 56294995342507859,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/run_summary.json",
+      "size_bytes": 8972,
+      "mtime_ns": 1785110023000000000,
+      "file_id": 45880421204222408,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/country_level/census_idb_2026_fewsnet_country_population.csv",
+      "size_bytes": 4776,
+      "mtime_ns": 1785458790609096100,
+      "file_id": 92886742314575895,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/country_level/country_level_run_summary.json",
+      "size_bytes": 3324,
+      "mtime_ns": 1785458790649096500,
+      "file_id": 14636698789015801,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/country_level/fewsnet_partitioned_rf_202604_country_predictions.csv",
+      "size_bytes": 43982,
+      "mtime_ns": 1785458790625096200,
+      "file_id": 155937137097764407,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/country_level/fewsnet_partitioned_rf_202604_scope_0m_country_predictions.csv",
+      "size_bytes": 15045,
+      "mtime_ns": 1785458790426794300,
+      "file_id": 129197014310263778,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/country_level/fewsnet_partitioned_rf_202604_scope_12m_country_predictions.csv",
+      "size_bytes": 15105,
+      "mtime_ns": 1785458790590098700,
+      "file_id": 52354345668240595,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/predictions/202604/country_level/fewsnet_partitioned_rf_202604_scope_6m_country_predictions.csv",
+      "size_bytes": 15048,
+      "mtime_ns": 1785458790514022200,
+      "file_id": 68679894317420467,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/reports/local-202604-57cb3b981198-510375f58cd8/run_manifest.json",
+      "size_bytes": 3982,
+      "mtime_ns": 1785109991000000000,
+      "file_id": 13510798882666382,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/fewsnet_partitioned_rf/reports/local-202604-57cb3b981198-510375f58cd8/training_threshold_report.json",
+      "size_bytes": 27040,
+      "mtime_ns": 1785109991000000000,
+      "file_id": 40813871623600375,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/features/ipcch_fixed_slow_features_by_area.csv",
+      "size_bytes": 1930793,
+      "mtime_ns": 1782441255776334000,
+      "file_id": 722827740192968111,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/features/ipcch_fixed_slow_features_summary.csv",
+      "size_bytes": 13442,
+      "mtime_ns": 1782441255782335500,
+      "file_id": 93731167244697869,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/features/MANIFEST.md",
+      "size_bytes": 1937,
+      "mtime_ns": 1782164214202670800,
+      "file_id": 2533274791512450,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/interim/ipcch_scaffold_202501_202604.csv",
+      "size_bytes": 4010647,
+      "mtime_ns": 1782441255820469900,
+      "file_id": 32088147345430256,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/interim/ipcch_scaffold_202604.csv",
+      "size_bytes": 249526,
+      "mtime_ns": 1782441255832483900,
+      "file_id": 16325548649634441,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/metadata/fewsnet_paper_data_source_evidence.md",
+      "size_bytes": 2522,
+      "mtime_ns": 1782158198793171600,
+      "file_id": 38843546786210564,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/metadata/ipcch_fixed_slow_source_vintage_manifest.csv",
+      "size_bytes": 32477,
+      "mtime_ns": 1782441255841015000,
+      "file_id": 12103423998758916,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/metadata/MANIFEST.md",
+      "size_bytes": 3170,
+      "mtime_ns": 1782164214217210500,
+      "file_id": 29554872554712776,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/metadata/variable_codebook_reorganized.csv",
+      "size_bytes": 26511,
+      "mtime_ns": 1782441255849028000,
+      "file_id": 21955048183849160,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/model_input/ipcch_monthly_base_input_202604.csv",
+      "size_bytes": 5648384,
+      "mtime_ns": 1784161558000000000,
+      "file_id": 23362423067171464,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/model_input/ipcch_monthly_base_input_202604_summary.json",
+      "size_bytes": 15314,
+      "mtime_ns": 1784161558000000000,
+      "file_id": 46443371157515360,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/raw/IPCCH_2026_completed.csv",
+      "size_bytes": 1782567753,
+      "mtime_ns": 1778618328000000000,
+      "file_id": 193936258953657702,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/schema/ipcch_base_panel_schema.csv",
+      "size_bytes": 54647,
+      "mtime_ns": 1782441255860277200,
+      "file_id": 12947848929111015,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/schema/ipcch_feature_family_contract.csv",
+      "size_bytes": 2297,
+      "mtime_ns": 1782441255868298500,
+      "file_id": 15762598696218322,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+      "size_bytes": 5047,
+      "mtime_ns": 1782164006218994100,
+      "file_id": 3096224744932727,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/schema/MANIFEST.md",
+      "size_bytes": 566,
+      "mtime_ns": 1782164006229065700,
+      "file_id": 3377699721643393,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/spatial/ipcch_admin_geometry.cpg",
+      "size_bytes": 6,
+      "mtime_ns": 1778521757000000000,
+      "file_id": 17451448556570339,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/spatial/ipcch_admin_geometry.dbf",
+      "size_bytes": 504517,
+      "mtime_ns": 1778521757000000000,
+      "file_id": 12384898975792741,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/spatial/ipcch_admin_geometry.prj",
+      "size_bytes": 142,
+      "mtime_ns": 1778521757000000000,
+      "file_id": 6473924464899322,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/spatial/ipcch_admin_geometry.shp",
+      "size_bytes": 68930596,
+      "mtime_ns": 1778521757000000000,
+      "file_id": 14355223812809320,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/spatial/ipcch_admin_geometry.shx",
+      "size_bytes": 49916,
+      "mtime_ns": 1778521757000000000,
+      "file_id": 10696049115640552,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/spatial/unique_area_id_lat_lon.csv",
+      "size_bytes": 224352,
+      "mtime_ns": 1780428991000000000,
+      "file_id": 11258999068872835,
+      "git_state": "tracked"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/ipcch_launch_202604_scope_0m_predictions.csv",
+      "size_bytes": 2089386,
+      "mtime_ns": 1785457385909567800,
+      "file_id": 24488322974198359,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/ipcch_launch_202604_scope_12m_predictions.csv",
+      "size_bytes": 2054899,
+      "mtime_ns": 1785457386062970600,
+      "file_id": 59954170039743318,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/ipcch_launch_202604_scope_6m_predictions.csv",
+      "size_bytes": 2090043,
+      "mtime_ns": 1785457386226387000,
+      "file_id": 37717646879618447,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/nonnegative_score_correction_summary.json",
+      "size_bytes": 5845,
+      "mtime_ns": 1785457565615670700,
+      "file_id": 94575592174926746,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/run_summary.json",
+      "size_bytes": 191264,
+      "mtime_ns": 1784161824362417200,
+      "file_id": 4785074604653405,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/country_level/census_idb_2026_ipcch_country_population.csv",
+      "size_bytes": 11296,
+      "mtime_ns": 1785457401798021000,
+      "file_id": 42502721483644036,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/country_level/country_level_run_summary.json",
+      "size_bytes": 2041,
+      "mtime_ns": 1785457402112039600,
+      "file_id": 78812993479349799,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/country_level/ipcch_launch_202604_country_predictions.csv",
+      "size_bytes": 93638,
+      "mtime_ns": 1785457402047225300,
+      "file_id": 54887620458942591,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/country_level/ipcch_launch_202604_scope_0m_country_predictions.csv",
+      "size_bytes": 31626,
+      "mtime_ns": 1785457401876567600,
+      "file_id": 66428094504051337,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/country_level/ipcch_launch_202604_scope_12m_country_predictions.csv",
+      "size_bytes": 31652,
+      "mtime_ns": 1785457401955155600,
+      "file_id": 113434415614758195,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/ipcch_unified/predictions/202604/country_level/ipcch_launch_202604_scope_6m_country_predictions.csv",
+      "size_bytes": 31626,
+      "mtime_ns": 1785457402031687000,
+      "file_id": 101330991616200548,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/config.env.example",
+      "size_bytes": 425,
+      "mtime_ns": 1791492274054264400,
+      "file_id": 8725724279042736,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/inventory.json",
+      "size_bytes": 39691,
+      "mtime_ns": 1791492699521073000,
+      "file_id": 18014398510755247,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/README.md",
+      "size_bytes": 6592,
+      "mtime_ns": 1791492697176504700,
+      "file_id": 8444249302332079,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/source-map.json",
+      "size_bytes": 64687,
+      "mtime_ns": 1791492697197647900,
+      "file_id": 1688849861843911,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/deploy/deploy_delivery.sh",
+      "size_bytes": 2446,
+      "mtime_ns": 1791492274022256700,
+      "file_id": 9570149209174691,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/deploy/migration_destination.py",
+      "size_bytes": 13452,
+      "mtime_ns": 1791492697167489200,
+      "file_id": 8444249302332062,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/deploy/migration_package.py",
+      "size_bytes": 10284,
+      "mtime_ns": 1791492697154972200,
+      "file_id": 6192449488646729,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/deploy/workflow.yaml",
+      "size_bytes": 2800,
+      "mtime_ns": 1791492274032258300,
+      "file_id": 7036874418778793,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/bundle_manifest.json",
+      "size_bytes": 730,
+      "mtime_ns": 1791492305811715300,
+      "file_id": 1688849861843906,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/manifest.json",
+      "size_bytes": 64319,
+      "mtime_ns": 1791492305794707200,
+      "file_id": 1688849861843905,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/model_inventory.json",
+      "size_bytes": 4581,
+      "mtime_ns": 1791492305825834400,
+      "file_id": 1688849861843907,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/source_request.json",
+      "size_bytes": 13725,
+      "mtime_ns": 1791492305924887900,
+      "file_id": 1688849861843910,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/Dockerfile",
+      "size_bytes": 807,
+      "mtime_ns": 1791492273976257300,
+      "file_id": 14073748836544730,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/requirements.lock.txt",
+      "size_bytes": 1373,
+      "mtime_ns": 1791492273979257300,
+      "file_id": 9851624185885089,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/inputs/fewsnet_identity_population.csv",
+      "size_bytes": 656488,
+      "mtime_ns": 1791492304938365300,
+      "file_id": 1688849861843826,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/inputs/fewsnet_scope_0m_inference.csv",
+      "size_bytes": 5862575,
+      "mtime_ns": 1791492304981405900,
+      "file_id": 1688849861843827,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/inputs/fewsnet_scope_12m_inference.csv",
+      "size_bytes": 5862575,
+      "mtime_ns": 1791492305031406600,
+      "file_id": 1970324838554489,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/inputs/fewsnet_scope_6m_inference.csv",
+      "size_bytes": 5862575,
+      "mtime_ns": 1791492304841335700,
+      "file_id": 1688849861843822,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/inputs/ipcch_origin_rows.csv",
+      "size_bytes": 10444040,
+      "mtime_ns": 1791492304908365000,
+      "file_id": 1688849861843825,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/reports/diagnostic_availability.csv",
+      "size_bytes": 2675361,
+      "mtime_ns": 1791492305905887800,
+      "file_id": 1688849861843909,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/fewsnet/country_confidence.csv",
+      "size_bytes": 1312,
+      "mtime_ns": 1791492305478224700,
+      "file_id": 1688849861843889,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/fewsnet/country_predictions.csv",
+      "size_bytes": 12437,
+      "mtime_ns": 1791492305455218400,
+      "file_id": 1688849861843888,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/fewsnet/polygon_confidence.csv",
+      "size_bytes": 306539,
+      "mtime_ns": 1791492305493735600,
+      "file_id": 1688849861843890,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/fewsnet/polygon_model_mapping.csv",
+      "size_bytes": 801481,
+      "mtime_ns": 1791492305514733000,
+      "file_id": 1688849861843891,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/fewsnet/polygon_predictions.csv",
+      "size_bytes": 1504590,
+      "mtime_ns": 1791492305430218500,
+      "file_id": 2251799815264049,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/ipcch/country_confidence.csv",
+      "size_bytes": 7619,
+      "mtime_ns": 1791492305351582800,
+      "file_id": 1688849861843884,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/ipcch/country_predictions.csv",
+      "size_bytes": 36814,
+      "mtime_ns": 1791492305329582400,
+      "file_id": 1688849861843883,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/ipcch/polygon_model_mapping.csv",
+      "size_bytes": 1025917,
+      "mtime_ns": 1791492305395105400,
+      "file_id": 1688849861843886,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/ipcch/polygon_predictions.csv",
+      "size_bytes": 1496976,
+      "mtime_ns": 1791492305308466100,
+      "file_id": 1688849861843880,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/0m/ipcch/polygon_training_errors.csv",
+      "size_bytes": 76314,
+      "mtime_ns": 1791492305368081700,
+      "file_id": 1688849861843885,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/fewsnet/country_confidence.csv",
+      "size_bytes": 1312,
+      "mtime_ns": 1791492305695955400,
+      "file_id": 1688849861843902,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/fewsnet/country_predictions.csv",
+      "size_bytes": 12481,
+      "mtime_ns": 1791492305679951100,
+      "file_id": 1688849861843901,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/fewsnet/polygon_confidence.csv",
+      "size_bytes": 306539,
+      "mtime_ns": 1791492305711955500,
+      "file_id": 1688849861843903,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/fewsnet/polygon_model_mapping.csv",
+      "size_bytes": 812917,
+      "mtime_ns": 1791492305765959300,
+      "file_id": 1688849861843904,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/fewsnet/polygon_predictions.csv",
+      "size_bytes": 1516064,
+      "mtime_ns": 1791492305658854800,
+      "file_id": 1688849861843900,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/ipcch/country_confidence.csv",
+      "size_bytes": 7619,
+      "mtime_ns": 1791492305592247100,
+      "file_id": 1688849861843896,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/ipcch/country_predictions.csv",
+      "size_bytes": 36880,
+      "mtime_ns": 1791492305569737100,
+      "file_id": 1688849861843895,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/ipcch/polygon_model_mapping.csv",
+      "size_bytes": 1044598,
+      "mtime_ns": 1791492305632248600,
+      "file_id": 1688849861843898,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/ipcch/polygon_predictions.csv",
+      "size_bytes": 1501916,
+      "mtime_ns": 1791492305546733100,
+      "file_id": 1688849861843894,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/12m/ipcch/polygon_training_errors.csv",
+      "size_bytes": 76314,
+      "mtime_ns": 1791492305608251400,
+      "file_id": 1688849861843897,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/fewsnet/country_confidence.csv",
+      "size_bytes": 1312,
+      "mtime_ns": 1791492305234952000,
+      "file_id": 1688849861843865,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/fewsnet/country_predictions.csv",
+      "size_bytes": 12442,
+      "mtime_ns": 1791492305214950700,
+      "file_id": 1688849861843862,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/fewsnet/polygon_confidence.csv",
+      "size_bytes": 306539,
+      "mtime_ns": 1791492305251951000,
+      "file_id": 1688849861843868,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/fewsnet/polygon_model_mapping.csv",
+      "size_bytes": 801481,
+      "mtime_ns": 1791492305276954500,
+      "file_id": 1688849861843871,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/fewsnet/polygon_predictions.csv",
+      "size_bytes": 1504640,
+      "mtime_ns": 1791492305192949500,
+      "file_id": 1688849861843859,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/ipcch/country_confidence.csv",
+      "size_bytes": 7619,
+      "mtime_ns": 1791492305121434800,
+      "file_id": 1688849861843847,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/ipcch/country_predictions.csv",
+      "size_bytes": 36797,
+      "mtime_ns": 1791492305100440600,
+      "file_id": 1688849861843844,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/ipcch/polygon_model_mapping.csv",
+      "size_bytes": 1025917,
+      "mtime_ns": 1791492305163435400,
+      "file_id": 1688849861843853,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/ipcch/polygon_predictions.csv",
+      "size_bytes": 1497799,
+      "mtime_ns": 1791492305080434600,
+      "file_id": 1688849861843841,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/reference/scopes/6m/ipcch/polygon_training_errors.csv",
+      "size_bytes": 76314,
+      "mtime_ns": 1791492305139442000,
+      "file_id": 1688849861843850,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/__init__.py",
+      "size_bytes": 61,
+      "mtime_ns": 1791492272437332500,
+      "file_id": 2814749768685928,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/config.py",
+      "size_bytes": 1033,
+      "mtime_ns": 1791492272945560400,
+      "file_id": 1688849861843531,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/__init__.py",
+      "size_bytes": 109,
+      "mtime_ns": 1791492272956064800,
+      "file_id": 1688849861843534,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/run_operational_launch_inference.py",
+      "size_bytes": 11639,
+      "mtime_ns": 1791492273540302800,
+      "file_id": 82190693200110046,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/audit_h5_inputs.py",
+      "size_bytes": 6434,
+      "mtime_ns": 1791492273665920700,
+      "file_id": 5348024558512257,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/build_fewsnet_country_level_predictions.py",
+      "size_bytes": 21221,
+      "mtime_ns": 1791492273679919300,
+      "file_id": 15199648743385253,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/build_fewsnet_stage3_parity_fixture.py",
+      "size_bytes": 6841,
+      "mtime_ns": 1791492273695921500,
+      "file_id": 9007199255750823,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/build_ipcch_country_level_predictions.py",
+      "size_bytes": 20362,
+      "mtime_ns": 1791492273711920900,
+      "file_id": 9570149209172221,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/build_ipcch_fixed_slow_features.py",
+      "size_bytes": 11538,
+      "mtime_ns": 1791492273728919800,
+      "file_id": 21955048184441139,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/build_ipcch_schema_contract.py",
+      "size_bytes": 19524,
+      "mtime_ns": 1791492273743924700,
+      "file_id": 15762598696806922,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/build_ipcch_source_vintage_manifest.py",
+      "size_bytes": 17871,
+      "mtime_ns": 1791492273760432800,
+      "file_id": 5910974511933981,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/build_monthly_ipcch_scaffold.py",
+      "size_bytes": 5895,
+      "mtime_ns": 1791492273778434800,
+      "file_id": 9288674232461907,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/build_prepare_assets.py",
+      "size_bytes": 6847,
+      "mtime_ns": 1791492273791433200,
+      "file_id": 9851624185883223,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/check_h5_delivery_focus.py",
+      "size_bytes": 1873,
+      "mtime_ns": 1791492273809432600,
+      "file_id": 10133099162593877,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/package_h5_delivery.py",
+      "size_bytes": 4276,
+      "mtime_ns": 1791492273822433800,
+      "file_id": 13510798883121762,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/refresh_h5_inputs.py",
+      "size_bytes": 16127,
+      "mtime_ns": 1791492273837434500,
+      "file_id": 9288674232461923,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/reshape_remote_sensing_wide_to_long.py",
+      "size_bytes": 5100,
+      "mtime_ns": 1791492273852439400,
+      "file_id": 8725724279040613,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/revise_h5_confidence.py",
+      "size_bytes": 16443,
+      "mtime_ns": 1791492273867950600,
+      "file_id": 6192449488644712,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/revise_h5_country_v3.py",
+      "size_bytes": 33134,
+      "mtime_ns": 1791492273881953400,
+      "file_id": 6473924465355369,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/run_h5_model_delivery.py",
+      "size_bytes": 16563,
+      "mtime_ns": 1791492273897952100,
+      "file_id": 9288674232461934,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/validate_csv_contract.py",
+      "size_bytes": 2775,
+      "mtime_ns": 1791492273910952500,
+      "file_id": 8725724279040623,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/validate_ipcch_schema.py",
+      "size_bytes": 9470,
+      "mtime_ns": 1791492273922471100,
+      "file_id": 9288674232461937,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/verify_h5_confidence.py",
+      "size_bytes": 9898,
+      "mtime_ns": 1791492273936670900,
+      "file_id": 31806672369314519,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/verify_h5_country_v3.py",
+      "size_bytes": 14288,
+      "mtime_ns": 1791492273947676000,
+      "file_id": 10977524092726784,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/tools/verify_h5_model_delivery.py",
+      "size_bytes": 11587,
+      "mtime_ns": 1791492273962256100,
+      "file_id": 7599824372199494,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/batch/evi_extract.py",
+      "size_bytes": 2012,
+      "mtime_ns": 1791492272447336100,
+      "file_id": 2533274791975299,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/batch/evi_outputs.py",
+      "size_bytes": 917,
+      "mtime_ns": 1791492272458845900,
+      "file_id": 3096224745396612,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/batch/evi_reference.py",
+      "size_bytes": 1711,
+      "mtime_ns": 1791492272468845900,
+      "file_id": 2251799815264647,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/batch/evi_service.py",
+      "size_bytes": 15636,
+      "mtime_ns": 1791492272476845900,
+      "file_id": 8725724278922085,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/batch/evi_validation.py",
+      "size_bytes": 3082,
+      "mtime_ns": 1791492272489844200,
+      "file_id": 1970324838553997,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/batch/evi_worker.py",
+      "size_bytes": 14932,
+      "mtime_ns": 1791492272499844600,
+      "file_id": 1970324838554003,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/batch/gee_export.py",
+      "size_bytes": 2745,
+      "mtime_ns": 1791492272513844900,
+      "file_id": 1970324838554006,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/batch/remote_sources.py",
+      "size_bytes": 18931,
+      "mtime_ns": 1791492272522846100,
+      "file_id": 1970324838554007,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/batch/__init__.py",
+      "size_bytes": 34,
+      "mtime_ns": 1791492272535846100,
+      "file_id": 1970324838554017,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/common/forbidden_side_effects.py",
+      "size_bytes": 1695,
+      "mtime_ns": 1791492272543847300,
+      "file_id": 1970324838554029,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/common/manifest.py",
+      "size_bytes": 8757,
+      "mtime_ns": 1791492272553848300,
+      "file_id": 1688849861843447,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/common/object_refs.py",
+      "size_bytes": 1878,
+      "mtime_ns": 1791492272565354500,
+      "file_id": 1688849861843448,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/common/object_store.py",
+      "size_bytes": 7075,
+      "mtime_ns": 1791492272575354200,
+      "file_id": 1688849861843451,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/common/release_reader.py",
+      "size_bytes": 731,
+      "mtime_ns": 1791492272586355400,
+      "file_id": 1688849861843452,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/common/reports.py",
+      "size_bytes": 5617,
+      "mtime_ns": 1791492272597361200,
+      "file_id": 1688849861843455,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/common/runtime_config.py",
+      "size_bytes": 1037,
+      "mtime_ns": 1791492272608361700,
+      "file_id": 1688849861843458,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/common/__init__.py",
+      "size_bytes": 36,
+      "mtime_ns": 1791492272620873900,
+      "file_id": 1688849861843462,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/assembly.py",
+      "size_bytes": 9413,
+      "mtime_ns": 1791492272627873100,
+      "file_id": 1688849861843469,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/base_input_validation.py",
+      "size_bytes": 5264,
+      "mtime_ns": 1791492272639978900,
+      "file_id": 1688849861843472,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/batch_client.py",
+      "size_bytes": 4318,
+      "mtime_ns": 1791492272651986400,
+      "file_id": 1970324838554131,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/causal_fill.py",
+      "size_bytes": 13352,
+      "mtime_ns": 1791492272664497300,
+      "file_id": 1688849861843478,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/deliver.py",
+      "size_bytes": 24390,
+      "mtime_ns": 1791492272678495300,
+      "file_id": 1688849861843479,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/delivery_bundle.py",
+      "size_bytes": 38570,
+      "mtime_ns": 1791492272692495000,
+      "file_id": 1688849861843482,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/delivery_inputs.py",
+      "size_bytes": 27171,
+      "mtime_ns": 1791492272708496300,
+      "file_id": 1688849861843485,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/delivery_job.py",
+      "size_bytes": 24913,
+      "mtime_ns": 1791492272722495500,
+      "file_id": 1688849861843486,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/delivery_manifest.py",
+      "size_bytes": 19431,
+      "mtime_ns": 1791492272737495100,
+      "file_id": 1688849861843487,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/delivery_outputs.py",
+      "size_bytes": 37713,
+      "mtime_ns": 1791492272750506500,
+      "file_id": 1688849861843488,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/delivery_run.py",
+      "size_bytes": 6914,
+      "mtime_ns": 1791492272764628300,
+      "file_id": 1688849861843489,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/delivery_scoring.py",
+      "size_bytes": 10643,
+      "mtime_ns": 1791492272778629100,
+      "file_id": 1688849861843490,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/deliver_job.py",
+      "size_bytes": 6861,
+      "mtime_ns": 1791492272791628200,
+      "file_id": 1688849861843493,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/inference.py",
+      "size_bytes": 39420,
+      "mtime_ns": 1791492272804627600,
+      "file_id": 1688849861843496,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/main.py",
+      "size_bytes": 40431,
+      "mtime_ns": 1791492272817628900,
+      "file_id": 1688849861843499,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/model_package.py",
+      "size_bytes": 3854,
+      "mtime_ns": 1791492272830629600,
+      "file_id": 1688849861843500,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/prepare.py",
+      "size_bytes": 44148,
+      "mtime_ns": 1791492272841631000,
+      "file_id": 1688849861843501,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/release.py",
+      "size_bytes": 27178,
+      "mtime_ns": 1791492272855631300,
+      "file_id": 1688849861843504,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/release_manifest.py",
+      "size_bytes": 1128,
+      "mtime_ns": 1791492272868910000,
+      "file_id": 1688849861843505,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/roots.py",
+      "size_bytes": 1426,
+      "mtime_ns": 1791492272880909200,
+      "file_id": 1688849861843508,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/run_state.py",
+      "size_bytes": 3326,
+      "mtime_ns": 1791492272890910100,
+      "file_id": 1688849861843512,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/vertex_client.py",
+      "size_bytes": 3820,
+      "mtime_ns": 1791492272901909000,
+      "file_id": 1688849861843515,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/orchestrator/__init__.py",
+      "size_bytes": 39,
+      "mtime_ns": 1791492272911908800,
+      "file_id": 1688849861843518,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/schemas/input-manifest.schema.json",
+      "size_bytes": 8620,
+      "mtime_ns": 1791492272918910600,
+      "file_id": 1688849861843522,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/cloud/schemas/__init__.py",
+      "size_bytes": 39,
+      "mtime_ns": 1791492272927556500,
+      "file_id": 1688849861843525,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/cli/infer.py",
+      "size_bytes": 9395,
+      "mtime_ns": 1791492272964068900,
+      "file_id": 1688849861843538,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py",
+      "size_bytes": 1896,
+      "mtime_ns": 1791492272975069000,
+      "file_id": 1688849861843539,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+      "size_bytes": 53244,
+      "mtime_ns": 1791492272986070500,
+      "file_id": 1688849861843543,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/cli/run_local_experiment.py",
+      "size_bytes": 1756,
+      "mtime_ns": 1791492272999068900,
+      "file_id": 27303072741604507,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py",
+      "size_bytes": 1751,
+      "mtime_ns": 1791492273008071000,
+      "file_id": 1970324838554200,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/cli/train.py",
+      "size_bytes": 19933,
+      "mtime_ns": 1791492273018074100,
+      "file_id": 1688849861843547,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/cli/__init__.py",
+      "size_bytes": 75,
+      "mtime_ns": 1791492273030071000,
+      "file_id": 1688849861843548,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/data.py",
+      "size_bytes": 17241,
+      "mtime_ns": 1791492273040112200,
+      "file_id": 1688849861843554,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/horizons.py",
+      "size_bytes": 9975,
+      "mtime_ns": 1791492273053116500,
+      "file_id": 1688849861843557,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/inference.py",
+      "size_bytes": 10701,
+      "mtime_ns": 1791492273067628000,
+      "file_id": 1688849861843560,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/normalization.py",
+      "size_bytes": 13844,
+      "mtime_ns": 1791492273079627300,
+      "file_id": 1688849861843561,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/package.py",
+      "size_bytes": 22117,
+      "mtime_ns": 1791492273093629000,
+      "file_id": 1688849861843562,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/partitions.py",
+      "size_bytes": 5457,
+      "mtime_ns": 1791492273107629200,
+      "file_id": 1688849861843563,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/preprocessing.py",
+      "size_bytes": 28684,
+      "mtime_ns": 1791492273116628400,
+      "file_id": 1688849861843564,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/thresholds.py",
+      "size_bytes": 2739,
+      "mtime_ns": 1791492273127629300,
+      "file_id": 1688849861843567,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/training.py",
+      "size_bytes": 21064,
+      "mtime_ns": 1791492273139634600,
+      "file_id": 1688849861843568,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/types.py",
+      "size_bytes": 2177,
+      "mtime_ns": 1791492273150772700,
+      "file_id": 1688849861843569,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/validation.py",
+      "size_bytes": 49990,
+      "mtime_ns": 1791492273162280800,
+      "file_id": 1688849861843572,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/core/__init__.py",
+      "size_bytes": 438,
+      "mtime_ns": 1791492273178285300,
+      "file_id": 44191571343904572,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/local/outputs.py",
+      "size_bytes": 29205,
+      "mtime_ns": 1791492273187793600,
+      "file_id": 16325548649663565,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/local/package.py",
+      "size_bytes": 27417,
+      "mtime_ns": 1791492273203404400,
+      "file_id": 34339947158742208,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/local/runner.py",
+      "size_bytes": 78062,
+      "mtime_ns": 1791492273218409000,
+      "file_id": 47287796087557734,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/local/__init__.py",
+      "size_bytes": 544,
+      "mtime_ns": 1791492273235920600,
+      "file_id": 7599824371633283,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json",
+      "size_bytes": 2463,
+      "mtime_ns": 1791492273248926200,
+      "file_id": 18014398509927822,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/local-model-package.schema.json",
+      "size_bytes": 3792,
+      "mtime_ns": 1791492273262437300,
+      "file_id": 12384898975714722,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/local-prediction-record.schema.json",
+      "size_bytes": 2702,
+      "mtime_ns": 1791492273276439300,
+      "file_id": 32088147345461970,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json",
+      "size_bytes": 4413,
+      "mtime_ns": 1791492273288440800,
+      "file_id": 75153818782192476,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json",
+      "size_bytes": 4577,
+      "mtime_ns": 1791492273299440100,
+      "file_id": 14918173766115303,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/prediction-record.schema.json",
+      "size_bytes": 1731,
+      "mtime_ns": 1791492273313439000,
+      "file_id": 8162774325059649,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/run-manifest.schema.json",
+      "size_bytes": 8554,
+      "mtime_ns": 1791492273325438600,
+      "file_id": 46161896180998245,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json",
+      "size_bytes": 3435,
+      "mtime_ns": 1791492273338439500,
+      "file_id": 60798594969952430,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/suite-manifest.schema.json",
+      "size_bytes": 6304,
+      "mtime_ns": 1791492273351445200,
+      "file_id": 109493765940900663,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json",
+      "size_bytes": 9936,
+      "mtime_ns": 1791492273363957400,
+      "file_id": 8162774325078897,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/schemas/__init__.py",
+      "size_bytes": 2067,
+      "mtime_ns": 1791492273377956100,
+      "file_id": 39687971716674367,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/vertex/batch_prediction.py",
+      "size_bytes": 35532,
+      "mtime_ns": 1791492273390957300,
+      "file_id": 4222124651131782,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py",
+      "size_bytes": 5568,
+      "mtime_ns": 1791492273407957400,
+      "file_id": 4222124651131810,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/vertex/promotion.py",
+      "size_bytes": 33893,
+      "mtime_ns": 1791492273425958700,
+      "file_id": 8725724278502317,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/vertex/registry.py",
+      "size_bytes": 15398,
+      "mtime_ns": 1791492273443961700,
+      "file_id": 34902897112596006,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/vertex/storage.py",
+      "size_bytes": 15836,
+      "mtime_ns": 1791492273458305900,
+      "file_id": 28147497671541107,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/vertex/training_job.py",
+      "size_bytes": 11304,
+      "mtime_ns": 1791492273473306100,
+      "file_id": 18858823440154672,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/vertex/__init__.py",
+      "size_bytes": 480,
+      "mtime_ns": 1791492273488302600,
+      "file_id": 22799473114135157,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json",
+      "size_bytes": 6564,
+      "mtime_ns": 1791492273501302500,
+      "file_id": 37436171903098692,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv",
+      "size_bytes": 193190,
+      "mtime_ns": 1791492273512301900,
+      "file_id": 30399297485344476,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json",
+      "size_bytes": 518,
+      "mtime_ns": 1791492273525304100,
+      "file_id": 21392098230604078,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/ipcch_launch_runtime/adapters.py",
+      "size_bytes": 5717,
+      "mtime_ns": 1791492273550307500,
+      "file_id": 20829148277272330,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/ipcch_launch_runtime/feature_contract.py",
+      "size_bytes": 17567,
+      "mtime_ns": 1791492273564818800,
+      "file_id": 19421773393719061,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/ipcch_launch_runtime/inference.py",
+      "size_bytes": 8270,
+      "mtime_ns": 1791492273578817400,
+      "file_id": 6473924465043488,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/ipcch_launch_runtime/model_package.py",
+      "size_bytes": 3251,
+      "mtime_ns": 1791492273591819400,
+      "file_id": 18858823440376426,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/ipcch_launch_runtime/outputs.py",
+      "size_bytes": 4868,
+      "mtime_ns": 1791492273603819700,
+      "file_id": 17169973580112505,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/ipcch_launch_runtime/population.py",
+      "size_bytes": 5922,
+      "mtime_ns": 1791492273618778400,
+      "file_id": 7036874418533235,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/ipcch_launch_runtime/uncertainty.py",
+      "size_bytes": 2558,
+      "mtime_ns": 1791492273633782100,
+      "file_id": 10414574139162171,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/ipcch_launch_runtime/visualization.py",
+      "size_bytes": 3457,
+      "mtime_ns": 1791492273645900100,
+      "file_id": 8444249302220487,
+      "git_state": "ignored"
+    },
+    {
+      "path": "Outcome/migration_packages/october_cloud_delivery/runtime/model_pipeline/ipcch_launch_runtime/__init__.py",
+      "size_bytes": 217,
+      "mtime_ns": 1791492273648901100,
+      "file_id": 13229323906409113,
+      "git_state": "ignored"
+    },
+    {
+      "path": "polygons_and_identifier/country_scope_ipcch_2026.csv",
+      "size_bytes": 20293,
+      "mtime_ns": 1782441256044333800,
+      "file_id": 139330113471905639,
+      "git_state": "tracked"
+    },
+    {
+      "path": "requirements-cloud.txt",
+      "size_bytes": 134,
+      "mtime_ns": 1782526364927138900,
+      "file_id": 24769797950931200,
+      "git_state": "tracked"
+    },
+    {
+      "path": "requirements-fewsnet-partitioned-rf.txt",
+      "size_bytes": 261,
+      "mtime_ns": 1784716109256143200,
+      "file_id": 59954170039543465,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/data-model.md",
+      "size_bytes": 10545,
+      "mtime_ns": 1782526364971254500,
+      "file_id": 9851624185429537,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/evidence.md",
+      "size_bytes": 35733,
+      "mtime_ns": 1782526364977254400,
+      "file_id": 7881299348454952,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/implementation-micro-plan.md",
+      "size_bytes": 64180,
+      "mtime_ns": 1782526364983254100,
+      "file_id": 6473924464901754,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/plan.md",
+      "size_bytes": 6832,
+      "mtime_ns": 1782526364989254500,
+      "file_id": 7881299348455043,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/quickstart.md",
+      "size_bytes": 7702,
+      "mtime_ns": 1784156274587421600,
+      "file_id": 8725724278587263,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/research.md",
+      "size_bytes": 6555,
+      "mtime_ns": 1782526364998254600,
+      "file_id": 21392098230566890,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/spec.md",
+      "size_bytes": 66887,
+      "mtime_ns": 1782526365003254800,
+      "file_id": 25895697857937444,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/tasks.md",
+      "size_bytes": 32849,
+      "mtime_ns": 1782526365008254900,
+      "file_id": 12666373952540847,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/checklists/requirements.md",
+      "size_bytes": 1598,
+      "mtime_ns": 1782526364939254500,
+      "file_id": 36028797019392787,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/contracts/execution-contract.md",
+      "size_bytes": 5384,
+      "mtime_ns": 1782526364947254300,
+      "file_id": 15199648742826589,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/contracts/input-manifest.schema.json",
+      "size_bytes": 8620,
+      "mtime_ns": 1782526364954254300,
+      "file_id": 23643898044159532,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/contracts/release-artifact-contract.md",
+      "size_bytes": 2890,
+      "mtime_ns": 1782526364960254300,
+      "file_id": 45598946227591022,
+      "git_state": "tracked"
+    },
+    {
+      "path": "specs/001-cloud-base-input/contracts/report-contracts.md",
+      "size_bytes": 6565,
+      "mtime_ns": 1782526364966254700,
+      "file_id": 43910096367402073,
+      "git_state": "tracked"
+    },
+    {
+      "path": "structured_TOR_from_variable_note.xlsx",
+      "size_bytes": 25097,
+      "mtime_ns": 1782165591014668000,
+      "file_id": 378020893722422007,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_build_fewsnet_country_level_predictions.py",
+      "size_bytes": 9883,
+      "mtime_ns": 1785458759951550100,
+      "file_id": 45035996273963219,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_build_ipcch_country_level_predictions.py",
+      "size_bytes": 9034,
+      "mtime_ns": 1785456159743941900,
+      "file_id": 18577348463550406,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_build_ipcch_fixed_slow_features.py",
+      "size_bytes": 4414,
+      "mtime_ns": 1782163837713501700,
+      "file_id": 34339947159035816,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_build_monthly_ipcch_base_input.py",
+      "size_bytes": 11593,
+      "mtime_ns": 1784156274641422400,
+      "file_id": 30962247438540227,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_build_prepare_assets.py",
+      "size_bytes": 1747,
+      "mtime_ns": 1791462040695494800,
+      "file_id": 11821949022780237,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_operational_launch_cli.py",
+      "size_bytes": 16021,
+      "mtime_ns": 1784156274646422200,
+      "file_id": 130885864170517522,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_operational_launch_feature_contract.py",
+      "size_bytes": 16467,
+      "mtime_ns": 1782441263333733700,
+      "file_id": 33495522228994862,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_operational_launch_inference.py",
+      "size_bytes": 15870,
+      "mtime_ns": 1784156274652422800,
+      "file_id": 70931694131512236,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_operational_launch_input_contract.py",
+      "size_bytes": 6940,
+      "mtime_ns": 1782526365163143800,
+      "file_id": 50384020831276347,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_population_contract.py",
+      "size_bytes": 1539,
+      "mtime_ns": 1784156274655421800,
+      "file_id": 1688849861868375,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_population_output.py",
+      "size_bytes": 2030,
+      "mtime_ns": 1784156274660423200,
+      "file_id": 1407374885157720,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_prediction_uncertainty.py",
+      "size_bytes": 3861,
+      "mtime_ns": 1784156274664427700,
+      "file_id": 1407374885157721,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_refresh_h5_inputs.py",
+      "size_bytes": 9323,
+      "mtime_ns": 1791429302732849000,
+      "file_id": 6192449488766570,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_reshape_remote_sensing_wide_to_long.py",
+      "size_bytes": 3788,
+      "mtime_ns": 1782526365167896900,
+      "file_id": 79657418409186872,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/test_tabular_config_paths.py",
+      "size_bytes": 3058,
+      "mtime_ns": 1782164731772062900,
+      "file_id": 126382264543103962,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/__init__.py",
+      "size_bytes": 60,
+      "mtime_ns": 1782526365012254800,
+      "file_id": 10414574138855651,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_causal_fill.py",
+      "size_bytes": 9750,
+      "mtime_ns": 1791429585453500700,
+      "file_id": 33214047252394991,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_cloud_batch_evi_worker.py",
+      "size_bytes": 24499,
+      "mtime_ns": 1782526365022254700,
+      "file_id": 6192449488200362,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_deliver.py",
+      "size_bytes": 9297,
+      "mtime_ns": 1791474999919537200,
+      "file_id": 141863388262239789,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_delivery_bundle.py",
+      "size_bytes": 20483,
+      "mtime_ns": 1791476579306001900,
+      "file_id": 83879543059845754,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_delivery_inputs.py",
+      "size_bytes": 15191,
+      "mtime_ns": 1791466620511583500,
+      "file_id": 104990166313278881,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_delivery_job.py",
+      "size_bytes": 20244,
+      "mtime_ns": 1791483381941741900,
+      "file_id": 16044073673155777,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_delivery_manifest.py",
+      "size_bytes": 11322,
+      "mtime_ns": 1791429585448997700,
+      "file_id": 94012642221529154,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_delivery_outputs.py",
+      "size_bytes": 25457,
+      "mtime_ns": 1791492461894621100,
+      "file_id": 16325548649922823,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_delivery_run.py",
+      "size_bytes": 6202,
+      "mtime_ns": 1791474775615295000,
+      "file_id": 10414574138759763,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_delivery_scoring.py",
+      "size_bytes": 4482,
+      "mtime_ns": 1791469851399845100,
+      "file_id": 209417382672748058,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_delivery_workflow.py",
+      "size_bytes": 2176,
+      "mtime_ns": 1791483357568392200,
+      "file_id": 22517998137071984,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_deliver_job.py",
+      "size_bytes": 2214,
+      "mtime_ns": 1791475386989202300,
+      "file_id": 16044073673102747,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_evi_reference_comparison.py",
+      "size_bytes": 2244,
+      "mtime_ns": 1782526365026257400,
+      "file_id": 8725724278596298,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_evi_validation_report.py",
+      "size_bytes": 2917,
+      "mtime_ns": 1782526365030257000,
+      "file_id": 39125021763347203,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_forbidden_side_effects.py",
+      "size_bytes": 1457,
+      "mtime_ns": 1782526365034257000,
+      "file_id": 10414574138864787,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_gcp_smoke_monthly_e2e.py",
+      "size_bytes": 21719,
+      "mtime_ns": 1784156274594420400,
+      "file_id": 14918173766235453,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_gee_export_manifest.py",
+      "size_bytes": 2915,
+      "mtime_ns": 1782526365043337500,
+      "file_id": 8725724278601151,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_ipcch_chunked.py",
+      "size_bytes": 11354,
+      "mtime_ns": 1791473864938397300,
+      "file_id": 26177172834653490,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_manifest_contract.py",
+      "size_bytes": 5843,
+      "mtime_ns": 1782526365047337700,
+      "file_id": 23080948090845326,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_migration_package.py",
+      "size_bytes": 5447,
+      "mtime_ns": 1791492650446144000,
+      "file_id": 56013520365864016,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_monthly_assembly_wrapper.py",
+      "size_bytes": 18789,
+      "mtime_ns": 1784156274599420600,
+      "file_id": 9007199255312589,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_object_refs.py",
+      "size_bytes": 1590,
+      "mtime_ns": 1782526365055337700,
+      "file_id": 10133099162155254,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_object_store.py",
+      "size_bytes": 4276,
+      "mtime_ns": 1791483973287293100,
+      "file_id": 6473924464917081,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_orchestrator_contract.py",
+      "size_bytes": 50316,
+      "mtime_ns": 1784156274605421200,
+      "file_id": 8162774325188308,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_prepare.py",
+      "size_bytes": 42109,
+      "mtime_ns": 1791466454306169500,
+      "file_id": 83316593106383896,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_quickstart_fake_cloud.py",
+      "size_bytes": 1408,
+      "mtime_ns": 1782526365071338400,
+      "file_id": 61080069946794548,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_rasterio_evi_extraction.py",
+      "size_bytes": 5485,
+      "mtime_ns": 1782526365076338400,
+      "file_id": 12947848929341006,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_release_conflict.py",
+      "size_bytes": 9697,
+      "mtime_ns": 1784156274612422900,
+      "file_id": 14918173766318905,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_release_consumer.py",
+      "size_bytes": 1542,
+      "mtime_ns": 1782526365085338100,
+      "file_id": 15762598696454232,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_release_manifest_contract.py",
+      "size_bytes": 7112,
+      "mtime_ns": 1784156274617420600,
+      "file_id": 6192449488329468,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_release_writer.py",
+      "size_bytes": 24793,
+      "mtime_ns": 1784156274624421300,
+      "file_id": 12103423999254184,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_remote_sources.py",
+      "size_bytes": 13966,
+      "mtime_ns": 1791460207222830700,
+      "file_id": 5910974512055796,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_report_contracts.py",
+      "size_bytes": 4044,
+      "mtime_ns": 1784156274629421200,
+      "file_id": 11540474045834335,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_runtime_defaults.py",
+      "size_bytes": 1021,
+      "mtime_ns": 1782526365108337800,
+      "file_id": 43628621390851983,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_runtime_image_contract.py",
+      "size_bytes": 1397,
+      "mtime_ns": 1782526365112337800,
+      "file_id": 19140298417024992,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_run_state.py",
+      "size_bytes": 3308,
+      "mtime_ns": 1782526365103337800,
+      "file_id": 75716768735866749,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_vertex_ai_custom_job_contract.py",
+      "size_bytes": 40389,
+      "mtime_ns": 1784156274635421300,
+      "file_id": 22799473114263542,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/test_wind_down_rest.py",
+      "size_bytes": 2543,
+      "mtime_ns": 1791477631757958800,
+      "file_id": 28710447624545270,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/cloud/__init__.py",
+      "size_bytes": 36,
+      "mtime_ns": 1782526365017254800,
+      "file_id": 5910974511489682,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/local_test_support.py",
+      "size_bytes": 8405,
+      "mtime_ns": 1785116256542174300,
+      "file_id": 46724846134080162,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_batch_prediction.py",
+      "size_bytes": 39505,
+      "mtime_ns": 1784716109267143300,
+      "file_id": 39969446693095787,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_contracts.py",
+      "size_bytes": 13310,
+      "mtime_ns": 1784716109271143300,
+      "file_id": 52354345668364674,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_gcp_smoke.py",
+      "size_bytes": 31452,
+      "mtime_ns": 1784716109276144600,
+      "file_id": 24769797950721486,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_horizons.py",
+      "size_bytes": 12012,
+      "mtime_ns": 1785116256551824900,
+      "file_id": 61643019899758374,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_imputer_thresholds.py",
+      "size_bytes": 6882,
+      "mtime_ns": 1784716109284143500,
+      "file_id": 46443371157443933,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_local_cli.py",
+      "size_bytes": 3120,
+      "mtime_ns": 1785116256559261600,
+      "file_id": 57420895249116479,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_local_outputs.py",
+      "size_bytes": 17219,
+      "mtime_ns": 1785116256567064100,
+      "file_id": 90353467524264871,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_local_package.py",
+      "size_bytes": 12110,
+      "mtime_ns": 1785116256574432300,
+      "file_id": 146648462866397208,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_local_runner.py",
+      "size_bytes": 39906,
+      "mtime_ns": 1785116256582020900,
+      "file_id": 9570149208308295,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_model_package.py",
+      "size_bytes": 26536,
+      "mtime_ns": 1784716109289147000,
+      "file_id": 73746443898378644,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_panel_normalization.py",
+      "size_bytes": 12132,
+      "mtime_ns": 1784716109293147200,
+      "file_id": 1204431425345089592,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_partitions.py",
+      "size_bytes": 4717,
+      "mtime_ns": 1784716109298148600,
+      "file_id": 23925373020599373,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_predictor_server.py",
+      "size_bytes": 15274,
+      "mtime_ns": 1784716109302655800,
+      "file_id": 53480245575229341,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_preprocessing.py",
+      "size_bytes": 12347,
+      "mtime_ns": 1784716109307656200,
+      "file_id": 63613344736820827,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_promotion.py",
+      "size_bytes": 64025,
+      "mtime_ns": 1784716109312655800,
+      "file_id": 66991044457349670,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_reference_parity.py",
+      "size_bytes": 4359,
+      "mtime_ns": 1784716109317655900,
+      "file_id": 75435293758675176,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_registry.py",
+      "size_bytes": 29539,
+      "mtime_ns": 1784716109321656300,
+      "file_id": 74309393851833067,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_runtime_foundation.py",
+      "size_bytes": 2391,
+      "mtime_ns": 1784716109332656000,
+      "file_id": 58546795156047724,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_runtime_image.py",
+      "size_bytes": 1076,
+      "mtime_ns": 1784716109336656500,
+      "file_id": 94012642221596354,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_run_latest.py",
+      "size_bytes": 104521,
+      "mtime_ns": 1784716109327655500,
+      "file_id": 71494644084736466,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_snapshot_staging.py",
+      "size_bytes": 27206,
+      "mtime_ns": 1784716109341656500,
+      "file_id": 125256364636483309,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_storage.py",
+      "size_bytes": 16594,
+      "mtime_ns": 1784716109345656100,
+      "file_id": 48695170971188320,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_training_inference.py",
+      "size_bytes": 19488,
+      "mtime_ns": 1785116256592020800,
+      "file_id": 221802281648143537,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/test_training_job.py",
+      "size_bytes": 23587,
+      "mtime_ns": 1784716109354657200,
+      "file_id": 50946970784876636,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/__init__.py",
+      "size_bytes": 0,
+      "mtime_ns": 1784716109259143800,
+      "file_id": 46443371157438622,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/__pycache__/test_build_fewsnet_country_level_predictions.cpython-312-pytest-7.4.4.pyc",
+      "size_bytes": 21077,
+      "mtime_ns": 1785458653836235500,
+      "file_id": 81064793292738424,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/__pycache__/test_build_ipcch_country_level_predictions.cpython-312.pyc",
+      "size_bytes": 9814,
+      "mtime_ns": 1785456454963600900,
+      "file_id": 30680772461997572,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 252,
+      "mtime_ns": 1785458653816233300,
+      "file_id": 76561193665348167,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/cloud/__pycache__/test_delivery_bundle.cpython-312.pyc",
+      "size_bytes": 25014,
+      "mtime_ns": 1791475754796386200,
+      "file_id": 562949955229151,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/cloud/__pycache__/test_delivery_outputs.cpython-312-pytest-7.4.4.pyc",
+      "size_bytes": 16650,
+      "mtime_ns": 1791464434767981100,
+      "file_id": 32369622322317956,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/cloud/__pycache__/test_delivery_workflow.cpython-312-pytest-7.4.4.pyc",
+      "size_bytes": 5603,
+      "mtime_ns": 1791483385254502900,
+      "file_id": 37154696926251374,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/cloud/__pycache__/test_prepare.cpython-312-pytest-7.4.4.pyc",
+      "size_bytes": 102947,
+      "mtime_ns": 1791462832027360700,
+      "file_id": 19421773393706140,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/cloud/__pycache__/test_remote_sources.cpython-312-pytest-7.4.4.pyc",
+      "size_bytes": 47328,
+      "mtime_ns": 1791430900383764200,
+      "file_id": 33214047252114895,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/cloud/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 234,
+      "mtime_ns": 1791430900354497900,
+      "file_id": 52072870691722428,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/__pycache__/test_local_outputs.cpython-312.pyc",
+      "size_bytes": 23623,
+      "mtime_ns": 1791475714319601800,
+      "file_id": 562949955225604,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/fewsnet_partitioned_rf/__pycache__/__init__.cpython-312.pyc",
+      "size_bytes": 207,
+      "mtime_ns": 1791475714295596700,
+      "file_id": 562949955225601,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tests/fixtures/cloud/input_manifest_202604_valid.json",
+      "size_bytes": 5859,
+      "mtime_ns": 1782526365137341600,
+      "file_id": 11258999069126664,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fixtures/cloud/input_manifest_local_path.json",
+      "size_bytes": 2223,
+      "mtime_ns": 1782526365143999100,
+      "file_id": 9007199255441424,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fixtures/cloud/input_manifest_missing_digest.json",
+      "size_bytes": 2126,
+      "mtime_ns": 1782526365150717800,
+      "file_id": 21955048184131602,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fixtures/cloud/README.md",
+      "size_bytes": 812,
+      "mtime_ns": 1782526365130341000,
+      "file_id": 9288674232152071,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fixtures/fewsnet_partitioned_rf/deployment_valid.json",
+      "size_bytes": 1148,
+      "mtime_ns": 1784716109361658100,
+      "file_id": 33214047252107686,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fixtures/fewsnet_partitioned_rf/panel_normalization_valid.json",
+      "size_bytes": 1566,
+      "mtime_ns": 1784716109367657600,
+      "file_id": 77687093572393590,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fixtures/fewsnet_partitioned_rf/source_snapshot_valid.json",
+      "size_bytes": 1761,
+      "mtime_ns": 1784716109373656800,
+      "file_id": 74027918875156736,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fixtures/fewsnet_partitioned_rf/stage3_reference_parity.json",
+      "size_bytes": 1851,
+      "mtime_ns": 1784716109378657200,
+      "file_id": 110338190870903895,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tests/fixtures/fewsnet_partitioned_rf/vertex_batch_output.jsonl",
+      "size_bytes": 817,
+      "mtime_ns": 1784716109383657600,
+      "file_id": 34339947159031614,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/audit_h5_inputs.py",
+      "size_bytes": 6434,
+      "mtime_ns": 1788986720840940000,
+      "file_id": 137922738588241214,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/build_fewsnet_country_level_predictions.py",
+      "size_bytes": 21221,
+      "mtime_ns": 1785458772706423000,
+      "file_id": 168884986026412671,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/build_fewsnet_stage3_parity_fixture.py",
+      "size_bytes": 6841,
+      "mtime_ns": 1784716109387659400,
+      "file_id": 41095346600119825,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/build_ipcch_country_level_predictions.py",
+      "size_bytes": 20362,
+      "mtime_ns": 1785456142987693500,
+      "file_id": 34621422135520361,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/build_ipcch_fixed_slow_features.py",
+      "size_bytes": 11538,
+      "mtime_ns": 1782163915647810200,
+      "file_id": 156781562027920740,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/build_ipcch_schema_contract.py",
+      "size_bytes": 19524,
+      "mtime_ns": 1782159464069255600,
+      "file_id": 117656540265136606,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/build_ipcch_source_vintage_manifest.py",
+      "size_bytes": 17871,
+      "mtime_ns": 1782163915659333500,
+      "file_id": 36310271995861488,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/build_monthly_ipcch_scaffold.py",
+      "size_bytes": 5895,
+      "mtime_ns": 1782159651783551500,
+      "file_id": 48976645947990514,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/build_prepare_assets.py",
+      "size_bytes": 6847,
+      "mtime_ns": 1791464395917858100,
+      "file_id": 91197892454322728,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/check_h5_delivery_focus.py",
+      "size_bytes": 1873,
+      "mtime_ns": 1788986720844450100,
+      "file_id": 14918173766573952,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/package_h5_delivery.py",
+      "size_bytes": 4276,
+      "mtime_ns": 1790189402941786400,
+      "file_id": 12103423999520164,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/refresh_h5_inputs.py",
+      "size_bytes": 16127,
+      "mtime_ns": 1791428827734896500,
+      "file_id": 33776997205490378,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/reshape_remote_sensing_wide_to_long.py",
+      "size_bytes": 5100,
+      "mtime_ns": 1782165042747767800,
+      "file_id": 144678138029287585,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/revise_h5_confidence.py",
+      "size_bytes": 16443,
+      "mtime_ns": 1789153179667536700,
+      "file_id": 12384898975996003,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/revise_h5_country_v3.py",
+      "size_bytes": 33134,
+      "mtime_ns": 1790190416631493700,
+      "file_id": 7036874419251263,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/run_h5_model_delivery.py",
+      "size_bytes": 16563,
+      "mtime_ns": 1790191612916615500,
+      "file_id": 8162774325527741,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/validate_csv_contract.py",
+      "size_bytes": 2775,
+      "mtime_ns": 1782152211201080300,
+      "file_id": 32369622321911065,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/validate_ipcch_schema.py",
+      "size_bytes": 9470,
+      "mtime_ns": 1782163915653825100,
+      "file_id": 22799473113747032,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/verify_h5_confidence.py",
+      "size_bytes": 9898,
+      "mtime_ns": 1789153179672525900,
+      "file_id": 10133099162981277,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/verify_h5_country_v3.py",
+      "size_bytes": 14288,
+      "mtime_ns": 1790189931683892500,
+      "file_id": 5629499535714794,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/verify_h5_model_delivery.py",
+      "size_bytes": 11587,
+      "mtime_ns": 1790191622540472800,
+      "file_id": 11821949022765925,
+      "git_state": "tracked"
+    },
+    {
+      "path": "tools/__pycache__/audit_h5_inputs.cpython-312.pyc",
+      "size_bytes": 9656,
+      "mtime_ns": 1791429313051330000,
+      "file_id": 39125021763206202,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/build_fewsnet_country_level_predictions.cpython-312.pyc",
+      "size_bytes": 26441,
+      "mtime_ns": 1790190012586939600,
+      "file_id": 4785074605582835,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/build_ipcch_country_level_predictions.cpython-312.pyc",
+      "size_bytes": 24180,
+      "mtime_ns": 1785456454952579500,
+      "file_id": 45880421204372827,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/check_h5_delivery_focus.cpython-312.pyc",
+      "size_bytes": 3460,
+      "mtime_ns": 1791429313062841500,
+      "file_id": 8444249301744747,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/package_h5_delivery.cpython-312.pyc",
+      "size_bytes": 7570,
+      "mtime_ns": 1790190081385687600,
+      "file_id": 3377699722029558,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/refresh_h5_inputs.cpython-312.pyc",
+      "size_bytes": 25321,
+      "mtime_ns": 1791429313039789700,
+      "file_id": 10133099162006844,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/revise_h5_confidence.cpython-312.pyc",
+      "size_bytes": 24156,
+      "mtime_ns": 1790190081406687000,
+      "file_id": 7036874419251265,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/revise_h5_country_v3.cpython-312.pyc",
+      "size_bytes": 51207,
+      "mtime_ns": 1790190416666512300,
+      "file_id": 5348024559004160,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/run_h5_model_delivery.cpython-312.pyc",
+      "size_bytes": 23760,
+      "mtime_ns": 1790191612946842100,
+      "file_id": 9288674232935470,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/verify_h5_confidence.cpython-312.pyc",
+      "size_bytes": 15448,
+      "mtime_ns": 1790190081437196900,
+      "file_id": 9851624186356949,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/verify_h5_country_v3.cpython-312.pyc",
+      "size_bytes": 25388,
+      "mtime_ns": 1790190081448198500,
+      "file_id": 3377699722029560,
+      "git_state": "ignored"
+    },
+    {
+      "path": "tools/__pycache__/verify_h5_model_delivery.cpython-312.pyc",
+      "size_bytes": 19147,
+      "mtime_ns": 1790191622568029500,
+      "file_id": 7599824372689551,
+      "git_state": "ignored"
+    },
+    {
+      "path": "VIIRS_nightlight/00_ee_export_viirs_nightlight.txt",
+      "size_bytes": 2778,
+      "mtime_ns": 1782441255881251200,
+      "file_id": 51791395715136539,
+      "git_state": "tracked"
+    },
+    {
+      "path": "VIIRS_nightlight/01_gcs_download_viirs_nightlight.txt",
+      "size_bytes": 190,
+      "mtime_ns": 1782148033481004500,
+      "file_id": 7881299348941973,
+      "git_state": "tracked"
+    },
+    {
+      "path": "VIIRS_nightlight/02_arcpy_mosaic_viirs_nightlight.py",
+      "size_bytes": 3306,
+      "mtime_ns": 1782441255887324800,
+      "file_id": 13792273859244308,
+      "git_state": "tracked"
+    },
+    {
+      "path": "VIIRS_nightlight/03_arcpy_extract_viirs_nightlight.py",
+      "size_bytes": 4701,
+      "mtime_ns": 1782441255893322600,
+      "file_id": 20829148277010739,
+      "git_state": "tracked"
+    },
+    {
+      "path": "WB_indicator/00_add_world_bank_features.py",
+      "size_bytes": 8414,
+      "mtime_ns": 1782164896457246100,
+      "file_id": 7599824371759264,
+      "git_state": "tracked"
+    },
+    {
+      "path": "WFP_indicator/00_add_wfp_price_features.py",
+      "size_bytes": 6424,
+      "mtime_ns": 1782164896451246700,
+      "file_id": 8444249301754381,
+      "git_state": "tracked"
+    },
+    {
+      "path": "workflow_config.py",
+      "size_bytes": 2567,
+      "mtime_ns": 1782147202512073700,
+      "file_id": 3659174697888116,
+      "git_state": "tracked"
+    },
+    {
+      "path": "__pycache__/workflow_config.cpython-312.pyc",
+      "size_bytes": 4708,
+      "mtime_ns": 1784161122279020900,
+      "file_id": 14918173765860042,
+      "git_state": "ignored"
+    }
+  ],
+  "status": "moved-and-verified",
+  "file_count": 690,
+  "total_bytes": 5213890698,
+  "verification": "same-volume rename; each original path/size/mtime/file-id compared after move",
+  "moved_entries": [
+    ".pytest_cache",
+    ".ruff_cache",
+    "ACLED",
+    "archive",
+    "cloud",
+    "config",
+    "curl_IPC",
+    "deploy",
+    "desktop.ini",
+    "docker",
+    "docs",
+    "EVI",
+    "FAO_price",
+    "fewsnet_partitioned_rf_pipeline",
+    "Final_harmonise",
+    "FLDAS",
+    "GOSIF_GPP",
+    "implementation-delta.md",
+    "model_artifacts",
+    "model_pipeline",
+    "Outcome",
+    "polygons_and_identifier",
+    "requirements-cloud.txt",
+    "requirements-fewsnet-partitioned-rf.txt",
+    "specs",
+    "structured_TOR_from_variable_note.xlsx",
+    "tests",
+    "tools",
+    "VIIRS_nightlight",
+    "WB_indicator",
+    "WFP_indicator",
+    "workflow_config.py",
+    "__pycache__"
+  ],
+  "verified_at": "2026-10-08T23:03:02.089118+00:00"
+}

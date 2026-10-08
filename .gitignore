@@ -50,3 +50,14 @@ Outcome/model_delivery/
 # Isolated manual deliveries and generated local migration payloads
 Outcome/manual_delivery/
 Outcome/migration_packages/
+
+# Closed operator handovers: maintain source/docs, distribute large payloads separately
+/cloud_pipeline/bootstrap/
+/cloud_pipeline/fallback/
+/cloud_pipeline/project.json
+/cloud_pipeline/operator-state/
+/september_manual/*
+!/september_manual/README.md
+!/september_manual/inventory.json
+.pytest_cache/
+.ruff_cache/

@@ -1,0 +1,558 @@
+[
+  {
+    "from": "Outcome/migration_packages/october_cloud_delivery/assets",
+    "to": "cloud_pipeline/bootstrap/assets",
+    "files": [
+      {
+        "path": "retained_acled.csv",
+        "size": 250906941
+      },
+      {
+        "path": "retained_wfp.csv",
+        "size": 84357242
+      },
+      {
+        "path": "fewsnet/geometry.geojson",
+        "size": 247394261
+      },
+      {
+        "path": "fewsnet/history_panel.csv",
+        "size": 775678605
+      },
+      {
+        "path": "fewsnet/population.csv",
+        "size": 4776
+      },
+      {
+        "path": "fewsnet/roster.csv",
+        "size": 27491
+      },
+      {
+        "path": "ipcch/fixed_features.csv",
+        "size": 5665607
+      },
+      {
+        "path": "ipcch/geometry.geojson",
+        "size": 132388443
+      },
+      {
+        "path": "ipcch/history_panel.csv",
+        "size": 1782634776
+      },
+      {
+        "path": "ipcch/population.csv",
+        "size": 11296
+      },
+      {
+        "path": "ipcch/roster.csv",
+        "size": 32657
+      },
+      {
+        "path": "fewsnet/history/evi.csv",
+        "size": 4269612
+      },
+      {
+        "path": "fewsnet/history/fldas.csv",
+        "size": 15660347
+      },
+      {
+        "path": "fewsnet/history/gosif_mean.csv",
+        "size": 2965650
+      },
+      {
+        "path": "fewsnet/history/viirs.csv",
+        "size": 6726511
+      },
+      {
+        "path": "ipcch/history/evi.csv",
+        "size": 6800663
+      },
+      {
+        "path": "ipcch/history/fldas.csv",
+        "size": 125753771
+      },
+      {
+        "path": "ipcch/history/gosif_mean.csv",
+        "size": 2673783
+      },
+      {
+        "path": "ipcch/history/gosif_sd.csv",
+        "size": 2670919
+      },
+      {
+        "path": "ipcch/history/viirs.csv",
+        "size": 6562799
+      }
+    ]
+  },
+  {
+    "from": "Outcome/migration_packages/october_cloud_delivery/models",
+    "to": "cloud_pipeline/bootstrap/models",
+    "files": [
+      {
+        "path": "ipcch/model_package_manifest.json",
+        "size": 897
+      },
+      {
+        "path": "ipcch/training_export_summary.json",
+        "size": 1976
+      },
+      {
+        "path": "fewsnet/0m/checksums.json",
+        "size": 563
+      },
+      {
+        "path": "fewsnet/0m/feature_contract.json",
+        "size": 6564
+      },
+      {
+        "path": "fewsnet/0m/local_model_manifest.json",
+        "size": 1807
+      },
+      {
+        "path": "fewsnet/0m/model.joblib",
+        "size": 64752378
+      },
+      {
+        "path": "fewsnet/0m/partition_map.csv",
+        "size": 193190
+      },
+      {
+        "path": "fewsnet/0m/threshold_report.json",
+        "size": 193
+      },
+      {
+        "path": "fewsnet/0m/training_report.json",
+        "size": 8672
+      },
+      {
+        "path": "fewsnet/12m/checksums.json",
+        "size": 563
+      },
+      {
+        "path": "fewsnet/12m/feature_contract.json",
+        "size": 6564
+      },
+      {
+        "path": "fewsnet/12m/local_model_manifest.json",
+        "size": 1809
+      },
+      {
+        "path": "fewsnet/12m/model.joblib",
+        "size": 76485805
+      },
+      {
+        "path": "fewsnet/12m/partition_map.csv",
+        "size": 193190
+      },
+      {
+        "path": "fewsnet/12m/threshold_report.json",
+        "size": 193
+      },
+      {
+        "path": "fewsnet/12m/training_report.json",
+        "size": 8674
+      },
+      {
+        "path": "fewsnet/6m/checksums.json",
+        "size": 563
+      },
+      {
+        "path": "fewsnet/6m/feature_contract.json",
+        "size": 6564
+      },
+      {
+        "path": "fewsnet/6m/local_model_manifest.json",
+        "size": 1807
+      },
+      {
+        "path": "fewsnet/6m/model.joblib",
+        "size": 84776400
+      },
+      {
+        "path": "fewsnet/6m/partition_map.csv",
+        "size": 193190
+      },
+      {
+        "path": "fewsnet/6m/threshold_report.json",
+        "size": 192
+      },
+      {
+        "path": "fewsnet/6m/training_report.json",
+        "size": 8672
+      },
+      {
+        "path": "ipcch/scope_0m/feature_columns.json",
+        "size": 2801
+      },
+      {
+        "path": "ipcch/scope_0m/feature_contract.csv",
+        "size": 30968
+      },
+      {
+        "path": "ipcch/scope_0m/model_metadata.json",
+        "size": 6802
+      },
+      {
+        "path": "ipcch/scope_0m/phase2_worse_model.json",
+        "size": 1261233
+      },
+      {
+        "path": "ipcch/scope_0m/phase3_worse_model.json",
+        "size": 1247443
+      },
+      {
+        "path": "ipcch/scope_0m/phase4_worse_model.json",
+        "size": 1240235
+      },
+      {
+        "path": "ipcch/scope_0m/phase5_worse_model.json",
+        "size": 1064455
+      },
+      {
+        "path": "ipcch/scope_12m/feature_columns.json",
+        "size": 2801
+      },
+      {
+        "path": "ipcch/scope_12m/feature_contract.csv",
+        "size": 31096
+      },
+      {
+        "path": "ipcch/scope_12m/model_metadata.json",
+        "size": 6797
+      },
+      {
+        "path": "ipcch/scope_12m/phase2_worse_model.json",
+        "size": 1260034
+      },
+      {
+        "path": "ipcch/scope_12m/phase3_worse_model.json",
+        "size": 1263362
+      },
+      {
+        "path": "ipcch/scope_12m/phase4_worse_model.json",
+        "size": 1236727
+      },
+      {
+        "path": "ipcch/scope_12m/phase5_worse_model.json",
+        "size": 991893
+      },
+      {
+        "path": "ipcch/scope_6m/feature_columns.json",
+        "size": 2801
+      },
+      {
+        "path": "ipcch/scope_6m/feature_contract.csv",
+        "size": 30968
+      },
+      {
+        "path": "ipcch/scope_6m/model_metadata.json",
+        "size": 6788
+      },
+      {
+        "path": "ipcch/scope_6m/phase2_worse_model.json",
+        "size": 1250168
+      },
+      {
+        "path": "ipcch/scope_6m/phase3_worse_model.json",
+        "size": 1276945
+      },
+      {
+        "path": "ipcch/scope_6m/phase4_worse_model.json",
+        "size": 1230312
+      },
+      {
+        "path": "ipcch/scope_6m/phase5_worse_model.json",
+        "size": 959655
+      }
+    ]
+  },
+  {
+    "from": "Outcome/manual_delivery/202609_h5/20260923_country_confidence_v3",
+    "to": "september_manual",
+    "files": [
+      {
+        "path": "inventory.json",
+        "size": 5478
+      },
+      {
+        "path": "README.md",
+        "size": 937
+      },
+      {
+        "path": "requirements.txt",
+        "size": 215
+      },
+      {
+        "path": "webapp_model_bundle.tar.gz",
+        "size": 240305152
+      },
+      {
+        "path": "fewsnet/country_confidence.csv",
+        "size": 7253
+      },
+      {
+        "path": "fewsnet/country_population_reference.csv",
+        "size": 4776
+      },
+      {
+        "path": "fewsnet/country_predictions.csv",
+        "size": 18259
+      },
+      {
+        "path": "fewsnet/polygon_confidence.csv",
+        "size": 782355
+      },
+      {
+        "path": "fewsnet/polygon_model_mapping.csv",
+        "size": 795057
+      },
+      {
+        "path": "fewsnet/polygon_predictions.csv",
+        "size": 1475994
+      },
+      {
+        "path": "inputs/ipcch_april_panel.csv",
+        "size": 5665607
+      },
+      {
+        "path": "ipcch/country_confidence.csv",
+        "size": 26193
+      },
+      {
+        "path": "ipcch/country_population_reference.csv",
+        "size": 11296
+      },
+      {
+        "path": "ipcch/country_predictions.csv",
+        "size": 55848
+      },
+      {
+        "path": "ipcch/polygon_model_mapping.csv",
+        "size": 1019690
+      },
+      {
+        "path": "ipcch/polygon_predictions.csv",
+        "size": 1518924
+      },
+      {
+        "path": "ipcch/polygon_training_errors.csv",
+        "size": 136323
+      },
+      {
+        "path": "original_metadata/bundle_manifest.json",
+        "size": 31748
+      },
+      {
+        "path": "original_metadata/manifest.json",
+        "size": 33327
+      },
+      {
+        "path": "original_metadata/README.md",
+        "size": 22502
+      },
+      {
+        "path": "reports/ipcch_four_target_training_replay.csv",
+        "size": 10059255
+      }
+    ]
+  },
+  {
+    "from": "Outcome/model_delivery/october_cloud_delivery/oct-final-20261008a",
+    "to": "cloud_pipeline/fallback/october_2026",
+    "files": [
+      {
+        "path": "manifest.json",
+        "size": 64319
+      },
+      {
+        "path": "webapp_model_bundle.tar.gz",
+        "size": 395497758
+      },
+      {
+        "path": "replay_evidence/current_validation.json",
+        "size": 1927
+      },
+      {
+        "path": "replay_evidence/download.json",
+        "size": 491
+      },
+      {
+        "path": "replay_evidence/member_check.json",
+        "size": 189
+      },
+      {
+        "path": "replay_evidence/oct-final-disclosures.json",
+        "size": 2538
+      },
+      {
+        "path": "replay_evidence/rescore.log",
+        "size": 5703
+      },
+      {
+        "path": "reports/delivery.json",
+        "size": 275
+      },
+      {
+        "path": "reports/diagnostic_availability.csv",
+        "size": 2675361
+      },
+      {
+        "path": "reports/fewsnet_assembly.json",
+        "size": 3692
+      },
+      {
+        "path": "reports/fewsnet_diagnostic_declarations.json",
+        "size": 1012
+      },
+      {
+        "path": "reports/fewsnet_normalization_audit.json",
+        "size": 1379
+      },
+      {
+        "path": "reports/ipcch_assembly.json",
+        "size": 3371
+      },
+      {
+        "path": "reports/ipcch_diagnostic_declarations.json",
+        "size": 1495
+      },
+      {
+        "path": "scopes/0m/fewsnet/country_confidence.csv",
+        "size": 1312
+      },
+      {
+        "path": "scopes/0m/fewsnet/country_predictions.csv",
+        "size": 12437
+      },
+      {
+        "path": "scopes/0m/fewsnet/polygon_confidence.csv",
+        "size": 306539
+      },
+      {
+        "path": "scopes/0m/fewsnet/polygon_model_mapping.csv",
+        "size": 801481
+      },
+      {
+        "path": "scopes/0m/fewsnet/polygon_predictions.csv",
+        "size": 1504590
+      },
+      {
+        "path": "scopes/0m/ipcch/country_confidence.csv",
+        "size": 7619
+      },
+      {
+        "path": "scopes/0m/ipcch/country_predictions.csv",
+        "size": 36814
+      },
+      {
+        "path": "scopes/0m/ipcch/polygon_model_mapping.csv",
+        "size": 1025917
+      },
+      {
+        "path": "scopes/0m/ipcch/polygon_predictions.csv",
+        "size": 1496976
+      },
+      {
+        "path": "scopes/0m/ipcch/polygon_training_errors.csv",
+        "size": 76314
+      },
+      {
+        "path": "scopes/12m/fewsnet/country_confidence.csv",
+        "size": 1312
+      },
+      {
+        "path": "scopes/12m/fewsnet/country_predictions.csv",
+        "size": 12481
+      },
+      {
+        "path": "scopes/12m/fewsnet/polygon_confidence.csv",
+        "size": 306539
+      },
+      {
+        "path": "scopes/12m/fewsnet/polygon_model_mapping.csv",
+        "size": 812917
+      },
+      {
+        "path": "scopes/12m/fewsnet/polygon_predictions.csv",
+        "size": 1516064
+      },
+      {
+        "path": "scopes/12m/ipcch/country_confidence.csv",
+        "size": 7619
+      },
+      {
+        "path": "scopes/12m/ipcch/country_predictions.csv",
+        "size": 36880
+      },
+      {
+        "path": "scopes/12m/ipcch/polygon_model_mapping.csv",
+        "size": 1044598
+      },
+      {
+        "path": "scopes/12m/ipcch/polygon_predictions.csv",
+        "size": 1501916
+      },
+      {
+        "path": "scopes/12m/ipcch/polygon_training_errors.csv",
+        "size": 76314
+      },
+      {
+        "path": "scopes/6m/fewsnet/country_confidence.csv",
+        "size": 1312
+      },
+      {
+        "path": "scopes/6m/fewsnet/country_predictions.csv",
+        "size": 12442
+      },
+      {
+        "path": "scopes/6m/fewsnet/polygon_confidence.csv",
+        "size": 306539
+      },
+      {
+        "path": "scopes/6m/fewsnet/polygon_model_mapping.csv",
+        "size": 801481
+      },
+      {
+        "path": "scopes/6m/fewsnet/polygon_predictions.csv",
+        "size": 1504640
+      },
+      {
+        "path": "scopes/6m/ipcch/country_confidence.csv",
+        "size": 7619
+      },
+      {
+        "path": "scopes/6m/ipcch/country_predictions.csv",
+        "size": 36797
+      },
+      {
+        "path": "scopes/6m/ipcch/polygon_model_mapping.csv",
+        "size": 1025917
+      },
+      {
+        "path": "scopes/6m/ipcch/polygon_predictions.csv",
+        "size": 1497799
+      },
+      {
+        "path": "scopes/6m/ipcch/polygon_training_errors.csv",
+        "size": 76314
+      },
+      {
+        "path": "shared/fewsnet/country_population_reference.csv",
+        "size": 4776
+      },
+      {
+        "path": "shared/fewsnet/polygons.geojson",
+        "size": 247394261
+      },
+      {
+        "path": "shared/ipcch/country_population_reference.csv",
+        "size": 11296
+      },
+      {
+        "path": "shared/ipcch/polygons.geojson",
+        "size": 132388443
+      }
+    ]
+  }
+]

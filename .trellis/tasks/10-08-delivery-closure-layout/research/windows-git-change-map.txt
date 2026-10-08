@@ -1,0 +1,398 @@
+M	.gitattributes
+M	.gitignore
+A	.trellis/spec/guides/cloud-handover-layout.md
+M	.trellis/spec/guides/index.md
+A	.trellis/tasks/10-08-delivery-closure-layout/check.jsonl
+A	.trellis/tasks/10-08-delivery-closure-layout/design.md
+A	.trellis/tasks/10-08-delivery-closure-layout/implement.jsonl
+A	.trellis/tasks/10-08-delivery-closure-layout/implement.md
+A	.trellis/tasks/10-08-delivery-closure-layout/prd.md
+A	.trellis/tasks/10-08-delivery-closure-layout/research/archive-map.md
+A	.trellis/tasks/10-08-delivery-closure-layout/research/bootstrap-evidence.json
+A	.trellis/tasks/10-08-delivery-closure-layout/research/closure-additional-tests.log
+A	.trellis/tasks/10-08-delivery-closure-layout/research/closure-export-preview.log
+A	.trellis/tasks/10-08-delivery-closure-layout/research/closure-final-tests.log
+A	.trellis/tasks/10-08-delivery-closure-layout/research/closure-findings.md
+A	.trellis/tasks/10-08-delivery-closure-layout/research/closure-package-build.log
+A	.trellis/tasks/10-08-delivery-closure-layout/research/closure-package-tests.log
+A	.trellis/tasks/10-08-delivery-closure-layout/research/closure-real-preview.log
+A	.trellis/tasks/10-08-delivery-closure-layout/research/closure-setup-preview.log
+A	.trellis/tasks/10-08-delivery-closure-layout/research/closure-workflow-tests.log
+A	.trellis/tasks/10-08-delivery-closure-layout/research/completion.md
+A	.trellis/tasks/10-08-delivery-closure-layout/research/delivery-moves.json
+A	.trellis/tasks/10-08-delivery-closure-layout/research/external-archive-manifest.json
+A	.trellis/tasks/10-08-delivery-closure-layout/research/gitnexus-limitations.md
+A	.trellis/tasks/10-08-delivery-closure-layout/research/handover-receipt.json
+A	.trellis/tasks/10-08-delivery-closure-layout/research/retained-output-check.json
+A	.trellis/tasks/10-08-delivery-closure-layout/research/verification-summary.md
+A	.trellis/tasks/10-08-delivery-closure-layout/task.json
+D	ACLED/00_add_acled_features.py
+D	EVI/00_ee_export_evi.txt
+D	EVI/01_gcs_download_evi.txt
+D	EVI/02_arcpy_extract_evi.py
+D	FAO_price/00_add_fao_price_features.py
+D	FLDAS/00_ee_export_fldas_all_bands.txt
+D	FLDAS/01_gcs_download_fldas.txt
+D	FLDAS/02_arcpy_extract_fldas_part1.py
+D	FLDAS/02_arcpy_extract_fldas_part2.py
+D	FLDAS/02_arcpy_extract_fldas_part3.py
+D	FLDAS/02_arcpy_extract_fldas_part4.py
+D	Final_harmonise/00_build_monthly_ipcch_base_input.py
+D	GOSIF_GPP/00_download_gosif_gpp_mean.py
+D	GOSIF_GPP/00_download_gosif_gpp_sd.py
+D	GOSIF_GPP/01_unzip_gosif_gpp_mean.py
+D	GOSIF_GPP/01_unzip_gosif_gpp_sd.py
+D	GOSIF_GPP/02_arcpy_extract_gosif_gpp_mean.py
+D	GOSIF_GPP/02_arcpy_extract_gosif_gpp_sd.py
+D	Outcome/README.md
+D	Outcome/ipcch_unified/DATASET_INDEX.csv
+D	Outcome/ipcch_unified/MANIFEST.md
+D	Outcome/ipcch_unified/country_area_id_lookup.csv
+D	Outcome/ipcch_unified/country_region_mapping.csv
+D	Outcome/ipcch_unified/features/MANIFEST.md
+D	Outcome/ipcch_unified/features/ipcch_fixed_slow_features_by_area.csv
+D	Outcome/ipcch_unified/features/ipcch_fixed_slow_features_summary.csv
+D	Outcome/ipcch_unified/interim/ipcch_scaffold_202501_202604.csv
+D	Outcome/ipcch_unified/interim/ipcch_scaffold_202604.csv
+D	Outcome/ipcch_unified/metadata/MANIFEST.md
+D	Outcome/ipcch_unified/metadata/fewsnet_paper_data_source_evidence.md
+D	Outcome/ipcch_unified/metadata/ipcch_fixed_slow_source_vintage_manifest.csv
+D	Outcome/ipcch_unified/metadata/variable_codebook_reorganized.csv
+D	Outcome/ipcch_unified/schema/MANIFEST.md
+D	Outcome/ipcch_unified/schema/ipcch_base_panel_schema.csv
+D	Outcome/ipcch_unified/schema/ipcch_feature_family_contract.csv
+D	Outcome/ipcch_unified/schema/ipcch_model_input_contract.md
+D	Outcome/ipcch_unified/spatial/unique_area_id_lat_lon.csv
+M	PROGRESS.md
+M	README.md
+D	VIIRS_nightlight/00_ee_export_viirs_nightlight.txt
+D	VIIRS_nightlight/01_gcs_download_viirs_nightlight.txt
+D	VIIRS_nightlight/02_arcpy_mosaic_viirs_nightlight.py
+D	VIIRS_nightlight/03_arcpy_extract_viirs_nightlight.py
+D	WB_indicator/00_add_world_bank_features.py
+D	WFP_indicator/00_add_wfp_price_features.py
+D	archive/example_raw_inputs/ACLED/ACLED Data_2026-05-11_ipcch.csv
+D	archive/example_raw_inputs/MANIFEST.md
+D	archive/example_raw_inputs/WFP/Prices-Export-Thu Mar 27 2025 11_30_42 GMT-0400 (Eastern Daylight Time).csv
+D	archive/legacy_final_harmonise/00_combine_all_IPC.py
+D	archive/legacy_final_harmonise/00_combine_all_ch.py
+D	archive/legacy_final_harmonise/01_CH_final_process.py
+D	archive/legacy_final_harmonise/01_IPC_final_process.py
+D	archive/legacy_final_harmonise/MANIFEST.md
+D	archive/legacy_reference_assets/MANIFEST.md
+D	archive/notebooks/ACLED/00_add_ACLED_IPCCH.ipynb
+D	archive/notebooks/FAO_price/00_add_FAO_ipcch_update.ipynb
+D	archive/notebooks/Final_harmonise/00_combine_all_IPC.ipynb
+D	archive/notebooks/Final_harmonise/00_combine_all_ch.ipynb
+D	archive/notebooks/Final_harmonise/01_CH_final_process.ipynb
+D	archive/notebooks/Final_harmonise/01_IPC_final_process.ipynb
+D	archive/notebooks/MANIFEST.md
+D	archive/notebooks/WB_indicator/00_add_WBG_ch.ipynb
+D	archive/notebooks/WFP_indicator/00_add_WFP_ch.ipynb
+D	cloud/common/forbidden_side_effects.py
+D	cloud/common/release_reader.py
+D	cloud/orchestrator/assembly.py
+D	cloud/orchestrator/base_input_validation.py
+D	cloud/orchestrator/deliver_job.py
+D	cloud/orchestrator/inference.py
+D	cloud/orchestrator/main.py
+D	cloud/orchestrator/model_package.py
+D	cloud/orchestrator/release.py
+D	cloud/orchestrator/release_manifest.py
+D	cloud/orchestrator/roots.py
+D	cloud/orchestrator/run_state.py
+D	cloud/orchestrator/vertex_client.py
+A	cloud_pipeline/LICENSE
+A	cloud_pipeline/OPERATIONS.md
+A	cloud_pipeline/QUICKSTART.md
+A	cloud_pipeline/README.md
+R100	cloud/__init__.py	cloud_pipeline/cloud/__init__.py
+R100	cloud/batch/__init__.py	cloud_pipeline/cloud/batch/__init__.py
+R100	cloud/batch/evi_extract.py	cloud_pipeline/cloud/batch/evi_extract.py
+R100	cloud/batch/evi_outputs.py	cloud_pipeline/cloud/batch/evi_outputs.py
+R100	cloud/batch/evi_reference.py	cloud_pipeline/cloud/batch/evi_reference.py
+R100	cloud/batch/evi_service.py	cloud_pipeline/cloud/batch/evi_service.py
+R100	cloud/batch/evi_validation.py	cloud_pipeline/cloud/batch/evi_validation.py
+R100	cloud/batch/evi_worker.py	cloud_pipeline/cloud/batch/evi_worker.py
+R100	cloud/batch/gee_export.py	cloud_pipeline/cloud/batch/gee_export.py
+R100	cloud/batch/remote_sources.py	cloud_pipeline/cloud/batch/remote_sources.py
+R100	cloud/common/__init__.py	cloud_pipeline/cloud/common/__init__.py
+R100	cloud/common/manifest.py	cloud_pipeline/cloud/common/manifest.py
+R100	cloud/common/object_refs.py	cloud_pipeline/cloud/common/object_refs.py
+R100	cloud/common/object_store.py	cloud_pipeline/cloud/common/object_store.py
+R100	cloud/common/reports.py	cloud_pipeline/cloud/common/reports.py
+R100	cloud/common/runtime_config.py	cloud_pipeline/cloud/common/runtime_config.py
+R100	cloud/orchestrator/__init__.py	cloud_pipeline/cloud/orchestrator/__init__.py
+R100	cloud/orchestrator/batch_client.py	cloud_pipeline/cloud/orchestrator/batch_client.py
+R100	cloud/orchestrator/causal_fill.py	cloud_pipeline/cloud/orchestrator/causal_fill.py
+R100	cloud/orchestrator/deliver.py	cloud_pipeline/cloud/orchestrator/deliver.py
+R100	cloud/orchestrator/delivery_bundle.py	cloud_pipeline/cloud/orchestrator/delivery_bundle.py
+R100	cloud/orchestrator/delivery_inputs.py	cloud_pipeline/cloud/orchestrator/delivery_inputs.py
+R100	cloud/orchestrator/delivery_job.py	cloud_pipeline/cloud/orchestrator/delivery_job.py
+R100	cloud/orchestrator/delivery_manifest.py	cloud_pipeline/cloud/orchestrator/delivery_manifest.py
+R100	cloud/orchestrator/delivery_outputs.py	cloud_pipeline/cloud/orchestrator/delivery_outputs.py
+R100	cloud/orchestrator/delivery_run.py	cloud_pipeline/cloud/orchestrator/delivery_run.py
+R100	cloud/orchestrator/delivery_scoring.py	cloud_pipeline/cloud/orchestrator/delivery_scoring.py
+R100	cloud/orchestrator/prepare.py	cloud_pipeline/cloud/orchestrator/prepare.py
+R100	cloud/schemas/__init__.py	cloud_pipeline/cloud/schemas/__init__.py
+R100	cloud/schemas/input-manifest.schema.json	cloud_pipeline/cloud/schemas/input-manifest.schema.json
+R100	deploy/october_delivery/Dockerfile	cloud_pipeline/deploy/Dockerfile
+A	cloud_pipeline/deploy/build_context.sh
+R100	deploy/october_delivery/deploy_delivery.sh	cloud_pipeline/deploy/deploy_delivery.sh
+A	cloud_pipeline/deploy/handover_package.py
+A	cloud_pipeline/deploy/setup.py
+A	cloud_pipeline/deploy/setup.sh
+R097	deploy/october_delivery/wind_down.py	cloud_pipeline/deploy/wind_down.py
+R100	deploy/october_delivery/workflow.yaml	cloud_pipeline/deploy/workflow.yaml
+R100	fewsnet_partitioned_rf_pipeline/__init__.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/__init__.py
+R100	fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json
+R097	fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv	cloud_pipeline/fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv
+R100	fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json
+R100	fewsnet_partitioned_rf_pipeline/config.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/config.py
+R100	fewsnet_partitioned_rf_pipeline/core/__init__.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/__init__.py
+R100	fewsnet_partitioned_rf_pipeline/core/data.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/data.py
+R100	fewsnet_partitioned_rf_pipeline/core/horizons.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/horizons.py
+R100	fewsnet_partitioned_rf_pipeline/core/inference.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/inference.py
+R100	fewsnet_partitioned_rf_pipeline/core/normalization.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/normalization.py
+R100	fewsnet_partitioned_rf_pipeline/core/package.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/package.py
+R100	fewsnet_partitioned_rf_pipeline/core/partitions.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/partitions.py
+R100	fewsnet_partitioned_rf_pipeline/core/preprocessing.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/preprocessing.py
+R100	fewsnet_partitioned_rf_pipeline/core/thresholds.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/thresholds.py
+R100	fewsnet_partitioned_rf_pipeline/core/training.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/training.py
+R100	fewsnet_partitioned_rf_pipeline/core/types.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/types.py
+R100	fewsnet_partitioned_rf_pipeline/core/validation.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/validation.py
+R100	fewsnet_partitioned_rf_pipeline/local/__init__.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/local/__init__.py
+R100	fewsnet_partitioned_rf_pipeline/local/outputs.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/local/outputs.py
+R100	fewsnet_partitioned_rf_pipeline/local/package.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/local/package.py
+R100	fewsnet_partitioned_rf_pipeline/local/runner.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/local/runner.py
+R100	fewsnet_partitioned_rf_pipeline/schemas/__init__.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/__init__.py
+R100	fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json
+R100	fewsnet_partitioned_rf_pipeline/schemas/local-model-package.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/local-model-package.schema.json
+R100	fewsnet_partitioned_rf_pipeline/schemas/local-prediction-record.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/local-prediction-record.schema.json
+R100	fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json
+R100	fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json
+R100	fewsnet_partitioned_rf_pipeline/schemas/prediction-record.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/prediction-record.schema.json
+R100	fewsnet_partitioned_rf_pipeline/schemas/run-manifest.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/run-manifest.schema.json
+R100	fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json
+R100	fewsnet_partitioned_rf_pipeline/schemas/suite-manifest.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/suite-manifest.schema.json
+R100	fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json	cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json
+R100	fewsnet_partitioned_rf_pipeline/vertex/__init__.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/vertex/__init__.py
+R100	fewsnet_partitioned_rf_pipeline/vertex/storage.py	cloud_pipeline/fewsnet_partitioned_rf_pipeline/vertex/storage.py
+R100	model_pipeline/ipcch_launch_runtime/__init__.py	cloud_pipeline/model_pipeline/ipcch_launch_runtime/__init__.py
+R100	model_pipeline/ipcch_launch_runtime/adapters.py	cloud_pipeline/model_pipeline/ipcch_launch_runtime/adapters.py
+R100	model_pipeline/ipcch_launch_runtime/feature_contract.py	cloud_pipeline/model_pipeline/ipcch_launch_runtime/feature_contract.py
+R100	model_pipeline/ipcch_launch_runtime/inference.py	cloud_pipeline/model_pipeline/ipcch_launch_runtime/inference.py
+R100	model_pipeline/ipcch_launch_runtime/model_package.py	cloud_pipeline/model_pipeline/ipcch_launch_runtime/model_package.py
+R100	model_pipeline/ipcch_launch_runtime/outputs.py	cloud_pipeline/model_pipeline/ipcch_launch_runtime/outputs.py
+R100	model_pipeline/ipcch_launch_runtime/population.py	cloud_pipeline/model_pipeline/ipcch_launch_runtime/population.py
+R100	model_pipeline/ipcch_launch_runtime/uncertainty.py	cloud_pipeline/model_pipeline/ipcch_launch_runtime/uncertainty.py
+R100	model_pipeline/ipcch_launch_runtime/visualization.py	cloud_pipeline/model_pipeline/ipcch_launch_runtime/visualization.py
+R100	model_pipeline/run_operational_launch_inference.py	cloud_pipeline/model_pipeline/run_operational_launch_inference.py
+A	cloud_pipeline/pipeline.py
+A	cloud_pipeline/project.example.json
+R100	deploy/october_delivery/requirements.lock.txt	cloud_pipeline/requirements.lock.txt
+R100	tests/__init__.py	cloud_pipeline/tests/__init__.py
+R100	tests/cloud/__init__.py	cloud_pipeline/tests/cloud/__init__.py
+R100	tests/cloud/test_causal_fill.py	cloud_pipeline/tests/cloud/test_causal_fill.py
+R100	tests/cloud/test_cloud_batch_evi_worker.py	cloud_pipeline/tests/cloud/test_cloud_batch_evi_worker.py
+R100	tests/cloud/test_deliver.py	cloud_pipeline/tests/cloud/test_deliver.py
+R100	tests/cloud/test_delivery_bundle.py	cloud_pipeline/tests/cloud/test_delivery_bundle.py
+R100	tests/cloud/test_delivery_inputs.py	cloud_pipeline/tests/cloud/test_delivery_inputs.py
+R100	tests/cloud/test_delivery_job.py	cloud_pipeline/tests/cloud/test_delivery_job.py
+R100	tests/cloud/test_delivery_manifest.py	cloud_pipeline/tests/cloud/test_delivery_manifest.py
+R098	tests/cloud/test_delivery_outputs.py	cloud_pipeline/tests/cloud/test_delivery_outputs.py
+R100	tests/cloud/test_delivery_run.py	cloud_pipeline/tests/cloud/test_delivery_run.py
+R100	tests/cloud/test_delivery_scoring.py	cloud_pipeline/tests/cloud/test_delivery_scoring.py
+R095	tests/cloud/test_delivery_workflow.py	cloud_pipeline/tests/cloud/test_delivery_workflow.py
+R100	tests/cloud/test_evi_reference_comparison.py	cloud_pipeline/tests/cloud/test_evi_reference_comparison.py
+R100	tests/cloud/test_evi_validation_report.py	cloud_pipeline/tests/cloud/test_evi_validation_report.py
+R100	tests/cloud/test_gee_export_manifest.py	cloud_pipeline/tests/cloud/test_gee_export_manifest.py
+R100	tests/cloud/test_ipcch_chunked.py	cloud_pipeline/tests/cloud/test_ipcch_chunked.py
+R100	tests/cloud/test_manifest_contract.py	cloud_pipeline/tests/cloud/test_manifest_contract.py
+R100	tests/cloud/test_object_refs.py	cloud_pipeline/tests/cloud/test_object_refs.py
+R100	tests/cloud/test_object_store.py	cloud_pipeline/tests/cloud/test_object_store.py
+R100	tests/cloud/test_prepare.py	cloud_pipeline/tests/cloud/test_prepare.py
+R100	tests/cloud/test_rasterio_evi_extraction.py	cloud_pipeline/tests/cloud/test_rasterio_evi_extraction.py
+R100	tests/cloud/test_remote_sources.py	cloud_pipeline/tests/cloud/test_remote_sources.py
+R100	tests/cloud/test_report_contracts.py	cloud_pipeline/tests/cloud/test_report_contracts.py
+R100	tests/cloud/test_runtime_defaults.py	cloud_pipeline/tests/cloud/test_runtime_defaults.py
+R060	tests/cloud/test_runtime_image_contract.py	cloud_pipeline/tests/cloud/test_runtime_image_contract.py
+R096	tests/cloud/test_wind_down_rest.py	cloud_pipeline/tests/cloud/test_wind_down_rest.py
+R100	tests/fewsnet_partitioned_rf/__init__.py	cloud_pipeline/tests/fewsnet_partitioned_rf/__init__.py
+R100	tests/fewsnet_partitioned_rf/test_local_outputs.py	cloud_pipeline/tests/fewsnet_partitioned_rf/test_local_outputs.py
+R100	tests/fixtures/cloud/README.md	cloud_pipeline/tests/fixtures/cloud/README.md
+R100	tests/fixtures/cloud/input_manifest_202604_valid.json	cloud_pipeline/tests/fixtures/cloud/input_manifest_202604_valid.json
+R100	tests/fixtures/cloud/input_manifest_local_path.json	cloud_pipeline/tests/fixtures/cloud/input_manifest_local_path.json
+R100	tests/fixtures/cloud/input_manifest_missing_digest.json	cloud_pipeline/tests/fixtures/cloud/input_manifest_missing_digest.json
+R100	tests/fixtures/fewsnet_partitioned_rf/deployment_valid.json	cloud_pipeline/tests/fixtures/fewsnet_partitioned_rf/deployment_valid.json
+R100	tests/fixtures/fewsnet_partitioned_rf/panel_normalization_valid.json	cloud_pipeline/tests/fixtures/fewsnet_partitioned_rf/panel_normalization_valid.json
+R100	tests/fixtures/fewsnet_partitioned_rf/source_snapshot_valid.json	cloud_pipeline/tests/fixtures/fewsnet_partitioned_rf/source_snapshot_valid.json
+R100	tests/fixtures/fewsnet_partitioned_rf/stage3_reference_parity.json	cloud_pipeline/tests/fixtures/fewsnet_partitioned_rf/stage3_reference_parity.json
+R100	tests/fixtures/fewsnet_partitioned_rf/vertex_batch_output.jsonl	cloud_pipeline/tests/fixtures/fewsnet_partitioned_rf/vertex_batch_output.jsonl
+A	cloud_pipeline/tests/fixtures/september/fewsnet/country_confidence.csv
+A	cloud_pipeline/tests/fixtures/september/fewsnet/country_population_reference.csv
+A	cloud_pipeline/tests/fixtures/september/fewsnet/polygon_confidence.csv
+A	cloud_pipeline/tests/fixtures/september/fewsnet/polygon_model_mapping.csv
+A	cloud_pipeline/tests/fixtures/september/fewsnet/polygon_predictions.csv
+A	cloud_pipeline/tests/fixtures/september/inputs/ipcch_april_panel.csv
+A	cloud_pipeline/tests/fixtures/september/ipcch/country_confidence.csv
+A	cloud_pipeline/tests/fixtures/september/ipcch/country_population_reference.csv
+A	cloud_pipeline/tests/fixtures/september/ipcch/polygon_model_mapping.csv
+A	cloud_pipeline/tests/fixtures/september/ipcch/polygon_predictions.csv
+A	cloud_pipeline/tests/fixtures/september/ipcch/polygon_training_errors.csv
+A	cloud_pipeline/tests/fixtures/september/reports/ipcch_four_target_training_replay.csv
+A	cloud_pipeline/tests/test_deploy_setup.py
+A	cloud_pipeline/tests/test_handover_package.py
+R100	tests/test_operational_launch_feature_contract.py	cloud_pipeline/tests/test_operational_launch_feature_contract.py
+R100	tests/test_operational_launch_input_contract.py	cloud_pipeline/tests/test_operational_launch_input_contract.py
+A	cloud_pipeline/tests/test_operator_cli.py
+R100	tests/test_population_contract.py	cloud_pipeline/tests/test_population_contract.py
+R100	tests/test_population_output.py	cloud_pipeline/tests/test_population_output.py
+R100	tests/test_prediction_uncertainty.py	cloud_pipeline/tests/test_prediction_uncertainty.py
+R100	tests/test_refresh_h5_inputs.py	cloud_pipeline/tests/test_refresh_h5_inputs.py
+A	cloud_pipeline/tests/test_runtime_closure.py
+R100	tools/build_fewsnet_country_level_predictions.py	cloud_pipeline/tools/build_fewsnet_country_level_predictions.py
+R100	tools/build_ipcch_country_level_predictions.py	cloud_pipeline/tools/build_ipcch_country_level_predictions.py
+R086	tools/refresh_h5_inputs.py	cloud_pipeline/tools/refresh_h5_inputs.py
+A	cloud_pipeline/tools/revise_h5_country_v3.py
+R100	tools/validate_ipcch_schema.py	cloud_pipeline/tools/validate_ipcch_schema.py
+D	config/ee_gcs_template.ini
+D	config/paths_template.ini
+D	curl_IPC/00_download_ipc_api.py
+D	deploy/october_delivery/MIGRATION.md
+D	deploy/october_delivery/QUICKSTART.en.md
+D	deploy/october_delivery/QUICKSTART.zh-CN.md
+D	deploy/october_delivery/README.md
+D	deploy/october_delivery/build_context.sh
+D	deploy/october_delivery/config.env.example
+D	deploy/october_delivery/migration_destination.py
+D	deploy/october_delivery/migration_package.py
+D	docker/Dockerfile
+D	docker/Dockerfile.fewsnet-partitioned-rf
+D	docs/00_handover_overview.md
+D	docs/01_environment_setup.md
+D	docs/02_ee_gcs_account_setup.md
+D	docs/03_workflow_runbook.md
+D	docs/04_output_inventory.md
+D	docs/05_weilun_handover_gap_list.md
+D	docs/06_weilun_deliverable_gap_audit.md
+D	docs/07_handover_email_archive.md
+D	docs/08_sediqa_raw_data_download_notes.md
+D	docs/09_fewsnet_partitioned_rf_runbook.md
+D	docs/superpowers/checklists/2026-06-27-202604-cloud-monthly-e2e-smoke-checklist.md
+D	docs/superpowers/plans/2026-06-22-g09-monthly-ipcch-base-input-implementation.md
+D	docs/superpowers/plans/2026-06-22-ipcch-handover-implementation.md
+D	docs/superpowers/plans/2026-06-22-ipcch-notebook-archive-plan.md
+D	docs/superpowers/plans/2026-07-15-prediction-population-uncertainty.md
+D	docs/superpowers/plans/2026-07-20-fewsnet-partitioned-rf-model-suite.md
+D	docs/superpowers/plans/2026-07-26-fewsnet-local-202604-prediction-experiment.md
+D	docs/superpowers/plans/2026-07-26-fewsnet-sparse-label-training-window.md
+D	docs/superpowers/plans/2026-09-09-local-202609-h5-model-refresh.md
+D	docs/superpowers/plans/2026-09-11-training-confidence.md
+D	docs/superpowers/specs/2026-06-22-g09-monthly-ipcch-base-input-design.md
+D	docs/superpowers/specs/2026-06-22-ipcch-handover-design.md
+D	docs/superpowers/specs/2026-06-23-evi-cloud-batch-extraction-design.md
+D	docs/superpowers/specs/2026-06-26-ipcch-cloud-monthly-base-input-design.md
+D	docs/superpowers/specs/2026-06-27-202604-cloud-monthly-e2e-smoke-design.md
+D	docs/superpowers/specs/2026-07-15-prediction-population-uncertainty-design.md
+D	docs/superpowers/specs/2026-07-20-partitioned-rf-model-suite-design.md
+D	docs/superpowers/specs/2026-07-26-fewsnet-local-202604-prediction-experiment-design.md
+D	docs/superpowers/specs/2026-07-26-fewsnet-sparse-label-training-window-design.md
+D	docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md
+D	docs/superpowers/specs/2026-09-11-training-confidence.md
+D	fewsnet_partitioned_rf_pipeline/cli/__init__.py
+D	fewsnet_partitioned_rf_pipeline/cli/infer.py
+D	fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py
+D	fewsnet_partitioned_rf_pipeline/cli/run_latest.py
+D	fewsnet_partitioned_rf_pipeline/cli/run_local_experiment.py
+D	fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py
+D	fewsnet_partitioned_rf_pipeline/cli/train.py
+D	fewsnet_partitioned_rf_pipeline/vertex/batch_prediction.py
+D	fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py
+D	fewsnet_partitioned_rf_pipeline/vertex/promotion.py
+D	fewsnet_partitioned_rf_pipeline/vertex/registry.py
+D	fewsnet_partitioned_rf_pipeline/vertex/training_job.py
+D	implementation-delta.md
+D	polygons_and_identifier/country_scope_ipcch_2026.csv
+D	requirements-cloud.txt
+D	requirements-fewsnet-partitioned-rf.txt
+A	september_manual/README.md
+A	september_manual/inventory.json
+D	specs/001-cloud-base-input/checklists/requirements.md
+D	specs/001-cloud-base-input/contracts/execution-contract.md
+D	specs/001-cloud-base-input/contracts/input-manifest.schema.json
+D	specs/001-cloud-base-input/contracts/release-artifact-contract.md
+D	specs/001-cloud-base-input/contracts/report-contracts.md
+D	specs/001-cloud-base-input/data-model.md
+D	specs/001-cloud-base-input/evidence.md
+D	specs/001-cloud-base-input/implementation-micro-plan.md
+D	specs/001-cloud-base-input/plan.md
+D	specs/001-cloud-base-input/quickstart.md
+D	specs/001-cloud-base-input/research.md
+D	specs/001-cloud-base-input/spec.md
+D	specs/001-cloud-base-input/tasks.md
+D	structured_TOR_from_variable_note.xlsx
+D	tests/cloud/test_deliver_job.py
+D	tests/cloud/test_forbidden_side_effects.py
+D	tests/cloud/test_gcp_smoke_monthly_e2e.py
+D	tests/cloud/test_migration_package.py
+D	tests/cloud/test_monthly_assembly_wrapper.py
+D	tests/cloud/test_orchestrator_contract.py
+D	tests/cloud/test_quickstart_fake_cloud.py
+D	tests/cloud/test_release_conflict.py
+D	tests/cloud/test_release_consumer.py
+D	tests/cloud/test_release_manifest_contract.py
+D	tests/cloud/test_release_writer.py
+D	tests/cloud/test_run_state.py
+D	tests/cloud/test_vertex_ai_custom_job_contract.py
+D	tests/fewsnet_partitioned_rf/local_test_support.py
+D	tests/fewsnet_partitioned_rf/test_batch_prediction.py
+D	tests/fewsnet_partitioned_rf/test_contracts.py
+D	tests/fewsnet_partitioned_rf/test_gcp_smoke.py
+D	tests/fewsnet_partitioned_rf/test_horizons.py
+D	tests/fewsnet_partitioned_rf/test_imputer_thresholds.py
+D	tests/fewsnet_partitioned_rf/test_local_cli.py
+D	tests/fewsnet_partitioned_rf/test_local_package.py
+D	tests/fewsnet_partitioned_rf/test_local_runner.py
+D	tests/fewsnet_partitioned_rf/test_model_package.py
+D	tests/fewsnet_partitioned_rf/test_panel_normalization.py
+D	tests/fewsnet_partitioned_rf/test_partitions.py
+D	tests/fewsnet_partitioned_rf/test_predictor_server.py
+D	tests/fewsnet_partitioned_rf/test_preprocessing.py
+D	tests/fewsnet_partitioned_rf/test_promotion.py
+D	tests/fewsnet_partitioned_rf/test_reference_parity.py
+D	tests/fewsnet_partitioned_rf/test_registry.py
+D	tests/fewsnet_partitioned_rf/test_run_latest.py
+D	tests/fewsnet_partitioned_rf/test_runtime_foundation.py
+D	tests/fewsnet_partitioned_rf/test_runtime_image.py
+D	tests/fewsnet_partitioned_rf/test_snapshot_staging.py
+D	tests/fewsnet_partitioned_rf/test_storage.py
+D	tests/fewsnet_partitioned_rf/test_training_inference.py
+D	tests/fewsnet_partitioned_rf/test_training_job.py
+D	tests/test_build_fewsnet_country_level_predictions.py
+D	tests/test_build_ipcch_country_level_predictions.py
+D	tests/test_build_ipcch_fixed_slow_features.py
+D	tests/test_build_monthly_ipcch_base_input.py
+D	tests/test_build_prepare_assets.py
+D	tests/test_operational_launch_cli.py
+D	tests/test_operational_launch_inference.py
+D	tests/test_reshape_remote_sensing_wide_to_long.py
+D	tests/test_tabular_config_paths.py
+D	tools/audit_h5_inputs.py
+D	tools/build_fewsnet_stage3_parity_fixture.py
+D	tools/build_ipcch_fixed_slow_features.py
+D	tools/build_ipcch_schema_contract.py
+D	tools/build_ipcch_source_vintage_manifest.py
+D	tools/build_monthly_ipcch_scaffold.py
+D	tools/build_prepare_assets.py
+D	tools/check_h5_delivery_focus.py
+D	tools/package_h5_delivery.py
+D	tools/reshape_remote_sensing_wide_to_long.py
+D	tools/revise_h5_confidence.py
+D	tools/revise_h5_country_v3.py
+D	tools/run_h5_model_delivery.py
+D	tools/validate_csv_contract.py
+D	tools/verify_h5_confidence.py
+D	tools/verify_h5_country_v3.py
+D	tools/verify_h5_model_delivery.py
+D	workflow_config.py

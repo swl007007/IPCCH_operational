@@ -1,0 +1,14 @@
+{
+  "project": "REPLACE_PROJECT",
+  "region": "us-central1",
+  "bucket": "REPLACE_OUTPUT_BUCKET",
+  "request_bucket": "REPLACE_REQUEST_BUCKET",
+  "service_account": "REPLACE_BATCH_SERVICE_ACCOUNT",
+  "image_uri": "REPLACE_REGISTRY/image@sha256:REPLACE_DIGEST",
+  "namespace": "monthly-staging",
+  "prepare_job": "monthly-prepare",
+  "earth_engine_project": "REPLACE_EE_PROJECT",
+  "operator": "REPLACE_OPERATOR",
+  "work_dir": "../operator-state",
+  "workflow_service_account": "REPLACE_WORKFLOW_SERVICE_ACCOUNT"
+}

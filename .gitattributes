@@ -7,3 +7,8 @@
 # picking either side (task state lives in task.json, not index.md). See
 # .trellis/spec/cli/backend/directory-structure.md for details.
 .trellis/workspace/*/journal-*.md merge=union
+
+# Operator shell entrypoints must remain executable after Windows Git checkout.
+cloud_pipeline/deploy/*.sh text eol=lf
+# The accepted runtime binds the exact dependency lock bytes.
+cloud_pipeline/requirements.lock.txt -text

@@ -1,0 +1,8 @@
+{
+  "model_manifests": 6,
+  "acceptance_reports": 6,
+  "all_reconstructed_bytes_match_original_pinned_sha256": true,
+  "environment_matches_original": true,
+  "files": 64,
+  "cloud_reads": false
+}

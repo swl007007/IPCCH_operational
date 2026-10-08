@@ -1,0 +1,6 @@
+{"file": ".trellis/spec/backend/monthly-delivery-contracts.md", "reason": "Keep model/source/fill/output and event contracts unchanged"}
+{"file": ".trellis/spec/backend/local-migration-package.md", "reason": "Existing local package/inventory and destination-reference behavior"}
+{"file": ".trellis/tasks/10-08-delivery-closure-layout/prd.md", "reason": "Resolved user requirements and acceptance"}
+{"file": ".trellis/tasks/10-08-delivery-closure-layout/design.md", "reason": "Two-entry layout and unified CLI contracts"}
+{"file": ".trellis/tasks/10-08-delivery-closure-layout/research/closure-findings.md", "reason": "Concrete import/path and legacy coupling evidence"}
+{"file": ".trellis/tasks/10-08-delivery-closure-layout/research/archive-map.md", "reason": "Keep/archive boundaries and control directory protection"}

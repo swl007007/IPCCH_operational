@@ -1,0 +1,20 @@
+{
+  "archive": "cloud_pipeline\\dist\\cloud_pipeline.tar.gz",
+  "sha256": "891d730fc5f08c3f8c86ccb4fe9e954ef617356afc713a383e7ef1ebfd697d4c",
+  "archive_bytes": 1665570362,
+  "unpacked_bytes": 4489366888,
+  "members": 209,
+  "extracted_to": "\\\\wsl.localhost\\Ubuntu-24.04\\tmp\\closure-unpacked",
+  "status": "verified",
+  "extracted_member_hashes_verified": 209,
+  "exported_modules_imported": 65,
+  "exported_init_preview": {
+    "files": 64,
+    "models": 6
+  },
+  "tests_passed": 465,
+  "unresolved_test_failures": 0,
+  "cloud_calls": false,
+  "production_prediction_or_replay": false,
+  "close_or_spot_audit": false
+}
