@@ -1,0 +1,14 @@
+{
+  "exit_code": 0,
+  "checker_exit_code": 0,
+  "differential_exit_code": 0,
+  "files": {
+    "output_check.json": "9ffc9699df86d8c4a83e27355f6afc34852280bfb31ba3fcf9e8e02176993618",
+    "compare.py": "c913a4bd62b378166152284c243df98bb49ad29f752a24f0d2d589c00c7f3731",
+    "differential_check.json": "0ab75616f8c72a40209c651df1d611458f4bbd0eca90770a1b18f046ef0cbc87",
+    "run.log": "46fd42e41a22aeccc13bdde3a85b5951583e5998add844abdc61506d4b68d18f",
+    "hash-start.txt": "4cc1e13a84f70420c8ba7c112586186ad3f0164fd37efa3c7beb5dd3ce1c0348",
+    "hash-end.txt": "4cc1e13a84f70420c8ba7c112586186ad3f0164fd37efa3c7beb5dd3ce1c0348",
+    "hash-inputs.sh": "7ec078de9d3df3f24bde6c6f00972e4e6fc961a639b2afb36d1982ebb8bf6653"
+  }
+}

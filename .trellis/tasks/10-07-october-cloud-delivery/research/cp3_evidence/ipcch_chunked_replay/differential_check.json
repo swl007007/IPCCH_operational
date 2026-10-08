@@ -1,0 +1,95 @@
+{
+  "files": {
+    "inputs/ipcch_base_series.csv": {
+      "left_sha256": "f2ebafc9b5c1427e94518a682304f6c11614753633f2171033437dfc4d006902",
+      "right_sha256": "f2ebafc9b5c1427e94518a682304f6c11614753633f2171033437dfc4d006902",
+      "byte_identical": true
+    },
+    "inputs/ipcch_origin_rows.csv": {
+      "left_sha256": "aecf81168c0cacb2e5c49937bf444213c55c1415b8ab9522577f7086a27d0f3e",
+      "right_sha256": "aecf81168c0cacb2e5c49937bf444213c55c1415b8ab9522577f7086a27d0f3e",
+      "byte_identical": true
+    },
+    "scopes/0m/ipcch/country_confidence.csv": {
+      "left_sha256": "295cdb87a32dcb82384a7298fefd74827ffad1b7b377b6aa29d7f845f30af36a",
+      "right_sha256": "295cdb87a32dcb82384a7298fefd74827ffad1b7b377b6aa29d7f845f30af36a",
+      "byte_identical": true
+    },
+    "scopes/0m/ipcch/country_predictions.csv": {
+      "left_sha256": "8e9f1808d2e023bf5b9d4498ea047459d375e81a5d9d39d6734a17ac2a1284d7",
+      "right_sha256": "8e9f1808d2e023bf5b9d4498ea047459d375e81a5d9d39d6734a17ac2a1284d7",
+      "byte_identical": true
+    },
+    "scopes/0m/ipcch/polygon_model_mapping.csv": {
+      "left_sha256": "4536aa22a7690be715eb27900582ac3b60bfa8c91ffeea4f9e012436ec64c524",
+      "right_sha256": "4536aa22a7690be715eb27900582ac3b60bfa8c91ffeea4f9e012436ec64c524",
+      "byte_identical": true
+    },
+    "scopes/0m/ipcch/polygon_predictions.csv": {
+      "left_sha256": "5408bfc0eb2b321552ed0ecd467ee1fb68c778f11dcefad8954b6584d74fedda",
+      "right_sha256": "5408bfc0eb2b321552ed0ecd467ee1fb68c778f11dcefad8954b6584d74fedda",
+      "byte_identical": true
+    },
+    "scopes/0m/ipcch/polygon_training_errors.csv": {
+      "left_sha256": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+      "right_sha256": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+      "byte_identical": true
+    },
+    "scopes/12m/ipcch/country_confidence.csv": {
+      "left_sha256": "e1d53c0b64197e2c1333ea9dcd6abda47e60bb4185d4a19d5c62beda7745d56a",
+      "right_sha256": "e1d53c0b64197e2c1333ea9dcd6abda47e60bb4185d4a19d5c62beda7745d56a",
+      "byte_identical": true
+    },
+    "scopes/12m/ipcch/country_predictions.csv": {
+      "left_sha256": "85ab9c58f430f3e8540d922470723c0748c213f4b016f650c60416e74cb9dbf9",
+      "right_sha256": "85ab9c58f430f3e8540d922470723c0748c213f4b016f650c60416e74cb9dbf9",
+      "byte_identical": true
+    },
+    "scopes/12m/ipcch/polygon_model_mapping.csv": {
+      "left_sha256": "6ad397fd95da21199b4d452b90fb8cbc31d7c908b66e408ca7b5525081a134b6",
+      "right_sha256": "6ad397fd95da21199b4d452b90fb8cbc31d7c908b66e408ca7b5525081a134b6",
+      "byte_identical": true
+    },
+    "scopes/12m/ipcch/polygon_predictions.csv": {
+      "left_sha256": "674804b5216aa7c82d8b10bc3da037019a20d875cc5215b08d109d32491f65d2",
+      "right_sha256": "674804b5216aa7c82d8b10bc3da037019a20d875cc5215b08d109d32491f65d2",
+      "byte_identical": true
+    },
+    "scopes/12m/ipcch/polygon_training_errors.csv": {
+      "left_sha256": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+      "right_sha256": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+      "byte_identical": true
+    },
+    "scopes/6m/ipcch/country_confidence.csv": {
+      "left_sha256": "2191c0bc0994b184ce4ed5f7fb89ad2276248372ea026b67cf62962f4f5e45b8",
+      "right_sha256": "2191c0bc0994b184ce4ed5f7fb89ad2276248372ea026b67cf62962f4f5e45b8",
+      "byte_identical": true
+    },
+    "scopes/6m/ipcch/country_predictions.csv": {
+      "left_sha256": "f25997624919c104172aa2633a40606bb50fd7e852de3518e9a734c7ac616406",
+      "right_sha256": "f25997624919c104172aa2633a40606bb50fd7e852de3518e9a734c7ac616406",
+      "byte_identical": true
+    },
+    "scopes/6m/ipcch/polygon_model_mapping.csv": {
+      "left_sha256": "19640e58e146622170b74f3aa628e0a7ab6ba91c682898d91e8aeb59040e3d4a",
+      "right_sha256": "19640e58e146622170b74f3aa628e0a7ab6ba91c682898d91e8aeb59040e3d4a",
+      "byte_identical": true
+    },
+    "scopes/6m/ipcch/polygon_predictions.csv": {
+      "left_sha256": "f6a4283e3a092e90473f33954094b89e579ac6ade9343f607d51b6f9e6eeb6cc",
+      "right_sha256": "f6a4283e3a092e90473f33954094b89e579ac6ade9343f607d51b6f9e6eeb6cc",
+      "byte_identical": true
+    },
+    "scopes/6m/ipcch/polygon_training_errors.csv": {
+      "left_sha256": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+      "right_sha256": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+      "byte_identical": true
+    }
+  },
+  "audit": {
+    "rows": 2391168,
+    "mismatches_after_exact_source_uri_relocation": 0,
+    "first_mismatch": null
+  },
+  "status": "passed"
+}

@@ -1,0 +1,57 @@
+{
+  "kind": "full-roster IPCCH integration with bounded smoke remote inputs; not latest-data acceptance",
+  "output": "/tmp/oct-delivery-local-i",
+  "scopes": {
+    "0": {
+      "rows": 6227,
+      "countries": 53,
+      "country_score_max_abs_diff": 1.1102230246251565e-16,
+      "unclipped_score_cells_below_zero": 1823,
+      "unclipped_score_cells_above_one": 0
+    },
+    "6": {
+      "rows": 6227,
+      "countries": 53,
+      "country_score_max_abs_diff": 7.155734338404329e-17,
+      "unclipped_score_cells_below_zero": 1514,
+      "unclipped_score_cells_above_one": 0
+    },
+    "12": {
+      "rows": 6227,
+      "countries": 53,
+      "country_score_max_abs_diff": 1.1102230246251565e-16,
+      "unclipped_score_cells_below_zero": 2044,
+      "unclipped_score_cells_above_one": 0
+    }
+  },
+  "checks": [
+    "15 scope table schemas",
+    "full native roster and fixed O/targets",
+    "unchanged population observations and correct carry methods",
+    "raw score phase cascade",
+    "independent country mean and SD within 1e-12",
+    "country maximum including zero-weight areas",
+    "blank diagnostics and explicit unavailable sidecar"
+  ],
+  "outputs": {
+    "scopes/0m/ipcch/polygon_predictions.csv": "5408bfc0eb2b321552ed0ecd467ee1fb68c778f11dcefad8954b6584d74fedda",
+    "scopes/0m/ipcch/country_predictions.csv": "8e9f1808d2e023bf5b9d4498ea047459d375e81a5d9d39d6734a17ac2a1284d7",
+    "scopes/0m/ipcch/polygon_model_mapping.csv": "4536aa22a7690be715eb27900582ac3b60bfa8c91ffeea4f9e012436ec64c524",
+    "scopes/0m/ipcch/polygon_training_errors.csv": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+    "scopes/0m/ipcch/country_confidence.csv": "295cdb87a32dcb82384a7298fefd74827ffad1b7b377b6aa29d7f845f30af36a",
+    "scopes/6m/ipcch/polygon_predictions.csv": "f6a4283e3a092e90473f33954094b89e579ac6ade9343f607d51b6f9e6eeb6cc",
+    "scopes/6m/ipcch/country_predictions.csv": "f25997624919c104172aa2633a40606bb50fd7e852de3518e9a734c7ac616406",
+    "scopes/6m/ipcch/polygon_model_mapping.csv": "19640e58e146622170b74f3aa628e0a7ab6ba91c682898d91e8aeb59040e3d4a",
+    "scopes/6m/ipcch/polygon_training_errors.csv": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+    "scopes/6m/ipcch/country_confidence.csv": "2191c0bc0994b184ce4ed5f7fb89ad2276248372ea026b67cf62962f4f5e45b8",
+    "scopes/12m/ipcch/polygon_predictions.csv": "674804b5216aa7c82d8b10bc3da037019a20d875cc5215b08d109d32491f65d2",
+    "scopes/12m/ipcch/country_predictions.csv": "85ab9c58f430f3e8540d922470723c0748c213f4b016f650c60416e74cb9dbf9",
+    "scopes/12m/ipcch/polygon_model_mapping.csv": "6ad397fd95da21199b4d452b90fb8cbc31d7c908b66e408ca7b5525081a134b6",
+    "scopes/12m/ipcch/polygon_training_errors.csv": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+    "scopes/12m/ipcch/country_confidence.csv": "e1d53c0b64197e2c1333ea9dcd6abda47e60bb4185d4a19d5c62beda7745d56a",
+    "ipcch/country_population_reference.csv": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+    "ipcch/polygons.geojson": "5b2587d761a2b396349b71790bf64d748385ec6bcd0bf43f937fa2e1a7ee6aba"
+  },
+  "availability_rows": 18999,
+  "status": "passed"
+}
