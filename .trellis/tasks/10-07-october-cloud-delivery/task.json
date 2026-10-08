@@ -1,0 +1,28 @@
+{
+  "id": "october-cloud-delivery",
+  "name": "october-cloud-delivery",
+  "title": "October cloud delivery integration",
+  "description": "Plan cloud remote-sensing refresh, operator-selected ACLED/WFP snapshots, and manifest-triggered FEWSNET/IPCCH 0/6/12-month delivery matching September contracts; design only.",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "William Shi",
+  "assignee": "William Shi",
+  "createdAt": "2026-10-07",
+  "completedAt": null,
+  "branch": "feat/october-cloud-delivery",
+  "base_branch": "feat/local-202609-h5",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "execution_mode": "herdr-supervisor-executor"
+  }
+}

@@ -1,3 +1,24 @@
+# Active Task: October Cloud Delivery (Trellis `10-07-october-cloud-delivery`)
+
+Operational ledger only; it does not grant authority. Authority: `.trellis/tasks/10-07-october-cloud-delivery/{supervision,prd,design,implement}.md`.
+
+- Executor: Claude Opus 5.5 1M, Herdr `wR:p3`, session `e8ac76ab-3486-4e51-b70c-ed09b2846fc7`. Supervisor: Codex `wR:p1`, session `01a11908-591c-7bf0-8a46-1bf09c6019f9`.
+- Branch `feat/october-cloud-delivery` (created by supervisor; do not switch). Baseline HEAD `4a42f1f666a4f2d5d2616069fe25ddd81f2662cb`. Task docs are uncommitted, pending a task-doc-only baseline commit after supervisor CP0 acceptance and GitNexus detect_changes.
+- Not executor-owned; leave untouched: `.trellis/.template-hashes.json`, AGENTS.md/CLAUDE.md index edits, `.agents/skills/*`, `.codex/`, `.birdview/`.
+- Constraints: no training, no GCP writes/deployment, no release-pointer changes, no push, no additional Trellis task audit. Do not patch site-packages or disable runtime checks. IPCCH raw-score semantics stay unchanged (no clipping).
+
+## Current checkpoint: CP0, delivered 2026-10-07, awaiting supervisor review
+
+- Supervisor disposition: pending. No product-code edits until a response.
+- Evidence: `.trellis/tasks/10-07-october-cloud-delivery/research/cp0-acceptance-evidence.md`; diagnostic script `research/cp0_replay_candidates.py` (always exits 0; not a validator); outputs `research/cp0_evidence/{cp0_replay_report.json,ipcch-h5-202609.freeze.txt}`.
+- Changed paths (all task-owned): `PROGRESS.md` (this section) and the research files above. No product code changed.
+- Commands run:
+  - `~/.venvs/ipcch-h5-202609/bin/python -B .trellis/tasks/10-07-october-cloud-delivery/research/cp0_replay_candidates.py --evidence-dir /tmp/cp0-replay`. Result: FEWS 0/6/12 packages load; IPCCH 0/6/12 replay differs from saved April scores only at the 85 phase4 and 8,013 phase5 cells that the saved correction summary records as clipped to zero; binary and overall-phase predictions are identical.
+  - GitNexus upstream impact (repo `IPCCH_operational`): `replace_sources` LOW (direct: `check_h5_delivery_focus.check`, `refresh`); `wfp_aggregates` LOW (direct: `audit_h5_inputs.audit`, `refresh`); `conflict_aggregates` LOW (direct: `refresh`); `refresh` LOW (script entry only).
+- Findings: frozen venv `ipcch-h5-202609` is the pinned runtime. A bare `import imblearn` fails (imbalanced-learn 0.14.0 needs sklearn's private `_is_pandas_df`, which is absent in 1.8.0); the existing scoped shim in `core/training.py` handles it, and inference does not need imblearn. FEWS thresholds are per-package (0.48/0.41/0.45).
+- Unresolved, and blocking only the affected adapters: T1 lineage (IPCCH FLDAS/GPP/VIIRS `fid` keying; all FEWS remote-sensing branches), FEWS 773 MB frozen-input replay, T3 normalization extension, IPCCH environment record. See the evidence file §4.
+- Proposed next (CP1, after approval): parameterize/split the raw converter, add a versioned dual-system request contract, and a generic area-scoped causal fill + audit with focused tests. Details are in the CP0 report.
+
 # FEWSNET Partitioned RF Model Suite Progress
 
 ## Active Correction: FEWSNET Sparse-Label Training Window

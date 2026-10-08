@@ -1,0 +1,7 @@
+{"file":".trellis/tasks/10-07-october-cloud-delivery/prd.md","reason":"Confirmed requirements, scope boundaries, and acceptance criteria"}
+{"file":".trellis/tasks/10-07-october-cloud-delivery/design.md","reason":"Proposed technical contracts; respect unresolved grill and technical gates"}
+{"file":".trellis/tasks/10-07-october-cloud-delivery/implement.md","reason":"Ordered milestones, lifecycle gates, and focused validation plan"}
+{"file":".trellis/tasks/10-07-october-cloud-delivery/research/raw-upload-contracts.md","reason":"September-compatible raw ingestion and existing conversion semantics"}
+{"file":".trellis/tasks/10-07-october-cloud-delivery/research/remote-sensing-contracts.md","reason":"Provider/reducer evidence and unresolved saved-feature lineage"}
+{"file":".trellis/tasks/10-07-october-cloud-delivery/research/release-contracts.md","reason":"Output inventory, null diagnostics, packaging, run and release behavior"}
+{"file": ".trellis/tasks/10-07-october-cloud-delivery/research/model-and-lineage-acceptance.md", "reason": "Candidate model environment, calendar constraints, proven CH mapping and unresolved canonical lineage"}
