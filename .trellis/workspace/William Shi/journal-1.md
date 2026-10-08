@@ -36,3 +36,25 @@ Full remote refresh, manifest-triggered FEWSNET and IPCCH 0/6/12 delivery, 30-ta
 ### Next Steps
 
 - Production consumer cutover and training remain separate; see deploy/october_delivery/QUICKSTART.zh-CN.md
+
+
+## Session 2: Local migration package and compact manual delivery
+<!-- trellis-session: v=2 fp=8cba843915c1d8e9 -->
+
+**Date**: 2026-10-08
+**Task**: Local migration package and compact manual delivery
+**Branch**: `feat/october-cloud-delivery`
+
+### Summary
+
+Built and relocated-verified 233-file migration payload and 1.10 GiB archive; isolated final September handoff at about 250 MiB; removed authorized redundant backups, reducing manual storage by 15.6 GiB; updated README/Quickstarts. 68 focused tests passed plus lint and credential-free dry-run. No cloud migration, training, repeat model replay, close audit or spot audit.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `551b3d4` | feat: package cloud migration and isolate final manual delivery |
+
+### Status
+
+[OK] **Completed**
