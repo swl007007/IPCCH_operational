@@ -1,0 +1,274 @@
+........................................................................ [ 11%]
+........................................................................ [ 22%]
+............................................ssss........................ [ 33%]
+....sss...................................................s............. [ 44%]
+..........................F............................................. [ 55%]
+........................................................................ [ 66%]
+...................FF................................................... [ 77%]
+..........................................F............................. [ 88%]
+............................................FFFF........................ [ 99%]
+.....                                                                    [100%]
+=================================== FAILURES ===================================
+__ test_assembly_matches_existing_builder_for_shared_inputs_then_appends_evi ___
+
+tmp_path = PosixPath('/tmp/oct-full-test-base/test_assembly_matches_existing0')
+
+    def test_assembly_matches_existing_builder_for_shared_inputs_then_appends_evi(
+        tmp_path,
+    ):
+>       existing_builder = _load_existing_monthly_builder()
+
+tests/cloud/test_monthly_assembly_wrapper.py:244: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/cloud/test_monthly_assembly_wrapper.py:20: in _load_existing_monthly_builder
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x7f85d34c51f0>
+path = '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+____ test_dockerfile_documents_single_image_entrypoints_and_digest_metadata ____
+
+    def test_dockerfile_documents_single_image_entrypoints_and_digest_metadata():
+>       dockerfile = Path("docker/Dockerfile").read_text(encoding="utf-8")
+
+tests/cloud/test_runtime_image_contract.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('docker/Dockerfile'), mode = 'r', buffering = -1
+encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: 'docker/Dockerfile'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+___ test_cloud_runtime_dependencies_include_launch_model_loader_requirements ___
+
+    def test_cloud_runtime_dependencies_include_launch_model_loader_requirements():
+>       requirements = Path("requirements-cloud.txt").read_text(encoding="utf-8")
+
+tests/cloud/test_runtime_image_contract.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('requirements-cloud.txt'), mode = 'r', buffering = -1
+encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: 'requirements-cloud.txt'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+_____________ test_horizon_alignment_rejects_unsupported_horizons ______________
+
+    def test_horizon_alignment_rejects_unsupported_horizons():
+        with pytest.raises(ValueError, match="0, 6, and 12"):
+>           align_horizon(feature_frame_fixture(), horizon_months=3)
+
+tests/fewsnet_partitioned_rf/test_horizons.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fewsnet_partitioned_rf_pipeline/core/horizons.py:164: in align_horizon
+    horizon = _validate_horizon(horizon_months)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+horizon_months = 3
+
+    def _validate_horizon(horizon_months: int) -> int:
+        if (
+            isinstance(horizon_months, bool)
+            or not isinstance(horizon_months, Integral)
+            or int(horizon_months) not in (*HORIZON_MONTHS, 5)
+        ):
+>           raise ValueError("horizon_months must be one of 0, 5, 6, and 12")
+E           ValueError: horizon_months must be one of 0, 5, 6, and 12
+
+fewsnet_partitioned_rf_pipeline/core/horizons.py:32: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def test_horizon_alignment_rejects_unsupported_horizons():
+>       with pytest.raises(ValueError, match="0, 6, and 12"):
+E       AssertionError: Regex pattern did not match.
+E        Regex: '0, 6, and 12'
+E        Input: 'horizon_months must be one of 0, 5, 6, and 12'
+
+tests/fewsnet_partitioned_rf/test_horizons.py:154: AssertionError
+_____ MonthlyIPCCHBaseInputTests.test_builds_base_input_for_observed_month _____
+
+self = <tests.test_build_monthly_ipcch_base_input.MonthlyIPCCHBaseInputTests testMethod=test_builds_base_input_for_observed_month>
+
+    def test_builds_base_input_for_observed_month(self):
+>       module = load_module()
+
+tests/test_build_monthly_ipcch_base_input.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_build_monthly_ipcch_base_input.py:18: in load_module
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x7f85d35c98b0>
+path = '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_________ MonthlyIPCCHBaseInputTests.test_duplicate_scaffold_key_fails _________
+
+self = <tests.test_build_monthly_ipcch_base_input.MonthlyIPCCHBaseInputTests testMethod=test_duplicate_scaffold_key_fails>
+
+    def test_duplicate_scaffold_key_fails(self):
+>       module = load_module()
+
+tests/test_build_monthly_ipcch_base_input.py:298: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_build_monthly_ipcch_base_input.py:18: in load_module
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x7f85d3409b80>
+path = '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_ MonthlyIPCCHBaseInputTests.test_future_month_keeps_scaffold_and_fixed_features _
+
+self = <tests.test_build_monthly_ipcch_base_input.MonthlyIPCCHBaseInputTests testMethod=test_future_month_keeps_scaffold_and_fixed_features>
+
+    def test_future_month_keeps_scaffold_and_fixed_features(self):
+>       module = load_module()
+
+tests/test_build_monthly_ipcch_base_input.py:244: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_build_monthly_ipcch_base_input.py:18: in load_module
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x7f85d3408260>
+path = '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+__ MonthlyIPCCHBaseInputTests.test_missing_current_or_prior_population_fails ___
+
+self = <tests.test_build_monthly_ipcch_base_input.MonthlyIPCCHBaseInputTests testMethod=test_missing_current_or_prior_population_fails>
+
+    def test_missing_current_or_prior_population_fails(self):
+>       module = load_module()
+
+tests/test_build_monthly_ipcch_base_input.py:269: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_build_monthly_ipcch_base_input.py:18: in load_module
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x7f85d341daf0>
+path = '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/oct-full-test/Final_harmonise/00_build_monthly_ipcch_base_input.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+=============================== warnings summary ===============================
+tests/cloud/test_prepare.py: 45 warnings
+tests/cloud/test_remote_sources.py: 17 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/transform.py:178: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    return Affine.translation(west, north) * Affine.scale(xsize, -ysize)
+
+tests/cloud/test_prepare.py: 147 warnings
+tests/cloud/test_remote_sources.py: 18 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:360: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    x, y = transform * (window.col_off or 0.0, window.row_off or 0.0)
+
+tests/cloud/test_prepare.py: 147 warnings
+tests/cloud/test_remote_sources.py: 18 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:361: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    return Affine.translation(
+
+tests/cloud/test_prepare.py::test_cloud_acquirer_gee_uses_discovered_image_and_named_fldas_bands
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_values_and_band_names
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[internal_mask]
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[nodata_value]
+tests/cloud/test_remote_sources.py::test_mosaic_keeps_valid_zero_and_masks_only_invalid_pixel
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/merge.py:341: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    output_transform = Affine.translation(dst_w, dst_n) * Affine.scale(
+
+tests/cloud/test_prepare.py: 2 warnings
+tests/cloud/test_remote_sources.py: 8 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:387: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    left, bottom = transform * (col_min, row_max)
+
+tests/cloud/test_prepare.py: 2 warnings
+tests/cloud/test_remote_sources.py: 8 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:388: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    right, top = transform * (col_max, row_min)
+
+tests/test_build_prepare_assets.py::test_missing_crs_is_rejected_not_relabelled
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/pyogrio/geopandas.py:948: UserWarning: 'crs' was not provided.  The output dataset will not have projection information defined and may not be usable in other systems.
+    write(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/cloud/test_monthly_assembly_wrapper.py::test_assembly_matches_existing_builder_for_shared_inputs_then_appends_evi
+FAILED tests/cloud/test_runtime_image_contract.py::test_dockerfile_documents_single_image_entrypoints_and_digest_metadata
+FAILED tests/cloud/test_runtime_image_contract.py::test_cloud_runtime_dependencies_include_launch_model_loader_requirements
+FAILED tests/fewsnet_partitioned_rf/test_horizons.py::test_horizon_alignment_rejects_unsupported_horizons
+FAILED tests/test_build_monthly_ipcch_base_input.py::MonthlyIPCCHBaseInputTests::test_builds_base_input_for_observed_month
+FAILED tests/test_build_monthly_ipcch_base_input.py::MonthlyIPCCHBaseInputTests::test_duplicate_scaffold_key_fails
+FAILED tests/test_build_monthly_ipcch_base_input.py::MonthlyIPCCHBaseInputTests::test_future_month_keeps_scaffold_and_fixed_features
+FAILED tests/test_build_monthly_ipcch_base_input.py::MonthlyIPCCHBaseInputTests::test_missing_current_or_prior_population_fails
+SKIPPED [1] tests/cloud/test_delivery_workflow.py:6: could not import 'yaml': No module named 'yaml'
+SKIPPED [2] tests/cloud/test_delivery_outputs.py:17: September v3 delivery not available locally
+SKIPPED [2] tests/cloud/test_delivery_outputs.py:30: September v3 delivery not available locally
+SKIPPED [2] tests/cloud/test_delivery_outputs.py:169: September v3 delivery not available locally
+SKIPPED [1] tests/cloud/test_delivery_outputs.py:209: September v3 delivery not available locally
+SKIPPED [1] tests/cloud/test_gcp_smoke_monthly_e2e.py:527: set IPCCH_GCP_SMOKE_ENABLED and deployment-specific GCP env vars to run live smoke
+8 failed, 637 passed, 9 skipped, 418 warnings in 82.85s (0:01:22)

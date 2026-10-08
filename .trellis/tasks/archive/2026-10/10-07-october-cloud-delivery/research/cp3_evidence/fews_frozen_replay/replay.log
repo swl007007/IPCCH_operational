@@ -1,0 +1,11 @@
+{"stage": "hashing_frozen_panel", "elapsed_seconds": 0.057, "peak_rss_kib": 231844}
+{"stage": "reading_full_frozen_panel", "elapsed_seconds": 3.209, "peak_rss_kib": 233128}
+{"stage": "building_identity_and_frozen_features", "elapsed_seconds": 13.267, "peak_rss_kib": 3211588}
+{"stage": "full_panel_transformed", "elapsed_seconds": 58.017, "peak_rss_kib": 6765708}
+{"stage": "loading_0m", "elapsed_seconds": 58.018, "peak_rss_kib": 6765708}
+{"stage": "completed_0m", "elapsed_seconds": 61.494, "peak_rss_kib": 6765708}
+{"stage": "loading_6m", "elapsed_seconds": 61.494, "peak_rss_kib": 6765708}
+{"stage": "completed_6m", "elapsed_seconds": 65.641, "peak_rss_kib": 6765708}
+{"stage": "loading_12m", "elapsed_seconds": 65.642, "peak_rss_kib": 6765708}
+{"stage": "completed_12m", "elapsed_seconds": 69.625, "peak_rss_kib": 6765708}
+{"stage": "complete", "elapsed_seconds": 69.626, "peak_rss_kib": 6765708}
