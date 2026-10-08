@@ -1,0 +1,47 @@
+{
+ "scopes/0m/ipcch/polygon_predictions.csv": {
+  "bytes_equal": true
+ },
+ "scopes/0m/ipcch/country_predictions.csv": {
+  "bytes_equal": true
+ },
+ "scopes/0m/ipcch/polygon_model_mapping.csv": {
+  "bytes_equal": true
+ },
+ "scopes/0m/ipcch/polygon_training_errors.csv": {
+  "bytes_equal": true
+ },
+ "scopes/0m/ipcch/country_confidence.csv": {
+  "bytes_equal": true
+ },
+ "scopes/6m/ipcch/polygon_predictions.csv": {
+  "bytes_equal": true
+ },
+ "scopes/6m/ipcch/country_predictions.csv": {
+  "bytes_equal": true
+ },
+ "scopes/6m/ipcch/polygon_model_mapping.csv": {
+  "bytes_equal": true
+ },
+ "scopes/6m/ipcch/polygon_training_errors.csv": {
+  "bytes_equal": true
+ },
+ "scopes/6m/ipcch/country_confidence.csv": {
+  "bytes_equal": true
+ },
+ "scopes/12m/ipcch/polygon_predictions.csv": {
+  "bytes_equal": true
+ },
+ "scopes/12m/ipcch/country_predictions.csv": {
+  "bytes_equal": true
+ },
+ "scopes/12m/ipcch/polygon_model_mapping.csv": {
+  "bytes_equal": true
+ },
+ "scopes/12m/ipcch/polygon_training_errors.csv": {
+  "bytes_equal": true
+ },
+ "scopes/12m/ipcch/country_confidence.csv": {
+  "bytes_equal": true
+ }
+}

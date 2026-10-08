@@ -2,7 +2,7 @@
   "id": "october-cloud-delivery",
   "name": "october-cloud-delivery",
   "title": "October cloud delivery integration",
-  "description": "Plan cloud remote-sensing refresh, operator-selected ACLED/WFP snapshots, and manifest-triggered FEWSNET/IPCCH 0/6/12-month delivery matching September contracts; design only.",
+  "description": "Integrate cloud remote-sensing refresh, operator-selected ACLED/WFP snapshots, and manifest-triggered FEWSNET/IPCCH 0/6/12-month delivery matching September output contracts.",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,

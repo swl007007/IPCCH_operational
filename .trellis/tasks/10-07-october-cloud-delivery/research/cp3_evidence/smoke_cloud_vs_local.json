@@ -1,0 +1,120 @@
+{
+  "left": "smoke-local-20261008a",
+  "right": "smoke-cloud-20261008a",
+  "families": {
+    "evi": {
+      "provider_ids_equal": true,
+      "source_sha256_equal": true,
+      "band_names": [
+        [
+          "single_band",
+          "single_band"
+        ]
+      ],
+      "systems": {
+        "fewsnet": {
+          "rows": 12,
+          "keys_and_columns_equal": true,
+          "nulls_equal": true,
+          "max_abs_diff": 0.0
+        },
+        "ipcch": {
+          "rows": 12,
+          "keys_and_columns_equal": true,
+          "nulls_equal": true,
+          "max_abs_diff": 0.0
+        }
+      }
+    },
+    "fldas": {
+      "provider_ids_equal": true,
+      "source_sha256_equal": true,
+      "band_names": [
+        [
+          "raster_band_descriptions",
+          "raster_band_descriptions"
+        ]
+      ],
+      "systems": {
+        "fewsnet": {
+          "rows": 12,
+          "keys_and_columns_equal": true,
+          "nulls_equal": true,
+          "max_abs_diff": 0.0
+        },
+        "ipcch": {
+          "rows": 12,
+          "keys_and_columns_equal": true,
+          "nulls_equal": true,
+          "max_abs_diff": 0.0
+        }
+      }
+    },
+    "gosif_mean": {
+      "provider_ids_equal": true,
+      "source_sha256_equal": true,
+      "band_names": [
+        [
+          null,
+          null
+        ]
+      ],
+      "systems": {
+        "fewsnet": {
+          "rows": 12,
+          "keys_and_columns_equal": true,
+          "nulls_equal": true,
+          "max_abs_diff": 0.0
+        },
+        "ipcch": {
+          "rows": 12,
+          "keys_and_columns_equal": true,
+          "nulls_equal": true,
+          "max_abs_diff": 0.0
+        }
+      }
+    },
+    "gosif_sd": {
+      "provider_ids_equal": true,
+      "source_sha256_equal": true,
+      "band_names": [
+        [
+          null,
+          null
+        ]
+      ],
+      "systems": {
+        "ipcch": {
+          "rows": 12,
+          "keys_and_columns_equal": true,
+          "nulls_equal": true,
+          "max_abs_diff": 0.0
+        }
+      }
+    },
+    "viirs": {
+      "provider_ids_equal": true,
+      "source_sha256_equal": true,
+      "band_names": [
+        [
+          "single_band",
+          "single_band"
+        ]
+      ],
+      "systems": {
+        "fewsnet": {
+          "rows": 12,
+          "keys_and_columns_equal": true,
+          "nulls_equal": true,
+          "max_abs_diff": 0.0
+        },
+        "ipcch": {
+          "rows": 12,
+          "keys_and_columns_equal": true,
+          "nulls_equal": true,
+          "max_abs_diff": 0.0
+        }
+      }
+    }
+  }
+}

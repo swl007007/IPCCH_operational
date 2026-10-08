@@ -22,6 +22,10 @@ class BatchJobConfig:
     worker_args: list[str]
     runtime: RuntimeDefaults = field(default_factory=RuntimeDefaults)
     worker_module: str = "cloud.batch.evi_worker"
+    # Optional resource request; None keeps the Batch defaults (existing EVI behaviour).
+    machine_type: str | None = None
+    memory_mib: int | None = None
+    cpu_milli: int | None = None
 
 
 def build_batch_job_spec(config: BatchJobConfig) -> dict:
@@ -29,10 +33,19 @@ def build_batch_job_spec(config: BatchJobConfig) -> dict:
         raise BatchJobConfigError("Cloud Batch worker image must be pinned by digest")
     if not config.service_account:
         raise BatchJobConfigError("Cloud Batch service account is required")
+    task_spec_resources = {}
+    if config.memory_mib or config.cpu_milli:
+        task_spec_resources["compute_resource"] = {
+            key: value for key, value in (("cpu_milli", config.cpu_milli), ("memory_mib", config.memory_mib)) if value
+        }
+    allocation_policy = {"service_account": {"email": config.service_account}}
+    if config.machine_type:
+        allocation_policy["instances"] = [{"policy": {"machine_type": config.machine_type}}]
     return {
         "task_groups": [
             {
                 "task_spec": {
+                    **task_spec_resources,
                     "runnables": [
                         {
                             "container": {
@@ -53,9 +66,7 @@ def build_batch_job_spec(config: BatchJobConfig) -> dict:
                 "parallelism": 1,
             }
         ],
-        "allocation_policy": {
-            "service_account": {"email": config.service_account},
-        },
+        "allocation_policy": allocation_policy,
         "logs_policy": {"destination": "CLOUD_LOGGING"},
         "labels": {
             "ipcch_feature_month": config.feature_month.replace("-", ""),

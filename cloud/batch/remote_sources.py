@@ -75,34 +75,44 @@ class SourceContract:
     reducers: tuple[str, ...]
     script: str
     export: Mapping[str, object]
+    # Product catalog start: discovery searches back to here, never to a baseline's first row.
+    first_month: str
 
 
 SOURCE_CONTRACTS = {
     "evi": SourceContract(
         "evi", "gee", "MODIS/061/MOD13A3", ("EVI",), ("mean", "std"),
         "EVI/00_ee_export_evi.txt; EVI/02_arcpy_extract_evi.py",
-        {"scale": 1000, "region": (-180, -60, 180, 80)},
+        {"scale": 1000, "region": (-180, -60, 180, 80)}, "2000-02",
     ),
     "fldas": SourceContract(
         "fldas", "gee", "NASA/FLDAS/NOAH01/C/GL/M/V001", FLDAS_BANDS, ("mean", "std"),
         "FLDAS/00_ee_export_fldas_all_bands.txt; FLDAS/02_arcpy_extract_fldas_part1-4.py",
         {"crs": "EPSG:4326", "crs_transform": (0.1, 0, -180, 0, -0.1, 90), "region": (-180, -90, 180, 90)},
+        "1982-01",
     ),
     "gosif_mean": SourceContract(
         "gosif_mean", "http", "GOSIF-GPP_v2/Monthly/Mean", ("GPP_Mean",), ("mean",),
         "GOSIF_GPP/00_download_gosif_gpp_mean.py; GOSIF_GPP/02_arcpy_extract_gosif_gpp_mean.py",
-        {"url": GOSIF_BASE_URL + "/Mean/GOSIF_GPP_{year}.M{month:02d}_Mean.tif.gz"},
+        {"url": GOSIF_BASE_URL + "/Mean/GOSIF_GPP_{year}.M{month:02d}_Mean.tif.gz"}, "2000-03",
     ),
     "gosif_sd": SourceContract(
         "gosif_sd", "http", "GOSIF-GPP_v2/Monthly/SD", ("GPP_SD",), ("mean",),
         "GOSIF_GPP/00_download_gosif_gpp_sd.py; GOSIF_GPP/02_arcpy_extract_gosif_gpp_sd.py",
-        {"url": GOSIF_BASE_URL + "/SD/GOSIF_GPP_{year}.M{month:02d}_SD.tif.gz"},
+        {"url": GOSIF_BASE_URL + "/SD/GOSIF_GPP_{year}.M{month:02d}_SD.tif.gz"}, "2000-03",
     ),
     "viirs": SourceContract(
         "viirs", "gee", "NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG", ("avg_rad",), ("sum", "std", "mean"),
         "VIIRS_nightlight/00_ee_export_viirs_nightlight.txt; 02_arcpy_mosaic; 03_arcpy_extract",
-        {"resample": "bilinear", "crs": "EPSG:4326", "crs_transform": VIIRS_TRANSFORM},
+        {"resample": "bilinear", "crs": "EPSG:4326", "crs_transform": VIIRS_TRANSFORM}, "2014-01",
     ),
+}
+
+# Families each system actually consumes (FEWSNET uses no GOSIF SD statistic).
+SYSTEM_FAMILIES = {
+    system: tuple(family for family, contract in SOURCE_CONTRACTS.items()
+                  if any(column.split("__")[0] in contract.bands for column in mapping.values()))
+    for system, mapping in MODEL_COLUMN_MAPPING.items()
 }
 
 _MONTH_RE = re.compile(r"^\d{4}-(0[1-9]|1[0-2])$")

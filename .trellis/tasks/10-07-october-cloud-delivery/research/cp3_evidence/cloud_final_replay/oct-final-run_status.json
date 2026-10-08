@@ -1,0 +1,15 @@
+{
+  "outputs": "gs://manuel-remote-sensing-oct-delivery-debug/deliveries/oct-final-20261008a/",
+  "release": {
+    "pointer_generation": "1791487045444241",
+    "pointer_uri": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/current.json",
+    "release_record": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/releases/oct-final-20261008a/release.json"
+  },
+  "request": {
+    "generation": "1791484415757028",
+    "sha256": "0a519a265605bcefc9c6e70621d31d2f6e50542c88fc02194cab221fc9594c6a",
+    "uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-final-20261008a/run_manifest.json"
+  },
+  "run_id": "oct-final-20261008a",
+  "status": "succeeded"
+}

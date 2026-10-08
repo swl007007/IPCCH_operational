@@ -1,0 +1,52 @@
+{
+ "executions": {
+  "oct-delivery-hjm8q": {
+   "succeededCount": 1,
+   "failedCount": null,
+   "completionTime": "2026-10-08T20:02:43.267699Z"
+  },
+  "oct-delivery-hdsgp": {
+   "succeededCount": null,
+   "failedCount": 1,
+   "completionTime": "2026-10-08T20:02:45.456496Z"
+  },
+  "oct-delivery-ng85q": {
+   "succeededCount": null,
+   "failedCount": 1,
+   "completionTime": "2026-10-08T20:04:37.204185Z"
+  }
+ },
+ "final_run_objects_before": {
+  "runs/oct-final-20261008a/_RUN_ACQUIRED": 1791484608393835,
+  "runs/oct-final-20261008a/run_status.json": 1791487045559976,
+  "oct-staging/current.json": 1791487045444241
+ },
+ "final_run_objects_after": {
+  "runs/oct-final-20261008a/_RUN_ACQUIRED": 1791484608393835,
+  "runs/oct-final-20261008a/run_status.json": 1791487045559976,
+  "oct-staging/current.json": 1791487045444241
+ },
+ "unchanged": {
+  "runs/oct-final-20261008a/_RUN_ACQUIRED": true,
+  "runs/oct-final-20261008a/run_status.json": true,
+  "oct-staging/current.json": true
+ },
+ "invalid_run_objects": [],
+ "final_status_text": "{\n  \"outputs\": \"gs://manuel-remote-sensing-oct-delivery-debug/deliveries/oct-final-20261008a/\",\n  \"release\": {\n    \"pointer_generation\": \"1791487045444241\",\n    \"pointer_uri\": \"gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/current.json\",\n    \"release_record\": \"gs://manuel-remote-sensing-",
+ "log_tail": {
+  "oct-delivery-hjm8q": [
+   "Container called exit(0).",
+   "}",
+   "  \"status_uri\": \"gs://manuel-remote-sensing-oct-delivery-debug/runs/oct-final-20261008a/run_status.json\"",
+   "  \"status\": \"succeeded\","
+  ],
+  "oct-delivery-hdsgp": [
+   "Container called exit(1).",
+   " _exact_keys\n    raise DeliveryManifestError(f\"{label} fields mismatch: missing {missing}, unexpected {extra}\")\ncloud.orchestrator.delivery_manifest.DeliveryManifestError: request fields mismatch: missing ['origin_month', 'systems', 'horizons_months', 'prepared_snapshot', 'acled', 'wfp', 'models', 'assets', 'diagnostics', 'contracts', 'runtime', 'release', 'operator', 'prepared_at'], unexpected []"
+  ],
+  "oct-delivery-ng85q": [
+   "Container called exit(1).",
+   "         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/cloud/orchestrator/delivery_run.py\", line 64, in run_once\n    raise RunConflict(f\"run_id {run_id} is bound to a different request; use a new run ID\") from None\ncloud.orchestrator.delivery_run.RunConflict: run_id oct-final-20261008a is bound to a different request; use a new run ID"
+  ]
+ }
+}

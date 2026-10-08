@@ -18,7 +18,8 @@ class FakeBlob:
         self.client = client
         self.generation = None
 
-    def upload_from_string(self, content, content_type=None, if_generation_match=None):
+    def upload_from_string(self, content, content_type=None, if_generation_match=None, timeout=None, retry=None):
+        self.client.upload_options.append({"timeout": timeout, "retry": retry})
         key = (self.bucket_name, self.name)
         current = self.client.generations.get(key, 0)
         if if_generation_match is not None and int(if_generation_match) != current:
@@ -53,6 +54,7 @@ class FakeBucket:
 
 class FakeStorageClient:
     def __init__(self):
+        self.upload_options = []
         self.objects = {}
         self.generations = {}
 
@@ -109,6 +111,7 @@ def test_gcs_object_store_uses_storage_client_generation_and_prefix_semantics():
 
     first = store.write_text("gs://bucket/runs/run-1/a.txt", "alpha")
     assert first.generation == "1"
+    assert client.upload_options[0]["timeout"] == 600 and client.upload_options[0]["retry"] is not None
     assert store.read_text("gs://bucket/runs/run-1/a.txt") == "alpha"
     assert store.list("gs://bucket/runs/run-1/") == ["gs://bucket/runs/run-1/a.txt"]
 

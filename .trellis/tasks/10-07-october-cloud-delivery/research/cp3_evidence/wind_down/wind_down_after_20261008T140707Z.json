@@ -1,0 +1,1107 @@
+{
+  "after": {
+    "taken_at_utc": "2026-10-08T14:08:25.484273+00:00",
+    "batch_jobs": {
+      "ipcch-prepare-full-window-20261008b": {
+        "command_result": {
+          "command": [
+            "gcloud",
+            "batch",
+            "jobs",
+            "describe",
+            "ipcch-prepare-full-window-20261008b",
+            "--project",
+            "manuel-remote-sensing",
+            "--location",
+            "us-central1",
+            "--format=json"
+          ],
+          "returncode": 0,
+          "stdout": "{\n  \"allocationPolicy\": {\n    \"instances\": [\n      {\n        \"policy\": {\n          \"machineType\": \"e2-highmem-4\"\n        }\n      }\n    ],\n    \"labels\": {\n      \"batch-job-id\": \"ipcch-prepare-full-window-20261008b\"\n    },\n    \"location\": {\n      \"allowedLocations\": [\n        \"regions/us-central1\",\n        \"zones/us-central1-a\",\n        \"zones/us-central1-b\",\n        \"zones/us-central1-c\",\n        \"zones/us-central1-f\"\n      ]\n    },\n    \"serviceAccount\": {\n      \"email\": \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\"\n    }\n  },\n  \"createTime\": \"2026-10-08T13:36:23.355698167Z\",\n  \"labels\": {\n    \"ipcch_feature_month\": \"202610\",\n    \"ipcch_run_id\": \"full-window-20261008b\"\n  },\n  \"logsPolicy\": {\n    \"destination\": \"CLOUD_LOGGING\"\n  },\n  \"name\": \"projects/manuel-remote-sensing/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b\",\n  \"status\": {\n    \"runDuration\": \"1656.130492738s\",\n    \"state\": \"FAILED\",\n    \"statusEvents\": [\n      {\n        \"description\": \"Job state is set from QUEUED to SCHEDULED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b.\",\n        \"eventTime\": \"2026-10-08T13:36:36.444264299Z\",\n        \"type\": \"STATUS_CHANGED\"\n      },\n      {\n        \"description\": \"Job state is set from SCHEDULED to RUNNING for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b.\",\n        \"eventTime\": \"2026-10-08T13:37:57.120687101Z\",\n        \"type\": \"STATUS_CHANGED\"\n      },\n      {\n        \"description\": \"Job state is set from RUNNING to FAILED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b.Job failed due to task failure. Specifically, task with index 0 failed due to the following task event: \\\"Task state is updated from RUNNING to FAILED on zones/us-central1-a/instances/2402415416315617939 with exit code 1.\\\"\",\n        \"eventTime\": \"2026-10-08T14:05:33.251179839Z\",\n        \"type\": \"STATUS_CHANGED\"\n      }\n    ],\n    \"taskGroups\": {\n      \"group0\": {\n        \"counts\": {\n          \"FAILED\": \"1\"\n        },\n        \"instances\": [\n          {\n            \"bootDisk\": {\n              \"image\": \"projects/batch-custom-image/global/images/batch-cos-stable-official-20260924-00-p01\",\n              \"sizeGb\": \"30\",\n              \"type\": \"pd-balanced\"\n            },\n            \"machineType\": \"e2-highmem-4\",\n            \"provisioningModel\": \"STANDARD\",\n            \"taskPack\": \"1\"\n          }\n        ]\n      }\n    }\n  },\n  \"taskGroups\": [\n    {\n      \"name\": \"projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b/taskGroups/group0\",\n      \"parallelism\": \"1\",\n      \"taskCount\": \"1\",\n      \"taskSpec\": {\n        \"computeResource\": {\n          \"cpuMilli\": \"4000\",\n          \"memoryMib\": \"28000\"\n        },\n        \"maxRunDuration\": \"2649s\",\n        \"runnables\": [\n          {\n            \"container\": {\n              \"commands\": [\n                \"-m\",\n                \"cloud.orchestrator.prepare\",\n                \"extract\",\n                \"--plan-uri\",\n                \"gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008b/prepare_plan.json\",\n                \"--plan-generation\",\n                \"1791466583147688\",\n                \"--plan-sha256\",\n                \"be9a62ad2ef84acc7e2cf4ba37ada4127edf5b5eb9b4f21d653c2e4440025bfc\",\n                \"--earth-engine-project\",\n                \"manuel-remote-sensing\",\n                \"--deadline-utc\",\n                \"2026-10-08T14:20:00Z\"\n              ],\n              \"entrypoint\": \"python3\",\n              \"imageUri\": \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e\"\n            }\n          }\n        ]\n      }\n    }\n  ],\n  \"uid\": \"ipcch-prepare-full-bbf64d1a-f81d-40fe0\",\n  \"updateTime\": \"2026-10-08T14:05:33.251179839Z\"\n}\n",
+          "stderr": ""
+        },
+        "document": {
+          "allocationPolicy": {
+            "instances": [
+              {
+                "policy": {
+                  "machineType": "e2-highmem-4"
+                }
+              }
+            ],
+            "labels": {
+              "batch-job-id": "ipcch-prepare-full-window-20261008b"
+            },
+            "location": {
+              "allowedLocations": [
+                "regions/us-central1",
+                "zones/us-central1-a",
+                "zones/us-central1-b",
+                "zones/us-central1-c",
+                "zones/us-central1-f"
+              ]
+            },
+            "serviceAccount": {
+              "email": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com"
+            }
+          },
+          "createTime": "2026-10-08T13:36:23.355698167Z",
+          "labels": {
+            "ipcch_feature_month": "202610",
+            "ipcch_run_id": "full-window-20261008b"
+          },
+          "logsPolicy": {
+            "destination": "CLOUD_LOGGING"
+          },
+          "name": "projects/manuel-remote-sensing/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b",
+          "status": {
+            "runDuration": "1656.130492738s",
+            "state": "FAILED",
+            "statusEvents": [
+              {
+                "description": "Job state is set from QUEUED to SCHEDULED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b.",
+                "eventTime": "2026-10-08T13:36:36.444264299Z",
+                "type": "STATUS_CHANGED"
+              },
+              {
+                "description": "Job state is set from SCHEDULED to RUNNING for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b.",
+                "eventTime": "2026-10-08T13:37:57.120687101Z",
+                "type": "STATUS_CHANGED"
+              },
+              {
+                "description": "Job state is set from RUNNING to FAILED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b.Job failed due to task failure. Specifically, task with index 0 failed due to the following task event: \"Task state is updated from RUNNING to FAILED on zones/us-central1-a/instances/2402415416315617939 with exit code 1.\"",
+                "eventTime": "2026-10-08T14:05:33.251179839Z",
+                "type": "STATUS_CHANGED"
+              }
+            ],
+            "taskGroups": {
+              "group0": {
+                "counts": {
+                  "FAILED": "1"
+                },
+                "instances": [
+                  {
+                    "bootDisk": {
+                      "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20260924-00-p01",
+                      "sizeGb": "30",
+                      "type": "pd-balanced"
+                    },
+                    "machineType": "e2-highmem-4",
+                    "provisioningModel": "STANDARD",
+                    "taskPack": "1"
+                  }
+                ]
+              }
+            }
+          },
+          "taskGroups": [
+            {
+              "name": "projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008b/taskGroups/group0",
+              "parallelism": "1",
+              "taskCount": "1",
+              "taskSpec": {
+                "computeResource": {
+                  "cpuMilli": "4000",
+                  "memoryMib": "28000"
+                },
+                "maxRunDuration": "2649s",
+                "runnables": [
+                  {
+                    "container": {
+                      "commands": [
+                        "-m",
+                        "cloud.orchestrator.prepare",
+                        "extract",
+                        "--plan-uri",
+                        "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008b/prepare_plan.json",
+                        "--plan-generation",
+                        "1791466583147688",
+                        "--plan-sha256",
+                        "be9a62ad2ef84acc7e2cf4ba37ada4127edf5b5eb9b4f21d653c2e4440025bfc",
+                        "--earth-engine-project",
+                        "manuel-remote-sensing",
+                        "--deadline-utc",
+                        "2026-10-08T14:20:00Z"
+                      ],
+                      "entrypoint": "python3",
+                      "imageUri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "uid": "ipcch-prepare-full-bbf64d1a-f81d-40fe0",
+          "updateTime": "2026-10-08T14:05:33.251179839Z"
+        }
+      },
+      "ipcch-prepare-full-window-20261008a": {
+        "command_result": {
+          "command": [
+            "gcloud",
+            "batch",
+            "jobs",
+            "describe",
+            "ipcch-prepare-full-window-20261008a",
+            "--project",
+            "manuel-remote-sensing",
+            "--location",
+            "us-central1",
+            "--format=json"
+          ],
+          "returncode": 0,
+          "stdout": "{\n  \"allocationPolicy\": {\n    \"labels\": {\n      \"batch-job-id\": \"ipcch-prepare-full-window-20261008a\"\n    },\n    \"location\": {\n      \"allowedLocations\": [\n        \"regions/us-central1\",\n        \"zones/us-central1-a\",\n        \"zones/us-central1-b\",\n        \"zones/us-central1-c\",\n        \"zones/us-central1-f\"\n      ]\n    },\n    \"serviceAccount\": {\n      \"email\": \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\"\n    }\n  },\n  \"createTime\": \"2026-10-08T13:17:32.486401426Z\",\n  \"labels\": {\n    \"ipcch_feature_month\": \"202610\",\n    \"ipcch_run_id\": \"full-window-20261008a\"\n  },\n  \"logsPolicy\": {\n    \"destination\": \"CLOUD_LOGGING\"\n  },\n  \"name\": \"projects/manuel-remote-sensing/locations/us-central1/jobs/ipcch-prepare-full-window-20261008a\",\n  \"status\": {\n    \"runDuration\": \"0s\",\n    \"state\": \"FAILED\",\n    \"statusEvents\": [\n      {\n        \"description\": \"Job state is set from QUEUED to SCHEDULED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008a.\",\n        \"eventTime\": \"2026-10-08T13:17:37.137375582Z\",\n        \"type\": \"STATUS_CHANGED\"\n      },\n      {\n        \"description\": \"Job state is set from SCHEDULED to FAILED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008a.Job failed due to task failure. Specifically, task with index 0 failed due to the following task event: \\\"Task state is updated from PENDING to FAILED on zones/us-central1-a/instances/493296917030774506 due to Batch no longer receives VM updates with exit code 50002.\\\"\",\n        \"eventTime\": \"2026-10-08T13:25:59.302539334Z\",\n        \"type\": \"STATUS_CHANGED\"\n      }\n    ],\n    \"taskGroups\": {\n      \"group0\": {\n        \"counts\": {\n          \"FAILED\": \"1\"\n        },\n        \"instances\": [\n          {\n            \"bootDisk\": {\n              \"image\": \"projects/batch-custom-image/global/images/batch-cos-stable-official-20260924-00-p01\",\n              \"sizeGb\": \"30\",\n              \"type\": \"pd-balanced\"\n            },\n            \"machineType\": \"e2-highcpu-2\",\n            \"provisioningModel\": \"STANDARD\",\n            \"taskPack\": \"1\"\n          }\n        ]\n      }\n    }\n  },\n  \"taskGroups\": [\n    {\n      \"name\": \"projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008a/taskGroups/group0\",\n      \"parallelism\": \"1\",\n      \"taskCount\": \"1\",\n      \"taskSpec\": {\n        \"computeResource\": {\n          \"cpuMilli\": \"2000\",\n          \"memoryMib\": \"2000\"\n        },\n        \"maxRunDuration\": \"3782s\",\n        \"runnables\": [\n          {\n            \"container\": {\n              \"commands\": [\n                \"-m\",\n                \"cloud.orchestrator.prepare\",\n                \"extract\",\n                \"--plan-uri\",\n                \"gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008a/prepare_plan.json\",\n                \"--plan-generation\",\n                \"1791465452309231\",\n                \"--plan-sha256\",\n                \"6b24ee7fdedad773d356382154c582ce5442a5760eecf583ca4a4d320638e75d\",\n                \"--earth-engine-project\",\n                \"manuel-remote-sensing\",\n                \"--deadline-utc\",\n                \"2026-10-08T14:20:00Z\"\n              ],\n              \"entrypoint\": \"python3\",\n              \"imageUri\": \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:945c4d51e49e21fb9818dd9a7245024697d927dd5ebe6e2b7d6612c051249ca0\"\n            }\n          }\n        ]\n      }\n    }\n  ],\n  \"uid\": \"ipcch-prepare-full-be2c9fb4-40ef-4a630\",\n  \"updateTime\": \"2026-10-08T13:25:59.302539334Z\"\n}\n",
+          "stderr": ""
+        },
+        "document": {
+          "allocationPolicy": {
+            "labels": {
+              "batch-job-id": "ipcch-prepare-full-window-20261008a"
+            },
+            "location": {
+              "allowedLocations": [
+                "regions/us-central1",
+                "zones/us-central1-a",
+                "zones/us-central1-b",
+                "zones/us-central1-c",
+                "zones/us-central1-f"
+              ]
+            },
+            "serviceAccount": {
+              "email": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com"
+            }
+          },
+          "createTime": "2026-10-08T13:17:32.486401426Z",
+          "labels": {
+            "ipcch_feature_month": "202610",
+            "ipcch_run_id": "full-window-20261008a"
+          },
+          "logsPolicy": {
+            "destination": "CLOUD_LOGGING"
+          },
+          "name": "projects/manuel-remote-sensing/locations/us-central1/jobs/ipcch-prepare-full-window-20261008a",
+          "status": {
+            "runDuration": "0s",
+            "state": "FAILED",
+            "statusEvents": [
+              {
+                "description": "Job state is set from QUEUED to SCHEDULED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008a.",
+                "eventTime": "2026-10-08T13:17:37.137375582Z",
+                "type": "STATUS_CHANGED"
+              },
+              {
+                "description": "Job state is set from SCHEDULED to FAILED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008a.Job failed due to task failure. Specifically, task with index 0 failed due to the following task event: \"Task state is updated from PENDING to FAILED on zones/us-central1-a/instances/493296917030774506 due to Batch no longer receives VM updates with exit code 50002.\"",
+                "eventTime": "2026-10-08T13:25:59.302539334Z",
+                "type": "STATUS_CHANGED"
+              }
+            ],
+            "taskGroups": {
+              "group0": {
+                "counts": {
+                  "FAILED": "1"
+                },
+                "instances": [
+                  {
+                    "bootDisk": {
+                      "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20260924-00-p01",
+                      "sizeGb": "30",
+                      "type": "pd-balanced"
+                    },
+                    "machineType": "e2-highcpu-2",
+                    "provisioningModel": "STANDARD",
+                    "taskPack": "1"
+                  }
+                ]
+              }
+            }
+          },
+          "taskGroups": [
+            {
+              "name": "projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008a/taskGroups/group0",
+              "parallelism": "1",
+              "taskCount": "1",
+              "taskSpec": {
+                "computeResource": {
+                  "cpuMilli": "2000",
+                  "memoryMib": "2000"
+                },
+                "maxRunDuration": "3782s",
+                "runnables": [
+                  {
+                    "container": {
+                      "commands": [
+                        "-m",
+                        "cloud.orchestrator.prepare",
+                        "extract",
+                        "--plan-uri",
+                        "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008a/prepare_plan.json",
+                        "--plan-generation",
+                        "1791465452309231",
+                        "--plan-sha256",
+                        "6b24ee7fdedad773d356382154c582ce5442a5760eecf583ca4a4d320638e75d",
+                        "--earth-engine-project",
+                        "manuel-remote-sensing",
+                        "--deadline-utc",
+                        "2026-10-08T14:20:00Z"
+                      ],
+                      "entrypoint": "python3",
+                      "imageUri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:945c4d51e49e21fb9818dd9a7245024697d927dd5ebe6e2b7d6612c051249ca0"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "uid": "ipcch-prepare-full-be2c9fb4-40ef-4a630",
+          "updateTime": "2026-10-08T13:25:59.302539334Z"
+        }
+      }
+    },
+    "run_executions": {
+      "oct-prepare-plan-vz2dq": {
+        "command_result": {
+          "command": [
+            "gcloud",
+            "run",
+            "jobs",
+            "executions",
+            "describe",
+            "oct-prepare-plan-vz2dq",
+            "--project",
+            "manuel-remote-sensing",
+            "--region",
+            "us-central1",
+            "--format=json"
+          ],
+          "returncode": 0,
+          "stdout": "{\n  \"apiVersion\": \"run.googleapis.com/v1\",\n  \"kind\": \"Execution\",\n  \"metadata\": {\n    \"annotations\": {\n      \"run.googleapis.com/client-name\": \"gcloud\",\n      \"run.googleapis.com/client-version\": \"562.0.0\",\n      \"run.googleapis.com/creator\": \"weilun.shi@cgiar.org\",\n      \"run.googleapis.com/execution-environment\": \"gen2\",\n      \"run.googleapis.com/lastModifier\": \"weilun.shi@cgiar.org\",\n      \"run.googleapis.com/operation-id\": \"23c9d0be-547e-48ae-87e5-adccd255c08a\"\n    },\n    \"creationTimestamp\": \"2026-10-08T13:33:09.346333Z\",\n    \"generation\": 1,\n    \"labels\": {\n      \"client.knative.dev/nonce\": \"qil_mat_kab\",\n      \"cloud.googleapis.com/location\": \"us-central1\",\n      \"run.googleapis.com/job\": \"oct-prepare-plan\",\n      \"run.googleapis.com/jobGeneration\": \"3\",\n      \"run.googleapis.com/jobResourceVersion\": \"1791466375417893\",\n      \"run.googleapis.com/jobUid\": \"ec67aa7d-7ba7-481d-bf6b-97f30b6cc3f3\",\n      \"task\": \"october-cloud-delivery\"\n    },\n    \"name\": \"oct-prepare-plan-vz2dq\",\n    \"namespace\": \"645415198431\",\n    \"ownerReferences\": [\n      {\n        \"apiVersion\": \"serving.knative.dev/v1\",\n        \"blockOwnerDeletion\": true,\n        \"controller\": true,\n        \"kind\": \"Job\",\n        \"name\": \"oct-prepare-plan\",\n        \"uid\": \"ec67aa7d-7ba7-481d-bf6b-97f30b6cc3f3\"\n      }\n    ],\n    \"resourceVersion\": \"AAZdVFH/WNk\",\n    \"selfLink\": \"/apis/run.googleapis.com/v1/namespaces/645415198431/executions/oct-prepare-plan-vz2dq\",\n    \"uid\": \"43970978-0b4e-4cda-af9a-c23b80864038\"\n  },\n  \"spec\": {\n    \"parallelism\": 1,\n    \"taskCount\": 1,\n    \"template\": {\n      \"spec\": {\n        \"containers\": [\n          {\n            \"args\": [\n              \"-m\",\n              \"cloud.orchestrator.prepare\",\n              \"plan\",\n              \"--request-uri\",\n              \"gs://manuel-remote-sensing-oct-delivery-debug/prepare_requests/full-window-20261008b/prepare_request.json\",\n              \"--request-generation\",\n              \"1791466138274323\",\n              \"--output-root\",\n              \"gs://manuel-remote-sensing-oct-delivery-debug\",\n              \"--earth-engine-project\",\n              \"manuel-remote-sensing\",\n              \"--batch-parent\",\n              \"projects/manuel-remote-sensing/locations/us-central1\",\n              \"--batch-image-uri\",\n              \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e\",\n              \"--batch-service-account\",\n              \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\",\n              \"--deadline-utc\",\n              \"2026-10-08T14:20:00Z\"\n            ],\n            \"command\": [\n              \"python3\"\n            ],\n            \"image\": \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e\",\n            \"resources\": {\n              \"limits\": {\n                \"cpu\": \"1\",\n                \"memory\": \"2Gi\"\n              }\n            }\n          }\n        ],\n        \"maxRetries\": 0,\n        \"serviceAccountName\": \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\",\n        \"timeoutSeconds\": \"1800\"\n      }\n    }\n  },\n  \"status\": {\n    \"completionTime\": \"2026-10-08T13:36:28.984284Z\",\n    \"conditions\": [\n      {\n        \"lastTransitionTime\": \"2026-10-08T13:36:28.984284Z\",\n        \"message\": \"Execution completed successfully in 2m9.58s.\",\n        \"status\": \"True\",\n        \"type\": \"Completed\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-08T13:34:06.928425Z\",\n        \"message\": \"Provisioned imported containers.\",\n        \"status\": \"True\",\n        \"type\": \"ResourcesAvailable\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-08T13:35:42.064114Z\",\n        \"message\": \"Started deployed execution in 1m35.13s.\",\n        \"status\": \"True\",\n        \"type\": \"Started\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-08T13:34:06.746676Z\",\n        \"message\": \"Imported container image in 57.4s.\",\n        \"status\": \"True\",\n        \"type\": \"ContainerReady\"\n      }\n    ],\n    \"logUri\": \"https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-prepare-plan%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-prepare-plan-vz2dq%22\",\n    \"observedGeneration\": 1,\n    \"startTime\": \"2026-10-08T13:34:19.395944Z\",\n    \"succeededCount\": 1\n  }\n}\n",
+          "stderr": ""
+        },
+        "document": {
+          "apiVersion": "run.googleapis.com/v1",
+          "kind": "Execution",
+          "metadata": {
+            "annotations": {
+              "run.googleapis.com/client-name": "gcloud",
+              "run.googleapis.com/client-version": "562.0.0",
+              "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+              "run.googleapis.com/execution-environment": "gen2",
+              "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+              "run.googleapis.com/operation-id": "23c9d0be-547e-48ae-87e5-adccd255c08a"
+            },
+            "creationTimestamp": "2026-10-08T13:33:09.346333Z",
+            "generation": 1,
+            "labels": {
+              "client.knative.dev/nonce": "qil_mat_kab",
+              "cloud.googleapis.com/location": "us-central1",
+              "run.googleapis.com/job": "oct-prepare-plan",
+              "run.googleapis.com/jobGeneration": "3",
+              "run.googleapis.com/jobResourceVersion": "1791466375417893",
+              "run.googleapis.com/jobUid": "ec67aa7d-7ba7-481d-bf6b-97f30b6cc3f3",
+              "task": "october-cloud-delivery"
+            },
+            "name": "oct-prepare-plan-vz2dq",
+            "namespace": "645415198431",
+            "ownerReferences": [
+              {
+                "apiVersion": "serving.knative.dev/v1",
+                "blockOwnerDeletion": true,
+                "controller": true,
+                "kind": "Job",
+                "name": "oct-prepare-plan",
+                "uid": "ec67aa7d-7ba7-481d-bf6b-97f30b6cc3f3"
+              }
+            ],
+            "resourceVersion": "AAZdVFH/WNk",
+            "selfLink": "/apis/run.googleapis.com/v1/namespaces/645415198431/executions/oct-prepare-plan-vz2dq",
+            "uid": "43970978-0b4e-4cda-af9a-c23b80864038"
+          },
+          "spec": {
+            "parallelism": 1,
+            "taskCount": 1,
+            "template": {
+              "spec": {
+                "containers": [
+                  {
+                    "args": [
+                      "-m",
+                      "cloud.orchestrator.prepare",
+                      "plan",
+                      "--request-uri",
+                      "gs://manuel-remote-sensing-oct-delivery-debug/prepare_requests/full-window-20261008b/prepare_request.json",
+                      "--request-generation",
+                      "1791466138274323",
+                      "--output-root",
+                      "gs://manuel-remote-sensing-oct-delivery-debug",
+                      "--earth-engine-project",
+                      "manuel-remote-sensing",
+                      "--batch-parent",
+                      "projects/manuel-remote-sensing/locations/us-central1",
+                      "--batch-image-uri",
+                      "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e",
+                      "--batch-service-account",
+                      "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+                      "--deadline-utc",
+                      "2026-10-08T14:20:00Z"
+                    ],
+                    "command": [
+                      "python3"
+                    ],
+                    "image": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e",
+                    "resources": {
+                      "limits": {
+                        "cpu": "1",
+                        "memory": "2Gi"
+                      }
+                    }
+                  }
+                ],
+                "maxRetries": 0,
+                "serviceAccountName": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+                "timeoutSeconds": "1800"
+              }
+            }
+          },
+          "status": {
+            "completionTime": "2026-10-08T13:36:28.984284Z",
+            "conditions": [
+              {
+                "lastTransitionTime": "2026-10-08T13:36:28.984284Z",
+                "message": "Execution completed successfully in 2m9.58s.",
+                "status": "True",
+                "type": "Completed"
+              },
+              {
+                "lastTransitionTime": "2026-10-08T13:34:06.928425Z",
+                "message": "Provisioned imported containers.",
+                "status": "True",
+                "type": "ResourcesAvailable"
+              },
+              {
+                "lastTransitionTime": "2026-10-08T13:35:42.064114Z",
+                "message": "Started deployed execution in 1m35.13s.",
+                "status": "True",
+                "type": "Started"
+              },
+              {
+                "lastTransitionTime": "2026-10-08T13:34:06.746676Z",
+                "message": "Imported container image in 57.4s.",
+                "status": "True",
+                "type": "ContainerReady"
+              }
+            ],
+            "logUri": "https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-prepare-plan%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-prepare-plan-vz2dq%22",
+            "observedGeneration": 1,
+            "startTime": "2026-10-08T13:34:19.395944Z",
+            "succeededCount": 1
+          }
+        }
+      },
+      "oct-prepare-plan-zgclz": {
+        "command_result": {
+          "command": [
+            "gcloud",
+            "run",
+            "jobs",
+            "executions",
+            "describe",
+            "oct-prepare-plan-zgclz",
+            "--project",
+            "manuel-remote-sensing",
+            "--region",
+            "us-central1",
+            "--format=json"
+          ],
+          "returncode": 0,
+          "stdout": "{\n  \"apiVersion\": \"run.googleapis.com/v1\",\n  \"kind\": \"Execution\",\n  \"metadata\": {\n    \"annotations\": {\n      \"run.googleapis.com/client-name\": \"gcloud\",\n      \"run.googleapis.com/client-version\": \"562.0.0\",\n      \"run.googleapis.com/creator\": \"weilun.shi@cgiar.org\",\n      \"run.googleapis.com/execution-environment\": \"gen2\",\n      \"run.googleapis.com/lastModifier\": \"weilun.shi@cgiar.org\",\n      \"run.googleapis.com/operation-id\": \"efadd4a0-d25d-4e13-8596-360cd39d1f36\"\n    },\n    \"creationTimestamp\": \"2026-10-08T13:13:30.994968Z\",\n    \"generation\": 1,\n    \"labels\": {\n      \"client.knative.dev/nonce\": \"ler_noz_jek\",\n      \"cloud.googleapis.com/location\": \"us-central1\",\n      \"run.googleapis.com/job\": \"oct-prepare-plan\",\n      \"run.googleapis.com/jobGeneration\": \"2\",\n      \"run.googleapis.com/jobResourceVersion\": \"1791465197947920\",\n      \"run.googleapis.com/jobUid\": \"ec67aa7d-7ba7-481d-bf6b-97f30b6cc3f3\",\n      \"task\": \"october-cloud-delivery\"\n    },\n    \"name\": \"oct-prepare-plan-zgclz\",\n    \"namespace\": \"645415198431\",\n    \"ownerReferences\": [\n      {\n        \"apiVersion\": \"serving.knative.dev/v1\",\n        \"blockOwnerDeletion\": true,\n        \"controller\": true,\n        \"kind\": \"Job\",\n        \"name\": \"oct-prepare-plan\",\n        \"uid\": \"ec67aa7d-7ba7-481d-bf6b-97f30b6cc3f3\"\n      }\n    ],\n    \"resourceVersion\": \"AAZdVA4+jhs\",\n    \"selfLink\": \"/apis/run.googleapis.com/v1/namespaces/645415198431/executions/oct-prepare-plan-zgclz\",\n    \"uid\": \"0ac675d3-2483-4309-aacb-d4043c79ca47\"\n  },\n  \"spec\": {\n    \"parallelism\": 1,\n    \"taskCount\": 1,\n    \"template\": {\n      \"spec\": {\n        \"containers\": [\n          {\n            \"args\": [\n              \"-m\",\n              \"cloud.orchestrator.prepare\",\n              \"plan\",\n              \"--request-uri\",\n              \"gs://manuel-remote-sensing-oct-delivery-debug/prepare_requests/full-window-20261008a/prepare_request.json\",\n              \"--request-generation\",\n              \"1791464576402371\",\n              \"--output-root\",\n              \"gs://manuel-remote-sensing-oct-delivery-debug\",\n              \"--earth-engine-project\",\n              \"manuel-remote-sensing\",\n              \"--batch-parent\",\n              \"projects/manuel-remote-sensing/locations/us-central1\",\n              \"--batch-image-uri\",\n              \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:945c4d51e49e21fb9818dd9a7245024697d927dd5ebe6e2b7d6612c051249ca0\",\n              \"--batch-service-account\",\n              \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\",\n              \"--deadline-utc\",\n              \"2026-10-08T14:20:00Z\"\n            ],\n            \"command\": [\n              \"python3\"\n            ],\n            \"image\": \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:945c4d51e49e21fb9818dd9a7245024697d927dd5ebe6e2b7d6612c051249ca0\",\n            \"resources\": {\n              \"limits\": {\n                \"cpu\": \"1\",\n                \"memory\": \"2Gi\"\n              }\n            }\n          }\n        ],\n        \"maxRetries\": 0,\n        \"serviceAccountName\": \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\",\n        \"timeoutSeconds\": \"1800\"\n      }\n    }\n  },\n  \"status\": {\n    \"completionTime\": \"2026-10-08T13:17:36.846742Z\",\n    \"conditions\": [\n      {\n        \"lastTransitionTime\": \"2026-10-08T13:17:36.846742Z\",\n        \"message\": \"Execution completed successfully in 2m55.48s.\",\n        \"status\": \"True\",\n        \"type\": \"Completed\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-08T13:14:27.020415Z\",\n        \"message\": \"Provisioned imported containers.\",\n        \"status\": \"True\",\n        \"type\": \"ResourcesAvailable\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-08T13:16:46.603865Z\",\n        \"message\": \"Started deployed execution in 2m19.58s.\",\n        \"status\": \"True\",\n        \"type\": \"Started\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-08T13:14:26.852876Z\",\n        \"message\": \"Imported container image in 55.86s.\",\n        \"status\": \"True\",\n        \"type\": \"ContainerReady\"\n      }\n    ],\n    \"logUri\": \"https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-prepare-plan%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-prepare-plan-zgclz%22\",\n    \"observedGeneration\": 1,\n    \"startTime\": \"2026-10-08T13:14:41.362794Z\",\n    \"succeededCount\": 1\n  }\n}\n",
+          "stderr": ""
+        },
+        "document": {
+          "apiVersion": "run.googleapis.com/v1",
+          "kind": "Execution",
+          "metadata": {
+            "annotations": {
+              "run.googleapis.com/client-name": "gcloud",
+              "run.googleapis.com/client-version": "562.0.0",
+              "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+              "run.googleapis.com/execution-environment": "gen2",
+              "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+              "run.googleapis.com/operation-id": "efadd4a0-d25d-4e13-8596-360cd39d1f36"
+            },
+            "creationTimestamp": "2026-10-08T13:13:30.994968Z",
+            "generation": 1,
+            "labels": {
+              "client.knative.dev/nonce": "ler_noz_jek",
+              "cloud.googleapis.com/location": "us-central1",
+              "run.googleapis.com/job": "oct-prepare-plan",
+              "run.googleapis.com/jobGeneration": "2",
+              "run.googleapis.com/jobResourceVersion": "1791465197947920",
+              "run.googleapis.com/jobUid": "ec67aa7d-7ba7-481d-bf6b-97f30b6cc3f3",
+              "task": "october-cloud-delivery"
+            },
+            "name": "oct-prepare-plan-zgclz",
+            "namespace": "645415198431",
+            "ownerReferences": [
+              {
+                "apiVersion": "serving.knative.dev/v1",
+                "blockOwnerDeletion": true,
+                "controller": true,
+                "kind": "Job",
+                "name": "oct-prepare-plan",
+                "uid": "ec67aa7d-7ba7-481d-bf6b-97f30b6cc3f3"
+              }
+            ],
+            "resourceVersion": "AAZdVA4+jhs",
+            "selfLink": "/apis/run.googleapis.com/v1/namespaces/645415198431/executions/oct-prepare-plan-zgclz",
+            "uid": "0ac675d3-2483-4309-aacb-d4043c79ca47"
+          },
+          "spec": {
+            "parallelism": 1,
+            "taskCount": 1,
+            "template": {
+              "spec": {
+                "containers": [
+                  {
+                    "args": [
+                      "-m",
+                      "cloud.orchestrator.prepare",
+                      "plan",
+                      "--request-uri",
+                      "gs://manuel-remote-sensing-oct-delivery-debug/prepare_requests/full-window-20261008a/prepare_request.json",
+                      "--request-generation",
+                      "1791464576402371",
+                      "--output-root",
+                      "gs://manuel-remote-sensing-oct-delivery-debug",
+                      "--earth-engine-project",
+                      "manuel-remote-sensing",
+                      "--batch-parent",
+                      "projects/manuel-remote-sensing/locations/us-central1",
+                      "--batch-image-uri",
+                      "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:945c4d51e49e21fb9818dd9a7245024697d927dd5ebe6e2b7d6612c051249ca0",
+                      "--batch-service-account",
+                      "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+                      "--deadline-utc",
+                      "2026-10-08T14:20:00Z"
+                    ],
+                    "command": [
+                      "python3"
+                    ],
+                    "image": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:945c4d51e49e21fb9818dd9a7245024697d927dd5ebe6e2b7d6612c051249ca0",
+                    "resources": {
+                      "limits": {
+                        "cpu": "1",
+                        "memory": "2Gi"
+                      }
+                    }
+                  }
+                ],
+                "maxRetries": 0,
+                "serviceAccountName": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+                "timeoutSeconds": "1800"
+              }
+            }
+          },
+          "status": {
+            "completionTime": "2026-10-08T13:17:36.846742Z",
+            "conditions": [
+              {
+                "lastTransitionTime": "2026-10-08T13:17:36.846742Z",
+                "message": "Execution completed successfully in 2m55.48s.",
+                "status": "True",
+                "type": "Completed"
+              },
+              {
+                "lastTransitionTime": "2026-10-08T13:14:27.020415Z",
+                "message": "Provisioned imported containers.",
+                "status": "True",
+                "type": "ResourcesAvailable"
+              },
+              {
+                "lastTransitionTime": "2026-10-08T13:16:46.603865Z",
+                "message": "Started deployed execution in 2m19.58s.",
+                "status": "True",
+                "type": "Started"
+              },
+              {
+                "lastTransitionTime": "2026-10-08T13:14:26.852876Z",
+                "message": "Imported container image in 55.86s.",
+                "status": "True",
+                "type": "ContainerReady"
+              }
+            ],
+            "logUri": "https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-prepare-plan%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-prepare-plan-zgclz%22",
+            "observedGeneration": 1,
+            "startTime": "2026-10-08T13:14:41.362794Z",
+            "succeededCount": 1
+          }
+        }
+      }
+    },
+    "earth_engine_tasks": [
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2026_08",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466727237,
+        "update_timestamp_ms": 1791468329752,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "H3QMG2IGGR7P2VESERXLAPLQ",
+        "name": "projects/manuel-remote-sensing/operations/H3QMG2IGGR7P2VESERXLAPLQ"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2026_07",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466726863,
+        "update_timestamp_ms": 1791468329197,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "WNAVD3577NTLEIYJUP5NAJP3",
+        "name": "projects/manuel-remote-sensing/operations/WNAVD3577NTLEIYJUP5NAJP3"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2026_06",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466726489,
+        "update_timestamp_ms": 1791468328910,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "FYSBGR5P6E5DTCFLRALNEGQ3",
+        "name": "projects/manuel-remote-sensing/operations/FYSBGR5P6E5DTCFLRALNEGQ3"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466725937,
+        "update_timestamp_ms": 1791468328590,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "GPQKEZU646DKH4MALIS7TJQL",
+        "name": "projects/manuel-remote-sensing/operations/GPQKEZU646DKH4MALIS7TJQL"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2026_04",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466725394,
+        "update_timestamp_ms": 1791468328279,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "7GX56BZI23YNXKS35VPLUIZ4",
+        "name": "projects/manuel-remote-sensing/operations/7GX56BZI23YNXKS35VPLUIZ4"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2026_03",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466724835,
+        "update_timestamp_ms": 1791468327983,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "ZZ2KD6HKYJKZNRB2RBSEDDEO",
+        "name": "projects/manuel-remote-sensing/operations/ZZ2KD6HKYJKZNRB2RBSEDDEO"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2026_02",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466724239,
+        "update_timestamp_ms": 1791468327435,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "4O377UMLOP4QEDSK3S3DI7JU",
+        "name": "projects/manuel-remote-sensing/operations/4O377UMLOP4QEDSK3S3DI7JU"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2026_01",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466723718,
+        "update_timestamp_ms": 1791468327004,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "UQU3ZGTWTOZJC2WPLORT6BZD",
+        "name": "projects/manuel-remote-sensing/operations/UQU3ZGTWTOZJC2WPLORT6BZD"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2025_12",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466723320,
+        "update_timestamp_ms": 1791468326580,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "TBMSRNHEUPCSRPBPSCH6P7QT",
+        "name": "projects/manuel-remote-sensing/operations/TBMSRNHEUPCSRPBPSCH6P7QT"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2025_11",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466722860,
+        "update_timestamp_ms": 1791468326304,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "TKA3KVPQD7XW6IJWA3O7GY46",
+        "name": "projects/manuel-remote-sensing/operations/TKA3KVPQD7XW6IJWA3O7GY46"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_viirs_2025_10",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466722298,
+        "update_timestamp_ms": 1791468325783,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "3CKXXB54ED6NJ5MDOGMT66AR",
+        "name": "projects/manuel-remote-sensing/operations/3CKXXB54ED6NJ5MDOGMT66AR"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2026_08",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466721661,
+        "update_timestamp_ms": 1791468325360,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "BSBPYAY2I2AVYN7FNS4K346H",
+        "name": "projects/manuel-remote-sensing/operations/BSBPYAY2I2AVYN7FNS4K346H"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2026_07",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466721218,
+        "update_timestamp_ms": 1791468325086,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "WZRZF5SGDAXWYDTLUXTY5QPO",
+        "name": "projects/manuel-remote-sensing/operations/WZRZF5SGDAXWYDTLUXTY5QPO"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2026_06",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466720753,
+        "update_timestamp_ms": 1791468324821,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "2CB4OOBOPR2KUWTXXVSJY6PW",
+        "name": "projects/manuel-remote-sensing/operations/2CB4OOBOPR2KUWTXXVSJY6PW"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466718999,
+        "update_timestamp_ms": 1791468324368,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "LMVCF7AZGCH543L4MZGPF4OD",
+        "name": "projects/manuel-remote-sensing/operations/LMVCF7AZGCH543L4MZGPF4OD"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2026_04",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466718477,
+        "update_timestamp_ms": 1791468323965,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "WZPPOMMWCKBI6UXUW7BC267C",
+        "name": "projects/manuel-remote-sensing/operations/WZPPOMMWCKBI6UXUW7BC267C"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2026_03",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466716423,
+        "update_timestamp_ms": 1791468323328,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "CIOMEBLO4RRSR7LSZZ3HGZNG",
+        "name": "projects/manuel-remote-sensing/operations/CIOMEBLO4RRSR7LSZZ3HGZNG"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2026_02",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466716155,
+        "update_timestamp_ms": 1791468322853,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "IWPVCRALKCIA76MEEEW65WJV",
+        "name": "projects/manuel-remote-sensing/operations/IWPVCRALKCIA76MEEEW65WJV"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2026_01",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466715720,
+        "update_timestamp_ms": 1791468322318,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "XRCPRV3S2PIHMW77WI3BYAXH",
+        "name": "projects/manuel-remote-sensing/operations/XRCPRV3S2PIHMW77WI3BYAXH"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2025_12",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466715267,
+        "update_timestamp_ms": 1791468321901,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "JUON7N4DI2MN5DUF6QUU5O5N",
+        "name": "projects/manuel-remote-sensing/operations/JUON7N4DI2MN5DUF6QUU5O5N"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2025_11",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466714676,
+        "update_timestamp_ms": 1791468321344,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "SZKRYWAIJRX3GLYIKE55EIBA",
+        "name": "projects/manuel-remote-sensing/operations/SZKRYWAIJRX3GLYIKE55EIBA"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_fldas_2025_10",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466713635,
+        "update_timestamp_ms": 1791468320760,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "3VKLSMTA3N6LYRHHCCNPXSBU",
+        "name": "projects/manuel-remote-sensing/operations/3VKLSMTA3N6LYRHHCCNPXSBU"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_evi_2026_08",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466713200,
+        "update_timestamp_ms": 1791468320457,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "VJ2IRBNGO2FF4SP32BHQ7VYH",
+        "name": "projects/manuel-remote-sensing/operations/VJ2IRBNGO2FF4SP32BHQ7VYH"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_evi_2026_07",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466712669,
+        "update_timestamp_ms": 1791468319853,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "LNUMMCZOY3W4FPMOYJPX2XBK",
+        "name": "projects/manuel-remote-sensing/operations/LNUMMCZOY3W4FPMOYJPX2XBK"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_evi_2026_06",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466712143,
+        "update_timestamp_ms": 1791468319382,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "HSBDKSXW43AP4VWNK4IGBM7S",
+        "name": "projects/manuel-remote-sensing/operations/HSBDKSXW43AP4VWNK4IGBM7S"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_evi_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466711718,
+        "update_timestamp_ms": 1791468319060,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "N5LJNB7PAYTDS2DCSSV34AYM",
+        "name": "projects/manuel-remote-sensing/operations/N5LJNB7PAYTDS2DCSSV34AYM"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_evi_2026_04",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466711172,
+        "update_timestamp_ms": 1791468318499,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "DYNO3TQICWIPN6KYVSRAZKCM",
+        "name": "projects/manuel-remote-sensing/operations/DYNO3TQICWIPN6KYVSRAZKCM"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_evi_2026_03",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466710659,
+        "update_timestamp_ms": 1791468318077,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "HFOXB2FCLBD3HWUK6YPXCSKX",
+        "name": "projects/manuel-remote-sensing/operations/HFOXB2FCLBD3HWUK6YPXCSKX"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_evi_2026_02",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466710144,
+        "update_timestamp_ms": 1791468317643,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "FHBWIKSY2SJOBJ5KY35HZKF3",
+        "name": "projects/manuel-remote-sensing/operations/FHBWIKSY2SJOBJ5KY35HZKF3"
+      },
+      {
+        "state": "CANCELLED",
+        "description": "full_window_20261008b_evi_2026_01",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466709523,
+        "update_timestamp_ms": 1791468317080,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "error_message": "Cancelled.",
+        "id": "ATWZDY7PVCKXLBWDHGCILSFQ",
+        "name": "projects/manuel-remote-sensing/operations/ATWZDY7PVCKXLBWDHGCILSFQ"
+      },
+      {
+        "state": "CANCEL_REQUESTED",
+        "description": "full_window_20261008b_evi_2025_12",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466709052,
+        "update_timestamp_ms": 1791468317234,
+        "start_timestamp_ms": 1791467917013,
+        "task_type": "EXPORT_IMAGE",
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 439.807,
+        "id": "KHVQOANYHBXYMPAUFTDIVBOP",
+        "name": "projects/manuel-remote-sensing/operations/KHVQOANYHBXYMPAUFTDIVBOP"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "full_window_20261008b_evi_2025_11",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466708439,
+        "update_timestamp_ms": 1791467914748,
+        "start_timestamp_ms": 1791467320241,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008b/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 472.1000061035156,
+        "id": "3L4XUXVMEV4TOY27EYKTXY4H",
+        "name": "projects/manuel-remote-sensing/operations/3L4XUXVMEV4TOY27EYKTXY4H"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "full_window_20261008b_evi_2025_10",
+        "priority": 100,
+        "creation_timestamp_ms": 1791466707994,
+        "update_timestamp_ms": 1791467316029,
+        "start_timestamp_ms": 1791466712466,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008b/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 440.8738708496094,
+        "id": "MQJWPO6GJVDB3JKWOMH2TJAK",
+        "name": "projects/manuel-remote-sensing/operations/MQJWPO6GJVDB3JKWOMH2TJAK"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "smoke_cloud_20261008a_viirs_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791464959942,
+        "update_timestamp_ms": 1791465183590,
+        "start_timestamp_ms": 1791464963362,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/smoke-cloud-20261008a/sources/viirs/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 67.21922302246094,
+        "id": "JAOO7LDZHPIJUVCLIIJI4W2R",
+        "name": "projects/manuel-remote-sensing/operations/JAOO7LDZHPIJUVCLIIJI4W2R"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "smoke_cloud_20261008a_fldas_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791464772444,
+        "update_timestamp_ms": 1791464950919,
+        "start_timestamp_ms": 1791464776104,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/smoke-cloud-20261008a/sources/fldas/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 60.50172424316406,
+        "id": "BC7LMYWS6CDHZKWWDIB3SZNH",
+        "name": "projects/manuel-remote-sensing/operations/BC7LMYWS6CDHZKWWDIB3SZNH"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "smoke_cloud_20261008a_evi_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791464164014,
+        "update_timestamp_ms": 1791464710779,
+        "start_timestamp_ms": 1791464166014,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/smoke-cloud-20261008a/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 457.0032958984375,
+        "id": "5DPNYMPM5DQ5C5OTEWB6TSW7",
+        "name": "projects/manuel-remote-sensing/operations/5DPNYMPM5DQ5C5OTEWB6TSW7"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "smoke_local_20261008a_viirs_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791462531837,
+        "update_timestamp_ms": 1791462882214,
+        "start_timestamp_ms": 1791462533461,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/smoke-local-20261008a/sources/viirs/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 72.88494873046875,
+        "id": "BUTIY545KSEUM5TK7Z2YRA2T",
+        "name": "projects/manuel-remote-sensing/operations/BUTIY545KSEUM5TK7Z2YRA2T"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "smoke_local_20261008a_fldas_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791462279119,
+        "update_timestamp_ms": 1791462504648,
+        "start_timestamp_ms": 1791462282252,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/smoke-local-20261008a/sources/fldas/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 61.24406433105469,
+        "id": "2BU27KKK4O4JXBXZZZHX6BZT",
+        "name": "projects/manuel-remote-sensing/operations/2BU27KKK4O4JXBXZZZHX6BZT"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "smoke_local_20261008a_evi_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791461763410,
+        "update_timestamp_ms": 1791462257400,
+        "start_timestamp_ms": 1791461765145,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/smoke-local-20261008a/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 475.8795471191406,
+        "id": "ZB3Q6O5JGUCI6PPGP4KEPTEC",
+        "name": "projects/manuel-remote-sensing/operations/ZB3Q6O5JGUCI6PPGP4KEPTEC"
+      }
+    ]
+  },
+  "summary": {
+    "executed": false,
+    "actions": [],
+    "batch_states_after": {
+      "ipcch-prepare-full-window-20261008b": "FAILED",
+      "ipcch-prepare-full-window-20261008a": "FAILED"
+    },
+    "run_execution_states_after": {
+      "oct-prepare-plan-vz2dq": "TERMINAL",
+      "oct-prepare-plan-zgclz": "TERMINAL"
+    },
+    "ee_states_after": {
+      "H3QMG2IGGR7P2VESERXLAPLQ": "CANCELLED",
+      "WNAVD3577NTLEIYJUP5NAJP3": "CANCELLED",
+      "FYSBGR5P6E5DTCFLRALNEGQ3": "CANCELLED",
+      "GPQKEZU646DKH4MALIS7TJQL": "CANCELLED",
+      "7GX56BZI23YNXKS35VPLUIZ4": "CANCELLED",
+      "ZZ2KD6HKYJKZNRB2RBSEDDEO": "CANCELLED",
+      "4O377UMLOP4QEDSK3S3DI7JU": "CANCELLED",
+      "UQU3ZGTWTOZJC2WPLORT6BZD": "CANCELLED",
+      "TBMSRNHEUPCSRPBPSCH6P7QT": "CANCELLED",
+      "TKA3KVPQD7XW6IJWA3O7GY46": "CANCELLED",
+      "3CKXXB54ED6NJ5MDOGMT66AR": "CANCELLED",
+      "BSBPYAY2I2AVYN7FNS4K346H": "CANCELLED",
+      "WZRZF5SGDAXWYDTLUXTY5QPO": "CANCELLED",
+      "2CB4OOBOPR2KUWTXXVSJY6PW": "CANCELLED",
+      "LMVCF7AZGCH543L4MZGPF4OD": "CANCELLED",
+      "WZPPOMMWCKBI6UXUW7BC267C": "CANCELLED",
+      "CIOMEBLO4RRSR7LSZZ3HGZNG": "CANCELLED",
+      "IWPVCRALKCIA76MEEEW65WJV": "CANCELLED",
+      "XRCPRV3S2PIHMW77WI3BYAXH": "CANCELLED",
+      "JUON7N4DI2MN5DUF6QUU5O5N": "CANCELLED",
+      "SZKRYWAIJRX3GLYIKE55EIBA": "CANCELLED",
+      "3VKLSMTA3N6LYRHHCCNPXSBU": "CANCELLED",
+      "VJ2IRBNGO2FF4SP32BHQ7VYH": "CANCELLED",
+      "LNUMMCZOY3W4FPMOYJPX2XBK": "CANCELLED",
+      "HSBDKSXW43AP4VWNK4IGBM7S": "CANCELLED",
+      "N5LJNB7PAYTDS2DCSSV34AYM": "CANCELLED",
+      "DYNO3TQICWIPN6KYVSRAZKCM": "CANCELLED",
+      "HFOXB2FCLBD3HWUK6YPXCSKX": "CANCELLED",
+      "FHBWIKSY2SJOBJ5KY35HZKF3": "CANCELLED",
+      "ATWZDY7PVCKXLBWDHGCILSFQ": "CANCELLED",
+      "KHVQOANYHBXYMPAUFTDIVBOP": "CANCEL_REQUESTED",
+      "3L4XUXVMEV4TOY27EYKTXY4H": "COMPLETED",
+      "MQJWPO6GJVDB3JKWOMH2TJAK": "COMPLETED",
+      "JAOO7LDZHPIJUVCLIIJI4W2R": "COMPLETED",
+      "BC7LMYWS6CDHZKWWDIB3SZNH": "COMPLETED",
+      "5DPNYMPM5DQ5C5OTEWB6TSW7": "COMPLETED",
+      "BUTIY545KSEUM5TK7Z2YRA2T": "COMPLETED",
+      "2BU27KKK4O4JXBXZZZHX6BZT": "COMPLETED",
+      "ZB3Q6O5JGUCI6PPGP4KEPTEC": "COMPLETED"
+    },
+    "ee_pending_cancel": [
+      "KHVQOANYHBXYMPAUFTDIVBOP"
+    ],
+    "ee_non_terminal": [
+      "KHVQOANYHBXYMPAUFTDIVBOP"
+    ],
+    "failed_actions": [],
+    "active_compute": [],
+    "needs_followup": true,
+    "unknown_targets": []
+  }
+}

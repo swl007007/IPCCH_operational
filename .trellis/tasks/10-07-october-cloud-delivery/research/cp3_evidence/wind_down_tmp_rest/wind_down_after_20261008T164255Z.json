@@ -1,0 +1,838 @@
+{
+  "after": {
+    "taken_at_utc": "2026-10-08T16:43:00.164322+00:00",
+    "batch_jobs": {
+      "ipcch-prepare-full-window-20261008c": {
+        "command_result": {
+          "command": [
+            "GET",
+            "https://batch.googleapis.com/v1/projects/manuel-remote-sensing/locations/us-central1/jobs/ipcch-prepare-full-window-20261008c"
+          ],
+          "returncode": 0,
+          "stdout": "{\n  \"name\": \"projects/manuel-remote-sensing/locations/us-central1/jobs/ipcch-prepare-full-window-20261008c\",\n  \"uid\": \"ipcch-prepare-full-06be1853-2c6a-4ad00\",\n  \"taskGroups\": [\n    {\n      \"name\": \"projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008c/taskGroups/group0\",\n      \"taskSpec\": {\n        \"computeResource\": {\n          \"cpuMilli\": \"4000\",\n          \"memoryMib\": \"28000\"\n        },\n        \"maxRunDuration\": \"20241s\",\n        \"runnables\": [\n          {\n            \"container\": {\n              \"imageUri\": \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e\",\n              \"commands\": [\n                \"-m\",\n                \"cloud.orchestrator.prepare\",\n                \"extract\",\n                \"--plan-uri\",\n                \"gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/prepare_plan.json\",\n                \"--plan-generation\",\n                \"1791472986778879\",\n                \"--plan-sha256\",\n                \"5c8d164c2e907f7060e6e105effc5eb17b80eb9d25a83d55b315819f7e848591\",\n                \"--earth-engine-project\",\n                \"manuel-remote-sensing\",\n                \"--deadline-utc\",\n                \"2026-10-08T21:00:00Z\"\n              ],\n              \"entrypoint\": \"python3\"\n            }\n          }\n        ]\n      },\n      \"taskCount\": \"1\",\n      \"parallelism\": \"1\"\n    }\n  ],\n  \"allocationPolicy\": {\n    \"location\": {\n      \"allowedLocations\": [\n        \"regions/us-central1\",\n        \"zones/us-central1-a\",\n        \"zones/us-central1-b\",\n        \"zones/us-central1-c\",\n        \"zones/us-central1-f\"\n      ]\n    },\n    \"labels\": {\n      \"batch-job-id\": \"ipcch-prepare-full-window-20261008c\"\n    },\n    \"instances\": [\n      {\n        \"policy\": {\n          \"machineType\": \"e2-highmem-4\"\n        }\n      }\n    ],\n    \"serviceAccount\": {\n      \"email\": \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\"\n    }\n  },\n  \"labels\": {\n    \"ipcch_feature_month\": \"202610\",\n    \"ipcch_run_id\": \"full-window-20261008c\"\n  },\n  \"status\": {\n    \"state\": \"RUNNING\",\n    \"statusEvents\": [\n      {\n        \"description\": \"Job state is set from QUEUED to SCHEDULED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008c.\",\n        \"eventTime\": \"2026-10-08T15:24:09.428475691Z\",\n        \"type\": \"STATUS_CHANGED\"\n      },\n      {\n        \"description\": \"Job state is set from SCHEDULED to RUNNING for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008c.\",\n        \"eventTime\": \"2026-10-08T15:25:42.824555823Z\",\n        \"type\": \"STATUS_CHANGED\"\n      }\n    ],\n    \"taskGroups\": {\n      \"group0\": {\n        \"counts\": {\n          \"RUNNING\": \"1\"\n        },\n        \"instances\": [\n          {\n            \"machineType\": \"e2-highmem-4\",\n            \"provisioningModel\": \"STANDARD\",\n            \"taskPack\": \"1\",\n            \"bootDisk\": {\n              \"type\": \"pd-balanced\",\n              \"sizeGb\": \"30\",\n              \"image\": \"projects/batch-custom-image/global/images/batch-cos-stable-official-20260924-00-p01\"\n            }\n          }\n        ]\n      }\n    },\n    \"runDuration\": \"4636.132703292s\"\n  },\n  \"createTime\": \"2026-10-08T15:23:06.988205772Z\",\n  \"updateTime\": \"2026-10-08T15:25:42.824555823Z\",\n  \"logsPolicy\": {\n    \"destination\": \"CLOUD_LOGGING\"\n  }\n}\n",
+          "stderr": ""
+        },
+        "document": {
+          "name": "projects/manuel-remote-sensing/locations/us-central1/jobs/ipcch-prepare-full-window-20261008c",
+          "uid": "ipcch-prepare-full-06be1853-2c6a-4ad00",
+          "taskGroups": [
+            {
+              "name": "projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008c/taskGroups/group0",
+              "taskSpec": {
+                "computeResource": {
+                  "cpuMilli": "4000",
+                  "memoryMib": "28000"
+                },
+                "maxRunDuration": "20241s",
+                "runnables": [
+                  {
+                    "container": {
+                      "imageUri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e",
+                      "commands": [
+                        "-m",
+                        "cloud.orchestrator.prepare",
+                        "extract",
+                        "--plan-uri",
+                        "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/prepare_plan.json",
+                        "--plan-generation",
+                        "1791472986778879",
+                        "--plan-sha256",
+                        "5c8d164c2e907f7060e6e105effc5eb17b80eb9d25a83d55b315819f7e848591",
+                        "--earth-engine-project",
+                        "manuel-remote-sensing",
+                        "--deadline-utc",
+                        "2026-10-08T21:00:00Z"
+                      ],
+                      "entrypoint": "python3"
+                    }
+                  }
+                ]
+              },
+              "taskCount": "1",
+              "parallelism": "1"
+            }
+          ],
+          "allocationPolicy": {
+            "location": {
+              "allowedLocations": [
+                "regions/us-central1",
+                "zones/us-central1-a",
+                "zones/us-central1-b",
+                "zones/us-central1-c",
+                "zones/us-central1-f"
+              ]
+            },
+            "labels": {
+              "batch-job-id": "ipcch-prepare-full-window-20261008c"
+            },
+            "instances": [
+              {
+                "policy": {
+                  "machineType": "e2-highmem-4"
+                }
+              }
+            ],
+            "serviceAccount": {
+              "email": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com"
+            }
+          },
+          "labels": {
+            "ipcch_feature_month": "202610",
+            "ipcch_run_id": "full-window-20261008c"
+          },
+          "status": {
+            "state": "RUNNING",
+            "statusEvents": [
+              {
+                "description": "Job state is set from QUEUED to SCHEDULED for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008c.",
+                "eventTime": "2026-10-08T15:24:09.428475691Z",
+                "type": "STATUS_CHANGED"
+              },
+              {
+                "description": "Job state is set from SCHEDULED to RUNNING for job projects/645415198431/locations/us-central1/jobs/ipcch-prepare-full-window-20261008c.",
+                "eventTime": "2026-10-08T15:25:42.824555823Z",
+                "type": "STATUS_CHANGED"
+              }
+            ],
+            "taskGroups": {
+              "group0": {
+                "counts": {
+                  "RUNNING": "1"
+                },
+                "instances": [
+                  {
+                    "machineType": "e2-highmem-4",
+                    "provisioningModel": "STANDARD",
+                    "taskPack": "1",
+                    "bootDisk": {
+                      "type": "pd-balanced",
+                      "sizeGb": "30",
+                      "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20260924-00-p01"
+                    }
+                  }
+                ]
+              }
+            },
+            "runDuration": "4636.132703292s"
+          },
+          "createTime": "2026-10-08T15:23:06.988205772Z",
+          "updateTime": "2026-10-08T15:25:42.824555823Z",
+          "logsPolicy": {
+            "destination": "CLOUD_LOGGING"
+          }
+        }
+      }
+    },
+    "run_executions": {
+      "oct-prepare-plan-8bv78": {
+        "command_result": {
+          "command": [
+            "GET",
+            "https://run.googleapis.com/v2/projects/manuel-remote-sensing/locations/us-central1/jobs/oct-prepare-plan/executions/oct-prepare-plan-8bv78"
+          ],
+          "returncode": 0,
+          "stdout": "{\n  \"name\": \"projects/manuel-remote-sensing/locations/us-central1/jobs/oct-prepare-plan/executions/oct-prepare-plan-8bv78\",\n  \"uid\": \"2f70ddd6-88eb-438f-abe3-7d79f4750c77\",\n  \"generation\": \"1\",\n  \"labels\": {\n    \"task\": \"october-cloud-delivery\"\n  },\n  \"createTime\": \"2026-10-08T15:21:08.392212Z\",\n  \"completionTime\": \"2026-10-08T15:23:29.780428Z\",\n  \"updateTime\": \"2026-10-08T15:21:08.392212Z\",\n  \"launchStage\": \"GA\",\n  \"job\": \"oct-prepare-plan\",\n  \"parallelism\": 1,\n  \"taskCount\": 1,\n  \"template\": {\n    \"containers\": [\n      {\n        \"image\": \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e\",\n        \"command\": [\n          \"python3\"\n        ],\n        \"args\": [\n          \"-m\",\n          \"cloud.orchestrator.prepare\",\n          \"plan\",\n          \"--request-uri\",\n          \"gs://manuel-remote-sensing-oct-delivery-debug/prepare_requests/full-window-20261008c/prepare_request.json\",\n          \"--request-generation\",\n          \"1791472775453882\",\n          \"--output-root\",\n          \"gs://manuel-remote-sensing-oct-delivery-debug\",\n          \"--earth-engine-project\",\n          \"manuel-remote-sensing\",\n          \"--batch-parent\",\n          \"projects/manuel-remote-sensing/locations/us-central1\",\n          \"--batch-image-uri\",\n          \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e\",\n          \"--batch-service-account\",\n          \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\",\n          \"--deadline-utc\",\n          \"2026-10-08T21:00:00Z\"\n        ],\n        \"resources\": {\n          \"limits\": {\n            \"cpu\": \"1\",\n            \"memory\": \"2Gi\"\n          }\n        }\n      }\n    ],\n    \"maxRetries\": 0,\n    \"timeout\": \"1800s\",\n    \"serviceAccount\": \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\",\n    \"executionEnvironment\": \"EXECUTION_ENVIRONMENT_GEN2\"\n  },\n  \"conditions\": [\n    {\n      \"type\": \"Started\",\n      \"state\": \"CONDITION_SUCCEEDED\",\n      \"message\": \"Started deployed execution in 1m14.94s.\",\n      \"lastTransitionTime\": \"2026-10-08T15:22:24.403792Z\"\n    },\n    {\n      \"type\": \"Completed\",\n      \"state\": \"CONDITION_SUCCEEDED\",\n      \"message\": \"Execution completed successfully in 2m4.25s.\",\n      \"lastTransitionTime\": \"2026-10-08T15:23:29.780428Z\"\n    },\n    {\n      \"type\": \"ContainerReady\",\n      \"state\": \"CONDITION_SUCCEEDED\",\n      \"message\": \"Imported container image.\",\n      \"lastTransitionTime\": \"2026-10-08T15:21:09.278694Z\"\n    },\n    {\n      \"type\": \"ResourcesAvailable\",\n      \"state\": \"CONDITION_SUCCEEDED\",\n      \"message\": \"Provisioned imported containers.\",\n      \"lastTransitionTime\": \"2026-10-08T15:21:09.456390Z\"\n    }\n  ],\n  \"observedGeneration\": \"1\",\n  \"succeededCount\": 1,\n  \"startTime\": \"2026-10-08T15:21:25.523094Z\",\n  \"logUri\": \"https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-prepare-plan%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-prepare-plan-8bv78%22\",\n  \"creator\": \"weilun.shi@cgiar.org\",\n  \"client\": \"gcloud\",\n  \"clientVersion\": \"562.0.0\",\n  \"etag\": \"\\\"COTpntYGEKDcgrsB/cHJvamVjdHMvbWFudWVsLXJlbW90ZS1zZW5zaW5nL2xvY2F0aW9ucy91cy1jZW50cmFsMS9qb2JzL29jdC1wcmVwYXJlLXBsYW4vZXhlY3V0aW9ucy9vY3QtcHJlcGFyZS1wbGFuLThidjc4\\\"\"\n}\n",
+          "stderr": ""
+        },
+        "document": {
+          "spec": {
+            "taskCount": 1
+          },
+          "status": {
+            "succeededCount": 1,
+            "failedCount": 0,
+            "cancelledCount": 0,
+            "completionTime": "2026-10-08T15:23:29.780428Z"
+          },
+          "v2": {
+            "name": "projects/manuel-remote-sensing/locations/us-central1/jobs/oct-prepare-plan/executions/oct-prepare-plan-8bv78",
+            "uid": "2f70ddd6-88eb-438f-abe3-7d79f4750c77",
+            "generation": "1",
+            "labels": {
+              "task": "october-cloud-delivery"
+            },
+            "createTime": "2026-10-08T15:21:08.392212Z",
+            "completionTime": "2026-10-08T15:23:29.780428Z",
+            "updateTime": "2026-10-08T15:21:08.392212Z",
+            "launchStage": "GA",
+            "job": "oct-prepare-plan",
+            "parallelism": 1,
+            "taskCount": 1,
+            "template": {
+              "containers": [
+                {
+                  "image": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e",
+                  "command": [
+                    "python3"
+                  ],
+                  "args": [
+                    "-m",
+                    "cloud.orchestrator.prepare",
+                    "plan",
+                    "--request-uri",
+                    "gs://manuel-remote-sensing-oct-delivery-debug/prepare_requests/full-window-20261008c/prepare_request.json",
+                    "--request-generation",
+                    "1791472775453882",
+                    "--output-root",
+                    "gs://manuel-remote-sensing-oct-delivery-debug",
+                    "--earth-engine-project",
+                    "manuel-remote-sensing",
+                    "--batch-parent",
+                    "projects/manuel-remote-sensing/locations/us-central1",
+                    "--batch-image-uri",
+                    "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e",
+                    "--batch-service-account",
+                    "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+                    "--deadline-utc",
+                    "2026-10-08T21:00:00Z"
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "1",
+                      "memory": "2Gi"
+                    }
+                  }
+                }
+              ],
+              "maxRetries": 0,
+              "timeout": "1800s",
+              "serviceAccount": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+              "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2"
+            },
+            "conditions": [
+              {
+                "type": "Started",
+                "state": "CONDITION_SUCCEEDED",
+                "message": "Started deployed execution in 1m14.94s.",
+                "lastTransitionTime": "2026-10-08T15:22:24.403792Z"
+              },
+              {
+                "type": "Completed",
+                "state": "CONDITION_SUCCEEDED",
+                "message": "Execution completed successfully in 2m4.25s.",
+                "lastTransitionTime": "2026-10-08T15:23:29.780428Z"
+              },
+              {
+                "type": "ContainerReady",
+                "state": "CONDITION_SUCCEEDED",
+                "message": "Imported container image.",
+                "lastTransitionTime": "2026-10-08T15:21:09.278694Z"
+              },
+              {
+                "type": "ResourcesAvailable",
+                "state": "CONDITION_SUCCEEDED",
+                "message": "Provisioned imported containers.",
+                "lastTransitionTime": "2026-10-08T15:21:09.456390Z"
+              }
+            ],
+            "observedGeneration": "1",
+            "succeededCount": 1,
+            "startTime": "2026-10-08T15:21:25.523094Z",
+            "logUri": "https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-prepare-plan%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-prepare-plan-8bv78%22",
+            "creator": "weilun.shi@cgiar.org",
+            "client": "gcloud",
+            "clientVersion": "562.0.0",
+            "etag": "\"COTpntYGEKDcgrsB/cHJvamVjdHMvbWFudWVsLXJlbW90ZS1zZW5zaW5nL2xvY2F0aW9ucy91cy1jZW50cmFsMS9qb2JzL29jdC1wcmVwYXJlLXBsYW4vZXhlY3V0aW9ucy9vY3QtcHJlcGFyZS1wbGFuLThidjc4\""
+          }
+        }
+      },
+      "oct-deliver-debug-xfr48": {
+        "command_result": {
+          "command": [
+            "GET",
+            "https://run.googleapis.com/v2/projects/manuel-remote-sensing/locations/us-central1/jobs/oct-deliver-debug/executions/oct-deliver-debug-xfr48"
+          ],
+          "returncode": 0,
+          "stdout": "{\n  \"name\": \"projects/manuel-remote-sensing/locations/us-central1/jobs/oct-deliver-debug/executions/oct-deliver-debug-xfr48\",\n  \"uid\": \"5bd78b5c-082b-4e39-b736-82d46a2c6975\",\n  \"generation\": \"1\",\n  \"createTime\": \"2026-10-08T16:15:11.141999Z\",\n  \"updateTime\": \"2026-10-08T16:15:11.141999Z\",\n  \"launchStage\": \"GA\",\n  \"job\": \"oct-deliver-debug\",\n  \"parallelism\": 1,\n  \"taskCount\": 1,\n  \"template\": {\n    \"containers\": [\n      {\n        \"image\": \"us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:a30d1cff702bd337f27cd3703d53ecbd769367d485e9aec6fd8e944315d7b84b\",\n        \"command\": [\n          \"python3\"\n        ],\n        \"args\": [\n          \"-m\",\n          \"cloud.orchestrator.deliver_job\",\n          \"run\",\n          \"--inputs-uri\",\n          \"gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/manifests/debug-smoke-20261008a.json\",\n          \"--inputs-generation\",\n          \"1791476078241656\",\n          \"--inputs-sha256\",\n          \"1a48c2d6c0b7f5e1df2d15be14b3cfc41e80b4b0d547e0f08bc41a160328fee0\",\n          \"--bucket-root\",\n          \"gs://manuel-remote-sensing-oct-delivery-debug\",\n          \"--run-name\",\n          \"smoke-20261008a-1\"\n        ],\n        \"resources\": {\n          \"limits\": {\n            \"cpu\": \"8\",\n            \"memory\": \"32Gi\"\n          }\n        }\n      }\n    ],\n    \"maxRetries\": 0,\n    \"timeout\": \"10800s\",\n    \"serviceAccount\": \"oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com\",\n    \"executionEnvironment\": \"EXECUTION_ENVIRONMENT_GEN2\"\n  },\n  \"reconciling\": true,\n  \"conditions\": [\n    {\n      \"type\": \"Started\",\n      \"state\": \"CONDITION_SUCCEEDED\",\n      \"message\": \"Started deployed execution in 1m34.4s.\",\n      \"lastTransitionTime\": \"2026-10-08T16:17:35.895423Z\"\n    },\n    {\n      \"type\": \"Retry\",\n      \"state\": \"CONDITION_SUCCEEDED\",\n      \"message\": \"System will retry after 10:00 from lastTransitionTime for polling interval\",\n      \"lastTransitionTime\": \"2026-10-08T16:26:55.032788Z\",\n      \"severity\": \"INFO\",\n      \"reason\": \"WAITING_FOR_OPERATION\"\n    },\n    {\n      \"type\": \"Completed\",\n      \"state\": \"CONDITION_RECONCILING\",\n      \"message\": \"Waiting for execution to complete.\",\n      \"lastTransitionTime\": \"2026-10-08T16:17:39.984787Z\"\n    },\n    {\n      \"type\": \"ContainerReady\",\n      \"state\": \"CONDITION_SUCCEEDED\",\n      \"message\": \"Imported container image in 50.15s.\",\n      \"lastTransitionTime\": \"2026-10-08T16:16:01.295120Z\"\n    },\n    {\n      \"type\": \"ResourcesAvailable\",\n      \"state\": \"CONDITION_SUCCEEDED\",\n      \"message\": \"Provisioned imported containers.\",\n      \"lastTransitionTime\": \"2026-10-08T16:16:01.493660Z\"\n    }\n  ],\n  \"observedGeneration\": \"1\",\n  \"runningCount\": 1,\n  \"startTime\": \"2026-10-08T16:16:15.592975Z\",\n  \"logUri\": \"https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-deliver-debug%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-deliver-debug-xfr48%22\",\n  \"creator\": \"weilun.shi@cgiar.org\",\n  \"client\": \"gcloud\",\n  \"clientVersion\": \"562.0.0\",\n  \"etag\": \"\\\"CI-Dn9YGEJj32kM/cHJvamVjdHMvbWFudWVsLXJlbW90ZS1zZW5zaW5nL2xvY2F0aW9ucy91cy1jZW50cmFsMS9qb2JzL29jdC1kZWxpdmVyLWRlYnVnL2V4ZWN1dGlvbnMvb2N0LWRlbGl2ZXItZGVidWcteGZyNDg\\\"\"\n}\n",
+          "stderr": ""
+        },
+        "document": {
+          "spec": {
+            "taskCount": 1
+          },
+          "status": {
+            "succeededCount": 0,
+            "failedCount": 0,
+            "cancelledCount": 0,
+            "completionTime": null
+          },
+          "v2": {
+            "name": "projects/manuel-remote-sensing/locations/us-central1/jobs/oct-deliver-debug/executions/oct-deliver-debug-xfr48",
+            "uid": "5bd78b5c-082b-4e39-b736-82d46a2c6975",
+            "generation": "1",
+            "createTime": "2026-10-08T16:15:11.141999Z",
+            "updateTime": "2026-10-08T16:15:11.141999Z",
+            "launchStage": "GA",
+            "job": "oct-deliver-debug",
+            "parallelism": 1,
+            "taskCount": 1,
+            "template": {
+              "containers": [
+                {
+                  "image": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:a30d1cff702bd337f27cd3703d53ecbd769367d485e9aec6fd8e944315d7b84b",
+                  "command": [
+                    "python3"
+                  ],
+                  "args": [
+                    "-m",
+                    "cloud.orchestrator.deliver_job",
+                    "run",
+                    "--inputs-uri",
+                    "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/manifests/debug-smoke-20261008a.json",
+                    "--inputs-generation",
+                    "1791476078241656",
+                    "--inputs-sha256",
+                    "1a48c2d6c0b7f5e1df2d15be14b3cfc41e80b4b0d547e0f08bc41a160328fee0",
+                    "--bucket-root",
+                    "gs://manuel-remote-sensing-oct-delivery-debug",
+                    "--run-name",
+                    "smoke-20261008a-1"
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "8",
+                      "memory": "32Gi"
+                    }
+                  }
+                }
+              ],
+              "maxRetries": 0,
+              "timeout": "10800s",
+              "serviceAccount": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+              "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2"
+            },
+            "reconciling": true,
+            "conditions": [
+              {
+                "type": "Started",
+                "state": "CONDITION_SUCCEEDED",
+                "message": "Started deployed execution in 1m34.4s.",
+                "lastTransitionTime": "2026-10-08T16:17:35.895423Z"
+              },
+              {
+                "type": "Retry",
+                "state": "CONDITION_SUCCEEDED",
+                "message": "System will retry after 10:00 from lastTransitionTime for polling interval",
+                "lastTransitionTime": "2026-10-08T16:26:55.032788Z",
+                "severity": "INFO",
+                "reason": "WAITING_FOR_OPERATION"
+              },
+              {
+                "type": "Completed",
+                "state": "CONDITION_RECONCILING",
+                "message": "Waiting for execution to complete.",
+                "lastTransitionTime": "2026-10-08T16:17:39.984787Z"
+              },
+              {
+                "type": "ContainerReady",
+                "state": "CONDITION_SUCCEEDED",
+                "message": "Imported container image in 50.15s.",
+                "lastTransitionTime": "2026-10-08T16:16:01.295120Z"
+              },
+              {
+                "type": "ResourcesAvailable",
+                "state": "CONDITION_SUCCEEDED",
+                "message": "Provisioned imported containers.",
+                "lastTransitionTime": "2026-10-08T16:16:01.493660Z"
+              }
+            ],
+            "observedGeneration": "1",
+            "runningCount": 1,
+            "startTime": "2026-10-08T16:16:15.592975Z",
+            "logUri": "https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-deliver-debug%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-deliver-debug-xfr48%22",
+            "creator": "weilun.shi@cgiar.org",
+            "client": "gcloud",
+            "clientVersion": "562.0.0",
+            "etag": "\"CI-Dn9YGEJj32kM/cHJvamVjdHMvbWFudWVsLXJlbW90ZS1zZW5zaW5nL2xvY2F0aW9ucy91cy1jZW50cmFsMS9qb2JzL29jdC1kZWxpdmVyLWRlYnVnL2V4ZWN1dGlvbnMvb2N0LWRlbGl2ZXItZGVidWcteGZyNDg\""
+          }
+        }
+      }
+    },
+    "earth_engine_tasks": [
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2026_08",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473193773,
+        "update_timestamp_ms": 1791473193773,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "OOVWEZSMW7ZMKZXUHSH2K2GE",
+        "name": "projects/manuel-remote-sensing/operations/OOVWEZSMW7ZMKZXUHSH2K2GE"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2026_07",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473193266,
+        "update_timestamp_ms": 1791473193266,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "IYRXIR6XLTYRU3I552TMBPSK",
+        "name": "projects/manuel-remote-sensing/operations/IYRXIR6XLTYRU3I552TMBPSK"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2026_06",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473192809,
+        "update_timestamp_ms": 1791473192809,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "HCPT4NQX6X3KFSL4QT3DYXVN",
+        "name": "projects/manuel-remote-sensing/operations/HCPT4NQX6X3KFSL4QT3DYXVN"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473192364,
+        "update_timestamp_ms": 1791473192364,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "A4BFMU7GFKLWBISY6RT7HBKC",
+        "name": "projects/manuel-remote-sensing/operations/A4BFMU7GFKLWBISY6RT7HBKC"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2026_04",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473191816,
+        "update_timestamp_ms": 1791473191816,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "7SKS6HSD6GEXW53HLNXBO6CF",
+        "name": "projects/manuel-remote-sensing/operations/7SKS6HSD6GEXW53HLNXBO6CF"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2026_03",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473191298,
+        "update_timestamp_ms": 1791473191298,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "357XRFF3DQIRFGQNUH3JJ72U",
+        "name": "projects/manuel-remote-sensing/operations/357XRFF3DQIRFGQNUH3JJ72U"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2026_02",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473190962,
+        "update_timestamp_ms": 1791477155124,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "NPNBN625MN767W4NK27LDFZF",
+        "name": "projects/manuel-remote-sensing/operations/NPNBN625MN767W4NK27LDFZF"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2026_01",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473190620,
+        "update_timestamp_ms": 1791476953333,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "AYVY5X7PLDYK2WRSMWZTEHMS",
+        "name": "projects/manuel-remote-sensing/operations/AYVY5X7PLDYK2WRSMWZTEHMS"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2025_12",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473190221,
+        "update_timestamp_ms": 1791476453646,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "SF534RIOQXOV6UJAVZMJTM5Y",
+        "name": "projects/manuel-remote-sensing/operations/SF534RIOQXOV6UJAVZMJTM5Y"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2025_11",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473189686,
+        "update_timestamp_ms": 1791476450483,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "ZW4NGEB2BUZXA3UIB5MF5UFH",
+        "name": "projects/manuel-remote-sensing/operations/ZW4NGEB2BUZXA3UIB5MF5UFH"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_viirs_2025_10",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473189093,
+        "update_timestamp_ms": 1791475502181,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "NK5DBVI3FXGYO5ONP4LMVZLM",
+        "name": "projects/manuel-remote-sensing/operations/NK5DBVI3FXGYO5ONP4LMVZLM"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2026_08",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473188561,
+        "update_timestamp_ms": 1791475045868,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "5OIVNCWPYNRCSW7YZA4FCLFB",
+        "name": "projects/manuel-remote-sensing/operations/5OIVNCWPYNRCSW7YZA4FCLFB"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2026_07",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473188031,
+        "update_timestamp_ms": 1791474230909,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "BIYH4LZKE6M3ISISMG4OA3BL",
+        "name": "projects/manuel-remote-sensing/operations/BIYH4LZKE6M3ISISMG4OA3BL"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2026_06",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473187544,
+        "update_timestamp_ms": 1791473190909,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "YDNB3FUTNFHC3XR4EWQCBJKT",
+        "name": "projects/manuel-remote-sensing/operations/YDNB3FUTNFHC3XR4EWQCBJKT"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473185860,
+        "update_timestamp_ms": 1791473190906,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "GS23CXORTVA5XRGMEJYTEYYK",
+        "name": "projects/manuel-remote-sensing/operations/GS23CXORTVA5XRGMEJYTEYYK"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2026_04",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473185577,
+        "update_timestamp_ms": 1791473190909,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "OKYWT3BVE3VO6Y7AE7DXSBFA",
+        "name": "projects/manuel-remote-sensing/operations/OKYWT3BVE3VO6Y7AE7DXSBFA"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2026_03",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473183669,
+        "update_timestamp_ms": 1791473190909,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "MSGEU2HUNJBJX7RRVO3SD3MT",
+        "name": "projects/manuel-remote-sensing/operations/MSGEU2HUNJBJX7RRVO3SD3MT"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2026_02",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473183305,
+        "update_timestamp_ms": 1791473185118,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "G7E3YROVUUJLVFGFIVZIUWVS",
+        "name": "projects/manuel-remote-sensing/operations/G7E3YROVUUJLVFGFIVZIUWVS"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2026_01",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473182903,
+        "update_timestamp_ms": 1791473185118,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "PBPVZJBF3G4PILDV67OFJRY3",
+        "name": "projects/manuel-remote-sensing/operations/PBPVZJBF3G4PILDV67OFJRY3"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2025_12",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473182482,
+        "update_timestamp_ms": 1791473185112,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "Q225BTLOJIKZC43OPGFYGUX3",
+        "name": "projects/manuel-remote-sensing/operations/Q225BTLOJIKZC43OPGFYGUX3"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2025_11",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473182038,
+        "update_timestamp_ms": 1791473185120,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "LLBLF7I3UDEZSELNEGHXARRJ",
+        "name": "projects/manuel-remote-sensing/operations/LLBLF7I3UDEZSELNEGHXARRJ"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_fldas_2025_10",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473181669,
+        "update_timestamp_ms": 1791473185110,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "U7O2NV42EGNXZ5UQKSNJCH3Y",
+        "name": "projects/manuel-remote-sensing/operations/U7O2NV42EGNXZ5UQKSNJCH3Y"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_evi_2026_08",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473181296,
+        "update_timestamp_ms": 1791473185120,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "J3KEZ76ABU4GEZPBDCWDUOYG",
+        "name": "projects/manuel-remote-sensing/operations/J3KEZ76ABU4GEZPBDCWDUOYG"
+      },
+      {
+        "state": "READY",
+        "description": "full_window_20261008c_evi_2026_07",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473180954,
+        "update_timestamp_ms": 1791473185114,
+        "start_timestamp_ms": 0,
+        "task_type": "EXPORT_IMAGE",
+        "id": "KTB2NSFYNSQDLVFYIT4NJY3V",
+        "name": "projects/manuel-remote-sensing/operations/KTB2NSFYNSQDLVFYIT4NJY3V"
+      },
+      {
+        "state": "RUNNING",
+        "description": "full_window_20261008c_evi_2026_06",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473180434,
+        "update_timestamp_ms": 1791477779268,
+        "start_timestamp_ms": 1791477159016,
+        "task_type": "EXPORT_IMAGE",
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 501.633,
+        "id": "4IC2X3S3AWZGKRENGNSEQSH5",
+        "name": "projects/manuel-remote-sensing/operations/4IC2X3S3AWZGKRENGNSEQSH5"
+      },
+      {
+        "state": "RUNNING",
+        "description": "full_window_20261008c_evi_2026_05",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473179950,
+        "update_timestamp_ms": 1791477765870,
+        "start_timestamp_ms": 1791476965613,
+        "task_type": "EXPORT_IMAGE",
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 507.646,
+        "id": "XAMKPU5VE2IWDQYYCFCKLHTU",
+        "name": "projects/manuel-remote-sensing/operations/XAMKPU5VE2IWDQYYCFCKLHTU"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "full_window_20261008c_evi_2026_04",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473179546,
+        "update_timestamp_ms": 1791477151651,
+        "start_timestamp_ms": 1791476453590,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 413.7991027832031,
+        "id": "MDC5WHJIDQYKDRX24CWQ3M3B",
+        "name": "projects/manuel-remote-sensing/operations/MDC5WHJIDQYKDRX24CWQ3M3B"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "full_window_20261008c_evi_2026_03",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473178984,
+        "update_timestamp_ms": 1791476951498,
+        "start_timestamp_ms": 1791476450439,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 457.0805969238281,
+        "id": "OI7BZGE2OLROTVU5YAZSULOP",
+        "name": "projects/manuel-remote-sensing/operations/OI7BZGE2OLROTVU5YAZSULOP"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "full_window_20261008c_evi_2026_02",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473178498,
+        "update_timestamp_ms": 1791476447199,
+        "start_timestamp_ms": 1791475811828,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 463.5592346191406,
+        "id": "DHQ3WOZST3B2YXFOOMI5DGN6",
+        "name": "projects/manuel-remote-sensing/operations/DHQ3WOZST3B2YXFOOMI5DGN6"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "full_window_20261008c_evi_2026_01",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473177971,
+        "update_timestamp_ms": 1791476449397,
+        "start_timestamp_ms": 1791475502124,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 412.87310791015625,
+        "id": "E67SFHWCH3U4ILL3HK4KJKHF",
+        "name": "projects/manuel-remote-sensing/operations/E67SFHWCH3U4ILL3HK4KJKHF"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "full_window_20261008c_evi_2025_12",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473177626,
+        "update_timestamp_ms": 1791475498435,
+        "start_timestamp_ms": 1791475045813,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 423.86224365234375,
+        "id": "EGWIHVXTRVQEWDZVKXWIJWDL",
+        "name": "projects/manuel-remote-sensing/operations/EGWIHVXTRVQEWDZVKXWIJWDL"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "full_window_20261008c_evi_2025_11",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473177241,
+        "update_timestamp_ms": 1791475042981,
+        "start_timestamp_ms": 1791474230867,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 267.49725341796875,
+        "id": "RRKWNRFQC3PH2JHZOU34KYHC",
+        "name": "projects/manuel-remote-sensing/operations/RRKWNRFQC3PH2JHZOU34KYHC"
+      },
+      {
+        "state": "COMPLETED",
+        "description": "full_window_20261008c_evi_2025_10",
+        "priority": 100,
+        "creation_timestamp_ms": 1791473176654,
+        "update_timestamp_ms": 1791474226409,
+        "start_timestamp_ms": 1791473181281,
+        "task_type": "EXPORT_IMAGE",
+        "destination_uris": [
+          "https://console.developers.google.com/storage/browser/manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/sources/evi/"
+        ],
+        "attempt": 1,
+        "batch_eecu_usage_seconds": 441.3772277832031,
+        "id": "7PU7MWYSA47EMLNJGSP3ZBFM",
+        "name": "projects/manuel-remote-sensing/operations/7PU7MWYSA47EMLNJGSP3ZBFM"
+      }
+    ]
+  },
+  "summary": {
+    "executed": false,
+    "actions": [],
+    "batch_states_after": {
+      "ipcch-prepare-full-window-20261008c": "RUNNING"
+    },
+    "run_execution_states_after": {
+      "oct-prepare-plan-8bv78": "TERMINAL",
+      "oct-deliver-debug-xfr48": "RUNNING"
+    },
+    "ee_states_after": {
+      "OOVWEZSMW7ZMKZXUHSH2K2GE": "READY",
+      "IYRXIR6XLTYRU3I552TMBPSK": "READY",
+      "HCPT4NQX6X3KFSL4QT3DYXVN": "READY",
+      "A4BFMU7GFKLWBISY6RT7HBKC": "READY",
+      "7SKS6HSD6GEXW53HLNXBO6CF": "READY",
+      "357XRFF3DQIRFGQNUH3JJ72U": "READY",
+      "NPNBN625MN767W4NK27LDFZF": "READY",
+      "AYVY5X7PLDYK2WRSMWZTEHMS": "READY",
+      "SF534RIOQXOV6UJAVZMJTM5Y": "READY",
+      "ZW4NGEB2BUZXA3UIB5MF5UFH": "READY",
+      "NK5DBVI3FXGYO5ONP4LMVZLM": "READY",
+      "5OIVNCWPYNRCSW7YZA4FCLFB": "READY",
+      "BIYH4LZKE6M3ISISMG4OA3BL": "READY",
+      "YDNB3FUTNFHC3XR4EWQCBJKT": "READY",
+      "GS23CXORTVA5XRGMEJYTEYYK": "READY",
+      "OKYWT3BVE3VO6Y7AE7DXSBFA": "READY",
+      "MSGEU2HUNJBJX7RRVO3SD3MT": "READY",
+      "G7E3YROVUUJLVFGFIVZIUWVS": "READY",
+      "PBPVZJBF3G4PILDV67OFJRY3": "READY",
+      "Q225BTLOJIKZC43OPGFYGUX3": "READY",
+      "LLBLF7I3UDEZSELNEGHXARRJ": "READY",
+      "U7O2NV42EGNXZ5UQKSNJCH3Y": "READY",
+      "J3KEZ76ABU4GEZPBDCWDUOYG": "READY",
+      "KTB2NSFYNSQDLVFYIT4NJY3V": "READY",
+      "4IC2X3S3AWZGKRENGNSEQSH5": "RUNNING",
+      "XAMKPU5VE2IWDQYYCFCKLHTU": "RUNNING",
+      "MDC5WHJIDQYKDRX24CWQ3M3B": "COMPLETED",
+      "OI7BZGE2OLROTVU5YAZSULOP": "COMPLETED",
+      "DHQ3WOZST3B2YXFOOMI5DGN6": "COMPLETED",
+      "E67SFHWCH3U4ILL3HK4KJKHF": "COMPLETED",
+      "EGWIHVXTRVQEWDZVKXWIJWDL": "COMPLETED",
+      "RRKWNRFQC3PH2JHZOU34KYHC": "COMPLETED",
+      "7PU7MWYSA47EMLNJGSP3ZBFM": "COMPLETED"
+    },
+    "ee_pending_cancel": [],
+    "ee_non_terminal": [
+      "OOVWEZSMW7ZMKZXUHSH2K2GE",
+      "IYRXIR6XLTYRU3I552TMBPSK",
+      "HCPT4NQX6X3KFSL4QT3DYXVN",
+      "A4BFMU7GFKLWBISY6RT7HBKC",
+      "7SKS6HSD6GEXW53HLNXBO6CF",
+      "357XRFF3DQIRFGQNUH3JJ72U",
+      "NPNBN625MN767W4NK27LDFZF",
+      "AYVY5X7PLDYK2WRSMWZTEHMS",
+      "SF534RIOQXOV6UJAVZMJTM5Y",
+      "ZW4NGEB2BUZXA3UIB5MF5UFH",
+      "NK5DBVI3FXGYO5ONP4LMVZLM",
+      "5OIVNCWPYNRCSW7YZA4FCLFB",
+      "BIYH4LZKE6M3ISISMG4OA3BL",
+      "YDNB3FUTNFHC3XR4EWQCBJKT",
+      "GS23CXORTVA5XRGMEJYTEYYK",
+      "OKYWT3BVE3VO6Y7AE7DXSBFA",
+      "MSGEU2HUNJBJX7RRVO3SD3MT",
+      "G7E3YROVUUJLVFGFIVZIUWVS",
+      "PBPVZJBF3G4PILDV67OFJRY3",
+      "Q225BTLOJIKZC43OPGFYGUX3",
+      "LLBLF7I3UDEZSELNEGHXARRJ",
+      "U7O2NV42EGNXZ5UQKSNJCH3Y",
+      "J3KEZ76ABU4GEZPBDCWDUOYG",
+      "KTB2NSFYNSQDLVFYIT4NJY3V",
+      "4IC2X3S3AWZGKRENGNSEQSH5",
+      "XAMKPU5VE2IWDQYYCFCKLHTU"
+    ],
+    "failed_actions": [],
+    "active_compute": [
+      "ipcch-prepare-full-window-20261008c",
+      "oct-deliver-debug-xfr48"
+    ],
+    "needs_followup": true,
+    "unknown_targets": []
+  }
+}

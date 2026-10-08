@@ -121,6 +121,8 @@ class GCSObjectStore:
                 content,
                 content_type="text/plain; charset=utf-8",
                 if_generation_match=_coerce_generation(if_generation_match),
+                timeout=600,  # status/sentinel writes survived only 120 s of GCS 503s in staging
+                retry=_write_retry(),
             )
         except Exception as exc:
             if _is_generation_precondition_error(exc):
@@ -174,6 +176,12 @@ class GCSObjectStore:
                 raise GenerationConflict(str(exc)) from exc
             raise
         return ObjectMetadata(uri=target_uri, generation=str(copied.generation))
+
+
+def _write_retry():
+    from google.cloud.storage.retry import DEFAULT_RETRY
+
+    return DEFAULT_RETRY.with_deadline(1800)
 
 
 def _parse_gcs_uri(uri: str) -> tuple[str, str]:

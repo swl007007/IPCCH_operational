@@ -249,8 +249,8 @@ def _source_identity(source_ref: Mapping[str, str]) -> tuple[str, str]:
     if not isinstance(source_ref, Mapping) or set(source_ref) != {"uri", "generation", "sha256"}:
         raise ValueError("source_ref must be {uri, generation, sha256}")
     uri, generation, sha256 = source_ref["uri"], source_ref["generation"], source_ref["sha256"]
-    if not isinstance(uri, str) or not uri.startswith("gs://") or uri.endswith("/"):
-        raise ValueError("source_ref.uri must be a gs:// object URI")
+    if not isinstance(uri, str) or not uri.startswith(("gs://", "file:///")) or uri.endswith("/"):
+        raise ValueError("source_ref.uri must be a gs:// object URI or an absolute file:/// path")
     if not isinstance(generation, str) or _GENERATION_RE.fullmatch(generation) is None:
         raise ValueError("source_ref.generation must be a positive integer string")
     if not isinstance(sha256, str) or _SHA256_RE.fullmatch(sha256) is None:

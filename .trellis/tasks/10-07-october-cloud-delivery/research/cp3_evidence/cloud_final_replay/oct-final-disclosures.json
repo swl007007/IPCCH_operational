@@ -1,0 +1,107 @@
+{
+ "origin_month": "2026-10",
+ "targets": {
+  "0m": "2026-10",
+  "6m": "2027-04",
+  "12m": "2027-10"
+ },
+ "prepare_id": "full-window-20261008c",
+ "provider_latest_completed_month": {
+  "evi": "2026-08",
+  "fldas": "2026-08",
+  "gosif_mean": "2024-12",
+  "gosif_sd": "2024-12",
+  "viirs": "2026-08"
+ },
+ "wfp_acled": "keep (operator selection; retained snapshots validated against the consumed history families)",
+ "fill_method_counts": {
+  "fewsnet/0m": {
+   "carry_forward": 460123,
+   "no_eligible_history": 38097,
+   "observed": 279428
+  },
+  "fewsnet/12m": {
+   "carry_forward": 460123,
+   "no_eligible_history": 38097,
+   "observed": 279428
+  },
+  "fewsnet/6m": {
+   "carry_forward": 460123,
+   "no_eligible_history": 38097,
+   "observed": 279428
+  },
+  "ipcch/0m": {
+   "carry_forward": 771666,
+   "no_eligible_history": 12936,
+   "observed": 12454
+  },
+  "ipcch/12m": {
+   "carry_forward": 771666,
+   "no_eligible_history": 12936,
+   "observed": 12454
+  },
+  "ipcch/6m": {
+   "carry_forward": 771666,
+   "no_eligible_history": 12936,
+   "observed": 12454
+  }
+ },
+ "fewsnet_disclosure": {
+  "zscore_dependency_disclosure": "climate zscore = (rolling12 - per-admin mean) / per-admin std over the whole cutoff-bounded panel; normalization deduplicate-before-global-rolling-zscore-v1",
+  "fewsnet_scoring_window": {
+   "full_history_rows": 1155036,
+   "identity_population_source": "inputs/fewsnet_base_panel.csv (pre-fill)",
+   "months": [
+    "2025-10",
+    "2026-10"
+   ],
+   "window_rows": 74334
+  }
+ },
+ "ipcch_disclosure": {
+  "ipcch_chunking": {
+   "groups": 8,
+   "groups_with_added_rows": 8,
+   "rows_read": 1219868,
+   "sorted_branch": true,
+   "whole_column_numeric_features": []
+  }
+ },
+ "diagnostic_availability": [
+  {
+   "model_system": "fewsnet",
+   "diagnostic_family": "country_confidence",
+   "status": "unavailable",
+   "reason": "missing_evidence",
+   "rows": 66
+  },
+  {
+   "model_system": "fewsnet",
+   "diagnostic_family": "polygon_confidence",
+   "status": "unavailable",
+   "reason": "missing_evidence",
+   "rows": 17154
+  },
+  {
+   "model_system": "ipcch",
+   "diagnostic_family": "country_confidence",
+   "status": "unavailable",
+   "reason": "missing_evidence",
+   "rows": 159
+  },
+  {
+   "model_system": "ipcch",
+   "diagnostic_family": "maximum_phase",
+   "status": "unavailable",
+   "reason": "missing_evidence",
+   "rows": 159
+  },
+  {
+   "model_system": "ipcch",
+   "diagnostic_family": "polygon_training_errors",
+   "status": "unavailable",
+   "reason": "missing_evidence",
+   "rows": 18681
+  }
+ ]
+}

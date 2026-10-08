@@ -5,7 +5,8 @@ Operational ledger only; it does not grant authority. Authority: `.trellis/tasks
 - Executor: Claude Opus 5.5 1M, Herdr `wR:p3`, session `e8ac76ab-3486-4e51-b70c-ed09b2846fc7`. Supervisor: Codex `wR:p1`, session `01a11908-591c-7bf0-8a46-1bf09c6019f9`.
 - Branch `feat/october-cloud-delivery` (created by supervisor; do not switch). Source baseline `4a42f1f666a4f2d5d2616069fe25ddd81f2662cb`; task-doc/CP0 baseline commit `1fa71a3` (supervisor). CP1 changes are uncommitted pending review.
 - Not executor-owned; leave untouched: `.trellis/.template-hashes.json`, AGENTS.md/CLAUDE.md index edits, `.agents/skills/*`, `.codex/`, `.birdview/`.
-- Constraints: no training, no GCP writes/deployment, no release-pointer changes, no push, no additional Trellis task audit. Do not patch site-packages or disable runtime checks. IPCCH raw-score semantics stay unchanged (no clipping).
+- Constraints: no training, no push, no additional Trellis task audit, no existing-consumer cutover/release-pointer changes. Do not patch site-packages or disable runtime checks. IPCCH raw-score semantics stay unchanged (no clipping).
+- Cloud authority (user, spec v0.6, 2026-10-07 ET): task-scoped cloud setup/deployment/debug in verified project `manuel-remote-sensing` (account weilun.shi@cgiar.org, region us-central1). Preserve unrelated resources and accepted consumers. Only unresolved CRITICAL issues go to the user.
 
 ## Binding user scope update (2026-10-07, relayed by supervisor; spec v0.5 pending from supervisor)
 
@@ -14,10 +15,306 @@ User: 不用溯源了，没完没了的。固定特征直接复用，遥感特�
 - Reuse fixed features/assets as-is.
 - Remote-sensing operational baseline = CURRENT repo extraction scripts (product/grid/reducer). Record the current script/product/grid/reducer and any already-known historical differences; no more archaeology.
 - New outputs key on explicit native `admin_code`. Keep the FEWS and IPCCH rosters separate; no guessed row-order/FID identity.
-- Unchanged: past-only same-area filling, latest complete monthly product eligibility, no training, no cloud mutation. Model runtime/replay checks remain.
+- Unchanged: past-only same-area filling, latest complete monthly product eligibility, no training. Model runtime/replay checks remain. (The earlier "no cloud mutation" is superseded by the v0.6 cloud authority above.)
 - CP2 validation is code-level/local fixture validation against the current scripts, with no historical source acceptance hunt.
 
-## Current checkpoint: CP2, delivered 2026-10-07, awaiting supervisor review
+## STATUS 20:15 UTC 2026-10-08 — CLOSEOUT (executor wR:p3; frozen for supervisor Windows Git commit; not committed)
+
+- Final delivery `oct-final-20261008a` succeeded and its offline replay is equal (see 19:20 block).
+- Durable local copy, ignored path:
+  `Outcome/model_delivery/october_cloud_delivery/oct-final-20261008a/` (archive, manifest, 30 scope CSVs,
+  shared refs, small reports, replay evidence). All 48 files verify against `/tmp/oct-durable.sha`.
+- M6 cloud checks (live trigger path, no scoring):
+  - duplicate replay `oct-delivery-hjm8q` returned the existing status;
+  - invalid request `oct-delivery-hdsgp` failed validation and wrote nothing;
+  - changed content under the same run ID `oct-delivery-ng85q` hit RunConflict;
+  - sentinel, status and pointer generations are unchanged.
+  - CAS release conflict: local fixtures only.
+  - Staging rejection `2ll5p` rejected before scoring, but its status write hit GCS 503 before the retry fix.
+- Tests, on a stable `/tmp` copy of repo code+tests (`research/cp3_evidence/m6_and_tests/`):
+  - 644 passed, 9 skipped, 1 failed = known baseline `test_horizon_alignment_rejects_unsupported_horizons`.
+  - The 7 initial copy-only failures (files missing from the copy) pass after copying.
+  - Skips: September v3 data / live GCP / PyYAML (the workflow test passes under system python3).
+- Cleanup (read-only REST 19:59): no active task-owned compute.
+  - Selectors: Batch `ipcch-prepare-full-window-20261008c`; executions `oct-prepare-plan-8bv78`, `oct-deliver-debug-xfr48`,
+    `oct-deliver-debug-nwvkk`, `oct-delivery-2ll5p`, `oct-delivery-qlb42`, `oct-delivery-hjm8q`, `oct-delivery-hdsgp`, `oct-delivery-ng85q`;
+    prepare `full-window-20261008c`.
+  - Crons 20:45/20:57 are kept.
+- Operator runbook: `deploy/october_delivery/README.md`. Request makers in `research/cp3_evidence/cloud_final_replay/` resolve the repository from their own location.
+- Known limitations:
+  - GOSIF is available only through 2024-12 (disclosed).
+  - Historical diagnostics are unavailable without evidence.
+  - Host `/mnt/c` I/O flaps; WSL git is unusable, so use Windows `git.exe`.
+
+## STATUS 19:20 UTC 2026-10-08 — FINAL CLOUD DELIVERY SUCCEEDED (awaiting supervisor final checks; nothing committed)
+
+- Final run `oct-delivery-qlb42` (image cp4-final-1 `sha256:41944ea0…d034`), request `oct-final-20261008a`
+  (`requests/oct-final-20261008a/run_manifest.json#1791484415757028`, sha256 `0a519a26…4c6a`, prepared `full-window-20261008c`).
+  Succeeded 19:17:37. Outputs `deliveries/oct-final-20261008a/`; release pointer `oct-staging/current.json#1791487045444241`
+  (task staging namespace only).
+- Offline relocated replay: 220/220 members, rescore exit 0, all_equal (30 tables + availability), 12.66 s, peak 1.52 GB;
+  current validator passed. Evidence: `research/cp3_evidence/cloud_final_replay/`.
+- Disclosures:
+  - Remote vintages: EVI/FLDAS/VIIRS 2026-08; GOSIF mean/sd 2024-12 (stale, disclosed).
+  - WFP/ACLED: keep.
+  - Fill per horizon: FEWS carry_forward 460,123 / observed 279,428 / no_eligible_history 38,097; IPCCH carry_forward 771,666 / observed 12,454 / no_eligible_history 12,936.
+  - All historical diagnostics are unavailable/missing_evidence (estimates blank).
+  - FEWS z-score whole-panel dependency is disclosed.
+
+## STATUS 18:27 UTC 2026-10-08 (executor wR:p3, same session)
+
+- **DEBUG cloud scoring + portable replay: ACCEPTED by the supervisor as bounded-smoke CP3 evidence** (not final latest-remote publication).
+  - Execution `oct-deliver-debug-nwvkk` (image cp4-debug-2 `sha256:f7d5e8cb…6cc0`) succeeded 18:24:02.
+  - `deliveries/debug-smoke-20261008a-2/`: 228 objects, 30 tables, archive.
+  - Offline relocated replay: rescore exit 0, all_equal, 17.97 s, peak 1,517,536 KiB; current validator passed.
+  - IPCCH: 15 tables byte-equal to local run i.
+  - Evidence: `research/cp3_evidence/cloud_debug2_replay/`.
+- **Earlier failures (host/transport, preserved):**
+  - Debug `xfr48` and staging `2ll5p`: GCS 503 beyond the 120 s upload retry; fixed by the create-only upload retry patch, which accepts an existing object only on size+CRC32C.
+  - Staging `2ll5p` itself rejected the smoke preparation correctly (roster).
+  - Host I/O incident on `/mnt/c` since ~16:37 (Dropbox folder EIO flaps; gcloud SDK unusable) -> REST + `/tmp` snapshots. Repo reconciled to snapshot `/tmp/oct-test-ctx` at 18:27.
+- **Final path deployed:**
+  - Image cp4-final-1 `sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034`.
+  - Job `oct-delivery` (maxRetries 0); workflow `oct-delivery-trigger` rev 000002-c39 (skip_polling); Eventarc trigger `oct-delivery-requests` on `gs://manuel-remote-sensing-oct-delivery-requests`.
+  - Submit `/tmp/oct-make-final-request.py` only if `prepared/full-window-20261008c` succeeded; latest launch 19:45.
+- **Full-window-c SUCCEEDED** 18:30:59 (prepare_status#1791484259757780, prepared_manifest#1791484258622845).
+- **FINAL run submitted:** request `requests/oct-final-20261008a/run_manifest.json#1791484415757028` (sha256 `0a519a26…4c6a`) -> workflow `79d33f60-7a7f-437d-a074-45da281fc6dd` SUCCEEDED (submit) -> Cloud Run `oct-delivery-qlb42` (cp4-final-1). ADD `oct-delivery-qlb42` TO CLEANUP SELECTORS.
+- **CLEANUP SELECTORS:**
+  - Batch `ipcch-prepare-full-window-20261008c`.
+  - Executions `oct-prepare-plan-8bv78`, `oct-deliver-debug-xfr48`, `oct-deliver-debug-nwvkk`, `oct-delivery-2ll5p` (+ any final `oct-delivery-*`).
+  - Prepare ID `full-window-20261008c`.
+  - Use `/tmp/oct-wind-down.py --backend rest`; crons f17f58ec (20:45) and 0e1552df (20:57).
+
+## RESUME BLOCK (CURRENT; executor wR:p3, same session; 15:22 UTC 2026-10-08)
+
+- **Authority (user, binding; supersedes the expired-window status below):**
+  - Task-scoped cloud debugging in `manuel-remote-sensing` until **21:00 UTC** (17:00 ET); cleanup begins **20:45 UTC**.
+  - Cloud scoring is allowed within the window after exact input generation+sha verification, with a pinned image.
+  - No training/cutover/commits; do not stop unrelated processes; same executor; no extra audit.
+- **Earlier window close-out:** the supervisor independently confirmed EE `KHVQOANYHBXYMPAUFTDIVBOP` = CANCELLED. full-window-a/b stay FAILED and immutable.
+- **full-window-20261008c (launched 15:21:09 UTC):**
+  - Request `gs://manuel-remote-sensing-oct-delivery-debug/prepare_requests/full-window-20261008c/prepare_request.json#1791472775453882`, sha256 `92bcecc0d5924a75de154ffc57b3f588453de5e3a2a49b3c4d2af659fa4ab4a7`.
+  - The request body differs from b ONLY in `prepare_id`. It intentionally keeps the same pinned assets `assets/full-20261008a`, cutoff `2026-10-08T13:00:00Z` (same vintage) and `refresh_from` evi/fldas/viirs = 2025-10.
+  - No reuse of b's objects or sentinels.
+  - Image `runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e`; `--deadline-utc 2026-10-08T21:00:00Z` with a 900 s reserve, so the effective export/wait cutoff is **20:45 UTC**.
+  - Planner execution `oct-prepare-plan-8bv78`; Batch ID pending.
+- **full-window-c EE timing:**
+  - Exports are strictly serial. b took ~10.0 min each; c's evi_2025_10 ran 15:26:21-15:43:46 (17.4 min).
+  - 33 exports need 5.5-9.6 h from 15:26, against the 20:45 cutoff, so expect roughly 19-31 done.
+  - If not all 33 complete, record preparation INCOMPLETE; keep partial rasters and task IDs for a deliberate later new-ID retry.
+- **Cleanup reminders:** session crons `be446d3f` (20:45 UTC) and `41b4a123` (20:57 UTC final recheck).
+- **MOUNT INCIDENT + STAGING (mirror of /tmp/oct-cleanup-record.md):**
+  # /tmp ledger (repo PROGRESS.md unreadable since ~16:45 UTC 2026-10-08: Dropbox folder on /mnt/c returns EIO)
+
+  - 16:37 UTC: host memory spike (swap full) -> gcloud ENOMEM; then the 9p mount returned I/O errors:
+    Cloud SDK (Program Files (x86)) at ~16:38, cp3_evidence at ~16:43, then the whole repo (PROGRESS.md, cloud/*.py) by ~16:47.
+    Non-Dropbox Windows paths still read. Not stopped/killed anything.
+  - Cleanup tool: /tmp/oct-wind-down.py (exact copy of repo wind_down.py incl. REST backend);
+    evidence /tmp/oct-wind-down-evidence; selectors /tmp/oct-cleanup-selectors.txt.
+    Crons: f17f58ec (20:45 UTC), 0e1552df (20:57 UTC).
+  - 16:42:55 report-only (REST): Batch c RUNNING; oct-prepare-plan-8bv78 TERMINAL; oct-deliver-debug-xfr48 RUNNING;
+    EE c: 7 COMPLETED / 2 RUNNING / 24 READY.
+  - Staging deployed (16:3x): image cp4-staging-1 sha256:cdeb0f429d0fde32ae5789f0b6e8545b0ae1c6a8663843485f54f9046fa7c5f7;
+    request bucket gs://manuel-remote-sensing-oct-delivery-requests; job oct-delivery (32Gi/8cpu/4h/max-retries 0);
+    workflow oct-delivery-trigger rev 000001-bfd; Eventarc trigger oct-delivery-requests (create op started 16:41:34 via REST);
+    compile-check workflow oct-delivery-trigger-check (executions cb6cb66a ignored, eeab386a IAM-denied).
+    IAM: runner objectViewer(request bucket), eventarc agent legacyBucketReader(request bucket), GCS agent pubsub.publisher,
+    runner eventarc.eventReceiver + workflows.invoker (project), runner serviceAccountUser(self), runner run.developer(job oct-delivery).
+    NO staging request uploaded (builder needs repo code; blocked by EIO).
+  - 16:47 mount recovered intermittently (still flapping). Staging request built from the exact cp4-staging-1 build context
+    (/tmp/october-delivery-ctx.MdZozs, hashes == /tmp/oct-build-7.context-sha.txt) with pinned GCS inputs.
+  - 16:49:28 UTC staging request uploaded create-only: gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-staging-20261008a/run_manifest.json#1791478168059910
+    sha256 fddaa7a13e2e352519f334919304c9d99a6bcbacc4cd90f334328178de227a84 (prepared = bounded smoke-local; expect roster rejection).
+  - Eventarc fired -> workflow execution db897c42-b1fa-42d4-a15d-00c0cfc3c6bf -> Cloud Run execution oct-delivery-2ll5p (created 16:49:29,
+    started 16:50:33) with full argv (request uri/generation + configured output root/namespace/image). Workflow then FAILED at
+    LRO polling: 403 run.operations.get (project-level permission not covered by job-scoped run.developer) -> monitoring gap, not job failure.
+  - CLEANUP SELECTORS now: Batch ipcch-prepare-full-window-20261008c; executions oct-prepare-plan-8bv78, oct-deliver-debug-xfr48,
+    oct-delivery-2ll5p; prepare-id full-window-20261008c.
+- **CLEANUP SELECTORS (all task-owned work today; the 20:45 cron reads these; ADD oct-delivery-2ll5p):**
+  - Batch: `ipcch-prepare-full-window-20261008c`.
+  - Run executions: `oct-prepare-plan-8bv78`; `oct-deliver-debug-xfr48` (job `oct-deliver-debug`).
+  - Prepare IDs: `full-window-20261008c`.
+  - Command: `wind_down.py --batch-jobs ipcch-prepare-full-window-20261008c --run-executions oct-prepare-plan-8bv78,oct-deliver-debug-xfr48 --prepare-ids full-window-20261008c`.
+- **Debug cloud scoring (CP3 parity only; never a release):**
+  - Execution `oct-deliver-debug-xfr48`, launched 16:15:11 UTC; job `oct-deliver-debug` (32Gi, 8 CPU, 3 h, max-retries 0, SA oct-delivery-runner).
+  - Image `runtime@sha256:a30d1cff702bd337f27cd3703d53ecbd769367d485e9aec6fd8e944315d7b84b` (`cp4-debug-1`; context hashes in `/tmp/oct-build-6.context-sha.txt`; frozen, not changed in flight).
+  - Inputs manifest `gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/manifests/debug-smoke-20261008a.json#1791476078241656`, sha256 `1a48c2d6c0b7f5e1df2d15be14b3cfc41e80b4b0d547e0f08bc41a160328fee0` (51 files).
+  - CRC32C matched each upload against the local file as transport verification only; the cloud job's pinned download SHA-256 is the identity check. Prepared snapshot is smoke-local-20261008a.
+  - Outputs go to `deliveries/debug-smoke-20261008a-1/`.
+- **IPCCH chunked assembly (memory-only; supervisor-accepted route):**
+  - Implementation: `delivery_inputs.ipcch_assemble_chunked`; `deliver._ipcch` switched to it. Per-horizon streamed audit (`deliver._AuditWriter`).
+  - Run h: FAILED exit 1, 1:11.73, peak 1,106,576 KiB, sources unchanged. Cause: the dtype guard; fixed with the pandas concat common type.
+  - Run i (`/tmp/oct-delivery-local-i`, IPCCH-only, code/input hashes `/tmp/oct-i-hash-{start,end}.txt`): the base series is byte-identical to d, **SHA256 `f2ebafc9b5c1427e94518a682304f6c11614753633f2171033437dfc4d006902`** (supervisor-hashed). Exit, O rows, audit and scope checks pending.
+  - Tests: `tests/cloud/test_ipcch_chunked.py` (10) plus the deliver/inputs suites pass. The supervisor's independent 17 also pass.
+- **IPCCH memory optimization ACCEPTED by the supervisor** (bounded-smoke integration):
+  - Run i: exit 0, sources unchanged, 8:06.08, peak 2,537,688 KiB.
+  - d vs i: base CSV, origin CSV and all 15 scope tables are byte-identical; 2,391,168 audit rows are exact apart from the source URI.
+  - Evidence: `research/cp3_evidence/ipcch_chunked_replay/`.
+- **Review A/B and gates 1-4 fixed (16:01 UTC; awaiting supervisor review):**
+  - Country family is independent of the polygon family.
+  - Evidence basis/period acceptance: FEWS = the package validation split; IPCCH = training resubstitution ending at or before the package `training_cutoff` (2026-04).
+  - Root-only inventory exclusion; exact 30 tables on both sides; seal check before archive.
+  - Pre-package content checks (rosters/countries/validators) and portable member checks (exact package inventories, runtime, docs, mapping targets).
+  - The rescored availability sidecar is compared.
+  - tests/cloud: 466 passed, 1 skipped, exit 0.
+- **C (CP4) implemented locally, NOT deployed or accepted:**
+  - `delivery_run`: duplicate responses carry status_uri; `release_conflict.json` is persisted.
+  - NEW `delivery_job.py`, the request-driven entry: pinned streamed downloads, acceptance, image check, prepared status + ROSTER sha binding (a smoke snapshot can never pass), per-system subprocess, sealed archive, create-only upload, CAS publish last.
+  - `deploy/october_delivery/workflow.yaml` + `deploy_delivery.sh` (retries 0, 32Gi).
+  - `deliver_job.py` rewritten as a pinned-inputs-manifest DEBUG entry (no publish).
+- **Readiness boundary:**
+  - The final Eventarc path can publish only with a succeeded full-roster preparation (full-window-c is unlikely to finish).
+  - Smoke = bounded local/cloud parity only.
+- **In flight (16:03):**
+  - IPCCH inputs and package being uploaded create-only to `delivery-inputs/v3-20261008a/`.
+  - Image build `cp4-debug-1` (log `/tmp/oct-build-6.log`, context hashes `/tmp/oct-build-6.context-sha.txt`).
+  - Inputs-manifest script `cp3_evidence/make_debug_inputs_manifest.py`.
+- **Local stable full run j** (IPCCH chunked + FEWS resume + bundle + relocated rescore) is deferred: only ~2.9 GB is available (VS Code ~6 GB, which must not be stopped); FEWS needs ~4.6 GB.
+- **Local:**
+  - Run g FAILED (IPCCH OOM). Next is chunked IPCCH history/assembly with bounded memory (outline being sent to the supervisor). d outputs are a comparator baseline only.
+  - Independent supervisor review is in progress: diagnostic binding, bundle replay, CP4.
+
+## RESUME BLOCK UPDATE (superseded at 15:22; executor wR:p3, same session, post-compaction; 14:33 UTC 2026-10-08)
+
+- **Cleanup cron (14:20 slot) fired at 14:33 UTC, after expiry. NOT executed** (no cloud calls after 14:30; even a report-only wind_down makes API calls). The final recorded state is the read-only 14:07 snapshot plus the 14:09 recheck: Batch a/b FAILED; planners TERMINAL; EE 30 CANCELLED / 8 COMPLETED / 1 CANCEL_REQUESTED `KHVQOANYHBXYMPAUFTDIVBOP`. No `--execute` was ever run; nothing was cancelled by wind_down (full-window-b self-cancelled 31 tasks at its 14:05 cutoff). Written objects kept. This is recorded in `cp3_evidence/cloud-setup-and-discovery.md`. The pending EE recheck needs renewed authority.
+- **Cloud:** authority expired at 14:30. The executor made no cloud calls after 14:19:27, when the pinned `smoke-local-20261008a` prepared objects (9 + manifest; `read_pinned` still checks sha256) were cached to `/tmp/oct-prepared-cache/smoke-local-20261008a/`. The supervisor is handling EE `KHVQOANYHBXYMPAUFTDIVBOP`. No scoring job has been launched.
+- **FEWS 13-month window adopted** (supervisor gate passed; `research/cp3_evidence/fews_window_replay/`):
+  - `delivery_scoring.load_fewsnet_scoring_inputs` reads a thin full-history identity source plus a chunked O-12..O window.
+  - `fewsnet_identity_and_window` rejects out-of-window rows and old-only or unknown areas.
+  - Each horizon checks inference frame == universe.
+  - **Identity/population now come from the PRE-FILL base panel**: run f showed the filled normalised panel turned carried-forward population into `raw_last_observed`/2026-10. September is 2024-10/raw_last_observed ×5716, missing_raw ×2.
+- **Resume:**
+  - `deliver(fewsnet_checkpoint=d)` writes to a NEW dir.
+  - It verifies d's fill_sources and normalisation-audit sha bindings and the version, copies the files create-only with a re-hash, and requires the re-derived fill to regenerate d's extended-raw sha.
+- **Audit binding fix:**
+  - FEWS identity/calendar features (FEWSNET_admin_code/lat/lon/month) are listed as unaudited and never treated as filled sources.
+  - `fews_ha` is in the observed-only label audit.
+- **Local runs:**
+  - e (resume): exit 1, 2:23, peak 4,105,552 KiB. Scoring passed; the binding bug above stopped it.
+  - f (resume): exit 0, 5:16.76, peak 4,559,084 KiB; 5,718 × 3 scopes; window 74,334 rows. f has the population provenance bug and code was edited during the run, so it is superseded.
+  - d, e and f are preserved.
+- **Diagnostics:**
+  - Evidence is self-describing (`model_package_id, horizon_months, basis, period` columns); it must equal the scored package AND the manifest declaration.
+  - `deliver.request_diagnostics(request, system, reader)` reads each available family via `read_pinned`; unavailable reasons are kept; families are independent.
+  - `maximum_phase` residual transfer is implemented (v3 complete-month bootstrap, restarted per scope; available / limited `single_month_interval_unavailable` / unavailable `no_complete_history`).
+  - `deliver.freeze_diagnostic_evidence` freezes the bytes; `delivery_bundle.frozen_declarations` is the replay helper.
+- **CP4 minimal (local/mock only):** `cloud/orchestrator/delivery_run.py`:
+  - `request_from_event` (exact request path + generation);
+  - `run_once` (create-only identity-bound sentinel; duplicate returns the original status; conflict; failed/abandoned runs never resumed; new ID for retry);
+  - `publish` (validate → immutable record → pointer generation CAS; legacy root refused).
+  - No Workflows/Eventarc deployment (cloud window closed).
+- **Tests (cp2 env, exit 0):**
+  - tests/cloud + assets: 416 passed, 1 skipped (live GCP), 418 warnings. This ran before the pre-fill identity fix; later focused runs: scoring 7, deliver 6, delivery_run 6.
+  - Outputs 43, including EXACT v3 maximum-phase parity from `reports/ipcch_four_target_training_replay.csv`.
+- **Run g FAILED (not retried):**
+  - IPCCH subprocess SIGKILL after 30:54.87 wall; outer peak RSS 7,017,260 KiB; 8% CPU (swap thrash); `FINAL_EXIT=1`. The background wrapper's exit 0 came from its echo.
+  - Only `inputs/ipcch_base_series.csv` was written. No FEWS, bundle, archive or relocated rescore ran; the evidence JSON was not written.
+  - Host at 14:58: 2.6 GB available, swap 4096/4096 used. A VS Code Insiders server (~4 GB) plus three gitnexus MCP servers (~3.3 GB) and Codex (~1.7 GB) are resident.
+  - Options for the supervisor:
+    (a) rerun g when ~8 GB is free;
+    (b) an IPCCH hash-bound resume from d's `ipcch_origin_rows.csv`/base series, analogous to FEWS. d's IPCCH output passed your check, but its code predates the diagnostics edits;
+    (c) chunked IPCCH base-series assembly (a code change needing review).
+- (superseded) final stable-source run g: `run_final_local_delivery.py smoke-local-20261008a /tmp/oct-delivery-local-g /tmp/oct-relocated-g /tmp/oct-delivery-local-d`. It hashes the code trees, runners, sources, prepared cache and checkpoint at start and end. Log `/tmp/oct-delivery-local-g.log`; evidence `/tmp/oct-delivery-local-g_final_run_evidence.json`.
+- **Open:** the actual new-product wrapper replay; Oct/portable acceptance (supervisor review); CP4 cloud pilot (needs renewed authority). Herdr to wR:p1 was blocked at 14:21 and 14:4x; resend.
+
+## RESUME BLOCK (executor wR:p3, same session; written 13:47 UTC 2026-10-08)
+
+- **Deadlines:** cloud authority ends 14:30 UTC; cleanup starts 14:20 UTC. full-window-b effective cutoff is 14:05:00 UTC (no new exports; waits capped; owned EE tasks cancelled; failed status written).
+- **Session crons:** `e8a0a97a` (10:08 ET wind-down check), `41b25df7` (10:20 ET cleanup). Cleanup command:
+  `/tmp/ipcch-oct-cp2/bin/python deploy/october_delivery/wind_down.py --project manuel-remote-sensing --location us-central1 --prepare-ids smoke-local-20261008a,smoke-cloud-20261008a,full-window-20261008a,full-window-20261008b [--execute]`
+  It touches only task-owned non-terminal Batch jobs and EE tasks; written objects stay as evidence.
+- **Live cloud:** Batch `ipcch-prepare-full-window-20261008b` (e2-highmem-4, SA-submitted by planner `oct-prepare-plan-vz2dq`). EE serial queue: 1 RUNNING / 32 READY at 13:46; no source objects yet. Monitor log `/tmp/oct-full-window-b.log`.
+- **Live local:** FEWS integration `run_local_delivery.py smoke-local-20261008a /tmp/oct-delivery-local-d fewsnet` (bg task bou5u3rzg; log `/tmp/oct-delivery-local-d-fewsnet.log`).
+- **IPCCH local run d:** exit 0, 6:53.84, peak RSS 7,092,124 KiB. 15 tables, O=2026-10, targets 2026-10/2027-04/2027-10, 6,227 rows per scope, all population carried forward, diagnostics blank, audit 2,391,168 rows.
+  - Qualification: code was edited during the run. The final stable run needs source and input hashes bound at start and end.
+- **14:02 update:**
+  - FEWS local run d: DELIVERY_EXIT 137, peak 7,421,840 KiB. Base panel, extra observations, fill-sources manifest, extended raw and normalised panel were written; it died at Stage3/scoring (host ~5 GB free). FEWS October integration is OPEN.
+  - The pinned-input cloud scoring worker is NOT launched (cannot be generation-bound and verified before 14:20). Image `cp3-deliver-1` (built 13:56) and uploads `gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/` are kept as preparation only; there is no job ID.
+  - wind_down.py: full output, complete-JSON parse, explicit UNKNOWN, raw results persisted, active compute in needs_followup. Dry-run evidence is in `research/cp3_evidence/wind_down/`.
+  - Bundle comparator: exact 30-table inventory, anchored continuous contract, finite and blank-mask checks.
+  - Diagnostics: per-family CP1 bridge (`normalise_declarations`, shared `scope_diagnostics` for deliver and rescore, frozen evidence, hash checked against the ref; maximum_phase available is explicitly unimplemented).
+  - Tests: outputs+deliver+bundle 41 pass.
+- **14:08 cloud final state (read-only wind_down, evidence in `research/cp3_evidence/wind_down/`):**
+  - full-window-b: self-cancelled; status `failed`/`source_retrieval_failed` written 14:05:29.833Z (EVI 2025-12 wait capped at cutoff); 31 cancellation requests; Batch FAILED 14:05:33/14:06; sources evi_2025-10 and evi_2025-11 retained.
+  - full-window-a: FAILED (exit 50002).
+  - Planners `oct-prepare-plan-vz2dq` and `oct-prepare-plan-zgclz`: TERMINAL.
+  - EE (all 4 prepare IDs): 30 CANCELLED, 8 COMPLETED, **1 CANCEL_REQUESTED `KHVQOANYHBXYMPAUFTDIVBOP`** (EVI 2025-12). Recheck it before 14:30 and run `--execute` only if still non-terminal. No active Batch/Run compute.
+  - Full-window acceptance: INCOMPLETE (2/33 sources).
+  - Automatic chain: planner → SA-submitted Batch → worker on highmem → provider exports → deadline self-cancel all demonstrated for b, but no successful full extraction.
+- **14:09 checkpoint (pre-compaction):**
+  - No scoring job was ever launched.
+  - Supervisor holds the 13-month dependency proof for the FEWS window option and is supervising the pending EE cancellation `KHVQOANYHBXYMPAUFTDIVBOP` independently.
+  - Remaining work: family diagnostics integration evidence, relocated bundle rescore, FEWS integration, CP4.
+  - Executor stopped for same-session /compact; resume from this block.
+- **Pending findings / TODO (durable):**
+  1. FEWS local integration OPEN. Option under review: Stage3 on a calendar O-12..O window taken from the FULL normalised panel (z-scores unchanged), identity/population from full history, full original roster. Adopt only after explicit dependency proof (supervisor scout: all 3 contracts identical, 123 features, hash 6e6f0bdc…) AND April saved-score/key/decision/threshold parity at 1e-12 in the frozen env; never fit/align_horizon; scoring in a separate process.
+  2. Relocated bundle rescore not yet executed end to end (final runner `research/cp3_evidence/run_final_local_delivery.py` is ready; it needs FEWS outputs).
+  3. CP4 (event/Workflows/duplicate/release CAS) not started.
+  4. Root cause of the earlier SA-submit QUEUED→FAILED (smoke) is unknown; b's SA submission succeeded.
+  5. The April 2026 all-zero EVI/nightlight placeholders remain in the history until a full-window refresh completes (EE runs exports serially, ~10-15 min each, so 33 exports ≈ 6-8 h).
+  6. Commits: only supervisor docs/evidence (`5f68cdc`, `6a56cfe`). All CP3 product code is uncommitted; no commits without review.
+- **Next actions:**
+  1. FEWS run result. Then `deliver.finalize`, then `delivery_bundle.install_runtime_and_models` + `write_inventory` + `build_archive` + relocated offline `rescore`/`compare_scopes`. Bind source hashes in the final runner.
+  2. At 14:05–14:20: verify b's self-cancellation and run wind_down (report, then `--execute` only if needed); record final states.
+  3. Wire diagnostic evidence refs and hashes from the manifest at the composition layer; implement minimal CP4 (event / duplicate / release CAS) once CP3 interfaces are reviewed.
+  4. No commits until reviewed.
+
+## Current checkpoint: CP3 + cloud debug, IN PROGRESS (2026-10-08, ledger updated 13:45 UTC)
+
+Authority: user cloud window ends **14:30 UTC**. Supervisor cleanup window starts 14:20 UTC. Session crons: wind-down check at 10:08 ET, cleanup at 10:20 ET. No new cloud actions after 14:30. Supervisor commits so far: `516c75e` (CP2), `5f68cdc` (supervisor docs/replay evidence). CP3 product code is uncommitted and executor-owned.
+
+### A. Source / scoring acceptance evidence (local; supervisor-verified replays)
+- FEWS April frozen replay (all 3 horizons) and the FEWS/IPCCH wrapper replays are exact. These were run by the supervisor, under `research/cp3_evidence/fews_frozen_replay/`, `fews_wrapper_replay/` and the IPCCH report.
+- Code done, focused tests pass (tests/cloud: delivery_inputs 13, delivery_outputs 22, deliver 2, prepare 31+, remote_sources 18, causal_fill, delivery_manifest; assets 3):
+  - `cloud/orchestrator/delivery_inputs.py`:
+    - vintage/refresh-aware remote overlay;
+    - full calendar from min(first, O-12);
+    - older provider rows as separate observations;
+    - keep/keep no-op;
+    - population provenance re-selected with `PopulationSnapshotBuilder`;
+    - rows after O dropped before whole-panel normalisation.
+  - `delivery_scoring.py`: sequential FEWS loading, final missingness from the actual matrices, saved-imputer rules, zscore whole-panel dependency disclosed.
+  - `delivery_outputs.py`:
+    - frozen September headers, and the aggregators + `append_country_v3` composition (reproduces v3 exactly);
+    - IPCCH phase-integrity gate;
+    - unavailable diagnostics plus the sidecar;
+    - supported area-evidence path (`area_evidence` → `EvidenceIntegrityError` on corrupt/foreign evidence; `weighted_country_errors` with the evidence's own basis; reproduces v3 counts/rates/flags exactly when fed v3 counts).
+  - `deliver.py`:
+    - per-system, bounded memory: IPCCH `usecols`, streamed hashes, FEWS fill-sources manifest;
+    - frozen FEWS inference frames + identity;
+    - stream `finalize`.
+  - `delivery_bundle.py`: runtime/models install, inventory, create-only archive with member hashes, offline `rescore` + `compare_scopes`. Not yet executed end to end.
+- Local full-scale integration (frozen venv `ipcch-h5-202609`, smoke-local prepared snapshot):
+  - a: DELIVERY_EXIT 137 (both systems in one process; host memory).
+  - b: IPCCH assembly OK (peak 6.97 GB); scoring rejected `population_imputation_method does not match reference period` (fixed with `PopulationSnapshotBuilder`).
+  - c: 137 (host swap full; other resident processes ~9 GB).
+  - d: running after the copy removals; 0m IPCCH tables emitted.
+  - FEWS local integration not yet run.
+
+### B. Numerical cloud worker parity (ACCEPTED as bounded numerical smoke)
+- `smoke-cloud-20261008a` vs `smoke-local-20261008a`: 9/9 system-family pairs exact (`research/cp3_evidence/smoke_cloud_vs_local.json`).
+
+### C. Automatic Cloud Run → Batch chain (deployment evidence; NOT yet accepted)
+- smoke: the SA-submitted job failed QUEUED→FAILED with no detail. The successful extract was a user resubmission (`oct-extract-smoke-cloud-1`).
+- full-window-a (`ipcch-prepare-full-window-20261008a`, uid `ipcch-prepare-full-be2c9fb4-40ef-4a630`):
+  - automatic chain: planner `oct-prepare-plan-zgclz` → SA-submitted Batch;
+  - VM `e2-highcpu-2` instance 493296917030774506 started 13:18:52; extract sentinel 13:19:11;
+  - FAILED 13:25:59 with exit code 50002 ("Batch no longer receives VM updates"); no status written; no EE tasks;
+  - OOM is a hypothesis only (full GeoJSON 247+132 MB parsed on 2 GiB).
+- Launcher fix: `BatchJobConfig.machine_type/memory_mib/cpu_milli` (defaults unchanged); prepare uses `e2-highmem-4`/28000/4000. Image `cp3-full-2` @ `sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e`.
+- full-window-b (`ipcch-prepare-full-window-20261008b`):
+  - request gen 1791466138274323, sha256 185d44fb…; planner `oct-prepare-plan-vz2dq` completed 13:36:28;
+  - SA-submitted Batch on `e2-highmem-4` RUNNING; all 33 EE exports submitted with IDs persisted.
+  - **EE runs them serially** (1 RUNNING / 32 READY at 13:39), ~4-8 min each, so the window cannot finish.
+  - Effective cutoff **14:05:00 UTC** (deadline 14:20 minus 900 s reserve): no new exports, waits capped, owned tasks cancelled, failed status with cancelled IDs.
+  - Full-window acceptance stays incomplete unless all 33 succeed.
+
+### D. Open
+- **CP3 integration:** FEWS local run; relocated bundle rescore; diagnostics inputs wired from pinned manifest refs (composition-layer binding of evidence ref/hash/family); full inventory with external history refs.
+- **CP4:** event / Workflows / duplicate handling / release CAS.
+- **Root cause and acceptance:** the earlier SA-submit failure; the automatic chain completing a full window; Cloud Run 32 GiB delivery placement.
+
+## CP2 (ACCEPTED; committed `516c75e`)
 
 Scope: current-repo remote-sensing preparation (spec v0.5). No historical provenance searches, no cloud mutations, no live extraction, no commits.
 

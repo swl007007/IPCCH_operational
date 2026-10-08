@@ -1,0 +1,81 @@
+{
+  "name": "projects/manuel-remote-sensing/locations/us-central1/jobs/oct-delivery/executions/oct-delivery-qlb42",
+  "uid": "957b100c-0660-45b0-803c-8dc9d5c21170",
+  "generation": "1",
+  "createTime": "2026-10-08T18:33:38.055863Z",
+  "completionTime": "2026-10-08T19:17:37.772141Z",
+  "updateTime": "2026-10-08T18:33:38.055863Z",
+  "launchStage": "GA",
+  "job": "oct-delivery",
+  "parallelism": 1,
+  "taskCount": 1,
+  "template": {
+    "containers": [
+      {
+        "image": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+        "command": [
+          "python3"
+        ],
+        "args": [
+          "-m",
+          "cloud.orchestrator.delivery_job",
+          "run",
+          "--request-uri",
+          "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-final-20261008a/run_manifest.json",
+          "--request-generation",
+          "1791484415757028",
+          "--output-root",
+          "gs://manuel-remote-sensing-oct-delivery-debug",
+          "--release-namespace",
+          "oct-staging",
+          "--image-uri",
+          "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "8",
+            "memory": "32Gi"
+          }
+        }
+      }
+    ],
+    "maxRetries": 0,
+    "timeout": "14400s",
+    "serviceAccount": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2"
+  },
+  "conditions": [
+    {
+      "type": "Started",
+      "state": "CONDITION_SUCCEEDED",
+      "message": "Started deployed execution in 2m29.15s.",
+      "lastTransitionTime": "2026-10-08T18:36:40.600826Z"
+    },
+    {
+      "type": "Completed",
+      "state": "CONDITION_SUCCEEDED",
+      "message": "Execution completed successfully in 43m12.01s.",
+      "lastTransitionTime": "2026-10-08T19:17:37.772141Z"
+    },
+    {
+      "type": "ContainerReady",
+      "state": "CONDITION_SUCCEEDED",
+      "message": "Imported container image in 33.19s.",
+      "lastTransitionTime": "2026-10-08T18:34:11.247526Z"
+    },
+    {
+      "type": "ResourcesAvailable",
+      "state": "CONDITION_SUCCEEDED",
+      "message": "Provisioned imported containers.",
+      "lastTransitionTime": "2026-10-08T18:34:11.441550Z"
+    }
+  ],
+  "observedGeneration": "1",
+  "succeededCount": 1,
+  "startTime": "2026-10-08T18:34:25.754088Z",
+  "logUri": "https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-delivery%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-delivery-qlb42%22",
+  "creator": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+  "client": "gcloud",
+  "clientVersion": "562.0.0",
+  "etag": "\"CILEn9YGENjN0Ro/cHJvamVjdHMvbWFudWVsLXJlbW90ZS1zZW5zaW5nL2xvY2F0aW9ucy91cy1jZW50cmFsMS9qb2JzL29jdC1kZWxpdmVyeS9leGVjdXRpb25zL29jdC1kZWxpdmVyeS1xbGI0Mg\""
+}

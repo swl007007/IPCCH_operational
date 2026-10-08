@@ -1,0 +1,6 @@
+batch: ipcch-prepare-full-window-20261008c
+run-executions: oct-prepare-plan-8bv78,oct-deliver-debug-xfr48
+prepare-ids: full-window-20261008c
+staging request uploaded; run-executions: oct-delivery-* (see below)
+run-executions add: oct-delivery-2ll5p (staging, from workflow db897c42-b1fa-42d4-a15d-00c0cfc3c6bf)
+run-executions add: oct-deliver-debug-nwvkk (debug rerun, image cp4-debug-2 sha256:f7d5e8cb..., started ~17:42 UTC)

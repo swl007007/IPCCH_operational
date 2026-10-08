@@ -54,3 +54,19 @@ Provider-vintage regressions cover successful latest discovery before the baseli
 ## 7. Wrong vs correct
 
 Wrong: substitute a saved `EVI_lag3` imputation value into base EVI, recompute a lag and label it observed. Correct: leave missing base EVI with no observation date, build `EVI_lag3`, then apply and record that package's saved rule for `EVI_lag3` if needed. No fallback invents raw measurements.
+
+## 8. Scoring, delivery and replay
+
+The delivery origin is fixed independently of provider lag: October 2026 emits 0/6/12-month targets October 2026, April 2027 and October 2027. Reuse the six saved packages without fitting. FEWS scores the necessary calendar window while retaining full-history identity/population observations; IPCCH partitions assembly by native area with unchanged calendar/fill arithmetic. Streaming changes must preserve the unpartitioned output and audit semantics.
+
+The bundle contains exactly 30 scope CSVs, two population references, both native geometries, six packages, frozen scoring inputs, runtime and dependency lock. Unsupported diagnostic estimates stay blank with explicit availability reasons; country current outcomes remain populated. Supported diagnostic evidence is package/horizon-specific: FEWS uses its recorded validation period, IPCCH training resubstitution ends at its package training cutoff. IPCCH raw scores remain unclipped.
+
+Validate native keys, identities, dates, scope inventory, country aggregation, package contents and diagnostic consistency before archiving. Regenerate diagnostic tables and availability from frozen evidence. Seal every inventoried file before create-only archive upload. Offline relocated replay uses the bundled runtime and frozen inputs without repository or cloud access, comparing all 30 tables and the availability table; IDs/discrete values and blank masks are exact, continuous tolerance is at most `atol=1e-12, rtol=0`.
+
+## 9. Automatic entry and operations
+
+Storage finalized events are filtered to the exact request path. Workflows submits Cloud Run with the event generation plus all deployment-configured arguments and does not poll the operation; durable run status is authoritative. Container overrides replace the entire argv. Task retries are zero. An identical request returns its original status; changed content under the same run ID conflicts. Failed attempts are retained and retried only with a new ID.
+
+The entry verifies prepared status, origin, current extraction contract, roster and geometry, and consumes the operator's keep/refresh choices. Keep binds the actual retained history-family projection. Package member conflicts fail before scoring. Artifacts upload create-only; transient GCS failures have a bounded retry budget, with existing-object recovery limited to matching size and CRC32C transport checks. Immutable release record and pointer generation CAS are written last. The October deployment uses `oct-staging`; production consumer cutover is separate.
+
+Operational commands and the actual staging resource names are documented in `deploy/october_delivery/README.md`. Fixed assets are reused; do not introduce historical provenance investigations. Source lag, filled features and unavailable diagnostics are disclosed in delivery reports. Checkpoint evidence distinguishes smoke from full-roster preparation and records actual event/job results. Use Windows Git for repository operations when WSL Git encounters the observed DrvFS I/O failure.

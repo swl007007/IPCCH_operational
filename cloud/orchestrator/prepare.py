@@ -43,13 +43,13 @@ from cloud.batch.remote_sources import (
     EXTRACTION_CONTRACT_VERSION,
     NATIVE_KEY,
     SOURCE_CONTRACTS,
+    SYSTEM_FAMILIES,
     SourceRetrievalError,
     gee_export_spec,
     gee_published_months,
     gosif_url,
     http_published_months,
     last_eligible_month,
-    latest_completed_month,
     months_between,
     mosaic_shards,
     native_geometries,
@@ -94,6 +94,9 @@ class AcquiredRaster:
 
 
 class SourceAcquirer(Protocol):
+    def latest_published(self, family: str, *, floor_month: str, end_month: str) -> tuple[str, str] | None:
+        """(month, provider identity) of the latest published month in [floor, end], or None."""
+
     def published_months(self, family: str, *, start_month: str, end_month: str) -> dict[str, str]:
         """Month -> exact provider identity (Earth Engine image ID or provider URL)."""
 
@@ -143,8 +146,10 @@ def validate_prepare_request(data: Mapping[str, Any], *, request_uri: str, reque
     ``request_sha256`` is the SHA-256 of the exact raw request bytes read at
     ``request_generation``; it is carried into the plan and prepared manifest.
     """
-    _exact_keys(data, ("schema_version", "prepare_id", "origin_month", "cutoff_utc",
-                       "extraction_contract_version", "systems", "operator"), "prepare request")
+    # ``refresh_from`` is optional: {family: YYYY-MM} re-extracts that family from the month on.
+    fields = ("schema_version", "prepare_id", "origin_month", "cutoff_utc", "extraction_contract_version",
+              "systems", "operator") + (("refresh_from",) if "refresh_from" in data else ())
+    _exact_keys(data, fields, "prepare request")
     if data["schema_version"] != PREPARE_SCHEMA_VERSION:
         raise DeliveryManifestError(f"schema_version must be {PREPARE_SCHEMA_VERSION}")
     prepare_id = data["prepare_id"]
@@ -167,11 +172,16 @@ def validate_prepare_request(data: Mapping[str, Any], *, request_uri: str, reque
         _exact_keys(assets, ("geometry", "roster", "history"), f"systems.{system}")
         _ref(assets["geometry"], f"systems.{system}.geometry")
         _ref(assets["roster"], f"systems.{system}.roster")
-        # Pinned accepted history snapshot per family, in the current extraction layout.
-        _exact_keys(assets["history"], FAMILIES, f"systems.{system}.history")
-        for family in FAMILIES:
+        # Pinned accepted history snapshot per consumed family, in the current extraction layout.
+        _exact_keys(assets["history"], SYSTEM_FAMILIES[system], f"systems.{system}.history")
+        for family in SYSTEM_FAMILIES[system]:
             _ref(assets["history"][family], f"systems.{system}.history.{family}")
     _text(data["operator"], "operator")
+    refresh = data.get("refresh_from", {})
+    if not isinstance(refresh, Mapping) or set(refresh) - set(FAMILIES):
+        raise DeliveryManifestError(f"refresh_from keys must be among {FAMILIES}")
+    for family, month in refresh.items():
+        _month(month, f"refresh_from.{family}")
     validated = dict(data)
     validated["request"] = {"uri": request_uri, "generation": request_generation, "sha256": request_sha256}
     return validated
@@ -196,27 +206,61 @@ def plan_prepare(request, *, store: ObjectStore, reader: PinnedReader, acquirer:
         rosters = {system: _load_system(reader, request["systems"][system])[0] for system in SYSTEMS}
         families = {}
         for family in FAMILIES:
-            history_through = {
+            systems = [system for system in SYSTEMS if family in SYSTEM_FAMILIES[system]]
+            histories = {
                 system: _history(reader, request["systems"][system]["history"][family], family,
-                                 rosters[system], limit)[1]
-                for system in SYSTEMS
+                                 rosters[system], limit)
+                for system in systems
             }
+            history_through = {system: histories[system][1] for system in systems}
+            # The provider's own latest completed month is the freshness boundary. Search
+            # back to the product's catalog start, independent of the baseline: a history
+            # table can start after, or carry (e.g. forward-filled) rows beyond, what the
+            # provider has actually published.
+            floor = SOURCE_CONTRACTS[family].first_month
+            found = acquirer.latest_published(family, floor_month=floor, end_month=limit)
+            if found is None:
+                raise ValueError(f"{family}: provider has no published month between {floor} and {limit}")
+            latest, latest_id = found
+            published = {latest: latest_id}
+            refresh_from = request.get("refresh_from", {}).get(family)
             earliest = min(history_through.values())
-            published: dict[str, str] = {}
-            latest = None
-            if earliest < limit:
-                published = acquirer.published_months(
-                    family, start_month=months_between(earliest, origin)[0], end_month=origin)
-                latest = latest_completed_month(published, origin_month=origin, cutoff_utc=cutoff)
-            system_months = {
-                system: months_between(through, latest) if latest and latest > through else []
-                for system, through in history_through.items()
-            }
+            query_start = months_between(earliest, latest)[0] if earliest < latest else latest
+            if refresh_from and refresh_from < query_start:
+                query_start = refresh_from
+            if query_start < latest:
+                between = acquirer.published_months(family, start_month=query_start, end_month=latest)
+                if between.get(latest, latest_id) != latest_id:
+                    raise SourceRetrievalError(f"{family} {latest} identity changed during discovery")
+                published.update(between)
+            system_months, beyond = {}, {}
+            for system, through in history_through.items():
+                frame = histories[system][0]
+                if refresh_from and refresh_from <= latest:
+                    # Explicit refresh window: these months are re-extracted and replace history.
+                    first = refresh_from if through >= latest else min(refresh_from, months_between(through, latest)[0])
+                    system_months[system] = months_between(_previous_month(first), latest)
+                    values = frame[[column for column in frame.columns if "__" in column]]
+                    claimed = frame.loc[(frame["month"] > latest) & values.notna().any(axis=1), "month"]
+                    beyond[system] = sorted(claimed.unique().tolist())
+                elif through >= latest:
+                    # Re-extract the provider's latest month; later history rows are not observations.
+                    system_months[system] = [latest]
+                    # Only rows carrying values claim an observation; empty rows are just absent.
+                    values = frame[[column for column in frame.columns if "__" in column]]
+                    claimed = frame.loc[(frame["month"] > latest) & values.notna().any(axis=1), "month"]
+                    beyond[system] = sorted(claimed.unique().tolist())
+                else:
+                    system_months[system] = months_between(through, latest)
+                    beyond[system] = []
             wanted = sorted(set().union(*system_months.values()))
             families[family] = {
                 "product": SOURCE_CONTRACTS[family].product,
+                "systems": systems,
+                "refresh_from": refresh_from,
                 "history_through": history_through,
                 "provider_latest_completed_month": latest,
+                "history_beyond_provider_vintage": beyond,
                 "months": {month: published[month] for month in wanted if month in published},
                 "not_published_months": [month for month in wanted if month not in published],
                 "system_months": system_months,
@@ -249,7 +293,9 @@ def execute_prepare_plan(plan_ref, *, store: ObjectStore, reader: PinnedReader, 
         manifest = _extract(plan, plan_ref, store=store, reader=reader, acquirer=acquirer,
                             prepare_root=prepare_root, workdir=workdir)
     except Exception as exc:
-        _write_failure(store, prepare_root, plan, exc)
+        # Stop provider work this preparation still owns before recording the failure.
+        cancelled = acquirer.cancel_started() if hasattr(acquirer, "cancel_started") else []
+        _write_failure(store, prepare_root, plan, exc, cancelled=cancelled)
         raise
     _write_status(store, prepare_root, plan, "succeeded", None, None)
     return manifest
@@ -260,29 +306,41 @@ def _extract(plan, plan_ref, *, store, reader, acquirer, prepare_root, workdir) 
     limit = last_eligible_month(origin, datetime.fromisoformat(plan["cutoff_utc"].replace("Z", "+00:00")))
     loaded = {system: _load_system(reader, plan["systems"][system]) for system in SYSTEMS}
     coverage_rows, latest_rows, families = [], [], {}
+    if hasattr(acquirer, "start_exports"):
+        # Submit every family's planned provider exports before waiting on any of them.
+        for family, family_plan in plan["families"].items():
+            acquirer.start_exports(family, family_plan["months"], prepare_id=plan["prepare_id"])
     for family, family_plan in plan["families"].items():
         product = SOURCE_CONTRACTS[family].product
+        systems = family_plan["systems"]
         system_months = family_plan["system_months"]
-        histories = {
-            system: _history(reader, plan["systems"][system]["history"][family], family, loaded[system][0], limit)
-            for system in SYSTEMS
-        }
-        for system in SYSTEMS:
-            history, through = histories[system]
-            coverage_rows.append(_coverage(system, family, product, through, "history_snapshot", None,
-                                           len(loaded[system][0]), history.loc[history["month"].eq(through)],
-                                           plan["systems"][system]["history"][family]))
+        vintage = family_plan["provider_latest_completed_month"]
+        baselines = {}
+        for system in systems:
+            ref = plan["systems"][system]["history"][family]
+            frame, _ = _history(reader, ref, family, loaded[system][0], limit)
+            for month in family_plan["history_beyond_provider_vintage"][system]:
+                coverage_rows.append(_coverage(system, family, product, month,
+                                               "history_beyond_provider_vintage_excluded", None,
+                                               len(loaded[system][0]), frame.loc[frame["month"].eq(month)], ref))
+            # Baseline = history up to the provider vintage, minus months re-extracted now.
+            kept = frame.loc[(frame["month"] <= vintage) & ~frame["month"].isin(system_months[system])]
+            baselines[system] = kept
+            if len(kept):
+                through = kept["month"].max()
+                coverage_rows.append(_coverage(system, family, product, through, "history_snapshot", None,
+                                               len(loaded[system][0]), kept.loc[kept["month"].eq(through)], ref))
             for month in family_plan["not_published_months"]:
                 if month in system_months[system]:
                     coverage_rows.append(_coverage(system, family, product, month, "not_published", None,
                                                    len(loaded[system][0]), None, {}))
-        frames = {system: [] for system in SYSTEMS}
+        frames = {system: [] for system in systems}
         sources = []
         for month, provider_id in sorted(family_plan["months"].items()):
             raster = acquirer.acquire(family, month, provider_id=provider_id,
                                       prepare_id=plan["prepare_id"], workdir=workdir)
             sources.append({"month": month, "provider_id": provider_id, **raster.source})
-            for system in SYSTEMS:
+            for system in systems:
                 if month not in system_months[system]:
                     continue  # already in this system's pinned history
                 stats = zonal_statistics(raster.path, loaded[system][1], family=family, month=month)
@@ -290,8 +348,8 @@ def _extract(plan, plan_ref, *, store, reader, acquirer, prepare_root, workdir) 
                 coverage_rows.append(_coverage(system, family, product, month, "observed", provider_id,
                                                len(loaded[system][0]), stats, raster.source))
         outputs, latest_observation = {}, {}
-        for system in SYSTEMS:
-            combined = histories[system][0]
+        for system in systems:
+            combined = baselines[system]
             if frames[system]:
                 new = pd.concat(frames[system], ignore_index=True)
                 outputs[system] = _write_create_only(store, f"{prepare_root}features/{system}/{family}.csv",
@@ -299,15 +357,19 @@ def _extract(plan, plan_ref, *, store, reader, acquirer, prepare_root, workdir) 
                 combined = pd.concat([combined, new], ignore_index=True)
             rows = _area_latest(system, family, loaded[system][0], combined)
             latest_rows.extend(rows)
-            latest_observation[system] = max(row["latest_observation_month"] for row in rows
-                                             if row["latest_observation_month"] is not None)
+            observed = [row["latest_observation_month"] for row in rows if row["latest_observation_month"] is not None]
+            latest_observation[system] = max(observed) if observed else None
         families[family] = {
             "product": product,
             "script": SOURCE_CONTRACTS[family].script,
             "reducers": list(SOURCE_CONTRACTS[family].reducers),
-            "history": {system: plan["systems"][system]["history"][family] for system in SYSTEMS},
+            "systems": systems,
+            "refresh_from": family_plan.get("refresh_from"),
+            "system_months": system_months,
+            "history": {system: plan["systems"][system]["history"][family] for system in systems},
             "history_through": family_plan["history_through"],
-            "provider_latest_completed_month": family_plan["provider_latest_completed_month"],
+            "provider_latest_completed_month": vintage,
+            "history_beyond_provider_vintage": family_plan["history_beyond_provider_vintage"],
             "latest_observation_month": latest_observation,
             "not_published_months": family_plan["not_published_months"],
             "sources": sources,
@@ -408,18 +470,19 @@ def _write_create_only(store: ObjectStore, uri: str, content: str) -> dict:
             "sha256": hashlib.sha256(content.encode("utf-8")).hexdigest()}
 
 
-def _write_failure(store, prepare_root, request, exc) -> None:
+def _write_failure(store, prepare_root, request, exc, *, cancelled=()) -> None:
     reason = "source_retrieval_failed" if isinstance(exc, SourceRetrievalError) else "preparation_error"
-    _write_status(store, prepare_root, request, "failed", reason, f"{type(exc).__name__}: {exc}")
+    _write_status(store, prepare_root, request, "failed", reason, f"{type(exc).__name__}: {exc}", cancelled=cancelled)
 
 
-def _write_status(store, prepare_root, request, status, reason, message) -> None:
+def _write_status(store, prepare_root, request, status, reason, message, *, cancelled=()) -> None:
     payload = {
         "prepare_id": request["prepare_id"],
         "origin_month": request["origin_month"],
         "status": status,
         "failure_reason": reason,
         "message": message,
+        "cancelled_provider_tasks": list(cancelled),
         "written_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
     store.write_text(f"{prepare_root}prepare_status.json", _json(payload), if_generation_match=0)
@@ -431,16 +494,23 @@ def _json(payload) -> str:
 
 def plan_and_submit(request, *, store: ObjectStore, reader: PinnedReader, acquirer: SourceAcquirer,
                     output_root: str, submit, image_uri: str, service_account: str,
-                    earth_engine_project: str) -> dict:
+                    earth_engine_project: str, deadline_utc: datetime | None = None,
+                    clock=lambda: datetime.now(timezone.utc)) -> dict:
     """Cloud Run entry: plan, then submit the Batch extract job.
 
     A submission failure after the plan was written leaves the sentinel and plan as
     evidence and records ``batch_submit_failed``; the operator retries with a new ID.
     """
+    max_run = 28800
+    if deadline_utc is not None:
+        max_run = int((deadline_utc - clock()).total_seconds())
+        if max_run <= 0:
+            raise ValueError("authorization deadline has passed; not planning provider work")
     planned = plan_prepare(request, store=store, reader=reader, acquirer=acquirer, output_root=output_root)
     config = prepare_batch_job_config(planned["plan_ref"], prepare_id=request["prepare_id"],
                                       origin_month=request["origin_month"], image_uri=image_uri,
-                                      service_account=service_account, earth_engine_project=earth_engine_project)
+                                      service_account=service_account, earth_engine_project=earth_engine_project,
+                                      max_run_seconds=max_run, deadline_utc=deadline_utc)
     try:
         job = submit(config)
     except Exception as exc:
@@ -451,8 +521,12 @@ def plan_and_submit(request, *, store: ObjectStore, reader: PinnedReader, acquir
 
 
 def prepare_batch_job_config(plan_ref: Mapping[str, str], *, prepare_id: str, origin_month: str,
-                             image_uri: str, service_account: str, earth_engine_project: str) -> BatchJobConfig:
-    """Batch job for the extract phase; no automatic retries (a retry is a new prepare_id)."""
+                             image_uri: str, service_account: str, earth_engine_project: str,
+                             max_run_seconds: int = 28800, deadline_utc: datetime | None = None) -> BatchJobConfig:
+    """Batch job for the extract phase; no automatic retries (a retry is a new prepare_id).
+
+    ``max_run_seconds`` bounds the job (e.g. to an authorization deadline).
+    """
     return BatchJobConfig(
         job_name_prefix="ipcch-prepare",
         image_uri=image_uri,
@@ -460,9 +534,12 @@ def prepare_batch_job_config(plan_ref: Mapping[str, str], *, prepare_id: str, or
         run_id=prepare_id,
         feature_month=origin_month,
         worker_args=["extract", "--plan-uri", plan_ref["uri"], "--plan-generation", plan_ref["generation"],
-                     "--plan-sha256", plan_ref["sha256"], "--earth-engine-project", earth_engine_project],
-        runtime=RuntimeDefaults(max_retries=0),
+                     "--plan-sha256", plan_ref["sha256"], "--earth-engine-project", earth_engine_project,
+                     *(["--deadline-utc", deadline_utc.strftime("%Y-%m-%dT%H:%M:%SZ")] if deadline_utc else [])],
+        runtime=RuntimeDefaults(max_retries=0, batch_job_timeout_seconds=int(max_run_seconds)),
         worker_module="cloud.orchestrator.prepare",
+        # Full rosters: native GeoJSON geometries (~380 MB) parse to several GB in memory.
+        machine_type="e2-highmem-4", memory_mib=28000, cpu_milli=4000,
     )
 
 
@@ -478,10 +555,29 @@ class CloudSourceAcquirer:
     """
 
     def __init__(self, *, ee, client, http, store: ObjectStore, output_root: str,
-                 timeout_seconds: int = 21600, poll_seconds: int = 60, http_timeout: int = 180):
+                 timeout_seconds: int = 21600, poll_seconds: int = 60, http_timeout: int = 180,
+                 deadline_utc: datetime | None = None, cleanup_reserve_seconds: int = 900, clock=None):
         self.ee, self.client, self.http, self.store = ee, client, http, store
+        self._started: dict[tuple[str, str], object] = {}
+        # Absolute authorization deadline: no new provider work inside the cleanup reserve,
+        # and waits never run past it.
+        self.deadline_utc, self.cleanup_reserve_seconds = deadline_utc, cleanup_reserve_seconds
+        self.clock = clock or (lambda: datetime.now(timezone.utc))
         self.output_root = output_root.rstrip("/")
         self.timeout_seconds, self.poll_seconds, self.http_timeout = timeout_seconds, poll_seconds, http_timeout
+
+    def latest_published(self, family: str, *, floor_month: str, end_month: str) -> tuple[str, str] | None:
+        contract = SOURCE_CONTRACTS[family]
+        if contract.provider == "gee":
+            found = gee_published_months(self._list_images, contract.product,
+                                         start_month=floor_month, end_month=end_month)
+            return max(found.items()) if found else None
+        # Walk back from the end; 404 means not published, anything else fails.
+        for month in reversed(months_between(_previous_month(floor_month), end_month)):
+            found = http_published_months(self._head, contract.export["url"], [month])
+            if found:
+                return month, found[month]
+        return None
 
     def published_months(self, family: str, *, start_month: str, end_month: str) -> dict[str, str]:
         contract = SOURCE_CONTRACTS[family]
@@ -529,9 +625,46 @@ class CloudSourceAcquirer:
         return AcquiredRaster(str(path), {"url": url, "uri": uri, "generation": generation,
                                           "sha256": hashlib.sha256(data).hexdigest()})
 
-    def _acquire_gee(self, family, month, provider_id, prepare_id, workdir) -> AcquiredRaster:
-        from cloud.batch.evi_service import _parse_gcs_uri, _wait_for_ee_task
+    def start_exports(self, family: str, months: dict[str, str], *, prepare_id: str) -> None:
+        """Start all Earth Engine exports for ``family`` without waiting (HTTP sources: no-op).
 
+        A failure part-way cancels the exports this preparation already started.
+        """
+        if SOURCE_CONTRACTS[family].provider != "gee":
+            return
+        try:
+            for month, provider_id in sorted(months.items()):
+                self._start_gee(family, month, provider_id, prepare_id)
+        except Exception as exc:
+            cancelled = self.cancel_started()
+            raise SourceRetrievalError(f"{family} export submission failed ({exc}); cancelled {cancelled}") from exc
+
+    def cancel_started(self) -> list[str]:
+        """Cancel this preparation's Earth Engine tasks that have not finished; returns their IDs."""
+        cancelled = []
+        for task, *_ in self._started.values():
+            try:
+                state = task.status().get("state")
+                if state not in {"COMPLETED", "FAILED", "CANCELLED"}:
+                    task.cancel()
+                    cancelled.append(getattr(task, "id", None) or "unknown")
+            except Exception:  # cleanup is best effort; the remaining task IDs are persisted
+                cancelled.append(f"{getattr(task, 'id', 'unknown')}:cancel_failed")
+        return cancelled
+
+    def _remaining_seconds(self) -> float:
+        if self.deadline_utc is None:
+            return float("inf")
+        return (self.deadline_utc - self.clock()).total_seconds() - self.cleanup_reserve_seconds
+
+    def _start_gee(self, family, month, provider_id, prepare_id):
+        from cloud.batch.evi_service import _parse_gcs_uri
+
+        if (family, month) in self._started:
+            started = self._started[(family, month)]
+            if started[4:] != (provider_id, prepare_id):
+                raise SourceRetrievalError(f"{family} {month} export already started for {started[4]} / {started[5]}")
+            return started
         spec = gee_export_spec(family, month)
         if not provider_id.startswith(spec["collection"] + "/"):
             raise SourceRetrievalError(f"{provider_id} is not an image of {spec['collection']}")
@@ -539,6 +672,8 @@ class CloudSourceAcquirer:
         bucket, blob_prefix = _parse_gcs_uri(prefix_uri)
         if self.store.list(prefix_uri):
             raise SourceRetrievalError(f"export prefix already has objects: {prefix_uri}")
+        if self._remaining_seconds() <= 0:
+            raise SourceRetrievalError("authorization deadline cleanup reserve reached; no new exports")
         # The exact discovered image, with the contract's bands selected explicitly and in order.
         image = self.ee.Image(provider_id).select(spec["bands"])
         export = {"description": f"{prepare_id}_{family}_{month}".replace("-", "_")[:100],
@@ -554,8 +689,21 @@ class CloudSourceAcquirer:
             export["scale"] = spec["scale"]
         task = self.ee.batch.Export.image.toCloudStorage(image=image, **export)
         task.start()
+        self._started[(family, month)] = (task, spec, prefix_uri, bucket, provider_id, prepare_id)
+        # Persist the provider task ID at once so an interrupted run can still be cleaned up.
+        task_record = {"family": family, "month": month, "provider_id": provider_id,
+                       "task_id": getattr(task, "id", None), "description": export["description"]}
+        self.store.write_text(f"{self.output_root}/prepared/{prepare_id}/provider_tasks/{family}_{month}.json",
+                              json.dumps(task_record, sort_keys=True) + "\n", if_generation_match=0)
+        return self._started[(family, month)]
+
+    def _acquire_gee(self, family, month, provider_id, prepare_id, workdir) -> AcquiredRaster:
+        from cloud.batch.evi_service import _parse_gcs_uri, _wait_for_ee_task
+
+        task, spec, prefix_uri, bucket, _, _ = self._start_gee(family, month, provider_id, prepare_id)
+        wait = min(self.timeout_seconds, max(0.0, self._remaining_seconds()))
         try:
-            _wait_for_ee_task(task, timeout_seconds=self.timeout_seconds, poll_seconds=self.poll_seconds)
+            _wait_for_ee_task(task, timeout_seconds=int(wait), poll_seconds=self.poll_seconds)
         except Exception as exc:
             raise SourceRetrievalError(f"Earth Engine export failed for {family} {month}: {exc}") from exc
         shards, refs, band_names = [], [], "single_band"
@@ -604,12 +752,15 @@ def main(argv: list[str] | None = None) -> int:
     plan.add_argument("--batch-parent", required=True, help="projects/<project>/locations/<region>")
     plan.add_argument("--batch-image-uri", required=True)
     plan.add_argument("--batch-service-account", required=True)
+    plan.add_argument("--deadline-utc", help="absolute authorization deadline, RFC3339 UTC")
     extract = commands.add_parser("extract", help="Cloud Batch: acquire planned sources and extract")
     extract.add_argument("--plan-uri", required=True)
     extract.add_argument("--plan-generation", required=True)
     extract.add_argument("--plan-sha256", required=True)
     extract.add_argument("--earth-engine-project", required=True)
+    extract.add_argument("--deadline-utc", help="absolute authorization deadline, RFC3339 UTC")
     args = parser.parse_args(argv)
+    deadline = (datetime.fromisoformat(args.deadline_utc.replace("Z", "+00:00")) if args.deadline_utc else None)
 
     import ee
     import requests
@@ -633,17 +784,17 @@ def main(argv: list[str] | None = None) -> int:
                                            request_generation=args.request_generation,
                                            request_sha256=hashlib.sha256(raw).hexdigest())
         acquirer = CloudSourceAcquirer(ee=ee, client=client, http=requests.Session(), store=store,
-                                       output_root=args.output_root)
+                                       output_root=args.output_root, deadline_utc=deadline)
         batch = batch_v1.BatchServiceClient()
         plan_and_submit(request, store=store, reader=reader, acquirer=acquirer, output_root=args.output_root,
                         submit=lambda config: submit_batch_job(config, client=batch, parent=args.batch_parent),
                         image_uri=args.batch_image_uri, service_account=args.batch_service_account,
-                        earth_engine_project=args.earth_engine_project)
+                        earth_engine_project=args.earth_engine_project, deadline_utc=deadline)
         return 0
     plan_ref = {"uri": args.plan_uri, "generation": args.plan_generation, "sha256": args.plan_sha256}
     output_root = args.plan_uri.split("/prepared/")[0]
     acquirer = CloudSourceAcquirer(ee=ee, client=client, http=requests.Session(), store=store,
-                                   output_root=output_root)
+                                   output_root=output_root, deadline_utc=deadline)
     with tempfile.TemporaryDirectory() as workdir:
         execute_prepare_plan(plan_ref, store=store, reader=reader, acquirer=acquirer, workdir=Path(workdir))
     return 0

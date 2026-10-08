@@ -1,0 +1,31 @@
+{"manifest.json": {"uri": "gs://manuel-remote-sensing-oct-delivery-debug/deliveries/oct-final-20261008a/manifest.json", "generation": "1791486960794767", "sha256": "d377d24174713e830938d5fedfc6091888e7133b8ffafdf6dc87a841b96f8971"}, "webapp_model_bundle.tar.gz": {"uri": "gs://manuel-remote-sensing-oct-delivery-debug/deliveries/oct-final-20261008a/webapp_model_bundle.tar.gz", "generation": "1791487044233595", "sha256": "92406388ba50c28c0c99efa69c4c6857b2c15cf5550fd65176639aff59ebbc22"}}
+{"members_expected": 220, "missing": [], "unexpected": [], "hash_mismatch": [], "archive_manifest_equals_root_manifest": true, "validation_recorded_at_packaging": "passed", "passed": true}
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:12.66
+	Maximum resident set size (kbytes): 1518944
+RESCORE_EXIT=0
+VALIDATION_EXIT=0
+{"status": "passed", "failures": [], "checks": {"scope_inventory_exact": true, "frozen_headers": true, "fewsnet_row_counts_consistent": true, "ipcch_row_counts_consistent": true, "shared_references": true, "reports": true, "frozen_scoring_inputs": true, "fewsnet_roster_nonempty_unique": true, "fewsnet_0m_polygon_keys": true, "fewsnet_0m_country_keys": true, "fewsnet_0m_predictions_valid": true, "fewsnet_6m_polygon_keys": true, "fewsnet_6m_country_keys": true, "fewsnet_6m_predictions_valid": true, "fewsnet_12m_polygon_keys": true, "fewsnet_12m_country_keys": true, "fewsnet_12m_predictions_valid": true, "ipcch_roster_nonempty_unique": true, "ipcch_0m_polygon_keys": true, "ipcch_0m_country_keys": true, "ipcch_0m_predictions_valid": true, "ipcch_6m_polygon_keys": true, "ipcch_6m_country_keys": true, "ipcch_6m_predictions_valid": true, "ipcch_12m_polygon_keys": true, "ipcch_12m_country_keys": true, "ipcch_12m_predictions_valid": true, "fewsnet_0m_row_identity": true, "ipcch_0m_row_identity": true, "fewsnet_6m_row_identity": true, "ipcch_6m_row_identity": true, "fewsnet_12m_row_identity": true, "ipcch_12m_row_identity": true, "fewsnet_0m_country_consistent": true, "fewsnet_6m_country_consistent": true, "fewsnet_12m_country_consistent": true, "ipcch_0m_country_consistent": true, "ipcch_6m_country_consistent": true, "ipcch_12m_country_consistent": true, "availability_complete": true, "availability_status_valid": true, "fewsnet_0m_diagnostics_regenerated": true, "fewsnet_6m_diagnostic
+	Command being timed: "/tmp/oct-replay-cloud.sh oct-final-20261008a"
+	User time (seconds): 54.14
+	System time (seconds): 6.36
+	Percent of CPU this job got: 125%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:48.05
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1518944
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 3723
+	Minor (reclaiming a frame) page faults: 577583
+	Voluntary context switches: 133824
+	Involuntary context switches: 1057
+	Swaps: 0
+	File system inputs: 767984
+	File system outputs: 7224376
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+REPLAY_SCRIPT_EXIT=0
