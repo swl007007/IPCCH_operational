@@ -1,0 +1,356 @@
+{
+  "status": "passed",
+  "origin": "2026-04",
+  "scopes": {
+    "0": {
+      "rows": 5718,
+      "numeric": {
+        "probability_crisis": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "threshold": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "population": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "lat": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "lon": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        }
+      },
+      "exact": {
+        "predicted_crisis": {
+          "mismatches": 0
+        },
+        "cluster_id": {
+          "mismatches": 0
+        },
+        "prediction_source": {
+          "mismatches": 0
+        },
+        "feature_month": {
+          "mismatches": 0
+        },
+        "target_month": {
+          "mismatches": 0
+        },
+        "horizon_months": {
+          "mismatches": 0
+        },
+        "population_reference_period": {
+          "mismatches": 0
+        },
+        "population_source": {
+          "mismatches": 0
+        },
+        "suite_version": {
+          "mismatches": 0
+        },
+        "model_artifact_path": {
+          "mismatches": 0
+        },
+        "ADMIN0": {
+          "mismatches": 0
+        },
+        "ADMIN1": {
+          "mismatches": 0
+        },
+        "ADMIN2": {
+          "mismatches": 0
+        },
+        "ADMIN3": {
+          "mismatches": 0
+        },
+        "ISO3": {
+          "mismatches": 0
+        }
+      },
+      "passed": true,
+      "missing_mask_equal": true,
+      "missing_cells": 226177,
+      "saved_prediction_sha256": "7c21f94485a5fdcab7088828ded2269dd25d706cd4b25957af4194552071dcb6",
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/0m"
+    },
+    "6": {
+      "rows": 5718,
+      "numeric": {
+        "probability_crisis": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "threshold": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "population": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "lat": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "lon": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        }
+      },
+      "exact": {
+        "predicted_crisis": {
+          "mismatches": 0
+        },
+        "cluster_id": {
+          "mismatches": 0
+        },
+        "prediction_source": {
+          "mismatches": 0
+        },
+        "feature_month": {
+          "mismatches": 0
+        },
+        "target_month": {
+          "mismatches": 0
+        },
+        "horizon_months": {
+          "mismatches": 0
+        },
+        "population_reference_period": {
+          "mismatches": 0
+        },
+        "population_source": {
+          "mismatches": 0
+        },
+        "suite_version": {
+          "mismatches": 0
+        },
+        "model_artifact_path": {
+          "mismatches": 0
+        },
+        "ADMIN0": {
+          "mismatches": 0
+        },
+        "ADMIN1": {
+          "mismatches": 0
+        },
+        "ADMIN2": {
+          "mismatches": 0
+        },
+        "ADMIN3": {
+          "mismatches": 0
+        },
+        "ISO3": {
+          "mismatches": 0
+        }
+      },
+      "passed": true,
+      "missing_mask_equal": true,
+      "missing_cells": 226177,
+      "saved_prediction_sha256": "1961d0cfc01d5352dfedcc158e395e1a8ec2c0b7d698aa1ba48ca3ac22fceb68",
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/6m"
+    },
+    "12": {
+      "rows": 5718,
+      "numeric": {
+        "probability_crisis": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "threshold": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "population": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "lat": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        },
+        "lon": {
+          "mismatches": 0,
+          "max_abs_diff": 0.0
+        }
+      },
+      "exact": {
+        "predicted_crisis": {
+          "mismatches": 0
+        },
+        "cluster_id": {
+          "mismatches": 0
+        },
+        "prediction_source": {
+          "mismatches": 0
+        },
+        "feature_month": {
+          "mismatches": 0
+        },
+        "target_month": {
+          "mismatches": 0
+        },
+        "horizon_months": {
+          "mismatches": 0
+        },
+        "population_reference_period": {
+          "mismatches": 0
+        },
+        "population_source": {
+          "mismatches": 0
+        },
+        "suite_version": {
+          "mismatches": 0
+        },
+        "model_artifact_path": {
+          "mismatches": 0
+        },
+        "ADMIN0": {
+          "mismatches": 0
+        },
+        "ADMIN1": {
+          "mismatches": 0
+        },
+        "ADMIN2": {
+          "mismatches": 0
+        },
+        "ADMIN3": {
+          "mismatches": 0
+        },
+        "ISO3": {
+          "mismatches": 0
+        }
+      },
+      "passed": true,
+      "missing_mask_equal": true,
+      "missing_cells": 226177,
+      "saved_prediction_sha256": "e9f53600dab0cad14674b40e4586caf6d3a5a8e71874d6f4c18102b64458b3d1",
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/12m"
+    }
+  },
+  "python": "/home/swl007007/.venvs/ipcch-h5-202609/bin/python",
+  "identity_source": "frozen normalized April panel (baseline replay only)",
+  "source_before": {
+    "cloud/orchestrator/delivery_scoring.py": "8dc158bd08e9cab2e8d52010ff81c1be2c396efd3b57c69abdc5959b18bd64be",
+    "cloud/orchestrator/delivery_inputs.py": "c05ee6dd91b039d3712afdab4955b939a5146cfa1e7e19baf1336bb111b96f52",
+    "fewsnet_partitioned_rf_pipeline/core/data.py": "e9b836fdad1389c092ad93311728fde664569fedb3243d783d1dec9e5141793a",
+    "fewsnet_partitioned_rf_pipeline/core/horizons.py": "2383fe487ea92dd28d076f8c6ca1d878333b244d47c81162eab41f9054131d55",
+    "fewsnet_partitioned_rf_pipeline/core/inference.py": "8caea37bceb247c58555ecf1eadf63144afc7a5ca817cafe4be898af73fcc4a5",
+    "fewsnet_partitioned_rf_pipeline/core/normalization.py": "da5a2606d5b43a423cc9706ca247dfaa9b43df114e002afce6b107cf0ad79f07",
+    "fewsnet_partitioned_rf_pipeline/core/package.py": "9b878d417f59c0565d9683196dc17aca47d66565637f6d17723e84630830bfdd",
+    "fewsnet_partitioned_rf_pipeline/core/partitions.py": "ebd6755fc267474fe9fda8229869a06388e3b4bf17b6cb8944929cbe974852c5",
+    "fewsnet_partitioned_rf_pipeline/core/preprocessing.py": "822b1c7c75c7e075b667970c63ee1b220172fcddfb2cbab1a0542c1127460d12",
+    "fewsnet_partitioned_rf_pipeline/core/thresholds.py": "d9bf93e122ca66671edabdbce6504a2cc4bb33e19d26508e743c06cb234a218f",
+    "fewsnet_partitioned_rf_pipeline/core/training.py": "82da727609bd30c6d6e49fb59a5d7f34beb7be4ea382cd2d94793848a7e92cfc",
+    "fewsnet_partitioned_rf_pipeline/core/types.py": "55738e577866c09993bff95a19b25ea2a4576baf7b104f7ee90282d2c2b35822",
+    "fewsnet_partitioned_rf_pipeline/core/validation.py": "416bc31b15e7cf5d4a0d8211dd738392eca7880d57a2296fcb8708243bdfc6e4",
+    "fewsnet_partitioned_rf_pipeline/core/__init__.py": "af134d0e2a2345f408f8f32cd4b82123489022180af2549eb8f7758ca68af650",
+    "fewsnet_partitioned_rf_pipeline/local/outputs.py": "c11d18019571c1d66da2c273e9f1b2d4f19885732f7769cb11e5c7e16e43d94a",
+    "fewsnet_partitioned_rf_pipeline/local/package.py": "ef334d013cc920e2e8f3f6b8d97db1e0bee6802a49e1808afbc295345b65077c",
+    "fewsnet_partitioned_rf_pipeline/local/runner.py": "9a0b5e5222d82324c3f756ab533cc6c8fc3550f58bc4d1acf951772239d25593",
+    "fewsnet_partitioned_rf_pipeline/local/__init__.py": "3d26e08a05cc2554636d5d47af958602d2e372d2c978629981d3f558da0c3142",
+    "fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+    "fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+    "fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json": "0e2f79ff3b32504a4468e217d1abb0c55e8d7009df6e34e2f197cc38ceff9f39",
+    "fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json": "acf6b20b954920b0f68099715e9d28add2c3ba86f15796c3eed759ed5811aa75",
+    "fewsnet_partitioned_rf_pipeline/schemas/local-model-package.schema.json": "2ba6ba9ccf13acfb3584710d1d832dc4a2203e99d54c53f7fed818dbf7ff745d",
+    "fewsnet_partitioned_rf_pipeline/schemas/local-prediction-record.schema.json": "499beaa674ea6db005007ab80fb72697b68c1712bdd8b6a9dfd9cab23f96b2e5",
+    "fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json": "557984218c0e0e08ffec1f9df21dd1d298f4f8c3e27d1032180db2b6f152bfa5",
+    "fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json": "ded30e61980e26c11f08e5eed0c2bbed94dda8605429a6fc6d097599ba099427",
+    "fewsnet_partitioned_rf_pipeline/schemas/prediction-record.schema.json": "719910b4eb1203f46f1b4dd791e2841ee581dca1f814147db9139b55dc0825f9",
+    "fewsnet_partitioned_rf_pipeline/schemas/run-manifest.schema.json": "b64f02ae448f4f7ce0d56ce5d41009f3350a771c247a143a3091dda9f3950b05",
+    "fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json": "5e5be126b748a57511ab8de18184febc18e09af6b439c17450b6b0519113d24a",
+    "fewsnet_partitioned_rf_pipeline/schemas/suite-manifest.schema.json": "0c4261d49a4f9e4734e9a6798e01cf834327967fbf4f327c7c7f9a28b3ef7169",
+    "fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json": "08fd01cebb58d843d04a60d0b2ab79d73d4b34f2ad790694db88ce848bc8faaf",
+    "fewsnet_partitioned_rf_pipeline/schemas/__init__.py": "a3173a1914c036dd004c05bd393676f94d1d85bcf2c031fd3144b56ef2e6b9c3",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/checksums.json": "03e4fb673c898e5c4f3ef58badab98b257db4e349c27204c9e656ff19f88e4d8",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/local_model_manifest.json": "51b02a8d5aba48dbc7077782ec36ef3f06d4c51bc6abb71074907151875c935a",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/model.joblib": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/threshold_report.json": "ab59086a60c7b99681ebe7c357c57c6bb508200cc71c6f3495368a39792c2956",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/training_report.json": "14fa1aa9447e86e6bc81be396ab112670f462bf4f69d4626a7b6b8810957a832",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/checksums.json": "b973b5f3d429af6ee5685a30cb74c56e8fddb3dfb1047d6e9605fe9d9af8bc29",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/local_model_manifest.json": "14bdc46272de7abd0cae4b07fe326b9c72a44c728105134f7e9897ae68716869",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/model.joblib": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/threshold_report.json": "39bb0bc0f302f1123abfe15815975b7f761514e88359d8d9b9698959c3b07135",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/training_report.json": "792920fe8ecaa34ba1d914e89526adb7b3dfe8e2429b4aebc46b49064beee7c2",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/checksums.json": "1a53d74e0aaa98ad81a653121d3910a1c02d34dcdfc6e27471a02a079822cbd0",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/local_model_manifest.json": "db0517e41744bc7e0597228420dd2a58a7602480382e519a8509617942ff169f",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/model.joblib": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/threshold_report.json": "b02e4520f116782067b6149922b800ab7a15bd3f04863c98159870ad4704d13a",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/training_report.json": "15c8e7a4a69534c991fa29b7cad114d2aed846c3cf9b6231e6a1b62bd9249180"
+  },
+  "panel_sha256": "510375f58cd835e694b6e287cce9439bbe1b6246d752daabc8151df8ffdda61d",
+  "identity_rows": 1120728,
+  "window_rows": 74334,
+  "stage": "complete",
+  "elapsed_seconds": 63.96931305099861,
+  "peak_rss_kib": 1626276,
+  "source_after": {
+    "cloud/orchestrator/delivery_scoring.py": "8dc158bd08e9cab2e8d52010ff81c1be2c396efd3b57c69abdc5959b18bd64be",
+    "cloud/orchestrator/delivery_inputs.py": "c05ee6dd91b039d3712afdab4955b939a5146cfa1e7e19baf1336bb111b96f52",
+    "fewsnet_partitioned_rf_pipeline/core/data.py": "e9b836fdad1389c092ad93311728fde664569fedb3243d783d1dec9e5141793a",
+    "fewsnet_partitioned_rf_pipeline/core/horizons.py": "2383fe487ea92dd28d076f8c6ca1d878333b244d47c81162eab41f9054131d55",
+    "fewsnet_partitioned_rf_pipeline/core/inference.py": "8caea37bceb247c58555ecf1eadf63144afc7a5ca817cafe4be898af73fcc4a5",
+    "fewsnet_partitioned_rf_pipeline/core/normalization.py": "da5a2606d5b43a423cc9706ca247dfaa9b43df114e002afce6b107cf0ad79f07",
+    "fewsnet_partitioned_rf_pipeline/core/package.py": "9b878d417f59c0565d9683196dc17aca47d66565637f6d17723e84630830bfdd",
+    "fewsnet_partitioned_rf_pipeline/core/partitions.py": "ebd6755fc267474fe9fda8229869a06388e3b4bf17b6cb8944929cbe974852c5",
+    "fewsnet_partitioned_rf_pipeline/core/preprocessing.py": "822b1c7c75c7e075b667970c63ee1b220172fcddfb2cbab1a0542c1127460d12",
+    "fewsnet_partitioned_rf_pipeline/core/thresholds.py": "d9bf93e122ca66671edabdbce6504a2cc4bb33e19d26508e743c06cb234a218f",
+    "fewsnet_partitioned_rf_pipeline/core/training.py": "82da727609bd30c6d6e49fb59a5d7f34beb7be4ea382cd2d94793848a7e92cfc",
+    "fewsnet_partitioned_rf_pipeline/core/types.py": "55738e577866c09993bff95a19b25ea2a4576baf7b104f7ee90282d2c2b35822",
+    "fewsnet_partitioned_rf_pipeline/core/validation.py": "416bc31b15e7cf5d4a0d8211dd738392eca7880d57a2296fcb8708243bdfc6e4",
+    "fewsnet_partitioned_rf_pipeline/core/__init__.py": "af134d0e2a2345f408f8f32cd4b82123489022180af2549eb8f7758ca68af650",
+    "fewsnet_partitioned_rf_pipeline/local/outputs.py": "c11d18019571c1d66da2c273e9f1b2d4f19885732f7769cb11e5c7e16e43d94a",
+    "fewsnet_partitioned_rf_pipeline/local/package.py": "ef334d013cc920e2e8f3f6b8d97db1e0bee6802a49e1808afbc295345b65077c",
+    "fewsnet_partitioned_rf_pipeline/local/runner.py": "9a0b5e5222d82324c3f756ab533cc6c8fc3550f58bc4d1acf951772239d25593",
+    "fewsnet_partitioned_rf_pipeline/local/__init__.py": "3d26e08a05cc2554636d5d47af958602d2e372d2c978629981d3f558da0c3142",
+    "fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+    "fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+    "fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json": "0e2f79ff3b32504a4468e217d1abb0c55e8d7009df6e34e2f197cc38ceff9f39",
+    "fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json": "acf6b20b954920b0f68099715e9d28add2c3ba86f15796c3eed759ed5811aa75",
+    "fewsnet_partitioned_rf_pipeline/schemas/local-model-package.schema.json": "2ba6ba9ccf13acfb3584710d1d832dc4a2203e99d54c53f7fed818dbf7ff745d",
+    "fewsnet_partitioned_rf_pipeline/schemas/local-prediction-record.schema.json": "499beaa674ea6db005007ab80fb72697b68c1712bdd8b6a9dfd9cab23f96b2e5",
+    "fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json": "557984218c0e0e08ffec1f9df21dd1d298f4f8c3e27d1032180db2b6f152bfa5",
+    "fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json": "ded30e61980e26c11f08e5eed0c2bbed94dda8605429a6fc6d097599ba099427",
+    "fewsnet_partitioned_rf_pipeline/schemas/prediction-record.schema.json": "719910b4eb1203f46f1b4dd791e2841ee581dca1f814147db9139b55dc0825f9",
+    "fewsnet_partitioned_rf_pipeline/schemas/run-manifest.schema.json": "b64f02ae448f4f7ce0d56ce5d41009f3350a771c247a143a3091dda9f3950b05",
+    "fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json": "5e5be126b748a57511ab8de18184febc18e09af6b439c17450b6b0519113d24a",
+    "fewsnet_partitioned_rf_pipeline/schemas/suite-manifest.schema.json": "0c4261d49a4f9e4734e9a6798e01cf834327967fbf4f327c7c7f9a28b3ef7169",
+    "fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json": "08fd01cebb58d843d04a60d0b2ab79d73d4b34f2ad790694db88ce848bc8faaf",
+    "fewsnet_partitioned_rf_pipeline/schemas/__init__.py": "a3173a1914c036dd004c05bd393676f94d1d85bcf2c031fd3144b56ef2e6b9c3",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/checksums.json": "03e4fb673c898e5c4f3ef58badab98b257db4e349c27204c9e656ff19f88e4d8",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/local_model_manifest.json": "51b02a8d5aba48dbc7077782ec36ef3f06d4c51bc6abb71074907151875c935a",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/model.joblib": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/threshold_report.json": "ab59086a60c7b99681ebe7c357c57c6bb508200cc71c6f3495368a39792c2956",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/0m/training_report.json": "14fa1aa9447e86e6bc81be396ab112670f462bf4f69d4626a7b6b8810957a832",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/checksums.json": "b973b5f3d429af6ee5685a30cb74c56e8fddb3dfb1047d6e9605fe9d9af8bc29",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/local_model_manifest.json": "14bdc46272de7abd0cae4b07fe326b9c72a44c728105134f7e9897ae68716869",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/model.joblib": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/threshold_report.json": "39bb0bc0f302f1123abfe15815975b7f761514e88359d8d9b9698959c3b07135",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/12m/training_report.json": "792920fe8ecaa34ba1d914e89526adb7b3dfe8e2429b4aebc46b49064beee7c2",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/checksums.json": "1a53d74e0aaa98ad81a653121d3910a1c02d34dcdfc6e27471a02a079822cbd0",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/local_model_manifest.json": "db0517e41744bc7e0597228420dd2a58a7602480382e519a8509617942ff169f",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/model.joblib": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/threshold_report.json": "b02e4520f116782067b6149922b800ab7a15bd3f04863c98159870ad4704d13a",
+    "Outcome/fewsnet_partitioned_rf/model_artifacts/local-202604-57cb3b981198-510375f58cd8/6m/training_report.json": "15c8e7a4a69534c991fa29b7cad114d2aed846c3cf9b6231e6a1b62bd9249180"
+  },
+  "source_unchanged": true
+}

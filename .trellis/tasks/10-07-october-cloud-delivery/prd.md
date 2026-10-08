@@ -6,7 +6,7 @@ Move the September manual FEWSNET and IPCCH delivery capabilities into a reprodu
 
 ## Planning status and authority
 
-- Latest user timing update (2026-10-08): cloud-debugging authorization runs through **10:30 ET / 14:30 UTC today**. Reserve time to wind down task-owned cloud work and preserve evidence before expiry; no new cloud actions beyond the window without renewed authorization. See `supervision.md`.
+- Latest user timing update (2026-10-08): cloud-debugging pre-authorization renewed through **17:00 ET / 21:00 UTC today**, superseding the earlier 10:30 ET deadline. Begin wind-down by **16:45 ET / 20:45 UTC** and preserve task-owned evidence before expiry; no new cloud actions beyond the window without renewed authorization. See `supervision.md`.
 
 - Cloud scope update (2026-10-07 ET): full cloud debugging in the verified SDK project `manuel-remote-sensing`, including necessary endpoint/service registration and startup, is authorized. The user is sleeping and requests questions only for CRITICAL issues; continue supervisor checkpoints, task-scoped deployment/testing and preservation of existing consumers. See `supervision.md` for timing and verified SDK configuration. This supersedes earlier local-only scope.
 
