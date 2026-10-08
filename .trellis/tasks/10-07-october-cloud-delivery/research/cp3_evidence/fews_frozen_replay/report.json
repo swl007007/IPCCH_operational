@@ -1,0 +1,480 @@
+{
+  "byte_identical_required": false,
+  "command": "/home/swl007007/.venvs/ipcch-h5-202609/bin/python -B /tmp/cp3-fews-frozen-replay-20261008T1158/replay.py",
+  "comparison_selfcheck": "passed",
+  "current_source_sha256": {
+    "fewsnet_partitioned_rf_pipeline/core/horizons.py": "2383fe487ea92dd28d076f8c6ca1d878333b244d47c81162eab41f9054131d55",
+    "fewsnet_partitioned_rf_pipeline/core/inference.py": "8caea37bceb247c58555ecf1eadf63144afc7a5ca817cafe4be898af73fcc4a5",
+    "fewsnet_partitioned_rf_pipeline/core/preprocessing.py": "822b1c7c75c7e075b667970c63ee1b220172fcddfb2cbab1a0542c1127460d12",
+    "fewsnet_partitioned_rf_pipeline/local/outputs.py": "c11d18019571c1d66da2c273e9f1b2d4f19885732f7769cb11e5c7e16e43d94a",
+    "fewsnet_partitioned_rf_pipeline/local/package.py": "ef334d013cc920e2e8f3f6b8d97db1e0bee6802a49e1808afbc295345b65077c"
+  },
+  "elapsed_seconds": 69.626,
+  "environment": {
+    "executable": "/home/swl007007/.venvs/ipcch-h5-202609/bin/python",
+    "libraries": {
+      "geopandas": "1.1.1",
+      "imbalanced-learn": "0.14.0",
+      "joblib": "1.5.3",
+      "numpy": "2.4.2",
+      "pandas": "3.0.0",
+      "pyarrow": "20.0.0",
+      "scikit-learn": "1.8.0",
+      "scipy": "1.17.0",
+      "xgboost": "3.2.0"
+    },
+    "python": "3.12.3"
+  },
+  "exit_status": 0,
+  "full_feature_rows": 1120728,
+  "latest_feature_rows": 5718,
+  "peak_rss_kib": 6765708,
+  "repository_head": "516c75e2690c030a5f444a1cf7b1fb6a9af9fd4d",
+  "saved_run_summary_sha256": "e574aac26fa2630dd46e9efad95bdc428dd91b9230de42dd9f34de4eba7abb1e",
+  "scopes": {
+    "0m": {
+      "discrete_dates_horizons": {
+        "cluster_id": {
+          "mismatches": 0
+        },
+        "feature_month": {
+          "mismatches": 0
+        },
+        "horizon_months": {
+          "mismatches": 0
+        },
+        "predicted_crisis": {
+          "mismatches": 0
+        },
+        "prediction_source": {
+          "mismatches": 0
+        },
+        "target_month": {
+          "mismatches": 0
+        }
+      },
+      "duplicate_keys": {
+        "replay": 0,
+        "saved": 0
+      },
+      "feature_count": 123,
+      "key_sets_equal": true,
+      "metadata": {
+        "ADMIN0": {
+          "mismatches": 0
+        },
+        "ADMIN1": {
+          "mismatches": 0
+        },
+        "ADMIN2": {
+          "mismatches": 0
+        },
+        "ADMIN3": {
+          "mismatches": 0
+        },
+        "ISO3": {
+          "mismatches": 0
+        },
+        "lat": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "lon": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "model_artifact_path": {
+          "mismatches": 0
+        },
+        "population": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "population_reference_period": {
+          "mismatches": 0
+        },
+        "population_source": {
+          "mismatches": 0
+        },
+        "source_input": {
+          "examples": [
+            {
+              "admin_code": "0",
+              "replay": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+              "saved": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+            },
+            {
+              "admin_code": "1",
+              "replay": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+              "saved": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+            },
+            {
+              "admin_code": "10",
+              "replay": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+              "saved": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+            }
+          ],
+          "mismatches": 5718
+        },
+        "suite_version": {
+          "mismatches": 0
+        }
+      },
+      "model_joblib_sha256": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
+      "native_keys": [
+        "admin_code",
+        "feature_month",
+        "target_month",
+        "horizon_months"
+      ],
+      "package_checksums": {
+        "feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+        "local_model_manifest.json": "51b02a8d5aba48dbc7077782ec36ef3f06d4c51bc6abb71074907151875c935a",
+        "model.joblib": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
+        "partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+        "threshold_report.json": "ab59086a60c7b99681ebe7c357c57c6bb508200cc71c6f3495368a39792c2956",
+        "training_report.json": "14fa1aa9447e86e6bc81be396ab112670f462bf4f69d4626a7b6b8810957a832"
+      },
+      "rows": {
+        "replay": 5718,
+        "saved": 5718
+      },
+      "saved_prediction_sha256": "7c21f94485a5fdcab7088828ded2269dd25d706cd4b25957af4194552071dcb6",
+      "score_and_key_parity": true,
+      "scores": {
+        "probability_crisis": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "threshold": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        }
+      },
+      "source_git_commit": "57cb3b98119813abfc4bf15267270457a4727224",
+      "threshold": 0.48,
+      "validation": {
+        "fallback_counts": {
+          "pooled_missing_partition_model": 0,
+          "pooled_single_class": 147,
+          "pooled_small_partition": 0,
+          "pooled_unmapped": 353
+        },
+        "missing_admin_codes": [
+          "216",
+          "2786"
+        ],
+        "population_counts": {
+          "missing_raw": 2,
+          "raw_last_observed": 5716
+        },
+        "positive_label_count": 2700,
+        "probability_max": 0.98,
+        "probability_mean": 0.49171563483735575,
+        "probability_min": 0.0,
+        "row_count": 5718,
+        "threshold": 0.48
+      }
+    },
+    "12m": {
+      "discrete_dates_horizons": {
+        "cluster_id": {
+          "mismatches": 0
+        },
+        "feature_month": {
+          "mismatches": 0
+        },
+        "horizon_months": {
+          "mismatches": 0
+        },
+        "predicted_crisis": {
+          "mismatches": 0
+        },
+        "prediction_source": {
+          "mismatches": 0
+        },
+        "target_month": {
+          "mismatches": 0
+        }
+      },
+      "duplicate_keys": {
+        "replay": 0,
+        "saved": 0
+      },
+      "feature_count": 123,
+      "key_sets_equal": true,
+      "metadata": {
+        "ADMIN0": {
+          "mismatches": 0
+        },
+        "ADMIN1": {
+          "mismatches": 0
+        },
+        "ADMIN2": {
+          "mismatches": 0
+        },
+        "ADMIN3": {
+          "mismatches": 0
+        },
+        "ISO3": {
+          "mismatches": 0
+        },
+        "lat": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "lon": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "model_artifact_path": {
+          "mismatches": 0
+        },
+        "population": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "population_reference_period": {
+          "mismatches": 0
+        },
+        "population_source": {
+          "mismatches": 0
+        },
+        "source_input": {
+          "examples": [
+            {
+              "admin_code": "0",
+              "replay": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+              "saved": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+            },
+            {
+              "admin_code": "1",
+              "replay": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+              "saved": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+            },
+            {
+              "admin_code": "10",
+              "replay": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+              "saved": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+            }
+          ],
+          "mismatches": 5718
+        },
+        "suite_version": {
+          "mismatches": 0
+        }
+      },
+      "model_joblib_sha256": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e",
+      "native_keys": [
+        "admin_code",
+        "feature_month",
+        "target_month",
+        "horizon_months"
+      ],
+      "package_checksums": {
+        "feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+        "local_model_manifest.json": "14bdc46272de7abd0cae4b07fe326b9c72a44c728105134f7e9897ae68716869",
+        "model.joblib": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e",
+        "partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+        "threshold_report.json": "39bb0bc0f302f1123abfe15815975b7f761514e88359d8d9b9698959c3b07135",
+        "training_report.json": "792920fe8ecaa34ba1d914e89526adb7b3dfe8e2429b4aebc46b49064beee7c2"
+      },
+      "rows": {
+        "replay": 5718,
+        "saved": 5718
+      },
+      "saved_prediction_sha256": "e9f53600dab0cad14674b40e4586caf6d3a5a8e71874d6f4c18102b64458b3d1",
+      "score_and_key_parity": true,
+      "scores": {
+        "probability_crisis": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "threshold": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        }
+      },
+      "source_git_commit": "57cb3b98119813abfc4bf15267270457a4727224",
+      "threshold": 0.45,
+      "validation": {
+        "fallback_counts": {
+          "pooled_missing_partition_model": 0,
+          "pooled_single_class": 147,
+          "pooled_small_partition": 0,
+          "pooled_unmapped": 353
+        },
+        "missing_admin_codes": [
+          "216",
+          "2786"
+        ],
+        "population_counts": {
+          "missing_raw": 2,
+          "raw_last_observed": 5716
+        },
+        "positive_label_count": 2505,
+        "probability_max": 0.9,
+        "probability_mean": 0.4488387548093739,
+        "probability_min": 0.04,
+        "row_count": 5718,
+        "threshold": 0.45
+      }
+    },
+    "6m": {
+      "discrete_dates_horizons": {
+        "cluster_id": {
+          "mismatches": 0
+        },
+        "feature_month": {
+          "mismatches": 0
+        },
+        "horizon_months": {
+          "mismatches": 0
+        },
+        "predicted_crisis": {
+          "mismatches": 0
+        },
+        "prediction_source": {
+          "mismatches": 0
+        },
+        "target_month": {
+          "mismatches": 0
+        }
+      },
+      "duplicate_keys": {
+        "replay": 0,
+        "saved": 0
+      },
+      "feature_count": 123,
+      "key_sets_equal": true,
+      "metadata": {
+        "ADMIN0": {
+          "mismatches": 0
+        },
+        "ADMIN1": {
+          "mismatches": 0
+        },
+        "ADMIN2": {
+          "mismatches": 0
+        },
+        "ADMIN3": {
+          "mismatches": 0
+        },
+        "ISO3": {
+          "mismatches": 0
+        },
+        "lat": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "lon": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "model_artifact_path": {
+          "mismatches": 0
+        },
+        "population": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "population_reference_period": {
+          "mismatches": 0
+        },
+        "population_source": {
+          "mismatches": 0
+        },
+        "source_input": {
+          "examples": [
+            {
+              "admin_code": "0",
+              "replay": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+              "saved": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+            },
+            {
+              "admin_code": "1",
+              "replay": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+              "saved": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+            },
+            {
+              "admin_code": "10",
+              "replay": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+              "saved": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv"
+            }
+          ],
+          "mismatches": 5718
+        },
+        "suite_version": {
+          "mismatches": 0
+        }
+      },
+      "model_joblib_sha256": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
+      "native_keys": [
+        "admin_code",
+        "feature_month",
+        "target_month",
+        "horizon_months"
+      ],
+      "package_checksums": {
+        "feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+        "local_model_manifest.json": "db0517e41744bc7e0597228420dd2a58a7602480382e519a8509617942ff169f",
+        "model.joblib": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
+        "partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+        "threshold_report.json": "b02e4520f116782067b6149922b800ab7a15bd3f04863c98159870ad4704d13a",
+        "training_report.json": "15c8e7a4a69534c991fa29b7cad114d2aed846c3cf9b6231e6a1b62bd9249180"
+      },
+      "rows": {
+        "replay": 5718,
+        "saved": 5718
+      },
+      "saved_prediction_sha256": "1961d0cfc01d5352dfedcc158e395e1a8ec2c0b7d698aa1ba48ca3ac22fceb68",
+      "score_and_key_parity": true,
+      "scores": {
+        "probability_crisis": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "threshold": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        }
+      },
+      "source_git_commit": "57cb3b98119813abfc4bf15267270457a4727224",
+      "threshold": 0.41,
+      "validation": {
+        "fallback_counts": {
+          "pooled_missing_partition_model": 0,
+          "pooled_single_class": 147,
+          "pooled_small_partition": 0,
+          "pooled_unmapped": 353
+        },
+        "missing_admin_codes": [
+          "216",
+          "2786"
+        ],
+        "population_counts": {
+          "missing_raw": 2,
+          "raw_last_observed": 5716
+        },
+        "positive_label_count": 2234,
+        "probability_max": 1.0,
+        "probability_mean": 0.38764078349073106,
+        "probability_min": 0.0,
+        "row_count": 5718,
+        "threshold": 0.41
+      }
+    }
+  },
+  "source_input": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/Outcome/fewsnet_partitioned_rf/raw/FEWSNET_forecast_unadjusted_bm_2025_combined.normalized-v1.csv",
+    "rows": 1120728,
+    "sha256": "510375f58cd835e694b6e287cce9439bbe1b6246d752daabc8151df8ffdda61d",
+    "size_bytes": 773553094
+  },
+  "stage": "complete",
+  "status": "passed",
+  "tolerance": {
+    "atol": 1e-12,
+    "rtol": 0
+  }
+}

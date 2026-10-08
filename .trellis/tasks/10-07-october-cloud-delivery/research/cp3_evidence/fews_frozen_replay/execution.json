@@ -1,0 +1,11 @@
+{
+  "bounded_command": "timeout 180s /home/swl007007/.venvs/ipcch-h5-202609/bin/python -B /tmp/cp3-fews-frozen-replay-20261008T1158/replay.py > /tmp/cp3-fews-frozen-replay-20261008T1158/replay.log 2>&1",
+  "observed_exit_status": 0,
+  "first_attempt_exit_status": 1,
+  "first_attempt_issue": "Temporary script SyntaxError; corrected before any model execution",
+  "report_sha256": "3fd25399c12cbc7ff1665f2eb74ec210ae3189f305c70031887c6dcff89e6d5f",
+  "script_sha256": "5a80d2936119d31b89b113e6a558d545f28f5a5fcfacf54afde867f8dbd4e319",
+  "log_sha256": "abc9dc3b8272da356fba462845bde03dcef4be1ad680c87499840dd0c8633409",
+  "source_files_unchanged_during_replay": true,
+  "repository_head_after": "516c75e2690c030a5f444a1cf7b1fb6a9af9fd4d"
+}

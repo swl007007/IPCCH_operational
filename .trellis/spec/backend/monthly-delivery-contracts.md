@@ -21,6 +21,8 @@ Native IDs stay strings, including leading zeros. Fill only within the same ID f
 
 Preparation binds immutable history per source/system, geometry/roster and discovered provider identity. History and new observations obey min(origin, last month completed by cutoff). EE acquisition uses the discovered image ID, with explicit named FLDAS bands; GOSIF retains raw compressed bytes/hash. Raster mosaics preserve real masks and valid zero values by setting an explicit floating NaN destination nodata on merge. Current mappings are FEWS nightlight mean, IPCCH nightlight sum, and regional mean of provider GOSIF SD. Both native rosters remain separate.
 
+Latest-source discovery is independent of the baseline's first/last rows: search to the product's catalog start and fetch the actual latest eligible product even when baseline rows extend later. Later history rows are excluded from observation coverage and recorded as `history_beyond_provider_vintage_excluded`; preserved input bytes are unchanged. No age cap rejects successful discovery of an old latest product. Delivery must apply the same exclusions when combining pinned history with new observations. `SYSTEM_FAMILIES` includes only consumed source families; FEWS does not require a GOSIF SD snapshot.
+
 ## 4. Validation and error matrix
 
 | Condition | Behavior |
@@ -46,6 +48,8 @@ Preparation binds immutable history per source/system, geometry/roster and disco
 Use `tests/test_refresh_h5_inputs.py`, `tests/cloud/test_causal_fill.py`, `tests/cloud/test_delivery_manifest.py` and existing manifest/run-state/release regressions. Assert four source choices, unchanged unrelated columns, Forecast exclusion, exact calendar matching, no cross-area/future fill, whole-column absence, final-feature rule identity, explicit null diagnostics and reference failures. Real v3 converter equivalence is separately recorded in task research. Do not claim live GCP or model acceptance from these tests.
 
 CP2 adds `tests/cloud/test_remote_sources.py` and `test_prepare.py`: real tiny GeoTIFFs including a valid zero and a separately masked cell, named multiband reductions, duplicate/failed preparation, historical cutoff, pinned generation/request hash and production-acquirer SDK mocks. `test_cloud_batch_evi_worker.py` protects the old launcher default. Live cloud evidence is a separate checkpoint.
+
+Provider-vintage regressions cover successful latest discovery before the baseline start, re-extraction of the latest month despite a later baseline, exclusion of later filled rows, and per-area fallback when the new raster has no valid pixel. The production HTTP fake verifies that discovery actually reaches the older published URL.
 
 ## 7. Wrong vs correct
 

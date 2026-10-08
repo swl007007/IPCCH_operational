@@ -1,0 +1,209 @@
+{
+  "command": "/usr/bin/time -v -o /tmp/cp3-fews-wrapper-replay-20261008T1240/time.txt timeout 180s /home/swl007007/.venvs/ipcch-h5-202609/bin/python -B /tmp/cp3-fews-wrapper-replay-20261008T1240/replay.py",
+  "comparison_selfcheck": "passed",
+  "elapsed_seconds": 97.878,
+  "exit_status": 0,
+  "full_feature_rows": 1120728,
+  "panel_rows": 1120728,
+  "panel_sha256": "510375f58cd835e694b6e287cce9439bbe1b6246d752daabc8151df8ffdda61d",
+  "peak_rss_kib": 7297916,
+  "python_executable": "/home/swl007007/.venvs/ipcch-h5-202609/bin/python",
+  "scopes": {
+    "0m": {
+      "audit_fields_pass": true,
+      "duplicate_keys": {
+        "saved": 0,
+        "wrapper": 0
+      },
+      "exact": {
+        "cluster_id": {
+          "mismatches": 0
+        },
+        "feature_month": {
+          "mismatches": 0
+        },
+        "horizon_months": {
+          "mismatches": 0
+        },
+        "predicted_crisis": {
+          "mismatches": 0
+        },
+        "prediction_source": {
+          "mismatches": 0
+        },
+        "target_month": {
+          "mismatches": 0
+        }
+      },
+      "key_sets_equal": true,
+      "missingness_and_rules": {
+        "columns_equal_actual_feature_columns": true,
+        "feature_count": 123,
+        "index_equal_actual_scoring_frame": true,
+        "mask_equal_preimputation_nonfinite": true,
+        "missing_cells": 226177,
+        "rule_count": 123,
+        "rule_examples": {
+          "FEWSNET_admin_code": "MaxPlusImputer[FEWSNET_admin_code]=np.float64(571700.0)",
+          "lat": "MaxPlusImputer[lat]=np.float64(3822.374755974924)",
+          "lon": "MaxPlusImputer[lon]=np.float64(7333.798817378395)"
+        },
+        "rules_equal_saved_imputer_values": true,
+        "saved_imputer_class": "MaxPlusImputer",
+        "saved_imputer_feature_count": 123,
+        "saved_imputer_stat_count": 123
+      },
+      "parity_pass": true,
+      "rows": {
+        "saved": 5718,
+        "wrapper": 5718
+      },
+      "saved_sha256": "7c21f94485a5fdcab7088828ded2269dd25d706cd4b25957af4194552071dcb6",
+      "scores": {
+        "probability_crisis": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "threshold": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        }
+      },
+      "threshold": 0.48
+    },
+    "12m": {
+      "audit_fields_pass": true,
+      "duplicate_keys": {
+        "saved": 0,
+        "wrapper": 0
+      },
+      "exact": {
+        "cluster_id": {
+          "mismatches": 0
+        },
+        "feature_month": {
+          "mismatches": 0
+        },
+        "horizon_months": {
+          "mismatches": 0
+        },
+        "predicted_crisis": {
+          "mismatches": 0
+        },
+        "prediction_source": {
+          "mismatches": 0
+        },
+        "target_month": {
+          "mismatches": 0
+        }
+      },
+      "key_sets_equal": true,
+      "missingness_and_rules": {
+        "columns_equal_actual_feature_columns": true,
+        "feature_count": 123,
+        "index_equal_actual_scoring_frame": true,
+        "mask_equal_preimputation_nonfinite": true,
+        "missing_cells": 226177,
+        "rule_count": 123,
+        "rule_examples": {
+          "FEWSNET_admin_code": "MaxPlusImputer[FEWSNET_admin_code]=np.float64(571700.0)",
+          "lat": "MaxPlusImputer[lat]=np.float64(3822.374755974924)",
+          "lon": "MaxPlusImputer[lon]=np.float64(7333.798817378395)"
+        },
+        "rules_equal_saved_imputer_values": true,
+        "saved_imputer_class": "MaxPlusImputer",
+        "saved_imputer_feature_count": 123,
+        "saved_imputer_stat_count": 123
+      },
+      "parity_pass": true,
+      "rows": {
+        "saved": 5718,
+        "wrapper": 5718
+      },
+      "saved_sha256": "e9f53600dab0cad14674b40e4586caf6d3a5a8e71874d6f4c18102b64458b3d1",
+      "scores": {
+        "probability_crisis": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "threshold": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        }
+      },
+      "threshold": 0.45
+    },
+    "6m": {
+      "audit_fields_pass": true,
+      "duplicate_keys": {
+        "saved": 0,
+        "wrapper": 0
+      },
+      "exact": {
+        "cluster_id": {
+          "mismatches": 0
+        },
+        "feature_month": {
+          "mismatches": 0
+        },
+        "horizon_months": {
+          "mismatches": 0
+        },
+        "predicted_crisis": {
+          "mismatches": 0
+        },
+        "prediction_source": {
+          "mismatches": 0
+        },
+        "target_month": {
+          "mismatches": 0
+        }
+      },
+      "key_sets_equal": true,
+      "missingness_and_rules": {
+        "columns_equal_actual_feature_columns": true,
+        "feature_count": 123,
+        "index_equal_actual_scoring_frame": true,
+        "mask_equal_preimputation_nonfinite": true,
+        "missing_cells": 226177,
+        "rule_count": 123,
+        "rule_examples": {
+          "FEWSNET_admin_code": "MaxPlusImputer[FEWSNET_admin_code]=np.float64(571700.0)",
+          "lat": "MaxPlusImputer[lat]=np.float64(3822.374755974924)",
+          "lon": "MaxPlusImputer[lon]=np.float64(7333.798817378395)"
+        },
+        "rules_equal_saved_imputer_values": true,
+        "saved_imputer_class": "MaxPlusImputer",
+        "saved_imputer_feature_count": 123,
+        "saved_imputer_stat_count": 123
+      },
+      "parity_pass": true,
+      "rows": {
+        "saved": 5718,
+        "wrapper": 5718
+      },
+      "saved_sha256": "1961d0cfc01d5352dfedcc158e395e1a8ec2c0b7d698aa1ba48ca3ac22fceb68",
+      "scores": {
+        "probability_crisis": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        },
+        "threshold": {
+          "max_abs_diff": 0.0,
+          "mismatches": 0
+        }
+      },
+      "threshold": 0.41
+    }
+  },
+  "source_sha256_after": "d403942d3eec094125b23c98e89beb037e785d222e7daa280bfa7650447b2663",
+  "source_sha256_before": "d403942d3eec094125b23c98e89beb037e785d222e7daa280bfa7650447b2663",
+  "source_unchanged": true,
+  "stage": "complete",
+  "status": "passed",
+  "tolerance": {
+    "atol": 1e-12,
+    "rtol": 0
+  },
+  "transform_calls": 1
+}

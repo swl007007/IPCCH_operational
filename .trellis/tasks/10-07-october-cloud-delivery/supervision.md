@@ -2,11 +2,13 @@
 
 ## Authority and scope
 
+**Latest authorization deadline (user, 2026-10-08):** cloud-debugging window extended through **2026-10-08 10:30 ET (14:30 UTC)**. This explicit end time supersedes earlier 09:00 timing interpretations below. Continue authorized task-scoped work within the window, reserve time to inspect and wind down only task-owned jobs/exports before expiry, and preserve partial/failure evidence and accepted pointers. No new cloud-debugging actions after expiry without renewed authority. Local implementation/review remains authorized; training and unrelated resources remain excluded.
+
 **Latest cloud authorization (2026-10-07 ET):** the user granted full cloud-debugging authority in the current Google SDK project `manuel-remote-sensing`, mentioned 2026-10-08 09:00 ET, and then explicitly authorized attempting to register/enable/start missing endpoints/services while they sleep, asking to be interrupted only for CRITICAL issues. Supervisor announced continuing now under that follow-up instruction and treating 09:00 ET as a progress checkpoint. SDK live config confirms project `manuel-remote-sensing`, account `weilun.shi@cgiar.org`, compute region `us-central1` (zone `us-east1-b`; do not assume these form one location). This supersedes earlier no-cloud-debug/deployment scope in these documents. Necessary service enablement, task-scoped IAM/resource setup, image/job deployment, live preparation/scoring and cloud debugging are authorized. Use isolated task/staging namespaces and preserve existing accepted consumer releases. Model training, unrelated cloud changes, and consumer production cutover remain outside this task. No extra task audit. Supervisor continues checkpoint control and escalates only issues that cannot safely be resolved within this authority.
 
 Following the v0.4 planning summary, the user explicitly requested: use Herdr to communicate with another Claude Opus 5.5 1M, have it implement this spec, and have Codex review checkpoints and supervise; no additional Trellis task audit. This is the subsequent implementation approval. It supersedes earlier design-only and automatic audit-controller lifecycle requirements for this task. Do not start/register/close a trellis-audit run or modify unrelated existing audit enrollment.
 
-Continue normal Trellis task/context tracking with native `task.py start`, implementation checks and eventual supervised finish. Code changes and relevant local validation/model replay are authorized. Training remains deferred. Cloud deployment/resource mutation, production runs and release-pointer changes are not authorized by this handoff.
+Continue normal Trellis task/context tracking with native `task.py start`, implementation checks and eventual supervised finish. Code changes and relevant local validation/model replay are authorized. Training remains deferred. The initial local-only handoff has been superseded by the cloud authorization above; existing-consumer production cutover remains separate.
 
 ## Verified session binding
 
@@ -30,14 +32,14 @@ Executor maintains `PROGRESS.md`: current checkpoint, changed paths, commands/re
 | CP1 | Manifest/raw choices/calendar filling contracts and focused tests (M2 and relevant M5 contract pieces) | Causal semantics, native IDs, four source choices, provenance and no training |
 | CP2 | Remote preparation adapters and source/geometry contracts (M3) | Verified reducer/scale/key lineage, latest complete month, failure vs lag, local reference evidence |
 | CP3 | Six-package scoring, country/optional diagnostics, output/package compatibility (M4) | Correct horizons, output schemas, null diagnostics, immutable assets, relocation/replay evidence |
-| CP4 | Event/job/run-state/release composition and deployment definitions (M5) | Generation binding, duplicate no-op, new-ID retry, CAS preservation; local/mock tests only |
-| CP5 | Integrated local validation, scoped diff, documentation, reproducibility and remaining cloud pilot plan | Supervisor final review; distinguish implemented/tested from unrun cloud acceptance |
+| CP4 | Event/job/run-state/release composition and deployment definitions (M5) | Generation binding, duplicate no-op, new-ID retry, CAS preservation; local/mock and authorized staging validation |
+| CP5 | Integrated validation, scoped diff, documentation, reproducibility and staging pilot evidence | Supervisor final review; distinguish implemented/tested from unrun cloud acceptance |
 
 Milestones can be reordered only by explicit supervisor response, with requirement mappings retained. The baseline acceptance evidence and approved task documents should be committed separately before product implementation after GitNexus detect_changes; never stage unrelated changes. GitNexus impact is mandatory before symbol edits, and HIGH/CRITICAL results must be surfaced before proceeding. Do not fabricate a clean baseline or silently omit existing changes.
 
 ## Status
 
-Binding re-verified against live Herdr state. Native Trellis task status is `in_progress`, branch `feat/october-cloud-delivery`. No additional task audit or cloud execution has started.
+Binding re-verified against live Herdr state. Native Trellis task status is `in_progress`, branch `feat/october-cloud-delivery`. CP0–CP2 accepted and committed through `516c75e`; CP3 and authorized task-scoped cloud setup are in progress. No additional task audit.
 
 ### CP0 disposition — 2026-10-07
 
@@ -60,3 +62,9 @@ After CP1 commit, proceed to CP2 current-script remote preparation for all four 
 CP2 accepted after the five corrections detailed in `research/cp2-supervisor-review.md`; supervisor final 39-test run passed. Existing Batch launcher change is a default-preserving worker module field; upstream impact LOW, diff detection MEDIUM. Broader regression retains the known baseline horizon failure and dependency deprecation warnings. This is current-script/local/mock acceptance, not live cloud acceptance.
 
 After the CP2 commit, the executor may proceed with CP3 pure scoring/assembly, country outputs, optional diagnostics and portable bundle, and perform the authorized task-scoped cloud setup/smoke debugging needed to make CP2 executable. Project is verified `manuel-remote-sensing`; required APIs have been enabled successfully by the supervisor. Read `research/cp3-reuse-pointers.md` and `research/cp4-platform-references.md`. Use a bounded cloud smoke run before full extraction, record actual resource/image/job IDs and source coverage, and preserve existing unrelated resources/accepted consumer pointers. No training or extra Trellis audit. Report failures and corrections through Herdr; ordinary setup issues are within authority, CRITICAL unresolved issues return to user. Supervisor still reviews each checkpoint before claiming acceptance.
+
+### CP3 interim evidence — 2026-10-08
+
+Frozen April FEWS 0/6/12 replay accepted with exact scores/decisions/keys in the pinned environment; only source-input path metadata differs. See `research/cp3-supervisor-review.md` and its persisted evidence. October assembly, exports, portable bundle and cloud execution remain pending. Successful discovery of GOSIF latest 2024-12 is permitted lag, but preparation must not confuse later filled baseline rows with actual new provider observations. Executor is correcting this integration before the bounded live smoke. No further historical provenance investigation.
+
+Supervisor authorized full remote dependency-window refresh after the executor observed all-area April 2026 EVI/nightlight zeros in both September panels. EVI/FLDAS/VIIRS refresh from 2025-10 through each actual latest completed product; add explicit pinned per-family `refresh_from` request/plan semantics. GOSIF uses actual latest 2024-12 with staleness. Preserve original panels and steady historical zeros outside the refreshed window; no zero-removal heuristic or historical investigation. All-source bounded smoke and resource checks precede full-window execution. Cloud authority covers this task-scoped refresh. The 09:00 ET checkpoint reports actual progress, not presumed completion.

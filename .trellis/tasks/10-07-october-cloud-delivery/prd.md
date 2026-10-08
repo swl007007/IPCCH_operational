@@ -6,15 +6,17 @@ Move the September manual FEWSNET and IPCCH delivery capabilities into a reprodu
 
 ## Planning status and authority
 
+- Latest user timing update (2026-10-08): cloud-debugging authorization runs through **10:30 ET / 14:30 UTC today**. Reserve time to wind down task-owned cloud work and preserve evidence before expiry; no new cloud actions beyond the window without renewed authorization. See `supervision.md`.
+
 - Cloud scope update (2026-10-07 ET): full cloud debugging in the verified SDK project `manuel-remote-sensing`, including necessary endpoint/service registration and startup, is authorized. The user is sleeping and requests questions only for CRITICAL issues; continue supervisor checkpoints, task-scoped deployment/testing and preservation of existing consumers. See `supervision.md` for timing and verified SDK configuration. This supersedes earlier local-only scope.
 
 - Latest scope update (2026-10-07): the user explicitly stopped historical provenance investigation: reuse fixed features directly and prioritize this repository's existing scripts for remote feature construction. This supersedes earlier historical canonical-panel/extractor/FID-lineage stop gates. Preserve current native IDs and test the selected construction; do not claim historical numerical parity or continue archaeology.
 
-- Brainstorm and document-grill product decisions are consolidated; design and execution plan are at revision 0.5. After reviewing the planning summary, the user explicitly requested Claude Opus 5.5 1M implementation under Codex supervisor/checkpoint review. Executable model/input checks remain; historical lineage requirements are superseded by the latest scope update above.
+- Brainstorm and document-grill product decisions are consolidated; design and execution plan are at revision 0.6. After reviewing the planning summary, the user explicitly requested Claude Opus 5.5 1M implementation under Codex supervisor/checkpoint review. Executable model/input checks remain; historical lineage requirements are superseded by the latest scope update above.
 - On 2026-10-07 the user explicitly authorized creation of a Trellis task, superseding the earlier map-only/no-task preference.
 - Requested sequence: brainstorm → persist specification → grill against the documents → final alignment. Use Trellis for this task; do not use Spec Kit or Superpowers lifecycle gates. Existing documents remain evidence of scientific and delivery contracts, not workflow authority.
 - `design.md` holds the technical specification and `implement.md` the execution plan. User-owned decisions G1–G3 are resolved. Implementation approval is recorded in `supervision.md`; acceptance gates remain binding.
-- Current authorization covers supervised implementation and relevant local validation/replay. Training remains deferred; cloud resource mutation, production runs/deployment and release publication require their own agreed scope. The user explicitly waived additional Trellis task audit for this task; use direct supervisor–executor checkpoints instead of audit-controller enrollment/start/close.
+- Current authorization covers supervised implementation, relevant local validation/replay and task-scoped cloud debugging/deployment. Training remains deferred; existing-consumer production cutover requires separate authority. The user explicitly waived additional Trellis task audit for this task; use direct supervisor–executor checkpoints instead of audit-controller enrollment/start/close.
 
 ## Requirements and confirmed decisions
 
@@ -64,7 +66,7 @@ Document-grill decision G3, confirmed on 2026-10-07: submission freezes the mani
 
 ### R8 — Accept existing models first; defer training
 
-Confirmed by the user on 2026-10-07: first assess and accept the existing FEWSNET and IPCCH 0/6/12 model packages; training is deferred. Manifest-triggered execution loads explicitly accepted, frozen model versions and does not submit training. Existing packages are candidates, not already accepted releases. A failed acceptance check must be reported for a separate decision; it must not silently trigger retraining. This decision establishes the planned model lifecycle, without expanding the current design-only authorization into model execution.
+Confirmed by the user on 2026-10-07: first assess and accept the existing FEWSNET and IPCCH 0/6/12 model packages; training is deferred. Manifest-triggered execution loads explicitly accepted, frozen model versions and does not submit training. Existing packages are candidates, not already accepted releases. A failed acceptance check must be reported for a separate decision; it must not silently trigger retraining. Subsequent supervised implementation and cloud authorization permit the required replay and inference checks.
 
 ### R9 — Operator-initiated cloud preparation
 
@@ -93,7 +95,7 @@ Code baseline: `4a42f1f666a4f2d5d2616069fe25ddd81f2662cb`. Existing architecture
 | `research/model-and-lineage-acceptance.md`; `fewsnet_partitioned_rf_pipeline/core/validation.py:121-142`; `model_pipeline/ipcch_launch_runtime/feature_contract.py:318-345` | FEWS candidates require Python 3.12 and exact saved dependencies, unlike the old Python 3.11 image. IPCCH saves training medians and XGBoost 3.2.0 models but lacks a complete recorded training environment. Model replay remains pending. |
 | `archive/notebooks/Final_harmonise/00_combine_all_ch.ipynb`, cells 24–28,32,45; `research/model-and-lineage-acceptance.md` | CH naming/reducer links are established, but canonical IPCCH/FEWS lineage and legacy zone-ID mapping remain incomplete. Global notebook fills/zero substitutions conflict with R4 and must not be reintroduced. Historical artifacts remain preserved. |
 
-CP0 performed FEWS load/identity checks and IPCCH frozen-input diagnostic replay; see `research/cp0-acceptance-evidence.md` for limitations and saved-output clipping provenance. No live GCP deployment/IAM/source-freshness inspection, FEWS prediction replay, local/cloud numerical parity run, or complete delivery acceptance rerun has been performed. Previously saved “passed” reports are not verification for this task.
+CP0 performed FEWS load/identity checks and IPCCH frozen-input diagnostic replay; see `research/cp0-acceptance-evidence.md` for limitations and saved-output clipping provenance. CP1–CP2 are accepted through commit `516c75e`. CP3 now includes an independently verified FEWS frozen-input replay, recorded in `research/cp3-supervisor-review.md`; live provider/resource discovery and task-scoped cloud setup are in progress. Local/cloud parity and complete October delivery acceptance remain pending. Previously saved “passed” reports are not verification for this task.
 
 ## Acceptance criteria
 
@@ -113,7 +115,7 @@ CP0 performed FEWS load/identity checks and IPCCH frozen-input diagnostic replay
 
 ## Risks and remaining acceptance evidence
 
-No user-owned brainstorm or G1–G3 choice remains unresolved. `design.md` section 10 and `implement.md` assign the remaining technical checks: canonical feature/region lineage, candidate-model replay, FEWS normalization extension, provider completeness and source availability, native event-trigger deployment, and numerical resource limits. Metadata inspection is complete only where the evidence table states so; these checks are not collectively passed.
+No user-owned brainstorm or G1–G3 choice remains unresolved. `design.md` section 10 and `implement.md` assign the technical checks: model/input compatibility, FEWS normalization extension, provider completeness and source availability, native event-trigger deployment, and numerical resource limits. Historical canonical feature/region lineage is no longer a gate. Evidence is complete only where the current checkpoint review states so; these checks are not collectively passed.
 
 The first acceptance milestone checks model loading/runtime and current input compatibility. Historical canonical-panel/extractor lineage is no longer required before adapters, per the latest user instruction. Current source versions/native IDs remain explicit, and no retraining or silent normalization change is authorized. Implementation continues under supervisor review; production readiness remains outstanding.
 
