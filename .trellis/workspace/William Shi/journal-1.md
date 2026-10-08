@@ -5,3 +5,34 @@
 
 ---
 
+
+
+## Session 1: October cloud delivery completed
+<!-- trellis-session: v=2 fp=5b4a098464455fc5 -->
+
+**Date**: 2026-10-08
+**Task**: October cloud delivery completed
+**Branch**: `feat/october-cloud-delivery`
+
+### Summary
+
+Full remote refresh, manifest-triggered FEWSNET and IPCCH 0/6/12 delivery, 30-table offline replay exact; staging published, all jobs terminal. Close and spot audits explicitly skipped.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b7e83f9` | feat: deliver October FEWSNET and IPCCH forecasts through cloud pipeline |
+
+### Testing
+
+- 644 passed across recorded runs; 9 skips; one known baseline horizon failure (not an all-green suite)
+- [OK] Final cloud run and offline bundle replay passed; 33 EE exports completed
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Production consumer cutover and training remain separate; see deploy/october_delivery/QUICKSTART.zh-CN.md

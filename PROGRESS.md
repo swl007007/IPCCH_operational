@@ -1,9 +1,9 @@
-# Active Task: October Cloud Delivery (Trellis `10-07-october-cloud-delivery`)
+# Completed Task: October Cloud Delivery (Trellis `10-07-october-cloud-delivery`)
 
-Operational ledger only; it does not grant authority. Authority: `.trellis/tasks/10-07-october-cloud-delivery/{supervision,prd,design,implement}.md`.
+Operational ledger only; it does not grant authority. Authority: `.trellis/tasks/archive/2026-10/10-07-october-cloud-delivery/{supervision,prd,design,implement}.md`.
 
 - Executor: Claude Opus 5.5 1M, Herdr `wR:p3`, session `e8ac76ab-3486-4e51-b70c-ed09b2846fc7`. Supervisor: Codex `wR:p1`, session `01a11908-591c-7bf0-8a46-1bf09c6019f9`.
-- Branch `feat/october-cloud-delivery` (created by supervisor; do not switch). Source baseline `4a42f1f666a4f2d5d2616069fe25ddd81f2662cb`; task-doc/CP0 baseline commit `1fa71a3` (supervisor). CP1 changes are uncommitted pending review.
+- Branch `feat/october-cloud-delivery` (created by supervisor; do not switch). Source baseline `4a42f1f666a4f2d5d2616069fe25ddd81f2662cb`; task-doc/CP0 baseline commit `1fa71a3` (supervisor). CP0–CP5 accepted; implementation committed as b7e83f9 using Windows Git.
 - Not executor-owned; leave untouched: `.trellis/.template-hashes.json`, AGENTS.md/CLAUDE.md index edits, `.agents/skills/*`, `.codex/`, `.birdview/`.
 - Constraints: no training, no push, no additional Trellis task audit, no existing-consumer cutover/release-pointer changes. Do not patch site-packages or disable runtime checks. IPCCH raw-score semantics stay unchanged (no clipping).
 - Cloud authority (user, spec v0.6, 2026-10-07 ET): task-scoped cloud setup/deployment/debug in verified project `manuel-remote-sensing` (account weilun.shi@cgiar.org, region us-central1). Preserve unrelated resources and accepted consumers. Only unresolved CRITICAL issues go to the user.
@@ -18,7 +18,7 @@ User: 不用溯源了，没完没了的。固定特征直接复用，遥感特�
 - Unchanged: past-only same-area filling, latest complete monthly product eligibility, no training. Model runtime/replay checks remain. (The earlier "no cloud mutation" is superseded by the v0.6 cloud authority above.)
 - CP2 validation is code-level/local fixture validation against the current scripts, with no historical source acceptance hunt.
 
-## STATUS 20:15 UTC 2026-10-08 — CLOSEOUT (executor wR:p3; frozen for supervisor Windows Git commit; not committed)
+## FINAL STATUS — completed, committed b7e83f9; native Trellis archive, no close/spot audit
 
 - Final delivery `oct-final-20261008a` succeeded and its offline replay is equal (see 19:20 block).
 - Durable local copy, ignored path:
@@ -35,7 +35,7 @@ User: 不用溯源了，没完没了的。固定特征直接复用，遥感特�
   - 644 passed, 9 skipped, 1 failed = known baseline `test_horizon_alignment_rejects_unsupported_horizons`.
   - The 7 initial copy-only failures (files missing from the copy) pass after copying.
   - Skips: September v3 data / live GCP / PyYAML (the workflow test passes under system python3).
-- Cleanup (read-only REST 19:59): no active task-owned compute.
+- Cleanup (read-only REST 20:06:44, after all M6 runs): no active task-owned compute; all 33 EE exports completed.
   - Selectors: Batch `ipcch-prepare-full-window-20261008c`; executions `oct-prepare-plan-8bv78`, `oct-deliver-debug-xfr48`,
     `oct-deliver-debug-nwvkk`, `oct-delivery-2ll5p`, `oct-delivery-qlb42`, `oct-delivery-hjm8q`, `oct-delivery-hdsgp`, `oct-delivery-ng85q`;
     prepare `full-window-20261008c`.

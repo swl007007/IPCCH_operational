@@ -23,7 +23,7 @@ Deployed in project `manuel-remote-sensing`, region `us-central1` (task staging 
 1. Write `prepare_requests/<prepare_id>/prepare_request.json` (pinned full-roster assets
    `assets/full-20261008a/{fewsnet,ipcch}/{geometry.geojson,roster.csv,history/*.csv}`, cutoff,
    optional `refresh_from` per family) with the request maker used for October,
-   `.trellis/tasks/10-07-october-cloud-delivery/research/cp3_evidence/cloud_final_replay/oct-make-request.py`:
+   `.trellis/tasks/archive/2026-10/10-07-october-cloud-delivery/research/cp3_evidence/cloud_final_replay/oct-make-request.py`:
    `python oct-make-request.py <prepare_id> gs://manuel-remote-sensing-oct-delivery-debug/assets/full-20261008a <cutoff_utc> '{"evi": "2025-10", "fldas": "2025-10", "viirs": "2025-10"}'`.
 2. Run the planner with the request URI/generation (`python -m cloud.orchestrator.prepare plan --request-uri ...
    --request-generation ... --output-root gs://manuel-remote-sensing-oct-delivery-debug --deadline-utc <UTC>`),
@@ -64,7 +64,7 @@ becomes
 ## 3. Upload the run manifest (this starts scoring)
 
 Build `run_manifest.json` with the request builder used for October
-(`research/cp3_evidence/cloud_final_replay/oct-make-final-request.py`):
+(`.trellis/tasks/archive/2026-10/10-07-october-cloud-delivery/research/cp3_evidence/cloud_final_replay/oct-make-final-request.py`):
 
 ```bash
 python oct-make-final-request.py <run_id> <image_uri@sha256> manuel-remote-sensing-oct-delivery-requests <prepare_id>

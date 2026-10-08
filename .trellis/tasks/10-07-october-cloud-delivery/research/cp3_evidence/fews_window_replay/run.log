@@ -1,8 +1,0 @@
-/tmp/oct-fews-window-replay.py:41: DtypeWarning: Columns (0: FEWSNET_admin_code) have mixed types. Specify dtype option on import or set low_memory=False.
-  full_identity_source = pd.read_csv(PANEL, usecols=list(_RAW_REQUIRED_COLUMNS), dtype={'FEWSNET_admin_code': 'string'})
-full_history_identity_complete 8.62 607000
-window_loaded 14.84 662720
-scope_0_complete 34.99 1432420
-scope_6_complete 37.77 1521360
-scope_12_complete 40.37 1529128
-complete 40.37 1529128

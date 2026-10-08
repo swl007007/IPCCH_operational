@@ -2,7 +2,7 @@
 
 ## 1. Scope / trigger
 
-Applies to the dual-system October delivery path. Keep the IPCCH-only manifest and September callers compatible. Full product contract: `.trellis/tasks/10-07-october-cloud-delivery/design.md`. Historical lineage investigation is explicitly waived; fixed features are reused and current repository remote scripts are the construction baseline.
+Applies to the dual-system October delivery path. Keep the IPCCH-only manifest and September callers compatible. Full product contract: `.trellis/tasks/archive/2026-10/10-07-october-cloud-delivery/design.md`. Historical lineage investigation is explicitly waived; fixed features are reused and current repository remote scripts are the construction baseline.
 
 ## 2. Signatures
 
