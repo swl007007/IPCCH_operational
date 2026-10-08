@@ -1,0 +1,34 @@
+{
+  "ok": true,
+  "stage": "complete",
+  "outputs": {
+    "html": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.birdview/architecture.html",
+    "sources": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.birdview/architecture.sources.html",
+    "constraints": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.birdview/architecture.constraints.json"
+  },
+  "written": [
+    "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.birdview/architecture.sources.html",
+    "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.birdview/architecture.constraints.json",
+    "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.birdview/architecture.html"
+  ],
+  "visualReview": "not-performed",
+  "implementationVerification": "unverified",
+  "validation": {
+    "ok": true,
+    "modules": 18,
+    "relationships": 25,
+    "events": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "map": {
+    "mapId": "ipcch-operations",
+    "revision": 1
+  },
+  "constraints": {
+    "rules": 43,
+    "snapshot": "4a42f1f666a4f2d5d2616069fe25ddd81f2662cb",
+    "scope": "已审阅手动输入/h5交付、IPCCH云v1、FEWS云及本地实验的架构相关契约；不是全部技能/模板/历史文档的有效规则全集。v3未入Git规范另见architecture.json约束和阅读说明。实现合规/实际部署未验证。",
+    "historyGaps": []
+  }
+}

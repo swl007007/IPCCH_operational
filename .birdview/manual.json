@@ -1,0 +1,1441 @@
+{
+  "schemaVersion": 1,
+  "language": "zh",
+  "mapId": "ipcch-manual",
+  "revision": 1,
+  "project": {
+    "id": "ipcch-operational",
+    "name": "IPCCH Operational",
+    "revision": "4a42f1f666a4f2d5d2616069fe25ddd81f2662cb"
+  },
+  "modules": [
+    {
+      "id": "source-tabular",
+      "name": "表格特征准备",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "按来源处理ACLED、WFP、FAO、WB；输出scaffold加特征，使用本地INI配置。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "ACLED"
+        },
+        {
+          "kind": "directory",
+          "path": "WFP_indicator"
+        },
+        {
+          "kind": "directory",
+          "path": "FAO_price"
+        },
+        {
+          "kind": "directory",
+          "path": "WB_indicator"
+        },
+        {
+          "kind": "file",
+          "path": "workflow_config.py"
+        },
+        {
+          "kind": "directory",
+          "path": "config"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "WFP_indicator/00_add_wfp_price_features.py",
+          "line": 181,
+          "note": "国家年月左连接"
+        },
+        {
+          "path": "ACLED/00_add_acled_features.py",
+          "line": 478,
+          "note": "配置驱动的独立入口"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 0,
+        "column": 0
+      }
+    },
+    {
+      "id": "source-raster",
+      "name": "手动遥感提取",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "GEE/直接下载 → Windows ArcPy；EVI、FLDAS四分片、GOSIF、VIIRS输出宽表。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "EVI"
+        },
+        {
+          "kind": "directory",
+          "path": "FLDAS"
+        },
+        {
+          "kind": "directory",
+          "path": "GOSIF_GPP"
+        },
+        {
+          "kind": "directory",
+          "path": "VIIRS_nightlight"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "EVI/02_arcpy_extract_evi.py",
+          "line": 125,
+          "note": "宽表mean/std输出"
+        },
+        {
+          "path": "FLDAS/02_arcpy_extract_fldas_part1.py",
+          "line": 228,
+          "note": "分片输出"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 1,
+        "column": 0
+      }
+    },
+    {
+      "id": "legacy-panel",
+      "name": "归档面板组装",
+      "kind": "local",
+      "role": "generic",
+      "responsibility": "旧notebook消费表格与栅格输出；保留为历史接口证据，当前自动更新衔接尚未核实。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "archive/notebooks/Final_harmonise"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "archive/notebooks/Final_harmonise/00_combine_all_ch.ipynb",
+          "line": 17,
+          "note": "列出来源CSV读入"
+        }
+      ],
+      "status": "uncertain",
+      "openQuestions": [
+        "源特征输出如何更新当前source_panel，是否仍由这些notebook执行？旧文档所指四个同名.py文件已不存在。"
+      ],
+      "layout": {
+        "row": 2,
+        "column": 0
+      },
+      "roleAssessment": {
+        "basis": "out-of-taxonomy",
+        "note": "文件型参考或归档资料，没有在线服务职责；保留中性分类。"
+      }
+    },
+    {
+      "id": "api-reference",
+      "name": "IPC API参考获取",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "下载areas/analyses逐年及合并文件；未证实直接接入当前月度组装。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "curl_IPC"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "curl_IPC/00_download_ipc_api.py",
+          "line": 28,
+          "note": "areas/analyses HTTP请求"
+        },
+        {
+          "path": "curl_IPC/00_download_ipc_api.py",
+          "line": 196,
+          "note": "合并输出"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 3,
+        "column": 0
+      }
+    },
+    {
+      "id": "local-base",
+      "name": "手动IPCCH月度输入",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "目标月scaffold + fixed/slow + 历史panel → base CSV/summary；不直接接收云EVI long。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "Final_harmonise"
+        },
+        {
+          "kind": "file",
+          "path": "tools/build_monthly_ipcch_scaffold.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/build_ipcch_fixed_slow_features.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/build_ipcch_schema_contract.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/build_ipcch_source_vintage_manifest.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/validate_ipcch_schema.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/validate_csv_contract.py"
+        },
+        {
+          "kind": "directory",
+          "path": "Outcome/ipcch_unified/schema"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "Final_harmonise/00_build_monthly_ipcch_base_input.py",
+          "line": 398,
+          "note": "本地组装入口"
+        },
+        {
+          "path": "tools/build_monthly_ipcch_scaffold.py",
+          "line": 163,
+          "note": "选择月或空间lookup构造scaffold"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 2,
+        "column": 1
+      }
+    },
+    {
+      "id": "h5-refresh",
+      "name": "h5手动来源更新",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "版本化WFP/ACLED原料 → 两套历史panel及April输入；FEWS规范化仍需独立调用。",
+      "ownership": [
+        {
+          "kind": "file",
+          "path": "tools/refresh_h5_inputs.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/audit_h5_inputs.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/check_h5_delivery_focus.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "tools/refresh_h5_inputs.py",
+          "line": 73,
+          "note": "WFP来源筛选及两种指标"
+        },
+        {
+          "path": "tools/refresh_h5_inputs.py",
+          "line": 177,
+          "note": "刷新后输入写出"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 0,
+        "column": 1
+      }
+    },
+    {
+      "id": "h5-models",
+      "name": "h5训练与重加载评分",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "独立action命令重训FEWS RF及IPCCH四目标XGB；固定2026-04 → 2026-09；复用共享评分器。",
+      "ownership": [
+        {
+          "kind": "file",
+          "path": "tools/run_h5_model_delivery.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "tools/run_h5_model_delivery.py",
+          "line": 48,
+          "note": "FEWSNET训练"
+        },
+        {
+          "path": "tools/run_h5_model_delivery.py",
+          "line": 89,
+          "note": "IPCCH训练"
+        },
+        {
+          "path": "tools/run_h5_model_delivery.py",
+          "line": 139,
+          "note": "保存包重加载评分"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 1,
+        "column": 1
+      }
+    },
+    {
+      "id": "local-fews",
+      "name": "FEWS本地0/6/12实验",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "独立本地训练/重加载CLI；固定三预测期，local包不能直接作为Vertex生产包注册。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "fewsnet_partitioned_rf_pipeline/local"
+        },
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/cli/run_local_experiment.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/local/runner.py",
+          "line": 1022,
+          "note": "三预测期循环"
+        },
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 2811,
+          "note": "local/production模型包边界"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 3,
+        "column": 1
+      }
+    },
+    {
+      "id": "country-bundle",
+      "name": "国家诊断与交付包",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "人口加权国家表、v2/v3诊断、polygon映射/GeoJSON、可搬移runtime和tar包；不等于web应用已部署。",
+      "ownership": [
+        {
+          "kind": "file",
+          "path": "tools/build_fewsnet_country_level_predictions.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/build_ipcch_country_level_predictions.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/revise_h5_confidence.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/revise_h5_country_v3.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/package_h5_delivery.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/verify_h5_confidence.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/verify_h5_country_v3.py"
+        },
+        {
+          "kind": "file",
+          "path": "tools/verify_h5_model_delivery.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "tools/run_h5_model_delivery.py",
+          "line": 184,
+          "note": "按交付policy选择国家表版本"
+        },
+        {
+          "path": "tools/revise_h5_country_v3.py",
+          "line": 59,
+          "note": "v3人口加权误差"
+        },
+        {
+          "path": "tools/package_h5_delivery.py",
+          "line": 30,
+          "note": "应用包选择文件"
+        }
+      ],
+      "status": "uncertain",
+      "openQuestions": [
+        "被Git忽略的实际交付runtime与当前源码是否逐字一致？本轮未重放验证。v3重建还依赖外部Stage3证据；搬移后评分与重新生成历史诊断是不同能力。"
+      ],
+      "layout": {
+        "row": 2,
+        "column": 3
+      }
+    },
+    {
+      "id": "ipcch-runtime",
+      "name": "共享IPCCH推理",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "固定列契约、人口快照、四个XGB累计占比分数和0.2解码；本地CLI可出图，云wrapper传--no-map。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "model_pipeline"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "model_pipeline/run_operational_launch_inference.py",
+          "line": 157,
+          "note": "run_scope共享入口"
+        },
+        {
+          "path": "model_pipeline/ipcch_launch_runtime/inference.py",
+          "line": 60,
+          "note": "评分、阈值与解码"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 2,
+        "column": 2
+      }
+    },
+    {
+      "id": "rf-core",
+      "name": "共享FEWSNET RF核心",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "冻结Stage3特征和17分区、pooled fallback、30/6选择阈值后36标签月refit；核心支持5m，云仍0/6/12。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "fewsnet_partitioned_rf_pipeline/core"
+        },
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/config.py"
+        },
+        {
+          "kind": "directory",
+          "path": "fewsnet_partitioned_rf_pipeline/assets"
+        },
+        {
+          "kind": "directory",
+          "path": "fewsnet_partitioned_rf_pipeline/schemas"
+        },
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/core/training.py",
+          "line": 438,
+          "note": "共同训练函数"
+        },
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/core/horizons.py",
+          "line": 26,
+          "note": "0/5/6/12对齐"
+        },
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/core/inference.py",
+          "line": 106,
+          "note": "分区/pooled路由"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 1,
+        "column": 2
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "source-tabular-to-legacy-panel",
+      "from": "source-tabular",
+      "to": "legacy-panel",
+      "label": "旧来源CSV接口",
+      "evidence": [
+        {
+          "path": "archive/notebooks/Final_harmonise/00_combine_all_ch.ipynb",
+          "line": 17,
+          "note": "旧来源CSV接口"
+        }
+      ],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "source-raster-to-legacy-panel",
+      "from": "source-raster",
+      "to": "legacy-panel",
+      "label": "旧遥感宽表接口",
+      "evidence": [
+        {
+          "path": "archive/notebooks/Final_harmonise/00_combine_all_ch.ipynb",
+          "line": 21,
+          "note": "旧遥感宽表接口"
+        }
+      ],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "legacy-panel-to-local-base",
+      "from": "legacy-panel",
+      "to": "local-base",
+      "label": "历史panel衔接待核实",
+      "evidence": [
+        {
+          "path": "Final_harmonise/00_build_monthly_ipcch_base_input.py",
+          "line": 407,
+          "note": "历史panel衔接待核实"
+        }
+      ],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "uncertain",
+      "openQuestions": [
+        "当前历史panel是否由归档notebook产出？只确认builder消费panel，未确认生成链。"
+      ]
+    },
+    {
+      "id": "local-base-to-ipcch-runtime",
+      "from": "local-base",
+      "to": "ipcch-runtime",
+      "label": "monthly base输入 / 本地0/6/12评分",
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 169,
+          "note": "monthly base输入 / 本地0/6/12评分"
+        }
+      ],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "h5-refresh-to-h5-models",
+      "from": "h5-refresh",
+      "to": "h5-models",
+      "label": "版本化panel；FEWS须先规范化",
+      "evidence": [
+        {
+          "path": "tools/run_h5_model_delivery.py",
+          "line": 48,
+          "note": "版本化panel；FEWS须先规范化"
+        }
+      ],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "h5-models-to-rf-core",
+      "from": "h5-models",
+      "to": "rf-core",
+      "label": "调用5m RF训练",
+      "evidence": [
+        {
+          "path": "tools/run_h5_model_delivery.py",
+          "line": 69,
+          "note": "调用5m RF训练"
+        }
+      ],
+      "kind": "request",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "h5-models-to-ipcch-runtime",
+      "from": "h5-models",
+      "to": "ipcch-runtime",
+      "label": "调用run_scope(5m)",
+      "evidence": [
+        {
+          "path": "tools/run_h5_model_delivery.py",
+          "line": 154,
+          "note": "调用run_scope(5m)"
+        }
+      ],
+      "kind": "request",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "h5-models-to-local-fews",
+      "from": "h5-models",
+      "to": "local-fews",
+      "label": "复用local模型包加载器",
+      "evidence": [
+        {
+          "path": "tools/run_h5_model_delivery.py",
+          "line": 140,
+          "note": "复用local模型包加载器"
+        }
+      ],
+      "kind": "dependency",
+      "visibility": "detail",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "h5-models-to-country-bundle",
+      "from": "h5-models",
+      "to": "country-bundle",
+      "label": "预测→国家表/映射/交付",
+      "evidence": [
+        {
+          "path": "tools/run_h5_model_delivery.py",
+          "line": 184,
+          "note": "预测→国家表/映射/交付"
+        }
+      ],
+      "kind": "result",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "local-fews-to-rf-core",
+      "from": "local-fews",
+      "to": "rf-core",
+      "label": "调用共享训练与预测",
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/local/runner.py",
+          "line": 1022,
+          "note": "调用共享训练与预测"
+        }
+      ],
+      "kind": "request",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "ipcch-runtime-to-country-bundle",
+      "from": "ipcch-runtime",
+      "to": "country-bundle",
+      "label": "分数及人口→国家聚合",
+      "evidence": [
+        {
+          "path": "tools/build_ipcch_country_level_predictions.py",
+          "line": 248,
+          "note": "分数及人口→国家聚合"
+        }
+      ],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "local-fews-to-country-bundle",
+      "from": "local-fews",
+      "to": "country-bundle",
+      "label": "概率及人口→国家聚合",
+      "evidence": [
+        {
+          "path": "tools/build_fewsnet_country_level_predictions.py",
+          "line": 247,
+          "note": "概率及人口→国家聚合"
+        }
+      ],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    }
+  ],
+  "constraints": [
+    {
+      "id": "impact-before-edit",
+      "name": "改符号前分析上游影响",
+      "note": "未来修改函数/类/方法",
+      "explanation": "列出调用方、流程和风险；HIGH/CRITICAL先告知。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "project",
+      "modules": [],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "AGENTS.md",
+          "line": 24,
+          "note": "**MUST run impact analysis before editing any symbol.**"
+        }
+      ],
+      "verification": "运行impact并核对当前源码；本次不改实现"
+    },
+    {
+      "id": "detect-before-commit",
+      "name": "提交前核对实际影响",
+      "note": "未来代码提交",
+      "explanation": "核对diff影响的符号和流程。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "project",
+      "modules": [],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "AGENTS.md",
+          "line": 25,
+          "note": "**MUST run `detect_changes()` before committing**"
+        }
+      ],
+      "verification": "detect_changes与git diff对照"
+    },
+    {
+      "id": "no-secrets",
+      "name": "填充配置及凭据保留本地",
+      "note": "配置/交接",
+      "explanation": "共享模板，配置值不写入公共产物。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "project",
+      "modules": [],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 17,
+          "note": "Local filled config files such as"
+        }
+      ],
+      "verification": "检查模板与忽略项；不读取密钥"
+    },
+    {
+      "id": "canonical-key",
+      "name": "统一area_id年月键",
+      "note": "月度IPCCH输入",
+      "explanation": "IPCCH模型输入按area_id/year/month唯一；admin_code是兼容别名。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "local-base"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+          "line": 14,
+          "note": "The standardized model input is one row per"
+        }
+      ],
+      "verification": "运行model-input-forecast schema校验"
+    },
+    {
+      "id": "single-scaffold",
+      "name": "生产只需目标月scaffold",
+      "note": "月度生产",
+      "explanation": "不强迫月度生产准备多月scaffold。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "local-base"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+          "line": 31,
+          "note": "Production only needs the target month scaffold"
+        }
+      ],
+      "verification": "核对目标年月和唯一空间集合"
+    },
+    {
+      "id": "no-outcomes-required",
+      "name": "预测输入不要求真实标签",
+      "note": "预测scaffold",
+      "explanation": "标签待真实发布，不填造预测月outcome。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "local-base",
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+          "line": 68,
+          "note": "For prediction runs, outcome columns are not part"
+        }
+      ],
+      "verification": "检查标签没有被虚构或作为强制预测输入"
+    },
+    {
+      "id": "vertex-no-map",
+      "name": "Vertex必须禁用地图",
+      "note": "IPCCH Vertex wrapper",
+      "explanation": "云推理只产出契约CSV和报告。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/execution-contract.md",
+          "line": 127,
+          "note": "- Must pass `--no-map`."
+        }
+      ],
+      "verification": "检查实际CLI参数及产物库存"
+    },
+    {
+      "id": "vertex-real-score",
+      "name": "不得用validate-only替代推理",
+      "note": "IPCCH云推理",
+      "explanation": "输入校验不是模型推理。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/execution-contract.md",
+          "line": 126,
+          "note": "- Must not pass `--validate-only`."
+        }
+      ],
+      "verification": "核对执行参数和三份prediction CSV"
+    },
+    {
+      "id": "population-output",
+      "name": "人口估计字段不替换模型特征",
+      "note": "人口增强运行",
+      "explanation": "population_estimate供输出；模型仍使用estimated_population。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 93,
+          "note": "same immutable model package. population_estimate is output-only"
+        }
+      ],
+      "verification": "核对feature contract及输入矩阵"
+    },
+    {
+      "id": "margin-not-ci",
+      "name": "阈值距离标签不是置信区间",
+      "note": "默认IPCCH uncertainty输出",
+      "explanation": "decision_margin只衡量当前阈值距离，h5修订可禁用该输出。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 95,
+          "note": "label is qualitative distance-to-threshold stability"
+        }
+      ],
+      "verification": "检查字段解释与阈值边界"
+    },
+    {
+      "id": "rf-normalize",
+      "name": "保留原panel并绑定规范化audit",
+      "note": "FEWS规范化与上传",
+      "explanation": "规范化写新CSV与匹配audit，不能复用旧checksum。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-core",
+        "h5-refresh"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 16,
+          "note": "- Never overwrite the raw assembled FEWSNET panel."
+        }
+      ],
+      "verification": "检查原始hash及新CSV/audit一致"
+    },
+    {
+      "id": "rf-window",
+      "name": "36个实际标签月按30/6拆分",
+      "note": "本地FEWS训练",
+      "explanation": "不是连续36日历月；前30拟合填补/临时模型，后6选阈值，36重拟合。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-core",
+        "local-fews",
+        "h5-models"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 2781,
+          "note": "Training uses the latest 36 distinct target periods"
+        }
+      ],
+      "verification": "核对实际target period/key账本和fit统计"
+    },
+    {
+      "id": "rf-local-package",
+      "name": "local包不得直接注册生产",
+      "note": "本地包向云迁移",
+      "explanation": "共享模型算法不代表local包符合云包身份契约。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "local-fews"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 2814,
+          "note": "is not the digest-pinned `fewsnet-model-package-v1`"
+        }
+      ],
+      "verification": "核对package schema、image digest及runtime versions"
+    },
+    {
+      "id": "rf-pins",
+      "name": "FEWS本地保持依赖版本",
+      "note": "FEWS本地模型重加载",
+      "explanation": "保留imbalanced-learn==0.14.0及既有兼容桥。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "local-fews",
+        "rf-core"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 2752,
+          "note": "keeps `scikit-learn==1.8.0`"
+        }
+      ],
+      "verification": "核对requirements和加载器版本校验"
+    },
+    {
+      "id": "h5-calendar",
+      "name": "h5按五个日历月连接",
+      "note": "该h5本地交付",
+      "explanation": "禁止行位移；训练target<=2026-04，训练feature最多2025-11。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "h5-models"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 83,
+          "note": "按 polygon 身份和日历月份连接"
+        }
+      ],
+      "verification": "逐行核对feature/target keys与cutoff"
+    },
+    {
+      "id": "h5-vintage",
+      "name": "截止月份不等于历史可得性",
+      "note": "该h5交付解释",
+      "explanation": "使用当前历史修订值重建April输入；不是严格当时可得数据回测。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "h5-refresh",
+        "h5-models"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 29,
+          "note": "月份 cutoff 约束观测和标签所指月份"
+        }
+      ],
+      "verification": "核对来源获取commit/时间和观测截止"
+    },
+    {
+      "id": "h5-preserve",
+      "name": "更新仅替换实际覆盖键",
+      "note": "WFP/ACLED刷新",
+      "explanation": "保留未覆盖旧值；缺失不等于零，不清空整段历史。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "h5-refresh"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 67,
+          "note": "在可更新键内用重新计算的整组指标替换旧值"
+        }
+      ],
+      "verification": "按键比较替换/保留和非更新列"
+    },
+    {
+      "id": "h5-wfp",
+      "name": "保留两模型不同WFP定义",
+      "note": "h5来源刷新",
+      "explanation": "FEWS用月价格百分比变化均值+100；IPCCH用Trend均值+100；不拟合新scaler。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "h5-refresh"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 58,
+          "note": "- WFP 保留各自最新 assembled 输入的定义"
+        }
+      ],
+      "verification": "核对同序列前日历月、单位证据及覆盖审计"
+    },
+    {
+      "id": "h5-raw-scores",
+      "name": "IPCCH原始回归分数不裁剪",
+      "note": "h5 IPCCH推理",
+      "explanation": "保留超界或非单调raw scores并报告；原0.2/cummax解码不变。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "h5-models",
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 101,
+          "note": "- 原有累计占比分数为回归输出"
+        }
+      ],
+      "verification": "核对有限数、超界报告和离散解码"
+    },
+    {
+      "id": "h5-portable",
+      "name": "评分必须先重加载交付模型",
+      "note": "h5交付评分",
+      "explanation": "交付内相对路径；重加载不能依赖外部checkout、云凭据或训练内存。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "h5-models",
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 123,
+          "note": "模型运行所需代码和依赖清单随交付提供"
+        }
+      ],
+      "verification": "异地临时目录重加载并比较全部预测"
+    },
+    {
+      "id": "h5-pop-meaning",
+      "name": "人口权重与Census参考分开",
+      "note": "国家预测表",
+      "explanation": "Census不作加权均值分母；区域分散度不是置信区间。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 139,
+          "note": "两表均保留 Census `referenced_population`"
+        }
+      ],
+      "verification": "独立重算均值、权重和支持数"
+    },
+    {
+      "id": "h5-prob-meaning",
+      "name": "危机概率不是危机人口比例",
+      "note": "FEWS国家表解释",
+      "explanation": "FEWS的概率均值不能直接解释为需要援助人数。该原规格不新增国家分类的限制已被v3本地规格覆盖，概率含义仍保留。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 133,
+          "note": "人口加权危机概率不能改称为危机人口占比"
+        }
+      ],
+      "verification": "核对输出codebook及字段文案"
+    },
+    {
+      "id": "h5-native-ids",
+      "name": "保留原生边界与字符串ID",
+      "note": "h5几何交付",
+      "explanation": "EPSG:4326，不重新分区/裁剪/简化；两模型空间全集分别校验。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 115,
+          "note": "| 各模型 `polygons.geojson`"
+        }
+      ],
+      "verification": "核对CSV/GeoJSON/mapping键一致"
+    },
+    {
+      "id": "h5-versioned",
+      "name": "新交付目录不得覆盖旧结果",
+      "note": "h5及诊断修订",
+      "explanation": "新模型、输入和预测采用独立版本目录。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "h5-refresh",
+        "h5-models",
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 77,
+          "note": "- 保留原始和旧版本文件。"
+        }
+      ],
+      "verification": "比较原版本hash和新目录成员"
+    },
+    {
+      "id": "h5-validation",
+      "name": "异地重评分须数值一致",
+      "note": "该h5包验收",
+      "explanation": "连续值rtol=0/atol=1e-12，类别精确一致。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 149,
+          "note": "7. 在不同的临时目录中重新加载完整交付包"
+        }
+      ],
+      "verification": "运行focused verification及relocation检查"
+    },
+    {
+      "id": "v3-evidence",
+      "name": "v3两模型证据基础不同",
+      "note": "仅适用于本地20260923_country_confidence_v3；规范在Git忽略目录，本轮按文件快照读取。",
+      "explanation": "FEWS保存的fs1/4月lag历史分类只作为h5 proxy；IPCCH仍用training resubstitution。不能称同一验证集、精确h5外推验证或已校准概率。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md",
+          "line": 49,
+          "note": "FEWS保存的fs1/4月lag历史分类只作为h5 proxy；IPCCH仍用training resubstitution。不能称同一验证集、精确h5外推验证或已校准概率。"
+        }
+      ],
+      "verification": "独立重算对应字段/边界并检查v3 source policy；本轮只读核实职责，未执行该验证。"
+    },
+    {
+      "id": "v3-weights",
+      "name": "v3人口加权区域误差",
+      "note": "仅适用于本地20260923_country_confidence_v3；规范在Git忽略目录，本轮按文件快照读取。",
+      "explanation": "保留全部polygon，只有有误差证据且人口有限正值者参与国家误差。无eligible则null，不能零填或自动降级。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md",
+          "line": 53,
+          "note": "保留全部polygon，只有有误差证据且人口有限正值者参与国家误差。无eligible则null，不能零填或自动降级。"
+        }
+      ],
+      "verification": "独立重算对应字段/边界并检查v3 source policy；本轮只读核实职责，未执行该验证。"
+    },
+    {
+      "id": "v3-flags",
+      "name": "v3固定10%/20%而非v2配额",
+      "note": "仅适用于本地20260923_country_confidence_v3；规范在Git忽略目录，本轮按文件快照读取。",
+      "explanation": "未舍入误差<=0.10 high、<=0.20 medium、>0.20 low；不设国家配额。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md",
+          "line": 67,
+          "note": "未舍入误差<=0.10 high、<=0.20 medium、>0.20 low；不设国家配额。"
+        }
+      ],
+      "verification": "独立重算对应字段/边界并检查v3 source policy；本轮只读核实职责，未执行该验证。"
+    },
+    {
+      "id": "v3-country-decode",
+      "name": "国家决策阈值独立于polygon",
+      "note": "仅适用于本地20260923_country_confidence_v3；规范在Git忽略目录，本轮按文件快照读取。",
+      "explanation": "FEWS国家均值>=0.5；IPCCH国家累计score>=0.2 cascade；maximum phase仅IPCCH，取全部区域最大phase。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md",
+          "line": 59,
+          "note": "FEWS国家均值>=0.5；IPCCH国家累计score>=0.2 cascade；maximum phase仅IPCCH，取全部区域最大phase。"
+        }
+      ],
+      "verification": "独立重算对应字段/边界并检查v3 source policy；本轮只读核实职责，未执行该验证。"
+    },
+    {
+      "id": "v3-max-proxy",
+      "name": "最大阶段不确定性基于完整月",
+      "note": "仅适用于本地20260923_country_confidence_v3；规范在Git忽略目录，本轮按文件快照读取。",
+      "explanation": "整月联合训练残差转移到September raw score；不裁剪/归一化。bootstrap完整月份，保留空间依赖；不是校准未来概率。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md",
+          "line": 97,
+          "note": "整月联合训练残差转移到September raw score；不裁剪/归一化。bootstrap完整月份，保留空间依赖；不是校准未来概率。"
+        }
+      ],
+      "verification": "独立重算对应字段/边界并检查v3 source policy；本轮只读核实职责，未执行该验证。"
+    },
+    {
+      "id": "v3-bootstrap",
+      "name": "零/单月支持保留限制",
+      "note": "仅适用于本地20260923_country_confidence_v3；规范在Git忽略目录，本轮按文件快照读取。",
+      "explanation": "0完整月point/CI均null；1月保留point但CI null；多月全同需报告退化。10000次、seed20260923、linear百分位。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md",
+          "line": 99,
+          "note": "0完整月point/CI均null；1月保留point但CI null；多月全同需报告退化。10000次、seed20260923、linear百分位。"
+        }
+      ],
+      "verification": "独立重算对应字段/边界并检查v3 source policy；本轮只读核实职责，未执行该验证。"
+    },
+    {
+      "id": "v3-portable-export",
+      "name": "portable export不可恢复旧flag",
+      "note": "仅适用于本地20260923_country_confidence_v3；规范在Git忽略目录，本轮按文件快照读取。",
+      "explanation": "重聚合country预测并附v3冻结诊断，校验forecast-derived字段一致；保留model/polygon输出。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "country-bundle"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md",
+          "line": 127,
+          "note": "重聚合country预测并附v3冻结诊断，校验forecast-derived字段一致；保留model/polygon输出。"
+        }
+      ],
+      "verification": "独立重算对应字段/边界并检查v3 source policy；本轮只读核实职责，未执行该验证。"
+    },
+    {
+      "id": "view-only",
+      "name": "本次只生成查看材料",
+      "note": "用户明确不创建Trellis任务；手动和云流程都需绘制。",
+      "origin": "user",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "project",
+      "modules": [],
+      "relationships": [],
+      "evidence": [],
+      "verification": "确认仅新增.birdview材料，未改代码/配置/任务、未执行云或模型。"
+    }
+  ],
+  "constraintDiscovery": {
+    "checkedAt": "2026-10-08T01:21:27.208292+00:00",
+    "checkedPaths": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      "README.md",
+      "specs/001-cloud-base-input/plan.md",
+      "specs/001-cloud-base-input/contracts/execution-contract.md",
+      "specs/001-cloud-base-input/contracts/release-artifact-contract.md",
+      "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+      "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+      "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md"
+    ],
+    "uninspectedPaths": [
+      ".agents/skills",
+      ".claude/skills",
+      ".trellis/spec",
+      "config/paths.ini",
+      "config/ee_gcs.ini"
+    ]
+  }
+}

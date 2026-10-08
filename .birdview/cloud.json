@@ -1,0 +1,1387 @@
+{
+  "schemaVersion": 1,
+  "language": "zh",
+  "mapId": "ipcch-cloud",
+  "revision": 1,
+  "project": {
+    "id": "ipcch-operational",
+    "name": "IPCCH Operational",
+    "revision": "4a42f1f666a4f2d5d2616069fe25ddd81f2662cb"
+  },
+  "modules": [
+    {
+      "id": "ipcch-runtime",
+      "name": "共享IPCCH推理",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "固定列契约、人口快照、四个XGB累计占比分数和0.2解码；本地CLI可出图，云wrapper传--no-map。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "model_pipeline"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "model_pipeline/run_operational_launch_inference.py",
+          "line": 157,
+          "note": "run_scope共享入口"
+        },
+        {
+          "path": "model_pipeline/ipcch_launch_runtime/inference.py",
+          "line": 60,
+          "note": "评分、阈值与解码"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 2,
+        "column": 1
+      }
+    },
+    {
+      "id": "rf-core",
+      "name": "共享FEWSNET RF核心",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "冻结Stage3特征和17分区、pooled fallback、30/6选择阈值后36标签月refit；核心支持5m，云仍0/6/12。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "fewsnet_partitioned_rf_pipeline/core"
+        },
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/config.py"
+        },
+        {
+          "kind": "directory",
+          "path": "fewsnet_partitioned_rf_pipeline/assets"
+        },
+        {
+          "kind": "directory",
+          "path": "fewsnet_partitioned_rf_pipeline/schemas"
+        },
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/core/training.py",
+          "line": 438,
+          "note": "共同训练函数"
+        },
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/core/horizons.py",
+          "line": 26,
+          "note": "0/5/6/12对齐"
+        },
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/core/inference.py",
+          "line": 106,
+          "note": "分区/pooled路由"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 1,
+        "column": 2
+      }
+    },
+    {
+      "id": "ipcch-cloud",
+      "name": "IPCCH Cloud Run编排",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "校验manifest、获取独占run前缀、提交Batch和Vertex、依据对象报告推进；单月0/6/12纯推理。",
+      "ownership": [
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/main.py"
+        },
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/run_state.py"
+        },
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/roots.py"
+        },
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/batch_client.py"
+        },
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/vertex_client.py"
+        },
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/model_package.py"
+        },
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/inference.py"
+        },
+        {
+          "kind": "directory",
+          "path": "cloud/common"
+        },
+        {
+          "kind": "directory",
+          "path": "cloud/schemas"
+        },
+        {
+          "kind": "directory",
+          "path": "docker/Dockerfile"
+        },
+        {
+          "kind": "file",
+          "path": "requirements-cloud.txt"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/main.py",
+          "line": 185,
+          "note": "run编排开始"
+        },
+        {
+          "path": "cloud/orchestrator/inference.py",
+          "line": 120,
+          "note": "调用现有推理CLI并禁止地图"
+        },
+        {
+          "path": "cloud/orchestrator/run_state.py",
+          "line": 38,
+          "note": "generation=0抢占run"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 0,
+        "column": 0
+      }
+    },
+    {
+      "id": "cloud-evi",
+      "name": "云EVI提取",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "Batch worker发起GEE月度EVI导出；rasterio区域mean/std → wide/long CSV与验证报告。",
+      "ownership": [
+        {
+          "kind": "directory",
+          "path": "cloud/batch"
+        },
+        {
+          "kind": "file",
+          "path": "tools/reshape_remote_sensing_wide_to_long.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "cloud/batch/evi_worker.py",
+          "line": 115,
+          "note": "manifest驱动worker"
+        },
+        {
+          "path": "cloud/batch/evi_service.py",
+          "line": 141,
+          "note": "rasterio区域统计"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 1,
+        "column": 0
+      }
+    },
+    {
+      "id": "cloud-base",
+      "name": "云IPCCH月度输入",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "独立pandas组装器显式合并EVI long；scaffold决定行集合，生成schema QA与人口来源。",
+      "ownership": [
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/assembly.py"
+        },
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/base_input_validation.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/assembly.py",
+          "line": 33,
+          "note": "独立assemble_monthly_base_input"
+        },
+        {
+          "path": "cloud/orchestrator/assembly.py",
+          "line": 95,
+          "note": "多来源按键左连接"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 2,
+        "column": 0
+      }
+    },
+    {
+      "id": "ipcch-release",
+      "name": "IPCCH原子发布",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "复制已验收文件到不可变run目录；generation CAS最后更新release_manifest；消费者先读manifest。",
+      "ownership": [
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/release.py"
+        },
+        {
+          "kind": "file",
+          "path": "cloud/orchestrator/release_manifest.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/release.py",
+          "line": 97,
+          "note": "create-only复制"
+        },
+        {
+          "path": "cloud/orchestrator/release.py",
+          "line": 270,
+          "note": "CAS提交指针"
+        },
+        {
+          "path": "cloud/common/release_reader.py",
+          "line": 12,
+          "note": "读取入口"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 3,
+        "column": 1
+      }
+    },
+    {
+      "id": "rf-cloud",
+      "name": "FEWS云套件编排",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "快照→一个CustomJob训练三预测期→3模型版本→3个精确版本Batch预测→统一验收。",
+      "ownership": [
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/cli/run_latest.py"
+        },
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/cli/train.py"
+        },
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py"
+        },
+        {
+          "kind": "directory",
+          "path": "fewsnet_partitioned_rf_pipeline/vertex"
+        },
+        {
+          "kind": "file",
+          "path": "docker/Dockerfile.fewsnet-partitioned-rf"
+        },
+        {
+          "kind": "file",
+          "path": "requirements-fewsnet-partitioned-rf.txt"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+          "line": 279,
+          "note": "独立云suite入口"
+        },
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+          "line": 540,
+          "note": "三预测期Batch提交"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 0,
+        "column": 3
+      }
+    },
+    {
+      "id": "rf-server",
+      "name": "FEWS Batch推理服务",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "FastAPI /health /predict加载精确模型包；供Vertex Batch使用，源码服务不证明在线Endpoint存在。",
+      "ownership": [
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py",
+          "line": 82,
+          "note": "create_app"
+        },
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py",
+          "line": 118,
+          "note": "health/predict路由"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 2,
+        "column": 3
+      }
+    },
+    {
+      "id": "rf-release",
+      "name": "FEWS套件发布",
+      "kind": "local",
+      "role": "backend",
+      "responsibility": "协调三production alias、可逆回滚、租约保护，最后写released/current.json；与IPCCH根隔离。",
+      "ownership": [
+        {
+          "kind": "file",
+          "path": "fewsnet_partitioned_rf_pipeline/vertex/promotion.py"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/vertex/promotion.py",
+          "line": 329,
+          "note": "统一promote_and_publish"
+        },
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 28,
+          "note": "三模型统一发布契约"
+        }
+      ],
+      "status": "supported",
+      "openQuestions": [],
+      "layout": {
+        "row": 3,
+        "column": 3
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "ipcch-cloud-to-cloud-evi",
+      "from": "ipcch-cloud",
+      "to": "cloud-evi",
+      "label": "提交Cloud Batch worker",
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/batch_client.py",
+          "line": 42,
+          "note": "提交Cloud Batch worker"
+        }
+      ],
+      "kind": "control",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "cloud-evi-to-cloud-base",
+      "from": "cloud-evi",
+      "to": "cloud-base",
+      "label": "EVI mean/std long",
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/assembly.py",
+          "line": 91,
+          "note": "EVI mean/std long"
+        }
+      ],
+      "kind": "result",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "ipcch-cloud-to-cloud-base",
+      "from": "ipcch-cloud",
+      "to": "cloud-base",
+      "label": "组装并检查输入",
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/main.py",
+          "line": 238,
+          "note": "组装并检查输入"
+        }
+      ],
+      "kind": "request",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "cloud-base-to-ipcch-runtime",
+      "from": "cloud-base",
+      "to": "ipcch-runtime",
+      "label": "月度输入→Vertex wrapper评分",
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/inference.py",
+          "line": 859,
+          "note": "月度输入→Vertex wrapper评分"
+        }
+      ],
+      "kind": "dependency",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "ipcch-cloud-to-ipcch-runtime",
+      "from": "ipcch-cloud",
+      "to": "ipcch-runtime",
+      "label": "Vertex执行CLI --no-map",
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/inference.py",
+          "line": 120,
+          "note": "Vertex执行CLI --no-map"
+        }
+      ],
+      "kind": "control",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "ipcch-cloud-to-ipcch-release",
+      "from": "ipcch-cloud",
+      "to": "ipcch-release",
+      "label": "所有门禁通过后发布",
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/main.py",
+          "line": 381,
+          "note": "所有门禁通过后发布"
+        }
+      ],
+      "kind": "control",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "ipcch-runtime-to-ipcch-release",
+      "from": "ipcch-runtime",
+      "to": "ipcch-release",
+      "label": "3份scope CSV及推理报告",
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/release.py",
+          "line": 349,
+          "note": "3份scope CSV及推理报告"
+        }
+      ],
+      "kind": "result",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "cloud-base-to-ipcch-release",
+      "from": "cloud-base",
+      "to": "ipcch-release",
+      "label": "base CSV/summary及QA",
+      "evidence": [
+        {
+          "path": "cloud/orchestrator/release.py",
+          "line": 349,
+          "note": "base CSV/summary及QA"
+        }
+      ],
+      "kind": "result",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "rf-cloud-to-rf-core",
+      "from": "rf-cloud",
+      "to": "rf-core",
+      "label": "CustomJob调用三预测期训练",
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/cli/train.py",
+          "line": 122,
+          "note": "CustomJob调用三预测期训练"
+        }
+      ],
+      "kind": "request",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "rf-cloud-to-rf-server",
+      "from": "rf-cloud",
+      "to": "rf-server",
+      "label": "精确版本Batch Prediction",
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+          "line": 540,
+          "note": "精确版本Batch Prediction"
+        }
+      ],
+      "kind": "control",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "rf-server-to-rf-core",
+      "from": "rf-server",
+      "to": "rf-core",
+      "label": "加载冻结包并预测",
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py",
+          "line": 95,
+          "note": "加载冻结包并预测"
+        }
+      ],
+      "kind": "request",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "rf-cloud-to-rf-release",
+      "from": "rf-cloud",
+      "to": "rf-release",
+      "label": "候选验证后统一promote",
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+          "line": 682,
+          "note": "候选验证后统一promote"
+        }
+      ],
+      "kind": "control",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    },
+    {
+      "id": "rf-server-to-rf-release",
+      "from": "rf-server",
+      "to": "rf-release",
+      "label": "经suite validator验收的预测",
+      "evidence": [
+        {
+          "path": "fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+          "line": 657,
+          "note": "经suite validator验收的预测"
+        }
+      ],
+      "kind": "result",
+      "visibility": "overview",
+      "status": "supported",
+      "openQuestions": []
+    }
+  ],
+  "constraints": [
+    {
+      "id": "impact-before-edit",
+      "name": "改符号前分析上游影响",
+      "note": "未来修改函数/类/方法",
+      "explanation": "列出调用方、流程和风险；HIGH/CRITICAL先告知。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "project",
+      "modules": [],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "AGENTS.md",
+          "line": 24,
+          "note": "**MUST run impact analysis before editing any symbol.**"
+        }
+      ],
+      "verification": "运行impact并核对当前源码；本次不改实现"
+    },
+    {
+      "id": "detect-before-commit",
+      "name": "提交前核对实际影响",
+      "note": "未来代码提交",
+      "explanation": "核对diff影响的符号和流程。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "project",
+      "modules": [],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "AGENTS.md",
+          "line": 25,
+          "note": "**MUST run `detect_changes()` before committing**"
+        }
+      ],
+      "verification": "detect_changes与git diff对照"
+    },
+    {
+      "id": "no-secrets",
+      "name": "填充配置及凭据保留本地",
+      "note": "配置/交接",
+      "explanation": "共享模板，配置值不写入公共产物。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "project",
+      "modules": [],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 17,
+          "note": "Local filled config files such as"
+        }
+      ],
+      "verification": "检查模板与忽略项；不读取密钥"
+    },
+    {
+      "id": "canonical-key",
+      "name": "统一area_id年月键",
+      "note": "月度IPCCH输入",
+      "explanation": "IPCCH模型输入按area_id/year/month唯一；admin_code是兼容别名。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "cloud-base"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+          "line": 14,
+          "note": "The standardized model input is one row per"
+        }
+      ],
+      "verification": "运行model-input-forecast schema校验"
+    },
+    {
+      "id": "single-scaffold",
+      "name": "生产只需目标月scaffold",
+      "note": "月度生产",
+      "explanation": "不强迫月度生产准备多月scaffold。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "cloud-base"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+          "line": 31,
+          "note": "Production only needs the target month scaffold"
+        }
+      ],
+      "verification": "核对目标年月和唯一空间集合"
+    },
+    {
+      "id": "no-outcomes-required",
+      "name": "预测输入不要求真实标签",
+      "note": "预测scaffold",
+      "explanation": "标签待真实发布，不填造预测月outcome。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "cloud-base",
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+          "line": 68,
+          "note": "For prediction runs, outcome columns are not part"
+        }
+      ],
+      "verification": "检查标签没有被虚构或作为强制预测输入"
+    },
+    {
+      "id": "cloud-v1-boundary",
+      "name": "IPCCH云v1仅EVI与纯推理",
+      "note": "IPCCH云v1",
+      "explanation": "禁止此路径调用训练、其它遥感族、地图/表格完整交付或非Vertex推理；不是全仓禁训。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-cloud",
+        "cloud-evi",
+        "ipcch-release"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 163,
+          "note": "Cloud v1 must not invoke local workstation scoring"
+        }
+      ],
+      "verification": "核对调用链与forbidden-side-effect inventory"
+    },
+    {
+      "id": "immutable-image",
+      "name": "云运行镜像使用digest",
+      "note": "云发布运行",
+      "explanation": "可变tag不是发布身份。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-cloud"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 62,
+          "note": "Use the returned `@sha256:...` reference"
+        }
+      ],
+      "verification": "输入manifest镜像以@sha256绑定"
+    },
+    {
+      "id": "artifact-identity",
+      "name": "输入引用须可核验",
+      "note": "云输入manifest",
+      "explanation": "SHA256、generation/version或manifest内明确批准的waiver。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-cloud"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 47,
+          "note": "Every required GCS artifact must have a checksum"
+        }
+      ],
+      "verification": "运行manifest/schema与对象引用校验"
+    },
+    {
+      "id": "one-month-run",
+      "name": "每次运行只选一个月",
+      "note": "IPCCH云v1",
+      "explanation": "一个feature_month与run_id，scaffold为行集合权威；不含历史回放。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-cloud",
+        "cloud-base"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/plan.md",
+          "line": 68,
+          "note": "**Scale/Scope**: Exactly one"
+        }
+      ],
+      "verification": "核对CLI/manifest月份及输出键集合"
+    },
+    {
+      "id": "duplicate-run",
+      "name": "重复run_id不得改已有前缀",
+      "note": "IPCCH云启动",
+      "explanation": "先获取独占run前缀，冲突即失败。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-cloud"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 74,
+          "note": "Use a unique `RUN_ID`. Duplicate run ids"
+        }
+      ],
+      "verification": "验证create-only sentinel和冲突测试"
+    },
+    {
+      "id": "split-identities",
+      "name": "云角色分离且最小权限",
+      "note": "部署IPCCH云",
+      "explanation": "编排、Batch和Vertex使用不同服务账户。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-cloud"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 42,
+          "note": "- Split service accounts for Cloud Run"
+        }
+      ],
+      "verification": "核对manifest及实际IAM；本轮未查云IAM"
+    },
+    {
+      "id": "evi-area-universe",
+      "name": "EVI保持scaffold空间全集",
+      "note": "云EVI提取",
+      "explanation": "区域统计不可丢失空间单位。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "cloud-evi"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/execution-contract.md",
+          "line": 50,
+          "note": "- Preserve one row per scaffold area."
+        }
+      ],
+      "verification": "核对几何/scaffold集合和输出area键"
+    },
+    {
+      "id": "evi-pixel-rule",
+      "name": "rasterio采用all_touched=false",
+      "note": "云EVI区域统计",
+      "explanation": "保持约定像元包含规则。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "cloud-evi"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/execution-contract.md",
+          "line": 49,
+          "note": "- Run rasterio extraction with `all_touched=false`."
+        }
+      ],
+      "verification": "核对mask参数及参考比较"
+    },
+    {
+      "id": "evi-errors",
+      "name": "EVI缺失或超时须失败",
+      "note": "云EVI运行",
+      "explanation": "缺栅格、无效schema、超时或重试耗尽不得当成功。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "cloud-evi"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/execution-contract.md",
+          "line": 52,
+          "note": "- Exit nonzero on missing raster"
+        }
+      ],
+      "verification": "检查worker错误报告/退出状态"
+    },
+    {
+      "id": "vertex-no-map",
+      "name": "Vertex必须禁用地图",
+      "note": "IPCCH Vertex wrapper",
+      "explanation": "云推理只产出契约CSV和报告。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-cloud",
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/execution-contract.md",
+          "line": 127,
+          "note": "- Must pass `--no-map`."
+        }
+      ],
+      "verification": "检查实际CLI参数及产物库存"
+    },
+    {
+      "id": "vertex-real-score",
+      "name": "不得用validate-only替代推理",
+      "note": "IPCCH云推理",
+      "explanation": "输入校验不是模型推理。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-cloud",
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/execution-contract.md",
+          "line": 126,
+          "note": "- Must not pass `--validate-only`."
+        }
+      ],
+      "verification": "核对执行参数和三份prediction CSV"
+    },
+    {
+      "id": "publish-last",
+      "name": "发布指针最后CAS写入",
+      "note": "IPCCH发布",
+      "explanation": "产物先完成，generation条件更新稳定入口。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-release"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/execution-contract.md",
+          "line": 158,
+          "note": "- Write `released/{YYYYMM}/release_manifest.json` last"
+        }
+      ],
+      "verification": "测试generation冲突时旧指针不变"
+    },
+    {
+      "id": "terminal-immutable",
+      "name": "终态运行证据不可改写",
+      "note": "IPCCH已终态run",
+      "explanation": "修订需新运行，保留旧证据。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-release"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/release-artifact-contract.md",
+          "line": 25,
+          "note": "Run evidence must not be modified after terminal status."
+        }
+      ],
+      "verification": "核对版本前缀与对象generation"
+    },
+    {
+      "id": "manifest-consumer",
+      "name": "消费者先读release manifest",
+      "note": "消费IPCCH云产物",
+      "explanation": "按记录的路径/checksum读取，不凭目录文件数判断完成。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-release"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "specs/001-cloud-base-input/contracts/release-artifact-contract.md",
+          "line": 87,
+          "note": "- read `release_manifest.json` first"
+        }
+      ],
+      "verification": "核对read_release_manifest路径"
+    },
+    {
+      "id": "population-output",
+      "name": "人口估计字段不替换模型特征",
+      "note": "人口增强运行",
+      "explanation": "population_estimate供输出；模型仍使用estimated_population。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-runtime",
+        "cloud-base"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 93,
+          "note": "same immutable model package. population_estimate is output-only"
+        }
+      ],
+      "verification": "核对feature contract及输入矩阵"
+    },
+    {
+      "id": "margin-not-ci",
+      "name": "阈值距离标签不是置信区间",
+      "note": "默认IPCCH uncertainty输出",
+      "explanation": "decision_margin只衡量当前阈值距离，h5修订可禁用该输出。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 95,
+          "note": "label is qualitative distance-to-threshold stability"
+        }
+      ],
+      "verification": "检查字段解释与阈值边界"
+    },
+    {
+      "id": "build-commit",
+      "name": "分配新run前验证镜像代码身份",
+      "note": "新云发布运行",
+      "explanation": "实现commit、镜像build记录和manifest digest一致。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-cloud"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 111,
+          "note": "Before allocating a new `run_id`, verify"
+        }
+      ],
+      "verification": "核对构建attestation与完整SHA"
+    },
+    {
+      "id": "rf-isolation",
+      "name": "FEWS与IPCCH云资源隔离",
+      "note": "FEWS云套件",
+      "explanation": "FEWS Batch-only；不得混用IPCCH模型/发布根。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-cloud",
+        "rf-server",
+        "rf-release"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 10,
+          "note": "It does not create an online Vertex Endpoint."
+        }
+      ],
+      "verification": "核对deployment roots及Endpoint inventory"
+    },
+    {
+      "id": "rf-three-horizons",
+      "name": "三预测期作为统一云套件",
+      "note": "FEWS云生产",
+      "explanation": "一个训练job、三个parent/version、三个精确版本Batch；h5不自动加入云suite。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-cloud",
+        "rf-release"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 8,
+          "note": "The suite uses exactly one Vertex AI Custom Job"
+        }
+      ],
+      "verification": "核对0m/6m/12m job/model资源清单"
+    },
+    {
+      "id": "rf-normalize",
+      "name": "保留原panel并绑定规范化audit",
+      "note": "FEWS规范化与上传",
+      "explanation": "规范化写新CSV与匹配audit，不能复用旧checksum。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-core",
+        "rf-cloud"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 16,
+          "note": "- Never overwrite the raw assembled FEWSNET panel."
+        }
+      ],
+      "verification": "检查原始hash及新CSV/audit一致"
+    },
+    {
+      "id": "rf-atomic-suite",
+      "name": "三production alias须协调发布",
+      "note": "FEWS晋升",
+      "explanation": "部分移动需回滚；不可手工改单一alias/pointer。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-release"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 30,
+          "note": "- Do not manually move one production alias"
+        }
+      ],
+      "verification": "核对promotion与冲突恢复证据"
+    },
+    {
+      "id": "rf-preflight",
+      "name": "gcloud与Python身份须一致",
+      "note": "FEWS云操作",
+      "explanation": "后续云操作必须保持已验证的服务账户impersonation。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-cloud"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 468,
+          "note": "Do not continue if either target differs."
+        }
+      ],
+      "verification": "核对CLI和ADC principal，不输出token"
+    },
+    {
+      "id": "rf-acceptance",
+      "name": "生产验收需完整16项证据",
+      "note": "FEWS首次生产验收",
+      "explanation": "本地测试、跳过smoke或成功构建都不是生产验收。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-cloud",
+        "rf-release"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 2736,
+          "note": "Do not call the first production run accepted until"
+        }
+      ],
+      "verification": "运行runbook验收器；本轮不执行"
+    },
+    {
+      "id": "rf-window",
+      "name": "36个实际标签月按30/6拆分",
+      "note": "本地FEWS训练",
+      "explanation": "不是连续36日历月；前30拟合填补/临时模型，后6选阈值，36重拟合。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-core"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 2781,
+          "note": "Training uses the latest 36 distinct target periods"
+        }
+      ],
+      "verification": "核对实际target period/key账本和fit统计"
+    },
+    {
+      "id": "rf-local-package",
+      "name": "local包不得直接注册生产",
+      "note": "本地包向云迁移",
+      "explanation": "共享模型算法不代表local包符合云包身份契约。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-cloud"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 2814,
+          "note": "is not the digest-pinned `fewsnet-model-package-v1`"
+        }
+      ],
+      "verification": "核对package schema、image digest及runtime versions"
+    },
+    {
+      "id": "rf-pins",
+      "name": "FEWS本地保持依赖版本",
+      "note": "FEWS本地模型重加载",
+      "explanation": "保留imbalanced-learn==0.14.0及既有兼容桥。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "rf-core"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/09_fewsnet_partitioned_rf_runbook.md",
+          "line": 2752,
+          "note": "keeps `scikit-learn==1.8.0`"
+        }
+      ],
+      "verification": "核对requirements和加载器版本校验"
+    },
+    {
+      "id": "h5-raw-scores",
+      "name": "IPCCH原始回归分数不裁剪",
+      "note": "h5 IPCCH推理",
+      "explanation": "保留超界或非单调raw scores并报告；原0.2/cummax解码不变。",
+      "origin": "local",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "modules",
+      "modules": [
+        "ipcch-runtime"
+      ],
+      "relationships": [],
+      "evidence": [
+        {
+          "path": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+          "line": 101,
+          "note": "- 原有累计占比分数为回归输出"
+        }
+      ],
+      "verification": "核对有限数、超界报告和离散解码"
+    },
+    {
+      "id": "view-only",
+      "name": "本次只生成查看材料",
+      "note": "用户明确不创建Trellis任务；手动和云流程都需绘制。",
+      "origin": "user",
+      "strength": "required",
+      "applicability": "applicable",
+      "scope": "project",
+      "modules": [],
+      "relationships": [],
+      "evidence": [],
+      "verification": "确认仅新增.birdview材料，未改代码/配置/任务、未执行云或模型。"
+    }
+  ],
+  "constraintDiscovery": {
+    "checkedAt": "2026-10-08T01:21:27.208292+00:00",
+    "checkedPaths": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      "README.md",
+      "specs/001-cloud-base-input/plan.md",
+      "specs/001-cloud-base-input/contracts/execution-contract.md",
+      "specs/001-cloud-base-input/contracts/release-artifact-contract.md",
+      "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+      "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+      "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md"
+    ],
+    "uninspectedPaths": [
+      ".agents/skills",
+      ".claude/skills",
+      ".trellis/spec",
+      "config/paths.ini",
+      "config/ee_gcs.ini"
+    ]
+  }
+}

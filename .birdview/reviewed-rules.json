@@ -1,0 +1,653 @@
+{
+  "revision": "4a42f1f666a4f2d5d2616069fe25ddd81f2662cb",
+  "scope": "已审阅手动输入/h5交付、IPCCH云v1、FEWS云及本地实验的架构相关契约；不是全部技能/模板/历史文档的有效规则全集。v3未入Git规范另见architecture.json约束和阅读说明。实现合规/实际部署未验证。",
+  "groups": [
+    {
+      "sourcePath": "AGENTS.md",
+      "category": "lifecycle",
+      "topic": {
+        "id": "topic-f903f8b73b",
+        "name": "变更与验证"
+      },
+      "rules": [
+        {
+          "id": "impact-before-edit",
+          "name": "改符号前分析上游影响",
+          "anchor": "**MUST run impact analysis before editing any symbol.**",
+          "explanation": "列出调用方、流程和风险；HIGH/CRITICAL先告知。",
+          "condition": "未来修改函数/类/方法",
+          "verification": "运行impact并核对当前源码；本次不改实现",
+          "applicability": "conditional"
+        },
+        {
+          "id": "detect-before-commit",
+          "name": "提交前核对实际影响",
+          "anchor": "**MUST run `detect_changes()` before committing**",
+          "explanation": "核对diff影响的符号和流程。",
+          "condition": "未来代码提交",
+          "verification": "detect_changes与git diff对照",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "README.md",
+      "category": "security",
+      "topic": {
+        "id": "topic-d401a630a9",
+        "name": "运行身份"
+      },
+      "rules": [
+        {
+          "id": "no-secrets",
+          "name": "填充配置及凭据保留本地",
+          "anchor": "Local filled config files such as",
+          "explanation": "共享模板，配置值不写入公共产物。",
+          "condition": "配置/交接",
+          "verification": "检查模板与忽略项；不读取密钥",
+          "applicability": "conditional"
+        },
+        {
+          "id": "split-identities",
+          "name": "云角色分离且最小权限",
+          "anchor": "- Split service accounts for Cloud Run",
+          "explanation": "编排、Batch和Vertex使用不同服务账户。",
+          "condition": "部署IPCCH云",
+          "verification": "核对manifest及实际IAM；本轮未查云IAM",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "Outcome/ipcch_unified/schema/ipcch_model_input_contract.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-2efc7382c0",
+        "name": "数据契约"
+      },
+      "rules": [
+        {
+          "id": "canonical-key",
+          "name": "统一area_id年月键",
+          "anchor": "The standardized model input is one row per",
+          "explanation": "IPCCH模型输入按area_id/year/month唯一；admin_code是兼容别名。",
+          "condition": "月度IPCCH输入",
+          "verification": "运行model-input-forecast schema校验",
+          "applicability": "conditional"
+        },
+        {
+          "id": "single-scaffold",
+          "name": "生产只需目标月scaffold",
+          "anchor": "Production only needs the target month scaffold",
+          "explanation": "不强迫月度生产准备多月scaffold。",
+          "condition": "月度生产",
+          "verification": "核对目标年月和唯一空间集合",
+          "applicability": "conditional"
+        },
+        {
+          "id": "no-outcomes-required",
+          "name": "预测输入不要求真实标签",
+          "anchor": "For prediction runs, outcome columns are not part",
+          "explanation": "标签待真实发布，不填造预测月outcome。",
+          "condition": "预测scaffold",
+          "verification": "检查标签没有被虚构或作为强制预测输入",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "README.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-b05219bc92",
+        "name": "IPCCH云边界"
+      },
+      "rules": [
+        {
+          "id": "cloud-v1-boundary",
+          "name": "IPCCH云v1仅EVI与纯推理",
+          "anchor": "Cloud v1 must not invoke local workstation scoring",
+          "explanation": "禁止此路径调用训练、其它遥感族、地图/表格完整交付或非Vertex推理；不是全仓禁训。",
+          "condition": "IPCCH云v1",
+          "verification": "核对调用链与forbidden-side-effect inventory",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "README.md",
+      "category": "configuration",
+      "topic": {
+        "id": "topic-0cb112c2d9",
+        "name": "IPCCH云身份"
+      },
+      "rules": [
+        {
+          "id": "immutable-image",
+          "name": "云运行镜像使用digest",
+          "anchor": "Use the returned `@sha256:...` reference",
+          "explanation": "可变tag不是发布身份。",
+          "condition": "云发布运行",
+          "verification": "输入manifest镜像以@sha256绑定",
+          "applicability": "conditional"
+        },
+        {
+          "id": "artifact-identity",
+          "name": "输入引用须可核验",
+          "anchor": "Every required GCS artifact must have a checksum",
+          "explanation": "SHA256、generation/version或manifest内明确批准的waiver。",
+          "condition": "云输入manifest",
+          "verification": "运行manifest/schema与对象引用校验",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "specs/001-cloud-base-input/plan.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-b05219bc92",
+        "name": "IPCCH云边界"
+      },
+      "rules": [
+        {
+          "id": "one-month-run",
+          "name": "每次运行只选一个月",
+          "anchor": "**Scale/Scope**: Exactly one",
+          "explanation": "一个feature_month与run_id，scaffold为行集合权威；不含历史回放。",
+          "condition": "IPCCH云v1",
+          "verification": "核对CLI/manifest月份及输出键集合",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "README.md",
+      "category": "delivery",
+      "topic": {
+        "id": "topic-80e9f0b040",
+        "name": "IPCCH云发布"
+      },
+      "rules": [
+        {
+          "id": "duplicate-run",
+          "name": "重复run_id不得改已有前缀",
+          "anchor": "Use a unique `RUN_ID`. Duplicate run ids",
+          "explanation": "先获取独占run前缀，冲突即失败。",
+          "condition": "IPCCH云启动",
+          "verification": "验证create-only sentinel和冲突测试",
+          "applicability": "conditional"
+        },
+        {
+          "id": "build-commit",
+          "name": "分配新run前验证镜像代码身份",
+          "anchor": "Before allocating a new `run_id`, verify",
+          "explanation": "实现commit、镜像build记录和manifest digest一致。",
+          "condition": "新云发布运行",
+          "verification": "核对构建attestation与完整SHA",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "specs/001-cloud-base-input/contracts/execution-contract.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-05f2683b74",
+        "name": "EVI与输入"
+      },
+      "rules": [
+        {
+          "id": "evi-area-universe",
+          "name": "EVI保持scaffold空间全集",
+          "anchor": "- Preserve one row per scaffold area.",
+          "explanation": "区域统计不可丢失空间单位。",
+          "condition": "云EVI提取",
+          "verification": "核对几何/scaffold集合和输出area键",
+          "applicability": "conditional"
+        },
+        {
+          "id": "evi-pixel-rule",
+          "name": "rasterio采用all_touched=false",
+          "anchor": "- Run rasterio extraction with `all_touched=false`.",
+          "explanation": "保持约定像元包含规则。",
+          "condition": "云EVI区域统计",
+          "verification": "核对mask参数及参考比较",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "specs/001-cloud-base-input/contracts/execution-contract.md",
+      "category": "testing",
+      "topic": {
+        "id": "topic-f1beb14418",
+        "name": "云门禁"
+      },
+      "rules": [
+        {
+          "id": "evi-errors",
+          "name": "EVI缺失或超时须失败",
+          "anchor": "- Exit nonzero on missing raster",
+          "explanation": "缺栅格、无效schema、超时或重试耗尽不得当成功。",
+          "condition": "云EVI运行",
+          "verification": "检查worker错误报告/退出状态",
+          "applicability": "conditional"
+        },
+        {
+          "id": "vertex-real-score",
+          "name": "不得用validate-only替代推理",
+          "anchor": "- Must not pass `--validate-only`.",
+          "explanation": "输入校验不是模型推理。",
+          "condition": "IPCCH云推理",
+          "verification": "核对执行参数和三份prediction CSV",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "specs/001-cloud-base-input/contracts/execution-contract.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-b05219bc92",
+        "name": "IPCCH云边界"
+      },
+      "rules": [
+        {
+          "id": "vertex-no-map",
+          "name": "Vertex必须禁用地图",
+          "anchor": "- Must pass `--no-map`.",
+          "explanation": "云推理只产出契约CSV和报告。",
+          "condition": "IPCCH Vertex wrapper",
+          "verification": "检查实际CLI参数及产物库存",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "specs/001-cloud-base-input/contracts/execution-contract.md",
+      "category": "delivery",
+      "topic": {
+        "id": "topic-80e9f0b040",
+        "name": "IPCCH云发布"
+      },
+      "rules": [
+        {
+          "id": "publish-last",
+          "name": "发布指针最后CAS写入",
+          "anchor": "- Write `released/{YYYYMM}/release_manifest.json` last",
+          "explanation": "产物先完成，generation条件更新稳定入口。",
+          "condition": "IPCCH发布",
+          "verification": "测试generation冲突时旧指针不变",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "specs/001-cloud-base-input/contracts/release-artifact-contract.md",
+      "category": "delivery",
+      "topic": {
+        "id": "topic-80e9f0b040",
+        "name": "IPCCH云发布"
+      },
+      "rules": [
+        {
+          "id": "terminal-immutable",
+          "name": "终态运行证据不可改写",
+          "anchor": "Run evidence must not be modified after terminal status.",
+          "explanation": "修订需新运行，保留旧证据。",
+          "condition": "IPCCH已终态run",
+          "verification": "核对版本前缀与对象generation",
+          "applicability": "conditional"
+        },
+        {
+          "id": "manifest-consumer",
+          "name": "消费者先读release manifest",
+          "anchor": "- read `release_manifest.json` first",
+          "explanation": "按记录的路径/checksum读取，不凭目录文件数判断完成。",
+          "condition": "消费IPCCH云产物",
+          "verification": "核对read_release_manifest路径",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "README.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-4ca3972c81",
+        "name": "输出统计语义"
+      },
+      "rules": [
+        {
+          "id": "population-output",
+          "name": "人口估计字段不替换模型特征",
+          "anchor": "same immutable model package. population_estimate is output-only",
+          "explanation": "population_estimate供输出；模型仍使用estimated_population。",
+          "condition": "人口增强运行",
+          "verification": "核对feature contract及输入矩阵",
+          "applicability": "conditional"
+        },
+        {
+          "id": "margin-not-ci",
+          "name": "阈值距离标签不是置信区间",
+          "anchor": "label is qualitative distance-to-threshold stability",
+          "explanation": "decision_margin只衡量当前阈值距离，h5修订可禁用该输出。",
+          "condition": "默认IPCCH uncertainty输出",
+          "verification": "检查字段解释与阈值边界",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-4e57622246",
+        "name": "FEWS云边界"
+      },
+      "rules": [
+        {
+          "id": "rf-isolation",
+          "name": "FEWS与IPCCH云资源隔离",
+          "anchor": "It does not create an online Vertex Endpoint.",
+          "explanation": "FEWS Batch-only；不得混用IPCCH模型/发布根。",
+          "condition": "FEWS云套件",
+          "verification": "核对deployment roots及Endpoint inventory",
+          "applicability": "conditional"
+        },
+        {
+          "id": "rf-three-horizons",
+          "name": "三预测期作为统一云套件",
+          "anchor": "The suite uses exactly one Vertex AI Custom Job",
+          "explanation": "一个训练job、三个parent/version、三个精确版本Batch；h5不自动加入云suite。",
+          "condition": "FEWS云生产",
+          "verification": "核对0m/6m/12m job/model资源清单",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-2efc7382c0",
+        "name": "数据契约"
+      },
+      "rules": [
+        {
+          "id": "rf-normalize",
+          "name": "保留原panel并绑定规范化audit",
+          "anchor": "- Never overwrite the raw assembled FEWSNET panel.",
+          "explanation": "规范化写新CSV与匹配audit，不能复用旧checksum。",
+          "condition": "FEWS规范化与上传",
+          "verification": "检查原始hash及新CSV/audit一致",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "category": "delivery",
+      "topic": {
+        "id": "topic-f109240df4",
+        "name": "FEWS云发布"
+      },
+      "rules": [
+        {
+          "id": "rf-atomic-suite",
+          "name": "三production alias须协调发布",
+          "anchor": "- Do not manually move one production alias",
+          "explanation": "部分移动需回滚；不可手工改单一alias/pointer。",
+          "condition": "FEWS晋升",
+          "verification": "核对promotion与冲突恢复证据",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "category": "security",
+      "topic": {
+        "id": "topic-d401a630a9",
+        "name": "运行身份"
+      },
+      "rules": [
+        {
+          "id": "rf-preflight",
+          "name": "gcloud与Python身份须一致",
+          "anchor": "Do not continue if either target differs.",
+          "explanation": "后续云操作必须保持已验证的服务账户impersonation。",
+          "condition": "FEWS云操作",
+          "verification": "核对CLI和ADC principal，不输出token",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "category": "testing",
+      "topic": {
+        "id": "topic-f1beb14418",
+        "name": "云门禁"
+      },
+      "rules": [
+        {
+          "id": "rf-acceptance",
+          "name": "生产验收需完整16项证据",
+          "anchor": "Do not call the first production run accepted until",
+          "explanation": "本地测试、跳过smoke或成功构建都不是生产验收。",
+          "condition": "FEWS首次生产验收",
+          "verification": "运行runbook验收器；本轮不执行",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-92dcb8452f",
+        "name": "训练时间与模型"
+      },
+      "rules": [
+        {
+          "id": "rf-window",
+          "name": "36个实际标签月按30/6拆分",
+          "anchor": "Training uses the latest 36 distinct target periods",
+          "explanation": "不是连续36日历月；前30拟合填补/临时模型，后6选阈值，36重拟合。",
+          "condition": "本地FEWS训练",
+          "verification": "核对实际target period/key账本和fit统计",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "category": "delivery",
+      "topic": {
+        "id": "topic-b9ec05a847",
+        "name": "手动与云接口"
+      },
+      "rules": [
+        {
+          "id": "rf-local-package",
+          "name": "local包不得直接注册生产",
+          "anchor": "is not the digest-pinned `fewsnet-model-package-v1`",
+          "explanation": "共享模型算法不代表local包符合云包身份契约。",
+          "condition": "本地包向云迁移",
+          "verification": "核对package schema、image digest及runtime versions",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/09_fewsnet_partitioned_rf_runbook.md",
+      "category": "configuration",
+      "topic": {
+        "id": "topic-423f51a286",
+        "name": "运行环境"
+      },
+      "rules": [
+        {
+          "id": "rf-pins",
+          "name": "FEWS本地保持依赖版本",
+          "anchor": "keeps `scikit-learn==1.8.0`",
+          "explanation": "保留imbalanced-learn==0.14.0及既有兼容桥。",
+          "condition": "FEWS本地模型重加载",
+          "verification": "核对requirements和加载器版本校验",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-92dcb8452f",
+        "name": "训练时间与模型"
+      },
+      "rules": [
+        {
+          "id": "h5-calendar",
+          "name": "h5按五个日历月连接",
+          "anchor": "按 polygon 身份和日历月份连接",
+          "explanation": "禁止行位移；训练target<=2026-04，训练feature最多2025-11。",
+          "condition": "该h5本地交付",
+          "verification": "逐行核对feature/target keys与cutoff",
+          "applicability": "conditional"
+        },
+        {
+          "id": "h5-vintage",
+          "name": "截止月份不等于历史可得性",
+          "anchor": "月份 cutoff 约束观测和标签所指月份",
+          "explanation": "使用当前历史修订值重建April输入；不是严格当时可得数据回测。",
+          "condition": "该h5交付解释",
+          "verification": "核对来源获取commit/时间和观测截止",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-2efc7382c0",
+        "name": "数据契约"
+      },
+      "rules": [
+        {
+          "id": "h5-preserve",
+          "name": "更新仅替换实际覆盖键",
+          "anchor": "在可更新键内用重新计算的整组指标替换旧值",
+          "explanation": "保留未覆盖旧值；缺失不等于零，不清空整段历史。",
+          "condition": "WFP/ACLED刷新",
+          "verification": "按键比较替换/保留和非更新列",
+          "applicability": "conditional"
+        },
+        {
+          "id": "h5-wfp",
+          "name": "保留两模型不同WFP定义",
+          "anchor": "- WFP 保留各自最新 assembled 输入的定义",
+          "explanation": "FEWS用月价格百分比变化均值+100；IPCCH用Trend均值+100；不拟合新scaler。",
+          "condition": "h5来源刷新",
+          "verification": "核对同序列前日历月、单位证据及覆盖审计",
+          "applicability": "conditional"
+        },
+        {
+          "id": "h5-native-ids",
+          "name": "保留原生边界与字符串ID",
+          "anchor": "| 各模型 `polygons.geojson`",
+          "explanation": "EPSG:4326，不重新分区/裁剪/简化；两模型空间全集分别校验。",
+          "condition": "h5几何交付",
+          "verification": "核对CSV/GeoJSON/mapping键一致",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+      "category": "interfaces",
+      "topic": {
+        "id": "topic-4ca3972c81",
+        "name": "输出统计语义"
+      },
+      "rules": [
+        {
+          "id": "h5-raw-scores",
+          "name": "IPCCH原始回归分数不裁剪",
+          "anchor": "- 原有累计占比分数为回归输出",
+          "explanation": "保留超界或非单调raw scores并报告；原0.2/cummax解码不变。",
+          "condition": "h5 IPCCH推理",
+          "verification": "核对有限数、超界报告和离散解码",
+          "applicability": "conditional"
+        },
+        {
+          "id": "h5-pop-meaning",
+          "name": "人口权重与Census参考分开",
+          "anchor": "两表均保留 Census `referenced_population`",
+          "explanation": "Census不作加权均值分母；区域分散度不是置信区间。",
+          "condition": "国家预测表",
+          "verification": "独立重算均值、权重和支持数",
+          "applicability": "conditional"
+        },
+        {
+          "id": "h5-prob-meaning",
+          "name": "危机概率不是危机人口比例",
+          "anchor": "人口加权危机概率不能改称为危机人口占比",
+          "explanation": "FEWS的概率均值不能直接解释为需要援助人数。该原规格不新增国家分类的限制已被v3本地规格覆盖，概率含义仍保留。",
+          "condition": "FEWS国家表解释",
+          "verification": "核对输出codebook及字段文案",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+      "category": "delivery",
+      "topic": {
+        "id": "topic-b9ec05a847",
+        "name": "手动与云接口"
+      },
+      "rules": [
+        {
+          "id": "h5-portable",
+          "name": "评分必须先重加载交付模型",
+          "anchor": "模型运行所需代码和依赖清单随交付提供",
+          "explanation": "交付内相对路径；重加载不能依赖外部checkout、云凭据或训练内存。",
+          "condition": "h5交付评分",
+          "verification": "异地临时目录重加载并比较全部预测",
+          "applicability": "conditional"
+        },
+        {
+          "id": "h5-versioned",
+          "name": "新交付目录不得覆盖旧结果",
+          "anchor": "- 保留原始和旧版本文件。",
+          "explanation": "新模型、输入和预测采用独立版本目录。",
+          "condition": "h5及诊断修订",
+          "verification": "比较原版本hash和新目录成员",
+          "applicability": "conditional"
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/superpowers/specs/2026-09-09-local-202609-h5-model-refresh-design.md",
+      "category": "testing",
+      "topic": {
+        "id": "topic-cbc4ed10c5",
+        "name": "本地验收"
+      },
+      "rules": [
+        {
+          "id": "h5-validation",
+          "name": "异地重评分须数值一致",
+          "anchor": "7. 在不同的临时目录中重新加载完整交付包",
+          "explanation": "连续值rtol=0/atol=1e-12，类别精确一致。",
+          "condition": "该h5包验收",
+          "verification": "运行focused verification及relocation检查",
+          "applicability": "conditional"
+        }
+      ]
+    }
+  ]
+}
