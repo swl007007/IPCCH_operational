@@ -58,3 +58,25 @@ Built and relocated-verified 233-file migration payload and 1.10 GiB archive; is
 ### Status
 
 [OK] **Completed**
+
+
+## Session 3: Two-entry delivery closure
+<!-- trellis-session: v=2 fp=7a6fb0a4535661bb -->
+
+**Date**: 2026-10-08
+**Task**: Two-entry delivery closure
+**Branch**: `feat/october-cloud-delivery`
+
+### Summary
+
+Closed September manual and cloud operator handovers; added destination CLI and English operations docs; archived 690 legacy files without deletion; verified 209-member archive and relocated baseline; 465 tests passed. No cloud calls, replay, audits or push.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4c9122d` | feat: close operator handover and archive legacy layout |
+
+### Status
+
+[OK] **Completed**
