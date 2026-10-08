@@ -1,6 +1,6 @@
 # October cloud delivery — execution plan draft
 
-Revision 0.4, 2026-10-07. **Authorized for implementation under the Herdr supervisor–executor agreement in `supervision.md`.** Read `prd.md`, `design.md`, and the four research notes. Product decisions G1–G3 are aligned; technical acceptance gates remain. Cloud deployment and production execution remain outside current authorization.
+Revision 0.5, 2026-10-07. **Authorized for implementation under the Herdr supervisor–executor agreement in `supervision.md`.** Read `prd.md`, `design.md`, and research notes. Product decisions G1–G3 are aligned. Latest user instruction removes historical lineage gates: reuse fixed features and prioritize repository remote scripts. Earlier research gaps are retained as facts, not instructions to keep searching. Cloud deployment and production execution remain outside current authorization.
 
 ## 1. Planning and lifecycle gates
 
@@ -13,7 +13,7 @@ Revision 0.4, 2026-10-07. **Authorized for implementation under the Herdr superv
 - [x] Scope T1–T5 with evidence status, owning milestones and stop conditions in design §10; model/lineage evidence is in `research/model-and-lineage-acceptance.md`. This does not mark the technical gates passed.
 - [x] Perform the lossless PRD convergence pass: all R1–R9 and 13 acceptance IDs retained; resolved G1–G3 folded into their owning requirements; source anchors preserved; consolidated PRD read end to end. Technical evidence gaps remain explicit rather than being marked passed.
 - [x] Present final planning summary and receive a subsequent explicit implementation request: Claude Opus 5.5 1M executor, Codex supervisor, checkpoint communication, no additional Trellis task audit. See `supervision.md` for session identities and scope.
-- [ ] Commit the approved task documents separately before product implementation, after GitNexus detect_changes. Use native Trellis task activation and supervisor checkpoints for this task; the user's explicit no-additional-audit instruction supersedes the prior controller register/start/close plan. Do not alter unrelated audit state.
+- [x] Commit the approved task documents separately before product implementation, after GitNexus detect_changes: `1fa71a3`, staged scope LOW with no affected execution processes; whitespace check passed. Use native Trellis task activation and supervisor checkpoints for this task; the user's explicit no-additional-audit instruction supersedes the prior controller register/start/close plan. Do not alter unrelated audit state.
 - [x] Curated `implement.jsonl` and `check.jsonl` validate (seven entries each). Follow the repository's active dispatch instructions at execution time. Present GitNexus upstream impact for every function/class/method to change; warn on HIGH/CRITICAL findings. CP0 is reviewed and CP1 is authorized after the task-document baseline commit; see `supervision.md`.
 
 Keep one task while the common input/output contract is converging. The stages below are ordered milestones under one acceptance contract, not speculative independent child projects. Split into child tasks only if implementation later yields independently reviewable releases with explicit dependencies. Preserve a repository-local progress ledger during authorized implementation; it records evidence, not authorization.
@@ -25,13 +25,13 @@ Keep one task while the common input/output contract is converging. The stages b
 Inputs: candidate April 0/6/12 packages, September v3 headers/spec, baseline source histories/rosters, research notes.
 
 - [ ] Inspect hashes, horizon metadata, ordered columns, imputation, thresholds, routing, fitted-key provenance and Python/library requirements of all six packages. Determine an accepted environment; do not change fitted values to fit a convenient container.
-- [ ] Trace each remote feature from provider/grid/reducer through intermediate panel transformation to model column for both native universes. Explicitly resolve GPP SD and VIIRS SUM/STD lineage.
-- [ ] Obtain keyed canonical-panel lineage and a verified native-ID crosswalk for unresolved IPC/FEWS/legacy-FID branches. CH notebook mapping alone is insufficient. Do not reproduce the notebook's cross-area fills or zero substitutions; preserve historical artifacts and validate the explicitly approved new missing-value policy separately.
+- [ ] Record current repository source/product/grid/reducer and model-column mapping for both native universes; no further historical chain reconstruction.
+- [x] Historical canonical-panel lineage and old FID crosswalk recovery removed by user instruction. New extraction must use explicit native IDs; preserve fixed/history artifacts and validate the approved causal-fill policy.
 - [ ] Freeze calendar dependencies, FEWS normalization and label-history missingness behavior. Verify O=2026-10 while future targets can be in 2027; do not add dummy input years unnecessarily.
 - [ ] Version the accepted feature/output contracts and model acceptance report format, including schema hashes and the allowed unavailable-diagnostics contract.
 - [ ] Under the current supervised local-validation authorization, load and replay accepted candidates on frozen input in the exact environment. Check semantics/operational compatibility; do not claim future forecast accuracy from this replay.
 
-Stop condition: unexplained lineage, numerical environment mismatch or package incompatibility → report and return to design. Do not auto-train. Current unknowns are not evidence that any package is invalid.
+Stop condition: numerical environment mismatch, actual input failure or package incompatibility → report. Historical lineage gaps no longer block implementation. Do not auto-train.
 
 Likely code touched only after impact review: package loaders, date-bound wrappers, contract validation. Reuse shared scoring functions rather than copying model algorithms.
 
@@ -53,7 +53,7 @@ Likely files: `tools/refresh_h5_inputs.py`, existing monthly builders, `cloud/or
 - [ ] Produce immutable prepared/source manifests and coverage reports; include source cutoffs, periods, versions and every relevant generation/hash.
 - [ ] Implement operator-initiated prepare command and result location. No scheduler or UI is required.
 
-Numerical validation must compare legacy/accepted reference extraction for both mean and dispersion, GPP SD and VIIRS sum on representative normal/boundary/nodata cases. Existing advisory EVI mean checks alone cannot pass this gate. Determine tolerances from the frozen accepted numerical contract; do not relax them simply to pass a drifted result.
+Numerical validation compares implemented operations with the selected current repository script contracts for mean/dispersion, provider GPP SD and selected nightlight reducer on normal/boundary/nodata fixtures. Historical reference extraction recovery is no longer required. Report actual provider/local/cloud checks separately; do not claim unrun historical parity.
 
 ### M4 — Batch scoring, country outputs, optional diagnostics and bundle
 

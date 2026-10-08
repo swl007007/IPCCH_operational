@@ -3,21 +3,57 @@
 Operational ledger only; it does not grant authority. Authority: `.trellis/tasks/10-07-october-cloud-delivery/{supervision,prd,design,implement}.md`.
 
 - Executor: Claude Opus 5.5 1M, Herdr `wR:p3`, session `e8ac76ab-3486-4e51-b70c-ed09b2846fc7`. Supervisor: Codex `wR:p1`, session `01a11908-591c-7bf0-8a46-1bf09c6019f9`.
-- Branch `feat/october-cloud-delivery` (created by supervisor; do not switch). Baseline HEAD `4a42f1f666a4f2d5d2616069fe25ddd81f2662cb`. Task docs are uncommitted, pending a task-doc-only baseline commit after supervisor CP0 acceptance and GitNexus detect_changes.
+- Branch `feat/october-cloud-delivery` (created by supervisor; do not switch). Source baseline `4a42f1f666a4f2d5d2616069fe25ddd81f2662cb`; task-doc/CP0 baseline commit `1fa71a3` (supervisor). CP1 changes are uncommitted pending review.
 - Not executor-owned; leave untouched: `.trellis/.template-hashes.json`, AGENTS.md/CLAUDE.md index edits, `.agents/skills/*`, `.codex/`, `.birdview/`.
 - Constraints: no training, no GCP writes/deployment, no release-pointer changes, no push, no additional Trellis task audit. Do not patch site-packages or disable runtime checks. IPCCH raw-score semantics stay unchanged (no clipping).
 
-## Current checkpoint: CP0, delivered 2026-10-07, awaiting supervisor review
+## Binding user scope update (2026-10-07, relayed by supervisor; spec v0.5 pending from supervisor)
 
-- Supervisor disposition: pending. No product-code edits until a response.
-- Evidence: `.trellis/tasks/10-07-october-cloud-delivery/research/cp0-acceptance-evidence.md`; diagnostic script `research/cp0_replay_candidates.py` (always exits 0; not a validator); outputs `research/cp0_evidence/{cp0_replay_report.json,ipcch-h5-202609.freeze.txt}`.
-- Changed paths (all task-owned): `PROGRESS.md` (this section) and the research files above. No product code changed.
-- Commands run:
-  - `~/.venvs/ipcch-h5-202609/bin/python -B .trellis/tasks/10-07-october-cloud-delivery/research/cp0_replay_candidates.py --evidence-dir /tmp/cp0-replay`. Result: FEWS 0/6/12 packages load; IPCCH 0/6/12 replay differs from saved April scores only at the 85 phase4 and 8,013 phase5 cells that the saved correction summary records as clipped to zero; binary and overall-phase predictions are identical.
-  - GitNexus upstream impact (repo `IPCCH_operational`): `replace_sources` LOW (direct: `check_h5_delivery_focus.check`, `refresh`); `wfp_aggregates` LOW (direct: `audit_h5_inputs.audit`, `refresh`); `conflict_aggregates` LOW (direct: `refresh`); `refresh` LOW (script entry only).
-- Findings: frozen venv `ipcch-h5-202609` is the pinned runtime. A bare `import imblearn` fails (imbalanced-learn 0.14.0 needs sklearn's private `_is_pandas_df`, which is absent in 1.8.0); the existing scoped shim in `core/training.py` handles it, and inference does not need imblearn. FEWS thresholds are per-package (0.48/0.41/0.45).
-- Unresolved, and blocking only the affected adapters: T1 lineage (IPCCH FLDAS/GPP/VIIRS `fid` keying; all FEWS remote-sensing branches), FEWS 773 MB frozen-input replay, T3 normalization extension, IPCCH environment record. See the evidence file §4.
-- Proposed next (CP1, after approval): parameterize/split the raw converter, add a versioned dual-system request contract, and a generic area-scoped causal fill + audit with focused tests. Details are in the CP0 report.
+User: 不用溯源了，没完没了的。固定特征直接复用，遥感特征优先用本文件夹现有脚本构建。
+- Stop the historical lineage investigation. Canonical-panel provenance and the FID crosswalk are no longer acceptance blockers.
+- Reuse fixed features/assets as-is.
+- Remote-sensing operational baseline = CURRENT repo extraction scripts (product/grid/reducer). Record the current script/product/grid/reducer and any already-known historical differences; no more archaeology.
+- New outputs key on explicit native `admin_code`. Keep the FEWS and IPCCH rosters separate; no guessed row-order/FID identity.
+- Unchanged: past-only same-area filling, latest complete monthly product eligibility, no training, no cloud mutation. Model runtime/replay checks remain.
+- CP2 validation is code-level/local fixture validation against the current scripts, with no historical source acceptance hunt.
+
+## Current checkpoint: CP1, delivered 2026-10-07, awaiting supervisor review
+
+- CP0: accepted as bounded evidence only (supervision.md, CP0 disposition). Baseline spec/evidence commit `1fa71a3`. Models are NOT accepted; FEWS replay, October/T3 and T1 remain open.
+- Supervisor disposition for CP1: pending. No commits by the executor.
+- Changed product paths: `tools/refresh_h5_inputs.py` (modified); new `cloud/orchestrator/causal_fill.py`, `cloud/orchestrator/delivery_manifest.py`, `tests/test_refresh_h5_inputs.py`, `tests/cloud/test_causal_fill.py`, `tests/cloud/test_delivery_manifest.py`. Evidence: `research/cp1_evidence/`.
+- Converter changes:
+  - `wfp_aggregates` / `conflict_aggregates` take `cutoff=CUTOFF`. Defaults keep the h5 callers (`refresh`, `audit_h5_inputs.audit`) unchanged.
+  - Strict raw validation: required columns, blank/malformed dates, unknown WFP Data Type, non-numeric values, ACLED `year`/event_date disagreement.
+  - Reports gain only the additive keys `cutoff` and observed-only `observed_period_min`/`observed_period_max`.
+  - `replace_sources` is now a wrapper over the new `replace_wfp` + `replace_acled`; the new `apply_source_choices` handles independent keep/refresh, with WFP selected by system.
+  - AST comparison against `1fa71a3`: only `wfp_aggregates`, `conflict_aggregates` and `replace_sources` changed; other existing functions are unchanged.
+- Real-data equivalence against the `1fa71a3` converter (`cp1_equiv*.py`):
+  - v3 WFP/ACLED aggregate frames are exactly equal.
+  - `replace_sources` frame and report are exactly equal on the IPCCH April panel (6,227 rows; 3,028 WFP-covered).
+  - ACLED overlay on scaffold months 2025-04..08 is exactly equal (31,135 rows; 18,681 covered; 15,735 matched; uncovered sentinels kept).
+  - The supervisor independently confirmed exact equality (FEWS 569, IPCCH 560, ACLED 5,787).
+- `causal_fill`:
+  - Base step: same-area, past-only, non-finite observations rejected; no-history stays `no_eligible_history`.
+  - `bind_model_features` binds to the final model feature + package. `model_imputation` is recorded only where the caller-supplied final-feature missingness says so, under that package's rule for that final feature; otherwise `RequiredInputUnavailable`.
+  - Lags must be non-negative ints; coverage is checked per polygon; source URI#generation and sha256 are recorded.
+  - Revised after the supervisor's early review.
+- `delivery_manifest`:
+  - Structural validation against design §4.2: exact keys, gs:// URI + generation + sha256 refs, exactly 6 distinct model packages, every diagnostic declared, evidence bound to the same package/horizon, fixed fill/converter contract versions, digest-pinned image, non-legacy namespace.
+  - `verify_reference_identities` (injected resolver) and `acceptance_requirements` are kept separate from structural validation.
+- Test env: `/tmp/ipcch-oct-cp1` (uv, Python 3.12.3; same numerical pins as the frozen venv, plus pytest 7.4.4; no xgboost, no rasterio). Freeze: `research/cp1_evidence/ipcch-oct-cp1.freeze.txt`. The frozen venv `ipcch-h5-202609` is unchanged.
+- Commands and results:
+  - `PYTHONDONTWRITEBYTECODE=1 /tmp/ipcch-oct-cp1/bin/python -m pytest tests/test_refresh_h5_inputs.py tests/cloud/test_causal_fill.py tests/cloud/test_delivery_manifest.py -q -p no:cacheprovider` → all pass.
+  - Regression: `... tests/test_refresh_h5_inputs.py tests/cloud tests/fewsnet_partitioned_rf/test_horizons.py tests/fewsnet_partitioned_rf/test_preprocessing.py tests/test_build_monthly_ipcch_base_input.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/test_reshape_remote_sensing_wide_to_long.py` → 362 passed, 1 skipped (live GCP smoke needs env vars), 1 failed.
+  - The failure is pre-existing (`test_horizons.py::test_horizon_alignment_rejects_unsupported_horizons`): it reproduces on a clean `git archive 1fa71a3` export (30 passed, 1 failed). `horizons.py` gained h5 support in `55f48ee` after the test's last change `0198909`. Left untouched.
+- GitNexus detect_changes (scope all): risk HIGH. The changed list includes AGENTS.md/CLAUDE.md (not executor-owned) and `sha256`/`write_json`/`periods`/`source_iso3`/`refresh`, which are line-shift only (AST-identical). Real changes: `wfp_aggregates`, `conflict_aggregates`, `replace_sources` (pre-edit impact LOW). Affected processes: h5 `refresh`, `audit`, `check` flows, which old-vs-new equality covers.
+- CP1 change request (4 findings), fixed 2026-10-07, awaiting re-review:
+  1. `carry_forward_base_series`: an all-NaN or empty feature raised a merge_asof dtype MergeError. Grid/eligible keys are now explicitly int64/str. Regression: one id `0`, `2026-04`, `x=NaN`, roster `["0","00"]`, months `2026-04`/`2026-10`, plus empty observations. Result is `no_eligible_history`, then the package rule applies, or `RequiredInputUnavailable` without one.
+  2. Unavailable diagnostics use the canonical design §4.2 form `evidence: null` + `status` + `reason`. The key is required and a non-null value is rejected. Fixture updated.
+  3. `systems`/`horizons_months` items must have the exact type (str/int; bool and 6.0 rejected). `[0,"6",12]` now raises `DeliveryManifestError`, not TypeError. Model `horizon_months` 0.0 rejected.
+  4. `prepared_at` must be full `YYYY-MM-DDTHH:MM:SS[.ffffff]Z` and parseable. Rejected: `2026-10-03Z`, `+02:00` offsets, `2026-13-03T12:00:00Z`.
+  - Results: focused 89 passed. Regression 375 passed, 1 skipped (live GCP), 1 failed (same pre-existing horizon test). `git diff --check` clean. New symbols are not yet in the GitNexus index; grep shows tests are the only callers.
+- Open: T1 historical lineage is withdrawn as a blocker by the user scope update above. Still open: FEWS 773 MB replay, T3, IPCCH runtime record, live ref resolver (CP4), model-specific final-missing extraction (CP3).
 
 # FEWSNET Partitioned RF Model Suite Progress
 

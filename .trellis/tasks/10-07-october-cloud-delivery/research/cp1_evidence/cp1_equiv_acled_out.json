@@ -1,0 +1,9 @@
+{
+ "rows": 31135,
+ "acled_covered_rows": 18681,
+ "matched_rows": 15735,
+ "uncovered_month_sentinels_kept": true,
+ "old_new_frame_equal": true,
+ "old_new_report_equal": true,
+ "acled_only_choice_equal": true
+}

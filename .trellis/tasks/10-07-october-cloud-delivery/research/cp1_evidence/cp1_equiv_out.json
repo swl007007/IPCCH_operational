@@ -1,0 +1,18 @@
+{
+ "wfp_frames_equal": true,
+ "acled_frame_equal": true,
+ "replace_sources_frame_equal": true,
+ "replace_sources_report_equal": true,
+ "apply_source_choices_refresh_both_equal": true,
+ "rows": 6227,
+ "wfp_covered_rows": 3028,
+ "acled_covered_rows": 0,
+ "new_wfp_report_keys_added": [
+  "cutoff",
+  "observed_period_max",
+  "observed_period_min"
+ ],
+ "new_acled_report_keys_added": [
+  "cutoff"
+ ]
+}

@@ -6,6 +6,8 @@ Move the September manual FEWSNET and IPCCH delivery capabilities into a reprodu
 
 ## Planning status and authority
 
+- Latest scope update (2026-10-07): the user explicitly stopped historical provenance investigation: reuse fixed features directly and prioritize this repository's existing scripts for remote feature construction. This supersedes earlier historical canonical-panel/extractor/FID-lineage stop gates. Preserve current native IDs and test the selected construction; do not claim historical numerical parity or continue archaeology.
+
 - Brainstorm and document-grill product decisions are consolidated; design and execution plan are at revision 0.4. After reviewing the planning summary, the user explicitly requested Claude Opus 5.5 1M implementation under Codex supervisor/checkpoint review. Technical acceptance evidence remains incomplete as listed below and gates the affected work.
 - On 2026-10-07 the user explicitly authorized creation of a Trellis task, superseding the earlier map-only/no-task preference.
 - Requested sequence: brainstorm → persist specification → grill against the documents → final alignment. Use Trellis for this task; do not use Spec Kit or Superpowers lifecycle gates. Existing documents remain evidence of scientific and delivery contracts, not workflow authority.
@@ -111,7 +113,7 @@ CP0 performed FEWS load/identity checks and IPCCH frozen-input diagnostic replay
 
 No user-owned brainstorm or G1–G3 choice remains unresolved. `design.md` section 10 and `implement.md` assign the remaining technical checks: canonical feature/region lineage, candidate-model replay, FEWS normalization extension, provider completeness and source availability, native event-trigger deployment, and numerical resource limits. Metadata inspection is complete only where the evidence table states so; these checks are not collectively passed.
 
-The first acceptance milestone must establish missing model/input lineage before implementing affected adapters. Failure returns that scientific contract to design; it does not authorize guessing, retraining, changing normalization or waiving source identity. Implementation is authorized under supervisor review; production readiness remains outstanding.
+The first acceptance milestone checks model loading/runtime and current input compatibility. Historical canonical-panel/extractor lineage is no longer required before adapters, per the latest user instruction. Current source versions/native IDs remain explicit, and no retraining or silent normalization change is authorized. Implementation continues under supervisor review; production readiness remains outstanding.
 
 ## Out of scope for the current implementation authorization
 

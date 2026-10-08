@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 import numpy as np
@@ -20,6 +21,12 @@ METRICS = [f"{kind}_{event}" for kind in ("event_count", "sum_fatalities")
            for event in EVENT_TYPES.values()]
 CONFLICT_COLUMNS = [f"{metric}{suffix}" for suffix in ("", "_w5", "_w10")
                     for metric in METRICS] + ["distance_to_nearest_acled"]
+SYSTEMS = ("fewsnet", "ipcch")
+WFP_REQUIRED_COLUMNS = ["Country", "Admin 1", "Admin 2", "Market Name", "Commodity", "Price Type",
+                        "Price Date", "Price", "Unit", "Currency", "Trend", "Data Type"]
+WFP_DATA_TYPES = {"Aggregated", "Forecast"}
+ACLED_REQUIRED_COLUMNS = ["event_date", "event_type", "country", "admin1", "admin2", "admin3",
+                          "location", "latitude", "longitude", "fatalities"]
 
 
 def sha256(path: Path) -> str:
@@ -32,6 +39,19 @@ def write_json(path: Path, value: object) -> None:
     with path.open("x", encoding="utf-8") as f:
         json.dump(value, f, indent=2, ensure_ascii=False, allow_nan=False)
         f.write("\n")
+
+
+def validate_cutoff(cutoff: str) -> str:
+    if not isinstance(cutoff, str) or re.fullmatch(r"\d{4}-(0[1-9]|1[0-2])", cutoff) is None:
+        raise ValueError(f"cutoff must be YYYY-MM, got {cutoff!r}")
+    return cutoff
+
+
+def require_columns(frame: pd.DataFrame, required: list[str], source: str) -> None:
+    """Extra export columns are tolerated; missing contract columns are not."""
+    missing = [col for col in required if col not in frame.columns]
+    if missing:
+        raise ValueError(f"{source} raw export lacks required columns: {missing}")
 
 
 def country_iso3(name: str) -> str:
@@ -70,10 +90,17 @@ def monthly_price_change(frame: pd.DataFrame, keys: list[str], price: str) -> pd
     return joined
 
 
-def wfp_aggregates(path: Path) -> tuple[dict[str, pd.DataFrame], dict]:
+def wfp_aggregates(path: Path, cutoff: str = CUTOFF) -> tuple[dict[str, pd.DataFrame], dict]:
+    cutoff = validate_cutoff(cutoff)
     raw = pd.read_csv(path)
+    require_columns(raw, WFP_REQUIRED_COLUMNS, "WFP")
+    unknown_types = set(raw["Data Type"].dropna().unique()) - WFP_DATA_TYPES
+    if raw["Data Type"].isna().any() or unknown_types:
+        raise ValueError(f"WFP Data Type must be one of {sorted(WFP_DATA_TYPES)}; found {sorted(unknown_types)} or blanks")
+    if raw["Price Date"].isna().any():
+        raise ValueError("WFP Price Date must not be blank")
     raw["period"] = pd.to_datetime(raw["Price Date"], format="%d/%m/%Y").dt.to_period("M").astype(str)
-    frame = raw.loc[(raw.period <= CUTOFF) & raw["Data Type"].eq("Aggregated")].copy()
+    frame = raw.loc[(raw.period <= cutoff) & raw["Data Type"].eq("Aggregated")].copy()
     frame["ISO3"] = frame.Country.map(country_iso3)
     for col in ["Price", "Trend"]:
         frame[col] = pd.to_numeric(frame[col], errors="raise")
@@ -87,21 +114,33 @@ def wfp_aggregates(path: Path) -> tuple[dict[str, pd.DataFrame], dict]:
         agg["WFP_Price"] += 100
         # Only supported indicator keys supersede historical values.
         result[name] = agg.dropna(subset=["WFP_Price"])
-    report = {"raw_rows": len(raw), "observed_rows_through_cutoff": len(frame),
-              "forecast_rows_excluded_through_cutoff": int(((raw.period <= CUTOFF) & raw["Data Type"].eq("Forecast")).sum()),
-              "rows_after_cutoff": int((raw.period > CUTOFF).sum()),
+    report = {"cutoff": cutoff, "raw_rows": len(raw), "observed_rows_through_cutoff": len(frame),
+              "forecast_rows_excluded_through_cutoff": int(((raw.period <= cutoff) & raw["Data Type"].eq("Forecast")).sum()),
+              "rows_after_cutoff": int((raw.period > cutoff).sum()),
               "source_period_min": raw.period.min(), "source_period_max": raw.period.max(),
+              # Forecast rows never establish observed coverage.
+              "observed_period_min": frame.period.min() if len(frame) else None,
+              "observed_period_max": frame.period.max() if len(frame) else None,
               "fewsnet_formula": "100 + mean(100 * (Price(t)/Price(t-1)-1)); same market/commodity/type/unit/currency; calendar join",
               "ipcch_formula": "100 + mean(Trend)", "standard_deviation": "sample SD of respective unshifted indicator",
               "scaler": None, "country_month_keys": {k: len(v) for k, v in result.items()}}
     return result, report
 
 
-def conflict_aggregates(path: Path) -> tuple[pd.DataFrame, dict]:
+def conflict_aggregates(path: Path, cutoff: str = CUTOFF) -> tuple[pd.DataFrame, dict]:
     """Same location pivot/admin hierarchy as ACLED/00_add_acled_features.py."""
+    cutoff = validate_cutoff(cutoff)
     raw = pd.read_csv(path, low_memory=False)
+    require_columns(raw, ACLED_REQUIRED_COLUMNS, "ACLED")
+    if raw.event_date.isna().any():
+        raise ValueError("ACLED event_date must not be blank")
+    for col in ["latitude", "longitude", "fatalities"]:
+        pd.to_numeric(raw[col], errors="raise")
     dates = pd.to_datetime(raw.event_date, format="%Y-%m-%d")
-    frame = raw.loc[dates.dt.to_period("M").astype(str) <= CUTOFF].copy()
+    # year/month come from event_date; a disagreeing export year is ambiguous.
+    if "year" in raw and (pd.to_numeric(raw.year, errors="raise") != dates.dt.year).any():
+        raise ValueError("ACLED year column disagrees with event_date")
+    frame = raw.loc[dates.dt.to_period("M").astype(str) <= cutoff].copy()
     frame["year"] = dates.loc[frame.index].dt.year
     frame["month"] = dates.loc[frame.index].dt.month
     locations = ["country", "admin1", "admin2", "admin3", "location", "latitude", "longitude", "year", "month"]
@@ -122,7 +161,7 @@ def conflict_aggregates(path: Path) -> tuple[pd.DataFrame, dict]:
         level = pivot.groupby(keys)[METRICS].sum().add_suffix(suffix).reset_index()
         adm3 = adm3.merge(level, on=keys, validate="many_to_one")
     adm3["period"] = periods(adm3)
-    report = {"raw_rows": len(raw), "rows_through_cutoff": len(frame),
+    report = {"cutoff": cutoff, "raw_rows": len(raw), "rows_through_cutoff": len(frame),
               "actual_date_min": str(dates.min().date()), "actual_date_max": str(dates.max().date()),
               "admin3_rows": len(adm3), "covered_months": sorted(adm3.period.unique()),
               "missing_location_key_rows_excluded_by_legacy_groupby": int(frame[locations].isna().any(axis=1).sum()),
@@ -131,7 +170,8 @@ def conflict_aggregates(path: Path) -> tuple[pd.DataFrame, dict]:
     return adm3, report
 
 
-def replace_sources(frame: pd.DataFrame, wfp: pd.DataFrame, acled: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+def replace_wfp(frame: pd.DataFrame, wfp: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+    """Overlay the WFP pair on covered country-months; uncovered history is retained."""
     out = frame.copy()
     month = periods(out)
     codes = source_iso3(out)
@@ -140,6 +180,14 @@ def replace_sources(frame: pd.DataFrame, wfp: pd.DataFrame, acled: pd.DataFrame)
     new_values = wfp.reindex(lookup)
     for col in WFP_COLUMNS:
         out.loc[covered, col] = new_values.loc[covered, col].to_numpy()
+    _assert_preserved(frame, out, WFP_COLUMNS)
+    return out, {"wfp_covered_rows": int(covered.sum())}
+
+
+def replace_acled(frame: pd.DataFrame, acled: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+    """Replace the conflict family for source-covered months; other months keep history."""
+    out = frame.copy()
+    month = periods(out)
     conflict_rows = 0
     for period, points in acled.groupby("period", sort=True):
         mask = month.eq(period)
@@ -162,16 +210,57 @@ def replace_sources(frame: pd.DataFrame, wfp: pd.DataFrame, acled: pd.DataFrame)
             out.loc[selected, CONFLICT_COLUMNS[:-1]] = points.iloc[nearest[accepted]][CONFLICT_COLUMNS[:-1]].to_numpy()
             out.loc[selected, "distance_to_nearest_acled"] = minimum[accepted]
         conflict_rows += int(mask.sum())
+    _assert_preserved(frame, out, CONFLICT_COLUMNS)
+    return out, {"acled_covered_rows": conflict_rows}
+
+
+def _assert_preserved(before: pd.DataFrame, after: pd.DataFrame, family: list[str]) -> None:
+    preserved = [c for c in before if c not in family]
+    pd.testing.assert_frame_equal(after[preserved], before[preserved], check_exact=True)
+
+
+def _changed_columns(before: pd.DataFrame, after: pd.DataFrame, columns: list[str]) -> dict:
     changed = {}
-    for col in WFP_COLUMNS + CONFLICT_COLUMNS:
-        same = out[col].eq(frame[col]) | (out[col].isna() & frame[col].isna())
-        changed[col] = {"changed_rows": int((~same).sum()), "missing_before": int(frame[col].isna().sum()), "missing_after": int(out[col].isna().sum())}
-    preserved = [c for c in frame if c not in WFP_COLUMNS + CONFLICT_COLUMNS]
-    pd.testing.assert_frame_equal(out[preserved], frame[preserved], check_exact=True)
-    return out, {"rows": len(out), "wfp_covered_rows": int(covered.sum()),
+    for col in columns:
+        same = after[col].eq(before[col]) | (after[col].isna() & before[col].isna())
+        changed[col] = {"changed_rows": int((~same).sum()), "missing_before": int(before[col].isna().sum()), "missing_after": int(after[col].isna().sum())}
+    return changed
+
+
+def replace_sources(frame: pd.DataFrame, wfp: pd.DataFrame, acled: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+    out, wfp_report = replace_wfp(frame, wfp)
+    out, acled_report = replace_acled(out, acled)
+    changed = _changed_columns(frame, out, WFP_COLUMNS + CONFLICT_COLUMNS)
+    _assert_preserved(frame, out, WFP_COLUMNS + CONFLICT_COLUMNS)
+    return out, {"rows": len(out), "wfp_covered_rows": wfp_report["wfp_covered_rows"],
                  "wfp_country_codes_resolved_from_name_rows": int(out.ISO3.isna().sum()) if "ISO3" in out else 0,
-                 "acled_covered_rows": conflict_rows, "changed_columns": changed,
+                 "acled_covered_rows": acled_report["acled_covered_rows"], "changed_columns": changed,
                  "non_source_columns_exactly_preserved": True}
+
+
+def apply_source_choices(frame: pd.DataFrame, system: str, wfp: dict[str, pd.DataFrame] | None,
+                         acled: pd.DataFrame | None) -> tuple[pd.DataFrame, dict]:
+    """Independent keep/refresh per family.
+
+    ``None`` keeps that family exactly as in ``frame`` (the pinned retained snapshot).
+    WFP is selected by ``system`` so FEWS and IPCCH indicator definitions never mix.
+    """
+    if system not in SYSTEMS:
+        raise ValueError(f"system must be one of {SYSTEMS}, got {system!r}")
+    out = frame
+    report = {"system": system, "rows": len(frame), "wfp_action": "keep", "acled_action": "keep"}
+    refreshed: list[str] = []
+    if wfp is not None:
+        out, family_report = replace_wfp(out, wfp[system])
+        report.update(family_report, wfp_action="refresh")
+        refreshed += WFP_COLUMNS
+    if acled is not None:
+        out, family_report = replace_acled(out, acled)
+        report.update(family_report, acled_action="refresh")
+        refreshed += CONFLICT_COLUMNS
+    report["changed_columns"] = _changed_columns(frame, out, refreshed)
+    _assert_preserved(frame, out, refreshed)
+    return out, report
 
 
 def refresh(root: Path, fewsnet_panel: Path) -> None:
