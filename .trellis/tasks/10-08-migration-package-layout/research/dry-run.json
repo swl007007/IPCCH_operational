@@ -1,0 +1,8 @@
+{
+  "mode": "dry-run",
+  "command": "upload",
+  "payload_files": 64,
+  "destination": "gs://migration-dry-run-output/migration/",
+  "image": "us-central1-docker.pkg.dev/migration-dry-run-project/images/runtime@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "acceptance": "requires destination runtime verification; no objects uploaded"
+}

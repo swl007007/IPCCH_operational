@@ -1,0 +1,12 @@
+{
+  "tests": {
+    "migration_tools_and_existing_delivery_outputs": "68 passed in 3.50s; no skips",
+    "after_formatting": "13 migration tests passed in 0.43s"
+  },
+  "lint": "ruff check: all checks passed for new helpers and focused tests",
+  "mocked_delivery_construction": "passed, 6 model manifests, reviewed by trellis-check",
+  "doc_links_checked": 19,
+  "cloud_calls": false,
+  "replayed_accepted_model_bundle": false,
+  "close_or_spot_audit": false
+}

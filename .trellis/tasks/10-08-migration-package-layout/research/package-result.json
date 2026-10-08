@@ -1,0 +1,11 @@
+{
+  "package": "Outcome/migration_packages/october_cloud_delivery",
+  "archive": "Outcome/migration_packages/october_cloud_delivery.tar.gz",
+  "archive_bytes": 1184481791,
+  "archive_sha256": "18fbd3cd97d532fa6d6af5fdf392ec6ac66ff4adce33d5c13a2adf70cdc6032d",
+  "inventory_sha256": "2e81d9e1a8f8b12efb160c9c390a6f9e25b6968d5cb3e69ff4ede2bb6fc06e4e",
+  "files": 233,
+  "payload_bytes": 3743236100,
+  "relocated_path": "\\\\wsl.localhost\\Ubuntu-24.04\\tmp\\oct-migration-relocation-final",
+  "relocation_verified": true
+}

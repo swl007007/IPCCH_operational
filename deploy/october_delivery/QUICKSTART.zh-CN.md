@@ -53,3 +53,14 @@ gs://manuel-remote-sensing-oct-delivery-requests/requests/<run_id>/run_manifest.
 
 当前请求构建示例固定为十月版本；下个月需要明确调整 origin/cutoff，并确认所用模型期限。
 尚未切换既有生产消费者。遥感滞后会按约定补齐并标注；缺少证据的历史诊断留空。
+
+## 本地迁移包与历史结果
+
+- 迁移包目录：`Outcome/migration_packages/october_cloud_delivery/`。
+- 可传输压缩包：`Outcome/migration_packages/october_cloud_delivery.tar.gz`。
+- 在解压后的包根目录运行 `python deploy/migration_package.py verify .` 校验文件。
+- 配置模板复制到包外再填写；上传工具默认 dry-run。具体操作见 [英文迁移说明](MIGRATION.md)。
+- 九月最终手动交付隔离在 `Outcome/manual_delivery/202609_h5/20260923_country_confidence_v3/`，保留已验证压缩包、最终 CSV 和少量对照材料；旧版本备份及重复展开文件已清理。
+- 十月云结果路径保持不变。目录用途见 [Outcome 索引](../../Outcome/README.md)。
+
+迁移包制作不等于已迁移云端；新项目仍需资源、权限、Earth Engine 访问和部署。

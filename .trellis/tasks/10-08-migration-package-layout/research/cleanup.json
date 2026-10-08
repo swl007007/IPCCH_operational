@@ -1,0 +1,1953 @@
+{
+  "status": "completed",
+  "compact_path": "Outcome/manual_delivery/202609_h5/20260923_country_confidence_v3",
+  "retained_files": 20,
+  "retained_bytes": 261970711,
+  "delete_root": "Outcome/model_delivery/202609_h5",
+  "delete_files": 485,
+  "delete_bytes": 17012353129,
+  "deletions": [
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/bundle_manifest.json",
+      "size": 24520
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/manifest.json",
+      "size": 26266
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/README.md",
+      "size": 11082
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/requirements.txt",
+      "size": 215
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/webapp_model_bundle.tar.gz",
+      "size": 234800313
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/README.md",
+      "size": 206
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/bundle_manifest.json",
+      "size": 28051
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/manifest.json",
+      "size": 29797
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/README.md",
+      "size": 14001
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/requirements.txt",
+      "size": 215
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/webapp_model_bundle.tar.gz",
+      "size": 236149289
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/bundle_manifest.json",
+      "size": 31748
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/manifest.json",
+      "size": 33327
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/README.md",
+      "size": 22502
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/requirements.txt",
+      "size": 215
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/webapp_model_bundle.tar.gz",
+      "size": 240305152
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/country_population_reference.csv",
+      "size": 4776
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/country_predictions.csv",
+      "size": 11099
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/polygons.geojson",
+      "size": 627221578
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/polygon_model_mapping.csv",
+      "size": 795057
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/polygon_predictions.csv",
+      "size": 1475994
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/inputs/fewsnet_april_features.csv",
+      "size": 4082409
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/inputs/fewsnet_identity_population.csv",
+      "size": 656488
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/inputs/fewsnet_panel.audit.json",
+      "size": 1559
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/inputs/fewsnet_panel.csv",
+      "size": 775667745
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/inputs/fewsnet_refreshed_raw.csv",
+      "size": 775678605
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/inputs/ipcch_april_panel.csv",
+      "size": 5665607
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/inputs/ipcch_panel.csv",
+      "size": 1782634776
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/country_population_reference.csv",
+      "size": 11296
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/country_predictions.csv",
+      "size": 29912
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/polygons.geojson",
+      "size": 373865010
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/polygon_model_mapping.csv",
+      "size": 1019690
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/polygon_predictions.csv",
+      "size": 1958855
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/approved_spec.md",
+      "size": 19039
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/execution_plan.md",
+      "size": 9678
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/fewsnet_training.json",
+      "size": 1357
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/fewsnet_training_keys.csv",
+      "size": 3923212
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/final_integrity.json",
+      "size": 98
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/final_verification.json",
+      "size": 1189
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/independent_final_artifacts.json",
+      "size": 1442
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/independent_reviews.json",
+      "size": 1298
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/input_refresh.json",
+      "size": 12369
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/ipcch_scoring.json",
+      "size": 53840
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/ipcch_training.json",
+      "size": 8349
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/ipcch_training_keys.csv",
+      "size": 947107
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/previous_artifact_hashes.json",
+      "size": 10819
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/saved_input_preservation.json",
+      "size": 2768
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/source_manifest.json",
+      "size": 773
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_derived_april_verification.json",
+      "size": 485
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_fewsnet_WFP_Price_comparison.csv",
+      "size": 9939
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_fewsnet_WFP_Price_multivalue.csv",
+      "size": 22
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_fewsnet_WFP_Price_std_comparison.csv",
+      "size": 9988
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_fewsnet_WFP_Price_std_multivalue.csv",
+      "size": 26
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_final_range_audit.json",
+      "size": 8255
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_ipcch_WFP_Price_comparison.csv",
+      "size": 27526
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_ipcch_WFP_Price_multivalue.csv",
+      "size": 7290
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_ipcch_WFP_Price_std_comparison.csv",
+      "size": 28468
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_ipcch_WFP_Price_std_multivalue.csv",
+      "size": 7783
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_native_range.json",
+      "size": 456
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/wfp_scale_audit.json",
+      "size": 1069
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/sources/ACLED Data_2026-07-22.csv",
+      "size": 35743195
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/sources/wfp_data_7.22.26.csv",
+      "size": 3757183
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/model_package/checksums.json",
+      "size": 563
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/model_package/feature_contract.json",
+      "size": 6564
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/model_package/local_model_manifest.json",
+      "size": 1537
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/model_package/model.joblib",
+      "size": 84759057
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/model_package/partition_map.csv",
+      "size": 193190
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/model_package/threshold_report.json",
+      "size": 193
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/fewsnet/model_package/training_report.json",
+      "size": 8672
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/model_package/scope_5m/feature_columns.json",
+      "size": 2801
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/model_package/scope_5m/feature_contract.csv",
+      "size": 30968
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/model_package/scope_5m/model_metadata.json",
+      "size": 8349
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/model_package/scope_5m/phase2_worse_model.json",
+      "size": 1286786
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/model_package/scope_5m/phase3_worse_model.json",
+      "size": 1285630
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/model_package/scope_5m/phase4_worse_model.json",
+      "size": 1264566
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/ipcch/model_package/scope_5m/phase5_worse_model.json",
+      "size": 1062645
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/preliminary/README.md",
+      "size": 290
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/preliminary/wfp_fewsnet_overlap.csv",
+      "size": 8598
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/preliminary/wfp_ipcch_overlap.csv",
+      "size": 37789
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/preliminary/wfp_new_country_month.csv",
+      "size": 25491
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/reports/preliminary/wfp_overlap_initial.json",
+      "size": 4961
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/config.py",
+      "size": 1033
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/__init__.py",
+      "size": 109
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/run_operational_launch_inference.py",
+      "size": 11560
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/tools/audit_h5_inputs.py",
+      "size": 6434
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/tools/build_fewsnet_country_level_predictions.py",
+      "size": 21221
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/tools/build_ipcch_country_level_predictions.py",
+      "size": 20362
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/tools/check_h5_delivery_focus.py",
+      "size": 1873
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/tools/package_h5_delivery.py",
+      "size": 3898
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/tools/refresh_h5_inputs.py",
+      "size": 11616
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/tools/run_h5_model_delivery.py",
+      "size": 13811
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/tools/verify_h5_model_delivery.py",
+      "size": 9560
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/cli/infer.py",
+      "size": 9395
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py",
+      "size": 1896
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+      "size": 53244
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/cli/run_local_experiment.py",
+      "size": 1756
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py",
+      "size": 1751
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/cli/train.py",
+      "size": 19933
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/cli/__init__.py",
+      "size": 75
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/data.py",
+      "size": 17241
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/horizons.py",
+      "size": 9975
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/inference.py",
+      "size": 10701
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/normalization.py",
+      "size": 13844
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/package.py",
+      "size": 22117
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/partitions.py",
+      "size": 5457
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/preprocessing.py",
+      "size": 28684
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/thresholds.py",
+      "size": 2739
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/training.py",
+      "size": 21064
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/types.py",
+      "size": 2177
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/validation.py",
+      "size": 49990
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/core/__init__.py",
+      "size": 438
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/local/outputs.py",
+      "size": 29205
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/local/package.py",
+      "size": 27417
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/local/runner.py",
+      "size": 78062
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/local/__init__.py",
+      "size": 544
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json",
+      "size": 2463
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/local-model-package.schema.json",
+      "size": 3792
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/local-prediction-record.schema.json",
+      "size": 2702
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json",
+      "size": 4413
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json",
+      "size": 4577
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/prediction-record.schema.json",
+      "size": 1731
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/run-manifest.schema.json",
+      "size": 8554
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json",
+      "size": 3435
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/suite-manifest.schema.json",
+      "size": 6304
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json",
+      "size": 9936
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/schemas/__init__.py",
+      "size": 2067
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/vertex/batch_prediction.py",
+      "size": 35532
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py",
+      "size": 5568
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/vertex/promotion.py",
+      "size": 33893
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/vertex/registry.py",
+      "size": 15398
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/vertex/storage.py",
+      "size": 15836
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/vertex/training_job.py",
+      "size": 11304
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/vertex/__init__.py",
+      "size": 480
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json",
+      "size": 6564
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv",
+      "size": 193190
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json",
+      "size": 518
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/ipcch_launch_runtime/adapters.py",
+      "size": 5717
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/ipcch_launch_runtime/feature_contract.py",
+      "size": 17567
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/ipcch_launch_runtime/inference.py",
+      "size": 8116
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/ipcch_launch_runtime/model_package.py",
+      "size": 3251
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/ipcch_launch_runtime/outputs.py",
+      "size": 4868
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/ipcch_launch_runtime/population.py",
+      "size": 5922
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/ipcch_launch_runtime/uncertainty.py",
+      "size": 2558
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/ipcch_launch_runtime/visualization.py",
+      "size": 3457
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1/runtime/model_pipeline/ipcch_launch_runtime/__init__.py",
+      "size": 217
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/fewsnet_export_identical/country_predictions.csv",
+      "size": 11099
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/fewsnet_export_identical/polygons.geojson",
+      "size": 627221578
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/fewsnet_export_identical/polygon_model_mapping.csv",
+      "size": 795057
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/inputs/ipcch_april_panel.csv",
+      "size": 5666165
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/inputs/ipcch_panel.csv",
+      "size": 1782633567
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/country_population_reference.csv",
+      "size": 11296
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/country_predictions.csv",
+      "size": 29870
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/polygons.geojson",
+      "size": 373865010
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/polygon_model_mapping.csv",
+      "size": 1019690
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/polygon_predictions.csv",
+      "size": 1958415
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/reports/input_refresh.json",
+      "size": 12257
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/reports/ipcch_scoring.json",
+      "size": 53841
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/reports/ipcch_training.json",
+      "size": 8349
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/reports/ipcch_training_keys.csv",
+      "size": 947107
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/reports/saved_input_preservation.json",
+      "size": 2768
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/reports/wfp_final_range_audit.json",
+      "size": 8249
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/model_package/scope_5m/feature_columns.json",
+      "size": 2801
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/model_package/scope_5m/feature_contract.csv",
+      "size": 30968
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/model_package/scope_5m/model_metadata.json",
+      "size": 8349
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/model_package/scope_5m/phase2_worse_model.json",
+      "size": 1302907
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/model_package/scope_5m/phase3_worse_model.json",
+      "size": 1282065
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/model_package/scope_5m/phase4_worse_model.json",
+      "size": 1284821
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260909_refresh_v1_superseded_civ_mapping/ipcch/model_package/scope_5m/phase5_worse_model.json",
+      "size": 1073210
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/country_population_reference.csv",
+      "size": 4776
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/country_predictions.csv",
+      "size": 13150
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/country_training_confidence.csv",
+      "size": 2144
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/polygons.geojson",
+      "size": 627221578
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/polygon_model_mapping.csv",
+      "size": 795057
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/polygon_predictions.csv",
+      "size": 1475994
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/polygon_training_errors.csv",
+      "size": 101853
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/inputs/fewsnet_april_features.csv",
+      "size": 4082409
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/inputs/fewsnet_identity_population.csv",
+      "size": 656488
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/inputs/fewsnet_panel.audit.json",
+      "size": 1559
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/inputs/fewsnet_panel.csv",
+      "size": 775667745
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/inputs/fewsnet_refreshed_raw.csv",
+      "size": 775678605
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/inputs/ipcch_april_panel.csv",
+      "size": 5665607
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/inputs/ipcch_panel.csv",
+      "size": 1782634776
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/country_population_reference.csv",
+      "size": 11296
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/country_predictions.csv",
+      "size": 34986
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/country_training_confidence.csv",
+      "size": 5331
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/polygons.geojson",
+      "size": 373865010
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/polygon_model_mapping.csv",
+      "size": 1019690
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/polygon_predictions.csv",
+      "size": 1518924
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/polygon_training_errors.csv",
+      "size": 136323
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/approved_spec.md",
+      "size": 19039
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/confidence_focused_checks.json",
+      "size": 439
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/confidence_independent_review.json",
+      "size": 924
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/execution_plan.md",
+      "size": 9678
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/fewsnet_confidence_summary.json",
+      "size": 424
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/fewsnet_training.json",
+      "size": 1357
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/fewsnet_training_keys.csv",
+      "size": 3923212
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/fewsnet_training_predictions.csv",
+      "size": 9872994
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/final_integrity.json",
+      "size": 98
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/final_verification.json",
+      "size": 1189
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/independent_final_artifacts.json",
+      "size": 1442
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/independent_reviews.json",
+      "size": 1298
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/input_refresh.json",
+      "size": 12369
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/ipcch_confidence_summary.json",
+      "size": 488
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/ipcch_scoring.json",
+      "size": 53542
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/ipcch_training.json",
+      "size": 8349
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/ipcch_training_keys.csv",
+      "size": 947107
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/ipcch_training_predictions.csv",
+      "size": 2759608
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/parent_delivery_manifest.json",
+      "size": 26266
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/parent_final_verification.json",
+      "size": 1189
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/previous_artifact_hashes.json",
+      "size": 10819
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/prior_boundary_flag_training_confidence_summary.json",
+      "size": 1055
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/prior_boundary_flag_training_confidence_verification.json",
+      "size": 1213
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/saved_input_preservation.json",
+      "size": 2768
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/source_manifest.json",
+      "size": 773
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/training_confidence_policy.json",
+      "size": 790
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/training_confidence_spec.md",
+      "size": 3098
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/training_confidence_summary.json",
+      "size": 1021
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/training_confidence_verification.json",
+      "size": 1372
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_derived_april_verification.json",
+      "size": 485
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_fewsnet_WFP_Price_comparison.csv",
+      "size": 9939
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_fewsnet_WFP_Price_multivalue.csv",
+      "size": 22
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_fewsnet_WFP_Price_std_comparison.csv",
+      "size": 9988
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_fewsnet_WFP_Price_std_multivalue.csv",
+      "size": 26
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_final_range_audit.json",
+      "size": 8255
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_ipcch_WFP_Price_comparison.csv",
+      "size": 27526
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_ipcch_WFP_Price_multivalue.csv",
+      "size": 7290
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_ipcch_WFP_Price_std_comparison.csv",
+      "size": 28468
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_ipcch_WFP_Price_std_multivalue.csv",
+      "size": 7783
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_native_range.json",
+      "size": 456
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/wfp_scale_audit.json",
+      "size": 1069
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/sources/ACLED Data_2026-07-22.csv",
+      "size": 35743195
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/sources/wfp_data_7.22.26.csv",
+      "size": 3757183
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/model_package/checksums.json",
+      "size": 563
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/model_package/feature_contract.json",
+      "size": 6564
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/model_package/local_model_manifest.json",
+      "size": 1537
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/model_package/model.joblib",
+      "size": 84759057
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/model_package/partition_map.csv",
+      "size": 193190
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/model_package/threshold_report.json",
+      "size": 193
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/fewsnet/model_package/training_report.json",
+      "size": 8672
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/model_package/scope_5m/feature_columns.json",
+      "size": 2801
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/model_package/scope_5m/feature_contract.csv",
+      "size": 30968
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/model_package/scope_5m/model_metadata.json",
+      "size": 8349
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/model_package/scope_5m/phase2_worse_model.json",
+      "size": 1286786
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/model_package/scope_5m/phase3_worse_model.json",
+      "size": 1285630
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/model_package/scope_5m/phase4_worse_model.json",
+      "size": 1264566
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/ipcch/model_package/scope_5m/phase5_worse_model.json",
+      "size": 1062645
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/preliminary/README.md",
+      "size": 290
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/preliminary/wfp_fewsnet_overlap.csv",
+      "size": 8598
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/preliminary/wfp_ipcch_overlap.csv",
+      "size": 37789
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/preliminary/wfp_new_country_month.csv",
+      "size": 25491
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/reports/preliminary/wfp_overlap_initial.json",
+      "size": 4961
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/config.py",
+      "size": 1033
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/__init__.py",
+      "size": 109
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/run_operational_launch_inference.py",
+      "size": 11639
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/audit_h5_inputs.py",
+      "size": 6434
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/build_fewsnet_country_level_predictions.py",
+      "size": 21221
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/build_ipcch_country_level_predictions.py",
+      "size": 20362
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/check_h5_delivery_focus.py",
+      "size": 1873
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/package_h5_delivery.py",
+      "size": 4084
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/refresh_h5_inputs.py",
+      "size": 11616
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/revise_h5_confidence.py",
+      "size": 16443
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/run_h5_model_delivery.py",
+      "size": 14172
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/verify_h5_confidence.py",
+      "size": 9898
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/tools/verify_h5_model_delivery.py",
+      "size": 10106
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/cli/infer.py",
+      "size": 9395
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py",
+      "size": 1896
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+      "size": 53244
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/cli/run_local_experiment.py",
+      "size": 1756
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py",
+      "size": 1751
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/cli/train.py",
+      "size": 19933
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/cli/__init__.py",
+      "size": 75
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/data.py",
+      "size": 17241
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/horizons.py",
+      "size": 9975
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/inference.py",
+      "size": 10701
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/normalization.py",
+      "size": 13844
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/package.py",
+      "size": 22117
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/partitions.py",
+      "size": 5457
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/preprocessing.py",
+      "size": 28684
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/thresholds.py",
+      "size": 2739
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/training.py",
+      "size": 21064
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/types.py",
+      "size": 2177
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/validation.py",
+      "size": 49990
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/core/__init__.py",
+      "size": 438
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/local/outputs.py",
+      "size": 29205
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/local/package.py",
+      "size": 27417
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/local/runner.py",
+      "size": 78062
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/local/__init__.py",
+      "size": 544
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json",
+      "size": 2463
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/local-model-package.schema.json",
+      "size": 3792
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/local-prediction-record.schema.json",
+      "size": 2702
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json",
+      "size": 4413
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json",
+      "size": 4577
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/prediction-record.schema.json",
+      "size": 1731
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/run-manifest.schema.json",
+      "size": 8554
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json",
+      "size": 3435
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/suite-manifest.schema.json",
+      "size": 6304
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json",
+      "size": 9936
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/schemas/__init__.py",
+      "size": 2067
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/vertex/batch_prediction.py",
+      "size": 35532
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py",
+      "size": 5568
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/vertex/promotion.py",
+      "size": 33893
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/vertex/registry.py",
+      "size": 15398
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/vertex/storage.py",
+      "size": 15836
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/vertex/training_job.py",
+      "size": 11304
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/vertex/__init__.py",
+      "size": 480
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json",
+      "size": 6564
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv",
+      "size": 193190
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json",
+      "size": 518
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/ipcch_launch_runtime/adapters.py",
+      "size": 5717
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/ipcch_launch_runtime/feature_contract.py",
+      "size": 17567
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/ipcch_launch_runtime/inference.py",
+      "size": 8270
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/ipcch_launch_runtime/model_package.py",
+      "size": 3251
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/ipcch_launch_runtime/outputs.py",
+      "size": 4868
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/ipcch_launch_runtime/population.py",
+      "size": 5922
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/ipcch_launch_runtime/uncertainty.py",
+      "size": 2558
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/ipcch_launch_runtime/visualization.py",
+      "size": 3457
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260911_training_confidence_v2/runtime/model_pipeline/ipcch_launch_runtime/__init__.py",
+      "size": 217
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/country_confidence.csv",
+      "size": 7253
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/country_population_reference.csv",
+      "size": 4776
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/country_predictions.csv",
+      "size": 18259
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/polygons.geojson",
+      "size": 627221578
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/polygon_confidence.csv",
+      "size": 782355
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/polygon_model_mapping.csv",
+      "size": 795057
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/polygon_predictions.csv",
+      "size": 1475994
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/inputs/fewsnet_april_features.csv",
+      "size": 4082409
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/inputs/fewsnet_identity_population.csv",
+      "size": 656488
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/inputs/fewsnet_panel.audit.json",
+      "size": 1559
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/inputs/fewsnet_panel.csv",
+      "size": 775667745
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/inputs/fewsnet_refreshed_raw.csv",
+      "size": 775678605
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/inputs/ipcch_april_panel.csv",
+      "size": 5665607
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/inputs/ipcch_panel.csv",
+      "size": 1782634776
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/country_confidence.csv",
+      "size": 26193
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/country_population_reference.csv",
+      "size": 11296
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/country_predictions.csv",
+      "size": 55848
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/polygons.geojson",
+      "size": 373865010
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/polygon_model_mapping.csv",
+      "size": 1019690
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/polygon_predictions.csv",
+      "size": 1518924
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/polygon_training_errors.csv",
+      "size": 136323
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/approved_spec.md",
+      "size": 19039
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_execution_plan.md",
+      "size": 4400
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_policy.json",
+      "size": 5328
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_spec.md",
+      "size": 27644
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/country_confidence_v3_verification.json",
+      "size": 1406
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/execution_plan.md",
+      "size": 9678
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/fewsnet_country_confidence_v3_summary.json",
+      "size": 520
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/fewsnet_stage3_historical_errors.csv",
+      "size": 4532793
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/fewsnet_training.json",
+      "size": 1357
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/fewsnet_training_keys.csv",
+      "size": 3923212
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/final_integrity.json",
+      "size": 98
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/final_verification.json",
+      "size": 1279
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/independent_final_artifacts.json",
+      "size": 1442
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/independent_reviews.json",
+      "size": 1298
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/input_refresh.json",
+      "size": 12369
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/ipcch_country_confidence_v3_summary.json",
+      "size": 2587
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/ipcch_country_month_coverage.csv",
+      "size": 18543
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/ipcch_four_target_training_replay.csv",
+      "size": 10059255
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/ipcch_maximum_phase_scenarios.csv",
+      "size": 4436
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/ipcch_scoring.json",
+      "size": 53542
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/ipcch_training.json",
+      "size": 8349
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/ipcch_training_keys.csv",
+      "size": 947107
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/ipcch_training_predictions.csv",
+      "size": 2759608
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_delivery_manifest.json",
+      "size": 26266
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_final_verification.json",
+      "size": 1189
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/previous_artifact_hashes.json",
+      "size": 10819
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/saved_input_preservation.json",
+      "size": 2768
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/source_manifest.json",
+      "size": 773
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_derived_april_verification.json",
+      "size": 485
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_fewsnet_WFP_Price_comparison.csv",
+      "size": 9939
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_fewsnet_WFP_Price_multivalue.csv",
+      "size": 22
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_fewsnet_WFP_Price_std_comparison.csv",
+      "size": 9988
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_fewsnet_WFP_Price_std_multivalue.csv",
+      "size": 26
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_final_range_audit.json",
+      "size": 8255
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_ipcch_WFP_Price_comparison.csv",
+      "size": 27526
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_ipcch_WFP_Price_multivalue.csv",
+      "size": 7290
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_ipcch_WFP_Price_std_comparison.csv",
+      "size": 28468
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_ipcch_WFP_Price_std_multivalue.csv",
+      "size": 7783
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_native_range.json",
+      "size": 456
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/wfp_scale_audit.json",
+      "size": 1069
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/sources/ACLED Data_2026-07-22.csv",
+      "size": 35743195
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/sources/wfp_data_7.22.26.csv",
+      "size": 3757183
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/model_package/checksums.json",
+      "size": 563
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/model_package/feature_contract.json",
+      "size": 6564
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/model_package/local_model_manifest.json",
+      "size": 1537
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/model_package/model.joblib",
+      "size": 84759057
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/model_package/partition_map.csv",
+      "size": 193190
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/model_package/threshold_report.json",
+      "size": 193
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/fewsnet/model_package/training_report.json",
+      "size": 8672
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/model_package/scope_5m/feature_columns.json",
+      "size": 2801
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/model_package/scope_5m/feature_contract.csv",
+      "size": 30968
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/model_package/scope_5m/model_metadata.json",
+      "size": 8349
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/model_package/scope_5m/phase2_worse_model.json",
+      "size": 1286786
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/model_package/scope_5m/phase3_worse_model.json",
+      "size": 1285630
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/model_package/scope_5m/phase4_worse_model.json",
+      "size": 1264566
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/ipcch/model_package/scope_5m/phase5_worse_model.json",
+      "size": 1062645
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/fewsnet_stage3_source/predictions_monthly.csv",
+      "size": 2162573
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/fewsnet_stage3_source/run_manifest.json",
+      "size": 1059
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/final_verification.json",
+      "size": 1189
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/manifest.json",
+      "size": 29797
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/preliminary/README.md",
+      "size": 290
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/preliminary/wfp_fewsnet_overlap.csv",
+      "size": 8598
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/preliminary/wfp_ipcch_overlap.csv",
+      "size": 37789
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/preliminary/wfp_new_country_month.csv",
+      "size": 25491
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/preliminary/wfp_overlap_initial.json",
+      "size": 4961
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/fewsnet/country_training_confidence.csv",
+      "size": 2144
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/fewsnet/polygon_training_errors.csv",
+      "size": 101853
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/ipcch/country_training_confidence.csv",
+      "size": 5331
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/confidence_focused_checks.json",
+      "size": 439
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/confidence_independent_review.json",
+      "size": 924
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/fewsnet_confidence_summary.json",
+      "size": 424
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/fewsnet_training_predictions.csv",
+      "size": 9872994
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/ipcch_confidence_summary.json",
+      "size": 488
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/prior_boundary_flag_training_confidence_summary.json",
+      "size": 1055
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/prior_boundary_flag_training_confidence_verification.json",
+      "size": 1213
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/training_confidence_policy.json",
+      "size": 790
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/training_confidence_spec.md",
+      "size": 3098
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/training_confidence_summary.json",
+      "size": 1021
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/reports/parent_v2/reports/training_confidence_verification.json",
+      "size": 1372
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/config.py",
+      "size": 1033
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/__init__.py",
+      "size": 109
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/run_operational_launch_inference.py",
+      "size": 11639
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/audit_h5_inputs.py",
+      "size": 6434
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/build_fewsnet_country_level_predictions.py",
+      "size": 21221
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/build_ipcch_country_level_predictions.py",
+      "size": 20362
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/check_h5_delivery_focus.py",
+      "size": 1873
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/package_h5_delivery.py",
+      "size": 4276
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/refresh_h5_inputs.py",
+      "size": 11616
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/revise_h5_confidence.py",
+      "size": 16443
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/revise_h5_country_v3.py",
+      "size": 33134
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/run_h5_model_delivery.py",
+      "size": 16563
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/verify_h5_confidence.py",
+      "size": 9898
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/verify_h5_country_v3.py",
+      "size": 14288
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/tools/verify_h5_model_delivery.py",
+      "size": 11587
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/cli/infer.py",
+      "size": 9395
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/cli/normalize_panel.py",
+      "size": 1896
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/cli/run_latest.py",
+      "size": 53244
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/cli/run_local_experiment.py",
+      "size": 1756
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/cli/stage_snapshot.py",
+      "size": 1751
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/cli/train.py",
+      "size": 19933
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/cli/__init__.py",
+      "size": 75
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/data.py",
+      "size": 17241
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/horizons.py",
+      "size": 9975
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/inference.py",
+      "size": 10701
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/normalization.py",
+      "size": 13844
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/package.py",
+      "size": 22117
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/partitions.py",
+      "size": 5457
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/preprocessing.py",
+      "size": 28684
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/thresholds.py",
+      "size": 2739
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/training.py",
+      "size": 21064
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/types.py",
+      "size": 2177
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/validation.py",
+      "size": 49990
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/core/__init__.py",
+      "size": 438
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/local/outputs.py",
+      "size": 29205
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/local/package.py",
+      "size": 27417
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/local/runner.py",
+      "size": 78062
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/local/__init__.py",
+      "size": 544
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/deployment.schema.json",
+      "size": 2463
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/local-model-package.schema.json",
+      "size": 3792
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/local-prediction-record.schema.json",
+      "size": 2702
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/model-package.schema.json",
+      "size": 4413
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/panel-normalization.schema.json",
+      "size": 4577
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/prediction-record.schema.json",
+      "size": 1731
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/run-manifest.schema.json",
+      "size": 8554
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/source-snapshot.schema.json",
+      "size": 3435
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/suite-manifest.schema.json",
+      "size": 6304
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/training-report.schema.json",
+      "size": 9936
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/schemas/__init__.py",
+      "size": 2067
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/vertex/batch_prediction.py",
+      "size": 35532
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/vertex/predictor_server.py",
+      "size": 5568
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/vertex/promotion.py",
+      "size": 33893
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/vertex/registry.py",
+      "size": 15398
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/vertex/storage.py",
+      "size": 15836
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/vertex/training_job.py",
+      "size": 11304
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/vertex/__init__.py",
+      "size": 480
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/assets/feature_contracts/fewsnet_stage3_v1.json",
+      "size": 6564
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv",
+      "size": 193190
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/fewsnet_partitioned_rf_pipeline/assets/partitions/partition_manifest.json",
+      "size": 518
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/ipcch_launch_runtime/adapters.py",
+      "size": 5717
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/ipcch_launch_runtime/feature_contract.py",
+      "size": 17567
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/ipcch_launch_runtime/inference.py",
+      "size": 8270
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/ipcch_launch_runtime/model_package.py",
+      "size": 3251
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/ipcch_launch_runtime/outputs.py",
+      "size": 4868
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/ipcch_launch_runtime/population.py",
+      "size": 5922
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/ipcch_launch_runtime/uncertainty.py",
+      "size": 2558
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/ipcch_launch_runtime/visualization.py",
+      "size": 3457
+    },
+    {
+      "path": "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3/runtime/model_pipeline/ipcch_launch_runtime/__init__.py",
+      "size": 217
+    }
+  ],
+  "migration_archive_sha256": "18fbd3cd97d532fa6d6af5fdf392ec6ac66ff4adce33d5c13a2adf70cdc6032d",
+  "net_manual_reduction_bytes": 16750382418
+}

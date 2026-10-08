@@ -1,8 +1,30 @@
 # IPCCH Operational
 
-This repository produces monthly model-compatible IPCCH input tables. A later
-prediction step will use exported model weights and the model pipeline together
-with that monthly input to generate predictions.
+This repository prepares remote-sensing inputs and delivers FEWSNET and IPCCH predictions
+at origin O, O+6, and O+12 using accepted model packages. Operators independently choose
+whether to keep or refresh ACLED/WFP; uploading the run manifest starts cloud delivery.
+
+## Current delivery and migration
+
+- [English quickstart](deploy/october_delivery/QUICKSTART.en.md) / [Chinese quickstart](deploy/october_delivery/QUICKSTART.zh-CN.md)
+- [October operator runbook](deploy/october_delivery/README.md)
+- [Local migration package instructions](deploy/october_delivery/MIGRATION.md)
+- [Output directory index](Outcome/README.md)
+
+The local migration payload is `Outcome/migration_packages/october_cloud_delivery/`
+with a sibling `october_cloud_delivery.tar.gz`. It includes the runtime build context,
+accepted models, fixed/history inputs, and destination request helpers. Destination
+resources and credentials are configured separately; no cloud migration is performed by packaging.
+
+Final September manual results are isolated under
+`Outcome/manual_delivery/202609_h5/20260923_country_confidence_v3/`.
+October cloud results remain under
+`Outcome/model_delivery/october_cloud_delivery/oct-final-20261008a/`.
+The verified September archive and final CSVs are retained; superseded backups and
+redundant expanded files have been removed. Unique operational inputs are preserved
+in the verified migration package before cleanup.
+
+## Earlier pipeline documentation
 
 Start here:
 
@@ -16,7 +38,7 @@ Start here:
 
 Local filled config files such as `config/paths.ini` and `config/ee_gcs.ini` are operator-specific. Share templates, not secrets.
 
-## Cloud Monthly E2E
+## Legacy Cloud Monthly E2E (EVI / Vertex)
 
 The cloud monthly E2E path is the GCP-only v1 production path for one selected
 feature month. It replaces local ArcPy remote-sensing extraction for the cloud

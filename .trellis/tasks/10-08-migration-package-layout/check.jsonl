@@ -1,0 +1,4 @@
+{"file": ".trellis/spec/backend/monthly-delivery-contracts.md", "reason": "Preserve cloud source, fill, manifest and output contracts"}
+{"file": ".trellis/tasks/10-08-migration-package-layout/prd.md", "reason": "Approved scope and acceptance requirements after planning gate"}
+{"file": ".trellis/tasks/10-08-migration-package-layout/design.md", "reason": "Package layout, destination refs and relocation design"}
+{"file": ".trellis/tasks/10-08-migration-package-layout/research/local-inventory.md", "reason": "Local assets and known live path consumers"}

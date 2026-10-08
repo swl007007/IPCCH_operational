@@ -5,7 +5,7 @@ import pytest
 
 from cloud.orchestrator import delivery_outputs as out
 
-V3 = Path(__file__).resolve().parents[2] / "Outcome/model_delivery/202609_h5/20260923_country_confidence_v3"
+V3 = Path(__file__).resolve().parents[2] / "Outcome/manual_delivery/202609_h5/20260923_country_confidence_v3"
 needs_v3 = pytest.mark.skipif(not V3.exists(), reason="September v3 delivery not available locally")
 
 

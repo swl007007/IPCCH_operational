@@ -1,5 +1,7 @@
 # October cloud delivery — operator runbook
 
+Quickstart: [English](QUICKSTART.en.md) · [简体中文](QUICKSTART.zh-CN.md).
+
 Monthly FEWSNET + IPCCH predictions at origin O for horizons 0/6/12 (O, O+6, O+12), from the six
 accepted packages. Fixed variables/assets are reused as they are; remote-sensing features are
 refreshed with the repository's extraction code; months after a source's latest observation are
@@ -17,6 +19,30 @@ Deployed in project `manuel-remote-sensing`, region `us-central1` (task staging 
 | Delivery job | Cloud Run job `oct-delivery` (32Gi, 8 CPU, 4 h, max retries 0) |
 | Trigger | Eventarc `oct-delivery-requests` -> Workflows `oct-delivery-trigger` (submit only) |
 | Release namespace | `oct-staging` (pointer `oct-staging/current.json`) |
+
+## Local migration package and manual results
+
+The ready-to-transfer payload is `Outcome/migration_packages/october_cloud_delivery/`
+plus `Outcome/migration_packages/october_cloud_delivery.tar.gz`. Follow
+[MIGRATION.md](MIGRATION.md) from the package root (the package contains it as `README.md`).
+It includes the runtime source/lock, accepted models, full input/history assets, a sealed
+checksum inventory, and destination-configurable upload/prepare/delivery helpers.
+
+```sh
+python deploy/october_delivery/migration_package.py verify Outcome/migration_packages/october_cloud_delivery
+```
+
+Copy the archive to the destination machine, extract into an empty directory, and run
+`python deploy/migration_package.py verify .` there. Keep filled configuration and work
+files outside the sealed package. Upload helpers default to credential-free dry-run;
+cloud mutations require `--execute`. Destination project setup and runtime acceptance
+remain separate operator steps. The archived October request makers below are historical
+examples for the old deployment; use packaged helpers for a different project.
+
+September manual results now live at
+`Outcome/manual_delivery/202609_h5/20260923_country_confidence_v3/`; only the final archive,
+CSV outputs, original metadata and small parity fixtures are retained. Superseded backups
+and duplicate expanded content were removed. See [output index](../../Outcome/README.md).
 
 ## 1. Prepare remote-sensing features (EVI, FLDAS, GOSIF, VIIRS)
 
