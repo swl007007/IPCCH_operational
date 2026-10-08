@@ -1,6 +1,6 @@
 # October cloud delivery — execution plan draft
 
-Revision 0.5, 2026-10-07. **Authorized for implementation under the Herdr supervisor–executor agreement in `supervision.md`.** Read `prd.md`, `design.md`, and research notes. Product decisions G1–G3 are aligned. Latest user instruction removes historical lineage gates: reuse fixed features and prioritize repository remote scripts. Earlier research gaps are retained as facts, not instructions to keep searching. Cloud deployment and production execution remain outside current authorization.
+Revision 0.6, 2026-10-07 ET. **Authorized for implementation and cloud debugging under the Herdr supervisor–executor agreement in `supervision.md`.** Read `prd.md`, `design.md`, and research notes. Product decisions G1–G3 are aligned. Reuse fixed features and prioritize repository remote scripts; stop historical archaeology. The user authorized needed service enablement/startup and task-scoped cloud deployment/debug runs in `manuel-remote-sensing`; preserve existing consumers and do not train. Earlier no-cloud statements are historical checkpoint scope, superseded by this authorization.
 
 ## 1. Planning and lifecycle gates
 

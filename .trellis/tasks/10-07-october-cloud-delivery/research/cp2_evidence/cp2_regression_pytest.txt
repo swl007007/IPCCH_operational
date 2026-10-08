@@ -1,0 +1,92 @@
+........................................................................ [ 17%]
+.......................................................s................ [ 34%]
+........................................................................ [ 52%]
+........................................................................ [ 69%]
+..............................................................F......... [ 86%]
+.......................................................                  [100%]
+=================================== FAILURES ===================================
+_____________ test_horizon_alignment_rejects_unsupported_horizons ______________
+
+    def test_horizon_alignment_rejects_unsupported_horizons():
+        with pytest.raises(ValueError, match="0, 6, and 12"):
+>           align_horizon(feature_frame_fixture(), horizon_months=3)
+
+tests/fewsnet_partitioned_rf/test_horizons.py:155:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+fewsnet_partitioned_rf_pipeline/core/horizons.py:164: in align_horizon
+    horizon = _validate_horizon(horizon_months)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+horizon_months = 3
+
+    def _validate_horizon(horizon_months: int) -> int:
+        if (
+            isinstance(horizon_months, bool)
+            or not isinstance(horizon_months, Integral)
+            or int(horizon_months) not in (*HORIZON_MONTHS, 5)
+        ):
+>           raise ValueError("horizon_months must be one of 0, 5, 6, and 12")
+E           ValueError: horizon_months must be one of 0, 5, 6, and 12
+
+fewsnet_partitioned_rf_pipeline/core/horizons.py:32: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def test_horizon_alignment_rejects_unsupported_horizons():
+>       with pytest.raises(ValueError, match="0, 6, and 12"):
+E       AssertionError: Regex pattern did not match.
+E        Regex: '0, 6, and 12'
+E        Input: 'horizon_months must be one of 0, 5, 6, and 12'
+
+tests/fewsnet_partitioned_rf/test_horizons.py:154: AssertionError
+=============================== warnings summary ===============================
+tests/cloud/test_prepare.py: 19 warnings
+tests/cloud/test_remote_sources.py: 15 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/transform.py:178: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    return Affine.translation(west, north) * Affine.scale(xsize, -ysize)
+
+tests/cloud/test_prepare.py: 61 warnings
+tests/cloud/test_remote_sources.py: 16 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:360: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    x, y = transform * (window.col_off or 0.0, window.row_off or 0.0)
+
+tests/cloud/test_prepare.py: 61 warnings
+tests/cloud/test_remote_sources.py: 16 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:361: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    return Affine.translation(
+
+tests/cloud/test_prepare.py::test_cloud_acquirer_gee_uses_discovered_image_and_named_fldas_bands
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_values_and_band_names
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[internal_mask]
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[nodata_value]
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/merge.py:341: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    output_transform = Affine.translation(dst_w, dst_n) * Affine.scale(
+
+tests/cloud/test_prepare.py::test_cloud_acquirer_gee_uses_discovered_image_and_named_fldas_bands
+tests/cloud/test_prepare.py::test_cloud_acquirer_gee_uses_discovered_image_and_named_fldas_bands
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_values_and_band_names
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_values_and_band_names
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[internal_mask]
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[internal_mask]
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[nodata_value]
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[nodata_value]
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:387: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    left, bottom = transform * (col_min, row_max)
+
+tests/cloud/test_prepare.py::test_cloud_acquirer_gee_uses_discovered_image_and_named_fldas_bands
+tests/cloud/test_prepare.py::test_cloud_acquirer_gee_uses_discovered_image_and_named_fldas_bands
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_values_and_band_names
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_values_and_band_names
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[internal_mask]
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[internal_mask]
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[nodata_value]
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[nodata_value]
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:388: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    right, top = transform * (col_max, row_min)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/fewsnet_partitioned_rf/test_horizons.py::test_horizon_alignment_rejects_unsupported_horizons
+SKIPPED [1] tests/cloud/test_gcp_smoke_monthly_e2e.py:527: set IPCCH_GCP_SMOKE_ENABLED and deployment-specific GCP env vars to run live smoke
+1 failed, 413 passed, 1 skipped, 208 warnings in 9.71s
+regression EXIT=1

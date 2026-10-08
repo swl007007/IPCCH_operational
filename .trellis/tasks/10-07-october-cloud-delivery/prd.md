@@ -6,9 +6,11 @@ Move the September manual FEWSNET and IPCCH delivery capabilities into a reprodu
 
 ## Planning status and authority
 
+- Cloud scope update (2026-10-07 ET): full cloud debugging in the verified SDK project `manuel-remote-sensing`, including necessary endpoint/service registration and startup, is authorized. The user is sleeping and requests questions only for CRITICAL issues; continue supervisor checkpoints, task-scoped deployment/testing and preservation of existing consumers. See `supervision.md` for timing and verified SDK configuration. This supersedes earlier local-only scope.
+
 - Latest scope update (2026-10-07): the user explicitly stopped historical provenance investigation: reuse fixed features directly and prioritize this repository's existing scripts for remote feature construction. This supersedes earlier historical canonical-panel/extractor/FID-lineage stop gates. Preserve current native IDs and test the selected construction; do not claim historical numerical parity or continue archaeology.
 
-- Brainstorm and document-grill product decisions are consolidated; design and execution plan are at revision 0.4. After reviewing the planning summary, the user explicitly requested Claude Opus 5.5 1M implementation under Codex supervisor/checkpoint review. Technical acceptance evidence remains incomplete as listed below and gates the affected work.
+- Brainstorm and document-grill product decisions are consolidated; design and execution plan are at revision 0.5. After reviewing the planning summary, the user explicitly requested Claude Opus 5.5 1M implementation under Codex supervisor/checkpoint review. Executable model/input checks remain; historical lineage requirements are superseded by the latest scope update above.
 - On 2026-10-07 the user explicitly authorized creation of a Trellis task, superseding the earlier map-only/no-task preference.
 - Requested sequence: brainstorm → persist specification → grill against the documents → final alignment. Use Trellis for this task; do not use Spec Kit or Superpowers lifecycle gates. Existing documents remain evidence of scientific and delivery contracts, not workflow authority.
 - `design.md` holds the technical specification and `implement.md` the execution plan. User-owned decisions G1–G3 are resolved. Implementation approval is recorded in `supervision.md`; acceptance gates remain binding.
@@ -117,4 +119,4 @@ The first acceptance milestone checks model loading/runtime and current input co
 
 ## Out of scope for the current implementation authorization
 
-Model training or retraining, cloud resource mutation, production runs, deployment, publication, and changing accepted September artifacts. A persistent online prediction endpoint is excluded from the planned delivery scope. No new serving UI, generalized orchestration framework, or migration of unrelated historical workflows is implied.
+Model training or retraining, unrelated cloud changes, existing-consumer production cutover and changing accepted September artifacts. Task-scoped cloud debugging/deployment is now authorized as above. A persistent online prediction endpoint, new serving UI, generalized orchestration framework, or migration of unrelated historical workflows is excluded.

@@ -21,6 +21,7 @@ class BatchJobConfig:
     feature_month: str
     worker_args: list[str]
     runtime: RuntimeDefaults = field(default_factory=RuntimeDefaults)
+    worker_module: str = "cloud.batch.evi_worker"
 
 
 def build_batch_job_spec(config: BatchJobConfig) -> dict:
@@ -39,7 +40,7 @@ def build_batch_job_spec(config: BatchJobConfig) -> dict:
                                 "entrypoint": "python3",
                                 "commands": [
                                     "-m",
-                                    "cloud.batch.evi_worker",
+                                    config.worker_module,
                                     *config.worker_args,
                                 ],
                             }

@@ -11,12 +11,15 @@ Applies to the dual-system October delivery path. Keep the IPCCH-only manifest a
 - `carry_forward_base_series(observations, *, system, id_column, month_column, feature_columns, roster, months, source_ref)` returns a filled base grid and base audit.
 - `bind_model_features(base_audit, dependencies, *, feature_month, horizon_months, model_package_id, final_missing, imputation_rules)` records final-feature provenance. Dependencies map final feature to `(source_feature, lag_months)`; `final_missing` is the actual pre-imputation feature-matrix missingness indexed by native polygon ID.
 - `validate_delivery_request(data, *, request_uri, request_generation, expected_release_namespace=None)` performs structural validation only. `verify_reference_identities(request, resolve)` separately checks exact generation/checksum via the resolver.
+- CP2 `python -m cloud.orchestrator.prepare plan` reads a version-pinned preparation request, freezes discovery/history into a plan and submits Batch; `prepare extract` consumes exact plan URI/generation/hash. Existing `BatchJobConfig.worker_module` defaults to the old EVI worker; the new extraction sets its module explicitly and task retries to zero.
 
 ## 3. Contracts
 
 Object refs require `uri`, positive-string `generation` and lowercase `sha256`. The request path is `requests/{run_id}/run_manifest.json`; request generation comes from the event. Systems are exactly fewsnet/ipcch, horizons integer 0/6/12. Models and diagnostics cover every required system/horizon/family. Unavailable diagnostics use explicit `evidence: null`, status and reason. `prepared_at` contains date, time and UTC `Z`. A structurally valid manifest is not accepted model/preparation/runtime evidence.
 
 Native IDs stay strings, including leading zeros. Fill only within the same ID from observations at or before the dependency month. Entirely absent features return missing values and `no_eligible_history`, not an as-of join error. Base gaps stay missing until existing builders compute final features; the saved model imputer acts only on those final features. Audit carries source URI/generation/hash, package ID, base fill method and final `feature_value_method` independently.
+
+Preparation binds immutable history per source/system, geometry/roster and discovered provider identity. History and new observations obey min(origin, last month completed by cutoff). EE acquisition uses the discovered image ID, with explicit named FLDAS bands; GOSIF retains raw compressed bytes/hash. Raster mosaics preserve real masks and valid zero values by setting an explicit floating NaN destination nodata on merge. Current mappings are FEWS nightlight mean, IPCCH nightlight sum, and regional mean of provider GOSIF SD. Both native rosters remain separate.
 
 ## 4. Validation and error matrix
 
@@ -28,6 +31,9 @@ Native IDs stay strings, including leading zeros. Fill only within the same ID f
 | Bad manifest shape/type/null policy | `DeliveryManifestError` |
 | Referenced generation missing or checksum differs | `ReferenceIdentityError`; never convert to unavailable diagnostics |
 | Missing base history with valid final-feature rule | Keep base observation date null; record final model imputation |
+| History after completed-month cutoff or unknown raster CRS | Fail preparation |
+| Batch submission/provider/extraction failure | Preserve failed status and existing evidence; retry under new prepare ID |
+| Duplicate preparation/extraction ID | Create-only sentinel prevents repeated work |
 
 ## 5. Good / base / bad cases
 
@@ -38,6 +44,8 @@ Native IDs stay strings, including leading zeros. Fill only within the same ID f
 ## 6. Required checks
 
 Use `tests/test_refresh_h5_inputs.py`, `tests/cloud/test_causal_fill.py`, `tests/cloud/test_delivery_manifest.py` and existing manifest/run-state/release regressions. Assert four source choices, unchanged unrelated columns, Forecast exclusion, exact calendar matching, no cross-area/future fill, whole-column absence, final-feature rule identity, explicit null diagnostics and reference failures. Real v3 converter equivalence is separately recorded in task research. Do not claim live GCP or model acceptance from these tests.
+
+CP2 adds `tests/cloud/test_remote_sources.py` and `test_prepare.py`: real tiny GeoTIFFs including a valid zero and a separately masked cell, named multiband reductions, duplicate/failed preparation, historical cutoff, pinned generation/request hash and production-acquirer SDK mocks. `test_cloud_batch_evi_worker.py` protects the old launcher default. Live cloud evidence is a separate checkpoint.
 
 ## 7. Wrong vs correct
 

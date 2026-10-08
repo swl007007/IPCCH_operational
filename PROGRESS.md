@@ -17,7 +17,95 @@ User: 不用溯源了，没完没了的。固定特征直接复用，遥感特�
 - Unchanged: past-only same-area filling, latest complete monthly product eligibility, no training, no cloud mutation. Model runtime/replay checks remain.
 - CP2 validation is code-level/local fixture validation against the current scripts, with no historical source acceptance hunt.
 
-## Current checkpoint: CP1, delivered 2026-10-07, awaiting supervisor review
+## Current checkpoint: CP2, delivered 2026-10-07, awaiting supervisor review
+
+Scope: current-repo remote-sensing preparation (spec v0.5). No historical provenance searches, no cloud mutations, no live extraction, no commits.
+
+- Changed paths:
+  - New: `cloud/batch/remote_sources.py`, `cloud/orchestrator/prepare.py`, `tests/cloud/test_remote_sources.py`, `tests/cloud/test_prepare.py`.
+  - Modified: `cloud/orchestrator/batch_client.py`, adding an optional `BatchJobConfig.worker_module` that defaults to `cloud.batch.evi_worker`. Pre-edit impact was LOW for `build_batch_job_spec` (d1 `build_batch_create_job_request`, d2 `submit_batch_job`) and for `BatchJobConfig` (0).
+- Evidence: `research/cp2_evidence/` (focused/regression pytest output, env freeze).
+- Env: `/tmp/ipcch-oct-cp2` = CP1 pins + rasterio 1.5.0 (GDAL 3.12.1; wheel `Requires-Dist numpy>=2`; read/write/mask smoke test on NumPy 2.4.2) + affine/click/cligj/pyparsing. The frozen scoring venv is unchanged.
+- Tests (exit status preserved):
+  - Focused: `PYTHONDONTWRITEBYTECODE=1 /tmp/ipcch-oct-cp2/bin/python -m pytest tests/cloud/test_prepare.py tests/cloud/test_remote_sources.py -q -p no:cacheprovider` → 32 passed, exit 0.
+  - Regression: `... tests/test_refresh_h5_inputs.py tests/cloud tests/fewsnet_partitioned_rf/test_horizons.py tests/fewsnet_partitioned_rf/test_preprocessing.py tests/test_build_monthly_ipcch_base_input.py tests/test_operational_launch_cli.py tests/test_operational_launch_input_contract.py tests/test_reshape_remote_sensing_wide_to_long.py -q -p no:cacheprovider -rfs --disable-warnings` → 407 passed, 1 skipped (live GCP smoke), 1 failed, exit 1. The failure is the pre-existing `test_horizon_alignment_rejects_unsupported_horizons`.
+  - Warnings, reported separately: 186 rasterio/affine `PendingDeprecationWarning` (`*` vs `@` matmul) from library internals.
+- GitNexus detect_changes (scope all): MEDIUM. AGENTS.md/CLAUDE.md are not executor-owned; `build_batch_job_spec` sits in the `submit_batch_job` flows. Its default output is unchanged (tested); existing batch worker tests pass.
+
+### CP2 review round 1 (4 requests), fixed 2026-10-07, awaiting re-review
+
+1. History snapshots must not contain months after `last_eligible_month(origin, cutoff_utc)` = min(O, last calendar month ended before the cutoff's month), enforced in plan and extract. Tests: a 2026-10 history at a 2026-10-05 cutoff and a 2026-09 history at a 2026-08-05 cutoff are both rejected. Discovery runs only when the baseline is before that limit.
+2. New `plan_and_submit(..., submit=...)` is used by `main plan`. A Batch submit failure after the plan writes `prepare_status.json` failed/`batch_submit_failed` and keeps the sentinel and plan; reusing the same ID raises `PreparationConflict`. On success no status is written until extract finishes.
+3. `validate_prepare_request(..., request_sha256=...)` requires the lowercase SHA-256 of the raw request bytes. `main` reads those bytes at the event generation via `GcsPinnedReader`. `{uri, generation, sha256}` is carried into the plan and the prepared manifest.
+4. `mosaic_shards` merges with `masked=True` and writes float64 with NaN nodata, so per-band invalid cells (internal mask or nodata value) stay invalid. Real GeoTIFF regression: shards `[10,20]` (mask `[255,0]`) + `[10,20]` → mask `[F,T,F,F]`, polygon mean 40/3. Previously `[10,0,10,20]`, mean 10. Both encodings are covered.
+
+- Results: focused `tests/cloud/test_prepare.py tests/cloud/test_remote_sources.py` 38 passed, exit 0. Regression 413 passed, 1 skipped (live GCP), 1 failed (pre-existing horizon test), exit 1. Full logs with exit lines: `research/cp2_evidence/cp2_{focused,regression}_pytest.txt`. 208 rasterio/affine PendingDeprecation warnings, listed in the logs.
+- Cloud authority (user, relayed): full debugging in `manuel-remote-sensing` is permitted later. Executor has made NO cloud mutation; waiting for CP2 review plus an explicit go-ahead with a verified project.
+
+### CP2 review round 2 (1 request), fixed 2026-10-08, awaiting re-review
+
+- `mosaic_shards` now merges with explicit `nodata=np.nan, dtype="float64"` plus `masked=True`. Previously a nodata-less source got an implicit 0 nodata, masking valid zeros (supervisor repro `[0,10]`+`[20,30]` → `[--,10,20,30]`).
+- New real GeoTIFF fixture with a valid 0 and a separately masked pixel: `[0,10]` (mask `[255,0]`) + `[0,30]` → mask `[F,T,F,F]`, valid `[0,0,30]`, mean 10, population std of `[0,0,30]`.
+- Focused `tests/cloud/test_prepare.py tests/cloud/test_remote_sources.py`: 39 passed, exit 0 (`research/cp2_evidence/cp2_focused_pytest.txt`). The full suite was not rerun, per the supervisor.
+- SDK verified by supervisor: `manuel-remote-sensing`, account weilun.shi@cgiar.org, Earth Engine/Storage enabled. Executor still has made no cloud mutation; waiting for an explicit go-ahead.
+
+### Current-script source contract (`remote_sources.SOURCE_CONTRACTS`, `EXTRACTION_CONTRACT_VERSION=current-repo-remote-scripts-v1`)
+
+| family | script baseline | product / grid | prepared statistic columns |
+|---|---|---|---|
+| evi | EVI/00_ee_export_evi.txt, 02_arcpy_extract_evi.py | MODIS/061/MOD13A3 `EVI`, scale 1000, region [-180,-60,180,80], raw scaled ints | `EVI__mean`, `EVI__std` |
+| fldas | FLDAS/00_ee_export_fldas_all_bands.txt, 02_*part1-4 | NASA/FLDAS/NOAH01/C/GL/M/V001, explicit `select(FLDAS_BANDS)` (28), EPSG:4326 [0.1,0,-180,0,-0.1,90] | `{band}__mean`, `{band}__std` |
+| gosif_mean | GOSIF_GPP/00_download_*_mean.py, 02_*_mean.py | provider Monthly/Mean .tif.gz | `GPP_Mean__mean` |
+| gosif_sd | GOSIF_GPP/00_download_*_sd.py, 02_*_sd.py | provider Monthly/SD .tif.gz | `GPP_SD__mean` (mean of the SD raster) |
+| viirs | VIIRS_nightlight/00_ee_export_*.txt, 02_mosaic, 03_extract | NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG `avg_rad`, bilinear reproject EPSG:4326 1/30 deg | `avg_rad__sum`, `avg_rad__std`, `avg_rad__mean` |
+
+Reducers follow ArcPy "DATA": nodata and NaN are ignored; STD is population (ddof 0); cell-centre inclusion (`all_touched=False`); no unit scaling. A raster without a CRS is rejected. Zones are keyed by the explicit string `admin_code` and must equal the pinned roster. FEWSNET and IPCCH are extracted separately.
+
+### Remote -> model/raw-panel column mapping (`remote_sources.MODEL_COLUMN_MAPPING`, chosen current construction)
+
+- IPCCH:
+  - `EVI_mean`<-`EVI__mean`, `EVI_std`<-`EVI__std`
+  - `GPP_mean`<-`GPP_Mean__mean`, `GPP_std`<-`GPP_SD__mean`
+  - `nightlight_mean`<-`avg_rad__sum` (this repo's CH harmonisation), `nightlight_std`<-`avg_rad__std`
+  - for the 28 FLDAS bands: `{band}_mean`<-`{band}__mean`, `{band}_stdDev`<-`{band}__std` (population STD per the current script; the `stdDev` name is not taken as a reducer claim)
+- FEWSNET raw source columns:
+  - `EVI`<-`EVI__mean`
+  - `gpp_mean`<-`GPP_Mean__mean`
+  - `nightlight`<-`avg_rad__mean` (the already-known FEWS mean construction), `nightlight_sd`<-`avg_rad__std`
+  - `Rainf_f_tavg_mean`<-`Rainf_f_tavg__mean`, `Tair_f_tavg_mean`<-`Tair_f_tavg__mean`
+  - `Tair_zscore`/`Rainf_zscore` and calendar lags/windows are derived later by the existing FEWS normalization/preprocessing (T3 open).
+- No historical-parity claim.
+
+### Preparation artifact/schema inventory (under `{output_root}/prepared/{prepare_id}/`)
+
+- Input `prepare_requests/{prepare_id}/prepare_request.json` (`fewsnet-ipcch-prepare-request-v1`): `prepare_id`, `origin_month`, `cutoff_utc` (full RFC3339 Z), `extraction_contract_version`, `operator`, and per system `geometry`, `roster` and `history.{evi,fldas,gosif_mean,gosif_sd,viirs}` as exact `{uri,generation,sha256}` refs.
+  - The request is read at the event generation; all refs are read at their exact generation and the sha256 is verified.
+  - History snapshot layout is exactly `admin_code,month,{family stat columns}`. IDs must be a subset of the roster, months <= origin, keys unique, values finite, and there must be at least one observation. The evidenced baseline is the latest observed month in the snapshot.
+- `_PREPARE_ACQUIRED` / `_EXTRACT_ACQUIRED`: create-only sentinels, written before any provider work. Reuse raises `PreparationConflict`; a retry needs a new `prepare_id`.
+- `prepare_plan.json` (`fewsnet-ipcch-prepare-plan-v1`): per family `history_through{system}`, `provider_latest_completed_month`, `months{month: exact provider id}` (Earth Engine `system:id` or GOSIF URL), `not_published_months`, `system_months{system:[...]}`.
+- `sources/{family}/...`: retained provider bytes (GOSIF .tif.gz create-only) or Earth Engine export shards, with uri/generation/sha256 and band-name provenance.
+- `features/{system}/{family}.csv`: new months only, `admin_code`(str), `month`, stat columns. Every roster row is present; NaN where no valid cell.
+- `source_coverage.csv`: system, family, product, month, status (`history_snapshot`/`observed`/`not_published`), provider_id, areas_total/with/without values, source uri/generation/sha256.
+- `area_latest_observation.csv`: system, family, admin_code, latest_observation_month, over history + new months.
+- `prepared_manifest.json` (`fewsnet-ipcch-prepared-snapshot-v1`): request, plan ref, systems refs, per-family history refs, latest-observation month per system, sources and outputs, plus coverage and latest-observation refs.
+- `prepare_status.json`: `succeeded`, or `failed` with `source_retrieval_failed`/`preparation_error`.
+
+### Compute placement
+
+- `python -m cloud.orchestrator.prepare plan ...` is the Cloud Run job. It validates, acquires the sentinel, reads pinned inputs, discovers months, writes the plan, then submits Batch through the existing `batch_client.submit_batch_job`, with `worker_module=cloud.orchestrator.prepare` and `max_retry_count 0`.
+- `extract --plan-uri --plan-generation --plan-sha256 --earth-engine-project` is the Batch job command.
+- `run_prepare` composes both phases in-process for local fixtures only.
+
+### Known limitations (not run; no live claims)
+
+- No live Earth Engine, GOSIF HTTP, GCS or Batch call was made. `main()` wiring (ee/storage/batch_v1/requests) is untested, and the real `batch_v1` request shape and Earth Engine `system:id`/export behaviour are unverified (T4/T5).
+- Whether Earth Engine GeoTIFF exports carry band descriptions is unverified. Missing names are stamped from the explicit `select(FLDAS_BANDS)` order; mismatched names fail.
+- GOSIF provider nodata/fill encoding is unverified. The dataset nodata tag is honoured, as ArcPy "DATA" does.
+- Completeness = provider listing/HTTP 200 plus the calendar month having ended before the cutoff. No provider completeness metadata is checked.
+- Differences from current ArcPy: rasterio cell-centre masking rather than ArcPy zone rasterization; VIIRS ArcPy BLEND mosaic vs first-wins (equal for non-overlapping Earth Engine shards).
+- History snapshots must already be in the current-contract layout. Building them from existing fixed/history assets (reused as-is) is CP3 assembly work.
+
+## CP1 (ACCEPTED 2026-10-07; committed by supervisor in `0feaad9` with spec v0.5)
 
 - CP0: accepted as bounded evidence only (supervision.md, CP0 disposition). Baseline spec/evidence commit `1fa71a3`. Models are NOT accepted; FEWS replay, October/T3 and T1 remain open.
 - Supervisor disposition for CP1: pending. No commits by the executor.

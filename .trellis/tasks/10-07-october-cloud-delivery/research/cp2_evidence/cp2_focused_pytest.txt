@@ -1,0 +1,38 @@
+.......................................                                  [100%]
+=============================== warnings summary ===============================
+tests/cloud/test_prepare.py: 19 warnings
+tests/cloud/test_remote_sources.py: 17 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/transform.py:178: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    return Affine.translation(west, north) * Affine.scale(xsize, -ysize)
+
+tests/cloud/test_prepare.py: 61 warnings
+tests/cloud/test_remote_sources.py: 18 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:360: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    x, y = transform * (window.col_off or 0.0, window.row_off or 0.0)
+
+tests/cloud/test_prepare.py: 61 warnings
+tests/cloud/test_remote_sources.py: 18 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:361: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    return Affine.translation(
+
+tests/cloud/test_prepare.py::test_cloud_acquirer_gee_uses_discovered_image_and_named_fldas_bands
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_values_and_band_names
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[internal_mask]
+tests/cloud/test_remote_sources.py::test_mosaic_preserves_invalid_cells_from_shard_masks[nodata_value]
+tests/cloud/test_remote_sources.py::test_mosaic_keeps_valid_zero_and_masks_only_invalid_pixel
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/merge.py:341: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    output_transform = Affine.translation(dst_w, dst_n) * Affine.scale(
+
+tests/cloud/test_prepare.py: 2 warnings
+tests/cloud/test_remote_sources.py: 8 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:387: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    left, bottom = transform * (col_min, row_max)
+
+tests/cloud/test_prepare.py: 2 warnings
+tests/cloud/test_remote_sources.py: 8 warnings
+  /tmp/ipcch-oct-cp2/lib/python3.12/site-packages/rasterio/windows.py:388: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    right, top = transform * (col_max, row_min)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+39 passed, 219 warnings in 1.10s
+focused EXIT=0
