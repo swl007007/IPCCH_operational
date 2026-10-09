@@ -28,6 +28,6 @@ The confidence flags describe historical error of the stated evidence basis. The
 
 Limitation: all inputs end by 2026-08, and the IPCCH packages use only same-month features with no lag or calendar terms. As a result, the IPCCH 6m/12m scores are numerically identical to the October-origin scores; only the target labels differ. FEWSNET scores do differ from October because its features include lag and window terms. The median absolute difference in `probability_crisis` is 0.03 at 6m (maximum 0.28) and 0.09 at 12m (maximum 0.53).
 
-There is no portable replay bundle for these scopes. The run's 0m tables and its feature-fill audits are kept outside this folder, and `scopes/inventory.json` records their hashes.
+There is no portable replay bundle for these scopes. The run's 0m tables and its feature-fill audits were not retained (local cleanup on 2026-10-09). `scopes/inventory.json` still records their hashes as provenance.
 
 Object references such as `gs://sept-local-baseline/...` in `scopes/reports/` (including the `evidence_ref` column) point to a local stand-in bucket. That bucket does not exist in cloud storage. These references identify files by sha256, and the files behind them are the `cloud_pipeline/bootstrap/` baseline and evidence files with those hashes.

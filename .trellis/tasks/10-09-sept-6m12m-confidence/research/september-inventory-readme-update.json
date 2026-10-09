@@ -5,8 +5,8 @@
     "size": 1130
   },
   "after": {
-    "sha256": "d110f0c2fe41206a84dc52354522e4cb91e6ef84217d8c83ceea16af0f1a6b94",
-    "size": 4157
+    "sha256": "f05434db6223455ae1a7055f813ee9b484385ff4e0a69efcaedf808a9f65ba65",
+    "size": 4192
   },
-  "reason": "D5 README section; data files unchanged; plus stand-in bucket note (check finding 1)"
+  "reason": "D5 README section; data files unchanged; plus stand-in bucket note (check finding 1); workdir retention note after local cleanup"
 }

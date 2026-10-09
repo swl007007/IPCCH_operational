@@ -90,3 +90,9 @@ Other:
 - Workflow executions `a04856c8-0e24-45a4-9e68-f590a3b4893c`, `00be8973-0432-4e63-9177-b35deb6f14da`
 
 Local scratch (outside the repo): `~/work/oct-confidence-20261009/`, `/tmp/oct-confidence-replay-{a,b}`.
+
+## Local cleanup (2026-10-09, user-authorized)
+
+Removed: superseded archives `dist/cloud_pipeline.tar.gz` and `dist/cloud_pipeline-20261009.tar.gz` (+ .sha256), workdirs `~/work/sept-6m12m-20261009` (incl. September 0m tables and feature-fill audits; hashes remain in `september_manual/scopes/inventory.json`) and `~/work/oct-confidence-20261009`, `/tmp/{sept_bundle,ipcch-sept-test,oct-confidence-replay-a,oct-confidence-replay-b}`, `__pycache__`/`.ruff_cache`.
+Kept: `september_manual/`, `cloud_pipeline/{bootstrap,fallback}`, `dist/cloud_pipeline-20261009b.tar.gz` (checksum re-verified OK before deletion of the others), external `legacy_archive/` recovery copies.
+Cloud objects listed in section 4 were not deleted.
