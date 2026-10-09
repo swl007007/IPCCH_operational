@@ -1,0 +1,371 @@
+{
+ "all_inventory_match": true,
+ "files": {
+  "cloud_pipeline/bootstrap/baseline.json": {
+   "sha256": "33cf646e4f8f5d97c4b6ab0908d54711d6a9293460da4cff34164e1eb4a1e6f0",
+   "size": 47081
+  },
+  "cloud_pipeline/dist/cloud_pipeline.tar.gz": {
+   "sha256": "891d730fc5f08c3f8c86ccb4fe9e954ef617356afc713a383e7ef1ebfd697d4c",
+   "size": 1665570362
+  },
+  "cloud_pipeline/dist/cloud_pipeline.tar.gz.sha256": {
+   "sha256": "52dec01aaccaba3ba5115e0822c9bd995564ab07994fb8932c9c6c1ae6f77d60",
+   "size": 89
+  },
+  "cloud_pipeline/fallback/october_2026/README.md": {
+   "inventory_match": true,
+   "sha256": "96037fa2980dad530617c0588aa30743238b0c7d1f5b9b0da884d884db0f483c",
+   "size": 1173
+  },
+  "cloud_pipeline/fallback/october_2026/manifest.json": {
+   "inventory_match": true,
+   "sha256": "d377d24174713e830938d5fedfc6091888e7133b8ffafdf6dc87a841b96f8971",
+   "size": 64319
+  },
+  "cloud_pipeline/fallback/october_2026/replay_evidence/current_validation.json": {
+   "inventory_match": true,
+   "sha256": "cdc0b0048a8f3bfee86351bf05961b59dd77f6facff42001d7c3fa1a00a2356e",
+   "size": 1927
+  },
+  "cloud_pipeline/fallback/october_2026/replay_evidence/download.json": {
+   "inventory_match": true,
+   "sha256": "895239fe8948316bee42cfe205352ba0be19aae80802ef537574daf5c9350fcd",
+   "size": 491
+  },
+  "cloud_pipeline/fallback/october_2026/replay_evidence/member_check.json": {
+   "inventory_match": true,
+   "sha256": "6e7a1af928755a7f78793cf5e30fcb3422006296923bad0c04217a13cd2bee20",
+   "size": 189
+  },
+  "cloud_pipeline/fallback/october_2026/replay_evidence/oct-final-disclosures.json": {
+   "inventory_match": true,
+   "sha256": "3736ba6a6afb3db41f13e9bf05432911f7aa6433927d25bc6b6f251ab2e09ed9",
+   "size": 2538
+  },
+  "cloud_pipeline/fallback/october_2026/replay_evidence/rescore.log": {
+   "inventory_match": true,
+   "sha256": "311a9818ef5151b5181e5f902185d3d52f9c519f00b538d24d25ff110973af68",
+   "size": 5703
+  },
+  "cloud_pipeline/fallback/october_2026/reports/delivery.json": {
+   "inventory_match": true,
+   "sha256": "458823781795d35f4ad41ffac3db0e30891400d8304d6a2e542fa8e0c108c99d",
+   "size": 275
+  },
+  "cloud_pipeline/fallback/october_2026/reports/diagnostic_availability.csv": {
+   "inventory_match": true,
+   "sha256": "df985943860547267797a925e1c718b244e377542642f6461ccb50e20a8ab431",
+   "size": 2675361
+  },
+  "cloud_pipeline/fallback/october_2026/reports/fewsnet_assembly.json": {
+   "inventory_match": true,
+   "sha256": "f96a4ddb2777022305749b23b5c95fd6b1717c3c39dc5ae95305b9d7fdd37f66",
+   "size": 3692
+  },
+  "cloud_pipeline/fallback/october_2026/reports/fewsnet_diagnostic_declarations.json": {
+   "inventory_match": true,
+   "sha256": "695722c665c6c14b18b2653b67aa3d1821b9ff1ce5a995561c82ab1cbd218451",
+   "size": 1012
+  },
+  "cloud_pipeline/fallback/october_2026/reports/fewsnet_normalization_audit.json": {
+   "inventory_match": true,
+   "sha256": "4e8528f550bc603fbe5fc4284a263820c5bdecd55982968d322b697ace6abf0a",
+   "size": 1379
+  },
+  "cloud_pipeline/fallback/october_2026/reports/ipcch_assembly.json": {
+   "inventory_match": true,
+   "sha256": "1ba8652fe9f65645829292f6fba7e14df368138d4a15b54384dc6c957b7f0c77",
+   "size": 3371
+  },
+  "cloud_pipeline/fallback/october_2026/reports/ipcch_diagnostic_declarations.json": {
+   "inventory_match": true,
+   "sha256": "bf12a19dd01cc4ae0086f653c2d8fc03c93897fc870a07f8ade5cd6ebb4a380a",
+   "size": 1495
+  },
+  "cloud_pipeline/fallback/october_2026/retained_inventory.json": {
+   "sha256": "6cca09111f28c2891b5764b23c6c34165895fd201a69ae728230e70f074d1e79",
+   "size": 9079
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/fewsnet/country_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "e6bc803b57ac900ab8cf9c5ad96342410103039dfead0166f40c9dc7a8e7e3ea",
+   "size": 1312
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/fewsnet/country_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "5b5fa774131e6f8ed6f2df68f8ae3bfd1167db14b686273fc23709f50d0475b6",
+   "size": 12437
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/fewsnet/polygon_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "91adc30e7b33ac76610bd336611d89585d465b2ad904992c16d7966be200c9b2",
+   "size": 306539
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/fewsnet/polygon_model_mapping.csv": {
+   "inventory_match": true,
+   "sha256": "d3320f12811309be47d3368ae4b87adf751300bb50f851dc51c48e5971d175a3",
+   "size": 801481
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/fewsnet/polygon_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "9f9470b91031a11de5e07d18c308b630a5c7d8650a9ef0cfddfc44ffd73dcf97",
+   "size": 1504590
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/ipcch/country_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "e0995c8bd9fa5c556718afeacf7691563e4142a521b7567e18e3a1f93e3bfefe",
+   "size": 7619
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/ipcch/country_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "81d7642091e72faea5b34b2674aba2d7f60e4e292535975fb4b7d3d5eba73119",
+   "size": 36814
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/ipcch/polygon_model_mapping.csv": {
+   "inventory_match": true,
+   "sha256": "4536aa22a7690be715eb27900582ac3b60bfa8c91ffeea4f9e012436ec64c524",
+   "size": 1025917
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/ipcch/polygon_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "ebff2da3771fb974aa8d5f5b4107397aad6d39a563fb04e56825b00b8575f71e",
+   "size": 1496976
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/0m/ipcch/polygon_training_errors.csv": {
+   "inventory_match": true,
+   "sha256": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+   "size": 76314
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/fewsnet/country_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "e6bc803b57ac900ab8cf9c5ad96342410103039dfead0166f40c9dc7a8e7e3ea",
+   "size": 1312
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/fewsnet/country_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "e57f185f6f64bc99753e019ceb4fd8df7d80e1cdefcafed8c29c71c593080f66",
+   "size": 12481
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/fewsnet/polygon_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "91adc30e7b33ac76610bd336611d89585d465b2ad904992c16d7966be200c9b2",
+   "size": 306539
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/fewsnet/polygon_model_mapping.csv": {
+   "inventory_match": true,
+   "sha256": "841c70d03946b545a7293b24e39b96ae33ebcc06dc4b3753ff3b64d2ca375b0d",
+   "size": 812917
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/fewsnet/polygon_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "21e0ba66317f607f68aaffdd2eaed31d02fb287a2f59423c5931f7c96094a7bc",
+   "size": 1516064
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/ipcch/country_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "28dfa67737ed7f793e15be6149bd2b871adfc57f12beb8268ff66c9123f26f9f",
+   "size": 7619
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/ipcch/country_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "3483b97df630d633e286aa2ddd362ca258082c792488589453659e3d6a2e321a",
+   "size": 36880
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/ipcch/polygon_model_mapping.csv": {
+   "inventory_match": true,
+   "sha256": "6ad397fd95da21199b4d452b90fb8cbc31d7c908b66e408ca7b5525081a134b6",
+   "size": 1044598
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/ipcch/polygon_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "1b69751d87ada31b88fc03172b6a19b86c297e52625d7572a093fcef9b4ce17e",
+   "size": 1501916
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/12m/ipcch/polygon_training_errors.csv": {
+   "inventory_match": true,
+   "sha256": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+   "size": 76314
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/fewsnet/country_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "bf0d2d4aa8fd19f44445ecadaefb4c957a808cedefe620efc07bdd4bfea06415",
+   "size": 1312
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/fewsnet/country_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "7ffcc8a9e4a0f5df2f83153e6a97864d014ae812053c369456db1d883d5cddea",
+   "size": 12442
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/fewsnet/polygon_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "91adc30e7b33ac76610bd336611d89585d465b2ad904992c16d7966be200c9b2",
+   "size": 306539
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/fewsnet/polygon_model_mapping.csv": {
+   "inventory_match": true,
+   "sha256": "34ba71aa3d45723fbd4fa0f969363ba0b4c2d66e75770b10f6f22192c89215e9",
+   "size": 801481
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/fewsnet/polygon_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "b28d244a634998eaca535f30a7ddb31ece119a24bfd75b53dcdf0a6d2761ce08",
+   "size": 1504640
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/ipcch/country_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "b9b0703cb6269916d8880d2e2cdb8e2724589e8866da1826d71ac65a779ad11f",
+   "size": 7619
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/ipcch/country_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "60449ef36af987397c246d53fe571d9bd9aef8324b3a73d07b8b54b228894f1c",
+   "size": 36797
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/ipcch/polygon_model_mapping.csv": {
+   "inventory_match": true,
+   "sha256": "19640e58e146622170b74f3aa628e0a7ab6ba91c682898d91e8aeb59040e3d4a",
+   "size": 1025917
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/ipcch/polygon_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "299aad14f3cba550477ab20d378a242553ca7d6e1b13fe54857a644486585ccd",
+   "size": 1497799
+  },
+  "cloud_pipeline/fallback/october_2026/scopes/6m/ipcch/polygon_training_errors.csv": {
+   "inventory_match": true,
+   "sha256": "531ecea0a258c06cfb2f5a054fbe54e0d5c4fb6fec442323696130af974bf4c2",
+   "size": 76314
+  },
+  "cloud_pipeline/fallback/october_2026/shared/fewsnet/country_population_reference.csv": {
+   "inventory_match": true,
+   "sha256": "2970798181d21e95caa5a9ee4b04eb2304dc8bd8d0e35df98e683eb878844a90",
+   "size": 4776
+  },
+  "cloud_pipeline/fallback/october_2026/shared/fewsnet/polygons.geojson": {
+   "inventory_match": true,
+   "sha256": "4a491eae5f88f99226f57b93542dcb9f527609787fb81059043a9c8721999386",
+   "size": 247394261
+  },
+  "cloud_pipeline/fallback/october_2026/shared/ipcch/country_population_reference.csv": {
+   "inventory_match": true,
+   "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+   "size": 11296
+  },
+  "cloud_pipeline/fallback/october_2026/shared/ipcch/polygons.geojson": {
+   "inventory_match": true,
+   "sha256": "6d0460bbc45292986fdb6da33215e34501e9ad4d8f7b20ff23117c43f1e66268",
+   "size": 132388443
+  },
+  "cloud_pipeline/fallback/october_2026/webapp_model_bundle.tar.gz": {
+   "inventory_match": true,
+   "sha256": "92406388ba50c28c0c99efa69c4c6857b2c15cf5550fd65176639aff59ebbc22",
+   "size": 395497758
+  },
+  "september_manual/README.md": {
+   "inventory_match": true,
+   "sha256": "fad28c73569175d112f20e0bab960deda359b42dbc95f384ed7b7a0d49ff3e51",
+   "size": 1130
+  },
+  "september_manual/fewsnet/country_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "a8bc44ba93c870259ac1f8cd84b3143c6cfed25fdbf8480359efc5a12f942ee9",
+   "size": 7253
+  },
+  "september_manual/fewsnet/country_population_reference.csv": {
+   "inventory_match": true,
+   "sha256": "2970798181d21e95caa5a9ee4b04eb2304dc8bd8d0e35df98e683eb878844a90",
+   "size": 4776
+  },
+  "september_manual/fewsnet/country_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "1e4886d57bd04fecde8c65aa243735cf8a629ba17da4c87675e03232f216ef9e",
+   "size": 18259
+  },
+  "september_manual/fewsnet/polygon_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "8be3c2de75fac2e10cf9af464614a0b5d4b3e989c8c66d5363dbcc908fa337f3",
+   "size": 782355
+  },
+  "september_manual/fewsnet/polygon_model_mapping.csv": {
+   "inventory_match": true,
+   "sha256": "167bcca111f78003d96a361bd92b6ff1f73c4255b355dd9c4141b41b59f1cc16",
+   "size": 795057
+  },
+  "september_manual/fewsnet/polygon_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "5d72daad8b1e0fbae8e0e80b22e83c195cfd7b77de6abbe55195d120c79a0a0a",
+   "size": 1475994
+  },
+  "september_manual/inputs/ipcch_april_panel.csv": {
+   "inventory_match": true,
+   "sha256": "8596ddb16aae439201b38148660e82981b7d498be1cbb1d2d77ae6dcf282e375",
+   "size": 5665607
+  },
+  "september_manual/inventory.json": {
+   "sha256": "237ba5789552228505b03ca0d3ffc36ec66ef7a4fbe102a4c721f200a2ac0477",
+   "size": 5479
+  },
+  "september_manual/ipcch/country_confidence.csv": {
+   "inventory_match": true,
+   "sha256": "59054200223d733615a557a2965807b9941a872f9a774b4f879c37b10c036a3b",
+   "size": 26193
+  },
+  "september_manual/ipcch/country_population_reference.csv": {
+   "inventory_match": true,
+   "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+   "size": 11296
+  },
+  "september_manual/ipcch/country_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "3b4c598e6894af8d4059682c80988ca96c650aef8e1a2d64c38251baf383be87",
+   "size": 55848
+  },
+  "september_manual/ipcch/polygon_model_mapping.csv": {
+   "inventory_match": true,
+   "sha256": "2bba67c151ea92811e75062f165e2f65a923b2c457657f565434b8cc07ac483f",
+   "size": 1019690
+  },
+  "september_manual/ipcch/polygon_predictions.csv": {
+   "inventory_match": true,
+   "sha256": "bf1ef7b0e3eca76a2c60f6ef0a7adfbf9168e94d0b09c4b058f2cd2e6d7ce06e",
+   "size": 1518924
+  },
+  "september_manual/ipcch/polygon_training_errors.csv": {
+   "inventory_match": true,
+   "sha256": "d7602886ddc509e01b4fcfe6eab3e8e47f56107613fba072fbdc3b70a55f487d",
+   "size": 136323
+  },
+  "september_manual/original_metadata/README.md": {
+   "inventory_match": true,
+   "sha256": "613849210af6cfd2ace8035dc3430ee38c3a61edb4eed4836c235604911963f5",
+   "size": 22502
+  },
+  "september_manual/original_metadata/bundle_manifest.json": {
+   "inventory_match": true,
+   "sha256": "1a6bbd9c9deddbda908c413f6e6cbcb4e7d0d8b8554a689e157d080829b133af",
+   "size": 31748
+  },
+  "september_manual/original_metadata/manifest.json": {
+   "inventory_match": true,
+   "sha256": "9c76de1138305253ef0cddae77946ed96050aa5d803fe9be543dc36254e231cd",
+   "size": 33327
+  },
+  "september_manual/reports/ipcch_four_target_training_replay.csv": {
+   "inventory_match": true,
+   "sha256": "e82e52273cf712c5a87563f464568a74a7d2ff1a36e4db8af3599db057485789",
+   "size": 10059255
+  },
+  "september_manual/requirements.txt": {
+   "inventory_match": true,
+   "sha256": "c2b4d940ffa3c7a4a63b480a8ce272b6d29c3bd21726e840493cb3e6e1f032d0",
+   "size": 215
+  },
+  "september_manual/webapp_model_bundle.tar.gz": {
+   "inventory_match": true,
+   "sha256": "3bedbc140552d46bacfc2caa69ea82f413dae3b332bfea04361a9f58c0460169",
+   "size": 240305152
+  }
+ },
+ "taken_at": "2026-10-09T18:44:05Z"
+}

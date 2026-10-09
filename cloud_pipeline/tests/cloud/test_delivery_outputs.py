@@ -154,6 +154,68 @@ def test_ipcch_area_evidence_accepts_training_resubstitution_only():
                           acceptance={**ACCEPT_IPCCH, "latest_end": None})
 
 
+@pytest.mark.parametrize("horizon", [0, 6, 12])
+def test_ipcch_training_resubstitution_is_accepted_at_every_horizon(horizon):
+    declared = {**DECLARED, "evidence_model_package_id": f"pkg/scope_{horizon}m", "evidence_horizon_months": horizon}
+    frame = _area(model_package_id=f"pkg/scope_{horizon}m", horizon_months=horizon, basis="training_resubstitution",
+                  period="2014-01..2026-04")
+    _, identity = out.area_evidence(frame, roster=["0", "1"], model_package_id=f"pkg/scope_{horizon}m", horizon=horizon,
+                                    declared=declared, acceptance=ACCEPT_IPCCH)
+    assert identity["basis"] == "training_resubstitution"
+    # the FEWSNET proxy allowlist never applies to IPCCH
+    if ("fewsnet", horizon) in out.APPROVED_PROXY_EVIDENCE:
+        basis, period = out.APPROVED_PROXY_EVIDENCE[("fewsnet", horizon)]
+        with pytest.raises(out.EvidenceIntegrityError, match="not the accepted ipcch basis"):
+            out.area_evidence(frame.assign(basis=basis, period=period), roster=["0", "1"],
+                              model_package_id=f"pkg/scope_{horizon}m", horizon=horizon, declared=declared,
+                              acceptance=ACCEPT_IPCCH)
+
+
+def _fews_proxy(horizon, **identity):
+    package = f"pkg/{horizon}m"
+    declared = {**DECLARED, "evidence_model_package_id": package, "evidence_horizon_months": horizon}
+    frame = _area(model_package_id=package, horizon_months=horizon, **identity)
+    return dict(roster=["0", "1"], model_package_id=package, horizon=horizon, declared=declared,
+                acceptance=ACCEPT_FEWS), frame
+
+
+@pytest.mark.parametrize("horizon", [6, 12])
+def test_fewsnet_allowlisted_stage3_proxy_is_accepted_at_its_own_horizon(horizon):
+    basis, period = out.APPROVED_PROXY_EVIDENCE[("fewsnet", horizon)]
+    kwargs, frame = _fews_proxy(horizon, basis=basis, period=period)
+    table, identity = out.area_evidence(frame, **kwargs)
+    assert (identity["basis"], identity["period"], len(table)) == (basis, period, 2)
+    # the origin bound still applies to an allowlisted proxy
+    with pytest.raises(out.EvidenceIntegrityError, match="ending at or"):
+        out.area_evidence(frame, **{**kwargs, "acceptance": {**ACCEPT_FEWS, "origin": "2024-09"}})
+    # the package's own validation split stays accepted alongside the proxy
+    kwargs, frame = _fews_proxy(horizon)
+    assert out.area_evidence(frame, **kwargs)[1]["basis"] == "package_validation_split"
+
+
+H6, H12 = out.APPROVED_PROXY_EVIDENCE[("fewsnet", 6)], out.APPROVED_PROXY_EVIDENCE[("fewsnet", 12)]
+
+
+@pytest.mark.parametrize(
+    ("horizon", "basis", "period", "message"),
+    [
+        (12, H6[0], H6[1], "or the approved 12m proxy"),  # fs2 proxy on the wrong horizon
+        (6, H12[0], H12[1], "or the approved 6m proxy"),
+        (6, H6[0], "2021-02..2024-09", "not the allowlisted '2021-02..2024-10'"),  # right basis, wrong period
+        (12, H12[0], "2023-10..2026-02", "not the allowlisted '2021-02..2024-10'"),
+        (6, "h5_validation_error_proxy_stage3_2021_2024", H6[1], "not the accepted fewsnet basis"),
+        (0, H6[0], H6[1], "not the accepted fewsnet basis 'package_validation_split'$"),  # no 0m proxy
+        (0, H12[0], H12[1], "not the accepted fewsnet basis 'package_validation_split'$"),
+        (6, "stage3_proxy_unknown", H6[1], "not the accepted fewsnet basis"),
+        (12, "package_validation_split", H12[1], "recorded validation split"),  # proxy period alone is not enough
+    ],
+)
+def test_fewsnet_proxy_outside_the_allowlist_is_rejected(horizon, basis, period, message):
+    kwargs, frame = _fews_proxy(horizon, basis=basis, period=period)
+    with pytest.raises(out.EvidenceIntegrityError, match=message):
+        out.area_evidence(frame, **kwargs)
+
+
 def test_ipcch_training_cutoff_comes_from_the_package_manifest(tmp_path):
     (tmp_path / "model_package_manifest.json").write_text('{"training_cutoff": "2026-04-01"}')
     assert out.ipcch_training_cutoff_month(tmp_path) == "2026-04"

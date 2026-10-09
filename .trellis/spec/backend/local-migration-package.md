@@ -37,9 +37,9 @@ October dual-system cloud workflow. It does not deploy cloud resources or train 
 
 ## Output organization
 
-- Current cloud outputs: `Outcome/model_delivery/october_cloud_delivery/`.
-- Compact manual final delivery: `Outcome/manual_delivery/202609_h5/20260923_country_confidence_v3/`.
-- Generated local migration payload/archive: `Outcome/migration_packages/` (ignored by Git).
-- Historical original manifests describe the original tree; the compact folder has its
+- Current runtime/handover root: `cloud_pipeline/` (accepted October outputs in `cloud_pipeline/fallback/october_2026/`); the `Outcome/...` paths of the October task were moved to the external legacy archive.
+- Accepted September h5 manual delivery: `september_manual/` root files plus `inventory.json` (bytes preserved).
+- September-origin 6m/12m results (2026-10-09): `september_manual/scopes/{6m,12m}/{fewsnet,ipcch}/`, `scopes/shared/`, `scopes/reports/`, with their own `scopes/inventory.json`. They follow the October fallback layout, ship no portable bundle and expose no 0m scope; the run workdir keeps the 0m tables and audits by hash only.
+- Historical original manifests describe the original tree; each compact folder has its
   own inventory. Preserve final CSV/fixture bytes and update live references when moving.
   Remove authorized backups only after required operational inputs are durable/verified.

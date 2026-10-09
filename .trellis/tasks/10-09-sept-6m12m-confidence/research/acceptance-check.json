@@ -1,0 +1,654 @@
+{
+ "ac1": {
+  "fewsnet/12m": {
+   "country_months": {
+    "feature_month": [
+     "2026-09"
+    ],
+    "horizon_months": [
+     "12"
+    ],
+    "target_month": [
+     "2027-09"
+    ]
+   },
+   "country_rows": {
+    "country_confidence.csv": 22,
+    "country_predictions.csv": 22
+   },
+   "file_set_equals_october": true,
+   "files": [
+    "country_confidence.csv",
+    "country_predictions.csv",
+    "polygon_confidence.csv",
+    "polygon_model_mapping.csv",
+    "polygon_predictions.csv"
+   ],
+   "h5_root_tables_compared": [
+    "country_confidence.csv",
+    "country_predictions.csv",
+    "polygon_confidence.csv",
+    "polygon_model_mapping.csv",
+    "polygon_predictions.csv"
+   ],
+   "headers_equal_h5_root": true,
+   "headers_equal_october": true,
+   "mapping_months": {
+    "feature_month": [
+     "2026-09"
+    ],
+    "horizon_months": [
+     "12"
+    ],
+    "target_month": [
+     "2027-09"
+    ]
+   },
+   "months_ok": true,
+   "package_ids": [
+    "local-202604-57cb3b981198-510375f58cd8/12m"
+   ],
+   "package_ok": true,
+   "polygon_rows": {
+    "polygon_confidence.csv": 5718,
+    "polygon_model_mapping.csv": 5718,
+    "polygon_predictions.csv": 5718
+   },
+   "polygon_unique": 5718,
+   "prediction_months": {
+    "feature_month": [
+     "2026-09"
+    ],
+    "horizon_months": [
+     "12"
+    ],
+    "target_month": [
+     "2027-09"
+    ]
+   },
+   "roster_ok": true
+  },
+  "fewsnet/6m": {
+   "country_months": {
+    "feature_month": [
+     "2026-09"
+    ],
+    "horizon_months": [
+     "6"
+    ],
+    "target_month": [
+     "2027-03"
+    ]
+   },
+   "country_rows": {
+    "country_confidence.csv": 22,
+    "country_predictions.csv": 22
+   },
+   "file_set_equals_october": true,
+   "files": [
+    "country_confidence.csv",
+    "country_predictions.csv",
+    "polygon_confidence.csv",
+    "polygon_model_mapping.csv",
+    "polygon_predictions.csv"
+   ],
+   "h5_root_tables_compared": [
+    "country_confidence.csv",
+    "country_predictions.csv",
+    "polygon_confidence.csv",
+    "polygon_model_mapping.csv",
+    "polygon_predictions.csv"
+   ],
+   "headers_equal_h5_root": true,
+   "headers_equal_october": true,
+   "mapping_months": {
+    "feature_month": [
+     "2026-09"
+    ],
+    "horizon_months": [
+     "6"
+    ],
+    "target_month": [
+     "2027-03"
+    ]
+   },
+   "months_ok": true,
+   "package_ids": [
+    "local-202604-57cb3b981198-510375f58cd8/6m"
+   ],
+   "package_ok": true,
+   "polygon_rows": {
+    "polygon_confidence.csv": 5718,
+    "polygon_model_mapping.csv": 5718,
+    "polygon_predictions.csv": 5718
+   },
+   "polygon_unique": 5718,
+   "prediction_months": {
+    "feature_month": [
+     "2026-09"
+    ],
+    "horizon_months": [
+     "6"
+    ],
+    "target_month": [
+     "2027-03"
+    ]
+   },
+   "roster_ok": true
+  },
+  "ipcch/12m": {
+   "country_months": {
+    "feature_period": [
+     "2026-09"
+    ],
+    "scope_months": [
+     "12"
+    ],
+    "target_period": [
+     "2027-09"
+    ]
+   },
+   "country_rows": {
+    "country_confidence.csv": 53,
+    "country_predictions.csv": 53
+   },
+   "file_set_equals_october": true,
+   "files": [
+    "country_confidence.csv",
+    "country_predictions.csv",
+    "polygon_model_mapping.csv",
+    "polygon_predictions.csv",
+    "polygon_training_errors.csv"
+   ],
+   "h5_root_tables_compared": [
+    "country_confidence.csv",
+    "country_predictions.csv",
+    "polygon_model_mapping.csv",
+    "polygon_predictions.csv",
+    "polygon_training_errors.csv"
+   ],
+   "headers_equal_h5_root": true,
+   "headers_equal_october": true,
+   "mapping_months": {
+    "feature_month": [
+     "2026-09"
+    ],
+    "horizon_months": [
+     "12"
+    ],
+    "target_month": [
+     "2027-09"
+    ]
+   },
+   "months_ok": true,
+   "package_ids": [
+    "launch_2026_04_production_safe"
+   ],
+   "package_ok": true,
+   "polygon_rows": {
+    "polygon_model_mapping.csv": 6227,
+    "polygon_predictions.csv": 6227,
+    "polygon_training_errors.csv": 6227
+   },
+   "polygon_unique": 6227,
+   "prediction_months": {
+    "feature_period": [
+     "2026-09"
+    ],
+    "scope_months": [
+     "12"
+    ],
+    "target_period": [
+     "2027-09"
+    ]
+   },
+   "roster_ok": true
+  },
+  "ipcch/6m": {
+   "country_months": {
+    "feature_period": [
+     "2026-09"
+    ],
+    "scope_months": [
+     "6"
+    ],
+    "target_period": [
+     "2027-03"
+    ]
+   },
+   "country_rows": {
+    "country_confidence.csv": 53,
+    "country_predictions.csv": 53
+   },
+   "file_set_equals_october": true,
+   "files": [
+    "country_confidence.csv",
+    "country_predictions.csv",
+    "polygon_model_mapping.csv",
+    "polygon_predictions.csv",
+    "polygon_training_errors.csv"
+   ],
+   "h5_root_tables_compared": [
+    "country_confidence.csv",
+    "country_predictions.csv",
+    "polygon_model_mapping.csv",
+    "polygon_predictions.csv",
+    "polygon_training_errors.csv"
+   ],
+   "headers_equal_h5_root": true,
+   "headers_equal_october": true,
+   "mapping_months": {
+    "feature_month": [
+     "2026-09"
+    ],
+    "horizon_months": [
+     "6"
+    ],
+    "target_month": [
+     "2027-03"
+    ]
+   },
+   "months_ok": true,
+   "package_ids": [
+    "launch_2026_04_production_safe"
+   ],
+   "package_ok": true,
+   "polygon_rows": {
+    "polygon_model_mapping.csv": 6227,
+    "polygon_predictions.csv": 6227,
+    "polygon_training_errors.csv": 6227
+   },
+   "polygon_unique": 6227,
+   "prediction_months": {
+    "feature_period": [
+     "2026-09"
+    ],
+    "scope_months": [
+     "6"
+    ],
+    "target_period": [
+     "2027-03"
+    ]
+   },
+   "roster_ok": true
+  }
+ },
+ "ac2": {
+  "availability": {
+   "horizons": [
+    "12",
+    "6"
+   ],
+   "missing_evidence_rows": 0,
+   "status_reason": {
+    "fewsnet/12/available/": 5735,
+    "fewsnet/12/unavailable/no_eligible_area_history": 5,
+    "fewsnet/6/available/": 5735,
+    "fewsnet/6/unavailable/no_eligible_area_history": 5,
+    "ipcch/12/available/": 6314,
+    "ipcch/12/limited/single_month_interval_unavailable": 9,
+    "ipcch/12/unavailable/no_complete_history": 10,
+    "ipcch/6/available/": 6314,
+    "ipcch/6/limited/single_month_interval_unavailable": 9,
+    "ipcch/6/unavailable/no_complete_history": 10
+   }
+  },
+  "fewsnet/12m": {
+   "basis_ok": true,
+   "blank_polygon_ids": [
+    "216",
+    "2786",
+    "4375",
+    "4511",
+    "5500"
+   ],
+   "country_error_basis": {
+    "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024": 22
+   },
+   "country_error_evidence_period": {
+    "2021-02..2024-10": 22
+   },
+   "country_error_rate_populated": 22,
+   "country_flag_distribution": {
+    "high": 10,
+    "low": 8,
+    "medium": 4
+   },
+   "country_predictions_flag_equals_confidence": true,
+   "evidence_basis": {
+    "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024": 5718
+   },
+   "evidence_period": {
+    "2021-02..2024-10": 5718
+   },
+   "historical_sample_count_populated": 5713,
+   "period_ok": true,
+   "polygon_confidence_populated": 5713
+  },
+  "fewsnet/6m": {
+   "basis_ok": true,
+   "blank_polygon_ids": [
+    "216",
+    "2786",
+    "4375",
+    "4511",
+    "5500"
+   ],
+   "country_error_basis": {
+    "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024": 22
+   },
+   "country_error_evidence_period": {
+    "2021-02..2024-10": 22
+   },
+   "country_error_rate_populated": 22,
+   "country_flag_distribution": {
+    "high": 11,
+    "low": 6,
+    "medium": 5
+   },
+   "country_predictions_flag_equals_confidence": true,
+   "evidence_basis": {
+    "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024": 5718
+   },
+   "evidence_period": {
+    "2021-02..2024-10": 5718
+   },
+   "historical_sample_count_populated": 5713,
+   "period_ok": true,
+   "polygon_confidence_populated": 5713
+  },
+  "ipcch/12m": {
+   "basis_ok": true,
+   "country_error_basis": {
+    "training_resubstitution": 53
+   },
+   "country_error_evidence_period": {
+    "2014-01..2026-04": 53
+   },
+   "country_error_rate_populated": 53,
+   "country_flag_distribution": {
+    "high": 26,
+    "low": 10,
+    "medium": 17
+   },
+   "country_overall_phase_populated": 53,
+   "country_predictions_flag_equals_confidence": true,
+   "max_phase_method": {
+    "training_residual_transfer_complete_month_bootstrap_proxy": 53
+   },
+   "max_phase_proxy_populated": 43,
+   "max_phase_status": {
+    "degenerate_empirical": 18,
+    "no_complete_history": 10,
+    "single_month": 9,
+    "supported": 16
+   },
+   "no_complete_history_blank": true,
+   "no_complete_history_iso3": [
+    "AGO",
+    "CAF",
+    "ETH",
+    "HND",
+    "LSO",
+    "MOZ",
+    "SDN",
+    "SOM",
+    "SSD",
+    "TZA"
+   ],
+   "period_ok": true,
+   "single_month_ci_blank": true,
+   "training_error_rate_populated": 6227,
+   "training_sample_count_populated": 6227
+  },
+  "ipcch/6m": {
+   "basis_ok": true,
+   "country_error_basis": {
+    "training_resubstitution": 53
+   },
+   "country_error_evidence_period": {
+    "2014-01..2026-04": 53
+   },
+   "country_error_rate_populated": 53,
+   "country_flag_distribution": {
+    "high": 27,
+    "low": 10,
+    "medium": 16
+   },
+   "country_overall_phase_populated": 53,
+   "country_predictions_flag_equals_confidence": true,
+   "max_phase_method": {
+    "training_residual_transfer_complete_month_bootstrap_proxy": 53
+   },
+   "max_phase_proxy_populated": 43,
+   "max_phase_status": {
+    "degenerate_empirical": 19,
+    "no_complete_history": 10,
+    "single_month": 9,
+    "supported": 15
+   },
+   "no_complete_history_blank": true,
+   "no_complete_history_iso3": [
+    "AGO",
+    "CAF",
+    "ETH",
+    "HND",
+    "LSO",
+    "MOZ",
+    "SDN",
+    "SOM",
+    "SSD",
+    "TZA"
+   ],
+   "period_ok": true,
+   "single_month_ci_blank": true,
+   "training_error_rate_populated": 6227,
+   "training_sample_count_populated": 6227
+  }
+ },
+ "checks": {
+  "ac1.fewsnet/12m.file_set_equals_october": true,
+  "ac1.fewsnet/12m.headers_equal_h5_root": true,
+  "ac1.fewsnet/12m.headers_equal_october": true,
+  "ac1.fewsnet/12m.months_ok": true,
+  "ac1.fewsnet/12m.package_ok": true,
+  "ac1.fewsnet/12m.roster_ok": true,
+  "ac1.fewsnet/6m.file_set_equals_october": true,
+  "ac1.fewsnet/6m.headers_equal_h5_root": true,
+  "ac1.fewsnet/6m.headers_equal_october": true,
+  "ac1.fewsnet/6m.months_ok": true,
+  "ac1.fewsnet/6m.package_ok": true,
+  "ac1.fewsnet/6m.roster_ok": true,
+  "ac1.ipcch/12m.file_set_equals_october": true,
+  "ac1.ipcch/12m.headers_equal_h5_root": true,
+  "ac1.ipcch/12m.headers_equal_october": true,
+  "ac1.ipcch/12m.months_ok": true,
+  "ac1.ipcch/12m.package_ok": true,
+  "ac1.ipcch/12m.roster_ok": true,
+  "ac1.ipcch/6m.file_set_equals_october": true,
+  "ac1.ipcch/6m.headers_equal_h5_root": true,
+  "ac1.ipcch/6m.headers_equal_october": true,
+  "ac1.ipcch/6m.months_ok": true,
+  "ac1.ipcch/6m.package_ok": true,
+  "ac1.ipcch/6m.roster_ok": true,
+  "ac2.availability.horizons_6_12_only": true,
+  "ac2.availability.no_missing_evidence": true,
+  "ac2.fewsnet/12m.basis_ok": true,
+  "ac2.fewsnet/12m.country_error_populated": true,
+  "ac2.fewsnet/12m.country_flag_consistent": true,
+  "ac2.fewsnet/12m.period_ok": true,
+  "ac2.fewsnet/12m.polygon_confidence_populated_5713": true,
+  "ac2.fewsnet/6m.basis_ok": true,
+  "ac2.fewsnet/6m.country_error_populated": true,
+  "ac2.fewsnet/6m.country_flag_consistent": true,
+  "ac2.fewsnet/6m.period_ok": true,
+  "ac2.fewsnet/6m.polygon_confidence_populated_5713": true,
+  "ac2.ipcch/12m.basis_ok": true,
+  "ac2.ipcch/12m.country_error_populated": true,
+  "ac2.ipcch/12m.country_flag_consistent": true,
+  "ac2.ipcch/12m.no_complete_history_blank": true,
+  "ac2.ipcch/12m.period_ok": true,
+  "ac2.ipcch/12m.single_month_ci_blank": true,
+  "ac2.ipcch/12m.training_errors_populated": true,
+  "ac2.ipcch/6m.basis_ok": true,
+  "ac2.ipcch/6m.country_error_populated": true,
+  "ac2.ipcch/6m.country_flag_consistent": true,
+  "ac2.ipcch/6m.no_complete_history_blank": true,
+  "ac2.ipcch/6m.period_ok": true,
+  "ac2.ipcch/6m.single_month_ci_blank": true,
+  "ac2.ipcch/6m.training_errors_populated": true,
+  "inventory_hashes_match": true,
+  "inventory_membership_exact": true
+ },
+ "informational": {
+  "fewsnet/12m": {
+   "country_flag_vs_h5": {
+    "agreement": 0.9090909090909091,
+    "h5_distribution": {
+     "high": 11,
+     "low": 7,
+     "medium": 4
+    },
+    "transitions": {
+     "high->high": 10,
+     "high->medium": 1,
+     "low->low": 7,
+     "medium->low": 1,
+     "medium->medium": 3
+    }
+   },
+   "matched_polygons": 5718,
+   "predicted_crisis_agreement": 0.8445260580622596,
+   "probability_crisis": {
+    "max_abs_diff": 0.53,
+    "median_abs_diff": 0.09000000000000002,
+    "share_exactly_equal": 0.025883175935641833
+   },
+   "september_class_distribution": {
+    "0": 3331,
+    "1": 2387
+   }
+  },
+  "fewsnet/6m": {
+   "country_flag_vs_h5": {
+    "agreement": 0.9545454545454546,
+    "h5_distribution": {
+     "high": 11,
+     "low": 7,
+     "medium": 4
+    },
+    "transitions": {
+     "high->high": 11,
+     "low->low": 6,
+     "low->medium": 1,
+     "medium->medium": 4
+    }
+   },
+   "matched_polygons": 5718,
+   "predicted_crisis_agreement": 0.9442112626792585,
+   "probability_crisis": {
+    "max_abs_diff": 0.27999999999999997,
+    "median_abs_diff": 0.03,
+    "share_exactly_equal": 0.12119622245540398
+   },
+   "september_class_distribution": {
+    "0": 3758,
+    "1": 1960
+   }
+  },
+  "ipcch/12m": {
+   "country_flag_vs_h5": {
+    "agreement": 0.8679245283018868,
+    "h5_distribution": {
+     "high": 27,
+     "low": 12,
+     "medium": 14
+    },
+    "transitions": {
+     "high->high": 26,
+     "high->medium": 1,
+     "low->low": 8,
+     "low->medium": 4,
+     "medium->low": 2,
+     "medium->medium": 12
+    }
+   },
+   "matched_polygons": 6227,
+   "overall_phase_pred_agreement": 1.0,
+   "phase2_worse_score": {
+    "max_abs_diff": 0.0,
+    "median_abs_diff": 0.0,
+    "share_exactly_equal": 1.0
+   },
+   "phase3_worse_score": {
+    "max_abs_diff": 0.0,
+    "median_abs_diff": 0.0,
+    "share_exactly_equal": 1.0
+   },
+   "phase4_worse_score": {
+    "max_abs_diff": 0.0,
+    "median_abs_diff": 0.0,
+    "share_exactly_equal": 1.0
+   },
+   "phase5_worse_score": {
+    "max_abs_diff": 0.0,
+    "median_abs_diff": 0.0,
+    "share_exactly_equal": 1.0
+   },
+   "september_class_distribution": {
+    "1": 131,
+    "2": 2743,
+    "3": 3289,
+    "4": 64
+   }
+  },
+  "ipcch/6m": {
+   "country_flag_vs_h5": {
+    "agreement": 0.8490566037735849,
+    "h5_distribution": {
+     "high": 27,
+     "low": 12,
+     "medium": 14
+    },
+    "transitions": {
+     "high->high": 26,
+     "high->medium": 1,
+     "low->low": 8,
+     "low->medium": 4,
+     "medium->high": 1,
+     "medium->low": 2,
+     "medium->medium": 11
+    }
+   },
+   "matched_polygons": 6227,
+   "overall_phase_pred_agreement": 1.0,
+   "phase2_worse_score": {
+    "max_abs_diff": 0.0,
+    "median_abs_diff": 0.0,
+    "share_exactly_equal": 1.0
+   },
+   "phase3_worse_score": {
+    "max_abs_diff": 0.0,
+    "median_abs_diff": 0.0,
+    "share_exactly_equal": 1.0
+   },
+   "phase4_worse_score": {
+    "max_abs_diff": 0.0,
+    "median_abs_diff": 0.0,
+    "share_exactly_equal": 1.0
+   },
+   "phase5_worse_score": {
+    "max_abs_diff": 0.0,
+    "median_abs_diff": 0.0,
+    "share_exactly_equal": 1.0
+   },
+   "september_class_distribution": {
+    "1": 122,
+    "2": 3238,
+    "3": 2748,
+    "4": 119
+   }
+  }
+ },
+ "passed": true
+}

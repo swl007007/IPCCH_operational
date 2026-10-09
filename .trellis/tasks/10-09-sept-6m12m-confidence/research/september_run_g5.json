@@ -1,0 +1,319 @@
+{
+ "baseline_id": "33cf646e4f8f5d97c4b6ab0908d54711d6a9293460da4cff34164e1eb4a1e6f0",
+ "downloads": {
+  "october_request": {
+   "generation": "1791484415757028",
+   "sha256": "0a519a265605bcefc9c6e70621d31d2f6e50542c88fc02194cab221fc9594c6a",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-final-20261008a/run_manifest.json"
+  },
+  "october_retained.acled": {
+   "generation": "1791484389220790",
+   "sha256": "2fe972edb8f4ac19276841ffdaa4670414069b8c661ee64c00f0b0508cdf168e",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/retained_acled.csv"
+  },
+  "october_retained.wfp": {
+   "generation": "1791484364663085",
+   "sha256": "bc0213b942c80f66510eb715646999ed6c7ecf444c7ba441fdbe3136bed13af8",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/retained_wfp.csv"
+  },
+  "prepared.evi.fewsnet": {
+   "generation": "1791478904987964",
+   "sha256": "32fbe9676480de1c43e0e8c1cf3446f7350a58cfa7fb9389bdc975329371645d",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/fewsnet/evi.csv"
+  },
+  "prepared.evi.ipcch": {
+   "generation": "1791478906510631",
+   "sha256": "e6a25704ef382def0103cef2dc0d211eee5f2f988cc8b33e1dd5983ec7d00117",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/ipcch/evi.csv"
+  },
+  "prepared.fldas.fewsnet": {
+   "generation": "1791482199705845",
+   "sha256": "a8a47ff2b7ded7d7de2ff7aab24d5bb7406ecb797674fa8149fd7808034b934e",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/fewsnet/fldas.csv"
+  },
+  "prepared.fldas.ipcch": {
+   "generation": "1791482210351461",
+   "sha256": "18e3741992e98b7b13db13342573b51062f03638700266879852c0392b7155d3",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/ipcch/fldas.csv"
+  },
+  "prepared.gosif_mean.fewsnet": {
+   "generation": "1791482233587220",
+   "sha256": "22fc39cb49e6cb6b8fcb9843a3b3d9b42dedc460dadaf9a12caf3db15ade7ad2",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/fewsnet/gosif_mean.csv"
+  },
+  "prepared.gosif_mean.ipcch": {
+   "generation": "1791482234376146",
+   "sha256": "b593cc37e558c53acae85aed175c21104c705a01ce92b0bb59b33b8c06322368",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/ipcch/gosif_mean.csv"
+  },
+  "prepared.gosif_sd.ipcch": {
+   "generation": "1791482246144120",
+   "sha256": "27f56b2efcbb17814e6b06cab87a81ddaf172c683ccb3bad330c045da5fc7256",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/ipcch/gosif_sd.csv"
+  },
+  "prepared.viirs.fewsnet": {
+   "generation": "1791484255798555",
+   "sha256": "0ece15a599befcb67c9d7725ec7458696f1013acb8c7fb59c5fe58c862156dec",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/fewsnet/viirs.csv"
+  },
+  "prepared.viirs.ipcch": {
+   "generation": "1791484257322077",
+   "sha256": "34fd496d4a8be24b96e4b3b9c760448c0c4e9c1e2adbfb030303e938006c6df0",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/ipcch/viirs.csv"
+  },
+  "prepared_manifest": {
+   "generation": "1791484258622845",
+   "sha256": "bb367e21854643ecaf16a0603082c96d331c19233624f36dc076980f0864bcec",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/prepared_manifest.json"
+  }
+ },
+ "g5": {
+  "availability_counts": {
+   "fewsnet/0/unavailable/missing_evidence": 5740,
+   "fewsnet/12/available/": 5735,
+   "fewsnet/12/unavailable/no_eligible_area_history": 5,
+   "fewsnet/6/available/": 5735,
+   "fewsnet/6/unavailable/no_eligible_area_history": 5,
+   "ipcch/0/available/": 6309,
+   "ipcch/0/limited/single_month_interval_unavailable": 14,
+   "ipcch/0/unavailable/no_complete_history": 10,
+   "ipcch/12/available/": 6314,
+   "ipcch/12/limited/single_month_interval_unavailable": 9,
+   "ipcch/12/unavailable/no_complete_history": 10,
+   "ipcch/6/available/": 6314,
+   "ipcch/6/limited/single_month_interval_unavailable": 9,
+   "ipcch/6/unavailable/no_complete_history": 10
+  },
+  "fewsnet_0m_missing_evidence_rows": 5740,
+  "missing_evidence_6m_12m_rows": 0,
+  "months": {
+   "fewsnet/0m": {
+    "expected_target": "2026-09",
+    "feature": [
+     "2026-09"
+    ],
+    "horizon": [
+     "0"
+    ],
+    "rows": 5718,
+    "target": [
+     "2026-09"
+    ]
+   },
+   "fewsnet/12m": {
+    "expected_target": "2027-09",
+    "feature": [
+     "2026-09"
+    ],
+    "horizon": [
+     "12"
+    ],
+    "rows": 5718,
+    "target": [
+     "2027-09"
+    ]
+   },
+   "fewsnet/6m": {
+    "expected_target": "2027-03",
+    "feature": [
+     "2026-09"
+    ],
+    "horizon": [
+     "6"
+    ],
+    "rows": 5718,
+    "target": [
+     "2027-03"
+    ]
+   },
+   "ipcch/0m": {
+    "expected_target": "2026-09",
+    "feature": [
+     "2026-09"
+    ],
+    "horizon": [
+     "0"
+    ],
+    "rows": 6227,
+    "target": [
+     "2026-09"
+    ]
+   },
+   "ipcch/12m": {
+    "expected_target": "2027-09",
+    "feature": [
+     "2026-09"
+    ],
+    "horizon": [
+     "12"
+    ],
+    "rows": 6227,
+    "target": [
+     "2027-09"
+    ]
+   },
+   "ipcch/6m": {
+    "expected_target": "2027-03",
+    "feature": [
+     "2026-09"
+    ],
+    "horizon": [
+     "6"
+    ],
+    "rows": 6227,
+    "target": [
+     "2027-03"
+    ]
+   }
+  },
+  "months_ok": true,
+  "passed": true,
+  "scope_table_count": 30,
+  "validation_passed": true
+ },
+ "interpreter": "/tmp/ipcch-sept-test/bin/python",
+ "october_request": {
+  "generation": "1791484415757028",
+  "sha256": "0a519a265605bcefc9c6e70621d31d2f6e50542c88fc02194cab221fc9594c6a",
+  "uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-final-20261008a/run_manifest.json"
+ },
+ "october_retained_equals_bootstrap": {
+  "acled": true,
+  "wfp": true
+ },
+ "origin_month": "2026-09",
+ "package": {
+  "archive": "/home/swl007007/work/sept-6m12m-20261009/delivery/webapp_model_bundle.tar.gz",
+  "archive_sha256": "5effc4d7c8dbdd021af2bd2adc7ac140d07ce385cc318c730580b244e96d5e72",
+  "elapsed_seconds": 183.0,
+  "finished_at": "2026-10-09T18:40:57Z",
+  "steps": [
+   "finalize",
+   "reports/delivery.json",
+   "install_runtime_and_models",
+   "write_bundle_docs",
+   "write_inventory (validate_delivery)",
+   "build_archive"
+  ],
+  "validation": "passed"
+ },
+ "prepare_checks": {
+  "acceptance_and_feature_schema": "passed (6 packages)",
+  "acled_keep_projection_sha256": "2fe972edb8f4ac19276841ffdaa4670414069b8c661ee64c00f0b0508cdf168e",
+  "environment": "passed",
+  "extraction_contract_version": "current-repo-remote-scripts-v1",
+  "origin_equality_check": "skipped (PREPARE_DEVIATION)",
+  "prepared_manifest_origin_label": "2026-10",
+  "prepared_roster_geometry_bound": true,
+  "prepared_status": "succeeded",
+  "reference_identities_verified": 40,
+  "request_origin_month": "2026-09",
+  "wfp_keep_projection_sha256": "bc0213b942c80f66510eb715646999ed6c7ecf444c7ba441fdbe3136bed13af8"
+ },
+ "prepared_snapshot": {
+  "feature_months": {
+   "evi/fewsnet": {
+    "max": "2026-08",
+    "min": "2025-10",
+    "rows": 62898
+   },
+   "evi/ipcch": {
+    "max": "2026-08",
+    "min": "2025-10",
+    "rows": 68497
+   },
+   "fldas/fewsnet": {
+    "max": "2026-08",
+    "min": "2025-10",
+    "rows": 62898
+   },
+   "fldas/ipcch": {
+    "max": "2026-08",
+    "min": "2025-10",
+    "rows": 68497
+   },
+   "gosif_mean/fewsnet": {
+    "max": "2024-12",
+    "min": "2024-12",
+    "rows": 5718
+   },
+   "gosif_mean/ipcch": {
+    "max": "2024-12",
+    "min": "2024-12",
+    "rows": 6227
+   },
+   "gosif_sd/ipcch": {
+    "max": "2024-12",
+    "min": "2024-12",
+    "rows": 6227
+   },
+   "viirs/fewsnet": {
+    "max": "2026-08",
+    "min": "2025-10",
+    "rows": 62898
+   },
+   "viirs/ipcch": {
+    "max": "2026-08",
+    "min": "2025-10",
+    "rows": 68497
+   }
+  },
+  "label_note": "delivery_job.prepare_inputs requires prepared_manifest.origin_month == request origin_month. The reused October snapshot is labelled 2026-10 while this run's origin is 2026-09 (D2/D6). All other prepare_inputs checks run unchanged through the same functions (reference identities, extraction contract, roster/geometry binding, family outputs, environment, acceptance, package materialisation, feature schema, keep-family projection). The prepared manifest is not edited; the request declares prepared_snapshot.origin_month=2026-09 because structural validation requires it to equal origin_month. Content bound: every prepared feature month <= 2026-08.",
+  "manifest": {
+   "generation": "1791484258622845",
+   "sha256": "bb367e21854643ecaf16a0603082c96d331c19233624f36dc076980f0864bcec",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/prepared_manifest.json"
+  },
+  "manifest_origin_month_label": "2026-10",
+  "prepare_id": "full-window-20261008c",
+  "run_origin_month": "2026-09"
+ },
+ "published_scopes": [
+  "6m",
+  "12m"
+ ],
+ "python": "3.12.3",
+ "request_sha256": "19ec6e50cff11b4b3aa037dc38f9dda3447c0eaddfe072348fce3f91d0f45daa",
+ "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+ "run_id": "sept-6m12m-20261009a",
+ "schema_version": "september-origin-run-v1",
+ "source_choices": {
+  "acled": "keep",
+  "wfp": "keep"
+ },
+ "steps_run": [
+  "prepare (pipeline.initialize local store, pipeline.run-shape request, validate_delivery_request, verify_reference_identities, prepare_inputs checks except origin label)",
+  "delivery_job system ipcch",
+  "delivery_job system fewsnet",
+  "finalize",
+  "reports/delivery.json",
+  "install_runtime_and_models",
+  "write_bundle_docs",
+  "write_inventory (validate_delivery)",
+  "build_archive"
+ ],
+ "systems": {
+  "fewsnet": {
+   "elapsed_seconds": 537.3,
+   "exit": 0,
+   "finished_at": "2026-10-09T18:32:44Z",
+   "interpreter": "/tmp/ipcch-sept-test/bin/python",
+   "peak_rss_kb": 5614992,
+   "system": "fewsnet"
+  },
+  "ipcch": {
+   "elapsed_seconds": 483.8,
+   "exit": 0,
+   "finished_at": "2026-10-09T18:22:36Z",
+   "interpreter": "/tmp/ipcch-sept-test/bin/python",
+   "peak_rss_kb": 2750792,
+   "system": "ipcch"
+  }
+ },
+ "targets": {
+  "0m": "2026-09",
+  "12m": "2027-09",
+  "6m": "2027-03"
+ },
+ "validation": "passed"
+}

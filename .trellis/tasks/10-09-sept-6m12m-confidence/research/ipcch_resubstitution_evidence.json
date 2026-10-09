@@ -1,0 +1,183 @@
+{
+ "builder": ".trellis/tasks/10-09-sept-6m12m-confidence/research/build_ipcch_resubstitution_evidence.py",
+ "builder_sha256": "40d87df64c7375f96c8a0f9f81768f21aaf24e876e13f2ef742a945bbc6ef43e",
+ "built_at": "2026-10-09T17:26:34Z",
+ "environment": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "pandas": "3.0.0",
+  "numpy": "2.4.2",
+  "xgboost": "3.2.0",
+  "sklearn": "1.8.0",
+  "interpreter": "/home/swl007007/.venvs/ipcch-h5-202609/bin/python"
+ },
+ "float_precision": "pandas default (launch trainer)",
+ "regression_gate": {
+  "report": ".trellis/tasks/10-09-sept-6m12m-confidence/research/ipcch_resubstitution_regression_h5.json",
+  "passed": true
+ },
+ "source": {
+  "path": "Google fund/Analysis/1.Source Data/assembled_IPCCH/raw/IPCCH_2026_completed.csv",
+  "sha256": "ae696087c3bbb280537ae269a05924133acdb51060d31290523404fa8a717673",
+  "size": 1782567753,
+  "rows": 1219868
+ },
+ "trainer": {
+  "path": "Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/IPCCH/scripts/modeling/train_export_operational_launch_production_safe.py",
+  "sha256": "963afecf19bde152efc6230c00d23c2f3e2e792fe13b67811d82f391ec12cca3",
+  "rules": "load_source/add_targets/build_training_frame re-implemented verbatim"
+ },
+ "roster": {
+  "path": "cloud_pipeline/bootstrap/assets/ipcch/roster.csv",
+  "sha256": "248acd133782d814d55ca24fd0d3040b92356c903b79c8ed7f736981991b15ee",
+  "size": 6227
+ },
+ "phase3_threshold": 0.2,
+ "evidence": {
+  "ipcch_0m_resubstitution_area.csv": {
+   "system": "ipcch",
+   "model_package_id": "launch_2026_04_production_safe/scope_0m",
+   "horizon_months": 0,
+   "basis": "training_resubstitution",
+   "period": "2014-01..2026-03",
+   "rows": 6227,
+   "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+   "size": 575764,
+   "write": "written"
+  },
+  "ipcch_0m_resubstitution_residual.csv": {
+   "system": "ipcch",
+   "model_package_id": "launch_2026_04_production_safe/scope_0m",
+   "horizon_months": 0,
+   "basis": "training_resubstitution",
+   "period": "2014-01..2026-03",
+   "rows": 40777,
+   "sha256": "38a0e027f5f551cf1311ffd97a9fa008ef2b87c1f99543a8c0d30b91905279e4",
+   "size": 7456592,
+   "write": "written"
+  },
+  "ipcch_6m_resubstitution_area.csv": {
+   "system": "ipcch",
+   "model_package_id": "launch_2026_04_production_safe/scope_6m",
+   "horizon_months": 6,
+   "basis": "training_resubstitution",
+   "period": "2014-01..2026-04",
+   "rows": 6227,
+   "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+   "size": 575807,
+   "write": "written"
+  },
+  "ipcch_6m_resubstitution_residual.csv": {
+   "system": "ipcch",
+   "model_package_id": "launch_2026_04_production_safe/scope_6m",
+   "horizon_months": 6,
+   "basis": "training_resubstitution",
+   "period": "2014-01..2026-04",
+   "rows": 43551,
+   "sha256": "97e7791f7a1b29cf47bbe640bb2c46d6303e47a3974af3647f032787dd1a2670",
+   "size": 7957265,
+   "write": "written"
+  },
+  "ipcch_12m_resubstitution_area.csv": {
+   "system": "ipcch",
+   "model_package_id": "launch_2026_04_production_safe/scope_12m",
+   "horizon_months": 12,
+   "basis": "training_resubstitution",
+   "period": "2014-01..2026-04",
+   "rows": 6227,
+   "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+   "size": 588263,
+   "write": "written"
+  },
+  "ipcch_12m_resubstitution_residual.csv": {
+   "system": "ipcch",
+   "model_package_id": "launch_2026_04_production_safe/scope_12m",
+   "horizon_months": 12,
+   "basis": "training_resubstitution",
+   "period": "2014-01..2026-04",
+   "rows": 43551,
+   "sha256": "f1fc9dd98eef2149bad6220775b16f83bdf0fe21121b4f1ce8c4945a6aeab780",
+   "size": 8043037,
+   "write": "written"
+  }
+ },
+ "scopes": {
+  "scope_0m": {
+   "rows": 40777,
+   "median_max_abs_diff": 0.0,
+   "median_mismatch_columns": [],
+   "runtime_matrix_equals_trainer_fillna": true,
+   "feature_min": "2014-01",
+   "feature_max": "2026-03",
+   "target_min": "2014-01",
+   "target_max": "2026-03",
+   "errors": 4867,
+   "model_sha256": {
+    "phase2_worse": "1623ffb2ad5dfc543a16649aa09d3aaa8f72279d864492ad340f495fb7efbc03",
+    "phase3_worse": "d187f943cfa5a623da6de680857dc1c65ef71ae8be7b02a971d20d5de8160757",
+    "phase4_worse": "177d201b628c49f90306971bb5d9504913b5c88edcd6ca1dc4133555ceaeeef3",
+    "phase5_worse": "21d25364c6225868ec1ea45f60c9bfd0e0c3c91023d9b33c4424bbd8e443ede2"
+   },
+   "metadata_sha256": "adf2965fcb9d830609a1ca908f151f7958d936d2ab44f310909f18136294da27",
+   "dropped_non_roster_ids": [],
+   "dropped_rows": 0,
+   "kept_rows": 40777,
+   "kept_polygons": 6227,
+   "roster_polygons_without_rows": 0,
+   "kept_errors": 4867,
+   "workdir_replay": "/home/swl007007/work/sept-6m12m-20261009/ipcch_replay/ipcch_0m_training_replay.csv"
+  },
+  "scope_6m": {
+   "rows": 43551,
+   "median_max_abs_diff": 0.0,
+   "median_mismatch_columns": [],
+   "runtime_matrix_equals_trainer_fillna": true,
+   "feature_min": "2013-07",
+   "feature_max": "2025-10",
+   "target_min": "2014-01",
+   "target_max": "2026-04",
+   "errors": 5345,
+   "model_sha256": {
+    "phase2_worse": "aafb1f83f6d70b16d782d765b565a55ebcf004d3a5659636f78852da74c5e354",
+    "phase3_worse": "664c8f57589372c98cef8853f939eaa44ac615a3a85f0c7ed1d6e7311683f753",
+    "phase4_worse": "7460239dc5c42cbfa008486ab013018d2bb081da4874949ce3365b6f106e2b00",
+    "phase5_worse": "3959dbb21b7e432430bebb2fc54bc79c63a246cdaa3869b1f22b67857e1e248d"
+   },
+   "metadata_sha256": "6dc4600831bf705bb1c6884f4e1925b3e737b2f68bda23d570f3da2ff4598e06",
+   "dropped_non_roster_ids": [],
+   "dropped_rows": 0,
+   "kept_rows": 43551,
+   "kept_polygons": 6227,
+   "roster_polygons_without_rows": 0,
+   "kept_errors": 5345,
+   "workdir_replay": "/home/swl007007/work/sept-6m12m-20261009/ipcch_replay/ipcch_6m_training_replay.csv"
+  },
+  "scope_12m": {
+   "rows": 43551,
+   "median_max_abs_diff": 0.0,
+   "median_mismatch_columns": [],
+   "runtime_matrix_equals_trainer_fillna": true,
+   "feature_min": "2013-01",
+   "feature_max": "2025-04",
+   "target_min": "2014-01",
+   "target_max": "2026-04",
+   "errors": 5362,
+   "model_sha256": {
+    "phase2_worse": "39e5bed8ca3063fa3004edabcd02838cb873a9c7a384c7aa5fd9867eff6cb41f",
+    "phase3_worse": "eb97f722d941fa95ca18cbf971492420af55f7eab44df68fddc7ddacc3bb7cb6",
+    "phase4_worse": "22c8a847317b5eb800c14d4fe6dfef320500741e1cb46830af7859c3c6eed1bf",
+    "phase5_worse": "17f76bdd82ccad753138029d62fa7e04cf8c40c50c3b3feaf7e7f64f74b370a8"
+   },
+   "metadata_sha256": "df8a81aa62c6f8be2226e8f6ba64dfa53786425d5e29e715f17219176da62582",
+   "dropped_non_roster_ids": [],
+   "dropped_rows": 0,
+   "kept_rows": 43551,
+   "kept_polygons": 6227,
+   "roster_polygons_without_rows": 0,
+   "kept_errors": 5362,
+   "workdir_replay": "/home/swl007007/work/sept-6m12m-20261009/ipcch_replay/ipcch_12m_training_replay.csv"
+  }
+ },
+ "wall_seconds": 49.1,
+ "peak_rss_gb": 5.9
+}

@@ -1,0 +1,6 @@
+{"file": ".trellis/spec/backend/monthly-delivery-contracts.md", "reason": "Delivery/diagnostic evidence contracts, causal fill, validation matrix"}
+{"file": ".trellis/spec/guides/cloud-handover-layout.md", "reason": "Runtime root, preservation of accepted bytes, handover archive rules"}
+{"file": ".trellis/spec/backend/local-migration-package.md", "reason": "september_manual compact layout and inventory conventions"}
+{"file": ".trellis/tasks/10-09-sept-6m12m-confidence/research/confidence-evidence.md", "reason": "Exact h5 confidence method, Stage3 fs1/fs2/fs3 sources, IPCCH training-frame reconstruction"}
+{"file": ".trellis/tasks/10-09-sept-6m12m-confidence/research/cloud-diagnostics-and-origin.md", "reason": "Cloud diagnostics call chain, evidence formats, baseline binding, local run entry points"}
+{"file": ".trellis/tasks/10-09-sept-6m12m-confidence/research/verify_ipcch_6m12m_training_keys.json", "reason": "Verified training-row/median reconstruction from ae696087 panel"}

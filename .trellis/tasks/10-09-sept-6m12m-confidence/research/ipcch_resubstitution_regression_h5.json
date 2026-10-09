@@ -1,0 +1,74 @@
+{
+ "gate": "G2",
+ "passed": true,
+ "builder": ".trellis/tasks/10-09-sept-6m12m-confidence/research/build_ipcch_resubstitution_evidence.py",
+ "builder_sha256": "40d87df64c7375f96c8a0f9f81768f21aaf24e876e13f2ef742a945bbc6ef43e",
+ "run_at": "2026-10-09T17:25:51Z",
+ "environment": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "pandas": "3.0.0",
+  "numpy": "2.4.2",
+  "xgboost": "3.2.0",
+  "sklearn": "1.8.0",
+  "interpreter": "/home/swl007007/.venvs/ipcch-h5-202609/bin/python"
+ },
+ "float_precision": "round_trip (h5 trainer)",
+ "inputs": {
+  "panel_sha256": "6ab4e44726666449b9c4c814cd52c89ef73fa83f7e05a480a066853d1e7e8ea3",
+  "bundle": "/home/swl007007/work/sept-6m12m-20261009/h5_bundle",
+  "september_bundle_sha256": "see september_manual/inventory.json webapp_model_bundle.tar.gz",
+  "training_keys_sha256": "d52babfc937ace3303b927e78160312db094929dfca169eda09a1600a573e34c",
+  "scope_5m_model_sha256": {
+   "phase2_worse": "1dd2c93f2f048856c162afa801d00398e03ff45465e1c3fd3295b2f9ac1a9ce8",
+   "phase3_worse": "8dd2c520c628add050e1184e8b6f6341ca7320661d089c368e5e07f536c96851",
+   "phase4_worse": "431eddc7b41a4640b004237b023e6ae36cd51a048de4f23b4bb7788d1a3f9ee9",
+   "phase5_worse": "6339a0fc3273e4be507810da1ee796700d3360e610c73ad15852d6c32367c09f"
+  }
+ },
+ "training_keys_equal_saved": true,
+ "replay_checks": {
+  "rows": 43551,
+  "median_max_abs_diff": 0.0,
+  "median_mismatch_columns": [],
+  "runtime_matrix_equals_trainer_fillna": true,
+  "feature_min": "2013-08",
+  "feature_max": "2025-11",
+  "target_min": "2014-01",
+  "target_max": "2026-04",
+  "errors": 5419
+ },
+ "polygon_count_comparison": {
+  "reference": "september_manual/ipcch/polygon_training_errors.csv",
+  "reference_sha256": "d7602886ddc509e01b4fcfe6eab3e8e47f56107613fba072fbdc3b70a55f487d",
+  "polygons": 6227,
+  "mismatched_polygons": [],
+  "mismatch_count": 0,
+  "total_samples": 43551,
+  "total_errors": 5419,
+  "accepted_total_errors": 5419
+ },
+ "residual_comparison": {
+  "reference": "september_manual/reports/ipcch_four_target_training_replay.csv",
+  "reference_sha256": "e82e52273cf712c5a87563f464568a74a7d2ff1a36e4db8af3599db057485789",
+  "atol": 1e-06,
+  "unmatched_rows": 0,
+  "max_abs_diff": {
+   "phase2_worse_actual": 2.220446049250313e-16,
+   "phase2_worse_predicted": 2.220446049250313e-16,
+   "phase2_worse_residual": 9.974659986866641e-17,
+   "phase3_worse_actual": 1.1102230246251565e-16,
+   "phase3_worse_predicted": 1.1102230246251565e-16,
+   "phase3_worse_residual": 9.985502008591496e-17,
+   "phase4_worse_actual": 8.326672684688674e-17,
+   "phase4_worse_predicted": 9.999054535747565e-17,
+   "phase4_worse_residual": 9.999054535747565e-17,
+   "phase5_worse_actual": 0.0,
+   "phase5_worse_predicted": 9.996344030316351e-17,
+   "phase5_worse_residual": 9.996344030316351e-17
+  },
+  "max_abs_residual_diff": 9.999054535747565e-17
+ },
+ "wall_seconds": 72.7,
+ "peak_rss_gb": 5.66
+}

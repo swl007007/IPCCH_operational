@@ -1,0 +1,107 @@
+{
+ "archive": {
+  "inventory_files": 218,
+  "inventory_schema": "cloud-handover-v1",
+  "path": "cloud_pipeline/dist/cloud_pipeline-20261009.tar.gz",
+  "sha256": "fb58bbcf552ada783bfe54c320c35601541d7da2d2b58f519d36250ac2e6a866",
+  "sidecar": "fb58bbcf552ada783bfe54c320c35601541d7da2d2b58f519d36250ac2e6a866  cloud_pipeline-20261009.tar.gz",
+  "sidecar_matches": true,
+  "size": 1671306352,
+  "tar_members": 219,
+  "verify_status": "verified"
+ },
+ "baseline_json": {
+  "archived_sha256": "33cf646e4f8f5d97c4b6ab0908d54711d6a9293460da4cff34164e1eb4a1e6f0",
+  "expected": "33cf646e4f8f5d97c4b6ab0908d54711d6a9293460da4cff34164e1eb4a1e6f0",
+  "matches": true
+ },
+ "bootstrap_evidence": {
+  "all_present_and_match_working_tree": true,
+  "count": 9,
+  "members": {
+   "bootstrap/evidence/fewsnet_12m_stage3_fs3_area.csv": {
+    "path": "bootstrap/evidence/fewsnet_12m_stage3_fs3_area.csv",
+    "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+    "size_bytes": 723803
+   },
+   "bootstrap/evidence/fewsnet_6m_stage3_fs2_area.csv": {
+    "path": "bootstrap/evidence/fewsnet_6m_stage3_fs2_area.csv",
+    "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+    "size_bytes": 700935
+   },
+   "bootstrap/evidence/ipcch_0m_resubstitution_area.csv": {
+    "path": "bootstrap/evidence/ipcch_0m_resubstitution_area.csv",
+    "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+    "size_bytes": 575764
+   },
+   "bootstrap/evidence/ipcch_0m_resubstitution_residual.csv": {
+    "path": "bootstrap/evidence/ipcch_0m_resubstitution_residual.csv",
+    "sha256": "38a0e027f5f551cf1311ffd97a9fa008ef2b87c1f99543a8c0d30b91905279e4",
+    "size_bytes": 7456592
+   },
+   "bootstrap/evidence/ipcch_12m_resubstitution_area.csv": {
+    "path": "bootstrap/evidence/ipcch_12m_resubstitution_area.csv",
+    "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+    "size_bytes": 588263
+   },
+   "bootstrap/evidence/ipcch_12m_resubstitution_residual.csv": {
+    "path": "bootstrap/evidence/ipcch_12m_resubstitution_residual.csv",
+    "sha256": "f1fc9dd98eef2149bad6220775b16f83bdf0fe21121b4f1ce8c4945a6aeab780",
+    "size_bytes": 8043037
+   },
+   "bootstrap/evidence/ipcch_6m_resubstitution_area.csv": {
+    "path": "bootstrap/evidence/ipcch_6m_resubstitution_area.csv",
+    "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+    "size_bytes": 575807
+   },
+   "bootstrap/evidence/ipcch_6m_resubstitution_residual.csv": {
+    "path": "bootstrap/evidence/ipcch_6m_resubstitution_residual.csv",
+    "sha256": "97e7791f7a1b29cf47bbe640bb2c46d6303e47a3974af3647f032787dd1a2670",
+    "size_bytes": 7957265
+   },
+   "bootstrap/evidence/provenance.json": {
+    "path": "bootstrap/evidence/provenance.json",
+    "sha256": "e09cd1afbefa52a34068a40e177f7aed350270f559838bd53020126a7be53950",
+    "size_bytes": 20950
+   }
+  }
+ },
+ "command": "python deploy/handover_package.py build|verify --archive dist/cloud_pipeline-20261009.tar.gz (cwd cloud_pipeline, /tmp/ipcch-sept-test/bin/python 3.12.3)",
+ "created_at": "2026-10-09T19:06:44Z",
+ "docs": {
+  "OPERATIONS.md": {
+   "archived_sha256": "083843aa1cb4fadef19a4071a499d1afbef4b56d521985f8eb7ca5aa8733ac9c",
+   "working_tree_sha256": "083843aa1cb4fadef19a4071a499d1afbef4b56d521985f8eb7ca5aa8733ac9c"
+  },
+  "README.md": {
+   "archived_sha256": "27d41fe2625749f44e1d828026bdb48b8b48a7fe9e44d96922d3f2cc9164c8e8",
+   "working_tree_sha256": "27d41fe2625749f44e1d828026bdb48b8b48a7fe9e44d96922d3f2cc9164c8e8"
+  }
+ },
+ "log": "research/handover-archive-20261009.log",
+ "old_archive": {
+  "cloud_pipeline/dist/cloud_pipeline.tar.gz": {
+   "before": {
+    "sha256": "891d730fc5f08c3f8c86ccb4fe9e954ef617356afc713a383e7ef1ebfd697d4c",
+    "size": 1665570362
+   },
+   "now": {
+    "sha256": "891d730fc5f08c3f8c86ccb4fe9e954ef617356afc713a383e7ef1ebfd697d4c",
+    "size": 1665570362
+   },
+   "unchanged": true
+  },
+  "cloud_pipeline/dist/cloud_pipeline.tar.gz.sha256": {
+   "before": {
+    "sha256": "52dec01aaccaba3ba5115e0822c9bd995564ab07994fb8932c9c6c1ae6f77d60",
+    "size": 89
+   },
+   "now": {
+    "sha256": "52dec01aaccaba3ba5115e0822c9bd995564ab07994fb8932c9c6c1ae6f77d60",
+    "size": 89
+   },
+   "unchanged": true
+  }
+ },
+ "old_archive_unchanged": true
+}

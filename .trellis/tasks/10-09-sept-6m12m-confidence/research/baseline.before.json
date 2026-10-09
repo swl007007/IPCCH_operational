@@ -1,0 +1,915 @@
+{
+  "delivery": {
+    "contracts": {
+      "diagnostic": {
+        "sha256": "be3f1b44776624b9c37b661e9711ac1d8f51628b80c33e3b60b6a56fea088c9b",
+        "version": "diag-v1"
+      },
+      "feature": {
+        "sha256": "d190c5735d387696e675626236364b8f6eef7ac7eeda3a401933bf32ca03b12c",
+        "version": "feature-v1"
+      },
+      "fill": {
+        "sha256": "dcd32479a72e55b29a03a586d8a483a05be0ce87cc5c25c7bad23079fc0356b3",
+        "version": "area-past-only-carry-forward-v1"
+      },
+      "output": {
+        "sha256": "13fb4caaedd24fbe2295ff05c4e05416ec88163fbaa05c69821d74f47868523a",
+        "version": "september-v3-output-v1"
+      }
+    },
+    "diagnostics": [
+      {
+        "evidence": null,
+        "family": "polygon_confidence",
+        "horizon_months": 0,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": null,
+        "family": "country_confidence",
+        "horizon_months": 0,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": null,
+        "family": "polygon_confidence",
+        "horizon_months": 6,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": null,
+        "family": "country_confidence",
+        "horizon_months": 6,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": null,
+        "family": "polygon_confidence",
+        "horizon_months": 12,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": null,
+        "family": "country_confidence",
+        "horizon_months": 12,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": null,
+        "family": "polygon_training_errors",
+        "horizon_months": 0,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "ipcch"
+      },
+      {
+        "evidence": null,
+        "family": "country_confidence",
+        "horizon_months": 0,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "ipcch"
+      },
+      {
+        "evidence": null,
+        "family": "maximum_phase",
+        "horizon_months": 0,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "ipcch"
+      },
+      {
+        "evidence": null,
+        "family": "polygon_training_errors",
+        "horizon_months": 6,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "ipcch"
+      },
+      {
+        "evidence": null,
+        "family": "country_confidence",
+        "horizon_months": 6,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "ipcch"
+      },
+      {
+        "evidence": null,
+        "family": "maximum_phase",
+        "horizon_months": 6,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "ipcch"
+      },
+      {
+        "evidence": null,
+        "family": "polygon_training_errors",
+        "horizon_months": 12,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "ipcch"
+      },
+      {
+        "evidence": null,
+        "family": "country_confidence",
+        "horizon_months": 12,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "ipcch"
+      },
+      {
+        "evidence": null,
+        "family": "maximum_phase",
+        "horizon_months": 12,
+        "reason": "missing_evidence",
+        "status": "unavailable",
+        "system": "ipcch"
+      }
+    ],
+    "horizons_months": [
+      0,
+      6,
+      12
+    ],
+    "schema_version": "fewsnet-ipcch-delivery-request-v1",
+    "systems": [
+      "fewsnet",
+      "ipcch"
+    ]
+  },
+  "files": {
+    "assets/fewsnet/geometry.geojson": {
+      "sha256": "4a491eae5f88f99226f57b93542dcb9f527609787fb81059043a9c8721999386",
+      "size_bytes": 247394261
+    },
+    "assets/fewsnet/history/evi.csv": {
+      "sha256": "6fce51ea8e6b44044812917a847947796879ed5472bc651637a2c6396e072e3c",
+      "size_bytes": 4269612
+    },
+    "assets/fewsnet/history/fldas.csv": {
+      "sha256": "012075c932e945142f473c7569316c9888328e65968eb7245fd5cc06a5fb1393",
+      "size_bytes": 15660347
+    },
+    "assets/fewsnet/history/gosif_mean.csv": {
+      "sha256": "ccfbf9af4804931470f756d99aea8e82e37409c976a07c937bc272dafa12113b",
+      "size_bytes": 2965650
+    },
+    "assets/fewsnet/history/viirs.csv": {
+      "sha256": "578bca9be8fe79a19fc69602a72ebd60ce37ab2815af7f15e7cfc5b887136825",
+      "size_bytes": 6726511
+    },
+    "assets/fewsnet/history_panel.csv": {
+      "sha256": "ddcd30f255e86e2465819a28f11facaca87221c0fd8be6e6fd4ff5fd677149b8",
+      "size_bytes": 775678605
+    },
+    "assets/fewsnet/population.csv": {
+      "sha256": "2970798181d21e95caa5a9ee4b04eb2304dc8bd8d0e35df98e683eb878844a90",
+      "size_bytes": 4776
+    },
+    "assets/fewsnet/roster.csv": {
+      "sha256": "57c3ffaec68103321bb8da485e86026e1ef0e861db3f6274709fab84bcdfb2ef",
+      "size_bytes": 27491
+    },
+    "assets/ipcch/fixed_features.csv": {
+      "sha256": "8596ddb16aae439201b38148660e82981b7d498be1cbb1d2d77ae6dcf282e375",
+      "size_bytes": 5665607
+    },
+    "assets/ipcch/geometry.geojson": {
+      "sha256": "6d0460bbc45292986fdb6da33215e34501e9ad4d8f7b20ff23117c43f1e66268",
+      "size_bytes": 132388443
+    },
+    "assets/ipcch/history/evi.csv": {
+      "sha256": "0e452a3778244e9b725bd6083a7bd2fa10d0177c67d8e893513846be1aa2a12f",
+      "size_bytes": 6800663
+    },
+    "assets/ipcch/history/fldas.csv": {
+      "sha256": "65034800c1ec0a5153c5afe1b0a8a449ab9dfc9894fc8bc5a997abb2da022a1f",
+      "size_bytes": 125753771
+    },
+    "assets/ipcch/history/gosif_mean.csv": {
+      "sha256": "4c2a70f86aefe469e56c772353e8e176597a7a0cd82b626a2f9aa7f0e2cb0323",
+      "size_bytes": 2673783
+    },
+    "assets/ipcch/history/gosif_sd.csv": {
+      "sha256": "622e5e7e5fcc02a66b37ae82773bfcb482c2b9d8fd19d7267cca08a213421d9d",
+      "size_bytes": 2670919
+    },
+    "assets/ipcch/history/viirs.csv": {
+      "sha256": "f5cba9a8db449a50b0bea86b71471e8b041484428398f4d578cf15ab64047902",
+      "size_bytes": 6562799
+    },
+    "assets/ipcch/history_panel.csv": {
+      "sha256": "6ab4e44726666449b9c4c814cd52c89ef73fa83f7e05a480a066853d1e7e8ea3",
+      "size_bytes": 1782634776
+    },
+    "assets/ipcch/population.csv": {
+      "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+      "size_bytes": 11296
+    },
+    "assets/ipcch/roster.csv": {
+      "sha256": "248acd133782d814d55ca24fd0d3040b92356c903b79c8ed7f736981991b15ee",
+      "size_bytes": 32657
+    },
+    "assets/retained_acled.csv": {
+      "sha256": "2fe972edb8f4ac19276841ffdaa4670414069b8c661ee64c00f0b0508cdf168e",
+      "size_bytes": 250906941
+    },
+    "assets/retained_wfp.csv": {
+      "sha256": "bc0213b942c80f66510eb715646999ed6c7ecf444c7ba441fdbe3136bed13af8",
+      "size_bytes": 84357242
+    },
+    "models/fewsnet/0m/checksums.json": {
+      "sha256": "03e4fb673c898e5c4f3ef58badab98b257db4e349c27204c9e656ff19f88e4d8",
+      "size_bytes": 563
+    },
+    "models/fewsnet/0m/feature_contract.json": {
+      "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+      "size_bytes": 6564
+    },
+    "models/fewsnet/0m/local_model_manifest.json": {
+      "sha256": "51b02a8d5aba48dbc7077782ec36ef3f06d4c51bc6abb71074907151875c935a",
+      "size_bytes": 1807
+    },
+    "models/fewsnet/0m/model.joblib": {
+      "sha256": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
+      "size_bytes": 64752378
+    },
+    "models/fewsnet/0m/partition_map.csv": {
+      "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+      "size_bytes": 193190
+    },
+    "models/fewsnet/0m/threshold_report.json": {
+      "sha256": "ab59086a60c7b99681ebe7c357c57c6bb508200cc71c6f3495368a39792c2956",
+      "size_bytes": 193
+    },
+    "models/fewsnet/0m/training_report.json": {
+      "sha256": "14fa1aa9447e86e6bc81be396ab112670f462bf4f69d4626a7b6b8810957a832",
+      "size_bytes": 8672
+    },
+    "models/fewsnet/12m/checksums.json": {
+      "sha256": "b973b5f3d429af6ee5685a30cb74c56e8fddb3dfb1047d6e9605fe9d9af8bc29",
+      "size_bytes": 563
+    },
+    "models/fewsnet/12m/feature_contract.json": {
+      "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+      "size_bytes": 6564
+    },
+    "models/fewsnet/12m/local_model_manifest.json": {
+      "sha256": "14bdc46272de7abd0cae4b07fe326b9c72a44c728105134f7e9897ae68716869",
+      "size_bytes": 1809
+    },
+    "models/fewsnet/12m/model.joblib": {
+      "sha256": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e",
+      "size_bytes": 76485805
+    },
+    "models/fewsnet/12m/partition_map.csv": {
+      "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+      "size_bytes": 193190
+    },
+    "models/fewsnet/12m/threshold_report.json": {
+      "sha256": "39bb0bc0f302f1123abfe15815975b7f761514e88359d8d9b9698959c3b07135",
+      "size_bytes": 193
+    },
+    "models/fewsnet/12m/training_report.json": {
+      "sha256": "792920fe8ecaa34ba1d914e89526adb7b3dfe8e2429b4aebc46b49064beee7c2",
+      "size_bytes": 8674
+    },
+    "models/fewsnet/6m/checksums.json": {
+      "sha256": "1a53d74e0aaa98ad81a653121d3910a1c02d34dcdfc6e27471a02a079822cbd0",
+      "size_bytes": 563
+    },
+    "models/fewsnet/6m/feature_contract.json": {
+      "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+      "size_bytes": 6564
+    },
+    "models/fewsnet/6m/local_model_manifest.json": {
+      "sha256": "db0517e41744bc7e0597228420dd2a58a7602480382e519a8509617942ff169f",
+      "size_bytes": 1807
+    },
+    "models/fewsnet/6m/model.joblib": {
+      "sha256": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
+      "size_bytes": 84776400
+    },
+    "models/fewsnet/6m/partition_map.csv": {
+      "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+      "size_bytes": 193190
+    },
+    "models/fewsnet/6m/threshold_report.json": {
+      "sha256": "b02e4520f116782067b6149922b800ab7a15bd3f04863c98159870ad4704d13a",
+      "size_bytes": 192
+    },
+    "models/fewsnet/6m/training_report.json": {
+      "sha256": "15c8e7a4a69534c991fa29b7cad114d2aed846c3cf9b6231e6a1b62bd9249180",
+      "size_bytes": 8672
+    },
+    "models/ipcch/model_package_manifest.json": {
+      "sha256": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+      "size_bytes": 897
+    },
+    "models/ipcch/scope_0m/feature_columns.json": {
+      "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+      "size_bytes": 2801
+    },
+    "models/ipcch/scope_0m/feature_contract.csv": {
+      "sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+      "size_bytes": 30968
+    },
+    "models/ipcch/scope_0m/model_metadata.json": {
+      "sha256": "adf2965fcb9d830609a1ca908f151f7958d936d2ab44f310909f18136294da27",
+      "size_bytes": 6802
+    },
+    "models/ipcch/scope_0m/phase2_worse_model.json": {
+      "sha256": "1623ffb2ad5dfc543a16649aa09d3aaa8f72279d864492ad340f495fb7efbc03",
+      "size_bytes": 1261233
+    },
+    "models/ipcch/scope_0m/phase3_worse_model.json": {
+      "sha256": "d187f943cfa5a623da6de680857dc1c65ef71ae8be7b02a971d20d5de8160757",
+      "size_bytes": 1247443
+    },
+    "models/ipcch/scope_0m/phase4_worse_model.json": {
+      "sha256": "177d201b628c49f90306971bb5d9504913b5c88edcd6ca1dc4133555ceaeeef3",
+      "size_bytes": 1240235
+    },
+    "models/ipcch/scope_0m/phase5_worse_model.json": {
+      "sha256": "21d25364c6225868ec1ea45f60c9bfd0e0c3c91023d9b33c4424bbd8e443ede2",
+      "size_bytes": 1064455
+    },
+    "models/ipcch/scope_12m/feature_columns.json": {
+      "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+      "size_bytes": 2801
+    },
+    "models/ipcch/scope_12m/feature_contract.csv": {
+      "sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+      "size_bytes": 31096
+    },
+    "models/ipcch/scope_12m/model_metadata.json": {
+      "sha256": "df8a81aa62c6f8be2226e8f6ba64dfa53786425d5e29e715f17219176da62582",
+      "size_bytes": 6797
+    },
+    "models/ipcch/scope_12m/phase2_worse_model.json": {
+      "sha256": "39e5bed8ca3063fa3004edabcd02838cb873a9c7a384c7aa5fd9867eff6cb41f",
+      "size_bytes": 1260034
+    },
+    "models/ipcch/scope_12m/phase3_worse_model.json": {
+      "sha256": "eb97f722d941fa95ca18cbf971492420af55f7eab44df68fddc7ddacc3bb7cb6",
+      "size_bytes": 1263362
+    },
+    "models/ipcch/scope_12m/phase4_worse_model.json": {
+      "sha256": "22c8a847317b5eb800c14d4fe6dfef320500741e1cb46830af7859c3c6eed1bf",
+      "size_bytes": 1236727
+    },
+    "models/ipcch/scope_12m/phase5_worse_model.json": {
+      "sha256": "17f76bdd82ccad753138029d62fa7e04cf8c40c50c3b3feaf7e7f64f74b370a8",
+      "size_bytes": 991893
+    },
+    "models/ipcch/scope_6m/feature_columns.json": {
+      "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+      "size_bytes": 2801
+    },
+    "models/ipcch/scope_6m/feature_contract.csv": {
+      "sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+      "size_bytes": 30968
+    },
+    "models/ipcch/scope_6m/model_metadata.json": {
+      "sha256": "6dc4600831bf705bb1c6884f4e1925b3e737b2f68bda23d570f3da2ff4598e06",
+      "size_bytes": 6788
+    },
+    "models/ipcch/scope_6m/phase2_worse_model.json": {
+      "sha256": "aafb1f83f6d70b16d782d765b565a55ebcf004d3a5659636f78852da74c5e354",
+      "size_bytes": 1250168
+    },
+    "models/ipcch/scope_6m/phase3_worse_model.json": {
+      "sha256": "664c8f57589372c98cef8853f939eaa44ac615a3a85f0c7ed1d6e7311683f753",
+      "size_bytes": 1276945
+    },
+    "models/ipcch/scope_6m/phase4_worse_model.json": {
+      "sha256": "7460239dc5c42cbfa008486ab013018d2bb081da4874949ce3365b6f106e2b00",
+      "size_bytes": 1230312
+    },
+    "models/ipcch/scope_6m/phase5_worse_model.json": {
+      "sha256": "3959dbb21b7e432430bebb2fc54bc79c63a246cdaa3869b1f22b67857e1e248d",
+      "size_bytes": 959655
+    },
+    "models/ipcch/training_export_summary.json": {
+      "sha256": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a",
+      "size_bytes": 1976
+    }
+  },
+  "models": [
+    {
+      "acceptance": {
+        "evidence": "supervisor frozen replays research/cp3_evidence/{fews_frozen_replay,fews_product_window_replay,ipcch_wrapper_replay}",
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 0,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+        "package_manifest_sha256": "bfc78075bac2a6e7ae944b7d376aab56cf35d4c611aa3fc0a548c4048a82e0b4",
+        "runtime": {
+          "environment_manifest_sha256": "ad92216e3f522ad62f046b3ea2a20bfd1cc6a5924b027c47c9160166c4c60325",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "fewsnet"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "horizon_months": 0,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791467646994945",
+            "path": "checksums.json",
+            "sha256": "03e4fb673c898e5c4f3ef58badab98b257db4e349c27204c9e656ff19f88e4d8",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/checksums.json"
+          },
+          {
+            "generation": "1791467646988286",
+            "path": "feature_contract.json",
+            "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/feature_contract.json"
+          },
+          {
+            "generation": "1791467647038526",
+            "path": "local_model_manifest.json",
+            "sha256": "51b02a8d5aba48dbc7077782ec36ef3f06d4c51bc6abb71074907151875c935a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/local_model_manifest.json"
+          },
+          {
+            "generation": "1791467649283509",
+            "path": "model.joblib",
+            "sha256": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/model.joblib"
+          },
+          {
+            "generation": "1791467647156491",
+            "path": "partition_map.csv",
+            "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/partition_map.csv"
+          },
+          {
+            "generation": "1791467647155691",
+            "path": "threshold_report.json",
+            "sha256": "ab59086a60c7b99681ebe7c357c57c6bb508200cc71c6f3495368a39792c2956",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/threshold_report.json"
+          },
+          {
+            "generation": "1791467647096915",
+            "path": "training_report.json",
+            "sha256": "14fa1aa9447e86e6bc81be396ab112670f462bf4f69d4626a7b6b8810957a832",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/training_report.json"
+          }
+        ],
+        "horizon_months": 0,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "fewsnet"
+      },
+      "manifest_sha256": "bfc78075bac2a6e7ae944b7d376aab56cf35d4c611aa3fc0a548c4048a82e0b4",
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+      "system": "fewsnet"
+    },
+    {
+      "acceptance": {
+        "evidence": "supervisor frozen replays research/cp3_evidence/{fews_frozen_replay,fews_product_window_replay,ipcch_wrapper_replay}",
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 6,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+        "package_manifest_sha256": "7cdb8f5a8846080e7ca3cadac6ec460013c2b16700a64e28b6634005e3c5e434",
+        "runtime": {
+          "environment_manifest_sha256": "ad92216e3f522ad62f046b3ea2a20bfd1cc6a5924b027c47c9160166c4c60325",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "fewsnet"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "horizon_months": 6,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791467660389561",
+            "path": "checksums.json",
+            "sha256": "1a53d74e0aaa98ad81a653121d3910a1c02d34dcdfc6e27471a02a079822cbd0",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/checksums.json"
+          },
+          {
+            "generation": "1791467660334586",
+            "path": "feature_contract.json",
+            "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/feature_contract.json"
+          },
+          {
+            "generation": "1791467660315200",
+            "path": "local_model_manifest.json",
+            "sha256": "db0517e41744bc7e0597228420dd2a58a7602480382e519a8509617942ff169f",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/local_model_manifest.json"
+          },
+          {
+            "generation": "1791467663714781",
+            "path": "model.joblib",
+            "sha256": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/model.joblib"
+          },
+          {
+            "generation": "1791467660499858",
+            "path": "partition_map.csv",
+            "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/partition_map.csv"
+          },
+          {
+            "generation": "1791467661473271",
+            "path": "threshold_report.json",
+            "sha256": "b02e4520f116782067b6149922b800ab7a15bd3f04863c98159870ad4704d13a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/threshold_report.json"
+          },
+          {
+            "generation": "1791467660446624",
+            "path": "training_report.json",
+            "sha256": "15c8e7a4a69534c991fa29b7cad114d2aed846c3cf9b6231e6a1b62bd9249180",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/training_report.json"
+          }
+        ],
+        "horizon_months": 6,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "fewsnet"
+      },
+      "manifest_sha256": "7cdb8f5a8846080e7ca3cadac6ec460013c2b16700a64e28b6634005e3c5e434",
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+      "system": "fewsnet"
+    },
+    {
+      "acceptance": {
+        "evidence": "supervisor frozen replays research/cp3_evidence/{fews_frozen_replay,fews_product_window_replay,ipcch_wrapper_replay}",
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 12,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+        "package_manifest_sha256": "466ce05b53df49c09a3bac50a7d8af28d690c79278d1b8733a58917f4fe35c30",
+        "runtime": {
+          "environment_manifest_sha256": "ad92216e3f522ad62f046b3ea2a20bfd1cc6a5924b027c47c9160166c4c60325",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "fewsnet"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "horizon_months": 12,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791467678333839",
+            "path": "checksums.json",
+            "sha256": "b973b5f3d429af6ee5685a30cb74c56e8fddb3dfb1047d6e9605fe9d9af8bc29",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/checksums.json"
+          },
+          {
+            "generation": "1791467678301914",
+            "path": "feature_contract.json",
+            "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/feature_contract.json"
+          },
+          {
+            "generation": "1791467678333144",
+            "path": "local_model_manifest.json",
+            "sha256": "14bdc46272de7abd0cae4b07fe326b9c72a44c728105134f7e9897ae68716869",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/local_model_manifest.json"
+          },
+          {
+            "generation": "1791467681461503",
+            "path": "model.joblib",
+            "sha256": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/model.joblib"
+          },
+          {
+            "generation": "1791467678476887",
+            "path": "partition_map.csv",
+            "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/partition_map.csv"
+          },
+          {
+            "generation": "1791467678394231",
+            "path": "threshold_report.json",
+            "sha256": "39bb0bc0f302f1123abfe15815975b7f761514e88359d8d9b9698959c3b07135",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/threshold_report.json"
+          },
+          {
+            "generation": "1791467678446208",
+            "path": "training_report.json",
+            "sha256": "792920fe8ecaa34ba1d914e89526adb7b3dfe8e2429b4aebc46b49064beee7c2",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/training_report.json"
+          }
+        ],
+        "horizon_months": 12,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "fewsnet"
+      },
+      "manifest_sha256": "466ce05b53df49c09a3bac50a7d8af28d690c79278d1b8733a58917f4fe35c30",
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+      "system": "fewsnet"
+    },
+    {
+      "acceptance": {
+        "evidence": "supervisor frozen replays research/cp3_evidence/{fews_frozen_replay,fews_product_window_replay,ipcch_wrapper_replay}",
+        "feature_schema_sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+        "horizon_months": 0,
+        "package_id": "launch_2026_04_production_safe/scope_0m",
+        "package_manifest_sha256": "6f8168e9cb582a453c683b3b08ee633a9ef4f80aa15169ef5057ed6d0262cbc9",
+        "runtime": {
+          "environment_manifest_sha256": "ad92216e3f522ad62f046b3ea2a20bfd1cc6a5924b027c47c9160166c4c60325",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "ipcch"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+      "horizon_months": 0,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791475524945832",
+            "path": "model_package_manifest.json",
+            "sha256": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/model_package_manifest.json"
+          },
+          {
+            "generation": "1791475562701164",
+            "path": "scope_0m/feature_columns.json",
+            "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/feature_columns.json"
+          },
+          {
+            "generation": "1791475582903689",
+            "path": "scope_0m/feature_contract.csv",
+            "sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/feature_contract.csv"
+          },
+          {
+            "generation": "1791475601041220",
+            "path": "scope_0m/model_metadata.json",
+            "sha256": "adf2965fcb9d830609a1ca908f151f7958d936d2ab44f310909f18136294da27",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/model_metadata.json"
+          },
+          {
+            "generation": "1791475618360116",
+            "path": "scope_0m/phase2_worse_model.json",
+            "sha256": "1623ffb2ad5dfc543a16649aa09d3aaa8f72279d864492ad340f495fb7efbc03",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/phase2_worse_model.json"
+          },
+          {
+            "generation": "1791475636928932",
+            "path": "scope_0m/phase3_worse_model.json",
+            "sha256": "d187f943cfa5a623da6de680857dc1c65ef71ae8be7b02a971d20d5de8160757",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/phase3_worse_model.json"
+          },
+          {
+            "generation": "1791475656169181",
+            "path": "scope_0m/phase4_worse_model.json",
+            "sha256": "177d201b628c49f90306971bb5d9504913b5c88edcd6ca1dc4133555ceaeeef3",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/phase4_worse_model.json"
+          },
+          {
+            "generation": "1791475676306310",
+            "path": "scope_0m/phase5_worse_model.json",
+            "sha256": "21d25364c6225868ec1ea45f60c9bfd0e0c3c91023d9b33c4424bbd8e443ede2",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/phase5_worse_model.json"
+          },
+          {
+            "generation": "1791475543109845",
+            "path": "training_export_summary.json",
+            "sha256": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/training_export_summary.json"
+          }
+        ],
+        "horizon_months": 0,
+        "package_id": "launch_2026_04_production_safe/scope_0m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "ipcch"
+      },
+      "manifest_sha256": "6f8168e9cb582a453c683b3b08ee633a9ef4f80aa15169ef5057ed6d0262cbc9",
+      "package_id": "launch_2026_04_production_safe/scope_0m",
+      "system": "ipcch"
+    },
+    {
+      "acceptance": {
+        "evidence": "supervisor frozen replays research/cp3_evidence/{fews_frozen_replay,fews_product_window_replay,ipcch_wrapper_replay}",
+        "feature_schema_sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+        "horizon_months": 6,
+        "package_id": "launch_2026_04_production_safe/scope_6m",
+        "package_manifest_sha256": "dcfa963311c6a52c2974e69319bf8569a1604fd877b8fbdc1ad9eabbb7353c22",
+        "runtime": {
+          "environment_manifest_sha256": "ad92216e3f522ad62f046b3ea2a20bfd1cc6a5924b027c47c9160166c4c60325",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "ipcch"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+      "horizon_months": 6,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791475524945832",
+            "path": "model_package_manifest.json",
+            "sha256": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/model_package_manifest.json"
+          },
+          {
+            "generation": "1791475838902969",
+            "path": "scope_6m/feature_columns.json",
+            "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/feature_columns.json"
+          },
+          {
+            "generation": "1791475858699184",
+            "path": "scope_6m/feature_contract.csv",
+            "sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/feature_contract.csv"
+          },
+          {
+            "generation": "1791475880316547",
+            "path": "scope_6m/model_metadata.json",
+            "sha256": "6dc4600831bf705bb1c6884f4e1925b3e737b2f68bda23d570f3da2ff4598e06",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/model_metadata.json"
+          },
+          {
+            "generation": "1791475901636284",
+            "path": "scope_6m/phase2_worse_model.json",
+            "sha256": "aafb1f83f6d70b16d782d765b565a55ebcf004d3a5659636f78852da74c5e354",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/phase2_worse_model.json"
+          },
+          {
+            "generation": "1791475920648464",
+            "path": "scope_6m/phase3_worse_model.json",
+            "sha256": "664c8f57589372c98cef8853f939eaa44ac615a3a85f0c7ed1d6e7311683f753",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/phase3_worse_model.json"
+          },
+          {
+            "generation": "1791475938851846",
+            "path": "scope_6m/phase4_worse_model.json",
+            "sha256": "7460239dc5c42cbfa008486ab013018d2bb081da4874949ce3365b6f106e2b00",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/phase4_worse_model.json"
+          },
+          {
+            "generation": "1791475961684742",
+            "path": "scope_6m/phase5_worse_model.json",
+            "sha256": "3959dbb21b7e432430bebb2fc54bc79c63a246cdaa3869b1f22b67857e1e248d",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/phase5_worse_model.json"
+          },
+          {
+            "generation": "1791475543109845",
+            "path": "training_export_summary.json",
+            "sha256": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/training_export_summary.json"
+          }
+        ],
+        "horizon_months": 6,
+        "package_id": "launch_2026_04_production_safe/scope_6m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "ipcch"
+      },
+      "manifest_sha256": "dcfa963311c6a52c2974e69319bf8569a1604fd877b8fbdc1ad9eabbb7353c22",
+      "package_id": "launch_2026_04_production_safe/scope_6m",
+      "system": "ipcch"
+    },
+    {
+      "acceptance": {
+        "evidence": "supervisor frozen replays research/cp3_evidence/{fews_frozen_replay,fews_product_window_replay,ipcch_wrapper_replay}",
+        "feature_schema_sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+        "horizon_months": 12,
+        "package_id": "launch_2026_04_production_safe/scope_12m",
+        "package_manifest_sha256": "3bdeaf94125a97d4c469a0496cdbb36bcb7cab9639eb60cf3a2550fc247db007",
+        "runtime": {
+          "environment_manifest_sha256": "ad92216e3f522ad62f046b3ea2a20bfd1cc6a5924b027c47c9160166c4c60325",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "ipcch"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+      "horizon_months": 12,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791475524945832",
+            "path": "model_package_manifest.json",
+            "sha256": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/model_package_manifest.json"
+          },
+          {
+            "generation": "1791475699172377",
+            "path": "scope_12m/feature_columns.json",
+            "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/feature_columns.json"
+          },
+          {
+            "generation": "1791475722555322",
+            "path": "scope_12m/feature_contract.csv",
+            "sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/feature_contract.csv"
+          },
+          {
+            "generation": "1791475745562211",
+            "path": "scope_12m/model_metadata.json",
+            "sha256": "df8a81aa62c6f8be2226e8f6ba64dfa53786425d5e29e715f17219176da62582",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/model_metadata.json"
+          },
+          {
+            "generation": "1791475768435606",
+            "path": "scope_12m/phase2_worse_model.json",
+            "sha256": "39e5bed8ca3063fa3004edabcd02838cb873a9c7a384c7aa5fd9867eff6cb41f",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/phase2_worse_model.json"
+          },
+          {
+            "generation": "1791475782645937",
+            "path": "scope_12m/phase3_worse_model.json",
+            "sha256": "eb97f722d941fa95ca18cbf971492420af55f7eab44df68fddc7ddacc3bb7cb6",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/phase3_worse_model.json"
+          },
+          {
+            "generation": "1791475798759892",
+            "path": "scope_12m/phase4_worse_model.json",
+            "sha256": "22c8a847317b5eb800c14d4fe6dfef320500741e1cb46830af7859c3c6eed1bf",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/phase4_worse_model.json"
+          },
+          {
+            "generation": "1791475818619654",
+            "path": "scope_12m/phase5_worse_model.json",
+            "sha256": "17f76bdd82ccad753138029d62fa7e04cf8c40c50c3b3feaf7e7f64f74b370a8",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/phase5_worse_model.json"
+          },
+          {
+            "generation": "1791475543109845",
+            "path": "training_export_summary.json",
+            "sha256": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/training_export_summary.json"
+          }
+        ],
+        "horizon_months": 12,
+        "package_id": "launch_2026_04_production_safe/scope_12m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "ipcch"
+      },
+      "manifest_sha256": "3bdeaf94125a97d4c469a0496cdbb36bcb7cab9639eb60cf3a2550fc247db007",
+      "package_id": "launch_2026_04_production_safe/scope_12m",
+      "system": "ipcch"
+    }
+  ],
+  "runtime": {
+    "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+    "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+  },
+  "schema_version": "operator-baseline/v1",
+  "sources": {
+    "acled": {
+      "sha256": "2b50fee6834348d2f45c60617955c75c4667e9a26197dff531eb337433029491",
+      "version": "september-h5-raw-converter-v1"
+    },
+    "wfp": {
+      "sha256": "2b50fee6834348d2f45c60617955c75c4667e9a26197dff531eb337433029491",
+      "version": "september-h5-raw-converter-v1"
+    }
+  }
+}

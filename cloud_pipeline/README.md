@@ -2,7 +2,7 @@
 
 This directory is the maintained runtime and operator entrypoint for FEWSNET/IPCCH monthly delivery. It preserves the existing feature, fill, model and event contracts. Start with [QUICKSTART.md](QUICKSTART.md) and the detailed [operator commands](OPERATIONS.md).
 
-`bootstrap/` contains the frozen assets, full historical baseline, six accepted model scopes and explicit descriptor used for one-time destination initialization. Full history is required by lag and normalization semantics. `fallback/october_2026/` preserves the accepted October delivery and its evidence; no new scoring is implied by relocation.
+`bootstrap/` contains the frozen assets, full historical baseline, six accepted model scopes and explicit descriptor used for one-time destination initialization. It also binds per-horizon diagnostic evidence in `bootstrap/evidence/`; see [diagnostic evidence](OPERATIONS.md#diagnostic-evidence). Full history is required by lag and normalization semantics. `fallback/october_2026/` preserves the accepted October delivery and its evidence; no new scoring is implied by relocation.
 
 Use a destination-owned project, buckets, service accounts, digest-pinned runtime and Earth Engine registration. No live deployment is performed by obtaining this directory. Keep credentials, filled project configuration and mutable work/state outside the distributable.
 

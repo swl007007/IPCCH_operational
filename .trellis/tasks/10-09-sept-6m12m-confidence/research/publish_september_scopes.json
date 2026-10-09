@@ -1,0 +1,23 @@
+{
+ "published": "september_manual/scopes",
+ "files": 33,
+ "rename_attempts": 1,
+ "inventory_sha256": "56f477e3556ccc2a1870a7acf7ff722ffe4ef3feac572e8f5b6edf91832b9f0f",
+ "root_before": {
+  "files": 20,
+  "mismatches": [],
+  "inventory_sha256": "237ba5789552228505b03ca0d3ffc36ec66ef7a4fbe102a4c721f200a2ac0477",
+  "readme_sha256": "fad28c73569175d112f20e0bab960deda359b42dbc95f384ed7b7a0d49ff3e51"
+ },
+ "root_after": {
+  "files": 20,
+  "mismatches": [],
+  "inventory_sha256": "237ba5789552228505b03ca0d3ffc36ec66ef7a4fbe102a4c721f200a2ac0477",
+  "readme_sha256": "fad28c73569175d112f20e0bab960deda359b42dbc95f384ed7b7a0d49ff3e51"
+ },
+ "root_unchanged": true,
+ "availability": {
+  "kept_rows": 24146,
+  "dropped_0m_rows": 12073
+ }
+}

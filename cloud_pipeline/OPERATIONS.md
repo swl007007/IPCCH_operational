@@ -152,7 +152,7 @@ Add `operator-model.json` beside those files. Use the corresponding object from 
 | `acceptance` | Real `delivery-model-acceptance-v1` accepted report, matching scope/package/schema, nonempty package-specific evidence, `package_manifest_sha256` and `runtime` bindings |
 | `diagnostics` | Optional complete slot-specific declarations; omit to mark every diagnostic family unavailable |
 
-Acceptance `runtime` includes `image_uri` and `environment_manifest_sha256`. Manifest and environment hashes use `sha256(json.dumps(body, sort_keys=True).encode())` (standard separators, no newline). They bind original bodies before destination reference rebinding. New available diagnostic evidence needs pinned destination refs and valid model-specific evidence; old model diagnostics cannot be reused. The baseline's existing acceptance is only for its original six models.
+Acceptance `runtime` includes `image_uri` and `environment_manifest_sha256`. Manifest and environment hashes use `sha256(json.dumps(body, sort_keys=True).encode())` (standard separators, no newline). They bind original bodies before destination reference rebinding. New available diagnostic evidence needs pinned destination refs and valid model-specific evidence. Diagnostics bound to another package, including the baseline evidence below, cannot be reused for a new package. The baseline's existing acceptance is only for its original six models.
 
 ```bash
 python pipeline.py models --config /private/project.json register   --package /private/new-package --system fewsnet --horizon 6
@@ -161,6 +161,19 @@ python pipeline.py models --config /private/project.json --execute select   --sy
 ```
 
 Registration checks package files and invokes the existing loader; only register trusted model packages. It does not select automatically. Selection preserves all six slots, immutable old versions and their diagnostics. To roll back, run select with the prior package ID. Unsubmitted runs bind their original selection; use a new run ID after changing models.
+
+## Diagnostic evidence
+
+`bootstrap/baseline.json` binds per-slot diagnostic evidence files in `bootstrap/evidence/`. `evidence/provenance.json` records the sources, the builders, regression checks against the accepted h5 evidence and the previous baseline hash. Current status:
+
+| System (families) | 0m | 6m | 12m |
+|---|---|---|---|
+| FEWSNET (polygon and country confidence) | unavailable, `missing_evidence` | Stage3 proxy `h6_validation_error_proxy_stage3_fs2_lag8_2021_2024`, `2021-02..2024-10` | Stage3 proxy `h12_validation_error_proxy_stage3_fs3_lag12_2021_2024`, `2021-02..2024-10` |
+| IPCCH (polygon training errors, country confidence, maximum phase) | `training_resubstitution`, `2014-01..2026-03` | `training_resubstitution`, `2014-01..2026-04` | `training_resubstitution`, `2014-01..2026-04` |
+
+The FEWSNET proxies are saved errors from research runs with 8- and 12-month lags. They are not held-out errors of the delivered packages. They are accepted only through the `APPROVED_PROXY_EVIDENCE` allowlist in `cloud/orchestrator/delivery_outputs.py`, which maps each horizon to one exact basis and period. Any other FEWSNET evidence must be `package_validation_split` over the package's recorded validation period. Every other basis, period or horizon is rejected, including the h5 proxy and any 0m proxy. IPCCH resubstitution evidence is in-sample and optimistic, and its maximum-phase file holds the four-target training residuals. Its period must end at or before the package training cutoff. Every evidence file carries `model_package_id`, `horizon_months`, `basis` and `period`, and these must match the scored package. Missing evidence still leaves values blank with an unavailable reason.
+
+Changing any evidence file or declaration changes `baseline.json` and therefore the baseline ID. An existing work directory refuses a different baseline, so initialize a fresh `work_dir` with `init`.
 
 ## Local artifacts and maintenance
 

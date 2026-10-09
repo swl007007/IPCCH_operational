@@ -179,6 +179,13 @@ MAXIMUM_PHASE_METHOD = "training_residual_transfer_complete_month_bootstrap_prox
 # package's own recorded validation split; IPCCH evidence is training resubstitution of that
 # package. Anything else (e.g. the h5 fs1 4-month-lag proxy relabelled for 0/6/12) is rejected.
 EVIDENCE_BASIS = {"fewsnet": "package_validation_split", "ipcch": "training_resubstitution"}
+# Explicitly approved FEWSNET proxies (user decision 2026-10-09): saved Stage3 research-run errors whose
+# active lag approximates the horizon. Only these exact (horizon -> basis, period) pairs are accepted;
+# the basis string itself discloses the proxy in every output that carries it.
+APPROVED_PROXY_EVIDENCE = {
+    ("fewsnet", 6): ("h6_validation_error_proxy_stage3_fs2_lag8_2021_2024", "2021-02..2024-10"),
+    ("fewsnet", 12): ("h12_validation_error_proxy_stage3_fs3_lag12_2021_2024", "2021-02..2024-10"),
+}
 _PERIOD = re.compile(r"^(\d{4}-(?:0[1-9]|1[0-2]))\.\.(\d{4}-(?:0[1-9]|1[0-2]))$")
 
 
@@ -202,7 +209,8 @@ def _evidence_identity(frame: pd.DataFrame, *, model_package_id: str, horizon: i
     """The evidence's own (constant) identity must equal the scored package/horizon and the manifest,
     and its basis/period must be the accepted semantics for the system (``acceptance``:
     ``system``, ``origin``; FEWSNET: the package's recorded validation ``period``; IPCCH: the
-    package's ``training_cutoff`` month as ``latest_end``)."""
+    package's ``training_cutoff`` month as ``latest_end``), or exactly an ``APPROVED_PROXY_EVIDENCE``
+    pair for this system/horizon."""
     missing = [column for column in EVIDENCE_IDENTITY if column not in frame]
     if missing:
         raise EvidenceIntegrityError(f"evidence lacks identity columns {missing}")
@@ -222,9 +230,15 @@ def _evidence_identity(frame: pd.DataFrame, *, model_package_id: str, horizon: i
                                      f"(declared {declared.get('evidence_model_package_id')}/"
                                      f"{declared.get('evidence_horizon_months')})")
     system = acceptance["system"]
-    if identity["basis"] != EVIDENCE_BASIS[system]:
+    proxy = APPROVED_PROXY_EVIDENCE.get((system, horizon))
+    approved_proxy = proxy is not None and identity["basis"] == proxy[0]
+    if approved_proxy and identity["period"] != proxy[1]:
+        raise EvidenceIntegrityError(f"approved {system}/{horizon}m proxy period {identity['period']!r} is not "
+                                     f"the allowlisted {proxy[1]!r}")
+    if not approved_proxy and identity["basis"] != EVIDENCE_BASIS[system]:
+        allowed = f" or the approved {horizon}m proxy {proxy[0]!r}" if proxy else ""
         raise EvidenceIntegrityError(f"evidence basis {identity['basis']!r} is not the accepted {system} basis "
-                                     f"{EVIDENCE_BASIS[system]!r}")
+                                     f"{EVIDENCE_BASIS[system]!r}{allowed}")
     match = _PERIOD.fullmatch(identity["period"])
     if match is None or match.group(1) > match.group(2) or match.group(2) > acceptance["origin"]:
         raise EvidenceIntegrityError(f"evidence period {identity['period']!r} must be YYYY-MM..YYYY-MM ending at or "
@@ -232,7 +246,7 @@ def _evidence_identity(frame: pd.DataFrame, *, model_package_id: str, horizon: i
     if system == "ipcch" and (not acceptance.get("latest_end") or match.group(2) > acceptance["latest_end"]):
         raise EvidenceIntegrityError(f"IPCCH training-resubstitution period {identity['period']!r} must end at or "
                                      f"before the package training cutoff {acceptance.get('latest_end')!r}")
-    if system == "fewsnet" and identity["period"] != acceptance.get("period"):
+    if system == "fewsnet" and not approved_proxy and identity["period"] != acceptance.get("period"):
         raise EvidenceIntegrityError(f"FEWSNET evidence period {identity['period']!r} is not the package's recorded "
                                      f"validation split {acceptance.get('period')!r}")
     return identity

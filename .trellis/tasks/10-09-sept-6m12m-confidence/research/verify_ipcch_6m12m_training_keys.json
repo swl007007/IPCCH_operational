@@ -1,0 +1,70 @@
+{
+ "raw_ae696087": {
+  "rows": 1219868,
+  "labeled_rows": 43551,
+  "read_s": 31.6,
+  "scope_0m": {
+   "train_rows": 40777,
+   "feature_min": "2014-01",
+   "feature_max": "2026-03",
+   "target_min": "2014-01",
+   "target_max": "2026-03",
+   "max_abs_median_diff_vs_saved": 0.0,
+   "n_median_mismatch": 0
+  },
+  "scope_6m": {
+   "train_rows": 43551,
+   "feature_min": "2013-07",
+   "feature_max": "2025-10",
+   "target_min": "2014-01",
+   "target_max": "2026-04",
+   "max_abs_median_diff_vs_saved": 0.0,
+   "n_median_mismatch": 0,
+   "target_keys_equal_h5": true
+  },
+  "scope_12m": {
+   "train_rows": 43551,
+   "feature_min": "2013-01",
+   "feature_max": "2025-04",
+   "target_min": "2014-01",
+   "target_max": "2026-04",
+   "max_abs_median_diff_vs_saved": 0.0,
+   "n_median_mismatch": 0,
+   "target_keys_equal_h5": true
+  }
+ },
+ "bootstrap_refreshed_6ab4e447": {
+  "rows": 1219868,
+  "labeled_rows": 43551,
+  "read_s": 58.2,
+  "scope_0m": {
+   "train_rows": 40777,
+   "feature_min": "2014-01",
+   "feature_max": "2026-03",
+   "target_min": "2014-01",
+   "target_max": "2026-03",
+   "max_abs_median_diff_vs_saved": 29.480402777777726,
+   "n_median_mismatch": 3
+  },
+  "scope_6m": {
+   "train_rows": 43551,
+   "feature_min": "2013-07",
+   "feature_max": "2025-10",
+   "target_min": "2014-01",
+   "target_max": "2026-04",
+   "max_abs_median_diff_vs_saved": 32.523090465466765,
+   "n_median_mismatch": 3,
+   "target_keys_equal_h5": true
+  },
+  "scope_12m": {
+   "train_rows": 43551,
+   "feature_min": "2013-01",
+   "feature_max": "2025-04",
+   "target_min": "2014-01",
+   "target_max": "2026-04",
+   "max_abs_median_diff_vs_saved": 15.801553076923085,
+   "n_median_mismatch": 2,
+   "target_keys_equal_h5": true
+  }
+ }
+}

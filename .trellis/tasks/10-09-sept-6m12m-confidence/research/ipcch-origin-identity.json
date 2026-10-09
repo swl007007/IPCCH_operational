@@ -1,0 +1,7 @@
+{
+ "finding": "September-origin (O=2026-09) IPCCH 6m/12m scores equal the October-origin (O=2026-10) scores exactly for all 6,227 polygons and all four targets.",
+ "cause": "All 128 IPCCH scope feature-contract columns are same-month values (no lag or calendar features). Every observation source ends <= 2026-08 (prepared EVI/FLDAS/VIIRS 2026-08, GOSIF 2024-12, panel history 2026-04), so area-past carry-forward yields identical feature values at both origins.",
+ "verified": "inputs/ipcch_origin_rows.csv (workdir) vs October bundle inputs/ipcch_origin_rows.csv: 6,227 rows, identical area_id index, 0 of 128 contract source columns differ; only year/month (2026-09 vs 2026-10) differ, and they are not model features.",
+ "fewsnet": "FEWSNET differs from October (6m median |dp| 0.03, max 0.28; 12m median 0.09, max 0.53) because its features include window/lag terms over O-12..O.",
+ "implication": "IPCCH September 6m/12m predictions add no information beyond October's apart from the target-month label. Feature staleness recorded in the fill audit is one month shorter at O=2026-09 (e.g. 2026-08 observations are 1 month stale instead of 2), but the values are the same. Confidence diagnostics come from the same training-resubstitution evidence."
+}

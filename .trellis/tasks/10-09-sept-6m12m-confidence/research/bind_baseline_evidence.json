@@ -1,0 +1,138 @@
+{
+ "previous_baseline_sha256": "634b1b399ccc583a06c5a71c31b00696dc736915e4111a8e90c0d55307f83b0f",
+ "new_baseline_sha256": "33cf646e4f8f5d97c4b6ab0908d54711d6a9293460da4cff34164e1eb4a1e6f0",
+ "line_endings": "CRLF",
+ "added_files": {
+  "evidence/fewsnet_12m_stage3_fs3_area.csv": {
+   "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+   "size_bytes": 723803
+  },
+  "evidence/fewsnet_6m_stage3_fs2_area.csv": {
+   "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+   "size_bytes": 700935
+  },
+  "evidence/ipcch_0m_resubstitution_area.csv": {
+   "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+   "size_bytes": 575764
+  },
+  "evidence/ipcch_0m_resubstitution_residual.csv": {
+   "sha256": "38a0e027f5f551cf1311ffd97a9fa008ef2b87c1f99543a8c0d30b91905279e4",
+   "size_bytes": 7456592
+  },
+  "evidence/ipcch_12m_resubstitution_area.csv": {
+   "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+   "size_bytes": 588263
+  },
+  "evidence/ipcch_12m_resubstitution_residual.csv": {
+   "sha256": "f1fc9dd98eef2149bad6220775b16f83bdf0fe21121b4f1ce8c4945a6aeab780",
+   "size_bytes": 8043037
+  },
+  "evidence/ipcch_6m_resubstitution_area.csv": {
+   "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+   "size_bytes": 575807
+  },
+  "evidence/ipcch_6m_resubstitution_residual.csv": {
+   "sha256": "97e7791f7a1b29cf47bbe640bb2c46d6303e47a3974af3647f032787dd1a2670",
+   "size_bytes": 7957265
+  },
+  "evidence/provenance.json": {
+   "sha256": "e09cd1afbefa52a34068a40e177f7aed350270f559838bd53020126a7be53950",
+   "size_bytes": 20950
+  }
+ },
+ "bound_declarations": [
+  [
+   "fewsnet",
+   6,
+   "polygon_confidence",
+   "fewsnet_6m_stage3_fs2_area.csv"
+  ],
+  [
+   "fewsnet",
+   6,
+   "country_confidence",
+   "fewsnet_6m_stage3_fs2_area.csv"
+  ],
+  [
+   "fewsnet",
+   12,
+   "polygon_confidence",
+   "fewsnet_12m_stage3_fs3_area.csv"
+  ],
+  [
+   "fewsnet",
+   12,
+   "country_confidence",
+   "fewsnet_12m_stage3_fs3_area.csv"
+  ],
+  [
+   "ipcch",
+   0,
+   "polygon_training_errors",
+   "ipcch_0m_resubstitution_area.csv"
+  ],
+  [
+   "ipcch",
+   0,
+   "country_confidence",
+   "ipcch_0m_resubstitution_area.csv"
+  ],
+  [
+   "ipcch",
+   0,
+   "maximum_phase",
+   "ipcch_0m_resubstitution_residual.csv"
+  ],
+  [
+   "ipcch",
+   6,
+   "polygon_training_errors",
+   "ipcch_6m_resubstitution_area.csv"
+  ],
+  [
+   "ipcch",
+   6,
+   "country_confidence",
+   "ipcch_6m_resubstitution_area.csv"
+  ],
+  [
+   "ipcch",
+   6,
+   "maximum_phase",
+   "ipcch_6m_resubstitution_residual.csv"
+  ],
+  [
+   "ipcch",
+   12,
+   "polygon_training_errors",
+   "ipcch_12m_resubstitution_area.csv"
+  ],
+  [
+   "ipcch",
+   12,
+   "country_confidence",
+   "ipcch_12m_resubstitution_area.csv"
+  ],
+  [
+   "ipcch",
+   12,
+   "maximum_phase",
+   "ipcch_12m_resubstitution_residual.csv"
+  ]
+ ],
+ "unavailable_declarations": [
+  [
+   "fewsnet",
+   0,
+   "polygon_confidence",
+   "missing_evidence"
+  ],
+  [
+   "fewsnet",
+   0,
+   "country_confidence",
+   "missing_evidence"
+  ]
+ ],
+ "backup": ".trellis/tasks/10-09-sept-6m12m-confidence/research/baseline.before.json"
+}

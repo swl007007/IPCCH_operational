@@ -61,6 +61,16 @@ The delivery origin is fixed independently of provider lag: October 2026 emits 0
 
 The bundle contains exactly 30 scope CSVs, two population references, both native geometries, six packages, frozen scoring inputs, runtime and dependency lock. Unsupported diagnostic estimates stay blank with explicit availability reasons; country current outcomes remain populated. Supported diagnostic evidence is package/horizon-specific: FEWS uses its recorded validation period, IPCCH training resubstitution ends at its package training cutoff. IPCCH raw scores remain unclipped.
 
+Diagnostic evidence binding (2026-10-09):
+- Evidence CSVs live in `bootstrap/evidence/` with `provenance.json`; `baseline.json` lists them in `files` and declares each family available.
+- Changing evidence changes the baseline ID, so use a fresh work_dir/init. Model package members never carry evidence.
+- Current status: FEWS 0m is `unavailable/missing_evidence`. IPCCH 0/6/12 use `training_resubstitution`: area counts plus phase2..5 residuals, replayed from the original training panel (sha `ae696087…`), not the refreshed bootstrap panel.
+- FEWS 6m/12m use user-approved Stage3 research-run proxies, accepted only through `delivery_outputs.APPROVED_PROXY_EVIDENCE`. The exact (horizon → basis, period) pairs are 6m → `h6_validation_error_proxy_stage3_fs2_lag8_2021_2024` and 12m → `h12_validation_error_proxy_stage3_fs3_lag12_2021_2024`, both with period `2021-02..2024-10`.
+- Any other FEWS basis or period, a proxy on another horizon, and the h5 basis are all rejected. The basis string is the disclosure.
+- Evidence builders are one-time offline scripts in `.trellis/tasks/archive/2026-10/10-09-sept-6m12m-confidence/research/`. They must reproduce the accepted h5 evidence (fs1 counts; h5 resubstitution counts and residuals) before emitting new evidence.
+
+Wrong: relabel a proxy as `package_validation_split`, or score historical rows with the final FEWS model. Correct: add the exact pair to the allowlist only after an explicit user decision, with tests for wrong-horizon/period rejection.
+
 Validate native keys, identities, dates, scope inventory, country aggregation, package contents and diagnostic consistency before archiving. Regenerate diagnostic tables and availability from frozen evidence. Seal every inventoried file before create-only archive upload. Offline relocated replay uses the bundled runtime and frozen inputs without repository or cloud access, comparing all 30 tables and the availability table; IDs/discrete values and blank masks are exact, continuous tolerance is at most `atol=1e-12, rtol=0`.
 
 ## 9. Automatic entry and operations
