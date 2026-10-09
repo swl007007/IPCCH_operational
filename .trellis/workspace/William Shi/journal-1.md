@@ -80,3 +80,27 @@ Closed September manual and cloud operator handovers; added destination CLI and 
 ### Status
 
 [OK] **Completed**
+
+
+## Session 4: September 6m/12m with confidence; October cloud rerun with confidence
+<!-- trellis-session: v=2 fp=4e15cbe963af0075 -->
+
+**Date**: 2026-10-09
+**Task**: September 6m/12m with confidence; October cloud rerun with confidence
+**Branch**: `feat/october-cloud-delivery`
+
+### Summary
+
+Grilled 21 decisions. Built confidence evidence (FEWS Stage3 fs1/fs2/fs3 proxies for 0/6/12m; IPCCH training resubstitution 0/6/12m from original training panel), each reproducing h5 exactly. Added APPROVED_PROXY_EVIDENCE allowlist; baseline 15/15 diagnostics available. Published september_manual/scopes/{6m,12m} (origin 2026-09, data to 2026-08; IPCCH scores equal October's because inputs are identical). Real-cloud October rerun oct-confidence-20261009b on image cp5-confidence-1: predictions byte-identical to smoke output, confidence filled; offline replay passes; fallback replaced (smoke copy in legacy archive); handover archive cloud_pipeline-20261009b. Local scratch and superseded archives removed; task-owned cloud objects kept (listed in research/cloud-rerun-20261009.md).
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `6da80bc` | feat: September-origin 6m/12m delivery with confidence evidence |
+| `6d815bb` | feat: fill FEWS 0m confidence and rerun October delivery with confidence |
+| `7ee1e84` | docs: point to final handover archive after local cleanup |
+
+### Status
+
+[OK] **Completed**
