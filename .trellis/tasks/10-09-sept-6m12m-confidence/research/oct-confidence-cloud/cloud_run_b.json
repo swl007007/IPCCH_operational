@@ -1,0 +1,71 @@
+{
+ "run_id": "oct-confidence-20261009b",
+ "run_status": {
+  "outputs": "gs://manuel-remote-sensing-oct-delivery-debug/deliveries/oct-confidence-20261009b/",
+  "release": {
+   "pointer_generation": "1791584165565011",
+   "pointer_uri": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/current.json",
+   "release_record": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/releases/oct-confidence-20261009b/release.json"
+  },
+  "request": {
+   "generation": "1791581660462581",
+   "sha256": "e2a7ce3db78f5d084a718bd3a530d88c591ebd85c0481120fa7893789a638d4c",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-confidence-20261009b/run_manifest.json"
+  },
+  "run_id": "oct-confidence-20261009b",
+  "status": "succeeded"
+ },
+ "request": {
+  "uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-confidence-20261009b/run_manifest.json",
+  "generation": "1791581660462581",
+  "at": "2026-10-09T21:34:20+00:00",
+  "sha256": "e2a7ce3db78f5d084a718bd3a530d88c591ebd85c0481120fa7893789a638d4c"
+ },
+ "request_local": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-09-sept-6m12m-confidence/research/oct-confidence-request/oct-confidence-20261009b/run_manifest.json",
+ "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+ "execution": {
+  "name": "oct-delivery-lmt6q",
+  "created": "2026-10-09T21:34:22.639115Z",
+  "completed": "2026-10-09T22:16:11.333987Z",
+  "conditions": [
+   {
+    "type": "Completed",
+    "status": "True",
+    "message": "Execution completed successfully in 41m31.72s."
+   },
+   {
+    "type": "ResourcesAvailable",
+    "status": "True",
+    "message": "Provisioned imported containers."
+   },
+   {
+    "type": "Started",
+    "status": "True",
+    "message": "Started deployed execution in 1m46.3s."
+   },
+   {
+    "type": "ContainerReady",
+    "status": "True",
+    "message": "Imported container image."
+   }
+  ]
+ },
+ "release": {
+  "pointer_generation": "1791584165565011",
+  "pointer_uri": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/current.json",
+  "release_record": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/releases/oct-confidence-20261009b/release.json"
+ },
+ "build": {
+  "id": "febbd244-5504-40cf-9d41-5cab5198a347",
+  "source": "gs://manuel-remote-sensing-oct-delivery-debug/build-sources/cp5-confidence-1.tgz#1791576191770816",
+  "source_sha256": "019cfbe895a8efe0f133a19bb94ce03e83a472c0076c6d771c5fe16c41e0750a",
+  "context_file_hashes": ".trellis/tasks/10-09-sept-6m12m-confidence/research/oct-confidence-cloud/build-context.sha256.txt"
+ },
+ "previous_failed_attempt": {
+  "run_id": "oct-confidence-20261009a",
+  "execution": "oct-delivery-zhztp",
+  "status": "failed",
+  "reason": "ReleaseConflict at precheck: request copied expected_pointer_generation 0 from oct-final-20261008a; outputs uploaded, pointer untouched",
+  "outputs_identical_to_retry": true
+ }
+}

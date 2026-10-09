@@ -1,0 +1,29 @@
+[
+  {
+    "createTime": "2026-10-08T16:41:34.448735458Z",
+    "destination": {
+      "workflow": "projects/manuel-remote-sensing/locations/us-central1/workflows/oct-delivery-trigger"
+    },
+    "eventDataContentType": "application/json",
+    "eventFilters": [
+      {
+        "attribute": "bucket",
+        "value": "manuel-remote-sensing-oct-delivery-requests"
+      },
+      {
+        "attribute": "type",
+        "value": "google.cloud.storage.object.v1.finalized"
+      }
+    ],
+    "name": "projects/manuel-remote-sensing/locations/us-central1/triggers/oct-delivery-requests",
+    "serviceAccount": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+    "transport": {
+      "pubsub": {
+        "subscription": "projects/manuel-remote-sensing/subscriptions/eventarc-us-central1-oct-delivery-requests-sub-198",
+        "topic": "projects/manuel-remote-sensing/topics/eventarc-us-central1-oct-delivery-requests-039"
+      }
+    },
+    "uid": "f6097161-a50c-448b-96a2-6525c1947c33",
+    "updateTime": "2026-10-08T16:41:43.232518485Z"
+  }
+]

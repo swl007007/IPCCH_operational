@@ -3,32 +3,19 @@
  "preview": {
   "mode": "preview",
   "command": "init",
-  "files": 73,
+  "files": 74,
   "models": 6
  },
  "execute": {
   "status": "initialized"
  },
- "baseline_id": "33cf646e4f8f5d97c4b6ab0908d54711d6a9293460da4cff34164e1eb4a1e6f0",
- "available": 13,
- "unavailable": [
-  [
-   "fewsnet",
-   0,
-   "polygon_confidence",
-   "missing_evidence"
-  ],
-  [
-   "fewsnet",
-   0,
-   "country_confidence",
-   "missing_evidence"
-  ]
- ],
- "uploads": 134,
+ "baseline_id": "95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884",
+ "available": 15,
+ "unavailable": [],
+ "uploads": 135,
  "model_version_records": 6,
  "available_per_model": {
-  "fewsnet/0m": 0,
+  "fewsnet/0m": 2,
   "fewsnet/6m": 2,
   "fewsnet/12m": 2,
   "ipcch/0m": 3,

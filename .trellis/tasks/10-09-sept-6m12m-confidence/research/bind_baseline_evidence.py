@@ -6,10 +6,13 @@
 * Writes ``bootstrap/evidence/provenance.json`` (sources, builders, environment, counts,
   regression gates, previous baseline sha256).
 * Rewrites ``baseline.json`` with the same serialization; before writing it proves that only
-  ``files`` (additions under ``evidence/``) and the 13 ``delivery.diagnostics`` entries change.
-  FEWSNET 0m keeps both families ``unavailable/missing_evidence``.
+  ``files`` (additions under ``evidence/``) and the 15 ``delivery.diagnostics`` entries change
+  relative to the pre-binding baseline. D19 (2026-10-09) adds the FEWSNET 0m fs1 proxy, so all 15
+  declarations are available; relative to the 13-available baseline only ``files`` (the 0m CSV and
+  the rewritten provenance) and the two FEWSNET 0m entries may change.
 
-The old baseline bytes are kept at ``research/baseline.before.json`` for rollback.
+The pre-binding bytes are kept at ``research/baseline.before.json`` and the 13-available bytes at
+``research/baseline.before-d19.json`` for rollback.
 """
 from __future__ import annotations
 
@@ -32,6 +35,8 @@ sys.path.insert(0, str(CP))
 from cloud.orchestrator import delivery_outputs as out  # noqa: E402
 
 BACKUP = RESEARCH / "baseline.before.json"
+BACKUP_D19 = RESEARCH / "baseline.before-d19.json"
+EXPECTED_BOUND = 15
 REPORT = RESEARCH / "bind_baseline_evidence.json"
 ORIGIN_FOR_CHECK = "2026-09"
 
@@ -86,6 +91,9 @@ def main() -> int:
     old = json.loads(old_bytes)
     if serialize(old, crlf) != old_bytes:
         raise SystemExit("baseline.json serialization is not reproducible; refusing to rewrite")
+    if not BACKUP_D19.exists():
+        BACKUP_D19.write_bytes(old_bytes)  # current (13-available) baseline before the D19 rebinding
+    before_d19 = json.loads(BACKUP_D19.read_bytes())
     if BACKUP.exists():
         backup = BACKUP.read_bytes()
         if backup != old_bytes:
@@ -119,7 +127,9 @@ def main() -> int:
         "schema_version": "diagnostic-evidence-provenance-v1",
         "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "task": ".trellis/tasks/10-09-sept-6m12m-confidence",
-        "decisions": "prd.md D4 (sources), D7 (coverage), D9/D14 (FEWSNET proxy allowlist and labels)",
+        "decisions": "prd.md D4 (sources), D7 (coverage), D9/D14 (FEWSNET proxy allowlist and labels), "
+                     "D19 (FEWSNET 0m fs1 4-month-lag proxy; all 15 declarations available)",
+        "previous_baseline_sha256_before_d19": sha(BACKUP_D19.read_bytes()),
         "previous_baseline_sha256": old_sha,
         "runtime_reads_external_paths": False,
         "evidence": {name: {k: v for k, v in item.items() if k != "write"} for name, item in sorted(items.items())},
@@ -155,13 +165,25 @@ def main() -> int:
                           "evidence": {"local_path": f"evidence/{plan[key]}"},
                           "evidence_model_package_id": packages[key[:2]], "evidence_horizon_months": key[1]})
             flipped.append(key)
-    if len(flipped) != 13 or len(plan) != 13 or set(flipped) != set(plan):
-        raise SystemExit(f"expected 13 bound declarations, got {len(flipped)} / plan {len(plan)}")
+    if len(flipped) != EXPECTED_BOUND or len(plan) != EXPECTED_BOUND or set(flipped) != set(plan):
+        raise SystemExit(f"expected {EXPECTED_BOUND} bound declarations, got {len(flipped)} / plan {len(plan)}")
     remaining = [(e["system"], e["horizon_months"], e["family"], e.get("reason"))
                  for e in new["delivery"]["diagnostics"] if e["status"] != "available"]
-    if remaining != [("fewsnet", 0, "polygon_confidence", "missing_evidence"),
-                     ("fewsnet", 0, "country_confidence", "missing_evidence")]:
+    if remaining:
         raise SystemExit(f"unexpected unavailable declarations {remaining}")
+    # D19: relative to the 13-available baseline only files and the two FEWSNET 0m entries change.
+    assert {k: v for k, v in before_d19.items() if k not in ("files", "delivery")} == \
+           {k: v for k, v in new.items() if k not in ("files", "delivery")}
+    assert {k: v for k, v in before_d19["delivery"].items() if k != "diagnostics"} == \
+           {k: v for k, v in new["delivery"].items() if k != "diagnostics"}
+    changed_entries = [(a["system"], a["horizon_months"], a["family"])
+                       for a, b in zip(before_d19["delivery"]["diagnostics"], new["delivery"]["diagnostics"]) if a != b]
+    if changed_entries != [("fewsnet", 0, "polygon_confidence"), ("fewsnet", 0, "country_confidence")]:
+        raise SystemExit(f"D19 changed unexpected declarations {changed_entries}")
+    changed_files = sorted(k for k in set(before_d19["files"]) | set(new["files"])
+                           if before_d19["files"].get(k) != new["files"].get(k))
+    if changed_files != ["evidence/fewsnet_0m_stage3_fs1_area.csv", "evidence/provenance.json"]:
+        raise SystemExit(f"D19 changed unexpected files {changed_files}")
 
     # Only files (additions) and delivery.diagnostics may differ.
     assert {k: v for k, v in old.items() if k not in ("files", "delivery")} == \
@@ -177,7 +199,9 @@ def main() -> int:
         raise SystemExit("baseline.json write verification failed")
     report = {"previous_baseline_sha256": old_sha, "new_baseline_sha256": sha(new_bytes), "line_endings": "CRLF" if crlf else "LF",
               "added_files": files, "bound_declarations": [list(k) + [plan[k]] for k in flipped],
-              "unavailable_declarations": [list(r) for r in remaining], "backup": str(BACKUP.relative_to(REPO))}
+              "unavailable_declarations": [list(r) for r in remaining], "backup": str(BACKUP.relative_to(REPO)),
+              "d19": {"before_d19_sha256": sha(BACKUP_D19.read_bytes()), "backup": str(BACKUP_D19.relative_to(REPO)),
+                      "changed_declarations": [list(k) for k in changed_entries], "changed_files": changed_files}}
     REPORT.write_text(json.dumps(report, indent=1) + "\n")
     print(json.dumps({k: report[k] for k in ("previous_baseline_sha256", "new_baseline_sha256",
                                              "unavailable_declarations")}, indent=1))

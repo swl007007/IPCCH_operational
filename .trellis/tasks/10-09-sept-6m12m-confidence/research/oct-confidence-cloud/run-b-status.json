@@ -1,0 +1,15 @@
+{
+  "outputs": "gs://manuel-remote-sensing-oct-delivery-debug/deliveries/oct-confidence-20261009b/",
+  "release": {
+    "pointer_generation": "1791584165565011",
+    "pointer_uri": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/current.json",
+    "release_record": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/releases/oct-confidence-20261009b/release.json"
+  },
+  "request": {
+    "generation": "1791581660462581",
+    "sha256": "e2a7ce3db78f5d084a718bd3a530d88c591ebd85c0481120fa7893789a638d4c",
+    "uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-confidence-20261009b/run_manifest.json"
+  },
+  "run_id": "oct-confidence-20261009b",
+  "status": "succeeded"
+}

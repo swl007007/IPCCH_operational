@@ -1,0 +1,10 @@
+{
+  "error": "ReleaseConflict: pointer generation is 1791487045444241, request expected 0; recorded at gs://manuel-remote-sensing-oct-delivery-debug/runs/oct-confidence-20261009a/release_conflict.json",
+  "request": {
+    "generation": "1791577147621782",
+    "sha256": "56171953ed3fa0490718ada659e3fb0d080aa56446ec7bb6d678cd36e95f5c38",
+    "uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-confidence-20261009a/run_manifest.json"
+  },
+  "run_id": "oct-confidence-20261009a",
+  "status": "failed"
+}

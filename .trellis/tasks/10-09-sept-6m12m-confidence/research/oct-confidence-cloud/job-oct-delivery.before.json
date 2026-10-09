@@ -1,0 +1,84 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Job",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+      "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+      "run.googleapis.com/operation-id": "d9422968-ee20-4408-a7c3-8b11514b28b3"
+    },
+    "creationTimestamp": "2026-10-08T16:33:21.833225Z",
+    "generation": 2,
+    "labels": {
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/lastUpdatedTime": "2026-10-08T18:23:46.437363Z"
+    },
+    "name": "oct-delivery",
+    "namespace": "645415198431",
+    "resourceVersion": "AAZdWb3Tbck",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/645415198431/jobs/oct-delivery",
+    "uid": "19dabf1e-3d4e-4be4-af84-ffc9915b9892"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "562.0.0",
+          "run.googleapis.com/execution-environment": "gen2"
+        }
+      },
+      "spec": {
+        "taskCount": 1,
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "args": [
+                  "-m",
+                  "cloud.orchestrator.delivery_job",
+                  "run",
+                  "--output-root",
+                  "gs://manuel-remote-sensing-oct-delivery-debug",
+                  "--release-namespace",
+                  "oct-staging",
+                  "--image-uri",
+                  "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+                ],
+                "command": [
+                  "python3"
+                ],
+                "image": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+                "resources": {
+                  "limits": {
+                    "cpu": "8",
+                    "memory": "32Gi"
+                  }
+                }
+              }
+            ],
+            "maxRetries": 0,
+            "serviceAccountName": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+            "timeoutSeconds": "14400"
+          }
+        }
+      }
+    }
+  },
+  "status": {
+    "conditions": [
+      {
+        "status": "True",
+        "type": "Ready"
+      }
+    ],
+    "executionCount": 5,
+    "latestCreatedExecution": {
+      "completionStatus": "EXECUTION_FAILED",
+      "completionTimestamp": "2026-10-08T20:04:37.204185Z",
+      "creationTimestamp": "2026-10-08T20:01:02.858959Z",
+      "name": "oct-delivery-ng85q"
+    },
+    "observedGeneration": 2
+  }
+}

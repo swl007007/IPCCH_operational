@@ -9,7 +9,8 @@ The supported runtime root is `cloud_pipeline/`; run cloud tests and module comm
 - Keep/refresh choices are independent. Keep binds initialized source snapshots. A refresh does not implicitly promote a future keep baseline.
 - Compatible model registration requires a complete package, matching feature schema, original environment and real package-specific acceptance. Rebinding an identical image digest to another registry preserves identity, but rebuilding does not inherit acceptance.
 - Preserve accepted result/archive bytes during layout changes. Verify hashes and relocation; do not repeat accepted model replay without a reason in task scope.
-- Handover archives are create-only and dated (e.g. `dist/cloud_pipeline-20261009.tar.gz` after the baseline gained diagnostic evidence). Never overwrite an earlier archive.
+- Handover archives are create-only and dated. The current one is `dist/cloud_pipeline-20261009b.tar.gz`: new image, all 15 diagnostics, and an October fallback with confidence. Never overwrite an earlier archive.
+- `fallback/october_2026/` is a smoke-delivery reference, not an operator release. On 2026-10-09 it was replaced by a real-cloud rerun with the same inputs: predictions are byte-identical and confidence is populated. The pre-change copy is in the external legacy archive under `2026-10-09-october-smoke-pre-confidence/`.
 - `deploy/handover_package.py` owns the code/data archive. Keep credentials, private config, state, tests and developer controls out. Shell scripts use LF. Large bootstrap/fallback/dist payloads are local handover artifacts, excluded from Git.
 - Current legacy originals are outside the repo at `../legacy_archive/IPCCH_monthly_operational/2026-10-08-two-entry-handover/`; MOVE_MANIFEST.json and DELIVERY_MOVES.json describe inverse moves. They are recovery materials, not operational dependencies.
 

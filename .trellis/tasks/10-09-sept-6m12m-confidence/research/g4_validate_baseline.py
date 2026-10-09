@@ -71,8 +71,7 @@ def main() -> int:
                   "baseline_id": init["baseline_id"], "available": len(available), "unavailable": unavailable,
                   "uploads": len(fake.objects), "model_version_records": len(versions),
                   "available_per_model": {f"{s}/{h}m": n for (s, h), n in sorted(per_model.items())}}
-        report["passed"] = (len(available) == 13 and unavailable == [
-            ("fewsnet", 0, "polygon_confidence", "missing_evidence"), ("fewsnet", 0, "country_confidence", "missing_evidence")]
+        report["passed"] = (len(available) == 15 and unavailable == []  # D19: all 15 declarations available
             and report["baseline_id"] == hashlib.sha256((CP / "bootstrap/baseline.json").read_bytes()).hexdigest())
     (HERE.parent / "g4_validate_baseline.json").write_text(json.dumps(report, indent=1, default=list) + "\n")
     print(json.dumps(report, indent=1, default=list))

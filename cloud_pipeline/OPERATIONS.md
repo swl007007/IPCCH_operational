@@ -62,14 +62,14 @@ First migration reuses the accepted container digest. It does not require rebuil
 With `crane` installed, authenticate to both registries and copy without changing bytes:
 
 ```bash
-export SOURCE_IMAGE='us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034'
+export SOURCE_IMAGE='us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0'
 export DEST_IMAGE="${REGION}-docker.pkg.dev/${PROJECT}/${IMAGE_REPO}/runtime:accepted-october"
 gcloud auth configure-docker us-central1-docker.pkg.dev,"${REGION}-docker.pkg.dev"
 crane copy "$SOURCE_IMAGE" "$DEST_IMAGE"
 crane digest "$DEST_IMAGE"
 ```
 
-The printed digest must equal `sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034`. Set config `image_uri` to the **destination URI with `@sha256:...`**, not its mutable tag. A rebuilt image is a new runtime and needs actual compatibility acceptance; old acceptance is not automatically valid. Source code and the lock are included for maintenance; the container binary is distributed by registry/OCI transfer, not embedded in the local data archive.
+The printed digest must equal `sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0` (source tag `runtime:cp5-confidence-1`). This is the runtime bound by `bootstrap/baseline.json`. Its acceptance evidence is the 2026-10-09 cloud rerun `oct-confidence-20261009b`, whose predictions equal the earlier accepted run exactly and whose bundle replayed offline. The earlier image `sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034` rejects the bound FEWSNET proxy evidence, so do not use it with this baseline. Set config `image_uri` to the **destination URI with `@sha256:...`**, not its mutable tag. A rebuilt image is a new runtime and needs actual compatibility acceptance; old acceptance is not automatically valid. Source code and the lock are included for maintenance; the container binary is distributed by registry/OCI transfer, not embedded in the local data archive.
 
 Preview and apply the maintained resource definitions:
 
@@ -168,16 +168,16 @@ Registration checks package files and invokes the existing loader; only register
 
 | System (families) | 0m | 6m | 12m |
 |---|---|---|---|
-| FEWSNET (polygon and country confidence) | unavailable, `missing_evidence` | Stage3 proxy `h6_validation_error_proxy_stage3_fs2_lag8_2021_2024`, `2021-02..2024-10` | Stage3 proxy `h12_validation_error_proxy_stage3_fs3_lag12_2021_2024`, `2021-02..2024-10` |
+| FEWSNET (polygon and country confidence) | Stage3 proxy `h0_validation_error_proxy_stage3_fs1_lag4_2021_2024`, `2021-02..2024-10` | Stage3 proxy `h6_validation_error_proxy_stage3_fs2_lag8_2021_2024`, `2021-02..2024-10` | Stage3 proxy `h12_validation_error_proxy_stage3_fs3_lag12_2021_2024`, `2021-02..2024-10` |
 | IPCCH (polygon training errors, country confidence, maximum phase) | `training_resubstitution`, `2014-01..2026-03` | `training_resubstitution`, `2014-01..2026-04` | `training_resubstitution`, `2014-01..2026-04` |
 
-The FEWSNET proxies are saved errors from research runs with 8- and 12-month lags. They are not held-out errors of the delivered packages. They are accepted only through the `APPROVED_PROXY_EVIDENCE` allowlist in `cloud/orchestrator/delivery_outputs.py`, which maps each horizon to one exact basis and period. Any other FEWSNET evidence must be `package_validation_split` over the package's recorded validation period. Every other basis, period or horizon is rejected, including the h5 proxy and any 0m proxy. IPCCH resubstitution evidence is in-sample and optimistic, and its maximum-phase file holds the four-target training residuals. Its period must end at or before the package training cutoff. Every evidence file carries `model_package_id`, `horizon_months`, `basis` and `period`, and these must match the scored package. Missing evidence still leaves values blank with an unavailable reason.
+All 15 declarations are available. The FEWSNET proxies are saved errors from research runs with 4-, 8- and 12-month lags for 0m, 6m and 12m. They are not held-out errors of the delivered packages. The 0m proxy is the 4-month-lag evidence of the accepted h5 delivery, so it is more pessimistic than true 0m error. They are accepted only through the `APPROVED_PROXY_EVIDENCE` allowlist in `cloud/orchestrator/delivery_outputs.py`, which maps each horizon to one exact basis and period. Any other FEWSNET evidence must be `package_validation_split` over the package's recorded validation period. Every other basis, period or horizon is rejected, including the h5 basis and a proxy used at another horizon. IPCCH resubstitution evidence is in-sample and optimistic, and its maximum-phase file holds the four-target training residuals. Its period must end at or before the package training cutoff. Every evidence file carries `model_package_id`, `horizon_months`, `basis` and `period`, and these must match the scored package. Missing evidence still leaves values blank with an unavailable reason.
 
 Changing any evidence file or declaration changes `baseline.json` and therefore the baseline ID. An existing work directory refuses a different baseline, so initialize a fresh `work_dir` with `init`.
 
 ## Local artifacts and maintenance
 
-`fallback/october_2026/` contains the accepted October result and original metadata. Do not rerun it merely because files were relocated. Historical source paths inside frozen evidence are provenance only; all current instructions are here.
+`fallback/october_2026/` contains the accepted October result from cloud run `oct-confidence-20261009b`, with populated confidence diagnostics, and its replay evidence. Its predictions equal the earlier smoke run `oct-final-20261008a`, whose confidence was blank; that copy is kept outside the package in the legacy archive. Do not rerun the fallback merely because files were relocated. Historical source paths inside frozen evidence are provenance only; all current instructions are here.
 
 To build a future container from maintained source, use `context=$(bash deploy/build_context.sh)` then `docker build -t YOUR_NEW_IMAGE "$context"`. This excludes baseline and fallback data from the build context. A new digest needs actual compatibility evidence; it cannot reuse the accepted image claim.
 

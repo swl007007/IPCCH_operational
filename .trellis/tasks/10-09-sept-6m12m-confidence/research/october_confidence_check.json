@@ -1,0 +1,784 @@
+{
+ "old": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/fallback/october_2026",
+ "new": "/home/swl007007/work/oct-confidence-20261009/run-b",
+ "predictions": {
+  "scopes/0m/fewsnet/polygon_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/0m/fewsnet/country_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": [],
+   "compared_columns": 32,
+   "confidence_columns_now_filled": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source"
+   ],
+   "confidence_columns_equal_country_confidence": true
+  },
+  "scopes/0m/fewsnet/polygon_model_mapping.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/0m/ipcch/polygon_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/0m/ipcch/country_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": [],
+   "compared_columns": 33,
+   "confidence_columns_now_filled": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source",
+    "country_maximum_phase_error_probability_proxy",
+    "country_maximum_phase_error_probability_ci_lower",
+    "country_maximum_phase_error_probability_ci_upper",
+    "country_maximum_phase_history_month_count",
+    "country_maximum_phase_uncertainty_status",
+    "country_maximum_phase_uncertainty_method"
+   ],
+   "confidence_columns_equal_country_confidence": true
+  },
+  "scopes/0m/ipcch/polygon_model_mapping.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/6m/fewsnet/polygon_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/6m/fewsnet/country_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": [],
+   "compared_columns": 32,
+   "confidence_columns_now_filled": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source"
+   ],
+   "confidence_columns_equal_country_confidence": true
+  },
+  "scopes/6m/fewsnet/polygon_model_mapping.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/6m/ipcch/polygon_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/6m/ipcch/country_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": [],
+   "compared_columns": 33,
+   "confidence_columns_now_filled": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source",
+    "country_maximum_phase_error_probability_proxy",
+    "country_maximum_phase_error_probability_ci_lower",
+    "country_maximum_phase_error_probability_ci_upper",
+    "country_maximum_phase_history_month_count",
+    "country_maximum_phase_uncertainty_status",
+    "country_maximum_phase_uncertainty_method"
+   ],
+   "confidence_columns_equal_country_confidence": true
+  },
+  "scopes/6m/ipcch/polygon_model_mapping.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/12m/fewsnet/polygon_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/12m/fewsnet/country_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": [],
+   "compared_columns": 32,
+   "confidence_columns_now_filled": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source"
+   ],
+   "confidence_columns_equal_country_confidence": true
+  },
+  "scopes/12m/fewsnet/polygon_model_mapping.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/12m/ipcch/polygon_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  },
+  "scopes/12m/ipcch/country_predictions.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": [],
+   "compared_columns": 33,
+   "confidence_columns_now_filled": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source",
+    "country_maximum_phase_error_probability_proxy",
+    "country_maximum_phase_error_probability_ci_lower",
+    "country_maximum_phase_error_probability_ci_upper",
+    "country_maximum_phase_history_month_count",
+    "country_maximum_phase_uncertainty_status",
+    "country_maximum_phase_uncertainty_method"
+   ],
+   "confidence_columns_equal_country_confidence": true
+  },
+  "scopes/12m/ipcch/polygon_model_mapping.csv": {
+   "equal": true,
+   "max_abs_diff": 0.0,
+   "mismatch_columns": []
+  }
+ },
+ "confidence": {
+  "scopes/0m/fewsnet/polygon_confidence.csv": {
+   "rows": 5718,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "historical_sample_count",
+    "historical_error_count",
+    "polygon_error_rate",
+    "polygon_confidence",
+    "country_error_eligible",
+    "evidence_basis",
+    "evidence_period"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {
+    "population": 2,
+    "population_reference_period": 2,
+    "historical_sample_count": 5,
+    "historical_error_count": 5,
+    "polygon_error_rate": 5,
+    "polygon_confidence": 5
+   },
+   "no_history_polygons": [
+    "216",
+    "2786",
+    "4375",
+    "4511",
+    "5500"
+   ],
+   "populated_polygons": 5713,
+   "country_error_eligible": {
+    "True": 5706,
+    "False": 12
+   },
+   "basis": [
+    "h0_validation_error_proxy_stage3_fs1_lag4_2021_2024"
+   ],
+   "period": [
+    "2021-02..2024-10"
+   ],
+   "passed": true
+  },
+  "scopes/0m/fewsnet/country_confidence.csv": {
+   "rows": 22,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {},
+   "countries": 22,
+   "country_error_rate_populated": 22,
+   "flags": {
+    "high": 11,
+    "low": 7,
+    "medium": 4
+   },
+   "basis": [
+    "h0_validation_error_proxy_stage3_fs1_lag4_2021_2024"
+   ],
+   "no_eligible_area_countries": [],
+   "passed": true
+  },
+  "scopes/0m/ipcch/polygon_training_errors.csv": {
+   "rows": 6227,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "training_sample_count",
+    "training_error_count",
+    "training_error_rate"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {},
+   "populated_polygons": 6227,
+   "no_training_rows_polygons": 0,
+   "passed": true
+  },
+  "scopes/0m/ipcch/country_confidence.csv": {
+   "rows": 53,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source",
+    "country_maximum_phase_error_probability_proxy",
+    "country_maximum_phase_error_probability_ci_lower",
+    "country_maximum_phase_error_probability_ci_upper",
+    "country_maximum_phase_history_month_count",
+    "country_maximum_phase_uncertainty_status",
+    "country_maximum_phase_uncertainty_method"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {
+    "country_maximum_phase_error_probability_proxy": 10,
+    "country_maximum_phase_error_probability_ci_lower": 24,
+    "country_maximum_phase_error_probability_ci_upper": 24
+   },
+   "countries": 53,
+   "country_error_rate_populated": 53,
+   "flags": {
+    "high": 28,
+    "medium": 15,
+    "low": 10
+   },
+   "basis": [
+    "training_resubstitution"
+   ],
+   "no_eligible_area_countries": [],
+   "maximum_phase_status": {
+    "degenerate_empirical": 15,
+    "single_month": 14,
+    "supported": 14,
+    "no_complete_history": 10
+   },
+   "passed": true
+  },
+  "scopes/6m/fewsnet/polygon_confidence.csv": {
+   "rows": 5718,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "historical_sample_count",
+    "historical_error_count",
+    "polygon_error_rate",
+    "polygon_confidence",
+    "country_error_eligible",
+    "evidence_basis",
+    "evidence_period"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {
+    "population": 2,
+    "population_reference_period": 2,
+    "historical_sample_count": 5,
+    "historical_error_count": 5,
+    "polygon_error_rate": 5,
+    "polygon_confidence": 5
+   },
+   "no_history_polygons": [
+    "216",
+    "2786",
+    "4375",
+    "4511",
+    "5500"
+   ],
+   "populated_polygons": 5713,
+   "country_error_eligible": {
+    "True": 5706,
+    "False": 12
+   },
+   "basis": [
+    "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024"
+   ],
+   "period": [
+    "2021-02..2024-10"
+   ],
+   "passed": true
+  },
+  "scopes/6m/fewsnet/country_confidence.csv": {
+   "rows": 22,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {},
+   "countries": 22,
+   "country_error_rate_populated": 22,
+   "flags": {
+    "high": 11,
+    "low": 6,
+    "medium": 5
+   },
+   "basis": [
+    "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024"
+   ],
+   "no_eligible_area_countries": [],
+   "passed": true
+  },
+  "scopes/6m/ipcch/polygon_training_errors.csv": {
+   "rows": 6227,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "training_sample_count",
+    "training_error_count",
+    "training_error_rate"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {},
+   "populated_polygons": 6227,
+   "no_training_rows_polygons": 0,
+   "passed": true
+  },
+  "scopes/6m/ipcch/country_confidence.csv": {
+   "rows": 53,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source",
+    "country_maximum_phase_error_probability_proxy",
+    "country_maximum_phase_error_probability_ci_lower",
+    "country_maximum_phase_error_probability_ci_upper",
+    "country_maximum_phase_history_month_count",
+    "country_maximum_phase_uncertainty_status",
+    "country_maximum_phase_uncertainty_method"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {
+    "country_maximum_phase_error_probability_proxy": 10,
+    "country_maximum_phase_error_probability_ci_lower": 19,
+    "country_maximum_phase_error_probability_ci_upper": 19
+   },
+   "countries": 53,
+   "country_error_rate_populated": 53,
+   "flags": {
+    "high": 27,
+    "medium": 16,
+    "low": 10
+   },
+   "basis": [
+    "training_resubstitution"
+   ],
+   "no_eligible_area_countries": [],
+   "maximum_phase_status": {
+    "degenerate_empirical": 19,
+    "supported": 15,
+    "no_complete_history": 10,
+    "single_month": 9
+   },
+   "passed": true
+  },
+  "scopes/12m/fewsnet/polygon_confidence.csv": {
+   "rows": 5718,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "historical_sample_count",
+    "historical_error_count",
+    "polygon_error_rate",
+    "polygon_confidence",
+    "country_error_eligible",
+    "evidence_basis",
+    "evidence_period"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {
+    "population": 2,
+    "population_reference_period": 2,
+    "historical_sample_count": 5,
+    "historical_error_count": 5,
+    "polygon_error_rate": 5,
+    "polygon_confidence": 5
+   },
+   "no_history_polygons": [
+    "216",
+    "2786",
+    "4375",
+    "4511",
+    "5500"
+   ],
+   "populated_polygons": 5713,
+   "country_error_eligible": {
+    "True": 5706,
+    "False": 12
+   },
+   "basis": [
+    "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024"
+   ],
+   "period": [
+    "2021-02..2024-10"
+   ],
+   "passed": true
+  },
+  "scopes/12m/fewsnet/country_confidence.csv": {
+   "rows": 22,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {},
+   "countries": 22,
+   "country_error_rate_populated": 22,
+   "flags": {
+    "high": 10,
+    "low": 8,
+    "medium": 4
+   },
+   "basis": [
+    "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024"
+   ],
+   "no_eligible_area_countries": [],
+   "passed": true
+  },
+  "scopes/12m/ipcch/polygon_training_errors.csv": {
+   "rows": 6227,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "training_sample_count",
+    "training_error_count",
+    "training_error_rate"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {},
+   "populated_polygons": 6227,
+   "no_training_rows_polygons": 0,
+   "passed": true
+  },
+  "scopes/12m/ipcch/country_confidence.csv": {
+   "rows": 53,
+   "same_shape": true,
+   "previously_populated_columns_equal": true,
+   "previously_populated_max_abs_diff": 0.0,
+   "previously_populated_mismatch": [],
+   "newly_populated_columns": [
+    "country_error_rate",
+    "country_confidence_flag",
+    "country_error_basis",
+    "country_error_weighting",
+    "country_error_evidence_period",
+    "country_confidence_thresholds",
+    "country_error_eligible_area_count",
+    "country_error_excluded_area_count",
+    "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count",
+    "country_error_nonpositive_population_area_count",
+    "country_error_sample_count",
+    "country_error_mistake_count",
+    "country_error_eligible_population_sum",
+    "country_error_known_population_sum",
+    "country_error_known_population_coverage",
+    "country_error_population_field",
+    "country_error_population_vintage",
+    "country_error_population_source",
+    "country_maximum_phase_error_probability_proxy",
+    "country_maximum_phase_error_probability_ci_lower",
+    "country_maximum_phase_error_probability_ci_upper",
+    "country_maximum_phase_history_month_count",
+    "country_maximum_phase_uncertainty_status",
+    "country_maximum_phase_uncertainty_method"
+   ],
+   "still_entirely_blank_columns": [],
+   "blank_counts": {
+    "country_maximum_phase_error_probability_proxy": 10,
+    "country_maximum_phase_error_probability_ci_lower": 19,
+    "country_maximum_phase_error_probability_ci_upper": 19
+   },
+   "countries": 53,
+   "country_error_rate_populated": 53,
+   "flags": {
+    "high": 26,
+    "medium": 17,
+    "low": 10
+   },
+   "basis": [
+    "training_resubstitution"
+   ],
+   "no_eligible_area_countries": [],
+   "maximum_phase_status": {
+    "degenerate_empirical": 18,
+    "supported": 16,
+    "no_complete_history": 10,
+    "single_month": 9
+   },
+   "passed": true
+  }
+ },
+ "cross_checks": {
+  "fewsnet_0m_counts_equal_h5": {
+   "equal": true,
+   "rows": 5718,
+   "max_abs_rate_diff": 0.0
+  },
+  "scopes/6m/fewsnet/polygon_confidence.csv_evidence_equal_september_scopes": true,
+  "scopes/6m/ipcch/polygon_training_errors.csv_evidence_equal_september_scopes": true,
+  "scopes/12m/fewsnet/polygon_confidence.csv_evidence_equal_september_scopes": true,
+  "scopes/12m/ipcch/polygon_training_errors.csv_evidence_equal_september_scopes": true
+ },
+ "availability": {
+  "rows": 36219,
+  "old_rows": 36219,
+  "same_entities": true,
+  "missing_evidence_rows": 0,
+  "status_reason_counts": {
+   "fewsnet/0/country_confidence/available/": 22,
+   "fewsnet/0/polygon_confidence/available/": 5713,
+   "fewsnet/0/polygon_confidence/unavailable/no_eligible_area_history": 5,
+   "fewsnet/12/country_confidence/available/": 22,
+   "fewsnet/12/polygon_confidence/available/": 5713,
+   "fewsnet/12/polygon_confidence/unavailable/no_eligible_area_history": 5,
+   "fewsnet/6/country_confidence/available/": 22,
+   "fewsnet/6/polygon_confidence/available/": 5713,
+   "fewsnet/6/polygon_confidence/unavailable/no_eligible_area_history": 5,
+   "ipcch/0/country_confidence/available/": 53,
+   "ipcch/0/maximum_phase/available/": 29,
+   "ipcch/0/maximum_phase/limited/single_month_interval_unavailable": 14,
+   "ipcch/0/maximum_phase/unavailable/no_complete_history": 10,
+   "ipcch/0/polygon_training_errors/available/": 6227,
+   "ipcch/12/country_confidence/available/": 53,
+   "ipcch/12/maximum_phase/available/": 34,
+   "ipcch/12/maximum_phase/limited/single_month_interval_unavailable": 9,
+   "ipcch/12/maximum_phase/unavailable/no_complete_history": 10,
+   "ipcch/12/polygon_training_errors/available/": 6227,
+   "ipcch/6/country_confidence/available/": 53,
+   "ipcch/6/maximum_phase/available/": 34,
+   "ipcch/6/maximum_phase/limited/single_month_interval_unavailable": 9,
+   "ipcch/6/maximum_phase/unavailable/no_complete_history": 10,
+   "ipcch/6/polygon_training_errors/available/": 6227
+  }
+ },
+ "check_revisions": [
+  "2026-10-09 after first run on oct-confidence-20261009a: country_predictions carries the country confidence columns by design, so it is compared on previously populated columns plus consistency with country_confidence.csv; FEWS evidence_basis/period label every row and left the no-history blank rule."
+ ],
+ "passed": true
+}

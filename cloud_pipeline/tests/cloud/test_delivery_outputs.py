@@ -179,7 +179,7 @@ def _fews_proxy(horizon, **identity):
                 acceptance=ACCEPT_FEWS), frame
 
 
-@pytest.mark.parametrize("horizon", [6, 12])
+@pytest.mark.parametrize("horizon", [0, 6, 12])
 def test_fewsnet_allowlisted_stage3_proxy_is_accepted_at_its_own_horizon(horizon):
     basis, period = out.APPROVED_PROXY_EVIDENCE[("fewsnet", horizon)]
     kwargs, frame = _fews_proxy(horizon, basis=basis, period=period)
@@ -193,7 +193,7 @@ def test_fewsnet_allowlisted_stage3_proxy_is_accepted_at_its_own_horizon(horizon
     assert out.area_evidence(frame, **kwargs)[1]["basis"] == "package_validation_split"
 
 
-H6, H12 = out.APPROVED_PROXY_EVIDENCE[("fewsnet", 6)], out.APPROVED_PROXY_EVIDENCE[("fewsnet", 12)]
+H0, H6, H12 = (out.APPROVED_PROXY_EVIDENCE[("fewsnet", h)] for h in (0, 6, 12))
 
 
 @pytest.mark.parametrize(
@@ -204,8 +204,13 @@ H6, H12 = out.APPROVED_PROXY_EVIDENCE[("fewsnet", 6)], out.APPROVED_PROXY_EVIDEN
         (6, H6[0], "2021-02..2024-09", "not the allowlisted '2021-02..2024-10'"),  # right basis, wrong period
         (12, H12[0], "2023-10..2026-02", "not the allowlisted '2021-02..2024-10'"),
         (6, "h5_validation_error_proxy_stage3_2021_2024", H6[1], "not the accepted fewsnet basis"),
-        (0, H6[0], H6[1], "not the accepted fewsnet basis 'package_validation_split'$"),  # no 0m proxy
-        (0, H12[0], H12[1], "not the accepted fewsnet basis 'package_validation_split'$"),
+        (0, H6[0], H6[1], "or the approved 0m proxy"),  # 6m/12m proxies are not the 0m proxy
+        (0, H12[0], H12[1], "or the approved 0m proxy"),
+        (6, H0[0], H0[1], "or the approved 6m proxy"),  # the fs1 0m proxy is not accepted at 6m/12m
+        (12, H0[0], H0[1], "or the approved 12m proxy"),
+        (0, H0[0], "2023-10..2026-02", "not the allowlisted '2021-02..2024-10'"),
+        (0, "h5_validation_error_proxy_stage3_2021_2024", H0[1], "or the approved 0m proxy"),  # h5 basis not relabelled
+        (0, "stage3_proxy_unknown", H0[1], "or the approved 0m proxy"),  # non-allowlisted basis at 0m
         (6, "stage3_proxy_unknown", H6[1], "not the accepted fewsnet basis"),
         (12, "package_validation_split", H12[1], "recorded validation split"),  # proxy period alone is not enough
     ],

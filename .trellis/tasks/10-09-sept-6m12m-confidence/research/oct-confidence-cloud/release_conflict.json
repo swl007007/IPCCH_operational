@@ -1,0 +1,9 @@
+{
+  "actual_pointer_generation": "1791487045444241",
+  "expected_pointer_generation": "0",
+  "pointer_uri": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/current.json",
+  "run_id": "oct-confidence-20261009a",
+  "stage": "precheck",
+  "status": "release_conflict",
+  "unpublished_release_record": null
+}

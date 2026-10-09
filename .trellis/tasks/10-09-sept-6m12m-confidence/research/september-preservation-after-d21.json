@@ -1,0 +1,10 @@
+{
+ "september_manual/inventory.json": {
+  "files": 20,
+  "mismatch": []
+ },
+ "september_manual/scopes/inventory.json": {
+  "files": 32,
+  "mismatch": []
+ }
+}

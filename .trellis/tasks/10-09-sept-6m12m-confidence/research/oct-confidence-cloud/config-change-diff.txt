@@ -1,0 +1,16 @@
+== job-oct-delivery
+.metadata.annotations.run.googleapis.com/client-name: <absent> -> gcloud
+.metadata.annotations.run.googleapis.com/client-version: <absent> -> 562.0.0
+.metadata.annotations.run.googleapis.com/operation-id: d9422968-ee20-4408-a7c3-8b11514b28b3 -> 4078e6f2-7be3-4049-975e-cafbfca23c9b
+.metadata.generation: 2 -> 3
+.metadata.labels.run.googleapis.com/lastUpdatedTime: 2026-10-08T18:23:46.437363Z -> 2026-10-09T20:17:01.975120Z
+.metadata.resourceVersion: AAZdWb3Tbck -> AAZdbggB4Co
+.spec.template.metadata.labels: <absent> -> {'client.knative.dev/nonce': 'wos_jol_hek'}
+.spec.template.spec.template.spec.containers[0].image: us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52... -> us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153...
+.status.observedGeneration: 2 -> 3
+== workflow
+.revisionCreateTime: 2026-10-08T18:23:47.383966288Z -> 2026-10-09T20:17:28.354679261Z
+.revisionId: 000002-c39 -> 000003-82d
+.updateTime: 2026-10-08T18:23:47.494791244Z -> 2026-10-09T20:17:28.531195173Z
+.userEnvVars.DELIVERY_IMAGE_URI: us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:41944ea048c559190b6018f30ad52... -> us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153...
+workflow sourceContents identical: True

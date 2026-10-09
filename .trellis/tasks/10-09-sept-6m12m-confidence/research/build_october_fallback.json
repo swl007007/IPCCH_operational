@@ -1,0 +1,24 @@
+{
+ "gates": {
+  "comparison_passed_for_this_download": true,
+  "replay_members": true,
+  "replay_rescore": true,
+  "replay_validation": true,
+  "cloud_run_succeeded": true,
+  "old_fallback_matches_inventory": true,
+  "fill_audit_matches_manifest": true,
+  "passed": true
+ },
+ "backup": {
+  "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/legacy_archive/IPCCH_monthly_operational/2026-10-09-october-smoke-pre-confidence/october_2026",
+  "files": 50,
+  "verified": true,
+  "retained_inventory_sha256": "6cca09111f28c2891b5764b23c6c34165895fd201a69ae728230e70f074d1e79"
+ },
+ "fallback": {
+  "files": 52,
+  "verified": true,
+  "retained_inventory_sha256": "ddf662a2aa3997a8d74e0007b3bbab387437d4301f2aed35593fb2ee12f7518e",
+  "built_at": "2026-10-09T22:23:23+00:00"
+ }
+}

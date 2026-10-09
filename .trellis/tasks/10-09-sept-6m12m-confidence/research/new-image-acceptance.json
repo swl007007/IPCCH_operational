@@ -1,0 +1,143 @@
+{
+ "schema_version": "runtime-image-acceptance-evidence-v1",
+ "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+ "previous_image_digest": "sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034",
+ "build": {
+  "id": "febbd244-5504-40cf-9d41-5cab5198a347",
+  "source": "gs://manuel-remote-sensing-oct-delivery-debug/build-sources/cp5-confidence-1.tgz#1791576191770816",
+  "source_sha256": "019cfbe895a8efe0f133a19bb94ce03e83a472c0076c6d771c5fe16c41e0750a",
+  "context_file_hashes": ".trellis/tasks/10-09-sept-6m12m-confidence/research/oct-confidence-cloud/build-context.sha256.txt"
+ },
+ "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+ "environment_manifest": {
+  "generation": "1791576681198324",
+  "sha256": "c8dec43c79faafa908518dd88aa875094cb9d30e8788366b77c78a7ebb4ba0ee",
+  "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-confidence-20261009a/environment.json"
+ },
+ "acceptance_reports": {
+  "fewsnet/0m": {
+   "generation": "1791576681574528",
+   "sha256": "3f3557d1c20f4f06a3e5088600236d7b1dcbee185669772bc33dba61f54f9968",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-confidence-20261009a/models/fewsnet_0m_acceptance.json"
+  },
+  "fewsnet/6m": {
+   "generation": "1791576681893425",
+   "sha256": "de6909d3599fd5c8bb043478b2455781b0ba2d9b6e8d727e1610e022bd8b6f7e",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-confidence-20261009a/models/fewsnet_6m_acceptance.json"
+  },
+  "fewsnet/12m": {
+   "generation": "1791576682244713",
+   "sha256": "fee2d55ebafa19b1fe01acd125f48c81279d14ba9ec800cfa797cb16374b9434",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-confidence-20261009a/models/fewsnet_12m_acceptance.json"
+  },
+  "ipcch/0m": {
+   "generation": "1791576682568130",
+   "sha256": "e4c2195464caddf7bd736dd72808b73a080e14a12780fd9761a326bb78794750",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-confidence-20261009a/models/ipcch_0m_acceptance.json"
+  },
+  "ipcch/6m": {
+   "generation": "1791576682888261",
+   "sha256": "0b0acd9bd9858998c8955bdad550bd811a58a4bc29ad22f3d43458afd731d42e",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-confidence-20261009a/models/ipcch_6m_acceptance.json"
+  },
+  "ipcch/12m": {
+   "generation": "1791576683220893",
+   "sha256": "b3e6b361084e8121e72ebf284ead633a008f50d39432ccb1f33b6e6d8bf45666",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-confidence-20261009a/models/ipcch_12m_acceptance.json"
+  }
+ },
+ "method": "rerun of the accepted October cloud delivery inputs (prepared full-window-20261008c, ACLED/WFP keep, same assets and package manifests) on the new image; every prediction/mapping/country prediction table compared with the accepted smoke run oct-final-20261008a (image sha256:41944ea0...) under the bundle comparator (IDs/discrete exact, continuous atol 1e-12, rtol 0) plus relocated offline replay of the new bundle",
+ "cloud_run": {
+  "run_id": "oct-confidence-20261009b",
+  "execution": {
+   "name": "oct-delivery-lmt6q",
+   "created": "2026-10-09T21:34:22.639115Z",
+   "completed": "2026-10-09T22:16:11.333987Z",
+   "conditions": [
+    {
+     "type": "Completed",
+     "status": "True",
+     "message": "Execution completed successfully in 41m31.72s."
+    },
+    {
+     "type": "ResourcesAvailable",
+     "status": "True",
+     "message": "Provisioned imported containers."
+    },
+    {
+     "type": "Started",
+     "status": "True",
+     "message": "Started deployed execution in 1m46.3s."
+    },
+    {
+     "type": "ContainerReady",
+     "status": "True",
+     "message": "Imported container image."
+    }
+   ]
+  },
+  "request": {
+   "uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-confidence-20261009b/run_manifest.json",
+   "generation": "1791581660462581",
+   "at": "2026-10-09T21:34:20+00:00",
+   "sha256": "e2a7ce3db78f5d084a718bd3a530d88c591ebd85c0481120fa7893789a638d4c"
+  },
+  "release": {
+   "pointer_generation": "1791584165565011",
+   "pointer_uri": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/current.json",
+   "release_record": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/releases/oct-confidence-20261009b/release.json"
+  }
+ },
+ "comparison": {
+  "passed": true,
+  "prediction_tables_equal": 18,
+  "prediction_tables": 18,
+  "max_abs_diff": 0.0,
+  "confidence_tables_passed": 12,
+  "report": "research/october_confidence_check.json"
+ },
+ "replay": {
+  "gates": {
+   "comparison_passed_for_this_download": true,
+   "replay_members": true,
+   "replay_rescore": true,
+   "replay_validation": true,
+   "cloud_run_succeeded": true,
+   "old_fallback_matches_inventory": true,
+   "fill_audit_matches_manifest": true,
+   "passed": true
+  },
+  "evidence": "cloud_pipeline/fallback/october_2026/replay_evidence/"
+ },
+ "baseline": {
+  "before_sha256": "8e2dd3fa3d861b093f9197dedea5c119dc8f49712bbcd8eead6b2af2dc388b04",
+  "after_sha256": "95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884",
+  "changed_paths": [
+   "models[0].acceptance.evidence",
+   "models[0].acceptance.runtime.environment_manifest_sha256",
+   "models[0].acceptance.runtime.image_uri",
+   "models[0].environment.image_uri",
+   "models[1].acceptance.evidence",
+   "models[1].acceptance.runtime.environment_manifest_sha256",
+   "models[1].acceptance.runtime.image_uri",
+   "models[1].environment.image_uri",
+   "models[2].acceptance.evidence",
+   "models[2].acceptance.runtime.environment_manifest_sha256",
+   "models[2].acceptance.runtime.image_uri",
+   "models[2].environment.image_uri",
+   "models[3].acceptance.evidence",
+   "models[3].acceptance.runtime.environment_manifest_sha256",
+   "models[3].acceptance.runtime.image_uri",
+   "models[3].environment.image_uri",
+   "models[4].acceptance.evidence",
+   "models[4].acceptance.runtime.environment_manifest_sha256",
+   "models[4].acceptance.runtime.image_uri",
+   "models[4].environment.image_uri",
+   "models[5].acceptance.evidence",
+   "models[5].acceptance.runtime.environment_manifest_sha256",
+   "models[5].acceptance.runtime.image_uri",
+   "models[5].environment.image_uri",
+   "runtime.image_uri"
+  ]
+ }
+}

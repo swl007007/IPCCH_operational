@@ -1,0 +1,5 @@
+{"source": {"storageSource": {"bucket": "manuel-remote-sensing-oct-delivery-debug", "object": "build-sources/cp5-confidence-1.tgz", "generation": "1791576191770816"}},
+ "steps": [{"name": "gcr.io/cloud-builders/docker", "args": ["build", "--network=cloudbuild", "-t", "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime:cp5-confidence-1", "."]}],
+ "images": ["us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime:cp5-confidence-1"],
+ "tags": ["oct-confidence-20261009"],
+ "timeout": "1800s"}

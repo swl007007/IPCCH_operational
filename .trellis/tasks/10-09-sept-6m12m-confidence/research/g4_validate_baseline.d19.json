@@ -1,0 +1,26 @@
+{
+ "gate": "G4",
+ "preview": {
+  "mode": "preview",
+  "command": "init",
+  "files": 74,
+  "models": 6
+ },
+ "execute": {
+  "status": "initialized"
+ },
+ "baseline_id": "8e2dd3fa3d861b093f9197dedea5c119dc8f49712bbcd8eead6b2af2dc388b04",
+ "available": 15,
+ "unavailable": [],
+ "uploads": 135,
+ "model_version_records": 6,
+ "available_per_model": {
+  "fewsnet/0m": 2,
+  "fewsnet/6m": 2,
+  "fewsnet/12m": 2,
+  "ipcch/0m": 3,
+  "ipcch/6m": 3,
+  "ipcch/12m": 3
+ },
+ "passed": true
+}

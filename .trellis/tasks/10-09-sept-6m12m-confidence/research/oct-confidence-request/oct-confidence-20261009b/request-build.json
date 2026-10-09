@@ -1,0 +1,28 @@
+{
+ "run_id": "oct-confidence-20261009b",
+ "from_request": {
+  "path": ".trellis/tasks/10-09-sept-6m12m-confidence/research/oct-confidence-request/run_manifest.json",
+  "sha256": "56171953ed3fa0490718ada659e3fb0d080aa56446ec7bb6d678cd36e95f5c38"
+ },
+ "pointer_at_build": {
+  "uri": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/current.json",
+  "generation": "1791487045444241",
+  "body": {
+   "release_record": "gs://manuel-remote-sensing-oct-delivery-debug/oct-staging/releases/oct-final-20261008a/release.json",
+   "release_record_generation": "1791487045352008",
+   "run_id": "oct-final-20261008a"
+  }
+ },
+ "changed_top_level": [
+  "prepared_at",
+  "release",
+  "run_id"
+ ],
+ "request_uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-confidence-20261009b/run_manifest.json",
+ "request_sha256": "e2a7ce3db78f5d084a718bd3a530d88c591ebd85c0481120fa7893789a638d4c",
+ "submitted": {
+  "uri": "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-confidence-20261009b/run_manifest.json",
+  "generation": "1791581660462581",
+  "at": "2026-10-09T21:34:20+00:00"
+ }
+}

@@ -1,8 +1,12 @@
 {
  "previous_baseline_sha256": "634b1b399ccc583a06c5a71c31b00696dc736915e4111a8e90c0d55307f83b0f",
- "new_baseline_sha256": "33cf646e4f8f5d97c4b6ab0908d54711d6a9293460da4cff34164e1eb4a1e6f0",
+ "new_baseline_sha256": "8e2dd3fa3d861b093f9197dedea5c119dc8f49712bbcd8eead6b2af2dc388b04",
  "line_endings": "CRLF",
  "added_files": {
+  "evidence/fewsnet_0m_stage3_fs1_area.csv": {
+   "sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+   "size_bytes": 700931
+  },
   "evidence/fewsnet_12m_stage3_fs3_area.csv": {
    "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
    "size_bytes": 723803
@@ -36,11 +40,23 @@
    "size_bytes": 7957265
   },
   "evidence/provenance.json": {
-   "sha256": "e09cd1afbefa52a34068a40e177f7aed350270f559838bd53020126a7be53950",
-   "size_bytes": 20950
+   "sha256": "949a71ff9e679b53ab64cb05b910453693b9fa30e6626e804abc904d26a93178",
+   "size_bytes": 23988
   }
  },
  "bound_declarations": [
+  [
+   "fewsnet",
+   0,
+   "polygon_confidence",
+   "fewsnet_0m_stage3_fs1_area.csv"
+  ],
+  [
+   "fewsnet",
+   0,
+   "country_confidence",
+   "fewsnet_0m_stage3_fs1_area.csv"
+  ],
   [
    "fewsnet",
    6,
@@ -120,19 +136,26 @@
    "ipcch_12m_resubstitution_residual.csv"
   ]
  ],
- "unavailable_declarations": [
-  [
-   "fewsnet",
-   0,
-   "polygon_confidence",
-   "missing_evidence"
+ "unavailable_declarations": [],
+ "backup": ".trellis/tasks/10-09-sept-6m12m-confidence/research/baseline.before.json",
+ "d19": {
+  "before_d19_sha256": "33cf646e4f8f5d97c4b6ab0908d54711d6a9293460da4cff34164e1eb4a1e6f0",
+  "backup": ".trellis/tasks/10-09-sept-6m12m-confidence/research/baseline.before-d19.json",
+  "changed_declarations": [
+   [
+    "fewsnet",
+    0,
+    "polygon_confidence"
+   ],
+   [
+    "fewsnet",
+    0,
+    "country_confidence"
+   ]
   ],
-  [
-   "fewsnet",
-   0,
-   "country_confidence",
-   "missing_evidence"
+  "changed_files": [
+   "evidence/fewsnet_0m_stage3_fs1_area.csv",
+   "evidence/provenance.json"
   ]
- ],
- "backup": ".trellis/tasks/10-09-sept-6m12m-confidence/research/baseline.before.json"
+ }
 }

@@ -1,0 +1,7 @@
+Updating Cloud Run job [[1moct-delivery[m] in project [[1mmanuel-remote-sensing[m] region [[1mus-central1[m]
+Updating job...
+Done.
+Job [[1moct-delivery[m] has successfully been updated.
+
+To execute this job, use:
+gcloud run jobs execute oct-delivery

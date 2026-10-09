@@ -1,0 +1,154 @@
+{
+ "run_id": "oct-confidence-20261009a",
+ "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+ "october_request": {
+  "path": ".trellis/tasks/archive/2026-10/10-07-october-cloud-delivery/research/cp3_evidence/cloud_final_replay/run_manifest.json",
+  "sha256": "0a519a265605bcefc9c6e70621d31d2f6e50542c88fc02194cab221fc9594c6a"
+ },
+ "baseline_sha256": "8e2dd3fa3d861b093f9197dedea5c119dc8f49712bbcd8eead6b2af2dc388b04",
+ "execute": false,
+ "submit": false,
+ "kept_reference_checks": [
+  {
+   "field": "prepared_snapshot.manifest",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/prepared_manifest.json",
+   "generation": "1791484258622845",
+   "size": 30579,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "acled.retained_snapshot",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/retained_acled.csv",
+   "generation": "1791484389220790",
+   "size": 250906941,
+   "check": "exists_at_generation_only (the job verifies sha256)"
+  },
+  {
+   "field": "wfp.retained_snapshot",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/retained_wfp.csv",
+   "generation": "1791484364663085",
+   "size": 84357242,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "models[fewsnet/0m].package_manifest",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/models/fewsnet_0m_package_manifest.json",
+   "generation": "1791484280065202",
+   "size": 2039,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "models[fewsnet/6m].package_manifest",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/models/fewsnet_6m_package_manifest.json",
+   "generation": "1791484280450568",
+   "size": 2039,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "models[fewsnet/12m].package_manifest",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/models/fewsnet_12m_package_manifest.json",
+   "generation": "1791484280800489",
+   "size": 2048,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "models[ipcch/0m].package_manifest",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/models/ipcch_0m_package_manifest.json",
+   "generation": "1791484281159065",
+   "size": 2730,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "models[ipcch/6m].package_manifest",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/models/ipcch_6m_package_manifest.json",
+   "generation": "1791484281524206",
+   "size": 2730,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "models[ipcch/12m].package_manifest",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/staging/oct-final-20261008a/models/ipcch_12m_package_manifest.json",
+   "generation": "1791484281885631",
+   "size": 2746,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "assets.fewsnet.geometry",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/assets/full-20261008a/fewsnet/geometry.geojson",
+   "generation": "1791464507801287",
+   "size": 247394261,
+   "check": "exists_at_generation_only (the job verifies sha256)"
+  },
+  {
+   "field": "assets.fewsnet.roster",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/assets/full-20261008a/fewsnet/roster.csv",
+   "generation": "1791464483389036",
+   "size": 27491,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "assets.fewsnet.population",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_country_population_reference.csv",
+   "generation": "1791467580293757",
+   "size": 4776,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "assets.fewsnet.country_reference",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_country_population_reference.csv",
+   "generation": "1791467580293757",
+   "size": 4776,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "assets.fewsnet.history_panel",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_refreshed_raw.csv",
+   "generation": "1791467564577787",
+   "size": 775678605,
+   "check": "exists_at_generation_only (the job verifies sha256)"
+  },
+  {
+   "field": "assets.ipcch.geometry",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/assets/full-20261008a/ipcch/geometry.geojson",
+   "generation": "1791464518348048",
+   "size": 132388443,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "assets.ipcch.roster",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/assets/full-20261008a/ipcch/roster.csv",
+   "generation": "1791464483463518",
+   "size": 32657,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "assets.ipcch.population",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_country_population_reference.csv",
+   "generation": "1791475472282789",
+   "size": 11296,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "assets.ipcch.country_reference",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_country_population_reference.csv",
+   "generation": "1791475472282789",
+   "size": 11296,
+   "check": "sha256_downloaded_equal"
+  },
+  {
+   "field": "assets.ipcch.history_panel",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_panel.csv",
+   "generation": "1791475441580036",
+   "size": 1782634776,
+   "check": "exists_at_generation_only (the job verifies sha256)"
+  },
+  {
+   "field": "assets.ipcch.fixed_features",
+   "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_april_panel.csv",
+   "generation": "1791475455811673",
+   "size": 5665607,
+   "check": "sha256_downloaded_equal"
+  }
+ ],
+ "status": "dry_checks_passed_no_cloud_writes"
+}

@@ -1,0 +1,152 @@
+[
+  {
+    "createTime": "2026-10-08T13:56:04.170735Z",
+    "metadata": {
+      "buildTime": "2026-10-08T13:54:31.415508320Z",
+      "imageSizeBytes": "815660843",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:337c365f29102ab30b9681fa615753ef096dbbdbd619ba03231ada12d824f2cf"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp3-deliver-1"
+    ],
+    "updateTime": "2026-10-08T13:56:04.170735Z",
+    "version": "sha256:337c365f29102ab30b9681fa615753ef096dbbdbd619ba03231ada12d824f2cf"
+  },
+  {
+    "createTime": "2026-10-08T18:23:13.138079Z",
+    "metadata": {
+      "buildTime": "2026-10-08T18:21:42.131588893Z",
+      "imageSizeBytes": "815689444",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp4-final-1"
+    ],
+    "updateTime": "2026-10-08T18:23:13.138079Z",
+    "version": "sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034"
+  },
+  {
+    "createTime": "2026-10-08T12:44:33.340831Z",
+    "metadata": {
+      "buildTime": "2026-10-08T12:42:44.864851914Z",
+      "imageSizeBytes": "815648574",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:73fe81a66dd5b6b5582a0b1fdfe1c8308eb8bba117e3330afbf4db35722a19bf"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp3-smoke-3"
+    ],
+    "updateTime": "2026-10-08T12:44:33.340831Z",
+    "version": "sha256:73fe81a66dd5b6b5582a0b1fdfe1c8308eb8bba117e3330afbf4db35722a19bf"
+  },
+  {
+    "createTime": "2026-10-08T13:09:50.298559Z",
+    "metadata": {
+      "buildTime": "2026-10-08T13:08:13.038308133Z",
+      "imageSizeBytes": "815656216",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:945c4d51e49e21fb9818dd9a7245024697d927dd5ebe6e2b7d6612c051249ca0"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp3-full-1"
+    ],
+    "updateTime": "2026-10-08T13:09:50.298559Z",
+    "version": "sha256:945c4d51e49e21fb9818dd9a7245024697d927dd5ebe6e2b7d6612c051249ca0"
+  },
+  {
+    "createTime": "2026-10-08T16:07:46.498319Z",
+    "metadata": {
+      "buildTime": "2026-10-08T16:06:16.526311630Z",
+      "imageSizeBytes": "815686126",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:a30d1cff702bd337f27cd3703d53ecbd769367d485e9aec6fd8e944315d7b84b"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp4-debug-1"
+    ],
+    "updateTime": "2026-10-08T16:07:46.498319Z",
+    "version": "sha256:a30d1cff702bd337f27cd3703d53ecbd769367d485e9aec6fd8e944315d7b84b"
+  },
+  {
+    "createTime": "2026-10-08T12:13:51.723887Z",
+    "metadata": {
+      "buildTime": "2026-10-08T12:12:30.449083774Z",
+      "imageSizeBytes": "815637540",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:c1cf7a10ca63eba154d49a066f8dce6cdae74738626a5e03264329d66a2f805b"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp3-smoke-1"
+    ],
+    "updateTime": "2026-10-08T12:13:51.723887Z",
+    "version": "sha256:c1cf7a10ca63eba154d49a066f8dce6cdae74738626a5e03264329d66a2f805b"
+  },
+  {
+    "createTime": "2026-10-08T12:38:36.926223Z",
+    "metadata": {
+      "buildTime": "2026-10-08T12:37:04.011138953Z",
+      "imageSizeBytes": "815647147",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:c9282e1e550a4f2d30c424e876c0073f8d49241fca14c0f91ee56a37da9e7870"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp3-smoke-2"
+    ],
+    "updateTime": "2026-10-08T12:38:36.926223Z",
+    "version": "sha256:c9282e1e550a4f2d30c424e876c0073f8d49241fca14c0f91ee56a37da9e7870"
+  },
+  {
+    "createTime": "2026-10-08T16:29:46.961983Z",
+    "metadata": {
+      "buildTime": "2026-10-08T16:28:05.005853024Z",
+      "imageSizeBytes": "815688478",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:cdeb0f429d0fde32ae5789f0b6e8545b0ae1c6a8663843485f54f9046fa7c5f7"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp4-staging-1"
+    ],
+    "updateTime": "2026-10-08T16:29:46.961983Z",
+    "version": "sha256:cdeb0f429d0fde32ae5789f0b6e8545b0ae1c6a8663843485f54f9046fa7c5f7"
+  },
+  {
+    "createTime": "2026-10-08T13:32:11.727519Z",
+    "metadata": {
+      "buildTime": "2026-10-08T13:30:42.872795773Z",
+      "imageSizeBytes": "815656482",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp3-full-2"
+    ],
+    "updateTime": "2026-10-08T13:32:11.727519Z",
+    "version": "sha256:cec7e4e111f26c7f87372771a96f36a8e2f82431be2e42abec0bc44fad07c01e"
+  },
+  {
+    "createTime": "2026-10-08T17:39:04.030175Z",
+    "metadata": {
+      "buildTime": "2026-10-08T17:37:27.258078Z",
+      "imageSizeBytes": "815748204",
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "name": "projects/manuel-remote-sensing/locations/us-central1/repositories/october-delivery/dockerImages/runtime@sha256:f7d5e8cbb297ef373ebfe05a475bf8221c62d31f18d2f650de80b804740d6cc0"
+    },
+    "package": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime",
+    "tags": [
+      "cp4-debug-2"
+    ],
+    "updateTime": "2026-10-08T17:39:04.030175Z",
+    "version": "sha256:f7d5e8cbb297ef373ebfe05a475bf8221c62d31f18d2f650de80b804740d6cc0"
+  }
+]

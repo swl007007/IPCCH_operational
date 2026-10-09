@@ -1,0 +1,57 @@
+{
+ "archive": {
+  "path": "cloud_pipeline/dist/cloud_pipeline-20261009b.tar.gz",
+  "sha256": "42d4e9079f0da815249a57670c8910361c981b10231eb2948ce60912b388606a",
+  "size": 1677224915,
+  "sidecar": "42d4e9079f0da815249a57670c8910361c981b10231eb2948ce60912b388606a  cloud_pipeline-20261009b.tar.gz",
+  "verify_status": "verified",
+  "files": 221,
+  "sidecar_matches": true
+ },
+ "members": {
+  "bootstrap/baseline.json": {
+   "archived_sha256": "95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884",
+   "working_tree_sha256": "95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884",
+   "matches": true
+  },
+  "fallback/october_2026/retained_inventory.json": {
+   "archived_sha256": "ddf662a2aa3997a8d74e0007b3bbab387437d4301f2aed35593fb2ee12f7518e",
+   "working_tree_sha256": "ddf662a2aa3997a8d74e0007b3bbab387437d4301f2aed35593fb2ee12f7518e",
+   "matches": true
+  },
+  "bootstrap/evidence/fewsnet_0m_stage3_fs1_area.csv": {
+   "archived_sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+   "working_tree_sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+   "matches": true
+  },
+  "bootstrap/evidence/provenance.json": {
+   "archived_sha256": "949a71ff9e679b53ab64cb05b910453693b9fa30e6626e804abc904d26a93178",
+   "working_tree_sha256": "949a71ff9e679b53ab64cb05b910453693b9fa30e6626e804abc904d26a93178",
+   "matches": true
+  },
+  "OPERATIONS.md": {
+   "archived_sha256": "0321243234cc561a904fe2fc4ec86dc91a28bf0b94749c0655719c7729b036b0",
+   "working_tree_sha256": "0321243234cc561a904fe2fc4ec86dc91a28bf0b94749c0655719c7729b036b0",
+   "matches": true
+  },
+  "cloud/orchestrator/delivery_outputs.py": {
+   "archived_sha256": "f06dd5f19ad5158728ba8ee3818c05b24926ac8a584a4536fb516b27ddb28291",
+   "working_tree_sha256": "f06dd5f19ad5158728ba8ee3818c05b24926ac8a584a4536fb516b27ddb28291",
+   "matches": true
+  }
+ },
+ "tar_members": 222,
+ "earlier_archives_unchanged": {
+  "cloud_pipeline.tar.gz": {
+   "sha256": "891d730fc5f08c3f8c86ccb4fe9e954ef617356afc713a383e7ef1ebfd697d4c",
+   "sidecar": "891d730fc5f08c3f8c86ccb4fe9e954ef617356afc713a383e7ef1ebfd697d4c",
+   "matches": true
+  },
+  "cloud_pipeline-20261009.tar.gz": {
+   "sha256": "fb58bbcf552ada783bfe54c320c35601541d7da2d2b58f519d36250ac2e6a866",
+   "sidecar": "fb58bbcf552ada783bfe54c320c35601541d7da2d2b58f519d36250ac2e6a866",
+   "matches": true
+  }
+ },
+ "log": ".trellis/tasks/10-09-sept-6m12m-confidence/research/handover-archive-20261009b.log"
+}

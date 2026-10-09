@@ -177,12 +177,15 @@ RESIDUAL_COLUMNS = tuple(f"{target}_residual" for target in PHASE_TARGETS)
 MAXIMUM_PHASE_METHOD = "training_residual_transfer_complete_month_bootstrap_proxy"
 # Accepted evidence semantics per system (design section 7). FEWSNET evidence must come from the
 # package's own recorded validation split; IPCCH evidence is training resubstitution of that
-# package. Anything else (e.g. the h5 fs1 4-month-lag proxy relabelled for 0/6/12) is rejected.
+# package. Anything else (e.g. the h5 basis relabelled for 0/6/12) is rejected unless it is exactly an
+# APPROVED_PROXY_EVIDENCE pair.
 EVIDENCE_BASIS = {"fewsnet": "package_validation_split", "ipcch": "training_resubstitution"}
-# Explicitly approved FEWSNET proxies (user decision 2026-10-09): saved Stage3 research-run errors whose
-# active lag approximates the horizon. Only these exact (horizon -> basis, period) pairs are accepted;
-# the basis string itself discloses the proxy in every output that carries it.
+# Explicitly approved FEWSNET proxies (user decisions 2026-10-09): saved Stage3 research-run errors, not
+# the delivered package's own validation. 6m/12m use the 8-/12-month-lag runs; 0m uses the 4-month-lag
+# run (the accepted h5 evidence), which is more pessimistic than true 0m error. Only these exact
+# (horizon -> basis, period) pairs are accepted; the basis string discloses the proxy in every output.
 APPROVED_PROXY_EVIDENCE = {
+    ("fewsnet", 0): ("h0_validation_error_proxy_stage3_fs1_lag4_2021_2024", "2021-02..2024-10"),
     ("fewsnet", 6): ("h6_validation_error_proxy_stage3_fs2_lag8_2021_2024", "2021-02..2024-10"),
     ("fewsnet", 12): ("h12_validation_error_proxy_stage3_fs3_lag12_2021_2024", "2021-02..2024-10"),
 }

@@ -1,0 +1,112 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Execution",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/creator": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+      "run.googleapis.com/execution-environment": "gen2",
+      "run.googleapis.com/lastModifier": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+      "run.googleapis.com/operation-id": "30cd5309-3f5e-46ec-981a-7e68045d20b1"
+    },
+    "creationTimestamp": "2026-10-09T21:34:22.639115Z",
+    "generation": 1,
+    "labels": {
+      "client.knative.dev/nonce": "wos_jol_hek",
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/job": "oct-delivery",
+      "run.googleapis.com/jobGeneration": "3",
+      "run.googleapis.com/jobResourceVersion": "1791579815667387",
+      "run.googleapis.com/jobUid": "19dabf1e-3d4e-4be4-af84-ffc9915b9892"
+    },
+    "name": "oct-delivery-lmt6q",
+    "namespace": "645415198431",
+    "ownerReferences": [
+      {
+        "apiVersion": "serving.knative.dev/v1",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "Job",
+        "name": "oct-delivery",
+        "uid": "19dabf1e-3d4e-4be4-af84-ffc9915b9892"
+      }
+    ],
+    "resourceVersion": "AAZdb7J90bg",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/645415198431/executions/oct-delivery-lmt6q",
+    "uid": "4aa0be94-0d0e-43db-8bd8-8b327f4ca845"
+  },
+  "spec": {
+    "parallelism": 1,
+    "taskCount": 1,
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "args": [
+              "-m",
+              "cloud.orchestrator.delivery_job",
+              "run",
+              "--request-uri",
+              "gs://manuel-remote-sensing-oct-delivery-requests/requests/oct-confidence-20261009b/run_manifest.json",
+              "--request-generation",
+              "1791581660462581",
+              "--output-root",
+              "gs://manuel-remote-sensing-oct-delivery-debug",
+              "--release-namespace",
+              "oct-staging",
+              "--image-uri",
+              "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0"
+            ],
+            "command": [
+              "python3"
+            ],
+            "image": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+            "resources": {
+              "limits": {
+                "cpu": "8",
+                "memory": "32Gi"
+              }
+            }
+          }
+        ],
+        "maxRetries": 0,
+        "serviceAccountName": "oct-delivery-runner@manuel-remote-sensing.iam.gserviceaccount.com",
+        "timeoutSeconds": "14400"
+      }
+    }
+  },
+  "status": {
+    "completionTime": "2026-10-09T22:16:11.333987Z",
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-10-09T22:16:11.333987Z",
+        "message": "Execution completed successfully in 41m31.72s.",
+        "status": "True",
+        "type": "Completed"
+      },
+      {
+        "lastTransitionTime": "2026-10-09T21:34:23.800078Z",
+        "message": "Provisioned imported containers.",
+        "status": "True",
+        "type": "ResourcesAvailable"
+      },
+      {
+        "lastTransitionTime": "2026-10-09T21:36:10.100081Z",
+        "message": "Started deployed execution in 1m46.3s.",
+        "status": "True",
+        "type": "Started"
+      },
+      {
+        "lastTransitionTime": "2026-10-09T21:34:23.629553Z",
+        "message": "Imported container image.",
+        "status": "True",
+        "type": "ContainerReady"
+      }
+    ],
+    "logUri": "https://console.cloud.google.com/logs/viewer?project=manuel-remote-sensing&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-delivery%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-delivery-lmt6q%22",
+    "observedGeneration": 1,
+    "startTime": "2026-10-09T21:34:39.609931Z",
+    "succeededCount": 1
+  }
+}

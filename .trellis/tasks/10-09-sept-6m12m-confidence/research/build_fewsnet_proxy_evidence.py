@@ -1,10 +1,11 @@
-"""One-time builder: FEWSNET 6m/12m Stage3 proxy area evidence (user decisions D4/D9/D14).
+"""One-time builder: FEWSNET 0m/6m/12m Stage3 proxy area evidence (user decisions D4/D9/D14/D19).
 
 Per polygon, count saved Stage3 partitioned decisions ``y_pred_partitioned != y_true`` (the
 September h5 rule: saved decisions, no re-thresholding). Gate G1 first rebuilds the h5 counts
 from ``georf_fs1`` and requires an exact per-polygon match with the accepted
-``september_manual/fewsnet/polygon_confidence.csv``; only then are fs2 -> 6m and fs3 -> 12m
-evidence CSVs written to ``cloud_pipeline/bootstrap/evidence/``.
+``september_manual/fewsnet/polygon_confidence.csv``; only then are fs1 -> 0m (D19: the h5 4-month-lag
+evidence, more pessimistic than true 0m error), fs2 -> 6m and fs3 -> 12m evidence CSVs written to
+``cloud_pipeline/bootstrap/evidence/``. The 0m file must equal the G1 counts exactly.
 
 Reads external research outputs read-only; the cloud runtime never reads them.
 """
@@ -27,7 +28,8 @@ STAGE3 = REPO.parent / ("Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/f
 EVIDENCE = CP / "bootstrap/evidence"
 REPORT = HERE.parent / "fewsnet_proxy_evidence.json"
 SEPTEMBER = REPO / "september_manual/fewsnet/polygon_confidence.csv"
-PROXIES = {  # horizon -> (Stage3 run, basis label approved 2026-10-09)
+PROXIES = {  # horizon -> (Stage3 run, basis label approved 2026-10-09; 0m added by D19)
+    0: ("georf_fs1", "h0_validation_error_proxy_stage3_fs1_lag4_2021_2024"),
     6: ("georf_fs2", "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024"),
     12: ("georf_fs3", "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024"),
 }
@@ -135,6 +137,17 @@ def main() -> int:
         name = f"fewsnet_{horizon}m_stage3_{run.split('_')[1]}_area.csv"
         data = kept[["polygon_id", "sample_count", "error_count", "model_package_id", "horizon_months", "basis",
                      "period"]].to_csv(index=False, lineterminator="\n").encode()
+        if run == "georf_fs1":  # D19 gate: the 0m proxy is exactly the accepted h5 evidence
+            g1 = report["regression"]
+            if (len(kept), int(kept["sample_count"].sum()), int(kept["error_count"].sum())) != (
+                    g1["compared_polygons"], g1["total_samples"], g1["total_errors"]) or g1["total_errors"] != 10635:
+                raise SystemExit(f"{name}: counts differ from the accepted h5 evidence")
+            accepted = pd.read_csv(SEPTEMBER, dtype={"polygon_id": str}).dropna(subset=["historical_sample_count"])
+            check = accepted.merge(kept, on="polygon_id", how="outer", indicator=True)
+            if not (check["_merge"].eq("both").all()
+                    and check["historical_sample_count"].astype(int).eq(check["sample_count"]).all()
+                    and check["historical_error_count"].astype(int).eq(check["error_count"]).all()):
+                raise SystemExit(f"{name}: per-polygon counts differ from {SEPTEMBER.name}")
         status = write_create_only(EVIDENCE / name, data)
         report["evidence"][name] = {
             "system": "fewsnet", "horizon_months": horizon, "model_package_id": packages[horizon], "basis": basis,

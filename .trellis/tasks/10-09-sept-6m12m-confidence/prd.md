@@ -38,6 +38,10 @@ Produce September-origin 6m and 12m FEWSNET + IPCCH results (targets 2027-03 and
 | D15 | No trellis-audit. Commit only this task's code, spec, doc and task files on `feat/october-cloud-delivery`. Exclude the pre-existing CRLF-only working-tree changes. No push. Data travels in the archive, not Git. |
 | D16 | No portable replay bundle for September 6m/12m. The deliverable is the scope CSVs, shared references, reports and inventory. |
 | D17 | Per-scope directories only; no combined cross-horizon table. |
+| D18 | (2026-10-09, revised after user correction; supersedes D10) The existing October cloud output is a **smoke** run. Real delivery happens after the operators move the package to their own account and buckets. The goals are therefore (a) the package can be transferred and (b) cloud orchestration output matches the manual output. Rerun the whole October delivery in the **real cloud** (`manuel-remote-sensing`) with the same inputs: origin 2026-10, prepared `full-window-20261008c`, ACLED/WFP keep. Use a new image built from the current code and the new baseline evidence, under a new run_id. Download the bundle and replay it offline locally. Predictions must equal the existing October cloud results; confidence is now populated. The result replaces `cloud_pipeline/fallback/october_2026`, after the old copy is backed up to the external legacy archive with hash checks. |
+| D19 | (2026-10-09, supersedes the FEWS 0m part of D7) FEWS 0m confidence uses the `georf_fs1` Stage3 proxy (4-month lag, the h5 evidence) with basis `h0_validation_error_proxy_stage3_fs1_lag4_2021_2024`, period 2021-02..2024-10, added to `APPROVED_PROXY_EVIDENCE`. It is more pessimistic than true 0m error; the basis string discloses this. All 15 baseline declarations become available. |
+| D20 | (2026-10-09) Update the Cloud Run job `oct-delivery` image and the workflow `oct-delivery-trigger` variable `DELIVERY_IMAGE_URI` together to the new image `runtime:cp5-confidence-1@sha256:7e6133f3…`. Nothing else in the workflow source changes. The old digest `41944ea0…` is recorded for rollback. Then submit the prepared `oct-confidence-20261009a` request. |
+| D21 | (2026-10-09) After the cloud rerun passes, verify that offline replay succeeds and that predictions equal the old October output. Then repoint the handover to the new image: the `baseline.json` runtime, the six acceptance records and the `OPERATIONS.md` digest. The prediction-equality result is the new image's acceptance evidence. Then build `dist/cloud_pipeline-20261009b.tar.gz`. |
 
 ## Requirements
 
@@ -86,3 +90,14 @@ Produce September-origin 6m and 12m FEWSNET + IPCCH results (targets 2027-03 and
 - Retraining or refitting any model, including temporary FEWS validation fits.
 - Rescoring the October fallback, live cloud deployment, cutover or push.
 - A FEWS 0m proxy; a portable September bundle; combined cross-horizon tables.
+
+## Follow-up acceptance (D18/D19)
+
+- [ ] AC7: FEWS 0m evidence is built from fs1, and its counts equal the h5 counts exactly. The allowlist accepts it at 0m only. `baseline.json` has all 15 declarations available, and the tests pass.
+- [ ] AC8: the cloud rerun (new image digest, new run_id) succeeds. In the downloaded bundle:
+  - It replays offline locally and reproduces every table.
+  - Prediction/mapping tables equal the existing October cloud output (IDs and categories exact; continuous values at atol 1e-12).
+  - Every 0/6/12m confidence table is populated per coverage, with only structural blanks.
+  - `diagnostic_availability.csv` has no `missing_evidence` rows.
+  - The old fallback has been backed up and verified. The new fallback inventory matches.
+- [ ] AC9: a new create-only handover archive is built and verified. Docs and specs are updated, and the change is committed. All task-owned cloud resources are listed and wound down as agreed.
