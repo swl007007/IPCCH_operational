@@ -1,0 +1,14 @@
+{
+  "project": "feisty-flames-511718-d4",
+  "region": "us-central1",
+  "bucket": "food-crisis-test-ipcch-data",
+  "request_bucket": "food-crisis-test-ipcch-requests",
+  "service_account": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+  "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+  "namespace": "monthly-staging",
+  "prepare_job": "monthly-prepare",
+  "earth_engine_project": "feisty-flames-511718-d4",
+  "operator": "weilun.shi",
+  "work_dir": "operator-state",
+  "workflow_service_account": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com"
+}

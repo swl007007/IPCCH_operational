@@ -1,0 +1,1213 @@
+{
+  "baseline_id": "95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884",
+  "delivery": {
+    "contracts": {
+      "diagnostic": {
+        "sha256": "be3f1b44776624b9c37b661e9711ac1d8f51628b80c33e3b60b6a56fea088c9b",
+        "version": "diag-v1"
+      },
+      "feature": {
+        "sha256": "d190c5735d387696e675626236364b8f6eef7ac7eeda3a401933bf32ca03b12c",
+        "version": "feature-v1"
+      },
+      "fill": {
+        "sha256": "dcd32479a72e55b29a03a586d8a483a05be0ce87cc5c25c7bad23079fc0356b3",
+        "version": "area-past-only-carry-forward-v1"
+      },
+      "output": {
+        "sha256": "13fb4caaedd24fbe2295ff05c4e05416ec88163fbaa05c69821d74f47868523a",
+        "version": "september-v3-output-v1"
+      }
+    },
+    "diagnostics": [
+      {
+        "evidence": {
+          "generation": "1792093502912090",
+          "sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/fewsnet_0m_stage3_fs1_area.csv"
+        },
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+        "family": "polygon_confidence",
+        "horizon_months": 0,
+        "status": "available",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1792093502912090",
+          "sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/fewsnet_0m_stage3_fs1_area.csv"
+        },
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+        "family": "country_confidence",
+        "horizon_months": 0,
+        "status": "available",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1792093503436729",
+          "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/fewsnet_6m_stage3_fs2_area.csv"
+        },
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+        "family": "polygon_confidence",
+        "horizon_months": 6,
+        "status": "available",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1792093503436729",
+          "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/fewsnet_6m_stage3_fs2_area.csv"
+        },
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+        "family": "country_confidence",
+        "horizon_months": 6,
+        "status": "available",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1792093503181747",
+          "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/fewsnet_12m_stage3_fs3_area.csv"
+        },
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+        "family": "polygon_confidence",
+        "horizon_months": 12,
+        "status": "available",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1792093503181747",
+          "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/fewsnet_12m_stage3_fs3_area.csv"
+        },
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+        "family": "country_confidence",
+        "horizon_months": 12,
+        "status": "available",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1792093503670429",
+          "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_0m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_0m",
+        "family": "polygon_training_errors",
+        "horizon_months": 0,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1792093503670429",
+          "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_0m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_0m",
+        "family": "country_confidence",
+        "horizon_months": 0,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1792093504519010",
+          "sha256": "38a0e027f5f551cf1311ffd97a9fa008ef2b87c1f99543a8c0d30b91905279e4",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_0m_resubstitution_residual.csv"
+        },
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_0m",
+        "family": "maximum_phase",
+        "horizon_months": 0,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1792093506246178",
+          "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_6m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_6m",
+        "family": "polygon_training_errors",
+        "horizon_months": 6,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1792093506246178",
+          "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_6m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_6m",
+        "family": "country_confidence",
+        "horizon_months": 6,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1792093508080011",
+          "sha256": "97e7791f7a1b29cf47bbe640bb2c46d6303e47a3974af3647f032787dd1a2670",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_6m_resubstitution_residual.csv"
+        },
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_6m",
+        "family": "maximum_phase",
+        "horizon_months": 6,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1792093504789365",
+          "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_12m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_12m",
+        "family": "polygon_training_errors",
+        "horizon_months": 12,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1792093504789365",
+          "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_12m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_12m",
+        "family": "country_confidence",
+        "horizon_months": 12,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1792093505964991",
+          "sha256": "f1fc9dd98eef2149bad6220775b16f83bdf0fe21121b4f1ce8c4945a6aeab780",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_12m_resubstitution_residual.csv"
+        },
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_12m",
+        "family": "maximum_phase",
+        "horizon_months": 12,
+        "status": "available",
+        "system": "ipcch"
+      }
+    ],
+    "horizons_months": [
+      0,
+      6,
+      12
+    ],
+    "schema_version": "fewsnet-ipcch-delivery-request-v1",
+    "systems": [
+      "fewsnet",
+      "ipcch"
+    ]
+  },
+  "destination": {
+    "bucket": "food-crisis-test-ipcch-data",
+    "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+    "namespace": "monthly-staging",
+    "project": "feisty-flames-511718-d4",
+    "request_bucket": "food-crisis-test-ipcch-requests"
+  },
+  "model_records": [
+    {
+      "acceptance": {
+        "evidence": "rebuilt runtime (current maintained source, unchanged requirements lock) for unchanged package bytes; compatibility evidence = prediction equality with the accepted cloud run oct-final-20261008a (image sha256:41944ea0...), checked after this run in .trellis/tasks/10-09-sept-6m12m-confidence/research/october_confidence_check.json",
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 0,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+        "package_manifest_sha256": "bfc78075bac2a6e7ae944b7d376aab56cf35d4c611aa3fc0a548c4048a82e0b4",
+        "runtime": {
+          "environment_manifest_sha256": "c8dec43c79faafa908518dd88aa875094cb9d30e8788366b77c78a7ebb4ba0ee",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "fewsnet"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "horizon_months": 0,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791467646994945",
+            "path": "checksums.json",
+            "sha256": "03e4fb673c898e5c4f3ef58badab98b257db4e349c27204c9e656ff19f88e4d8",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/checksums.json"
+          },
+          {
+            "generation": "1791467646988286",
+            "path": "feature_contract.json",
+            "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/feature_contract.json"
+          },
+          {
+            "generation": "1791467647038526",
+            "path": "local_model_manifest.json",
+            "sha256": "51b02a8d5aba48dbc7077782ec36ef3f06d4c51bc6abb71074907151875c935a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/local_model_manifest.json"
+          },
+          {
+            "generation": "1791467649283509",
+            "path": "model.joblib",
+            "sha256": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/model.joblib"
+          },
+          {
+            "generation": "1791467647156491",
+            "path": "partition_map.csv",
+            "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/partition_map.csv"
+          },
+          {
+            "generation": "1791467647155691",
+            "path": "threshold_report.json",
+            "sha256": "ab59086a60c7b99681ebe7c357c57c6bb508200cc71c6f3495368a39792c2956",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/threshold_report.json"
+          },
+          {
+            "generation": "1791467647096915",
+            "path": "training_report.json",
+            "sha256": "14fa1aa9447e86e6bc81be396ab112670f462bf4f69d4626a7b6b8810957a832",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/0m/training_report.json"
+          }
+        ],
+        "horizon_months": 0,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "fewsnet"
+      },
+      "manifest_sha256": "bfc78075bac2a6e7ae944b7d376aab56cf35d4c611aa3fc0a548c4048a82e0b4",
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+      "system": "fewsnet"
+    },
+    {
+      "acceptance": {
+        "evidence": "rebuilt runtime (current maintained source, unchanged requirements lock) for unchanged package bytes; compatibility evidence = prediction equality with the accepted cloud run oct-final-20261008a (image sha256:41944ea0...), checked after this run in .trellis/tasks/10-09-sept-6m12m-confidence/research/october_confidence_check.json",
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 6,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+        "package_manifest_sha256": "7cdb8f5a8846080e7ca3cadac6ec460013c2b16700a64e28b6634005e3c5e434",
+        "runtime": {
+          "environment_manifest_sha256": "c8dec43c79faafa908518dd88aa875094cb9d30e8788366b77c78a7ebb4ba0ee",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "fewsnet"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "horizon_months": 6,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791467660389561",
+            "path": "checksums.json",
+            "sha256": "1a53d74e0aaa98ad81a653121d3910a1c02d34dcdfc6e27471a02a079822cbd0",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/checksums.json"
+          },
+          {
+            "generation": "1791467660334586",
+            "path": "feature_contract.json",
+            "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/feature_contract.json"
+          },
+          {
+            "generation": "1791467660315200",
+            "path": "local_model_manifest.json",
+            "sha256": "db0517e41744bc7e0597228420dd2a58a7602480382e519a8509617942ff169f",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/local_model_manifest.json"
+          },
+          {
+            "generation": "1791467663714781",
+            "path": "model.joblib",
+            "sha256": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/model.joblib"
+          },
+          {
+            "generation": "1791467660499858",
+            "path": "partition_map.csv",
+            "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/partition_map.csv"
+          },
+          {
+            "generation": "1791467661473271",
+            "path": "threshold_report.json",
+            "sha256": "b02e4520f116782067b6149922b800ab7a15bd3f04863c98159870ad4704d13a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/threshold_report.json"
+          },
+          {
+            "generation": "1791467660446624",
+            "path": "training_report.json",
+            "sha256": "15c8e7a4a69534c991fa29b7cad114d2aed846c3cf9b6231e6a1b62bd9249180",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/6m/training_report.json"
+          }
+        ],
+        "horizon_months": 6,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "fewsnet"
+      },
+      "manifest_sha256": "7cdb8f5a8846080e7ca3cadac6ec460013c2b16700a64e28b6634005e3c5e434",
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+      "system": "fewsnet"
+    },
+    {
+      "acceptance": {
+        "evidence": "rebuilt runtime (current maintained source, unchanged requirements lock) for unchanged package bytes; compatibility evidence = prediction equality with the accepted cloud run oct-final-20261008a (image sha256:41944ea0...), checked after this run in .trellis/tasks/10-09-sept-6m12m-confidence/research/october_confidence_check.json",
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 12,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+        "package_manifest_sha256": "466ce05b53df49c09a3bac50a7d8af28d690c79278d1b8733a58917f4fe35c30",
+        "runtime": {
+          "environment_manifest_sha256": "c8dec43c79faafa908518dd88aa875094cb9d30e8788366b77c78a7ebb4ba0ee",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "fewsnet"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "horizon_months": 12,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791467678333839",
+            "path": "checksums.json",
+            "sha256": "b973b5f3d429af6ee5685a30cb74c56e8fddb3dfb1047d6e9605fe9d9af8bc29",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/checksums.json"
+          },
+          {
+            "generation": "1791467678301914",
+            "path": "feature_contract.json",
+            "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/feature_contract.json"
+          },
+          {
+            "generation": "1791467678333144",
+            "path": "local_model_manifest.json",
+            "sha256": "14bdc46272de7abd0cae4b07fe326b9c72a44c728105134f7e9897ae68716869",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/local_model_manifest.json"
+          },
+          {
+            "generation": "1791467681461503",
+            "path": "model.joblib",
+            "sha256": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/model.joblib"
+          },
+          {
+            "generation": "1791467678476887",
+            "path": "partition_map.csv",
+            "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/partition_map.csv"
+          },
+          {
+            "generation": "1791467678394231",
+            "path": "threshold_report.json",
+            "sha256": "39bb0bc0f302f1123abfe15815975b7f761514e88359d8d9b9698959c3b07135",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/threshold_report.json"
+          },
+          {
+            "generation": "1791467678446208",
+            "path": "training_report.json",
+            "sha256": "792920fe8ecaa34ba1d914e89526adb7b3dfe8e2429b4aebc46b49064beee7c2",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/fewsnet_package/12m/training_report.json"
+          }
+        ],
+        "horizon_months": 12,
+        "package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "fewsnet"
+      },
+      "manifest_sha256": "466ce05b53df49c09a3bac50a7d8af28d690c79278d1b8733a58917f4fe35c30",
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+      "system": "fewsnet"
+    },
+    {
+      "acceptance": {
+        "evidence": "rebuilt runtime (current maintained source, unchanged requirements lock) for unchanged package bytes; compatibility evidence = prediction equality with the accepted cloud run oct-final-20261008a (image sha256:41944ea0...), checked after this run in .trellis/tasks/10-09-sept-6m12m-confidence/research/october_confidence_check.json",
+        "feature_schema_sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+        "horizon_months": 0,
+        "package_id": "launch_2026_04_production_safe/scope_0m",
+        "package_manifest_sha256": "6f8168e9cb582a453c683b3b08ee633a9ef4f80aa15169ef5057ed6d0262cbc9",
+        "runtime": {
+          "environment_manifest_sha256": "c8dec43c79faafa908518dd88aa875094cb9d30e8788366b77c78a7ebb4ba0ee",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "ipcch"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+      "horizon_months": 0,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791475524945832",
+            "path": "model_package_manifest.json",
+            "sha256": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/model_package_manifest.json"
+          },
+          {
+            "generation": "1791475562701164",
+            "path": "scope_0m/feature_columns.json",
+            "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/feature_columns.json"
+          },
+          {
+            "generation": "1791475582903689",
+            "path": "scope_0m/feature_contract.csv",
+            "sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/feature_contract.csv"
+          },
+          {
+            "generation": "1791475601041220",
+            "path": "scope_0m/model_metadata.json",
+            "sha256": "adf2965fcb9d830609a1ca908f151f7958d936d2ab44f310909f18136294da27",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/model_metadata.json"
+          },
+          {
+            "generation": "1791475618360116",
+            "path": "scope_0m/phase2_worse_model.json",
+            "sha256": "1623ffb2ad5dfc543a16649aa09d3aaa8f72279d864492ad340f495fb7efbc03",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/phase2_worse_model.json"
+          },
+          {
+            "generation": "1791475636928932",
+            "path": "scope_0m/phase3_worse_model.json",
+            "sha256": "d187f943cfa5a623da6de680857dc1c65ef71ae8be7b02a971d20d5de8160757",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/phase3_worse_model.json"
+          },
+          {
+            "generation": "1791475656169181",
+            "path": "scope_0m/phase4_worse_model.json",
+            "sha256": "177d201b628c49f90306971bb5d9504913b5c88edcd6ca1dc4133555ceaeeef3",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/phase4_worse_model.json"
+          },
+          {
+            "generation": "1791475676306310",
+            "path": "scope_0m/phase5_worse_model.json",
+            "sha256": "21d25364c6225868ec1ea45f60c9bfd0e0c3c91023d9b33c4424bbd8e443ede2",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_0m/phase5_worse_model.json"
+          },
+          {
+            "generation": "1791475543109845",
+            "path": "training_export_summary.json",
+            "sha256": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/training_export_summary.json"
+          }
+        ],
+        "horizon_months": 0,
+        "package_id": "launch_2026_04_production_safe/scope_0m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "ipcch"
+      },
+      "manifest_sha256": "6f8168e9cb582a453c683b3b08ee633a9ef4f80aa15169ef5057ed6d0262cbc9",
+      "package_id": "launch_2026_04_production_safe/scope_0m",
+      "system": "ipcch"
+    },
+    {
+      "acceptance": {
+        "evidence": "rebuilt runtime (current maintained source, unchanged requirements lock) for unchanged package bytes; compatibility evidence = prediction equality with the accepted cloud run oct-final-20261008a (image sha256:41944ea0...), checked after this run in .trellis/tasks/10-09-sept-6m12m-confidence/research/october_confidence_check.json",
+        "feature_schema_sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+        "horizon_months": 6,
+        "package_id": "launch_2026_04_production_safe/scope_6m",
+        "package_manifest_sha256": "dcfa963311c6a52c2974e69319bf8569a1604fd877b8fbdc1ad9eabbb7353c22",
+        "runtime": {
+          "environment_manifest_sha256": "c8dec43c79faafa908518dd88aa875094cb9d30e8788366b77c78a7ebb4ba0ee",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "ipcch"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+      "horizon_months": 6,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791475524945832",
+            "path": "model_package_manifest.json",
+            "sha256": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/model_package_manifest.json"
+          },
+          {
+            "generation": "1791475838902969",
+            "path": "scope_6m/feature_columns.json",
+            "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/feature_columns.json"
+          },
+          {
+            "generation": "1791475858699184",
+            "path": "scope_6m/feature_contract.csv",
+            "sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/feature_contract.csv"
+          },
+          {
+            "generation": "1791475880316547",
+            "path": "scope_6m/model_metadata.json",
+            "sha256": "6dc4600831bf705bb1c6884f4e1925b3e737b2f68bda23d570f3da2ff4598e06",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/model_metadata.json"
+          },
+          {
+            "generation": "1791475901636284",
+            "path": "scope_6m/phase2_worse_model.json",
+            "sha256": "aafb1f83f6d70b16d782d765b565a55ebcf004d3a5659636f78852da74c5e354",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/phase2_worse_model.json"
+          },
+          {
+            "generation": "1791475920648464",
+            "path": "scope_6m/phase3_worse_model.json",
+            "sha256": "664c8f57589372c98cef8853f939eaa44ac615a3a85f0c7ed1d6e7311683f753",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/phase3_worse_model.json"
+          },
+          {
+            "generation": "1791475938851846",
+            "path": "scope_6m/phase4_worse_model.json",
+            "sha256": "7460239dc5c42cbfa008486ab013018d2bb081da4874949ce3365b6f106e2b00",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/phase4_worse_model.json"
+          },
+          {
+            "generation": "1791475961684742",
+            "path": "scope_6m/phase5_worse_model.json",
+            "sha256": "3959dbb21b7e432430bebb2fc54bc79c63a246cdaa3869b1f22b67857e1e248d",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_6m/phase5_worse_model.json"
+          },
+          {
+            "generation": "1791475543109845",
+            "path": "training_export_summary.json",
+            "sha256": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/training_export_summary.json"
+          }
+        ],
+        "horizon_months": 6,
+        "package_id": "launch_2026_04_production_safe/scope_6m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "ipcch"
+      },
+      "manifest_sha256": "dcfa963311c6a52c2974e69319bf8569a1604fd877b8fbdc1ad9eabbb7353c22",
+      "package_id": "launch_2026_04_production_safe/scope_6m",
+      "system": "ipcch"
+    },
+    {
+      "acceptance": {
+        "evidence": "rebuilt runtime (current maintained source, unchanged requirements lock) for unchanged package bytes; compatibility evidence = prediction equality with the accepted cloud run oct-final-20261008a (image sha256:41944ea0...), checked after this run in .trellis/tasks/10-09-sept-6m12m-confidence/research/october_confidence_check.json",
+        "feature_schema_sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+        "horizon_months": 12,
+        "package_id": "launch_2026_04_production_safe/scope_12m",
+        "package_manifest_sha256": "3bdeaf94125a97d4c469a0496cdbb36bcb7cab9639eb60cf3a2550fc247db007",
+        "runtime": {
+          "environment_manifest_sha256": "c8dec43c79faafa908518dd88aa875094cb9d30e8788366b77c78a7ebb4ba0ee",
+          "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0"
+        },
+        "schema_version": "delivery-model-acceptance-v1",
+        "status": "accepted",
+        "system": "ipcch"
+      },
+      "environment": {
+        "image_uri": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+        "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+      },
+      "feature_schema_sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+      "horizon_months": 12,
+      "manifest": {
+        "files": [
+          {
+            "generation": "1791475524945832",
+            "path": "model_package_manifest.json",
+            "sha256": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/model_package_manifest.json"
+          },
+          {
+            "generation": "1791475699172377",
+            "path": "scope_12m/feature_columns.json",
+            "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/feature_columns.json"
+          },
+          {
+            "generation": "1791475722555322",
+            "path": "scope_12m/feature_contract.csv",
+            "sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/feature_contract.csv"
+          },
+          {
+            "generation": "1791475745562211",
+            "path": "scope_12m/model_metadata.json",
+            "sha256": "df8a81aa62c6f8be2226e8f6ba64dfa53786425d5e29e715f17219176da62582",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/model_metadata.json"
+          },
+          {
+            "generation": "1791475768435606",
+            "path": "scope_12m/phase2_worse_model.json",
+            "sha256": "39e5bed8ca3063fa3004edabcd02838cb873a9c7a384c7aa5fd9867eff6cb41f",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/phase2_worse_model.json"
+          },
+          {
+            "generation": "1791475782645937",
+            "path": "scope_12m/phase3_worse_model.json",
+            "sha256": "eb97f722d941fa95ca18cbf971492420af55f7eab44df68fddc7ddacc3bb7cb6",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/phase3_worse_model.json"
+          },
+          {
+            "generation": "1791475798759892",
+            "path": "scope_12m/phase4_worse_model.json",
+            "sha256": "22c8a847317b5eb800c14d4fe6dfef320500741e1cb46830af7859c3c6eed1bf",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/phase4_worse_model.json"
+          },
+          {
+            "generation": "1791475818619654",
+            "path": "scope_12m/phase5_worse_model.json",
+            "sha256": "17f76bdd82ccad753138029d62fa7e04cf8c40c50c3b3feaf7e7f64f74b370a8",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/scope_12m/phase5_worse_model.json"
+          },
+          {
+            "generation": "1791475543109845",
+            "path": "training_export_summary.json",
+            "sha256": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a",
+            "uri": "gs://manuel-remote-sensing-oct-delivery-debug/delivery-inputs/v3-20261008a/ipcch_package/training_export_summary.json"
+          }
+        ],
+        "horizon_months": 12,
+        "package_id": "launch_2026_04_production_safe/scope_12m",
+        "schema_version": "delivery-package-manifest-v1",
+        "system": "ipcch"
+      },
+      "manifest_sha256": "3bdeaf94125a97d4c469a0496cdbb36bcb7cab9639eb60cf3a2550fc247db007",
+      "package_id": "launch_2026_04_production_safe/scope_12m",
+      "system": "ipcch"
+    }
+  ],
+  "models": [
+    {
+      "acceptance_report": {
+        "generation": "1792093567802907",
+        "sha256": "f7aab63f823718edfca3bdd4ce37c216be842f8c9423cddbddbe581d8c63abfb",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/fewsnet/0m/local-202604-57cb3b981198-510375f58cd8/0m/acceptance.json"
+      },
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "horizon_months": 0,
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+      "package_manifest": {
+        "generation": "1792093567669988",
+        "sha256": "283f82aaaec5c8e3022201f31401e2238a107be52465a0be8d3cc49ff60a7a31",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/fewsnet/0m/local-202604-57cb3b981198-510375f58cd8/0m/package.json"
+      },
+      "system": "fewsnet"
+    },
+    {
+      "acceptance_report": {
+        "generation": "1792093581328428",
+        "sha256": "ff9f02351702ef08ccf9884cd4113a004493e88768f3572119cbb7130f20352f",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/fewsnet/6m/local-202604-57cb3b981198-510375f58cd8/6m/acceptance.json"
+      },
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "horizon_months": 6,
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+      "package_manifest": {
+        "generation": "1792093581195179",
+        "sha256": "d89a7271ac1c0e218b7138393c9dc604b08924ad552e577a7689c68aac08cd52",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/fewsnet/6m/local-202604-57cb3b981198-510375f58cd8/6m/package.json"
+      },
+      "system": "fewsnet"
+    },
+    {
+      "acceptance_report": {
+        "generation": "1792093599710664",
+        "sha256": "bd683736bbc9add8561078ee5876c3b6f3916e5fc29b3f96ea22c5d49fca1205",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/fewsnet/12m/local-202604-57cb3b981198-510375f58cd8/12m/acceptance.json"
+      },
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "horizon_months": 12,
+      "package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+      "package_manifest": {
+        "generation": "1792093599563031",
+        "sha256": "9eb370b3da2fd9b85311f8fd0d678655ecc3f62df634702b70d69fdc843e3aed",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/fewsnet/12m/local-202604-57cb3b981198-510375f58cd8/12m/package.json"
+      },
+      "system": "fewsnet"
+    },
+    {
+      "acceptance_report": {
+        "generation": "1792093602915130",
+        "sha256": "f767f5f5f417763c78fc969937a8a0cdacbc109354d5bc217e8781097ae7d5c4",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/ipcch/0m/launch_2026_04_production_safe/scope_0m/acceptance.json"
+      },
+      "feature_schema_sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+      "horizon_months": 0,
+      "package_id": "launch_2026_04_production_safe/scope_0m",
+      "package_manifest": {
+        "generation": "1792093602790827",
+        "sha256": "238924fe61fde554499819d05a296fe1e8caa7e44eccde3f5a0449759fd6facd",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/ipcch/0m/launch_2026_04_production_safe/scope_0m/package.json"
+      },
+      "system": "ipcch"
+    },
+    {
+      "acceptance_report": {
+        "generation": "1792093605154768",
+        "sha256": "5fc5ecaef6ef203bca1661a1d896b178201ab9b4194908f2485b0eb88eb58cd0",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/ipcch/6m/launch_2026_04_production_safe/scope_6m/acceptance.json"
+      },
+      "feature_schema_sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+      "horizon_months": 6,
+      "package_id": "launch_2026_04_production_safe/scope_6m",
+      "package_manifest": {
+        "generation": "1792093605034268",
+        "sha256": "556b5657904b40ef4efe414d4ef842e5e2eae369f2501be6d6f2c88b930cf371",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/ipcch/6m/launch_2026_04_production_safe/scope_6m/package.json"
+      },
+      "system": "ipcch"
+    },
+    {
+      "acceptance_report": {
+        "generation": "1792093607320575",
+        "sha256": "2d70b492e79c6276bc261caae3a75f776f9be5f3edb10df872951ee19e450356",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/ipcch/12m/launch_2026_04_production_safe/scope_12m/acceptance.json"
+      },
+      "feature_schema_sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+      "horizon_months": 12,
+      "package_id": "launch_2026_04_production_safe/scope_12m",
+      "package_manifest": {
+        "generation": "1792093607204184",
+        "sha256": "f0e777dd708b306b00dd1e9822e4dd60a148107d9113e8ebc69424d82a5615b5",
+        "uri": "gs://food-crisis-test-ipcch-data/models/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0/ipcch/12m/launch_2026_04_production_safe/scope_12m/package.json"
+      },
+      "system": "ipcch"
+    }
+  ],
+  "refs": {
+    "assets/fewsnet/geometry.geojson": {
+      "generation": "1792093021794829",
+      "sha256": "4a491eae5f88f99226f57b93542dcb9f527609787fb81059043a9c8721999386",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/fewsnet/geometry.geojson"
+    },
+    "assets/fewsnet/history/evi.csv": {
+      "generation": "1792093024042389",
+      "sha256": "6fce51ea8e6b44044812917a847947796879ed5472bc651637a2c6396e072e3c",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/fewsnet/history/evi.csv"
+    },
+    "assets/fewsnet/history/fldas.csv": {
+      "generation": "1792093027777846",
+      "sha256": "012075c932e945142f473c7569316c9888328e65968eb7245fd5cc06a5fb1393",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/fewsnet/history/fldas.csv"
+    },
+    "assets/fewsnet/history/gosif_mean.csv": {
+      "generation": "1792093028692211",
+      "sha256": "ccfbf9af4804931470f756d99aea8e82e37409c976a07c937bc272dafa12113b",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/fewsnet/history/gosif_mean.csv"
+    },
+    "assets/fewsnet/history/viirs.csv": {
+      "generation": "1792093030244594",
+      "sha256": "578bca9be8fe79a19fc69602a72ebd60ce37ab2815af7f15e7cfc5b887136825",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/fewsnet/history/viirs.csv"
+    },
+    "assets/fewsnet/history_panel.csv": {
+      "generation": "1792093161777044",
+      "sha256": "ddcd30f255e86e2465819a28f11facaca87221c0fd8be6e6fd4ff5fd677149b8",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/fewsnet/history_panel.csv"
+    },
+    "assets/fewsnet/population.csv": {
+      "generation": "1792093174423064",
+      "sha256": "2970798181d21e95caa5a9ee4b04eb2304dc8bd8d0e35df98e683eb878844a90",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/fewsnet/population.csv"
+    },
+    "assets/fewsnet/roster.csv": {
+      "generation": "1792093174571436",
+      "sha256": "57c3ffaec68103321bb8da485e86026e1ef0e861db3f6274709fab84bcdfb2ef",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/fewsnet/roster.csv"
+    },
+    "assets/ipcch/fixed_features.csv": {
+      "generation": "1792093175195000",
+      "sha256": "8596ddb16aae439201b38148660e82981b7d498be1cbb1d2d77ae6dcf282e375",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/fixed_features.csv"
+    },
+    "assets/ipcch/geometry.geojson": {
+      "generation": "1792093184692973",
+      "sha256": "6d0460bbc45292986fdb6da33215e34501e9ad4d8f7b20ff23117c43f1e66268",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/geometry.geojson"
+    },
+    "assets/ipcch/history/evi.csv": {
+      "generation": "1792093185787626",
+      "sha256": "0e452a3778244e9b725bd6083a7bd2fa10d0177c67d8e893513846be1aa2a12f",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/history/evi.csv"
+    },
+    "assets/ipcch/history/fldas.csv": {
+      "generation": "1792093195001645",
+      "sha256": "65034800c1ec0a5153c5afe1b0a8a449ab9dfc9894fc8bc5a997abb2da022a1f",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/history/fldas.csv"
+    },
+    "assets/ipcch/history/gosif_mean.csv": {
+      "generation": "1792093195856890",
+      "sha256": "4c2a70f86aefe469e56c772353e8e176597a7a0cd82b626a2f9aa7f0e2cb0323",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/history/gosif_mean.csv"
+    },
+    "assets/ipcch/history/gosif_sd.csv": {
+      "generation": "1792093196339263",
+      "sha256": "622e5e7e5fcc02a66b37ae82773bfcb482c2b9d8fd19d7267cca08a213421d9d",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/history/gosif_sd.csv"
+    },
+    "assets/ipcch/history/viirs.csv": {
+      "generation": "1792093197105119",
+      "sha256": "f5cba9a8db449a50b0bea86b71471e8b041484428398f4d578cf15ab64047902",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/history/viirs.csv"
+    },
+    "assets/ipcch/history_panel.csv": {
+      "generation": "1792093464807152",
+      "sha256": "6ab4e44726666449b9c4c814cd52c89ef73fa83f7e05a480a066853d1e7e8ea3",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/history_panel.csv"
+    },
+    "assets/ipcch/population.csv": {
+      "generation": "1792093470882078",
+      "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/population.csv"
+    },
+    "assets/ipcch/roster.csv": {
+      "generation": "1792093471011032",
+      "sha256": "248acd133782d814d55ca24fd0d3040b92356c903b79c8ed7f736981991b15ee",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/ipcch/roster.csv"
+    },
+    "assets/retained_acled.csv": {
+      "generation": "1792093486126115",
+      "sha256": "2fe972edb8f4ac19276841ffdaa4670414069b8c661ee64c00f0b0508cdf168e",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/retained_acled.csv"
+    },
+    "assets/retained_wfp.csv": {
+      "generation": "1792093502376011",
+      "sha256": "bc0213b942c80f66510eb715646999ed6c7ecf444c7ba441fdbe3136bed13af8",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/assets/retained_wfp.csv"
+    },
+    "evidence/fewsnet_0m_stage3_fs1_area.csv": {
+      "generation": "1792093502912090",
+      "sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/fewsnet_0m_stage3_fs1_area.csv"
+    },
+    "evidence/fewsnet_12m_stage3_fs3_area.csv": {
+      "generation": "1792093503181747",
+      "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/fewsnet_12m_stage3_fs3_area.csv"
+    },
+    "evidence/fewsnet_6m_stage3_fs2_area.csv": {
+      "generation": "1792093503436729",
+      "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/fewsnet_6m_stage3_fs2_area.csv"
+    },
+    "evidence/ipcch_0m_resubstitution_area.csv": {
+      "generation": "1792093503670429",
+      "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_0m_resubstitution_area.csv"
+    },
+    "evidence/ipcch_0m_resubstitution_residual.csv": {
+      "generation": "1792093504519010",
+      "sha256": "38a0e027f5f551cf1311ffd97a9fa008ef2b87c1f99543a8c0d30b91905279e4",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_0m_resubstitution_residual.csv"
+    },
+    "evidence/ipcch_12m_resubstitution_area.csv": {
+      "generation": "1792093504789365",
+      "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_12m_resubstitution_area.csv"
+    },
+    "evidence/ipcch_12m_resubstitution_residual.csv": {
+      "generation": "1792093505964991",
+      "sha256": "f1fc9dd98eef2149bad6220775b16f83bdf0fe21121b4f1ce8c4945a6aeab780",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_12m_resubstitution_residual.csv"
+    },
+    "evidence/ipcch_6m_resubstitution_area.csv": {
+      "generation": "1792093506246178",
+      "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_6m_resubstitution_area.csv"
+    },
+    "evidence/ipcch_6m_resubstitution_residual.csv": {
+      "generation": "1792093508080011",
+      "sha256": "97e7791f7a1b29cf47bbe640bb2c46d6303e47a3974af3647f032787dd1a2670",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/ipcch_6m_resubstitution_residual.csv"
+    },
+    "evidence/provenance.json": {
+      "generation": "1792093508245913",
+      "sha256": "949a71ff9e679b53ab64cb05b910453693b9fa30e6626e804abc904d26a93178",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/evidence/provenance.json"
+    },
+    "models/fewsnet/0m/checksums.json": {
+      "generation": "1792093508374379",
+      "sha256": "03e4fb673c898e5c4f3ef58badab98b257db4e349c27204c9e656ff19f88e4d8",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/0m/checksums.json"
+    },
+    "models/fewsnet/0m/feature_contract.json": {
+      "generation": "1792093508512455",
+      "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/0m/feature_contract.json"
+    },
+    "models/fewsnet/0m/local_model_manifest.json": {
+      "generation": "1792093508635656",
+      "sha256": "51b02a8d5aba48dbc7077782ec36ef3f06d4c51bc6abb71074907151875c935a",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/0m/local_model_manifest.json"
+    },
+    "models/fewsnet/0m/model.joblib": {
+      "generation": "1792093522658508",
+      "sha256": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/0m/model.joblib"
+    },
+    "models/fewsnet/0m/partition_map.csv": {
+      "generation": "1792093523081986",
+      "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/0m/partition_map.csv"
+    },
+    "models/fewsnet/0m/threshold_report.json": {
+      "generation": "1792093523216299",
+      "sha256": "ab59086a60c7b99681ebe7c357c57c6bb508200cc71c6f3495368a39792c2956",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/0m/threshold_report.json"
+    },
+    "models/fewsnet/0m/training_report.json": {
+      "generation": "1792093523350114",
+      "sha256": "14fa1aa9447e86e6bc81be396ab112670f462bf4f69d4626a7b6b8810957a832",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/0m/training_report.json"
+    },
+    "models/fewsnet/12m/checksums.json": {
+      "generation": "1792093523482679",
+      "sha256": "b973b5f3d429af6ee5685a30cb74c56e8fddb3dfb1047d6e9605fe9d9af8bc29",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/12m/checksums.json"
+    },
+    "models/fewsnet/12m/feature_contract.json": {
+      "generation": "1792093523716113",
+      "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/12m/feature_contract.json"
+    },
+    "models/fewsnet/12m/local_model_manifest.json": {
+      "generation": "1792093523872173",
+      "sha256": "14bdc46272de7abd0cae4b07fe326b9c72a44c728105134f7e9897ae68716869",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/12m/local_model_manifest.json"
+    },
+    "models/fewsnet/12m/model.joblib": {
+      "generation": "1792093534788200",
+      "sha256": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/12m/model.joblib"
+    },
+    "models/fewsnet/12m/partition_map.csv": {
+      "generation": "1792093535207377",
+      "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/12m/partition_map.csv"
+    },
+    "models/fewsnet/12m/threshold_report.json": {
+      "generation": "1792093535345484",
+      "sha256": "39bb0bc0f302f1123abfe15815975b7f761514e88359d8d9b9698959c3b07135",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/12m/threshold_report.json"
+    },
+    "models/fewsnet/12m/training_report.json": {
+      "generation": "1792093535505066",
+      "sha256": "792920fe8ecaa34ba1d914e89526adb7b3dfe8e2429b4aebc46b49064beee7c2",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/12m/training_report.json"
+    },
+    "models/fewsnet/6m/checksums.json": {
+      "generation": "1792093535644503",
+      "sha256": "1a53d74e0aaa98ad81a653121d3910a1c02d34dcdfc6e27471a02a079822cbd0",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/6m/checksums.json"
+    },
+    "models/fewsnet/6m/feature_contract.json": {
+      "generation": "1792093535814200",
+      "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/6m/feature_contract.json"
+    },
+    "models/fewsnet/6m/local_model_manifest.json": {
+      "generation": "1792093535947212",
+      "sha256": "db0517e41744bc7e0597228420dd2a58a7602480382e519a8509617942ff169f",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/6m/local_model_manifest.json"
+    },
+    "models/fewsnet/6m/model.joblib": {
+      "generation": "1792093548018538",
+      "sha256": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/6m/model.joblib"
+    },
+    "models/fewsnet/6m/partition_map.csv": {
+      "generation": "1792093548484735",
+      "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/6m/partition_map.csv"
+    },
+    "models/fewsnet/6m/threshold_report.json": {
+      "generation": "1792093548629476",
+      "sha256": "b02e4520f116782067b6149922b800ab7a15bd3f04863c98159870ad4704d13a",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/6m/threshold_report.json"
+    },
+    "models/fewsnet/6m/training_report.json": {
+      "generation": "1792093548761844",
+      "sha256": "15c8e7a4a69534c991fa29b7cad114d2aed846c3cf9b6231e6a1b62bd9249180",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/fewsnet/6m/training_report.json"
+    },
+    "models/ipcch/model_package_manifest.json": {
+      "generation": "1792093548896820",
+      "sha256": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/model_package_manifest.json"
+    },
+    "models/ipcch/scope_0m/feature_columns.json": {
+      "generation": "1792093549027204",
+      "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_0m/feature_columns.json"
+    },
+    "models/ipcch/scope_0m/feature_contract.csv": {
+      "generation": "1792093549227379",
+      "sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_0m/feature_contract.csv"
+    },
+    "models/ipcch/scope_0m/model_metadata.json": {
+      "generation": "1792093549367030",
+      "sha256": "adf2965fcb9d830609a1ca908f151f7958d936d2ab44f310909f18136294da27",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_0m/model_metadata.json"
+    },
+    "models/ipcch/scope_0m/phase2_worse_model.json": {
+      "generation": "1792093549677518",
+      "sha256": "1623ffb2ad5dfc543a16649aa09d3aaa8f72279d864492ad340f495fb7efbc03",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_0m/phase2_worse_model.json"
+    },
+    "models/ipcch/scope_0m/phase3_worse_model.json": {
+      "generation": "1792093550292484",
+      "sha256": "d187f943cfa5a623da6de680857dc1c65ef71ae8be7b02a971d20d5de8160757",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_0m/phase3_worse_model.json"
+    },
+    "models/ipcch/scope_0m/phase4_worse_model.json": {
+      "generation": "1792093550998190",
+      "sha256": "177d201b628c49f90306971bb5d9504913b5c88edcd6ca1dc4133555ceaeeef3",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_0m/phase4_worse_model.json"
+    },
+    "models/ipcch/scope_0m/phase5_worse_model.json": {
+      "generation": "1792093551325716",
+      "sha256": "21d25364c6225868ec1ea45f60c9bfd0e0c3c91023d9b33c4424bbd8e443ede2",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_0m/phase5_worse_model.json"
+    },
+    "models/ipcch/scope_12m/feature_columns.json": {
+      "generation": "1792093551464835",
+      "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_12m/feature_columns.json"
+    },
+    "models/ipcch/scope_12m/feature_contract.csv": {
+      "generation": "1792093551628703",
+      "sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_12m/feature_contract.csv"
+    },
+    "models/ipcch/scope_12m/model_metadata.json": {
+      "generation": "1792093551762737",
+      "sha256": "df8a81aa62c6f8be2226e8f6ba64dfa53786425d5e29e715f17219176da62582",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_12m/model_metadata.json"
+    },
+    "models/ipcch/scope_12m/phase2_worse_model.json": {
+      "generation": "1792093552262986",
+      "sha256": "39e5bed8ca3063fa3004edabcd02838cb873a9c7a384c7aa5fd9867eff6cb41f",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_12m/phase2_worse_model.json"
+    },
+    "models/ipcch/scope_12m/phase3_worse_model.json": {
+      "generation": "1792093552700220",
+      "sha256": "eb97f722d941fa95ca18cbf971492420af55f7eab44df68fddc7ddacc3bb7cb6",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_12m/phase3_worse_model.json"
+    },
+    "models/ipcch/scope_12m/phase4_worse_model.json": {
+      "generation": "1792093553101392",
+      "sha256": "22c8a847317b5eb800c14d4fe6dfef320500741e1cb46830af7859c3c6eed1bf",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_12m/phase4_worse_model.json"
+    },
+    "models/ipcch/scope_12m/phase5_worse_model.json": {
+      "generation": "1792093553503444",
+      "sha256": "17f76bdd82ccad753138029d62fa7e04cf8c40c50c3b3feaf7e7f64f74b370a8",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_12m/phase5_worse_model.json"
+    },
+    "models/ipcch/scope_6m/feature_columns.json": {
+      "generation": "1792093553671522",
+      "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_6m/feature_columns.json"
+    },
+    "models/ipcch/scope_6m/feature_contract.csv": {
+      "generation": "1792093553837378",
+      "sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_6m/feature_contract.csv"
+    },
+    "models/ipcch/scope_6m/model_metadata.json": {
+      "generation": "1792093553994293",
+      "sha256": "6dc4600831bf705bb1c6884f4e1925b3e737b2f68bda23d570f3da2ff4598e06",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_6m/model_metadata.json"
+    },
+    "models/ipcch/scope_6m/phase2_worse_model.json": {
+      "generation": "1792093554440487",
+      "sha256": "aafb1f83f6d70b16d782d765b565a55ebcf004d3a5659636f78852da74c5e354",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_6m/phase2_worse_model.json"
+    },
+    "models/ipcch/scope_6m/phase3_worse_model.json": {
+      "generation": "1792093554836198",
+      "sha256": "664c8f57589372c98cef8853f939eaa44ac615a3a85f0c7ed1d6e7311683f753",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_6m/phase3_worse_model.json"
+    },
+    "models/ipcch/scope_6m/phase4_worse_model.json": {
+      "generation": "1792093555318806",
+      "sha256": "7460239dc5c42cbfa008486ab013018d2bb081da4874949ce3365b6f106e2b00",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_6m/phase4_worse_model.json"
+    },
+    "models/ipcch/scope_6m/phase5_worse_model.json": {
+      "generation": "1792093555620864",
+      "sha256": "3959dbb21b7e432430bebb2fc54bc79c63a246cdaa3869b1f22b67857e1e248d",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/scope_6m/phase5_worse_model.json"
+    },
+    "models/ipcch/training_export_summary.json": {
+      "generation": "1792093555766943",
+      "sha256": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a",
+      "uri": "gs://food-crisis-test-ipcch-data/baselines/95111230975434f14258eac6c46a2525f527e7ee8ad8c1e14eb22033115d9884/models/ipcch/training_export_summary.json"
+    }
+  },
+  "runtime": {
+    "environment_manifest": {
+      "generation": "1792093555917692",
+      "sha256": "ed267b2e6993366025cbcbb7566ba990c07887a21f6722a453b370233192d0cb",
+      "uri": "gs://food-crisis-test-ipcch-data/environments/7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0.json"
+    },
+    "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0"
+  },
+  "sources": {
+    "acled": {
+      "sha256": "2b50fee6834348d2f45c60617955c75c4667e9a26197dff531eb337433029491",
+      "version": "september-h5-raw-converter-v1"
+    },
+    "wfp": {
+      "sha256": "2b50fee6834348d2f45c60617955c75c4667e9a26197dff531eb337433029491",
+      "version": "september-h5-raw-converter-v1"
+    }
+  }
+}
