@@ -20,7 +20,8 @@ live in different environments:
   One transaction per bundle: CREATE TABLE ``<namespace>.<name>`` (``_fid`` primary key, attributes, ``geom``), COPY,
   GiST index, ANALYZE, then verification before COMMIT - row count, every attribute (bigint exact, double exact, NULL
   positions exact, text exact) and ``ST_AsBinary(geom, 'NDR')`` byte-equal to the exported WKB, every SRID equal.
-  ``public._geometry_bundles`` keeps the bundle identity (member hashes, prj, srid, export sha256). Any failure rolls
+  ``public._geometry_bundles`` and the report keep the bundle identity (member hashes, prj, srid, rows/export.json/
+  inventory sha256). Any failure rolls
   the bundle back. Geometry validity is recorded (``ST_IsValid`` counts), never repaired.
 
   python -m research_cloud.sqlimport.load_geometry export --inventory INV.json --bundle ID --out DIR
@@ -140,6 +141,7 @@ def export(inventory_path, bundle, out_dir):
             f.write("\t".join(fields) + "\n")
     types = frame.geometry.geom_type.fillna("<null>").value_counts().to_dict()
     record = {"bundle": bundle, "namespace": ns, "shp_entry": shp["id"], "table": table_name(shp["id"]),
+              "inventory": {"path": os.path.abspath(inventory_path), "sha256": sha256_file(inventory_path)},
               "members": hashes, "encoding": info.get("encoding"), "driver_geometry_type": info.get("geometry_type"),
               "columns": [{"name": c, "kind": kinds[c], "sql_type": SQL_TYPES[kinds[c]]} for c in columns],
               "srid": int(epsg or 0), "prj": prj,
@@ -148,7 +150,8 @@ def export(inventory_path, bundle, out_dir):
               "has_z": has_z, "rows": int(len(frame)),
               "geometry_types": {k: int(v) for k, v in types.items()}, "rows_sha256": sha256_file(rows_path),
               "reader": {"geopandas": geopandas.__version__, "pyogrio": pyogrio.__version__, "shapely": shapely.__version__}}
-    json.dump(record, open(os.path.join(out_dir, "export.json"), "w"), indent=1)
+    with open(os.path.join(out_dir, "export.json"), "w") as f:
+        json.dump(record, f, indent=1)
     return record
 
 
@@ -168,7 +171,10 @@ def same(a, b, kind):
 
 def load(export_dir, dsn, report_path):
     import psycopg2
-    record = json.load(open(os.path.join(export_dir, "export.json")))
+    export_json = os.path.join(export_dir, "export.json")
+    export_sha = sha256_file(export_json)
+    with open(export_json) as f:
+        record = json.load(f)
     rows_path = os.path.join(export_dir, "rows.tsv")
     if sha256_file(rows_path) != record["rows_sha256"]:
         raise GeometryImportFailure("rows.tsv differs from its export record")
@@ -217,12 +223,14 @@ def load(export_dir, dsn, report_path):
                 raise GeometryImportFailure(json.dumps({"rows": rows, "expected": record["rows"], "compared": count,
                                                         "srid_mismatch": srid_bad, "mismatches": mismatches}))
             cur.execute("CREATE TABLE IF NOT EXISTS public._geometry_bundles (bundle text PRIMARY KEY, "
-                        "schema_name text, table_name text, srid int, prj text, rows bigint, rows_sha256 text, members jsonb)")
-            cur.execute("INSERT INTO public._geometry_bundles VALUES (%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (bundle) DO UPDATE "
+                        "schema_name text, table_name text, srid int, prj text, rows bigint, rows_sha256 text, members jsonb, "
+                        "export_sha256 text, inventory_sha256 text)")
+            cur.execute("INSERT INTO public._geometry_bundles VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (bundle) DO UPDATE "
                         "SET schema_name=EXCLUDED.schema_name, table_name=EXCLUDED.table_name, srid=EXCLUDED.srid, "
-                        "prj=EXCLUDED.prj, rows=EXCLUDED.rows, rows_sha256=EXCLUDED.rows_sha256, members=EXCLUDED.members",
+                        "prj=EXCLUDED.prj, rows=EXCLUDED.rows, rows_sha256=EXCLUDED.rows_sha256, members=EXCLUDED.members, "
+                        "export_sha256=EXCLUDED.export_sha256, inventory_sha256=EXCLUDED.inventory_sha256",
                         (record["bundle"], schema, table, srid, record["prj"], rows, record["rows_sha256"],
-                         json.dumps(record["members"])))
+                         json.dumps(record["members"]), export_sha, record["inventory"]["sha256"]))
             cur.execute("SELECT pg_total_relation_size(%s), pg_relation_size(%s), pg_indexes_size(%s)",
                         (f"{schema}.{table}",) * 3)
             total, heap, indexes = cur.fetchone()
@@ -230,16 +238,18 @@ def load(export_dir, dsn, report_path):
                   "rows": rows, "attributes_compared": len(record["columns"]), "wkb_byte_equal": True,
                   "invalid_geometries_recorded": invalid, "null_geometries": null_geom,
                   "geometry_types": record["geometry_types"], "members": record["members"],
+                  "inventory": record["inventory"], "export_json_sha256": export_sha,
                   "rows_sha256": record["rows_sha256"], "readback_sha256": sha256_file(readback),
                   "bytes": {"total": total, "heap_and_toast": total - indexes, "heap": heap, "indexes": indexes},
                   "seconds": round(time.time() - t0, 1)}
     except Exception as exc:
-        result = {"status": "failed", "bundle": record["bundle"], "error": str(exc)[:4000]}
+        result = {"status": "failed", "bundle": record["bundle"], "export_json_sha256": export_sha, "error": str(exc)[:4000]}
     finally:
         conn.close()
     report = json.load(open(report_path)) if os.path.exists(report_path) else {}
     report[record["bundle"]] = result
-    json.dump(report, open(report_path, "w"), indent=1)
+    with open(report_path, "w") as f:
+        json.dump(report, f, indent=1)
     return result
 
 
