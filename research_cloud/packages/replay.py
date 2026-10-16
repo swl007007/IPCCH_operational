@@ -89,7 +89,30 @@ def compare(expected, raw, star, phase, threshold=THRESHOLD):
     return report
 
 
-def check_output(got, expected, key_columns=("admin_code", "target_ord"), threshold=THRESHOLD):
+def compare_columns(expected, got, columns):
+    """Declared continuous columns: every value within tolerance; NaN accepted only where the reference is NaN."""
+    report = {"rows": int(len(expected)), "columns": {}, "phase_changes": [], "checks": {}}
+    if len(expected) == 0:
+        report.update(passed=False, error="empty reference sample")
+        return report
+    bad = np.zeros(len(expected), dtype=bool)
+    for col in columns:
+        ref = expected[col].to_numpy(dtype=np.float64)
+        new = got[col].to_numpy(dtype=np.float64)
+        both_nan = np.isnan(ref) & np.isnan(new)
+        err = np.where(both_nan, 0.0, np.abs(new - ref))
+        ok = both_nan | (np.isfinite(err) & (err <= ABS_TOL + REL_TOL * np.abs(np.nan_to_num(ref))))
+        bad |= ~ok
+        finite = err[np.isfinite(err)]
+        report["columns"][col] = {"max_abs_err": float(finite.max()) if finite.size else 0.0,
+                                  "mean_abs_err": float(finite.mean()) if finite.size else 0.0,
+                                  "failures": int((~ok).sum()), "reference_nan": int(np.isnan(ref).sum())}
+    report["failed_rows"] = [int(i) for i in np.flatnonzero(bad)]
+    report["passed"] = not bad.any()
+    return report
+
+
+def check_output(got, expected, key_columns=("admin_code", "target_ord"), threshold=THRESHOLD, columns=None):
     """Exact keys/order/routing first; numeric comparison only on a correctly keyed output."""
     keys_ok = len(got) == len(expected) and all(
         np.array_equal(got[k].to_numpy(), expected[k].to_numpy()) for k in key_columns)
@@ -98,8 +121,11 @@ def check_output(got, expected, key_columns=("admin_code", "target_ord"), thresh
                 "checks": {"keys_and_order": False}}
     mismatch = (got["unit"].to_numpy() != expected["unit"].to_numpy()) | \
                (got["route"].to_numpy() != expected["route"].to_numpy())
-    result = compare(expected, got[[f"{q}_raw" for q in TARGETS]].to_numpy(),
-                     got[[f"{q}_star" for q in TARGETS]].to_numpy(), got["phase"].to_numpy(), threshold)
+    if columns:
+        result = compare_columns(expected, got, columns)
+    else:
+        result = compare(expected, got[[f"{q}_raw" for q in TARGETS]].to_numpy(),
+                         got[[f"{q}_star" for q in TARGETS]].to_numpy(), got["phase"].to_numpy(), threshold)
     result["checks"]["keys_and_order"] = True
     result["routing_mismatches"] = int(mismatch.sum())
     if mismatch.any():
@@ -134,7 +160,8 @@ def main(argv=None):
             key_columns = meta.get("loader", {}).get("keys", ["admin_code", "target_ord"])
             got = model.predict(expected[key_columns], X)
             threshold = float(meta.get("loader", {}).get("phase_threshold", THRESHOLD))
-            out.update(check_output(got, expected, key_columns, threshold))
+            columns = meta.get("reference", {}).get("compare_columns")
+            out.update(check_output(got, expected, key_columns, threshold, columns))
     out["passed"] = bool(out.get("passed")) and not problems and "error" not in out
     out["seconds"] = round(time.time() - t0, 2)
     with open(args.report, "w") as f:

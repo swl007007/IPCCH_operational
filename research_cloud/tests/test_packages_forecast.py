@@ -84,3 +84,16 @@ class HighestCrossingDecode(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DeclaredColumns(unittest.TestCase):
+    def test_nan_only_where_reference_is_nan(self):
+        from research_cloud.packages.replay import compare_columns
+        exp = pd.DataFrame({"a": [0.5, np.nan], "b": [0.1, 0.2]})
+        self.assertTrue(compare_columns(exp, exp.copy(), ["a", "b"])["passed"])
+        got = exp.copy(); got.loc[1, "a"] = 0.3
+        self.assertFalse(compare_columns(exp, got, ["a", "b"])["passed"])
+        got = exp.copy(); got.loc[0, "a"] = np.nan
+        self.assertFalse(compare_columns(exp, got, ["a", "b"])["passed"])
+        got = exp.copy(); got.loc[0, "b"] = 0.1 + 0.0012
+        self.assertFalse(compare_columns(exp, got, ["a", "b"])["passed"])
