@@ -33,7 +33,7 @@
     "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/schedule.cpython-312.pyc",
     "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/targets.cpython-312.pyc"
   ],
-  "snapshot_permissions": "r3 dir700, databases600; r1/r2 privacy correction requested separately",
+  "snapshot_permissions": "r1/r2/r3 dirs700, all snapshot databases600; supervisor rechecked after r1 mode correction at13:00 EDT",
   "live_service_state": "MainPID=0\nActiveState=inactive\nSubState=dead\nUnitFileState=disabled\n",
   "decision": "empty delta; no import necessary; local writer stopped and disabled; cloud-only additions preserved"
 }
