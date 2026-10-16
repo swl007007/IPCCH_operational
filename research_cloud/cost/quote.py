@@ -58,7 +58,8 @@ def lines(skus):
     add("platform", "Cloud SQL SSD 30 GiB", ("sql.json", 15396, "C18F-7FE0-0717"), 30,
         "measured 10.98 GiB data + WAL/temp allowances 13.65 GiB; 30 GiB leaves ~16 GiB headroom")
     add("platform", "Cloud SQL backups 30 GiB-month", ("sql.json", 5732, "46C8-DA82-DF18"), 30,
-        "daily managed backups, short retention; conservatively the disk size")
+        "automated daily backups, 7 retained, point-in-time recovery (WAL archiving) OFF; one full (~11 GiB measured "
+        "data) + incrementals of a mostly static research DB, reserved at ~2.7x measured data; reconcile with billed usage")
     add("platform", "Cloud SQL public IPv4 reservation, 744 h", ("sql.json", 3944, "3151-8F6A-75C1"), 744,
         "included conservatively; applicability to an attached instance IP unverified")
     # Cloud Run MLflow service (max 1 instance, min 0, 1 vCPU / 2 GiB, request-based)
@@ -66,7 +67,7 @@ def lines(skus):
     add("platform", "Cloud Run memory, 60 active h x 2 GiB", ("run.json", 8, "02A2-9231-36A6"), 60 * 3600 * 2, "research use estimate")
     add("platform", "Cloud Run requests, 0.1 M", ("run.json", 149, "2DA5-55D3-E679"), 100_000, "gross (first 2 M are free tier)")
     add("platform", "Cloud Run internet egress 20 GiB", ("run.json", 646, "DDFD-AE42-E219"), 20,
-        "MLflow UI/API and proxied artifact downloads to the research workstation")
+        "the single recurring download path: MLflow UI/API and proxied artifact/package downloads to the workstation")
     # GCS (regional standard, us-central1)
     add("platform", f"GCS standard storage {storage_gib} GiB-month", ("gcs.json", 1124, "E5F0-6A5D-7BAD"), storage_gib,
         f"measured {gib_total:.1f} GiB (FEWS roots, inputs, MLflow artifacts, packages, snapshots) + 10% soft-delete/growth")
@@ -74,12 +75,21 @@ def lines(skus):
         one_time=True)
     add("platform", "GCS Class A, monthly 10k", ("gcs.json", 392, "4DBF-185F-A415"), 10_000, "operations")
     add("platform", "GCS Class B, monthly 100k", ("gcs.json", 596, "7870-010B-2763"), 100_000, "operations")
-    add("platform", "GCS direct download 20 GiB", ("gcs.json", 180, "22EB-AAE8-FBCD"), 20,
-        "large package/snapshot downloads (worldwide excl. Asia/Australia); in-region training reads are free")
+    scen, packages = 45_341_699_278 / GIB, VOLUMES["packages"] / GIB
+    add("platform", f"GCS direct download, acceptance {math.ceil(scen + packages)} GiB", ("gcs.json", 180, "22EB-AAE8-FBCD"),
+        math.ceil(scen + packages),
+        f"one-time acceptance downloads by direct GCS: every extant scen-b43ef6a-v1 material {scen:.2f} GiB (design: the "
+        f"exception's source archive) + all retained packages {packages:.2f} GiB; no other root is re-downloaded; in-region "
+        "training reads are free", one_time=True)
+    add("platform", "Artifact Registry pulls to the workstation 8 GiB", ("ar.json", 1, "108E-9EAE-92D9"), 8,
+        "one-time crane pulls of the 3 images for local digest verification: measured unpacked envs 3.54 GB "
+        "(service 0.63, training-fews 1.70, training-ipcch 1.21) + base layers, x2 for one rebuild", one_time=True)
     # images, builds, secrets, logging
     add("platform", "Artifact Registry storage 9 GiB-month", ("ar.json", 14, "8502-299A-ABAF"), 9,
         "service + 2 training images (~3.5 GB unpacked envs), up to 3 retained digests each; in-region pulls")
-    add("platform", "Cloud Build e2-standard-2, 60 min", ("build.json", 249, "A464-9020-6404"), 60, "3 images x a few builds")
+    add("platform", "Cloud Build e2-standard-2, 60 min", ("build.json", 249, "A464-9020-6404"), 60,
+        "3 images x a few builds; source contexts total ~4.5 MB (0.004 GiB) staged in the build source bucket, "
+        "deleted after the build (negligible storage)")
     add("platform", "Secret Manager, 10 replica-months", ("secret.json", 0, "7756-ADEF-84F4"), 10,
         "Flask secret, KEK, DB and identity credentials; user-managed us-central1 replication")
     add("platform", "Secret Manager accesses 20k", ("secret.json", 1, "EBA7-264F-2D2C"), 20_000, "accesses")
