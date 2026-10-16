@@ -1,52 +1,123 @@
 {
  "task": "10-16-gcp-research-modeling-migration",
  "project": "food-crisis-modeling-enso",
- "draft_at": "2026-10-16T12:55:00-04:00",
- "status": "DRAFT - final sequence pending (SQL import completion, temporary-admin removal + post-removal checks, writer freeze + r3 delta); not final until supervisor reconciliation",
+ "generated_at": "2026-10-16T12:57:43-0400",
+ "status": "FINAL (executor) - all acceptance criteria evidenced; awaiting supervisor reconciliation and trellis-audit close",
  "criteria": {
   "AC1": {
    "status": "accepted",
    "summary": "Exact 242-version registry ledger (key set = snapshot r1): 170 packaged_replay_passed, 72 missing_weights_tracking_only (disclosed, tracking preserved); pop-v1 (660 models, 24 packages); FEWS NET 29 roots / 27 weight runs catalogued with provenance labels; declared inputs 122 with fresh hashes.",
-   "evidence": ["ledger/README.md (current-state block)", "ledger/registry_ledger.json", "ledger/fews_run_catalog.json", "ledger/popv1_models.json", "input-inventory.json", "model-inventory.json"]
+   "evidence": [
+    "ledger/README.md (current-state block)",
+    "ledger/registry_ledger.json",
+    "ledger/fews_run_catalog.json",
+    "ledger/popv1_models.json",
+    "input-inventory.json",
+    "model-inventory.json"
+   ]
   },
   "AC2": {
    "status": "accepted",
-   "summary": "MLflow tracking + auth stores copied from consistent snapshot r1 into Cloud SQL (64 tables / 361,026 rows; auth 11 / 10; every table digest equal); URI map 56 applied, original references preserved; feature-list map; 223 package runs published in historical-packages (15,477 files verified); reverse links on 170 versions + 170 source runs; 29 FEWS NET registry entries READY (package pointers); all 223 packages downloaded through the reader SDK with package.json = tag; user UI acceptance (navigation + speed).",
-   "evidence": ["cloud-operations.md O-045, O-058..O-063, O-091..O-099, O-106", "g9-uri-map/", "g9-publish/", "g9-fews-registry/", "g9-publish/download-all/", "downloaded-replay-supervisor/keyed-reconciliation.json"]
+   "summary": "MLflow tracking + auth stores copied from consistent snapshot r1 into Cloud SQL (64 tables / 361,026 rows; auth 11 / 10; every table digest equal); URI map 56 applied, original references preserved; feature-list map; 223 package runs published in historical-packages (15,477 files verified); reverse links on 170 versions + 170 source runs; 29 FEWS NET registry entries READY (package pointers); all 223 packages downloaded through the reader SDK with package.json = tag; user UI acceptance (navigation + speed). Final writer freeze + r3 (12:56): 0 differing tables vs r1 in both stores; all 3,569 frozen artifacts re-hashed equal (extras only the 14 disclosed .pyc) -> empty delta, cut over without import; cloud is the sole writable tracking authority.",
+   "evidence": [
+    "cloud-operations.md O-045, O-058..O-063, O-091..O-099, O-106",
+    "g9-uri-map/",
+    "g9-publish/",
+    "g9-fews-registry/",
+    "g9-publish/download-all/",
+    "downloaded-replay-supervisor/keyed-reconciliation.json",
+    "g12-cutover/r3-delta-vs-r1.json",
+    "g12-cutover/cutover-receipt.json"
+   ]
   },
   "AC3": {
    "status": "accepted_with_disclosed_exceptions",
    "summary": "223/223 downloaded packages replayed in the pinned images: 97,928 rows, 0 phase changes (supervisor-accepted). 219 complete; 4 approved incomplete scenario systems (scen-b43ef6a-v1, 3,746 unreplayable rows) are not full-system passes. confirm-onset-v1 full system arm unreplayable (7 missing boosters; S0/S3 2,446/11,436 rows), pooled packages replay separately. Every extant byte of both exception archives downloaded and verified (55,899 + 65). Future models use the same package contract (trial packages replayed: FEWS 200, IPCCH 48 rows; HPT3 2 x 48).",
-   "evidence": ["downloaded-replay-supervisor/", "g9-publish/replay-downloaded/", "g8-g9-data-load/archive-download-scen-b43ef6a-v1.summary.json", "g11-vertex/ipcch-hpt2-3/harvest.json"]
+   "evidence": [
+    "downloaded-replay-supervisor/",
+    "g9-publish/replay-downloaded/",
+    "g8-g9-data-load/archive-download-scen-b43ef6a-v1.summary.json",
+    "g11-vertex/ipcch-hpt2-3/harvest.json"
+   ]
   },
   "AC4": {
    "status": "accepted_with_disclosures",
-   "summary": "Access matrices 17/17 anonymous + 32/32 principals (owner/job writes ok, reader writes denied, anonymous content denied); credential-cache invalidation 18/18; permissions, guard ledger rows and assistant arming survive new revisions 00006 -> 00007; assistant answered a research query (5 guard rows settled, USD 0.04063650); the deny probe was refused by the model itself, so the tool allowlist was not exercised live (rehearsal + startup marker only); assistant cannot start unrestricted (startup gate).",
-   "disclosures": ["deny probe: model self-refusal, allowlist not exercised live", "post-removal access checks without the temporary admin: PENDING"],
-   "evidence": ["g9-service-staging/", "g10-assistant/", "cloud-operations.md O-063, O-097..O-102"]
+   "summary": "Access matrices 17/17 anonymous + 32/32 principals (owner/job writes ok, reader writes denied, anonymous content denied); credential-cache invalidation 18/18; permissions, guard ledger rows and assistant arming survive new revisions 00006 -> 00007; assistant answered a research query (5 guard rows settled, USD 0.04063650); the deny probe was refused by the model itself, so the tool allowlist was not exercised live (rehearsal + startup marker only); assistant cannot start unrestricted (startup gate). Post-removal (temporary admin removed O-117): direct anonymous 17/17 and cloud_access --without-admin 31/31 on 00007-hld (O-118); old admin credential 404 (no content) inside the 60 s TTL, 401 from 61.1 s.",
+   "disclosures": [
+    "deny probe: model self-refusal, allowlist not exercised live (rehearsal + startup marker only)"
+   ],
+   "evidence": [
+    "g9-service-staging/",
+    "g10-assistant/",
+    "cloud-operations.md O-063, O-097..O-102",
+    "g12-cutover/post-removal/",
+    "g12-cutover/temp-admin-removal/disposition.json",
+    "auth-final-supervisor.json"
+   ]
   },
   "AC5": {
    "status": "accepted_with_disclosures",
    "summary": "FEWS and IPCCH feature snapshots, Linux adapter trials on Vertex with provenance equal to submission, MLflow results and downloaded-package replays; two-trial HPT smoke (attempt 3) SUCCEEDED with Vertex/MLflow/trial.json agreement on params, objective, status, links and image; parents closed with true outcomes.",
-   "disclosures": ["HPT attempts 1 (permission) and 2 (cancelled at aggregate deadline) failed and are recorded", "HPT attempt 3 ran with an ineffective per-trial cap (PID-1 SIGALRM); trials measured 297.45 s / 399.80 s < 900 s; corrected in d9ede46 and enforced at admission"],
-   "evidence": ["g11-vertex/", "g11-vertex/parent-close-receipt.json", "cloud-operations.md O-104..O-109"]
+   "disclosures": [
+    "HPT attempts 1 (permission) and 2 (cancelled at aggregate deadline) failed and are recorded",
+    "HPT attempt 3 ran with an ineffective per-trial cap (PID-1 SIGALRM); trials measured 297.45 s / 399.80 s < 900 s; corrected in d9ede46 and enforced at admission"
+   ],
+   "evidence": [
+    "g11-vertex/",
+    "g11-vertex/parent-close-receipt.json",
+    "cloud-operations.md O-104..O-109"
+   ]
   },
   "AC6": {
    "status": "accepted_with_disclosures",
    "summary": "Itemized regional quotes before provisioning; revised measured quote d58fcda: platform 79.97/month, first month 92.18 <= 100; training reservations 1.06 <= 100; every job reserved before submission; admission enforces machine/trials/timeout/retries/cap; Gemini guard allocation USD 10.",
-   "disclosures": ["no billing actuals (billing export not readable); estimates are gross list prices, scoped to this migration, not a project-wide cap", "post-hoc ledger reservation G12-revised-quote-amend (0.79) and ~0.09 unreserved smoke egress", "user-supplied USD 0 spend baseline, not API-verified"],
-   "evidence": ["quote-d58fcda/", "g12-cutover/actuals/actuals-1155.json", "cloud-operations.md O-110, O-111, O-114"]
+   "disclosures": [
+    "no billing actuals (billing export not readable); estimates are gross list prices, scoped to this migration, not a project-wide cap",
+    "post-hoc ledger reservation G12-revised-quote-amend (0.79) and ~0.09 unreserved smoke egress",
+    "user-supplied USD 0 spend baseline, not API-verified"
+   ],
+   "evidence": [
+    "quote-d58fcda/",
+    "g12-cutover/actuals/actuals-1155.json",
+    "cloud-operations.md O-110, O-111, O-114"
+   ]
   },
   "AC7": {
    "status": "accepted",
-   "summary": "Cloud Run on Cloud SQL tracking/auth + GCS artifacts; restart to new revisions verified; largest-package download through the proxy; trial jobs on pinned image digests (7 digests recorded).",
-   "evidence": ["cloud-operations.md O-086 (largest artifact), O-102 (restart)", "g9-service-staging/", "quote-d58fcda/README.md"]
+   "summary": "Cloud Run on Cloud SQL tracking/auth + GCS artifacts; restart to new revisions verified; largest-package download through the proxy; trial jobs on pinned image digests (7 digests recorded). Research database: 53/53 CSV + 3/3 geometry verified with full reconciliation; disk 12.91 GB used of 31.53 GB quota (41%).",
+   "evidence": [
+    "cloud-operations.md O-086 (largest artifact), O-102 (restart)",
+    "g9-service-staging/",
+    "quote-d58fcda/README.md",
+    "g8-g9-data-load/sql-import-final/",
+    "sql-final-supervisor.json"
+   ]
   },
   "AC8": {
    "status": "accepted",
-   "summary": "Clean native-WSL checkout runs (both families) with /mnt/c and host home absent: inputs from gs://, features equal expected hashes, trial objective equal, MLflow read and package download + replay; researcher runbook 9427f01/6ee56f5 with tested commands; cloud-only eligibility limited to exact verified roots (cutover-runbook.md section 5), monthly workflows excluded.",
-   "evidence": ["ac8/", "runbook-checks-9427f01/receipt.json", "cutover-runbook.md"]
+   "summary": "Clean native-WSL checkout runs (both families) with /mnt/c and host home absent: inputs from gs://, features equal expected hashes, trial objective equal, MLflow read and package download + replay; researcher runbook 9427f01/6ee56f5 with tested commands; cloud-only eligibility limited to exact verified roots (cutover-runbook.md section 5), monthly workflows excluded. Cutover executed with an empty delta; Cloudflare/DNS unchanged; local service stopped+disabled (fallback = keep it stopped, snapshots offline).",
+   "evidence": [
+    "ac8/",
+    "runbook-checks-9427f01/receipt.json",
+    "cutover-runbook.md",
+    "g12-cutover/cutover-receipt.json",
+    "native-merge-supervisor.json"
+   ]
   }
  },
- "pending_before_final": ["SQL input import 53/53 + geometry + capacity", "temporary-admin removal + TTL proof + post-removal checks", "writer freeze + r3 keyed delta + 3,569 artifact re-hash", "native merge", "supervisor reconciliation"]
+ "supervisor_receipts": [
+  "downloaded-replay-supervisor/keyed-reconciliation.json",
+  "native-merge-supervisor.json",
+  "sql-final-supervisor.json",
+  "auth-final-supervisor.json"
+ ],
+ "native_code": {
+  "branch": "gcp-research-migration",
+  "final_sha": "6ee56f5",
+  "merged_as": "12a5dd7 (registered lineage, --no-ff)"
+ },
+ "remaining": [
+  "supervisor reconciliation",
+  "trellis-audit close from the bound Claude session; accepted only on an accepted audit result"
+ ]
 }

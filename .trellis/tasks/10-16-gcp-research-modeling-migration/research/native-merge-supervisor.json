@@ -1,0 +1,17 @@
+{
+  "verified_at": "2026-10-16T12:30:39.408965-04:00",
+  "registered_head": "12a5dd74c76b0c1de0905d4a8e2d7f9a6ec078d6",
+  "merge_commit": "12a5dd74c76b0c1de0905d4a8e2d7f9a6ec078d6",
+  "native_sha": "6ee56f5b97a92768a792b50ef54383593068bba8",
+  "merge_parents": [
+    "57dc77050afe1219d48f704c3df523371c87657b",
+    "6ee56f5b97a92768a792b50ef54383593068bba8"
+  ],
+  "native_is_ancestor": true,
+  "research_cloud_tree": "ecbb5b959dd014d626aeb863f46d53679094955f",
+  "changed_paths": 153,
+  "all_changes_under_research_cloud": true,
+  "unrelated_dirty_files": 72,
+  "unrelated_dirty_hashes_unchanged": true,
+  "research_cloud_worktree_clean": true
+}

@@ -1,0 +1,51 @@
+{
+ "generated_at": "2026-10-16T12:56:52-0400",
+ "authorization": "active approved goal (G12; no additional user gate); supervisor-reviewed runbook: stop+disable after all remaining ACs pass",
+ "unit": {
+  "name": "ipcch-mlflow.service (systemd --user)",
+  "points_at": "~/.local/share/ipcch-mlflow (mlflow.db, auth/basic_auth.db via auth/basic_auth.ini, artifacts/) = the inventoried store",
+  "before": "active/running, MainPID 596, enabled (12:55:58)",
+  "after": "inactive/dead, MainPID 0, disabled (12:56:05)",
+  "checks": "no process holds mlflow.db or basic_auth.db (fuser), no 'mlflow server' process, nothing on :5000",
+  "log": "freeze.txt"
+ },
+ "r3": {
+  "taken_at": "2026-10-16T12:56:24-0400",
+  "method": "sqlite3 online backup from mode=ro connections (same as r2); writer stopped+disabled 12:56:05",
+  "files": "scratch/mlflow-snapshot-r3 (dir 700, databases 600; private, not in git)",
+  "mlflow.db": {
+   "tables": 65,
+   "rows": 361027,
+   "source_file_sha256": "30f1bc5d42729011255492d032eb73cd7009aaa00f3c402bfb3292f976411377",
+   "differing_tables_vs_r1": 0
+  },
+  "basic_auth.db": {
+   "tables": 12,
+   "rows": 11,
+   "source_file_sha256": "00502a9dd7fa7c3376eba57af1845b9851d233f9811444d3198fca32d5bfc069",
+   "differing_tables_vs_r1": 0
+  },
+  "artifacts": {
+   "frozen": 3569,
+   "rehashed_equal": 3569,
+   "extra_count": 14,
+   "extra_all_pyc": true,
+   "mismatched_or_missing": 0,
+   "method": "full sha256 + size of every frozen file vs the r1 manifest (scratch/preservation/mlflow-artifacts-r1.json)"
+  },
+  "delta_file": "r3-delta-vs-r1.json",
+  "delta_file_sha256": "02905232f220e2ee0b125276bf80c0f5bd7a40569822c3dc36afc62985161efc"
+ },
+ "decision": "EMPTY DELTA -> cut over; nothing imported; copy_store not rerun and its journal untouched; cloud-only additions preserved",
+ "cloud_authority": {
+  "url": "https://research-mlflow-76571749286.us-central1.run.app",
+  "revision": "research-mlflow-00007-hld",
+  "auth": "Basic; existing accounts unchanged; temporary admin removed (O-117)"
+ },
+ "unchanged": [
+  "Cloudflare tunnel and DNS (mlflow.weilunshi.com) not changed",
+  "original local store left in place, not written, not deleted",
+  "Dropbox and user inputs untouched; no cloud-only change made (user's decision, cutover-runbook.md section 5)"
+ ],
+ "fallback": "keep the local service stopped+disabled and snapshots r1/r2/r3 offline (private); no read-only web server; any later writable rollback first exports the keyed delta r1 -> cloud and never overwrites cloud writes"
+}

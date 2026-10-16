@@ -1,0 +1,221 @@
+{
+ "started": "2026-10-16T12:43:44-04:00",
+ "revision_before": "research-mlflow-00007-hld",
+ "admin_user": "[redacted]",
+ "admin_user_id": 3,
+ "users_before": [
+  "admin",
+  "assistant",
+  "ipcch-assistant",
+  "ipcch-jobwriter",
+  "[redacted]",
+  "ipcch-reader"
+ ],
+ "digests_before": {
+  "_rc_migration_journal": {
+   "rows": 11,
+   "excluded_admin_rows": 0,
+   "digest": "72b0ea19d12548cc36b94828a0df53b5764465a36c89d22baeb88cac45b8f922"
+  },
+  "_rc_migration_source": {
+   "rows": 1,
+   "excluded_admin_rows": 0,
+   "digest": "7cf026268337ed44e185975a2a1d0b7ffa7d582fe103f3acbf91d364a8843fcc"
+  },
+  "alembic_version_auth": {
+   "rows": 1,
+   "excluded_admin_rows": 0,
+   "digest": "592f851b1de7a7e05b98d86b8794044779c59824f28a798fc4ab1e19bc0ce88f"
+  },
+  "experiment_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gateway_endpoint_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gateway_model_definition_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gateway_secret_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "registered_model_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "role_permissions": {
+   "rows": 44,
+   "excluded_admin_rows": 0,
+   "digest": "99f0e6324253a9d877e0314a6743dc9da42df6eaff4399a6117b73414a13ed10"
+  },
+  "roles": {
+   "rows": 7,
+   "excluded_admin_rows": 0,
+   "digest": "bbc4cffcea9c2714537b4630c04fd5531b22d0ad2d19a852fb9693c37e065f32"
+  },
+  "scorer_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "user_role_assignments": {
+   "rows": 8,
+   "excluded_admin_rows": 1,
+   "digest": "885cccd09ded0c73f400e7da8477624db3c031fa21e8349fb00b08c0c199fffb"
+  },
+  "users": {
+   "rows": 5,
+   "excluded_admin_rows": 1,
+   "digest": "a5b11c00ea4d1db109a8e57c744a42b57c4acf85ffcf03d5adf3e35d5bfe324f"
+  },
+  "workspace_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+ },
+ "probes": [
+  {
+   "seconds_after_removal": 0.1,
+   "status": 404
+  },
+  {
+   "seconds_after_removal": 10.3,
+   "status": 404
+  },
+  {
+   "seconds_after_removal": 20.6,
+   "status": 404
+  },
+  {
+   "seconds_after_removal": 30.7,
+   "status": 404
+  },
+  {
+   "seconds_after_removal": 40.9,
+   "status": 404
+  },
+  {
+   "seconds_after_removal": 51.0,
+   "status": 404
+  },
+  {
+   "seconds_after_removal": 61.1,
+   "status": 401
+  },
+  {
+   "seconds_after_removal": 71.3,
+   "status": 401
+  }
+ ],
+ "warm": {
+  "time": "2026-10-16T12:44:26-04:00",
+  "status": 200
+ },
+ "remove": {
+  "time": "2026-10-16T12:45:24-04:00",
+  "rc": 0,
+  "receipt": "ledger/temp-admin-receipt.json (remove section)"
+ },
+ "users_after": [
+  "admin",
+  "assistant",
+  "ipcch-assistant",
+  "ipcch-jobwriter",
+  "ipcch-reader"
+ ],
+ "digests_after": {
+  "_rc_migration_journal": {
+   "rows": 11,
+   "excluded_admin_rows": 0,
+   "digest": "72b0ea19d12548cc36b94828a0df53b5764465a36c89d22baeb88cac45b8f922"
+  },
+  "_rc_migration_source": {
+   "rows": 1,
+   "excluded_admin_rows": 0,
+   "digest": "7cf026268337ed44e185975a2a1d0b7ffa7d582fe103f3acbf91d364a8843fcc"
+  },
+  "alembic_version_auth": {
+   "rows": 1,
+   "excluded_admin_rows": 0,
+   "digest": "592f851b1de7a7e05b98d86b8794044779c59824f28a798fc4ab1e19bc0ce88f"
+  },
+  "experiment_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gateway_endpoint_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gateway_model_definition_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gateway_secret_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "registered_model_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "role_permissions": {
+   "rows": 11,
+   "excluded_admin_rows": 0,
+   "digest": "4cd05f9b26199b45f8b541164b92d992891506264621c18ff1d3dca8d19f877b"
+  },
+  "roles": {
+   "rows": 6,
+   "excluded_admin_rows": 0,
+   "digest": "7a79a946eba0b15769e77515efdd50342b87fa3ccf1088a1dccfa6026bfeb325"
+  },
+  "scorer_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "user_role_assignments": {
+   "rows": 8,
+   "excluded_admin_rows": 0,
+   "digest": "885cccd09ded0c73f400e7da8477624db3c031fa21e8349fb00b08c0c199fffb"
+  },
+  "users": {
+   "rows": 5,
+   "excluded_admin_rows": 0,
+   "digest": "a5b11c00ea4d1db109a8e57c744a42b57c4acf85ffcf03d5adf3e35d5bfe324f"
+  },
+  "workspace_permissions": {
+   "rows": 0,
+   "excluded_admin_rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+ },
+ "revision_after": "research-mlflow-00007-hld",
+ "checks": {
+  "warm_200": true,
+  "remove_rc_0": true,
+  "users_after_eq_before_minus_admin": true,
+  "all_other_rows_unchanged": false,
+  "admin_rows_gone": true,
+  "old_credential_401_after_ttl": true,
+  "first_401_seconds": 61.1,
+  "same_revision": true
+ },
+ "ok": false,
+ "finished": "2026-10-16T12:47:05-04:00"
+}

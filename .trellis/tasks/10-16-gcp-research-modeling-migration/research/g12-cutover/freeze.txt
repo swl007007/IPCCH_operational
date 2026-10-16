@@ -1,0 +1,16 @@
+before 2026-10-16T12:55:58-0400
+MainPID=596
+ActiveState=active
+SubState=running
+UnitFileState=enabled
+stop rc=0
+Removed "/home/swl007007/.config/systemd/user/default.target.wants/ipcch-mlflow.service".
+disable rc=0
+after 2026-10-16T12:56:05-0400
+MainPID=0
+ActiveState=inactive
+SubState=dead
+UnitFileState=disabled
+holders of store files:
+mlflow server processes:
+port 5000:

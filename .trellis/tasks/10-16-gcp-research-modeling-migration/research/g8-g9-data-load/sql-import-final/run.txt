@@ -1,0 +1,71 @@
+start 08:36:02 commit 779a5c1
+{"id": "ipcch.model_ready.expected_run_index.csv", "status": "verified", "rows": 7, "columns": 7, "total_bytes": 32768, "seconds": 1.6, "error": null}
+{"id": "ipcch.region_mapping", "status": "verified", "rows": 6227, "columns": 2, "total_bytes": 622592, "seconds": 2.1, "error": null}
+{"id": "ipcch.country_lookup", "status": "verified", "rows": 6227, "columns": 5, "total_bytes": 851968, "seconds": 3.1, "error": null}
+{"id": "ipcch.reference_coordinates_source", "status": "verified", "rows": 6227, "columns": 3, "total_bytes": 688128, "seconds": 1.7, "error": null}
+{"id": "ipcch.saved_reference_coordinates", "status": "verified", "rows": 6227, "columns": 3, "total_bytes": 688128, "seconds": 3.5, "error": null}
+{"id": "fewsnet.coordinates", "status": "verified", "rows": 5718, "columns": 3, "total_bytes": 679936, "seconds": 2.3, "error": null}
+{"id": "ipcch.saved_country_lookup", "status": "verified", "rows": 6227, "columns": 6, "total_bytes": 884736, "seconds": 2.6, "error": null}
+{"id": "ipcch.model_ready.expected_feature_contract.csv", "status": "verified", "rows": 308, "columns": 33, "total_bytes": 679936, "seconds": 7.3, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_cohort_keys.csv", "status": "verified", "rows": 52521, "columns": 6, "total_bytes": 5939200, "seconds": 9.1, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_idp_ledger_h6.csv", "status": "verified", "rows": 52521, "columns": 8, "total_bytes": 6594560, "seconds": 11.7, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_idp_ledger_h3.csv", "status": "verified", "rows": 52521, "columns": 8, "total_bytes": 6610944, "seconds": 11.0, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_idp_ledger_h0.csv", "status": "verified", "rows": 52521, "columns": 8, "total_bytes": 6610944, "seconds": 7.7, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_idp_ledger_h12.csv", "status": "verified", "rows": 52521, "columns": 8, "total_bytes": 6578176, "seconds": 12.2, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_history_ledger_h12.csv", "status": "verified", "rows": 52521, "columns": 16, "total_bytes": 9592832, "seconds": 19.2, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_oracle_ledger_h3.csv", "status": "verified", "rows": 52521, "columns": 13, "total_bytes": 9625600, "seconds": 21.5, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_oracle_ledger_h6.csv", "status": "verified", "rows": 52521, "columns": 13, "total_bytes": 9625600, "seconds": 19.8, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_history_ledger_h6.csv", "status": "verified", "rows": 52521, "columns": 16, "total_bytes": 9592832, "seconds": 21.1, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_oracle_ledger_h12.csv", "status": "verified", "rows": 52521, "columns": 13, "total_bytes": 9625600, "seconds": 23.1, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_history_ledger_h3.csv", "status": "verified", "rows": 52521, "columns": 16, "total_bytes": 9625600, "seconds": 20.3, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_history_ledger_h0.csv", "status": "verified", "rows": 52521, "columns": 16, "total_bytes": 9592832, "seconds": 16.6, "error": null}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_oracle_ledger_h6.csv", "status": "verified", "rows": 52521, "columns": 20, "total_bytes": 13262848, "seconds": 24.3, "error": null}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_oracle_ledger_h12.csv", "status": "verified", "rows": 52521, "columns": 20, "total_bytes": 13295616, "seconds": 23.5, "error": null}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_oracle_ledger_h3.csv", "status": "verified", "rows": 52521, "columns": 20, "total_bytes": 13295616, "seconds": 24.4, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_season_ledger_h6.csv", "status": "verified", "rows": 52521, "columns": 20, "total_bytes": 13524992, "seconds": 29.7, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_season_ledger_h3.csv", "status": "verified", "rows": 52521, "columns": 20, "total_bytes": 13524992, "seconds": 29.6, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_season_ledger_h0.csv", "status": "verified", "rows": 52521, "columns": 20, "total_bytes": 13492224, "seconds": 27.6, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_season_ledger_h12.csv", "status": "verified", "rows": 52521, "columns": 20, "total_bytes": 13459456, "seconds": 34.3, "error": null}
+{"id": "fewsnet.covariate_extension", "status": "verified", "rows": 40026, "columns": 71, "total_bytes": 20914176, "seconds": 196.7, "error": null}
+{"id": "fewsnet.outcome", "status": "verified", "rows": 302949, "columns": 16, "total_bytes": 85016576, "seconds": 272.9, "error": null}
+{"id": "ipcch.climate_seasonal", "status": "verified", "rows": 149448, "columns": 92, "total_bytes": 126337024, "seconds": 753.9, "error": null}
+{"id": "ipcch.compact.compact_baseline_h12", "status": "verified", "rows": 52521, "columns": 305, "total_bytes": 143220736, "seconds": 449.5, "error": null}
+{"id": "ipcch.compact.compact_baseline_h0", "status": "verified", "rows": 52521, "columns": 305, "total_bytes": 143810560, "seconds": 410.4, "error": null}
+{"id": "ipcch.compact.compact_baseline_h6", "status": "verified", "rows": 52521, "columns": 305, "total_bytes": 144203776, "seconds": 341.4, "error": null}
+{"id": "ipcch.compact.compact_baseline_h3", "status": "verified", "rows": 52521, "columns": 305, "total_bytes": 144203776, "seconds": 129.9, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_compact_weather_oracle_h3.csv", "status": "verified", "rows": 52521, "columns": 311, "total_bytes": 143810560, "seconds": 161.2, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_compact_weather_oracle_h12.csv", "status": "verified", "rows": 52521, "columns": 317, "total_bytes": 143155200, "seconds": 195.3, "error": null}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_compact_weather_oracle_h6.csv", "status": "verified", "rows": 52521, "columns": 317, "total_bytes": 144203776, "seconds": 227.4, "error": null}
+{"id": "ipcch.scope.scope_fs3", "status": "verified", "rows": 52521, "columns": 387, "total_bytes": 205742080, "seconds": 212.2, "error": null}
+{"id": "ipcch.scope.scope_fs0", "status": "verified", "rows": 52521, "columns": 521, "total_bytes": 277241856, "seconds": 446.1, "error": null}
+{"id": "ipcch.scope.scope_fs1", "status": "verified", "rows": 53257, "columns": 522, "total_bytes": 279617536, "seconds": 348.4, "error": null}
+{"id": "ipcch.scope.scope_fs2", "status": "verified", "rows": 53257, "columns": 522, "total_bytes": 287350784, "seconds": 352.9, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_h12.csv", "status": "verified", "rows": 52521, "columns": 663, "total_bytes": 423583744, "seconds": 547.5, "error": null}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_h12.csv", "status": "verified", "rows": 52521, "columns": 681, "total_bytes": 423583744, "seconds": 529.7, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_h0.csv", "status": "verified", "rows": 52521, "columns": 879, "total_bytes": 427974656, "seconds": 802.7, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_h3.csv", "status": "verified", "rows": 52521, "columns": 879, "total_bytes": 427909120, "seconds": 912.7, "error": null}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_h6.csv", "status": "verified", "rows": 52521, "columns": 879, "total_bytes": 427974656, "seconds": 882.0, "error": null}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_h3.csv", "status": "verified", "rows": 52521, "columns": 891, "total_bytes": 427909120, "seconds": 1204.1, "error": null}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_h6.csv", "status": "verified", "rows": 52521, "columns": 897, "total_bytes": 427909120, "seconds": 1272.6, "error": null}
+{"id": "fewsnet.panel", "status": "verified", "rows": 1029240, "columns": 88, "total_bytes": 804339712, "seconds": 790.1, "error": null}
+{"id": "fewsnet.extension_component_2025_combined", "status": "verified", "rows": 1120730, "columns": 88, "total_bytes": 879099904, "seconds": 565.2, "error": null}
+{"id": "ipcch.climate_monthly", "status": "verified", "rows": 871780, "columns": 95, "total_bytes": 736239616, "seconds": 704.2, "error": null}
+{"id": "ipcch.raw_panel", "status": "verified", "rows": 1219868, "columns": 143, "total_bytes": 1596391424, "seconds": 900.3, "error": null}
+{"id": "ipcch.interim", "status": "verified", "rows": 1219868, "columns": 168, "total_bytes": 1796767744, "seconds": 1045.7, "error": null}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/swl007007/projects/food-crisis-research/control-plane/research_cloud/deploy/load_research_inputs.py", line 88, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/swl007007/projects/food-crisis-research/control-plane/research_cloud/deploy/load_research_inputs.py", line 71, in main
+    os.environ["PGPASSWORD"] = secret_value(api, "sql-research-admin")
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/swl007007/projects/food-crisis-research/control-plane/research_cloud/deploy/db_roles.py", line 42, in secret_value
+    raise ProvisionError(f"secret {name}: {status} {message(ver)}")
+research_cloud.deploy.provision_secrets.ProvisionError: secret sql-research-admin: 401 [UNAUTHENTICATED ACCESS_TOKEN_TYPE_UNSUPPORTED]
+{"expected": 53, "verified": 53, "stale_receipt": 0, "failed": 0, "not_imported": 0, "verified_but_table_absent": 0} {"database_bytes": 11332836375, "verified_table_bytes": 11287109632, "verified_source_bytes": 13763421380}
+{"status": "verified", "bundle": "ipcch.geometry_repaired", "table": "ipcch.geometry_repaired_shp_36cba6d5", "srid": 4326, "rows": 6227, "attributes_compared": 4, "wkb_byte_equal": true, "invalid_geometries_recorded": 0, "null_geometries": 0, "geometry_types": {"Polygon": 5578, "MultiPolygon": 649}, "inventory": {"path": "/home/swl007007/projects/food-crisis-research/scratch/p1/input-inventory.json", "sha256": "26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049"}, "export_json_sha256": "712a8730b912d7cddef8ae27b8077ee3ca118d5a48e74a3631aaf71d6860b2b6", "rows_sha256": "c4b046d6499b211fba303b13bfb1e644de91c667bfb0a6b868a80293161c8f2a", "readback_sha256": "c4b046d6499b211fba303b13bfb1e644de91c667bfb0a6b868a80293161c8f2a", "bytes": {"total": 69722112, "heap_and_toast": 69296128, "heap": 9543680, "indexes": 425984}, "seconds": 41.3}
+{"status": "verified", "bundle": "ipcch.geometry_source", "table": "ipcch.geometry_source_shp_68bca802", "srid": 4326, "rows": 6227, "attributes_compared": 3, "wkb_byte_equal": true, "invalid_geometries_recorded": 253, "null_geometries": 0, "geometry_types": {"Polygon": 5446, "MultiPolygon": 781}, "inventory": {"path": "/home/swl007007/projects/food-crisis-research/scratch/p1/input-inventory.json", "sha256": "26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049"}, "export_json_sha256": "5f19bd07e79b10a2e075279d8d07b8bdc305548cc4ed026d04d11e4554fa9f0b", "rows_sha256": "c2c4f8d0f853464173f84a27210df2c51a07495e7b9455c7c2c7d4f0241b72e9", "readback_sha256": "c2c4f8d0f853464173f84a27210df2c51a07495e7b9455c7c2c7d4f0241b72e9", "bytes": {"total": 71688192, "heap_and_toast": 71262208, "heap": 9543680, "indexes": 425984}, "seconds": 36.6}
+{"status": "verified", "bundle": "fewsnet.geometry", "table": "fewsnet.geometry_shp_45c0b03c", "srid": 4326, "rows": 5718, "attributes_compared": 16, "wkb_byte_equal": true, "invalid_geometries_recorded": 1, "null_geometries": 0, "geometry_types": {"Polygon": 4953, "MultiPolygon": 765}, "inventory": {"path": "/home/swl007007/projects/food-crisis-research/scratch/p1/input-inventory.json", "sha256": "26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049"}, "export_json_sha256": "f8b8a98e64fd08964777373d914e998547470fcd5ccedd5f93af80b23c1d7b55", "rows_sha256": "8d56d1b6b2be7614e7339562798b24e5552017a660de336b32566eaf31151620", "readback_sha256": "ad87221a55c443fbea3e97ed62a658309008761fb5f9d2b3a6846116b9c78b64", "bytes": {"total": 104267776, "heap_and_toast": 103858176, "heap": 11132928, "indexes": 409600}, "seconds": 124.1}
+exit=1 12:50:46

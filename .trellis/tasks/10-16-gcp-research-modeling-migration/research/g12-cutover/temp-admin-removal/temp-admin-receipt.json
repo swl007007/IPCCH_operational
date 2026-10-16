@@ -1,0 +1,92 @@
+{
+ "secrets": {
+  "mlflow-temp-admin": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": []
+  }
+ },
+ "sql_ops": {},
+ "steps": [
+  {
+   "time": "2026-10-16T09:11:06-0400",
+   "step": "secret",
+   "name": "mlflow-temp-admin",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T09:11:12-0400",
+   "step": "temp-admin-created",
+   "user": "[redacted]",
+   "diff": {
+    "added": [
+     "[redacted]"
+    ],
+    "removed": [],
+    "others_unchanged": 2
+   }
+  },
+  {
+   "time": "2026-10-16T12:45:24-0400",
+   "step": "temp-admin-removed",
+   "user": "[redacted]",
+   "diff": {
+    "added": [],
+    "removed": [
+     "[redacted]"
+    ],
+    "others_unchanged": 5
+   },
+   "secret_versions_destroyed": [
+    "1"
+   ]
+  }
+ ],
+ "temp_admin_created": true,
+ "create": {
+  "before": {
+   "admin": true,
+   "assistant": false
+  },
+  "after": {
+   "admin": true,
+   "assistant": false,
+   "[redacted]": true
+  },
+  "diff": {
+   "added": [
+    "[redacted]"
+   ],
+   "removed": [],
+   "others_unchanged": 2
+  },
+  "authenticates": true
+ },
+ "remove": {
+  "before": {
+   "admin": true,
+   "assistant": false,
+   "[redacted]": true,
+   "ipcch-jobwriter": false,
+   "ipcch-reader": false,
+   "ipcch-assistant": false
+  },
+  "after": {
+   "admin": true,
+   "assistant": false,
+   "ipcch-jobwriter": false,
+   "ipcch-reader": false,
+   "ipcch-assistant": false
+  },
+  "diff": {
+   "added": [],
+   "removed": [
+    "[redacted]"
+   ],
+   "others_unchanged": 5
+  },
+  "secret_versions_destroyed": [
+   "1"
+  ]
+ }
+}

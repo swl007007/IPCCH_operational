@@ -1,0 +1,82 @@
+{
+ "time": "2026-10-16T16:54:26+00:00",
+ "metrics": {
+  "database/disk/bytes_used": {
+   "status": 200,
+   "latest": [
+    {
+     "labels": {},
+     "end": "2026-10-16T16:52:00Z",
+     "value": "12911144960"
+    }
+   ]
+  },
+  "database/disk/quota": {
+   "status": 200,
+   "latest": [
+    {
+     "labels": {},
+     "end": "2026-10-16T16:53:00Z",
+     "value": "31526391808"
+    }
+   ]
+  },
+  "database/disk/utilization": {
+   "status": 200,
+   "latest": [
+    {
+     "labels": {},
+     "end": "2026-10-16T16:52:00Z",
+     "value": 0.4095344953723415
+    }
+   ]
+  },
+  "database/disk/bytes_used_by_data_type": {
+   "status": 200,
+   "latest": [
+    {
+     "labels": {
+      "data_type": "Archived_wal_log"
+     },
+     "end": "2026-10-16T16:52:00Z",
+     "value": "0"
+    },
+    {
+     "labels": {
+      "data_type": "Audit_log"
+     },
+     "end": "2026-10-16T16:52:00Z",
+     "value": "0"
+    },
+    {
+     "labels": {
+      "data_type": "Data"
+     },
+     "end": "2026-10-16T16:52:00Z",
+     "value": "11999589064"
+    },
+    {
+     "labels": {
+      "data_type": "Other"
+     },
+     "end": "2026-10-16T16:52:00Z",
+     "value": "3767608"
+    },
+    {
+     "labels": {
+      "data_type": "Tmp_data"
+     },
+     "end": "2026-10-16T16:52:00Z",
+     "value": "197386240"
+    },
+    {
+     "labels": {
+      "data_type": "Wal"
+     },
+     "end": "2026-10-16T16:52:00Z",
+     "value": "1073741824"
+    }
+   ]
+  }
+ }
+}

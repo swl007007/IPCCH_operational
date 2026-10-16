@@ -1,0 +1,45 @@
+{
+ "taken_at": "2026-10-16T12:56:24-0400",
+ "method": "sqlite3 online backup from mode=ro connections (same as r2); writer stopped+disabled 12:56:05",
+ "stores": {
+  "mlflow.db": {
+   "source": "/home/swl007007/.local/share/ipcch-mlflow/mlflow.db",
+   "source_file_sha256": "30f1bc5d42729011255492d032eb73cd7009aaa00f3c402bfb3292f976411377",
+   "tables": 65,
+   "rows": 361027,
+   "differing_tables": {}
+  },
+  "basic_auth.db": {
+   "source": "/home/swl007007/.local/share/ipcch-mlflow/auth/basic_auth.db",
+   "source_file_sha256": "00502a9dd7fa7c3376eba57af1845b9851d233f9811444d3198fca32d5bfc069",
+   "tables": 12,
+   "rows": 11,
+   "differing_tables": {}
+  }
+ },
+ "artifacts": {
+  "root": "/home/swl007007/.local/share/ipcch-mlflow/artifacts",
+  "frozen": 3569,
+  "rehashed_equal": 3569,
+  "mismatched_or_missing": [],
+  "extra_files": [
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/__init__.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/artifacts.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/contract.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/errors.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/features.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/geography.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/metrics.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/modelstore.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/preflight.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/prepare.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/projection.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/quartet.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/schedule.cpython-312.pyc",
+   "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/targets.cpython-312.pyc"
+  ],
+  "extra_all_pyc": true,
+  "extra_count": 14
+ },
+ "delta_empty": true
+}

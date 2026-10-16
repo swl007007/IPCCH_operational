@@ -1,0 +1,62 @@
+{
+ "receipt": "removal-receipt.json (original measurements and checks, unmodified; all_other_rows_unchanged=false kept)",
+ "receipt_sha256": "cd58d9e61b0ae24f91024cbe459de85f5afeab854cd608f1325fc8dfb7e0d37f",
+ "finding": "roles 7->6 and role_permissions 44->11 changed beyond rows carrying the admin's user_id; users and user_role_assignments digests (admin rows excluded) equal before/after",
+ "executed_code": {
+  "mlflow_version": "3.17.0",
+  "file": "/home/swl007007/projects/food-crisis-research/envs/mlflow-svc/lib/python3.12/site-packages/mlflow/server/auth/sqlalchemy_store.py",
+  "file_sha256": "5346083c8e67b3e0e42ea82614a643405aaadc016cc4e9fb1c7ec3f86f0a20ba",
+  "delete_user_source_sha256": "e501d87eb23ccfcf2dbf755e282b0b993f60ad640a9679493e32df7700000284",
+  "behaviour": "deletes the synthetic per-user role __user_<id>__ (with its role_permissions) before the user row; executed locally via temp_admin.store (Auth Proxy)"
+ },
+ "reconstruction": {
+  "deleted_role": {
+   "id": 6,
+   "name": "__user_3__",
+   "workspace": "default",
+   "description": null
+  },
+  "deleted_grants": 33,
+  "grant_ids": [
+   11,
+   13,
+   14,
+   15,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45
+  ],
+  "roles_current_plus_deleted_eq_original_before_digest": true,
+  "role_permissions_current_plus_deleted_eq_original_before_digest": true,
+  "pre_existing_gap": "role_permissions id 12 (absent before removal; the USE grant on the copied old-project endpoint, revoked 14:38:19Z)",
+  "file": "reconstruction.json"
+ },
+ "disposition": "the removal deleted exactly the temporary admin (user 3), its role assignment, its synthetic role __user_3__ and that role's 33 MANAGE grants on resources it created; every other auth row is byte-identical to before (digest-proven by reconstruction). Not 'all auth tables unchanged': 33 temporary-admin grants were intentionally removed with the account.",
+ "cache_window": "within the 60 s TTL the cached old credential authenticated but each request returned 404 (no content); 401 from 61.1 s (and at 71.3 s)"
+}

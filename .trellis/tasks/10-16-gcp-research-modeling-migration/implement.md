@@ -1,6 +1,6 @@
 # Research migration implementation plan
 
-> **Status 2026-10-16 12:45 EDT:** checked items are done, with evidence in `research/` (`cloud-operations.md` O-001…O-114, checkpoints, `executor-state.md`). Open: SQL input import completion (53/53 + geometry + capacity), temporary-admin removal and post-removal checks, writer freeze + r3 + final delta, `acceptance.json` / cutover receipt, cloud-only guidance, native merge and close.
+> **Status 2026-10-16 12:58 EDT:** checked items are done, with evidence in `research/` (`cloud-operations.md` O-001…O-120, `acceptance.json`, `g12-cutover/cutover-receipt.json`, `executor-state.md`). Cloud-only eligibility is in `cutover-runbook.md` §5 (exact verified roots only; the user performs any change). Open: supervisor reconciliation and close via `trellis-audit close`.
 
 Status: approved for supervised execution by the active goal. `execution-authorization.md` supersedes repeated per-operation approval gates for in-scope cloud work; preserve operation-level records, budget and technical gates. This is one migration task with independently verifiable phases. If later split, each child must explicitly name predecessor artifacts and acceptance, not rely on tree order.
 
@@ -81,7 +81,7 @@ Spending baseline update, 2026-10-16: user confirms target-project current-month
 Depends on P2/P3 and corresponding operation approvals; validates AC2/AC4/AC7.
 
 - [x] Provision only reviewed resources. Use Cloud SQL connector/auth proxy with TLS and scoped identity; no public DB allowlist for arbitrary clients.
-- [ ] Import versioned data and geometry; validate source hashes, typed content and export/readback. Produce consistent GCS snapshots.
+- [x] Import versioned data and geometry; validate source hashes, typed content and export/readback. Produce consistent GCS snapshots.
 - [x] Transfer the rehearsed tracking/auth copy and artifacts. Keep secrets out of evidence and rebind Gemini credentials to the target project.
 - [x] Start the staging MLflow revision with durable backend/auth stores and GCS artifacts. Use its HTTPS URL before any custom-domain change.
 - [x] Reconcile all source/target metadata and relationships, including original timestamps and external descriptors. Register FEWS research records with correct fit/import provenance; never invent missing historical metrics.
@@ -103,10 +103,10 @@ Depends on P4 and job-specific approval; satisfies AC3/AC5.
 
 Depends on P1-P5, all ACs and any final operation approvals.
 
-- [ ] Freeze local writers, create the consistent final snapshot/delta, reconcile again and set cloud as the sole writable tracking authority.
+- [x] Freeze local writers, create the consistent final snapshot/delta, reconcile again and set cloud as the sole writable tracking authority.
 - [x] Execute AC8 from a clean native-WSL checkout/container with only explicit inputs mounted. Publish a concise researcher runbook: add/change recipe, run local smoke, submit trial, compare, download/load, and recover.
-- [ ] Write `research/acceptance.json`, `cutover.md` and final inventory status. Explicitly identify incomplete packages and archive exclusions; any unapproved required incomplete item prevents claiming full migration. Both approved FEWS exceptions remain visibly incomplete and can satisfy migration only after preservation/download checks for all extant materials, never as full-system replay passes.
-- [ ] Tell the user which research Dropbox paths can become cloud-only. The user performs that change; do not delete/move original data or stop unrelated operational workflows.
+- [x] Write `research/acceptance.json`, `cutover.md` and final inventory status. Explicitly identify incomplete packages and archive exclusions; any unapproved required incomplete item prevents claiming full migration. Both approved FEWS exceptions remain visibly incomplete and can satisfy migration only after preservation/download checks for all extant materials, never as full-system replay passes.
+- [x] Tell the user which research Dropbox paths can become cloud-only. The user performs that change; do not delete/move original data or stop unrelated operational workflows.
 - [ ] Run focused checks and detect_changes, commit only relevant work/evidence, then close through the bound Claude audit session. Verify accepted audit outcome; queued/launched is not passed. Preserve any incomplete evidence.
 
 ## Validation commands and evidence

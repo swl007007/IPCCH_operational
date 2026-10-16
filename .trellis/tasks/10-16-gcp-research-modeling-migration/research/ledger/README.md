@@ -1,6 +1,6 @@
 # Acceptance ledger reconciliation (written 2026-10-16 02:43:09 EDT by `date`)
 
-## Current state (2026-10-16 12:40 EDT; supersedes the counts and "pending" items in the dated sections below)
+## Current state (2026-10-16 12:27 EDT; supersedes the counts and "pending" items in the dated sections below)
 
 `registry_ledger.json`: **242** registered versions (key set equal to snapshot r1), by class:
 

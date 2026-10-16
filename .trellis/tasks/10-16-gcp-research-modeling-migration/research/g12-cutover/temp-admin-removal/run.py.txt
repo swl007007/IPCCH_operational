@@ -1,0 +1,111 @@
+"""Temporary migration admin removal + credential-cache TTL proof + preservation digests (one process; the old
+credential lives only in memory and is never printed or written).
+
+1. Read the task secret (temp_admin's own guard: task labels) into memory.
+2. Keyed digest of every auth table, rows of the temporary admin excluded (users: password hashes enter only as
+   sha256 inside the digest). Warm request with the old credential (expect 200).
+3. ``temp_admin remove`` (receipt + task secret + authenticating credential; deletes exactly that user via the
+   MLflow auth store; destroys its secret versions).
+4. Requests with the old credential: immediately, then every 10 s until 401; the 401 must hold after the 60 s TTL.
+5. Digests again: every table equal except the removed admin's own rows; users = before minus the admin.
+"""
+import datetime, hashlib, json, os, subprocess, sys, time
+
+import requests
+import sqlalchemy as sa
+
+sys.path.insert(0, "/home/swl007007/projects/food-crisis-research/control-plane")
+from research_cloud.deploy import provision_secrets as ps
+from research_cloud.deploy import temp_admin as ta
+
+W = "/home/swl007007/projects/food-crisis-research"
+U = "https://research-mlflow-76571749286.us-central1.run.app"
+OUT = f"{W}/scratch/temp-admin-removal"
+now = lambda: datetime.datetime.now().astimezone().isoformat(timespec="seconds")
+
+
+def revision():
+    return subprocess.run(["gcloud", "run", "services", "describe", "research-mlflow", "--region=us-central1",
+                           "--project=food-crisis-modeling-enso", "--billing-project=food-crisis-modeling-enso", "--quiet",
+                           "--format=value(status.latestReadyRevisionName)"], capture_output=True, text=True).stdout.strip()
+
+
+def digests(eng, admin_id):
+    insp, out = sa.inspect(eng), {}
+    with eng.connect() as c:
+        for t in sorted(insp.get_table_names()):
+            cols = [x["name"] for x in insp.get_columns(t)]
+            rows, excluded = [], 0
+            for r in c.execute(sa.text(f'select * from "{t}"')):
+                d = dict(zip(cols, r))
+                if admin_id is not None and (d.get("user_id") == admin_id or (t == "users" and d.get("id") == admin_id)):
+                    excluded += 1
+                    continue
+                if "password_hash" in d:
+                    d["password_hash"] = hashlib.sha256(str(d["password_hash"]).encode()).hexdigest()
+                rows.append(json.dumps(d, sort_keys=True, default=str))
+            out[t] = {"rows": len(rows), "excluded_admin_rows": excluded,
+                      "digest": hashlib.sha256("\n".join(sorted(rows)).encode()).hexdigest()}
+    return out
+
+
+def probe(auth):
+    r = requests.get(f"{U}/api/2.0/mlflow/experiments/search", params={"max_results": 1}, auth=auth, timeout=60)
+    return r.status_code
+
+
+def main():
+    api = ps.Api()
+    state, value = ps.secret_state(api, ta.SECRET)
+    assert state == "task", state
+    cred = json.loads(value)
+    ps.remember(cred["password"])
+    auth = (cred["username"], cred["password"])
+    s = ta.store(api, 5433)
+    eng = s.engine if hasattr(s, "engine") else s._engine
+    with eng.connect() as c:
+        admin_id = c.execute(sa.text("select id from users where username = :u"), {"u": ta.USERNAME}).scalar()
+        users_before = sorted(r[0] for r in c.execute(sa.text("select username from users")))
+    rec = {"started": now(), "revision_before": revision(), "admin_user": ta.USERNAME, "admin_user_id": admin_id,
+           "users_before": users_before, "digests_before": digests(eng, admin_id), "probes": []}
+    rec["warm"] = {"time": now(), "status": probe(auth)}
+    rc = ta.main(["remove", "--port", "5433", "--receipt", f"{W}/ledger/temp-admin-receipt.json"], api=api)
+    t_removed = time.time()
+    rec["remove"] = {"time": now(), "rc": rc, "receipt": "ledger/temp-admin-receipt.json (remove section)"}
+    deadline = t_removed + 180
+    while time.time() < deadline:
+        st = probe(auth)
+        rec["probes"].append({"seconds_after_removal": round(time.time() - t_removed, 1), "status": st})
+        if st == 401 and time.time() - t_removed > 70:
+            break
+        time.sleep(10)
+    with eng.connect() as c:
+        users_after = sorted(r[0] for r in c.execute(sa.text("select username from users")))
+    rec["users_after"] = users_after
+    rec["digests_after"] = digests(eng, admin_id)
+    rec["revision_after"] = revision()
+    first401 = next((p["seconds_after_removal"] for p in rec["probes"] if p["status"] == 401), None)
+    late = [p for p in rec["probes"] if p["seconds_after_removal"] > 65]
+    rec["checks"] = {
+        "warm_200": rec["warm"]["status"] == 200,
+        "remove_rc_0": rc == 0,
+        "users_after_eq_before_minus_admin": users_after == [u for u in users_before if u != ta.USERNAME],
+        "all_other_rows_unchanged": all(rec["digests_before"][t]["digest"] == rec["digests_after"][t]["digest"]
+                                        for t in rec["digests_before"]),
+        "admin_rows_gone": all(v["excluded_admin_rows"] == 0 for v in rec["digests_after"].values()),
+        "old_credential_401_after_ttl": bool(late) and all(p["status"] == 401 for p in late),
+        "first_401_seconds": first401,
+        "same_revision": rec["revision_before"] == rec["revision_after"],
+    }
+    rec["ok"] = all(v for k, v in rec["checks"].items() if k != "first_401_seconds")
+    rec["finished"] = now()
+    text = ps.scrub(json.dumps(rec, indent=1, default=str))
+    assert cred["password"] not in text
+    open(f"{OUT}/removal-receipt.json", "w").write(text)
+    print(json.dumps({"ok": rec["ok"], "checks": rec["checks"], "warm": rec["warm"], "probes": rec["probes"],
+                      "revision": rec["revision_after"]}))
+    return 0 if rec["ok"] else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,64 @@
+{
+  "verified_at": "2026-10-16T12:52:06.449888-04:00",
+  "csv_accepted": true,
+  "geometry_accepted": true,
+  "csv_tables": 53,
+  "source_rows": 7935826,
+  "typed_rows": 7935825,
+  "cells_compared": 1207728709,
+  "source_bytes": 13763421380,
+  "table_bytes": 11287109632,
+  "database_bytes_at_csv_reconcile": 11332836375,
+  "irregular_rows": {
+    "fewsnet.outcome": {
+      "table": "fewsnet.outcome_ea382f78__irregular_rows",
+      "count": 1,
+      "rows": [
+        302949
+      ],
+      "examples": [
+        [
+          "System.IO.MemoryStream"
+        ]
+      ]
+    }
+  },
+  "geometry": {
+    "ipcch.geometry_repaired": {
+      "rows": 6227,
+      "srid": 4326,
+      "wkb_byte_equal": true,
+      "invalid_geometries_recorded": 0,
+      "null_geometries": 0
+    },
+    "ipcch.geometry_source": {
+      "rows": 6227,
+      "srid": 4326,
+      "wkb_byte_equal": true,
+      "invalid_geometries_recorded": 253,
+      "null_geometries": 0
+    },
+    "fewsnet.geometry": {
+      "rows": 5718,
+      "srid": 4326,
+      "wkb_byte_equal": true,
+      "invalid_geometries_recorded": 1,
+      "null_geometries": 0
+    }
+  },
+  "inventory_sha256": "26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049",
+  "csv_report_sha256": "a431c4a0f09dfd77836ea52a67ed27b237781f424784b85ee73f617711a16bd7",
+  "geometry_report_sha256": "b64a683bc99eb99f727a0f819a945b034910f5dd92272862fdb90cda19e78499",
+  "capacity": {
+    "accepted": true,
+    "source": "/home/swl007007/projects/food-crisis-research/ledger/sql-import/capacity.json",
+    "sha256": "7679d32141a31df71177b9925a5b6a0dbe6f2cb43e375cfa01906057cf737451",
+    "database_bytes": 11801301084,
+    "wal_bytes_now": 1073741824,
+    "database_plus_wal_gib": 11.990818109363317,
+    "allocated_gb": 30,
+    "temp_bytes_since_reset": 6361587712,
+    "sum_database_wal_and_cumulative_temp_bytes": 19236630620,
+    "limits": "Database plus current WAL is measured; cumulative temp bytes are not a reconstructed peak or live total disk usage. No claim of exact free filesystem bytes. Both fit the allocated30GB with headroom."
+  }
+}

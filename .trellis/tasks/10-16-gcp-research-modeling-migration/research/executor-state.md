@@ -73,7 +73,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - `scratch/p1/fews/` (hash cache, catalog, search report);
   - `scratch/p1/popv1_models.json`.
 - **SKU catalogs:** `scratch/p3/skus/*.json`.
-- **Live handles at 12:25 (do not duplicate; poll logs):**
+- **Live handles at 12:58:** Cloud SQL Auth Proxy PID 4174282 and loopback IAM proxy PID 570218 (operator tooling; may be stopped after close). No import, download, replay or Vertex job is running. Earlier list, for history:
   - Cloud SQL Auth Proxy PID 4174282 (127.0.0.1:5433); loopback IAM proxy PID 570218 (127.0.0.1:8091).
   - Cloud SQL input import PID 220361 (`ledger/sql-import/run.log`; 51/53 verified, no failures; geometry + capacity follow in the same process).
   - Downloaded-copy replay of the remaining families, **supervisor-owned**: `scratch/pkg-download-all-replay-supervisor/{training-fews,replay-x320}` (forecast 56/56 done). training-ipcch 28/28 was done by the executor (`ledger/image-replays-downloaded/training-ipcch`, accepted).
@@ -132,7 +132,7 @@ The registry ledger stands at 170 passed and 72 tracking-only.
   - Training adapters for both families: features, trials, packages and MLflow linkage.
   - Five pinned images are built.
   - Preservation gate: 29/29 roots.
-- **P3 (cloud), current at 12:45:**
+- **P3 (cloud), current at 12:28:**
   - **G5–G8:** APIs, SAs and scoped grants, 18 secret versions, buckets, AR, `research-pg` (PostGIS) with scoped roles: done.
   - **Data:**
     - MLflow stores in Cloud SQL (64 tables / 361,026 rows and 11 / 10, digests equal);
@@ -180,18 +180,19 @@ None open at this refresh. Rulings recorded by the supervisor (473467b, f5b6fa1)
   - Label the 18 missing regional boosters and the 3,746 of 22,872 unreplayable rows.
   - No substitute retraining.
 
-## Open items and next actions (current at 12:50; the earlier list is superseded)
+## Open items and next actions (current at 12:58; supersedes earlier lists)
 
-1. **SQL input import** (PID 220361): 53/53 verified, then geometry (3 tables) and capacity. Record and commit the evidence.
-2. **Temporary-admin removal** (`temp_admin remove`; receipt + task secret + authenticating credential), then:
-   - **cache proof:** after the 60 s TTL the old credential gets 401, checked in memory only;
-   - **post-removal checks** on revision 00007: `staging_access --direct` and `cloud_access --without-admin`.
-3. **Writer freeze:** confirm `ipcch-mlflow.service` points at `~/.local/share/ipcch-mlflow`, then `systemctl --user stop` + `disable`.
-4. **r3 snapshot** under umask 077 (same SQLite backup method as r2), keyed table delta against r1, and a re-hash of all 3,569 frozen artifacts (the 14 `.pyc` are the only allowed extras).
-   - Empty delta: cut over.
-   - Otherwise: stop and prepare a keyed additive delta for review. Never rerun `copy_store`.
-5. **`research/acceptance.json` + cutover receipt** (AC1–AC8 with evidence pointers; incomplete packages and archive exclusions explicit), and cloud-only guidance (exact verified roots only).
-6. **Native merge:** `git merge --no-ff --no-commit --no-autostash` of the final native SHA (no checkout, stash or reset). Check that `research_cloud` is the only change and that the 72 unrelated dirty-file hashes are unchanged (`scratch/supervisor-premerge-unrelated.json`). Then commit with staged `detect_changes`.
-7. **Supervisor reconciliation**, then `trellis-audit close`.
+All execution steps are done:
+- SQL 53/53 + geometry 3/3 + capacity (O-115/O-116; supervisor-accepted);
+- temporary-admin removal with TTL proof and own-role cascade disposition (O-117; accepted);
+- post-removal checks 17/17 + 31/31 (O-118);
+- writer freeze (O-119);
+- r3: empty delta, 3,569/3,569 artifacts equal, cut over (O-120);
+- native merge 12a5dd7 (accepted);
+- `acceptance.json` FINAL and `g12-cutover/cutover-receipt.json`.
+
+Remaining:
+1. Supervisor reconciliation.
+2. `trellis-audit close` from this bound session, after all relevant evidence is committed. Success is claimed only on an accepted audit result.
 
 **Disclosed, no action:** the 14 executor-written `.pyc` files stay in the original MLflow artifact store. **Flag:** the default compute SA holds Editor (automatic; O-030).

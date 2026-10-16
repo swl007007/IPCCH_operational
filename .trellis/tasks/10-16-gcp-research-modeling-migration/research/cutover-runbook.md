@@ -1,6 +1,6 @@
-# Cutover and fallback runbook (executor draft, 2026-10-16 ≈11:25 EDT; not executed)
+# Cutover and fallback runbook (written ≈11:25 EDT; **executed 12:44–12:56 EDT**, see §8)
 
-This is the plan for G12, which the active approved goal authorizes; there is no additional user-go gate. Supervisor-reviewed: stop and disable `ipcch-mlflow.service` after all remaining ACs pass, provided the unit points at the inventoried local store. This is a reversible writer freeze within the migration. Cloudflare tunnel and DNS stay unchanged. Nothing below has been run unless marked **done**.
+This is the plan for G12, which the active approved goal authorizes; there is no additional user-go gate. Supervisor-reviewed: stop and disable `ipcch-mlflow.service` after all remaining ACs pass, provided the unit points at the inventoried local store. This is a reversible writer freeze within the migration. Cloudflare tunnel and DNS stay unchanged. Steps marked **done** were run; §8 records the execution.
 
 ## 1. Current delta evidence (done)
 
@@ -45,9 +45,9 @@ Eligible means every file was transferred create-only with a fresh sha256 equal 
 |---|---|---|---|---|---|
 | `/mnt/c/Users/swl00/geoxgb_runs/confirm-onset-v1` (accepted exception; full-system replay unavailable; pooled models packaged) | `gs://food-crisis-modeling-enso-research-inputs/fews-runs/confirm-onset-v1/` | 65 | 62,541,229 | ok | **ok 65/65** |
 | `/mnt/c/Users/swl00/geoxgb_runs/scen-b43ef6a-v1` (accepted exception; incomplete full-system status unchanged) | `…/fews-runs/scen-b43ef6a-v1/` | 55,899 | 45,341,699,278 | ok (part of the 29-root verify) | **ok 55,899/55,899** (`ledger/verify/archive-download-scen-b43ef6a-v1.json`, sha256 `dcf6d5f3…5042e0`; set equal, no missing/extra/problems; every bucket/object/generation/sha256 equals the frozen upload receipts; supervisor-accepted) |
+| The other 27 roots in `scratch/preservation/gate.json`: the d34/d37/d38 evidence roots, geoxgb-d26 … d52, geoxgb-v1, minirun-1/2, smoke-2, scen-b43ef6a-v1.failed_stage1, scen-b43ef6a-v1.actual-inputs-v1, the geoxgb_runs top-level files | `…/fews-runs/<root>/` | per gate (29 roots total 136,927 files, 76,973,948,308 bytes) | per gate | **ok: all 29 roots, 136,927 / 76,973,948,308 exact** (`ledger/verify/fews-*.json`, 11:25) | not required (metadata + hash verify) |
 
 Both accepted historical exceptions now meet extant-byte download preservation. This does not change their incomplete full-system status: confirm-onset's full system arm stays unreplayable, and neither archive becomes a complete run.
-| The other 27 roots in `scratch/preservation/gate.json`: the d34/d37/d38 evidence roots, geoxgb-d26 … d52, geoxgb-v1, minirun-1/2, smoke-2, scen-b43ef6a-v1.failed_stage1, scen-b43ef6a-v1.actual-inputs-v1, the geoxgb_runs top-level files | `…/fews-runs/<root>/` | per gate (29 roots total 136,927 files, 76,973,948,308 bytes) | per gate | **ok: all 29 roots, 136,927 / 76,973,948,308 exact** (`ledger/verify/fews-*.json`, 11:25) | not required (metadata + hash verify) |
 
 **Declared inputs:** only the 122 exact inventory paths in `scratch/p1/input-inventory.json`, verified 122/122. These are **individual files**, not their parent trees.
 
@@ -66,4 +66,17 @@ Both accepted historical exceptions now meet extant-byte download preservation. 
 
 - **Done:** UI acceptance; access matrices; restart persistence (00006 → 00007: armed, guard rows kept, query settled); publish verify 223; reverse links 170 keyed; FEWS registry 29; FEWS archive verify 29 roots / 136,927 files / 76,973,948,308 bytes; confirm-onset bytes 65/65; scen bytes 55,899/55,899 (45,341,699,278 B); AC8 both families; trials and provenance.
 - **Per-trial cap:** the 54c9ad6 SIGALRM cap is ineffective, because the trial is PID 1. Native d9ede46 replaces it with `[/usr/local/bin/train-entry] /usr/bin/timeout --kill-after=30s 900s python …`. That sends TERM at 900 s and KILL at 930 s; the 30 s grace is inside the declared 600 s overhead, so this is not a hard 900 s. It was tested as PID 1 in the pinned training-ipcch rootfs, and admission requires that exact prefix. HPT attempt 3 (submitted 11:43 with the ineffective cap) is evaluated on its measured trial durations (each must stay within 900 s). A fourth HPT is not submitted just to repeat wiring. Any future spec must carry the corrected wrapper.
-- **Pending:** full 223 reader download + 4-image replay; SQL import 53/53 + geometry + capacity; HPT attempt 3 outcome; temporary-admin removal + post-removal checks; writer freeze + r3 keyed delta + artifact re-hash; native commit merge; close.
+- **Done since:** full 223 reader download + 4-image replay (accepted); SQL 53/53 + geometry 3/3 + capacity (accepted); HPT attempt 3 SUCCEEDED (harvested); temporary-admin removal + post-removal checks; writer freeze + r3 + artifact re-hash (empty delta); native merge 12a5dd7. **Remaining:** supervisor reconciliation and `trellis-audit close`.
+
+## 8. Execution record (2026-10-16)
+
+- **§6, temporary admin removal: done 12:44–12:47 (O-117).**
+  - The user was removed and secret version 1 destroyed.
+  - The old credential returned 404 (no content) inside the TTL and **401 from 61.1 s**.
+  - MLflow's `delete_user` also removed that admin's synthetic role `__user_3__` and its 33 own grants. The reconstruction reproduces the original digests exactly; the failed blanket check is retained (`g12-cutover/temp-admin-removal/`).
+- **§6.3, post-removal checks: done (O-118).** Direct anonymous 17/17; `cloud_access --without-admin` 31/31 on 00007-hld.
+- **§3.1–3.2, writer freeze: done 12:55:58–12:56:05 (O-119).** The unit identity was confirmed, then the service stopped and disabled.
+- **§3.3, r3: done 12:56 (O-120).** 0 differing tables in both stores; artifacts 3,569/3,569 re-hashed equal; extras only the 14 `.pyc`.
+- **§3.4–3.5, decision: empty delta → cut over; nothing imported.** Cloud is the sole writable authority. Cloudflare/DNS unchanged. Receipt: `g12-cutover/cutover-receipt.json`.
+- **§4, fallback (unchanged):** the local service stays stopped and disabled; snapshots r1/r2/r3 stay private and offline.
+- **§5, archives:** both exception archives now have full byte-download acceptance: confirm-onset 65/65, scen 55,899/55,899. Eligibility does not delete anything; any cloud-only change is the user's decision.

@@ -1,0 +1,21 @@
+{
+  "verified_at": "2026-10-16T12:56:18.873996-04:00",
+  "accepted": true,
+  "revision": "research-mlflow-00007-hld",
+  "anonymous_checks": 17,
+  "principal_checks": 31,
+  "removed": "temporary migration administrator and secret version1",
+  "other_users": 5,
+  "original_check_failed_and_retained": true,
+  "disposition": "Only removed user own role6 __user_3__ and33MANAGE grants changed; current rows plus exact deleted rows reproduce BOTH original before-table SHA256 values. All other auth-table digests equal. Original false unchanged-tables check was not rewritten.",
+  "old_credential_first_401_seconds": 61.1,
+  "ttl_after_71s_401": true,
+  "direct_anonymous_note": "staging_access report iam_token field is legacy row intent. --direct passes token=None; Checks.call emits X-Serverless-Authorization only if iam and self.token. No Google identity header sent.",
+  "receipt_hashes": {
+    "removal": "cd58d9e61b0ae24f91024cbe459de85f5afeab854cd608f1325fc8dfb7e0d37f",
+    "reconstruction": "5b1afa36d98fad8a6a378a01d7e6e1264c15c3c32361cb335657d4810016c1d0",
+    "disposition": "35de81a55f4b78530523b516c47f5422667b142933b13e43fd34860d88e94487",
+    "anonymous": "aff9f7d4e6b5008ad1785a887de6c0a50b552f514fd4e2ce29a340183923ec13",
+    "principals": "f64859562ead7c7c3701da716412560301f12effc9d190f685802f27ba30e2de"
+  }
+}
