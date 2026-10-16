@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 05:08 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 05:17 EDT by `date`
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `5003e4f`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `6d0eb85`. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -30,7 +30,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - guard Gemini 3.8 contract da40998; window provenance tests afc020a; sqlimport b93429b; training harness + IPCCH adapter 418da0e;
   - pop-v1 route/support + frozen bindings 3c47cc5; harness project binding + failed-trial MLflow 7bd3921; dropbox interop retry e972207.
   - importer collision-free names + whole-table verification 643d1a4, exact numerics/stale receipts 8868583;
-  - training S27 boundaries + Linux feature snapshot + portable trial package 5003e4f.
+  - training S27 boundaries + Linux feature snapshot + portable trial package 5003e4f; code identity/full manifests/integral checks 6d0eb85.
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
@@ -59,10 +59,27 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - `scratch/p1/popv1_models.json`.
 - **SKU catalogs:** `scratch/p3/skus/*.json`.
 - **Background processes:**
-  - **pop-v1 rebuild at `3c47cc5` is complete** (24 packages). The smoke replay of `fullpool_xgb-h01` passed 1,006 rows with exact support. The full replay is the supervisor's.
+  - The feature snapshot regenerates with code identity (`scratch/training/features-h03-v2`, log `features-h03-v2.log`).
   - **SQL import rerun:** started with the corrected code `8868583` (run3; log `scratch/sqlimport/run3.log`, report `scratch/sqlimport/report.json`). Earlier runs were stopped and their tables dropped; the stopped run's report is `report-stopped-643d1a4.json`, which is not accepted.
   - The disposable PG (`pg_ctl` PID 1262386) is running.
 - **Registered-repo lock:** the stale 0-byte `.git/index.lock` (04:21:04, no live git) was moved to `preservation/stale-index.lock-0421`. Evidence was committed in `a99e84c`.
+
+## Completed rounds: do not redo
+
+Each round below is finished, with current receipts. Rerun a round only if its code or packages change.
+
+| Round | Result | Receipts |
+|---|---|---|
+| GeoXGB P6 / yearly / AlphaEarth | 36/36 | `p2-packages/replay-bf3da00` |
+| Forecasting batch/launch | 56/56 (supervisor round, adopted) | `p2-packages/replay-forecast-602558c-supervisor` |
+| Somalia v2/v3/v4 | 55/55 | `p2-packages/replay-somalia-e8d5160` |
+| Somalia v1 | 15/15 | `p2-packages/replay-somalia-v1-50c2b38` |
+| Window-probe comparators (input binding) | 8/8 | `p2-packages/replay-window-probe-62bc2a7` |
+| pop-v1 corrected | 24/24, 20,106 rows (supervisor full replay, adopted) | `p2-packages/replay-popv1-3c47cc5` |
+| Service rehearsals | deny 50, armed 48, restart 7, assistant 9, copied roles 16 | `p2-service-d84dabd` |
+| IPCCH training chain | at `5003e4f` | `p2-training-5003e4f` |
+
+The registry ledger stands at 170 passed and 72 tracking-only.
 
 ## Status by phase
 
