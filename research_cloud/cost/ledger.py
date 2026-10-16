@@ -13,11 +13,16 @@ other. Every paid operation is admitted by ``reserve`` before it is submitted:
 * ``release`` is only for an admission whose submission never created a resource, confirmed by a provider lookup
   (``no_resource_evidence``); anything ambiguous stays reserved.
 
+Every transition reads the deciding state and writes it (with its event) inside one ``BEGIN IMMEDIATE`` transaction
+with a conditional ``UPDATE``, so a concurrent attach and release cannot both succeed. Caps, amounts and reservation
+inputs must be finite and in range.
+
 The ledger is an operator control and receipt trail, not a provider-side spending cap.
 
   python -m research_cloud.cost.ledger --db LEDGER.sqlite summary --month 2026-10
 """
 import argparse
+import contextlib
 import json
 import math
 import sqlite3
@@ -50,12 +55,38 @@ def now():
     return time.strftime("%Y-%m-%dT%H:%M:%S%z")
 
 
-def connect(path, pools=None):
-    conn = sqlite3.connect(path, isolation_level=None, timeout=30)
+def finite(value, name, minimum=0.0, strict=False):
+    """A finite real >= minimum (> minimum when strict); bools and non-numbers are refused."""
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) \
+            or value < minimum or (strict and value == minimum):
+        raise LedgerError(f"{name} must be a finite number {'>' if strict else '>='} {minimum}, got {value!r}")
+    return float(value)
+
+
+def connect(path, pools=None, timeout=30):
+    pools = pools or POOLS
+    for pool, cap in pools.items():
+        finite(cap, f"cap of {pool}", strict=True)
+    conn = sqlite3.connect(path, isolation_level=None, timeout=timeout)
     conn.executescript(SCHEMA)
-    for pool, cap in (pools or POOLS).items():
-        conn.execute("INSERT OR IGNORE INTO pools VALUES (?, ?)", (pool, cap))
+    for pool, cap in pools.items():
+        conn.execute("INSERT OR IGNORE INTO pools VALUES (?, ?)", (pool, float(cap)))
+        stored = conn.execute("SELECT monthly_cap_usd FROM pools WHERE pool = ?", (pool,)).fetchone()[0]
+        if stored != float(cap):
+            raise LedgerError(f"pool {pool} already has cap {stored}, not {cap}")
     return conn
+
+
+@contextlib.contextmanager
+def transaction(conn):
+    """One exclusive write transaction: every read that decides a transition and its write happen inside it."""
+    conn.execute("BEGIN IMMEDIATE")
+    try:
+        yield
+        conn.execute("COMMIT")
+    except BaseException:
+        conn.execute("ROLLBACK")
+        raise
 
 
 def _event(conn, op, event, data):
@@ -70,10 +101,8 @@ def committed(conn, pool, month):
 
 
 def reserve(conn, pool, month, operation_id, amount_usd, detail):
-    if not (amount_usd > 0 and math.isfinite(amount_usd)):
-        raise LedgerError("a reservation must be a positive finite amount")
-    conn.execute("BEGIN IMMEDIATE")
-    try:
+    amount_usd = finite(amount_usd, "reservation", strict=True)
+    with transaction(conn):
         cap = conn.execute("SELECT monthly_cap_usd FROM pools WHERE pool = ?", (pool,)).fetchone()
         if cap is None:
             raise LedgerError(f"unknown pool {pool}")
@@ -86,10 +115,6 @@ def reserve(conn, pool, month, operation_id, amount_usd, detail):
         conn.execute("INSERT INTO operations VALUES (?, ?, ?, ?, 'reserved', NULL, NULL, NULL, NULL, ?, ?, ?)",
                      (operation_id, pool, month, amount_usd, json.dumps(detail, sort_keys=True), t, t))
         _event(conn, operation_id, "reserved", {"amount_usd": amount_usd, "committed_before": used, "cap": cap[0]})
-        conn.execute("COMMIT")
-    except BaseException:
-        conn.execute("ROLLBACK")
-        raise
     return used + amount_usd
 
 
@@ -102,45 +127,55 @@ def _get(conn, operation_id):
 
 
 def attach(conn, operation_id, provider_resource):
-    status, existing, _ = _get(conn, operation_id)
-    if status != "reserved" or (existing and existing != provider_resource):
-        raise LedgerError(f"{operation_id}: cannot attach {provider_resource} (status {status}, resource {existing})")
-    conn.execute("UPDATE operations SET provider_resource = ?, updated_at = ? WHERE operation_id = ?",
-                 (provider_resource, now(), operation_id))
-    _event(conn, operation_id, "attached", {"provider_resource": provider_resource})
+    if not provider_resource:
+        raise LedgerError("provider resource name required")
+    with transaction(conn):
+        status, existing, _ = _get(conn, operation_id)
+        if status != "reserved" or (existing and existing != provider_resource):
+            raise LedgerError(f"{operation_id}: cannot attach {provider_resource} (status {status}, resource {existing})")
+        conn.execute("UPDATE operations SET provider_resource = ?, updated_at = ? "
+                     "WHERE operation_id = ? AND status = 'reserved'", (provider_resource, now(), operation_id))
+        _event(conn, operation_id, "attached", {"provider_resource": provider_resource})
 
 
 def observe(conn, operation_id, provider_state, source):
     """Record a provider-reported state (source: the read command/receipt that returned it)."""
-    _get(conn, operation_id)
-    conn.execute("UPDATE operations SET provider_state = ?, updated_at = ? WHERE operation_id = ?",
-                 (provider_state, now(), operation_id))
-    _event(conn, operation_id, "observed", {"provider_state": provider_state, "source": source,
-                                            "terminal": provider_state in TERMINAL})
+    with transaction(conn):
+        status, resource, _ = _get(conn, operation_id)
+        if status != "reserved" or not resource:
+            raise LedgerError(f"{operation_id}: states are observed only for an attached open reservation")
+        conn.execute("UPDATE operations SET provider_state = ?, updated_at = ? WHERE operation_id = ?",
+                     (provider_state, now(), operation_id))
+        _event(conn, operation_id, "observed", {"provider_state": provider_state, "source": source,
+                                                "terminal": provider_state in TERMINAL})
     return provider_state in TERMINAL
 
 
 def settle(conn, operation_id, actual_usd, basis):
-    status, _, state = _get(conn, operation_id)
-    if status != "reserved":
-        raise LedgerError(f"{operation_id}: already {status}")
-    if state not in TERMINAL:
-        raise LedgerError(f"{operation_id}: provider state {state} is not terminal; the reservation stays")
-    if not (actual_usd >= 0 and math.isfinite(actual_usd)):
-        raise LedgerError("actual must be a non-negative finite amount")
-    conn.execute("UPDATE operations SET status = 'settled', actual_usd = ?, actual_basis = ?, updated_at = ? "
-                 "WHERE operation_id = ?", (actual_usd, basis, now(), operation_id))
-    _event(conn, operation_id, "settled", {"actual_usd": actual_usd, "basis": basis})
+    actual_usd = finite(actual_usd, "actual")
+    if not basis:
+        raise LedgerError("settlement basis required")
+    with transaction(conn):
+        status, _, state = _get(conn, operation_id)
+        if status != "reserved":
+            raise LedgerError(f"{operation_id}: already {status}")
+        if state not in TERMINAL:
+            raise LedgerError(f"{operation_id}: provider state {state} is not terminal; the reservation stays")
+        conn.execute("UPDATE operations SET status = 'settled', actual_usd = ?, actual_basis = ?, updated_at = ? "
+                     "WHERE operation_id = ? AND status = 'reserved'", (actual_usd, basis, now(), operation_id))
+        _event(conn, operation_id, "settled", {"actual_usd": actual_usd, "basis": basis})
 
 
 def release(conn, operation_id, no_resource_evidence):
-    status, resource, _ = _get(conn, operation_id)
-    if status != "reserved" or resource:
-        raise LedgerError(f"{operation_id}: only an admission without a provider resource can be released")
     if not no_resource_evidence:
         raise LedgerError(f"{operation_id}: release needs a provider lookup showing no resource was created")
-    conn.execute("UPDATE operations SET status = 'released', updated_at = ? WHERE operation_id = ?", (now(), operation_id))
-    _event(conn, operation_id, "released", {"no_resource_evidence": no_resource_evidence})
+    with transaction(conn):
+        status, resource, _ = _get(conn, operation_id)
+        if status != "reserved" or resource:
+            raise LedgerError(f"{operation_id}: only an admission without a provider resource can be released")
+        conn.execute("UPDATE operations SET status = 'released', updated_at = ? "
+                     "WHERE operation_id = ? AND status = 'reserved' AND provider_resource IS NULL", (now(), operation_id))
+        _event(conn, operation_id, "released", {"no_resource_evidence": no_resource_evidence})
 
 
 def summary(conn, month):
@@ -157,6 +192,13 @@ def summary(conn, month):
 def vertex_reservation(rate_per_hour, trials, timeout_s, overhead_s, disk_gib, disk_rate_gib_hour):
     """Conservative CustomJob/HPT reservation: per trial (running timeout + declared startup/termination overhead),
     rounded up to 30-second billing increments, at the machine's on-demand rate, plus boot disk for the same time."""
+    if isinstance(trials, bool) or not isinstance(trials, int) or trials < 1:
+        raise LedgerError(f"trials must be a positive integer, got {trials!r}")
+    rate_per_hour = finite(rate_per_hour, "machine rate", strict=True)
+    timeout_s = finite(timeout_s, "timeout", strict=True)
+    overhead_s = finite(overhead_s, "overhead")
+    disk_gib = finite(disk_gib, "disk GiB")
+    disk_rate_gib_hour = finite(disk_rate_gib_hour, "disk rate")
     billed_s = math.ceil((timeout_s + overhead_s) / 30) * 30
     hours = trials * billed_s / 3600
     return {"trials": trials, "billed_seconds_per_trial": billed_s, "compute_usd": hours * rate_per_hour,

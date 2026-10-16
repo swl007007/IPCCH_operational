@@ -68,3 +68,59 @@ class Ledger(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Atomicity(unittest.TestCase):
+    def setUp(self):
+        self.path = os.path.join(tempfile.mkdtemp(), "ledger.sqlite")
+        self.conn = L.connect(self.path)
+
+    def test_attach_cannot_interleave_with_release(self):
+        """release's deciding read and its write are one exclusive transaction: an attach from another connection
+        between them is blocked (it cannot land), so the operation is never released with a live resource."""
+        L.reserve(self.conn, "training", "2026-10", "op", 100.0, {})
+        other = L.connect(self.path, timeout=0.2)
+        real_get, seen = L._get, []
+
+        def interleaving_get(conn, operation_id):
+            row = real_get(conn, operation_id)
+            if not seen:
+                seen.append(True)
+                try:
+                    L.attach(other, operation_id, "projects/p/locations/l/customJobs/1")
+                    seen.append("attached")
+                except sqlite3.OperationalError:
+                    seen.append("blocked")
+            return row
+        L._get = interleaving_get
+        try:
+            L.release(self.conn, "op", "lookup: none")
+        finally:
+            L._get = real_get
+        self.assertEqual(seen[1], "blocked")
+        status, resource = self.conn.execute("SELECT status, provider_resource FROM operations").fetchone()
+        self.assertEqual((status, resource), ("released", None))
+        with self.assertRaises(L.LedgerError):                 # and a later attach sees the release
+            L.attach(other, "op", "projects/p/locations/l/customJobs/1")
+
+    def test_attach_first_blocks_release(self):
+        L.reserve(self.conn, "training", "2026-10", "op", 1.0, {})
+        L.attach(self.conn, "op", "projects/p/locations/l/customJobs/2")
+        with self.assertRaises(L.LedgerError):
+            L.release(L.connect(self.path), "op", "lookup: none")
+
+    def test_invalid_caps_and_quantities_are_refused(self):
+        for cap in (float("inf"), float("nan"), 0, -5, True):
+            with self.assertRaises(L.LedgerError):
+                L.connect(os.path.join(tempfile.mkdtemp(), "x.sqlite"), pools={"training": cap})
+        with self.assertRaises(L.LedgerError):
+            L.connect(self.path, pools={"training": 1e6})        # an existing cap is not silently replaced
+        for amount in (float("inf"), float("nan"), 0, -1):
+            with self.assertRaises(L.LedgerError):
+                L.reserve(self.conn, "training", "2026-10", f"a{amount}", amount, {})
+        bad = [dict(disk_gib=-100), dict(trials=0), dict(trials=1.5), dict(timeout_s=0), dict(overhead_s=-1),
+               dict(rate_per_hour=float("nan")), dict(disk_rate_gib_hour=-1e-6)]
+        base = dict(rate_per_hour=0.21849885, trials=2, timeout_s=900, overhead_s=0, disk_gib=100, disk_rate_gib_hour=0.000063014)
+        for change in bad:
+            with self.assertRaises(L.LedgerError):
+                L.vertex_reservation(**{**base, **change})
