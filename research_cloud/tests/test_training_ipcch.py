@@ -38,7 +38,8 @@ class Boundaries(unittest.TestCase):
                  "frozen rich561": "reorder", "lack ['origin_ord']": dict(origin_ord=None),
                  "phase_truth holds non-integer": dict(phase_truth=[1, 2.5]),
                  "phase_truth outside": dict(phase_truth=[1, 7]),
-                 "own origin": dict(horizon_months=[1, 1])}
+                 "own origin": dict(horizon_months=[1, 1]),
+                 "non-finite": dict(admin_code=[1, float("inf")])}
         for fragment, change in cases.items():
             if change == "reorder":
                 inputs, d = self.bundle()
@@ -52,6 +53,21 @@ class Boundaries(unittest.TestCase):
                 args = (self.bundle(**change)[0],)
             with self.assertRaisesRegex(common.TrialError, fragment.replace("[", r"\[").replace("]", r"\]"), msg=fragment):
                 self.fit(*args)
+
+    def test_fractional_config_values_are_refused_not_truncated(self):
+        inputs, _ = self.bundle()
+        for edit in ({"horizon": 3.5}, {"holdout_start_ord": 24276.5}, {"folds": [{"origin_ord": 24269.2}]}, {"horizon": "3"}):
+            config = {"horizon": 3, "holdout_start_ord": 24276, "folds": [{"origin_ord": 24269}], "fixed": {}, "geoxgb_src": SRC}
+            config.update(edit)
+            with self.assertRaisesRegex(common.TrialError, "must be an integer", msg=edit):
+                ipcch_quartet.fit(inputs, {"files": {}}, config, {"rounds": 10}, common.Output(tempfile.mkdtemp()))
+
+    def test_code_identity_hashes_imported_modules_and_schema(self):
+        mods = ipcch_quartet._modules({"geoxgb_src": SRC})
+        ident = ipcch_quartet.code_identity(mods, {"geoxgb_src": SRC})
+        self.assertEqual(set(ident["files"]), {"ipcch_geoxgb/quartet.py", "ipcch_geoxgb/projection.py", "ipcch_geoxgb/metrics.py",
+                                               "ipcch_geoxgb/modelstore.py", "config/feature-schema.json"})
+        self.assertTrue(all(len(v) == 64 for v in ident["files"].values()))
 
 
 if __name__ == "__main__":

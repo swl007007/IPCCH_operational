@@ -223,6 +223,7 @@ def run_trial(fit, argv=None, objective=None):
             raise TrialError(f"this adapter reports {objective!r}, the config declares {config.get('objective')!r}")
         inputs, manifest = resolve_inputs(args.manifest, out.local)
         record["input_sha256"] = {r: e["sha256"] for r, e in manifest["files"].items()}
+        record["input_manifest"] = {"sha256": sha256_file(args.manifest), "content": manifest}   # incl. derived_from
         params = validate_params(trial, config["space"], config["fixed"])
         record.update(params=params, resolved_params={**config["fixed"], **params})
         out.write_json("trial.json", record)   # provenance persists even if fit raises

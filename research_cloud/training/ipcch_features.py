@@ -35,6 +35,16 @@ def modules(src):
     return {n: importlib.import_module(f"ipcch_geoxgb.{n}") for n in names}
 
 
+def source_identity(mods, src):
+    """sha256 of every builder module actually imported, plus the frozen schema/contract files they read."""
+    files = {f"ipcch_geoxgb/{os.path.basename(m.__file__)}": sha256_file(m.__file__) for m in mods.values()}
+    for name in ("feature-schema.json", "experiment-contract.json", "inputs.json"):
+        path = os.path.join(src, "config", name)
+        if os.path.exists(path):
+            files[f"config/{name}"] = sha256_file(path)
+    return {"geoxgb_src": os.path.abspath(src), "files": dict(sorted(files.items()))}
+
+
 def build(inputs, horizon, src):
     m = modules(src)
     schema = m["contract"].load_feature_schema()
@@ -52,7 +62,7 @@ def build(inputs, horizon, src):
     grid = feat.build_panel_grid(panel)
     index = feat.build_history_index(valid)
     X, keys, audit = m["prepare"].build_horizon(valid, panel, grid, index, schema, int(horizon), country)
-    return X, keys, audit, schema
+    return X, keys, audit, schema, source_identity(m, src)
 
 
 def main(argv=None):
@@ -70,7 +80,7 @@ def main(argv=None):
     os.makedirs(args.output)
     t0 = time.time()
     inputs, manifest = resolve_inputs(args.manifest, args.output)
-    X, keys, audit, schema = build(inputs, args.horizon, args.geoxgb_src)
+    X, keys, audit, schema, code = build(inputs, args.horizon, args.geoxgb_src)
     hh = f"h{args.horizon:02d}"
     names = {"keys": f"keys_{hh}.csv.gz", "X": f"X_rich561_{hh}.npy", "feature_order": "feature_order.csv"}
     out = {k: os.path.join(args.output, v) for k, v in names.items()}
@@ -80,17 +90,31 @@ def main(argv=None):
     pd.DataFrame({"name": schema["ordered_names"]}).to_csv(out["feature_order"], index=False, lineterminator="\n")
     snapshot = {"name": f"ipcch-rich561-{hh}-linux", "gcp_project": manifest.get("gcp_project"),
                 "derived_from": {"base_manifest": os.path.abspath(args.manifest), "base_manifest_sha256": sha256_file(args.manifest),
-                                 "base_inputs": {r: e["sha256"] for r, e in manifest["files"].items()}},
+                                 "base_inputs": {r: e["sha256"] for r, e in manifest["files"].items()},
+                                 "builder_code": code, "horizon": args.horizon,
+                                 "recipe": "targets.build_target_ledger -> valid_targets; features.load_covariate_panel -> "
+                                           "build_panel_grid; build_history_index; prepare.build_horizon"},
                 "files": {k: {"uri": os.path.abspath(p), "sha256": sha256_file(p)} for k, p in out.items()}}
     comparison = None
     if args.compare:
         ref, _ = resolve_inputs(args.compare, args.output)
         rk = pd.read_csv(ref["keys"])
         rx = np.load(ref["X"], mmap_mode="r")
-        same_keys = rk.shape == keys.shape and all(
-            np.array_equal(rk[c].to_numpy(), keys[c].to_numpy(), equal_nan=True) for c in ("admin_code", "target_ord", "origin_ord"))
+        differing_key_columns = sorted(set(rk.columns) ^ set(keys.columns))
+        if rk.shape == keys.shape:
+            for c in keys.columns:
+                if c in rk.columns:
+                    a, b = rk[c], keys[c]
+                    numeric = pd.api.types.is_numeric_dtype(a) and pd.api.types.is_numeric_dtype(b)
+                    same = (np.array_equal(a.to_numpy(dtype=np.float64), b.to_numpy(dtype=np.float64), equal_nan=True) if numeric
+                            else a.astype(str).tolist() == b.astype(str).tolist())
+                    if not same:
+                        differing_key_columns.append(c)
+        same_keys = rk.shape == keys.shape and not differing_key_columns
         same_x = rx.shape == X.shape and np.array_equal(np.asarray(rx), X, equal_nan=True)
-        comparison = {"reference": os.path.abspath(args.compare), "keys_identical": bool(same_keys), "X_identical": bool(same_x),
+        comparison = {"reference": os.path.abspath(args.compare), "keys_identical": bool(same_keys),
+                      "keys_compared": "every column (targets q2..q5, phase/crisis truth, country, horizon, origin, persistence)",
+                      "differing_key_columns": differing_key_columns, "X_identical": bool(same_x),
                       "X_sha256_equal": snapshot["files"]["X"]["sha256"] == sha256_file(ref["X"]),
                       "shape": list(X.shape), "reference_shape": list(rx.shape)}
         if not same_x and rx.shape == X.shape:

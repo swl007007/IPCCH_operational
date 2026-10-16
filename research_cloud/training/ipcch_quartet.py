@@ -31,11 +31,21 @@ OBJECTIVE = "crisis_f1"
 def integer_column(frame, name, lo=None, hi=None):
     """Raw values must be integers (no fraction, no NaN) within bounds before any int cast."""
     v = pd.to_numeric(frame[name], errors="coerce").to_numpy(dtype=np.float64)
-    if np.isnan(v).any() or (v != np.round(v)).any():
-        raise TrialError(f"{name} holds non-integer or missing values")
+    if not np.isfinite(v).all() or (v != np.round(v)).any() or (np.abs(v) > 2 ** 53).any():
+        raise TrialError(f"{name} holds non-integer, non-finite or missing values")
     if (lo is not None and v.min() < lo) or (hi is not None and v.max() > hi):
         raise TrialError(f"{name} outside [{lo}, {hi}]")
     return v.astype(np.int64)
+
+
+def config_int(config, *path):
+    """An integral, finite config value; fractional or non-numeric values are refused, never truncated."""
+    value = config
+    for k in path:
+        value = value[k]
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not np.isfinite(value) or value != int(value):
+        raise TrialError(f"config {'.'.join(map(str, path))} must be an integer, got {value!r}")
+    return int(value)
 
 
 def _modules(config):
@@ -45,9 +55,18 @@ def _modules(config):
     return tuple(importlib.import_module(f"ipcch_geoxgb.{m}") for m in ("quartet", "projection", "metrics", "modelstore"))
 
 
+def code_identity(mods, config):
+    """sha256 of the vendored modules this trial imported and of the frozen schema it checked against."""
+    from research_cloud.training.common import sha256_file
+    src = os.environ.get("IPCCH_GEOXGB_SRC", config.get("geoxgb_src", ""))
+    files = {f"ipcch_geoxgb/{os.path.basename(m.__file__)}": sha256_file(m.__file__) for m in mods}
+    files["config/feature-schema.json"] = sha256_file(os.path.join(src, "config", "feature-schema.json"))
+    return {"geoxgb_src": os.path.abspath(src), "files": dict(sorted(files.items()))}
+
+
 def fit(inputs, manifest, config, params, out):
     quartet, projection, metrics, modelstore = _modules(config)
-    h = int(config["horizon"])
+    h = config_int(config, "horizon")
     if h not in HORIZONS:
         raise TrialError(f"horizon {h} is not one of the historical GeoXGB horizons {sorted(HORIZONS)}")
     if not config.get("folds"):
@@ -72,14 +91,14 @@ def fit(inputs, manifest, config, params, out):
     if (horizons != h).any() or ((months - origins) != h).any():
         raise TrialError("prepared rows are not built at their own origin O = T - H for this horizon")
     Y = keys[list(TARGETS)].to_numpy(dtype=np.float64)
-    holdout = int(config["holdout_start_ord"])
+    holdout = config_int(config, "holdout_start_ord")
     params = dict(params)   # the caller records the validated trial values unchanged
     rounds = int(params.pop("rounds"))
     model_params = {**config["fixed"], **params}
 
     counts, panels, fits, packaged = [], [], [], []
-    for fold in config["folds"]:
-        origin = int(fold["origin_ord"])
+    for i, fold in enumerate(config["folds"]):
+        origin = config_int(config, "folds", i, "origin_ord")
         target = origin + h
         if target >= holdout:
             raise TrialError(f"fold origin {origin}: validation month {target} is inside the holdout (>= {holdout})")
@@ -130,9 +149,10 @@ def fit(inputs, manifest, config, params, out):
         geoxgb_src=os.environ.get("IPCCH_GEOXGB_SRC", config.get("geoxgb_src", "")),
         identity={"family": "ipcch_geoxgb_pooled_quartet", "horizon": h, "trial": os.environ.get("CLOUD_ML_TRIAL_ID"),
                   "job": os.environ.get("CLOUD_ML_JOB_ID"), "params": model_params, "rounds": rounds,
-                  "inputs": {r: e["sha256"] for r, e in manifest["files"].items()}},
+                  "input_manifest": manifest, "trial_code": code_identity((quartet, projection, metrics, modelstore), config)},
         runtime=runtime_identity())
     return {"metrics": result_metrics, "artifacts": fits + ["package"], "model_params": model_params, "rounds": rounds,
+            "trial_code": code_identity((quartet, projection, metrics, modelstore), config),
             "package": {"path": "package", "content_sha256": package_meta["content_sha256"], "units": package_meta["fitted_units"]},
             "identity": {"family": "ipcch_geoxgb_pooled_quartet", "kind": "new Linux research run (not a historical version)",
                          "horizon": h, "folds": [p["origin_ord"] for p in panels]}}
