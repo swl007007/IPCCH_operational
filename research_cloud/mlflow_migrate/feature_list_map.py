@@ -14,6 +14,9 @@ import re
 
 LOCAL_ROOT = "/home/swl007007/.local/share/ipcch-mlflow/artifacts/"
 TAG, CLOUD_TAG = "card.feature_list", "card.feature_list.cloud"
+# logged models are returned with all their metrics (up to ~6.9k rows per model here); Cloud Run refuses responses
+# over 32 MiB ("Response size was too large"), so pages stay small (worst case ~12 MB at 5 models)
+PAGE = 5
 LOCAL_PART = re.compile(re.escape(LOCAL_ROOT) + r"(?P<exp>[^/]+)/(?P<run>[0-9a-f]{32})/artifacts/(?P<path>[^!#]+)(?P<rest>.*)$")
 
 
@@ -40,7 +43,7 @@ def plan(client):
     for exp in client.search_experiments():
         token = None
         while True:
-            page = client.search_logged_models(experiment_ids=[exp.experiment_id], max_results=200, page_token=token)
+            page = client.search_logged_models(experiment_ids=[exp.experiment_id], max_results=PAGE, page_token=token)
             for m in page:
                 spec = (m.tags or {}).get(TAG)
                 if not spec:
