@@ -82,6 +82,8 @@ def conflicts(snap, job_users, assistant_user, job_experiments):
             out.append("a named job identity does not exist")
         elif snap["users"][name]["is_admin"]:
             out.append("a named job identity is an administrator")
+    if assistant_user is not None and assistant_user in job_users:
+        out.append("the service assistant identity is also declared a job identity; it must stay read-only")
     if assistant_user is not None:
         if assistant_user not in snap["users"]:
             out.append("the service assistant identity does not exist")

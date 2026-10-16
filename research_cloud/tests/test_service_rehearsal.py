@@ -87,6 +87,13 @@ class RolePrecondition(unittest.TestCase):
             workspace_roles.apply(api, ["job"], ["7"], assistant_user="assistant")
         self.assertEqual(api.mutations, [])
 
+    def test_assistant_declared_as_job_identity_is_refused_without_change(self):
+        users, roles = self.base()
+        api = FakeApi(users, {k: {"name": v["name"], "permissions": [tuple(p) for p in v["permissions"]]} for k, v in roles.items()})
+        with self.assertRaisesRegex(RuntimeError, "also declared a job identity"):
+            workspace_roles.apply(api, ["job", "assistant"], ["7"], assistant_user="assistant")
+        self.assertEqual(api.mutations, [])
+
     def test_clean_apply_preserves_copied_state(self):
         users, roles = self.base()
         api = FakeApi(users, {k: {"name": v["name"], "permissions": [tuple(p) for p in v["permissions"]]} for k, v in roles.items()})
