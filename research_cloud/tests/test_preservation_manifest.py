@@ -52,3 +52,16 @@ class Manifest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TopLevel(unittest.TestCase):
+    def test_no_recurse_lists_loose_files_and_names_subdirectories(self):
+        root = tempfile.mkdtemp()
+        os.makedirs(f"{root}/run-a")
+        open(f"{root}/run-a/inner.txt", "w").write("x")
+        open(f"{root}/loose.log", "w").write("y")
+        out = tempfile.mktemp(suffix=".json")
+        self.assertEqual(pm.main(["--root", root, "--out", out, "--no-recurse"]), 0)
+        m = json.load(open(out))
+        self.assertEqual([f["path"] for f in m["files"]], ["loose.log"])
+        self.assertEqual((m["recursive"], m["subdirectories_not_walked"]), (False, ["run-a"]))

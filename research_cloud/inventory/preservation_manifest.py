@@ -6,7 +6,7 @@ files map relative paths to sha256 values the run itself recorded (e.g. ``scenar
 each must match, and a mismatch or a missing recorded file fails the manifest.
 
   python -m research_cloud.inventory.preservation_manifest --root RUN --out MANIFEST.json
-      [--cache ubj-hash-cache.jsonl] [--recorded PREFIX=FILE.json:key ...]
+      [--cache ubj-hash-cache.jsonl] [--recorded PREFIX=FILE.json:key ...] [--no-recurse]
 """
 import argparse
 import hashlib
@@ -33,7 +33,7 @@ def load_cache(path):
     return out
 
 
-def walk(root, cache):
+def walk(root, cache, recurse=True):
     files, links, errors = [], [], []
     for dirpath, dirnames, filenames in os.walk(root, onerror=lambda e: errors.append(str(e))):
         for name in dirnames + filenames:
@@ -41,6 +41,8 @@ def walk(root, cache):
             if os.path.islink(full):
                 links.append({"path": os.path.relpath(full, root), "target": os.readlink(full)})
         dirnames[:] = [d for d in dirnames if not os.path.islink(os.path.join(dirpath, d))]
+        if not recurse:   # loose top-level files only; subdirectories are separate roots
+            dirnames[:] = []
         for name in sorted(filenames):
             full = os.path.join(dirpath, name)
             if os.path.islink(full):
@@ -60,9 +62,10 @@ def main(argv=None):
     ap.add_argument("--out", required=True)
     ap.add_argument("--cache")
     ap.add_argument("--recorded", action="append", default=[], help="PREFIX=FILE.json:key (paths in key are under PREFIX)")
+    ap.add_argument("--no-recurse", action="store_true", help="loose top-level files only (subdirectories listed, not walked)")
     args = ap.parse_args(argv)
     t0 = time.time()
-    files, links, errors = walk(args.root, load_cache(args.cache))
+    files, links, errors = walk(args.root, load_cache(args.cache), recurse=not args.no_recurse)
     by_path = {f["path"]: f["sha256"] for f in files}
     checks = []
     for spec in args.recorded:
@@ -79,6 +82,9 @@ def main(argv=None):
             checks.append({"path": path, "recorded_by": rec_file, "ok": by_path.get(path) == digest,
                            "present": path in by_path})
     manifest = {"root": os.path.abspath(args.root), "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+                "recursive": not args.no_recurse,
+                "subdirectories_not_walked": sorted(e.name for e in os.scandir(args.root) if e.is_dir())
+                if args.no_recurse else [],
                 "files": files, "symlinks": links, "walk_errors": errors, "recorded_checks": checks,
                 "totals": {"files": len(files), "bytes": sum(f["bytes"] for f in files),
                            "recorded_checked": len(checks), "recorded_ok": sum(c["ok"] for c in checks)},
