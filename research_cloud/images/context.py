@@ -7,7 +7,10 @@ training images, the scientific source - FEWS from ``git archive`` of the clean 
 commits, the base image digest from the Dockerfile and the sha256 of every other context file. Build with the
 control-plane commit as ``SOURCE_COMMIT`` so the running image reports it.
 
-  python -m research_cloud.images.context --image training-fews --out DIR
+It also writes ``cloudbuild.yaml``: build (``SOURCE_COMMIT`` = the commit), then ``selfcheck`` inside the built image as
+the runtime user (UID 65534, no network), and only then push (``images:``), as the given build service account.
+
+  python -m research_cloud.images.context --image training-fews --out DIR [--image-uri URI --build-sa EMAIL]
 """
 import argparse
 import hashlib
@@ -63,7 +66,21 @@ def tree(root):
     return out
 
 
-def build(image, out):
+def cloudbuild(image, commit, image_uri, build_sa):
+    lines = ["steps:",
+             "- name: gcr.io/cloud-builders/docker",
+             f"  args: [build, --build-arg, SOURCE_COMMIT={commit}, -t, '{image_uri}', .]",
+             "- name: gcr.io/cloud-builders/docker",
+             f"  args: [run, --rm, --user, '65534:65534', --network, none, --entrypoint, python, '{image_uri}',",
+             f"         -m, research_cloud.images.selfcheck, --image, {image}]",
+             f"images: ['{image_uri}']",
+             "options:", "  logging: CLOUD_LOGGING_ONLY"]
+    if build_sa:
+        lines.append(f"serviceAccount: projects/{build_sa.split('@')[1].split('.')[0]}/serviceAccounts/{build_sa}")
+    return "\n".join(lines) + "\n"
+
+
+def build(image, out, image_uri=None, build_sa=None):
     if image not in IMAGES:
         raise ContextError(f"unknown image {image}")
     if os.path.exists(out):
@@ -97,6 +114,9 @@ def build(image, out):
                 "files": files, "build_arg": {"SOURCE_COMMIT": commit}}
     with open(os.path.join(out, "context-manifest.json"), "w") as f:
         json.dump(manifest, f, indent=1, sort_keys=True)
+    if image_uri:   # outside the hashed file list: it names where the context is built to, not what it contains
+        with open(os.path.join(out, "cloudbuild.yaml"), "w") as f:
+            f.write(cloudbuild(image, commit, image_uri, build_sa))
     return manifest
 
 
@@ -104,8 +124,10 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", required=True, choices=IMAGES)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--image-uri")
+    ap.add_argument("--build-sa")
     args = ap.parse_args(argv)
-    m = build(args.image, args.out)
+    m = build(args.image, args.out, args.image_uri, args.build_sa)
     print(json.dumps({"image": m["image"], "commit": m["control_plane_commit"][:12], "files": len(m["files"]),
                       "lock_sha256": m["lock_sha256"][:16], "context_manifest_sha256": sha256(os.path.join(args.out, "context-manifest.json"))}))
     return 0

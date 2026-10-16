@@ -13,5 +13,8 @@ COPY context-manifest.json /app/context-manifest.json
 
 ARG SOURCE_COMMIT
 ENV PYTHONPATH=/app PYTHONDONTWRITEBYTECODE=1 IPCCH_GEOXGB_SRC=/app/sources/IPCCHGeoXGBExperiment IPCCH_SOURCE_COMMIT=${SOURCE_COMMIT}
+# an owned, writable HOME for the runtime user (start.py writes $HOME/.mlflow; tools cache under HOME)
+RUN mkdir -p /home/app && chown 65534:65534 /home/app
+ENV HOME=/home/app
 USER 65534:65534
 ENTRYPOINT ["python", "-m", "research_cloud.training.ipcch_quartet"]

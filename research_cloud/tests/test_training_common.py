@@ -138,6 +138,11 @@ class ProjectAndFailureRecords(unittest.TestCase):
             self.assertEqual((rc, run.info.status, run.data.tags["trial_status"]), (1, "FAILED", "failed"))
             self.assertIn("sha256", run.data.tags["error"])
             self.assertEqual(run.data.params["arg.max_depth"], "4")
+            harness = record["harness_code"]     # recorded before fit, so a trial that fails early still has it
+            self.assertTrue(harness["control_plane_commit"])
+            self.assertIn("research_cloud/training/common.py", harness["files"])
+            self.assertIn("research_cloud/tests/test_training_common.py", harness["files"])
+            self.assertEqual(run.data.tags["source_commit"], os.environ.get("IPCCH_SOURCE_COMMIT") or harness["control_plane_commit"])
         finally:
             os.environ.pop("MLFLOW_TRACKING_URI", None)
             os.environ.pop("MLFLOW_ALLOW_FILE_STORE", None)

@@ -1,0 +1,79 @@
+"""In-image self-check, run by Cloud Build against the BUILT image as the runtime user (UID 65534) before any push.
+
+service: HOME is writable and ``start.write_assistant_config`` (the deny-mode start-up write) succeeds there; the
+service hook ``.pth`` is installed in site-packages and a fresh interpreter loads the hook in deny mode
+(``start.verify_hook``, the same check start-up runs); MLflow is the pinned 3.17.0; the ``ipcch-model`` wrapper is
+executable.
+training-fews / training-ipcch: HOME and /tmp are writable; the pinned scientific source imports from ``/app/sources``;
+the image's control-plane commit is set and ``adapter_identity`` reports it.
+
+  python -m research_cloud.images.selfcheck --image service|training-fews|training-ipcch
+Exit 0 and one JSON line on success; any failure raises (non-zero exit), which stops the build before the push.
+"""
+import argparse
+import json
+import os
+import sys
+import tempfile
+
+
+def writable(path):
+    os.makedirs(path, exist_ok=True)
+    with tempfile.NamedTemporaryFile(dir=path):
+        pass
+    return path
+
+
+def service():
+    import site
+    from importlib.metadata import version
+
+    from research_cloud.service import start
+    home = os.environ["HOME"]
+    writable(home)
+    env = {**os.environ, "IPCCH_ASSISTANT_MODE": "deny", "IPCCH_SERVICE_HOOK": "1"}
+    start.write_assistant_config("deny", env, home)
+    pth = [p for p in site.getsitepackages() if os.path.exists(os.path.join(p, "ipcch_service_hook.pth"))]
+    if not pth:
+        raise RuntimeError("ipcch_service_hook.pth is not installed in site-packages")
+    state = start.verify_hook(env, "deny")
+    if version("mlflow") != "3.17.0":
+        raise RuntimeError(f"mlflow {version('mlflow')}")
+    wrapper = "/usr/local/bin/ipcch-model"
+    if not os.access(wrapper, os.X_OK):
+        raise RuntimeError(f"{wrapper} is not executable")
+    return {"home": home, "pth": pth[0], "hook": state, "mlflow": version("mlflow")}
+
+
+def training(image):
+    from research_cloud.training.common import adapter_identity
+    writable(os.environ["HOME"])
+    writable("/tmp/hypertune")
+    if image == "training-fews":
+        src = os.environ["FEWS_SRC"]
+        sys.path[:0] = [src, os.path.join(src, "scripts")]
+        from src.experiment import plan, stage3  # noqa: F401
+        from src.model import native_xgb  # noqa: F401
+        import run_experiment  # noqa: F401
+        from research_cloud.training import fews_features, fews_fourclass  # noqa: F401
+    else:
+        sys.path.insert(0, os.environ["IPCCH_GEOXGB_SRC"])
+        from ipcch_geoxgb import features, prepare, projection, quartet  # noqa: F401
+        from research_cloud.training import ipcch_features, ipcch_quartet  # noqa: F401
+    ident = adapter_identity("research_cloud.training.common")
+    if not ident["control_plane_commit"]:
+        raise RuntimeError("the image does not carry its control-plane commit (IPCCH_SOURCE_COMMIT)")
+    return {"home": os.environ["HOME"], "commit": ident["control_plane_commit"]}
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--image", required=True, choices=("service", "training-fews", "training-ipcch"))
+    args = ap.parse_args(argv)
+    result = service() if args.image == "service" else training(args.image)
+    print(json.dumps({"selfcheck": "ok", "image": args.image, "uid": os.getuid(), **result}, default=str))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

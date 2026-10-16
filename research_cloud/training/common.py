@@ -194,8 +194,8 @@ def mlflow_log(experiment, record, artifacts_dir):
             "image_digest": record["runtime"].get("image_digest") or "",
             # the image env commit, else the adapter identity's commit (a checkout run)
             "source_commit": record["runtime"].get("source_commit")
-            or ((record.get("trial_code") or {}).get("adapter") or {}).get("control_plane_commit") or ""}
-    adapter = (record.get("trial_code") or {}).get("adapter") or {}
+            or (record.get("harness_code") or {}).get("control_plane_commit") or ""}
+    adapter = record.get("harness_code") or {}
     if adapter.get("research_cloud_dirty") is not None:
         tags["research_cloud_dirty"] = str(adapter["research_cloud_dirty"]).lower()
     if os.environ.get("IPCCH_PARENT_RUN_ID"):
@@ -223,6 +223,18 @@ def trial_prefix(output):
     return prefix
 
 
+def harness_identity(fit):
+    """adapter_identity of the harness and the adapter module that defines ``fit`` (``python -m`` runs it as
+    ``__main__``; its real name comes from the module spec)."""
+    module = getattr(fit, "__module__", None)
+    if module == "__main__":
+        module = getattr(getattr(sys.modules.get("__main__"), "__spec__", None), "name", None)
+    modules = ["research_cloud.training.common"]
+    if module and module.startswith("research_cloud.") and module not in modules:
+        modules.append(module)
+    return adapter_identity(*modules)
+
+
 def run_trial(fit, argv=None, objective=None):
     """CLI wrapper: --manifest --config --output [--param name=value ...] [--mlflow-experiment NAME].
     Vertex HPT passes trial values as --name=value arguments; they are accepted the same way."""
@@ -242,7 +254,7 @@ def run_trial(fit, argv=None, objective=None):
         trial[k] = v
     out = Output(trial_prefix(args.output))
     record = {"status": "started", "runtime": runtime_identity(), "trial_arguments": trial, "started": time.time(),
-              "output": out.prefix}
+              "output": out.prefix, "harness_code": harness_identity(fit)}   # before fit: failed trials carry it too
     manifest = {}
     try:
         config = json.load(open(args.config))
