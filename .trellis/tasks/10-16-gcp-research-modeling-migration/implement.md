@@ -27,6 +27,7 @@ Depends on P0; satisfies AC1 and prepares AC3/AC6.
 - [ ] Build FEWS D9 and IPCCH D10 input manifests, using the existing source manifests and actual dependency references. Hash before transfer; do not broaden to the whole source-data archive. Preserve historical oracle/target/vintage distinctions.
 - [ ] Freeze reference samples and tolerances before Linux comparison. Assemble package candidates in scratch and test one representative per runtime/family first, then every retained version/component. Do not silently shrink the inventory when one fails.
 - [ ] Apply the user's explicit `scen-b43ef6a-v1` exception only to its 18 documented missing regional boosters and affected 3,746/22,872 rows. Preserve all extant materials; keep the run incomplete with missing keys/components and the exception reference, without substituting a full-replay pass.
+- [ ] Apply the separately approved `confirm-onset-v1` exception to its 7 distinct missing local boosters and 2,446/11,436 S0/S3 system rows. Preserve all extant materials and the incomplete full-system record; expose retained pooled/global download/replay separately without substituting its predictions for the system.
 - [ ] Measure data import/index size, largest package, temporary RAM/disk, source/target row/schema/geometry invariants and minimal training fixture cost. Retain source files and original locks untouched.
 - [ ] If an asset is an unavailable Dropbox placeholder, report the exact required file and obtain the appropriate download authorization; do not sweep/hydrate the archive incidentally.
 
@@ -83,6 +84,7 @@ Depends on P2/P3 and corresponding operation approvals; validates AC2/AC4/AC7.
 - [ ] Start the staging MLflow revision with durable backend/auth stores and GCS artifacts. Use its HTTPS URL before any custom-domain change.
 - [ ] Reconcile all source/target metadata and relationships, including original timestamps and external descriptors. Register FEWS research records with correct fit/import provenance; never invent missing historical metrics.
 - [ ] Test owner/job/read-only/anonymous behavior, assistant allowed/denied calls, restart persistence, cold-start self-calls and largest-package downloads.
+- [ ] Use the user-approved temporary migration administrator for setup/acceptance, with password only in Secret Manager. Preserve personal accounts/passwords; remove the temporary administrator and credential after acceptance and record the user's own login verification.
 - [ ] Record resource IDs, image digests, object generations and verified statuses. A successful deployment alone is not migration acceptance.
 
 ## P5 — cloud research and all-version download acceptance
@@ -101,7 +103,7 @@ Depends on P1-P5, all ACs and any final operation approvals.
 
 - [ ] Freeze local writers, create the consistent final snapshot/delta, reconcile again and set cloud as the sole writable tracking authority.
 - [ ] Execute AC8 from a clean native-WSL checkout/container with only explicit inputs mounted. Publish a concise researcher runbook: add/change recipe, run local smoke, submit trial, compare, download/load, and recover.
-- [ ] Write `research/acceptance.json`, `cutover.md` and final inventory status. Explicitly identify incomplete packages and archive exclusions; any unapproved required incomplete item prevents claiming full migration. The approved FEWS exception remains visibly incomplete and can satisfy migration only after preservation/download checks for all extant materials, never as a full-replay pass.
+- [ ] Write `research/acceptance.json`, `cutover.md` and final inventory status. Explicitly identify incomplete packages and archive exclusions; any unapproved required incomplete item prevents claiming full migration. Both approved FEWS exceptions remain visibly incomplete and can satisfy migration only after preservation/download checks for all extant materials, never as full-system replay passes.
 - [ ] Tell the user which research Dropbox paths can become cloud-only. The user performs that change; do not delete/move original data or stop unrelated operational workflows.
 - [ ] Run focused checks and detect_changes, commit only relevant work/evidence, then close through the bound Claude audit session. Verify accepted audit outcome; queued/launched is not passed. Preserve any incomplete evidence.
 

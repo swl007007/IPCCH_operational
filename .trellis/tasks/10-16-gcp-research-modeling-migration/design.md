@@ -96,11 +96,15 @@ Future cloud/WSL checks use the exact training image and tighter supported bound
 
 The user-approved historical exception is exactly the 18 missing regional continuation boosters in FEWS `scen-b43ef6a-v1` (3,746/22,872 saved prediction rows; four H4/H8 × June/October 2025 cases). Preserve and transfer all available source material and saved outputs, enumerate affected keys/components, and expose status `incomplete` with an explicit acceptance-exception link. Do not substitute global-only predictions for affected rows, infer a full replay pass, or invent weights/new fits under the historical identity. Other retained components and versions keep the ordinary acceptance contract.
 
+The user separately approved the same preservation/disclosure treatment for `confirm-onset-v1`: 7 distinct missing local boosters across 9 S0/S3 gate entries affect 2,446/11,436 system rows. Full-system replay stays unavailable; download/replay the extant pooled/global path as itself. This second exception does not authorize substitution or waive preservation/download of extant material.
+
 ## Access and assistant
 
 Keep the existing basic-auth experience, with PostgreSQL permission storage. HTTPS transport may admit requests without GCP identity to reach the login challenge, but MLflow authenticates every content/download/API route. Only a content-free health route may be anonymous. Test artifacts, datasets, logged models and assistant endpoints as well as UI; IAM invoker settings alone do not establish content permissions.
 
 Principals: owner administrator; existing invited readers; dedicated job writers; READ-only assistant with required Gateway endpoint USE. Scope Cloud Run identity to its databases/artifacts/secrets/provider access and training identity to immutable inputs, its outputs and MLflow writes. Neither is project admin. No anonymous signup or reader privilege escalation.
+
+For migration setup/acceptance only, the user approved a temporary MLflow administrator with its password stored only in Secret Manager. Preserve existing personal accounts/passwords. Remove the temporary administrator and its credential after acceptance and have the user verify their own login; record removal without exposing the secret.
 
 Reuse command allowlists and feature-query helpers. Set localhost self-calls to the runtime port. Verify pinned version, patch activation and assistant permissions at startup; refuse to enable the assistant on failure. Query/cache files use bounded scratch paths; no general shell/file access. Test streaming and concurrent self-calls under the chosen server configuration.
 
@@ -120,7 +124,7 @@ Cut over only after AC1-AC8 pass. Leave local/Dropbox bytes intact. Publish clou
 
 Local remains writable authority until final freeze/snapshot. Then permit new writes only in cloud. If rollback follows new cloud experiments, preserve/export those writes before reverting; never overwrite them with the old snapshot. Failed packages block archival of their dependencies. Unrelated operational Dropbox consumers are outside this acceptance claim.
 
-For the approved FEWS exception, verify cloud byte preservation and download of every extant material before declaring its source archive eligible for cloud-only. The missing-weight disclosure persists after migration; accepting it does not authorize deleting originals or claiming full inference portability.
+For both approved FEWS exceptions, verify cloud byte preservation and download of every extant material before declaring the respective source archive eligible for cloud-only. Missing-weight disclosures persist after migration; accepting them does not authorize deleting originals or claiming full-system inference portability.
 
 ## Verified documentation and remaining checks
 
