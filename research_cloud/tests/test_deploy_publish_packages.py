@@ -23,7 +23,7 @@ class Bucket:
         self.objects[dst] = Blob(dst, src.md5_hash, src.crc32c, 99)
 
 
-REC = {"packages/p/a.bin": {"generation": 7, "local_md5": "m", "local_crc32c": "c"}}
+REC = {"packages/p/a.bin": {"generation": 7, "local_md5": "m", "local_crc32c": "c", "local_sha256": "s", "declared_sha256": "s"}}
 
 
 class CopyOne(unittest.TestCase):
@@ -32,23 +32,29 @@ class CopyOne(unittest.TestCase):
         self.b.objects["packages/p/a.bin"] = Blob("packages/p/a.bin", "m", "c", 7)
 
     def test_copy_from_the_transferred_generation(self):
-        r = pp.copy_one(self.b, REC, "p", "run", "mlflow-artifacts/x/package", "a.bin")
+        r = pp.copy_one(self.b, REC, "p", "run", "mlflow-artifacts/x/package", "a.bin", expected_sha256="s")
         self.assertEqual(r["status"], "verified (copied)")
         self.assertEqual(self.b.copies, [("packages/p/a.bin", "mlflow-artifacts/x/package/a.bin", 7, 0)])
-        r = pp.copy_one(self.b, REC, "p", "run", "mlflow-artifacts/x/package", "a.bin")   # rerun re-reads, no copy
+        r = pp.copy_one(self.b, REC, "p", "run", "mlflow-artifacts/x/package", "a.bin", expected_sha256="s")   # rerun re-reads, no copy
         self.assertEqual((r["status"], len(self.b.copies)), ("verified (present (re-verified))", 1))
 
     def test_stale_source_and_missing_receipt_refused(self):
         self.b.objects["packages/p/a.bin"].generation = 8
-        self.assertTrue(pp.copy_one(self.b, REC, "p", "run", "x", "a.bin")["status"].startswith("refused"))
-        self.assertTrue(pp.copy_one(self.b, {}, "p", "run", "x", "a.bin")["status"].startswith("refused"))
+        self.assertTrue(pp.copy_one(self.b, REC, "p", "run", "x", "a.bin", expected_sha256="s")["status"].startswith("refused"))
+        self.assertTrue(pp.copy_one(self.b, {}, "p", "run", "x", "a.bin", expected_sha256="s")["status"].startswith("refused"))
+        self.assertEqual(self.b.copies, [])
+
+    def test_manifest_sha_must_match_the_transfer_receipt(self):
+        for exp in ("other", None):
+            r = pp.copy_one(self.b, REC, "p", "run", "x", "a.bin", expected_sha256=exp)
+            self.assertTrue(r["status"].startswith("refused"))
         self.assertEqual(self.b.copies, [])
 
     def test_verify_mode_never_writes_and_detects_conflict(self):
-        r = pp.copy_one(self.b, REC, "p", "run", "x", "a.bin", write=False)
+        r = pp.copy_one(self.b, REC, "p", "run", "x", "a.bin", write=False, expected_sha256="s")
         self.assertEqual((r["status"], self.b.copies), ("missing", []))
         self.b.objects["x/a.bin"] = Blob("x/a.bin", "other", "c", 5)
-        self.assertEqual(pp.copy_one(self.b, REC, "p", "run", "x", "a.bin", write=False)["status"], "conflict")
+        self.assertEqual(pp.copy_one(self.b, REC, "p", "run", "x", "a.bin", write=False, expected_sha256="s")["status"], "conflict")
 
 
 if __name__ == "__main__":

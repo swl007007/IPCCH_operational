@@ -61,7 +61,7 @@ def source_links(name, meta, registry):
     return links
 
 
-def copy_one(bucket, transfer, name, run_id, prefix, rel, write=True):
+def copy_one(bucket, transfer, name, run_id, prefix, rel, write=True, expected_sha256=None):
     """Copy (or, with write=False, only check) one package file. Every call re-reads the current source and
     destination: the source must still be the transferred object (generation, md5, crc32c of its receipt) and the
     copy is made from exactly that generation, create-only; the destination must then hold the receipt's md5/crc32c.
@@ -70,6 +70,9 @@ def copy_one(bucket, transfer, name, run_id, prefix, rel, write=True):
     src_name, dst_name = f"packages/{name}/{rel}", f"{prefix}/{rel}"
     row = {"package": name, "run_id": run_id, "src": src_name, "dst": dst_name}
     rec = transfer.get(src_name)
+    if rec is None or expected_sha256 is None or rec.get("local_sha256") != expected_sha256 \
+            or rec.get("declared_sha256") != expected_sha256:
+        return {**row, "status": "refused: transfer receipt does not bind the package manifest sha256"}
     src = bucket.get_blob(src_name)
     if rec is None or src is None or src.generation != rec["generation"] or src.md5_hash != rec["local_md5"] \
             or src.crc32c != rec["local_crc32c"]:
@@ -124,6 +127,8 @@ def main(argv=None):
     elif len(names) != args.expect_packages:
         raise SystemExit(f"coverage: {len(names)} packages, expected {args.expect_packages}")
     exp = client.get_experiment_by_name(EXPERIMENT)
+    if exp is None and args.verify:
+        raise SystemExit(f"experiment {EXPERIMENT} does not exist; nothing to verify")
     exp_id = exp.experiment_id if exp else client.create_experiment(EXPERIMENT)
     lock, out = threading.Lock(), open(args.receipts, "a")
     report = {"experiment_id": exp_id, "packages": {}}
@@ -152,8 +157,12 @@ def main(argv=None):
         files = sorted(meta["files"]) + ["package.json"]
         total_files += len(files)
 
+        expected = {rel: rec["sha256"] for rel, rec in meta["files"].items()}
+        expected["package.json"] = meta["_package_json_sha256"]
+
         def copy(rel):
-            return copy_one(bucket, transfer, name, run.info.run_id, prefix, rel, write=not args.verify)
+            return copy_one(bucket, transfer, name, run.info.run_id, prefix, rel, write=not args.verify,
+                            expected_sha256=expected[rel])
 
         with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
             results = [r for r in pool.map(copy, files) if r]

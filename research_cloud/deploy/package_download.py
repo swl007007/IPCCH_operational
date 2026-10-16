@@ -9,7 +9,8 @@ artifact_path="package")`` into a fresh directory ``OUT/packages/<name>/`` and c
 itself (``packages.common.verify_package``) when ``images.rootfs_replay`` replays the downloaded directory inside each
 image's sandbox.
 
-  python -m research_cloud.deploy.package_download --url URL --out DIR [--only NAME ...] [--expect N]
+  python -m research_cloud.deploy.package_download --url URL --out DIR --expected-packages PACKAGES_DIR
+      [--only NAME ...] [--expect N]
 """
 import argparse
 import json
@@ -39,6 +40,8 @@ for run in sorted(runs, key=lambda r: r.data.tags.get("package.name", "")):
     name = run.data.tags["package.name"]
     if only and name not in only:
         continue
+    if not run.info.artifact_uri.startswith("mlflow-artifacts:/"):
+        raise SystemExit(f"{name}: artifact_uri {run.info.artifact_uri} is not the service's artifact proxy")
     dst = os.path.join(out, "packages", name)
     os.makedirs(dst, exist_ok=False)
     t0 = time.time()
@@ -63,6 +66,8 @@ def main(argv=None, api=None):
     ap.add_argument("--out", required=True)
     ap.add_argument("--only", action="append", default=[])
     ap.add_argument("--expect", type=int)
+    ap.add_argument("--expected-packages", help="local frozen packages dir: the downloaded set must equal its names "
+                                              "(or the --only subset) and each package.json must equal the local one")
     args = ap.parse_args(argv)
     from research_cloud.deploy import provision_secrets as ps
     from research_cloud.deploy.mlflow_identities import cred
@@ -85,6 +90,20 @@ def main(argv=None, api=None):
                "identity": "ipcch-reader (MLflow Basic auth); no Google credentials in the downloader"}
     json.dump(summary, open(os.path.join(args.out, "summary.json"), "w"), indent=1)
     print(json.dumps(summary))
+    if args.expected_packages:
+        import hashlib
+        expected = sorted(n for n in os.listdir(args.expected_packages) if not args.only or n in args.only)
+        got = sorted(x["package"] for x in rows)
+        local = {n: hashlib.sha256(open(os.path.join(args.expected_packages, n, "package.json"), "rb").read()).hexdigest()
+                 for n in expected}
+        summary["set_equal"] = got == expected
+        summary["missing"], summary["extra"] = sorted(set(expected) - set(got)), sorted(set(got) - set(expected))
+        summary["package_json_differs_from_local"] = sorted(x["package"] for x in rows
+                                                            if local.get(x["package"]) != x["package_json_sha256"])
+        json.dump(summary, open(os.path.join(args.out, "summary.json"), "w"), indent=1)
+        print(json.dumps({k: summary[k] for k in ("set_equal", "missing", "extra", "package_json_differs_from_local")}))
+        if not summary["set_equal"] or summary["package_json_differs_from_local"]:
+            return 1
     if args.expect is not None and len(rows) != args.expect:
         return 1
     return 0 if summary["ok"] == summary["packages"] else 1
