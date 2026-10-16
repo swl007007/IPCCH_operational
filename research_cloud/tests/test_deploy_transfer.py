@@ -139,6 +139,31 @@ class Main(unittest.TestCase):
         with self.assertRaises(transfer.TransferError):
             transfer.from_packages(pkgs, "packages")
 
+    def test_inventory_statuses_explicit(self):
+        import json
+        path = os.path.join(self.dir, "a.bin")
+        open(path, "wb").write(b"abc")
+        sha = hashlib.sha256(b"abc").hexdigest()
+
+        def entry(**kw):
+            return {"id": "x.a", "path": path, "local_status": "local", "match": True, "actual_sha256": sha,
+                    "recorded_sha256": sha, "actual_bytes": 3, "recorded_bytes": None, **kw}
+
+        def build(*entries):
+            inv = os.path.join(self.dir, "inv.json")
+            json.dump({"namespaces": {"n": {"files": list(entries)}}}, open(inv, "w"))
+            return transfer.from_inventory(inv, "inputs")
+
+        self.assertEqual(build(entry())[0]["manifest"], "input-inventory (recorded hash matched)")
+        self.assertEqual(len(build(entry(local_status="local (non-DrvFS)"))), 1)
+        got = build(entry(match="no_recorded_value", recorded_sha256=None))
+        self.assertEqual(got[0]["manifest"], "input-inventory (P1 fresh hash (no recorded value))")
+        for bad in (entry(local_status="online-only"), entry(match=False), entry(match="mismatch"),
+                    entry(match="no_recorded_value"),                       # a recorded value exists: not this case
+                    entry(recorded_sha256="0" * 64), entry(recorded_bytes=4), entry(actual_sha256=None)):
+            with self.assertRaises(transfer.TransferError):
+                build(bad)
+
     def test_torn_tail_recovered_malformed_line_refused(self):
         bucket = FakeBucket()
         self.run_main(bucket)

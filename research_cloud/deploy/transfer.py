@@ -53,18 +53,41 @@ def from_preservation(manifest_path, prefix):
              "bytes": f["bytes"], "manifest": os.path.basename(manifest_path)} for f in m["files"]]
 
 
+# inventory vocabulary (research_cloud/inventory/dropbox_local.py): files on a native Linux filesystem are recorded as
+# "local (non-DrvFS)"; Dropbox files present on disk as "local". Anything else (online-only, missing, error) is refused.
+LOCAL_STATUSES = ("local", "local (non-DrvFS)")
+
+
+def inventory_basis(e):
+    """Why an inventory entry's sha256 is the frozen identity, or raise. ``match`` is True (the freshly computed P1
+    hash equals the recorded/declared hash) or the string "no_recorded_value" (nothing was declared; the P1 fresh hash
+    is the identity). Strings are never accepted by truthiness."""
+    if e.get("local_status") not in LOCAL_STATUSES:
+        raise TransferError(f"{e['id']}: inventory local_status {e.get('local_status')!r} is not local; refusing")
+    if not e.get("actual_sha256") or not isinstance(e.get("actual_bytes"), int):
+        raise TransferError(f"{e['id']}: inventory entry has no fresh hash/size; refusing")
+    if e.get("match") is True:
+        if e.get("actual_sha256") != e.get("recorded_sha256") or (
+                e.get("recorded_bytes") is not None and e["recorded_bytes"] != e["actual_bytes"]):
+            raise TransferError(f"{e['id']}: inventory says match but hashes/sizes differ; refusing")
+        return "recorded hash matched"
+    if e.get("match") == "no_recorded_value" and not e.get("recorded_sha256"):
+        return "P1 fresh hash (no recorded value)"
+    raise TransferError(f"{e['id']}: inventory match {e.get('match')!r} is not a hash match; refusing")
+
+
 def from_inventory(inventory_path, prefix):
     inv = json.load(open(inventory_path))
     out, seen = [], set()
     for ns, block in inv["namespaces"].items():
         for e in block["files"]:
+            basis = inventory_basis(e)
             if e["path"] in seen:          # shared files appear in both namespaces; transferred once
                 continue
-            if not e.get("match") or e.get("local_status") != "local":
-                raise TransferError(f"{e['id']}: inventory entry is not a local, hash-matched file; refusing")
             seen.add(e["path"])
             out.append({"local": e["path"], "object": f"{prefix.rstrip('/')}/{e['id']}/{os.path.basename(e['path'])}",
-                        "sha256": e["actual_sha256"], "bytes": e["actual_bytes"], "manifest": "input-inventory"})
+                        "sha256": e["actual_sha256"], "bytes": e["actual_bytes"],
+                        "manifest": f"input-inventory ({basis})"})
     return out
 
 
