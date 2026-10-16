@@ -16,7 +16,17 @@ contract, accepted only through replay against the run's saved ``reports/main_pr
   selection; rows without history (served by fullpool_xgb only) use 0.5.
 
 A key routes to its fold through the saved prediction rows (``deps/routing.csv``): exactly the keys the run scored.
+Two saved fields are kept apart and both checked exactly: ``support`` (``E_history`` / ``E_no_history``: which rows a
+model scores and which threshold applies) and ``route`` (``model`` or the fold's constant route, e.g.
+``constant_single_class``).
+
+Before any reference is built the run's frozen inventories are bound to every fold identity: ``freeze.json``
+selections must hash (``json.dumps(..., sort_keys=True)``, run_pipeline.py:1034-1035) to the identity's
+``selections_sha256``; ``inputs/feature-schema.json`` and ``inputs/candidate-configs.json`` must hash to its ``spec``;
+and ``data/feature_schema.csv`` must list exactly the frozen rich order (original93, then the appended blocks in
+``BLOCK_ORDER``, prepare_data.py:165-276).
 """
+import hashlib
 import io
 import json
 import os
@@ -29,6 +39,27 @@ from research_cloud.packages.common import PackageBuilder, PackageError, ensure_
 KEYS = ["admin_code", "target_ord"]
 ARMS = ("binary_history_xgb", "rich_direct_xgb", "correction_xgb", "share_xgb", "rich_rf", "fullpool_xgb")
 NO_HISTORY_THRESHOLD = 0.5
+# prepare_data.py BLOCK_ORDER: the appended 468 columns follow exactly this block sequence
+BLOCK_ORDER = ("observation_levels", "observation_timing", "changes", "observation_trends", "window_statistics",
+               "window_support", "prior_binary_states", "threshold_distance", "window_crisis", "event_and_run")
+
+
+def frozen_rich_order(schema):
+    """original93 + appended blocks in BLOCK_ORDER, validated as load_frozen_spec does."""
+    original = list(schema["original_features"])
+    if tuple(schema["additional_blocks"]) != BLOCK_ORDER:
+        raise PackageError("feature-schema.json additional_blocks order differs from BLOCK_ORDER")
+    additional = [n for block in BLOCK_ORDER for n in schema["additional_blocks"][block]]
+    rich = original + additional
+    if (len(original), len(additional), len(rich)) != (schema["original_count"], schema["additional_count"], schema["rich_count"]) \
+            or len(set(rich)) != len(rich):
+        raise PackageError("feature-schema.json counts or names inconsistent")
+    return rich
+
+
+def selections_digest(selections):
+    """run_pipeline.py:1034-1035."""
+    return hashlib.sha256(json.dumps(selections, sort_keys=True).encode("utf-8")).hexdigest()
 
 ENTRY = '''"""Keyed loader for one historical IPCCH pop-v1 package (generated; see package.json)."""
 import json
@@ -119,7 +150,9 @@ class Model:
         history = np.array([s == "E_history" for _, s in routed])
         threshold = np.where(history, np.where(b == 0.0, self.t0, self.t1), self.t_none)
         out = keys.reset_index(drop=True)[["admin_code", "target_ord"]].copy()
-        out["unit"], out["route"] = folds, [s for _, s in routed]
+        out["unit"] = folds
+        out["route"] = [self.units[f]["route"] for f in folds]   # model / constant_* as recorded
+        out["support"] = [s for _, s in routed]
         out["raw_score"], out["crisis_score"] = raw, crisis
         out["threshold"] = threshold
         out["decision"] = (crisis > threshold).astype(np.int64)
@@ -136,7 +169,7 @@ def build(out_dir, *, run_root, arm, horizon, inventory, matrix_sha256, runtime,
         raise PackageError(f"unknown arm {arm}")
     h = int(horizon)
     fixed = ["freeze.json", "folds/calendar.csv", "data/keys.csv.gz", "data/feature_schema.csv", "inputs/feature-schema.json",
-             "reports/main_predictions.csv.gz", "manifest.json"]
+             "inputs/candidate-configs.json", "reports/main_predictions.csv.gz", "manifest.json"]
     ensure_local([os.path.join(run_root, p) for p in fixed + ["data/rich561_X.npy"]])
     freeze = json.load(open(os.path.join(run_root, "freeze.json")))
     if freeze["matrix_sha256"] != matrix_sha256:
@@ -153,7 +186,14 @@ def build(out_dir, *, run_root, arm, horizon, inventory, matrix_sha256, runtime,
     schema = schema.sort_values("position")
     if schema["position"].tolist() != list(range(561)):
         raise PackageError("data/feature_schema.csv does not list positions 0..560")
-    columns = schema["name"].astype(str).tolist() + ["persistence_b"]
+    frozen_schema_path = os.path.join(run_root, "inputs/feature-schema.json")
+    frozen_schema_sha = sha256_file(frozen_schema_path)
+    configs_sha = sha256_file(os.path.join(run_root, "inputs/candidate-configs.json"))
+    rich = frozen_rich_order(json.load(open(frozen_schema_path)))
+    if schema["name"].astype(str).tolist() != rich:
+        raise PackageError("data/feature_schema.csv order differs from the frozen rich order (original93 first)")
+    columns = rich + ["persistence_b"]
+    selections_sha = selections_digest(freeze["selections"])
     keys_sha = sha256_file(os.path.join(run_root, "data/keys.csv.gz"))
     calendar_sha = sha256_file(os.path.join(run_root, "folds/calendar.csv"))
 
@@ -172,14 +212,23 @@ def build(out_dir, *, run_root, arm, horizon, inventory, matrix_sha256, runtime,
         raise PackageError("saved predictions name folds outside the main calendar")
 
     files = {f["path"]: f for f in inventory}
-    units, gaps, b = {}, [], PackageBuilder(out_dir)
-    for fold in sorted(rows["fold_id"].unique()):
+    idents = {}
+    for fold in sorted(rows["fold_id"].unique()):   # every fold identity is verified before a package is started
         ident_rel = f"main/model_identity/{fold}.json"
         ensure_local([os.path.join(run_root, ident_rel)])
-        ident = json.load(open(os.path.join(run_root, ident_rel)))
-        if ident["identity"]["keys_sha256"] != keys_sha or ident["identity"]["calendar_sha256"] != calendar_sha \
-                or ident["identity"]["matrix_sha256"] != matrix_sha256:
+        ident = idents[fold] = json.load(open(os.path.join(run_root, ident_rel)))
+        idn = ident["identity"]
+        if idn["keys_sha256"] != keys_sha or idn["calendar_sha256"] != calendar_sha or idn["matrix_sha256"] != matrix_sha256:
             raise PackageError(f"{fold}: identity does not bind the run's keys/calendar/matrix")
+        if idn.get("selections_sha256") != selections_sha:
+            raise PackageError(f"{fold}: freeze.json selections do not hash to the identity's selections_sha256")
+        spec = idn.get("spec") or {}
+        if (spec.get("feature_schema_sha256"), spec.get("candidate_configs_sha256")) != (frozen_schema_sha, configs_sha) \
+                or (spec.get("original_count"), spec.get("rich_count")) != (93, 561):
+            raise PackageError(f"{fold}: frozen feature schema / candidate configs differ from the identity's spec")
+    units, gaps, b = {}, [], PackageBuilder(out_dir)
+    for fold, ident in idents.items():
+        ident_rel = f"main/model_identity/{fold}.json"
         entry = ident["models"].get(f"{arm}::{config}")
         if entry is None:
             gaps.append(f"{fold}: no {arm}::{config} model identity")
@@ -202,22 +251,26 @@ def build(out_dir, *, run_root, arm, horizon, inventory, matrix_sha256, runtime,
             b.add_json(f"deps/imputers/{fold}.json", imp["fill_values"])
         b.add_file(os.path.join(run_root, ident_rel), f"deps/source/{ident_rel}")
         units[fold] = unit
+    saved_route = rows.groupby("fold_id")["route"].unique()
+    for fold, unit in units.items():
+        if list(saved_route[fold]) != [unit["route"]]:
+            raise PackageError(f"{fold}: saved route {list(saved_route[fold])} differs from the identity route {unit['route']}")
     b.add_json("deps/units.json", units)
     b.add_json("deps/input_columns.json", columns)
     b.add_bytes("deps/feature_order.csv", pd.DataFrame({"name": columns}).to_csv(index=False).encode())
-    b.add_bytes("deps/routing.csv", rows[KEYS + ["fold_id", "support"]].sort_values(KEYS).to_csv(index=False).encode())
+    b.add_bytes("deps/routing.csv", rows[KEYS + ["fold_id", "support", "route"]].sort_values(KEYS).to_csv(index=False).encode())
     for p in fixed:
         b.add_file(os.path.join(run_root, p), f"deps/source/{p}")
 
-    rows["unit"], rows["route"] = rows["fold_id"], rows["support"]
+    rows["unit"] = rows["fold_id"]   # route and support stay the saved values
     boundary = (rows["crisis_score"] - rows["threshold"].replace([np.inf, -np.inf], np.nan)).abs().fillna(1.0)
-    ref = select_reference(rows, "unit", boundary, KEYS, per_unit=per_unit, cover_cols=("route",))
+    ref = select_reference(rows, "unit", boundary, KEYS, per_unit=per_unit, cover_cols=("route", "support"))
     idx = ref["row_index"].to_numpy()
     arr = np.column_stack([np.asarray(X[idx], dtype=np.float64), keys.loc[idx, "persistence_b"].to_numpy(dtype=np.float64)])
     buf = io.BytesIO()
     np.save(buf, np.ascontiguousarray(arr), allow_pickle=False)
     b.add_bytes("reference/inputs.npy", buf.getvalue())
-    expected = ref[KEYS + ["unit", "route", "raw_score", "crisis_score", "decision"]]
+    expected = ref[KEYS + ["unit", "route", "support", "raw_score", "crisis_score", "decision"]]
     b.add_bytes("reference/expected.csv", expected.to_csv(index=False, float_format="%.17g").encode())
     b.add_bytes("loader/entry.py", ENTRY.encode())
     manifest = json.load(open(os.path.join(run_root, "manifest.json")))
@@ -233,8 +286,9 @@ def build(out_dir, *, run_root, arm, horizon, inventory, matrix_sha256, runtime,
                      "no_history": NO_HISTORY_THRESHOLD if no_history else "+Infinity",
                      "source": "freeze.json selections; run_pipeline.py apply_thresholds; report_results build_scored_table"},
         "routing": {"table": "deps/routing.csv", "feature_order": "deps/feature_order.csv", "served_keys": int(len(rows)),
-                    "routes_in_version": sorted(rows["support"].unique())},
+                    "routes_in_version": sorted(rows["route"].unique()), "supports_in_version": sorted(rows["support"].unique())},
         "source": {"run_root": run_root, "matrix_sha256": matrix_sha256, "keys_sha256": keys_sha, "calendar_sha256": calendar_sha,
+                   "selections_sha256": selections_sha, "feature_schema_sha256": frozen_schema_sha, "candidate_configs_sha256": configs_sha,
                    "main_predictions_sha256": sha256_file(os.path.join(run_root, "reports/main_predictions.csv.gz")),
                    "freeze_code_sha256": freeze.get("code_sha256")},
         "code": {"loader": "thin reimplementation of the documented contract; the current run_pipeline.py matches neither "
@@ -247,11 +301,12 @@ def build(out_dir, *, run_root, arm, horizon, inventory, matrix_sha256, runtime,
                    "inputs": "float64 rows: rich561 (deps/input_columns.json order, NaN = missing) + persistence_b",
                    "unserved_keys": "KeyError"},
         "reference": {"rows": int(len(expected)), "per_unit_cap": per_unit, "compare_columns": ["raw_score", "crisis_score", "decision"],
-                      "selection": "per fold (cap): >=1 row per support route, half nearest the decision threshold, rest by key hash",
-                      "routes_covered": sorted(expected["route"].unique()),
+                      "exact_columns": ["support"],
+                      "selection": "per fold (cap): >=1 row per route and per support, half nearest the decision threshold, rest by key hash",
+                      "routes_covered": sorted(expected["route"].unique()), "supports_covered": sorted(expected["support"].unique()),
                       "rows_with_missing_features": int(np.isnan(arr[:, :561]).any(axis=1).sum())},
         "tolerance": {"declared_before_comparison": True,
                       "continuous": "abs(new-ref) <= 1e-3 + 1e-3*abs(ref) for raw_score and crisis_score",
                       "decision": "compared exactly (within the same tolerance on 0/1)",
-                      "routing": "fold and support route must equal the saved row exactly"},
+                      "routing": "fold (unit), route and support must each equal the saved row exactly"},
     })

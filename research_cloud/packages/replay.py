@@ -112,7 +112,8 @@ def compare_columns(expected, got, columns):
     return report
 
 
-def check_output(got, expected, key_columns=("admin_code", "target_ord"), threshold=THRESHOLD, columns=None):
+def check_output(got, expected, key_columns=("admin_code", "target_ord"), threshold=THRESHOLD, columns=None,
+                 exact_columns=()):
     """Exact keys/order/routing first; numeric comparison only on a correctly keyed output."""
     keys_ok = len(got) == len(expected) and all(
         np.array_equal(got[k].to_numpy(), expected[k].to_numpy()) for k in key_columns)
@@ -127,6 +128,10 @@ def check_output(got, expected, key_columns=("admin_code", "target_ord"), thresh
         result = compare(expected, got[[f"{q}_raw" for q in TARGETS]].to_numpy(),
                          got[[f"{q}_star" for q in TARGETS]].to_numpy(), got["phase"].to_numpy(), threshold)
     result["checks"]["keys_and_order"] = True
+    for col in exact_columns:   # declared categorical outputs (e.g. pop-v1 support) must equal the reference exactly
+        diff = got[col].astype(str).to_numpy() != expected[col].astype(str).to_numpy()
+        result["checks"][f"exact_{col}"] = not diff.any()
+        mismatch = mismatch | diff
     result["routing_mismatches"] = int(mismatch.sum())
     if mismatch.any():
         result["passed"] = False
@@ -161,7 +166,8 @@ def main(argv=None):
             got = model.predict(expected[key_columns], X)
             threshold = float(meta.get("loader", {}).get("phase_threshold", THRESHOLD))
             columns = meta.get("reference", {}).get("compare_columns")
-            out.update(check_output(got, expected, key_columns, threshold, columns))
+            exact = meta.get("reference", {}).get("exact_columns", [])
+            out.update(check_output(got, expected, key_columns, threshold, columns, exact))
     out["passed"] = bool(out.get("passed")) and not problems and "error" not in out
     out["seconds"] = round(time.time() - t0, 2)
     with open(args.report, "w") as f:
