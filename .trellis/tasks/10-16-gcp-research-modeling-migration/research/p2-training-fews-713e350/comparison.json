@@ -1,0 +1,25 @@
+{
+ "features_vs_original_scen_root": {
+  "original": "scen-b43ef6a-v1/stage1_scenario/roots/scenA_h4_2019-02_G1_k0_r50_s42/fold_membership.csv.gz",
+  "fitting_cohort": {"original_keys": 81979, "rebuilt_eval_keys": 81979, "keys_and_labels_equal": true},
+  "target_cohort": {"original_heldout_target": 5365, "rebuilt_target": 5365, "keys_and_labels_equal": true}
+ },
+ "pool_vs_original_global": {
+  "original": "scen-b43ef6a-v1/scenario_globals/h4/G1/O2018-10_e323393f551da35c (k0, strategy A, Windows, xgboost 3.0.0)",
+  "fit_keys_sha256_equal": true, "labels_sha256_equal": true, "features_sha256_equal": true,
+  "resolved_params_equal": true
+ },
+ "booster": {
+  "trial_default_sha256": "d4724c663c5968e19313fa7dc073a47c0e9e0bb6f98039d413defa56e70d41de",
+  "linux_fit_with_plan_G_CONFIGS_G1_sha256": "d4724c663c5968e19313fa7dc073a47c0e9e0bb6f98039d413defa56e70d41de",
+  "linux_refit_repeatable": true,
+  "original_windows_sha256": "3224dec0ff59bee077f7a36d04846ebd6987160ffd689aa5141cdea9043979e1",
+  "equal_to_original": false,
+  "target_rows": 5365, "max_abs_probability_difference_vs_original": 0.1145043671131134, "argmax_agree": 5322,
+  "structure_sha256": {"linux": "9431e22bc42da781...", "original": "74db352ca656e72a..."},
+  "interpretation": "identical inputs and parameters; Linux and Windows xgboost 3.0.0 fits with subsample/colsample 0.8 diverge (likely platform random streams). Historical inference replays exactly via packages; Linux training is a new research identity, never a historical-version substitute."
+ },
+ "trials": {"default (max_depth 3, rounds 200)": {"crisis_f1": 0.7915766738660908},
+            "max_depth 2, rounds 150": {"crisis_f1": 0.7835164835164835},
+            "objective=binary:logistic": "refused: outside the declared space"}
+}

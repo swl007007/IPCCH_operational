@@ -1,0 +1,31 @@
+{
+ "roles": {
+  "fit_variant": 81979,
+  "eval": 81979,
+  "target": 5365
+ },
+ "features": 129,
+ "original_fit_keys": 81979,
+ "target_class_counts": {
+  "0": 2926,
+  "1": 1497,
+  "2": 886,
+  "3": 56
+ },
+ "availability_note": "Linux digest; the Windows runs computed it with \\r\\n line terminators",
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "packages": {
+   "numpy": "2.2.6",
+   "pandas": "2.2.3",
+   "xgboost": "3.0.0",
+   "scikit-learn": "1.6.1"
+  },
+  "image_digest": null,
+  "source_commit": null,
+  "vertex": {}
+ },
+ "seconds": 167.5
+}

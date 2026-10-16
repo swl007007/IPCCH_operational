@@ -1,0 +1,30 @@
+[
+ {
+  "package": "fews-geoxgb-v1-20261001-globals",
+  "receipt": "/home/swl007007/projects/food-crisis-research/scratch/replay/fews-globals-1cde8f6/fews-geoxgb-v1-20261001-globals.json",
+  "family": "fewsnet_global_screen",
+  "registered_model": null,
+  "logged_model_id": null,
+  "status": "complete",
+  "gaps": 0,
+  "package_json_sha256": "406f85ff090adafbd8fe58b867dd2d98853ccb7bdfe4bfcd6c2d7e5706ab3462",
+  "receipt_package_json_sha256": "406f85ff090adafbd8fe58b867dd2d98853ccb7bdfe4bfcd6c2d7e5706ab3462",
+  "receipt_matches_package": true,
+  "replay_passed": true,
+  "reference_rows": 1152,
+  "fitted_units": 72,
+  "max_abs_err": 1.8626451943337674e-09,
+  "routing_mismatches": 0,
+  "phase_changes": 0,
+  "routes_covered": "1/1",
+  "content_sha256": "cbc7a1f3396311a22805dc4244fb1e6e83e1e0a366890619f3410bddd0c9e6f9",
+  "package_bytes": 135811763,
+  "runtime": {
+   "python": "3.12.3",
+   "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "xgboost": "3.0.0",
+   "numpy": "2.2.6",
+   "pandas": "2.2.3"
+  }
+ }
+]

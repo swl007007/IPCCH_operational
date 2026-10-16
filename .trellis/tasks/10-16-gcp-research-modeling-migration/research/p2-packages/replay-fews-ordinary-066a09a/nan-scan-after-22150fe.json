@@ -1,0 +1,52 @@
+{
+ "geoxgb-d35-global-increment-20261002": {
+  "files": 63,
+  "cells": 2114284,
+  "non_finite": 0
+ },
+ "geoxgb-d37-recency-root-20261002": {
+  "files": 42,
+  "cells": 1284188,
+  "non_finite": 0
+ },
+ "geoxgb-d38-persistence-margin-root-20261002": {
+  "files": 42,
+  "cells": 1284188,
+  "non_finite": 0
+ },
+ "geoxgb-d46-class-weight-root-20261002": {
+  "files": 63,
+  "cells": 6640976,
+  "non_finite": 0
+ },
+ "geoxgb-d47-stump-root-20261002": {
+  "files": 63,
+  "cells": 6640976,
+  "non_finite": 0
+ },
+ "geoxgb-d48-known-origin-fit-20261002": {
+  "files": 63,
+  "cells": 4327212,
+  "non_finite": 0
+ },
+ "geoxgb-d51-history-calendar-root-20261002": {
+  "files": 63,
+  "cells": 6640976,
+  "non_finite": 0
+ },
+ "geoxgb-d52-binary-root-20261002": {
+  "files": 63,
+  "cells": 1660244,
+  "non_finite": 0
+ },
+ "geoxgb-d42-map-transfer-20261002": {
+  "files": 24,
+  "cells": 2180484,
+  "non_finite": 0
+ },
+ "geoxgb-d43-temporal-map-refit-20261002": {
+  "files": 21,
+  "cells": 1362096,
+  "non_finite": 0
+ }
+}

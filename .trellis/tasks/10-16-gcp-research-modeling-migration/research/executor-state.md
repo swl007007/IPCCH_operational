@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 06:38 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 06:54 EDT by `date`
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `8d779ff`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `713e350`. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -37,7 +37,9 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - FEWS ordinary (D35/37/38/46/47/48/51/52) 4ba91e3 + 6577476, completion binding/loader length 066a09a; D42/D43 map
     transfer 066a09a (+cap scope 8d779ff); stage-1 candidates 617de73 + completion binding/root coverage 8d779ff;
     confirm-onset pooled 3bee169; summarize 1c6c977;
-  - cost ledger ccd1fd2 + atomic transitions/validation e79ccad.
+  - cost ledger ccd1fd2 + atomic transitions/validation e79ccad;
+  - stage-1 explicit system/root 78ae83f; v1 globals 78ae83f + horizon validation 1cde8f6; shared scen/confirm loader
+    width + NaN-safe builders 22150fe; preservation --no-recurse 991e27a; FEWS training adapter 713e350.
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
@@ -92,8 +94,13 @@ Each round below is finished, with current receipts. Rerun a round only if its c
 | SQL CSV import run3 | 53/53 verified, 0 stale/failed | `p2-sql-postgis-f93bfa1/csv-import-report.json` |
 | PostGIS geometry | 3/3 verified, WKB byte-equal (identity-bound reload after deliberate metadata reset) | `p2-sql-postgis-f93bfa1/geometry` |
 | SQL capacity | 10.98 GiB data; quote carries 30 GiB | `p2-sql-postgis-f93bfa1/capacity.json` |
-| FEWS ordinary 8 runs (066a09a) | 8/8, 10,752 rows, 168 units | `p2-packages/replay-fews-ordinary-066a09a` |
-| FEWS confirm-onset pooled S0/S3 | 2/2, 800 rows; system arm NOT packaged (pending) | `p2-packages/replay-fews-confirm-3bee169` |
+| FEWS ordinary 8 runs (066a09a) | 8/8, 10,752 rows, 168 units; 0 non-finite source probabilities | `p2-packages/replay-fews-ordinary-066a09a` |
+| FEWS map D42/D43 (8d779ff) | 2/2, 11,356 rows | `p2-packages/replay-fews-map-8d779ff` |
+| FEWS stage-1 8 runs (78ae83f) | 8/8, 12,912 rows, 1,614 units all covered | `p2-packages/replay-fews-stage1-78ae83f` |
+| FEWS v1 globals (1cde8f6) | 1/1, 1,152 rows | `p2-packages/replay-fews-globals-1cde8f6` |
+| FEWS scen 8 (22150fe) | 8/8, 3,200 rows (supersedes 1a7e207) | `p2-packages/replay-fews-scen-22150fe` |
+| FEWS confirm-onset pooled S0/S3 (22150fe) | 2/2, 800 rows; system arm NOT packaged (pending) | `p2-packages/replay-fews-confirm-22150fe` |
+| FEWS training adapter (713e350) | features equal original cohorts/digests; 2 trials + refusal; package replay | `p2-training-fews-713e350` |
 | Preservation manifests | scen 55,899 files; actual-inputs 6; failed_stage1 670 | `p2-preservation/` |
 
 The registry ledger stands at 170 passed and 72 tracking-only.
@@ -157,21 +164,17 @@ The registry ledger stands at 170 passed and 72 tracking-only.
 
 ## Open items (in order; nothing below is accepted yet)
 
-1. **Running** (`scratch/replay/fews-stage1/run.sh`, code 8d779ff): rebuild D42/D43 (cap scope metadata) then the 8 stage-1 runs, replay, summaries in `scratch/replay/fews-map` and `scratch/replay/fews-stage1`. Do not start another build.
-2. **FEWS remaining:**
-   - v1 globals (72) + gscreen predictions;
-   - preservation-only records (minirun-1/2, smoke-2, d34/d37/d38 replay evidence);
-   - confirm-onset system arm awaiting the user's disposition (no substitute).
-3. **FEWS training adapter** (`training-adapter-source-supervisor.md`); training submission wires the cost ledger (`research_cloud/cost/ledger.py`) before any job.
-4. **Images:** service + training Dockerfiles.
-5. **Final itemized quote:**
-   - transfer baseline in `transfer-volume-supervisor.md` (101.48 GB gross);
+1. **Preservation manifests** for all 27 roots and the top-level loose files are running (`scratch/preservation/all-roots.sh`, 991e27a).
+2. **Pending user disposition:** the confirm-onset system arm. Do not substitute.
+3. **Images:** service plus training Dockerfiles for both families (FEWS_SRC and IPCCH_GEOXGB_SRC pinned; xgboost 3.0.0 pinned).
+4. **Final itemized quote:**
+   - transfer baseline 101.48 GB gross;
    - Cloud SQL 30 GiB;
-   - Vertex per `vertex-training-cost-supervisor.md`;
+   - Vertex reservation via `cost/ledger.py`;
    - Gemini 3.8 Flash SKUs;
-   - GCS soft-delete/retention, images/builds/egress, SQL backup/IP applicability.
-6. **G5-G11 cloud operations** with per-operation receipts and ledger entries.
-7. **Merge** the native commits into the registered lineage before close.
+   - GCS soft-delete/retention, builds/egress, SQL backup/IP.
+5. **G5-G11 cloud operations** with per-operation receipts and ledger entries; then cloud acceptance (AC5: one family's two-trial HPT on Vertex).
+6. **Merge** the native commits into the registered lineage before close.
 
 ## Next actions (in order)
 

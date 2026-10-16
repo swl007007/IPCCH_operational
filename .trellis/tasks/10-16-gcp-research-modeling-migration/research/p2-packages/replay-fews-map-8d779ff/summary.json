@@ -1,0 +1,58 @@
+[
+ {
+  "package": "fews-geoxgb-d42-map-transfer-20261002",
+  "receipt": "/home/swl007007/projects/food-crisis-research/scratch/replay/fews-map/fews-geoxgb-d42-map-transfer-20261002.json",
+  "family": "fewsnet_map_transfer_diagnostic",
+  "registered_model": null,
+  "logged_model_id": null,
+  "status": "complete",
+  "gaps": 0,
+  "package_json_sha256": "3e7871168ef0a1ce2d3a08f525f4714ed407d42ab919255f57e11c2726645388",
+  "receipt_package_json_sha256": "3e7871168ef0a1ce2d3a08f525f4714ed407d42ab919255f57e11c2726645388",
+  "receipt_matches_package": true,
+  "replay_passed": true,
+  "reference_rows": 6083,
+  "fitted_units": 187,
+  "max_abs_err": 5.960464466436832e-08,
+  "routing_mismatches": 0,
+  "phase_changes": 0,
+  "routes_covered": "3/4",
+  "content_sha256": "a561425ca5a9c25b4f1ee5fcd902b01e3da5374c3cb7f7ff2545c0de5b3eec0f",
+  "package_bytes": 364030107,
+  "runtime": {
+   "python": "3.12.3",
+   "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "xgboost": "3.0.0",
+   "numpy": "2.2.6",
+   "pandas": "2.2.3"
+  }
+ },
+ {
+  "package": "fews-geoxgb-d43-temporal-map-refit-20261002",
+  "receipt": "/home/swl007007/projects/food-crisis-research/scratch/replay/fews-map/fews-geoxgb-d43-temporal-map-refit-20261002.json",
+  "family": "fewsnet_map_transfer_diagnostic",
+  "registered_model": null,
+  "logged_model_id": null,
+  "status": "complete",
+  "gaps": 0,
+  "package_json_sha256": "14ace7c278857fb821066d22f735a760f096ef2f0134307daa73c089b9dc7303",
+  "receipt_package_json_sha256": "14ace7c278857fb821066d22f735a760f096ef2f0134307daa73c089b9dc7303",
+  "receipt_matches_package": true,
+  "replay_passed": true,
+  "reference_rows": 5273,
+  "fitted_units": 327,
+  "max_abs_err": 5.960464477539063e-08,
+  "routing_mismatches": 0,
+  "phase_changes": 0,
+  "routes_covered": "2/4",
+  "content_sha256": "09b2ddbff5bb656fe90caab60490379337483f0a981829aa2b3b1a7763e2fb35",
+  "package_bytes": 665803925,
+  "runtime": {
+   "python": "3.12.3",
+   "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "xgboost": "3.0.0",
+   "numpy": "2.2.6",
+   "pandas": "2.2.3"
+  }
+ }
+]

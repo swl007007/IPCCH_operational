@@ -1,0 +1,58 @@
+[
+ {
+  "package": "fews-confirm-onset-v1-S0-pooled",
+  "receipt": "/home/swl007007/projects/food-crisis-research/scratch/replay/fews-confirm-22150fe/fews-confirm-onset-v1-S0-pooled.json",
+  "family": "fewsnet_confirm_onset_pooled",
+  "registered_model": null,
+  "logged_model_id": null,
+  "status": "complete",
+  "gaps": 0,
+  "package_json_sha256": "b13df408e47015387af58b07ae4fd7b6f7d970f9df74338868ba8a0ff13fd900",
+  "receipt_package_json_sha256": "b13df408e47015387af58b07ae4fd7b6f7d970f9df74338868ba8a0ff13fd900",
+  "receipt_matches_package": true,
+  "replay_passed": true,
+  "reference_rows": 400,
+  "fitted_units": 1,
+  "max_abs_err": 1.8626451873948735e-09,
+  "routing_mismatches": 0,
+  "phase_changes": 0,
+  "routes_covered": "1/1",
+  "content_sha256": "7310c85f8c1d244195718073ea72cb77e7f7f3081154f4c104d5369c38a685c6",
+  "package_bytes": 2018660,
+  "runtime": {
+   "python": "3.12.3",
+   "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "xgboost": "3.0.0",
+   "numpy": "2.2.6",
+   "pandas": "2.2.3"
+  }
+ },
+ {
+  "package": "fews-confirm-onset-v1-S3-pooled",
+  "receipt": "/home/swl007007/projects/food-crisis-research/scratch/replay/fews-confirm-22150fe/fews-confirm-onset-v1-S3-pooled.json",
+  "family": "fewsnet_confirm_onset_pooled",
+  "registered_model": null,
+  "logged_model_id": null,
+  "status": "complete",
+  "gaps": 0,
+  "package_json_sha256": "f0bf944dd25fd7eeebbc3e31267352a2e6b7a0c3967563bda6030fb4f7dc1d66",
+  "receipt_package_json_sha256": "f0bf944dd25fd7eeebbc3e31267352a2e6b7a0c3967563bda6030fb4f7dc1d66",
+  "receipt_matches_package": true,
+  "replay_passed": true,
+  "reference_rows": 400,
+  "fitted_units": 1,
+  "max_abs_err": 1.8626451873948735e-09,
+  "routing_mismatches": 0,
+  "phase_changes": 0,
+  "routes_covered": "1/1",
+  "content_sha256": "f9b43dcf09a952ba8e6425e6809b76a8537b12ddc42714c57b14826978f31257",
+  "package_bytes": 2012307,
+  "runtime": {
+   "python": "3.12.3",
+   "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "xgboost": "3.0.0",
+   "numpy": "2.2.6",
+   "pandas": "2.2.3"
+  }
+ }
+]

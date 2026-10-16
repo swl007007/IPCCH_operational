@@ -1,0 +1,17 @@
+{
+ "family": "fewsnet_pooled_fourclass",
+ "horizon": 4,
+ "target": "2019-02",
+ "development_targets": ["2019-02", "2019-06", "2019-10", "2020-02", "2020-06", "2020-10"],
+ "holdout_start": "2021-01",
+ "holdout_note": "FEWS development targets end 2020-10 (plan.DEV_TARGETS); later scenario evaluation and actual months are excluded from search",
+ "objective": "crisis_f1",
+ "n_features": 129,
+ "fixed": {"eta": 0.05, "min_child_weight": 10, "reg_lambda": 10, "reg_alpha": 0, "subsample": 0.8, "colsample_bytree": 0.8,
+           "tree_method": "hist"},
+ "space": {
+  "max_depth": {"type": "int", "min": 2, "max": 4, "default": 3},
+  "rounds": {"type": "int", "min": 100, "max": 400, "default": 200}
+ },
+ "fews_src": "/home/swl007007/projects/food-crisis-research/sources/Food_Crisis_Cluster/FEWSNETGeoXGBExperiment"
+}
