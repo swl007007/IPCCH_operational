@@ -242,7 +242,7 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=16):
             p_root = boosters["root"].predict(xgb.DMatrix(Xc, missing=np.nan, nthread=4)).astype(np.float64)
             check = {"rows": int(len(rows)), "file_sha256": sha256_file(path),
                      "root_max_abs_err": float(np.abs(rows[[f"p_root_{l}" for l in LABELS]].to_numpy(np.float64) - p_root).max())}
-            if check["root_max_abs_err"] > 1e-6:
+            if not check["root_max_abs_err"] <= 1e-6:   # NaN fails
                 raise PackageError(f"{cell}/{part}: root replay differs {check}")
             for arm, col in spec["arms"].items():
                 area_map, eligible = maps[arm]
@@ -261,7 +261,7 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=16):
                 decided = rows[f"y_{col}"].to_numpy(int) == np.argmax(proba, axis=1)
                 check[arm] = {"max_abs_err": float(err.max()), "decision_matches": int(decided.sum()),
                               "region_rows": int((reason == "region").sum())}
-                if err.max() > 1e-6 or not decided.all():
+                if not (np.isfinite(err).all() and (err <= 1e-6).all()) or not decided.all():
                     raise PackageError(f"{cell}/{part}/{arm}: full-part check failed {check[arm]}")
                 frame = pd.DataFrame({"cell": cell, "arm": arm, "area": rows["area"].to_numpy(),
                                       "target_month": rows["target_month"].to_numpy(), "part": part,

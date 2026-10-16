@@ -30,12 +30,7 @@ from research_cloud.packages.fews_scen import (ENTRY as SCEN_ENTRY, PROB, crlf_d
 RUN = Path("/mnt/c/Users/swl00/geoxgb_runs/confirm-onset-v1")
 RUN10 = Path("/mnt/c/Users/swl00/geoxgb_runs/scen-b43ef6a-v1")
 SCENARIOS = ("S0", "S3")
-ENTRY = SCEN_ENTRY.replace("one FEWS NET scen-b43ef6a-v1 actual-case package", "one FEWS NET confirm-onset-v1 pooled package").replace(
-    """        X = np.array(X, dtype=np.float64, copy=True)
-        X[np.isinf(X)] = np.nan""", """        X = np.array(X, dtype=np.float64, copy=True)
-        if X.ndim != 2 or len(X) != len(keys):
-            raise ValueError(f"{len(keys)} keys but X of shape {X.shape}")
-        X[np.isinf(X)] = np.nan""")
+ENTRY = SCEN_ENTRY.replace("one FEWS NET scen-b43ef6a-v1 actual-case package", "one FEWS NET confirm-onset-v1 pooled package")
 
 
 def rebuild(src, scenario, fold):
@@ -112,7 +107,7 @@ def build_scenario(out_root, scenario, src, runtime, per_unit=400):
     err = np.abs(saved[PROB].to_numpy(np.float64) - proba)
     decided = saved["y_pred_code"].to_numpy(int) == np.argmax(proba, axis=1)
     cohort = {"rows": int(len(saved)), "max_abs_err": float(err.max()), "decision_matches": int(decided.sum())}
-    if err.max() > 1e-6 or not decided.all() or (saved["route"] != "pooled_arm").any():
+    if not (np.isfinite(err).all() and (err <= 1e-6).all()) or not decided.all() or (saved["route"] != "pooled_arm").any():
         raise PackageError(f"{scenario}: pooled full-cohort check failed {cohort}")
     system = pd.read_csv(d / "fold" / "predictions.csv.gz", dtype={"route": str})
     local = system[system["route"] == "local_model"]

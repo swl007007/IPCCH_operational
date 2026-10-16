@@ -63,18 +63,23 @@ class Model:
         self.arm = self.meta["arm"]
         self.booster = xgb.Booster()
         self.booster.load_model(bytearray(open(os.path.join(package_dir, "weights", "global.ubj"), "rb").read()))
+        self.n_features = len(pd.read_csv(os.path.join(package_dir, "deps", "feature_order.csv")))
+        if self.booster.num_features() != self.n_features:
+            raise RuntimeError(f"booster expects {self.booster.num_features()} features, feature_order declares {self.n_features}")
         route = pd.read_csv(os.path.join(package_dir, "deps", "routing.csv"), dtype={"route": str, "target_month": str})
         self.route = {(int(a), t): (r, c) for a, t, r, c in route[["area", "target_month", "route", "cluster_id"]].itertuples(index=False)}
 
     def predict(self, keys, X):
-        """keys: DataFrame[area, target_month]; X: (n, 129) feature rows in deps/feature_order.csv order."""
+        """keys: DataFrame[area, target_month]; X: (len(keys), F) rows in deps/feature_order.csv order (F columns)."""
+        X = np.array(X, dtype=np.float64, copy=True)
+        if X.shape != (len(keys), self.n_features):
+            raise ValueError(f"X must be ({len(keys)}, {self.n_features}) for {len(keys)} keys, got {X.shape}")
         routes = [self.route[(int(a), str(t))] for a, t in zip(keys["area"], keys["target_month"])]   # KeyError if unserved
         if self.arm == "system":
             local = [i for i, (r, _) in enumerate(routes) if r == "local_model"]
             if local:
                 raise LocalBoosterNotRetained(f"{len(local)} rows route to local boosters that were not retained "
                                               "(accepted incomplete-history exception)")
-        X = np.array(X, dtype=np.float64, copy=True)
         X[np.isinf(X)] = np.nan                      # native_xgb.clean
         proba = self.booster.predict(xgb.DMatrix(X, missing=np.nan, nthread=4))
         if proba.ndim != 2 or proba.shape[1] != 4:
@@ -203,7 +208,7 @@ def build_case(out_root, horizon_label, target, src, runtime, per_unit=400):
         decided = (saved["y_pred_code"].to_numpy()[served] == np.argmax(proba[served], axis=1))
         cohort = {"rows": int(len(saved)), "served_rows": int(served.sum()), "max_abs_err": float(err.max()),
                   "decision_matches": int(decided.sum())}
-        if err.max() > 1e-6 or not decided.all():
+        if not (np.isfinite(err).all() and (err <= 1e-6).all()) or not decided.all():
             raise PackageError(f"{arm}: full-cohort check failed {cohort}")
         out_dir = os.path.join(out_root, f"fews-scen-b43ef6a-v1-actual-{horizon_label}-{target}-{arm}")
         b = PackageBuilder(out_dir)

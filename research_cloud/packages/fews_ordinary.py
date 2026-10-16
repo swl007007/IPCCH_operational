@@ -269,7 +269,7 @@ def check_cell(run_dir, spec, cell, snapshots, identity, completion, columns=Non
             decided = rows[f"y_{spec['arm']}"].to_numpy(int) == np.argmax(proba, axis=1)
         check[part] = {"rows": int(len(rows)), "max_abs_err": float(err.max()), "decision_matches": int(decided.sum()),
                        "file_sha256": sha256_file(path)}
-        if err.max() > 1e-6 or not decided.all():
+        if not (np.isfinite(err).all() and (err <= 1e-6).all()) or not decided.all():
             raise PackageError(f"{cell}/{part}: full-part check failed {check[part]}")
         if binary:
             frame = rows[["area", "target_month", "p_binary", "call_binary"]].copy()
