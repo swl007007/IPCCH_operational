@@ -1,14 +1,14 @@
-"""Package builder for IPCCH Somalia-oracle registered versions (runs somalia_oracle/v2_q3 and v3_validity).
+"""Package builder for IPCCH Somalia-oracle registered versions (runs somalia_oracle/v2_q3, v3_validity, v4_calibrated_d).
 
 Rules were read at each run's recorded commit (manifest ``git_head``), not the current checkout:
 - v2_q3 (d75378d): ``src/ipcch/somalia_oracle/q3opt.py`` final_task / predict_q3 / apply_branches /
   bound_share / Q3Mapping, ``modeling.py`` FittedRegressor, ``configs/somalia_q3_optimization.json``
-  (residual baseline ``hist_q3_obs1``, source ``history_obs1_source_ord``);
+  (residual baseline ``residual_baseline``, source ``history_obs1_source_ord``);
 - v3_validity (1f3bfcec): ``augexp.py`` final_task / fit_predict_q3 / _baseline (same q3opt mapping and
   bound; label branch original/augmented in model and mapping identity).
 Per saved final-prediction row of a version: X = the run's saved ``features/feature_matrix_hXX`` row
 (area_id, target_ord) in the version's schema; q2/q4/q5 and q3_direct = XGBRegressor.predict(X) (or a
-saved constant); a unit with a ``q3_residual_delta`` model predicts q3 = hist_q3_obs1 + delta where the
+saved constant); a unit with a ``q3_residual_delta`` model predicts q3 = residual_baseline + delta where the
 baseline is supported (finite and history_obs1_source_ord >= 0, from ``ledgers/row_provenance_hXX``),
 else direct (branch fallback_direct); then the recorded per-branch calibration mapping and the [0, 1]
 bound. All raw/mapped/final columns the run saved are compared. The loader is a thin reimplementation,
@@ -83,6 +83,64 @@ def _v3_maps(maps):
     return maps.assign(map_key=maps["job_id"] + "|" + maps["branch"] + "|" + maps["view"])
 
 
+def _v4_rows(pred, plan_version):
+    setting = {"somalia_calibrated_observed": "original", "somalia_calibrated_augmented": "augmented"}[plan_version["family"]]
+    rows = pred[(pred["data_setting"] == setting) & (pred["horizon"] == int(plan_version["lead"]))].copy()
+    rows["model_view"] = "D_calibrated"
+    rows["stem"] = rows["job_id"]
+    rows["map_key"] = rows["job_id"]
+    rows["branch"] = rows["prediction_branch"]
+    return rows, "D_calibrated", f"h{int(plan_version['lead']):02d}_D"
+
+
+def _v4_maps(maps):
+    return maps.assign(map_key=maps["job_id"])
+
+
+V4_OVERRIDE_FILES = {"override_features": "features/final_override_features.csv.gz",
+                     "history_overrides": "selection/history_overrides.csv.gz"}
+
+
+def _v4_overrides(sources, rows, inputs, schema):
+    """augexp._v4_matrix (a787257): a test row exposed to its job's test families uses recomputed history.
+    The run saved those exact feature rows (features/final_override_features) and their baseline/support
+    (selection/history_overrides, role test_prediction). `sources` maps V4_OVERRIDE_FILES keys to hash-verified paths.
+    Within this version's served (job, key) set the two files must correspond one-to-one."""
+    feats = pd.read_csv(sources["override_features"], float_precision="round_trip")
+    hist = pd.read_csv(sources["history_overrides"], float_precision="round_trip")
+    hist = hist[hist["role"] == "test_prediction"].assign(job_id=lambda d: d["scope"].str.removeprefix("job:"))
+    jk = ["job_id"] + KEYS
+    for name, frame in (("override features", feats), ("history overrides", hist)):
+        if frame.duplicated(jk).any():
+            raise PackageError(f"{name} repeat a (job, area, target) key")
+    served = set(zip(rows["job_id"], rows["area_id"], rows["target_ord"]))
+    def mine(frame):   # boolean array mask, so an empty frame keeps its columns
+        return frame.loc[np.array([k in served for k in zip(frame["job_id"], frame["area_id"], frame["target_ord"])], dtype=bool)]
+    mine_f, mine_h = mine(feats), mine(hist)
+    f_keys, h_keys = set(map(tuple, mine_f[jk].to_numpy().tolist())), set(map(tuple, mine_h[jk].to_numpy().tolist()))
+    if f_keys != h_keys:
+        raise PackageError(f"override features/history disagree for this version: "
+                           f"{sorted(f_keys - h_keys)[:3]} lack history, {sorted(h_keys - f_keys)[:3]} lack features")
+    hist_of = {k: r for k, r in zip(map(tuple, mine_h[jk].to_numpy().tolist()), mine_h.to_dict("records"))}
+    applied = []
+    out = inputs.set_index(KEYS)
+    for r in mine_f.to_dict("records"):
+        key = (r["area_id"], r["target_ord"])
+        if key not in out.index:
+            raise PackageError(f"override for {r['job_id']} {key}: key absent from the saved feature matrix")
+        h = hist_of[(r["job_id"],) + key]
+        b, src = float(h["context_hist_q3_obs1"]), h["context_obs1_source_ord"]
+        ok = bool(np.isfinite(b) and not pd.isna(src) and int(src) >= 0)
+        # the override X row holds the float32 model input; the residual adds the float64 context baseline
+        if ok != bool(h["context_base_ok"]) or (np.isfinite(b) and np.float32(b) != np.float32(r["hist_q3_obs1"])):
+            raise PackageError(f"override for {r['job_id']} {key}: recorded baseline/support disagree")
+        out.loc[key, schema] = [r[c] for c in schema]
+        out.loc[key, "history_obs1_source_ord"] = src
+        out.loc[key, "residual_baseline"] = b
+        applied.append({"job_id": r["job_id"], "area_id": key[0], "target_ord": key[1], "hx": r["hx"], "base_ok": ok})
+    return out.reset_index(), applied
+
+
 SPECS = {
     "somalia_oracle_v2_q3": {"run": "results/experiments/somalia_oracle/v2_q3", "rows": _v2_rows, "maps": _v2_maps,
                              "compare": ["q2_raw", "q3_raw", "q4_raw", "q5_raw", "q3_mapped", "q3_final"],
@@ -93,6 +151,12 @@ SPECS = {
                                    "rule_files": ["src/ipcch/somalia_oracle/augexp.py", "src/ipcch/somalia_oracle/q3opt.py",
                                                   "src/ipcch/somalia_oracle/modeling.py",
                                                   "scripts/modeling/run_somalia_validity_augmentation.py"]},
+    "somalia_oracle_v4_calibrated_d": {"run": "results/experiments/somalia_oracle/v4_calibrated_d", "rows": _v4_rows, "maps": _v4_maps,
+                                       "override": _v4_overrides, "override_files": V4_OVERRIDE_FILES,
+                                       "compare": ["q2_raw", "q3_raw", "q4_raw", "q5_raw", "q3_final"],
+                                       "rule_files": ["src/ipcch/somalia_oracle/augexp.py (v4_final_task, v4_fit_predict, _v4_matrix)",
+                                                      "src/ipcch/somalia_oracle/q3opt.py", "src/ipcch/somalia_oracle/modeling.py",
+                                                      "scripts/modeling/run_somalia_v4_calibrated_d.py"]},
 }
 
 ENTRY = '''"""Keyed loader for one historical IPCCH Somalia-oracle package (generated; see package.json)."""
@@ -166,7 +230,7 @@ class Model:
             raw = self.predict_target(stem, "q3_direct", Xs)
             br = np.full(len(idx), "direct", dtype=object)
             if self.has(stem, "q3_residual_delta"):
-                b = frame["hist_q3_obs1"].to_numpy()[idx]
+                b = frame["residual_baseline"].to_numpy()[idx]
                 src = frame["history_obs1_source_ord"].to_numpy()[idx]
                 ok = np.isfinite(b) & (np.nan_to_num(src, nan=-1) >= 0)
                 res = np.where(ok, b + self.predict_target(stem, "q3_residual_delta", Xs), np.nan)
@@ -200,6 +264,8 @@ def build(out_dir, *, source_key, ipcch_root, plan_version, version_key, version
     paths = {"pred": "predictions/final_predictions.csv.gz", "maps": "fits/calibration_mappings.csv",
              "schema": "features/feature_schema.json", "matrix": f"features/feature_matrix_{hh}.csv.gz",
              "prov": f"ledgers/row_provenance_{hh}.csv.gz", "inventory": "models/model_inventory.csv", "manifest": "manifest.json"}
+    paths.update(spec.get("override_files", {}))
+    recorded = {m["path"]: m for m in plan_version["members"]}
     members = {os.path.basename(m["path"]): m for m in plan_version["members"] if m["role"] == "booster"}
     ensure_local([os.path.join(run_root, p) for p in paths.values()] + [os.path.join(ipcch_root, m["path"]) for m in members.values()])
     manifest = json.load(open(os.path.join(run_root, paths["manifest"])))
@@ -223,9 +289,21 @@ def build(out_dir, *, source_key, ipcch_root, plan_version, version_key, version
     if matrix.duplicated(KEYS).any() or prov.duplicated(KEYS).any():
         raise PackageError("feature matrix or provenance ledger repeats a key")
     inputs = matrix.merge(prov[KEYS + ["history_obs1_source_ord"]], on=KEYS, how="left", validate="one_to_one")
+    inputs["residual_baseline"] = inputs["hist_q3_obs1"]   # frame baseline; history overrides replace it below
     missing_cols = [c for c in schema + ["hist_q3_obs1"] if c not in inputs]
     if missing_cols:
         raise PackageError(f"saved feature matrix lacks {missing_cols[:3]}")
+    overrides_applied = []
+    if "override" in spec:
+        sources = {}
+        for k, p in spec["override_files"].items():   # recorded plan members only; verified before they are read
+            m = recorded.get(os.path.join(spec["run"], p))
+            if m is None:
+                raise PackageError(f"{version_key}: override dependency {p} is not a recorded plan member")
+            if sha256_file(os.path.join(run_root, p)) != m["sha256"]:
+                raise PackageError(f"{version_key}: override dependency {p} differs from its recorded sha256")
+            sources[k] = os.path.join(run_root, p)
+        inputs, overrides_applied = spec["override"](sources, rows, inputs, schema)
     columns = [c for c in inputs.columns if c not in KEYS]
     stems = set(rows["stem"])
     used_members = sorted(n for n in members if any(n.startswith(s + "_") for s in stems))
@@ -252,16 +330,17 @@ def build(out_dir, *, source_key, ipcch_root, plan_version, version_key, version
     b.add_json("deps/input_columns.json", columns)
     b.add_bytes("deps/feature_order.csv", pd.DataFrame({"name": columns}).to_csv(index=False).encode())
     b.add_bytes("deps/routing.csv", rows[KEYS + ["stem", "map_key"]].sort_values(KEYS).to_csv(index=False).encode())
-    recorded = {m["path"]: m for m in plan_version["members"]}
-    for p in ("pred", "maps", "schema", "inventory", "manifest", "matrix", "prov"):
+    for p in ("pred", "maps", "schema", "inventory", "manifest", "matrix", "prov") + tuple(spec.get("override_files", {})):
         rel = os.path.join(spec["run"], paths[p])
         m = recorded.get(rel)   # enforce the plan's recorded bytes/sha256 wherever the dependency was recorded
         b.add_file(os.path.join(run_root, paths[p]), "deps/source/" + paths[p],
                    m["sha256"] if m else None, m["bytes"] if m else None)
 
     rows["unit"], rows["route"] = rows["stem"], rows[branch_col]
+    over = {(o["area_id"], o["target_ord"]) for o in overrides_applied}
+    rows["input_source"] = ["history_override" if k in over else "feature_matrix" for k in zip(rows["area_id"], rows["target_ord"])]
     boundary = (rows["q3_final"] - 0.20).abs()
-    ref = select_reference(rows, "unit", boundary.fillna(1.0), KEYS, per_unit=per_unit, cover_cols=("route",))
+    ref = select_reference(rows, "unit", boundary.fillna(1.0), KEYS, per_unit=per_unit, cover_cols=("route", "input_source"))
     arr = np.ascontiguousarray(inputs.set_index(KEYS).loc[list(zip(ref["area_id"], ref["target_ord"])), columns].to_numpy(dtype=np.float64))
     buf = io.BytesIO()
     np.save(buf, arr, allow_pickle=False)
@@ -281,10 +360,14 @@ def build(out_dir, *, source_key, ipcch_root, plan_version, version_key, version
                                                               if os.path.join(spec["run"], paths[p]) in recorded),
                               "fresh_hash_only": sorted(os.path.join(spec["run"], paths[p]) for p in paths
                                                         if os.path.join(spec["run"], paths[p]) not in recorded)},
+        "history_overrides_applied": overrides_applied,
         "job_calibration_scope": "frozen per original job (deps/job_calibration.json); never derived from a request batch",
         "routing": {"table": "deps/routing.csv", "feature_order": "deps/feature_order.csv", "served_keys": int(len(rows)),
                     "routes_in_version": sorted(rows["route"].astype(str).unique())},
-        "source": {"run_root": run_root, "final_predictions_sha256": sha256_file(os.path.join(run_root, paths["pred"]))},
+        "source": {"run_root": run_root, "final_predictions_sha256": sha256_file(os.path.join(run_root, paths["pred"])),
+                   "override_dependencies": {k: {"path": "deps/source/" + p, **{f: recorded[os.path.join(spec["run"], p)][f]
+                                                                                 for f in ("sha256", "bytes")}}
+                                             for k, p in spec.get("override_files", {}).items()}},
         "code": {"loader": "thin reimplementation, accepted only through replay against the run's saved final predictions",
                  "rules_read_at_recorded_commit": {"git_head": manifest.get("git_head") or (manifest.get("git") or {}).get("head"),
                                                    "git_dirty": manifest.get("git_dirty", (manifest.get("git") or {}).get("dirty_paths")),

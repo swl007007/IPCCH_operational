@@ -15,7 +15,7 @@ def make_package(root, job_available):
     os.makedirs(f"{root}/deps"); os.makedirs(f"{root}/weights"); os.makedirs(f"{root}/loader")
     open(f"{root}/loader/entry.py", "w").write(ENTRY)
     json.dump({"identity": {}}, open(f"{root}/package.json", "w"))
-    json.dump(["f1", "hist_q3_obs1", "history_obs1_source_ord"], open(f"{root}/deps/input_columns.json", "w"))
+    json.dump(["f1", "residual_baseline", "history_obs1_source_ord"], open(f"{root}/deps/input_columns.json", "w"))
     json.dump(["f1"], open(f"{root}/deps/schema_columns.json", "w"))
     pd.DataFrame({"area_id": [1, 2], "target_ord": [10, 10], "stem": ["J_D_residual"] * 2,
                   "map_key": ["J|D_residual"] * 2}).to_csv(f"{root}/deps/routing.csv", index=False)
@@ -87,3 +87,57 @@ class OracleStatusFromSchema(unittest.TestCase):
         from research_cloud.packages.somalia import information_status
         with self.assertRaises(PackageError):
             information_status(["oracle_Rainf_f_tavg_mean_o9"], 12)
+
+
+class V4HistoryOverrides(unittest.TestCase):
+    """Saved override feature rows must correspond one-to-one with test_prediction history records per served
+    (job, key); the residual adds the float64 context baseline while X keeps the float32-saved feature."""
+    rows = pd.DataFrame({"job_id": ["J1", "J1", "J2"], "area_id": [1, 2, 3], "target_ord": [10, 10, 10]})
+
+    def run_overrides(self, feats, hist):
+        from research_cloud.packages.somalia import _v4_overrides
+        d = tempfile.mkdtemp()
+        pd.DataFrame(feats).to_csv(f"{d}/f.csv.gz", index=False)
+        pd.DataFrame(hist).to_csv(f"{d}/h.csv.gz", index=False)
+        inputs = pd.DataFrame({"area_id": [1, 2, 3], "target_ord": [10] * 3, "f1": [9.0] * 3, "hist_q3_obs1": [0.9] * 3,
+                               "history_obs1_source_ord": [7.0] * 3, "residual_baseline": [0.9] * 3})
+        return _v4_overrides({"override_features": f"{d}/f.csv.gz", "history_overrides": f"{d}/h.csv.gz"},
+                             self.rows, inputs, ["f1", "hist_q3_obs1"])
+
+    @staticmethod
+    def feat(job, area, base):
+        return {"job_id": job, "area_id": area, "target_ord": 10, "hx": 1, "f1": 1.5, "hist_q3_obs1": base}
+
+    @staticmethod
+    def hist(job, area, base, src, ok, role="test_prediction"):
+        return {"scope": f"job:{job}", "role": role, "area_id": area, "target_ord": 10,
+                "context_hist_q3_obs1": base, "context_obs1_source_ord": src, "context_base_ok": ok}
+
+    def test_precision_and_support_are_preserved(self):
+        out, applied = self.run_overrides(
+            [self.feat("J1", 1, float(np.float32(0.4))), self.feat("J1", 2, np.nan), self.feat("J9", 3, 0.2)],
+            [self.hist("J1", 1, 0.4000000000000001, 24273, True), self.hist("J1", 2, np.nan, -1, False),
+             self.hist("J9", 3, 0.2, 5, True)])
+        out = out.set_index("area_id")
+        self.assertEqual(out.loc[1, "residual_baseline"], 0.4000000000000001)   # float64 context baseline, not X
+        self.assertEqual(out.loc[1, "hist_q3_obs1"], float(np.float32(0.4)))
+        self.assertEqual((out.loc[2, "history_obs1_source_ord"], out.loc[3, "f1"]), (-1, 9.0))  # J9 is not served at area 3
+        self.assertEqual([(a["area_id"], a["base_ok"]) for a in applied], [(1, True), (2, False)])
+
+    def test_baseline_or_support_disagreement_is_refused(self):
+        from research_cloud.packages.common import PackageError
+        for h in (self.hist("J1", 1, 0.41, 5, True), self.hist("J1", 1, 0.4, -1, True)):
+            with self.assertRaises(PackageError):
+                self.run_overrides([self.feat("J1", 1, 0.4)], [h])
+
+    def test_missing_or_duplicate_correspondence_is_refused(self):
+        from research_cloud.packages.common import PackageError
+        cases = [([self.feat("J1", 1, 0.4)], []),                                              # features lack history
+                 ([], [self.hist("J1", 1, 0.4, 5, True)]),                                     # history lacks features
+                 ([self.feat("J1", 1, 0.4)], [self.hist("J1", 1, 0.4, 5, True, role="fit")]),  # wrong role only
+                 ([self.feat("J1", 1, 0.4)] * 2, [self.hist("J1", 1, 0.4, 5, True)]),
+                 ([self.feat("J1", 1, 0.4)], [self.hist("J1", 1, 0.4, 5, True)] * 2)]
+        for feats, hist in cases:
+            with self.assertRaises(PackageError, msg=(feats, hist)):
+                self.run_overrides(feats or {k: [] for k in self.feat("J", 0, 0)},
+                                   hist or {k: [] for k in self.hist("J", 0, 0, 0, True)})
