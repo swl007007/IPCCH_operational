@@ -1,0 +1,277 @@
+{
+ "status": "PRELIMINARY \u2014 v1 first-existing-root existence pass (code dc5fc48), no hashing. Superseded by v2 per-member resolver (65c0d45) running with --fresh hashing; not AC1 evidence.",
+ "generated_at": "2026-10-16T01:50:25-0400",
+ "direct_diagnosis_2026-10-16T02:00": "Temp roots for MLP, climate, window probe, split2024 and yearly keep only empty content-hash directories (members not found); MLflow backups under ~/ipcch-mlflow-backups are 5-9 MB metadata only. Yearly has a preserved copy at /home/swl007007/ipcch-legacy-source-preservation/yearly-formal-20261007 (1.1 GB) that v2 checks as a second candidate root.",
+ "registered_versions": {
+  "dashboard_experiment2": 116,
+  "forecasting_experiment4": 126
+ },
+ "families": [
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_climate_swap",
+   "parent_run_id": "0d829cbc36114d2b922bbd0b2ea41ccd",
+   "source_key": "climate_perturbation/climate-20261005",
+   "member_count": 5460,
+   "recorded_bytes": 1529203461,
+   "largest_bytes": 693005,
+   "status_counts": {
+    "missing": 5460
+   },
+   "root_v1": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-climate-runs/climate-20261005",
+   "versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "mlp_residual_fixed_maps",
+   "parent_run_id": "744b0d2512824623bd2cf58217c95d18",
+   "source_key": "mlp_fixed_map/mlp-formal-20261005",
+   "member_count": 26696,
+   "recorded_bytes": 2403432127,
+   "largest_bytes": 610420,
+   "status_counts": {
+    "missing": 26696
+   },
+   "root_v1": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-mlp-runs/mlp-formal-20261005",
+   "versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "alphaearth_supervised_partition",
+   "parent_run_id": "9939ac69809949e9923821fa692a7b2a",
+   "source_key": "alphaearth_partition/p1-formal-d30-20261014",
+   "member_count": 305,
+   "recorded_bytes": 755157035,
+   "largest_bytes": 9650749,
+   "status_counts": {
+    "unhashed": 305
+   },
+   "root_v1": "/home/swl007007/ipcch-alphaearth-runs/p1-formal-d30-20261014",
+   "versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_maps_2024",
+   "parent_run_id": "9dcddedc0e8e4bc38fd24cb4ce29298f",
+   "source_key": "split2024_sensitivity/split2024-20261005",
+   "member_count": 4180,
+   "recorded_bytes": 1420913441,
+   "largest_bytes": 672061,
+   "status_counts": {
+    "missing": 4180
+   },
+   "root_v1": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-split2024-20261005-3moikuh3",
+   "versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_yearly_refit",
+   "parent_run_id": "a6dc32cda52f45a7a5f12e87a72c6749",
+   "source_key": "yearly_geoxgb/yearly-formal-20261007",
+   "member_count": 1267,
+   "recorded_bytes": 320464656,
+   "largest_bytes": 671857,
+   "status_counts": {
+    "missing": 1267
+   },
+   "root_v1": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-yearly-xgb-runs/yearly-formal-20261007",
+   "versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_reference",
+   "parent_run_id": "bdbafe393d694439a1c35ccec4d5816a",
+   "source_key": "p6_geoxgb/p6-formal-20261004b",
+   "member_count": 6125,
+   "recorded_bytes": 2001306904,
+   "largest_bytes": 688109,
+   "status_counts": {
+    "unhashed": 6125
+   },
+   "root_v1": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/Food_Crisis_Cluster/IPCCHGeoXGBExperiment/runs/p6-formal-20261004b",
+   "versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_window_probe",
+   "parent_run_id": "e9cfa99f94dd4a67b0e3b6ed511708ad",
+   "source_key": "history_window_sensitivity/ipcch-window-probe-20261005-zckpq9hf",
+   "member_count": 475,
+   "recorded_bytes": 161882134,
+   "largest_bytes": 684709,
+   "status_counts": {
+    "missing": 475
+   },
+   "root_v1": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-window-probe-20261005-zckpq9hf",
+   "versions": null
+  },
+  {
+   "kind": "forecasting",
+   "family": "origin_safe_weather_oracle_v1",
+   "parent_run_id": "1f4f29ce78054398bc216f014b55fd72",
+   "source_key": "origin_safe_weather_oracle_v1",
+   "member_count": 174,
+   "recorded_bytes": 354766685,
+   "largest_bytes": 8285051,
+   "status_counts": {
+    "unhashed": 174
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 6
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_somalia_original",
+   "parent_run_id": "2e08142e9c7d4ba88f805ec1c7672746",
+   "source_key": "compact_somalia_original",
+   "member_count": 203,
+   "recorded_bytes": 133029991,
+   "largest_bytes": 3364478,
+   "status_counts": {
+    "unhashed": 203
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 7
+  },
+  {
+   "kind": "forecasting",
+   "family": "somalia_oracle_v4_calibrated_d",
+   "parent_run_id": "4742de9ebfc74ae7932f20c8321c79cf",
+   "source_key": "somalia_oracle_v4_calibrated_d",
+   "member_count": 642,
+   "recorded_bytes": 530569321,
+   "largest_bytes": 20399640,
+   "status_counts": {
+    "unhashed": 642
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 8
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_global_original",
+   "parent_run_id": "50994de27b5641a0bbbc514ec37e347e",
+   "source_key": "compact_global_original",
+   "member_count": 203,
+   "recorded_bytes": 450519219,
+   "largest_bytes": 9264664,
+   "status_counts": {
+    "unhashed": 203
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 7
+  },
+  {
+   "kind": "forecasting",
+   "family": "somalia_oracle_v2_q3",
+   "parent_run_id": "78e965df979f4edfb873e71c5b02d15f",
+   "source_key": "somalia_oracle_v2_q3",
+   "member_count": 409,
+   "recorded_bytes": 238061566,
+   "largest_bytes": 3312249,
+   "status_counts": {
+    "unhashed": 409
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 23
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_global_2026_extension",
+   "parent_run_id": "7a1d7d874be54be892ebf69091d72f35",
+   "source_key": "compact_global_2026_extension",
+   "member_count": 252,
+   "recorded_bytes": 581182631,
+   "largest_bytes": 9748410,
+   "status_counts": {
+    "unhashed": 252
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 7
+  },
+  {
+   "kind": "forecasting",
+   "family": "origin_safe_climate_idp_v1",
+   "parent_run_id": "83af3ce7b185426ea05a72c2594a1174",
+   "source_key": "origin_safe_climate_idp_v1",
+   "member_count": 348,
+   "recorded_bytes": 716930073,
+   "largest_bytes": 8439874,
+   "status_counts": {
+    "unhashed": 348
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 12
+  },
+  {
+   "kind": "forecasting",
+   "family": "somalia_oracle_v3_validity",
+   "parent_run_id": "89e2e4151dc843cf9faf83da588e57f3",
+   "source_key": "somalia_oracle_v3_validity",
+   "member_count": 533,
+   "recorded_bytes": 219783727,
+   "largest_bytes": 3106962,
+   "status_counts": {
+    "unhashed": 533
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 24
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_somalia_launch",
+   "parent_run_id": "a825dfab346e46d5b37325121bda8943",
+   "source_key": "compact_somalia_launch",
+   "member_count": 60,
+   "recorded_bytes": 48373678,
+   "largest_bytes": 4250869,
+   "status_counts": {
+    "unhashed": 60
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 5
+  },
+  {
+   "kind": "forecasting",
+   "family": "somalia_oracle_v1",
+   "parent_run_id": "bc5d8d39ece04492b196568324d8ba25",
+   "source_key": "somalia_oracle_v1",
+   "member_count": 307,
+   "recorded_bytes": 222327422,
+   "largest_bytes": 3312249,
+   "status_counts": {
+    "unhashed": 307
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 15
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_global_launch",
+   "parent_run_id": "cacfb63a15314089bdda91d1070f3bd3",
+   "source_key": "compact_global_launch",
+   "member_count": 60,
+   "recorded_bytes": 137484956,
+   "largest_bytes": 9544131,
+   "status_counts": {
+    "unhashed": 60
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 5
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_somalia_2026_extension",
+   "parent_run_id": "f2fab83539454a69a5d4dfc447ee5a94",
+   "source_key": "compact_somalia_2026_extension",
+   "member_count": 252,
+   "recorded_bytes": 190646058,
+   "largest_bytes": 4157037,
+   "status_counts": {
+    "unhashed": 252
+   },
+   "root_v1": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+   "versions": 7
+  }
+ ]
+}

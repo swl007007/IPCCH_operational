@@ -1,0 +1,426 @@
+{
+ "status": "MEMBER-LEVEL inventory (AC1 partial). Per-member resolution across all declared candidate roots, fresh sha256 of every present member. Version-to-member and non-member dependency mapping (maps/partitions/calibrators/transforms/feature lists) is NOT yet established; FEWS NET research runs not yet included.",
+ "code": {
+  "repo": "native control-plane gcp-research-migration",
+  "commit": "65c0d45",
+  "module": "research_cloud/inventory/model_inventory.py",
+  "roots": "research_cloud/inventory/roots.json"
+ },
+ "command": "python3 -m research_cloud.inventory.model_inventory --out scratch/p1/model_inv_v2 --fresh --workers 4",
+ "generated_at": "2026-10-16T01:56:19-0400",
+ "hash_mode": "fresh",
+ "members_jsonl": {
+  "path": "/home/swl007007/projects/food-crisis-research/scratch/p1/model_inv_v2/members.jsonl",
+  "sha256": "e61ec512e631b46e24937658c6a350e5269981cf02f5432f57b152ae0a2b156f"
+ },
+ "families": [
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_climate_swap",
+   "parent_run_id": "0d829cbc36114d2b922bbd0b2ea41ccd",
+   "source_key": "climate_perturbation/climate-20261005",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/0d829cbc36114d2b922bbd0b2ea41ccd/artifacts/manifests/models.tar.members.json",
+   "roots": [
+    {
+     "root": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-climate-runs/climate-20261005",
+     "status": "local"
+    }
+   ],
+   "member_count": 5460,
+   "recorded_bytes": 1529203461,
+   "largest_bytes": 693005,
+   "status_counts": {
+    "missing": 5460
+   },
+   "family_weight_status": "weights_missing",
+   "registered_versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "mlp_residual_fixed_maps",
+   "parent_run_id": "744b0d2512824623bd2cf58217c95d18",
+   "source_key": "mlp_fixed_map/mlp-formal-20261005",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/744b0d2512824623bd2cf58217c95d18/artifacts/manifests/models.tar.members.json",
+   "roots": [
+    {
+     "root": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-mlp-runs/mlp-formal-20261005",
+     "status": "local"
+    }
+   ],
+   "member_count": 26696,
+   "recorded_bytes": 2403432127,
+   "largest_bytes": 610420,
+   "status_counts": {
+    "missing": 26696
+   },
+   "family_weight_status": "weights_missing",
+   "registered_versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "alphaearth_supervised_partition",
+   "parent_run_id": "9939ac69809949e9923821fa692a7b2a",
+   "source_key": "alphaearth_partition/p1-formal-d30-20261014",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/9939ac69809949e9923821fa692a7b2a/artifacts/manifests/models.tar.members.json",
+   "roots": [
+    {
+     "root": "/home/swl007007/ipcch-alphaearth-runs/p1-formal-d30-20261014",
+     "status": "local"
+    }
+   ],
+   "member_count": 305,
+   "recorded_bytes": 755157035,
+   "largest_bytes": 9650749,
+   "status_counts": {
+    "verified": 305
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_maps_2024",
+   "parent_run_id": "9dcddedc0e8e4bc38fd24cb4ce29298f",
+   "source_key": "split2024_sensitivity/split2024-20261005",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/9dcddedc0e8e4bc38fd24cb4ce29298f/artifacts/manifests/models.tar.members.json",
+   "roots": [
+    {
+     "root": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-split2024-20261005-3moikuh3",
+     "status": "local"
+    }
+   ],
+   "member_count": 4180,
+   "recorded_bytes": 1420913441,
+   "largest_bytes": 672061,
+   "status_counts": {
+    "missing": 4180
+   },
+   "family_weight_status": "weights_missing",
+   "registered_versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_yearly_refit",
+   "parent_run_id": "a6dc32cda52f45a7a5f12e87a72c6749",
+   "source_key": "yearly_geoxgb/yearly-formal-20261007",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/a6dc32cda52f45a7a5f12e87a72c6749/artifacts/manifests/models.tar.members.json",
+   "roots": [
+    {
+     "root": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-yearly-xgb-runs/yearly-formal-20261007",
+     "status": "local"
+    },
+    {
+     "root": "/home/swl007007/ipcch-legacy-source-preservation/yearly-formal-20261007",
+     "status": "local"
+    }
+   ],
+   "member_count": 1267,
+   "recorded_bytes": 320464656,
+   "largest_bytes": 671857,
+   "status_counts": {
+    "verified": 1267
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_reference",
+   "parent_run_id": "bdbafe393d694439a1c35ccec4d5816a",
+   "source_key": "p6_geoxgb/p6-formal-20261004b",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/bdbafe393d694439a1c35ccec4d5816a/artifacts/manifests/models.tar.members.json",
+   "roots": [
+    {
+     "root": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/Food_Crisis_Cluster/IPCCHGeoXGBExperiment/runs/p6-formal-20261004b",
+     "status": "local"
+    }
+   ],
+   "member_count": 6125,
+   "recorded_bytes": 2001306904,
+   "largest_bytes": 688109,
+   "status_counts": {
+    "verified": 6125
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": null
+  },
+  {
+   "kind": "dashboard",
+   "family": "geoxgb_window_probe",
+   "parent_run_id": "e9cfa99f94dd4a67b0e3b6ed511708ad",
+   "source_key": "history_window_sensitivity/ipcch-window-probe-20261005-zckpq9hf",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/e9cfa99f94dd4a67b0e3b6ed511708ad/artifacts/manifests/models.tar.members.json",
+   "roots": [
+    {
+     "root": "/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-window-probe-20261005-zckpq9hf",
+     "status": "local"
+    }
+   ],
+   "member_count": 475,
+   "recorded_bytes": 161882134,
+   "largest_bytes": 684709,
+   "status_counts": {
+    "missing": 475
+   },
+   "family_weight_status": "weights_missing",
+   "registered_versions": null
+  },
+  {
+   "kind": "forecasting",
+   "family": "origin_safe_weather_oracle_v1",
+   "parent_run_id": "1f4f29ce78054398bc216f014b55fd72",
+   "source_key": "origin_safe_weather_oracle_v1",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 174,
+   "recorded_bytes": 354766685,
+   "largest_bytes": 8285051,
+   "status_counts": {
+    "verified": 174
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 6
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_somalia_original",
+   "parent_run_id": "2e08142e9c7d4ba88f805ec1c7672746",
+   "source_key": "compact_somalia_original",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 203,
+   "recorded_bytes": 133029991,
+   "largest_bytes": 3364478,
+   "status_counts": {
+    "verified": 203
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 7
+  },
+  {
+   "kind": "forecasting",
+   "family": "somalia_oracle_v4_calibrated_d",
+   "parent_run_id": "4742de9ebfc74ae7932f20c8321c79cf",
+   "source_key": "somalia_oracle_v4_calibrated_d",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/4742de9ebfc74ae7932f20c8321c79cf/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 642,
+   "recorded_bytes": 530569321,
+   "largest_bytes": 20399640,
+   "status_counts": {
+    "verified": 642
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 8
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_global_original",
+   "parent_run_id": "50994de27b5641a0bbbc514ec37e347e",
+   "source_key": "compact_global_original",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 203,
+   "recorded_bytes": 450519219,
+   "largest_bytes": 9264664,
+   "status_counts": {
+    "verified": 203
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 7
+  },
+  {
+   "kind": "forecasting",
+   "family": "somalia_oracle_v2_q3",
+   "parent_run_id": "78e965df979f4edfb873e71c5b02d15f",
+   "source_key": "somalia_oracle_v2_q3",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/78e965df979f4edfb873e71c5b02d15f/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 409,
+   "recorded_bytes": 238061566,
+   "largest_bytes": 3312249,
+   "status_counts": {
+    "verified": 409
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 23
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_global_2026_extension",
+   "parent_run_id": "7a1d7d874be54be892ebf69091d72f35",
+   "source_key": "compact_global_2026_extension",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/7a1d7d874be54be892ebf69091d72f35/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 252,
+   "recorded_bytes": 581182631,
+   "largest_bytes": 9748410,
+   "status_counts": {
+    "verified": 252
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 7
+  },
+  {
+   "kind": "forecasting",
+   "family": "origin_safe_climate_idp_v1",
+   "parent_run_id": "83af3ce7b185426ea05a72c2594a1174",
+   "source_key": "origin_safe_climate_idp_v1",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/83af3ce7b185426ea05a72c2594a1174/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 348,
+   "recorded_bytes": 716930073,
+   "largest_bytes": 8439874,
+   "status_counts": {
+    "verified": 348
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 12
+  },
+  {
+   "kind": "forecasting",
+   "family": "somalia_oracle_v3_validity",
+   "parent_run_id": "89e2e4151dc843cf9faf83da588e57f3",
+   "source_key": "somalia_oracle_v3_validity",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/89e2e4151dc843cf9faf83da588e57f3/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 533,
+   "recorded_bytes": 219783727,
+   "largest_bytes": 3106962,
+   "status_counts": {
+    "verified": 533
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 24
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_somalia_launch",
+   "parent_run_id": "a825dfab346e46d5b37325121bda8943",
+   "source_key": "compact_somalia_launch",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/a825dfab346e46d5b37325121bda8943/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 60,
+   "recorded_bytes": 48373678,
+   "largest_bytes": 4250869,
+   "status_counts": {
+    "verified": 60
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 5
+  },
+  {
+   "kind": "forecasting",
+   "family": "somalia_oracle_v1",
+   "parent_run_id": "bc5d8d39ece04492b196568324d8ba25",
+   "source_key": "somalia_oracle_v1",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/bc5d8d39ece04492b196568324d8ba25/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 307,
+   "recorded_bytes": 222327422,
+   "largest_bytes": 3312249,
+   "status_counts": {
+    "verified": 307
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 15
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_global_launch",
+   "parent_run_id": "cacfb63a15314089bdda91d1070f3bd3",
+   "source_key": "compact_global_launch",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/cacfb63a15314089bdda91d1070f3bd3/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 60,
+   "recorded_bytes": 137484956,
+   "largest_bytes": 9544131,
+   "status_counts": {
+    "verified": 60
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 5
+  },
+  {
+   "kind": "forecasting",
+   "family": "compact_somalia_2026_extension",
+   "parent_run_id": "f2fab83539454a69a5d4dfc447ee5a94",
+   "source_key": "compact_somalia_2026_extension",
+   "manifest": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/f2fab83539454a69a5d4dfc447ee5a94/artifacts/manifests/plan.json",
+   "roots": [
+    {
+     "root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH",
+     "status": "local"
+    }
+   ],
+   "member_count": 252,
+   "recorded_bytes": 190646058,
+   "largest_bytes": 4157037,
+   "status_counts": {
+    "verified": 252
+   },
+   "family_weight_status": "weights_retained_verified",
+   "registered_versions": 7
+  }
+ ],
+ "totals": {
+  "missing": 36811,
+  "verified": 11140
+ },
+ "retained_recorded_bytes": 6900603922
+}

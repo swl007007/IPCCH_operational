@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-10-16T02:10-04:00",
+  "project": {"id": "food-crisis-modeling-enso", "number": "76571749286", "state": "ACTIVE", "created": "2026-08-12", "ancestors": "none returned", "org_policies": "none listed", "evidence": ["O-001", "O-005", "O-006"]},
+  "billing": {"enabled": true, "account": "billingAccounts/01A0EF-314BAC-4D55E6", "executor_billing_account_permissions": [], "budgets_visible": false, "billing_export_dataset": "none in project", "evidence": ["O-003", "O-010", "O-016", "O-018", "O-019", "O-020"]},
+  "executor_project_permissions": {"granted": ["resourcemanager.projects.setIamPolicy", "serviceusage.services.enable", "iam.serviceAccounts.create", "iam.serviceAccounts.actAs", "cloudsql.instances.create", "run.services.create", "storage.buckets.create", "artifactregistry.repositories.create", "aiplatform.customJobs.create", "aiplatform.hyperparameterTuningJobs.create", "secretmanager.secrets.create", "cloudbuild.builds.create", "aiplatform.endpoints.predict"], "evidence": ["O-007"]},
+  "services_enabled_before_task": ["analyticshub", "bigquery*", "cloudapis", "cloudtrace", "dataform", "dataplex", "datastore", "earthengine", "logging", "monitoring", "servicemanagement", "serviceusage", "sql-component", "storage-api", "storage-component", "storage", "telemetry"],
+  "services_enabled_by_task": [{"service": "cloudbilling.googleapis.com", "op": "O-014"}, {"service": "billingbudgets.googleapis.com", "op": "O-015"}],
+  "services_required_not_enabled": ["run.googleapis.com", "sqladmin.googleapis.com", "artifactregistry.googleapis.com", "aiplatform.googleapis.com", "secretmanager.googleapis.com", "iam.googleapis.com", "cloudbuild.googleapis.com (container builds; no Docker/sudo in WSL)"],
+  "existing_resources": {"buckets": [{"name": "food-crisis-modeling-enso-han", "location": "US", "bytes_observed": 223108170, "ownership": "pre-existing, not part of this task; must not be modified"}], "sql": "API not enabled (no instances possible)", "run": "API not enabled", "vertex": "API not enabled"},
+  "shared_project_usage_signals": {"earth_engine_eecu_seconds_30d_bucket": {"value": 3190660.85, "interval_returned": "2026-09-16T05:55Z..2026-10-16T05:55Z", "caveat": "single aggregated Monitoring ALIGN_SUM bucket; raw points/interval semantics not checked; not verified October usage; not billing"}, "bigquery_scanned_bytes_billed": "no series (not proof of zero)", "evidence": ["O-021", "O-022", "O-024"]},
+  "actual_spend_visibility": "NOT AVAILABLE to executor (IAM denial on billing account; no export dataset)",
+  "administrator_figures_needed": [
+    "October 2026 month-to-date actual cost for food-crisis-modeling-enso by service, or confirmation that the earlier USD 3 figure refers to this project and month",
+    "Whether Earth Engine usage on this project is billed (plan/SKU) or no-charge",
+    "Any budget/alert on billing account 01A0EF-314BAC-4D55E6 covering this project"
+  ],
+  "local_environment": {"docker": "not available in WSL (Docker Desktop daemon not running, no WSL integration, no sudo)", "container_route": "Cloud Build for image builds; run exact digests in WSL rootless via crane export + bwrap (both installed; user namespaces work)", "postgres": "PostgreSQL 16.10 + PostGIS via micromamba user-space env /home/swl007007/projects/food-crisis-research/envs/pg16", "region_default_gcloud": "compute/region us-central1 (global config, unchanged)"},
+  "gate": "Paid provisioning (G6-G11) deferred until the current-month available envelope is supported by administrator figures; API enables of support services and read-only preflight continue."
+}
