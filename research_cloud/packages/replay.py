@@ -123,7 +123,7 @@ def main(argv=None):
         model = load_entry(args.package)
         X = np.load(os.path.join(args.package, "reference", "inputs.npy"), allow_pickle=False)
         expected = pd.read_csv(os.path.join(args.package, "reference", "expected.csv"), dtype={"unit": str})
-        n_features = len(pd.read_csv(os.path.join(args.package, "deps", "prepared", "feature_order.csv")))
+        n_features = len(pd.read_csv(os.path.join(args.package, meta["routing"]["feature_order"])))
         if len(expected) == 0 or len(X) != len(expected) or X.ndim != 2 or X.shape[1] != n_features:
             out["error"] = (f"reference contract violated: inputs {X.shape}, expected rows {len(expected)}, "
                             f"feature_order {n_features}")

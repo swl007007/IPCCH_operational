@@ -1,4 +1,4 @@
-"""Package builder for the IPCCH GeoXGB reference (P6) registered versions.
+"""Package builder for IPCCH GeoXGB registered versions (P6 reference and yearly refit).
 
 A registered version is (lead, arm). The frozen run determines, for every
 (admin_code, target_ord) key, which fitted quartet serves it:
@@ -24,8 +24,48 @@ from research_cloud.packages.common import (PackageBuilder, PackageError, ensure
                                             sha256_file)
 
 TARGETS = ("q2", "q3", "q4", "q5")
-ARMS = {"pooled": ("global_identity", "pool_"), "partitioned_gated": ("provider", "geo_")}
 LOADER_FILES = ("errors.py", "quartet.py", "projection.py")
+REQUIRED_UNIT_FILES = ("q2.ubj", "q3.ubj", "q4.ubj", "q5.ubj", "record.json")
+
+
+def _p6_pooled(p):
+    return p["global_identity"], pd.Series("pooled_global", index=p.index), "pool_", pd.Series(True, index=p.index)
+
+
+def _p6_gated(p):
+    return p["provider"], p["route"], "geo_", pd.Series(True, index=p.index)
+
+
+def _yr_pooled(p):
+    return p["pool_provider"], pd.Series("pooled_global", index=p.index), "pool_", pd.Series(True, index=p.index)
+
+
+def _yr_gated(p):
+    unit = p["local_provider"].where(p["route"] == "local", p["pool_provider"])
+    return unit, p["route"], "geo_", pd.Series(True, index=p.index)
+
+
+def _yr_ungated(p):
+    served = p["local_provider"].fillna("").astype(str) != ""
+    return p["local_provider"], pd.Series("regional_local_ungated", index=p.index), "local_", served
+
+
+FAMILIES = {
+    "geoxgb_reference": {
+        "package": "ipcch_geoxgb", "predictions": "stage3/{h}/predictions.csv.gz",
+        "keys": "prepared/keys_{h}.csv.gz", "X": "prepared/X_rich561_{h}.npy",
+        "feature_order": "prepared/feature_order.csv", "frozen_map": "stage1/frozen_map_{h}.csv",
+        "deps": ["stage1/frozen_{h}.json", "stage3/{h}/gate_decisions.jsonl", "stage3/{h}/fold_ledger.csv"],
+        "arms": {"pooled": _p6_pooled, "partitioned_gated": _p6_gated}},
+    "geoxgb_yearly_refit": {
+        "package": "ipcch_yearly_xgb", "predictions": "predict/{h}/predictions.csv.gz",
+        "keys": "inputs/run/prepared/keys_{h}.csv.gz", "X": "inputs/run/prepared/X_rich561_{h}.npy",
+        "feature_order": "inputs/run/prepared/feature_order.csv", "frozen_map": "inputs/run/stage1/frozen_map_{h}.csv",
+        "deps": ["inputs/run/stage1/frozen_{h}.json", "predict/{h}/gate_decisions.jsonl", "predict/{h}/fold_ledger.csv",
+                 "predict/{h}/block_ledger.json"],
+        "arms": {"pooled": _yr_pooled, "partitioned_gated": _yr_gated, "regional_ungated": _yr_ungated}},
+}
+
 
 ENTRY = '''"""Keyed loader for one historical IPCCH GeoXGB package (generated; see package.json)."""
 import json
@@ -38,7 +78,10 @@ import pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from ipcch_geoxgb import projection, quartet  # vendored from the run's source_code artifact
+import importlib
+_META = json.load(open(os.path.join(ROOT, "package.json")))
+projection = importlib.import_module(_META["code"]["package"] + ".projection")  # vendored from the run's
+quartet = importlib.import_module(_META["code"]["package"] + ".quartet")        # source_code artifact
 
 
 class Model:
@@ -46,8 +89,7 @@ class Model:
         self.root = package_dir
         self.meta = json.load(open(os.path.join(package_dir, "package.json")))
         self.lead = int(self.meta["lead_months"])
-        self.unit_col = self.meta["routing"]["unit_column"]
-        regions = pd.read_csv(os.path.join(package_dir, "deps", "stage1", "frozen_map_h%02d.csv" % self.lead))
+        regions = pd.read_csv(os.path.join(package_dir, self.meta["routing"]["frozen_map"]))
         self.region_of = dict(zip(regions["admin_code"].astype(int), regions["node_id"].astype(str)))
         routes = pd.read_csv(os.path.join(package_dir, "deps", "routing.csv"), dtype={"region": str}, keep_default_na=False)
         self.routes = {(int(t), r): row for t, r, row in zip(routes["target_ord"], routes["region"], routes.to_dict("records"))}
@@ -68,13 +110,13 @@ class Model:
         for a, t in zip(keys["admin_code"].astype(int), keys["target_ord"].astype(int)):
             route = self.routes.get((t, self.region_of.get(a, "")))
             if route is None:
-                raise KeyError(f"no frozen route for admin_code={a} target_ord={t} in this package")
-            out.append((route[self.unit_col], route["route"] if self.unit_col == "provider" else "pooled_global"))
+                raise KeyError(f"no frozen route/model for admin_code={a} target_ord={t} in this package's arm")
+            out.append((route["unit"], route["route"]))
         return out
 
     def predict(self, keys, X):
         """Keyed prediction. keys: DataFrame[admin_code, target_ord]; X: (n, 561) float64 rows in
-        deps/prepared/feature_order.csv order, NaN = missing. Returns a DataFrame per row."""
+        the package's feature_order.csv order, NaN = missing. Returns a DataFrame per row."""
         X = np.asarray(X, dtype=np.float64)
         if len(X) != len(keys):
             raise ValueError("keys and X differ in length")
@@ -102,104 +144,121 @@ def _members(manifest_path):
     return {m["path"]: m for m in json.load(open(manifest_path))}
 
 
-def _routing(pred, region_of, lead):
-    pred = pred.assign(region=pred["region"].fillna("").astype(str))
-    if ((pred["target_ord"] - pred["origin_ord"]) != lead).any():
+def _routing(served, unit, route, region_of, lead):
+    frame = served.assign(region=served["region"].fillna("").astype(str), unit=unit, route_out=route)
+    if "origin_ord" in frame and ((frame["target_ord"] - frame["origin_ord"]) != lead).any():
         raise PackageError("origin is not target - H for some rows")
-    mapped = pred["admin_code"].astype(int).map(lambda a: region_of.get(a, ""))
-    if not (mapped == pred["region"]).all():
+    mapped = frame["admin_code"].astype(int).map(lambda a: region_of.get(a, ""))
+    if not (mapped == frame["region"]).all():
         raise PackageError("frozen map disagrees with the saved prediction regions")
-    cols = ["target_ord", "region", "fold_id", "origin_ord", "route", "provider", "global_identity"]
-    routing = pred[cols].drop_duplicates()
+    routing = frame[["target_ord", "region", "unit", "route_out"]].drop_duplicates().rename(columns={"route_out": "route"})
     if routing.duplicated(["target_ord", "region"]).any():
-        raise PackageError("a (target_ord, region) has more than one frozen route")
+        raise PackageError("a (target_ord, region) has more than one frozen unit/route")
     return routing.sort_values(["target_ord", "region"])
 
 
-def build(out_dir, *, run_root, source_code_dir, members_manifest, version, lead, arm, code_identity,
+def build(out_dir, *, family, run_root, source_code_dir, members_manifest, version, lead, arm, code_identity,
           original_runtime, linux_runtime, per_unit=32):
-    if arm not in ARMS:
-        raise PackageError(f"unknown arm {arm}")
-    unit_col, prefix = ARMS[arm]
+    spec = FAMILIES[family]
+    if arm not in spec["arms"]:
+        raise PackageError(f"unknown arm {arm} for {family}")
     h = f"h{int(lead):02d}"
+    rel = {k: spec[k].format(h=h) for k in ("predictions", "keys", "X", "feature_order", "frozen_map")}
+    deps = [rel["feature_order"], rel["frozen_map"], rel["predictions"]] + [d.format(h=h) for d in spec["deps"]]
+    ensure_local([os.path.join(run_root, r) for r in [rel["keys"], rel["X"]] + deps])
     members = _members(members_manifest)
-    deps = ["prepared/feature_order.csv", f"stage1/frozen_map_{h}.csv", f"stage1/frozen_{h}.json",
-            f"stage3/{h}/gate_decisions.jsonl", f"stage3/{h}/fold_ledger.csv", f"stage3/{h}/predictions.csv.gz"]
-    pred_path = os.path.join(run_root, "stage3", h, "predictions.csv.gz")
-    keys_path = os.path.join(run_root, "prepared", f"keys_{h}.csv.gz")
-    x_path = os.path.join(run_root, "prepared", f"X_rich561_{h}.npy")
-    ensure_local([pred_path, keys_path, x_path] + [os.path.join(run_root, d) for d in deps])
 
-    pred = pd.read_csv(pred_path)
-    keys = pd.read_csv(keys_path)
-    X = np.load(x_path, mmap_mode="r")
+    pred = pd.read_csv(os.path.join(run_root, rel["predictions"]), dtype={"local_provider": str, "provider": str})
+    keys = pd.read_csv(os.path.join(run_root, rel["keys"]))
+    X = np.load(os.path.join(run_root, rel["X"]), mmap_mode="r")
     if len(keys) != len(X) or keys.duplicated(["admin_code", "target_ord"]).any():
         raise PackageError("keys/X misaligned or non-unique (admin_code, target_ord)")
-    frozen = pd.read_csv(os.path.join(run_root, "stage1", f"frozen_map_{h}.csv"))
-    routing = _routing(pred, dict(zip(frozen["admin_code"].astype(int), frozen["node_id"].astype(str))), int(lead))
+    n_features = len(pd.read_csv(os.path.join(run_root, rel["feature_order"])))
+    if X.shape[1] != n_features:
+        raise PackageError(f"X has {X.shape[1]} columns but feature_order lists {n_features}")
+    unit, route, prefix, served = spec["arms"][arm](pred)
+    served_pred = pred[served.to_numpy()].copy()
+    unit, route = unit[served.to_numpy()], route[served.to_numpy()]
+    frozen = pd.read_csv(os.path.join(run_root, rel["frozen_map"]))
+    routing = _routing(served_pred, unit, route, dict(zip(frozen["admin_code"].astype(int), frozen["node_id"].astype(str))),
+                       int(lead))
 
-    units = sorted(pred[unit_col].dropna().unique())
-    unit_files = [(d, n) for d in units for n in [q + ".ubj" for q in TARGETS] + ["record.json"]]
-    ensure_local([os.path.join(run_root, f"models/{d[:2]}/{d}/{n}") for d, n in unit_files])
-    b = PackageBuilder(out_dir)
+    units = sorted(unit.dropna().unique())
+    unit_files = sorted(m for m in members if any(m.startswith(f"models/{d[:2]}/{d}/") for d in units))
     gaps = []
-    for d, name in unit_files:
-        rel = f"models/{d[:2]}/{d}/{name}"
-        m = members.get(rel)
-        if m is None:
-            gaps.append(f"unit {d} file {name} not in the member manifest")
+    for d in units:  # required inference components of every served quartet
+        for name in REQUIRED_UNIT_FILES:
+            if f"models/{d[:2]}/{d}/{name}" not in members:
+                gaps.append(f"unit {d}: required member {name} absent from the member manifest")
+    ensure_local([os.path.join(run_root, m) for m in unit_files])
+    b = PackageBuilder(out_dir)
+    for m in unit_files:
+        b.add_file(os.path.join(run_root, m), "weights/" + "/".join(m.split("/")[2:]), members[m]["sha256"], members[m]["bytes"])
+    for d in units:
+        record_path = os.path.join(out_dir, "weights", d, "record.json")
+        if not os.path.exists(record_path):
             continue
-        b.add_file(os.path.join(run_root, rel), f"weights/{d}/{name}", m["sha256"], m["bytes"])
-    for rel in deps:
-        b.add_file(os.path.join(run_root, rel), "deps/" + rel)
+        record = json.load(open(record_path))
+        for q in TARGETS:
+            booster = os.path.join(out_dir, "weights", d, f"{q}.ubj")
+            if not os.path.exists(booster):
+                continue
+            if record.get("booster_sha256", {}).get(q) != b.files[f"weights/{d}/{q}.ubj"]["sha256"]:
+                gaps.append(f"unit {d}: {q}.ubj bytes differ from record.json booster_sha256")
+            if q not in record.get("fit_records", {}):
+                gaps.append(f"unit {d}: record.json has no fit record for {q}")
+    for r in deps:
+        b.add_file(os.path.join(run_root, r), "deps/" + r)
     b.add_bytes("deps/routing.csv", routing.to_csv(index=False).encode())
 
+    served_pred["unit"], served_pred["route_out"] = unit.to_numpy(), route.to_numpy()
     star_cols = [f"{prefix}{q}_star" for q in TARGETS]
-    boundary = (pred[star_cols] - 0.20).abs().min(axis=1)
-    cover = ("route",) if arm == "partitioned_gated" else ()
-    ref = select_reference(pred, unit_col, boundary, ["admin_code", "target_ord"], per_unit=per_unit, cover_cols=cover)
+    boundary = (served_pred[star_cols] - 0.20).abs().min(axis=1)
+    ref = select_reference(served_pred, "unit", boundary, ["admin_code", "target_ord"], per_unit=per_unit,
+                           cover_cols=("route_out",))
     row_of = pd.Series(np.arange(len(keys)), index=pd.MultiIndex.from_frame(keys[["admin_code", "target_ord"]]))
     rows = row_of.loc[list(zip(ref["admin_code"], ref["target_ord"]))].to_numpy()
     inputs = np.ascontiguousarray(X[rows], dtype=np.float64)
     buf = io.BytesIO()
     np.save(buf, inputs, allow_pickle=False)
     b.add_bytes("reference/inputs.npy", buf.getvalue())
-    expected = ref[["admin_code", "target_ord", "fold_id", "route", unit_col]].rename(columns={unit_col: "unit"}).copy()
+    expected = ref[["admin_code", "target_ord", "fold_id", "route_out", "unit"]].rename(columns={"route_out": "route"}).copy()
     for q in TARGETS:
         expected[f"{q}_raw"] = ref[f"{prefix}{q}_raw"].to_numpy()
         expected[f"{q}_star"] = ref[f"{prefix}{q}_star"].to_numpy()
     expected["phase"] = ref[f"{prefix}phase"].to_numpy()
-    if arm == "pooled":
-        expected["route"] = "pooled_global"
     b.add_bytes("reference/expected.csv", expected.to_csv(index=False, float_format="%.17g").encode())
 
-    src_pkg = os.path.join(source_code_dir, "ipcch_geoxgb")
-    b.add_bytes("loader/ipcch_geoxgb/__init__.py", b"")
+    src_pkg = os.path.join(source_code_dir, spec["package"])
+    b.add_bytes(f"loader/{spec['package']}/__init__.py", b"")
     for name in LOADER_FILES:
-        b.add_file(os.path.join(src_pkg, name), f"loader/ipcch_geoxgb/{name}")
+        b.add_file(os.path.join(src_pkg, name), f"loader/{spec['package']}/{name}")
     b.add_bytes("loader/entry.py", ENTRY.encode())
 
     raw_cols = [f"{prefix}{q}_raw" for q in TARGETS]
     return b.finalize({
-        "family": "geoxgb_reference",
+        "family": family,
         "identity": version,
         "lead_months": int(lead), "arm": arm,
         "status": "complete" if not gaps else "retained_weights_missing_dependencies",
         "gaps": gaps,
         "fitted_units": len(units),
-        "routing": {"unit_column": unit_col, "table": "deps/routing.csv",
-                    "routes_in_version": sorted(pred["route"].unique()) if arm == "partitioned_gated" else ["pooled_global"]},
+        "routing": {"table": "deps/routing.csv", "frozen_map": "deps/" + rel["frozen_map"],
+                    "feature_order": "deps/" + rel["feature_order"],
+                    "served_keys": int(served.sum()), "unserved_keys_in_saved_predictions": int((~served).sum()),
+                    "routes_in_version": sorted(route.unique())},
         "source": {"run_root": run_root, "members_manifest": members_manifest,
                    "members_manifest_sha256": sha256_file(members_manifest),
-                   "predictions_sha256": sha256_file(pred_path)},
-        "code": {"identity": code_identity, "vendored_from": src_pkg,
+                   "predictions_sha256": sha256_file(os.path.join(run_root, rel["predictions"]))},
+        "code": {"identity": code_identity, "package": spec["package"], "vendored_from": src_pkg,
                  "vendored_files": {n: sha256_file(os.path.join(src_pkg, n)) for n in LOADER_FILES}},
         "runtime": {"original": original_runtime, "linux": linux_runtime},
         "loader": {"entry": "loader/entry.py",
                    "call": "load(package_dir).predict(keys[admin_code,target_ord], X)",
-                   "inputs": "float64 rows in deps/prepared/feature_order.csv order; NaN = missing"},
+                   "inputs": f"float64 rows ({n_features} features) in the routing.feature_order order; NaN = missing",
+                   "unserved_keys": "KeyError (no frozen model for that key in this arm)"},
         "reference": {"rows": int(len(expected)), "per_unit_cap": per_unit,
-                      "selection": "per fitted unit: half nearest a 0.20 phase boundary, rest by sha256 of (admin_code,target_ord); plus >=4 rows of every route",
+                      "selection": "per fitted unit (cap): >=1 row of every route present in the unit, half the rest nearest a 0.20 phase boundary, rest by sha256 of (admin_code,target_ord)",
                       "rows_with_missing_features": int(np.isnan(inputs).any(axis=1).sum()),
                       "routes_covered": sorted(expected["route"].unique()),
                       "raw_range_in_sample": [float(ref[raw_cols].min().min()), float(ref[raw_cols].max().max())]},
@@ -208,6 +267,6 @@ def build(out_dir, *, run_root, source_code_dir, members_manifest, version, lead
             "projected_shares": "abs(new-ref) <= 1e-3 + 1e-3*abs(ref) (design.md approved contract, values in [0,1])",
             "raw_shares": "abs(new-ref) <= 1e-3 + 1e-3*abs(ref); raw quartet outputs are unbounded regression values "
                           "(sample range recorded above), so the relative term scales with |ref|",
-            "phase": "change allowed only where each changed threshold crossing has |ref_star-0.20| within tolerance and continuous outputs pass",
+            "phase": "new phase must decode from new projected shares; a change is accepted only where each changed crossing has |ref_star-0.20| within that reference's tolerance and all continuous outputs pass",
             "routing": "resolved unit and route must equal the frozen reference exactly"},
     })

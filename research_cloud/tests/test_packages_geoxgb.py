@@ -48,7 +48,9 @@ def make_run(root):
         os.makedirs(base)
         for q, data in payloads.items():
             open(f"{base}/{q}.ubj", "wb").write(data)
-        open(f"{base}/record.json", "w").write(json.dumps({"fit_records": {q: {} for q in payloads}}))
+        open(f"{base}/record.json", "w").write(json.dumps({
+            "fit_records": {q: {} for q in payloads},
+            "booster_sha256": {q: hashlib.sha256(b).hexdigest() for q, b in payloads.items()}}))
         for name in ["q2.ubj", "q3.ubj", "q4.ubj", "q5.ubj", "record.json"]:
             b = open(f"{base}/{name}", "rb").read()
             members.append({"path": f"models/{d[:2]}/{d}/{name}", "bytes": len(b), "sha256": hashlib.sha256(b).hexdigest()})
@@ -101,7 +103,7 @@ class GeoXGBPackageBehaviour(unittest.TestCase):
 
     def build(self, arm):
         out = os.path.join(self.tmp, f"pkg-{arm}")
-        self.geoxgb.build(out, run_root=self.run_root, source_code_dir=SRC, members_manifest=f"{self.run_root}/members.json",
+        self.geoxgb.build(out, family="geoxgb_reference", run_root=self.run_root, source_code_dir=SRC, members_manifest=f"{self.run_root}/members.json",
                           version={"registered_model": "t", "version": 1}, lead=3, arm=arm, code_identity={},
                           original_runtime={}, linux_runtime={})
         return out
@@ -183,6 +185,28 @@ class GeoXGBPackageBehaviour(unittest.TestCase):
         self.assertLessEqual(len(sel), 8)
         self.assertEqual(set(sel["route"]), {"a", "b"})
 
+    def test_truncated_member_manifest_is_not_complete(self):
+        members = json.load(open(f"{self.run_root}/members.json"))
+        u = self.units["g10"]
+        json.dump([m for m in members if m["path"] != f"models/{u[:2]}/{u}/q3.ubj"], open(f"{self.run_root}/members.json", "w"))
+        pkg = self.build("pooled")
+        meta = json.load(open(f"{pkg}/package.json"))
+        self.assertEqual(meta["status"], "retained_weights_missing_dependencies")
+        self.assertTrue(any("q3.ubj" in g for g in meta["gaps"]))
+
+    def test_record_digest_mismatch_is_not_complete(self):
+        u = self.units["g11"]
+        path = f"{self.run_root}/models/{u[:2]}/{u}/record.json"
+        rec = json.load(open(path)); rec["booster_sha256"]["q4"] = "0" * 64
+        open(path, "w").write(json.dumps(rec))
+        members = json.load(open(f"{self.run_root}/members.json"))
+        for m in members:
+            if m["path"].endswith(f"{u}/record.json"):
+                b = open(path, "rb").read(); m["bytes"], m["sha256"] = len(b), hashlib.sha256(b).hexdigest()
+        json.dump(members, open(f"{self.run_root}/members.json", "w"))
+        meta = json.load(open(f"{self.build('pooled')}/package.json"))
+        self.assertEqual(meta["status"], "retained_weights_missing_dependencies")
+
     def test_unsafe_paths_refused(self):
         from research_cloud.packages.common import PackageBuilder, PackageError
         b = PackageBuilder(os.path.join(self.tmp, "p"))
@@ -201,3 +225,58 @@ class GeoXGBPackageBehaviour(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def make_yearly_run(root):
+    """Yearly layout from the P6 synthetic run: ungated local models exist only for region r1."""
+    units = make_run(root)
+    os.makedirs(f"{root}/inputs/run")
+    for d in ("prepared", "stage1"):
+        shutil.move(f"{root}/{d}", f"{root}/inputs/run/{d}")
+    os.rename(f"{root}/inputs/run/stage1/frozen_h03.json", f"{root}/inputs/run/stage1/frozen_h03.json")
+    os.makedirs(f"{root}/predict/h03")
+    for name in ("gate_decisions.jsonl", "fold_ledger.csv"):
+        shutil.move(f"{root}/stage3/h03/{name}", f"{root}/predict/h03/{name}")
+    open(f"{root}/predict/h03/block_ledger.json", "w").write("{}\n")
+    p = pd.read_csv(f"{root}/stage3/h03/predictions.csv.gz")
+    local = p["provider"] == units["l11"]
+    p = p.rename(columns={"global_identity": "pool_provider"})
+    p["local_provider"] = np.where(local, units["l11"], "")
+    p["route"] = np.where(local, "local", "pool_fallback:gain_not_above_threshold")
+    for q in ("q2", "q3", "q4", "q5"):
+        for t in ("raw", "star"):
+            p[f"local_{q}_{t}"] = np.where(local, p[f"geo_{q}_{t}"], np.nan)
+    p["local_phase"] = np.where(local, p["geo_phase"], 0)
+    p.drop(columns=["provider"]).to_csv(f"{root}/predict/h03/predictions.csv.gz", index=False)
+    return units
+
+
+YEARLY_SRC = ("/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/a6dc32cda52f45a7a5f12e87a72c6749/"
+              "artifacts/source_code/IPCCHYearlyGeoXGBExperiment")
+
+
+@unittest.skipUnless(xgb is not None and os.path.isdir(SRC) and os.path.isdir(YEARLY_SRC), "needs xgboost and archived source_code")
+class YearlyUngatedUnavailableKeys(unittest.TestCase):
+    def test_ungated_serves_only_keys_with_a_local_model(self):
+        import importlib.util
+        from research_cloud.packages import geoxgb, replay
+        tmp = tempfile.mkdtemp()
+        try:
+            root = os.path.join(tmp, "run")
+            units = make_yearly_run(root)
+            pkg = os.path.join(tmp, "pkg")
+            meta = geoxgb.build(pkg, family="geoxgb_yearly_refit", run_root=root, source_code_dir=YEARLY_SRC,
+                                members_manifest=f"{root}/members.json", version={}, lead=3, arm="regional_ungated",
+                                code_identity={}, original_runtime={}, linux_runtime={})
+            self.assertEqual(meta["status"], "complete")
+            self.assertGreater(meta["routing"]["unserved_keys_in_saved_predictions"], 0)
+            self.assertEqual(replay.main([pkg, "--report", os.path.join(tmp, "r.json")]), 0)
+            spec = importlib.util.spec_from_file_location("e", f"{pkg}/loader/entry.py")
+            mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+            model = mod.load(pkg)
+            self.assertEqual(model.resolve(pd.DataFrame({"admin_code": [1], "target_ord": [11]}))[0][0], units["l11"])
+            for area, month in ((3, 11), (4, 11), (1, 10)):  # other region, unmapped, no local fit that month
+                with self.assertRaises(KeyError):
+                    model.resolve(pd.DataFrame({"admin_code": [area], "target_ord": [month]}))
+        finally:
+            shutil.rmtree(tmp)
