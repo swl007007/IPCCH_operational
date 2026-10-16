@@ -14,7 +14,9 @@ COPY context-manifest.json /app/context-manifest.json
 ARG SOURCE_COMMIT
 ENV PYTHONPATH=/app PYTHONDONTWRITEBYTECODE=1 IPCCH_GEOXGB_SRC=/app/sources/IPCCHGeoXGBExperiment IPCCH_SOURCE_COMMIT=${SOURCE_COMMIT}
 # an owned, writable HOME for the runtime user (start.py writes $HOME/.mlflow; tools cache under HOME)
-RUN mkdir -p /home/app && chown 65534:65534 /home/app
+RUN mkdir -p /home/app && chown 65534:65534 /home/app \
+ && install -m 0755 /app/research_cloud/images/train-entry.sh /usr/local/bin/train-entry
 ENV HOME=/home/app
-USER 65534:65534
-ENTRYPOINT ["python", "-m", "research_cloud.training.ipcch_quartet"]
+# the container starts as root only so train-entry can hand Vertex's root-owned /var/hypertune mount to the runtime
+# user; every command then runs as 65534 (Vertex job specs call /usr/local/bin/train-entry explicitly)
+ENTRYPOINT ["/usr/local/bin/train-entry", "python", "-m", "research_cloud.training.ipcch_quartet"]

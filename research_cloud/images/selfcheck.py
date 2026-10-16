@@ -83,11 +83,29 @@ def replay():
     return {"home": os.environ["HOME"], "lock_pins": len(lock)}
 
 
+def hypertune_write():
+    """Run under train-entry as Vertex HPT does: uid 65534, and the objective report must land in the metric file."""
+    import hypertune
+    if os.getuid() != 65534 or os.getgid() != 65534 or os.getgroups() not in ([], [65534]):
+        raise RuntimeError(f"not dropped to 65534: uid {os.getuid()} gid {os.getgid()} groups {os.getgroups()}")
+    hypertune.HyperTune().report_hyperparameter_tuning_metric(hyperparameter_metric_tag="probe", metric_value=1.0,
+                                                              global_step=1)
+    path = os.environ["CLOUD_ML_HP_METRIC_FILE"]
+    rows = [json.loads(line) for line in open(path) if line.strip()]
+    if not any(float(r.get("probe", "nan")) == 1.0 for r in rows):
+        raise RuntimeError(f"metric not written to {path}: {rows}")
+    return {"hypertune_file": path, "uid": os.getuid()}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", required=True,
                     choices=("service", "training-fews", "training-ipcch", "replay-x320", "replay-forecast-x320"))
+    ap.add_argument("--hypertune", action="store_true", help="training-ipcch: check the HPT metric write under train-entry")
     args = ap.parse_args(argv)
+    if args.hypertune:
+        print(json.dumps({"selfcheck": "ok", "image": args.image, **hypertune_write()}))
+        return 0
     result = (service() if args.image == "service" else replay() if args.image.startswith("replay-")
               else training(args.image))
     print(json.dumps({"selfcheck": "ok", "image": args.image, "uid": os.getuid(), **result}, default=str))

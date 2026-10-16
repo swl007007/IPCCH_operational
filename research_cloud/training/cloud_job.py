@@ -82,17 +82,19 @@ def cloud_config(local_path):
 
 
 def spec(adapter, image, machine, manifest, config, family, timeout_s, hpt=None, objective=None, space=None,
-         mlflow_uri=None, experiment=None, parent_run=None):
+         mlflow_uri=None, experiment=None, parent_run=None, entry=None):
     if "@sha256:" not in image:
         raise SystemExit("the image must be given by digest")
     args = ["--manifest", manifest, "--config", config, "--output", f"gs://{ARTIFACTS}/trials/{family}"]
     # the baked harness records IPCCH_IMAGE_DIGEST as the trial's image identity (runtime_identity/adapter_identity)
     digest_env = [{"name": "IPCCH_IMAGE_DIGEST", "value": image.split("@", 1)[1]}]
     container = {"imageUri": image, "command": ["python", "-m", adapter], "args": args, "env": digest_env}
+    if entry:            # the image's root-start entry (training-ipcch: hands /var/hypertune to 65534, then drops)
+        container["command"] = [entry] + container["command"]
     if mlflow_uri:
         # MLflow linkage: the job writer's credential is read at run time by the launcher (never in the spec)
         from research_cloud.training.vertex_launch import LAUNCHER
-        container = {"imageUri": image, "command": ["python", "-c", LAUNCHER, adapter],
+        container = {"imageUri": image, "command": ([entry] if entry else []) + ["python", "-c", LAUNCHER, adapter],
                      "args": args + ["--mlflow-experiment", experiment],
                      "env": digest_env + [{"name": "MLFLOW_TRACKING_URI", "value": mlflow_uri},
                              {"name": "IPCCH_GCP_PROJECT", "value": PROJECT}]
@@ -138,6 +140,7 @@ def main(argv=None):
     s.add_argument("--mlflow-uri")
     s.add_argument("--mlflow-experiment")
     s.add_argument("--parent-run")
+    s.add_argument("--entry", help="image entry wrapper to prefix (training-ipcch: /usr/local/bin/train-entry)")
     args = ap.parse_args(argv)
     if args.cmd == "manifest":
         out = cloud_manifest(args.local, args.snapshot)
@@ -149,7 +152,7 @@ def main(argv=None):
         cfg = json.load(open(args.local_config))
         out = spec(args.adapter, args.image, args.machine, args.manifest, args.config, args.family, args.timeout_s,
                    args.hpt, cfg.get("objective"), cfg.get("space"), args.mlflow_uri, args.mlflow_experiment,
-                   args.parent_run)
+                   args.parent_run, args.entry)
     with open(args.out, "w") as f:
         json.dump(out, f, indent=1)
     print(json.dumps({"wrote": args.out, "sha256": sha256_file(args.out)}))

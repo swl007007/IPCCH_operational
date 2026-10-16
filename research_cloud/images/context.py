@@ -73,8 +73,16 @@ def cloudbuild(image, commit, image_uri, build_sa):
              f"  args: [build, --build-arg, SOURCE_COMMIT={commit}, -t, '{image_uri}', .]",
              "- name: gcr.io/cloud-builders/docker",
              f"  args: [run, --rm, --user, '65534:65534', --network, none, --entrypoint, python, '{image_uri}',",
-             f"         -m, research_cloud.images.selfcheck, --image, {image}]",
-             f"images: ['{image_uri}']",
+             f"         -m, research_cloud.images.selfcheck, --image, {image}]"]
+    if image == "training-ipcch":
+        # as Vertex HPT runs it: started as root with a root-owned 0755 /var/hypertune; the entry must hand it over and
+        # the trial's cloudml-hypertune write must succeed as uid 65534
+        lines += ["- name: gcr.io/cloud-builders/docker",
+                  f"  args: [run, --rm, --network, none, -e, CLOUD_ML_HP_METRIC_FILE=/var/hypertune/probe.metric, "
+                  f"--entrypoint, sh, '{image_uri}', -c,",
+                  "         'mkdir -p /var/hypertune && chown 0:0 /var/hypertune && chmod 0755 /var/hypertune && exec "
+                  "/usr/local/bin/train-entry python -m research_cloud.images.selfcheck --image training-ipcch --hypertune']"]
+    lines += [f"images: ['{image_uri}']",
              "options:", "  logging: CLOUD_LOGGING_ONLY"]
     if build_sa:
         lines.append(f"serviceAccount: projects/{build_sa.split('@')[1].split('.')[0]}/serviceAccounts/{build_sa}")
