@@ -164,11 +164,9 @@ def remote_bytes(loc):
             return f.read()
 
 
-def cmd_features(c, a):
-    m = find_model(c, a.key)
-    spec = m.tags.get(CLOUD_FEATURE_TAG) or m.tags.get(FEATURE_TAG)
-    if not spec:
-        sys.exit(f"{m.name}: no archived ordered feature list (see the feature groups in the model card)")
+def feature_blocks(spec):
+    """[(label, ordered feature names)] for one feature-list spec (``label=loc[#column] ; ...``)."""
+    out = []
     for part in spec.split(" ; "):          # one entry per input block, e.g. compact296 ; alphaearth128
         label, _, loc = part.partition("=")
         loc, _, column = loc.partition("#")
@@ -187,7 +185,16 @@ def cmd_features(c, a):
                     data = tar.extractfile(member).read()
             else:
                 data = p.read_bytes()
-        names = read_columns(data, loc.split("!")[-1].endswith(".gz"), column or None)
+        out.append((label, loc, column, read_columns(data, loc.split("!")[-1].endswith(".gz"), column or None)))
+    return out
+
+
+def cmd_features(c, a):
+    m = find_model(c, a.key)
+    spec = m.tags.get(CLOUD_FEATURE_TAG) or m.tags.get(FEATURE_TAG)
+    if not spec:
+        sys.exit(f"{m.name}: no archived ordered feature list (see the feature groups in the model card)")
+    for label, loc, column, names in feature_blocks(spec):
         print(f"# {label}: {len(names)} features (source {loc}{'#' + column if column else ''})")
         print("\n".join(names))
 
