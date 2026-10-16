@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 04:06 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 04:57 EDT by `date`
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,13 +18,16 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `733f2c0`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `418da0e`. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
   - somalia v4 e8d5160 + 7e1c391;
   - assistant guard 40f43d4 + total reconciliation 44350b6;
-  - service launcher/rehearsal 2791308 + workspace roles/assistant end-to-end 733f2c0.
+  - service launcher/rehearsal 2791308 + workspace roles/assistant end-to-end 733f2c0 + corrections d84dabd;
+  - Somalia v1 50c2b38; window-probe comparators efdaea3 + input binding 62bc2a7;
+  - role overlap fix f49520a; pop-v1 6d95905;
+  - guard Gemini 3.8 contract da40998; window provenance tests afc020a; sqlimport b93429b; training harness + IPCCH adapter 418da0e.
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
@@ -52,17 +55,19 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - `scratch/p1/fews/` (hash cache, catalog, search report);
   - `scratch/p1/popv1_models.json`.
 - **SKU catalogs:** `scratch/p3/skus/*.json`.
-- **Background processes:** none.
-  - The executor's `/tmp/round_fc.sh` (PID 2122191) and `/tmp/round_som.sh` were stopped or had finished; they had overlapped (`rm -rf` + rebuild) and duplicated the supervisor's forecast replay.
-  - `/tmp/round_som2.sh` (PID 2200404) finished with 55/55.
+- **Background processes:**
+  - The SQL import rehearsal (PID 2615250, started with the pre-fix code; start time not recorded by `date`) loads into `scratch/pg-rehearsal` DB `research`; log `scratch/sqlimport/run.log`, report `scratch/sqlimport/report.json`. When it finishes, rerun only the failed tables with `--only` using the fixed code (63-byte header mapping, verbatim header read, irregular-row sidecar).
   - The disposable PG (`pg_ctl` PID 1262386) is running.
+  - Rehearsal service servers are stopped.
+- **Registered-repo git lock:** `.git/index.lock` (0 bytes) has existed since 04:21:04, with no git process in WSL or Windows. It is not the executor's, and it was not removed; it blocks evidence commits. The prepared but uncommitted evidence is the P2e checkpoint note, the pop-v1/window-probe/Somalia v1 receipts, the service reports, the confirm-onset receipt, the ledger, the cloud-operations update and this file.
 
 ## Status by phase
 
 - **P1:** inventory reconciled (`ledger/README.md`).
   - 242 registry versions with exact key equality: 36 packaged and passing, 134 retained with packages pending (forecasting 126 + window-probe comparators 8, linked to P6 units), 72 tracking-only.
   - Unregistered and in scope: `pop-v1` (660 local models), and the FEWS NET bounded root (27 runs, 34,085 `.ubj` files, 59.9 GB, labelled).
-  - Current ledger: 147 packaged_replay_passed, 23 package pending (Somalia v1 15 + window-probe comparators 8), 72 missing tracking-only (`checkpoint-p2-forecast-somalia-guard-20261016.md`).
+  - Current ledger: **170 packaged_replay_passed, 0 pending, 72 missing tracking-only**. The unregistered pop-v1 run has 24 packages, all passing (`checkpoint-p2-packages-complete-service-corrections-20261016.md`).
+  - Environment `envs/rt-popv1-x300` (scikit-learn 1.6.1) was added for pop-v1.
   - Inputs: 121 declared files, 14.87 GB, hashes match (`input-inventory.json`; agent-produced, partial).
 - **P2:**
   - Store-copy rehearsal r3 passes (tracking + auth).
@@ -98,6 +103,10 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
     - Historical MLflow artifacts are 3,573 files / 1.32 GB (max `source.tar` 130 MB; 9 files over 32 MiB).
     - Transport: per-file/directory via the MLflow proxy (`artifact-transport-supervisor.md`); no signing infrastructure. The final freeze must include the artifact tree, not only the DB.
 
+## Open user question
+
+- **FEWS NET `confirm-onset-v1`:** 7 local boosters were not retained (2,446 of 11,436 system rows); see `fews/confirm-onset-missing-local-boosters-receipt.md`.
+
 ## User rulings (recorded by the supervisor in e53de85; no longer open)
 
 - **Spend:** the user stated current-month actual spend for `food-crisis-modeling-enso` is USD 0. This is user-supplied and not API-verified; billing-account access is still denied. The USD 3 figure belongs to `manuel-remote-sensing` and is not used.
@@ -111,12 +120,12 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 
 ## Next actions (in order)
 
-1. Somalia v1 packages (15; use `somalia-v1-package-supervisor.md`).
-2. Window-probe comparators and pop-v1 packages (`remaining-packages-supervisor.md`).
+1. SQL capacity: the typed import rehearsal is running (`research_cloud/sqlimport/load_inputs.py`, report `scratch/sqlimport/report.json`).
+2. FEWS NET run records (`fews-adapter-groups-supervisor.md`): the `scen-b43ef6a-v1` exception record; the `confirm-onset-v1` blocker receipt (user disposition needed).
 3. SQL input import rehearsal.
 4. Image definitions for Cloud Build.
-5. Training adapter plus HPT trial entry.
-6. Final itemized quote (`cost-inputs-supervisor.md`) with actual SQL capacity and download paths; then G5-G11 operations, with per-operation receipts.
+5. Training adapter plus HPT trial entry (`training-adapter-source-supervisor.md`).
+6. Final itemized quote (`cost-inputs-supervisor.md`, exact Gemini 3.8 Flash SKUs in `gemini-exact-price-supervisor.md`) with the measured SQL capacity and download paths; then G5-G11 operations, with per-operation receipts.
 
 Service status: launcher, workspace roles, access matrix and assistant end-to-end are done locally (`checkpoint-p2-service-20261016.md`). The remaining service items are the cloud-phase checks listed there.
 

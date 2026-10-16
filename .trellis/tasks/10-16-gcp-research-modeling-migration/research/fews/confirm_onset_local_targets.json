@@ -1,0 +1,74 @@
+[
+ {
+  "system": "S0",
+  "region": "4",
+  "child_sha256": "3858733d0fd0e56f12988ad9dce9be590b3d4c1548f48877dcfde3237eb1d0f0",
+  "parent_sha256": "727d0a2c77bf2c83c5561a999ca586a02d70f5d4b098170015962c553233e0b2",
+  "rounds_total": 220,
+  "found_paths": []
+ },
+ {
+  "system": "S0",
+  "region": "5",
+  "child_sha256": "c2c9c0f9a994ae40f282a84b93e1fde3a35d462b24ad63d3c2427fdd0cf7e581",
+  "parent_sha256": "727d0a2c77bf2c83c5561a999ca586a02d70f5d4b098170015962c553233e0b2",
+  "rounds_total": 220,
+  "found_paths": []
+ },
+ {
+  "system": "S0",
+  "region": "8",
+  "child_sha256": "a7bae7b5a0a3801947d9b9e5dfb983b5b70e3943012e893c3e3db8033e3b4e3d",
+  "parent_sha256": "727d0a2c77bf2c83c5561a999ca586a02d70f5d4b098170015962c553233e0b2",
+  "rounds_total": 220,
+  "found_paths": []
+ },
+ {
+  "system": "S0",
+  "region": "14",
+  "child_sha256": "ff8c9428f6579ebe8093a92382ef198f4353e6efe48ccdaa6e69efcbc55c6f99",
+  "parent_sha256": "727d0a2c77bf2c83c5561a999ca586a02d70f5d4b098170015962c553233e0b2",
+  "rounds_total": 220,
+  "found_paths": []
+ },
+ {
+  "system": "S0",
+  "region": "16",
+  "child_sha256": "d2f8c147f646b5d8d9c5d8c1eb909b08e4405a211928671fc0cbd75276c49f94",
+  "parent_sha256": "727d0a2c77bf2c83c5561a999ca586a02d70f5d4b098170015962c553233e0b2",
+  "rounds_total": 220,
+  "found_paths": []
+ },
+ {
+  "system": "S3",
+  "region": "3",
+  "child_sha256": "5c28aba2fefa18d50bade10d2628096fb371caadb52ff2aae4595bdb2a124693",
+  "parent_sha256": "727d0a2c77bf2c83c5561a999ca586a02d70f5d4b098170015962c553233e0b2",
+  "rounds_total": 220,
+  "found_paths": []
+ },
+ {
+  "system": "S3",
+  "region": "4",
+  "child_sha256": "3858733d0fd0e56f12988ad9dce9be590b3d4c1548f48877dcfde3237eb1d0f0",
+  "parent_sha256": "727d0a2c77bf2c83c5561a999ca586a02d70f5d4b098170015962c553233e0b2",
+  "rounds_total": 220,
+  "found_paths": []
+ },
+ {
+  "system": "S3",
+  "region": "9",
+  "child_sha256": "55dd58ac743f8109a19ebc52dc275b9d8664c3bcba0fb2c61596dd4fc8f07f2a",
+  "parent_sha256": "727d0a2c77bf2c83c5561a999ca586a02d70f5d4b098170015962c553233e0b2",
+  "rounds_total": 220,
+  "found_paths": []
+ },
+ {
+  "system": "S3",
+  "region": "14",
+  "child_sha256": "ff8c9428f6579ebe8093a92382ef198f4353e6efe48ccdaa6e69efcbc55c6f99",
+  "parent_sha256": "727d0a2c77bf2c83c5561a999ca586a02d70f5d4b098170015962c553233e0b2",
+  "rounds_total": 220,
+  "found_paths": []
+ }
+]

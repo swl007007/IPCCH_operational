@@ -3,8 +3,7 @@
  "versions": 242,
  "key_set_equals_snapshot": true,
  "by_class": {
-  "packaged_replay_passed": 147,
-  "weights_retained_package_pending": 23,
+  "packaged_replay_passed": 170,
   "missing_weights_tracking_only": 72
  },
  "by_family_class": {
@@ -17,14 +16,14 @@
   "geoxgb_maps_2024 | missing_weights_tracking_only": 8,
   "geoxgb_reference | packaged_replay_passed": 8,
   "geoxgb_window_probe | missing_weights_tracking_only": 8,
-  "geoxgb_window_probe | weights_retained_package_pending": 8,
+  "geoxgb_window_probe | packaged_replay_passed": 8,
   "geoxgb_yearly_refit | packaged_replay_passed": 12,
   "mlp_residual_fixed_maps | missing_weights_tracking_only": 48,
   "origin_safe_climate_global | packaged_replay_passed": 12,
   "origin_safe_weather_global | packaged_replay_passed": 6,
   "somalia_calibrated_augmented | packaged_replay_passed": 4,
   "somalia_calibrated_observed | packaged_replay_passed": 4,
-  "somalia_oracle_information | weights_retained_package_pending": 15,
+  "somalia_oracle_information | packaged_replay_passed": 15,
   "somalia_q3_optimization | packaged_replay_passed": 23,
   "somalia_validity_augmented | packaged_replay_passed": 12,
   "somalia_validity_observed | packaged_replay_passed": 12
@@ -3496,9 +3495,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_existing_predictors_00--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "faed75453b6ab542e9f2852c754ced78d5c604e511a59aee98b5732aa3ee7ed2",
+    "gaps": [],
+    "package_json_sha256": "a1b9cb7448a29c82d09e1a1b3f3f8246cd7eb07460cc968a8bc028e3102ebf05"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.97758476261356e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "a1b9cb7448a29c82d09e1a1b3f3f8246cd7eb07460cc968a8bc028e3102ebf05"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3527,9 +3538,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_existing_predictors_12--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "500be2795d23e8dc870be347ed3ae52bb860c538ae7ec308794cdd91e543be54",
+    "gaps": [],
+    "package_json_sha256": "8323bccbf830fb821673925e2346d46d8acb7b31dd843bc5864de24715198852"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.968911145233676e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "8323bccbf830fb821673925e2346d46d8acb7b31dd843bc5864de24715198852"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3558,9 +3581,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_existing_predictors_03--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "41705c9fb08a2eddcc0ffcaba9021c06fc31187ea2ef9a691ff1ba19e4451b1d",
+    "gaps": [],
+    "package_json_sha256": "8e7261a38a6225cacb67e9c280132ce75aa6aad36ed1911463cb876c9b2525d5"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9905951886833861e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "8e7261a38a6225cacb67e9c280132ce75aa6aad36ed1911463cb876c9b2525d5"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3589,9 +3624,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_existing_predictors_06--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "c9b22be982cde12d9ce2605670c47940ff4b18642b10c01ed9e21f7df9c79819",
+    "gaps": [],
+    "package_json_sha256": "927201df0fd60b6b8498bfa710f060fe0f2b6bfbb5f35503d7e1b1d194aca5ea"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9868004810796869e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "927201df0fd60b6b8498bfa710f060fe0f2b6bfbb5f35503d7e1b1d194aca5ea"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3620,9 +3667,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_seasonal_climate_00--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "c8f7544748521be7af232ba13831faf6a5f8dffe39e051ef02f0968fb2ae0e06",
+    "gaps": [],
+    "package_json_sha256": "b227917ecf52bc7c25b3111a0692393d9f359ee476b7ecac8fd8f8c66cb880d2"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.964574336543734e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "b227917ecf52bc7c25b3111a0692393d9f359ee476b7ecac8fd8f8c66cb880d2"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3651,9 +3710,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_seasonal_climate_12--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "6a5fb29fcc643e9e20924f26698e51d47a68cef51503c9726c2e4923f3243090",
+    "gaps": [],
+    "package_json_sha256": "9ce6d3573eb526bba6cd60d6973b632ef7137f3d1d22e9e5dc314bd6fc0205a9"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9949319973733282e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "9ce6d3573eb526bba6cd60d6973b632ef7137f3d1d22e9e5dc314bd6fc0205a9"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3682,9 +3753,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_seasonal_climate_03--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "96ec02837e44b9214237ad2e4b0d4f6ab13a2367f51a4b92873cd1caeb7a858d",
+    "gaps": [],
+    "package_json_sha256": "5fda36947ce826fd965009f665adb620ac429ec94598118873249c55a7a1a34a"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.975416358268589e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "5fda36947ce826fd965009f665adb620ac429ec94598118873249c55a7a1a34a"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3713,9 +3796,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_seasonal_climate_06--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "f4a40b90c46493d1c4482307402ec7cbc9104df95f7ac98c63ea5d418affdec4",
+    "gaps": [],
+    "package_json_sha256": "30b14a1e87f7c94fbaf4adf6b8fc699bbec4b6e0abbfbeb538b0d54c1bb4eb37"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9949319973733282e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "30b14a1e87f7c94fbaf4adf6b8fc699bbec4b6e0abbfbeb538b0d54c1bb4eb37"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3744,9 +3839,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_weather_oracle_12--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "810ab85a4430005e991558a7a87ee4a994b5602a46b2264462b11fa768d622eb",
+    "gaps": [],
+    "package_json_sha256": "1eb7b3117456cddbcfbcc686e1dc4c9bc1892b6232fd414e67290a0391b7acfc"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.942890293094024e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "1eb7b3117456cddbcfbcc686e1dc4c9bc1892b6232fd414e67290a0391b7acfc"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3775,9 +3882,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_weather_oracle_03--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "c80e8c3bc082b3aeab0eda2172e3ae2e6d70cb9686762cada566ff915147326e",
+    "gaps": [],
+    "package_json_sha256": "a2b589b42ae177b76e3e67b55f7ad84f9b19a74420ea75cd8889dff6c6ea8a59"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.973247953923618e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "a2b589b42ae177b76e3e67b55f7ad84f9b19a74420ea75cd8889dff6c6ea8a59"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3806,9 +3925,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_weather_oracle_06--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "c55a1e28d6d7495c16433f43fdb1481bdb64ee3989805eb8f31075375c2ab166",
+    "gaps": [],
+    "package_json_sha256": "c4a2a7f0ee927a355abb37c5a298dfb4e8e575fb59db15a6206d5d81a35a4a31"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.986258379993444e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "c4a2a7f0ee927a355abb37c5a298dfb4e8e575fb59db15a6206d5d81a35a4a31"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3837,9 +3968,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_weather_oracle_with_share_history_00--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "4565f636d2aeff153630146a60752e8451b60102e536c013bada1dc05c591268",
+    "gaps": [],
+    "package_json_sha256": "398d920efc890d335a097e5cda758551bd457b96507bc37d8396dbaa2bcb1f0f"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.942890293094024e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "398d920efc890d335a097e5cda758551bd457b96507bc37d8396dbaa2bcb1f0f"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3868,9 +4011,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_weather_oracle_with_share_history_12--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "7dfac0d665867fdb15145336f532dd663c34f05ad8065d45c57db09e38f0b1c7",
+    "gaps": [],
+    "package_json_sha256": "28eadd5dea84819fdb986e603d8b53fa8dc5a78ab3a15e69d58eb3f10d67d9cb"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.97758476261356e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "28eadd5dea84819fdb986e603d8b53fa8dc5a78ab3a15e69d58eb3f10d67d9cb"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3899,9 +4054,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_weather_oracle_with_share_history_03--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "2d19793553a73eeb604eae853eefe3f669fbe34e7cc1c4ac24a1666c20b57c89",
+    "gaps": [],
+    "package_json_sha256": "1abe565a16a8ceabe27272b44caf4873e9b2c89284e7887b508276f21e673a28"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.951563910473908e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "1abe565a16a8ceabe27272b44caf4873e9b2c89284e7887b508276f21e673a28"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3930,9 +4097,21 @@
    "member_status_counts": {
     "verified": 27
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_oracle_information_weather_oracle_with_share_history_06--somalia_oracle_v1",
+    "status": "complete",
+    "content_sha256": "879a4b3259fea80ec82c27ed52b21fa3a74e0c8b26a899a229bcd88954457b39",
+    "gaps": [],
+    "package_json_sha256": "1342fbe24fb3cbae7e97a3ee9f9db059948dcf6fb1a347e8a51291ce9394a56d"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.97758476261356e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-v1/summary.json",
+    "package_json_sha256": "1342fbe24fb3cbae7e97a3ee9f9db059948dcf6fb1a347e8a51291ce9394a56d"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -6822,8 +7001,20 @@
    "member_status_counts": {
     "missing": 475
    },
-   "package": null,
-   "replay": null,
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_window_probe-pooled-h01",
+    "status": "complete",
+    "content_sha256": "86ec165fae6d59d0dcfadbda5f647ecfd2bade6721c9581b1894cf2b4b081522",
+    "gaps": [],
+    "package_json_sha256": "bdd920d4f42b0a6c36ad4c6f50d459c69aa621cee8618e20af942679770410c4"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 96,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/window-probe/summary.json",
+    "package_json_sha256": "bdd920d4f42b0a6c36ad4c6f50d459c69aa621cee8618e20af942679770410c4"
+   },
    "resolution": {
     "ledger_class": "weights_retained_package_pending",
     "evidence": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global",
@@ -6838,8 +7029,8 @@
     "underlying_member_status": "all verified (model_inventory v2, fresh hashes)",
     "storage": "linked to P6 units; not duplicated"
    },
-   "ledger_class": "weights_retained_package_pending",
-   "reason": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global"
+   "ledger_class": "packaged_replay_passed",
+   "reason": null
   },
   {
    "registered_model": "IPCCH GeoXGB window probe | pooled | 36-month window | 12-month",
@@ -6867,8 +7058,20 @@
    "member_status_counts": {
     "missing": 475
    },
-   "package": null,
-   "replay": null,
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_window_probe-pooled-h12",
+    "status": "complete",
+    "content_sha256": "78fdd630ccdc9d4d3e780c14ed6aeddac07c590de770f498291fbb19255b7266",
+    "gaps": [],
+    "package_json_sha256": "a5611f0155977edd880c2667ca4d10870d9c2a374b89307300981a8952b03b1b"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 64,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/window-probe/summary.json",
+    "package_json_sha256": "a5611f0155977edd880c2667ca4d10870d9c2a374b89307300981a8952b03b1b"
+   },
    "resolution": {
     "ledger_class": "weights_retained_package_pending",
     "evidence": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global",
@@ -6882,8 +7085,8 @@
     "underlying_member_status": "all verified (model_inventory v2, fresh hashes)",
     "storage": "linked to P6 units; not duplicated"
    },
-   "ledger_class": "weights_retained_package_pending",
-   "reason": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global"
+   "ledger_class": "packaged_replay_passed",
+   "reason": null
   },
   {
    "registered_model": "IPCCH GeoXGB window probe | pooled | 36-month window | 3-month",
@@ -6911,8 +7114,20 @@
    "member_status_counts": {
     "missing": 475
    },
-   "package": null,
-   "replay": null,
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_window_probe-pooled-h03",
+    "status": "complete",
+    "content_sha256": "eda6ba1f8707d8d75d8821f93daf78b9e82bd934051e97f8aef87d1611bcf64e",
+    "gaps": [],
+    "package_json_sha256": "e1dc82494ad070202e6524dba7c0c004d5b8718939ee5ca2cddc026d7332037a"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 96,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/window-probe/summary.json",
+    "package_json_sha256": "e1dc82494ad070202e6524dba7c0c004d5b8718939ee5ca2cddc026d7332037a"
+   },
    "resolution": {
     "ledger_class": "weights_retained_package_pending",
     "evidence": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global",
@@ -6927,8 +7142,8 @@
     "underlying_member_status": "all verified (model_inventory v2, fresh hashes)",
     "storage": "linked to P6 units; not duplicated"
    },
-   "ledger_class": "weights_retained_package_pending",
-   "reason": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global"
+   "ledger_class": "packaged_replay_passed",
+   "reason": null
   },
   {
    "registered_model": "IPCCH GeoXGB window probe | pooled | 36-month window | 6-month",
@@ -6956,8 +7171,20 @@
    "member_status_counts": {
     "missing": 475
    },
-   "package": null,
-   "replay": null,
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_window_probe-pooled-h06",
+    "status": "complete",
+    "content_sha256": "18d732f95953c955dba919a265a599123b916716fb8fcadb63a68d03202ef0f7",
+    "gaps": [],
+    "package_json_sha256": "f55ffd2dafa6e3dfebd06b76ab0b4d824c3b2bd32bd2227217ac4e10b09ffb85"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 96,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/window-probe/summary.json",
+    "package_json_sha256": "f55ffd2dafa6e3dfebd06b76ab0b4d824c3b2bd32bd2227217ac4e10b09ffb85"
+   },
    "resolution": {
     "ledger_class": "weights_retained_package_pending",
     "evidence": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global",
@@ -6972,8 +7199,8 @@
     "underlying_member_status": "all verified (model_inventory v2, fresh hashes)",
     "storage": "linked to P6 units; not duplicated"
    },
-   "ledger_class": "weights_retained_package_pending",
-   "reason": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global"
+   "ledger_class": "packaged_replay_passed",
+   "reason": null
   },
   {
    "registered_model": "IPCCH GeoXGB window probe | pooled | full-history window | 1-month",
@@ -7125,8 +7352,20 @@
    "member_status_counts": {
     "missing": 475
    },
-   "package": null,
-   "replay": null,
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_window_probe-regional_ungated-h01",
+    "status": "complete",
+    "content_sha256": "b100ffc3a26e031c2a299dc03427c97e899243ccd19ca160e9088fddcbe18962",
+    "gaps": [],
+    "package_json_sha256": "ff4d53824d9f68cd8e62a847e00bc9cce127790032be99facc4af11aeab36625"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 826,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/window-probe/summary.json",
+    "package_json_sha256": "ff4d53824d9f68cd8e62a847e00bc9cce127790032be99facc4af11aeab36625"
+   },
    "resolution": {
     "ledger_class": "weights_retained_package_pending",
     "evidence": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global",
@@ -7165,8 +7404,8 @@
     "underlying_member_status": "all verified (model_inventory v2, fresh hashes)",
     "storage": "linked to P6 units; not duplicated"
    },
-   "ledger_class": "weights_retained_package_pending",
-   "reason": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global"
+   "ledger_class": "packaged_replay_passed",
+   "reason": null
   },
   {
    "registered_model": "IPCCH GeoXGB window probe | regional_ungated | 36-month window | 12-month",
@@ -7194,8 +7433,20 @@
    "member_status_counts": {
     "missing": 475
    },
-   "package": null,
-   "replay": null,
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_window_probe-regional_ungated-h12",
+    "status": "complete",
+    "content_sha256": "092722449dad6b58d580547adc701f12fd2b309142394619f03ca5d6701d73cb",
+    "gaps": [],
+    "package_json_sha256": "facffec5e0a44acca20970609c3d39946dce07e18f373bdfc256b7703905807d"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 626,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/window-probe/summary.json",
+    "package_json_sha256": "facffec5e0a44acca20970609c3d39946dce07e18f373bdfc256b7703905807d"
+   },
    "resolution": {
     "ledger_class": "weights_retained_package_pending",
     "evidence": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global",
@@ -7227,8 +7478,8 @@
     "underlying_member_status": "all verified (model_inventory v2, fresh hashes)",
     "storage": "linked to P6 units; not duplicated"
    },
-   "ledger_class": "weights_retained_package_pending",
-   "reason": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global"
+   "ledger_class": "packaged_replay_passed",
+   "reason": null
   },
   {
    "registered_model": "IPCCH GeoXGB window probe | regional_ungated | 36-month window | 3-month",
@@ -7256,8 +7507,20 @@
    "member_status_counts": {
     "missing": 475
    },
-   "package": null,
-   "replay": null,
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_window_probe-regional_ungated-h03",
+    "status": "complete",
+    "content_sha256": "784c803c2b8eb307a5a0231e837c47c28dae8dec9585f66fc08972b7e1cd1893",
+    "gaps": [],
+    "package_json_sha256": "a304ad8448405c441b45c6a865490cbcfeeb2a0710f228862012ebabca75c604"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 737,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/window-probe/summary.json",
+    "package_json_sha256": "a304ad8448405c441b45c6a865490cbcfeeb2a0710f228862012ebabca75c604"
+   },
    "resolution": {
     "ledger_class": "weights_retained_package_pending",
     "evidence": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global",
@@ -7293,8 +7556,8 @@
     "underlying_member_status": "all verified (model_inventory v2, fresh hashes)",
     "storage": "linked to P6 units; not duplicated"
    },
-   "ledger_class": "weights_retained_package_pending",
-   "reason": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global"
+   "ledger_class": "packaged_replay_passed",
+   "reason": null
   },
   {
    "registered_model": "IPCCH GeoXGB window probe | regional_ungated | 36-month window | 6-month",
@@ -7322,8 +7585,20 @@
    "member_status_counts": {
     "missing": 475
    },
-   "package": null,
-   "replay": null,
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_window_probe-regional_ungated-h06",
+    "status": "complete",
+    "content_sha256": "2680a9dc4c8de5a7bd61a455df4f5251df114f61832fab7a78ac248dba5fde03",
+    "gaps": [],
+    "package_json_sha256": "0fd0ec6b1479acc816e100099a4fc8ba0d77d8564a69770fb9c8f70e8e7832cb"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 555,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/window-probe/summary.json",
+    "package_json_sha256": "0fd0ec6b1479acc816e100099a4fc8ba0d77d8564a69770fb9c8f70e8e7832cb"
+   },
    "resolution": {
     "ledger_class": "weights_retained_package_pending",
     "evidence": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global",
@@ -7354,8 +7629,8 @@
     "underlying_member_status": "all verified (model_inventory v2, fresh hashes)",
     "storage": "linked to P6 units; not duplicated"
    },
-   "ledger_class": "weights_retained_package_pending",
-   "reason": "reused comparator resolved to the P6 reference fitted units: run_probe.py (runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source/run_probe.py) loads P6 global_identity via check_saved(BASE/models/<gid>) and asserts base predictions equal P6 saved pool_ raw; base_local uses P6 local_identity units from the P6 gate pairs where local_fit_ok, else the global"
+   "ledger_class": "packaged_replay_passed",
+   "reason": null
   },
   {
    "registered_model": "IPCCH GeoXGB window probe | regional_ungated | full-history window | 1-month",

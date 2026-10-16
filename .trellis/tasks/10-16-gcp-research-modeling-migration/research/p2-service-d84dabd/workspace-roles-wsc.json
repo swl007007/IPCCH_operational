@@ -1,0 +1,358 @@
+{
+ "store": "disposable copy of the r1-copied tracking/auth stores (wsc_*), workspaces enabled",
+ "visible_experiments_to_copied_nonadmin": 6,
+ "role_report": {
+  "before": {
+   "users": {
+    "admin": {
+     "is_admin": true,
+     "role_ids": [
+      1
+     ]
+    },
+    "copied-nonadmin": {
+     "is_admin": false,
+     "role_ids": [
+      2
+     ]
+    },
+    "new-job-writer": {
+     "is_admin": false,
+     "role_ids": []
+    }
+   },
+   "roles": {
+    "1": {
+     "name": "__user_1__",
+     "workspace": "default",
+     "assignees": [
+      "admin"
+     ],
+     "permissions": [
+      [
+       "gateway_endpoint",
+       "e-9f0a333c965e4418ad1506f44bf12787",
+       "MANAGE"
+      ],
+      [
+       "gateway_model_definition",
+       "d-1781ed87f6404d2d9d90c879c58eccb7",
+       "MANAGE"
+      ],
+      [
+       "gateway_secret",
+       "s-84c34d2bbdcf434abf9ea71ba4e4f8cc",
+       "MANAGE"
+      ]
+     ]
+    },
+    "2": {
+     "name": "__user_2__",
+     "workspace": "default",
+     "assignees": [
+      "copied-nonadmin"
+     ],
+     "permissions": [
+      [
+       "gateway_endpoint",
+       "e-9f0a333c965e4418ad1506f44bf12787",
+       "USE"
+      ]
+     ]
+    }
+   }
+  },
+  "after": {
+   "users": {
+    "admin": {
+     "is_admin": true,
+     "role_ids": [
+      1
+     ]
+    },
+    "copied-nonadmin": {
+     "is_admin": false,
+     "role_ids": [
+      2,
+      3
+     ]
+    },
+    "new-job-writer": {
+     "is_admin": false,
+     "role_ids": [
+      4
+     ]
+    }
+   },
+   "roles": {
+    "1": {
+     "name": "__user_1__",
+     "workspace": "default",
+     "assignees": [
+      "admin"
+     ],
+     "permissions": [
+      [
+       "gateway_endpoint",
+       "e-9f0a333c965e4418ad1506f44bf12787",
+       "MANAGE"
+      ],
+      [
+       "gateway_model_definition",
+       "d-1781ed87f6404d2d9d90c879c58eccb7",
+       "MANAGE"
+      ],
+      [
+       "gateway_secret",
+       "s-84c34d2bbdcf434abf9ea71ba4e4f8cc",
+       "MANAGE"
+      ]
+     ]
+    },
+    "2": {
+     "name": "__user_2__",
+     "workspace": "default",
+     "assignees": [
+      "copied-nonadmin"
+     ],
+     "permissions": [
+      [
+       "gateway_endpoint",
+       "e-9f0a333c965e4418ad1506f44bf12787",
+       "USE"
+      ]
+     ]
+    },
+    "3": {
+     "name": "ipcch-readers",
+     "workspace": "default",
+     "assignees": [
+      "copied-nonadmin"
+     ],
+     "permissions": [
+      [
+       "experiment",
+       "*",
+       "READ"
+      ],
+      [
+       "prompt",
+       "*",
+       "READ"
+      ],
+      [
+       "registered_model",
+       "*",
+       "READ"
+      ]
+     ]
+    },
+    "4": {
+     "name": "ipcch-job-writers",
+     "workspace": "default",
+     "assignees": [
+      "new-job-writer"
+     ],
+     "permissions": [
+      [
+       "experiment",
+       "1",
+       "EDIT"
+      ],
+      [
+       "workspace",
+       "*",
+       "USE"
+      ]
+     ]
+    }
+   }
+  },
+  "preserved": {
+   "users": true,
+   "roles": true
+  },
+  "added": {
+   "admin": {
+    "role_ids": [],
+    "effective_added": []
+   },
+   "copied-nonadmin": {
+    "role_ids": [
+     3
+    ],
+    "effective_added": [
+     [
+      "experiment",
+      "*",
+      "READ"
+     ],
+     [
+      "prompt",
+      "*",
+      "READ"
+     ],
+     [
+      "registered_model",
+      "*",
+      "READ"
+     ]
+    ]
+   },
+   "new-job-writer": {
+    "role_ids": [
+     4
+    ],
+    "effective_added": [
+     [
+      "experiment",
+      "1",
+      "EDIT"
+     ],
+     [
+      "workspace",
+      "*",
+      "USE"
+     ]
+    ]
+   }
+  },
+  "scope": "users, workspace roles, role permission rows and assignments read through the admin REST API; legacy per-resource tables are covered by the full-store copier's table comparison"
+ },
+ "checks": [
+  {
+   "phase": "before",
+   "principal": "copied-nonadmin",
+   "call": "GET /api/2.0/mlflow/users/current",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "before",
+   "principal": "copied-nonadmin",
+   "call": "GET /api/2.0/mlflow/experiments/get",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "setup",
+   "principal": "admin",
+   "call": "POST /api/2.0/mlflow/users/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "GET /api/2.0/mlflow/experiments/get",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "GET /api/2.0/mlflow/experiments/search",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "POST /api/2.0/mlflow/experiments/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "POST /api/2.0/mlflow/registered-models/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "POST /api/3.0/mlflow/gateway/secrets/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "admin",
+   "call": "GET /api/3.0/mlflow/users/permissions/get",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "detail": {
+    "allowed": true,
+    "permission": "USE"
+   }
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/experiments/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/experiments/delete",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "admin",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  }
+ ],
+ "passed": 16,
+ "total": 16
+}

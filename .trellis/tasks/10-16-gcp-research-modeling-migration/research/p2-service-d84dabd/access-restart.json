@@ -1,0 +1,77 @@
+{
+ "mode": "verify-restart",
+ "passed": 7,
+ "total": 7,
+ "results": [
+  {
+   "principal": "jobwriter",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/log-metric",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "jobwriter",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/delete",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "GET",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/4/c945321bebe041cd8dac85bb07f441a1/artifacts/probe.txt",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "GET",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/4/c945321bebe041cd8dac85bb07f441a1/artifacts/probe.txt",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "anonymous",
+   "method": "GET",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/4/c945321bebe041cd8dac85bb07f441a1/artifacts/probe.txt",
+   "remote": true,
+   "expected": 401,
+   "observed": 401,
+   "ok": true,
+   "note": ""
+  }
+ ]
+}

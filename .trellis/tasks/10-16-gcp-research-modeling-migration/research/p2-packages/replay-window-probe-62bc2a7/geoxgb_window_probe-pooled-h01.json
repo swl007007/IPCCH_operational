@@ -1,0 +1,74 @@
+{
+ "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_window_probe-pooled-h01",
+ "package_json_sha256": "bdd920d4f42b0a6c36ad4c6f50d459c69aa621cee8618e20af942679770410c4",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "logged_model_id": "m-29a71598c68d4ae4bc303a962afea9da",
+  "parent_run_id": "e9cfa99f94dd4a67b0e3b6ed511708ad",
+  "registered_model": "IPCCH GeoXGB window probe | pooled | 36-month window | 1-month",
+  "source_run_id": "258a6ab90dca4b8fb057950a066f715c",
+  "version": 1
+ },
+ "rows": 96,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.423544863740858e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.734349486520036e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 5.349973032584462e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 2.0691814938080613e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.423544863740858e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.734349486520036e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 4.9994143301474815e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 8.922983879555701e-17,
+   "mean_abs_err": 8.284511619739091e-18,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.95
+}

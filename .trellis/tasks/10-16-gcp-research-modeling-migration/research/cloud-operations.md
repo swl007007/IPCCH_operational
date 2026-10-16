@@ -51,3 +51,15 @@ Optional supporting evidence, not a blocker: any existing budget or alert on bil
 Conditional: Earth Engine billing detail is needed only if the supplied report or estimate leaves a material recurring cost unresolved.
 
 Paid provisioning and job submission stay deferred until the current-month available envelope is supported by those figures.
+
+## Update 2026-10-16: spend figure supplied (user ruling, recorded by the supervisor in e53de85)
+
+The user stated that current-month (October 2026) actual spend for `food-crisis-modeling-enso` to date is **USD 0**. This is a user-supplied figure, not API-verified; billing-account access is still denied (O-016/O-018/O-020).
+
+The earlier "USD 3" belongs to `manuel-remote-sensing`; it is not used here.
+
+The required budget prerequisite above is therefore satisfied:
+- In-scope provisioning and job submission may proceed once their technical gates and the per-operation cost and reservation gates pass, with no repeat permission request.
+- The platform (USD 100/month) and training/HPT (USD 100/month) used-and-reserved ledgers stay separate.
+- Every operation keeps its own receipt.
+- The Earth Engine usage signal above stays an unverified observation. The conditional EE billing item applies only if a material recurring cost appears.
