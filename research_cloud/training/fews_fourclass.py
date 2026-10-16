@@ -23,7 +23,7 @@ import sys
 import numpy as np
 import pandas as pd
 
-from research_cloud.training.common import TrialError, run_trial, sha256_file
+from research_cloud.training.common import TrialError, adapter_identity, run_trial, sha256_file
 from research_cloud.training.ipcch_quartet import config_int, integer_column
 
 OBJECTIVE = "crisis_f1"
@@ -45,7 +45,10 @@ def modules(config):
 def code_identity(src):
     files = {rel: sha256_file(os.path.join(src, rel)) for rel in
              ("src/model/native_xgb.py", "src/experiment/plan.py", "src/metrics/fourclass.py")}
-    return {"fews_src": os.path.abspath(src), "files": files}
+    return {"fews_src": os.path.abspath(src), "files": files,
+            "adapter": adapter_identity("research_cloud.training.fews_fourclass", "research_cloud.training.common",
+                                        "research_cloud.training.ipcch_quartet", "research_cloud.packages.fews_confirm",
+                                        "research_cloud.packages.fews_scen", "research_cloud.packages.common")}
 
 
 def crisis_f1(truth, codes):
@@ -61,6 +64,13 @@ def fit(inputs, manifest, config, params, out):
         if key in config["fixed"] or key in config["space"]:
             raise TrialError(f"{key} is fixed by native_xgb and may not be configured or tuned")
     target = config["target"]
+    h = config_int(config, "horizon")
+    if h not in (4, 8, 12):
+        raise TrialError(f"horizon {h} is not a FEWS horizon (4, 8, 12)")
+    derived = manifest.get("derived_from") or {}
+    if (derived.get("horizon"), derived.get("target")) != (h, target):
+        raise TrialError(f"snapshot was built for horizon {derived.get('horizon')} / target {derived.get('target')}, "
+                         f"the config declares {h} / {target}")
     if target not in plan.DEV_TARGETS or target not in config.get("development_targets", []):
         raise TrialError(f"target {target} is not a declared development target")
     if not target < config["holdout_start"]:
@@ -77,8 +87,9 @@ def fit(inputs, manifest, config, params, out):
     weights = pd.to_numeric(rows["weight"], errors="coerce").to_numpy(np.float64)
     fit_rows, val_rows = np.flatnonzero(roles == "fit_variant"), np.flatnonzero(roles == "target")
     months = integer_column(rows, "target_month")
+    if (integer_column(rows, "horizon") != h).any() or (integer_column(rows, "origin_month") != months - h).any():
+        raise TrialError(f"snapshot rows are not built at horizon {h} with origin_month = target_month - H")
     t = int(target[:4]) * 12 + int(target[5:]) - 1
-    h = config_int(config, "horizon")
     if len(fit_rows) == 0 or len(val_rows) == 0:
         raise TrialError("empty fitting or target cohort")
     if (months[val_rows] != t).any() or months[fit_rows].max() >= t - h:

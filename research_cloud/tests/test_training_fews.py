@@ -25,9 +25,12 @@ class Boundaries(unittest.TestCase):
                              "area": list(range(n_fit)) + [0, 1, 2, 3] + list(range(8)),
                              "target_month": [self.T - 10] * n_fit + [self.T - 10] * 4 + [self.T] * 8,
                              "class_code": list(np.arange(n_fit) % 4) + [0, 1, 2, 3] + [0, 2, 3, 1, 2, 0, 2, 3],
-                             "weight": 1.0, "variant_k": 0})
+                             "weight": 1.0, "variant_k": 0, "horizon": 4})
+        rows["origin_month"] = rows["target_month"] - 4
         for k, v in edit.items():
             rows[k] = v
+        if "target_month" in edit and "origin_month" not in edit:
+            rows["origin_month"] = rows["target_month"] - 4
         rows.to_csv(f"{d}/rows.csv", index=False)
         np.save(f"{d}/X.npy", rng.normal(size=(len(rows), 3)))
         pd.DataFrame({"name": ["a", "b", "c"]}).to_csv(f"{d}/order.csv", index=False)
@@ -39,8 +42,9 @@ class Boundaries(unittest.TestCase):
         c.update(edit)
         return c
 
-    def fit(self, inputs, config, params=None):
-        return fews_fourclass.fit(inputs, {"files": {}}, config, params or {"max_depth": 2, "rounds": 5},
+    def fit(self, inputs, config, params=None, derived=None):
+        manifest = {"files": {}, "derived_from": derived if derived is not None else {"horizon": 4, "target": config["target"]}}
+        return fews_fourclass.fit(inputs, manifest, config, params or {"max_depth": 2, "rounds": 5},
                                   common.Output(tempfile.mkdtemp()))
 
     def test_refusals(self):
@@ -53,10 +57,30 @@ class Boundaries(unittest.TestCase):
             (self.bundle(class_code=1.5), self.config(), "non-integer"),
             (self.bundle(class_code=4), self.config(), "outside"),
             (self.bundle(weight=0.0), self.config(), "weights"),
-        ]
+            (self.bundle(horizon=8), self.config(), "built at horizon"),
+            (self.bundle(origin_month=0), self.config(), "built at horizon"),
+        ] + [(self.bundle(), self.config(horizon=h), "not a FEWS horizon") for h in (1, 0, -1)] \
+          + [(self.bundle(), self.config(horizon=4.5), "must be an integer")]
         for inputs, config, message in cases:
             with self.assertRaisesRegex(common.TrialError, message):
                 self.fit(inputs, config)
+
+    def test_snapshot_identity_must_match_the_config(self):
+        for derived in ({"horizon": 8, "target": "2019-02"}, {"horizon": 4, "target": "2019-06"}, {}):
+            with self.assertRaisesRegex(common.TrialError, "snapshot was built"):
+                self.fit(self.bundle(), self.config(), derived=derived)
+
+    def test_raw_observation_labels_are_checked_before_the_builders(self):
+        from research_cloud.training import fews_features
+        rx = fews_features.modules(SRC)[0]
+        d = tempfile.mkdtemp()
+        ok = pd.DataFrame({"area": [1, 2], "month": [24000, 24001], "country": ["A", "B"], "class_code": [0, 3]})
+        ok.to_csv(f"{d}/ok.csv", index=False)
+        self.assertEqual(len(fews_features.read_observations(rx, f"{d}/ok.csv")), 2)
+        for bad in ({"class_code": [0, 2.5]}, {"class_code": [0, 4]}, {"class_code": [0, None]}, {"month": [24000, 24000.5]}):
+            ok.assign(**bad).to_csv(f"{d}/bad.csv", index=False)
+            with self.assertRaises(common.TrialError):
+                fews_features.read_observations(rx, f"{d}/bad.csv")
 
     def test_fitting_labels_may_not_reach_the_origin(self):
         months = [self.T - 10] * 79 + [self.T - 4] + [self.T - 10] * 4 + [self.T] * 8   # one label at O = T - H

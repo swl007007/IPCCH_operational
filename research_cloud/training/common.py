@@ -146,6 +146,28 @@ class Output:
         return self.prefix
 
 
+def adapter_identity(*modules):
+    """The research_cloud implementation a trial or snapshot ran: sha256 of each named module file plus the
+    control-plane commit (``IPCCH_SOURCE_COMMIT`` baked into images; else ``git`` in a checkout, with a dirty flag)."""
+    import subprocess
+    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    files = {}
+    for m in modules:
+        rel = m.replace(".", "/") + ".py"
+        files[rel] = sha256_file(os.path.join(root, rel))
+    commit, dirty = os.environ.get("IPCCH_SOURCE_COMMIT") or None, None
+    if commit is None:
+        try:
+            commit = subprocess.run(["git", "-C", root, "rev-parse", "HEAD"], capture_output=True, text=True,
+                                    check=True).stdout.strip()
+            dirty = bool(subprocess.run(["git", "-C", root, "status", "--porcelain", "--", "research_cloud"],
+                                        capture_output=True, text=True, check=True).stdout.strip())
+        except (OSError, subprocess.CalledProcessError):
+            commit = None
+    return {"control_plane_commit": commit, "research_cloud_dirty": dirty, "files": dict(sorted(files.items())),
+            "image_digest": os.environ.get("IPCCH_IMAGE_DIGEST")}
+
+
 def runtime_identity():
     import importlib.metadata as md
     pkgs = {}

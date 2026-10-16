@@ -61,7 +61,10 @@ def code_identity(mods, config):
     src = os.environ.get("IPCCH_GEOXGB_SRC", config.get("geoxgb_src", ""))
     files = {f"ipcch_geoxgb/{os.path.basename(m.__file__)}": sha256_file(m.__file__) for m in mods}
     files["config/feature-schema.json"] = sha256_file(os.path.join(src, "config", "feature-schema.json"))
-    return {"geoxgb_src": os.path.abspath(src), "files": dict(sorted(files.items()))}
+    from research_cloud.training.common import adapter_identity
+    return {"geoxgb_src": os.path.abspath(src), "files": dict(sorted(files.items())),
+            "adapter": adapter_identity("research_cloud.training.ipcch_quartet", "research_cloud.training.common",
+                                        "research_cloud.training.trial_package")}
 
 
 def fit(inputs, manifest, config, params, out):

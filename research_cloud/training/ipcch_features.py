@@ -27,7 +27,7 @@ import time
 import numpy as np
 import pandas as pd
 
-from research_cloud.training.common import TrialError, resolve_inputs, runtime_identity, sha256_file
+from research_cloud.training.common import TrialError, adapter_identity, resolve_inputs, runtime_identity, sha256_file
 
 HORIZONS = {1, 3, 6, 12}
 
@@ -46,7 +46,8 @@ def source_identity(mods, src):
         path = os.path.join(src, "config", name)
         if os.path.exists(path):
             files[f"config/{name}"] = sha256_file(path)
-    return {"geoxgb_src": os.path.abspath(src), "files": dict(sorted(files.items()))}
+    return {"geoxgb_src": os.path.abspath(src), "files": dict(sorted(files.items())),
+            "adapter": adapter_identity("research_cloud.training.ipcch_features", "research_cloud.training.common")}
 
 
 def build(inputs, horizon, src):

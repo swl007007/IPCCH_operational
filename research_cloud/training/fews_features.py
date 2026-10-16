@@ -30,7 +30,8 @@ import time
 import numpy as np
 import pandas as pd
 
-from research_cloud.training.common import TrialError, resolve_inputs, runtime_identity, sha256_file
+from research_cloud.training.common import TrialError, adapter_identity, resolve_inputs, runtime_identity, sha256_file
+from research_cloud.training.ipcch_quartet import integer_column
 
 ROLES = ("fit_variant", "eval", "target")
 
@@ -52,7 +53,19 @@ def source_identity(src, schema_path):
                 "src/experiment/stage3.py", "src/feature/fourclass_features.py", "src/model/native_xgb.py"):
         files[rel] = sha256_file(os.path.join(src, rel))
     files["feature-schema.json"] = sha256_file(schema_path)
-    return {"fews_src": os.path.abspath(src), "files": dict(sorted(files.items()))}
+    return {"fews_src": os.path.abspath(src), "files": dict(sorted(files.items())),
+            "adapter": adapter_identity("research_cloud.training.fews_features", "research_cloud.training.common")}
+
+
+def read_observations(rx, path):
+    """Observations as FEWS reads them; the native builders cast labels to int64 (stage1_input), so a fractional,
+    missing or out-of-range raw label (or area/month) must fail here first."""
+    from pathlib import Path
+    obs = rx.read_csv(Path(path))[["area", "month", "country", "class_code"]]
+    integer_column(obs, "class_code", 0, 3)
+    integer_column(obs, "area")
+    integer_column(obs, "month")
+    return obs
 
 
 def build(inputs, horizon, target, k, strategy, src):
@@ -66,7 +79,7 @@ def build(inputs, horizon, target, k, strategy, src):
     panel = rx._certified_panel(Path(inputs["panel"]), sha256_file(inputs["panel"]), schema)
     alignment = json.load(open(inputs["alignment"]))
     ledger = av.ReleaseLedger(pd.read_csv(inputs["release_ledger"], dtype=str), real=True)
-    obs = rx.read_csv(Path(inputs["observations"]))[["area", "month", "country", "class_code"]]
+    obs = read_observations(rx, inputs["observations"])
     ctx = av.Availability(obs, ledger, ff.Scaffold(panel, rx._covariate_columns(schema)), schema, horizon, alignment,
                           truth=obs)
     frame = ctx.stage1_input(stage3.mi(target), k, strategy)
