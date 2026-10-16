@@ -1,0 +1,10 @@
+{
+  "description": "Vertex AI predict only (MLflow assistant Gemini calls); task gcp-research-modeling-migration",
+  "etag": "BwZd9hHvvyo=",
+  "includedPermissions": [
+    "aiplatform.endpoints.predict"
+  ],
+  "name": "projects/food-crisis-modeling-enso/roles/researchGeminiInvoker",
+  "stage": "GA",
+  "title": "Research Gemini invoker"
+}

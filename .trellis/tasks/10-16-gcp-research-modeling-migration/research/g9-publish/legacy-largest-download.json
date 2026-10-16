@@ -1,0 +1,10 @@
+{
+ "artifact": "3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar",
+ "expected_sha256": "fa2b9d81093a1511c34eb936aba95fb6015bc16b0b12c88d18efb30f10e4b6c9",
+ "expected_bytes": 130211840,
+ "bytes": 130211840,
+ "sha256": "fa2b9d81093a1511c34eb936aba95fb6015bc16b0b12c88d18efb30f10e4b6c9",
+ "seconds": 15.8,
+ "identity": "ipcch-reader; no Google credentials",
+ "match": true
+}

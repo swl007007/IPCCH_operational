@@ -1,0 +1,64 @@
+{
+ "status": 200,
+ "body": {
+  "name": "projects/76571749286/locations/us-central1/hyperparameterTuningJobs/188012167612596224",
+  "displayName": "hypertune-mount-probe",
+  "studySpec": {
+   "metrics": [
+    {
+     "metricId": "probe",
+     "goal": "MAXIMIZE"
+    }
+   ],
+   "parameters": [
+    {
+     "parameterId": "x",
+     "integerValueSpec": {
+      "minValue": "1",
+      "maxValue": "1"
+     },
+     "scaleType": "UNIT_LINEAR_SCALE"
+    }
+   ],
+   "algorithm": "RANDOM_SEARCH"
+  },
+  "maxTrialCount": 1,
+  "parallelTrialCount": 1,
+  "maxFailedTrialCount": 1,
+  "trialJobSpec": {
+   "workerPoolSpecs": [
+    {
+     "machineSpec": {
+      "machineType": "n1-standard-4"
+     },
+     "replicaCount": "1",
+     "diskSpec": {
+      "bootDiskType": "pd-ssd",
+      "bootDiskSizeGb": 100
+     },
+     "containerSpec": {
+      "imageUri": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch@sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+      "command": [
+       "python",
+       "-c",
+       "\nimport json, os, stat\np = os.environ.get(\"CLOUD_ML_HP_METRIC_FILE\")\nd = os.path.dirname(p) if p else \"/var/hypertune\"\nout = {\"CLOUD_ML_HP_METRIC_FILE\": p, \"uid\": os.getuid(), \"gid\": os.getgid(), \"groups\": os.getgroups(),\n       \"dir_exists\": os.path.isdir(d)}\nif os.path.isdir(d):\n    st = os.stat(d); out.update(dir_mode=oct(stat.S_IMODE(st.st_mode)), dir_uid=st.st_uid, dir_gid=st.st_gid,\n                                dir_writable=os.access(d, os.W_OK), dir_listing=os.listdir(d)[:10])\nout[\"mounts\"] = [l.strip() for l in open(\"/proc/mounts\") if \"hypertune\" in l or \" /var \" in l]\ntry:\n    open(p or \"/var/hypertune/probe\", \"a\").close(); out[\"write\"] = \"ok\"\nexcept OSError as e:\n    out[\"write\"] = f\"{type(e).__name__}: {e}\"\nprint(\"HPT-PROBE \" + json.dumps(out))\n"
+      ]
+     }
+    }
+   ],
+   "scheduling": {
+    "timeout": "300s",
+    "disableRetries": true
+   },
+   "serviceAccount": "research-trainer@food-crisis-modeling-enso.iam.gserviceaccount.com"
+  },
+  "state": "JOB_STATE_PENDING",
+  "createTime": "2026-10-16T14:44:05.092254Z",
+  "updateTime": "2026-10-16T14:44:05.092254Z",
+  "labels": {
+   "task": "gcp-research-modeling-migration",
+   "family": "hypertune-probe",
+   "ipcch-claim": "abae1300aa714f078819"
+  }
+ }
+}

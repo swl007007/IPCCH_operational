@@ -1,0 +1,96 @@
+{
+ "secrets": {
+  "mlflow-assistant-password": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": [
+    "research-mlflow"
+   ]
+  },
+  "guard-config": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": [
+    "research-mlflow"
+   ]
+  }
+ },
+ "sql_ops": {},
+ "steps": [
+  {
+   "time": "2026-10-16T10:36:37-0400",
+   "step": "secret",
+   "name": "mlflow-assistant-password",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T10:36:38-0400",
+   "step": "secret",
+   "name": "guard-config",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T10:37:05-0400",
+   "step": "endpoint-exists",
+   "endpoint_id": "e-9f0a333c965e4418ad1506f44bf12787"
+  },
+  {
+   "time": "2026-10-16T10:37:05-0400",
+   "step": "assistant-use-granted",
+   "user": "ipcch-assistant",
+   "endpoint_id": "e-9f0a333c965e4418ad1506f44bf12787"
+  },
+  {
+   "time": "2026-10-16T10:38:50-0400",
+   "step": "endpoint-created",
+   "endpoint_id": "e-992fea289989480995fa0dd0be8c0b39",
+   "secret_id": "s-eb9b945d65bb4f918bfb23dbb86057e1",
+   "model_definition_id": "d-14187b20b85d47ddb5c4b80a14691cfb"
+  },
+  {
+   "time": "2026-10-16T10:38:52-0400",
+   "step": "assistant-use-granted",
+   "user": "ipcch-assistant",
+   "endpoint_id": "e-992fea289989480995fa0dd0be8c0b39"
+  },
+  {
+   "time": "2026-10-16T10:43:24-0400",
+   "step": "query",
+   "post": 200,
+   "stream": 200,
+   "rows": 2,
+   "all_settled": true
+  },
+  {
+   "time": "2026-10-16T10:49:31-0400",
+   "step": "correction",
+   "note": "the 10:37:05 'endpoint-exists'/'assistant-use-granted' steps refer to the COPIED old-project endpoint e-9f0a333c965e4418ad1506f44bf12787 (secret ipcch-vertex-sa, vertex_project manuel-remote-sensing): the first tool version reused it by name. The mistaken USE grant to ipcch-assistant was revoked at 2026-10-16T14:38:19Z (HTTP 200, revision 00005, deny mode); readback NO_PERMISSIONS, re-verified 10:5x. The copied principal 'assistant' keeps its original USE (copied role __user_2__). No Gateway invocation of any endpoint occurred before arming (request logs), and the guard pins the target project. The target endpoint is ipcch-assistant-gemini-enso (e-992fea289989480995fa0dd0be8c0b39, native 6242aec)."
+  }
+ ],
+ "query": {
+  "post": 200,
+  "stream": 200,
+  "answer_tail": "                cloud-training-acceptance            mlflow-artifacts:/workspaces/default/7\\\\n8                historical-packages                  mlflow-artifacts:/workspaces/default/8\\\\n9                gateway/ipcch-assistant-gemini-enso  mlflow-artifacts:/workspaces/default/9\\\"}, {\\\"role\\\": \\\"assistant\\\", \\\"content\\\": \\\"Default\\\\nIPCCH detailed runs\\\\nIPCCH dashboard\\\\nIPCCH forecasting detailed runs\\\\nIPCCH forecasting dashboard\\\\ngateway/ipcch-assistant-gemini\\\\ncloud-acceptance-access-matrix\\\\ncloud-training-acceptance\\\\nhistorical-packages\\\\ngateway/ipcch-assistant-gemini-enso\\\"}]\"}\n\n",
+  "ledger_rows": [
+   [
+    "1",
+    "settled",
+    "1.69574400",
+    "0.00712950",
+    "4463",
+    "58",
+    "34"
+   ],
+   [
+    "2",
+    "settled",
+    "1.69574400",
+    "0.00748200",
+    "4683",
+    "61",
+    "0"
+   ]
+  ],
+  "all_settled": true
+ }
+}

@@ -1,0 +1,7 @@
+{
+ "operation": "G11-vertex-ipcch-hpt2-1",
+ "claim": "claim:9361c57cdc0f49acbe3e:c0e8ae8ed08ffbc0350886026707e91fcf6dacb3f6d4d4c7fc7281c24035f499",
+ "spec": "/home/swl007007/projects/food-crisis-research/scratch/vertex/jobs/spec-ipcch-hpt2-linked.json",
+ "spec_sha256": "c0e8ae8ed08ffbc0350886026707e91fcf6dacb3f6d4d4c7fc7281c24035f499",
+ "time": "2026-10-16T10:29:26-0400"
+}

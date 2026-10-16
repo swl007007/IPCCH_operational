@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 10:32 EDT
+# Executor state (continuation record), updated 2026-10-16 10:55 EDT
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `5700b95`; a separate worktree `control-plane-inputs-fix` (branch `transfer-inventory-status`, 760e763) holds the corrected transfer.py and must be merged after the driver ends. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `5ce0243`; a separate worktree `control-plane-inputs-fix` (branch `transfer-inventory-status`, 760e763) holds the corrected transfer.py and must be merged after the driver ends. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -44,7 +44,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - images writable HOME + self-check ff90981, provider pin 36bde42, replay images b24dfd1; quote bindings 7180734 /
     6d4a9b6 / b24dfd1; preservation gate 50e9a6c; provisioner b497503 → 253a6b2 → b32038d; db_roles 3c8dbad;
     ledger note 6f9cbda; transfer a3eb433 → a524e51; bytecode guards df4bd6b (NOT in the 36bde42 images; see
-    `checkpoint-g7-g8-data-load-20261016.md` §3); MLflow store loader b97ddcd; URI driver fix 0624d03 + a408376; staging access 344a857; input-import wrapper 779a5c1; image sandbox replay 9a04ded; cloud job specs edb0989 (+disableRetries de1a116); quote f45426e/7d83228; replay freshness gate 4a0080c; temp admin de1a116/e0a18d7; identities/access e0a18d7/7f09313; IAM proxy de1a116; URI map paging 600a932; Vertex launcher 3f0a8e5 + digest env c63e436; guarded admission e646fa7/2f2743d; credential cache 468a155 (image) / 1cc5cd7 (comment) + live check; package publish/download 5700b95.
+    `checkpoint-g7-g8-data-load-20261016.md` §3); MLflow store loader b97ddcd; URI driver fix 0624d03 + a408376; staging access 344a857; input-import wrapper 779a5c1; image sandbox replay 9a04ded; cloud job specs edb0989 (+disableRetries de1a116); quote f45426e/7d83228; replay freshness gate 4a0080c; temp admin de1a116/e0a18d7; identities/access e0a18d7/7f09313; IAM proxy de1a116; URI map paging 600a932; Vertex launcher 3f0a8e5 + digest env c63e436; guarded admission e646fa7/2f2743d; credential cache 468a155 (image) / 1cc5cd7 (comment) + live check; package publish/download 5700b95 → da4f3ce/90a1409; transfer merge bc618c5; base manifests 51e7804; AC8 clean run 8727a46/5ce0243; G10 15edaba/6242aec/56d1008.
   - **Do not change `research_cloud/deploy/transfer.py` until the transfer driver has finished** (its stages import from this checkout).
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**

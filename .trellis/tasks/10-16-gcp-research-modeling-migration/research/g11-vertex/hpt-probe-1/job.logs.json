@@ -1,0 +1,168 @@
+[
+  {
+    "insertId": "1mui80idmn9y",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "QUEUED",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F188012167612596224",
+    "receiveTimestamp": "2026-10-16T14:44:15.149350562Z",
+    "resource": {
+      "labels": {
+        "job_id": "188012167612596224",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Waiting for job to be provisioned.",
+    "timestamp": "2026-10-16T14:44:14.584499253Z"
+  },
+  {
+    "insertId": "1mui80idmn9z",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F188012167612596224",
+    "receiveTimestamp": "2026-10-16T14:44:15.149350562Z",
+    "resource": {
+      "labels": {
+        "job_id": "188012167612596224",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Vertex AI is provisioning job running framework. First time usage might take couple of minutes, and subsequent runs can be much faster.",
+    "timestamp": "2026-10-16T14:44:14.603930447Z"
+  },
+  {
+    "insertId": "1mui80idmna0",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F188012167612596224",
+    "receiveTimestamp": "2026-10-16T14:44:15.149350562Z",
+    "resource": {
+      "labels": {
+        "job_id": "188012167612596224",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Vertex AI is setting up this job.",
+    "timestamp": "2026-10-16T14:44:14.625562363Z"
+  },
+  {
+    "insertId": "1mui80idmna1",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F188012167612596224",
+    "receiveTimestamp": "2026-10-16T14:44:15.149350562Z",
+    "resource": {
+      "labels": {
+        "job_id": "188012167612596224",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Waiting for training program to start.",
+    "timestamp": "2026-10-16T14:44:14.677715887Z"
+  },
+  {
+    "insertId": "1mui80idmna6",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "PREPARING",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F188012167612596224",
+    "receiveTimestamp": "2026-10-16T14:44:17.148668676Z",
+    "resource": {
+      "labels": {
+        "job_id": "188012167612596224",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job is preparing.",
+    "timestamp": "2026-10-16T14:44:16.350489048Z"
+  },
+  {
+    "insertId": "1nxs4slf54btd6",
+    "labels": {
+      "compute.googleapis.com/resource_id": "6503403250287347265",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-351ub4a7-ef88d02d-clwg",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "188012167612596224",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T14:47:46.423353996Z",
+    "resource": {
+      "labels": {
+        "job_id": "188012167612596224",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "HPT-PROBE {\"CLOUD_ML_HP_METRIC_FILE\": \"/var/hypertune/output905a71fd21.metric\", \"uid\": 65534, \"gid\": 65534, \"groups\": [3003, 65534], \"dir_exists\": true, \"dir_mode\": \"0o755\", \"dir_uid\": 0, \"dir_gid\": 0, \"dir_writable\": false, \"dir_listing\": [], \"mounts\": [\"/dev/sda1 /var/hypertune ext4 rw,relatime,commit=30 0 0\"], \"write\": \"PermissionError: [Errno 13] Permission denied: '/var/hypertune/output905a71fd21.metric'\"}",
+    "timestamp": "2026-10-16T14:47:43.081627401Z"
+  },
+  {
+    "insertId": "1mui80idmno7",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "RUNNING",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F188012167612596224",
+    "receiveTimestamp": "2026-10-16T14:47:56.194203799Z",
+    "resource": {
+      "labels": {
+        "job_id": "188012167612596224",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job is running.",
+    "timestamp": "2026-10-16T14:47:55.126842386Z"
+  },
+  {
+    "insertId": "1mui80idmnoj",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F188012167612596224",
+    "receiveTimestamp": "2026-10-16T14:47:57.188114486Z",
+    "resource": {
+      "labels": {
+        "job_id": "188012167612596224",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Tearing down training program.",
+    "timestamp": "2026-10-16T14:47:56.338132476Z"
+  }
+]

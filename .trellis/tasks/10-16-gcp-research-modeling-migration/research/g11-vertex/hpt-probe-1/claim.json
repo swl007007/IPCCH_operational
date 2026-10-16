@@ -1,0 +1,7 @@
+{
+ "operation": "G11-vertex-hpt-probe-1",
+ "claim": "claim:abae1300aa714f078819:7bb3402998f7d3581ab9500bb8db44cb0a9d2c39e8138af6c5cbf9bdb536d274",
+ "spec": "/home/swl007007/projects/food-crisis-research/scratch/vertex/jobs/spec-hpt-probe.json",
+ "spec_sha256": "7bb3402998f7d3581ab9500bb8db44cb0a9d2c39e8138af6c5cbf9bdb536d274",
+ "time": "2026-10-16T10:43:45-0400"
+}
