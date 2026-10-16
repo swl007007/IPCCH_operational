@@ -29,10 +29,12 @@ class CloudJob(unittest.TestCase):
             cj.spec("m", "repo/img:tag", "n1-standard-4", "/gcs/a", "/gcs/b", "fam", 600)
         job = cj.spec("m", "repo/img@sha256:" + "b" * 64, "n1-standard-4", "/gcs/a", "/gcs/b", "fam", 600)
         self.assertEqual(job["jobSpec"]["serviceAccount"], cj.TRAINER)
-        self.assertEqual(job["jobSpec"]["scheduling"], {"timeout": "600s", "restartJobOnWorkerRestart": False})
+        self.assertEqual(job["jobSpec"]["scheduling"],
+                         {"timeout": "600s", "disableRetries": True, "restartJobOnWorkerRestart": False})
         hpt = cj.spec("m", "repo/img@sha256:" + "b" * 64, "n1-highmem-4", "/gcs/a", "/gcs/b", "fam", 600, 2,
                       "crisis_f1", cfg["space"])
         self.assertEqual((hpt["maxTrialCount"], hpt["parallelTrialCount"]), (2, 1))
+        self.assertIs(hpt["trialJobSpec"]["scheduling"]["disableRetries"], True)
         self.assertEqual(hpt["studySpec"]["metrics"], [{"metricId": "crisis_f1", "goal": "MAXIMIZE"}])
         self.assertEqual(hpt["studySpec"]["parameters"][0]["integerValueSpec"], {"minValue": 2, "maxValue": 4})
 

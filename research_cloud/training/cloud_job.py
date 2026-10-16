@@ -12,8 +12,9 @@ sources come from ``FEWS_SRC`` / ``IPCCH_GEOXGB_SRC`` under ``/app/sources``.
 ``spec``: a CustomJob (or HyperparameterTuningJob) request body: image by digest, the dedicated trainer service
 account, one replica of the quoted machine type, ``python -m <adapter> --manifest /gcs/... --config /gcs/...
 --output gs://<artifacts>/trials/<family>`` and, for HPT, the config's tuning space with the declared objective
-maximized, ``maxTrialCount``/``parallelTrialCount`` as given and ``disableRetries``-equivalent scheduling
-(``restartJobOnWorkerRestart: false``, per-trial ``timeout``).
+maximized, ``maxTrialCount``/``parallelTrialCount`` as given. Scheduling sets ``disableRetries: true`` (no retry
+after internal errors once the job runs; it also overrides ``restartJobOnWorkerRestart``, which alone only concerns
+restarting a whole distributed job) and the per-trial ``timeout``.
 
   python -m research_cloud.training.cloud_job manifest --local M.json --snapshot NAME --out CLOUD_M.json
   python -m research_cloud.training.cloud_job config --local C.json --out CLOUD_C.json
@@ -60,7 +61,8 @@ def spec(adapter, image, machine, manifest, config, family, timeout_s, hpt=None,
     job_spec = {"workerPoolSpecs": [{"machineSpec": {"machineType": machine}, "replicaCount": "1",
                                      "containerSpec": container}],
                 "serviceAccount": TRAINER,
-                "scheduling": {"timeout": f"{int(timeout_s)}s", "restartJobOnWorkerRestart": False}}
+                "scheduling": {"timeout": f"{int(timeout_s)}s", "disableRetries": True,
+                               "restartJobOnWorkerRestart": False}}
     labels = {"task": "gcp-research-modeling-migration", "family": family.replace("_", "-")[:63]}
     if not hpt:
         return {"displayName": f"{family}-trial", "jobSpec": job_spec, "labels": labels}
