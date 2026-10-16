@@ -1,0 +1,127 @@
+"""G10: arm the cloud MLflow assistant (read-only, Gemini 3.8 Flash on Vertex AI global) as rehearsed.
+
+``secrets``: the service needs the assistant's MLflow identity as two variables, but ``mlflow-assistant-credentials``
+holds a JSON pair, so its password is copied in-process into ``mlflow-assistant-password`` (task labels, accessor
+research-mlflow only; never printed). The guard configuration is written to ``guard-config`` (same accessor) and
+mounted as a file: Cloud Billing catalog list prices of the pinned model (input/output SKUs 2A35-AC68-14D6 /
+90FD-DC5F-DC55, effective 2026-10-15), USD 10 monthly allocation, the rehearsed limits, ledger DSN from
+``IPCCH_GUARD_DSN`` (secret ``guard-dsn``).
+``gateway``: as the temporary migration admin, the Vertex AI Gateway endpoint ``ipcch-assistant-gemini`` is created
+with an ADC secret (no key material; project food-crisis-modeling-enso, location global, gemini-3.8-flash) - the
+rehearsed calls - and ``ipcch-assistant`` is granted USE on it.
+``query``: one bounded read-only question as ``ipcch-reader`` (the rehearsed stream client); the guard ledger must then
+hold only settled rows for this turn (read as its owner guard_app).
+
+  python -m research_cloud.deploy.arm_assistant secrets|gateway|query --url URL --port 5433 --receipt R.json
+"""
+import argparse
+import contextlib
+import json
+import sys
+
+from research_cloud.deploy import provision_secrets as ps
+from research_cloud.deploy.db_roles import connect, secret_value
+
+ENDPOINT = "ipcch-assistant-gemini"
+GUARD = {"dsn_env": "IPCCH_GUARD_DSN", "project": "food-crisis-modeling-enso", "location": "global",
+         "model": "gemini-3.8-flash",
+         "price_source": "Cloud Billing catalog list price, Gemini 3.8 Flash Global Text Input/Output - Predictions, SKUs "
+                         "2A35-AC68-14D6 / 90FD-DC5F-DC55, effective 2026-10-15T07:00:00Z (scratch/p3/skus/vertex.json)",
+         "input_usd_per_mtok": 1.5, "output_usd_per_mtok": 7.5, "monthly_allocation_usd": 10,
+         "model_max_input_tokens": 1048576, "output_reservation_factor": 2, "max_output_tokens": 8192,
+         "max_request_bytes": 2000000, "max_in_flight": 2, "request_timeout_s": 120, "settle_grace_s": 30}
+
+
+def do_secrets(api, receipt):
+    pair = json.loads(secret_value(api, "mlflow-assistant-credentials"))
+    ps.KNOWN.discard(pair["username"])
+    ps.ensure_secret(api, receipt, "mlflow-assistant-password", lambda: pair["password"], ["research-mlflow"],
+                     must_equal=pair["password"])
+    text = json.dumps(GUARD, sort_keys=True)
+    ps.ensure_secret(api, receipt, "guard-config", lambda: text, ["research-mlflow"], must_equal=text)
+    return {"assistant_username": pair["username"], "guard_config": GUARD}
+
+
+def do_gateway(api, receipt, url):
+    import requests
+    from mlflow.entities.gateway_endpoint import GatewayEndpointModelConfig, GatewayModelLinkageType
+    from mlflow.store.tracking.rest_store import RestStore
+    from mlflow.utils.rest_utils import MlflowHostCreds
+
+    from research_cloud.deploy.mlflow_identities import cred
+    admin = cred(api, "mlflow-temp-admin")
+    assistant = cred(api, "mlflow-assistant-credentials")[0]
+    store = RestStore(lambda: MlflowHostCreds(url, username=admin[0], password=admin[1]))
+    existing = {e.name: e for e in store.list_gateway_endpoints()}
+    if ENDPOINT in existing:
+        endpoint = existing[ENDPOINT]
+        receipt.step("endpoint-exists", endpoint_id=endpoint.endpoint_id)
+    else:
+        secret = store.create_gateway_secret("vertex-adc-research", {"mode": "adc"}, provider="vertex_ai",
+                                             auth_config={"vertex_project": GUARD["project"],
+                                                          "vertex_location": GUARD["location"]})
+        model = store.create_gateway_model_definition("gemini-3.8-flash-research", secret.secret_id, "vertex_ai",
+                                                      GUARD["model"])
+        endpoint = store.create_gateway_endpoint(ENDPOINT, [GatewayEndpointModelConfig(
+            model_definition_id=model.model_definition_id, linkage_type=GatewayModelLinkageType.PRIMARY, weight=1.0)])
+        receipt.step("endpoint-created", endpoint_id=endpoint.endpoint_id, secret_id=secret.secret_id,
+                     model_definition_id=model.model_definition_id)
+    grant = {"username": assistant, "resource_type": "gateway_endpoint", "resource_id": endpoint.endpoint_id}
+    requests.post(url + "/api/3.0/mlflow/users/permissions/grant", json=dict(grant, permission="USE"), auth=admin,
+                  timeout=60)
+    perm = requests.get(url + "/api/3.0/mlflow/users/permissions/get", params=grant, auth=admin, timeout=60).json()
+    if perm.get("permission") != "USE":
+        raise ps.ProvisionError(f"assistant identity does not hold USE on the endpoint: {perm}")
+    receipt.step("assistant-use-granted", user=assistant, endpoint_id=endpoint.endpoint_id)
+    return {"endpoint_id": endpoint.endpoint_id, "assistant": assistant, "permission": perm.get("permission")}
+
+
+def guard_rows(api, port):
+    """The guard ledger as its owner ``guard_app`` (the table lives in database ``guard``)."""
+    with contextlib.closing(connect(port, "guard_app", secret_value(api, "sql-guard-app"), "guard")) as c:
+        cur = c.cursor()
+        cur.execute("SELECT to_regclass('public.ipcch_assistant_ledger')")
+        if cur.fetchone()[0] is None:
+            return None
+        cur.execute("SELECT id, status, reserved_usd, actual_usd, prompt_tokens, output_tokens, thought_tokens "
+                    "FROM ipcch_assistant_ledger ORDER BY id")
+        return cur.fetchall()
+
+
+def do_query(api, receipt, url, port):
+    from research_cloud.deploy.mlflow_identities import cred
+    from research_cloud.service.rehearse_assistant import stream_turn
+    reader = cred(api, "mlflow-reader")
+    before = guard_rows(api, port) or []
+    post, got, body = stream_turn(url, reader, "Which experiments exist? Answer with their names only.", "1")
+    after = guard_rows(api, port) or []
+    new = after[len(before):]
+    result = {"post": post, "stream": got, "answer_tail": body[-600:], "ledger_rows": [[str(x) for x in r] for r in new],
+              "all_settled": bool(new) and all(r[1] == "settled" for r in new)}
+    receipt.data["query"] = result
+    receipt.step("query", post=post, stream=got, rows=len(new), all_settled=result["all_settled"])
+    return result
+
+
+def main(argv=None, api=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("action", choices=("secrets", "gateway", "query"))
+    ap.add_argument("--url", required=True)
+    ap.add_argument("--port", type=int, default=5433)
+    ap.add_argument("--receipt", required=True)
+    args = ap.parse_args(argv)
+    receipt = ps.Receipt(args.receipt)
+    api = api or ps.Api()
+    try:
+        out = {"secrets": lambda: do_secrets(api, receipt), "gateway": lambda: do_gateway(api, receipt, args.url),
+               "query": lambda: do_query(api, receipt, args.url, args.port)}[args.action]()
+    except ps.ProvisionError as e:
+        receipt.step("stopped", error=ps.scrub(str(e)))
+        print(ps.scrub(json.dumps({"status": "stopped", "error": str(e)})))
+        return 1
+    print(ps.scrub(json.dumps({"status": "complete", "action": args.action, **out}, default=str)))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
