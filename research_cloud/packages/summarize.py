@@ -13,6 +13,15 @@ import os
 from research_cloud.packages.common import sha256_file
 
 
+def routes_covered(package, m):
+    """covered/total routes; cell-routed packages (FEWS ordinary) count reference cells against their units."""
+    if "routes_covered" in m["reference"]:
+        return f"{len(m['reference']['routes_covered'])}/{len(m['routing']['routes_in_version'])}"
+    import pandas as pd
+    routes = pd.read_csv(os.path.join(package, "reference", "expected.csv"), usecols=["route"])["route"].astype(str)
+    return f"{routes.nunique()}/{len(m['units'])}"
+
+
 def summarize(report_paths):
     rows = []
     for f in sorted(report_paths):
@@ -30,7 +39,7 @@ def summarize(report_paths):
             replay_passed=bool(r.get("passed")) and fresh, reference_rows=r.get("rows"), fitted_units=m.get("fitted_units"),
             max_abs_err=max((v["max_abs_err"] for v in cols.values()), default=None),
             routing_mismatches=r.get("routing_mismatches"), phase_changes=len(r.get("phase_changes", [])),
-            routes_covered=f"{len(m['reference']['routes_covered'])}/{len(m['routing']['routes_in_version'])}",
+            routes_covered=routes_covered(r["package"], m),
             content_sha256=m["content_sha256"], package_bytes=sum(x["bytes"] for x in m["files"].values()),
             runtime=r.get("runtime")))
     return rows
