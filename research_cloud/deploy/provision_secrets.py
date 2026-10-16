@@ -53,9 +53,11 @@ IDENTITIES = {"mlflow-assistant-credentials": ("ipcch-assistant", ["research-mlf
               "mlflow-jobwriter": ("ipcch-jobwriter", ["research-trainer"]),
               "mlflow-reader": ("ipcch-reader", [])}
 SOCKET = f"/cloudsql/{CONNECTION}"
+# the driver is explicit: SQLAlchemy 2.1 maps a bare postgresql:// to psycopg (v3), and the service image ships psycopg2
+DRIVER = "postgresql+psycopg2"
 DEPENDENT = {
-    "mlflow-backend-uri": (lambda pw: f"postgresql://mlflow_app:{pw['sql-mlflow-app']}@/mlflow?host={SOCKET}", ["research-mlflow"]),
-    "mlflow-auth-db-uri": (lambda pw: f"postgresql://mlflow_app:{pw['sql-mlflow-app']}@/mlflow_auth?host={SOCKET}", ["research-mlflow"]),
+    "mlflow-backend-uri": (lambda pw: f"{DRIVER}://mlflow_app:{pw['sql-mlflow-app']}@/mlflow?host={SOCKET}", ["research-mlflow"]),
+    "mlflow-auth-db-uri": (lambda pw: f"{DRIVER}://mlflow_app:{pw['sql-mlflow-app']}@/mlflow_auth?host={SOCKET}", ["research-mlflow"]),
     "guard-dsn": (lambda pw: f"host={SOCKET} dbname=guard user=guard_app password={pw['sql-guard-app']}", ["research-mlflow"]),
 }
 
