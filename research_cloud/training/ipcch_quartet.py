@@ -14,6 +14,7 @@ undefined (no positives in truth and prediction) fails the trial. q3 R2 values a
   python -m research_cloud.training.ipcch_quartet --manifest M.json --config C.json --output DIR|gs://... [--max_depth=4 ...]
 """
 import importlib
+import json
 import os
 import sys
 
@@ -24,6 +25,17 @@ from research_cloud.training.common import TrialError, run_trial
 
 TARGETS = ("q2", "q3", "q4", "q5")
 HORIZONS = {1, 3, 6, 12}
+OBJECTIVE = "crisis_f1"
+
+
+def integer_column(frame, name, lo=None, hi=None):
+    """Raw values must be integers (no fraction, no NaN) within bounds before any int cast."""
+    v = pd.to_numeric(frame[name], errors="coerce").to_numpy(dtype=np.float64)
+    if np.isnan(v).any() or (v != np.round(v)).any():
+        raise TrialError(f"{name} holds non-integer or missing values")
+    if (lo is not None and v.min() < lo) or (hi is not None and v.max() > hi):
+        raise TrialError(f"{name} outside [{lo}, {hi}]")
+    return v.astype(np.int64)
 
 
 def _modules(config):
@@ -38,21 +50,34 @@ def fit(inputs, manifest, config, params, out):
     h = int(config["horizon"])
     if h not in HORIZONS:
         raise TrialError(f"horizon {h} is not one of the historical GeoXGB horizons {sorted(HORIZONS)}")
+    if not config.get("folds"):
+        raise TrialError("no development folds declared")
     keys = pd.read_csv(inputs["keys"])
     X = np.load(inputs["X"], mmap_mode="r")
-    order = pd.read_csv(inputs["feature_order"])
-    if X.shape != (len(keys), len(order)) or keys.duplicated(["admin_code", "target_ord"]).any():
-        raise TrialError("prepared bundle misaligned: keys, X and feature order disagree or keys repeat")
-    if "origin_ord" in keys and ((keys["target_ord"] - keys["origin_ord"]) != h).any():
-        raise TrialError("prepared rows are not built at origin = target - H")
+    order = pd.read_csv(inputs["feature_order"])["name"].astype(str).tolist()
+    frozen = json.load(open(os.path.join(os.environ.get("IPCCH_GEOXGB_SRC", config.get("geoxgb_src", "")),
+                                         "config", "feature-schema.json")))["ordered_names"]
+    if order != list(frozen) or len(order) != 561:
+        raise TrialError("feature order is not the frozen rich561 ordered schema")
+    missing = [c for c in ("admin_code", "target_ord", "origin_ord", "horizon_months", "phase_truth", *TARGETS) if c not in keys]
+    if missing:
+        raise TrialError(f"prepared keys lack {missing}")
+    admin = integer_column(keys, "admin_code")
+    months = integer_column(keys, "target_ord")
+    origins = integer_column(keys, "origin_ord")
+    horizons = integer_column(keys, "horizon_months")
+    phases = integer_column(keys, "phase_truth", 1, 5)
+    if X.shape != (len(keys), 561) or pd.Series(list(zip(admin, months))).duplicated().any():
+        raise TrialError("prepared bundle misaligned: keys and X disagree or keys repeat")
+    if (horizons != h).any() or ((months - origins) != h).any():
+        raise TrialError("prepared rows are not built at their own origin O = T - H for this horizon")
     Y = keys[list(TARGETS)].to_numpy(dtype=np.float64)
-    months = keys["target_ord"].to_numpy(np.int64)
     holdout = int(config["holdout_start_ord"])
     params = dict(params)   # the caller records the validated trial values unchanged
     rounds = int(params.pop("rounds"))
     model_params = {**config["fixed"], **params}
 
-    counts, panels, fits = [], [], []
+    counts, panels, fits, packaged = [], [], [], []
     for fold in config["folds"]:
         origin = int(fold["origin_ord"])
         target = origin + h
@@ -67,7 +92,7 @@ def fit(inputs, manifest, config, params, out):
         q = quartet.fit_global_quartet(np.asarray(X[fit_rows]), Y[fit_rows], model_params, rounds)
         raw = q.predict_raw(np.asarray(X[val_rows]))
         star, phase = projection.project_and_decode(raw)
-        truth = keys.iloc[val_rows]["phase_truth"].to_numpy(np.int64)
+        truth = phases[val_rows]
         panel = metrics.metric_panel(truth, phase, Y[val_rows, 1], star[:, 1], raw[:, 1])
         counts.append(metrics.crisis_counts(truth, phase))
         panels.append({"origin_ord": origin, "target_ord": target, "fit_rows": int(len(fit_rows)),
@@ -80,11 +105,14 @@ def fit(inputs, manifest, config, params, out):
             "booster_sha256": q.booster_shas(), "fit_records": q.records, "rounds": rounds, "params": model_params,
             "fitting_keys_sha256": modelstore.array_digest(keys.iloc[fit_rows][["admin_code", "target_ord"]].to_numpy(np.int64)),
             "y_sha256": modelstore.target_digests(Y[fit_rows]), "window": [origin - 35, origin], "validation_target_ord": target})
-        pd.DataFrame({"admin_code": keys.iloc[val_rows]["admin_code"].to_numpy(), "target_ord": target,
+        pd.DataFrame({"admin_code": admin[val_rows], "target_ord": target,
                       **{f"{t}_raw": raw[:, j] for j, t in enumerate(TARGETS)},
                       **{f"{t}_star": star[:, j] for j, t in enumerate(TARGETS)}, "phase": phase,
                       "phase_truth": truth}).to_csv(out.path(f"{fold_dir}/predictions.csv.gz"), index=False)
         fits.append(fold_dir)
+        packaged.append({"unit": f"o{origin}_{q.booster_shas()['q3'][:16]}", "payloads": q.payloads,
+                         "record": {"booster_sha256": q.booster_shas(), "fit_records": q.records},
+                         "validation_rows": val_rows, "target_ord": target, "raw": raw, "star": star, "phase": phase})
     pooled = metrics.add_counts(*counts)
     f1 = metrics.exact_f1(pooled)
     result_metrics = {"crisis_f1": float(f1) if f1 is not None else None,
@@ -95,10 +123,20 @@ def fit(inputs, manifest, config, params, out):
         if all(v is not None for v in values):
             result_metrics[f"mean_{name}"] = float(np.mean(values))
     out.write_json("metrics.json", {"pooled_crisis_counts": pooled, "folds": panels})
-    return {"metrics": result_metrics, "artifacts": fits, "model_params": model_params, "rounds": rounds,
+    from research_cloud.training import trial_package
+    from research_cloud.training.common import runtime_identity
+    package_meta = trial_package.build(
+        out.path("package"), folds=packaged, keys=keys, X=X, feature_order_path=inputs["feature_order"],
+        geoxgb_src=os.environ.get("IPCCH_GEOXGB_SRC", config.get("geoxgb_src", "")),
+        identity={"family": "ipcch_geoxgb_pooled_quartet", "horizon": h, "trial": os.environ.get("CLOUD_ML_TRIAL_ID"),
+                  "job": os.environ.get("CLOUD_ML_JOB_ID"), "params": model_params, "rounds": rounds,
+                  "inputs": {r: e["sha256"] for r, e in manifest["files"].items()}},
+        runtime=runtime_identity())
+    return {"metrics": result_metrics, "artifacts": fits + ["package"], "model_params": model_params, "rounds": rounds,
+            "package": {"path": "package", "content_sha256": package_meta["content_sha256"], "units": package_meta["fitted_units"]},
             "identity": {"family": "ipcch_geoxgb_pooled_quartet", "kind": "new Linux research run (not a historical version)",
                          "horizon": h, "folds": [p["origin_ord"] for p in panels]}}
 
 
 if __name__ == "__main__":
-    sys.exit(run_trial(fit))
+    sys.exit(run_trial(fit, objective=OBJECTIVE))

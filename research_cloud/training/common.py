@@ -71,6 +71,9 @@ def resolve_inputs(manifest_path, workdir):
 
 def validate_params(trial, space, fixed):
     """Trial values must be inside the declared space; fixed keys can never be overridden."""
+    overlap = sorted(set(space) & set(fixed))
+    if overlap:   # a space default would silently replace a fixed value
+        raise TrialError(f"config declares {overlap} both fixed and tunable")
     clash = sorted(set(trial) & set(fixed))
     if clash:
         raise TrialError(f"trial parameters may not override fixed keys {clash}")
@@ -182,7 +185,17 @@ def mlflow_log(experiment, record, artifacts_dir):
     return run_id
 
 
-def run_trial(fit, argv=None):
+def trial_prefix(output):
+    """Each job/trial writes under its own subprefix; an existing trial record is never overwritten."""
+    job = os.environ.get("CLOUD_ML_JOB_ID") or "local-" + time.strftime("%Y%m%dT%H%M%S") + f"-{os.getpid()}"
+    trial = os.environ.get("CLOUD_ML_TRIAL_ID") or "0"
+    prefix = f"{output.rstrip('/')}/{job}/trial-{trial}"
+    if not prefix.startswith("gs://") and os.path.exists(os.path.join(prefix, "trial.json")):
+        raise SystemExit(f"{prefix} already holds a trial record")
+    return prefix
+
+
+def run_trial(fit, argv=None, objective=None):
     """CLI wrapper: --manifest --config --output [--param name=value ...] [--mlflow-experiment NAME].
     Vertex HPT passes trial values as --name=value arguments; they are accepted the same way."""
     import argparse
@@ -199,16 +212,22 @@ def run_trial(fit, argv=None):
             raise SystemExit(f"unrecognised argument {item}")
         k, v = item[2:].split("=", 1)
         trial[k] = v
-    out = Output(args.output)
-    record = {"status": "started", "runtime": runtime_identity(), "trial_arguments": trial, "started": time.time()}
+    out = Output(trial_prefix(args.output))
+    record = {"status": "started", "runtime": runtime_identity(), "trial_arguments": trial, "started": time.time(),
+              "output": out.prefix}
     manifest = {}
     try:
-        inputs, manifest = resolve_inputs(args.manifest, out.local)
         config = json.load(open(args.config))
+        record["config"] = config
+        if objective is not None and config.get("objective") != objective:
+            raise TrialError(f"this adapter reports {objective!r}, the config declares {config.get('objective')!r}")
+        inputs, manifest = resolve_inputs(args.manifest, out.local)
+        record["input_sha256"] = {r: e["sha256"] for r, e in manifest["files"].items()}
         params = validate_params(trial, config["space"], config["fixed"])
+        record.update(params=params, resolved_params={**config["fixed"], **params})
+        out.write_json("trial.json", record)   # provenance persists even if fit raises
         result = fit(inputs, manifest, config, params, out)
-        record.update(status="succeeded", params=params, input_sha256={r: e["sha256"] for r, e in manifest["files"].items()},
-                      config=config, **result)
+        record.update(status="succeeded", **result)
         record["objective_report"] = report_objective(config["objective"], result["metrics"].get(config["objective"]))
     except Exception as e:
         record.update(status="failed", error=f"{type(e).__name__}: {e}", traceback=traceback.format_exc()[-4000:])
