@@ -1,0 +1,235 @@
+{
+ "fews-trial-6384402304920977408": {
+  "run_id": "213cec733ca244eca2e06d9837541f83",
+  "artifacts": [
+   "metrics.json",
+   "model",
+   "package",
+   "predictions",
+   "trial.json"
+  ],
+  "package_json_sha256": "fb4b83f997ac2e0b27e44063377aaf57483efbb59b2c8cac294bc4d34c369de0",
+  "runtime": null,
+  "identity": {
+   "family": "fewsnet_pooled_fourclass_trial",
+   "horizon": 4,
+   "input_manifest": {
+    "derived_from": {
+     "availability_inputs_sha256_linux": "9844579a7ae47cd8e4030953d231947e03160765337cebeb2e665897f01e0ed9",
+     "base_inputs": {
+      "alignment": "ca9e9a66ba791aacc14bf3d028c89c39bad6ae21c27331e07f0cf0c0b542e543",
+      "observations": "c1ba4d2e4c84d035cb91760f1f589965563dca08e67a647c4c71aa357bb0b873",
+      "panel": "611f9e776380e28da3fc845888d66a117626f91b37868e236ce849d44bc8f651",
+      "release_ledger": "83402d71a517298984392b105169f0b2841116721c24ee4f8421d299c9b9f960"
+     },
+     "base_manifest": "/home/swl007007/projects/food-crisis-research/scratch/training/manifest-fews-base.json",
+     "base_manifest_sha256": "50d20e39150e9ce4b5d79f5af77234a6a0b0db7c119781ae5b597be545da3a6f",
+     "builder_code": {
+      "adapter": {
+       "control_plane_commit": "6d4a9b62a3b8b3dea70bb9250d3a706f17cbee55",
+       "files": {
+        "research_cloud/training/common.py": "15716a2aa26c488f2f3e8d16d09208caa070f246163ef5b6ded6af680ed88192",
+        "research_cloud/training/fews_features.py": "d39f50601b5052ce5f362d93fe432625f64959391776fc7fdb710eaa5e1bc01e"
+       },
+       "image_digest": null,
+       "research_cloud_dirty": false
+      },
+      "fews_src": "/home/swl007007/projects/food-crisis-research/sources/Food_Crisis_Cluster/FEWSNETGeoXGBExperiment",
+      "files": {
+       "feature-schema.json": "51b6f8b21b76a78510522c34e2d1f2a648b7aec768bbcac3dd2318669fa13349",
+       "scripts/run_experiment.py": "ddbe9c44d90876f2aac1c1c79e8b8866f0c480e24da5582bf1f8cda358e872e1",
+       "src/experiment/availability.py": "3389e70d177ce3f3b5780ac54ea35d3a5b7b12cabdb16023c81c8d5fff4b80c3",
+       "src/experiment/plan.py": "991e2780bde4e2a01fc1cbed5f626714898417d79c423741e157b4d98dba0816",
+       "src/experiment/stage3.py": "eddccc3b7638a6f201a0de226b3a36183bcfcb8d4d848734e5ba60324f984a94",
+       "src/feature/fourclass_features.py": "4ade6658e74609eb64e32b703224cf6dd36bc014885d70292f4deb4804ae1a90",
+       "src/model/native_xgb.py": "1c5822ccb6307441fd1552f22f86c70cbb5748ec69e67ed036faa006d0002d57"
+      }
+     },
+     "horizon": 4,
+     "k": 0,
+     "local_manifest": {
+      "path": "/home/swl007007/projects/food-crisis-research/scratch/training/fews-features-h4-2019-02-ff90981/manifest.json",
+      "sha256": "6aa28e10cbbf864210f80ddb1ac47bba21d931a4bd6943cbe64cc4a7f9fad35e"
+     },
+     "recipe": "Availability(obs, ReleaseLedger, Scaffold(certified panel), schema, H, alignment, truth=obs).stage1_input(T, k, strategy)",
+     "strategy": "A",
+     "target": "2019-02"
+    },
+    "files": {
+     "X": {
+      "sha256": "333fb45ad32087b6d22b054d548abb36e6a44ba8aea16c403d1d4366cfcf3448",
+      "uri": "/gcs/food-crisis-modeling-enso-research-inputs/training-snapshots/fews-features-h4-2019-02-ff90981/X_h4_2019-02_k0_A.npy"
+     },
+     "feature_order": {
+      "sha256": "5c4ea94b811b4c76951ef59d96b8a356eb01d49274cdc6a2bec33b4784e4aaef",
+      "uri": "/gcs/food-crisis-modeling-enso-research-inputs/training-snapshots/fews-features-h4-2019-02-ff90981/feature_order.csv"
+     },
+     "rows": {
+      "sha256": "c49dc149c664942f7fe0c1c2a41724d6aa15174aedf77c6cf70246df726124db",
+      "uri": "/gcs/food-crisis-modeling-enso-research-inputs/training-snapshots/fews-features-h4-2019-02-ff90981/rows_h4_2019-02_k0_A.csv.gz"
+     }
+    },
+    "gcp_project": "food-crisis-modeling-enso",
+    "name": "fews-scenario-fourclass-h4_2019-02_k0_A-linux"
+   },
+   "job": "6384402304920977408",
+   "params": {
+    "colsample_bytree": 0.8,
+    "eta": 0.05,
+    "max_depth": 3,
+    "min_child_weight": 10,
+    "reg_alpha": 0,
+    "reg_lambda": 10,
+    "rounds": 200,
+    "subsample": 0.8,
+    "tree_method": "hist"
+   },
+   "target": "2019-02",
+   "trial": null,
+   "trial_code": {
+    "adapter": {
+     "control_plane_commit": "36bde42fe1fa4055c97977893ac7f7c429b7af35",
+     "files": {
+      "research_cloud/packages/common.py": "c147424860367b405fd223a6dcc69a1af5e45dd987467799ab986b5edccd8eaf",
+      "research_cloud/packages/fews_confirm.py": "f1ccb661f60910366a794748dfbde62d00080f46b12d8d5be0740c4acceb65e7",
+      "research_cloud/packages/fews_scen.py": "5ecdf3fd87415c808d20e9e379072f0d58bc9d4f4a379bd9a22e8d9a60451e3d",
+      "research_cloud/training/common.py": "15716a2aa26c488f2f3e8d16d09208caa070f246163ef5b6ded6af680ed88192",
+      "research_cloud/training/fews_fourclass.py": "c79eca11323203727a52b0847dd602ac7c01c1ba9dc2ebff89b62996e102f498",
+      "research_cloud/training/ipcch_quartet.py": "dd5bd982cf7b6d1f00075f152c81416fc6c357fbc42b08dd38e0b45d2f2d8770"
+     },
+     "image_digest": "sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+     "research_cloud_dirty": null
+    },
+    "fews_src": "/app/sources/FEWSNETGeoXGBExperiment",
+    "files": {
+     "src/experiment/plan.py": "991e2780bde4e2a01fc1cbed5f626714898417d79c423741e157b4d98dba0816",
+     "src/metrics/fourclass.py": "505f12b5dc597166ab2b4a777f1f2627daa9aaafc07c574916c1a0b50319aeee",
+     "src/model/native_xgb.py": "1c5822ccb6307441fd1552f22f86c70cbb5748ec69e67ed036faa006d0002d57"
+    }
+   }
+  }
+ },
+ "ipcch-trial-8508412479179587584": {
+  "run_id": "d3d1833d04ed427fbcfd97d9ef3cb1aa",
+  "artifacts": [
+   "folds",
+   "metrics.json",
+   "package",
+   "trial.json"
+  ],
+  "package_json_sha256": "d328165fc2986ab958c4e94d85860048f2d31e7088d0d283ce51493fff69f19a",
+  "runtime": {
+   "linux": {
+    "image_digest": "sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+    "machine": "x86_64",
+    "packages": {
+     "cloudml-hypertune": "0.1.0.dev6",
+     "mlflow-skinny": "3.17.0",
+     "numpy": "2.2.6",
+     "pandas": "2.2.3",
+     "xgboost": "3.0.0"
+    },
+    "platform": "Linux-6.12.105+-x86_64-with-glibc2.36",
+    "python": "3.12.3",
+    "source_commit": "36bde42fe1fa4055c97977893ac7f7c429b7af35",
+    "vertex": {
+     "CLOUD_ML_JOB_ID": "8508412479179587584"
+    }
+   }
+  },
+  "identity": {
+   "family": "ipcch_geoxgb_pooled_quartet",
+   "horizon": 3,
+   "input_manifest": {
+    "derived_from": {
+     "base_inputs": {
+      "country_lookup": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90",
+      "raw_panel": "ae696087c3bbb280537ae269a05924133acdb51060d31290523404fa8a717673"
+     },
+     "base_manifest": "/home/swl007007/projects/food-crisis-research/scratch/training/manifest-ipcch-base.json",
+     "base_manifest_sha256": "103c6e8547f60c07c8aaee2ea52febd72f4ec04708d965ef653022159afabe06",
+     "builder_code": {
+      "files": {
+       "config/experiment-contract.json": "49a367ce6fbabb7efda3d2f86a78bac8c3f3f1e31790958d290505cd0b6ffd72",
+       "config/feature-schema.json": "a6093121691e5dce5958f7713872561d89f9d3e19646dcce9c62ce16d62c643d",
+       "config/inputs.json": "49826724a8812b66f1941c69cbbd15e816f9a9a43e03f01633a0a27be473d550",
+       "ipcch_geoxgb/artifacts.py": "dc8f39108cf69f7a3d4a5ca202559b5177652e66098ad17ddb48c2e5f9d108c2",
+       "ipcch_geoxgb/contract.py": "e838ff2861569a085a034be0ff8682540b148734d9909cb1e61ded4499c656c1",
+       "ipcch_geoxgb/features.py": "b3fc637b871adeac732fcc285bed6f53ae329be323485e45928213c9eb8fb958",
+       "ipcch_geoxgb/geography.py": "441fecf06eaf7294280392c524316023a11a199860cfdfd8ddc6cae12c10131e",
+       "ipcch_geoxgb/prepare.py": "1dc973c9266f154ad67da002a66153e5909b8fa451fa2353aae8ed04ac9b64f3",
+       "ipcch_geoxgb/targets.py": "87bfb4e04d2af0b7a04de48df480dfa0daf13e1345309c16355f4024292ebc3b"
+      },
+      "geoxgb_src": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment"
+     },
+     "horizon": 3,
+     "local_manifest": {
+      "path": "/home/swl007007/projects/food-crisis-research/scratch/training/features-h03-v2/manifest.json",
+      "sha256": "8a0ab35df9b2735a1ff64f4a3707fbc7ef275390894c880cd81bfee78958e94d"
+     },
+     "recipe": "targets.build_target_ledger -> valid_targets; features.load_covariate_panel -> build_panel_grid; build_history_index; prepare.build_horizon"
+    },
+    "files": {
+     "X": {
+      "sha256": "b924207cc7e9ad1fd67d0826a48ee5220339fc05251f3000cc73a39d7198d51b",
+      "uri": "/gcs/food-crisis-modeling-enso-research-inputs/training-snapshots/features-h03-v2/X_rich561_h03.npy"
+     },
+     "feature_order": {
+      "sha256": "ae4b543b1e6ed77467780773d32fd58313e6b1b5ed68416b5d767156d9adad51",
+      "uri": "/gcs/food-crisis-modeling-enso-research-inputs/training-snapshots/features-h03-v2/feature_order.csv"
+     },
+     "keys": {
+      "sha256": "e8c9e9d5cd740da7a115ce84558cc1937c13ec2317682942050abe5923af2dc7",
+      "uri": "/gcs/food-crisis-modeling-enso-research-inputs/training-snapshots/features-h03-v2/keys_h03.csv.gz"
+     }
+    },
+    "gcp_project": "food-crisis-modeling-enso",
+    "name": "ipcch-rich561-h03-linux"
+   },
+   "job": "8508412479179587584",
+   "params": {
+    "base_score": 0.5,
+    "booster": "gbtree",
+    "colsample_bytree": 0.8,
+    "device": "cpu",
+    "eta": 0.05,
+    "gamma": 0,
+    "grow_policy": "depthwise",
+    "max_bin": 256,
+    "max_delta_step": 0,
+    "max_depth": 3,
+    "min_child_weight": 10.0,
+    "nthread": 4,
+    "num_parallel_tree": 1,
+    "objective": "reg:squarederror",
+    "reg_alpha": 0,
+    "reg_lambda": 10.0,
+    "seed": 42,
+    "subsample": 0.8,
+    "tree_method": "hist"
+   },
+   "rounds": 200,
+   "trial": null,
+   "trial_code": {
+    "adapter": {
+     "control_plane_commit": "36bde42fe1fa4055c97977893ac7f7c429b7af35",
+     "files": {
+      "research_cloud/training/common.py": "15716a2aa26c488f2f3e8d16d09208caa070f246163ef5b6ded6af680ed88192",
+      "research_cloud/training/ipcch_quartet.py": "dd5bd982cf7b6d1f00075f152c81416fc6c357fbc42b08dd38e0b45d2f2d8770",
+      "research_cloud/training/trial_package.py": "20c4dc64c2d2db59ddf4cd75b30d397da7dcce72a04c7847cd80afbfdfc1e216"
+     },
+     "image_digest": "sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+     "research_cloud_dirty": null
+    },
+    "files": {
+     "config/feature-schema.json": "a6093121691e5dce5958f7713872561d89f9d3e19646dcce9c62ce16d62c643d",
+     "ipcch_geoxgb/metrics.py": "d7006599a29de17de7d37e7d23745ebacbd1725f53eb2c0822316580fac8a620",
+     "ipcch_geoxgb/modelstore.py": "4b75060335119596ccfd17a0b2155ca7339d2a5598a6d56cff8c5286aba2e671",
+     "ipcch_geoxgb/projection.py": "59bbebf7a433f24ddca5acaeecb36036aa3717966ad6c8a3eeb7c8af07af2ab4",
+     "ipcch_geoxgb/quartet.py": "3ec3dbbf4e2aff6ccaf507b63e21ea4924895dfe344f3bde1833adaa3e4f927b"
+    },
+    "geoxgb_src": "/app/sources/IPCCHGeoXGBExperiment"
+   }
+  }
+ }
+}

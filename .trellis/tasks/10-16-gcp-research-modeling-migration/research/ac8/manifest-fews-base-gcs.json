@@ -1,0 +1,33 @@
+{
+ "name": "fews-base-scen-b43ef6a-v1-prepared",
+ "gcp_project": "food-crisis-modeling-enso",
+ "source": "scen-b43ef6a-v1 prepared inputs (hashes equal to prepared outputs.json) + certified pinned panel (sources.json)",
+ "files": {
+  "observations": {
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/fews-runs/scen-b43ef6a-v1/prepared/ledgers/observations.csv",
+   "sha256": "c1ba4d2e4c84d035cb91760f1f589965563dca08e67a647c4c71aa357bb0b873",
+   "gcs_generation": 1792158362060871
+  },
+  "release_ledger": {
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/fews-runs/scen-b43ef6a-v1/prepared/manifests/release_ledger.csv",
+   "sha256": "83402d71a517298984392b105169f0b2841116721c24ee4f8421d299c9b9f960",
+   "gcs_generation": 1792158359715799
+  },
+  "alignment": {
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/fews-runs/scen-b43ef6a-v1/prepared/manifests/alignment.json",
+   "sha256": "ca9e9a66ba791aacc14bf3d028c89c39bad6ae21c27331e07f0cf0c0b542e543",
+   "gcs_generation": 1792158359101341
+  },
+  "panel": {
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/fewsnet.panel/FEWSNET_forecast_unadjusted_bm.csv",
+   "sha256": "611f9e776380e28da3fc845888d66a117626f91b37868e236ce849d44bc8f651",
+   "gcs_generation": 1792155712010706
+  }
+ },
+ "derived_from": {
+  "local_manifest": {
+   "path": "/home/swl007007/projects/food-crisis-research/scratch/training/manifest-fews-base.json",
+   "sha256": "50d20e39150e9ce4b5d79f5af77234a6a0b0db7c119781ae5b597be545da3a6f"
+  }
+ }
+}

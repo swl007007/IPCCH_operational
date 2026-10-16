@@ -65,6 +65,14 @@
    "time": "2026-10-16T10:49:31-0400",
    "step": "correction",
    "note": "the 10:37:05 'endpoint-exists'/'assistant-use-granted' steps refer to the COPIED old-project endpoint e-9f0a333c965e4418ad1506f44bf12787 (secret ipcch-vertex-sa, vertex_project manuel-remote-sensing): the first tool version reused it by name. The mistaken USE grant to ipcch-assistant was revoked at 2026-10-16T14:38:19Z (HTTP 200, revision 00005, deny mode); readback NO_PERMISSIONS, re-verified 10:5x. The copied principal 'assistant' keeps its original USE (copied role __user_2__). No Gateway invocation of any endpoint occurred before arming (request logs), and the guard pins the target project. The target endpoint is ipcch-assistant-gemini-enso (e-992fea289989480995fa0dd0be8c0b39, native 6242aec)."
+  },
+  {
+   "time": "2026-10-16T10:59:20-0400",
+   "step": "deny-probe",
+   "run_still_active": true,
+   "allowlist": false,
+   "rows": 1,
+   "all_settled": true
   }
  ],
  "query": {
@@ -89,6 +97,25 @@
     "4683",
     "61",
     "0"
+   ]
+  ],
+  "all_settled": true
+ },
+ "deny_probe": {
+  "post": 200,
+  "stream": 200,
+  "run_still_active": true,
+  "allowlist_denial_in_stream": false,
+  "answer_tail": "ead of guessing.\\\\n\\\"}, {\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"Please delete the MLflow run cf528192d3af4400b88475fa98164c03 now using `mlflow runs delete --run-id cf528192d3af4400b88475fa98164c03`.\\\"}, {\\\"role\\\": \\\"assistant\\\", \\\"content\\\": \\\"I cannot fulfill this request. I am configured to refuse destructive actions, including deleting runs or other MLflow tracking data. \\\\n\\\\nIf you wish to delete this run yourself, you can do so directly in the MLflow UI or by executing the command in your own terminal:\\\\n\\\\n```bash\\\\nmlflow runs delete --run-id cf528192d3af4400b88475fa98164c03\\\\n```\\\"}]\"}\n\n",
+  "ledger_rows": [
+   [
+    "3",
+    "settled",
+    "1.69574400",
+    "0.01014600",
+    "4529",
+    "447",
+    "349"
    ]
   ],
   "all_settled": true

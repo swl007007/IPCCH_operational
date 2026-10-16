@@ -1,0 +1,20 @@
+{
+ "fews-trial-6384402304920977408": {
+  "image": "training-fews",
+  "rc": 0,
+  "passed": true,
+  "rows": 200,
+  "package_json_sha256": "fb4b83f997ac2e0b27e44063377aaf57483efbb59b2c8cac294bc4d34c369de0",
+  "integrity_problems": [],
+  "stderr": ""
+ },
+ "ipcch-trial-8508412479179587584": {
+  "image": "training-ipcch",
+  "rc": 0,
+  "passed": true,
+  "rows": 48,
+  "package_json_sha256": "d328165fc2986ab958c4e94d85860048f2d31e7088d0d283ce51493fff69f19a",
+  "integrity_problems": [],
+  "stderr": ""
+ }
+}

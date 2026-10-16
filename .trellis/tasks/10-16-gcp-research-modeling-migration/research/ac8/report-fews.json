@@ -1,0 +1,65 @@
+{
+ "family": "fews",
+ "commit": "56d10082de3e74202f3cdd89c5c450d47b267a89",
+ "time": "2026-10-16T10:48:01-0400",
+ "steps": {
+  "clone": {
+   "ok": true,
+   "head": "56d10082de3e74202f3cdd89c5c450d47b267a89"
+  },
+  "probe": {
+   "rc": 0,
+   "seconds": 0.0,
+   "stdout_tail": "{\"mnt_c\": false, \"host_home\": false, \"research_cloud\": \"/work/checkout/research_cloud/__init__.py\", \"uid\": 65534}\n",
+   "stderr_tail": "",
+   "result": {
+    "mnt_c": false,
+    "host_home": false,
+    "research_cloud": "/work/checkout/research_cloud/__init__.py",
+    "uid": 65534
+   },
+   "ok": true
+  },
+  "features": {
+   "rc": 0,
+   "seconds": 164.1,
+   "stdout_tail": "{\"roles\": {\"fit_variant\": 81979, \"eval\": 81979, \"target\": 5365}, \"features\": 129, \"seconds\": 163.4}\n",
+   "stderr_tail": "",
+   "hashes_equal_expected": {
+    "rows": true,
+    "X": true,
+    "feature_order": true
+   }
+  },
+  "trial": {
+   "rc": 0,
+   "seconds": 4.3,
+   "stdout_tail": "{\"status\": \"succeeded\", \"error\": null, \"metrics\": {\"crisis_f1\": 0.7915766738660908, \"crisis_tp\": 733, \"crisis_fp\": 177, \"crisis_fn\": 209, \"crisis_tn\": 4246, \"fit_rows\": 81979, \"fit_original_keys\": 81979, \"target_rows\": 5365}}\n",
+   "stderr_tail": "",
+   "objective": 0.7915766738660908,
+   "objective_equal_expected": true
+  },
+  "mlflow-read-and-download": {
+   "rc": 0,
+   "seconds": 10.5,
+   "stdout_tail": "{\"experiments\": 10, \"package_run\": \"0d2550c952734f20901f05091d056100\", \"downloaded\": \"/out/pkg-dl/package\", \"package_json_tag\": \"b13df408e47015387af58b07ae4fd7b6f7d970f9df74338868ba8a0ff13fd900\"}\n",
+   "stderr_tail": "",
+   "result": {
+    "experiments": 10,
+    "package_run": "0d2550c952734f20901f05091d056100",
+    "downloaded": "/out/pkg-dl/package",
+    "package_json_tag": "b13df408e47015387af58b07ae4fd7b6f7d970f9df74338868ba8a0ff13fd900"
+   },
+   "package_json_equal_tag": true
+  },
+  "package-load-replay": {
+   "rc": 0,
+   "seconds": 1.3,
+   "stdout_tail": "{\"passed\": true, \"rows\": 400, \"seconds\": 0.71}\n",
+   "stderr_tail": "",
+   "passed": true,
+   "rows": 400
+  }
+ },
+ "ok": true
+}

@@ -1,0 +1,65 @@
+{
+ "family": "ipcch",
+ "commit": "56d10082de3e74202f3cdd89c5c450d47b267a89",
+ "time": "2026-10-16T10:51:14-0400",
+ "steps": {
+  "clone": {
+   "ok": true,
+   "head": "56d10082de3e74202f3cdd89c5c450d47b267a89"
+  },
+  "probe": {
+   "rc": 0,
+   "seconds": 0.1,
+   "stdout_tail": "{\"mnt_c\": false, \"host_home\": false, \"research_cloud\": \"/work/checkout/research_cloud/__init__.py\", \"uid\": 65534}\n",
+   "stderr_tail": "",
+   "result": {
+    "mnt_c": false,
+    "host_home": false,
+    "research_cloud": "/work/checkout/research_cloud/__init__.py",
+    "uid": 65534
+   },
+   "ok": true
+  },
+  "features": {
+   "rc": 0,
+   "seconds": 182.7,
+   "stdout_tail": "{\"rows\": 42695, \"shape\": [42695, 561], \"comparison\": null, \"seconds\": 181.8}\n",
+   "stderr_tail": "",
+   "hashes_equal_expected": {
+    "keys": true,
+    "X": true,
+    "feature_order": true
+   }
+  },
+  "trial": {
+   "rc": 0,
+   "seconds": 6.3,
+   "stdout_tail": "{\"status\": \"succeeded\", \"error\": null, \"metrics\": {\"crisis_f1\": 0.8626907073509015, \"crisis_tp\": 311, \"crisis_fp\": 47, \"crisis_fn\": 52, \"folds\": 2, \"mean_q3_r2_projected\": 0.21472155054941677, \"mean_q3_r2_raw\": 0.21472155054941677}}\n",
+   "stderr_tail": "",
+   "objective": 0.8626907073509015,
+   "objective_equal_expected": true
+  },
+  "mlflow-read-and-download": {
+   "rc": 0,
+   "seconds": 45.7,
+   "stdout_tail": "{\"experiments\": 10, \"package_run\": \"ee4f2558ea0e4947bd108e3b7bcc8f14\", \"downloaded\": \"/out/pkg-dl/package\", \"package_json_tag\": \"326b1039ae3b0d6e7f5e7fcb7314d57a59e7a70ef1d6e0e321a7c6f5a62081a8\"}\n",
+   "stderr_tail": "",
+   "result": {
+    "experiments": 10,
+    "package_run": "ee4f2558ea0e4947bd108e3b7bcc8f14",
+    "downloaded": "/out/pkg-dl/package",
+    "package_json_tag": "326b1039ae3b0d6e7f5e7fcb7314d57a59e7a70ef1d6e0e321a7c6f5a62081a8"
+   },
+   "package_json_equal_tag": true
+  },
+  "package-load-replay": {
+   "rc": 0,
+   "seconds": 13.9,
+   "stdout_tail": "{\"passed\": true, \"rows\": 1389, \"seconds\": 13.44}\n",
+   "stderr_tail": "",
+   "passed": true,
+   "rows": 1389
+  }
+ },
+ "ok": true
+}

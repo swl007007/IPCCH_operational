@@ -1,0 +1,153 @@
+{
+ "fews_package_runs": 29,
+ "entries": {
+  "FEWS NET | fews-confirm-onset-v1-S0-pooled": {
+   "version": "1",
+   "run_id": "0d2550c952734f20901f05091d056100",
+   "source": "runs:/0d2550c952734f20901f05091d056100/package"
+  },
+  "FEWS NET | fews-confirm-onset-v1-S3-pooled": {
+   "version": "1",
+   "run_id": "f5074066b9964c8d80e3ad05c98c9b9a",
+   "source": "runs:/f5074066b9964c8d80e3ad05c98c9b9a/package"
+  },
+  "FEWS NET | fews-geoxgb-d26-20261001": {
+   "version": "1",
+   "run_id": "b8d5113792ef42b6b85fc8ace701e90c",
+   "source": "runs:/b8d5113792ef42b6b85fc8ace701e90c/package"
+  },
+  "FEWS NET | fews-geoxgb-d27-tb3-20261001": {
+   "version": "1",
+   "run_id": "cc6363c0924a44c0bdc58149652bb393",
+   "source": "runs:/cc6363c0924a44c0bdc58149652bb393/package"
+  },
+  "FEWS NET | fews-geoxgb-d28-rootinc-20261001": {
+   "version": "1",
+   "run_id": "8c4d9dc630e142b082b28e0c749ce521",
+   "source": "runs:/8c4d9dc630e142b082b28e0c749ce521/package"
+  },
+  "FEWS NET | fews-geoxgb-d29-confirm-20261001": {
+   "version": "1",
+   "run_id": "70cf10ea0cb14972a6b4cb7605e301ae",
+   "source": "runs:/70cf10ea0cb14972a6b4cb7605e301ae/package"
+  },
+  "FEWS NET | fews-geoxgb-d30-recent-search-20261001": {
+   "version": "1",
+   "run_id": "9288fe63055e4f51a4fe290e72f3a50e",
+   "source": "runs:/9288fe63055e4f51a4fe290e72f3a50e/package"
+  },
+  "FEWS NET | fews-geoxgb-d31-matched-search-20261001": {
+   "version": "1",
+   "run_id": "5633cc123b9149f0bed305d3542bcc1b",
+   "source": "runs:/5633cc123b9149f0bed305d3542bcc1b/package"
+  },
+  "FEWS NET | fews-geoxgb-d34-e1-brier-20261002": {
+   "version": "1",
+   "run_id": "53982b24682e470a8ff29f32b9b2291d",
+   "source": "runs:/53982b24682e470a8ff29f32b9b2291d/package"
+  },
+  "FEWS NET | fews-geoxgb-d35-global-increment-20261002": {
+   "version": "1",
+   "run_id": "c68e0fc9b89c47bb91b4573dd8530f7a",
+   "source": "runs:/c68e0fc9b89c47bb91b4573dd8530f7a/package"
+  },
+  "FEWS NET | fews-geoxgb-d37-recency-root-20261002": {
+   "version": "1",
+   "run_id": "4ec8b9eb54e443c694fe9ffefdf12e91",
+   "source": "runs:/4ec8b9eb54e443c694fe9ffefdf12e91/package"
+  },
+  "FEWS NET | fews-geoxgb-d38-persistence-margin-root-20261002": {
+   "version": "1",
+   "run_id": "e48f2bd3c9a7472a915b0dd6cbbe1e7d",
+   "source": "runs:/e48f2bd3c9a7472a915b0dd6cbbe1e7d/package"
+  },
+  "FEWS NET | fews-geoxgb-d42-map-transfer-20261002": {
+   "version": "1",
+   "run_id": "54f2d7c8a2e84939b953d40e18772cd6",
+   "source": "runs:/54f2d7c8a2e84939b953d40e18772cd6/package"
+  },
+  "FEWS NET | fews-geoxgb-d43-temporal-map-refit-20261002": {
+   "version": "1",
+   "run_id": "c8b1782efa3746a89b5ecbe0c89e2da5",
+   "source": "runs:/c8b1782efa3746a89b5ecbe0c89e2da5/package"
+  },
+  "FEWS NET | fews-geoxgb-d46-class-weight-root-20261002": {
+   "version": "1",
+   "run_id": "09e6741bd8d34231acdb61a6e8c74ad7",
+   "source": "runs:/09e6741bd8d34231acdb61a6e8c74ad7/package"
+  },
+  "FEWS NET | fews-geoxgb-d47-stump-root-20261002": {
+   "version": "1",
+   "run_id": "bef161ca085d4242b34c059978ef93f5",
+   "source": "runs:/bef161ca085d4242b34c059978ef93f5/package"
+  },
+  "FEWS NET | fews-geoxgb-d48-known-origin-fit-20261002": {
+   "version": "1",
+   "run_id": "2a510b174e4a4a3f8f21d18d07fa7018",
+   "source": "runs:/2a510b174e4a4a3f8f21d18d07fa7018/package"
+  },
+  "FEWS NET | fews-geoxgb-d51-history-calendar-root-20261002": {
+   "version": "1",
+   "run_id": "06b68eed3b514a228bf4201c4c2b1a0b",
+   "source": "runs:/06b68eed3b514a228bf4201c4c2b1a0b/package"
+  },
+  "FEWS NET | fews-geoxgb-d52-binary-root-20261002": {
+   "version": "1",
+   "run_id": "2aa1ce18371841ed88546cf3558a68df",
+   "source": "runs:/2aa1ce18371841ed88546cf3558a68df/package"
+  },
+  "FEWS NET | fews-geoxgb-v1-20261001": {
+   "version": "1",
+   "run_id": "a6a4e8eebc8e4eb0bcd6b6c113db47b7",
+   "source": "runs:/a6a4e8eebc8e4eb0bcd6b6c113db47b7/package"
+  },
+  "FEWS NET | fews-geoxgb-v1-20261001-globals": {
+   "version": "1",
+   "run_id": "233bd18856a1400d86c2aed02674981d",
+   "source": "runs:/233bd18856a1400d86c2aed02674981d/package"
+  },
+  "FEWS NET | fews-scen-b43ef6a-v1-actual-h4-2025-06-pooled": {
+   "version": "1",
+   "run_id": "68936f15dc6b47db9bb07be12f131685",
+   "source": "runs:/68936f15dc6b47db9bb07be12f131685/package"
+  },
+  "FEWS NET | fews-scen-b43ef6a-v1-actual-h4-2025-06-system": {
+   "version": "1",
+   "run_id": "28efc56c2fab405c9f7466b9cb948d03",
+   "source": "runs:/28efc56c2fab405c9f7466b9cb948d03/package"
+  },
+  "FEWS NET | fews-scen-b43ef6a-v1-actual-h4-2025-10-pooled": {
+   "version": "1",
+   "run_id": "96f995c8c5a9425da828d705b0c8c3c4",
+   "source": "runs:/96f995c8c5a9425da828d705b0c8c3c4/package"
+  },
+  "FEWS NET | fews-scen-b43ef6a-v1-actual-h4-2025-10-system": {
+   "version": "1",
+   "run_id": "be79de1f8bac491bb994730acdae59c1",
+   "source": "runs:/be79de1f8bac491bb994730acdae59c1/package"
+  },
+  "FEWS NET | fews-scen-b43ef6a-v1-actual-h8-2025-06-pooled": {
+   "version": "1",
+   "run_id": "5a5baabc99024c29b2747693fd076c07",
+   "source": "runs:/5a5baabc99024c29b2747693fd076c07/package"
+  },
+  "FEWS NET | fews-scen-b43ef6a-v1-actual-h8-2025-06-system": {
+   "version": "1",
+   "run_id": "626894c8c5204ed2bb04ad93054d9b88",
+   "source": "runs:/626894c8c5204ed2bb04ad93054d9b88/package"
+  },
+  "FEWS NET | fews-scen-b43ef6a-v1-actual-h8-2025-10-pooled": {
+   "version": "1",
+   "run_id": "ceed3523630741c09cde0b438f21822f",
+   "source": "runs:/ceed3523630741c09cde0b438f21822f/package"
+  },
+  "FEWS NET | fews-scen-b43ef6a-v1-actual-h8-2025-10-system": {
+   "version": "1",
+   "run_id": "10e692c4674d454b8dfcd8eb4e7eae72",
+   "source": "runs:/10e692c4674d454b8dfcd8eb4e7eae72/package"
+  }
+ },
+ "created": 0,
+ "problems": [],
+ "ok": true
+}

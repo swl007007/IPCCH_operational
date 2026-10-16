@@ -1,0 +1,1570 @@
+{
+ "experiment_id": "8",
+ "packages": {
+  "alphaearth_supervised_partition-pooled-h01": {
+   "run_id": "e2fe8311f99d409fb36b230fd24edc66",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-pooled-h03": {
+   "run_id": "43c155c067ca4d429be3a722e48c4182",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-pooled-h06": {
+   "run_id": "b38d0941e66a41668f2b8cbae6d8fea7",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-pooled-h12": {
+   "run_id": "9ab5d83eacba4d52a7242ae0e7d205da",
+   "files": 35,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-pooled_plus_alphaearth-h01": {
+   "run_id": "be32871d071141aabf8d097c960d7b21",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-pooled_plus_alphaearth-h03": {
+   "run_id": "1a8b7d6f3d724855aeb23b931b921c21",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-pooled_plus_alphaearth-h06": {
+   "run_id": "e4f493d1b39743968ede6e4a60ac8e6f",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-pooled_plus_alphaearth-h12": {
+   "run_id": "202c2be4c7b6406fb4610335d1812f5a",
+   "files": 35,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-regional_calibration-h01": {
+   "run_id": "339c52634da647b6ada8e872f6fcd128",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-regional_calibration-h03": {
+   "run_id": "94f32b29d550471d9f3c94fc6a8bca0c",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-regional_calibration-h06": {
+   "run_id": "9821cea9cc184048a5ff975f850ca1ac",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-regional_calibration-h12": {
+   "run_id": "86d1a35ea1de4705bc4bd017f06affe8",
+   "files": 35,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-shared_calibration-h01": {
+   "run_id": "0021389bbc46456fb3b95b1eb055008e",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-shared_calibration-h03": {
+   "run_id": "51b335967b8a41d6aaf6e12cbce6fc08",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-shared_calibration-h06": {
+   "run_id": "604ca0eab5ef462497f29c4282ee93ca",
+   "files": 40,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "alphaearth_supervised_partition-shared_calibration-h12": {
+   "run_id": "0e012fa6c0ba474e919e1a89c136b40b",
+   "files": 35,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-confirm-onset-v1-S0-pooled": {
+   "run_id": "0d2550c952734f20901f05091d056100",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-confirm-onset-v1-S3-pooled": {
+   "run_id": "f5074066b9964c8d80e3ad05c98c9b9a",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d26-20261001": {
+   "run_id": "b8d5113792ef42b6b85fc8ace701e90c",
+   "files": 502,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d27-tb3-20261001": {
+   "run_id": "cc6363c0924a44c0bdc58149652bb393",
+   "files": 112,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d28-rootinc-20261001": {
+   "run_id": "8c4d9dc630e142b082b28e0c749ce521",
+   "files": 131,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d29-confirm-20261001": {
+   "run_id": "70cf10ea0cb14972a6b4cb7605e301ae",
+   "files": 111,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d30-recent-search-20261001": {
+   "run_id": "9288fe63055e4f51a4fe290e72f3a50e",
+   "files": 83,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d31-matched-search-20261001": {
+   "run_id": "5633cc123b9149f0bed305d3542bcc1b",
+   "files": 244,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d34-e1-brier-20261002": {
+   "run_id": "53982b24682e470a8ff29f32b9b2291d",
+   "files": 587,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d35-global-increment-20261002": {
+   "run_id": "c68e0fc9b89c47bb91b4573dd8530f7a",
+   "files": 52,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d37-recency-root-20261002": {
+   "run_id": "4ec8b9eb54e443c694fe9ffefdf12e91",
+   "files": 52,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d38-persistence-margin-root-20261002": {
+   "run_id": "e48f2bd3c9a7472a915b0dd6cbbe1e7d",
+   "files": 52,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d42-map-transfer-20261002": {
+   "run_id": "54f2d7c8a2e84939b953d40e18772cd6",
+   "files": 433,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d43-temporal-map-refit-20261002": {
+   "run_id": "c8b1782efa3746a89b5ecbe0c89e2da5",
+   "files": 749,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d46-class-weight-root-20261002": {
+   "run_id": "09e6741bd8d34231acdb61a6e8c74ad7",
+   "files": 52,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d47-stump-root-20261002": {
+   "run_id": "bef161ca085d4242b34c059978ef93f5",
+   "files": 52,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d48-known-origin-fit-20261002": {
+   "run_id": "2a510b174e4a4a3f8f21d18d07fa7018",
+   "files": 52,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d51-history-calendar-root-20261002": {
+   "run_id": "06b68eed3b514a228bf4201c4c2b1a0b",
+   "files": 53,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-d52-binary-root-20261002": {
+   "run_id": "2aa1ce18371841ed88546cf3558a68df",
+   "files": 52,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-v1-20261001": {
+   "run_id": "a6a4e8eebc8e4eb0bcd6b6c113db47b7",
+   "files": 822,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-geoxgb-v1-20261001-globals": {
+   "run_id": "233bd18856a1400d86c2aed02674981d",
+   "files": 155,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h4-2025-06-pooled": {
+   "run_id": "68936f15dc6b47db9bb07be12f131685",
+   "files": 14,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h4-2025-06-system": {
+   "run_id": "28efc56c2fab405c9f7466b9cb948d03",
+   "files": 15,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h4-2025-10-pooled": {
+   "run_id": "96f995c8c5a9425da828d705b0c8c3c4",
+   "files": 14,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h4-2025-10-system": {
+   "run_id": "be79de1f8bac491bb994730acdae59c1",
+   "files": 15,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h8-2025-06-pooled": {
+   "run_id": "5a5baabc99024c29b2747693fd076c07",
+   "files": 14,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h8-2025-06-system": {
+   "run_id": "626894c8c5204ed2bb04ad93054d9b88",
+   "files": 15,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h8-2025-10-pooled": {
+   "run_id": "ceed3523630741c09cde0b438f21822f",
+   "files": 14,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h8-2025-10-system": {
+   "run_id": "10e692c4674d454b8dfcd8eb4e7eae72",
+   "files": 15,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_baseline_00--compact_global_2026_extension": {
+   "run_id": "c8fca85237c34927b0a3306b23d26c09",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_baseline_00--compact_global_original": {
+   "run_id": "22146bb475da46e1abd21bdc9338384e",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_baseline_03--compact_global_2026_extension": {
+   "run_id": "bb34f0498be6489ea99b437420f62d25",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_baseline_03--compact_global_original": {
+   "run_id": "f0b3fc5773ac403b88bdea5fbff85f2a",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_baseline_06--compact_global_2026_extension": {
+   "run_id": "7d5920a898ca4b949c52837ad7a513a3",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_baseline_06--compact_global_original": {
+   "run_id": "08740c58d4bb48ffb0c90bc7bc943624",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_baseline_12--compact_global_2026_extension": {
+   "run_id": "272f24612a8941be95434fe3d6702891",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_baseline_12--compact_global_original": {
+   "run_id": "39d2fb6f084e4b2b9785e35a4448fd44",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_weather_oracle_03--compact_global_2026_extension": {
+   "run_id": "6d8eda69ba504046bdf883ac4c1c5f47",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_weather_oracle_03--compact_global_original": {
+   "run_id": "9bf322e2e53c472eb46e6f2174e85bf7",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_weather_oracle_06--compact_global_2026_extension": {
+   "run_id": "e095c270c78c4d9dae377cbc19776c81",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_weather_oracle_06--compact_global_original": {
+   "run_id": "b3ad24f2986141199a6d887507475d3f",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_weather_oracle_12--compact_global_2026_extension": {
+   "run_id": "e87b9a82f7984ce088a85c94c0e6e938",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_global_weather_oracle_12--compact_global_original": {
+   "run_id": "ef1258e15524444cba9b469e2ed2b01c",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_baseline_00--compact_somalia_2026_extension": {
+   "run_id": "0b0456b7d97c402f914d1595fc6452c9",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_baseline_00--compact_somalia_original": {
+   "run_id": "d2979315626842419f6313c2085e4fa8",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_baseline_03--compact_somalia_2026_extension": {
+   "run_id": "0d406b262016497fb760544389a18328",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_baseline_03--compact_somalia_original": {
+   "run_id": "5db573187bdd45b1bdd561a77dadd776",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_baseline_06--compact_somalia_2026_extension": {
+   "run_id": "2bfdebc93edb44d59cdc81a90a58811c",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_baseline_06--compact_somalia_original": {
+   "run_id": "262a34ba3a2342f5817f0ec368d07396",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_baseline_12--compact_somalia_2026_extension": {
+   "run_id": "27070354622d4b379a90d41867009e0c",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_baseline_12--compact_somalia_original": {
+   "run_id": "61e8462557414f9f8ea775b82d8c21b5",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_2026_extension": {
+   "run_id": "25a6ebc03de24f8280ad285a44e7e840",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_original": {
+   "run_id": "5063fdf901804032b554fd91ac6f1d6c",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_2026_extension": {
+   "run_id": "f9bb4c6b47434a56bacc9f0564b94818",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_original": {
+   "run_id": "3eb5b025184a43d08a3e71603e0452a8",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_2026_extension": {
+   "run_id": "2366fc7aa0104b94800a6a3a97689ac6",
+   "files": 43,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_original": {
+   "run_id": "277ee73c5835482ca3870b1304609309",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_global_baseline_00--compact_global_launch": {
+   "run_id": "2497025bf432482fb060806071d3def5",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_global_baseline_06--compact_global_launch": {
+   "run_id": "7db8ff21c7384f75bc2653a756099877",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_global_baseline_12--compact_global_launch": {
+   "run_id": "47ae197ce60244ebadfe75a0ecab29f9",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_global_cds_weather_06--compact_global_launch": {
+   "run_id": "30cdf9060d4048b2b2a3d6160a4528ad",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_global_cds_weather_12--compact_global_launch": {
+   "run_id": "3b86587388804c9f8e9b8142c15bfdfd",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_somalia_baseline_00--compact_somalia_launch": {
+   "run_id": "ae055c23ec964bd9a321df86d00fc909",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_somalia_baseline_06--compact_somalia_launch": {
+   "run_id": "68cf2cbbccc0480baeb5177da7e2434f",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_somalia_baseline_12--compact_somalia_launch": {
+   "run_id": "fabdfd4c3f784188967c86c600732a57",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_somalia_cds_weather_06--compact_somalia_launch": {
+   "run_id": "a7a0bdbf83574718b27675f030b226b5",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-compact_launch_somalia_cds_weather_12--compact_somalia_launch": {
+   "run_id": "6406df55e89c4672acfa3fd85ca7094c",
+   "files": 19,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_no_ipc_history_00--origin_safe_climate_idp_v1": {
+   "run_id": "40b600a513274ce7a7b2c680fb1907aa",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_no_ipc_history_03--origin_safe_climate_idp_v1": {
+   "run_id": "08f1973b54d945eba988f185715c1715",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_no_ipc_history_06--origin_safe_climate_idp_v1": {
+   "run_id": "3a1fc059f20b4003b006d9dd6d772e52",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_no_ipc_history_12--origin_safe_climate_idp_v1": {
+   "run_id": "b16987c0d4d449a1b03a8be03c774e3b",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_00--origin_safe_climate_idp_v1": {
+   "run_id": "6a9cbc2193f04b58b9ce96624c91a242",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_03--origin_safe_climate_idp_v1": {
+   "run_id": "4ca125a374d2415b9afb7b1fd0d14ca4",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_06--origin_safe_climate_idp_v1": {
+   "run_id": "197422b56f1a455c9ea500bfe7c09eba",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_12--origin_safe_climate_idp_v1": {
+   "run_id": "e933b6037f0c4b0cb6e7cfe5ea199951",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_idp_00--origin_safe_climate_idp_v1": {
+   "run_id": "d508f6c0b014440aa0d9d06987ac9e92",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_idp_03--origin_safe_climate_idp_v1": {
+   "run_id": "67ca8e6084a9434d86b65a1dcba4d33d",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_idp_06--origin_safe_climate_idp_v1": {
+   "run_id": "84287843e376405ebbb208e2d508a6da",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_idp_12--origin_safe_climate_idp_v1": {
+   "run_id": "f4921a18a50443929576470d3281fc13",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_03--origin_safe_weather_oracle_v1": {
+   "run_id": "dcaedea80f754c44b82fb10c3b45fdb3",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_06--origin_safe_weather_oracle_v1": {
+   "run_id": "034b1936739449639f91d9f1c29e856b",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_12--origin_safe_weather_oracle_v1": {
+   "run_id": "fdd94a8fb5a94c7fb7e7738ef9e64e3c",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_with_summaries_03--origin_safe_weather_oracle_v1": {
+   "run_id": "7344955691e9489286e42e1a51fe5212",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_with_summaries_06--origin_safe_weather_oracle_v1": {
+   "run_id": "9aadfa8332bb42a68d7757d296b9e766",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_with_summaries_12--origin_safe_weather_oracle_v1": {
+   "run_id": "248fb743cc7a4820b38c573ea3ab2870",
+   "files": 36,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_reference-partitioned_gated-h01": {
+   "run_id": "ee4f2558ea0e4947bd108e3b7bcc8f14",
+   "files": 255,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_reference-partitioned_gated-h03": {
+   "run_id": "0c4cb106bc6b4e2d96a4b1d904b99e8c",
+   "files": 250,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_reference-partitioned_gated-h06": {
+   "run_id": "434d980a3d0b4c7280323a7a6ee20e95",
+   "files": 190,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_reference-partitioned_gated-h12": {
+   "run_id": "4822ae20e2c04a2c98209d974589e186",
+   "files": 195,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_reference-pooled-h01": {
+   "run_id": "66a3a31f3f1245b2b85f97681ad9aaa8",
+   "files": 195,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_reference-pooled-h03": {
+   "run_id": "7409cc1dffbd49e0829dc248ce418c02",
+   "files": 185,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_reference-pooled-h06": {
+   "run_id": "75de37ddccf94bacb018740f1b92b615",
+   "files": 170,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_reference-pooled-h12": {
+   "run_id": "c2a985a919224cc3bdd607c7b1bbac19",
+   "files": 140,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_window_probe-pooled-h01": {
+   "run_id": "671843c47ad24125926d580416c79d3f",
+   "files": 33,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_window_probe-pooled-h03": {
+   "run_id": "ab2f8108bb0641ef8468935e49bdfd6a",
+   "files": 33,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_window_probe-pooled-h06": {
+   "run_id": "4875f9bccbcd46959b9e482a974e3b2b",
+   "files": 33,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_window_probe-pooled-h12": {
+   "run_id": "14639395dc36486e9429c1d9965f2ec3",
+   "files": 27,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_window_probe-regional_ungated-h01": {
+   "run_id": "cf5864115a1741eab41fe4e4b4e1e4de",
+   "files": 153,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_window_probe-regional_ungated-h03": {
+   "run_id": "3018a73368f54950a8492d8e81d2113d",
+   "files": 138,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_window_probe-regional_ungated-h06": {
+   "run_id": "f018261969c94ae7b691a343fb2a6c19",
+   "files": 113,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_window_probe-regional_ungated-h12": {
+   "run_id": "f3af681325ee4a7c8456f60fdf913f94",
+   "files": 117,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-partitioned_gated-h01": {
+   "run_id": "1df377ed5ad04a72a62a07127fb868d3",
+   "files": 65,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-partitioned_gated-h03": {
+   "run_id": "d2279cf1e3354c3286915c346247f684",
+   "files": 79,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-partitioned_gated-h06": {
+   "run_id": "9bebb173a5ba4780971d2397c42d526e",
+   "files": 65,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-partitioned_gated-h12": {
+   "run_id": "3a740fa2d0e7418c8b204b7afc00cd75",
+   "files": 44,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-pooled-h01": {
+   "run_id": "719d996003084b25bd38c4beed534280",
+   "files": 44,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-pooled-h03": {
+   "run_id": "bcd8601e88114a5e810ed59113d12375",
+   "files": 44,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-pooled-h06": {
+   "run_id": "505104cfda674b249e13c7164ebf9773",
+   "files": 44,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-pooled-h12": {
+   "run_id": "bb85ef9058c040afa88cf1a4552a68dc",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-regional_ungated-h01": {
+   "run_id": "d61836f251ad4c1489e233f2eaaa7cc2",
+   "files": 268,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-regional_ungated-h03": {
+   "run_id": "c4babdb0af5f47199c733a51c8d59179",
+   "files": 212,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-regional_ungated-h06": {
+   "run_id": "7d91c48900144a3c982fab6481fbacfe",
+   "files": 184,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "geoxgb_yearly_refit-regional_ungated-h12": {
+   "run_id": "bd49884c465046e0b265314d4c147468",
+   "files": 205,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-binary_history_xgb-h01": {
+   "run_id": "c3fc5252b0c44ebca30b7ee95975a022",
+   "files": 80,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-binary_history_xgb-h03": {
+   "run_id": "7d37b1ef8eed4029aa30a6eae989a9e8",
+   "files": 76,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-binary_history_xgb-h06": {
+   "run_id": "acf2b313eaaa48d287dc2160af26fa23",
+   "files": 70,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-binary_history_xgb-h12": {
+   "run_id": "83d2110e7d8d49b1ad28062213a16ec1",
+   "files": 58,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-correction_xgb-h01": {
+   "run_id": "5a2480834b0d4dbb951ff88e29265019",
+   "files": 80,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-correction_xgb-h03": {
+   "run_id": "88480cc2a9334e07a6006a3a8b647cfd",
+   "files": 76,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-correction_xgb-h06": {
+   "run_id": "27a716b919f345babb2177b0f12088b8",
+   "files": 70,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-correction_xgb-h12": {
+   "run_id": "fd7538bb1d7442bb8ac66107af928240",
+   "files": 58,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-fullpool_xgb-h01": {
+   "run_id": "f5268fa04cac4c3a9a88a1549357d7bd",
+   "files": 80,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-fullpool_xgb-h03": {
+   "run_id": "aacdf7eacc3f46e5b79830c8801dc3a9",
+   "files": 76,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-fullpool_xgb-h06": {
+   "run_id": "20cb5df560a14a65bc8c3ded0df41619",
+   "files": 70,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-fullpool_xgb-h12": {
+   "run_id": "ffcb7aa066db45faa287c32f4beb1776",
+   "files": 58,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-rich_direct_xgb-h01": {
+   "run_id": "09ad0dac95b8402e96749d31d3982245",
+   "files": 80,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-rich_direct_xgb-h03": {
+   "run_id": "0754480441e7486fb1aab6a20b953561",
+   "files": 76,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-rich_direct_xgb-h06": {
+   "run_id": "080c6dac19f84092b96cb678fc9d11a0",
+   "files": 70,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-rich_direct_xgb-h12": {
+   "run_id": "fb5345205307411989591aa4353bca47",
+   "files": 58,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-rich_rf-h01": {
+   "run_id": "8749112192934844a5313c98f828b24d",
+   "files": 112,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-rich_rf-h03": {
+   "run_id": "6975abe70e3d428bb9d3fc71eff3014a",
+   "files": 106,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-rich_rf-h06": {
+   "run_id": "c182ac5d40d04f3b84e4e331dd05078d",
+   "files": 97,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-rich_rf-h12": {
+   "run_id": "6488f0d5d26143b9b4d9a8502fa362d7",
+   "files": 79,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-share_xgb-h01": {
+   "run_id": "d8d54491686246e78ae2883634dcd2e3",
+   "files": 80,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-share_xgb-h03": {
+   "run_id": "b196a85628bb4e58b74122f2df192670",
+   "files": 76,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-share_xgb-h06": {
+   "run_id": "b804b361a2a94eb0906fa64a55e80a00",
+   "files": 70,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "popv1-share_xgb-h12": {
+   "run_id": "e71f0c2d6f5942709df077d7fd1ca5b8",
+   "files": 58,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_calibrated_augmented_calibrated_share_history_00--somalia_oracle_v4_calibrated_d": {
+   "run_id": "38dd87d54943461598e4b1ba91505383",
+   "files": 129,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_calibrated_augmented_calibrated_share_history_03--somalia_oracle_v4_calibrated_d": {
+   "run_id": "65dd4ff68e5640e6bcec55a4de1c0f83",
+   "files": 112,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_calibrated_augmented_calibrated_share_history_06--somalia_oracle_v4_calibrated_d": {
+   "run_id": "bad835fc0b3a49bc883c05e79787820e",
+   "files": 125,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_calibrated_augmented_calibrated_share_history_12--somalia_oracle_v4_calibrated_d": {
+   "run_id": "14716867e09143699410be693e52a205",
+   "files": 115,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_calibrated_observed_calibrated_share_history_00--somalia_oracle_v4_calibrated_d": {
+   "run_id": "7e397652989b40238812437f080e8a90",
+   "files": 83,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_calibrated_observed_calibrated_share_history_03--somalia_oracle_v4_calibrated_d": {
+   "run_id": "aed6d8f9ce9c4e4293ccea99dc413fe1",
+   "files": 70,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_calibrated_observed_calibrated_share_history_06--somalia_oracle_v4_calibrated_d": {
+   "run_id": "c4442d73fd464f40a174c7e702eceb8f",
+   "files": 72,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_calibrated_observed_calibrated_share_history_12--somalia_oracle_v4_calibrated_d": {
+   "run_id": "3406299d638549cfb0202afdc005a857",
+   "files": 72,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_existing_predictors_00--somalia_oracle_v1": {
+   "run_id": "3a9e91f45f904e7f96edc267a49dc5cb",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_existing_predictors_03--somalia_oracle_v1": {
+   "run_id": "00c26dcdae4949109959c2e70bb8adf6",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_existing_predictors_06--somalia_oracle_v1": {
+   "run_id": "9dd113db2b5c40528cf270dca4b2c4b6",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_existing_predictors_12--somalia_oracle_v1": {
+   "run_id": "5508f2bb70934ad1ba01a2943afe9400",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_seasonal_climate_00--somalia_oracle_v1": {
+   "run_id": "b49f314fa2cb42c5b90e33744c25409e",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_seasonal_climate_03--somalia_oracle_v1": {
+   "run_id": "702caededc8c4d83949c1332a25cc401",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_seasonal_climate_06--somalia_oracle_v1": {
+   "run_id": "c59806097ab348b4a82efc41073c7447",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_seasonal_climate_12--somalia_oracle_v1": {
+   "run_id": "c3da72fd8aca40068f7e0a0f0898b954",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_weather_oracle_03--somalia_oracle_v1": {
+   "run_id": "38b75ec291de4a8c9e97599ba5129e89",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_weather_oracle_06--somalia_oracle_v1": {
+   "run_id": "70950d112cce4b31a0c64185a7487889",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_weather_oracle_12--somalia_oracle_v1": {
+   "run_id": "7513894013e54d289a92b0f3d58330ba",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_weather_oracle_with_share_history_00--somalia_oracle_v1": {
+   "run_id": "7476111a29a34049b50a3aecda41e67c",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_weather_oracle_with_share_history_03--somalia_oracle_v1": {
+   "run_id": "689e8c988538414896a30787fa1895a1",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_weather_oracle_with_share_history_06--somalia_oracle_v1": {
+   "run_id": "f7510a8c9f954bd084828d2db04dcbce",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_oracle_information_weather_oracle_with_share_history_12--somalia_oracle_v1": {
+   "run_id": "9442eeeffa7240a18a9e86afe8c1fe2e",
+   "files": 32,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_existing_predictors_00--somalia_oracle_v2_q3": {
+   "run_id": "054f3d8003064d6799950dc952814f5a",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_existing_predictors_03--somalia_oracle_v2_q3": {
+   "run_id": "ac78d9affd3f4732b81957a206f95e32",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_existing_predictors_06--somalia_oracle_v2_q3": {
+   "run_id": "f4002b6f471245afaeab98dbbf151857",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_existing_predictors_12--somalia_oracle_v2_q3": {
+   "run_id": "808dcad6e3a64709984691f0955eb091",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_seasonal_climate_00--somalia_oracle_v2_q3": {
+   "run_id": "509227ee1ca64022b1e82a8fb039b444",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_seasonal_climate_03--somalia_oracle_v2_q3": {
+   "run_id": "e1a04e061b9847f5bcfcafbbaf57ae1a",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_seasonal_climate_06--somalia_oracle_v2_q3": {
+   "run_id": "3e7c397084d2460489e29fe785ac2115",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_seasonal_climate_12--somalia_oracle_v2_q3": {
+   "run_id": "e8ee9c8de0364cd5a24cb021f6f63488",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_direct_00--somalia_oracle_v2_q3": {
+   "run_id": "ae3a81e9164c40c5a47d0f9031362c61",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_direct_03--somalia_oracle_v2_q3": {
+   "run_id": "035f80813f504bb9b7bb895e31b6b54b",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_direct_06--somalia_oracle_v2_q3": {
+   "run_id": "3f52bda6aeb641998e4aa00903d34501",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_direct_12--somalia_oracle_v2_q3": {
+   "run_id": "6a97c3cd0e434f6d9f5e22daa8cf1c9d",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_residual_00--somalia_oracle_v2_q3": {
+   "run_id": "79d4c41a2c5e48259257cc0c6c26436f",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_residual_03--somalia_oracle_v2_q3": {
+   "run_id": "465906dcdc914393856033803a6b9f50",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_residual_06--somalia_oracle_v2_q3": {
+   "run_id": "11b75355ed9746de8fb6620aec025838",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_residual_12--somalia_oracle_v2_q3": {
+   "run_id": "49779346a9054121a7bff5dbfa5d5347",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_selected_00--somalia_oracle_v2_q3": {
+   "run_id": "281febada45247d6823b3d9812a01def",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_selected_03--somalia_oracle_v2_q3": {
+   "run_id": "721cee4879f04f7d8bc5f3d61a788dee",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_selected_06--somalia_oracle_v2_q3": {
+   "run_id": "c49e248223834d7da6ea8dbb8c3410c6",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_share_history_selected_12--somalia_oracle_v2_q3": {
+   "run_id": "a3c80b4574f5405389d4f8ec604e9f9b",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_weather_oracle_03--somalia_oracle_v2_q3": {
+   "run_id": "d6e285491fea4679b3754944038e29ce",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_weather_oracle_06--somalia_oracle_v2_q3": {
+   "run_id": "40c7cbb55e824551830ad77b5a75a0f6",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_q3_optimization_weather_oracle_12--somalia_oracle_v2_q3": {
+   "run_id": "4b82e634f3544922ab1a70a574775dd8",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_direct_00--somalia_oracle_v3_validity": {
+   "run_id": "5bb857bd5aac4d84bf0b205c2ff7cf82",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_direct_03--somalia_oracle_v3_validity": {
+   "run_id": "691a229779484bf1a623b649ae17aa5d",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_direct_06--somalia_oracle_v3_validity": {
+   "run_id": "88009db439b64caaba3599b7674ed168",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_direct_12--somalia_oracle_v3_validity": {
+   "run_id": "7855c79543d34bd5884f28457e6a499a",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_residual_00--somalia_oracle_v3_validity": {
+   "run_id": "8d7e8bf2a410422c80900089f9bff08d",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_residual_03--somalia_oracle_v3_validity": {
+   "run_id": "0435b094cc1d4724835c814a85f7f1c7",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_residual_06--somalia_oracle_v3_validity": {
+   "run_id": "8ac61e930ee9443db4e2275b82100b39",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_residual_12--somalia_oracle_v3_validity": {
+   "run_id": "0f03b3146be64c0f86b4db822befb61a",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_selected_00--somalia_oracle_v3_validity": {
+   "run_id": "dd7bfcfc9bd9446393e4c3b4ea95c216",
+   "files": 38,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_selected_03--somalia_oracle_v3_validity": {
+   "run_id": "74af39a7124c4e61bc5c6f772bca86c9",
+   "files": 38,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_selected_06--somalia_oracle_v3_validity": {
+   "run_id": "bc3c296553144eabb30e8e0217645a78",
+   "files": 38,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_augmented_share_history_selected_12--somalia_oracle_v3_validity": {
+   "run_id": "868935c3a5b04a0a9cac7a69561125d6",
+   "files": 38,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_direct_00--somalia_oracle_v3_validity": {
+   "run_id": "f9ee4a957eb049de90d04b854f746b6d",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_direct_03--somalia_oracle_v3_validity": {
+   "run_id": "ef4f5efeffa743c4a63aa336186490bf",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_direct_06--somalia_oracle_v3_validity": {
+   "run_id": "f0004a3cad994ab4a42189ce7ae48d6d",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_direct_12--somalia_oracle_v3_validity": {
+   "run_id": "cae5e3808d3049b0bbbe352bebbe07e1",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_residual_00--somalia_oracle_v3_validity": {
+   "run_id": "ddad821d152442ef9782fc0fce9d16ca",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_residual_03--somalia_oracle_v3_validity": {
+   "run_id": "4a34e5087e4e40f5a6ae65dfd160a8a6",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_residual_06--somalia_oracle_v3_validity": {
+   "run_id": "e89f305c6def46a188313274c850addc",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_residual_12--somalia_oracle_v3_validity": {
+   "run_id": "c6855e95fe114d24bce7b8a0c7187c1b",
+   "files": 42,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_selected_00--somalia_oracle_v3_validity": {
+   "run_id": "544eee51d02542d08d72252471c229b2",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_selected_03--somalia_oracle_v3_validity": {
+   "run_id": "f712dc7eab6b446b8f82c8fd4bd67f91",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_selected_06--somalia_oracle_v3_validity": {
+   "run_id": "7d1ed7ab1ef044e7aad7edcf4fe4c765",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  },
+  "somalia-somalia_validity_observed_share_history_selected_12--somalia_oracle_v3_validity": {
+   "run_id": "4931852eed6449d8928c987918e0255d",
+   "files": 37,
+   "bad": 0,
+   "tag_mismatch": [],
+   "finished": true
+  }
+ },
+ "problems": [],
+ "files": 15477,
+ "runs_in_experiment": 223,
+ "verified": true
+}

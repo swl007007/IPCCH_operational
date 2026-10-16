@@ -1,0 +1,23 @@
+{
+ "name": "ipcch-base-inputs",
+ "source": "P6 config/inputs.json recorded identities",
+ "gcp_project": "food-crisis-modeling-enso",
+ "files": {
+  "raw_panel": {
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.raw_panel/IPCCH_2026_completed.csv",
+   "sha256": "ae696087c3bbb280537ae269a05924133acdb51060d31290523404fa8a717673",
+   "gcs_generation": 1792156354650297
+  },
+  "country_lookup": {
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.country_lookup/country_area_id_lookup.csv",
+   "sha256": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90",
+   "gcs_generation": 1792153966578810
+  }
+ },
+ "derived_from": {
+  "local_manifest": {
+   "path": "/home/swl007007/projects/food-crisis-research/scratch/training/manifest-ipcch-base.json",
+   "sha256": "103c6e8547f60c07c8aaee2ea52febd72f4ec04708d965ef653022159afabe06"
+  }
+ }
+}

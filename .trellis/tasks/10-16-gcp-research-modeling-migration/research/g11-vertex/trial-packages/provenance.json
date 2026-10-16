@@ -1,0 +1,42 @@
+{
+ "fews": {
+  "trial_json_sha256": "5f707305c0e3f631c0ec5c35dea85222df021e144f5976002fdf0f676820e9a0",
+  "crisis_f1": 0.7915766738660908,
+  "objective_report": "cloudml-hypertune",
+  "checks": {
+   "status": true,
+   "vertex_job_id": true,
+   "image_digest_emitted_eq_spec": true,
+   "source_commit_36bde42": true,
+   "input_manifest_sha_eq_submitted": true,
+   "input_files_eq_manifest": true,
+   "objective_eq_metric": true,
+   "params": {
+    "max_depth": 3,
+    "rounds": 200
+   }
+  }
+ },
+ "ipcch": {
+  "trial_json_sha256": "b3fb80b36d4fd55d2cc40bb10204169899a3957df5f7e96e23a3735d2f1a59b7",
+  "crisis_f1": 0.8663853727144867,
+  "objective_report": "cloudml-hypertune",
+  "checks": {
+   "status": true,
+   "vertex_job_id": true,
+   "image_digest_emitted_eq_spec": true,
+   "source_commit_36bde42": true,
+   "input_manifest_sha_eq_submitted": true,
+   "input_files_eq_manifest": true,
+   "objective_eq_metric": true,
+   "params": {
+    "max_depth": 3,
+    "rounds": 200,
+    "min_child_weight": 10.0,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 10.0
+   }
+  }
+ }
+}
