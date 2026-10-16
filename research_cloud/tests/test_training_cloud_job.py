@@ -51,5 +51,24 @@ class CloudJob(unittest.TestCase):
         self.assertFalse({"MLFLOW_TRACKING_USERNAME", "MLFLOW_TRACKING_PASSWORD"} & set(env))   # read at run time only
 
 
+class BaseManifest(unittest.TestCase):
+    def test_maps_to_verified_objects_and_refuses_missing(self):
+        with tempfile.TemporaryDirectory() as d:
+            local = os.path.join(d, "base.json")
+            json.dump({"name": "b", "files": {"panel": {"uri": "/mnt/c/x/panel.csv", "sha256": "a" * 64}}}, open(local, "w"))
+            rec = os.path.join(d, "r.jsonl")
+            with open(rec, "w") as f:
+                f.write(json.dumps({"status": "verified (uploaded)", "bucket": "bk", "local": "/other/panel.csv",
+                                    "object": "inputs/x/panel.csv", "local_sha256": "a" * 64, "generation": 5}) + "\n")
+                f.write(json.dumps({"status": "error: RetryError", "bucket": "bk", "local": "/mnt/c/x/panel.csv",
+                                    "object": "inputs/y/panel.csv", "local_sha256": "a" * 64, "generation": 6}) + "\n")
+            m = cj.gcs_base_manifest(local, [rec])
+            self.assertEqual(m["files"]["panel"], {"uri": "gs://bk/inputs/x/panel.csv", "sha256": "a" * 64, "gcs_generation": 5})
+            self.assertEqual(m["gcp_project"], cj.PROJECT)
+            json.dump({"name": "b", "files": {"p": {"uri": "/z", "sha256": "b" * 64}}}, open(local, "w"))
+            with self.assertRaises(SystemExit):
+                cj.gcs_base_manifest(local, [rec])
+
+
 if __name__ == "__main__":
     unittest.main()

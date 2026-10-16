@@ -21,6 +21,7 @@ run id). Every spec sets ``IPCCH_IMAGE_DIGEST`` to the image's digest, which the
 image identity; ``--mlflow-experiment`` is passed to the harness.
 
   python -m research_cloud.training.cloud_job manifest --local M.json --snapshot NAME --out CLOUD_M.json
+  python -m research_cloud.training.cloud_job base-manifest --local BASE.json --receipts R.jsonl ... --out CLOUD_BASE.json
   python -m research_cloud.training.cloud_job config --local C.json --out CLOUD_C.json
   python -m research_cloud.training.cloud_job spec --adapter MODULE --image URI@sha256:... --machine TYPE
       --manifest /gcs/... --config /gcs/... --family NAME [--hpt TRIALS] --timeout-s N --out SPEC.json
@@ -50,6 +51,29 @@ def cloud_manifest(local_path, snapshot):
     derived = dict(m.get("derived_from") or {})
     derived["local_manifest"] = {"path": os.path.abspath(local_path), "sha256": sha256_file(local_path)}
     return {**m, "gcp_project": PROJECT, "files": files, "derived_from": derived}
+
+
+def gcs_base_manifest(local_path, receipt_paths):
+    """A cloud copy of a base-input manifest: every file becomes the ``gs://`` object whose verified transfer receipt
+    has exactly its sha256 (preferring the receipt for the same local path), with the object generation recorded;
+    ``resolve_inputs`` re-hashes each download before use. A file without a verified object refuses."""
+    m = json.load(open(local_path))
+    by_sha = {}
+    for path in receipt_paths:
+        for line in open(path):
+            r = json.loads(line)
+            if r.get("status", "").startswith("verified") and r.get("bucket"):
+                by_sha.setdefault(r["local_sha256"], []).append(r)
+    files = {}
+    for role, e in m["files"].items():
+        found = sorted(by_sha.get(e["sha256"], []), key=lambda r: (r["local"] != e["uri"], r["object"]))
+        if not found:
+            raise SystemExit(f"{role}: no verified GCS object with sha256 {e['sha256']}")
+        r = found[0]
+        files[role] = {"uri": f"gs://{r['bucket']}/{r['object']}", "sha256": e["sha256"], "gcs_generation": r["generation"]}
+    derived = {"local_manifest": {"path": os.path.abspath(local_path), "sha256": sha256_file(local_path)}}
+    return {**{k: v for k, v in m.items() if k != "files"}, "gcp_project": PROJECT, "files": files,
+            "derived_from": {**(m.get("derived_from") or {}), **derived}}
 
 
 def cloud_config(local_path):
@@ -99,6 +123,10 @@ def main(argv=None):
     m.add_argument("--local", required=True)
     m.add_argument("--snapshot", required=True)
     m.add_argument("--out", required=True)
+    g = sub.add_parser("base-manifest")
+    g.add_argument("--local", required=True)
+    g.add_argument("--receipts", nargs="+", required=True)
+    g.add_argument("--out", required=True)
     c = sub.add_parser("config")
     c.add_argument("--local", required=True)
     c.add_argument("--out", required=True)
@@ -113,6 +141,8 @@ def main(argv=None):
     args = ap.parse_args(argv)
     if args.cmd == "manifest":
         out = cloud_manifest(args.local, args.snapshot)
+    elif args.cmd == "base-manifest":
+        out = gcs_base_manifest(args.local, args.receipts)
     elif args.cmd == "config":
         out = cloud_config(args.local)
     else:
