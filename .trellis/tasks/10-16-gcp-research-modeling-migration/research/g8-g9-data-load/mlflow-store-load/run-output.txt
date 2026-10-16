@@ -1,0 +1,8 @@
+b97ddcd deploy: load MLflow snapshot r1 into Cloud SQL as mlflow_app (MLflow initializers, copy_store, verify-only)
+08:07:17
+/home/swl007007/projects/food-crisis-research/envs/mlflow-svc/lib/python3.12/site-packages/mlflow/server/fastapi_app.py:23: StarletteDeprecationWarning: starlette.middleware.wsgi is deprecated and will be removed in a future release. Please refer to https://github.com/abersheeran/a2wsgi as a replacement.
+  from starlette.middleware.wsgi import WSGIResponder, build_environ
+{"mlflow": {"schema_before": null, "revision": ["dc11669786a5"], "copy_complete": true, "copy_error": null, "verified": true, "tables": 64, "rc": [0, 0]}, "mlflow_auth": {"schema_before": null, "revision": ["f1a2b3c4d5e6"], "copy_complete": true, "copy_error": null, "verified": true, "tables": 11, "rc": [0, 0]}}
+08:11:52
+
+[exited with code 0]

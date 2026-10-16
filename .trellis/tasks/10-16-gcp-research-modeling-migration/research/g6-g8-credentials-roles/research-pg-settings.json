@@ -1,0 +1,46 @@
+{
+ "name": "research-pg",
+ "state": "RUNNABLE",
+ "databaseVersion": "POSTGRES_16",
+ "region": "us-central1",
+ "gceZone": "us-central1-a",
+ "edition": "ENTERPRISE",
+ "tier": "db-g1-small",
+ "availabilityType": "ZONAL",
+ "dataDiskType": "PD_SSD",
+ "dataDiskSizeGb": "30",
+ "storageAutoResize": false,
+ "backup": {
+  "enabled": true,
+  "startTime": "07:00",
+  "pointInTimeRecoveryEnabled": false,
+  "retainedBackups": {
+   "retainedBackups": 7,
+   "retentionUnit": "COUNT"
+  },
+  "transactionLogRetentionDays": 7,
+  "location": null
+ },
+ "ip": {
+  "ipv4Enabled": true,
+  "authorizedNetworks": [],
+  "sslMode": "ENCRYPTED_ONLY",
+  "requireSsl": false,
+  "privateNetwork": null
+ },
+ "deletionProtectionEnabled": true,
+ "databaseFlags": [],
+ "ipAddresses": [
+  {
+   "ipAddress": "34.123.136.49",
+   "type": "PRIMARY"
+  },
+  {
+   "ipAddress": "136.80.159.139",
+   "type": "OUTGOING"
+  }
+ ],
+ "connectionName": "food-crisis-modeling-enso:us-central1:research-pg",
+ "createTime": "2026-10-16T11:32:26.842Z",
+ "settingsVersion": "1"
+}

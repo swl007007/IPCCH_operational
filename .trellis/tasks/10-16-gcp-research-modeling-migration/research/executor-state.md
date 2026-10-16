@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 07:59 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 08:22 EDT
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `6f9cbda`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `b97ddcd`. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -43,7 +43,9 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - training label/horizon/identity checks aeec007, MLflow tag fallback b49ccc7; images e24de64; quote 3aec3ab;
   - images writable HOME + self-check ff90981, provider pin 36bde42, replay images b24dfd1; quote bindings 7180734 /
     6d4a9b6 / b24dfd1; preservation gate 50e9a6c; provisioner b497503 → 253a6b2 → b32038d; db_roles 3c8dbad;
-    ledger note 6f9cbda.
+    ledger note 6f9cbda; transfer a3eb433 → a524e51; bytecode guards df4bd6b (NOT in the 36bde42 images; see
+    `checkpoint-g7-g8-data-load-20261016.md` §3); MLflow store loader b97ddcd.
+  - **Do not change `research_cloud/deploy/transfer.py` until the transfer driver has finished** (its stages import from this checkout).
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
@@ -74,6 +76,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - **Background processes:**
   - Cloud SQL Auth Proxy v2.26.2 (`tools/cloud-sql-proxy.v2.26.2`, sha verified) on 127.0.0.1:5433 → `research-pg`; log `scratch/sql-proxy.log`.
   - The disposable PG (`scratch/pg-rehearsal`) is still running for local rehearsals.
+  - GCS transfer driver `ledger/transfer/run-all.sh` (PID 25168, started 08:04:23; log `ledger/transfer/run-all.log`; per-source JSONL receipts in `ledger/transfer/`). Do not duplicate it. Its DONE line is not acceptance: acceptance is the fresh `--verify` with `--expect-files` per source.
   - No other job is running.
 - **Operator ledger and receipts:**
   - `ledger/spend.sqlite`: platform 2026-10 reservations USD 46.76, no actual cost claimed yet.
@@ -126,7 +129,9 @@ The registry ledger stands at 170 passed and 72 tracking-only.
   - **G6:** 3 SAs, project and resource-scoped grants, 13 task-owned secrets (O-031, O-032, O-036, O-041).
   - **G7:** inputs/artifacts/build buckets and AR repo (O-033…O-035).
   - **G8:** `research-pg` RUNNABLE; scoped roles, 4 databases and PostGIS 3.6.4 verified (O-037, O-042).
-  - **G9:** 5 images pushed with in-image self-checks (O-038, O-039). Data staging and the Cloud Run service are not started.
+  - **G9:** 5 images pushed with in-image self-checks (O-038, O-039).
+  - **Data:** transfer pilot (O-044). MLflow stores loaded and verified in Cloud SQL (O-045: 64 tables / 361,026 rows and 11 / 10, every digest equal). The bulk GCS transfer is running: mlflow-artifacts 3,569/3,569 receipts, packages in progress, then inputs and 28 FEWS roots. Final verify is pending.
+  - The Cloud Run service is not started.
   - G10/G11 not started.
 - **Quote** (`quote-6d4a9b6`, amended b24dfd1): platform USD 79.23/month + 8.63 one-time; training USD 0.78.
 
@@ -151,10 +156,10 @@ Somalia v1, window-probe comparators, pop-v1, FEWS NET coverage, the URI map, se
 
 ## Open items (in order; nothing below is accepted yet)
 
-1. **G9 data staging.**
+1. **G9 data staging (running).** Acceptance requires fresh `--verify` with `--expect-files`: MLflow 3,569; packages 15,477 (223 package.json); inputs 122; FEWS 29 roots, 136,927 files (the actual-inputs root was piloted separately and also needs a final verify).
    - Transfer tool: fresh local sha256/md5/crc32c pass equal to the frozen manifests, then if-generation-match=0 upload, cloud md5/crc32c equality, and object-generation receipts.
    - Scope: MLflow artifact tree, packages, declared inputs, the FEWS archive (29 roots) and training snapshots.
-2. **MLflow stores into Cloud SQL** (copy_store from snapshot r1 as mlflow_app via the proxy). Then:
+2. **MLflow stores in Cloud SQL: DONE (O-045).** Then:
    - the Cloud Run `research-mlflow` service (deny mode);
    - workspace roles and the identities from `mlflow-jobwriter` / `mlflow-reader` / `mlflow-assistant-credentials`;
    - `feature_list_map --apply`;
@@ -163,7 +168,7 @@ Somalia v1, window-probe comparators, pop-v1, FEWS NET coverage, the URI map, se
 4. **G10:** Gemini rebind (custom role `researchGeminiInvoker`) and a bounded read-only assistant query.
 5. **G11:** Vertex jobs and the two-trial HPT smoke, with ledger reservations, plus the Vertex custom-code agent AR reader grant.
 6. **Cloud acceptance** (AC1–AC8). Then merge the native commits into the registered lineage and close.
-7. **Pending user disposition:** the confirm-onset system arm. **Flag:** default compute SA Editor (O-030).
+7. **Pending user disposition:** the confirm-onset system arm; whether to delete the 14 executor-written `.pyc` files in the original MLflow artifact store (`checkpoint-g7-g8-data-load-20261016.md` §4). **Flag:** default compute SA Editor (O-030).
 
 ## Next actions (in order)
 
