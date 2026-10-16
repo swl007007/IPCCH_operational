@@ -81,7 +81,10 @@ def write_auth_config(env, path):
                      "grant_default_workspace_access": "false",
                      # MLflow's own HMAC-keyed, bounded credential cache: without it every request re-runs the
                      # password hash (~0.17 s CPU on the service, serialized on its single worker). Password, admin
-                     # and user-deletion routes invalidate it in-process; one worker / one instance makes that complete.
+                     # and user-deletion routes invalidate it in the process that served them; that is complete only in
+                     # the steady state of one worker / one instance. During a revision overlap, or after an
+                     # out-of-band auth-store edit, a cached credential can outlive the change by at most the TTL
+                     # (60 s default, 0 disables, 300 max).
                      "auth_cache_ttl_seconds": str(auth_cache_ttl(env))}
     path.parent.mkdir(parents=True, exist_ok=True)
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
