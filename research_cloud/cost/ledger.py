@@ -178,6 +178,13 @@ def release(conn, operation_id, no_resource_evidence):
         _event(conn, operation_id, "released", {"no_resource_evidence": no_resource_evidence})
 
 
+def note(conn, operation_id, data):
+    """Append a provider observation (e.g. build ids and states) to an operation's events; no state change."""
+    with transaction(conn):
+        _get(conn, operation_id)
+        _event(conn, operation_id, "note", data)
+
+
 def summary(conn, month):
     out = {}
     for pool, cap in conn.execute("SELECT pool, monthly_cap_usd FROM pools ORDER BY pool"):
