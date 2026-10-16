@@ -1,4 +1,4 @@
-# Checkpoint P1/P3 (interim) — 2026-10-16 02:15 EDT
+# Checkpoint P1/P3 (interim) — written approx. 01:57 EDT 2026-10-16 (committed e19b2c5 at 01:57:54; timestamps corrected afterwards)
 
 Executor run `1193a92d1b0e4118a464753e548e113f`, base `99d390b`. Registered-repo HEAD is unchanged at `99d390b`; the evidence below is uncommitted until this checkpoint's commit.
 
@@ -35,10 +35,10 @@ GitNexus: `impact` on `classify` in repo `IPCCH_operational` returns "Target not
 
 See `cloud-preflight.json` and `cloud-operations.md` (O-001…O-024).
 - Project active, billing enabled.
-- The executor holds every project permission the plan needs, but **no billing-account permission**.
+- The tested subset of project permissions is granted (O-007); the remaining exact operations are unverified. The executor holds **no billing-account permission** (O-020).
 - Support APIs `cloudbilling` and `billingbudgets` were enabled (O-014/O-015).
 - Public SKU catalogs for SQL, Run, GCS, AR, Vertex, Secret Manager, Build and Logging were retrieved.
-- Actual spend is not visible to the executor. The three exact administrator figures needed are listed in `cloud-operations.md`. Paid provisioning and job submission are deferred until they arrive.
+- Actual spend is not visible to the executor. The required administrator figure (current-month actual spend) plus optional/conditional items are in `cloud-operations.md`. Paid provisioning and job submission are deferred until they arrive.
 
 ## Explicit gap ledger (unresolved)
 
@@ -50,10 +50,10 @@ See `cloud-preflight.json` and `cloud-operations.md` (O-001…O-024).
 | G-4 | 4 dashboard families have no retained weights: their versions (registered but no package) stay tracking-only and are disclosed. Exact per-version count pending G-1 | Count after mapping |
 | G-5 | Reference prediction samples not frozen yet | After G-1/G-2/G-3 |
 | G-6 | Input key-profile results not merged; no SQL/GCS layout decision per file yet | Merge `keys.jsonl`; storage map |
-| G-7 | Cost quote not yet written; actual spend and EE billing status unknown | Administrator figures (supervisor requesting); write `cost-estimate.md` from SKUs + measured volumes |
+| G-7 | Cost quote not yet written; current-month actual spend unknown (required); EE billing only if material cost remains unresolved | Administrator figure (supervisor requesting); write `cost-estimate.md` from SKUs + measured volumes |
 | G-8 | No container runtime in WSL; images must be built by Cloud Build, a paid route deferred by G-7 | Prepare Dockerfiles and rootless crane+bwrap runner locally |
 | G-9 | Agent-produced partial artifacts in scratch are not evidence until re-derived by committed code | — |
 
-No live handles remain: all detached agent processes finished by 02:12, and v2 inventory finished at 01:56.
+No live handles remain. Last-write times of the detached agent outputs (file mtimes) run from 01:44:47 (`keys.jsonl`) to 01:56:06 (`bg_done.flag`); `ps` showed none running just before commit e19b2c5 (01:57:54). The v2 inventory finished at 01:56:19 (summary mtime).
 
 Next: P2 local integration (MLflow SQLite→PostgreSQL rehearsal on the user-space PG16; container/runtime contracts), interleaved with G-1/G-3 package mapping.
