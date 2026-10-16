@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 06:54 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 07:04 EDT by `date`
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `713e350`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `3aec3ab`. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -39,7 +39,8 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
     confirm-onset pooled 3bee169; summarize 1c6c977;
   - cost ledger ccd1fd2 + atomic transitions/validation e79ccad;
   - stage-1 explicit system/root 78ae83f; v1 globals 78ae83f + horizon validation 1cde8f6; shared scen/confirm loader
-    width + NaN-safe builders 22150fe; preservation --no-recurse 991e27a; FEWS training adapter 713e350.
+    width + NaN-safe builders 22150fe; preservation --no-recurse 991e27a; FEWS training adapter 713e350;
+  - training label/horizon/identity checks aeec007, MLflow tag fallback b49ccc7; images e24de64; quote 3aec3ab.
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
@@ -101,6 +102,9 @@ Each round below is finished, with current receipts. Rerun a round only if its c
 | FEWS scen 8 (22150fe) | 8/8, 3,200 rows (supersedes 1a7e207) | `p2-packages/replay-fews-scen-22150fe` |
 | FEWS confirm-onset pooled S0/S3 (22150fe) | 2/2, 800 rows; system arm NOT packaged (pending) | `p2-packages/replay-fews-confirm-22150fe` |
 | FEWS training adapter (713e350) | features equal original cohorts/digests; 2 trials + refusal; package replay | `p2-training-fews-713e350` |
+| FEWS MLflow linkage (b49ccc7) | FINISHED run, reader download replay 200/200 | `p2-training-fews-b49ccc7` |
+| Images (e24de64) | locks verified in fresh venvs; trials byte-identical | `checkpoint-p2-images-quote-20261016.md` |
+| Final quote (3aec3ab) | platform 81.07/mo + 0.85; training 0.78 | `quote-3aec3ab/` |
 | Preservation manifests | scen 55,899 files; actual-inputs 6; failed_stage1 670 | `p2-preservation/` |
 
 The registry ledger stands at 170 passed and 72 tracking-only.
@@ -164,17 +168,17 @@ The registry ledger stands at 170 passed and 72 tracking-only.
 
 ## Open items (in order; nothing below is accepted yet)
 
-1. **Preservation manifests** for all 27 roots and the top-level loose files are running (`scratch/preservation/all-roots.sh`, 991e27a).
-2. **Pending user disposition:** the confirm-onset system arm. Do not substitute.
-3. **Images:** service plus training Dockerfiles for both families (FEWS_SRC and IPCCH_GEOXGB_SRC pinned; xgboost 3.0.0 pinned).
-4. **Final itemized quote:**
-   - transfer baseline 101.48 GB gross;
-   - Cloud SQL 30 GiB;
-   - Vertex reservation via `cost/ledger.py`;
-   - Gemini 3.8 Flash SKUs;
-   - GCS soft-delete/retention, builds/egress, SQL backup/IP.
-5. **G5-G11 cloud operations** with per-operation receipts and ledger entries; then cloud acceptance (AC5: one family's two-trial HPT on Vertex).
-6. **Merge** the native commits into the registered lineage before close.
+1. **Preservation manifests** for all roots and loose files are running (`scratch/preservation/all-roots.sh`).
+2. **Pending user disposition:** the confirm-onset system arm.
+3. **G5-G11 cloud operations**, each with a receipt in `cloud-operations.md` and a ledger entry (`cost/ledger.py`, pools platform/training):
+   - GCS buckets and transfer with fresh hash verification;
+   - Artifact Registry plus Cloud Build of the 3 images (contexts re-assembled at the final HEAD);
+   - Cloud SQL and import;
+   - Secret Manager;
+   - Cloud Run service;
+   - Vertex feature/trial jobs and the two-trial HPT smoke;
+   - cloud acceptance.
+4. **Merge** the native commits into the registered lineage before close.
 
 ## Next actions (in order)
 

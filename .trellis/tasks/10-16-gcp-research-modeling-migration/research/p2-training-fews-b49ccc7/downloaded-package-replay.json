@@ -1,0 +1,138 @@
+{
+ "package": "/home/swl007007/projects/food-crisis-research/scratch/training/fews-linkage-download/package",
+ "package_json_sha256": "77279f2619dd149345ccf0576320890e679ea00983571ea6bd848438d61bce73",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "family": "fewsnet_pooled_fourclass_trial",
+  "horizon": 4,
+  "input_manifest": {
+   "derived_from": {
+    "availability_inputs_sha256_linux": "9844579a7ae47cd8e4030953d231947e03160765337cebeb2e665897f01e0ed9",
+    "base_inputs": {
+     "alignment": "ca9e9a66ba791aacc14bf3d028c89c39bad6ae21c27331e07f0cf0c0b542e543",
+     "observations": "c1ba4d2e4c84d035cb91760f1f589965563dca08e67a647c4c71aa357bb0b873",
+     "panel": "611f9e776380e28da3fc845888d66a117626f91b37868e236ce849d44bc8f651",
+     "release_ledger": "83402d71a517298984392b105169f0b2841116721c24ee4f8421d299c9b9f960"
+    },
+    "base_manifest": "/home/swl007007/projects/food-crisis-research/scratch/training/manifest-fews-base.json",
+    "base_manifest_sha256": "50d20e39150e9ce4b5d79f5af77234a6a0b0db7c119781ae5b597be545da3a6f",
+    "builder_code": {
+     "fews_src": "/home/swl007007/projects/food-crisis-research/sources/Food_Crisis_Cluster/FEWSNETGeoXGBExperiment",
+     "files": {
+      "feature-schema.json": "51b6f8b21b76a78510522c34e2d1f2a648b7aec768bbcac3dd2318669fa13349",
+      "scripts/run_experiment.py": "ddbe9c44d90876f2aac1c1c79e8b8866f0c480e24da5582bf1f8cda358e872e1",
+      "src/experiment/availability.py": "3389e70d177ce3f3b5780ac54ea35d3a5b7b12cabdb16023c81c8d5fff4b80c3",
+      "src/experiment/plan.py": "991e2780bde4e2a01fc1cbed5f626714898417d79c423741e157b4d98dba0816",
+      "src/experiment/stage3.py": "eddccc3b7638a6f201a0de226b3a36183bcfcb8d4d848734e5ba60324f984a94",
+      "src/feature/fourclass_features.py": "4ade6658e74609eb64e32b703224cf6dd36bc014885d70292f4deb4804ae1a90",
+      "src/model/native_xgb.py": "1c5822ccb6307441fd1552f22f86c70cbb5748ec69e67ed036faa006d0002d57"
+     }
+    },
+    "horizon": 4,
+    "k": 0,
+    "recipe": "Availability(obs, ReleaseLedger, Scaffold(certified panel), schema, H, alignment, truth=obs).stage1_input(T, k, strategy)",
+    "strategy": "A",
+    "target": "2019-02"
+   },
+   "files": {
+    "X": {
+     "sha256": "333fb45ad32087b6d22b054d548abb36e6a44ba8aea16c403d1d4366cfcf3448",
+     "uri": "/home/swl007007/projects/food-crisis-research/scratch/training/fews-features-h4-2019-02/X_h4_2019-02_k0_A.npy"
+    },
+    "feature_order": {
+     "sha256": "5c4ea94b811b4c76951ef59d96b8a356eb01d49274cdc6a2bec33b4784e4aaef",
+     "uri": "/home/swl007007/projects/food-crisis-research/scratch/training/fews-features-h4-2019-02/feature_order.csv"
+    },
+    "rows": {
+     "sha256": "c49dc149c664942f7fe0c1c2a41724d6aa15174aedf77c6cf70246df726124db",
+     "uri": "/home/swl007007/projects/food-crisis-research/scratch/training/fews-features-h4-2019-02/rows_h4_2019-02_k0_A.csv.gz"
+    }
+   },
+   "gcp_project": "food-crisis-modeling-enso",
+   "name": "fews-scenario-fourclass-h4_2019-02_k0_A-linux"
+  },
+  "job": "local-fews-linkage",
+  "params": {
+   "colsample_bytree": 0.8,
+   "eta": 0.05,
+   "max_depth": 3,
+   "min_child_weight": 10,
+   "reg_alpha": 0,
+   "reg_lambda": 10,
+   "rounds": 200,
+   "subsample": 0.8,
+   "tree_method": "hist"
+  },
+  "target": "2019-02",
+  "trial": "1",
+  "trial_code": {
+   "adapter": {
+    "control_plane_commit": "b49ccc71429201e50c1fdcf6ad58fa2698e0ab7e",
+    "files": {
+     "research_cloud/packages/common.py": "c147424860367b405fd223a6dcc69a1af5e45dd987467799ab986b5edccd8eaf",
+     "research_cloud/packages/fews_confirm.py": "f1ccb661f60910366a794748dfbde62d00080f46b12d8d5be0740c4acceb65e7",
+     "research_cloud/packages/fews_scen.py": "5ecdf3fd87415c808d20e9e379072f0d58bc9d4f4a379bd9a22e8d9a60451e3d",
+     "research_cloud/training/common.py": "70c059fe8fff014526f30e5675b4fa1d98180eec0f20e9ff2714274b3705dbab",
+     "research_cloud/training/fews_fourclass.py": "c79eca11323203727a52b0847dd602ac7c01c1ba9dc2ebff89b62996e102f498",
+     "research_cloud/training/ipcch_quartet.py": "dd5bd982cf7b6d1f00075f152c81416fc6c357fbc42b08dd38e0b45d2f2d8770"
+    },
+    "image_digest": null,
+    "research_cloud_dirty": false
+   },
+   "fews_src": "/home/swl007007/projects/food-crisis-research/sources/Food_Crisis_Cluster/FEWSNETGeoXGBExperiment",
+   "files": {
+    "src/experiment/plan.py": "991e2780bde4e2a01fc1cbed5f626714898417d79c423741e157b4d98dba0816",
+    "src/metrics/fourclass.py": "505f12b5dc597166ab2b4a777f1f2627daa9aaafc07c574916c1a0b50319aeee",
+    "src/model/native_xgb.py": "1c5822ccb6307441fd1552f22f86c70cbb5748ec69e67ed036faa006d0002d57"
+   }
+  }
+ },
+ "rows": 200,
+ "columns": {
+  "p_1": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.816893411918599e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_2": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.794775687599895e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_3": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.807569273235224e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_4\u62165": {
+   "max_abs_err": 9.963817965141786e-17,
+   "mean_abs_err": 5.1059146060489224e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "y_pred_code": {
+   "max_abs_err": 0.0,
+   "mean_abs_err": 0.0,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 0.89
+}
