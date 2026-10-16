@@ -67,7 +67,7 @@ def lines(skus):
     add("platform", "Cloud Run memory, 60 active h x 2 GiB", ("run.json", 8, "02A2-9231-36A6"), 60 * 3600 * 2, "research use estimate")
     add("platform", "Cloud Run requests, 0.1 M", ("run.json", 149, "2DA5-55D3-E679"), 100_000, "gross (first 2 M are free tier)")
     add("platform", "Cloud Run internet egress 20 GiB", ("run.json", 646, "DDFD-AE42-E219"), 20,
-        "the single recurring download path: MLflow UI/API and proxied artifact/package downloads to the workstation")
+        "recurring workload allowance: MLflow UI/API and proxied artifact/package downloads to the workstation")
     # GCS (regional standard, us-central1)
     add("platform", f"GCS standard storage {storage_gib} GiB-month", ("gcs.json", 1124, "E5F0-6A5D-7BAD"), storage_gib,
         f"measured {gib_total:.1f} GiB (FEWS roots, inputs, MLflow artifacts, packages, snapshots) + 10% soft-delete/growth")
@@ -76,11 +76,17 @@ def lines(skus):
     add("platform", "GCS Class A, monthly 10k", ("gcs.json", 392, "4DBF-185F-A415"), 10_000, "operations")
     add("platform", "GCS Class B, monthly 100k", ("gcs.json", 596, "7870-010B-2763"), 100_000, "operations")
     scen, packages = 45_341_699_278 / GIB, VOLUMES["packages"] / GIB
-    add("platform", f"GCS direct download, acceptance {math.ceil(scen + packages)} GiB", ("gcs.json", 180, "22EB-AAE8-FBCD"),
-        math.ceil(scen + packages),
-        f"one-time acceptance downloads by direct GCS: every extant scen-b43ef6a-v1 material {scen:.2f} GiB (design: the "
-        f"exception's source archive) + all retained packages {packages:.2f} GiB; no other root is re-downloaded; in-region "
-        "training reads are free", one_time=True)
+    add("platform", f"GCS direct download, scen archive acceptance {math.ceil(scen)} GiB", ("gcs.json", 180, "22EB-AAE8-FBCD"),
+        math.ceil(scen), f"one-time: every extant scen-b43ef6a-v1 material ({scen:.2f} GiB; the exception's source archive), "
+        "authorized direct GCS download; no other root is re-downloaded", one_time=True)
+    add("platform", f"Cloud Run egress, package acceptance via MLflow SDK {math.ceil(packages)} GiB",
+        ("run.json", 646, "DDFD-AE42-E219"), math.ceil(packages),
+        f"one-time: all retained packages ({packages:.2f} GiB) downloaded with authenticated MLflow SDK calls through the "
+        "service's artifact proxy (the intended user path, incl. the largest-package service check)", one_time=True)
+    add("platform", "Cloud Run CPU, package acceptance streaming 2 h", ("run.json", 229, "4856-B847-F1EB"), 2 * 3600,
+        "one-time: proxy time to stream the package acceptance volume (conservative)", one_time=True)
+    add("platform", "Cloud Run memory, package acceptance streaming 2 h x 2 GiB", ("run.json", 8, "02A2-9231-36A6"),
+        2 * 3600 * 2, "one-time, as above", one_time=True)
     add("platform", "Artifact Registry pulls to the workstation 8 GiB", ("ar.json", 1, "108E-9EAE-92D9"), 8,
         "one-time crane pulls of the 3 images for local digest verification: measured unpacked envs 3.54 GB "
         "(service 0.63, training-fews 1.70, training-ipcch 1.21) + base layers, x2 for one rebuild", one_time=True)
