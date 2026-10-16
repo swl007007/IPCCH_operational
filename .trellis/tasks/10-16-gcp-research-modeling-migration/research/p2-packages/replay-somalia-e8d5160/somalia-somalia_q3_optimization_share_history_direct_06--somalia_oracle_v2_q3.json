@@ -1,0 +1,65 @@
+{
+ "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_direct_06--somalia_oracle_v2_q3",
+ "package_json_sha256": "80051ffc8b76919b77d7b78b0b281c5787a7920ffcec2e5b10ffd95beba1ddb6",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "xgboost": "3.2.0",
+  "numpy": "2.4.4",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "somalia_q3_optimization",
+  "logged_model_id": "m-deeb85f4149a4c38bb84ec4b81c42908",
+  "registered_model": "IPCCH Forecasting Somalia q3 optimization historical | share_history_direct | 6-month",
+  "version": 1
+ },
+ "rows": 132,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 6.329112318412351e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 5.698303781693512e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 7.827282593119594e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.986258379993444e-16,
+   "mean_abs_err": 8.539570565831282e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q3_mapped": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 6.16089670862066e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q3_final": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 6.16089670862066e-17,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.31
+}

@@ -1,0 +1,73 @@
+{
+ "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_cds_weather_06--compact_somalia_launch",
+ "package_json_sha256": "d26d5259963eac650bfb159429a79cae7c9ca991aa4961e3f186074e3efd60d4",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "xgboost": "3.2.0",
+  "numpy": "2.3.5",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "compact_launch_somalia",
+  "logged_model_id": "m-dbd5ed55101042f3af1e0f0b203b74a1",
+  "registered_model": "IPCCH Forecasting Compact climate Somalia-local launch | cds_weather | 6-month",
+  "version": 1
+ },
+ "rows": 32,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 6.245004513516506e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 6.505213034913027e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.8735013540549517e-16,
+   "mean_abs_err": 8.218252467440124e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.97758476261356e-16,
+   "mean_abs_err": 8.498112153212944e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 6.245004513516506e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 6.505213034913027e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 1.8735013540549517e-16,
+   "mean_abs_err": 8.218252467440124e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 1.97758476261356e-16,
+   "mean_abs_err": 8.498112153212944e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.52
+}

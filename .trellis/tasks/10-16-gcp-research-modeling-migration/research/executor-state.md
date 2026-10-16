@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 03:22 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 03:45 EDT by `date`
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -13,10 +13,19 @@ This file is kept current by the executor so work continues unchanged across con
 
 There must be no restart or reset of the run or executor.
 
-The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90cab1, 0d9b1b4, ed1c6de, 0a0d135 and cd95cdf (plus the next checkpoint), all on `feat/october-cloud-delivery`. Only this task's directory has been committed. The 73 pre-existing dirty paths are untouched.
+The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90cab1, 0d9b1b4, ed1c6de, 0a0d135, cd95cdf and b4c9052 (plus the next checkpoint), all on `feat/october-cloud-delivery`.
+- Commits so far contain this task's directory plus one authorized append to `PROGRESS.md` (supervisor request; staged as HEAD + LF section, see `p0-receipt.md` amendment). **Correction:** an earlier version of this file said "only task-dir committed, all 73 untouched"; that was stale after the `PROGRESS.md` append.
+- The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `bf77ccd` (forecasting batch/launch 81d6fb3, provenance fix 602558c, somalia v2 74e00f6, somalia v2/v3 job-scoped bf77ccd). These commits **must be merged into the registered repo lineage before close.**
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `44350b6`. Recent commits:
+  - forecasting batch/launch 81d6fb3, provenance fix 602558c;
+  - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
+  - PROGRESS ledger c509a39;
+  - somalia v4 e8d5160 + 7e1c391;
+  - assistant guard 40f43d4 + total reconciliation 44350b6.
+
+  All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
 ## Native workspace handles (`/home/swl007007/projects/food-crisis-research`)
 
@@ -30,35 +39,47 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - `envs/rt-forecast-x320`: xgboost 3.2.0 + IPCCH-lock numpy 2.3.5 / pandas 3.0.3 / scikit-learn 1.9.0 / scipy 1.17.1. **Correction (supervisor finding):** an earlier note said forecasting boosters "embed 3.2.0". That came from re-serializing through the current xgboost, which reports the loader's version, not the original bytes'. Original xgboost versions are known only where run metadata records them; otherwise they are unknown.
 - **Disposable PG:** `scratch/pg-rehearsal` (data dir; socket `scratch/pg-rehearsal/sock`; port 55432; DBs mlflow, mlflow_auth, research). It is running, started with `pg_ctl`; stop with `envs/pg16/bin/pg_ctl -D scratch/pg-rehearsal/data stop`.
 - **MLflow snapshot r1:** `scratch/mlflow-snapshot-r1` (`mlflow.db` sha `54aa6898…`, auth copy mode 600).
-- **Packages:** `packages/`. P6 8, yearly 12 and AlphaEarth 16 all pass (`p2-packages/replay-bf3da00/`). Forecasting batch/launch: 56 built with the corrected provenance code, replay running. Somalia v2 23 + v3 24 are being rebuilt with job-scoped calibration (previous build: 47/47 pass). Replay round `scratch/replay/fc-bf77ccd/` comes from background PID 2114182 (`/tmp/round_fc.sh`, log `scratch/replay/round-fc.log`).
+- **Packages:** `packages/`. All built packages pass:
+  - P6 8, yearly 12 and AlphaEarth 16 (`p2-packages/replay-bf3da00/`);
+  - forecasting 56 (supervisor round adopted, `p2-packages/replay-forecast-602558c-supervisor/`);
+  - Somalia v2/v3/v4 55 (`p2-packages/replay-somalia-e8d5160/`, from `scratch/replay/somalia-final/`).
+
+  Do not repeat the forecast round unless the forecast code or packages change.
 - **Inventories:**
   - `scratch/p1/model_inv_v2` (member-level, fresh hashes);
   - `scratch/p1/registry_ledger.json` (+ `ledger_resolutions.json`);
   - `scratch/p1/fews/` (hash cache, catalog, search report);
   - `scratch/p1/popv1_models.json`.
 - **SKU catalogs:** `scratch/p3/skus/*.json`.
-- **Background processes:** PID 2114182 (somalia rebuild + forecasting/somalia replay), started 03:21:24.
+- **Background processes:** none.
+  - The executor's `/tmp/round_fc.sh` (PID 2122191) and `/tmp/round_som.sh` were stopped or had finished; they had overlapped (`rm -rf` + rebuild) and duplicated the supervisor's forecast replay.
+  - `/tmp/round_som2.sh` (PID 2200404) finished with 55/55.
+  - The disposable PG (`pg_ctl` PID 1262386) is running.
 
 ## Status by phase
 
 - **P1:** inventory reconciled (`ledger/README.md`).
   - 242 registry versions with exact key equality: 36 packaged and passing, 134 retained with packages pending (forecasting 126 + window-probe comparators 8, linked to P6 units), 72 tracking-only.
   - Unregistered and in scope: `pop-v1` (660 local models), and the FEWS NET bounded root (27 runs, 34,085 `.ubj` files, 59.9 GB, labelled).
+  - Current ledger: 147 packaged_replay_passed, 23 package pending (Somalia v1 15 + window-probe comparators 8), 72 missing tracking-only (`checkpoint-p2-forecast-somalia-guard-20261016.md`).
   - Inputs: 121 declared files, 14.87 GB, hashes match (`input-inventory.json`; agent-produced, partial).
 - **P2:**
   - Store-copy rehearsal r3 passes (tracking + auth).
   - Packages: P6, yearly and AlphaEarth are done.
-  - **In progress:** forecasting batch/launch builder (`research_cloud/packages/forecast_batch.py`, uncommitted). It covers compact global/somalia original and 2026 extensions, origin-safe climate IDP, origin-safe weather ORACLE (label kept) and launch. The dataset comes from the manifest chain with sha verification; the decode is `classify_cumulative`.
+  - Forecasting batch/launch and Somalia v2/v3/v4 are done and committed.
+  - The assistant spend guard is committed with 12 tests; the launcher and HTTP rehearsal are next.
 - **P3:** preflight done (`cloud-preflight.json`, `cloud-operations.md` O-001…O-024); support APIs `cloudbilling` and `billingbudgets` enabled; SKU prices collected. **No paid resource has been created.**
 
 ## Pending items and gaps
 
-1. **Forecasting:**
-   - Batch/launch (56) and somalia v2/v3 (47) builders are done; the replay round is running.
-   - Remaining: **somalia v4** (8 versions, commit a787257: per-job recipe, history-override feature rows saved in `features/final_override_features.csv.gz`, residual support via `_v4_matrix`/`v4_fit_predict`) and **somalia v1** (15 versions, `run_somalia_oracle_experiment.py`, `predictions/predictions.csv.gz` with `q*_pred`/`phase_pred`).
+1. **Forecasting:** remaining is **somalia v1** (15 versions, `run_somalia_oracle_experiment.py`, `predictions/predictions.csv.gz` with `q*_pred`/`phase_pred`, arms A-D ensembles).
    - **Correction:** the somalia runs DO have saved predictions in their original run directories (`predictions/*.csv.gz`, `selection/*`); they were only absent from the MLflow plan members.
-2. **Window-probe comparator packages (8):** link to P6 units; a builder is needed.
-3. **pop-v1 packages:** XGBoost plus RandomForest (`joblib`) loader; version granularity proposal.
+2. **Window-probe comparator packages (8):** these cannot alias the P6 packages. `regional_ungated` needs 77 local P6 units, which are absent from the current packages and retained in the original P6 root. Routing uses `local_fit_ok` regardless of gate adoption, on selected dates only. Keep the eight original registry identities and references (`remaining-packages-supervisor.md`).
+3. **pop-v1 packages:**
+   - Weights: all 660 weight basenames match 110 fold identity JSONs across six arms; the originals inventory covers the files beyond the 24 in the native clone.
+   - RandomForest: reuse the saved imputer `fill_values` from each `model_identity` (do not refit).
+   - Threshold and correction: the threshold is strict `>` with ±Infinity literals; the correction arm flips by persistence.
+   - Pointers: `remaining-packages-supervisor.md`.
 4. **FEWS NET:** run-record treatment per `ledger/README.md`; packages only for runs with a servable model and saved predictions; `scen-b43ef6a-v1` 18 missing local boosters recorded in `fews/missing-local-boosters-receipt.md`.
 5. **URI map:** 56 `card.feature_list` logged-model tags embed the local store path. The plan is to keep the original tag, add a mapped cloud reference and adapt the `ipcch_model.py` reader.
 6. **Service (Cloud Run):** follow `service-readiness-supervisor.md`:
@@ -83,10 +104,10 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 
 ## Next actions (in order)
 
-1. Commit and finish forecasting batch/launch packages, then replay them.
-2. Somalia-oracle reference source.
+1. Service launcher plus local HTTP access and assistant rehearsal (guard done).
+2. Somalia v1 packages.
 3. Comparator and pop-v1 packages.
-4. Service rehearsal.
+4. Remaining service items (Secret Manager wiring, image).
 5. SQL import rehearsal.
 6. Training adapter.
 7. Cost estimate.

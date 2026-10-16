@@ -3,16 +3,16 @@
  "versions": 242,
  "key_set_equals_snapshot": true,
  "by_class": {
-  "packaged_replay_passed": 36,
-  "weights_retained_package_pending": 134,
+  "packaged_replay_passed": 147,
+  "weights_retained_package_pending": 23,
   "missing_weights_tracking_only": 72
  },
  "by_family_class": {
   "alphaearth_supervised_partition | packaged_replay_passed": 16,
-  "compact_climate_global | weights_retained_package_pending": 14,
-  "compact_climate_somalia | weights_retained_package_pending": 14,
-  "compact_launch_global | weights_retained_package_pending": 5,
-  "compact_launch_somalia | weights_retained_package_pending": 5,
+  "compact_climate_global | packaged_replay_passed": 14,
+  "compact_climate_somalia | packaged_replay_passed": 14,
+  "compact_launch_global | packaged_replay_passed": 5,
+  "compact_launch_somalia | packaged_replay_passed": 5,
   "geoxgb_climate_swap | missing_weights_tracking_only": 8,
   "geoxgb_maps_2024 | missing_weights_tracking_only": 8,
   "geoxgb_reference | packaged_replay_passed": 8,
@@ -20,14 +20,14 @@
   "geoxgb_window_probe | weights_retained_package_pending": 8,
   "geoxgb_yearly_refit | packaged_replay_passed": 12,
   "mlp_residual_fixed_maps | missing_weights_tracking_only": 48,
-  "origin_safe_climate_global | weights_retained_package_pending": 12,
-  "origin_safe_weather_global | weights_retained_package_pending": 6,
-  "somalia_calibrated_augmented | weights_retained_package_pending": 4,
-  "somalia_calibrated_observed | weights_retained_package_pending": 4,
+  "origin_safe_climate_global | packaged_replay_passed": 12,
+  "origin_safe_weather_global | packaged_replay_passed": 6,
+  "somalia_calibrated_augmented | packaged_replay_passed": 4,
+  "somalia_calibrated_observed | packaged_replay_passed": 4,
   "somalia_oracle_information | weights_retained_package_pending": 15,
-  "somalia_q3_optimization | weights_retained_package_pending": 23,
-  "somalia_validity_augmented | weights_retained_package_pending": 12,
-  "somalia_validity_observed | weights_retained_package_pending": 12
+  "somalia_q3_optimization | packaged_replay_passed": 23,
+  "somalia_validity_augmented | packaged_replay_passed": 12,
+  "somalia_validity_observed | packaged_replay_passed": 12
  },
  "rows": [
   {
@@ -744,9 +744,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_00--compact_somalia_original",
+    "status": "complete",
+    "content_sha256": "4842d225bb139cbd0adc7ab9ab8d7f994b3b49817046eecc943a42ce212716fd",
+    "gaps": [],
+    "package_json_sha256": "aabfaa327131af3bab112cdc7deee67144f3d335d67b753b8daecad224d8b72c"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "aabfaa327131af3bab112cdc7deee67144f3d335d67b753b8daecad224d8b72c"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -775,9 +787,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_00--compact_somalia_2026_extension",
+    "status": "complete",
+    "content_sha256": "c87360e2ceedd59abc465cd50385c9df83702b6ab81e6f55f7ffd883d5f1ce27",
+    "gaps": [],
+    "package_json_sha256": "d9f82a82fa0831ec941fdeea69dd4bf60f962ed7f51a1d30b6cdf5608a479ee8"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "d9f82a82fa0831ec941fdeea69dd4bf60f962ed7f51a1d30b6cdf5608a479ee8"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -806,9 +830,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_12--compact_somalia_original",
+    "status": "complete",
+    "content_sha256": "b6c166e247a092d7c0e29d09b4c94992db15e8d653485db2a8fc98b4a5504030",
+    "gaps": [],
+    "package_json_sha256": "5751a73b51ec6638a49ec608a5e451c8757d3ee59faa0953b06f4bb3a66a7437"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "5751a73b51ec6638a49ec608a5e451c8757d3ee59faa0953b06f4bb3a66a7437"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -837,9 +873,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_12--compact_somalia_2026_extension",
+    "status": "complete",
+    "content_sha256": "437cbffa69c6ee37c65e96d22680566b0df2b2e560952626e94c5d5ef5aa0027",
+    "gaps": [],
+    "package_json_sha256": "f297af7cf502c83ae14090f00740ee2466db2a7d49c20caa6b70b50ffe07545f"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "f297af7cf502c83ae14090f00740ee2466db2a7d49c20caa6b70b50ffe07545f"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -868,9 +916,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_03--compact_somalia_original",
+    "status": "complete",
+    "content_sha256": "6638d25f763aa903b4ab68f4138379fca502cb37dca49e11726f59d4d0d58404",
+    "gaps": [],
+    "package_json_sha256": "c7cca69a8560ebe2af652beffbbfeaf8284b5272aae7c6300088e0862ee2ec03"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "c7cca69a8560ebe2af652beffbbfeaf8284b5272aae7c6300088e0862ee2ec03"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -899,9 +959,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_03--compact_somalia_2026_extension",
+    "status": "complete",
+    "content_sha256": "befd63c063522c05df74f31d9384faf5695cc8e41cdbdb3ace60dd7f271e57be",
+    "gaps": [],
+    "package_json_sha256": "c2b1470cdeb330191d7266ae608cc2b37b85d68a4d9b20c1c7f184058d426b62"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "c2b1470cdeb330191d7266ae608cc2b37b85d68a4d9b20c1c7f184058d426b62"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -930,9 +1002,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_06--compact_somalia_original",
+    "status": "complete",
+    "content_sha256": "612991d62329bb1928a4751bc0c77e771c618444b2706320bf9e4bf00059731b",
+    "gaps": [],
+    "package_json_sha256": "ce28e6b7e0719e8cfda11c4d169ff59d0425a6782d963a08b51955738fda46fe"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "ce28e6b7e0719e8cfda11c4d169ff59d0425a6782d963a08b51955738fda46fe"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -961,9 +1045,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_06--compact_somalia_2026_extension",
+    "status": "complete",
+    "content_sha256": "a376bd70c731d616b55288585c9bd7fe64e0c84f616a2f74b0eaafc1961a5eab",
+    "gaps": [],
+    "package_json_sha256": "7ebb13dd23da3f5be7a9487591fc3cc5eb73c2b817ca3864669b8f4b4e6dd3f4"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "7ebb13dd23da3f5be7a9487591fc3cc5eb73c2b817ca3864669b8f4b4e6dd3f4"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -992,9 +1088,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_original",
+    "status": "complete",
+    "content_sha256": "e2f24c1775d7062a3773b03c96e17d994a1da776aa9b23f258af291da9f383bb",
+    "gaps": [],
+    "package_json_sha256": "71b2987e77d9eb1af3cc3b96fea7917eacec9bdfec779f9269fc8a0a3a5decd8"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "71b2987e77d9eb1af3cc3b96fea7917eacec9bdfec779f9269fc8a0a3a5decd8"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1023,9 +1131,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_2026_extension",
+    "status": "complete",
+    "content_sha256": "13c1554588f2181928b0c9ec9450458e19f8ba3a572228681ca7220c185984bf",
+    "gaps": [],
+    "package_json_sha256": "ccadec9116846892d5b39bb5a19a763d6c771c26af57eec562e7c21baec36a2f"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "ccadec9116846892d5b39bb5a19a763d6c771c26af57eec562e7c21baec36a2f"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1054,9 +1174,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_original",
+    "status": "complete",
+    "content_sha256": "2d730b4851db59b302aaece15c1d93160fbe641ecdc27b86df1186b92bfdf89b",
+    "gaps": [],
+    "package_json_sha256": "4947f74866a30ca4dfa7230cb89f79d11a6bf0c674f698d9b4282c91ded07ec8"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "4947f74866a30ca4dfa7230cb89f79d11a6bf0c674f698d9b4282c91ded07ec8"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1085,9 +1217,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_2026_extension",
+    "status": "complete",
+    "content_sha256": "0e87cdea66c6090e1aa2124ff211ec3912328025c63ad86397e4bb3b111dbb7a",
+    "gaps": [],
+    "package_json_sha256": "c0f3672054b2658cf75472510badcb125d108dfc178d17a251bca38a6881259b"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "c0f3672054b2658cf75472510badcb125d108dfc178d17a251bca38a6881259b"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1116,9 +1260,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_original",
+    "status": "complete",
+    "content_sha256": "7a6a1545b005872029a94e35b736aad04f38e02d439b4055a5a21c3127065eff",
+    "gaps": [],
+    "package_json_sha256": "d5735ffaab3d9d7d67b2d1efdb73b1211a1002f03ce333906b07419f6adb5ce1"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "d5735ffaab3d9d7d67b2d1efdb73b1211a1002f03ce333906b07419f6adb5ce1"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1147,9 +1303,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_2026_extension",
+    "status": "complete",
+    "content_sha256": "f5fe739774cde2a936369ce4711514918aa4d2d8adf14415c75c7009a31aabec",
+    "gaps": [],
+    "package_json_sha256": "a98fd56fe0466c628d76a6b2da84b9fc6c5ee4a1a163ace638d45b517fcb7b4e"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "a98fd56fe0466c628d76a6b2da84b9fc6c5ee4a1a163ace638d45b517fcb7b4e"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1178,9 +1346,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_baseline_00--compact_somalia_launch",
+    "status": "complete",
+    "content_sha256": "09ee267220bfd14c8b01b7813ebd45620de8622ea2268bee82252a74c6af3800",
+    "gaps": [],
+    "package_json_sha256": "f8a655966c63a5f3f5b445d47de9c03a34d6ec20426573c32698ad16b4f6de9e"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "f8a655966c63a5f3f5b445d47de9c03a34d6ec20426573c32698ad16b4f6de9e"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1209,9 +1389,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_baseline_12--compact_somalia_launch",
+    "status": "complete",
+    "content_sha256": "4a805459a6e0ea5bc4eff913587ca11f0164c684375a7f34368882b5b0541ac5",
+    "gaps": [],
+    "package_json_sha256": "285cbc347da52429568a7433d1dbe24bbbf40fecafbd80c1d84eb7bf13486e79"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "285cbc347da52429568a7433d1dbe24bbbf40fecafbd80c1d84eb7bf13486e79"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1240,9 +1432,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_baseline_06--compact_somalia_launch",
+    "status": "complete",
+    "content_sha256": "58b20bd14a94a952c5b8a5f0323da8e51f2d90e231dc205f9e170a7642bd2c2f",
+    "gaps": [],
+    "package_json_sha256": "99c19e625104c90cb588b5755f756f12cd69fdf0a7a852a26db9c9bc2d87ab61"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "99c19e625104c90cb588b5755f756f12cd69fdf0a7a852a26db9c9bc2d87ab61"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1271,9 +1475,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_cds_weather_12--compact_somalia_launch",
+    "status": "complete",
+    "content_sha256": "f05738726bc0e72953269eaec6604de565968208ed1b04bcf3f50f4fcc45dbc5",
+    "gaps": [],
+    "package_json_sha256": "c37eef8aa867187d323a768022919cc1d045b392c8a0a2d6dfae9114923d0181"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "c37eef8aa867187d323a768022919cc1d045b392c8a0a2d6dfae9114923d0181"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1302,9 +1518,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_cds_weather_06--compact_somalia_launch",
+    "status": "complete",
+    "content_sha256": "15b6e5566f40e6e018b4d14be0f8d248579670a800d478b7748d8dce91d34f88",
+    "gaps": [],
+    "package_json_sha256": "d26d5259963eac650bfb159429a79cae7c9ca991aa4961e3f186074e3efd60d4"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "d26d5259963eac650bfb159429a79cae7c9ca991aa4961e3f186074e3efd60d4"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1333,9 +1561,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_00--compact_global_original",
+    "status": "complete",
+    "content_sha256": "afff7c81ec3e994cf5af3e8e36db0adf4c6254a309205c4f8fff617eaaf1720f",
+    "gaps": [],
+    "package_json_sha256": "c474e04f43f4d7d7b6817bb4dff5837032cf0832a376802b6b928a8072263e79"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "c474e04f43f4d7d7b6817bb4dff5837032cf0832a376802b6b928a8072263e79"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1364,9 +1604,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_00--compact_global_2026_extension",
+    "status": "complete",
+    "content_sha256": "e14eb5c3dc5acb670b51f706aad2391ef5c587c98c0aabe9ba24fdea1f66e76d",
+    "gaps": [],
+    "package_json_sha256": "ad915234ee9cb878f575ef4098a705237065f5ea4873ae2b9066eff3faca5aa5"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "ad915234ee9cb878f575ef4098a705237065f5ea4873ae2b9066eff3faca5aa5"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1395,9 +1647,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_12--compact_global_original",
+    "status": "complete",
+    "content_sha256": "b815469557811693a84758d6b7e0fa14e8b9c34a36be6db68d749f2d0ffde3ce",
+    "gaps": [],
+    "package_json_sha256": "3f0edec6b5c38a3c52dcb75ff8fb2694b519cc8870448d25cbe4896e3b9db628"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "3f0edec6b5c38a3c52dcb75ff8fb2694b519cc8870448d25cbe4896e3b9db628"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1426,9 +1690,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_12--compact_global_2026_extension",
+    "status": "complete",
+    "content_sha256": "cc9fb081abd765bd609240ec577239ff9ec745bdf30d81fab7322fcf2937c2c8",
+    "gaps": [],
+    "package_json_sha256": "6b23bbbbce8a20ace6caf4eb21370f1f61197a986e10fd06f50890908ada790f"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "6b23bbbbce8a20ace6caf4eb21370f1f61197a986e10fd06f50890908ada790f"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1457,9 +1733,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_03--compact_global_original",
+    "status": "complete",
+    "content_sha256": "1d56c7d2e32731f2cfe941eda49862236bd2d247ba45f055991479bdce886d31",
+    "gaps": [],
+    "package_json_sha256": "9522cac8dea1c9be1cc3515287d78747ab14ce24005886a5d553b2ebef0a2e90"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "9522cac8dea1c9be1cc3515287d78747ab14ce24005886a5d553b2ebef0a2e90"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1488,9 +1776,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_03--compact_global_2026_extension",
+    "status": "complete",
+    "content_sha256": "78612253b6507c57122518dfd622531216fe28a8b179d3d2e58ec486d1219027",
+    "gaps": [],
+    "package_json_sha256": "ee4aa60fc86570f9bc3bc1a3f8277b2049d6b1bfe4a904f7388e7b0c61ac33fc"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "ee4aa60fc86570f9bc3bc1a3f8277b2049d6b1bfe4a904f7388e7b0c61ac33fc"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1519,9 +1819,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_06--compact_global_original",
+    "status": "complete",
+    "content_sha256": "a8ed03a70d19db8354bfe03ca37837dcc2fa431d81a777d41a5b38c9c2a484d3",
+    "gaps": [],
+    "package_json_sha256": "b0247ed6d683c0f9ea9910292491fbead9d40d28825e876e00ba12327e841fdd"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "b0247ed6d683c0f9ea9910292491fbead9d40d28825e876e00ba12327e841fdd"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1550,9 +1862,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_06--compact_global_2026_extension",
+    "status": "complete",
+    "content_sha256": "9e794313b324b7843b0afe6f02abed1914dbc50c497257f7fcfb39a91d0ebc5c",
+    "gaps": [],
+    "package_json_sha256": "d98174738b70c97e3a67683119234791d8f32c500bc2c55b3396b5f8a8fe5685"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "d98174738b70c97e3a67683119234791d8f32c500bc2c55b3396b5f8a8fe5685"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1581,9 +1905,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_12--compact_global_original",
+    "status": "complete",
+    "content_sha256": "c0c1b0b35219097e4801cd5d78a2d6e6008b7ed51e8a7dcee656a7eaff97ce9a",
+    "gaps": [],
+    "package_json_sha256": "99cc925641b07a654d13bfeb0e4ee219d9a623d7edd2d3dc122e582aabec1531"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "99cc925641b07a654d13bfeb0e4ee219d9a623d7edd2d3dc122e582aabec1531"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1612,9 +1948,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_12--compact_global_2026_extension",
+    "status": "complete",
+    "content_sha256": "03ee1d971de79bcacad2185b40f310643e63c92a60a36e7dccccd7a797846fd2",
+    "gaps": [],
+    "package_json_sha256": "0c694708118e483da87bd9254c554a04d4a0f8a6855785c1c1563212a685d226"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "0c694708118e483da87bd9254c554a04d4a0f8a6855785c1c1563212a685d226"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1643,9 +1991,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_03--compact_global_original",
+    "status": "complete",
+    "content_sha256": "cb901131a81bc40892b0ca4fd96dfcc2363009cd4c91d0a800d9f261c8eae13b",
+    "gaps": [],
+    "package_json_sha256": "293f61bbd72777722cb030df99a43f789a16b7f13c76769e8a205288ec1aa6a6"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "293f61bbd72777722cb030df99a43f789a16b7f13c76769e8a205288ec1aa6a6"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1674,9 +2034,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_03--compact_global_2026_extension",
+    "status": "complete",
+    "content_sha256": "6bbf803be7484726f7944dbfd6fa491f2c5c86a2f6a802d0f719694ed042c9db",
+    "gaps": [],
+    "package_json_sha256": "0523ff92e95e5d0f92ace8b77feeccc449ea41b1ad9de519ac73595fc7476007"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "0523ff92e95e5d0f92ace8b77feeccc449ea41b1ad9de519ac73595fc7476007"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1705,9 +2077,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_06--compact_global_original",
+    "status": "complete",
+    "content_sha256": "2840cc500d7633c3f5ab993348b5fab60c750c9e57100c0e4d66d2a4df57d271",
+    "gaps": [],
+    "package_json_sha256": "21cd3c306635ffc43e8a932e321c62236a9c8e6d5f670327156e1262806e7599"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "21cd3c306635ffc43e8a932e321c62236a9c8e6d5f670327156e1262806e7599"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1736,9 +2120,21 @@
    "member_status_counts": {
     "verified": 36
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_06--compact_global_2026_extension",
+    "status": "complete",
+    "content_sha256": "7324fed9baf7808f0d0c0f2d89f30fea551266fac4dd8faba57147d7acbba633",
+    "gaps": [],
+    "package_json_sha256": "f10d95ae20e9033a2837c47a789ee2346ecb09d6195816ee05592ccc9044bb66"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 160,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "f10d95ae20e9033a2837c47a789ee2346ecb09d6195816ee05592ccc9044bb66"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1767,9 +2163,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_baseline_00--compact_global_launch",
+    "status": "complete",
+    "content_sha256": "c25bf9a1116dbfe40f8b38af21a939110127520a5596a94670142ee56399d552",
+    "gaps": [],
+    "package_json_sha256": "42989701e27016560dd67d7bdf3f44561b88bb4831f860e1cc7e3fca165ec9a4"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "42989701e27016560dd67d7bdf3f44561b88bb4831f860e1cc7e3fca165ec9a4"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1798,9 +2206,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_baseline_12--compact_global_launch",
+    "status": "complete",
+    "content_sha256": "1cd105205b2eca7723c23b42f470cbf75bbc878497425f840257429fd3a8c7a3",
+    "gaps": [],
+    "package_json_sha256": "f0b12a640b8a8856182b4b5741468a802acc750ecc3b1a555333713f8f119823"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "f0b12a640b8a8856182b4b5741468a802acc750ecc3b1a555333713f8f119823"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1829,9 +2249,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_baseline_06--compact_global_launch",
+    "status": "complete",
+    "content_sha256": "9ffa43267a131c903f10c00b986bf99070bc0763011f1f1a2976ad9ff10dc7d3",
+    "gaps": [],
+    "package_json_sha256": "30ba4f4c0225c3f61ef136b094678fcdc66c048566d0f3be48a575d8f1350e01"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "30ba4f4c0225c3f61ef136b094678fcdc66c048566d0f3be48a575d8f1350e01"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1860,9 +2292,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_cds_weather_12--compact_global_launch",
+    "status": "complete",
+    "content_sha256": "57476eb69eeab85de4b1cbb6572a83aaacef17cea4344be095e9f7b784cce207",
+    "gaps": [],
+    "package_json_sha256": "139bd59d17a990040368c6b36932b76641f1b69e835cc6ec4442afad94da9bc6"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "139bd59d17a990040368c6b36932b76641f1b69e835cc6ec4442afad94da9bc6"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1891,9 +2335,21 @@
    "member_status_counts": {
     "verified": 12
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_cds_weather_06--compact_global_launch",
+    "status": "complete",
+    "content_sha256": "8bc3ee23a481e69476b4d0b8453f8e48204a8424afaea92d8c5976560f5e2779",
+    "gaps": [],
+    "package_json_sha256": "559b7856a6ce994cd9b9e317716ace2ecf6c909b44ca09bd3d937579f4533570"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 32,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "559b7856a6ce994cd9b9e317716ace2ecf6c909b44ca09bd3d937579f4533570"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1922,9 +2378,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_no_ipc_history_00--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "3b23654bfc04afee5c9714a97e55ee74a6d1aac8e7a5172a5d2e630bcf31af94",
+    "gaps": [],
+    "package_json_sha256": "a4b59a1bbb5cbc136cf534bd2e4967fd47ec71dd2cdad2566a4918fb5edb0ce7"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "a4b59a1bbb5cbc136cf534bd2e4967fd47ec71dd2cdad2566a4918fb5edb0ce7"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1953,9 +2421,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_no_ipc_history_12--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "f821b17aee4893fb2ab4baf6ba5550fdcea78b406695a09ee9bc633486393e8a",
+    "gaps": [],
+    "package_json_sha256": "e70139e05f6e5a0e3b222a3b883f54274a618ff5b1b105ed4a196ed6d96e4276"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "e70139e05f6e5a0e3b222a3b883f54274a618ff5b1b105ed4a196ed6d96e4276"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -1984,9 +2464,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_no_ipc_history_03--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "29e4139c49d4889763e770395751609ff58f493a6b7133a8cd9af412015d12bd",
+    "gaps": [],
+    "package_json_sha256": "cc2c7c7ade62eb8608b7f2094f363f9b5111a720974bf551310ae55def0fbadd"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "cc2c7c7ade62eb8608b7f2094f363f9b5111a720974bf551310ae55def0fbadd"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2015,9 +2507,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_no_ipc_history_06--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "9863baeb6bd96ca25be1e8894cfcbc793d57a65cd8f2849994167e7688cd6c21",
+    "gaps": [],
+    "package_json_sha256": "e6891ce1aae3284ab669cf99f2dd4edb49f957985785a7969ded1352f3a9f488"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "e6891ce1aae3284ab669cf99f2dd4edb49f957985785a7969ded1352f3a9f488"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2046,9 +2550,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_00--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "7b64a265ab1957e4abc1c0e6051d7c5b4e1dcbd43db32443b77b1b7c3ec84f67",
+    "gaps": [],
+    "package_json_sha256": "c488f0569f139c70d6fcf4f51e0f73df737f7a0ac9c8e28e880bfd7efafc5bf3"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "c488f0569f139c70d6fcf4f51e0f73df737f7a0ac9c8e28e880bfd7efafc5bf3"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2077,9 +2593,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_12--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "8fb1037c12ace52b3a2f9b477acbe33ddeef8e714b0bbe95e8f751011e6814ba",
+    "gaps": [],
+    "package_json_sha256": "a45ff890d795405ee28238d65303d4cbaa352faf0ac0872c82138d96874838d5"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "a45ff890d795405ee28238d65303d4cbaa352faf0ac0872c82138d96874838d5"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2108,9 +2636,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_03--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "1555f4288d4d5f4c143704f71fe507715c59c82fd9b88d24e7bb8e5d9df296dd",
+    "gaps": [],
+    "package_json_sha256": "b576d6e1d28fee662e2af985abe85b7235f8766bc8c108d32174ac06c42f9f8a"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "b576d6e1d28fee662e2af985abe85b7235f8766bc8c108d32174ac06c42f9f8a"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2139,9 +2679,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_06--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "1da9ce99e4bcb60bb3445bfff23e69845a0fc61a1115ca77a6f42425f919e7ea",
+    "gaps": [],
+    "package_json_sha256": "6d147ab9227576bb0d8ff32ba09029055179ce83a2ee87ff56a2df35ad2a996a"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "6d147ab9227576bb0d8ff32ba09029055179ce83a2ee87ff56a2df35ad2a996a"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2170,9 +2722,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_idp_00--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "3c332b6ed4b08ca2b47973fcc258368475df8d166120f413ff52b052d9c0ee5f",
+    "gaps": [],
+    "package_json_sha256": "7ad53fde50d9c00779a4d394913f3436bf18e77131a22e58eb9b03cf124cd4c3"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "7ad53fde50d9c00779a4d394913f3436bf18e77131a22e58eb9b03cf124cd4c3"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2201,9 +2765,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_idp_12--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "0b3db9e62567d73009c92d154f75ea9fbae6c0bc0d0631d20211751543b9e072",
+    "gaps": [],
+    "package_json_sha256": "cf5496d80bc027b2eb2f31467aac015207524b2de8f52228389295bb205ebd3d"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "cf5496d80bc027b2eb2f31467aac015207524b2de8f52228389295bb205ebd3d"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2232,9 +2808,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_idp_03--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "83f44687e3b4f8ae0f43509e16d9b6079e2650ffc3fc3967263150175df1f847",
+    "gaps": [],
+    "package_json_sha256": "77d8d64962a717bf9019da0932f9ffbcf297064782601df3e50ba87a70d5eced"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "77d8d64962a717bf9019da0932f9ffbcf297064782601df3e50ba87a70d5eced"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2263,9 +2851,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_idp_06--origin_safe_climate_idp_v1",
+    "status": "complete",
+    "content_sha256": "8fd0447df32792a67464d22e0f1f34e044dec6f2d26ef59831e6c7210ca49ab5",
+    "gaps": [],
+    "package_json_sha256": "7987a52aa655a737c9619eb578e127dc0f206cb9363a1c7e33f23e6e4668a9e2"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "7987a52aa655a737c9619eb578e127dc0f206cb9363a1c7e33f23e6e4668a9e2"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2294,9 +2894,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_12--origin_safe_weather_oracle_v1",
+    "status": "complete",
+    "content_sha256": "b4342ab1ba49659aff0a85e018474ec3cc8f83f00d4dbfeb1f4532db1466e941",
+    "gaps": [],
+    "package_json_sha256": "280e4ebd9eebb6383ee8e8334fd5cf108d23681008351e0810100a24f23e9085"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "280e4ebd9eebb6383ee8e8334fd5cf108d23681008351e0810100a24f23e9085"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2325,9 +2937,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_03--origin_safe_weather_oracle_v1",
+    "status": "complete",
+    "content_sha256": "6fffe1e9dc048b04199c00e250538542e8a1b4fd2d8ebc9919264f7f7a430ceb",
+    "gaps": [],
+    "package_json_sha256": "7f8e726c15e0bf6ec6646c710e9bcb4dae28721da7a9976da48383d4d17ae896"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "7f8e726c15e0bf6ec6646c710e9bcb4dae28721da7a9976da48383d4d17ae896"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2356,9 +2980,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_06--origin_safe_weather_oracle_v1",
+    "status": "complete",
+    "content_sha256": "876094a01b1d2de83884545b64b0beba6c993f60a73583896644a62ffdb37bc9",
+    "gaps": [],
+    "package_json_sha256": "c83d98debf1340b09432a1310c03d0d4943dab1c7556ef985637d6742b256138"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "c83d98debf1340b09432a1310c03d0d4943dab1c7556ef985637d6742b256138"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2387,9 +3023,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_with_summaries_12--origin_safe_weather_oracle_v1",
+    "status": "complete",
+    "content_sha256": "ffd5d19b94643a69142b4138faa03bef5580d43296a47950e65ef408b102653f",
+    "gaps": [],
+    "package_json_sha256": "35070c8280c7a456cbd141c0c7a4775b90f1c99e0b69e28c7adbbcbd2a8ba099"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "35070c8280c7a456cbd141c0c7a4775b90f1c99e0b69e28c7adbbcbd2a8ba099"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2418,9 +3066,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_with_summaries_03--origin_safe_weather_oracle_v1",
+    "status": "complete",
+    "content_sha256": "27d3363b435e9c0e2d567345fb22b087c93f2b5c514ce4dde385be01736354a1",
+    "gaps": [],
+    "package_json_sha256": "a4b0fbf055a328fd88e249eeb7325a589e2bc93d75d43dd2b7709b9ede40f015"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "a4b0fbf055a328fd88e249eeb7325a589e2bc93d75d43dd2b7709b9ede40f015"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2449,9 +3109,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_with_summaries_06--origin_safe_weather_oracle_v1",
+    "status": "complete",
+    "content_sha256": "63763670e794e845990e47133f667c26a7e172d765436019dd5bdbf4c6789d3a",
+    "gaps": [],
+    "package_json_sha256": "7783ecfe86f9ee95b715721bd789cc7d820ded85a430884a74c40c162253a2f2"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.1102230246251565e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/forecast-adopted/summary.json",
+    "package_json_sha256": "7783ecfe86f9ee95b715721bd789cc7d820ded85a430884a74c40c162253a2f2"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2480,9 +3152,21 @@
    "member_status_counts": {
     "verified": 126
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_calibrated_augmented_calibrated_share_history_00--somalia_oracle_v4_calibrated_d",
+    "status": "complete",
+    "content_sha256": "74d7834d1a70d3d054d3b5e166c936200e8c02a5be4e18e413ce45f9c3351723",
+    "gaps": [],
+    "package_json_sha256": "d83701cb37d3b4ab26d74f0e6a597ad1a8bed51ceb9f2d760355bf0997f5006c"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 709,
+    "max_abs_err": 1.9992688060632702e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "d83701cb37d3b4ab26d74f0e6a597ad1a8bed51ceb9f2d760355bf0997f5006c"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2511,9 +3195,21 @@
    "member_status_counts": {
     "verified": 112
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_calibrated_augmented_calibrated_share_history_12--somalia_oracle_v4_calibrated_d",
+    "status": "complete",
+    "content_sha256": "79299f99f2c0b925f99895caeea61f5559db6635df1cd32438cb6df0ad046207",
+    "gaps": [],
+    "package_json_sha256": "1c7afd30971e2dc8a8da8c1b1c685d9a9bd46ee732c05350e9832b4396e06f07"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 705,
+    "max_abs_err": 1.981921571303502e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "1c7afd30971e2dc8a8da8c1b1c685d9a9bd46ee732c05350e9832b4396e06f07"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2542,9 +3238,21 @@
    "member_status_counts": {
     "verified": 109
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_calibrated_augmented_calibrated_share_history_03--somalia_oracle_v4_calibrated_d",
+    "status": "complete",
+    "content_sha256": "db6cf76a828c25e29c3405c1f44c5473406c88a702a923784a3180689d67dd8c",
+    "gaps": [],
+    "package_json_sha256": "94d086f28e0205466b52d787b4d2f999a27a618f8125ef3f0cc5bdd4c6d89fa8"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 652,
+    "max_abs_err": 1.986258379993444e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "94d086f28e0205466b52d787b4d2f999a27a618f8125ef3f0cc5bdd4c6d89fa8"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2573,9 +3281,21 @@
    "member_status_counts": {
     "verified": 122
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_calibrated_augmented_calibrated_share_history_06--somalia_oracle_v4_calibrated_d",
+    "status": "complete",
+    "content_sha256": "e8cebcb215fea5d71f04f5cbe71c97401a53fdd35cf5e678b66a4a8bf5095407",
+    "gaps": [],
+    "package_json_sha256": "424230b5e1bb3d535699978722dda242ed322d6884e70fb0f6a6ca3bfd3adca9"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 652,
+    "max_abs_err": 1.9992688060632702e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "424230b5e1bb3d535699978722dda242ed322d6884e70fb0f6a6ca3bfd3adca9"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2604,9 +3324,21 @@
    "member_status_counts": {
     "verified": 80
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_calibrated_observed_calibrated_share_history_00--somalia_oracle_v4_calibrated_d",
+    "status": "complete",
+    "content_sha256": "0356c4c64ad061446b25936f5907a7836252394500e4fd94793edd51d2652324",
+    "gaps": [],
+    "package_json_sha256": "0036684663903d1935419c5c33eb8e69814879d1734e24d4eabdd08188aa6840"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 389,
+    "max_abs_err": 1.9884267843384151e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "0036684663903d1935419c5c33eb8e69814879d1734e24d4eabdd08188aa6840"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2635,9 +3367,21 @@
    "member_status_counts": {
     "verified": 69
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_calibrated_observed_calibrated_share_history_12--somalia_oracle_v4_calibrated_d",
+    "status": "complete",
+    "content_sha256": "a9b01bccd2a6170dfd0f32f98c1f1effc80ce08a1a56e126b987398025e1038a",
+    "gaps": [],
+    "package_json_sha256": "3e5c57ec2cd399487b47724cb3e493f23234844dcdc8aadb54cd8ed47c3be1f8"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 385,
+    "max_abs_err": 1.986258379993444e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "3e5c57ec2cd399487b47724cb3e493f23234844dcdc8aadb54cd8ed47c3be1f8"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2666,9 +3410,21 @@
    "member_status_counts": {
     "verified": 67
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_calibrated_observed_calibrated_share_history_03--somalia_oracle_v4_calibrated_d",
+    "status": "complete",
+    "content_sha256": "ec00a1aa2620f3696d15641ef13bb724c9454d52e502900415f01798c6a56444",
+    "gaps": [],
+    "package_json_sha256": "cdeb58cef09830f88d426b5c694aa5e1d454fb459443ebcd5ac62d73f17f1d14"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 332,
+    "max_abs_err": 1.9824636723897449e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "cdeb58cef09830f88d426b5c694aa5e1d454fb459443ebcd5ac62d73f17f1d14"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -2697,9 +3453,21 @@
    "member_status_counts": {
     "verified": 69
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_calibrated_observed_calibrated_share_history_06--somalia_oracle_v4_calibrated_d",
+    "status": "complete",
+    "content_sha256": "4c7aa5b3bb0aa7c3369d233c0925bd9e5c2f6202b59f9788d07eced0252c19e4",
+    "gaps": [],
+    "package_json_sha256": "2b9e7bd0f55a38459656002947dcd16e8c91cfaed44179bd391dd15614c47c02"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 332,
+    "max_abs_err": 1.986258379993444e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "2b9e7bd0f55a38459656002947dcd16e8c91cfaed44179bd391dd15614c47c02"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3193,9 +3961,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_existing_predictors_00--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "3bfea798316e003f13a23b1932a02ffb4c7632d47d97ae0ca326f7e2d7175212",
+    "gaps": [],
+    "package_json_sha256": "744f88df242d7304ae61116a19955753144515cd94a098438d002be4b515f622"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "744f88df242d7304ae61116a19955753144515cd94a098438d002be4b515f622"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3224,9 +4004,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_existing_predictors_12--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "7a44c62e060ceca8320f2baf7d0304c2fa45a933dda17fa7557f92267f19534a",
+    "gaps": [],
+    "package_json_sha256": "2507fc1d308c7f0da1cf5ba6d3177b906897da667af0fff3dfb7dec557719c10"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.3592239273284576e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "2507fc1d308c7f0da1cf5ba6d3177b906897da667af0fff3dfb7dec557719c10"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3255,9 +4047,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_existing_predictors_03--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "e0704351d8160c74e1c1dd35e8bc080166d1630323947e7ad6c329f0b91c8dff",
+    "gaps": [],
+    "package_json_sha256": "476f95d016acad2eeae8dfd1068e464626b0c8aa6448b422516ffffe05a47d5b"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "476f95d016acad2eeae8dfd1068e464626b0c8aa6448b422516ffffe05a47d5b"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3286,9 +4090,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_existing_predictors_06--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "8f19c0a5c977ab6491107621ef1035c8c7bc54f817e44d58ef092f5bd867141e",
+    "gaps": [],
+    "package_json_sha256": "ff8e57752de2491b3b73120b88dc2a40a84349934b5626f3145e3ff7e5386378"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.7755575615628914e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "ff8e57752de2491b3b73120b88dc2a40a84349934b5626f3145e3ff7e5386378"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3317,9 +4133,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_seasonal_climate_00--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "b238853f73ba82e03c70f27a96b583f8e97b19cada8a52ec9d0724bebfd4ded4",
+    "gaps": [],
+    "package_json_sha256": "3e5fce33dec7095fb9b06d74d6d064f957d482aba216e89f4d22d64c3a6b80b4"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.97758476261356e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "3e5fce33dec7095fb9b06d74d6d064f957d482aba216e89f4d22d64c3a6b80b4"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3348,9 +4176,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_seasonal_climate_12--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "7ec3d12eae71d98c00e6a285e58bbec3b113d41860f049f076ef16fc1b6c28ac",
+    "gaps": [],
+    "package_json_sha256": "4f4099ff23b359642f601f798153ccfa1a9c18875f45d2aa4482a8e86306600e"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.636779683484747e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "4f4099ff23b359642f601f798153ccfa1a9c18875f45d2aa4482a8e86306600e"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3379,9 +4219,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_seasonal_climate_03--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "53ee0f3740ad522dce11315e0b1e1c1320a2abdfb86a5be5d778b6cfe56eba94",
+    "gaps": [],
+    "package_json_sha256": "5cc7d71a9f08861f417b82bb3e56a68b64bac91fda91920aa557da3df79ed6dc"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.975416358268589e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "5cc7d71a9f08861f417b82bb3e56a68b64bac91fda91920aa557da3df79ed6dc"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3410,9 +4262,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_seasonal_climate_06--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "f75656068d494b1b2aec2b19a38d68293b4c1d61ce72894d433a52827db94f55",
+    "gaps": [],
+    "package_json_sha256": "b2e1b600dbd6e36ed37498bc3f9aa74e3fce4cd73c3decb76677afbbc5342fed"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.968911145233676e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "b2e1b600dbd6e36ed37498bc3f9aa74e3fce4cd73c3decb76677afbbc5342fed"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3441,9 +4305,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_direct_00--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "5159ca579986305ba836ca4040051e53e6193afd2167992208915576dcaa9d9d",
+    "gaps": [],
+    "package_json_sha256": "17e2fd75a797b62c676db458eeb4a69b10970c4fedc55eb4eb457e671d133a53"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "17e2fd75a797b62c676db458eeb4a69b10970c4fedc55eb4eb457e671d133a53"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3472,9 +4348,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_direct_12--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "8779e7052f015f158f68cb5f2d05866a240058dc5b3f0fdeaeb2782552156ccd",
+    "gaps": [],
+    "package_json_sha256": "d8dadaff688e4a03d1293733e49c74a24beb9e71b257c722ef008afdcaf261f9"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.968911145233676e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "d8dadaff688e4a03d1293733e49c74a24beb9e71b257c722ef008afdcaf261f9"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3503,9 +4391,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_direct_03--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "7237e12204bd21c9bed1955e3232175ce5b393de9b2aceeeaf6888eb0d7ddef5",
+    "gaps": [],
+    "package_json_sha256": "b560afdc6d1b07ef5ad83b4ce1e79de5d38a41538295d603c61be9172b0f2265"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "b560afdc6d1b07ef5ad83b4ce1e79de5d38a41538295d603c61be9172b0f2265"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3534,9 +4434,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_direct_06--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "e4c24db0836c4a55661b88e2a4ebc93020c48a5d5d8957c1872600ffdd80994a",
+    "gaps": [],
+    "package_json_sha256": "80051ffc8b76919b77d7b78b0b281c5787a7920ffcec2e5b10ffd95beba1ddb6"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "80051ffc8b76919b77d7b78b0b281c5787a7920ffcec2e5b10ffd95beba1ddb6"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3565,9 +4477,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_residual_00--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "2d016ce14f37e4bd33bf3d0d089e7c500bc50166fdeecc96fa0231d78ac3f44a",
+    "gaps": [],
+    "package_json_sha256": "cc04acfc9665085c31ebae225465051930c0ae33eed6d8f9f793061af8623777"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "cc04acfc9665085c31ebae225465051930c0ae33eed6d8f9f793061af8623777"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3596,9 +4520,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_residual_12--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "f6259d9278b60149c31fa616f75bee31d2ea7895e208d568599b314f2d3dd026",
+    "gaps": [],
+    "package_json_sha256": "d1ed44088ec811c5589e934ef227651fba5953ae9bb8e8dcc3ec90ea8f60ecf9"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.942890293094024e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "d1ed44088ec811c5589e934ef227651fba5953ae9bb8e8dcc3ec90ea8f60ecf9"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3627,9 +4563,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_residual_03--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "43a5ea32d1df89c9c0c29a3681af02173399d434660df2531955fee98a7a1253",
+    "gaps": [],
+    "package_json_sha256": "47859b0e5caef962950f440d92db9526760c1128ea0a7dd093663147c463a853"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.942890293094024e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "47859b0e5caef962950f440d92db9526760c1128ea0a7dd093663147c463a853"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3658,9 +4606,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_residual_06--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "4cbddea93426f68f06c28938d7a93fcb9c9b91f2dfe2713ae00cdf16ecf69566",
+    "gaps": [],
+    "package_json_sha256": "ec024ddff4f540d1a882ad9333a4585c4cdf0283f10c8fe255bdfbc4967f3051"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "ec024ddff4f540d1a882ad9333a4585c4cdf0283f10c8fe255bdfbc4967f3051"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3689,9 +4649,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_selected_00--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "2d016ce14f37e4bd33bf3d0d089e7c500bc50166fdeecc96fa0231d78ac3f44a",
+    "gaps": [],
+    "package_json_sha256": "68e7f83452a23235effe3c104cee8705d369aaf55e8295c062ba1006741e2cff"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "68e7f83452a23235effe3c104cee8705d369aaf55e8295c062ba1006741e2cff"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3720,9 +4692,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_selected_12--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "f6259d9278b60149c31fa616f75bee31d2ea7895e208d568599b314f2d3dd026",
+    "gaps": [],
+    "package_json_sha256": "22ca1841d7804101aabdb9f6ae7469cf5bb17ea047d81930a47c48686151e3a9"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.942890293094024e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "22ca1841d7804101aabdb9f6ae7469cf5bb17ea047d81930a47c48686151e3a9"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3751,9 +4735,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_selected_03--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "43a5ea32d1df89c9c0c29a3681af02173399d434660df2531955fee98a7a1253",
+    "gaps": [],
+    "package_json_sha256": "a16719bd62ce563d8b2ad0e963d3d9d1ef7f56fe60075dcd065764cce5e3e341"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.942890293094024e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "a16719bd62ce563d8b2ad0e963d3d9d1ef7f56fe60075dcd065764cce5e3e341"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3782,9 +4778,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_share_history_selected_06--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "4cbddea93426f68f06c28938d7a93fcb9c9b91f2dfe2713ae00cdf16ecf69566",
+    "gaps": [],
+    "package_json_sha256": "93b0740d4a1fc5acd876b2fc8d6959eaf183eca31bb43ad2f37f7b1a3e00fc10"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "93b0740d4a1fc5acd876b2fc8d6959eaf183eca31bb43ad2f37f7b1a3e00fc10"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3813,9 +4821,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_weather_oracle_12--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "7bd2acd3e7df7ed48fb1a5bfa7f1c28236ab9759040e25b290e0dc68abb1221e",
+    "gaps": [],
+    "package_json_sha256": "b37106fbae7046d910f4dd608f208f16faee36a87898ff72948d1854a257ea68"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "b37106fbae7046d910f4dd608f208f16faee36a87898ff72948d1854a257ea68"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3844,9 +4864,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_weather_oracle_03--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "a10d9840e8a8796f033dc519adc721914e29546980cbb5b3086b1704842721fa",
+    "gaps": [],
+    "package_json_sha256": "b42ae13655b7eeeed637df835a30e567d461bca4fac18f48bbb090d3eb6dc95e"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.960237527853792e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "b42ae13655b7eeeed637df835a30e567d461bca4fac18f48bbb090d3eb6dc95e"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3875,9 +4907,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_q3_optimization_weather_oracle_06--somalia_oracle_v2_q3",
+    "status": "complete",
+    "content_sha256": "cb9de2697d27cb7fa452d8fe7ba49666230f42a9a061291f81ffc7d01538ab73",
+    "gaps": [],
+    "package_json_sha256": "ccf6c3a61808d067f2dbfac32ca27c986d5cd5deb7c6db831e6a453d09ab8dd9"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.968911145233676e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "ccf6c3a61808d067f2dbfac32ca27c986d5cd5deb7c6db831e6a453d09ab8dd9"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3906,9 +4950,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_direct_00--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "bab9b1af6a49cbc19eba58e5f6be9a0260a3660679d92c051334fc1647ab33d0",
+    "gaps": [],
+    "package_json_sha256": "3720a0858d8111b285df226dae361aee418eb26661550d6e5533c96c1482821a"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.942890293094024e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "3720a0858d8111b285df226dae361aee418eb26661550d6e5533c96c1482821a"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3937,9 +4993,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_direct_12--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "33b2e782b10e800ff9963e9c5a9e5d22b94b1650f4d8d3668d3f7c5548026987",
+    "gaps": [],
+    "package_json_sha256": "c7d1878e354e4f7139d45abf10dd6aa4e80e43eee65131290aa0eee8ae62c5e9"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.986258379993444e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "c7d1878e354e4f7139d45abf10dd6aa4e80e43eee65131290aa0eee8ae62c5e9"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3968,9 +5036,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_direct_03--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "02963c65c73792c45f9fabaac2afa12a4902b2244b80b8a2b7cea9becb2f97e4",
+    "gaps": [],
+    "package_json_sha256": "7f9aafb6e84589f3f3e171d2764a6b3471887538ae62d2ed5c47708dd71e0bb5"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.97758476261356e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "7f9aafb6e84589f3f3e171d2764a6b3471887538ae62d2ed5c47708dd71e0bb5"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -3999,9 +5079,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_direct_06--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "3c456670085d7e2aae5ef494fa70ec189a271be76102d3e944177482f9a79fc7",
+    "gaps": [],
+    "package_json_sha256": "d89d3e69898101498ac52d4a08c1549f9f9cf476022fee1a6f0553016e83483d"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9439744952665095e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "d89d3e69898101498ac52d4a08c1549f9f9cf476022fee1a6f0553016e83483d"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4030,9 +5122,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_residual_00--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "1aee6cc0a45faf80c10734b345d7fe12b1d348a95c9d88dbbca69436f2f75f2c",
+    "gaps": [],
+    "package_json_sha256": "95fd6871bf55dd2d52219c6c8b05d2487393141de9bed7147513947d68332681"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9905951886833861e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "95fd6871bf55dd2d52219c6c8b05d2487393141de9bed7147513947d68332681"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4061,9 +5165,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_residual_12--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "059d0ee82ab0fe9b54eaf3cfeffe2e3b8790cbaf4b0d6bc628c89ab2e7431196",
+    "gaps": [],
+    "package_json_sha256": "d2ca0bd34296bf06632d18157b1e467df3ab35c9a81fc154dbea0c3a4be8d0e1"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.986258379993444e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "d2ca0bd34296bf06632d18157b1e467df3ab35c9a81fc154dbea0c3a4be8d0e1"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4092,9 +5208,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_residual_03--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "3e9f60db09581640bb879b8b50b59b3eba17b8830a40f2fb6208cf7846c1e601",
+    "gaps": [],
+    "package_json_sha256": "3a3de58c4bc6ce795041586e834e89ec5b953ae4f991cfd2abad5c0b3fa5d103"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.981921571303502e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "3a3de58c4bc6ce795041586e834e89ec5b953ae4f991cfd2abad5c0b3fa5d103"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4123,9 +5251,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_residual_06--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "ca3c406aa66fd3dc0f261a637b0dee9081101d92a3ee7f1464fa96466cefdb78",
+    "gaps": [],
+    "package_json_sha256": "ed625f56857b38f2fdb2168ff839b8ad92445a85f20370abc43e3c060f6ba343"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.986258379993444e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "ed625f56857b38f2fdb2168ff839b8ad92445a85f20370abc43e3c060f6ba343"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4154,9 +5294,21 @@
    "member_status_counts": {
     "verified": 30
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_selected_00--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "839751d5f3843cff1130c675a27e124342456184a170b0f261ac9fe73f9df291",
+    "gaps": [],
+    "package_json_sha256": "913e62bc75174d59bb9e6b8206c8bc7650c4fe566477f70be97257a388ff4362"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.942890293094024e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "913e62bc75174d59bb9e6b8206c8bc7650c4fe566477f70be97257a388ff4362"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4185,9 +5337,21 @@
    "member_status_counts": {
     "verified": 30
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_selected_12--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "394aa7e4e7a5cbbe1dc79f748927a260ee35e101d26bdb692568405e3b9aed1c",
+    "gaps": [],
+    "package_json_sha256": "b4bb4598464e12331fabf8fd7b9393ee1b4c2f5e4a27146aa2842f907f9d1db0"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.986258379993444e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "b4bb4598464e12331fabf8fd7b9393ee1b4c2f5e4a27146aa2842f907f9d1db0"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4216,9 +5380,21 @@
    "member_status_counts": {
     "verified": 30
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_selected_03--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "09ebe6f44f88de0d7cfc9ac453aba451930ce9c7d2eec03b2668c899b789031e",
+    "gaps": [],
+    "package_json_sha256": "015c4feb85384e9316f161872aaf403b42178c1cdd2e86076adaff0cdb83851e"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.97758476261356e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "015c4feb85384e9316f161872aaf403b42178c1cdd2e86076adaff0cdb83851e"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4247,9 +5423,21 @@
    "member_status_counts": {
     "verified": 30
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_augmented_share_history_selected_06--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "238a26bdce9675113953464b57dc619f541e753c9ea2c4df4673ad4510b9f4b2",
+    "gaps": [],
+    "package_json_sha256": "ee50e960c96efd040ebd61c35a976a5bdcf77ec9691758c41851d7eb083a4352"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9439744952665095e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "ee50e960c96efd040ebd61c35a976a5bdcf77ec9691758c41851d7eb083a4352"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4278,9 +5466,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_direct_00--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "abfda616da40273a9853c1c14488a3ea19db04991626fc5750588921aaab9f81",
+    "gaps": [],
+    "package_json_sha256": "7ec3cb8df78da50fce38463a1bfa6f61fa1f9eb53a68a92c445973590d9e3638"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.7755575615628914e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "7ec3cb8df78da50fce38463a1bfa6f61fa1f9eb53a68a92c445973590d9e3638"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4309,9 +5509,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_direct_12--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "6d47c14a9f8e7abb69bf9a99751fb4def7a27bef4115ce679bf1350f6b3a51b2",
+    "gaps": [],
+    "package_json_sha256": "bd0bfd35f1d6b58009ac85abe0d78a017177966f25cd37cbd401fb2d7973038c"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.1510571102112408e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "bd0bfd35f1d6b58009ac85abe0d78a017177966f25cd37cbd401fb2d7973038c"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4340,9 +5552,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_direct_03--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "9c6fcdf83d7324ead2a3bac4e81b2385fe9f59b4d83ccb1730c7ac5ef2014dac",
+    "gaps": [],
+    "package_json_sha256": "bb61c9f65dd4c0f8c857f55d12acc8c8623fd370fedab93a4efaf56ac2e5c45d"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "bb61c9f65dd4c0f8c857f55d12acc8c8623fd370fedab93a4efaf56ac2e5c45d"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4371,9 +5595,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_direct_06--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "ca9ffb4783d813f1398266071da08264d51e85a98a7612eeb1fa0989631958c8",
+    "gaps": [],
+    "package_json_sha256": "4fd6ab4a77afde084aba2754eac8cb8526dccea66fecabe14049537944f6f044"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.636779683484747e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "4fd6ab4a77afde084aba2754eac8cb8526dccea66fecabe14049537944f6f044"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4402,9 +5638,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_residual_00--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "20c5e2dc457a47a7c1db2eaa8c95d98e4381503de251cadab49404e4919154cc",
+    "gaps": [],
+    "package_json_sha256": "a8b1a52a7e1c86ee5eb5b34b501fe84babb0519da220e1ee24a27697e95a7608"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9949319973733282e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "a8b1a52a7e1c86ee5eb5b34b501fe84babb0519da220e1ee24a27697e95a7608"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4433,9 +5681,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_residual_12--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "2ee6458043ed4827bd86367c9230753b38a5c72bcc65a916658774bfbecc8b78",
+    "gaps": [],
+    "package_json_sha256": "b250153a8523860c6ea9621c55878e85b11c7f82e5c3ac6912a18a0ca4ff0075"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9905951886833861e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "b250153a8523860c6ea9621c55878e85b11c7f82e5c3ac6912a18a0ca4ff0075"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4464,9 +5724,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_residual_03--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "68b0e603b025ef76d687a236cd17d7b9b30b9fc335f9497d4b0d92c18bdbfe17",
+    "gaps": [],
+    "package_json_sha256": "86a90f6cfc317d7681d7e182b06dd7ef9e990ffaf84f9d41e338994e6b3b7706"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 1.9873425821659296e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "86a90f6cfc317d7681d7e182b06dd7ef9e990ffaf84f9d41e338994e6b3b7706"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4495,9 +5767,21 @@
    "member_status_counts": {
     "verified": 34
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_residual_06--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "8392e1b88460f4ef43e19d14797af4035243cf8c43289a187d7f85b5fea921d1",
+    "gaps": [],
+    "package_json_sha256": "eb881345fc2401453524e24ee5114ff272b908c934b62baad9954830c047e8fb"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.498001805406602e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "eb881345fc2401453524e24ee5114ff272b908c934b62baad9954830c047e8fb"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4526,9 +5810,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_selected_00--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "2e03a13b9a957daa1fd0e64a1a1368f889ec9bff67c457ce9dc652971172edd6",
+    "gaps": [],
+    "package_json_sha256": "c65961d0c22d935119aedec4b8f8a18d9e47539727d0d4a86b335a56c2711abe"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.7755575615628914e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "c65961d0c22d935119aedec4b8f8a18d9e47539727d0d4a86b335a56c2711abe"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4557,9 +5853,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_selected_12--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "c0743341244b727759a56fa18006bb617c166437f0420ed3a2614cd74091811a",
+    "gaps": [],
+    "package_json_sha256": "9d0c94214187473a2ef623eadef127b87b08ad46d4442a5e046d9fa77fc3e499"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.1510571102112408e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "9d0c94214187473a2ef623eadef127b87b08ad46d4442a5e046d9fa77fc3e499"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4588,9 +5896,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_selected_03--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "4f662b21b98f96ca9d9462d273d8c2661a72bdf941dbfc3cae70d745a086f176",
+    "gaps": [],
+    "package_json_sha256": "52d18ac5adee567641c13ed255610579cef8e6fe1c4b8f99af7ac5fa709dbf99"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.220446049250313e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "52d18ac5adee567641c13ed255610579cef8e6fe1c4b8f99af7ac5fa709dbf99"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4619,9 +5939,21 @@
    "member_status_counts": {
     "verified": 29
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/somalia-somalia_validity_observed_share_history_selected_06--somalia_oracle_v3_validity",
+    "status": "complete",
+    "content_sha256": "43fcc5ed04d5f556473e7a6fd38d05af464e02b5b20f978a7607f6e47dca7710",
+    "gaps": [],
+    "package_json_sha256": "f512b62fcc0e88239347b71231aa7cd1f77b9a3ddade0c80ca2640801c4a0b3f"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 132,
+    "max_abs_err": 2.636779683484747e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/somalia-final/summary.json",
+    "package_json_sha256": "f512b62fcc0e88239347b71231aa7cd1f77b9a3ddade0c80ca2640801c4a0b3f"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {

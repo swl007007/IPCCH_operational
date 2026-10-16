@@ -1,0 +1,73 @@
+{
+ "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_baseline_00--compact_global_launch",
+ "package_json_sha256": "42989701e27016560dd67d7bdf3f44561b88bb4831f860e1cc7e3fca165ec9a4",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "xgboost": "3.2.0",
+  "numpy": "2.3.5",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "compact_launch_global",
+  "logged_model_id": "m-1b90bc1dcaf94d53878d78a488bcb439",
+  "registered_model": "IPCCH Forecasting Compact climate global launch | baseline | 0-month",
+  "version": 1
+ },
+ "rows": 32,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 1.0928757898653885e-16,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 6.808789643208968e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 9.48609138289036e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.9878846832521724e-16,
+   "mean_abs_err": 9.232235608598247e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 1.0928757898653885e-16,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 6.808789643208968e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 9.48609138289036e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 1.9878846832521724e-16,
+   "mean_abs_err": 9.232235608598247e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 2.5
+}

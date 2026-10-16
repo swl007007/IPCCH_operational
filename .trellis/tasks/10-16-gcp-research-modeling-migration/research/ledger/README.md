@@ -66,3 +66,20 @@ Every listed path is a plan member, so no constant-JSON dependency exists outsid
 - Packages: AlphaEarth (16); forecasting (126); window-probe comparators (8, linked to P6 units); pop-v1; FEWS NET servable runs.
 - FEWS NET run-level preservation manifests and the GCS layout, pending G7/G9 and the spend gate.
 - User dispositions pending: FEWS NET 18 missing boosters, and the current-month actual spend figure.
+
+## Update 2026-10-16 03:45 EDT: forecasting and Somalia packages
+
+Regenerated with three replay summaries:
+- `p2-packages/replay-bf3da00`;
+- the supervisor's forecasting round, adopted via `replay-forecast-602558c-supervisor/summary-executor.json`;
+- `p2-packages/replay-somalia-e8d5160`.
+
+Result: 242 versions, key set equal to the snapshot. The classes are:
+
+| Class | Versions |
+|---|---|
+| packaged_replay_passed | 147 (GeoXGB P6 8, yearly 12, AlphaEarth 16, forecasting 56, Somalia v2/v3/v4 55) |
+| weights_retained_package_pending | 23 (Somalia v1 15; window-probe reused comparators 8) |
+| missing_weights_tracking_only | 72 |
+
+The window-probe comparator resolution identifies retained P6 weights only. Their packages need the 77 P6 local units used by `regional_ungated`, which no current package carries (`../remaining-packages-supervisor.md`).

@@ -1,0 +1,847 @@
+{
+  "packages": [
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_00--compact_global_2026_extension",
+      "package_json_sha256": "ad915234ee9cb878f575ef4098a705237065f5ea4873ae2b9066eff3faca5aa5",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_baseline_00--compact_global_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-8ddb379eede443cab2a933813e292146",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | baseline | 0-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_00--compact_global_original",
+      "package_json_sha256": "c474e04f43f4d7d7b6817bb4dff5837032cf0832a376802b6b928a8072263e79",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_baseline_00--compact_global_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-f60a26cd718d49968fa27ce63b256545",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | baseline | 0-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_03--compact_global_2026_extension",
+      "package_json_sha256": "ee4aa60fc86570f9bc3bc1a3f8277b2049d6b1bfe4a904f7388e7b0c61ac33fc",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_baseline_03--compact_global_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-28cd79cafc144b89a188be4ae65dd2d1",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | baseline | 3-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_03--compact_global_original",
+      "package_json_sha256": "9522cac8dea1c9be1cc3515287d78747ab14ce24005886a5d553b2ebef0a2e90",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_baseline_03--compact_global_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-445fac10969843ed9bcca4a106a9689d",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | baseline | 3-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_06--compact_global_2026_extension",
+      "package_json_sha256": "d98174738b70c97e3a67683119234791d8f32c500bc2c55b3396b5f8a8fe5685",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_baseline_06--compact_global_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-abf04d589de14f5aba3cf9e98c9bce03",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | baseline | 6-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_06--compact_global_original",
+      "package_json_sha256": "b0247ed6d683c0f9ea9910292491fbead9d40d28825e876e00ba12327e841fdd",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_baseline_06--compact_global_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-f82043b030e643fe9986724219e6f707",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | baseline | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_12--compact_global_2026_extension",
+      "package_json_sha256": "6b23bbbbce8a20ace6caf4eb21370f1f61197a986e10fd06f50890908ada790f",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_baseline_12--compact_global_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-69876945f0ff44179e0feea051e31d87",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | baseline | 12-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_baseline_12--compact_global_original",
+      "package_json_sha256": "3f0edec6b5c38a3c52dcb75ff8fb2694b519cc8870448d25cbe4896e3b9db628",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_baseline_12--compact_global_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-0a2ad6fce61249deb90b77a80a02dbdc",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | baseline | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_03--compact_global_2026_extension",
+      "package_json_sha256": "0523ff92e95e5d0f92ace8b77feeccc449ea41b1ad9de519ac73595fc7476007",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_weather_oracle_03--compact_global_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-d269466933c84110b0e2382423d91596",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | weather_oracle | 3-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_03--compact_global_original",
+      "package_json_sha256": "293f61bbd72777722cb030df99a43f789a16b7f13c76769e8a205288ec1aa6a6",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_weather_oracle_03--compact_global_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-7b02a1ea7e3a45bbae8f1d231e40ef29",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | weather_oracle | 3-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_06--compact_global_2026_extension",
+      "package_json_sha256": "f10d95ae20e9033a2837c47a789ee2346ecb09d6195816ee05592ccc9044bb66",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_weather_oracle_06--compact_global_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-b87ea87013d24f2eb3f201a506e0ad1e",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | weather_oracle | 6-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_06--compact_global_original",
+      "package_json_sha256": "21cd3c306635ffc43e8a932e321c62236a9c8e6d5f670327156e1262806e7599",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_weather_oracle_06--compact_global_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-c9c0140ed8a34d5999e63d5683bd7f9f",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | weather_oracle | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_12--compact_global_2026_extension",
+      "package_json_sha256": "0c694708118e483da87bd9254c554a04d4a0f8a6855785c1c1563212a685d226",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_weather_oracle_12--compact_global_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-37c7342a70804db69b6fd6042d96ce20",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | weather_oracle | 12-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_global_weather_oracle_12--compact_global_original",
+      "package_json_sha256": "99cc925641b07a654d13bfeb0e4ee219d9a623d7edd2d3dc122e582aabec1531",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_global_weather_oracle_12--compact_global_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_global",
+        "logged_model_id": "m-795b94ede8324d6b86562d244d66639a",
+        "registered_model": "IPCCH Forecasting Compact climate global historical | weather_oracle | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_00--compact_somalia_2026_extension",
+      "package_json_sha256": "d9f82a82fa0831ec941fdeea69dd4bf60f962ed7f51a1d30b6cdf5608a479ee8",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_baseline_00--compact_somalia_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-3bf63c86ef93403bbf14e380f7c904b3",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | baseline | 0-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_00--compact_somalia_original",
+      "package_json_sha256": "aabfaa327131af3bab112cdc7deee67144f3d335d67b753b8daecad224d8b72c",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_baseline_00--compact_somalia_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-823b6b47e6fc4a769e32760b848b79b1",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | baseline | 0-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_03--compact_somalia_2026_extension",
+      "package_json_sha256": "c2b1470cdeb330191d7266ae608cc2b37b85d68a4d9b20c1c7f184058d426b62",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_baseline_03--compact_somalia_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-ba7f9b1de0f14ad18348e0962ed07afa",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | baseline | 3-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_03--compact_somalia_original",
+      "package_json_sha256": "c7cca69a8560ebe2af652beffbbfeaf8284b5272aae7c6300088e0862ee2ec03",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_baseline_03--compact_somalia_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-b5667155228d489181bd8aaba427d0a8",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | baseline | 3-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_06--compact_somalia_2026_extension",
+      "package_json_sha256": "7ebb13dd23da3f5be7a9487591fc3cc5eb73c2b817ca3864669b8f4b4e6dd3f4",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_baseline_06--compact_somalia_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-71b42e2ddd7d4c589d01b8a29af54ada",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | baseline | 6-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_06--compact_somalia_original",
+      "package_json_sha256": "ce28e6b7e0719e8cfda11c4d169ff59d0425a6782d963a08b51955738fda46fe",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_baseline_06--compact_somalia_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-35bbdec24d434fbab737a07ce12626e9",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | baseline | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_12--compact_somalia_2026_extension",
+      "package_json_sha256": "f297af7cf502c83ae14090f00740ee2466db2a7d49c20caa6b70b50ffe07545f",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_baseline_12--compact_somalia_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-7a52c2f56f1e43cdb136134c396bc440",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | baseline | 12-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_baseline_12--compact_somalia_original",
+      "package_json_sha256": "5751a73b51ec6638a49ec608a5e451c8757d3ee59faa0953b06f4bb3a66a7437",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_baseline_12--compact_somalia_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-0e76407b52794fabbb301242b0ca6dc6",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | baseline | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_2026_extension",
+      "package_json_sha256": "c0f3672054b2658cf75472510badcb125d108dfc178d17a251bca38a6881259b",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-34177a7cb0da40aebdedcbb05aa1d0e5",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | weather_oracle | 3-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_original",
+      "package_json_sha256": "4947f74866a30ca4dfa7230cb89f79d11a6bf0c674f698d9b4282c91ded07ec8",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-8de122e1578544a2b09f1fd049de3d22",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | weather_oracle | 3-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_2026_extension",
+      "package_json_sha256": "a98fd56fe0466c628d76a6b2da84b9fc6c5ee4a1a163ace638d45b517fcb7b4e",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-e059076227f74d318800fe9cabeeba62",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | weather_oracle | 6-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_original",
+      "package_json_sha256": "d5735ffaab3d9d7d67b2d1efdb73b1211a1002f03ce333906b07419f6adb5ce1",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-281ddabc4d104ac192a7500f8232f1f6",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | weather_oracle | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_2026_extension",
+      "package_json_sha256": "ccadec9116846892d5b39bb5a19a763d6c771c26af57eec562e7c21baec36a2f",
+      "passed": true,
+      "rows": 160,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_2026_extension.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-5a866caff16548b6841ddbb0eff5c389",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | weather_oracle | 12-month",
+        "version": 2
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_original",
+      "package_json_sha256": "71b2987e77d9eb1af3cc3b96fea7917eacec9bdfec779f9269fc8a0a3a5decd8",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_original.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_climate_somalia",
+        "logged_model_id": "m-6341bc41ae714f36a10ea1d77118764e",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local historical | weather_oracle | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_baseline_00--compact_global_launch",
+      "package_json_sha256": "42989701e27016560dd67d7bdf3f44561b88bb4831f860e1cc7e3fca165ec9a4",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_global_baseline_00--compact_global_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_global",
+        "logged_model_id": "m-1b90bc1dcaf94d53878d78a488bcb439",
+        "registered_model": "IPCCH Forecasting Compact climate global launch | baseline | 0-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_baseline_06--compact_global_launch",
+      "package_json_sha256": "30ba4f4c0225c3f61ef136b094678fcdc66c048566d0f3be48a575d8f1350e01",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_global_baseline_06--compact_global_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_global",
+        "logged_model_id": "m-4fa6b82547f846b2a51dae484d36164c",
+        "registered_model": "IPCCH Forecasting Compact climate global launch | baseline | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_baseline_12--compact_global_launch",
+      "package_json_sha256": "f0b12a640b8a8856182b4b5741468a802acc750ecc3b1a555333713f8f119823",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_global_baseline_12--compact_global_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_global",
+        "logged_model_id": "m-c5538eca033d40029ad7e5a8ca9d253c",
+        "registered_model": "IPCCH Forecasting Compact climate global launch | baseline | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_cds_weather_06--compact_global_launch",
+      "package_json_sha256": "559b7856a6ce994cd9b9e317716ace2ecf6c909b44ca09bd3d937579f4533570",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_global_cds_weather_06--compact_global_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_global",
+        "logged_model_id": "m-2c75661e8bae47d09d2c641bf108f2f8",
+        "registered_model": "IPCCH Forecasting Compact climate global launch | cds_weather | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_global_cds_weather_12--compact_global_launch",
+      "package_json_sha256": "139bd59d17a990040368c6b36932b76641f1b69e835cc6ec4442afad94da9bc6",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_global_cds_weather_12--compact_global_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_global",
+        "logged_model_id": "m-0c4d80e619974d2c9c3e71162a960abb",
+        "registered_model": "IPCCH Forecasting Compact climate global launch | cds_weather | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_baseline_00--compact_somalia_launch",
+      "package_json_sha256": "f8a655966c63a5f3f5b445d47de9c03a34d6ec20426573c32698ad16b4f6de9e",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_somalia_baseline_00--compact_somalia_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_somalia",
+        "logged_model_id": "m-e7a3d96074a0405281ea66f319881f2f",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local launch | baseline | 0-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_baseline_06--compact_somalia_launch",
+      "package_json_sha256": "99c19e625104c90cb588b5755f756f12cd69fdf0a7a852a26db9c9bc2d87ab61",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_somalia_baseline_06--compact_somalia_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_somalia",
+        "logged_model_id": "m-c71dc1df0fc94727a183bed2bb23dfdc",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local launch | baseline | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_baseline_12--compact_somalia_launch",
+      "package_json_sha256": "285cbc347da52429568a7433d1dbe24bbbf40fecafbd80c1d84eb7bf13486e79",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_somalia_baseline_12--compact_somalia_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_somalia",
+        "logged_model_id": "m-f619b0a341ba448989ad96fe2355f60a",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local launch | baseline | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_cds_weather_06--compact_somalia_launch",
+      "package_json_sha256": "d26d5259963eac650bfb159429a79cae7c9ca991aa4961e3f186074e3efd60d4",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_somalia_cds_weather_06--compact_somalia_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_somalia",
+        "logged_model_id": "m-dbd5ed55101042f3af1e0f0b203b74a1",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local launch | cds_weather | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-compact_launch_somalia_cds_weather_12--compact_somalia_launch",
+      "package_json_sha256": "c37eef8aa867187d323a768022919cc1d045b392c8a0a2d6dfae9114923d0181",
+      "passed": true,
+      "rows": 32,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-compact_launch_somalia_cds_weather_12--compact_somalia_launch.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "compact_launch_somalia",
+        "logged_model_id": "m-1810d1a357774b4bb90afdd03997f89d",
+        "registered_model": "IPCCH Forecasting Compact climate Somalia-local launch | cds_weather | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_no_ipc_history_00--origin_safe_climate_idp_v1",
+      "package_json_sha256": "a4b59a1bbb5cbc136cf534bd2e4967fd47ec71dd2cdad2566a4918fb5edb0ce7",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_no_ipc_history_00--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-c12b333847084dd8b6689cd664a71038",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | no_ipc_history | 0-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_no_ipc_history_03--origin_safe_climate_idp_v1",
+      "package_json_sha256": "cc2c7c7ade62eb8608b7f2094f363f9b5111a720974bf551310ae55def0fbadd",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_no_ipc_history_03--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-9e152937930d4447b26518b3591e7c6e",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | no_ipc_history | 3-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_no_ipc_history_06--origin_safe_climate_idp_v1",
+      "package_json_sha256": "e6891ce1aae3284ab669cf99f2dd4edb49f957985785a7969ded1352f3a9f488",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_no_ipc_history_06--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-05503b0e1ebe46cb80b1cb09c083e980",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | no_ipc_history | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_no_ipc_history_12--origin_safe_climate_idp_v1",
+      "package_json_sha256": "e70139e05f6e5a0e3b222a3b883f54274a618ff5b1b105ed4a196ed6d96e4276",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_no_ipc_history_12--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-08c98a6d474149869e1f65530a98cd33",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | no_ipc_history | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_00--origin_safe_climate_idp_v1",
+      "package_json_sha256": "c488f0569f139c70d6fcf4f51e0f73df737f7a0ac9c8e28e880bfd7efafc5bf3",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_safe_ipc_history_00--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-e7ec406ad59e4dbe8044ab349e140051",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | safe_ipc_history | 0-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_03--origin_safe_climate_idp_v1",
+      "package_json_sha256": "b576d6e1d28fee662e2af985abe85b7235f8766bc8c108d32174ac06c42f9f8a",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_safe_ipc_history_03--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-54a485e34323448b87866d1fb6ab31c6",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | safe_ipc_history | 3-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_06--origin_safe_climate_idp_v1",
+      "package_json_sha256": "6d147ab9227576bb0d8ff32ba09029055179ce83a2ee87ff56a2df35ad2a996a",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_safe_ipc_history_06--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-6fc8da0c72a24d6099aa14a485ec485c",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | safe_ipc_history | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_12--origin_safe_climate_idp_v1",
+      "package_json_sha256": "a45ff890d795405ee28238d65303d4cbaa352faf0ac0872c82138d96874838d5",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_safe_ipc_history_12--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-fb3bdce9f14d4cb2970f1f87bdcfb69b",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | safe_ipc_history | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_idp_00--origin_safe_climate_idp_v1",
+      "package_json_sha256": "7ad53fde50d9c00779a4d394913f3436bf18e77131a22e58eb9b03cf124cd4c3",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_safe_ipc_history_idp_00--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-cc75e402114b44baaacbc948f747ff33",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | safe_ipc_history_idp | 0-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_idp_03--origin_safe_climate_idp_v1",
+      "package_json_sha256": "77d8d64962a717bf9019da0932f9ffbcf297064782601df3e50ba87a70d5eced",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_safe_ipc_history_idp_03--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-88529f313f3848ac9cc7018529540cce",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | safe_ipc_history_idp | 3-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_idp_06--origin_safe_climate_idp_v1",
+      "package_json_sha256": "7987a52aa655a737c9619eb578e127dc0f206cb9363a1c7e33f23e6e4668a9e2",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_safe_ipc_history_idp_06--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-533ebac9ff044bc9ade54a2b54ca189a",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | safe_ipc_history_idp | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_climate_global_safe_ipc_history_idp_12--origin_safe_climate_idp_v1",
+      "package_json_sha256": "cf5496d80bc027b2eb2f31467aac015207524b2de8f52228389295bb205ebd3d",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_climate_global_safe_ipc_history_idp_12--origin_safe_climate_idp_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_climate_global",
+        "logged_model_id": "m-0a97750f9ea64b0eb8cf0dcc4c7e3396",
+        "registered_model": "IPCCH Forecasting Origin-safe climate global historical | safe_ipc_history_idp | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_03--origin_safe_weather_oracle_v1",
+      "package_json_sha256": "7f8e726c15e0bf6ec6646c710e9bcb4dae28721da7a9976da48383d4d17ae896",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_weather_global_weather_oracle_03--origin_safe_weather_oracle_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_weather_global",
+        "logged_model_id": "m-213a4f3fbd5441ad8ab05ebbe3a1a478",
+        "registered_model": "IPCCH Forecasting Origin-safe weather global historical | weather_oracle | 3-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_06--origin_safe_weather_oracle_v1",
+      "package_json_sha256": "c83d98debf1340b09432a1310c03d0d4943dab1c7556ef985637d6742b256138",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_weather_global_weather_oracle_06--origin_safe_weather_oracle_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_weather_global",
+        "logged_model_id": "m-878334e516e6408aae086115cfa9cf09",
+        "registered_model": "IPCCH Forecasting Origin-safe weather global historical | weather_oracle | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_12--origin_safe_weather_oracle_v1",
+      "package_json_sha256": "280e4ebd9eebb6383ee8e8334fd5cf108d23681008351e0810100a24f23e9085",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_weather_global_weather_oracle_12--origin_safe_weather_oracle_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_weather_global",
+        "logged_model_id": "m-c605af5a2c1d400dba03ce6bab223f2b",
+        "registered_model": "IPCCH Forecasting Origin-safe weather global historical | weather_oracle | 12-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_with_summaries_03--origin_safe_weather_oracle_v1",
+      "package_json_sha256": "a4b0fbf055a328fd88e249eeb7325a589e2bc93d75d43dd2b7709b9ede40f015",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_weather_global_weather_oracle_with_summaries_03--origin_safe_weather_oracle_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_weather_global",
+        "logged_model_id": "m-84ebb0fa989c4df88b1ca1abd9a43f8f",
+        "registered_model": "IPCCH Forecasting Origin-safe weather global historical | weather_oracle_with_summaries | 3-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_with_summaries_06--origin_safe_weather_oracle_v1",
+      "package_json_sha256": "7783ecfe86f9ee95b715721bd789cc7d820ded85a430884a74c40c162253a2f2",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_weather_global_weather_oracle_with_summaries_06--origin_safe_weather_oracle_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_weather_global",
+        "logged_model_id": "m-bd57cabe0d2749b4aa36e4a2ce06709e",
+        "registered_model": "IPCCH Forecasting Origin-safe weather global historical | weather_oracle_with_summaries | 6-month",
+        "version": 1
+      }
+    },
+    {
+      "package": "/home/swl007007/projects/food-crisis-research/packages/forecast-origin_safe_weather_global_weather_oracle_with_summaries_12--origin_safe_weather_oracle_v1",
+      "package_json_sha256": "35070c8280c7a456cbd141c0c7a4775b90f1c99e0b69e28c7adbbcbd2a8ba099",
+      "passed": true,
+      "rows": 128,
+      "report": "/home/swl007007/projects/food-crisis-research/scratch/replay/supervisor-forecast-602558c/forecast-origin_safe_weather_global_weather_oracle_with_summaries_12--origin_safe_weather_oracle_v1.json",
+      "exit": 0,
+      "stale": false,
+      "identity": {
+        "family": "origin_safe_weather_global",
+        "logged_model_id": "m-c9e79f62e4bb425e897970eb933c71d0",
+        "registered_model": "IPCCH Forecasting Origin-safe weather global historical | weather_oracle_with_summaries | 12-month",
+        "version": 1
+      }
+    }
+  ],
+  "passed": 56,
+  "total": 56,
+  "rows": 6656
+}
