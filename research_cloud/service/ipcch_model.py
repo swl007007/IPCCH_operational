@@ -158,7 +158,10 @@ def remote_bytes(loc):
         if not member:
             return path.read_bytes()
         with tarfile.open(path) as tar:
-            f = tar.extractfile(member)
+            try:
+                f = tar.extractfile(member)
+            except KeyError:
+                f = None
             if f is None:
                 sys.exit(f"archive member not found: {member} in {uri}")
             return f.read()
@@ -182,7 +185,10 @@ def feature_blocks(spec):
             if member:
                 import tarfile
                 with tarfile.open(p) as tar:
-                    data = tar.extractfile(member).read()
+                    try:
+                        data = tar.extractfile(member).read()
+                    except (KeyError, AttributeError):
+                        sys.exit(f"archive member not found: {member} in {p}")
             else:
                 data = p.read_bytes()
         out.append((label, loc, column, read_columns(data, loc.split("!")[-1].endswith(".gz"), column or None)))
