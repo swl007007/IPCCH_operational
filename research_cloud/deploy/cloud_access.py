@@ -4,11 +4,12 @@ Principals are the real cloud identities (credentials read in-process from this 
 the temporary migration admin, ``ipcch-reader``, ``ipcch-assistant`` (read-only) and ``ipcch-jobwriter``. The owner's
 personal account is not used (the user performs their own login). Each row records expected vs observed status.
 
+* job writer (first): create (or reuse) the acceptance experiment, create a run in it, log a metric, upload and read
+  back an artifact through the proxied artifact route - 200; create a run in a copied experiment, create a user - 403.
 * reader / assistant: search experiments and runs, read a copied run, download a copied artifact through the proxied
-  artifact route (bytes must equal the frozen r1 manifest sha256) - 200; create experiment / run / registered model /
-  Gateway secret, tag a copied run, delete a copied experiment, create a user, self-escalate to admin - 403.
-* job writer: create (or reuse) the acceptance experiment, create a run in it, log a metric, upload and read back an
-  artifact through the proxy - 200; create a run in / delete a copied experiment, create a user - 403.
+  artifact route (bytes must equal the frozen r1 manifest sha256) - 200; create an experiment / registered model /
+  Gateway secret, a user, self-escalate to admin - 403; and the denied write/delete probes (create a run, tag a run,
+  delete the experiment) target the acceptance-only experiment and run, never historical copied data.
 * temporary admin: list users - 200.
 Writes go only to the acceptance experiment ``cloud-acceptance-access-matrix`` (created by the job writer).
 
@@ -45,24 +46,7 @@ def run(api, url, artifact, artifact_sha, exp_id, run_id):
     ids = {k: cred(api, s) for k, s in (("admin", "mlflow-temp-admin"), ("reader", "mlflow-reader"),
                                         ("assistant", "mlflow-assistant-credentials"), ("job", "mlflow-jobwriter"))}
     m.call("admin", ids["admin"], "GET", "/api/2.0/mlflow/users/list", 200)
-    for who in ("reader", "assistant"):
-        a = ids[who]
-        r = m.call(who, a, "GET", "/api/2.0/mlflow/experiments/search", 200, params={"max_results": 100})
-        m.rows[-1]["experiments_visible"] = len(r.json().get("experiments", [])) if r.ok else None
-        m.call(who, a, "POST", "/api/2.0/mlflow/runs/search", 200, body={"experiment_ids": [exp_id], "max_results": 5})
-        m.call(who, a, "GET", "/api/2.0/mlflow/runs/get", 200, params={"run_id": run_id})
-        r = m.call(who, a, "GET", f"/api/2.0/mlflow-artifacts/artifacts/{artifact}", 200, note="copied artifact")
-        m.rows[-1]["sha256_equal_r1"] = r.ok and hashlib.sha256(r.content).hexdigest() == artifact_sha
-        m.rows[-1]["ok"] &= m.rows[-1]["sha256_equal_r1"]
-        m.call(who, a, "POST", "/api/2.0/mlflow/experiments/create", 403, body={"name": f"denied-{who}-{time.time():.0f}"})
-        m.call(who, a, "POST", "/api/2.0/mlflow/runs/create", 403, body={"experiment_id": exp_id})
-        m.call(who, a, "POST", "/api/2.0/mlflow/runs/set-tag", 403, body={"run_id": run_id, "key": "x", "value": "y"})
-        m.call(who, a, "POST", "/api/2.0/mlflow/experiments/delete", 403, body={"experiment_id": exp_id})
-        m.call(who, a, "POST", "/api/2.0/mlflow/registered-models/create", 403, body={"name": f"denied-{who}"})
-        m.call(who, a, "POST", "/api/3.0/mlflow/gateway/secrets/create", 403,
-               body={"secret_name": f"denied-{who}", "secret_value": {"api_key": "x"}, "provider": "openai"})
-        m.call(who, a, "POST", "/api/2.0/mlflow/users/create", 403, body={"username": f"denied-{who}", "password": "p" * 16})
-        m.call(who, a, "PATCH", "/api/2.0/mlflow/users/update-admin", 403, body={"username": a[0], "is_admin": True})
+    # the job writer first: the acceptance experiment/run are the targets of every denied write/delete probe below
     j = ids["job"]
     r = requests.get(url + "/api/2.0/mlflow/experiments/get-by-name", params={"experiment_name": EXPERIMENT}, auth=j, timeout=60)
     if r.status_code == 200:
@@ -83,9 +67,29 @@ def run(api, url, artifact, artifact_sha, exp_id, run_id):
     r = m.call("job", j, "GET", f"/api/2.0/mlflow-artifacts/artifacts/{path}", 200, note="read back own artifact")
     m.rows[-1]["bytes_equal"] = r.content == payload
     m.rows[-1]["ok"] &= m.rows[-1]["bytes_equal"]
-    m.call("job", j, "POST", "/api/2.0/mlflow/runs/create", 403, body={"experiment_id": exp_id}, note="copied experiment")
-    m.call("job", j, "POST", "/api/2.0/mlflow/experiments/delete", 403, body={"experiment_id": exp_id})
+    m.call("job", j, "POST", "/api/2.0/mlflow/runs/create", 403, body={"experiment_id": exp_id},
+           note="copied experiment (no write grant)")
     m.call("job", j, "POST", "/api/2.0/mlflow/users/create", 403, body={"username": "denied-job", "password": "p" * 16})
+    for who in ("reader", "assistant"):
+        a = ids[who]
+        r = m.call(who, a, "GET", "/api/2.0/mlflow/experiments/search", 200, params={"max_results": 100})
+        m.rows[-1]["experiments_visible"] = len(r.json().get("experiments", [])) if r.ok else None
+        m.call(who, a, "POST", "/api/2.0/mlflow/runs/search", 200, body={"experiment_ids": [exp_id], "max_results": 5})
+        m.call(who, a, "GET", "/api/2.0/mlflow/runs/get", 200, params={"run_id": run_id})
+        r = m.call(who, a, "GET", f"/api/2.0/mlflow-artifacts/artifacts/{artifact}", 200, note="copied artifact")
+        m.rows[-1]["sha256_equal_r1"] = r.ok and hashlib.sha256(r.content).hexdigest() == artifact_sha
+        m.rows[-1]["ok"] &= m.rows[-1]["sha256_equal_r1"]
+        m.call(who, a, "POST", "/api/2.0/mlflow/experiments/create", 403, body={"name": f"denied-{who}-{time.time():.0f}"})
+        # denied write/delete probes target the acceptance-only experiment and run (same copied-role READ policy)
+        m.call(who, a, "POST", "/api/2.0/mlflow/runs/create", 403, body={"experiment_id": own}, note="acceptance experiment")
+        m.call(who, a, "POST", "/api/2.0/mlflow/runs/set-tag", 403, body={"run_id": new_run["run_id"], "key": "x", "value": "y"},
+               note="acceptance run")
+        m.call(who, a, "POST", "/api/2.0/mlflow/experiments/delete", 403, body={"experiment_id": own}, note="acceptance experiment")
+        m.call(who, a, "POST", "/api/2.0/mlflow/registered-models/create", 403, body={"name": f"denied-{who}"})
+        m.call(who, a, "POST", "/api/3.0/mlflow/gateway/secrets/create", 403,
+               body={"secret_name": f"denied-{who}", "secret_value": {"api_key": "x"}, "provider": "openai"})
+        m.call(who, a, "POST", "/api/2.0/mlflow/users/create", 403, body={"username": f"denied-{who}", "password": "p" * 16})
+        m.call(who, a, "PATCH", "/api/2.0/mlflow/users/update-admin", 403, body={"username": a[0], "is_admin": True})
     return m.rows, {"acceptance_experiment": own, "acceptance_run": new_run["run_id"], "artifact_path": path}
 
 
@@ -100,7 +104,8 @@ def main(argv=None, api=None):
     args = ap.parse_args(argv)
     rows, created = run(api or ps.Api(), args.url.rstrip("/"), args.artifact, args.artifact_sha256,
                         args.copied_experiment, args.copied_run)
-    report = {"time": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "transport": "loopback IAM proxy (deploy.iam_proxy)",
+    report = {"time": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "url": args.url,
+              "transport": "loopback IAM proxy (deploy.iam_proxy)" if args.url.startswith("http://127.0.0.1") else "direct HTTPS",
               "rows": rows, "passed": sum(r["ok"] for r in rows), "total": len(rows), **created}
     with open(args.out, "w") as f:
         f.write(ps.scrub(json.dumps(report, indent=1)))

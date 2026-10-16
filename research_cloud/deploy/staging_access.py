@@ -43,7 +43,7 @@ class Checks:
         self.token, self.results = token, []
 
     def call(self, row, base, method, path, expect, *, iam=True, auth=None, json_body=None, note=""):
-        headers = {"X-Serverless-Authorization": f"Bearer {self.token}"} if iam else {}
+        headers = {"X-Serverless-Authorization": f"Bearer {self.token}"} if iam and self.token else {}
         r = requests.request(method, base.rstrip("/") + path, headers=headers, auth=auth, json=json_body, timeout=120,
                              allow_redirects=False)
         challenge = r.headers.get("WWW-Authenticate", "")
@@ -56,9 +56,12 @@ class Checks:
 
 
 def run(url, legacy_url, artifact, run_id, token):
+    """token None: direct mode after the approved public-invoker binding - no Google identity at all; row A (the IAM
+    gate) does not apply and every other row is the same MLflow expectation."""
     c = Checks(token)
-    c.call("A", url, "GET", "/health", 403, iam=False, note="Cloud Run IAM, no identity token")
-    c.call("A", url, "GET", CONTENT[0], 403, iam=False, note="Cloud Run IAM, no identity token")
+    if token:
+        c.call("A", url, "GET", "/health", 403, iam=False, note="Cloud Run IAM, no identity token")
+        c.call("A", url, "GET", CONTENT[0], 403, iam=False, note="Cloud Run IAM, no identity token")
     c.call("B", url, "GET", "/health", 200, note="content-free health")
     for path in CONTENT:
         c.call("B", url, "GET", path, 401, note="content route without Basic credentials")
@@ -96,9 +99,11 @@ def main(argv=None):
     ap.add_argument("--artifact", required=True, help="artifact path relative to the artifact root")
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--direct", action="store_true", help="no Google identity (public invoker); rows B-D only")
     args = ap.parse_args(argv)
-    results = run(args.url, args.legacy_url, args.artifact, args.run_id, identity_token())
+    results = run(args.url, args.legacy_url, args.artifact, args.run_id, None if args.direct else identity_token())
     report = {"time": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "url": args.url, "legacy_url": args.legacy_url,
+              "mode": "direct (no Google identity)" if args.direct else "identity token in X-Serverless-Authorization",
               "checks": len(results), "passed": sum(r["ok"] for r in results), "results": results}
     with open(args.out, "w") as f:
         json.dump(report, f, indent=1)
