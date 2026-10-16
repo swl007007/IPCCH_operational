@@ -23,7 +23,8 @@ For every inventory entry whose proposed storage is a Cloud SQL table (``input-i
    profile. Any failure rolls the table back, so nothing unverified is committed.
 
 The report is keyed by inventory id. ``--only`` re-imports a subset and merges into the existing report; every run
-reconciles the full expected table set (verified and present / failed / not imported).
+reconciles the full expected table set (verified, present and current / stale receipt / failed / not imported). A
+receipt is current only if its sha256 and table name equal the entry's current bytes and planned name.
 
   python -m research_cloud.sqlimport.load_inputs --inventory input-inventory.json --keys keys.jsonl
       --dsn "host=... dbname=research" --report REPORT.json [--only ID ...]
@@ -37,6 +38,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 import time
 
 import numpy as np
@@ -122,7 +124,7 @@ def chunks(path, header, short):
     """Pandas string chunks with the verbatim header, and a mask of the short rows (from short_rows)."""
     base = 0
     for chunk in pd.read_csv(path, dtype=str, keep_default_na=False, chunksize=CHUNK, encoding="utf-8-sig",
-                             header=0, names=header):
+                             header=0, names=header, skip_blank_lines=False):   # blank lines stay rows (short, side table)
         rows = np.arange(base + 1, base + len(chunk) + 1)
         base += len(chunk)
         yield chunk, np.isin(rows, list(short)) if short else np.zeros(len(chunk), dtype=bool)
@@ -164,17 +166,12 @@ def infer_types(path, header, key_columns, short_set):
     return kinds, rows, short_total
 
 
-def typed(frame, header, kinds):
-    """Strings -> the values the table must hold (float64 / Int64 / str; '' -> NA in numeric columns)."""
-    out = {}
-    for c in header:
-        s = frame[c]
-        if kinds[c] == "text":
-            out[c] = s.astype(str)
-        else:
-            num = pd.to_numeric(s.mask(s == ""), errors="raise")
-            out[c] = num.astype("Int64") if kinds[c] == "bigint" else num.astype("float64")
-    return out
+def parse_column(values, kind, null):
+    """Exact parsing of numeric text: Python int (nullable Int64, never through float) and Python float (correctly
+    rounded, unlike pandas' fast parser). ``null`` marks NULL/empty positions."""
+    if kind == "bigint":
+        return pd.array([None if n else int(v) for v, n in zip(values, null)], dtype="Int64")
+    return np.array([np.nan if n else float(v) for v, n in zip(values, null)], dtype=np.float64)
 
 
 def copy_rows(cur, table, path, header, kinds, names):
@@ -214,7 +211,7 @@ def copy_rows(cur, table, path, header, kinds, names):
 
 def compare_table(cur, table, path, header, kinds, names, short_set):
     """Every cell of the table against the source, in _source_row order (table read back via COPY TO STDOUT)."""
-    tmp = io.StringIO()
+    tmp = tempfile.TemporaryFile(mode="w+", encoding="utf-8", newline="")   # disk-backed, read back in chunks
     cur.copy_expert(f"COPY (SELECT _source_row, {', '.join(ident(n) for n in names)} FROM {table} ORDER BY _source_row) "
                     "TO STDOUT WITH (FORMAT csv, NULL '\\N')", tmp)
     tmp.seek(0)
@@ -237,20 +234,19 @@ def compare_table(cur, table, path, header, kinds, names, short_set):
         got = pd.concat(parts, ignore_index=True)
         if not np.array_equal(got["_source_row"].astype(np.int64).to_numpy(), src_rows):
             raise ImportFailure("table rows are not the source rows in order")
-        want = typed(regular, header, kinds)
         for c in header:
-            g = got[c]
+            g, src = got[c].to_numpy(), regular[c].to_numpy()
+            null_back = g == "\\N"
             if kinds[c] == "text":
-                bad = (g == "\\N").to_numpy() | (want[c].to_numpy() != g.to_numpy())
+                bad = null_back | (src != g)
             else:
-                null = (g == "\\N").to_numpy()
-                back = pd.to_numeric(g.mask(null), errors="raise")
-                w = want[c]
+                null_src = src == ""
+                a, b = parse_column(src, kinds[c], null_src), parse_column(g, kinds[c], null_back)
                 if kinds[c] == "bigint":
-                    bad = (w.isna().to_numpy() != null) | (~null & (w.fillna(0).to_numpy() != back.fillna(0).astype("int64").to_numpy()))
+                    bad = (null_src != null_back) | (~null_src & ~null_back &
+                                                     (a.fillna(0).to_numpy(dtype=object) != b.fillna(0).to_numpy(dtype=object)))
                 else:
-                    wv, bv = w.to_numpy(dtype=np.float64), back.to_numpy(dtype=np.float64)
-                    bad = (np.isnan(wv) != null) | (~null & (wv != bv))
+                    bad = (null_src != null_back) | (~null_src & ~null_back & (a != b))
             cells += len(g)
             if bad.any():
                 mismatches.append({"column": c, "count": int(bad.sum()), "first_source_row": int(src_rows[np.flatnonzero(bad)[0]])})
@@ -260,7 +256,9 @@ def compare_table(cur, table, path, header, kinds, names, short_set):
     return {"cells_compared": cells, "mismatched_columns": mismatches}
 
 
-def key_check(cur, table, profile, header, names):
+def key_check(cur, table, profile, header, names, irregular=()):
+    """Key duplicates / null-or-empty keys in SQL, reconciled with the profile, which counted every source row: short
+    rows (side table) count as null keys when a key field is absent or empty in the padded row."""
     cols = profile.get("key_columns") or []
     if not cols:
         return None
@@ -271,9 +269,14 @@ def key_check(cur, table, profile, header, names):
     nulls = " OR ".join(f"{ident(sql[c])} IS NULL OR {ident(sql[c])}::text = ''" for c in cols)
     cur.execute(f"SELECT count(*) FROM {table} WHERE {nulls}")
     null = cur.fetchone()[0]
+    positions = [header.index(c) for c in cols]
+    short_null = sum(1 for _, fields in irregular
+                     if any(p >= len(json.loads(fields)) or json.loads(fields)[p] == "" for p in positions))
     return {"key_columns": cols, "sql_duplicate_rows": dup, "profile_duplicates": profile.get("key_duplicates_full"),
-            "sql_null_or_empty": null, "profile_null_or_empty": profile.get("key_null_or_empty"),
-            "agrees_with_profile": dup == profile.get("key_duplicates_full") and null == profile.get("key_null_or_empty")}
+            "sql_null_or_empty": null, "side_table_rows_with_null_key": short_null,
+            "profile_null_or_empty": profile.get("key_null_or_empty"),
+            "agrees_with_profile": dup == profile.get("key_duplicates_full")
+            and null + short_null == profile.get("key_null_or_empty")}
 
 
 def load_one(conn, entry, schema, tname, profile):
@@ -315,7 +318,7 @@ def load_one(conn, entry, schema, tname, profile):
         comparison = compare_table(cur, table, path, header, kinds, names, short_set)
         if comparison["mismatched_columns"]:
             raise ImportFailure(f"cell comparison failed: {comparison['mismatched_columns'][:3]}")
-        keys = key_check(cur, table, profile, header, names) if profile else None
+        keys = key_check(cur, table, profile, header, names, irregular) if profile else None
         if keys is not None and not keys["agrees_with_profile"]:
             raise ImportFailure(f"key profile disagrees: {keys}")
         cur.execute(f"ANALYZE {table}")
@@ -345,6 +348,12 @@ def expected_entries(inventory):
     return list(out.values())
 
 
+def current(result, entry, names):
+    """A receipt counts only for the entry's current bytes and planned table name."""
+    schema, tname = names[entry["id"]]
+    return result.get("sha256") == entry["actual_sha256"] and result.get("table") == f"{schema}.{tname}"
+
+
 def reconcile(conn, entries, names, results):
     with conn.cursor() as cur:
         present = {}
@@ -355,11 +364,14 @@ def reconcile(conn, entries, names, results):
         cur.execute("SELECT pg_database_size(current_database())")
         db_bytes = cur.fetchone()[0]
     ids = [e["id"] for _, e in entries]
+    by_id = {e["id"]: e for _, e in entries}
+    ok = {i for i in ids if results.get(i, {}).get("status") == "verified" and current(results[i], by_id[i], names)}
     rec = {"expected": len(ids),
-           "verified": sorted(i for i in ids if results.get(i, {}).get("status") == "verified" and present[i]),
+           "verified": sorted(i for i in ok if present[i]),
+           "stale_receipt": sorted(i for i in ids if results.get(i, {}).get("status") == "verified" and i not in ok),
            "failed": sorted(i for i in ids if results.get(i, {}).get("status") == "failed"),
            "not_imported": sorted(i for i in ids if i not in results),
-           "verified_but_table_absent": sorted(i for i in ids if results.get(i, {}).get("status") == "verified" and not present[i])}
+           "verified_but_table_absent": sorted(i for i in ok if not present[i])}
     return rec, db_bytes
 
 

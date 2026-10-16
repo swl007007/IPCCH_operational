@@ -113,6 +113,36 @@ class Load(unittest.TestCase):
         self.assertEqual(li.main(args + ["--only", "ipcch.b"]), 0)         # merged: both verified
         self.assertEqual(json.load(open(f"{d}/r.json"))["reconciliation"]["verified"], ["ipcch.a", "ipcch.b"])
 
+    def test_exact_integers_floats_and_one_unit_corruption(self):
+        text = "area_id,n,x\n1,9007199254740993,-7961314590657215.0\n2,,0.1\n3,123456789012345678,1e-5\n"
+        e = self.entry(text, "fewsnet.precision")
+        tname = li.table_name(e["id"])
+        with self.connect() as conn:
+            r = li.load_one(conn, e, "fewsnet", tname, None)
+        self.assertEqual(r["column_types"], {"bigint": 1, "double precision": 1, "text": 1})
+        header, kinds = ["area_id", "n", "x"], {"area_id": "text", "n": "bigint", "x": "double precision"}
+        with self.connect() as conn, conn.cursor() as cur:
+            table = f'fewsnet."{tname}"'
+            cur.execute(f"UPDATE {table} SET n = n + 1 WHERE _source_row = 1")   # one unit beyond float precision
+            got = li.compare_table(cur, table, e["path"], header, kinds, header, set())
+            conn.rollback()
+        self.assertEqual(got["mismatched_columns"], [{"column": "n", "count": 1, "first_source_row": 1}])
+
+    def test_blank_line_and_short_row_reconcile_with_the_key_profile(self):
+        e = self.entry("admin_code,year,v\n1,2020,0.5\n\n2,2021,1.5\nSystem.IO.MemoryStream\n", "fewsnet.short")
+        profile = {"key_columns": ["admin_code", "year"], "key_duplicates_full": 0, "key_null_or_empty": 2}
+        with self.connect() as conn:
+            r = li.load_one(conn, e, "fewsnet", li.table_name(e["id"]), profile)
+        self.assertEqual((r["typed_rows"], r["irregular_rows"]["count"], r["irregular_rows"]["rows"]), (2, 2, [2, 4]))
+        self.assertTrue(r["keys"]["agrees_with_profile"])
+
+    def test_receipt_for_changed_bytes_is_stale(self):
+        entry = {"id": "ipcch.a", "actual_sha256": "new"}
+        names = {"ipcch.a": ("ipcch", li.table_name("ipcch.a"))}
+        self.assertFalse(li.current({"sha256": "old", "table": "ipcch." + li.table_name("ipcch.a")}, entry, names))
+        self.assertFalse(li.current({"sha256": "new", "table": "ipcch.a_old_name"}, entry, names))
+        self.assertTrue(li.current({"sha256": "new", "table": "ipcch." + li.table_name("ipcch.a")}, entry, names))
+
 
 if __name__ == "__main__":
     unittest.main()
