@@ -104,3 +104,43 @@ Grilled 21 decisions. Built confidence evidence (FEWS Stage3 fs1/fs2/fs3 proxies
 ### Status
 
 [OK] **Completed**
+
+
+## Session 5: GCP research modeling migration close + A01 sqlimport precision repair
+<!-- trellis-session: v=2 fp=ba97e2f87b36003b -->
+
+**Date**: 2026-10-16
+**Task**: GCP research modeling migration close + A01 sqlimport precision repair
+**Branch**: `feat/october-cloud-delivery`
+
+### Summary
+
+Migration to food-crisis-modeling-enso completed and closed: PID-1-safe per-trial cap (timeout wrapper), HPT attempt 3 harvested and parents closed, 223 packages downloaded and replayed (accepted), revised measured quote, tested researcher runbook, SQL 53/53 + geometry + capacity, temporary admin removed (own-role cascade reconstructed to original digests), writer freeze + empty r3 delta, cutover, native merge 12a5dd7. Close audit 4b7c22cf accepted (minor A01) after a disclosed native-archive recovery (deviation 1). Repair task sqlimport-a01-precision: infer_types carries integer precision across chunks (red/green tests, PG round trip), bounded exposure scan of all 53 sources (13.76 GB, 0 candidates, 429 multi-line records tokenized; no cloud repair), merged b93f9c8; close audit 5d2c1e92 accepted, resolving A01; remaining minor audit debt sqlimport-a01-precision-A01 (native start + resume-start, deviation 2) retained.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d9ede46` | Per-trial cap via coreutils timeout at the command prefix (replaces PID-1-ineffective SIGALRM) |
+| `d58fcda` | Revised quote from measured actuals; read-only actuals collector |
+| `9427f01` | Runbook: concrete, tested FEWS/IPCCH examples |
+| `6ee56f5` | Runbook: smoke output path is trial/<local-job>/trial-0/ (as produced by the verbatim FEWS run) |
+| `12a5dd7` | Merge native gcp-research-migration (6ee56f5) into the registered lineage |
+| `841d196` | docs(gcp-migration): O-104 correction + O-105..O-114 (PID-1 cap fix d9ede46, 223 reader download, downloaded-copy replay accepted 223, HPT3 harvest + parent closing, actuals + revised quote d58fcda, runbook 9427f01, scen bytes accepted), S89 |
+| `57dc770` | docs(gcp-migration): pre-close summaries current (ledger README 170/72, implement checkboxes, PRD status, task notes, executor-state final sequence), acceptance.json DRAFT, runbook command-check receipt |
+| `ae64c2b` | docs(gcp-migration): G12 executed - SQL 53/53 + geometry + capacity (O-115/116), temporary admin removed with TTL proof and own-role cascade disposition (O-117), post-removal 17/17 + 31/31 (O-118), writer freeze + r3 empty delta + 3,569 artifacts re-hashed, cut over (O-119/120); acceptance.json FINAL, cutover receipt, supervisor receipts (merge, SQL, auth) |
+| `1300b04` | docs(gcp-migration): PROGRESS migration status (additive, LF blob; working-copy CRLF dirt untouched), O-121 snapshot-mode correction, supervisor cutover-final receipt |
+| `e0a3b45` | docs(gcp-migration): supervisor S92 final acceptance and cutover-final receipt (pending wording removed) |
+| `427e12d` | docs(trellis): A01 repair task spec/plan (sqlimport cross-chunk integer precision; bounded exposure scan) |
+| `8c147ea` | docs(trellis): A01 plan correction (CSV integer-field prefilter, three result classes, multi-line records checked per file) and disclosed lifecycle deviation 2 (native start + resume-start) |
+| `1d9c21d` | sqlimport: carry integer precision across chunks in infer_types (A01) |
+| `b93f9c8` | Merge native sqlimport-a01-precision (1d9c21d): A01 cross-chunk integer precision in infer_types |
+| `dbd4e06` | docs(trellis): A01 repair evidence - red/green tests, exposure scan (script, cloud catalog, receipt, run log, decision: trigger absent, no cloud repair), supervisor acceptance, plan checkboxes |
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None for these tasks; audit debt sqlimport-a01-precision-A01 stays recorded. Archived: .trellis/tasks/archive/2026-10/{10-16-gcp-research-modeling-migration,10-16-sqlimport-a01-precision}.
