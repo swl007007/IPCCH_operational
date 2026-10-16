@@ -18,7 +18,8 @@ given weight file survived there. The member resolves to the first candidate
 whose bytes+sha256 match the record; all candidates and their states are kept.
 Status per member: verified | hash_mismatch (local copies exist, none match) |
 present_unverified (local, not hashed) | cloud_only | inspection_error |
-missing (every candidate verified not-found) | root_unavailable.
+missing (every declared candidate verified not-found). A root that is itself
+cloud-only or uninspectable propagates to its members; it is never dropped.
 
 Hashes may come from a resumable cache keyed by (path, size, mtime_ns); such
 results are provisional (hash_source=cache). Final transfer/package acceptance
@@ -72,10 +73,10 @@ def path_state(paths):
     return out
 
 
-def candidate_roots(candidates):
-    """Return (existing roots in declared order, {root: status}) for all candidates."""
-    states = path_state(candidates)
-    return [c for c in candidates if states[c]["status"] == "local"], {c: states[c]["status"] for c in candidates}
+def declared_roots(candidates, state_fn=None):
+    """Return [{"root", "status"}] for EVERY declared candidate, in declared order."""
+    states = (state_fn or path_state)(candidates)
+    return [{"root": c, "status": states[c]["status"]} for c in candidates]
 
 
 def dashboard_members(db, store, roots):
@@ -87,17 +88,17 @@ def dashboard_members(db, store, roots):
     for run_id, source_key in rows:
         family = db.execute("SELECT value FROM tags WHERE run_uuid=? AND key='family'", (run_id,)).fetchone()[0]
         manifest = f"{store}/artifacts/1/{run_id}/artifacts/manifests/models.tar.members.json"
-        root, root_status = candidate_roots(roots["dashboard"][source_key])
+        root = declared_roots(roots["dashboard"][source_key])
         members = json.load(open(manifest))
         fams.append({"kind": "dashboard", "family": family, "parent_run_id": run_id, "source_key": source_key,
-                     "manifest": manifest, "root": root, "root_status": root_status,
+                     "manifest": manifest, "roots": root,
                      "members": [dict(m, version_keys=None) for m in members]})
     return fams
 
 
 def forecasting_members(store, roots):
     fams = []
-    root, root_status = candidate_roots([roots["forecasting_root"]])
+    root = declared_roots([roots["forecasting_root"]])
     for plan_path in sorted(glob.glob(f"{store}/artifacts/3/*/artifacts/manifests/plan.json")):
         plan = json.load(open(plan_path))
         by_path = {}
@@ -109,8 +110,8 @@ def forecasting_members(store, roots):
                     raise SystemExit(f"conflicting member records for {m['path']} in {plan_path}")
                 rec["version_keys"].append(version_key)
         fams.append({"kind": "forecasting", "family": plan["source_key"], "parent_run_id": plan_path.split("/")[-4],
-                     "source_key": plan["source_key"], "manifest": plan_path, "root": root,
-                     "root_status": root_status, "members": list(by_path.values()),
+                     "source_key": plan["source_key"], "manifest": plan_path, "roots": root,
+                     "members": list(by_path.values()),
                      "versions": {k: {"registered_model": v.get("registered_model"), "members": len(v["members"]),
                                       "arm": v.get("arm"), "lead": v.get("lead"), "family": v.get("family")}
                                   for k, v in plan["versions"].items()}})
@@ -125,12 +126,40 @@ def sha256(path):
     return h.hexdigest()
 
 
+def attach_candidates(fams, state_fn=None):
+    """Give every member one candidate per DECLARED root. Members under an unreadable root keep
+    that root's failure (root_cloud_only / root_inspection_error / root_missing) so it can never
+    be silently dropped; members under readable roots get their own path status."""
+    state_fn = state_fn or path_state
+    paths = set()
+    for fam in fams:
+        for m in fam["members"]:
+            m["candidates"] = []
+            for r in fam["roots"]:
+                cand = {"path": os.path.join(r["root"], m["path"])}
+                if r["status"] == "local":
+                    paths.add(cand["path"])
+                else:
+                    cand["status"] = "root_" + r["status"]
+                m["candidates"].append(cand)
+    states = state_fn(sorted(paths))
+    for fam in fams:
+        for m in fam["members"]:
+            for c in m["candidates"]:
+                if "status" in c:
+                    continue
+                st = states[c["path"]]
+                c["status"] = st["status"]
+                if st["status"] == "inspection_error":
+                    c["error"] = st.get("error")
+
+
 def resolve(member):
     """Pick the candidate matching the recorded bytes+sha256; never call a member missing unless
     every candidate was verified not-found."""
     cands = member["candidates"]
     if not cands:
-        return "root_unavailable", None
+        raise ValueError("member has no declared candidate roots")
     for c in cands:
         if c.get("sha256_actual") == member["sha256"] and c.get("bytes_actual") == member["bytes"]:
             return "verified", c["path"]
@@ -139,10 +168,12 @@ def resolve(member):
         if any("sha256_actual" not in c for c in cands if c["status"] == "local"):
             return "present_unverified", None
         return "hash_mismatch", None
-    for status in ("inspection_error", "cloud_only"):
+    for status in ("inspection_error", "root_inspection_error", "cloud_only", "root_cloud_only"):
         if status in statuses:
-            return status, None
-    return "missing", None
+            return status.removeprefix("root_"), None
+    if statuses <= {"missing", "root_missing"}:
+        return "missing", None
+    raise ValueError(f"unknown candidate statuses {sorted(statuses)}")
 
 
 def load_cache(path):
@@ -159,20 +190,16 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--store", default=STORE)
     ap.add_argument("--hash", action="store_true")
-    ap.add_argument("--fresh", action="store_true", help="ignore the hash cache; required for acceptance")
+    ap.add_argument("--fresh", action="store_true", help="ignore the hash cache (implies --hash); required for acceptance")
     ap.add_argument("--workers", type=int, default=4)
     args = ap.parse_args()
+    args.hash = args.hash or args.fresh
     os.makedirs(args.out, exist_ok=True)
     roots = json.load(open(ROOTS))
     db = connect(args.store)
     fams = dashboard_members(db, args.store, roots) + forecasting_members(args.store, roots)
 
-    abs_paths = []
-    for fam in fams:
-        for m in fam["members"]:
-            m["candidates"] = [{"path": os.path.join(r, m["path"])} for r in fam["root"]]
-            abs_paths += [c["path"] for c in m["candidates"]]
-    states = path_state(sorted(set(abs_paths)))
+    attach_candidates(fams)
 
     cache_path = os.path.join(args.out, "hash-cache.jsonl")
     cache = {} if args.fresh else load_cache(cache_path)
@@ -180,11 +207,7 @@ def main():
     for fam in fams:
         for m in fam["members"]:
             for c in m["candidates"]:
-                st = states[c["path"]]
-                c["status"] = st["status"]
-                if st["status"] == "inspection_error":
-                    c["error"] = st.get("error")
-                if st["status"] != "local":
+                if c["status"] != "local":
                     continue
                 s_ = os.stat(c["path"])
                 c["bytes_actual"] = s_.st_size
@@ -215,7 +238,7 @@ def main():
                 counts[m["status"]] += 1
                 out.write(json.dumps({"family": fam["family"], **{k: v for k, v in m.items()}}) + "\n")
             members = fam["members"]
-            summary.append({k: fam[k] for k in ("kind", "family", "parent_run_id", "source_key", "manifest", "root", "root_status")}
+            summary.append({k: fam[k] for k in ("kind", "family", "parent_run_id", "source_key", "manifest", "roots")}
                            | {"member_count": len(members), "recorded_bytes": sum(m["bytes"] for m in members),
                               "largest_bytes": max((m["bytes"] for m in members), default=0),
                               "status_counts": dict(counts), "versions": fam.get("versions")})
