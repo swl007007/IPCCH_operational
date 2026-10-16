@@ -99,15 +99,18 @@ class Submit(unittest.TestCase):
         self.assertEqual(vs.reconcile(self.conn, "custom", "op", self.dir), 0)
         self.assertEqual(L._get(self.conn, "op")[1], "projects/p/locations/us-central1/customJobs/1")
 
-    def test_absent_job_released_only_with_lookup(self):
+    def test_absent_job_keeps_claim_held(self):
         path = self.write(spec())
         self.p.lose_ack = True
         vs.submit(self.conn, path, "custom", "op", self.dir)
-        self.p.jobs.clear()                                                 # the provider never created it
+        self.p.jobs.clear()                                                 # not (yet) visible to a list lookup
         self.assertEqual(vs.reconcile(self.conn, "custom", "op", self.dir), 1)
-        self.assertEqual(L._get(self.conn, "op")[0], "reserved")
-        self.assertEqual(vs.reconcile(self.conn, "custom", "op", self.dir, release_if_absent=True), 0)
-        self.assertEqual(L._get(self.conn, "op")[0], "released")
+        status, resource, _ = L._get(self.conn, "op")
+        self.assertEqual(status, "reserved")
+        self.assertTrue(resource.startswith("claim:"))
+        self.assertFalse(hasattr(L, "release_claim"))
+        with self.assertRaises(L.LedgerError):
+            L.release(self.conn, "op", "list lookup found nothing")         # a held claim is never released here
 
     def test_spec_larger_than_reservation_refused_before_claim(self):
         for body in (spec(machine="n1-highmem-16"), spec(timeout="7200s"), spec(retries=False)):

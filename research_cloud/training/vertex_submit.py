@@ -8,13 +8,14 @@ Admission is idempotent and fail-closed (the cost/concurrency contract, not a ge
   written to ``claim.json``, the request carries it as the job label ``ipcch-claim``, then the spec is POSTed once.
   HTTP 200: the returned job name is **bound** to the reservation (ledger ``bind``). Anything else - a non-200, a
   timeout, a lost acknowledgement - leaves the claim held with the outcome recorded; nothing is retried.
-* ``reconcile``: for a held claim, list the jobs labelled with it. Exactly one: bind it. None: print the lookup, and
-  with ``--release-if-absent`` release the claim with that lookup as evidence. More than one: refuse.
+* ``reconcile``: for a held claim, list the jobs labelled with it. Exactly one: bind it. More than one: refuse. None:
+  the claim stays held - a list result (eventually consistent) cannot prove the job was never created, so the
+  reservation is never released from here.
 * ``poll``: read the bound job until a terminal state; every read must be HTTP 200 and return exactly the bound name
   before its state is recorded on the ledger. The reservation is never released here.
 
   python -m research_cloud.training.vertex_submit submit --spec SPEC.json --kind custom|hpt --operation ID --out DIR
-  python -m research_cloud.training.vertex_submit reconcile --kind custom|hpt --operation ID --out DIR [--release-if-absent]
+  python -m research_cloud.training.vertex_submit reconcile --kind custom|hpt --operation ID --out DIR
   python -m research_cloud.training.vertex_submit poll --kind custom|hpt --operation ID --out DIR [--every 30]
 """
 import argparse
@@ -115,7 +116,7 @@ def submit(conn, spec_path, kind, operation, out):
     return 0
 
 
-def reconcile(conn, kind, operation, out, release_if_absent=False):
+def reconcile(conn, kind, operation, out):
     from research_cloud.cost import ledger as L
     status, marker, _, _ = current(conn, operation)
     if status != "reserved" or not marker or not marker.startswith("claim:"):
@@ -135,11 +136,7 @@ def reconcile(conn, kind, operation, out, release_if_absent=False):
         return 0
     if len(jobs) > 1:
         raise SystemExit(f"{len(jobs)} jobs carry claim {claim_id}; refusing")
-    if release_if_absent:
-        L.release_claim(conn, operation, marker, json.dumps(lookup))
-        print(json.dumps({"released": operation, "evidence": lookup}))
-        return 0
-    print(json.dumps({"absent": lookup, "claim": "held"}))
+    print(json.dumps({"not_found_yet": lookup, "claim": "held (no release from a list lookup)"}))
     return 1
 
 
@@ -179,8 +176,6 @@ def main(argv=None, conn=None):
         p.add_argument("--out", required=True)
         if cmd == "submit":
             p.add_argument("--spec", required=True)
-        if cmd == "reconcile":
-            p.add_argument("--release-if-absent", action="store_true")
         if cmd == "poll":
             p.add_argument("--every", type=int, default=30)
     args = ap.parse_args(argv)
@@ -191,7 +186,7 @@ def main(argv=None, conn=None):
     if args.cmd == "submit":
         return submit(conn, args.spec, args.kind, args.operation, args.out)
     if args.cmd == "reconcile":
-        return reconcile(conn, args.kind, args.operation, args.out, args.release_if_absent)
+        return reconcile(conn, args.kind, args.operation, args.out)
     return poll(conn, args.kind, args.operation, args.out, args.every)
 
 
