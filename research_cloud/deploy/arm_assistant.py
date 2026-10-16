@@ -124,6 +124,11 @@ def do_query(api, receipt, url, port):
               "all_settled": bool(new) and all(r[1] == "settled" for r in new)}
     receipt.data["query"] = result
     receipt.step("query", post=post, stream=got, rows=len(new), all_settled=result["all_settled"])
+    failed = (post != 200 or got != 200 or not result["all_settled"]
+              or '"type": "error"' in body or "MLflow AI Gateway error" in body)
+    if failed:
+        raise ps.ProvisionError(f"assistant query not accepted: post {post}, stream {got}, ledger rows "
+                                f"{[r[1] for r in new]}")
     return result
 
 
