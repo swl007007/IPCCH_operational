@@ -363,6 +363,8 @@ def install(config_path=None):
         utils._aiohttp_post = make_egress(original, cfg, ledger)
         mode = "armed"
     else:
+        if is_provider_allowed("litellm") or is_provider_allowed("bedrock"):
+            raise GuardRefusal("MLFLOW_GATEWAY_ALLOWED_PROVIDERS must exclude SDK-client providers in deny mode too")
         utils._aiohttp_post = deny_all()
     utils._ipcch_guard_mode = mode
     return mode
