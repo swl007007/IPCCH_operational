@@ -1,0 +1,103 @@
+On branch feat/october-cloud-delivery
+Your branch is ahead of 'origin/feat/october-cloud-delivery' by 182 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .gitattributes
+	modified:   .gitignore
+	modified:   .trellis/spec/backend/index.md
+	modified:   .trellis/spec/guides/index.md
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/check.jsonl
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/design.md
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/implement.jsonl
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/implement.md
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/prd.md
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/research/exposure/cloud-column-catalog.json
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/research/exposure/decision.md
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/research/exposure/exposure-receipt.json
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/research/exposure/exposure-run.txt
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/research/exposure/exposure_scan.py
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/research/lifecycle/a01-start.txt
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/research/supervisor-acceptance.json
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/research/tests/pytest-fixed.txt
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/research/tests/pytest-prefix-6ee56f5.txt
+	deleted:    .trellis/tasks/10-16-sqlimport-a01-precision/task.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/check.jsonl
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/design.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/implement.jsonl
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/implement.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/prd.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/archive-map.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/bootstrap-evidence.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/closure-findings.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/closure-package-build.log
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/completion.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/delivery-moves.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/external-archive-manifest.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/gitnexus-limitations.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/handover-receipt.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/retained-output-check.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/verification-summary.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/windows-git-change-map.txt
+	modified:   .trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/task.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/check.jsonl
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/completion.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/design.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/implement.jsonl
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/implement.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/prd.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/research/checks.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/research/cleanup.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/research/local-inventory.md
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/research/package-result.json
+	modified:   .trellis/tasks/archive/2026-10/10-08-migration-package-layout/task.json
+	modified:   AGENTS.md
+	modified:   PROGRESS.md
+	modified:   README.md
+	modified:   cloud_pipeline/OPERATIONS.md
+	modified:   cloud_pipeline/QUICKSTART.md
+	modified:   cloud_pipeline/deploy/handover_package.py
+	modified:   cloud_pipeline/deploy/wind_down.py
+	modified:   cloud_pipeline/fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv
+	modified:   cloud_pipeline/project.example.json
+	modified:   cloud_pipeline/tests/cloud/__init__.py
+	modified:   cloud_pipeline/tests/cloud/test_causal_fill.py
+	modified:   cloud_pipeline/tests/cloud/test_cloud_batch_evi_worker.py
+	modified:   cloud_pipeline/tests/cloud/test_deliver.py
+	modified:   cloud_pipeline/tests/cloud/test_delivery_bundle.py
+	modified:   cloud_pipeline/tests/cloud/test_delivery_inputs.py
+	modified:   cloud_pipeline/tests/cloud/test_delivery_job.py
+	modified:   cloud_pipeline/tests/cloud/test_delivery_manifest.py
+	modified:   cloud_pipeline/tests/cloud/test_delivery_run.py
+	modified:   cloud_pipeline/tests/cloud/test_delivery_scoring.py
+	modified:   cloud_pipeline/tests/cloud/test_delivery_workflow.py
+	modified:   cloud_pipeline/tests/cloud/test_evi_reference_comparison.py
+	modified:   cloud_pipeline/tests/cloud/test_evi_validation_report.py
+	modified:   cloud_pipeline/tests/cloud/test_gee_export_manifest.py
+	modified:   cloud_pipeline/tests/cloud/test_ipcch_chunked.py
+	modified:   cloud_pipeline/tests/cloud/test_manifest_contract.py
+	modified:   cloud_pipeline/tests/cloud/test_object_refs.py
+	modified:   cloud_pipeline/tests/cloud/test_object_store.py
+	modified:   cloud_pipeline/tests/cloud/test_prepare.py
+	modified:   cloud_pipeline/tests/cloud/test_rasterio_evi_extraction.py
+	modified:   cloud_pipeline/tests/cloud/test_remote_sources.py
+	modified:   cloud_pipeline/tests/cloud/test_report_contracts.py
+	modified:   cloud_pipeline/tests/cloud/test_runtime_defaults.py
+	modified:   cloud_pipeline/tests/cloud/test_runtime_image_contract.py
+	modified:   cloud_pipeline/tests/cloud/test_wind_down_rest.py
+	modified:   cloud_pipeline/tests/test_handover_package.py
+	modified:   cloud_pipeline/tests/test_runtime_closure.py
+	modified:   cloud_pipeline/tools/refresh_h5_inputs.py
+	modified:   cloud_pipeline/tools/revise_h5_country_v3.py
+	modified:   september_manual/README.md
+	modified:   september_manual/inventory.json
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.trellis/tasks/archive/2026-10/10-16-sqlimport-a01-precision/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+apply rc=0
+restored 73: mismatched [] | HEAD dbd4e06c1ae9e9f977bb328b96256615d9e6885b

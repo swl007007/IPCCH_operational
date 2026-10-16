@@ -1,0 +1,214 @@
+{
+  "attempt": 1,
+  "audited_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+  "completion_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+  "created": 1792173230.4066076,
+  "error": null,
+  "gate_checkpoints": "[]",
+  "gate_open": 0,
+  "id": "5d2c1e92f84ad1ef0d6ffaac",
+  "manifest": {
+    "archive_path": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/archive/2026-10/10-16-sqlimport-a01-precision",
+    "audited_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+    "base_sha": "427e12d83c3badf34ae12c9bbc64692258ee1bc3",
+    "closed_at": 1792173230.0835018,
+    "completion_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+    "executor": {
+      "agent": "claude",
+      "agent_session": {
+        "agent": "claude",
+        "kind": "id",
+        "source": "herdr:claude",
+        "value": "228d9075-d67a-41c9-9f4c-7830cdac3b87"
+      },
+      "terminal_id": "term_65dee2e4ca9b6a"
+    },
+    "mode": "close-audit",
+    "repo": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational",
+    "skill_dir": "/home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/5d2c1e92f84ad1ef0d6ffaac/input/skill",
+    "snapshot_path": "/home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/5d2c1e92f84ad1ef0d6ffaac/input/task_snapshot.json",
+    "snapshot_sha256": "40b986ba018091b023c386d30a4556a3c6d3d3cbfa3674f71be854a607e40dab",
+    "task_dir": ".trellis/tasks/10-16-sqlimport-a01-precision",
+    "task_id": "sqlimport-a01-precision"
+  },
+  "mode": "close-audit",
+  "notice": null,
+  "recheck_of": null,
+  "repo": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational",
+  "resolved_by": null,
+  "result": {
+    "audited_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+    "base_sha": "427e12d83c3badf34ae12c9bbc64692258ee1bc3",
+    "completion_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+    "coverage": [
+      {
+        "criterion": "R1-R3 / AC1: carry the conservative integer precision rule across chunks while preserving pure-bigint and ordinary double behavior.",
+        "evidence": [
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/prd.md:15-17 defines the rule; dbd4e06c1ae9e9f977bb328b96256615d9e6885b:research_cloud/sqlimport/load_inputs.py:137-171 initializes persistent unsafe_int state, updates it before the all-integer continue branch, and consults it after promotion. More than 15 digits subsumes magnitude above 2**53 under the existing integer-literal grammar.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:research_cloud/sqlimport/load_inputs.py:160-164 preserves the pure-integer 18-digit bound; dbd4e06c1ae9e9f977bb328b96256615d9e6885b:research_cloud/sqlimport/load_inputs.py:300-325 passes the final types to table creation, COPY and verification. Text comparisons at lines 245-246 preserve the original literal.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:research_cloud/tests/test_sqlimport.py:66-79 covers both row orders with small chunks, the actual 50,000-row boundary, unchanged bigint, and safe-integer promotion. Fresh isolated run: 6 passed, 7 database tests skipped.",
+          "The originating report is the result.findings entry gcp-research-modeling-migration-A01 in dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/archive/2026-10/10-16-gcp-research-modeling-migration/research/close-out/close-audit-4b7c22cf-result.json:1-1 (embedded wrapper SHA256 0670c754ab0c9afc6b1b50f0ad7d3f122685a0aa918f9b9a8cb838df122ef885; audited e0a3b4521799a254380b4ef68e5969be76c3564b). Only that finding and its reproduction were used; unrelated original-task coverage was not inherited."
+        ],
+        "status": "met"
+      },
+      {
+        "criterion": "R4 / AC1: regression evidence distinguishes the old failure and checks original stored integer text in both row orders.",
+        "evidence": [
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:research_cloud/tests/test_sqlimport.py:133-154 calls load_one for both orders, reads v::text and n::text at the keyed source row, and compares with original literals before any float conversion.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/tests/pytest-prefix-6ee56f5.txt:1-18 records the new tests against pre-fix load_inputs.py: the two cross-chunk inference tests and the exact-text roundtrip fail (3 failed, 10 passed).",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/tests/pytest-fixed.txt:1-21 records 19 passing importer/geometry tests at registered merge b93f9c89864d9fedf2246c1fd1ae06cbba5d78c8. dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/supervisor-acceptance.json:5-15 separately binds the 13-test sqlimport run, command, environment and exit 0.",
+          "Git object checks establish research_cloud tree bd2d781d31076c95e4192b4d2fc76e17c0342701 at native 1d9c21d1cf2020accae336de49721b175c025fcf, registered merge b93f9c89864d9fedf2246c1fd1ae06cbba5d78c8, and audited dbd4e06c1ae9e9f977bb328b96256615d9e6885b; retained database test evidence therefore covers identical source/tests."
+        ],
+        "status": "met"
+      },
+      {
+        "criterion": "R5-R6 / AC2-AC3: bounded exposure evidence covers all inventoried migrated CSVs and supports the no-cloud-repair decision.",
+        "evidence": [
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/prd.md:19-29 and dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/design.md:25-55 define the corrected integer-field prefilter, full byte/hash coverage, multiline fallback and conditional cloud repair.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/exposure/exposure_scan.py:23-67 scans complete binary lines without consuming trailing delimiters; lines 93-117 tokenize all flagged records and every multiline record, while lines 143-173 retain per-file hashes, byte counts and classifications. Its bounded self-test passed again in a network-isolated runner.",
+          "Independent keyed reconciliation of the committed exposure receipt, frozen inventory, final cloud import report and column catalog verified identical sets of 53 IDs/table identities, paths, source hashes, source byte counts, imported row counts, column positions and type counts. Total covered bytes are 13,763,421,380; all persisted candidate counts are zero. The three multiline cases retain 196 + 53 + 180 = 429 parsed records and zero classified fields. The catalog contains 10,109 double columns across 45 tables.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/exposure/decision.md:3-24 explicitly records no A01-triggering values and no cloud repair, with the numerical-audit scope limit. Receipt SHA256 8d1bb0c7e233ad1e1488ff0afde4c3dfa48b8576e3879b7859677c53492d22d4 and catalog SHA256 3ef25d7d737c95fd0b58df70fcf8b34dfaac7ae63cfc1b469cae6f4f73b03a04 were recomputed from pinned Git blobs.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/archive/2026-10/10-16-gcp-research-modeling-migration/research/sql-final-supervisor.json:49-50 binds the frozen inventory (26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049) and final import receipt (a431c4a0f09dfd77836ea52a67ed27b237781f424784b85ee73f617711a16bd7); both digests match independently extracted pinned blobs. Reconciliation output: /tmp/sqlimport-a01-audit-rw3uUK/evidence-check.json, SHA256 218c15b42d66309022376b505a398425d2c486d90d1877a7ed2a8bd1ecfb699e."
+        ],
+        "status": "met"
+      },
+      {
+        "criterion": "R7 / AC4 code identity: native and registered research_cloud trees agree at the audited closure.",
+        "evidence": [
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/prd.md:30-30 and dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/supervisor-acceptance.json:5-7 identify the native commit and intended tree.",
+          "git rev-parse <revision>:research_cloud returned bd2d781d31076c95e4192b4d2fc76e17c0342701 for 1d9c21d1cf2020accae336de49721b175c025fcf, b93f9c89864d9fedf2246c1fd1ae06cbba5d78c8 and dbd4e06c1ae9e9f977bb328b96256615d9e6885b. The merge includes the native commit as its second parent; the completion commit changes task evidence only."
+        ],
+        "status": "met"
+      },
+      {
+        "criterion": "Enrolled-task lifecycle: use audit wrappers rather than direct native task.py start.",
+        "evidence": [
+          "The supplied AGENTS.md instructions require enrolled tasks to use audit wrappers instead of native task.py start/archive.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/lifecycle/a01-start.txt:25-38 records native start rc=0, the planning-to-in_progress transition and subsequent resume-start, which warns that native start hooks were not replayed.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/prd.md:49-52 explicitly acknowledges the noncompliant recovery. Finding sqlimport-a01-precision-A01 retains this known deviation without implying that the implementation or original run identity is invalid."
+        ],
+        "status": "violated"
+      }
+    ],
+    "evidence_gaps": [],
+    "findings": [
+      {
+        "category": "contract_violation",
+        "claim": "The task start recovery bypassed the required audit wrapper with a direct native task.py start.",
+        "evidence": [
+          "The supplied enrolled-repository AGENTS.md rule requires audit wrappers instead of native task.py start/archive.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/lifecycle/a01-start.txt:25-38 records HEAD 427e12d, native planning-to-in_progress transition, native start rc=0, and resume-start rc=0 with the explicit note that native start hooks were not replayed.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/prd.md:49-52 expressly acknowledges this was not a compliant wrapper-only recovery; dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/supervisor-acceptance.json:35-35 retains the deviation rather than claiming compliance."
+        ],
+        "file": ".trellis/tasks/10-16-sqlimport-a01-precision/research/lifecycle/a01-start.txt",
+        "id": "sqlimport-a01-precision-A01",
+        "impact": "The wrapper-only start sequence was not followed, so its required start/hook handling cannot be inferred solely from the later active state. This is a bounded process violation: the supplied evidence preserves the original base and executor, and the durable close manifest binds the correct completion and snapshot. No incorrect code result, lost baseline or immediate execution hazard was established.",
+        "lines": {
+          "end": 38,
+          "start": 25
+        },
+        "origin": "task_change",
+        "remediation": "Keep the deviation recorded and verify any required unreplayed start-hook work from durable controller evidence. Future start recovery should use the supported wrapper recovery path; preserve the existing run identity and baseline rather than resetting or rebinding the run.",
+        "revision": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+        "severity": "minor"
+      }
+    ],
+    "limitations": [
+      "This is a diff-first controller-close audit, not a new certification of the original cloud migration, scientific experiments, serving system or complete historical acceptance matrix. The prior report was inspected only to identify the originating A01 defect; review_scope contained no prior checkpoint or accepted reports to narrow the supplied diff.",
+      "GitNexus list_repos exposed IPCCH_operational at a differently cased path and lastCommit 8feec3a113829364483e226e4ef56ec66227a183, not audited_sha. The exact supplied gitnexus_repo context query returned repository not found. Bounded git grep and pinned source reads established infer_types -> load_one -> load_inputs.main and the deploy/load_research_inputs consumer; no index was rebuilt.",
+      "The 13.76 GB source corpus was not rescanned and cloud state was not contacted. The exposure conclusion relies on committed execution evidence, scanner inspection/self-test and independent reconciliation of retained identities/hashes, rather than a fresh raw-file scan. No corpus corruption was established.",
+      "Seven PostgreSQL tests and the old-code red run were not independently rerun. Commit-bound retained results were used after verifying native/merge/audited code-tree identity. No dependencies were installed and no existing database was modified.",
+      "AC4 code-tree identity was directly verified. The implementation plan states that staged detect_changes was run, but no separate command-output receipt establishes every invocation. That procedural claim was not independently certified; the pinned two-endpoint diff and direct caller review establish this change scope.",
+      "The current task explicitly discloses a native-start/resume-start lifecycle deviation; it is retained as one minor finding. The original migration close deviation is outside this repair diff and was not re-audited. No task lifecycle or controller state was changed by this audit.",
+      "AGENTS.md links specs/001-cloud-base-input/plan.md, which is absent at audited_sha. The localized precision task has complete committed PRD/design and closure snapshot evidence, so this unrelated stale link did not create a material scoped gap.",
+      "The first isolated pytest invocation failed before collection because the read-only host /dev/null was unsuitable. Adding a private /dev mount fixed the audit runner; unchanged tests then passed. This setup error is not a repository defect.",
+      "The frozen audit repository remained clean after verification. No executor transcripts, sub-agents, external services, repairs or source edits were used. Audit logs in /tmp are ephemeral; their outcomes and digests are included in this result."
+    ],
+    "mode": "close-audit",
+    "schema_version": "1.0",
+    "summary": "Controller-close review of 427e12d83c3badf34ae12c9bbc64692258ee1bc3..dbd4e06c1ae9e9f977bb328b96256615d9e6885b: the cross-chunk precision repair, its regression tests and the retained 53-file exposure evidence satisfy the scoped technical requirements. No production-code defect or material evidence gap was found. One minor, already-disclosed lifecycle contract violation remains: this task was started with native task.py before resume-start, contrary to the required wrapper-only lifecycle. The originating gcp-research-modeling-migration-A01 precision finding is resolved by the changed inference state and exact-text roundtrip tests. Scope expanded only from infer_types to its load_one/COPY/comparison consumers and from the new exposure receipt to the frozen inventory, final import receipt and column catalog needed to establish corpus coverage. review-scope.json supplies no prior checkpoint; the complete supplied two-endpoint diff was reviewed, without reopening the original migration acceptance matrix.",
+    "task": "sqlimport-a01-precision",
+    "tests": [
+      {
+        "command": "python3 /home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/5d2c1e92f84ad1ef0d6ffaac/attempt-1/skill/scripts/collect_audit_context.py --repo /home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/5d2c1e92f84ad1ef0d6ffaac/attempt-1/repo --task-id sqlimport-a01-precision --mode close-audit --base-sha 427e12d83c3badf34ae12c9bbc64692258ee1bc3 --completion-sha dbd4e06c1ae9e9f977bb328b96256615d9e6885b --scoped --review-base-sha 427e12d83c3badf34ae12c9bbc64692258ee1bc3 --task-dir .trellis/tasks/10-16-sqlimport-a01-precision --task-snapshot /home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/5d2c1e92f84ad1ef0d6ffaac/input/task_snapshot.json",
+        "environment": "Python 3.12 stdlib/Git; read-only frozen audit repository.",
+        "evidence": [
+          "collection_status=collected; gaps=[]; exactly one matching task; SHA bindings resolved. Snapshot SHA256 40b986ba018091b023c386d30a4556a3c6d3d3cbfa3674f71be854a607e40dab matches the durable closure manifest. Collector output: /tmp/sqlimport-a01-audit-rw3uUK/context.json."
+        ],
+        "exit_code": 0,
+        "revision": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+        "status": "passed"
+      },
+      {
+        "command": "bwrap --ro-bind / / --dev /dev --bind /tmp/sqlimport-a01-audit-rw3uUK /tmp/sqlimport-a01-audit-rw3uUK --unshare-net --die-with-parent --chdir /tmp/sqlimport-a01-audit-rw3uUK/test-copy --unsetenv RC_TEST_PG --setenv PYTHONDONTWRITEBYTECODE 1 --setenv PYTEST_DISABLE_PLUGIN_AUTOLOAD 1 --setenv PYTHONPATH /tmp/sqlimport-a01-audit-rw3uUK/test-copy --setenv TMPDIR /tmp/sqlimport-a01-audit-rw3uUK /home/swl007007/projects/food-crisis-research/envs/mlflow-svc/bin/python -m pytest -p no:cacheprovider -q research_cloud/tests/test_sqlimport.py",
+        "environment": "Independent copies of pinned Git blobs; Bubblewrap read-only host filesystem and disabled network, scratch-only writes. Existing mlflow-svc Python 3.12.3, NumPy 2.5.3, pandas 3.0.6, pytest 9.1.1; no dependency installation.",
+        "evidence": [
+          "6 passed, 7 skipped in 0.41s. All Names and CrossChunk tests passed; Load tests explicitly skipped because RC_TEST_PG was unset. /tmp/sqlimport-a01-audit-rw3uUK/pytest-auditor.log SHA256 0f9f93012c67335fceeb6e73af2e71effdbb88eb76f08c31a6a89b0010612ba6."
+        ],
+        "exit_code": 0,
+        "revision": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+        "status": "passed"
+      },
+      {
+        "command": "RC_TEST_PG='host=/home/swl007007/projects/food-crisis-research/scratch/pg-rehearsal/sock port=55432 user=postgres' PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. /home/swl007007/projects/food-crisis-research/envs/mlflow-svc/bin/python -m pytest -q research_cloud/tests/test_sqlimport.py",
+        "environment": "Retained supervisor run from /home/swl007007/projects/food-crisis-research/control-plane against the disposable local rehearsal PostgreSQL; not rerun by this auditor. Native, merge and audited research_cloud trees are identical.",
+        "evidence": [
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/supervisor-acceptance.json:5-15 records 13 passed, 0 skipped, exit 0 in 0.78s.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/tests/pytest-fixed.txt:1-21 independently retains the registered-merge 19-test importer/geometry pass list including the exact-text cross-chunk roundtrip.",
+          "dbd4e06c1ae9e9f977bb328b96256615d9e6885b:.trellis/tasks/10-16-sqlimport-a01-precision/research/tests/pytest-prefix-6ee56f5.txt:1-18 retains the expected pre-fix 3-failure/10-pass result; the old-code failure was not rerun."
+        ],
+        "exit_code": 0,
+        "revision": "1d9c21d1cf2020accae336de49721b175c025fcf",
+        "status": "existing_evidence"
+      },
+      {
+        "command": "bwrap --ro-bind / / --dev /dev --bind /tmp/sqlimport-a01-audit-rw3uUK /tmp/sqlimport-a01-audit-rw3uUK --unshare-net --die-with-parent --setenv PYTHONDONTWRITEBYTECODE 1 /usr/bin/python3 /tmp/sqlimport-a01-audit-rw3uUK/pinned/.trellis/tasks/10-16-sqlimport-a01-precision/research/exposure/exposure_scan.py --report unused --inventory unused --catalog unused --out /tmp/sqlimport-a01-audit-rw3uUK/unused.json --self-test-only",
+        "environment": "System Python 3.12; isolated network and read-only host; no corpus reads or receipt writes in self-test-only mode.",
+        "evidence": [
+          "self_test_failures=[] for adjacent fields, quoting/padding/signs, LF/CRLF/CR, decimal/exponent exclusion, EOF and tiny-buffer cases. /tmp/sqlimport-a01-audit-rw3uUK/scan-selftest.log SHA256 8710339f59d9d7e350f72c3bc1617ded13134cefa94cd4bb33e9004d6f194b6c."
+        ],
+        "exit_code": 0,
+        "revision": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+        "status": "passed"
+      },
+      {
+        "command": "python3 inline assertion check joining the pinned exposure-receipt.json, input-inventory.json, g8-g9-data-load/sql-import-final/csv-import-report.json and cloud-column-catalog.json by inventory ID and table name",
+        "environment": "Python 3.12 stdlib; data extracted with git show at audited_sha into /tmp/sqlimport-a01-audit-rw3uUK/pinned; no live source corpus or database access.",
+        "evidence": [
+          "Asserted exact unique ID/table sets, per-file paths/hashes/bytes/row counts, catalog positions/types and summary totals: 53 files; 13,763,421,380 bytes; 429 multiline records; 10,109 double columns in 45 tables; zero persisted candidates. Result /tmp/sqlimport-a01-audit-rw3uUK/evidence-check.json SHA256 218c15b42d66309022376b505a398425d2c486d90d1877a7ed2a8bd1ecfb699e."
+        ],
+        "exit_code": 0,
+        "revision": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+        "status": "passed"
+      }
+    ],
+    "verdict": "findings"
+  },
+  "runtime": {
+    "agent_name": "audit-5d2c1e92f84ad1ef-1",
+    "cleaned": true,
+    "created": 1792173260.0268517,
+    "identity": {
+      "agent": "codex",
+      "agent_session": {
+        "agent": "codex",
+        "kind": "id",
+        "source": "herdr:codex",
+        "value": "01a145d9-caae-7e53-95a8-6b7329b7fa2d"
+      },
+      "name": "audit-5d2c1e92f84ad1ef-1",
+      "terminal_id": "term_65df8da8a596cc"
+    },
+    "initial_prompt": true,
+    "label": "audit-5d2c1e92f84a-1",
+    "pane_id": "w1B:p1",
+    "sent_at": 1792173260.0442255,
+    "stage": "running",
+    "terminal_id": "term_65df8da8a596cc",
+    "working_seen": true,
+    "workspace_id": "w1B"
+  },
+  "severity": "minor",
+  "status": "done",
+  "task_id": "sqlimport-a01-precision"
+}

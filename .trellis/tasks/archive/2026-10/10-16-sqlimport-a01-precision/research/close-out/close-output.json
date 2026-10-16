@@ -1,0 +1,44 @@
+{
+  "attempt": 1,
+  "audited_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+  "completion_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+  "created": 1792173230.4066076,
+  "error": null,
+  "gate_checkpoints": "[]",
+  "gate_open": 0,
+  "id": "5d2c1e92f84ad1ef0d6ffaac",
+  "manifest": {
+    "archive_path": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/archive/2026-10/10-16-sqlimport-a01-precision",
+    "audited_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+    "base_sha": "427e12d83c3badf34ae12c9bbc64692258ee1bc3",
+    "closed_at": 1792173230.0835018,
+    "completion_sha": "dbd4e06c1ae9e9f977bb328b96256615d9e6885b",
+    "executor": {
+      "agent": "claude",
+      "agent_session": {
+        "agent": "claude",
+        "kind": "id",
+        "source": "herdr:claude",
+        "value": "228d9075-d67a-41c9-9f4c-7830cdac3b87"
+      },
+      "terminal_id": "term_65dee2e4ca9b6a"
+    },
+    "mode": "close-audit",
+    "repo": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational",
+    "skill_dir": "/home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/5d2c1e92f84ad1ef0d6ffaac/input/skill",
+    "snapshot_path": "/home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/5d2c1e92f84ad1ef0d6ffaac/input/task_snapshot.json",
+    "snapshot_sha256": "40b986ba018091b023c386d30a4556a3c6d3d3cbfa3674f71be854a607e40dab",
+    "task_dir": ".trellis/tasks/10-16-sqlimport-a01-precision",
+    "task_id": "sqlimport-a01-precision"
+  },
+  "mode": "close-audit",
+  "notice": null,
+  "recheck_of": null,
+  "repo": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational",
+  "resolved_by": null,
+  "result": null,
+  "runtime": {},
+  "severity": null,
+  "status": "pending",
+  "task_id": "sqlimport-a01-precision"
+}
