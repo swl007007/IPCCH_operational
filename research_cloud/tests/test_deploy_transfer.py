@@ -1,6 +1,7 @@
 """transfer_one against a fake bucket: fresh hashes vs the frozen manifest, create-only upload, server hash readback."""
 import base64
 import hashlib
+import json
 import os
 import tempfile
 import unittest
@@ -13,11 +14,14 @@ class PreconditionFailed(Exception):
 
 
 class FakeBlob:
+    requests = []
+
     def __init__(self, store, name):
         self.store, self.name, self.metadata, self.md5_hash = store, name, None, None
         self.crc32c = self.generation = None
 
-    def upload_from_filename(self, path, if_generation_match=None, checksum=None):
+    def upload_from_filename(self, path, if_generation_match=None, checksum=None, timeout=None):
+        FakeBlob.requests.append((getattr(self, "chunk_size", None), timeout))
         data = open(path, "rb").read()
         if self.name in self.store and if_generation_match == 0:
             raise PreconditionFailed()
@@ -138,6 +142,28 @@ class Main(unittest.TestCase):
         os.makedirs(os.path.join(pkgs, "no-manifest"))
         with self.assertRaises(transfer.TransferError):
             transfer.from_packages(pkgs, "packages")
+
+    def test_uploads_use_bounded_requests_and_errors_keep_cause_type(self):
+        FakeBlob.requests.clear()
+        rc, s = self.run_main(FakeBucket())
+        self.assertEqual(rc, 0)
+        self.assertEqual(FakeBlob.requests, [(transfer.CHUNK_BYTES, transfer.REQUEST_TIMEOUT_S)])
+        self.assertEqual(transfer.CHUNK_BYTES % (256 * 1024), 0)
+
+        class Failing(FakeBucket):
+            def blob(self, name):
+                b = super().blob(name)
+
+                def boom(*a, **k):
+                    from google.api_core.exceptions import RetryError
+                    raise RetryError("deadline", TimeoutError("remote text must not be kept"))
+                b.upload_from_filename = boom
+                return b
+        os.remove(self.receipts)
+        rc, s = self.run_main(Failing())
+        rec = [json.loads(l) for l in open(self.receipts)][-1]
+        self.assertEqual((rec["status"], rec["error_cause"]), ("error: RetryError", "TimeoutError"))
+        self.assertNotIn("remote text", open(self.receipts).read())
 
     def test_inventory_statuses_explicit(self):
         import json

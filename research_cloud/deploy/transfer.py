@@ -36,6 +36,10 @@ import threading
 import time
 
 PROJECT = "food-crisis-modeling-enso"
+# Large files go up as resumable uploads in bounded requests: with the SDK default (100 MiB per request, 60 s timeout)
+# every input >= ~68 MB failed with RetryError while three uploaders shared the workstation uplink (O-053).
+CHUNK_BYTES = 16 * 1024 * 1024          # a multiple of 256 KiB, as GCS requires
+REQUEST_TIMEOUT_S = (60, 600)           # (connect, read) per request
 
 
 class TransferError(Exception):
@@ -131,11 +135,12 @@ def transfer_one(bucket, entry):
     if local["sha256"] != entry["sha256"] or local["bytes"] != entry["bytes"]:
         return {**record, "status": "rejected: local bytes differ from the frozen manifest"}
     blob = bucket.blob(entry["object"])
+    blob.chunk_size = CHUNK_BYTES
     blob.metadata = {"sha256": entry["sha256"]}
     blob.md5_hash = local["md5"]                     # GCS validates the upload against this
     state = "uploaded"
     try:
-        blob.upload_from_filename(entry["local"], if_generation_match=0, checksum=None)
+        blob.upload_from_filename(entry["local"], if_generation_match=0, checksum=None, timeout=REQUEST_TIMEOUT_S)
     except PreconditionFailed:
         state = "already present"
     blob.reload()
@@ -246,8 +251,10 @@ def main(argv=None, bucket=None):
             try:
                 rec = fut.result()
             except Exception as e:      # noqa: BLE001 - recorded per object; a rerun retries it
+                cause = getattr(e, "cause", None) or e.__cause__ or e.__context__
                 rec = {"object": futures[fut]["object"], "local": futures[fut]["local"],
-                       "status": f"error: {type(e).__name__}"}
+                       "status": f"error: {type(e).__name__}",          # exception types only, never remote text
+                       "error_cause": type(cause).__name__ if cause is not None else None}
             rec["time"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
             with lock:
                 out.write(json.dumps(rec) + "\n")
