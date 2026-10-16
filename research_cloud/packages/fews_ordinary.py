@@ -9,7 +9,9 @@ Weighting, recency, stumps and known-origin masks change the fit, not the predic
 the same files (``p_original_*``: D34's roots; ``p_root_*``; D46 ``p_posthoc2x_*``, a post-hoc transform, not a
 booster) are preserved with the run, not packaged here.
 
-Binding before reading predictions: the cell booster's sha256 equals its record (``*_sha256``), the D34 snapshot's
+Binding before reading predictions: every consumed run file (rows, records, weights, feature map, gate, summary)
+hashes to the run's own ``completion.json`` ``outputs`` record (so a changed or truncated rows file cannot shrink the
+full check); the cell booster's sha256 equals its record (``*_sha256``), the D34 snapshot's
 sha256 equals the run's ``identity.json`` ``inputs[cell].snapshot`` and the feature order equals D34
 ``prepared/manifests/features.json`` (``schema_sha256`` recorded). At build time every saved row of every part is
 re-predicted from the snapshot (keyed by area and target month); probabilities must agree within 1e-6 and the saved
@@ -118,6 +120,8 @@ class Model:
         X = np.array(X, dtype=np.float64, copy=True)
         if X.ndim != 2 or X.shape[1] != self.n_features:
             raise ValueError(f"X must be (n, {self.n_features})")
+        if len(X) != len(keys):
+            raise ValueError(f"{len(keys)} keys but {len(X)} feature rows")
         X[np.isinf(X)] = np.nan                      # native_xgb.clean
         keys = keys.reset_index(drop=True)
         proba = np.full((len(keys), 1 if self.binary else 4), np.nan)
@@ -195,16 +199,27 @@ class Snapshots:
         return self.cache[h]
 
 
+def frozen(run_dir, completion, rel):
+    """A run file consumed by packaging; its sha256 must equal the run's own completion.json outputs record."""
+    recorded = completion.get("outputs", {}).get(rel)
+    if recorded is None:
+        raise PackageError(f"{rel}: not among completion.json outputs")
+    path = Path(run_dir) / rel
+    if sha256_file(path) != recorded:
+        raise PackageError(f"{rel}: differs from its completion.json outputs sha256")
+    return path
+
+
 def cells():
     return [f"h{h}_{t}_{G_OF[h]}_r80_s42_e1pair" for h in (4, 8, 12) for t in DATES]
 
 
-def check_cell(run_dir, spec, cell, snapshots, identity, columns=None):
+def check_cell(run_dir, spec, cell, snapshots, identity, completion, columns=None):
     """Bind the cell's booster and snapshot, then re-predict every saved row; returns (unit, rows, X, check)."""
     import xgboost as xgb
     h = int(cell.split("_")[0][1:])
-    record = json.load(open(run_dir / cell / spec["record"]))
-    ubj = run_dir / cell / f"{spec['unit']}.ubj"
+    record = json.load(open(frozen(run_dir, completion, f"{cell}/{spec['record']}")))
+    ubj = frozen(run_dir, completion, f"{cell}/{spec['unit']}.ubj")
     digest = sha256_file(ubj)
     if digest != record[f"{spec['unit']}_sha256"]:
         raise PackageError(f"{cell}: {ubj.name} sha256 differs from {spec['record']}")
@@ -223,7 +238,7 @@ def check_cell(run_dir, spec, cell, snapshots, identity, columns=None):
     prob = [f"p_{spec['arm']}_{l}" for l in LABELS]
     frames, Xs, check = [], [], {}
     for part in spec["parts"]:
-        path = run_dir / cell / f"rows_{part}{spec['suffix']}.csv.gz"
+        path = frozen(run_dir, completion, f"{cell}/rows_{part}{spec['suffix']}.csv.gz")
         rows = pd.read_csv(path, float_precision="round_trip", dtype={"target_month": str})
         keys = list(zip(rows["area"].astype(int), rows["target_month"].map(month_index)))
         absent = ~pd.MultiIndex.from_tuples(keys).isin(snap.index)
@@ -289,7 +304,7 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=64):
     b = PackageBuilder(os.path.join(out_root, f"fews-{run}"))
     columns, projection = None, None
     if spec.get("projection"):   # D51: the run's own feature map, checked against D34's order
-        fmap_path = run_dir / spec["projection"]
+        fmap_path = frozen(run_dir, completion, spec["projection"])
         fmap = json.load(open(fmap_path))
         columns = [int(i) for i in fmap["selected_index"]]
         if fmap["schema_sha256"] != schema_sha or fmap["selected_names"] != [names[i] for i in columns] \
@@ -301,7 +316,7 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=64):
                       "rule": "pure column take of the 162-column X in global order (d51 project())"}
     units, refs, inputs, checks = {}, [], [], {}
     for cell in expected:
-        unit, ubj, frame, X, check = check_cell(run_dir, spec, cell, snapshots, identity, columns)
+        unit, ubj, frame, X, check = check_cell(run_dir, spec, cell, snapshots, identity, completion, columns)
         b.add_file(str(ubj), unit["file"], unit["sha256"], None)
         b.add_file(str(run_dir / cell / spec["record"]), unit["record"])
         units[cell], checks[cell] = unit, check
@@ -319,6 +334,8 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=64):
         refs.append(ref)
         inputs.append(X[ref["row"].to_numpy()])
         print(run, cell, {k: (v["rows"], v["max_abs_err"]) for k, v in check.items()}, flush=True)
+    for name in ("gate.json", "summary.json"):
+        frozen(run_dir, completion, name)
     for name in ("identity.json", "gate.json", "completion.json", "summary.json"):
         b.add_file(str(run_dir / name), f"deps/source/{name}")
     b.add_file(str(D34 / "prepared" / "manifests" / "features.json"), "deps/source/d34_features.json", features_sha)
@@ -344,7 +361,8 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=64):
         "projection": projection, "output": "binary" if spec.get("binary") else "fourclass", "binary": spec.get("binary"),
         "binding": {"d34_features_schema_sha256": schema_sha, "d34_features_json_sha256": features_sha,
                     "snapshots": {f"h{h}": snapshots.get(h)[1] for h in (4, 8, 12)},
-                    "rule": "unit sha256 == cell record; snapshot sha256 == identity.inputs[cell].snapshot"},
+                    "rule": "every consumed run file (rows, records, weights, feature map, gate, summary) == completion.json "
+                            "outputs; unit sha256 == cell record; snapshot sha256 == identity.inputs[cell].snapshot"},
         "full_cohort_check": {"total": total, "cells": checks},
         "routing": {"by": "explicit cell (keys[cell]); rows recur across cells, so there is no key router",
                     "feature_order": "deps/feature_order.csv"},
