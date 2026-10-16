@@ -2885,3 +2885,20 @@ The completed prediction-population-and-uncertainty ledger below is retained unc
   the new additive untracked script/test are not yet represented in its index.
 - No commit, push, cloud call, model rerun, or external service mutation was
   performed.
+
+## 2026-10-16 — GCP research modeling migration (task 10-16-gcp-research-modeling-migration, in progress)
+
+Executor: Claude Opus 5.5 (session 228d9075…, pane w14:p9); supervisor: Codex (w14:p1). trellis-audit run
+1193a92d…, base 99d390b. Authoritative evidence: `.trellis/tasks/10-16-gcp-research-modeling-migration/research/`
+(`executor-state.md`, `supervisor-log.md`, checkpoints, ledgers). Native implementation branch
+`gcp-research-migration` (control-plane clone under `/home/swl007007/projects/food-crisis-research/`) is to be
+merged into this lineage before close.
+
+- P0: run started; 73 pre-existing dirty paths preserved (ref `refs/preserve/gcp-migration-predirty-20261016`).
+- P1: exact 242-version registry ledger; member inventory with fresh hashes; FEWS NET 27-run catalog; pop-v1
+  (660 models) identified; FEWS `scen-b43ef6a-v1` 18 local continuation boosters missing (user disposition pending).
+- P2: MLflow SQLite→PostgreSQL copy rehearsal verified (tracking + auth); historical inference packages built and
+  replayed on Linux at machine precision for GeoXGB P6/yearly and AlphaEarth (36), forecasting batch/launch and
+  Somalia v2/v3 in progress; Somalia v1/v4, comparators, pop-v1, service, SQL import and training adapters pending.
+- P3: cloud preflight done; billing support APIs enabled; no paid resource created. Paid provisioning waits for the
+  current-month actual-spend figure (pending).

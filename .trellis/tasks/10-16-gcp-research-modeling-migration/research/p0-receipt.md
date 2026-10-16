@@ -52,3 +52,11 @@ The controller's `close()` (`herdr-audit-controller/trellis_audit.py:274-280`) r
 Active code lives in a native-WSL clone of this repository at `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, created from `99d390b`. Integration code goes under `research_cloud/`. Before close, the clone's commits are fetched into the registered repository and merged into `feat/october-cloud-delivery`. The merge only touches `research_cloud/**` and this task directory, never the 73 preserved paths. The completion SHA is therefore a descendant of `base_sha`, and the audit snapshot contains the implementation. No other checkout is enrolled in trellis-audit and the executor is not changed.
 
 Task evidence is written directly in this task directory in the registered repo, where the supervisor inspects it, and is committed there at checkpoints.
+
+## Amendment 2026-10-16 03:22:48 EDT: executor append to PROGRESS.md
+
+At the supervisor's request, a migration ledger section was appended to `PROGRESS.md`, which is one of the 73 preserved CRLF-only paths:
+- The index was staged as HEAD bytes + the LF section (only those 17 lines are committed).
+- The worktree file became its original CRLF bytes + the same section in CRLF.
+
+The close-time verification for `PROGRESS.md` therefore uses `expected-after-executor-appends.txt` (same preservation directory), not the original `worktree-sha256.txt` entry. The original pre-append bytes remain in `predirty-bytes.tar`. Any further executor append is recorded there in the same way.
