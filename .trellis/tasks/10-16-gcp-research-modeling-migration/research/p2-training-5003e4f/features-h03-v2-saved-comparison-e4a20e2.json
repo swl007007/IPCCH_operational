@@ -1,0 +1,23 @@
+{
+ "reference": "/home/swl007007/projects/food-crisis-research/scratch/training/manifest-ipcch-h03.json",
+ "compared": "saved artifacts on both sides",
+ "keys_identical": true,
+ "keys_decompressed_sha256": "bc94d674c19f631f1407466b9282319a2ba4a9c777ed6829068d8afbc5e8f3c7",
+ "reference_keys_decompressed_sha256": "bc94d674c19f631f1407466b9282319a2ba4a9c777ed6829068d8afbc5e8f3c7",
+ "differing_key_columns": [],
+ "X_sha256_equal": false,
+ "shape": [
+  42695,
+  561
+ ],
+ "reference_shape": [
+  42695,
+  561
+ ],
+ "X_identical": false,
+ "differing_cells": 12576,
+ "differing_columns": 45,
+ "nan_pattern_differs": false,
+ "max_abs_diff": 1.6653345369377348e-16,
+ "max_rel_diff": 7.915408550154206e-14
+}

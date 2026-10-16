@@ -1,0 +1,236 @@
+{
+ "generated_at": "2026-10-16T06:06:24-0400",
+ "databases": {
+  "research": {
+   "database_bytes": 11579519459,
+   "relation_bytes": 11546861568,
+   "other_bytes": 32657891,
+   "groups": {
+    "fewsnet:geometry": {
+     "relations": 1,
+     "heap": 11132928,
+     "toast": 92700672,
+     "indexes": 409600,
+     "total": 104267776
+    },
+    "fewsnet:side_table": {
+     "relations": 1,
+     "heap": 8192,
+     "toast": 8192,
+     "indexes": 16384,
+     "total": 32768
+    },
+    "fewsnet:table": {
+     "relations": 5,
+     "heap": 1733615616,
+     "toast": 40960,
+     "indexes": 56221696,
+     "total": 1790492672
+    },
+    "ipcch:geometry": {
+     "relations": 2,
+     "heap": 19087360,
+     "toast": 121421824,
+     "indexes": 851968,
+     "total": 141410304
+    },
+    "ipcch:table": {
+     "relations": 48,
+     "heap": 9372786688,
+     "toast": 393216,
+     "indexes": 122912768,
+     "total": 9499910144
+    },
+    "public:catalog": {
+     "relations": 3,
+     "heap": 8945664,
+     "toast": 24576,
+     "indexes": 1712128,
+     "total": 10747904
+    }
+   },
+   "largest": [
+    {
+     "relation": "ipcch.interim_b19556da",
+     "bytes": 1797226496
+    },
+    {
+     "relation": "ipcch.raw_panel_43e74747",
+     "bytes": 1596850176
+    },
+    {
+     "relation": "fewsnet.extension_component_2025_combined_12a50c12",
+     "bytes": 879362048
+    },
+    {
+     "relation": "fewsnet.panel_70b29b36",
+     "bytes": 804577280
+    },
+    {
+     "relation": "ipcch.climate_monthly_dca3d139",
+     "bytes": 736460800
+    },
+    {
+     "relation": "ipcch.model_ready_origin_safe_climate_idp_v1_48d5b559",
+     "bytes": 428113920
+    },
+    {
+     "relation": "ipcch.model_ready_origin_safe_climate_idp_v1_39de6a08",
+     "bytes": 428113920
+    },
+    {
+     "relation": "ipcch.model_ready_origin_safe_weather_oracle_f2c504eb",
+     "bytes": 428048384
+    },
+    {
+     "relation": "ipcch.model_ready_origin_safe_weather_oracle_a0ba9a3f",
+     "bytes": 428048384
+    },
+    {
+     "relation": "ipcch.model_ready_origin_safe_climate_idp_v1_86711ab1",
+     "bytes": 428048384
+    }
+   ]
+  },
+  "mlflow": {
+   "database_bytes": 203297251,
+   "relation_bytes": 194347008,
+   "other_bytes": 8950243,
+   "groups": {
+    "public:table": {
+     "relations": 67,
+     "heap": 76357632,
+     "toast": 6340608,
+     "indexes": 111001600,
+     "total": 194347008
+    }
+   },
+   "largest": [
+    {
+     "relation": "public.metrics",
+     "bytes": 73981952
+    },
+    {
+     "relation": "public.logged_model_metrics",
+     "bytes": 56057856
+    },
+    {
+     "relation": "public.latest_metrics",
+     "bytes": 38445056
+    },
+    {
+     "relation": "public.tags",
+     "bytes": 5890048
+    },
+    {
+     "relation": "public.spans",
+     "bytes": 4923392
+    },
+    {
+     "relation": "public.logged_model_tags",
+     "bytes": 2785280
+    },
+    {
+     "relation": "public.input_tags",
+     "bytes": 2547712
+    },
+    {
+     "relation": "public.inputs",
+     "bytes": 1597440
+    },
+    {
+     "relation": "public.datasets",
+     "bytes": 1310720
+    },
+    {
+     "relation": "public.registered_model_tags",
+     "bytes": 1130496
+    }
+   ]
+  },
+  "mlflow_auth": {
+   "database_bytes": 8294883,
+   "relation_bytes": 499712,
+   "other_bytes": 7795171,
+   "groups": {
+    "public:table": {
+     "relations": 14,
+     "heap": 57344,
+     "toast": 90112,
+     "indexes": 352256,
+     "total": 499712
+    }
+   },
+   "largest": [
+    {
+     "relation": "public.user_role_assignments",
+     "bytes": 73728
+    },
+    {
+     "relation": "public.roles",
+     "bytes": 65536
+    },
+    {
+     "relation": "public.role_permissions",
+     "bytes": 65536
+    },
+    {
+     "relation": "public.users",
+     "bytes": 49152
+    },
+    {
+     "relation": "public._rc_migration_journal",
+     "bytes": 32768
+    },
+    {
+     "relation": "public.workspace_permissions",
+     "bytes": 24576
+    },
+    {
+     "relation": "public.scorer_permissions",
+     "bytes": 24576
+    },
+    {
+     "relation": "public.registered_model_permissions",
+     "bytes": 24576
+    },
+    {
+     "relation": "public.gateway_secret_permissions",
+     "bytes": 24576
+    },
+    {
+     "relation": "public.gateway_model_definition_permissions",
+     "bytes": 24576
+    }
+   ]
+  }
+ },
+ "cluster": {
+  "pg_wal_bytes_now": 1023410176,
+  "settings": {
+   "max_wal_size": "1GB",
+   "min_wal_size": "80MB",
+   "wal_keep_size": "0",
+   "shared_buffers": "128MB",
+   "work_mem": "4MB",
+   "maintenance_work_mem": "64MB"
+  },
+  "temp_since_stats_reset": {
+   "research": {
+    "temp_files": 103,
+    "temp_bytes": 4671954944,
+    "stats_reset": null
+   },
+   "mlflow": {
+    "temp_files": 0,
+    "temp_bytes": 0,
+    "stats_reset": null
+   },
+   "mlflow_auth": {
+    "temp_files": 0,
+    "temp_bytes": 0,
+    "stats_reset": null
+   }
+  }
+ }
+}

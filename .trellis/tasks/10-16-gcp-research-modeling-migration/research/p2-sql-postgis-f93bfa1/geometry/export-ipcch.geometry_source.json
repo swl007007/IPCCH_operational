@@ -1,0 +1,75 @@
+{
+ "bundle": "ipcch.geometry_source",
+ "namespace": "ipcch",
+ "shp_entry": "ipcch.geometry_source.shp",
+ "table": "geometry_source_shp_68bca802",
+ "inventory": {
+  "path": "/home/swl007007/projects/food-crisis-research/scratch/p1/input-inventory.json",
+  "sha256": "26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049"
+ },
+ "members": {
+  "ipcch.geometry_source.shp": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.shp",
+   "sha256": "49ee44f49a2832b70f94a5df999018c4e9f3461cb96d8d79c83e308a4fbe24a0",
+   "bytes": 68930596
+  },
+  "ipcch.geometry_source.shx": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.shx",
+   "sha256": "a19d750a68eed012832c7c0027140543b49e85596452b85acf30eb53f073dca3",
+   "bytes": 49916
+  },
+  "ipcch.geometry_source.dbf": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.dbf",
+   "sha256": "eca55302f2f494a08db401202f3efdf7b120d1e3c5f741d80117b0b4b5b97fde",
+   "bytes": 504517
+  },
+  "ipcch.geometry_source.prj": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.prj",
+   "sha256": "5d3b39697820a6d6dfe49413bea38603f41331c162725fd1bd958941034a1c37",
+   "bytes": 142
+  },
+  "ipcch.geometry_source.cpg": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.cpg",
+   "sha256": "146d6789ffe033a5297c1ad046e6a62ee35319b86b021444f05b6ea2aa8a1f4a",
+   "bytes": 6
+  }
+ },
+ "encoding": "UTF-8",
+ "driver_geometry_type": "Polygon",
+ "columns": [
+  {
+   "name": "admin_code",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "lat",
+   "kind": "float",
+   "sql_type": "double precision"
+  },
+  {
+   "name": "lon",
+   "kind": "float",
+   "sql_type": "double precision"
+  }
+ ],
+ "srid": 4326,
+ "prj": "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137,298.257223563]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]]\n",
+ "srid_basis": {
+  "reader_crs_epsg": 4326,
+  "prj_alone_pyproj_epsg": 4326,
+  "reader_crs": "EPSG:4326"
+ },
+ "has_z": false,
+ "rows": 6227,
+ "geometry_types": {
+  "Polygon": 5446,
+  "MultiPolygon": 781
+ },
+ "rows_sha256": "c2c4f8d0f853464173f84a27210df2c51a07495e7b9455c7c2c7d4f0241b72e9",
+ "reader": {
+  "geopandas": "1.0.1",
+  "pyogrio": "0.13.0",
+  "shapely": "2.1.0"
+ }
+}

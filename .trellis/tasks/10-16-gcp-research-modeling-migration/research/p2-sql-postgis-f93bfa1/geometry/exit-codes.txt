@@ -1,0 +1,6 @@
+ipcch.geometry_repaired exit=0
+ipcch.geometry_source exit=0
+fewsnet.geometry exit=0
+ipcch.geometry_repaired exit=0
+ipcch.geometry_source exit=0
+fewsnet.geometry exit=0

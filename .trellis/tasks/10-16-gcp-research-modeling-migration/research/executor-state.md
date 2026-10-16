@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 05:42 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 06:08 EDT by `date`
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `e513fff`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `f93bfa1`. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -31,7 +31,9 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - pop-v1 route/support + frozen bindings 3c47cc5; harness project binding + failed-trial MLflow 7bd3921; dropbox interop retry e972207.
   - importer collision-free names + whole-table verification 643d1a4, exact numerics/stale receipts 8868583;
   - training S27 boundaries + Linux feature snapshot + portable trial package 5003e4f; code identity/full manifests/integral checks 6d0eb85;
-  - FEWS scen actual packages cd88184; URI mapper + cloud reader d6bff7e; reader feature_blocks + check harness (WIP) e513fff.
+  - FEWS scen actual packages cd88184; URI mapper + cloud reader d6bff7e; reader feature_blocks + check harness e513fff; URI original-side fix 697d33c;
+  - scen accepted-exception receipt binding 1a7e207; saved-artifact feature comparison e4a20e2; preservation manifest 3c39f64;
+  - PostGIS geometry import c1dc977 + identities/PG tests e280fde; capacity record f93bfa1.
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
@@ -80,7 +82,12 @@ Each round below is finished, with current receipts. Rerun a round only if its c
 | Window-probe comparators (input binding) | 8/8 | `p2-packages/replay-window-probe-62bc2a7` |
 | pop-v1 corrected | 24/24, 20,106 rows (supervisor full replay, adopted) | `p2-packages/replay-popv1-3c47cc5` |
 | Service rehearsals | deny 50, armed 48, restart 7, assistant 9, copied roles 16 | `p2-service-d84dabd` |
-| IPCCH training chain | at `5003e4f` | `p2-training-5003e4f` |
+| IPCCH training chain | at `5003e4f`; saved-artifact comparison e4a20e2 (keys byte-identical, X 12,576 cells ≤1.7e-16) | `p2-training-5003e4f` |
+| URI mapping check2 | 172/172, 56 mapped, 115,658 ordered features (supervisor-verified) | `p2-uri-697d33c` |
+| FEWS scen amended (receipt-bound) | 8/8, 3,200 rows; system arms carry receipt 6ea45411… | `p2-packages/replay-fews-scen-1a7e207` |
+| SQL CSV import run3 | 53/53 verified, 0 stale/failed | `p2-sql-postgis-f93bfa1/csv-import-report.json` |
+| PostGIS geometry | 3/3 verified, WKB byte-equal (identity-bound reload after deliberate metadata reset) | `p2-sql-postgis-f93bfa1/geometry` |
+| SQL capacity | 10.98 GiB data; quote carries 30 GiB | `p2-sql-postgis-f93bfa1/capacity.json` |
 
 The registry ledger stands at 170 passed and 72 tracking-only.
 
@@ -143,30 +150,26 @@ The registry ledger stands at 170 passed and 72 tracking-only.
 
 ## Open items (in order; nothing below is accepted yet)
 
-1. **URI check fix** (supervisor):
-   - `feature_list_check` must resolve the ORIGINAL side from snapshot r1 runs' local artifact root, so the 116 `runs:/` specs are not read from the target;
-   - add unit tests for the mapping, remote member extraction and cloud-local refusal;
-   - then re-run against the URI rehearsal server (`scratch/svc-rehearsal/run-uri.sh`, port 55502; admin and copied non-admin credentials in `wsc-creds.json`).
-2. **FEWS scen packages** (supervisor scout on cd88184; numerics and routing verified):
-   - add a hash-bound accepted-exception receipt inside each package (affected keys and counts, the 7 child hashes, the search scope);
-   - mark the original receipt as accepted by the user ruling;
-   - document the loader input as prepared 129-column X, with raw reconstruction outside the package;
-   - write a separate preservation transfer manifest covering `gate_pairs.csv.gz` and all extant scenario material, keeping Windows paths as provenance only.
-   - Rebuilding only the 8 scen packages is acceptable; do not rerun other groups.
-3. **Feature comparison** (supervisor): compare the SAVED artifacts. The new `keys_h03.csv.gz` decompresses to bytes identical to P6's (sha256 bc94d674…, 42,695 rows × 19 columns). `keys_identical=false` in the `features-h03-v2` audit came from comparing the in-memory frame with the deserialized one. Narrow fix plus one regression. Do NOT regenerate the features.
-4. **Remaining FEWS groups** per `fews-adapter-groups-supervisor.md`: ordinary 162-column D35/37/46/47/48, D38 margin, D51 h78, D52 binary, D42/D43 map transfer, the stage1 candidate group (v1, d26-d31, d34), confirm-onset (global/pooled only; system pending user disposition), and preservation-only records (fixtures, replay evidence, failed_stage1).
-5. **PostGIS:** import and round-trip the three geometry bundles, keeping their identities.
-6. **SQL capacity:** after run3 reconciliation, record the sizes of all three DBs (relations, indexes, TOAST, side tables), measured WAL/temp and explicit headroom; disclose the key-profile coverage (26 of 53 profiled; gaps not invented).
-7. **Images** (service plus training; Dockerfiles), then the final itemized quote (exact Gemini 3.8 Flash SKUs), then G5-G11 cloud operations with per-operation receipts.
+Done since 05:42 (see the completed-rounds table): URI check fix, scen receipt amendment, saved-artifact feature comparison, PostGIS round trip, SQL capacity.
+
+1. **scen preservation manifest:** `scratch/preservation/scen-b43ef6a-v1.json` is running (fixed cache label, `--recorded scenario_actual/actual.json:outputs`). `scen-b43ef6a-v1.actual-inputs-v1` is done (6 files) in `p2-preservation/`.
+2. **Remaining FEWS groups** per `fews-adapter-groups-supervisor.md`:
+   - ordinary 162-column D35/37/46/47/48, D38 margin, D51 h78, D52 binary, D42/D43 map transfer;
+   - the stage1 candidate group (v1, d26-d31, d34);
+   - confirm-onset (global/pooled only; system pending user disposition);
+   - preservation-only records (fixtures, replay evidence, failed_stage1).
+3. **FEWS training adapter** (future HPT path; `training-adapter-source-supervisor.md`).
+4. **Images:** service plus training Dockerfiles.
+5. **Final itemized quote and cost ledger:**
+   - Cloud SQL 30 GiB SSD;
+   - Vertex per `vertex-training-cost-supervisor.md`: n1-standard-4 0.21849885/h, no separate management line, startup/termination reservation, `disableRetries`, terminal-status reconciliation, no hard-cap claim;
+   - Gemini 3.8 Flash exact SKUs.
+6. **G5-G11 cloud operations** with per-operation receipts, then cloud acceptance.
+7. **Merge** the native commits into the registered lineage before close.
 
 ## Next actions (in order)
 
-1. SQL capacity: the typed import rehearsal is running (`research_cloud/sqlimport/load_inputs.py`, report `scratch/sqlimport/report.json`).
-2. FEWS NET run records (`fews-adapter-groups-supervisor.md`): the `scen-b43ef6a-v1` exception record; the `confirm-onset-v1` blocker receipt (user disposition needed).
-3. SQL input import rehearsal.
-4. Image definitions for Cloud Build.
-5. Training adapter plus HPT trial entry (`training-adapter-source-supervisor.md`).
-6. Final itemized quote (`cost-inputs-supervisor.md`, exact Gemini 3.8 Flash SKUs in `gemini-exact-price-supervisor.md`) with the measured SQL capacity and download paths; then G5-G11 operations, with per-operation receipts.
+Follow the open items above in order; checkpoint-commit the evidence after each.
 
 Service status: launcher, workspace roles, access matrix and assistant end-to-end are done locally (`checkpoint-p2-service-20261016.md`). The remaining service items are the cloud-phase checks listed there.
 

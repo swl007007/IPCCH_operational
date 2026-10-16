@@ -1,6 +1,6 @@
-# FEWS NET `scen-b43ef6a-v1`: missing local continuation boosters (blocker receipt)
+# FEWS NET `scen-b43ef6a-v1`: missing local continuation boosters (accepted historical exception)
 
-Written 2026-10-16 02:28:59 EDT (by `date`). Status: **retained_weights_missing_dependencies**. This needs a user disposition; it does not block independent work.
+Search receipt written 2026-10-16 02:28:59 EDT (by `date`). The user subsequently accepted this exact historical exception: **incomplete_history_accepted_exception**. Missing weights remain missing; this is acceptance of a disclosed incomplete migration, not a full replay pass. Authority: `../../prd.md`, confirmed historical exception; `../../execution-authorization.md`, subsequent user rulings.
 
 ## What is missing
 
@@ -35,14 +35,14 @@ In total, 18 local boosters are missing, affecting 3,746 of 22,872 actual-case p
 
 **Conclusion (bounded):** the 18 local boosters do not exist as `.ubj` files with those exact bytes anywhere in the searched scope. This is not a claim of global absence.
 
-## Consequence and options (user disposition)
+## Confirmed disposition and acceptance boundary
 
-The historical identity of each actual-case version requires all its components. Global-routed rows (19,126 of 22,872) can be replay-checked against saved predictions; local-routed rows cannot. The version therefore stays **retained_weights_missing_dependencies**. It is not registered as a replayable package, and no global-only substitute is presented as the historical model.
+The historical identity of each actual-case version requires all its components. Global-routed rows (19,126 of 22,872) can be replay-checked against saved predictions; local-routed rows cannot. Preserve the historical identity and expose the incomplete status, missing child hashes and affected keys. A successful sample of retained routes is not a complete system replay, and no pooled-only substitute may be presented as the historical system.
 
-Possible dispositions (no default is taken):
+User ruling: "接受这份历史运行的明确例外，保留全部现存材料".
 
-1. **Locate originals** elsewhere (another machine, drive or bucket); the exact sha256 values above allow verification.
-2. **Register as incomplete:** migrate the retained global boosters, maps, gate records and saved predictions as a disclosed incomplete historical record (tracking plus partial package), with local-route rows marked unreplayable.
-3. **New version:** a separate, clearly new model version (e.g. a rerun with `keep_boosters`) that is never labelled as the historical `scen-b43ef6a-v1` result. This would be future research work, not part of recovering the original.
+- Migrate every extant source material, including retained weights, input/source identities, maps, gate and diagnostic records, tracking and saved predictions. Verify cloud preservation and download before archive eligibility.
+- Package the retained inference routes with an explicit missing-weight exception and a downloadable copy of this receipt. Keep affected local rows unavailable; do not silently use global predictions.
+- Do not retrain under the old identity. Any later retraining is a separate research version.
 
-Pending under P1/G-3: the other FEWS NET model-bearing runs in the bounded boundary (diagnostic, aborted and test-labelled runs included) still need their deterministic catalog. This receipt covers only `scen-b43ef6a-v1`'s actual cases.
+This exception covers only `scen-b43ef6a-v1`'s four actual cases above. Other FEWS NET runs retain their own inventory and acceptance requirements; this ruling does not authorize an exception for `confirm-onset-v1`.

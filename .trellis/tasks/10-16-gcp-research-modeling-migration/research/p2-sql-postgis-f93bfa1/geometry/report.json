@@ -1,0 +1,170 @@
+{
+ "ipcch.geometry_repaired": {
+  "status": "verified",
+  "bundle": "ipcch.geometry_repaired",
+  "table": "ipcch.geometry_repaired_shp_36cba6d5",
+  "srid": 4326,
+  "rows": 6227,
+  "attributes_compared": 4,
+  "wkb_byte_equal": true,
+  "invalid_geometries_recorded": 0,
+  "null_geometries": 0,
+  "geometry_types": {
+   "Polygon": 5578,
+   "MultiPolygon": 649
+  },
+  "members": {
+   "ipcch.geometry_repaired.shp": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/Food_Crisis_Cluster/IPCCHGeoRFExperiment/runs/ipcch-v1-20260920d/geography/ipcch_admin_geometry_repaired.shp",
+    "sha256": "9df70f3aa719eaa2458a3ff4a92f058da1f5fe1feeb85432e0dd88e515ccfadb",
+    "bytes": 67208080
+   },
+   "ipcch.geometry_repaired.shx": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/Food_Crisis_Cluster/IPCCHGeoRFExperiment/runs/ipcch-v1-20260920d/geography/ipcch_admin_geometry_repaired.shx",
+    "sha256": "424554aec24b86d74609a5fe59a01e498c78269c6e6b4b87765e657a4fe6fc83",
+    "bytes": 49916
+   },
+   "ipcch.geometry_repaired.dbf": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/Food_Crisis_Cluster/IPCCHGeoRFExperiment/runs/ipcch-v1-20260920d/geography/ipcch_admin_geometry_repaired.dbf",
+    "sha256": "964b8030e5d543fd49d112489035ac5e713a068d04076bf75b0f99c3b034a71e",
+    "bytes": 915531
+   },
+   "ipcch.geometry_repaired.prj": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/Food_Crisis_Cluster/IPCCHGeoRFExperiment/runs/ipcch-v1-20260920d/geography/ipcch_admin_geometry_repaired.prj",
+    "sha256": "a02a27b1d1982c8516d83398e85a3c8b1aef1713c13ef4d84d7bde17430c07c4",
+    "bytes": 145
+   },
+   "ipcch.geometry_repaired.cpg": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/Food_Crisis_Cluster/IPCCHGeoRFExperiment/runs/ipcch-v1-20260920d/geography/ipcch_admin_geometry_repaired.cpg",
+    "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824",
+    "bytes": 5
+   }
+  },
+  "inventory": {
+   "path": "/home/swl007007/projects/food-crisis-research/scratch/p1/input-inventory.json",
+   "sha256": "26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049"
+  },
+  "export_json_sha256": "712a8730b912d7cddef8ae27b8077ee3ca118d5a48e74a3631aaf71d6860b2b6",
+  "rows_sha256": "c4b046d6499b211fba303b13bfb1e644de91c667bfb0a6b868a80293161c8f2a",
+  "readback_sha256": "c4b046d6499b211fba303b13bfb1e644de91c667bfb0a6b868a80293161c8f2a",
+  "bytes": {
+   "total": 69722112,
+   "heap_and_toast": 69296128,
+   "heap": 9543680,
+   "indexes": 425984
+  },
+  "seconds": 18.0
+ },
+ "ipcch.geometry_source": {
+  "status": "verified",
+  "bundle": "ipcch.geometry_source",
+  "table": "ipcch.geometry_source_shp_68bca802",
+  "srid": 4326,
+  "rows": 6227,
+  "attributes_compared": 3,
+  "wkb_byte_equal": true,
+  "invalid_geometries_recorded": 253,
+  "null_geometries": 0,
+  "geometry_types": {
+   "Polygon": 5446,
+   "MultiPolygon": 781
+  },
+  "members": {
+   "ipcch.geometry_source.shp": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.shp",
+    "sha256": "49ee44f49a2832b70f94a5df999018c4e9f3461cb96d8d79c83e308a4fbe24a0",
+    "bytes": 68930596
+   },
+   "ipcch.geometry_source.shx": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.shx",
+    "sha256": "a19d750a68eed012832c7c0027140543b49e85596452b85acf30eb53f073dca3",
+    "bytes": 49916
+   },
+   "ipcch.geometry_source.dbf": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.dbf",
+    "sha256": "eca55302f2f494a08db401202f3efdf7b120d1e3c5f741d80117b0b4b5b97fde",
+    "bytes": 504517
+   },
+   "ipcch.geometry_source.prj": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.prj",
+    "sha256": "5d3b39697820a6d6dfe49413bea38603f41331c162725fd1bd958941034a1c37",
+    "bytes": 142
+   },
+   "ipcch.geometry_source.cpg": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/spatial/ipcch_admin_geometry.cpg",
+    "sha256": "146d6789ffe033a5297c1ad046e6a62ee35319b86b021444f05b6ea2aa8a1f4a",
+    "bytes": 6
+   }
+  },
+  "inventory": {
+   "path": "/home/swl007007/projects/food-crisis-research/scratch/p1/input-inventory.json",
+   "sha256": "26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049"
+  },
+  "export_json_sha256": "5f19bd07e79b10a2e075279d8d07b8bdc305548cc4ed026d04d11e4554fa9f0b",
+  "rows_sha256": "c2c4f8d0f853464173f84a27210df2c51a07495e7b9455c7c2c7d4f0241b72e9",
+  "readback_sha256": "c2c4f8d0f853464173f84a27210df2c51a07495e7b9455c7c2c7d4f0241b72e9",
+  "bytes": {
+   "total": 71688192,
+   "heap_and_toast": 71262208,
+   "heap": 9543680,
+   "indexes": 425984
+  },
+  "seconds": 17.8
+ },
+ "fewsnet.geometry": {
+  "status": "verified",
+  "bundle": "fewsnet.geometry",
+  "table": "fewsnet.geometry_shp_45c0b03c",
+  "srid": 4326,
+  "rows": 5718,
+  "attributes_compared": 16,
+  "wkb_byte_equal": true,
+  "invalid_geometries_recorded": 1,
+  "null_geometries": 0,
+  "geometry_types": {
+   "Polygon": 4953,
+   "MultiPolygon": 765
+  },
+  "members": {
+   "fewsnet.geometry.shp": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.shp",
+    "sha256": "3aba66a6fbf6b2a8beb153df76a67662ce4e0a898fcb11e292a17cc174f5f742",
+    "bytes": 98094620
+   },
+   "fewsnet.geometry.shx": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.shx",
+    "sha256": "16061b9a97add1220d0aa54e432f55ed277f919a7bf233da06a5867ee709dfb0",
+    "bytes": 45844
+   },
+   "fewsnet.geometry.dbf": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.dbf",
+    "sha256": "2175dc97d3c6969c627ebb07c4f456e05231b7050321b4bd40e9079f86b102d3",
+    "bytes": 7942848
+   },
+   "fewsnet.geometry.prj": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.prj",
+    "sha256": "94ba1b071fb00c93429718b8005a15b45c5846baafe222b77dcb38847d5e2f49",
+    "bytes": 306
+   },
+   "fewsnet.geometry.cpg": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.cpg",
+    "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824",
+    "bytes": 5
+   }
+  },
+  "inventory": {
+   "path": "/home/swl007007/projects/food-crisis-research/scratch/p1/input-inventory.json",
+   "sha256": "26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049"
+  },
+  "export_json_sha256": "f8b8a98e64fd08964777373d914e998547470fcd5ccedd5f93af80b23c1d7b55",
+  "rows_sha256": "8d56d1b6b2be7614e7339562798b24e5552017a660de336b32566eaf31151620",
+  "readback_sha256": "ad87221a55c443fbea3e97ed62a658309008761fb5f9d2b3a6846116b9c78b64",
+  "bytes": {
+   "total": 104267776,
+   "heap_and_toast": 103858176,
+   "heap": 11132928,
+   "indexes": 409600
+  },
+  "seconds": 33.2
+ }
+}

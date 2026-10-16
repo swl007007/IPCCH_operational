@@ -1,0 +1,53 @@
+{
+ "root": "/mnt/c/Users/swl00/geoxgb_runs/scen-b43ef6a-v1.actual-inputs-v1",
+ "generated_at": "2026-10-16T05:59:30-0400",
+ "files": [
+  {
+   "path": "assembly_report.json",
+   "bytes": 2660,
+   "sha256": "26884dffd5f5c0ee0582e4f2ec70fa2762d9af4622e98cd6fb9d67aff96ff0b3",
+   "hash_source": "fresh"
+  },
+  {
+   "path": "covariate_extension_2024-12_2025-06.csv",
+   "bytes": 19942124,
+   "sha256": "0d6b78ca2fda21f73b8bfaeb6b916dd72fcb250f020fbea7be54299be9038b05",
+   "hash_source": "fresh"
+  },
+  {
+   "path": "extension_manifest.json",
+   "bytes": 3581,
+   "sha256": "da9b3084cdd4cf41361e02fcfc5c46ae803bb433ca5e03c7cd26b11a20aa9c9c",
+   "hash_source": "fresh"
+  },
+  {
+   "path": "extension_manifest.v2.json",
+   "bytes": 4102,
+   "sha256": "72a766c626d699814aa532f8f973d9c5dde9fd041bf15bb64bd99d6ef44c81d6",
+   "hash_source": "fresh"
+  },
+  {
+   "path": "manifest_binding_v2.json",
+   "bytes": 701,
+   "sha256": "5a457939835592c191977bec3811d1c800b461d3ef27c8263b553b667f4c439a",
+   "hash_source": "fresh"
+  },
+  {
+   "path": "verification_report.json",
+   "bytes": 2380,
+   "sha256": "103a363f19628644f28bb450812c37ee0fa61559f538d8baf60722d708fee943",
+   "hash_source": "fresh"
+  }
+ ],
+ "symlinks": [],
+ "walk_errors": [],
+ "recorded_checks": [],
+ "totals": {
+  "files": 6,
+  "bytes": 19955548,
+  "recorded_checked": 0,
+  "recorded_ok": 0
+ },
+ "complete": true,
+ "seconds": 0.3
+}

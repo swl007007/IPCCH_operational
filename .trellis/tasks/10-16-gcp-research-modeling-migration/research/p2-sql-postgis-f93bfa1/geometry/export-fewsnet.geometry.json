@@ -1,0 +1,140 @@
+{
+ "bundle": "fewsnet.geometry",
+ "namespace": "fewsnet",
+ "shp_entry": "fewsnet.geometry.shp",
+ "table": "geometry_shp_45c0b03c",
+ "inventory": {
+  "path": "/home/swl007007/projects/food-crisis-research/scratch/p1/input-inventory.json",
+  "sha256": "26b3f7570309104162410937f2fdcc077d586dbc15dbbc852740cfab4b4e5049"
+ },
+ "members": {
+  "fewsnet.geometry.shp": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.shp",
+   "sha256": "3aba66a6fbf6b2a8beb153df76a67662ce4e0a898fcb11e292a17cc174f5f742",
+   "bytes": 98094620
+  },
+  "fewsnet.geometry.shx": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.shx",
+   "sha256": "16061b9a97add1220d0aa54e432f55ed277f919a7bf233da06a5867ee709dfb0",
+   "bytes": 45844
+  },
+  "fewsnet.geometry.dbf": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.dbf",
+   "sha256": "2175dc97d3c6969c627ebb07c4f456e05231b7050321b4bd40e9079f86b102d3",
+   "bytes": 7942848
+  },
+  "fewsnet.geometry.prj": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.prj",
+   "sha256": "94ba1b071fb00c93429718b8005a15b45c5846baafe222b77dcb38847d5e2f49",
+   "bytes": 306
+  },
+  "fewsnet.geometry.cpg": {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/Outcome/FEWSNET_IPC/FEWS NET Admin Boundaries/FEWS_Admin_LZ_v3.cpg",
+   "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824",
+   "bytes": 5
+  }
+ },
+ "encoding": "UTF-8",
+ "driver_geometry_type": "Polygon",
+ "columns": [
+  {
+   "name": "cov_start",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "cov_end",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "report_mon",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "unit_name",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "ADMIN0",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "ADMIN1",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "ADMIN2",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "ADMIN3",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "LZCODE",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "LZNAME",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "admin_code",
+   "kind": "int",
+   "sql_type": "bigint"
+  },
+  {
+   "name": "admin_name",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "ISO",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "adm0_name",
+   "kind": "text",
+   "sql_type": "text"
+  },
+  {
+   "name": "AREA2",
+   "kind": "float",
+   "sql_type": "double precision"
+  },
+  {
+   "name": "AREA1",
+   "kind": "float",
+   "sql_type": "double precision"
+  }
+ ],
+ "srid": 4326,
+ "prj": "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],VERTCS[\"WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PARAMETER[\"Vertical_Shift\",0.0],PARAMETER[\"Direction\",1.0],UNIT[\"Meter\",1.0]]",
+ "srid_basis": {
+  "reader_crs_epsg": 4326,
+  "prj_alone_pyproj_epsg": null,
+  "reader_crs": "EPSG:4326"
+ },
+ "has_z": false,
+ "rows": 5718,
+ "geometry_types": {
+  "Polygon": 4953,
+  "MultiPolygon": 765
+ },
+ "rows_sha256": "8d56d1b6b2be7614e7339562798b24e5552017a660de336b32566eaf31151620",
+ "reader": {
+  "geopandas": "1.0.1",
+  "pyogrio": "0.13.0",
+  "shapely": "2.1.0"
+ }
+}
