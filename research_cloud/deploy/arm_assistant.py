@@ -6,7 +6,7 @@ research-mlflow only; never printed). The guard configuration is written to ``gu
 mounted as a file: Cloud Billing catalog list prices of the pinned model (input/output SKUs 2A35-AC68-14D6 /
 90FD-DC5F-DC55, effective 2026-10-15), USD 10 monthly allocation, the rehearsed limits, ledger DSN from
 ``IPCCH_GUARD_DSN`` (secret ``guard-dsn``).
-``gateway``: as the temporary migration admin, the Vertex AI Gateway endpoint ``ipcch-assistant-gemini`` is created
+``gateway``: as the temporary migration admin, the Vertex AI Gateway endpoint ``ipcch-assistant-gemini-enso`` is created
 with an ADC secret (no key material; project food-crisis-modeling-enso, location global, gemini-3.8-flash) - the
 rehearsed calls - and ``ipcch-assistant`` is granted USE on it.
 ``query``: one bounded read-only question as ``ipcch-reader`` (the rehearsed stream client); the guard ledger must then
@@ -22,7 +22,9 @@ import sys
 from research_cloud.deploy import provision_secrets as ps
 from research_cloud.deploy.db_roles import connect, secret_value
 
-ENDPOINT = "ipcch-assistant-gemini"
+# a new name: the copied store already holds "ipcch-assistant-gemini", bound to the old project's key (secret
+# "ipcch-vertex-sa", vertex_project manuel-remote-sensing); it stays as migrated data and is never used or granted
+ENDPOINT = "ipcch-assistant-gemini-enso"
 GUARD = {"dsn_env": "IPCCH_GUARD_DSN", "project": "food-crisis-modeling-enso", "location": "global",
          "model": "gemini-3.8-flash",
          "price_source": "Cloud Billing catalog list price, Gemini 3.8 Flash Global Text Input/Output - Predictions, SKUs "
@@ -55,6 +57,9 @@ def do_gateway(api, receipt, url):
     existing = {e.name: e for e in store.list_gateway_endpoints()}
     if ENDPOINT in existing:
         endpoint = existing[ENDPOINT]
+        bound = target_bound(store, url, admin, endpoint)
+        if bound is not True:
+            raise ps.ProvisionError(f"existing endpoint {ENDPOINT} is not bound to the target project/model: {bound}")
         receipt.step("endpoint-exists", endpoint_id=endpoint.endpoint_id)
     else:
         secret = store.create_gateway_secret("vertex-adc-research", {"mode": "adc"}, provider="vertex_ai",
@@ -66,6 +71,8 @@ def do_gateway(api, receipt, url):
             model_definition_id=model.model_definition_id, linkage_type=GatewayModelLinkageType.PRIMARY, weight=1.0)])
         receipt.step("endpoint-created", endpoint_id=endpoint.endpoint_id, secret_id=secret.secret_id,
                      model_definition_id=model.model_definition_id)
+        if target_bound(store, url, admin, endpoint) is not True:
+            raise ps.ProvisionError("the new endpoint does not read back as bound to the target project/model")
     grant = {"username": assistant, "resource_type": "gateway_endpoint", "resource_id": endpoint.endpoint_id}
     requests.post(url + "/api/3.0/mlflow/users/permissions/grant", json=dict(grant, permission="USE"), auth=admin,
                   timeout=60)
@@ -74,6 +81,23 @@ def do_gateway(api, receipt, url):
         raise ps.ProvisionError(f"assistant identity does not hold USE on the endpoint: {perm}")
     receipt.step("assistant-use-granted", user=assistant, endpoint_id=endpoint.endpoint_id)
     return {"endpoint_id": endpoint.endpoint_id, "assistant": assistant, "permission": perm.get("permission")}
+
+
+def target_bound(store, url, admin, endpoint):
+    """True when every model of the endpoint is the pinned Vertex model on a secret configured for the target
+    project/location (metadata only; no secret value is read)."""
+    import requests
+    models = {m.model_definition_id: m for m in store.list_gateway_model_definitions()}
+    for mapping in endpoint.model_mappings or []:
+        m = models.get(mapping.model_definition_id)
+        if m is None or m.provider != "vertex_ai" or m.model_name != GUARD["model"]:
+            return f"model {mapping.model_definition_id} is not vertex_ai/{GUARD['model']}"
+        sec = requests.get(url + "/api/3.0/mlflow/gateway/secrets/get", params={"secret_id": m.secret_id}, auth=admin,
+                           timeout=60).json().get("secret", {})
+        cfg = sec.get("auth_config") or {}
+        if cfg.get("vertex_project") != GUARD["project"] or cfg.get("vertex_location") != GUARD["location"]:
+            return f"secret {m.secret_id} targets {cfg}"
+    return True if endpoint.model_mappings else "no models"
 
 
 def guard_rows(api, port):
