@@ -6,8 +6,10 @@ service hook ``.pth`` is installed in site-packages and a fresh interpreter load
 executable.
 training-fews / training-ipcch: HOME and /tmp are writable; the pinned scientific source imports from ``/app/sources``;
 the image's control-plane commit is set and ``adapter_identity`` reports it.
+replay-x320 / replay-forecast-x320: HOME is writable; every installed distribution equals ``/app/requirements.lock.txt``
+(the exact freeze of the tested replay environment) and the replay entry point imports.
 
-  python -m research_cloud.images.selfcheck --image service|training-fews|training-ipcch
+  python -m research_cloud.images.selfcheck --image service|training-fews|training-ipcch|replay-x320|replay-forecast-x320
 Exit 0 and one JSON line on success; any failure raises (non-zero exit), which stops the build before the push.
 """
 import argparse
@@ -66,11 +68,27 @@ def training(image):
     return {"home": os.environ["HOME"], "commit": ident["control_plane_commit"]}
 
 
+def replay():
+    from importlib.metadata import distributions
+
+    from research_cloud.packages import replay as _replay  # noqa: F401
+    writable(os.environ["HOME"])
+    lock = dict(line.strip().split("==", 1) for line in open("/app/requirements.lock.txt") if "==" in line)
+    installed = {d.metadata["Name"].lower().replace("_", "-"): d.version for d in distributions()}
+    wrong = {k: (v, installed.get(k.lower().replace("_", "-"))) for k, v in lock.items()
+             if installed.get(k.lower().replace("_", "-")) != v}
+    if wrong:
+        raise RuntimeError(f"installed distributions differ from the lock: {wrong}")
+    return {"home": os.environ["HOME"], "lock_pins": len(lock)}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--image", required=True, choices=("service", "training-fews", "training-ipcch"))
+    ap.add_argument("--image", required=True,
+                    choices=("service", "training-fews", "training-ipcch", "replay-x320", "replay-forecast-x320"))
     args = ap.parse_args(argv)
-    result = service() if args.image == "service" else training(args.image)
+    result = (service() if args.image == "service" else replay() if args.image.startswith("replay-")
+              else training(args.image))
     print(json.dumps({"selfcheck": "ok", "image": args.image, "uid": os.getuid(), **result}, default=str))
     return 0
 

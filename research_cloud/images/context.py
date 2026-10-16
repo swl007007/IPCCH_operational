@@ -1,4 +1,5 @@
-"""Assemble a pinned Cloud Build context for one research image (service, training-fews, training-ipcch).
+"""Assemble a pinned Cloud Build context for one research image (service, training-fews, training-ipcch, and the
+historical replay images replay-x320 / replay-forecast-x320).
 
 The context holds exactly: the image's ``Dockerfile`` and ``requirements.lock.txt``; ``research_cloud`` exported with
 ``git archive`` from the committed control-plane HEAD (refused when ``research_cloud`` has uncommitted changes); for
@@ -29,7 +30,7 @@ SOURCES = "/home/swl007007/projects/food-crisis-research/sources"
 FEWS_REPO, FEWS_COMMIT, FEWS_DIR = f"{SOURCES}/Food_Crisis_Cluster", "6c1ebf72f36651ad1c229508f3388e796e710f3c", "FEWSNETGeoXGBExperiment"
 P6_RUN = "bdbafe393d694439a1c35ccec4d5816a"
 P6_SOURCE = f"/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/{P6_RUN}/artifacts/source_code/IPCCHGeoXGBExperiment"
-IMAGES = ("service", "training-fews", "training-ipcch")
+IMAGES = ("service", "training-fews", "training-ipcch", "replay-x320", "replay-forecast-x320")
 
 
 class ContextError(Exception):

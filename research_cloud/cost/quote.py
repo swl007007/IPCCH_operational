@@ -87,14 +87,15 @@ def lines(skus):
         "one-time: proxy time to stream the package acceptance volume (conservative)", one_time=True)
     add("platform", "Cloud Run memory, package acceptance streaming 2 h x 2 GiB", ("run.json", 8, "02A2-9231-36A6"),
         2 * 3600 * 2, "one-time, as above", one_time=True)
-    add("platform", "Artifact Registry pulls to the workstation 8 GiB", ("ar.json", 1, "108E-9EAE-92D9"), 8,
-        "one-time crane pulls of the 3 images for local digest verification: measured unpacked envs 3.54 GB "
-        "(service 0.63, training-fews 1.70, training-ipcch 1.21) + base layers, x2 for one rebuild", one_time=True)
+    add("platform", "Artifact Registry pulls to the workstation 11 GiB", ("ar.json", 1, "108E-9EAE-92D9"), 11,
+        "one-time crane pulls of the 5 images (digest verification; historical replay acceptance on the workstation): "
+        "measured unpacked envs 5.54 GB + base layers, x2 for one rebuild", one_time=True)
     # images, builds, secrets, logging
-    add("platform", "Artifact Registry storage 9 GiB-month", ("ar.json", 14, "8502-299A-ABAF"), 9,
-        "service + 2 training images (~3.5 GB unpacked envs), up to 3 retained digests each; in-region pulls")
-    add("platform", "Cloud Build e2-standard-2, 60 min", ("build.json", 249, "A464-9020-6404"), 60,
-        "3 images x a few builds; source contexts total ~4.5 MB (0.004 GiB) staged in the build source bucket, "
+    add("platform", "Artifact Registry storage 11 GiB-month", ("ar.json", 14, "8502-299A-ABAF"), 11,
+        "5 images: service + 2 training + 2 historical replay (measured unpacked envs 5.54 GB: 0.63 + 1.70 + 1.21 + "
+        "0.99 + 1.00), up to 2 retained digests each; Cloud Run/Vertex pulls are in-region")
+    add("platform", "Cloud Build e2-standard-2, 120 min", ("build.json", 249, "A464-9020-6404"), 120,
+        "5 images x ~12 min x 2 builds; source contexts total ~4.5 MB (0.004 GiB) staged in the build source bucket, "
         "deleted after the build (negligible storage)")
     add("platform", "Secret Manager, 10 replica-months", ("secret.json", 0, "7756-ADEF-84F4"), 10,
         "Flask secret, KEK, DB and identity credentials; user-managed us-central1 replication")
