@@ -42,8 +42,13 @@ def sku(skus, file, index, sku_id, tier=None):
     return price, rec["description"], info["effectiveTime"], info["pricingExpression"]["usageUnit"]
 
 
+# measured live GCS bytes after transfer and publication (ledger/actuals; supervisor reconciliation): 156,113 transfer
+# objects + 15,477 publication copies (server-side copies of the packages into MLflow artifact paths)
+LIVE = {"transfer_objects": 106_113_317_859, "publication_copies": 12_578_866_404}
+
+
 def lines(skus):
-    gib_total = sum(VOLUMES.values()) / GIB
+    gib_total = sum(LIVE.values()) / GIB
     storage_gib = math.ceil(gib_total * 1.10)          # + 10% soft-delete / growth allowance
     out = []
 
@@ -73,19 +78,29 @@ def lines(skus):
         "recurring workload allowance: MLflow UI/API and proxied artifact/package downloads to the workstation")
     # GCS (regional standard, us-central1)
     add("platform", f"GCS standard storage {storage_gib} GiB-month", ("gcs.json", 1124, "E5F0-6A5D-7BAD"), storage_gib,
-        f"measured {gib_total:.1f} GiB (FEWS roots, inputs, MLflow artifacts, packages, snapshots) + 10% soft-delete/growth")
-    add("platform", "GCS Class A, initial upload 170k objects", ("gcs.json", 392, "4DBF-185F-A415"), 170_000, "operations; month 1 only",
+        f"measured live {gib_total:.2f} GiB: 156,113 transferred objects (FEWS roots, inputs, MLflow artifacts, packages, "
+        "snapshots, jobs) + 15,477 publication copies (12.58 GB, packages copied into MLflow artifact paths) + 10% "
+        "soft-delete/growth")
+    add("platform", "GCS Class A, initial upload + publication 172k", ("gcs.json", 392, "4DBF-185F-A415"), 172_000,
+        "one-time: 171,590 logical object writes (156,113 transfer objects + 15,477 publication copies, counted once)",
         one_time=True)
     add("platform", "GCS Class A, monthly 10k", ("gcs.json", 392, "4DBF-185F-A415"), 10_000, "operations")
     add("platform", "GCS Class B, monthly 100k", ("gcs.json", 596, "7870-010B-2763"), 100_000, "operations")
+    add("platform", "GCS Class B, acceptance reads 400k", ("gcs.json", 596, "7870-010B-2763"), 400_000,
+        "one-time (indicative; with the monthly 100k: 500k): upload reload + verify 312,226, publication verify 30,954, "
+        "archive downloads 55,964, package downloads 15,477", one_time=True)
     scen, packages = 45_341_699_278 / GIB, VOLUMES["packages"] / GIB
     add("platform", f"GCS direct download, scen archive acceptance {math.ceil(scen)} GiB", ("gcs.json", 180, "22EB-AAE8-FBCD"),
         math.ceil(scen), f"one-time: every extant scen-b43ef6a-v1 material ({scen:.2f} GiB; the exception's source archive), "
         "authorized direct GCS download; no other root is re-downloaded", one_time=True)
+    add("platform", "GCS direct download, AC8 inputs + confirm-onset archive 3 GiB", ("gcs.json", 180, "22EB-AAE8-FBCD"), 3,
+        "one-time: AC8 clean-run gs:// input reads 2.34 GiB (6 objects, sizes from object metadata) + confirm-onset-v1 "
+        "every extant byte 0.06 GiB", one_time=True)
     add("platform", f"Cloud Run egress, package acceptance via MLflow SDK {math.ceil(packages)} GiB",
         ("run.json", 646, "DDFD-AE42-E219"), math.ceil(packages),
         f"one-time: all retained packages ({packages:.2f} GiB) downloaded with authenticated MLflow SDK calls through the "
-        "service's artifact proxy (the intended user path, incl. the largest-package service check)", one_time=True)
+        "service's artifact proxy (the intended user path, incl. the largest-package service check); the pilot, trial, "
+        "HPT and AC8 package downloads (0.11 GiB) fit in the rounding", one_time=True)
     add("platform", "Cloud Run CPU, package acceptance streaming 2 h", ("run.json", 229, "4856-B847-F1EB"), 2 * 3600,
         "one-time: proxy time to stream the package acceptance volume (conservative)", one_time=True)
     add("platform", "Cloud Run memory, package acceptance streaming 2 h x 2 GiB", ("run.json", 8, "02A2-9231-36A6"),
@@ -95,15 +110,16 @@ def lines(skus):
         "measured unpacked envs 5.54 GB + base layers, x2 for one rebuild", one_time=True)
     # images, builds, secrets, logging
     add("platform", "Artifact Registry storage 11 GiB-month", ("ar.json", 14, "8502-299A-ABAF"), 11,
-        "5 images: service + 2 training + 2 historical replay (measured unpacked envs 5.54 GB: 0.63 + 1.70 + 1.21 + "
-        "0.99 + 1.00), up to 2 retained digests each; Cloud Run/Vertex pulls are in-region")
+        "7 digests now: the original 5 (service + 2 training + 2 historical replay) + service 4cc5d93b + training-ipcch "
+        "6ad7f46c (train-entry); measured repository size 4.11 GB (3.82 GiB), allowance kept for later digests; "
+        "Cloud Run/Vertex pulls are in-region")
     add("platform", "Cloud Build e2-standard-2, 120 min", ("build.json", 249, "A464-9020-6404"), 120,
-        "5 images x ~12 min x 2 builds; source contexts total ~4.5 MB (0.004 GiB) staged in the build source bucket, "
-        "deleted after the build (negligible storage)")
-    add("platform", "Secret Manager, 16 active versions (replica-months)", ("secret.json", 0, "7756-ADEF-84F4"), 16,
-        "actual versions created: 13 initial (Flask secret, KEK, DB and identity credentials), 2 corrected MLflow URI "
-        "versions (version 1 kept), 1 temporary migration admin; all assumed retained the full month; user-managed "
-        "us-central1 replication")
+        "measured: 7 successful builds 18.64 min + 1 failed ~1.93 min (20.5 min); allowance kept for rebuilds; source "
+        "contexts ~4.5 MB staged in the build source bucket (2.5 MB live)")
+    add("platform", "Secret Manager, 18 active versions (replica-months)", ("secret.json", 0, "7756-ADEF-84F4"), 18,
+        "measured: 16 secrets, 18 ENABLED versions (13 initial, 2 corrected MLflow URI versions with version 1 kept, "
+        "1 temporary migration admin, 2 assistant/guard); all assumed retained the full month (the temporary admin's "
+        "versions are destroyed after acceptance: 17 steady); user-managed us-central1 replication")
     add("platform", "Secret Manager accesses 20k", ("secret.json", 1, "EBA7-264F-2D2C"), 20_000, "accesses")
     add("platform", "Logging ingestion 10 GiB", ("logging.json", 0, "143F-A1B0-E0BE"), 10, "gross (first 50 GiB free tier)")
     add("platform", "Logging retention 10 GiB-month", ("logging.json", 2, "F4AE-5A52-ACE3"), 10, "beyond default retention")
@@ -123,11 +139,15 @@ def lines(skus):
     ram, *_ = sku(skus, "vertex.json", 8176, "DE93-D712-2AE4")
     machines = {"n1-standard-4": 4 * core + 15 * ram, "n1-highmem-4": 4 * core + 26 * ram}
     disk_hour = 0.000063014   # official displayed standard-PD hourly price (vertex-training-cost-supervisor.md)
-    jobs = [("FEWS feature snapshot (fews_features), 1 job", "n1-standard-4", 1, 1800),
-            ("IPCCH feature snapshot (ipcch_features), 1 job", "n1-highmem-4", 1, 1800),
-            ("FEWS single trial (fews_fourclass), 1 job", "n1-standard-4", 1, 900),
-            ("IPCCH single trial (ipcch_quartet), 1 job", "n1-highmem-4", 1, 900),
-            ("HPT smoke: 2 serial trials (ipcch_quartet), parallel 1", "n1-highmem-4", 2, 900)]
+    # the training jobs actually submitted (each reserved before its POST; reservations are estimates, not billed
+    # spend). The two feature-snapshot jobs of earlier quotes were not run on Vertex (built on the workstation).
+    jobs = [("FEWS single trial attempt 1 (failed: trainer lacked serviceusage), 1 job", "n1-standard-4", 1, 900),
+            ("FEWS single trial attempt 2 (succeeded), 1 job", "n1-standard-4", 1, 900),
+            ("IPCCH single trial (succeeded), 1 job", "n1-highmem-4", 1, 900),
+            ("HPT smoke attempt 1: 2 serial trials (failed: /var/hypertune permission)", "n1-highmem-4", 2, 900),
+            ("HPT diagnostic: /var/hypertune mount probe (cancelled)", "n1-standard-4", 1, 300),
+            ("HPT smoke attempt 2: 2 serial trials (cancelled at the aggregate deadline)", "n1-highmem-4", 2, 900),
+            ("HPT smoke attempt 3: 2 serial trials", "n1-highmem-4", 2, 900)]
     for name, machine, trials, timeout in jobs:
         r = vertex_reservation(machines[machine], trials, timeout, 600, 100, disk_hour)
         out.append({"pool": "training", "item": name, "sku": {"machine": machine, "usd_per_hour": machines[machine],
@@ -135,8 +155,9 @@ def lines(skus):
                     "quantity": {"trials": trials, "timeout_s": timeout, "overhead_s": 600, "boot_disk_gib": 100,
                                  "billed_seconds_per_trial": r["billed_seconds_per_trial"]},
                     "usd": round(r["total_usd"], 6), "one_time": True,
-                    "basis": "reservation held until provider terminal status; disableRetries; 600 s declared startup/"
-                             "termination overhead (not a provider bound); no separate management line (on-demand price)"})
+                    "basis": "submitted job's reservation (an estimate; billed actual not yet known), held until provider "
+                             "terminal status; disableRetries; 600 s declared startup/termination overhead (not a provider "
+                             "bound); no separate management line (on-demand price)"})
     return out
 
 
@@ -159,7 +180,7 @@ def main(argv=None):
     items = lines(args.skus)
     quote = {"project": "food-crisis-modeling-enso", "region": "us-central1 (Gemini: global endpoint)",
              "prices": "gross list prices, catalog effective 2026-10-15T07:00:00Z; no free tiers or credits subtracted",
-             "volumes_bytes": VOLUMES, "volumes_basis": VOLUMES_BASIS, "items": items, "totals": totals(items)}
+             "volumes_bytes": VOLUMES, "volumes_basis": VOLUMES_BASIS, "live_gcs_bytes": LIVE, "items": items, "totals": totals(items)}
     with open(args.out, "w") as f:
         json.dump(quote, f, indent=1)
     if args.markdown:
