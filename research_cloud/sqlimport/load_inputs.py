@@ -136,6 +136,7 @@ def is_identifier(name, key_columns):
 
 def infer_types(path, header, key_columns, short_set):
     kinds = {c: ("text" if is_identifier(c, key_columns) else "bigint") for c in header}
+    unsafe_int = dict.fromkeys(header, False)     # an integer literal a double cannot hold, seen in any chunk so far
     rows = short_total = 0
     for chunk, short in chunks(path, header, short_set):
         rows += len(chunk)
@@ -152,6 +153,10 @@ def infer_types(path, header, key_columns, short_set):
                 kinds[c] = "text"
                 continue
             ints = v.str.fullmatch(r"-?\d+")
+            if ints.any() and not unsafe_int[c]:
+                # > 15 digits; <= 15 digits is < 10**15 < EXACT_FLOAT_INT, so this is the former "> 15 digits or
+                # > 2**53" test, without converting the literal
+                unsafe_int[c] = bool(v[ints].str.lstrip("-").str.len().max() > 15)
             if kinds[c] == "bigint":
                 if ints.all():
                     if v.str.lstrip("-").str.len().max() > 18:
@@ -161,8 +166,8 @@ def infer_types(path, header, key_columns, short_set):
             num = pd.to_numeric(v, errors="coerce")
             if num.isna().any() or not np.isfinite(num.to_numpy(dtype=np.float64)).all():
                 kinds[c] = "text"
-            elif ints.any() and (v[ints].str.lstrip("-").str.len().max() > 15 or (num[ints].abs() > EXACT_FLOAT_INT).any()):
-                kinds[c] = "text"                         # integer literal not exactly representable as float
+            elif unsafe_int[c]:
+                kinds[c] = "text"                         # an integer literal (this or an earlier chunk) a double would round
     return kinds, rows, short_total
 
 
