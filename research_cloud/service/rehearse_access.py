@@ -68,9 +68,13 @@ def run(url, mode):
         t.user(role, suffix)
     exp = t.setup("admin", "POST", "/api/2.0/mlflow/experiments/create", 200,
                  json_body={"name": f"rehearsal-{secrets.token_hex(3)}"}).json()["experiment_id"]
-    t.setup("admin", "POST", "/api/3.0/mlflow/users/permissions/grant", 200,
-            json_body={"username": t.auth["jobwriter"][0], "resource_type": "experiment", "resource_id": exp, "permission": "EDIT"},
-           note="job writer EDIT on the experiment")
+    from research_cloud.service import workspace_roles
+    roles = workspace_roles.apply(workspace_roles.Admin(t.url, t.auth["admin"][1], t.auth["admin"][0]),
+                                  [t.auth["jobwriter"][0]], [exp])
+    t.results.append({"principal": "admin", "method": "APPLY", "path": "workspace_roles", "remote": False,
+                      "expected": "no copied grant removed", "observed": "applied", "ok": True,
+                      "note": json.dumps({k: {kk: len(vv) for kk, vv in v.items()} for k, v in roles["diff"].items()
+                                          if k in (t.auth["reader"][0], t.auth["jobwriter"][0], t.auth["assistant"][0])})})
 
     run_id = t.setup("jobwriter", "POST", "/api/2.0/mlflow/runs/create", 200,
                     json_body={"experiment_id": exp}).json()["run"]["info"]["run_id"]
@@ -90,22 +94,42 @@ def run(url, mode):
         t.call(who, "POST", "/api/2.0/mlflow/users/create", 403, json_body={"username": f"{who}-{suffix}-2", "password": "p" * 16})
         t.call(who, "POST", "/api/2.0/mlflow/users/update-admin", 403, json_body={"username": t.auth[who][0], "is_admin": True},
                note="no self-escalation")
+        t.call(who, "POST", "/api/3.0/mlflow/users/permissions/grant", 403,
+               json_body={"username": t.auth[who][0], "resource_type": "experiment", "resource_id": exp, "permission": "MANAGE"},
+               note="no self-grant")
+        t.call(who, "POST", "/api/2.0/mlflow/experiments/create", 403, json_body={"name": f"{who}-{suffix}"},
+               note="READ cannot create experiments (workspace mode)")
+        t.call(who, "POST", "/api/2.0/mlflow/registered-models/create", 403, json_body={"name": f"{who}-{suffix}"},
+               note="READ cannot create registered models")
+        t.call(who, "POST", "/api/3.0/mlflow/gateway/secrets/create", 403,
+               json_body={"secret_name": f"{who}{suffix}", "secret_value": {"api_key": "x"}, "provider": "vertex_ai"},
+               note="READ cannot create Gateway secrets")
     t.call("jobwriter", "POST", "/api/2.0/mlflow/experiments/delete", 403, json_body={"experiment_id": exp},
            note="EDIT is not MANAGE")
+    new_exp = t.call("jobwriter", "POST", "/api/2.0/mlflow/experiments/create", 200, json_body={"name": f"job-{suffix}"},
+                     note="job writer creates a new experiment (workspace USE)").json().get("experiment_id")
+    t.call("jobwriter", "POST", "/api/2.0/mlflow/runs/create", 200, json_body={"experiment_id": new_exp},
+           note="job writer writes in its new experiment")
 
-    # assistant routes: config writes and skills install stay loopback-only; chat follows the mode
-    t.call("admin", "PUT", "/ajax-api/3.0/mlflow/assistant/config", 403, json_body={"providers": {}},
-           note="remote config write refused even for admin")
-    t.call("admin", "PUT", "/ajax-api/3.0/mlflow/assistant/config", (200, 403, 422), json_body={"providers": {}},
-           remote=False, note="loopback config write (observational)")
+    # assistant administration stays loopback-only: a real escalation attempt (switch to a shell-capable provider with
+    # full access) and a skills install, remotely, even as admin
+    escalate = {"providers": {"claude_code": {"model": "default", "selected": True,
+                                              "permissions": {"allow_edit_files": True, "full_access": True}}}}
+    for who in ("admin", "assistant"):
+        t.call(who, "PUT", "/ajax-api/3.0/mlflow/assistant/config", 403, json_body=escalate, note="remote provider escalation")
+        t.call(who, "POST", "/ajax-api/3.0/mlflow/assistant/skills/install", 403, json_body={"type": "global"},
+               note="remote skills install")
     msg = {"message": "list experiments", "context": {}}
-    t.call("assistant", "POST", "/ajax-api/3.0/mlflow/assistant/message", 403 if mode == "deny" else (200, 400, 422),
-           json_body=msg, note=f"remote assistant chat in {mode} mode")
+    if mode == "deny":
+        t.call("assistant", "POST", "/ajax-api/3.0/mlflow/assistant/message", 403, json_body=msg,
+               note="remote assistant chat refused in deny mode")
     gateway_egress(t, mode)
     return t, {"experiment_id": exp, "run_id": run_id, "artifact": art, "auth": t.auth}
 
 
 def gateway_egress(t, mode):
+    """An OpenAI-type endpoint (fake key, inert api_base) must be created by the admin and then refused at invocation by
+    MLflow's own provider allowlist, which the launcher pins to vertex_ai in both modes. Nothing reaches a network."""
     from mlflow.entities.gateway_endpoint import GatewayEndpointModelConfig, GatewayModelLinkageType
     from mlflow.store.tracking.rest_store import RestStore
     from mlflow.utils.rest_utils import MlflowHostCreds
@@ -113,27 +137,16 @@ def gateway_egress(t, mode):
     user, password = t.auth["admin"]
     store = RestStore(lambda: MlflowHostCreds(t.url, username=user, password=password))
     tag = secrets.token_hex(3)
-    try:
-        secret = store.create_gateway_secret(f"rehearsal-{tag}", {"api_key": "rehearsal-not-a-key"}, provider="openai",
-                                              auth_config={"api_base": "https://example.com:9/v1"})
-        model = store.create_gateway_model_definition(f"rehearsal-{tag}", secret.secret_id, "openai", "gpt-rehearsal")
-        store.create_gateway_endpoint(f"rehearsal-{tag}", [GatewayEndpointModelConfig(
-            model_definition_id=model.model_definition_id, linkage_type=GatewayModelLinkageType.PRIMARY, weight=1.0)])
-    except Exception as e:   # armed mode: the provider allowlist may refuse at creation
-        t.results.append({"principal": "admin", "method": "POST", "path": "gateway endpoint create (openai)",
-                          "remote": False, "expected": "refused in armed mode" if mode == "armed" else "created",
-                          "observed": type(e).__name__, "ok": mode == "armed", "note": str(e)[:200]})
-        return
-    r = t.call("admin", "POST", "/gateway/mlflow/v1/chat/completions", 503 if mode == "deny" else (400, 403, 404, 500, 503),
+    secret = store.create_gateway_secret(f"rehearsal-{tag}", {"api_key": "rehearsal-not-a-key"}, provider="openai",
+                                          auth_config={"api_base": "https://example.com:9/v1"})
+    model = store.create_gateway_model_definition(f"rehearsal-{tag}", secret.secret_id, "openai", "gpt-rehearsal")
+    store.create_gateway_endpoint(f"rehearsal-{tag}", [GatewayEndpointModelConfig(
+        model_definition_id=model.model_definition_id, linkage_type=GatewayModelLinkageType.PRIMARY, weight=1.0)])
+    r = t.call("admin", "POST", "/gateway/mlflow/v1/chat/completions", 400,
                json_body={"model": f"rehearsal-{tag}", "messages": [{"role": "user", "content": "hi"}]},
-               note=f"provider egress in {mode} mode")
-    t.results[-1]["note"] += f"; response {r.text[:160]!r}"
-    if mode == "armed":   # must be the native allowlist refusal, not an upstream attempt
-        native = "not allowed" in r.text
-        t.results[-1].update(ok=t.results[-1]["ok"] and native)
-    if mode == "deny":
-        guarded = "disabled on this server" in r.text
-        t.results[-1].update(ok=t.results[-1]["ok"] and guarded, note=t.results[-1]["note"] + f"; guard message {guarded}")
+               note=f"non-Vertex provider refused by the pinned allowlist ({mode} mode)")
+    refused = "is not allowed by the current gateway provider policy" in r.text
+    t.results[-1].update(ok=t.results[-1]["ok"] and refused, note=t.results[-1]["note"] + f"; allowlist message {refused}")
 
 
 def verify_restart(url, state):

@@ -5,6 +5,8 @@ Start-up refuses to serve unless the base contract holds:
 * Stable Flask secret and Gateway KEK from the environment (Secret Manager), never generated per revision.
 * ``MLFLOW_GATEWAY_ALLOWED_PROVIDERS`` is pinned to ``vertex_ai`` in every mode (any other value is refused): the egress
   hook wraps only the Gateway's aiohttp choke point, and providers with their own SDK clients would bypass it.
+* Workspaces are enabled (``MLFLOW_ENABLE_WORKSPACES=true``): creating experiments, registered models and Gateway
+  resources then needs a workspace-wide USE grant, so READ principals stay read-only (``workspace_roles.py``).
 * Server job execution is forced off (``MLFLOW_SERVER_ENABLE_JOB_EXECUTION=false``; SQL trace rollups, which need it,
   are refused): job workers can call LLM providers outside the Gateway (e.g. LiteLLM judges on the service's ADC),
   which would bypass the spend guard, and this research service does not use them.
@@ -53,6 +55,8 @@ def check_base(env):
     for k in ("MLFLOW_BACKEND_STORE_URI", "IPCCH_AUTH_DATABASE_URI"):
         if not env[k].startswith("postgresql"):
             raise StartupRefused(f"{k} must be a PostgreSQL URI")
+    if env.get("IPCCH_REHEARSAL_FAKE_VERTEX") and env.get("K_SERVICE"):
+        raise StartupRefused("the rehearsal fake upstream cannot run on Cloud Run")
     if env.get("MLFLOW_GATEWAY_ALLOWED_PROVIDERS", "vertex_ai") != "vertex_ai":
         raise StartupRefused("MLFLOW_GATEWAY_ALLOWED_PROVIDERS may only be vertex_ai")
     if env.get("MLFLOW_SQL_TRACE_ROLLUPS_ENABLED", "").lower() in ("1", "true"):
@@ -139,7 +143,7 @@ def prepare(env):
                MLFLOW_ENABLE_REMOTE_ASSISTANT="true" if mode == "armed" else "false",
                MLFLOW_ENABLE_ASSISTANT_SANDBOX="false", MLFLOW_SERVER_ENABLE_JOB_EXECUTION="false",
                # pinned in both modes: providers with their own SDK clients (Bedrock, LiteLLM) bypass the egress hook
-               MLFLOW_GATEWAY_ALLOWED_PROVIDERS="vertex_ai")
+               MLFLOW_GATEWAY_ALLOWED_PROVIDERS="vertex_ai", MLFLOW_ENABLE_WORKSPACES="true")
     write_assistant_config(mode, env, env.get("HOME", str(Path.home())))
     state = verify_hook(env, mode)
     argv = ["mlflow", "server", "--app-name", "basic-auth", "--host", "0.0.0.0", "--port", port, "--workers", "1",

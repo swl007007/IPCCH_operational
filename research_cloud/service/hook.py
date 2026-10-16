@@ -17,6 +17,10 @@ def _run():
     mode = os.environ.get("IPCCH_ASSISTANT_MODE", "deny")
     if mode not in ("armed", "deny"):
         raise RuntimeError(f"IPCCH_ASSISTANT_MODE={mode!r}")
+    if os.environ.get("IPCCH_REHEARSAL_FAKE_VERTEX") == "1":   # local rehearsal only; refuses under Cloud Run
+        from research_cloud.service import rehearsal_upstream
+
+        rehearsal_upstream.install()
     installed = guard.install(os.environ["IPCCH_ASSISTANT_GUARD_CONFIG"] if mode == "armed" else None)
     markers = {}
     if installed == "armed":
