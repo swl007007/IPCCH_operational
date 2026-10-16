@@ -1,0 +1,39 @@
+{
+  "verified_at": "2026-10-16T12:59:11.769885-04:00",
+  "accepted": true,
+  "stores": {
+    "mlflow.db": {
+      "tables": 65,
+      "rows": 361027,
+      "all_table_digests_equal": true,
+      "r3_file_sha256": "54aa68980b25df0a07be313d471e51c226ffc7245ae455679aaadb4242e4dcd9"
+    },
+    "basic_auth.db": {
+      "tables": 12,
+      "rows": 11,
+      "all_table_digests_equal": true,
+      "r3_file_sha256": "3797d7d06c0c1ff1a81727b29a000cbc90f06028870bc939b5faa4cbfebc5b6b"
+    }
+  },
+  "artifact_files_rehashed": 3569,
+  "artifact_bytes_rehashed": 1321922679,
+  "extras_exactly_disclosed_pyc": [
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/__init__.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/artifacts.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/contract.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/errors.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/features.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/geography.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/metrics.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/modelstore.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/preflight.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/prepare.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/projection.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/quartet.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/schedule.cpython-312.pyc",
+    "1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/__pycache__/targets.cpython-312.pyc"
+  ],
+  "snapshot_permissions": "r3 dir700, databases600; r1/r2 privacy correction requested separately",
+  "live_service_state": "MainPID=0\nActiveState=inactive\nSubState=dead\nUnitFileState=disabled\n",
+  "decision": "empty delta; no import necessary; local writer stopped and disabled; cloud-only additions preserved"
+}

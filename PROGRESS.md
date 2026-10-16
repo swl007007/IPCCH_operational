@@ -2902,3 +2902,22 @@ merged into this lineage before close.
   Somalia v2/v3 in progress; Somalia v1/v4, comparators, pop-v1, service, SQL import and training adapters pending.
 - P3: cloud preflight done; billing support APIs enabled; no paid resource created. Paid provisioning waits for the
   current-month actual-spend figure (pending).
+
+### Status 2026-10-16 13:00 EDT: execution complete, awaiting supervisor reconciliation and audit close
+
+Supersedes the in-progress bullets above, which are kept as written.
+- **Cloud:** all on `food-crisis-modeling-enso`.
+  - MLflow on Cloud Run `research-mlflow` (revision 00007-hld), with Cloud SQL tracking/auth and GCS artifacts. It is the sole writable tracking authority; the local service is stopped and disabled, with an empty r1→r3 delta.
+  - Research inputs in Cloud SQL `research`: 53 tables + 3 geometry tables, verified.
+  - Vertex trials and a two-trial HPT smoke.
+  - Gemini assistant with a cost guard.
+- **Historical models:**
+  - 223 retained packages published, downloaded and replayed in the pinned images: 97,928 rows, 0 phase changes.
+  - Registry 170 passed / 72 tracking-only.
+  - 29 FEWS NET registry entries.
+  - Both approved exceptions (`scen-b43ef6a-v1`, `confirm-onset-v1`) preserved byte-for-byte; neither is a full-system pass.
+- **Quote:** platform about USD 80/month (first month about 92; gross list estimates, no billing actuals).
+- **Temporary migration admin:** removed.
+- **Native code:** merged as 12a5dd7 (`research_cloud/`, native 6ee56f5).
+- **Evidence:** `research/acceptance.json`, `research/g12-cutover/cutover-receipt.json`, `research/cloud-operations.md` (O-001…O-120).
+- **Unchanged:** Cloudflare/DNS, Dropbox and source data. Cloud-only eligibility is listed in `research/cutover-runbook.md` §5; any change is the user's decision.
