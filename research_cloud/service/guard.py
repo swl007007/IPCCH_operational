@@ -113,9 +113,11 @@ def cost_usd(cfg, prompt_tokens, output_tokens):
 def parse_usage(usage):
     """Token counts from raw usageMetadata, or None when they cannot be trusted for settlement.
 
-    promptTokenCount and candidatesTokenCount are required; thoughts/tool-prompt counts are optional (absent means
-    none were used). Every present count must be a non-negative integer, and totalTokenCount, when given, must not be
-    smaller than their sum."""
+    promptTokenCount, candidatesTokenCount and totalTokenCount are required; thoughts/tool-prompt counts may be absent.
+    Every count must be a non-negative integer and totalTokenCount must equal prompt + candidates + thoughts +
+    tool-use prompt exactly (Vertex usageMetadata semantics; cachedContentTokenCount is part of promptTokenCount and
+    caching is refused by the contract). An absent optional count is read as zero only because the exact total
+    confirms it; any unexplained difference leaves the call uncertain at its reservation."""
     if not isinstance(usage, dict):
         return None
     counts = {}
@@ -128,7 +130,7 @@ def parse_usage(usage):
             return None
         counts[k] = v
     total = usage.get("totalTokenCount")
-    if total is not None and not (_is_int(total) and total >= sum(counts.values())):
+    if not (_is_int(total) and total == sum(counts.values())):
         return None
     return counts
 

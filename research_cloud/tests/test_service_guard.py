@@ -85,13 +85,19 @@ class ConfigAndContract(unittest.TestCase):
         # 333 x 1.5 = 499.5 output tokens, rounded up to 500
         self.assertEqual(guard.reservation(config(output_reservation_factor=1.5), 333), Decimal("0.105"))
 
+    def test_unexplained_total_is_not_settled_low(self):
+        # regression: 15 itemized tokens against a 10,000 total must not settle at the 15
+        self.assertIsNone(guard.parse_usage({"promptTokenCount": 10, "candidatesTokenCount": 5, "totalTokenCount": 10_000}))
+        self.assertEqual(guard.parse_usage({"promptTokenCount": 10, "candidatesTokenCount": 5, "totalTokenCount": 15}),
+                         {"promptTokenCount": 10, "candidatesTokenCount": 5, "thoughtsTokenCount": 0, "toolUsePromptTokenCount": 0})
+
     def test_usage_must_be_complete_and_well_formed(self):
         good = {"promptTokenCount": 10, "candidatesTokenCount": 5, "thoughtsTokenCount": 7, "totalTokenCount": 22}
         counts = guard.parse_usage(good)
         self.assertEqual(guard.usage_cost(config(), counts)[1:], (10, 12))     # thinking billed as output
         for bad in (None, {}, {"promptTokenCount": 10}, dict(good, candidatesTokenCount=-1),
                     dict(good, promptTokenCount=1.0), dict(good, thoughtsTokenCount="7"), dict(good, totalTokenCount=3),
-                    dict(good, candidatesTokenCount=True)):
+                    dict(good, candidatesTokenCount=True), {k: v for k, v in good.items() if k != "totalTokenCount"}):
             self.assertIsNone(guard.parse_usage(bad), msg=bad)
 
 
@@ -160,7 +166,8 @@ class LedgerAndEgress(unittest.TestCase):
         b = self.ledger.reserve(Decimal("0.4"), "b")
         with self.assertRaises(guard.GuardRefusal):          # 0.8 charged + 0.4 > 1.0
             self.ledger.reserve(Decimal("0.4"), "c")
-        self.ledger.settle(a, {"promptTokenCount": 1000, "candidatesTokenCount": 100, "thoughtsTokenCount": 900}, True)
+        self.ledger.settle(a, {"promptTokenCount": 1000, "candidatesTokenCount": 100, "thoughtsTokenCount": 900,
+                                "totalTokenCount": 2000}, True)
         self.ledger.settle(b, {"promptTokenCount": 10}, True)   # malformed: stays charged at its reservation
         self.assertEqual([r[0] for r in self.rows()], ["settled", "uncertain", "rejected"])
         self.assertEqual(self.rows()[0][2:], (Decimal("0.01100000"), 900))
@@ -170,7 +177,7 @@ class LedgerAndEgress(unittest.TestCase):
 
     def test_partial_readback_never_lowers_the_charge(self):
         a = self.ledger.reserve(Decimal("0.3"), "a")
-        self.ledger.settle(a, {"promptTokenCount": 10, "candidatesTokenCount": 1}, False)   # stream without finish
+        self.ledger.settle(a, {"promptTokenCount": 10, "candidatesTokenCount": 1, "totalTokenCount": 11}, False)   # stream without finish
         self.assertEqual(self.rows()[0][0], "uncertain")
         with self.assertRaises(guard.GuardRefusal):
             self.ledger.reserve(Decimal("0.71"), "b")          # charged at max(0.3, observed) = 0.3
