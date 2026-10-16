@@ -1,0 +1,497 @@
+{
+ "mode": "deny",
+ "passed": 49,
+ "total": 49,
+ "results": [
+  {
+   "principal": "anonymous",
+   "method": "GET",
+   "path": "/health",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "content-free health"
+  },
+  {
+   "principal": "anonymous",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/experiments/search",
+   "remote": true,
+   "expected": 401,
+   "observed": 401,
+   "ok": true,
+   "note": "anonymous content route"
+  },
+  {
+   "principal": "anonymous",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/registered-models/search",
+   "remote": true,
+   "expected": 401,
+   "observed": 401,
+   "ok": true,
+   "note": "anonymous content route"
+  },
+  {
+   "principal": "anonymous",
+   "method": "GET",
+   "path": "/api/2.0/mlflow-artifacts/artifacts",
+   "remote": true,
+   "expected": 401,
+   "observed": 401,
+   "ok": true,
+   "note": "anonymous content route"
+  },
+  {
+   "principal": "anonymous",
+   "method": "GET",
+   "path": "/ajax-api/2.0/mlflow/gateway/endpoints/list",
+   "remote": true,
+   "expected": 401,
+   "observed": 401,
+   "ok": true,
+   "note": "anonymous content route"
+  },
+  {
+   "principal": "anonymous",
+   "method": "GET",
+   "path": "/ajax-api/3.0/mlflow/assistant/config",
+   "remote": true,
+   "expected": 401,
+   "observed": 401,
+   "ok": true,
+   "note": "anonymous content route"
+  },
+  {
+   "principal": "anonymous",
+   "method": "POST",
+   "path": "/gateway/mlflow/v1/chat/completions",
+   "remote": true,
+   "expected": 401,
+   "observed": 401,
+   "ok": true,
+   "note": "anonymous gateway"
+  },
+  {
+   "principal": "anonymous",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "remote": true,
+   "expected": 401,
+   "observed": 401,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "admin",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "admin creates user"
+  },
+  {
+   "principal": "admin",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "admin creates user"
+  },
+  {
+   "principal": "admin",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "admin creates user"
+  },
+  {
+   "principal": "admin",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/create",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "admin",
+   "method": "APPLY",
+   "path": "workspace_roles",
+   "remote": false,
+   "expected": "no copied grant removed",
+   "observed": "applied",
+   "ok": true,
+   "note": "{\"assistant-f5c43d\": {\"copied_unchanged\": 0, \"added\": 3, \"removed\": 0}, \"jobwriter-f5c43d\": {\"copied_unchanged\": 0, \"added\": 2, \"removed\": 0}, \"reader-f5c43d\": {\"copied_unchanged\": 0, \"added\": 3, \"removed\": 0}}"
+  },
+  {
+   "principal": "jobwriter",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "jobwriter",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/log-metric",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "jobwriter",
+   "method": "PUT",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/1/e221e2d77c754c4fb2b4289f37c01202/artifacts/probe.txt",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "job writer uploads via artifact proxy"
+  },
+  {
+   "principal": "reader",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/runs/get",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "default READ"
+  },
+  {
+   "principal": "reader",
+   "method": "GET",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/1/e221e2d77c754c4fb2b4289f37c01202/artifacts/probe.txt",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "READ downloads artifact"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot write"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/log-metric",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "PUT",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/1/e221e2d77c754c4fb2b4289f37c01202/artifacts/overwrite.txt",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot upload"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/delete",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/update-admin",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "no self-escalation"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/3.0/mlflow/users/permissions/grant",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "no self-grant"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot create experiments (workspace mode)"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/registered-models/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot create registered models"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/3.0/mlflow/gateway/secrets/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot create Gateway secrets"
+  },
+  {
+   "principal": "assistant",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/runs/get",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "default READ"
+  },
+  {
+   "principal": "assistant",
+   "method": "GET",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/1/e221e2d77c754c4fb2b4289f37c01202/artifacts/probe.txt",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "READ downloads artifact"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot write"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/log-metric",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "PUT",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/1/e221e2d77c754c4fb2b4289f37c01202/artifacts/overwrite.txt",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot upload"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/delete",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/update-admin",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "no self-escalation"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/3.0/mlflow/users/permissions/grant",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "no self-grant"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot create experiments (workspace mode)"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/registered-models/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot create registered models"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/3.0/mlflow/gateway/secrets/create",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "READ cannot create Gateway secrets"
+  },
+  {
+   "principal": "jobwriter",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/delete",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "EDIT is not MANAGE"
+  },
+  {
+   "principal": "jobwriter",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/create",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "job writer creates a new experiment (workspace USE)"
+  },
+  {
+   "principal": "jobwriter",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "remote": true,
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "job writer writes in its new experiment"
+  },
+  {
+   "principal": "admin",
+   "method": "PUT",
+   "path": "/ajax-api/3.0/mlflow/assistant/config",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "remote provider escalation"
+  },
+  {
+   "principal": "admin",
+   "method": "POST",
+   "path": "/ajax-api/3.0/mlflow/assistant/skills/install",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "remote skills install"
+  },
+  {
+   "principal": "assistant",
+   "method": "PUT",
+   "path": "/ajax-api/3.0/mlflow/assistant/config",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "remote provider escalation"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/ajax-api/3.0/mlflow/assistant/skills/install",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "remote skills install"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/ajax-api/3.0/mlflow/assistant/message",
+   "remote": true,
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "remote assistant chat refused in deny mode"
+  },
+  {
+   "principal": "admin",
+   "method": "POST",
+   "path": "/gateway/mlflow/v1/chat/completions",
+   "remote": true,
+   "expected": 400,
+   "observed": 400,
+   "ok": true,
+   "note": "non-Vertex provider refused by the pinned allowlist (deny mode); allowlist message True"
+  }
+ ]
+}

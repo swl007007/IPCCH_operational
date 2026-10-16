@@ -1,0 +1,320 @@
+{
+ "store": "disposable copy of the r1-copied tracking/auth stores (wsc_*), workspaces enabled",
+ "visible_experiments_to_copied_nonadmin": 6,
+ "role_report": {
+  "before": {
+   "admin": {
+    "is_admin": true,
+    "grants": [
+     [
+      "__user_1__",
+      "gateway_endpoint",
+      "e-9f0a333c965e4418ad1506f44bf12787",
+      "MANAGE"
+     ],
+     [
+      "__user_1__",
+      "gateway_model_definition",
+      "d-1781ed87f6404d2d9d90c879c58eccb7",
+      "MANAGE"
+     ],
+     [
+      "__user_1__",
+      "gateway_secret",
+      "s-84c34d2bbdcf434abf9ea71ba4e4f8cc",
+      "MANAGE"
+     ]
+    ]
+   },
+   "copied-nonadmin": {
+    "is_admin": false,
+    "grants": [
+     [
+      "__user_2__",
+      "gateway_endpoint",
+      "e-9f0a333c965e4418ad1506f44bf12787",
+      "USE"
+     ]
+    ]
+   },
+   "new-job-writer": {
+    "is_admin": false,
+    "grants": []
+   }
+  },
+  "after": {
+   "admin": {
+    "is_admin": true,
+    "grants": [
+     [
+      "__user_1__",
+      "gateway_endpoint",
+      "e-9f0a333c965e4418ad1506f44bf12787",
+      "MANAGE"
+     ],
+     [
+      "__user_1__",
+      "gateway_model_definition",
+      "d-1781ed87f6404d2d9d90c879c58eccb7",
+      "MANAGE"
+     ],
+     [
+      "__user_1__",
+      "gateway_secret",
+      "s-84c34d2bbdcf434abf9ea71ba4e4f8cc",
+      "MANAGE"
+     ]
+    ]
+   },
+   "copied-nonadmin": {
+    "is_admin": false,
+    "grants": [
+     [
+      "__user_2__",
+      "gateway_endpoint",
+      "e-9f0a333c965e4418ad1506f44bf12787",
+      "USE"
+     ],
+     [
+      "ipcch-readers",
+      "experiment",
+      "*",
+      "READ"
+     ],
+     [
+      "ipcch-readers",
+      "prompt",
+      "*",
+      "READ"
+     ],
+     [
+      "ipcch-readers",
+      "registered_model",
+      "*",
+      "READ"
+     ]
+    ]
+   },
+   "new-job-writer": {
+    "is_admin": false,
+    "grants": [
+     [
+      "ipcch-job-writers",
+      "experiment",
+      "1",
+      "EDIT"
+     ],
+     [
+      "ipcch-job-writers",
+      "workspace",
+      "*",
+      "USE"
+     ]
+    ]
+   }
+  },
+  "diff": {
+   "admin": {
+    "copied_unchanged": [
+     [
+      "__user_1__",
+      "gateway_endpoint",
+      "e-9f0a333c965e4418ad1506f44bf12787",
+      "MANAGE"
+     ],
+     [
+      "__user_1__",
+      "gateway_model_definition",
+      "d-1781ed87f6404d2d9d90c879c58eccb7",
+      "MANAGE"
+     ],
+     [
+      "__user_1__",
+      "gateway_secret",
+      "s-84c34d2bbdcf434abf9ea71ba4e4f8cc",
+      "MANAGE"
+     ]
+    ],
+    "added": [],
+    "removed": []
+   },
+   "copied-nonadmin": {
+    "copied_unchanged": [
+     [
+      "__user_2__",
+      "gateway_endpoint",
+      "e-9f0a333c965e4418ad1506f44bf12787",
+      "USE"
+     ]
+    ],
+    "added": [
+     [
+      "ipcch-readers",
+      "experiment",
+      "*",
+      "READ"
+     ],
+     [
+      "ipcch-readers",
+      "prompt",
+      "*",
+      "READ"
+     ],
+     [
+      "ipcch-readers",
+      "registered_model",
+      "*",
+      "READ"
+     ]
+    ],
+    "removed": []
+   },
+   "new-job-writer": {
+    "copied_unchanged": [],
+    "added": [
+     [
+      "ipcch-job-writers",
+      "experiment",
+      "1",
+      "EDIT"
+     ],
+     [
+      "ipcch-job-writers",
+      "workspace",
+      "*",
+      "USE"
+     ]
+    ],
+    "removed": []
+   }
+  }
+ },
+ "checks": [
+  {
+   "phase": "before",
+   "principal": "copied-nonadmin",
+   "call": "GET /api/2.0/mlflow/experiments/get",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "setup",
+   "principal": "admin",
+   "call": "POST /api/2.0/mlflow/users/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "GET /api/2.0/mlflow/experiments/get",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "GET /api/2.0/mlflow/experiments/search",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "POST /api/2.0/mlflow/experiments/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "POST /api/2.0/mlflow/registered-models/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "POST /api/3.0/mlflow/gateway/secrets/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "copied-nonadmin",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "admin",
+   "call": "GET /api/3.0/mlflow/users/permissions/get",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "detail": {
+    "allowed": true,
+    "permission": "USE"
+   }
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/experiments/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "new-job-writer",
+   "call": "POST /api/2.0/mlflow/experiments/delete",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "phase": "after",
+   "principal": "admin",
+   "call": "POST /api/2.0/mlflow/runs/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  }
+ ],
+ "passed": 15,
+ "total": 15
+}

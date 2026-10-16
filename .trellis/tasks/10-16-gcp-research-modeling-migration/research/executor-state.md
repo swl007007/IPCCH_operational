@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 03:45 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 04:06 EDT by `date`
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,12 +18,13 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `44350b6`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `733f2c0`. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
   - somalia v4 e8d5160 + 7e1c391;
-  - assistant guard 40f43d4 + total reconciliation 44350b6.
+  - assistant guard 40f43d4 + total reconciliation 44350b6;
+  - service launcher/rehearsal 2791308 + workspace roles/assistant end-to-end 733f2c0.
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
@@ -67,8 +68,8 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - Store-copy rehearsal r3 passes (tracking + auth).
   - Packages: P6, yearly and AlphaEarth are done.
   - Forecasting batch/launch and Somalia v2/v3/v4 are done and committed.
-  - The assistant spend guard is committed with 12 tests; the launcher and HTTP rehearsal are next.
-- **P3:** preflight done (`cloud-preflight.json`, `cloud-operations.md` O-001…O-024); support APIs `cloudbilling` and `billingbudgets` enabled; SKU prices collected. **No paid resource has been created.**
+  - The service (guard, launcher, workspace roles, access matrix, assistant end-to-end) is done locally; see `checkpoint-p2-service-20261016.md`.
+- **P3:** preflight done (`cloud-preflight.json`, `cloud-operations.md` O-001…O-024); support APIs `cloudbilling` and `billingbudgets` enabled; SKU prices collected; the spend-information gate is resolved by user ruling (USD 0). **No paid resource has been created yet**; the final itemized quote comes next.
 
 ## Pending items and gaps
 
@@ -80,7 +81,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
    - RandomForest: reuse the saved imputer `fill_values` from each `model_identity` (do not refit).
    - Threshold and correction: the threshold is strict `>` with ±Infinity literals; the correction arm flips by persistence.
    - Pointers: `remaining-packages-supervisor.md`.
-4. **FEWS NET:** run-record treatment per `ledger/README.md`; packages only for runs with a servable model and saved predictions; `scen-b43ef6a-v1` 18 missing local boosters recorded in `fews/missing-local-boosters-receipt.md`.
+4. **FEWS NET:** run-record treatment per `ledger/README.md`; packages only for runs with a servable model and saved predictions. For `scen-b43ef6a-v1`, apply the accepted incomplete-history exception: preserve all material and label the 18 missing boosters and the 3,746 unreplayable rows.
 5. **URI map:** 56 `card.feature_list` logged-model tags embed the local store path. The plan is to keep the original tag, add a mapped cloud reference and adapt the `ipcch_model.py` reader.
 6. **Service (Cloud Run):** follow `service-readiness-supervisor.md`:
    - provider `vertex_ai` with ADC (`auth_config` project/location);
@@ -97,19 +98,26 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
     - Historical MLflow artifacts are 3,573 files / 1.32 GB (max `source.tar` 130 MB; 9 files over 32 MiB).
     - Transport: per-file/directory via the MLflow proxy (`artifact-transport-supervisor.md`); no signing infrastructure. The final freeze must include the artifact tree, not only the DB.
 
-## Open user questions (no answer yet; do not assume)
+## User rulings (recorded by the supervisor in e53de85; no longer open)
 
-- **Spend:** the actual current-month spend for `food-crisis-modeling-enso` (service breakdown preferred). This is required before paid provisioning or job submission.
-- **FEWS NET:** the disposition of the 18 missing `scen-b43ef6a-v1` local continuation boosters (locate originals / register as incomplete / separate new version).
+- **Spend:** the user stated current-month actual spend for `food-crisis-modeling-enso` is USD 0. This is user-supplied and not API-verified; billing-account access is still denied. The USD 3 figure belongs to `manuel-remote-sensing` and is not used.
+  - The spend-information gate is resolved.
+  - In-scope provisioning and jobs proceed when their technical and cost gates pass, with no repeat permission request.
+  - The platform (USD 100/month) and training/HPT (USD 100/month) used-and-reserved ledgers stay separate, and each operation keeps its own receipt.
+- **FEWS NET `scen-b43ef6a-v1`:** the user accepted it as an incomplete historical exception.
+  - Preserve all extant material.
+  - Label the 18 missing regional boosters and the 3,746 of 22,872 unreplayable rows.
+  - No substitute retraining.
 
 ## Next actions (in order)
 
-1. Service launcher plus local HTTP access and assistant rehearsal (guard done).
-2. Somalia v1 packages.
-3. Comparator and pop-v1 packages.
-4. Remaining service items (Secret Manager wiring, image).
-5. SQL import rehearsal.
-6. Training adapter.
-7. Cost estimate.
+1. Somalia v1 packages (15; use `somalia-v1-package-supervisor.md`).
+2. Window-probe comparators and pop-v1 packages (`remaining-packages-supervisor.md`).
+3. SQL input import rehearsal.
+4. Image definitions for Cloud Build.
+5. Training adapter plus HPT trial entry.
+6. Final itemized quote (`cost-inputs-supervisor.md`) with actual SQL capacity and download paths; then G5-G11 operations, with per-operation receipts.
+
+Service status: launcher, workspace roles, access matrix and assistant end-to-end are done locally (`checkpoint-p2-service-20261016.md`). The remaining service items are the cloud-phase checks listed there.
 
 Continue checkpoint commits after each step.

@@ -1,0 +1,70 @@
+{
+ "passed": 9,
+ "total": 9,
+ "checks": [
+  {
+   "check": "assistant identity holds USE on the endpoint",
+   "ok": true,
+   "detail": {
+    "allowed": true,
+    "permission": "USE"
+   }
+  },
+  {
+   "check": "reader message accepted and stream read",
+   "ok": true,
+   "detail": [
+    200,
+    200
+   ]
+  },
+  {
+   "check": "tool ran with the read-only identity and answer quotes it",
+   "ok": true,
+   "detail": "ault/2\\\\n3                gateway/rehearsal-e22206        mlflow-artifacts:/workspaces/default/3\\\\n4                gateway/ipcch-assistant-gemini  mlflow-artifacts:/workspaces/default/4\\\"}, {\\\"role\\\": \\\"assistant\\\", \\\"content\\\": \\\"REHEARSAL-ANSWER tool said: {\\\\\\\"result\\\\\\\": \\\\\\\"Experiment Id    Name                            Artifact Location                     \\\\\\\\n---------------  --\\\"}]\"}\n\n"
+  },
+  {
+   "check": "one settled ledger row per model call at the exact usage price",
+   "ok": true,
+   "detail": [
+    [
+     "settled",
+     "1.69574400",
+     "0.00078000",
+     "50"
+    ],
+    [
+     "settled",
+     "1.69574400",
+     "0.00078000",
+     "50"
+    ]
+   ]
+  },
+  {
+   "check": "prohibited command denied by the allowlist",
+   "ok": true,
+   "detail": "flow experiments get; mlflow runs list; mlflow runs describe; mlflow artifacts list; ipcch-model search; ipcch-model get; ipcch-model registered; ipcch-model features; ipcch-model families.\\\"}, {\\\"role\\\": \\\"assistant\\\", \\\"content\\\": \\\"REHEARSAL-ANSWER tool said: {\\\\\\\"result\\\\\\\": \\\\\\\"Permission denied: this assistant may only run read-only commands: mlflow experiments search; mlflow experim\\\"}]\"}\n\n"
+  },
+  {
+   "check": "probe run still active",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "deny turn also settled",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "without endpoint USE the turn fails before any model call",
+   "ok": true,
+   "detail": "event: error\ndata: {\"error\": \"MLflow AI Gateway error 403: Permission denied\"}\n\n"
+  },
+  {
+   "check": "no uncertain or reserved rows left",
+   "ok": true,
+   "detail": ""
+  }
+ ]
+}
