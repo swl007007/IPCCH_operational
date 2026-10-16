@@ -324,7 +324,10 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=16):
                    "unserved_keys": "KeyError for a cell or arm outside this run; areas outside the map route to the root"},
         "preserved_not_packaged": "global+20 columns (D35 package), search/temporal candidate boosters, equivalence and "
                                   "search evidence, legal-pool membership and descriptive files",
-        "reference": {"rows": int(len(ref)), "per_unit_cap": per_unit, "compare_columns": prob + ["y_pred_code"],
+        "reference": {"rows": int(len(ref)), "per_unit_cap": per_unit,
+                      "per_unit_cap_scope": "per served booster within each (cell, part, arm) selection; a booster that "
+                                            "serves several parts or both arms (e.g. a cell root) can have more rows",
+                      "compare_columns": prob + ["y_pred_code"],
                       "routes_covered": sorted(ref["route"].unique()),
                       "selection": "per served booster: route coverage, then half nearest an argmax tie, rest by key hash"},
         "tolerance": {"declared_before_comparison": True, "continuous": "abs(new-ref) <= 1e-3 + 1e-3*abs(ref) for p_1..p_4",
