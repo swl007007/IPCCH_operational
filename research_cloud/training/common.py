@@ -2,7 +2,8 @@
 
 A trial takes: an input manifest (every file with its sha256, hashed before use), an experiment config (fixed
 parameters, the allowed tuning space, declared development folds and the holdout start), trial parameters, an output
-prefix (local directory or ``gs://bucket/prefix``) and an MLflow identity. It records the source commit, image digest,
+prefix (local directory or ``gs://bucket/prefix``) and an MLflow identity. GCS access is bound explicitly to
+``food-crisis-modeling-enso`` (client project and quota project); any other project is refused. It records the source commit, image digest,
 runtime, parameters, input digests, fitting-key digest, metrics and failure state, and reports the objective to
 Vertex AI hyperparameter tuning through ``cloudml-hypertune`` when it is installed (its documented
 ``/tmp/hypertune/output.metrics`` file otherwise). A missing or undefined objective fails the trial.
@@ -22,6 +23,24 @@ class TrialError(Exception):
     """A trial that must fail rather than report a metric."""
 
 
+TARGET_PROJECT = "food-crisis-modeling-enso"
+
+
+def storage_client(project):
+    """A GCS client bound explicitly to the target project (also the quota project); no default inheritance."""
+    if project != TARGET_PROJECT:
+        raise TrialError(f"GCS access is limited to {TARGET_PROJECT}, not {project!r}")
+    from google.cloud import storage
+    return storage.Client(project=project, client_options={"quota_project_id": project})
+
+
+def gcs_project(manifest=None):
+    project = (manifest or {}).get("gcp_project") or os.environ.get("IPCCH_GCP_PROJECT")
+    if not project:
+        raise TrialError("gs:// access needs an explicit project (manifest gcp_project or IPCCH_GCP_PROJECT)")
+    return project
+
+
 def sha256_file(path):
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -37,11 +56,10 @@ def resolve_inputs(manifest_path, workdir):
     for role, entry in manifest["files"].items():
         uri, expected = entry["uri"], entry["sha256"]
         if uri.startswith("gs://"):
-            from google.cloud import storage
             bucket, _, name = uri[5:].partition("/")
             local = os.path.join(workdir, "inputs", role + "_" + os.path.basename(name))
             os.makedirs(os.path.dirname(local), exist_ok=True)
-            storage.Client().bucket(bucket).blob(name).download_to_filename(local)
+            storage_client(gcs_project(manifest)).bucket(bucket).blob(name).download_to_filename(local)
         else:
             local = uri
         actual = sha256_file(local)
@@ -113,12 +131,11 @@ class Output:
         with open(self.path(name), "w") as f:
             json.dump(value, f, indent=1, default=str)
 
-    def publish(self):
+    def publish(self, project=None):
         if not self.prefix.startswith("gs://"):
             return self.prefix
-        from google.cloud import storage
         bucket, _, base = self.prefix[5:].partition("/")
-        client = storage.Client()
+        client = storage_client(project or gcs_project())
         for root, _, files in os.walk(self.local):
             for name in files:
                 rel = os.path.relpath(os.path.join(root, name), self.local)
@@ -140,17 +157,29 @@ def runtime_identity():
             "vertex": {k: os.environ.get(k) for k in ("CLOUD_ML_JOB_ID", "CLOUD_ML_TRIAL_ID", "AIP_MODEL_DIR") if os.environ.get(k)}}
 
 
-def mlflow_log(identity, params, metrics, artifacts_dir, tags):
-    """Log to the configured MLflow server when MLFLOW_TRACKING_URI is set (job identity credentials from env)."""
+def mlflow_log(experiment, record, artifacts_dir):
+    """Log every trial, succeeded or failed, to the configured MLflow server (job identity credentials from env).
+    A failed trial is a FAILED run carrying its arguments, error and trial record; metrics only when defined."""
     if not os.environ.get("MLFLOW_TRACKING_URI"):
         return None
     import mlflow
-    mlflow.set_experiment(identity["experiment"])
-    with mlflow.start_run(run_name=identity.get("run_name"), tags=tags) as run:
-        mlflow.log_params({k: v for k, v in params.items()})
-        mlflow.log_metrics({k: v for k, v in metrics.items() if isinstance(v, (int, float)) and math.isfinite(v)})
+    mlflow.set_experiment(experiment)
+    vertex = record["runtime"]["vertex"]
+    tags = {"trial_status": record["status"], **{f"vertex.{k}": v for k, v in vertex.items()},
+            "image_digest": record["runtime"].get("image_digest") or "", "source_commit": record["runtime"].get("source_commit") or ""}
+    if os.environ.get("IPCCH_PARENT_RUN_ID"):
+        tags["mlflow.parentRunId"] = os.environ["IPCCH_PARENT_RUN_ID"]
+    if record["status"] == "failed":
+        tags["error"] = record.get("error", "")[:4000]
+    with mlflow.start_run(run_name=vertex.get("CLOUD_ML_TRIAL_ID") or None, tags=tags) as run:
+        mlflow.log_params(record.get("params") or {f"arg.{k}": v for k, v in record["trial_arguments"].items()})
+        mlflow.log_metrics({k: v for k, v in (record.get("metrics") or {}).items()
+                            if isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)})
         mlflow.log_artifacts(artifacts_dir)
-        return run.info.run_id
+        run_id = run.info.run_id
+    if record["status"] == "failed":
+        mlflow.tracking.MlflowClient().set_terminated(run_id, status="FAILED")
+    return run_id
 
 
 def run_trial(fit, argv=None):
@@ -172,6 +201,7 @@ def run_trial(fit, argv=None):
         trial[k] = v
     out = Output(args.output)
     record = {"status": "started", "runtime": runtime_identity(), "trial_arguments": trial, "started": time.time()}
+    manifest = {}
     try:
         inputs, manifest = resolve_inputs(args.manifest, out.local)
         config = json.load(open(args.config))
@@ -184,12 +214,16 @@ def run_trial(fit, argv=None):
         record.update(status="failed", error=f"{type(e).__name__}: {e}", traceback=traceback.format_exc()[-4000:])
     record["finished"] = time.time()
     out.write_json("trial.json", record)
-    if args.mlflow_experiment and record["status"] == "succeeded":
-        record["mlflow_run_id"] = mlflow_log({"experiment": args.mlflow_experiment}, record["params"], record["metrics"],
-                                             out.local, {"trial_status": record["status"],
-                                                         **{f"vertex.{k}": v for k, v in record["runtime"]["vertex"].items()}})
+    if args.mlflow_experiment:   # failed trials are recorded too
+        try:
+            record["mlflow_run_id"] = mlflow_log(args.mlflow_experiment, record, out.local)
+        except Exception as e:
+            record["mlflow_error"] = f"{type(e).__name__}: {e}"
+            if record["status"] == "succeeded":
+                record.update(status="failed", error="MLflow linkage failed: " + record["mlflow_error"])
         out.write_json("trial.json", record)
-    out.publish()
+    # explicit project; the target constant applies only when the manifest itself could not be read (failure record)
+    out.publish(manifest.get("gcp_project") or os.environ.get("IPCCH_GCP_PROJECT") or TARGET_PROJECT)
     print(json.dumps({k: record.get(k) for k in ("status", "error", "metrics")}, default=str))
     return 0 if record["status"] == "succeeded" else 1
 
