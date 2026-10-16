@@ -130,3 +130,53 @@ class LoaderLength(unittest.TestCase):
         self.assertEqual(model.predict(keys, X[:1])["route"].tolist(), ["root_unassigned_test_area"])
         with self.assertRaisesRegex(ValueError, "1 keys but 2 feature rows"):
             model.predict(keys, X)
+
+
+class FullReplay(unittest.TestCase):
+    """A mini stage-1 package with system-routed and root reference rows passes the shared replay unchanged."""
+
+    def test_replay_passes_for_system_and_root_requests(self):
+        import io
+        import os
+        import xgboost as xgb
+        from research_cloud.packages import replay
+        from research_cloud.packages.common import PackageBuilder
+        d = tempfile.mkdtemp()
+        rng = np.random.default_rng(3)
+        boosters = {b: xgb.train({"objective": "multi:softprob", "num_class": 4, "max_depth": 1, "nthread": 1},
+                                 xgb.DMatrix(rng.normal(size=(64, 162)), label=np.arange(64) % 4), 2) for b in ("root", "01")}
+        src = tempfile.mkdtemp()
+        b = PackageBuilder(os.path.join(d, "pkg"))
+        units = {}
+        for name, bst in boosters.items():
+            bst.save_model(f"{src}/{name}.ubj")
+            b.add_file(f"{src}/{name}.ubj", f"weights/c/xgb_{name}.ubj")
+            units[f"c|{name}"] = {"file": f"weights/c/xgb_{name}.ubj", "sha256": hashlib.sha256(open(f"{src}/{name}.ubj", "rb").read()).hexdigest()}
+        X = rng.normal(size=(3, 162))
+        keys = pd.DataFrame({"candidate": "c", "area": [1, 2, 1], "target_month": "2018-02",
+                             "branch_request": ["system", "system", "root"]})
+        # area 1 -> branch 01, area 2 -> outside the map (root), area 1 again through the pooled root request
+        use = ["01", "root", "root"]
+        p = np.vstack([boosters[u].predict(xgb.DMatrix(X[i:i + 1])) for i, u in enumerate(use)])
+        exp = keys.copy()
+        exp["unit"] = [units[f"c|{u}"]["sha256"][:16] for u in use]
+        exp["route"] = ["terminal_branch", "root_unassigned_test_area", "pooled_root"]
+        for k, l in enumerate(s1.LABELS):
+            exp[f"p_{l}"] = p[:, k]
+        exp["y_pred_code"] = p.argmax(1)
+        b.add_bytes("deps/feature_order.csv", pd.DataFrame({"name": [f"f{i}" for i in range(162)]}).to_csv(index=False).encode())
+        b.add_bytes("deps/routing.csv", pd.DataFrame({"candidate": ["c"], "area": [1], "branch": ["01"]}).to_csv(index=False).encode())
+        buf = io.BytesIO()
+        np.save(buf, X, allow_pickle=False)
+        b.add_bytes("reference/inputs.npy", buf.getvalue())
+        b.add_bytes("reference/expected.csv", exp.to_csv(index=False, float_format="%.17g").encode())
+        b.add_bytes("loader/entry.py", s1.ENTRY.encode())
+        b.finalize({"family": "t", "status": "complete", "gaps": [], "identity": {}, "candidates": ["c"], "units": units,
+                    "routing": {"feature_order": "deps/feature_order.csv"},
+                    "loader": {"keys": ["candidate", "area", "target_month", "branch_request"]},
+                    "reference": {"compare_columns": [f"p_{l}" for l in s1.LABELS] + ["y_pred_code"]}})
+        report = os.path.join(d, "r.json")
+        self.assertEqual(replay.main([os.path.join(d, "pkg"), "--report", report]), 0)
+        r = json.load(open(report))
+        self.assertTrue(r["passed"] and r["checks"]["keys_and_order"])
+        self.assertEqual(r["routing_mismatches"], 0)

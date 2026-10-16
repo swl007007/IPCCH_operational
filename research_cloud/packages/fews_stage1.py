@@ -15,7 +15,7 @@ re-routed (``branch_id``/``routing`` exactly), re-predicted from the snapshot at
 to ``candidate.json`` scores (``partitioned``; ``partitioned_crisis`` where the producer recorded it - v1 did not).
 
 The root's own ``root_target_predictions.csv`` (the pooled root arm on every target area) is re-checked the same way
-and sampled as references with ``branch_request = root``, so root units that route no target rows (13 in v1/D27)
+and sampled as references with ``branch_request = root`` (routed rows carry ``system``), so root units that route no target rows (13 in v1/D27)
 still have saved reference rows; every served booster must have reference rows.
 """
 import io
@@ -72,16 +72,18 @@ class Model:
         X[np.isinf(X)] = np.nan                      # native_xgb.clean
         keys = keys.reset_index(drop=True)
         units, routes = [], []
-        requests = keys["branch_request"] if "branch_request" in keys else pd.Series([""] * len(keys))
+        # "system" (default when the column is absent): the candidate's own correspondence routing;
+        # "root": the pooled root arm on any area (the root's saved target predictions)
+        requests = keys["branch_request"].tolist() if "branch_request" in keys else ["system"] * len(keys)
         for cand, area, req in zip(keys["candidate"], keys["area"], requests):
             if cand not in self.meta["candidates"]:
                 raise KeyError(f"{cand} is not a candidate of this run")
-            if isinstance(req, str) and req == "root":       # the pooled root arm on any area
+            if req not in ("system", "root"):
+                raise KeyError(f"branch_request must be 'system' or 'root', got {req!r}")
+            if req == "root":
                 units.append(f"{cand}|root")
                 routes.append("pooled_root")
                 continue
-            if isinstance(req, str) and req:
-                raise KeyError(f"unknown branch_request {req!r}")
             branch = self.branch.get((cand, int(area)))
             units.append(f"{cand}|{branch if branch is not None else 'root'}")
             routes.append("terminal_branch" if branch is not None else "root_unassigned_test_area")
@@ -92,6 +94,7 @@ class Model:
                 raise RuntimeError(f"{unit}: booster returned shape {pred.shape}")
             proba[idx] = pred
         out = keys[["candidate", "area", "target_month"]].copy()
+        out["branch_request"] = requests
         out["unit"] = [self.meta["units"][u]["sha256"][:16] for u in units]
         out["route"] = routes
         for k, label in enumerate(("1", "2", "3", "4或5")):
@@ -263,7 +266,7 @@ def check_candidate(sdir, name, snap, features, root, outputs):
     rsaved = numeric(rt, [f"p_pooled_{l}" for l in LABELS])
     root_err = agree(rsaved, predict(units["root"], rXc), rt["y_pred_pooled_code"].to_numpy(int), f"{name} root target")
     frames = []
-    for a, t, br, rq, rte, p, y in ((areas, target, branch, "", route, saved, pred_code),
+    for a, t, br, rq, rte, p, y in ((areas, target, branch, "system", route, saved, pred_code),
                                     (rareas, target, np.full(len(rareas), "root", dtype=object), "root",
                                      np.full(len(rareas), "pooled_root", dtype=object), rsaved,
                                      rt["y_pred_pooled_code"].to_numpy(int))):
@@ -360,8 +363,9 @@ def build_run(out_root, run, runtime, per_unit=8):
         "full_cohort_check": {"total": total, "candidates": checks},
         "routing": {"table": "deps/routing.csv", "feature_order": "deps/feature_order.csv",
                     "rule": "correspondence_table area -> terminal partition booster; areas outside it -> xgb_root "
-                            "(root_unassigned_test_area); keys[branch_request] == 'root' asks for the root booster on "
-                            "any area (the pooled root arm, saved as root_target_predictions)",
+                            "(root_unassigned_test_area); keys[branch_request]: 'system' (default when absent) keeps "
+                            "that routing, 'root' asks for the root booster on any area (the pooled root arm, saved as "
+                            "root_target_predictions); other values are refused and the request is echoed",
                     "routes_in_version": ["terminal_branch", ROOT_ROUTE, "pooled_root"]},
         "runtime": {"linux": runtime},
         "code": {"loader": "thin reimplementation (correspondence routing, native_xgb.clean/proba, argmax) accepted by replay"},
