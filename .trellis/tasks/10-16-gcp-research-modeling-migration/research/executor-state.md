@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 04:57 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 05:01 EDT by `date`
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `418da0e`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `e972207`. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -27,7 +27,9 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - service launcher/rehearsal 2791308 + workspace roles/assistant end-to-end 733f2c0 + corrections d84dabd;
   - Somalia v1 50c2b38; window-probe comparators efdaea3 + input binding 62bc2a7;
   - role overlap fix f49520a; pop-v1 6d95905;
-  - guard Gemini 3.8 contract da40998; window provenance tests afc020a; sqlimport b93429b; training harness + IPCCH adapter 418da0e.
+  - guard Gemini 3.8 contract da40998; window provenance tests afc020a; sqlimport b93429b; training harness + IPCCH adapter 418da0e;
+  - pop-v1 route/support + frozen bindings 3c47cc5; harness project binding + failed-trial MLflow 7bd3921; dropbox interop retry e972207.
+  - Uncommitted native work: `research_cloud/training/ipcch_features.py`, `trial_package.py`, and the `ipcch_quartet.py` package wiring.
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
@@ -56,10 +58,10 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - `scratch/p1/popv1_models.json`.
 - **SKU catalogs:** `scratch/p3/skus/*.json`.
 - **Background processes:**
-  - The SQL import rehearsal (PID 2615250, started with the pre-fix code; start time not recorded by `date`) loads into `scratch/pg-rehearsal` DB `research`; log `scratch/sqlimport/run.log`, report `scratch/sqlimport/report.json`. When it finishes, rerun only the failed tables with `--only` using the fixed code (63-byte header mapping, verbatim header read, irregular-row sidecar).
+  - pop-v1 rebuild at `3c47cc5` (`/tmp/round_pop2.sh`, log `scratch/replay/round-pop3.log`; it skips completed packages and ends with a one-package smoke replay into `scratch/replay/popv1-smoke`). The full replay is the supervisor's after the rebuild.
+  - The SQL import was **stopped** (supervisor S27: table-name collisions). Its tables in `research` are not accepted.
   - The disposable PG (`pg_ctl` PID 1262386) is running.
-  - Rehearsal service servers are stopped.
-- **Registered-repo git lock:** `.git/index.lock` (0 bytes) has existed since 04:21:04, with no git process in WSL or Windows. It is not the executor's, and it was not removed; it blocks evidence commits. The prepared but uncommitted evidence is the P2e checkpoint note, the pop-v1/window-probe/Somalia v1 receipts, the service reports, the confirm-onset receipt, the ledger, the cloud-operations update and this file.
+- **Registered-repo lock:** the stale 0-byte `.git/index.lock` (04:21:04, no live git) was moved to `preservation/stale-index.lock-0421`. Evidence was committed in `a99e84c`.
 
 ## Status by phase
 
@@ -117,6 +119,37 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - Preserve all extant material.
   - Label the 18 missing regional boosters and the 3,746 of 22,872 unreplayable rows.
   - No substitute retraining.
+
+## Pending corrections (supervisor S27, `sql-training-checkpoint-supervisor.md`)
+
+**SQL importer** (`research_cloud/sqlimport/load_inputs.py`; a full rewrite is drafted but not yet written, because the file must be re-read first):
+- Table naming:
+  - stable names of the form prefix + `_sha8(id)`, at most 63 bytes including `__irregular_rows`;
+  - a whole-inventory uniqueness preflight before any DDL (five colliding groups were found).
+- Typing:
+  - ID columns (`area_id`, `FEWSNET_admin_code`, `*_id`, `*_code`, `fid`, non-date key columns) stay text;
+  - integers of more than 18 digits, or beyond 2^53 in float columns, stay text.
+- Verification: a streaming whole-table typed cell comparison inside the load transaction; a failed check rolls back, so no unverified table is committed.
+- Report: keyed by id, with `--only` merging into it, and each run reconciling the full expected set (verified / failed / not imported).
+- Then rebuild and reconcile all tables locally; the earlier capacity figures are not accepted.
+
+**Training harness/adapter:**
+- Parameters: reject a fixed∩space intersection (a space default can currently override a fixed seed).
+- Output: a unique per-job/trial output subprefix (`CLOUD_ML_JOB_ID` / `CLOUD_ML_TRIAL_ID`, refusing an existing `trial.json`).
+- Provenance: persist the resolved config, fixed and default parameters, and input identities before `fit`.
+- Objective: enforce the adapter's documented `crisis_f1` objective and non-empty folds.
+- Validation:
+  - check raw integer phases and keys before int casts;
+  - require the exact rich561 ordered schema (the frozen `ordered_names`) and the `origin_ord` / `horizon_months` metadata.
+- Testing: test the installed `cloudml-hypertune` reporter (it emits strings; parse them as float).
+
+**AC5 chain:**
+- `ipcch_features.py` generated H3 rich561 on Linux from the hashed base inputs:
+  - keys are identical to P6;
+  - X differs only in 12,576 cells / 45 entropy-derived columns, at most 1.7e-16 absolute (512 ULPs), with no NaN-pattern changes (`scratch/training/features-h03/comparison-detail.json`).
+- The trial on that snapshot produced a portable package (geoxgb format) that replays 48/48 at 1.1e-16.
+- MLflow linkage failed with a SQLite URI (mlflow-skinny has no SQL registry); redo it against the local rehearsal MLflow server over HTTP with a job-writer identity.
+- The FEWS adapter is not written yet (`fews-adapter-groups-supervisor.md`, `training-adapter-source-supervisor.md`).
 
 ## Next actions (in order)
 
