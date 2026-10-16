@@ -107,12 +107,12 @@ steps = {"fews": [["research_cloud.training.fews_features", "--manifest", "/work
 for s in steps:
     subprocess.run(b + ["/usr/local/bin/python", "-m"] + s, check=True)
 P
-ls $OUT/trial/*/                               # trial.json (status, params, metrics, input/code hashes), metrics.json, package/
+ls $OUT/trial/*/trial-0/                       # trial.json (status, params, metrics, input/code hashes), metrics.json, package/
 ```
 
 - **Reference objectives** with the unchanged code and config: FEWS crisis_f1 `0.7915766738660908`; IPCCH (rounds=50) `0.8626907073509015`. A different value after your change is your change.
 - **Trial parameters:** `--param name=value`, repeatable; the Vertex form `--name=value` is also accepted.
-- **Replay the produced package** in the same sandbox: `/usr/local/bin/python -m research_cloud.packages.replay /out/trial/<id>/package --report /out/replay.json`.
+- **Replay the produced package** in the same sandbox: `/usr/local/bin/python -m research_cloud.packages.replay /out/trial/<local-job>/trial-0/package --report /out/replay.json`.
 - **Unit tests:** run only the tests for what you changed, in that family's image or environment. The service venv lacks the scientific packages and the PostgreSQL fixture, so a whole-suite run there is not a meaningful gate.
 - **Commit.** Images are built only from a committed, clean `research_cloud`.
 
