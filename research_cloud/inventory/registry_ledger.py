@@ -21,12 +21,16 @@ import json
 import os
 import sqlite3
 
+from research_cloud.packages.common import sha256_file
+
 TAGS = ("family", "arm", "arm_kind", "arm_role", "lead_months", "seed", "window", "zz_original_arm",
         "zz_prov.projection_key", "zz_prov.version_key", "zz_prov.source_key", "feature_set", "snapshot")
 
 
 def classify(row, statuses, pkg, replay, resolution, experiment):
     if pkg and pkg["status"] == "complete" and replay and replay["replay_passed"]:
+        if replay.get("package_json_sha256") != pkg.get("package_json_sha256"):
+            return "packaged_replay_stale", "replay receipt was produced for a different package.json than the current package"
         return "packaged_replay_passed", None
     if row.get("arm_kind") == "reused_comparator" and not resolution:
         return "needs_resolution", ("reused comparator: the underlying weight identity is not established; "
@@ -104,12 +108,14 @@ def load_inputs(args):
     for pj in glob.glob(f"{args.packages}/*/package.json"):
         m = json.load(open(pj))
         packages[m["identity"].get("logged_model_id")] = {"package": os.path.dirname(pj), "status": m["status"],
-                                                           "content_sha256": m["content_sha256"], "gaps": m["gaps"]}
+                                                           "content_sha256": m["content_sha256"], "gaps": m["gaps"],
+                                                           "package_json_sha256": sha256_file(pj)}
     replays = {}
     for path in args.replays:
         for r in json.load(open(path)):
             replays[r["logged_model_id"]] = {"replay_passed": r["replay_passed"], "reference_rows": r["reference_rows"],
-                                             "max_abs_err": r["max_abs_err"], "replay_summary": path}
+                                             "max_abs_err": r["max_abs_err"], "replay_summary": path,
+                                             "package_json_sha256": r.get("package_json_sha256")}
     resolutions = json.load(open(args.resolutions)) if args.resolutions else {}
     return member_status, plan_members, packages, replays, resolutions
 

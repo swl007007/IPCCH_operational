@@ -46,6 +46,15 @@ class LedgerCoverage(unittest.TestCase):
                              {"m-c": {"ledger_class": "weights_retained_package_pending", "evidence": "linked"}})
         self.assertEqual([r for r in rows if r["registered_model"] == "C"][0]["ledger_class"], "weights_retained_package_pending")
 
+    def test_stale_replay_receipt_does_not_pass(self):
+        pkg = {"package": "/p", "status": "complete", "content_sha256": "c", "gaps": [], "package_json_sha256": "new"}
+        good = {"replay_passed": True, "reference_rows": 1, "max_abs_err": 0.0, "package_json_sha256": "new"}
+        stale = dict(good, package_json_sha256="old")
+        rows = rl.build_rows(self.db, {"fam": {"x": "verified"}}, {}, {"m-a": pkg}, {"m-a": good}, {})
+        self.assertEqual([r for r in rows if r["logged_model_id"] == "m-a"][0]["ledger_class"], "packaged_replay_passed")
+        rows = rl.build_rows(self.db, {"fam": {"x": "verified"}}, {}, {"m-a": pkg}, {"m-a": stale}, {})
+        self.assertEqual([r for r in rows if r["logged_model_id"] == "m-a"][0]["ledger_class"], "packaged_replay_stale")
+
     def test_key_mismatch_is_fatal(self):
         rows = rl.build_rows(self.db, {"fam": {}}, {}, {}, {}, {})
         with self.assertRaises(SystemExit):

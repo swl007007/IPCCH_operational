@@ -112,8 +112,10 @@ def main(argv=None):
     ap.add_argument("--report", required=True)
     args = ap.parse_args(argv)
     t0 = time.time()
+    from research_cloud.packages.common import sha256_file
+    package_json_sha = sha256_file(os.path.join(args.package, "package.json"))
     problems = verify_package(args.package)
-    out = {"package": os.path.abspath(args.package), "integrity_problems": problems,
+    out = {"package": os.path.abspath(args.package), "package_json_sha256": package_json_sha, "integrity_problems": problems,
            "runtime": {"python": platform.python_version(), "platform": platform.platform()}}
     if not problems:
         import xgboost
