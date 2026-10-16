@@ -14,6 +14,10 @@ resolves the experiment from the proxy path. For every package (idempotent; an e
    path>/package/<rel>``; the copy's md5/crc32c must equal the source object's and the transfer receipt's local
    hashes. Receipts are JSONL;
 3. the run is tagged with the copied file count and ended FINISHED.
+Every invocation re-reads each source (must still be the transferred generation and hashes; the copy is made from that
+generation) and each destination; receipts are never trusted on their own. ``--verify`` is the read-only final
+reconciliation used for acceptance: one FINISHED run per package with the expected tags, every source and destination
+re-read against the transfer receipts, and exactly the expected number of runs in the experiment.
 Historical copied runs, registered model versions and the original ``packages/`` objects are only read.
 
   python -m research_cloud.deploy.publish_packages --url URL --packages DIR --receipts R.jsonl
@@ -57,6 +61,35 @@ def source_links(name, meta, registry):
     return links
 
 
+def copy_one(bucket, transfer, name, run_id, prefix, rel, write=True):
+    """Copy (or, with write=False, only check) one package file. Every call re-reads the current source and
+    destination: the source must still be the transferred object (generation, md5, crc32c of its receipt) and the
+    copy is made from exactly that generation, create-only; the destination must then hold the receipt's md5/crc32c.
+    Receipts are never trusted on their own."""
+    from google.api_core.exceptions import PreconditionFailed
+    src_name, dst_name = f"packages/{name}/{rel}", f"{prefix}/{rel}"
+    row = {"package": name, "run_id": run_id, "src": src_name, "dst": dst_name}
+    rec = transfer.get(src_name)
+    src = bucket.get_blob(src_name)
+    if rec is None or src is None or src.generation != rec["generation"] or src.md5_hash != rec["local_md5"] \
+            or src.crc32c != rec["local_crc32c"]:
+        return {**row, "status": "refused: source object is not the transferred generation/hashes"}
+    dst = bucket.get_blob(dst_name)
+    state = "present (re-verified)"
+    if dst is None:
+        if not write:
+            return {**row, "source_generation": src.generation, "status": "missing"}
+        try:
+            bucket.copy_blob(src, bucket, dst_name, source_generation=rec["generation"], if_generation_match=0)
+        except PreconditionFailed:
+            pass
+        dst, state = bucket.get_blob(dst_name), "copied"
+    ok = dst is not None and dst.md5_hash == rec["local_md5"] and dst.crc32c == rec["local_crc32c"]
+    return {**row, "source_generation": src.generation, "bytes": dst.size if dst else None,
+            "md5": dst.md5_hash if dst else None, "crc32c": dst.crc32c if dst else None,
+            "generation": dst.generation if dst else None, "status": f"verified ({state})" if ok else "conflict"}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     for k in ("--url", "--packages", "--receipts", "--transfer-receipts", "--registry-ledger", "--image-map", "--out"):
@@ -65,6 +98,7 @@ def main(argv=None):
     ap.add_argument("--expect-files", type=int, required=True)
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--only", action="append", default=[], help="pilot: only these packages (coverage checks skipped)")
+    ap.add_argument("--verify", action="store_true", help="read-only final reconciliation: no run/tag/object writes")
     args = ap.parse_args(argv)
     from google.cloud import storage
     from mlflow.tracking import MlflowClient
@@ -91,9 +125,6 @@ def main(argv=None):
         raise SystemExit(f"coverage: {len(names)} packages, expected {args.expect_packages}")
     exp = client.get_experiment_by_name(EXPERIMENT)
     exp_id = exp.experiment_id if exp else client.create_experiment(EXPERIMENT)
-    done = set()
-    if os.path.exists(args.receipts):
-        done = {json.loads(line)["dst"] for line in open(args.receipts) if '"status": "verified' in line}
     lock, out = threading.Lock(), open(args.receipts, "a")
     report = {"experiment_id": exp_id, "packages": {}}
     total_files = 0
@@ -113,6 +144,8 @@ def main(argv=None):
             run = found[0]
             if run.data.tags.get("package.json_sha256") != meta["_package_json_sha256"]:
                 raise SystemExit(f"{name}: existing run binds another package.json; refusing")
+        elif args.verify:
+            raise SystemExit(f"{name}: no package run")
         else:
             run = client.create_run(exp_id, run_name=name, tags=tags)
         prefix = "mlflow-artifacts/" + run.info.artifact_uri.split("mlflow-artifacts:/", 1)[1].strip("/") + "/package"
@@ -120,24 +153,7 @@ def main(argv=None):
         total_files += len(files)
 
         def copy(rel):
-            src_name, dst_name = f"packages/{name}/{rel}", f"{prefix}/{rel}"
-            if dst_name in done:
-                return None
-            src = bucket.get_blob(src_name)
-            rec = transfer.get(src_name)
-            row = {"package": name, "run_id": run.info.run_id, "src": src_name, "dst": dst_name}
-            if src is None or rec is None or src.md5_hash != rec["local_md5"] or src.crc32c != rec["local_crc32c"]:
-                return {**row, "status": "refused: source object/receipt mismatch"}
-            from google.api_core.exceptions import PreconditionFailed
-            try:
-                bucket.copy_blob(src, bucket, dst_name, if_generation_match=0)
-            except PreconditionFailed:
-                pass
-            dst = bucket.get_blob(dst_name)
-            ok = dst is not None and dst.md5_hash == rec["local_md5"] and dst.crc32c == rec["local_crc32c"]
-            return {**row, "bytes": dst.size if dst else None, "md5": dst.md5_hash if dst else None,
-                    "crc32c": dst.crc32c if dst else None, "generation": dst.generation if dst else None,
-                    "status": "verified (copied)" if ok else "conflict"}
+            return copy_one(bucket, transfer, name, run.info.run_id, prefix, rel, write=not args.verify)
 
         with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
             results = [r for r in pool.map(copy, files) if r]
@@ -147,6 +163,15 @@ def main(argv=None):
                 out.write(json.dumps(r) + "\n")
             out.flush()
         bad = [r for r in results if not r["status"].startswith("verified")]
+        if args.verify:
+            tag_diff = sorted(k for k, v in {**tags, "package.files": str(len(files))}.items() if run.data.tags.get(k) != v)
+            report["packages"][name] = {"run_id": run.info.run_id, "files": len(files), "bad": len(bad),
+                                        "tag_mismatch": tag_diff, "finished": run.info.status == "FINISHED"}
+            report.setdefault("problems", []).extend(
+                [f"{name}: {len(bad)} files"] * bool(bad) + [f"{name}: tags {tag_diff}"] * bool(tag_diff)
+                + [f"{name}: run {run.info.status}"] * (run.info.status != "FINISHED"))
+            print(json.dumps({"package": name, "verified_files": len(files) - len(bad), "bad": len(bad)}), flush=True)
+            continue
         if bad:
             raise SystemExit(f"{name}: {len(bad)} copies not verified; run left open")
         for k, v in tags.items():
@@ -161,9 +186,16 @@ def main(argv=None):
     if not args.only and total_files != args.expect_files:
         raise SystemExit(f"coverage: {total_files} files, expected {args.expect_files}")
     report["files"] = total_files
+    if args.verify:
+        runs = client.search_runs([exp_id], max_results=1000)
+        report["runs_in_experiment"] = len(runs)
+        if not args.only and len(runs) != args.expect_packages:
+            report.setdefault("problems", []).append(f"experiment holds {len(runs)} runs, expected {args.expect_packages}")
+        report["verified"] = not report.get("problems")
     json.dump(report, open(args.out, "w"), indent=1)
-    print(json.dumps({"packages": len(report["packages"]), "files": total_files, "experiment_id": exp_id}))
-    return 0
+    print(json.dumps({"packages": len(report["packages"]), "files": total_files, "experiment_id": exp_id,
+                      "verified": report.get("verified")}))
+    return 1 if args.verify and not report["verified"] else 0
 
 
 if __name__ == "__main__":
