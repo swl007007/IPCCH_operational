@@ -1,0 +1,6 @@
+{"file":".trellis/tasks/10-16-gcp-research-modeling-migration/prd.md","reason":"Approved requirements D1-D11, scope, cost and acceptance"}
+{"file":".trellis/tasks/10-16-gcp-research-modeling-migration/execution-authorization.md","reason":"Active-goal authorization, Herdr identity and supervisor checkpoints; no repeated in-scope cloud approval"}
+{"file":".trellis/tasks/10-16-gcp-research-modeling-migration/design.md","reason":"Data, MLflow, Linux, permissions, tolerance and cutover contracts"}
+{"file":".trellis/tasks/10-16-gcp-research-modeling-migration/implement.md","reason":"Dependency-ordered phases, per-operation cloud review and verification gates"}
+{"file":".trellis/tasks/10-16-gcp-research-modeling-migration/research/local-baseline-discovery.md","reason":"Pinned local baseline evidence and known missing-weight/input limitations"}
+{"file":".trellis/tasks/10-16-gcp-research-modeling-migration/research/migration-mechanics.md","reason":"Existing helpers, historical locks, assistant failure path and scientific pipeline guards"}

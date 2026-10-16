@@ -1,0 +1,30 @@
+{
+  "id": "gcp-research-modeling-migration",
+  "name": "gcp-research-modeling-migration",
+  "title": "Plan GCP research modeling migration",
+  "description": "Specify GCP research migration: FEWS NET GeoXGB and IPCCH base inputs, all retained historical models, MLflow and read-only assistant, Linux training and native WSL development.",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "William Shi",
+  "assignee": "William Shi",
+  "createdAt": "2026-10-16",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "feat/october-cloud-delivery",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/tasks/10-16-gcp-research-modeling-migration/prd.md",
+    ".trellis/tasks/10-16-gcp-research-modeling-migration/design.md",
+    ".trellis/tasks/10-16-gcp-research-modeling-migration/implement.md"
+  ],
+  "notes": "D1-D11 and final planning approved through the active goal on 2026-10-16. In-scope cloud authority and Herdr executor recorded in execution-authorization.md. Await audit lifecycle start; no target-project operation yet.",
+  "meta": {}
+}
