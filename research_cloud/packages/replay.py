@@ -32,15 +32,17 @@ def load_entry(package_dir):
     return module.load(package_dir)
 
 
-def decode(star):
-    """Phase from projected shares: 1 + number of q_k >= 0.20 with the monotone vector (P6 contract)."""
+def decode(star, threshold=THRESHOLD):
+    """Highest phase k+2 whose score q_k >= threshold, else 1. For the monotone projected quartets (GeoXGB,
+    AlphaEarth) this equals 1 + count; for raw unprojected forecasting scores it is the families' own
+    highest-crossing rule (IPCCH origin_safe.classify_cumulative), not a count."""
     phase = np.ones(len(star), dtype=np.int64)
     for k in range(4):
-        phase = np.where(star[:, k] >= THRESHOLD, k + 2, phase)
+        phase = np.where(star[:, k] >= threshold, k + 2, phase)
     return phase
 
 
-def compare(expected, raw, star, phase):
+def compare(expected, raw, star, phase, threshold=THRESHOLD):
     """Every value checked; boundary drift accepted only when the new phase is the correct decode of
     the new projected vector, each changed crossing's reference score lies within that reference's
     tolerance of 0.20, and every continuous output of the row passes."""
@@ -67,14 +69,14 @@ def compare(expected, raw, star, phase):
                                                 "failures": int((~ok).sum())}
     ref_phase = expected["phase"].to_numpy()
     ref_star = expected[[f"{q}_star" for q in TARGETS]].to_numpy(dtype=np.float64)
-    decoded_new_ok = decode(star) == phase
-    decoded_ref_ok = decode(ref_star) == ref_phase
+    decoded_new_ok = decode(star, threshold) == phase
+    decoded_ref_ok = decode(ref_star, threshold) == ref_phase
     report["checks"].update(new_phase_decodes=int((~decoded_new_ok).sum()) == 0,
                             reference_phase_decodes=int((~decoded_ref_ok).sum()) == 0)
     phase_ok = decoded_new_ok & decoded_ref_ok
     for i in np.flatnonzero(phase != ref_phase):
-        changed = np.flatnonzero((star[i] >= THRESHOLD) != (ref_star[i] >= THRESHOLD))
-        near = all(abs(ref_star[i, k] - THRESHOLD) <= ABS_TOL + REL_TOL * abs(ref_star[i, k]) for k in changed)
+        changed = np.flatnonzero((star[i] >= threshold) != (ref_star[i] >= threshold))
+        near = all(abs(ref_star[i, k] - threshold) <= ABS_TOL + REL_TOL * abs(ref_star[i, k]) for k in changed)
         accepted = bool(len(changed)) and near and bool(row_ok[i]) and bool(phase_ok[i])
         phase_ok[i] = accepted
         report["phase_changes"].append({"row": int(i), "ref_phase": int(ref_phase[i]), "new_phase": int(phase[i]),
@@ -87,18 +89,17 @@ def compare(expected, raw, star, phase):
     return report
 
 
-def check_output(got, expected):
+def check_output(got, expected, key_columns=("admin_code", "target_ord"), threshold=THRESHOLD):
     """Exact keys/order/routing first; numeric comparison only on a correctly keyed output."""
-    keys_ok = (len(got) == len(expected)
-               and np.array_equal(got["admin_code"].to_numpy(), expected["admin_code"].to_numpy())
-               and np.array_equal(got["target_ord"].to_numpy(), expected["target_ord"].to_numpy()))
+    keys_ok = len(got) == len(expected) and all(
+        np.array_equal(got[k].to_numpy(), expected[k].to_numpy()) for k in key_columns)
     if not keys_ok:
         return {"passed": False, "error": "output keys/order differ from the requested reference keys",
                 "checks": {"keys_and_order": False}}
     mismatch = (got["unit"].to_numpy() != expected["unit"].to_numpy()) | \
                (got["route"].to_numpy() != expected["route"].to_numpy())
     result = compare(expected, got[[f"{q}_raw" for q in TARGETS]].to_numpy(),
-                     got[[f"{q}_star" for q in TARGETS]].to_numpy(), got["phase"].to_numpy())
+                     got[[f"{q}_star" for q in TARGETS]].to_numpy(), got["phase"].to_numpy(), threshold)
     result["checks"]["keys_and_order"] = True
     result["routing_mismatches"] = int(mismatch.sum())
     if mismatch.any():
@@ -130,8 +131,10 @@ def main(argv=None):
             out["error"] = (f"reference contract violated: inputs {X.shape}, expected rows {len(expected)}, "
                             f"feature_order {n_features}")
         else:
-            got = model.predict(expected[["admin_code", "target_ord"]], X)
-            out.update(check_output(got, expected))
+            key_columns = meta.get("loader", {}).get("keys", ["admin_code", "target_ord"])
+            got = model.predict(expected[key_columns], X)
+            threshold = float(meta.get("loader", {}).get("phase_threshold", THRESHOLD))
+            out.update(check_output(got, expected, key_columns, threshold))
     out["passed"] = bool(out.get("passed")) and not problems and "error" not in out
     out["seconds"] = round(time.time() - t0, 2)
     with open(args.report, "w") as f:
