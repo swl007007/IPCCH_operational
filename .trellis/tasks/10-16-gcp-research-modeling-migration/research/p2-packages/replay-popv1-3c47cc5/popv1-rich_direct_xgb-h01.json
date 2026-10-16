@@ -1,0 +1,49 @@
+{
+ "package": "/home/swl007007/projects/food-crisis-research/packages/popv1-rich_direct_xgb-h01",
+ "package_json_sha256": "fbdec3e2eb246477bbd0dfa6e120afff5ee315ae44c559fef7ff108732319c95",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "arm": "rich_direct_xgb",
+  "config_id": "X1",
+  "horizon_months": 1,
+  "registry": "unregistered retained research run (package per arm x horizon)",
+  "run": "pop-v1"
+ },
+ "rows": 965,
+ "columns": {
+  "raw_score": {
+   "max_abs_err": 1.8626451232101049e-09,
+   "mean_abs_err": 1.9302620248083145e-12,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "crisis_score": {
+   "max_abs_err": 1.8626451232101049e-09,
+   "mean_abs_err": 1.9302620248083145e-12,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "decision": {
+   "max_abs_err": 0.0,
+   "mean_abs_err": 0.0,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true,
+  "exact_support": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 6.72
+}
