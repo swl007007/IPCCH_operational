@@ -51,6 +51,7 @@ def config_int(config, *path):
 def _modules(config):
     src = os.environ.get("IPCCH_GEOXGB_SRC", config.get("geoxgb_src", ""))
     if src and src not in sys.path:
+        sys.dont_write_bytecode = True   # never write __pycache__ into a source/artifact tree
         sys.path.insert(0, src)
     return tuple(importlib.import_module(f"ipcch_geoxgb.{m}") for m in ("quartet", "projection", "metrics", "modelstore"))
 

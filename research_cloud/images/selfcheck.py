@@ -48,6 +48,7 @@ def service():
 
 
 def training(image):
+    sys.dont_write_bytecode = True
     from research_cloud.training.common import adapter_identity
     writable(os.environ["HOME"])
     writable("/tmp/hypertune")

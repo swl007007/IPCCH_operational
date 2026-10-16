@@ -39,6 +39,7 @@ ROLES = ("fit_variant", "eval", "target")
 def modules(src):
     for p in (src, os.path.join(src, "scripts")):
         if p not in sys.path:
+            sys.dont_write_bytecode = True   # never write __pycache__ into the source tree
             sys.path.insert(0, p)
     import run_experiment as rx
     from src.experiment import availability as av, plan, stage3

@@ -56,6 +56,7 @@ def make_run(root):
             members.append({"path": f"models/{d[:2]}/{d}/{name}", "bytes": len(b), "sha256": hashlib.sha256(b).hexdigest()})
     json.dump(members, open(f"{root}/members.json", "w"))
     import sys
+    sys.dont_write_bytecode = True   # SRC is an original MLflow artifact: read only
     sys.path.insert(0, SRC)
     from ipcch_geoxgb import projection, quartet
     rows = []

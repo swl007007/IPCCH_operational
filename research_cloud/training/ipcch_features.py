@@ -34,6 +34,7 @@ HORIZONS = {1, 3, 6, 12}
 
 def modules(src):
     if src not in sys.path:
+        sys.dont_write_bytecode = True   # never write __pycache__ into a source/artifact tree
         sys.path.insert(0, src)
     names = ("targets", "features", "prepare", "geography", "contract", "artifacts")
     return {n: importlib.import_module(f"ipcch_geoxgb.{n}") for n in names}

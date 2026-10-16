@@ -123,6 +123,7 @@ def crlf_panel_sha(sp, availability_digest):
 def fews_modules(src):
     for p in (src, os.path.join(src, "scripts")):
         if p not in sys.path:
+            sys.dont_write_bytecode = True   # never write __pycache__ into the source tree
             sys.path.insert(0, p)
     import run_experiment as rx
     from src.experiment import availability as av, stage3 as s3

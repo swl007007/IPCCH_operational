@@ -35,6 +35,7 @@ def modules(config):
     src = os.environ.get("FEWS_SRC", config.get("fews_src", ""))
     for p in (src, os.path.join(src, "scripts")):
         if p and p not in sys.path:
+            sys.dont_write_bytecode = True   # never write __pycache__ into the source tree
             sys.path.insert(0, p)
     from src.experiment import plan
     from src.metrics import fourclass
