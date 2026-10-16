@@ -50,9 +50,20 @@ class InputChain(unittest.TestCase):
     def test_information_status_from_arm_contract_not_path(self):
         ordinary = fb.information_status({"manifest": self.manifest, "horizon": 0, "arm": "compact_baseline"}, ["f"])
         oracle = fb.information_status({"manifest": self.manifest, "horizon": 0, "arm": "compact_weather_oracle"}, ["f", "oracle_prcp_o1"])
-        self.assertEqual(ordinary["status"], "origin_safe_ordinary")
+        self.assertEqual(ordinary["status"], "no_declared_oracle_input")
         self.assertEqual(oracle["status"], "oracle_realized_future_information")
         self.assertEqual(fb.information_status({"run_id": "launch"}, ["f"])["status"], "undeclared")
+        absent = fb.information_status({"manifest": self.manifest, "horizon": 0, "arm": "not_in_manifest"}, ["f"])
+        self.assertEqual(absent["status"], "undeclared")
+
+    def test_original_runtime_never_taken_from_the_current_loader(self):
+        import xgboost
+        unknown = fb.original_runtime({"horizon": 0})
+        self.assertTrue(unknown["xgboost"].startswith("unknown"))
+        self.assertNotEqual(unknown["xgboost"], xgboost.__version__)
+        recorded = fb.original_runtime({"fingerprint_payload": {"xgboost": "3.0.0"}})
+        self.assertEqual(recorded, {"xgboost": "3.0.0", "source": "run_metadata fingerprint_payload"})
+        self.assertFalse(hasattr(fb, "booster_version"))
 
 
 class HighestCrossingDecode(unittest.TestCase):

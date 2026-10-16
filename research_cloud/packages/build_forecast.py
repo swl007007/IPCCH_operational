@@ -21,7 +21,7 @@ BATCH_KEYS = ("compact_global_original", "compact_somalia_original", "compact_gl
               "compact_somalia_2026_extension", "origin_safe_climate_idp_v1", "origin_safe_weather_oracle_v1",
               "compact_global_launch", "compact_somalia_launch")
 RUNTIME = {"python": "3.12", "xgboost": "3.2.0", "numpy": "2.3.5", "pandas": "3.0.3", "scikit-learn": "1.9.0", "scipy": "1.17.1", "env": "rt-forecast-x320",
-           "note": "numpy/pandas/scikit-learn/scipy from IPCCH uv.lock (python>=3.11 markers); boosters embed xgboost 3.2.0, which the lock does not pin"}
+           "note": "numpy/pandas/scikit-learn/scipy from IPCCH uv.lock (python>=3.11 markers); xgboost is not pinned by the lock: 3.2.0 is the loader tested here, matching run metadata where recorded"}
 
 
 def main():

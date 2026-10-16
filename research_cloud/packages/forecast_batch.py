@@ -153,28 +153,36 @@ def resolve_dataset(run_metadata, horizon, arm):
     return ds["path"], ds["sha256"], chain
 
 
+VINTAGE_LIMITATION = ("inputs are the model-ready tables as built (revised/latest-vintage sources); real-time vintages "
+                      "are not certified by this migration")
+
+
 def information_status(run_metadata, features):
-    """Oracle status from the manifest arm contract (declared ``appended`` oracle inputs actually served), never from
-    the source path. Without a manifest arm contract the status is recorded as undeclared."""
+    """Oracle-input status from the manifest arm contract only (declared ``appended`` oracle inputs actually served),
+    never from the source path. It says nothing about data vintages (see ``VINTAGE_LIMITATION``). Without the named
+    arm's contract the status is undeclared."""
     manifest_path, _ = resolve_manifest(run_metadata) if ("manifest" in run_metadata or "extension_manifest" in run_metadata) else (None, None)
     if manifest_path is None:
-        return {"status": "undeclared", "evidence": "no model-ready manifest arm contract for this run"}
-    arm = json.load(open(manifest_path))["horizons"][str(run_metadata["horizon"])].get("arms", {}).get(run_metadata["arm"], {})
-    appended = arm.get("appended") or []
+        return {"status": "undeclared", "evidence": "no model-ready manifest for this run"}
+    arms = json.load(open(manifest_path))["horizons"][str(run_metadata["horizon"])].get("arms", {})
+    if run_metadata.get("arm") not in arms:
+        return {"status": "undeclared", "evidence": f"manifest has no contract for arm {run_metadata.get('arm')}"}
+    appended = arms[run_metadata["arm"]].get("appended") or []
     if isinstance(appended, str):
         appended = json.loads(appended.replace("'", '"'))
     served = [f for f in appended if f in features and f.startswith("oracle_")]
     if served:
         return {"status": "oracle_realized_future_information", "evidence": f"manifest arm {run_metadata['arm']} appends {len(served)} oracle inputs, all served",
                 "oracle_features": served}
-    return {"status": "origin_safe_ordinary", "evidence": f"manifest arm {run_metadata['arm']} serves no appended oracle input"}
+    return {"status": "no_declared_oracle_input", "evidence": f"manifest arm {run_metadata['arm']} declares no appended oracle input that is served"}
 
 
-def booster_version(path):
-    import xgboost as xgb
-    booster = xgb.Booster()
-    booster.load_model(path)
-    return ".".join(str(x) for x in json.loads(bytes(booster.save_raw("json")))["version"])
+def original_runtime(run_metadata):
+    """Original-runtime evidence from the run's own records only. Re-serializing a booster through the current
+    xgboost reports the LOADER's version, not the original bytes', so it is never used here."""
+    payload = recorded_payload(run_metadata)
+    return {"xgboost": payload.get("xgboost", "unknown (not recorded in run metadata)"),
+            "source": "run_metadata fingerprint_payload" if "xgboost" in payload else "none"}
 
 
 def build(out_dir, *, ipcch_root, plan_version, version_key, source_key, version, runtime, per_unit=32):
@@ -230,8 +238,6 @@ def build(out_dir, *, ipcch_root, plan_version, version_key, source_key, version
     missing_units = sorted(set(pred["unit"]) - set(units))
     gaps += [f"saved predictions reference unit {u} with no boosters" for u in missing_units]
 
-    embedded = {unit: sorted({booster_version(os.path.join(ipcch_root, m["path"])) for m in files.values()})
-                for unit, files in units.items()}
     b = PackageBuilder(out_dir)
     for unit, files in sorted(units.items()):
         for name, m in sorted(files.items()):
@@ -270,6 +276,7 @@ def build(out_dir, *, ipcch_root, plan_version, version_key, source_key, version
         "family": version.get("family"), "identity": version, "source_key": source_key, "version_key": version_key,
         "lead_months": int(run_meta.get("horizon", 0)), "arm": run_meta.get("arm") or run_meta.get("run_id"),
         "information": information_status(run_meta, features),
+        "vintage_limitation": VINTAGE_LIMITATION,
         "source_vintage": {"source_key": source_key, "family": version.get("family")},
         "status": "complete" if not gaps else "retained_weights_missing_dependencies", "gaps": gaps,
         "fitted_units": len(units),
@@ -282,9 +289,8 @@ def build(out_dir, *, ipcch_root, plan_version, version_key, source_key, version
                                        "IPCCH src/ipcch/origin_safe.py:328-336 classify_cumulative"],
                  "producing_code_recorded": {k: run_meta.get(k) for k in ("git_head", "git_status_porcelain") if k in run_meta}
                                             | {"code_sha256": recorded_payload(run_meta).get("code_sha256", "not recorded")}},
-        "runtime": {"original": {"xgboost_recorded": recorded_payload(run_meta).get("xgboost", "not recorded"),
-                                 "booster_embedded_versions_by_unit": embedded},
-                    "linux": runtime},
+        "runtime": {"original": original_runtime(run_meta),
+                    "linux_loader_tested": runtime},
         "loader": {"entry": "loader/entry.py", "keys": KEYS, "call": "load(package_dir).predict(keys[area_id,year,month], X)",
                    "inputs": f"float64 rows ({len(features)} features) in deps/features.json order; NaN = missing",
                    "phase_threshold": float(run_meta.get("phase_threshold", 0.2)),
