@@ -35,11 +35,18 @@ class FakeBlob:
 
 
 class FakeBucket:
-    def __init__(self):
-        self.store = {}
+    def __init__(self, name="bucket-a"):
+        self.store, self.name = {}, name
 
     def blob(self, name):
         return FakeBlob(self.store, name)
+
+    def get_blob(self, name):
+        if name not in self.store:
+            return None
+        b = FakeBlob(self.store, name)
+        b.reload()
+        return b
 
 
 class Transfer(unittest.TestCase):
@@ -70,6 +77,79 @@ class Transfer(unittest.TestCase):
         rec = transfer.transfer_one(FakeBucket(), self.entry)
         self.assertTrue(rec["status"].startswith("rejected"))
         self.assertNotIn("generation", rec)                                              # never uploaded
+
+
+class Main(unittest.TestCase):
+    def setUp(self):
+        import google.api_core.exceptions as gexc
+        self._orig = gexc.PreconditionFailed
+        gexc.PreconditionFailed = PreconditionFailed
+        self.dir = tempfile.mkdtemp()
+        self.root = os.path.join(self.dir, "root")
+        os.makedirs(self.root)
+        open(os.path.join(self.root, "a.bin"), "wb").write(b"payload-1")
+        from research_cloud.inventory import preservation_manifest as pm
+        self.manifest = os.path.join(self.dir, "m.json")
+        pm.main(["--root", self.root, "--out", self.manifest])
+        self.receipts = os.path.join(self.dir, "r.jsonl")
+
+    def tearDown(self):
+        import google.api_core.exceptions as gexc
+        gexc.PreconditionFailed = self._orig
+
+    def run_main(self, bucket, *extra):
+        import contextlib
+        import io
+        import json
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = transfer.main(["--bucket", bucket.name, "--receipts", self.receipts, "--from-preservation",
+                                self.manifest, "--prefix", "p", "--workers", "2", *extra], bucket=bucket)
+        return rc, json.loads(out.getvalue().strip().splitlines()[-1])
+
+    def test_receipts_never_skip_without_fresh_identity_checks(self):
+        bucket = FakeBucket("bucket-a")
+        self.assertEqual(self.run_main(bucket)[1]["counts"], {"verified": 1})
+        rc, s = self.run_main(bucket)                          # unchanged: resumed after fresh checks
+        self.assertEqual((rc, s["attempted"]), (0, 0))
+        rc, s = self.run_main(FakeBucket("bucket-b"))           # same receipt, new empty bucket: not skipped
+        self.assertEqual((rc, s["attempted"], s["counts"]), (0, 1, {"verified": 1}))
+        open(os.path.join(self.root, "a.bin"), "wb").write(b"payload-X")   # same-size local drift
+        rc, s = self.run_main(bucket)
+        self.assertEqual((rc, s["attempted"], s["counts"]), (1, 1, {"rejected": 1}))
+
+    def test_verify_mode_and_coverage(self):
+        bucket = FakeBucket()
+        self.run_main(bucket)
+        rc, s = self.run_main(bucket, "--verify", os.path.join(self.dir, "v.json"))
+        self.assertEqual((rc, s["complete"], s["counts"]), (0, True, {"verified": 1}))
+        rc, s = self.run_main(FakeBucket("empty"), "--verify", os.path.join(self.dir, "v2.json"))
+        self.assertEqual((rc, s["complete"]), (1, False))
+        with self.assertRaises(SystemExit):
+            self.run_main(bucket, "--expect-files", "2")
+
+    def test_incomplete_sources_are_refused(self):
+        import json
+        m = json.load(open(self.manifest))
+        json.dump({**m, "complete": False}, open(self.manifest, "w"))
+        with self.assertRaises(transfer.TransferError):
+            self.run_main(FakeBucket())
+        pkgs = os.path.join(self.dir, "packages")
+        os.makedirs(os.path.join(pkgs, "no-manifest"))
+        with self.assertRaises(transfer.TransferError):
+            transfer.from_packages(pkgs, "packages")
+
+    def test_torn_tail_recovered_malformed_line_refused(self):
+        bucket = FakeBucket()
+        self.run_main(bucket)
+        good = open(self.receipts).read()
+        open(self.receipts, "w").write(good + '{"object": "p/a.bin", "sta')      # torn last write
+        rc, s = self.run_main(bucket)
+        self.assertEqual(rc, 0)
+        self.assertTrue(os.path.exists(self.receipts + ".tail"))
+        open(self.receipts, "w").write('{"broken"\n' + good)                     # malformed complete line
+        with self.assertRaises(transfer.TransferError):
+            self.run_main(bucket)
 
 
 if __name__ == "__main__":

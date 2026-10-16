@@ -11,8 +11,13 @@ For every entry ``{"local", "object", "sha256", "bytes"}`` of a transfer list:
    object, bytes, local sha256/md5/crc32c, cloud md5/crc32c and the object generation.
 
 An object that already exists is accepted only if its server md5/crc32c and declared sha256 equal this file's (a
-resumed transfer); anything else is a conflict. Receipts are JSONL, one line per object, appended as each finishes;
-a rerun skips objects with a verified receipt. Originals are only read.
+resumed transfer); anything else is a conflict. Receipts are JSONL (with the bucket), one line per object, appended as
+each finishes. A rerun skips an object only if its verified receipt matches the bucket/object/path/manifest identity
+AND the current local bytes and the remote generation/checksums still equal it; a torn last line is set aside and its
+object re-verified; malformed complete lines stop the run. ``--verify REPORT`` is the final fresh verification of every
+entry (current local bytes vs manifest, remote generation/md5/crc32c/declared sha256; no writes) used for acceptance.
+Builders refuse incomplete preservation manifests and package directories without package.json; ``--expect-files``
+checks coverage. Originals are only read.
 
 Transfer lists are built from: a preservation manifest (``--from-preservation MANIFEST --prefix P``), the input
 inventory (``--from-inventory``), or package directories (``--from-packages DIR``).
@@ -39,6 +44,10 @@ class TransferError(Exception):
 
 def from_preservation(manifest_path, prefix):
     m = json.load(open(manifest_path))
+    if not m.get("complete") or m.get("walk_errors") or any(not c.get("ok") for c in m.get("recorded_checks", [])):
+        raise TransferError(f"{manifest_path}: preservation manifest is not complete (walk errors or failed checks)")
+    if not m["files"] or len(m["files"]) != m["totals"]["files"]:
+        raise TransferError(f"{manifest_path}: no files, or the file list disagrees with its totals")
     root = m["root"]
     return [{"local": os.path.join(root, f["path"]), "object": f"{prefix.rstrip('/')}/{f['path']}", "sha256": f["sha256"],
              "bytes": f["bytes"], "manifest": os.path.basename(manifest_path)} for f in m["files"]]
@@ -51,6 +60,8 @@ def from_inventory(inventory_path, prefix):
         for e in block["files"]:
             if e["path"] in seen:          # shared files appear in both namespaces; transferred once
                 continue
+            if not e.get("match") or e.get("local_status") != "local":
+                raise TransferError(f"{e['id']}: inventory entry is not a local, hash-matched file; refusing")
             seen.add(e["path"])
             out.append({"local": e["path"], "object": f"{prefix.rstrip('/')}/{e['id']}/{os.path.basename(e['path'])}",
                         "sha256": e["actual_sha256"], "bytes": e["actual_bytes"], "manifest": "input-inventory"})
@@ -62,7 +73,7 @@ def from_packages(packages_dir, prefix, names=None):
     for name in sorted(names or os.listdir(packages_dir)):
         pj = os.path.join(packages_dir, name, "package.json")
         if not os.path.exists(pj):
-            continue
+            raise TransferError(f"{name}: package directory without package.json; refusing an incomplete package set")
         meta = json.load(open(pj))
         files = dict(meta["files"])
         for rel, rec in sorted(files.items()):
@@ -91,7 +102,7 @@ def local_hashes(path):
 def transfer_one(bucket, entry):
     from google.api_core.exceptions import PreconditionFailed
     local = local_hashes(entry["local"])
-    record = {"local": entry["local"], "object": entry["object"], "manifest": entry.get("manifest"),
+    record = {"bucket": bucket.name, "local": entry["local"], "object": entry["object"], "manifest": entry.get("manifest"),
               "bytes": local["bytes"], "local_sha256": local["sha256"], "local_md5": local["md5"],
               "local_crc32c": local["crc32c"], "declared_sha256": entry["sha256"]}
     if local["sha256"] != entry["sha256"] or local["bytes"] != entry["bytes"]:
@@ -112,14 +123,62 @@ def transfer_one(bucket, entry):
     return record
 
 
-def done_objects(receipts):
-    if not os.path.exists(receipts):
-        return set()
-    return {json.loads(line)["object"] for line in open(receipts) if line.strip()
-            and json.loads(line)["status"].startswith("verified")}
+def read_receipts(path):
+    """Receipt records; an incomplete final line (interrupted write) is moved to PATH.tail and its object is simply
+    re-verified; any malformed complete line stops the run."""
+    if not os.path.exists(path):
+        return []
+    data = open(path, "rb").read()
+    lines = data.split(b"\n")
+    records = []
+    for i, line in enumerate(lines):
+        if not line.strip():
+            continue
+        try:
+            records.append(json.loads(line))
+        except ValueError:
+            if i == len(lines) - 1 and not data.endswith(b"\n"):          # torn tail only
+                with open(path + ".tail", "ab") as f:
+                    f.write(line + b"\n")
+                with open(path, "wb") as f:
+                    f.write(data[: len(data) - len(line)])
+                break
+            raise TransferError(f"{path}: malformed receipt line {i + 1}")
+    return records
 
 
-def main(argv=None):
+def resumable(bucket, entry, rec):
+    """A previous verified receipt counts only for the same bucket/object/manifest identity AND after re-checking the
+    current local bytes and the remote object's generation and server checksums against it."""
+    if not (rec.get("status", "").startswith("verified") and rec.get("bucket") == bucket.name
+            and rec.get("object") == entry["object"] and rec.get("local") == entry["local"]
+            and rec.get("declared_sha256") == entry["sha256"] and rec.get("bytes") == entry["bytes"]):
+        return False
+    local = local_hashes(entry["local"])
+    if (local["sha256"], local["md5"], local["crc32c"]) != (entry["sha256"], rec["local_md5"], rec["local_crc32c"]):
+        return False
+    blob = bucket.get_blob(entry["object"])
+    return bool(blob) and (blob.generation, blob.md5_hash, blob.crc32c) == (rec["generation"], rec["local_md5"], rec["local_crc32c"])
+
+
+def verify_one(bucket, entry, rec):
+    """Final fresh verification (no writes): current local bytes vs the frozen manifest and the receipt, and the
+    remote object's generation, server md5/crc32c and declared sha256."""
+    local = local_hashes(entry["local"])
+    blob = bucket.get_blob(entry["object"])
+    out = {"bucket": bucket.name, "object": entry["object"], "local_sha256": local["sha256"],
+           "manifest_sha256": entry["sha256"], "receipt_generation": (rec or {}).get("generation")}
+    if blob is None:
+        return {**out, "status": "missing remote object"}
+    out.update(generation=blob.generation, cloud_md5=blob.md5_hash, cloud_crc32c=blob.crc32c,
+               cloud_declared_sha256=(blob.metadata or {}).get("sha256"))
+    ok = (local["sha256"] == entry["sha256"] and local["bytes"] == entry["bytes"] and blob.md5_hash == local["md5"]
+          and blob.crc32c == local["crc32c"] and out["cloud_declared_sha256"] == entry["sha256"]
+          and (rec is None or rec.get("generation") == blob.generation))
+    return {**out, "status": "verified" if ok else "mismatch"}
+
+
+def main(argv=None, bucket=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--bucket", required=True)
     ap.add_argument("--receipts", required=True)
@@ -129,6 +188,8 @@ def main(argv=None):
     ap.add_argument("--prefix", required=True)
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--verify", metavar="REPORT", help="final fresh verification of every entry (no writes)")
+    ap.add_argument("--expect-files", type=int, help="coverage: the transfer list must hold exactly this many files")
     args = ap.parse_args(argv)
     if args.from_preservation:
         entries = from_preservation(args.from_preservation, args.prefix)
@@ -140,10 +201,21 @@ def main(argv=None):
         raise SystemExit("one transfer-list source is required")
     if len({e["object"] for e in entries}) != len(entries):
         raise SystemExit("transfer list maps two files to one object")
-    done = done_objects(args.receipts)
+    if args.expect_files is not None and len(entries) != args.expect_files:
+        raise SystemExit(f"coverage: {len(entries)} transfer entries, expected {args.expect_files}")
+    if bucket is None:
+        from google.cloud import storage
+        bucket = storage.Client(project=PROJECT, client_options={"quota_project_id": PROJECT}).bucket(args.bucket)
+    receipts = {}
+    for rec in read_receipts(args.receipts):
+        if rec.get("object") and rec.get("status", "").startswith("verified"):
+            receipts[rec["object"]] = rec
+    if args.verify:
+        return run_verify(bucket, entries, receipts, args)
+    with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
+        resumed = list(pool.map(lambda e: e["object"] in receipts and resumable(bucket, e, receipts[e["object"]]), entries))
+    done = {e["object"] for e, ok in zip(entries, resumed) if ok}
     todo = [e for e in entries if e["object"] not in done][: args.limit]
-    from google.cloud import storage
-    bucket = storage.Client(project=PROJECT, client_options={"quota_project_id": PROJECT}).bucket(args.bucket)
     lock, counts, t0 = threading.Lock(), {}, time.time()
     with open(args.receipts, "a") as out, concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
         futures = {pool.submit(transfer_one, bucket, e): e for e in todo}
@@ -163,6 +235,22 @@ def main(argv=None):
                "bytes_attempted": sum(e["bytes"] for e in todo), "seconds": round(time.time() - t0, 1)}
     print(json.dumps(summary))
     return 0 if set(counts) <= {"verified"} else 1
+
+
+def run_verify(bucket, entries, receipts, args):
+    t0 = time.time()
+    with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
+        results = list(pool.map(lambda e: verify_one(bucket, e, receipts.get(e["object"])), entries))
+    counts = {}
+    for r in results:
+        counts[r["status"]] = counts.get(r["status"], 0) + 1
+    report = {"bucket": bucket.name, "entries": len(entries), "counts": counts,
+              "bytes": sum(e["bytes"] for e in entries), "seconds": round(time.time() - t0, 1),
+              "complete": counts.get("verified", 0) == len(entries), "objects": results}
+    with open(args.verify, "w") as f:
+        json.dump(report, f, indent=1)
+    print(json.dumps({k: v for k, v in report.items() if k != "objects"}))
+    return 0 if report["complete"] else 1
 
 
 if __name__ == "__main__":
