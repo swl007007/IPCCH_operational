@@ -62,6 +62,9 @@ def lines(skus):
         "data) + incrementals of a mostly static research DB, reserved at ~2.7x measured data; reconcile with billed usage")
     add("platform", "Cloud SQL public IPv4 reservation, 744 h", ("sql.json", 3944, "3151-8F6A-75C1"), 744,
         "included conservatively; applicability to an attached instance IP unverified")
+    add("platform", "Cloud SQL internet egress, input-import verification readback 16 GiB", ("sql.json", 2798, "238B-D94B-7243"),
+        16, "one-time: the research-input import's every-cell COPY TO readback through the Auth Proxy to the workstation "
+        "(~12.8 GiB CSV-equivalent + geometry/catalog reads); added before the import ran", one_time=True)
     # Cloud Run MLflow service (max 1 instance, min 0, 1 vCPU / 2 GiB, request-based)
     add("platform", "Cloud Run CPU, 60 active h x 1 vCPU", ("run.json", 229, "4856-B847-F1EB"), 60 * 3600, "research use estimate")
     add("platform", "Cloud Run memory, 60 active h x 2 GiB", ("run.json", 8, "02A2-9231-36A6"), 60 * 3600 * 2, "research use estimate")
