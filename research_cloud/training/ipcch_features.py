@@ -8,12 +8,16 @@ origin O = T - H). P6's ``run_prepare`` Windows/runtime guards are not used and 
 
 Output: ``keys_hHH.csv.gz``, ``X_rich561_hHH.npy``, ``feature_order.csv``, ``audit.json`` and ``manifest.json``
 (sha256 of each file; directly usable as a trial input manifest). ``--compare`` takes a manifest of an existing
-prepared bundle (e.g. P6's) and records whether keys and X are identical (NaN positions included).
+prepared bundle (e.g. P6's) and compares the two saved bundles: keys by decompressed bytes, X by the loaded arrays
+(NaN positions included). ``--compare-only DIR`` re-runs that comparison for an existing snapshot without rebuilding
+it and writes ``DIR/comparison.json``.
 
   python -m research_cloud.training.ipcch_features --manifest BASE.json --horizon 3 --output DIR [--compare P6.json]
+  python -m research_cloud.training.ipcch_features --compare-only DIR --compare P6.json
 """
 import argparse
 import gzip
+import hashlib
 import importlib
 import json
 import os
@@ -65,14 +69,72 @@ def build(inputs, horizon, src):
     return X, keys, audit, schema, source_identity(m, src)
 
 
+def keys_bytes(path):
+    with gzip.open(path, "rb") as f:
+        return f.read()
+
+
+def compare_saved(saved, reference_manifest, workdir):
+    """Compare the two SAVED bundles (never the in-memory frames): keys by decompressed bytes, then per column of
+    the re-read CSVs when the bytes differ; X by the loaded arrays (NaN positions included)."""
+    ref, _ = resolve_inputs(reference_manifest, workdir)
+    a_bytes, b_bytes = keys_bytes(saved["keys"]), keys_bytes(ref["keys"])
+    keys_identical = a_bytes == b_bytes
+    differing_key_columns = []
+    if not keys_identical:
+        a, b = pd.read_csv(saved["keys"]), pd.read_csv(ref["keys"])
+        differing_key_columns = sorted(set(a.columns) ^ set(b.columns))
+        if len(a) != len(b):
+            differing_key_columns.append("<row count>")
+        else:
+            differing_key_columns += [c for c in a.columns if c in b.columns
+                                      and a[c].astype(str).tolist() != b[c].astype(str).tolist()]
+    x, rx = np.load(saved["X"], mmap_mode="r"), np.load(ref["X"], mmap_mode="r")
+    comparison = {"reference": os.path.abspath(reference_manifest), "compared": "saved artifacts on both sides",
+                  "keys_identical": keys_identical,
+                  "keys_decompressed_sha256": hashlib.sha256(a_bytes).hexdigest(),
+                  "reference_keys_decompressed_sha256": hashlib.sha256(b_bytes).hexdigest(),
+                  "differing_key_columns": differing_key_columns,
+                  "X_sha256_equal": sha256_file(saved["X"]) == sha256_file(ref["X"]),
+                  "shape": list(x.shape), "reference_shape": list(rx.shape)}
+    same_shape = x.shape == rx.shape
+    comparison["X_identical"] = bool(same_shape and np.array_equal(np.asarray(x), np.asarray(rx), equal_nan=True))
+    if same_shape and not comparison["X_identical"]:
+        x, rx = np.asarray(x, dtype=np.float64), np.asarray(rx, dtype=np.float64)
+        nan_a, nan_b = np.isnan(x), np.isnan(rx)
+        diff = ~((x == rx) | (nan_a & nan_b))
+        both = diff & ~nan_a & ~nan_b
+        abs_err = np.abs(x[both] - rx[both])
+        comparison.update(differing_cells=int(diff.sum()), differing_columns=int(diff.any(axis=0).sum()),
+                          nan_pattern_differs=bool((nan_a != nan_b).any()),
+                          max_abs_diff=float(abs_err.max()) if abs_err.size else 0.0,
+                          max_rel_diff=float((abs_err / np.maximum(np.abs(rx[both]), np.finfo(float).tiny)).max()) if abs_err.size else 0.0)
+    return comparison
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--manifest", required=True, help="base inputs: raw_panel, country_lookup")
-    ap.add_argument("--horizon", type=int, required=True)
-    ap.add_argument("--output", required=True)
+    ap.add_argument("--manifest", help="base inputs: raw_panel, country_lookup")
+    ap.add_argument("--horizon", type=int)
+    ap.add_argument("--output")
     ap.add_argument("--geoxgb-src", default=os.environ.get("IPCCH_GEOXGB_SRC"))
     ap.add_argument("--compare")
+    ap.add_argument("--compare-only", metavar="DIR", help="compare an existing snapshot's saved files; no rebuild")
     args = ap.parse_args(argv)
+    if args.compare_only:
+        if not args.compare:
+            raise SystemExit("--compare-only needs --compare")
+        files = json.load(open(os.path.join(args.compare_only, "manifest.json")))["files"]
+        for role, entry in files.items():
+            if sha256_file(entry["uri"]) != entry["sha256"]:
+                raise SystemExit(f"{role}: saved file no longer matches the snapshot manifest")
+        comparison = compare_saved({r: e["uri"] for r, e in files.items()}, args.compare, args.compare_only)
+        with open(os.path.join(args.compare_only, "comparison.json"), "w") as f:
+            json.dump(comparison, f, indent=1)
+        print(json.dumps(comparison))
+        return 0
+    if not (args.manifest and args.horizon is not None and args.output):
+        raise SystemExit("--manifest, --horizon and --output are required to build a snapshot")
     if args.horizon not in HORIZONS:
         raise SystemExit(f"horizon must be one of {sorted(HORIZONS)} (H0 would read contemporaneous labels)")
     if os.path.exists(args.output):
@@ -95,31 +157,7 @@ def main(argv=None):
                                  "recipe": "targets.build_target_ledger -> valid_targets; features.load_covariate_panel -> "
                                            "build_panel_grid; build_history_index; prepare.build_horizon"},
                 "files": {k: {"uri": os.path.abspath(p), "sha256": sha256_file(p)} for k, p in out.items()}}
-    comparison = None
-    if args.compare:
-        ref, _ = resolve_inputs(args.compare, args.output)
-        rk = pd.read_csv(ref["keys"])
-        rx = np.load(ref["X"], mmap_mode="r")
-        differing_key_columns = sorted(set(rk.columns) ^ set(keys.columns))
-        if rk.shape == keys.shape:
-            for c in keys.columns:
-                if c in rk.columns:
-                    a, b = rk[c], keys[c]
-                    numeric = pd.api.types.is_numeric_dtype(a) and pd.api.types.is_numeric_dtype(b)
-                    same = (np.array_equal(a.to_numpy(dtype=np.float64), b.to_numpy(dtype=np.float64), equal_nan=True) if numeric
-                            else a.astype(str).tolist() == b.astype(str).tolist())
-                    if not same:
-                        differing_key_columns.append(c)
-        same_keys = rk.shape == keys.shape and not differing_key_columns
-        same_x = rx.shape == X.shape and np.array_equal(np.asarray(rx), X, equal_nan=True)
-        comparison = {"reference": os.path.abspath(args.compare), "keys_identical": bool(same_keys),
-                      "keys_compared": "every column (targets q2..q5, phase/crisis truth, country, horizon, origin, persistence)",
-                      "differing_key_columns": differing_key_columns, "X_identical": bool(same_x),
-                      "X_sha256_equal": snapshot["files"]["X"]["sha256"] == sha256_file(ref["X"]),
-                      "shape": list(X.shape), "reference_shape": list(rx.shape)}
-        if not same_x and rx.shape == X.shape:
-            diff = ~((np.asarray(rx) == X) | (np.isnan(rx) & np.isnan(X)))
-            comparison.update(differing_cells=int(diff.sum()), differing_columns=int(diff.any(axis=0).sum()))
+    comparison = compare_saved(out, args.compare, args.output) if args.compare else None
     with open(os.path.join(args.output, "audit.json"), "w") as f:
         json.dump({"horizon": args.horizon, "rows": int(len(keys)), "audit": audit, "comparison": comparison,
                    "runtime": runtime_identity(), "seconds": round(time.time() - t0, 1)}, f, indent=1, default=str)

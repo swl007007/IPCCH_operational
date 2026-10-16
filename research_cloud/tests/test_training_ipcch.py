@@ -72,3 +72,38 @@ class Boundaries(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SavedComparison(unittest.TestCase):
+    """Regression: the acceptance comparison reads both SAVED bundles; a frame that only round-trips through CSV
+    (floats re-parsed, ints widened) must not be reported as a key difference."""
+
+    def bundle(self, keys_text, X):
+        import gzip
+        d = tempfile.mkdtemp()
+        with gzip.GzipFile(f"{d}/keys.csv.gz", "wb", mtime=0) as f:
+            f.write(keys_text.encode())
+        np.save(f"{d}/X.npy", X)
+        files = {"keys": f"{d}/keys.csv.gz", "X": f"{d}/X.npy"}
+        manifest = f"{d}/manifest.json"
+        json.dump({"files": {r: {"uri": p, "sha256": common.sha256_file(p)} for r, p in files.items()}}, open(manifest, "w"))
+        return files, manifest
+
+    def test_saved_bytes_decide_keys_and_x_differences_are_measured(self):
+        from research_cloud.training import ipcch_features
+        text = "admin_code,q2,persistence_q3\n1,0.30000000000000004,\n2,0.1,0.25\n"
+        X = np.array([[1.0, np.nan], [2.0, 3.0]])
+        saved, _ = self.bundle(text, X)
+        _, same = self.bundle(text, X.copy())
+        c = ipcch_features.compare_saved(saved, same, tempfile.mkdtemp())
+        self.assertTrue(c["keys_identical"] and c["X_identical"] and c["X_sha256_equal"])
+        self.assertEqual(c["differing_key_columns"], [])
+        X2 = X.copy()
+        X2[1, 1] = np.nextafter(3.0, 4.0)
+        _, other = self.bundle(text.replace("0.25", "0.26"), X2)
+        c = ipcch_features.compare_saved(saved, other, tempfile.mkdtemp())
+        self.assertFalse(c["keys_identical"])
+        self.assertEqual(c["differing_key_columns"], ["persistence_q3"])
+        self.assertFalse(c["X_identical"])
+        self.assertEqual((c["differing_cells"], c["differing_columns"], c["nan_pattern_differs"]), (1, 1, False))
+        self.assertGreater(c["max_abs_diff"], 0)
