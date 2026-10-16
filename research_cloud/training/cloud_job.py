@@ -14,7 +14,10 @@ account, one replica of the quoted machine type, ``python -m <adapter> --manifes
 --output gs://<artifacts>/trials/<family>`` and, for HPT, the config's tuning space with the declared objective
 maximized, ``maxTrialCount``/``parallelTrialCount`` as given. Scheduling sets ``disableRetries: true`` (no retry
 after internal errors once the job runs; it also overrides ``restartJobOnWorkerRestart``, which alone only concerns
-restarting a whole distributed job) and the per-trial ``timeout``.
+restarting a whole distributed job) and the per-trial ``timeout``. With ``--mlflow-uri`` the command is the
+``vertex_launch.LAUNCHER`` source (reads the job writer's credential from Secret Manager at run time) followed by the
+adapter module, and the container env carries only non-secret settings (tracking URI, project, optional HPT parent
+run id); ``--mlflow-experiment`` is passed to the harness.
 
   python -m research_cloud.training.cloud_job manifest --local M.json --snapshot NAME --out CLOUD_M.json
   python -m research_cloud.training.cloud_job config --local C.json --out CLOUD_C.json
@@ -53,11 +56,20 @@ def cloud_config(local_path):
     return {k: v for k, v in c.items() if k not in HOST_KEYS}
 
 
-def spec(adapter, image, machine, manifest, config, family, timeout_s, hpt=None, objective=None, space=None):
+def spec(adapter, image, machine, manifest, config, family, timeout_s, hpt=None, objective=None, space=None,
+         mlflow_uri=None, experiment=None, parent_run=None):
     if "@sha256:" not in image:
         raise SystemExit("the image must be given by digest")
-    container = {"imageUri": image, "command": ["python", "-m", adapter],
-                 "args": ["--manifest", manifest, "--config", config, "--output", f"gs://{ARTIFACTS}/trials/{family}"]}
+    args = ["--manifest", manifest, "--config", config, "--output", f"gs://{ARTIFACTS}/trials/{family}"]
+    container = {"imageUri": image, "command": ["python", "-m", adapter], "args": args}
+    if mlflow_uri:
+        # MLflow linkage: the job writer's credential is read at run time by the launcher (never in the spec)
+        from research_cloud.training.vertex_launch import LAUNCHER
+        container = {"imageUri": image, "command": ["python", "-c", LAUNCHER, adapter],
+                     "args": args + ["--mlflow-experiment", experiment],
+                     "env": [{"name": "MLFLOW_TRACKING_URI", "value": mlflow_uri},
+                             {"name": "IPCCH_GCP_PROJECT", "value": PROJECT}]
+                     + ([{"name": "IPCCH_PARENT_RUN_ID", "value": parent_run}] if parent_run else [])}
     job_spec = {"workerPoolSpecs": [{"machineSpec": {"machineType": machine}, "replicaCount": "1",
                                      "containerSpec": container}],
                 "serviceAccount": TRAINER,
@@ -92,6 +104,9 @@ def main(argv=None):
         s.add_argument(k, required=True)
     s.add_argument("--timeout-s", type=int, required=True)
     s.add_argument("--hpt", type=int)
+    s.add_argument("--mlflow-uri")
+    s.add_argument("--mlflow-experiment")
+    s.add_argument("--parent-run")
     args = ap.parse_args(argv)
     if args.cmd == "manifest":
         out = cloud_manifest(args.local, args.snapshot)
@@ -100,7 +115,8 @@ def main(argv=None):
     else:
         cfg = json.load(open(args.local_config))
         out = spec(args.adapter, args.image, args.machine, args.manifest, args.config, args.family, args.timeout_s,
-                   args.hpt, cfg.get("objective"), cfg.get("space"))
+                   args.hpt, cfg.get("objective"), cfg.get("space"), args.mlflow_uri, args.mlflow_experiment,
+                   args.parent_run)
     with open(args.out, "w") as f:
         json.dump(out, f, indent=1)
     print(json.dumps({"wrote": args.out, "sha256": sha256_file(args.out)}))

@@ -37,6 +37,16 @@ class CloudJob(unittest.TestCase):
         self.assertIs(hpt["trialJobSpec"]["scheduling"]["disableRetries"], True)
         self.assertEqual(hpt["studySpec"]["metrics"], [{"metricId": "crisis_f1", "goal": "MAXIMIZE"}])
         self.assertEqual(hpt["studySpec"]["parameters"][0]["integerValueSpec"], {"minValue": 2, "maxValue": 4})
+        linked = cj.spec("research_cloud.training.m", "repo/img@sha256:" + "b" * 64, "n1-standard-4", "/gcs/a", "/gcs/b",
+                         "fam", 600, mlflow_uri="https://svc.run.app", experiment="exp", parent_run="r1")
+        c = linked["jobSpec"]["workerPoolSpecs"][0]["containerSpec"]
+        from research_cloud.training.vertex_launch import LAUNCHER
+        self.assertEqual(c["command"], ["python", "-c", LAUNCHER, "research_cloud.training.m"])
+        self.assertEqual(c["args"][-2:], ["--mlflow-experiment", "exp"])
+        env = {e["name"]: e["value"] for e in c["env"]}
+        self.assertEqual(env, {"MLFLOW_TRACKING_URI": "https://svc.run.app", "IPCCH_GCP_PROJECT": cj.PROJECT,
+                               "IPCCH_PARENT_RUN_ID": "r1"})
+        self.assertFalse({"MLFLOW_TRACKING_USERNAME", "MLFLOW_TRACKING_PASSWORD"} & set(env))   # read at run time only
 
 
 if __name__ == "__main__":
