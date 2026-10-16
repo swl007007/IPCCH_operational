@@ -1,0 +1,1 @@
+import os, sys; exec("try:\n    import research_cloud.service.hook\nexcept BaseException as e:\n    sys.stderr.write('ipcch service hook import failed: %r\\n' % (e,)); sys.stderr.flush(); os._exit(78)") if os.environ.get("IPCCH_SERVICE_HOOK") == "1" else None
