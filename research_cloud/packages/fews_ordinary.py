@@ -1,5 +1,5 @@
 """FEWS NET ordinary 162-column diagnostic runs: D35 global increment, D37 recency, D46 class weight, D47 stump,
-D48 known-origin and D38 persistence-margin roots (one package per run).
+D48 known-origin, D38 persistence-margin, D51 78-column history/calendar and D52 binary roots (one package per run).
 
 Each run fitted one four-class root booster per D34 root cell (``h{4,8,12}_{T}_{G}_r80_s42_e1pair``; 21 cells) and
 saved row predictions for its parts (``rows_C``, ``rows_E3`` and, where written, ``rows_S``/``rows_FIT``; D48 files
@@ -20,6 +20,11 @@ D38 differs only in its prediction input: its anchored boosters carry the ``geox
 per-row persistence base margin computed from the row's own ``hist_phase_o00`` (one of the 162 features), exactly as
 the producer computed it; the saved ``origin_phase`` must equal that feature. Its ``prior_only`` and ``posthoc`` columns
 are no-fit controls and are preserved, not packaged.
+
+D51 takes the same 162-column X; its boosters read the 78 columns of the run's ``feature_map.json`` (``selected_index``
+in global order, schema sha equal to D34's), a pure column take. D52's ``binary:logistic`` boosters return one crisis
+probability per row; ``call_binary = p_binary >= 0.5``. Its four-class ``p_original`` columns are D34's roots and are
+not fed to it.
 """
 import io
 import json
@@ -51,6 +56,12 @@ RUNS = {
                                                      "parts": ("C", "E3"), "suffix": "", "kind": "root refit with a per-row persistence base margin",
                                                      "margin": {"attr": "geoxgb_base_margin", "marker": "d38-persistence-lambda0.5-v1",
                                                                 "feature": "hist_phase_o00"}},
+    "geoxgb-d51-history-calendar-root-20261002": {"unit": "h78_root", "record": "h78_root.json", "arm": "h78",
+                                                   "parts": ("C", "E3", "FIT"), "suffix": "", "kind": "root refit on the 78 history/calendar columns",
+                                                   "projection": "feature_map.json"},
+    "geoxgb-d52-binary-root-20261002": {"unit": "binary_root", "record": "binary_root.json", "arm": "binary",
+                                         "parts": ("C", "E3", "FIT"), "suffix": "", "kind": "binary:logistic crisis root",
+                                         "binary": {"threshold": 0.5, "rule": "call_binary = p_binary >= 0.5 (d52_binary_root.THRESHOLD)"}},
 }
 MARGIN_RULE = ("lambda 0.5 prior from the row's own hist_phase_o00 (phase 5 -> code 3): known q = 0.625 own class, 0.125 "
                "others; margin = 0.5 + log(q) - mean(log(q)) as float32; missing origin exactly 0.5; set as the DMatrix "
@@ -93,6 +104,8 @@ class Model:
             self.boosters[cell] = b
         names = pd.read_csv(os.path.join(package_dir, "deps", "feature_order.csv"))["name"].tolist()
         self.n_features = len(names)
+        self.columns = (self.meta.get("projection") or {}).get("selected_index")   # D51: 78-column take
+        self.binary = self.meta.get("output") == "binary"                         # D52: scalar crisis probability
         self.margin = self.meta.get("base_margin")
         if self.margin:
             self.phase_col = names.index(self.margin["feature"])
@@ -107,16 +120,24 @@ class Model:
             raise ValueError(f"X must be (n, {self.n_features})")
         X[np.isinf(X)] = np.nan                      # native_xgb.clean
         keys = keys.reset_index(drop=True)
-        proba = np.full((len(keys), 4), np.nan)
+        proba = np.full((len(keys), 1 if self.binary else 4), np.nan)
         for cell, idx in keys.groupby("cell").indices.items():
             booster = self.boosters[cell]            # KeyError: not a cell of this run
-            dm = xgb.DMatrix(X[idx], missing=np.nan, nthread=4)
+            Xi = X[idx] if self.columns is None else X[idx][:, self.columns]
+            dm = xgb.DMatrix(Xi, missing=np.nan, nthread=4)
             if self.margin:                          # D38: per-row persistence margin from the row's own origin phase
                 dm.set_base_margin(persistence_margin(X[idx, self.phase_col]))
-            proba[idx] = booster.predict(dm)
+            pred = booster.predict(dm)
+            if pred.shape != ((len(idx),) if self.binary else (len(idx), 4)):
+                raise RuntimeError(f"{cell}: booster returned shape {pred.shape}")
+            proba[idx] = pred.reshape(len(idx), -1)
         out = keys[["cell", "area", "target_month"]].copy()
         out["unit"] = [self.meta["units"][c]["sha256"][:16] for c in keys["cell"]]
         out["route"] = keys["cell"].astype(str)
+        if self.binary:
+            out["p_binary"] = proba[:, 0]
+            out["call_binary"] = (proba[:, 0] >= self.meta["binary"]["threshold"]).astype(np.int64)
+            return out
         for k, label in enumerate(("1", "2", "3", "4或5")):
             out[f"p_{label}"] = proba[:, k]
         out["y_pred_code"] = np.argmax(proba, axis=1).astype(np.int64)   # first max wins
@@ -178,7 +199,7 @@ def cells():
     return [f"h{h}_{t}_{G_OF[h]}_r80_s42_e1pair" for h in (4, 8, 12) for t in DATES]
 
 
-def check_cell(run_dir, spec, cell, snapshots, identity):
+def check_cell(run_dir, spec, cell, snapshots, identity, columns=None):
     """Bind the cell's booster and snapshot, then re-predict every saved row; returns (unit, rows, X, check)."""
     import xgboost as xgb
     h = int(cell.split("_")[0][1:])
@@ -192,7 +213,7 @@ def check_cell(run_dir, spec, cell, snapshots, identity):
         raise PackageError(f"{cell}: D34 snapshot_h{h} differs from the run identity")
     booster = xgb.Booster()
     booster.load_model(bytearray(ubj.read_bytes()))
-    if booster.num_features() != len(snapshots.features):
+    if booster.num_features() != (len(columns) if columns else len(snapshots.features)):
         raise PackageError(f"{cell}: booster expects {booster.num_features()} features")
     margin = spec.get("margin")
     if margin and not (booster.attr(margin["attr"]) == margin["marker"] == record.get(f"{spec['unit']}_marker")):
@@ -214,7 +235,7 @@ def check_cell(run_dir, spec, cell, snapshots, identity):
         X = data[snapshots.features].to_numpy(dtype=np.float64, copy=True)
         Xc = X.copy()
         Xc[np.isinf(Xc)] = np.nan
-        dm = xgb.DMatrix(Xc, missing=np.nan, nthread=4)
+        dm = xgb.DMatrix(Xc[:, columns] if columns else Xc, missing=np.nan, nthread=4)
         if margin:
             phase = Xc[:, snapshots.features.index(margin["feature"])]
             saved_phase = rows["origin_phase"].to_numpy(dtype=np.float64)
@@ -222,16 +243,27 @@ def check_cell(run_dir, spec, cell, snapshots, identity):
                 raise PackageError(f"{cell}/{part}: saved origin_phase differs from the snapshot hist_phase_o00")
             dm.set_base_margin(persistence_margin(phase))
         proba = booster.predict(dm).astype(np.float64)
-        err = np.abs(rows[prob].to_numpy(dtype=np.float64) - proba)
-        decided = rows[f"y_{spec['arm']}"].to_numpy(int) == np.argmax(proba, axis=1)
+        binary = spec.get("binary")
+        if binary:
+            if proba.ndim != 1:
+                raise PackageError(f"{cell}: binary booster returned shape {proba.shape}")
+            err = np.abs(rows["p_binary"].to_numpy(dtype=np.float64) - proba)
+            decided = rows["call_binary"].to_numpy(int) == (proba >= binary["threshold"]).astype(int)
+        else:
+            err = np.abs(rows[prob].to_numpy(dtype=np.float64) - proba)
+            decided = rows[f"y_{spec['arm']}"].to_numpy(int) == np.argmax(proba, axis=1)
         check[part] = {"rows": int(len(rows)), "max_abs_err": float(err.max()), "decision_matches": int(decided.sum()),
                        "file_sha256": sha256_file(path)}
         if err.max() > 1e-6 or not decided.all():
             raise PackageError(f"{cell}/{part}: full-part check failed {check[part]}")
-        frame = rows[["area", "target_month"] + prob].copy()
-        frame.columns = ["area", "target_month"] + [f"p_{l}" for l in LABELS]
+        if binary:
+            frame = rows[["area", "target_month", "p_binary", "call_binary"]].copy()
+            frame["call_binary"] = frame["call_binary"].astype(np.int64)
+        else:
+            frame = rows[["area", "target_month"] + prob].copy()
+            frame.columns = ["area", "target_month"] + [f"p_{l}" for l in LABELS]
+            frame["y_pred_code"] = rows[f"y_{spec['arm']}"].to_numpy(np.int64)
         frame["part"] = part
-        frame["y_pred_code"] = rows[f"y_{spec['arm']}"].to_numpy(np.int64)
         frames.append(frame)
         Xs.append(X)
     unit = {"file": f"weights/{cell}.ubj", "sha256": digest, "record": f"deps/source/{cell}/{spec['record']}",
@@ -255,9 +287,21 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=64):
         raise PackageError(f"{run}: cell directories differ from the 21 D34 roots")
     names, schema_sha, features_sha = schema
     b = PackageBuilder(os.path.join(out_root, f"fews-{run}"))
+    columns, projection = None, None
+    if spec.get("projection"):   # D51: the run's own feature map, checked against D34's order
+        fmap_path = run_dir / spec["projection"]
+        fmap = json.load(open(fmap_path))
+        columns = [int(i) for i in fmap["selected_index"]]
+        if fmap["schema_sha256"] != schema_sha or fmap["selected_names"] != [names[i] for i in columns] \
+                or columns != sorted(columns) or len(columns) != 78:
+            raise PackageError(f"{run}: feature_map does not select 78 D34 columns in global order")
+        b.add_file(str(fmap_path), f"deps/source/{spec['projection']}")
+        projection = {"feature_map": f"deps/source/{spec['projection']}", "selected_index": columns,
+                      "selected_count": len(columns), "feature_map_sha256": sha256_file(fmap_path),
+                      "rule": "pure column take of the 162-column X in global order (d51 project())"}
     units, refs, inputs, checks = {}, [], [], {}
     for cell in expected:
-        unit, ubj, frame, X, check = check_cell(run_dir, spec, cell, snapshots, identity)
+        unit, ubj, frame, X, check = check_cell(run_dir, spec, cell, snapshots, identity, columns)
         b.add_file(str(ubj), unit["file"], unit["sha256"], None)
         b.add_file(str(run_dir / cell / spec["record"]), unit["record"])
         units[cell], checks[cell] = unit, check
@@ -265,8 +309,12 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=64):
         frame["unit"] = unit["sha256"][:16]
         frame["route"] = cell
         frame["row"] = np.arange(len(frame))
-        p = np.sort(frame[[f"p_{l}" for l in LABELS]].to_numpy(dtype=np.float64), axis=1)
-        ref = select_reference(frame, "unit", pd.Series(p[:, -1] - p[:, -2], index=frame.index),
+        if spec.get("binary"):
+            boundary = (frame["p_binary"] - spec["binary"]["threshold"]).abs()
+        else:
+            p = np.sort(frame[[f"p_{l}" for l in LABELS]].to_numpy(dtype=np.float64), axis=1)
+            boundary = pd.Series(p[:, -1] - p[:, -2], index=frame.index)
+        ref = select_reference(frame, "unit", boundary,
                                ["cell", "area", "target_month", "part"], per_unit=per_unit, cover_cols=("part",))
         refs.append(ref)
         inputs.append(X[ref["row"].to_numpy()])
@@ -279,8 +327,8 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=64):
     buf = io.BytesIO()
     np.save(buf, np.ascontiguousarray(np.vstack(inputs), dtype=np.float64), allow_pickle=False)
     b.add_bytes("reference/inputs.npy", buf.getvalue())
-    prob = [f"p_{l}" for l in LABELS]
-    b.add_bytes("reference/expected.csv", ref[["cell", "area", "target_month", "part", "unit", "route"] + prob + ["y_pred_code"]]
+    prob, decision = (["p_binary"], "call_binary") if spec.get("binary") else ([f"p_{l}" for l in LABELS], "y_pred_code")
+    b.add_bytes("reference/expected.csv", ref[["cell", "area", "target_month", "part", "unit", "route"] + prob + [decision]]
                 .to_csv(index=False, float_format="%.17g").encode())
     b.add_bytes("loader/entry.py", ENTRY.encode())
     total = {"rows": sum(v["rows"] for c in checks.values() for v in c.values()),
@@ -293,6 +341,7 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=64):
                      "producer_code": identity.get("producer_code"), "script_code": identity.get("script_code")},
         "fitted_units": len(units), "units": units,
         "base_margin": ({**spec["margin"], "rule": MARGIN_RULE} if spec.get("margin") else None),
+        "projection": projection, "output": "binary" if spec.get("binary") else "fourclass", "binary": spec.get("binary"),
         "binding": {"d34_features_schema_sha256": schema_sha, "d34_features_json_sha256": features_sha,
                     "snapshots": {f"h{h}": snapshots.get(h)[1] for h in (4, 8, 12)},
                     "rule": "unit sha256 == cell record; snapshot sha256 == identity.inputs[cell].snapshot"},
@@ -311,9 +360,11 @@ def build_run(out_root, run, snapshots, schema, runtime, per_unit=64):
                    "unserved_keys": "KeyError for a cell outside this run"},
         "preserved_not_packaged": "other arms' columns in the saved rows files (D34 original roots, p_root, D46 "
                                   "posthoc2x), fitting weights and per-part files beyond the reference sample",
-        "reference": {"rows": int(len(ref)), "per_unit_cap": per_unit, "compare_columns": prob + ["y_pred_code"],
+        "reference": {"rows": int(len(ref)), "per_unit_cap": per_unit,
+                      "compare_columns": prob + ([] if spec.get("binary") else ["y_pred_code"]),
+                      "exact_columns": ["call_binary"] if spec.get("binary") else [],
                       "parts_covered": sorted(ref["part"].unique()),
                       "selection": "per cell: part coverage, then half nearest an argmax tie, rest by key hash"},
-        "tolerance": {"declared_before_comparison": True, "continuous": "abs(new-ref) <= 1e-3 + 1e-3*abs(ref) for p_1..p_4",
-                      "decision": "y_pred_code exactly", "routing": "unit and route (= cell) exactly"},
+        "tolerance": {"declared_before_comparison": True, "continuous": f"abs(new-ref) <= 1e-3 + 1e-3*abs(ref) for {', '.join(prob)}",
+                      "decision": f"{decision} exactly", "routing": "unit and route (= cell) exactly"},
     })
