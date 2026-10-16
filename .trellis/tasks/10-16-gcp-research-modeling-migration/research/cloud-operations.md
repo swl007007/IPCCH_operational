@@ -78,3 +78,26 @@ Every command pins `--project=food-crisis-modeling-enso --billing-project=food-c
 | O-030 | ≈07:10 (after a 30 s wait) – 07:10:15 | `gcloud projects get-iam-policy` | target | read | 7 bindings. Service-account bindings: cloudbuild legacy SA `roles/cloudbuild.builds.builder`; agents for cloudbuild, containerregistry, pubsub, run; **default compute SA `roles/editor`** (granted automatically when Compute-dependent APIs were enabled) | none |
 
 **Flag (supervisor/user):** the default compute SA now holds project Editor (automatic Google behaviour, not a grant by us). The design forbids Editor/Owner for jobs and the assistant. No workload of ours will run as this SA: Cloud Build, Cloud Run and Vertex jobs get dedicated scoped SAs in G6. Removing the automatic Editor grant is a project-level IAM change outside the planned grants, so it is not done unilaterally; it is recommended if nothing else in the shared project relies on the default SA.
+
+## G6 — identities (2026-10-16)
+
+| ID | Time (EDT) | Operation | Consumer | Effect | Result | Cost |
+|---|---|---|---|---|---|---|
+| O-031 | 07:15:58 – 07:17:12 | `gcloud iam service-accounts create research-build / research-mlflow / research-trainer` (display names: image builds, MLflow service runtime, training jobs); then list | target | **write: 3 service accounts** (no roles yet) | all three created; listed alongside the default compute SA | none |
+| O-032 | 07:23:33 – 07:24:19 | `gcloud projects add-iam-policy-binding` ×3 (`--condition=None`): research-build and research-trainer `roles/logging.logWriter`; research-mlflow `roles/cloudsql.client`. Then get-iam-policy | target | **write: 3 project role bindings** (as in cloud-deployment-plan.md G6) | the policy shows exactly these research-* bindings | none |
+
+## G7 — storage and image repository (2026-10-16)
+
+Ledger: `/home/swl007007/projects/food-crisis-research/ledger/spend.sqlite` (operator host). Before creation, the platform pool for 2026-10 admitted:
+- `G7-gcs-storage-ops-2026-10`: USD 2.27;
+- `G7-gcs-initial-class-a`: USD 0.85;
+- `G7-artifact-registry-2026-10`: USD 1.10.
+
+Committed total: USD 4.22 of 100. These are reservations, not actual cost.
+
+| ID | Time (EDT) | Operation | Consumer | Effect | Result | Cost |
+|---|---|---|---|---|---|---|
+| O-033 | 07:24:53 – 07:25:36 | `gcloud storage buckets create gs://food-crisis-modeling-enso-research-inputs` and `…-research-artifacts` (`--location=us-central1 --default-storage-class=STANDARD --uniform-bucket-level-access --public-access-prevention --soft-delete-duration=7d`) | target | **write: 2 buckets** | created; describe shows US-CENTRAL1, STANDARD, uniform access true, PAP enforced, soft delete 604800 s | storage by usage (reserved above) |
+| O-034 | 07:25:36 – 07:26:52 | `gcloud artifacts repositories create research --repository-format=docker --location=us-central1`; describes | target | **write: AR repository** | `projects/food-crisis-modeling-enso/locations/us-central1/repositories/research`, DOCKER, STANDARD_REPOSITORY, Google-managed key | storage by usage (reserved above) |
+| O-035 | 07:27:09 – 07:27:46 | `gcloud storage buckets create gs://food-crisis-modeling-enso-research-build` (same flags) + `buckets update --lifecycle-file` (Delete at age 7 days) | target | **write: build-staging bucket + lifecycle** | created; lifecycle Delete age 7 confirmed by describe | negligible (≈4.5 MB contexts) |
+| O-036 | 07:27:46 – 07:30:38 | bucket IAM: artifacts → research-mlflow `objectUser`, research-trainer `objectCreator`; inputs → research-trainer `objectViewer`; build → research-build `objectViewer`. Repo `research` → research-build `artifactregistry.writer`. Then get-iam-policy of each bucket | target | **write: 5 resource-scoped bindings** | the policies show exactly these research-* bindings | none |
