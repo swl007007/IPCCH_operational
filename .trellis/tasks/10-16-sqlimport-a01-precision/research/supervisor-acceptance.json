@@ -1,0 +1,36 @@
+{
+  "task": "sqlimport-a01-precision",
+  "finding": "gcp-research-modeling-migration-A01",
+  "status": "technical_acceptance; independent close audit pending",
+  "native_commit": "1d9c21d1cf2020accae336de49721b175c025fcf",
+  "registered_merge": "b93f9c8",
+  "research_cloud_tree": "bd2d781d31076c95e4192b4d2fc76e17c0342701",
+  "code_review": "Reviewed the two-file diff from 6ee56f5. infer_types carries the existing conservative integer precision rule across chunks; pure-bigint and ordinary double behavior is preserved. No serving or training path invokes this importer.",
+  "supervisor_tests": {
+    "command": "RC_TEST_PG='host=/home/swl007007/projects/food-crisis-research/scratch/pg-rehearsal/sock port=55432 user=postgres' PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. /home/swl007007/projects/food-crisis-research/envs/mlflow-svc/bin/python -m pytest -q research_cloud/tests/test_sqlimport.py",
+    "cwd": "/home/swl007007/projects/food-crisis-research/control-plane",
+    "exit_code": 0,
+    "passed": 13,
+    "skipped": 0,
+    "seconds": 0.78
+  },
+  "exposure": {
+    "receipt": "exposure/exposure-receipt.json",
+    "sha256": "8d1bb0c7e233ad1e1488ff0afde4c3dfa48b8576e3879b7859677c53492d22d4",
+    "files": 53,
+    "bytes_covered": 13763421380,
+    "verification": "Supervisor independently joined the complete receipt ID set to the frozen inventory and final import report: all 53 IDs, table identities, source byte counts and source SHA256 values agree; every receipt reports full hash/byte equality. Reviewed the scanning code, including non-consuming field boundaries, cloud column catalog use and exact parsing of multiline records. The full source scan was executed by the executor and was not repeated by the supervisor.",
+    "candidate_fields": 0,
+    "class1_type_change_fields": 0,
+    "class2_precision_loss_fields": 0,
+    "class3_lexical_edges": 0,
+    "multiline_records_explicitly_examined": 429,
+    "decision": "No A01-triggering source values found; no cloud data repair needed. This is scoped to A01, not a new general numerical audit."
+  },
+  "workspace": {
+    "native_registered_trees_equal": true,
+    "original_dirty_files_hash_equal": 73,
+    "preservation_manifest": "/home/swl007007/projects/food-crisis-research/scratch/pre-close-dirty-byte-backup/manifest.json"
+  },
+  "lifecycle_disclosure": "Both direct native lifecycle recoveries are retained as deviations from the wrapper-only convention. Original run bases, executor identity and original close snapshot were preserved; neither deviation is described as fully compliant. Subsequent close requires explicit supervisor instruction and successful preflight."
+}

@@ -1,0 +1,18 @@
+# tests 1d9c21d with research_cloud/sqlimport/load_inputs.py from 6ee56f5 (pre-fix)
+research_cloud/tests/test_sqlimport.py::Names::test_identifier_columns_stay_text PASSED [  7%]
+research_cloud/tests/test_sqlimport.py::Names::test_similar_long_ids_get_distinct_names_within_63_bytes PASSED [ 15%]
+research_cloud/tests/test_sqlimport.py::Names::test_whole_inventory_preflight PASSED [ 23%]
+research_cloud/tests/test_sqlimport.py::CrossChunk::test_big_integer_before_the_real_chunk_boundary FAILED [ 30%]
+research_cloud/tests/test_sqlimport.py::CrossChunk::test_both_orders_across_a_small_chunk_boundary FAILED [ 38%]
+research_cloud/tests/test_sqlimport.py::CrossChunk::test_safe_integers_before_a_fraction_stay_double PASSED [ 46%]
+research_cloud/tests/test_sqlimport.py::Load::test_blank_line_and_short_row_reconcile_with_the_key_profile PASSED [ 53%]
+research_cloud/tests/test_sqlimport.py::Load::test_cross_chunk_big_integer_round_trips_verbatim FAILED [ 61%]
+research_cloud/tests/test_sqlimport.py::Load::test_exact_integers_floats_and_one_unit_corruption PASSED [ 69%]
+research_cloud/tests/test_sqlimport.py::Load::test_failed_verification_commits_nothing PASSED [ 76%]
+research_cloud/tests/test_sqlimport.py::Load::test_only_merges_into_the_report_and_reconciles_the_full_set PASSED [ 84%]
+research_cloud/tests/test_sqlimport.py::Load::test_receipt_for_changed_bytes_is_stale PASSED [ 92%]
+research_cloud/tests/test_sqlimport.py::Load::test_typing_and_whole_table_verification PASSED [100%]
+FAILED research_cloud/tests/test_sqlimport.py::CrossChunk::test_big_integer_before_the_real_chunk_boundary
+FAILED research_cloud/tests/test_sqlimport.py::CrossChunk::test_both_orders_across_a_small_chunk_boundary
+FAILED research_cloud/tests/test_sqlimport.py::Load::test_cross_chunk_big_integer_round_trips_verbatim
+========================= 3 failed, 10 passed in 0.59s =========================

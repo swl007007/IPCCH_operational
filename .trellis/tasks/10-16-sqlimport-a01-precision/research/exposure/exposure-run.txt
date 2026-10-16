@@ -1,0 +1,57 @@
+start 13:37:20
+{"self_test_failures": []}
+{"id": "fewsnet.coordinates", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.0}
+{"id": "fewsnet.covariate_extension", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 1.4}
+{"id": "fewsnet.extension_component_2025_combined", "sha_equal": true, "bytes_equal": true, "single_line_records": false, "candidate_lines": 0, "field_counts": {"class1": 0, "class2": 0, "class3": 0}, "seconds": 57.7}
+{"id": "fewsnet.outcome", "sha_equal": true, "bytes_equal": true, "single_line_records": false, "candidate_lines": 0, "field_counts": {"class1": 0, "class2": 0, "class3": 0}, "seconds": 4.2}
+{"id": "fewsnet.panel", "sha_equal": true, "bytes_equal": true, "single_line_records": false, "candidate_lines": 0, "field_counts": {"class1": 0, "class2": 0, "class3": 0}, "seconds": 58.5}
+{"id": "ipcch.climate_monthly", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 52.9}
+{"id": "ipcch.climate_seasonal", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 9.3}
+{"id": "ipcch.compact.compact_baseline_h0", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 9.6}
+{"id": "ipcch.compact.compact_baseline_h12", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 9.5}
+{"id": "ipcch.compact.compact_baseline_h3", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 22.5}
+{"id": "ipcch.compact.compact_baseline_h6", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 14.2}
+{"id": "ipcch.country_lookup", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.0}
+{"id": "ipcch.interim", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 116.7}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_compact_weather_oracle_h12.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 15.0}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_compact_weather_oracle_h3.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 10.9}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_compact_weather_oracle_h6.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 11.8}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_oracle_ledger_h12.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.2}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_oracle_ledger_h3.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.2}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_oracle_ledger_h6.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.2}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_season_ledger_h0.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.4}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_season_ledger_h12.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.4}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_season_ledger_h3.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.4}
+{"id": "ipcch.model_ready.compact_climate_weather_oracle_v1_season_ledger_h6.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.5}
+{"id": "ipcch.model_ready.expected_feature_contract.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.0}
+{"id": "ipcch.model_ready.expected_run_index.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.0}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_cohort_keys.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.1}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_h0.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 31.4}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_h12.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 26.3}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_h3.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 34.7}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_h6.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 32.1}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_history_ledger_h0.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.2}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_history_ledger_h12.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.2}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_history_ledger_h3.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.2}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_history_ledger_h6.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.2}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_idp_ledger_h0.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.1}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_idp_ledger_h12.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.1}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_idp_ledger_h3.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.1}
+{"id": "ipcch.model_ready.origin_safe_climate_idp_v1_idp_ledger_h6.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.1}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_h12.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 22.9}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_h3.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 41.3}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_h6.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 36.0}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_oracle_ledger_h12.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.5}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_oracle_ledger_h3.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.4}
+{"id": "ipcch.model_ready.origin_safe_weather_oracle_v1_oracle_ledger_h6.csv", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.5}
+{"id": "ipcch.raw_panel", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 92.7}
+{"id": "ipcch.reference_coordinates_source", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.0}
+{"id": "ipcch.region_mapping", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.0}
+{"id": "ipcch.saved_country_lookup", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.0}
+{"id": "ipcch.saved_reference_coordinates", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 0.0}
+{"id": "ipcch.scope.scope_fs0", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 13.5}
+{"id": "ipcch.scope.scope_fs1", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 14.3}
+{"id": "ipcch.scope.scope_fs2", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 15.4}
+{"id": "ipcch.scope.scope_fs3", "sha_equal": true, "bytes_equal": true, "single_line_records": true, "candidate_lines": 0, "field_counts": null, "seconds": 12.4}
+{"files": 53, "all_sha_equal": true, "all_bytes_equal": true, "bytes_covered": 13763421380, "files_with_multiline_records": ["fewsnet.extension_component_2025_combined", "fewsnet.outcome", "fewsnet.panel"], "files_with_candidates": [], "class1_fields": 0, "class2_fields": 0, "class3_fields": 0, "seconds": 772.1}
+exit=0 13:50:12
