@@ -26,6 +26,7 @@ Depends on P0; satisfies AC1 and prepares AC3/AC6.
 - [ ] For each version, classify complete weights / retained weights with missing dependencies / missing weights / non-parametric comparator. Include model hashes, fit block/arm/horizon, required maps/transforms, package size and saved-prediction keys.
 - [ ] Build FEWS D9 and IPCCH D10 input manifests, using the existing source manifests and actual dependency references. Hash before transfer; do not broaden to the whole source-data archive. Preserve historical oracle/target/vintage distinctions.
 - [ ] Freeze reference samples and tolerances before Linux comparison. Assemble package candidates in scratch and test one representative per runtime/family first, then every retained version/component. Do not silently shrink the inventory when one fails.
+- [ ] Apply the user's explicit `scen-b43ef6a-v1` exception only to its 18 documented missing regional boosters and affected 3,746/22,872 rows. Preserve all extant materials; keep the run incomplete with missing keys/components and the exception reference, without substituting a full-replay pass.
 - [ ] Measure data import/index size, largest package, temporary RAM/disk, source/target row/schema/geometry invariants and minimal training fixture cost. Retain source files and original locks untouched.
 - [ ] If an asset is an unavailable Dropbox placeholder, report the exact required file and obtain the appropriate download authorization; do not sweep/hydrate the archive incidentally.
 
@@ -70,6 +71,8 @@ Candidate APIs: `run.googleapis.com`, `sqladmin.googleapis.com`, `storage.google
 
 Exit: `research/cloud-preflight.json`, `cost-estimate.md`, individually reviewable operation requests. Lack of billing-account access is a disclosed limitation, not permission to ignore the cap.
 
+Spending baseline update, 2026-10-16: user confirms target-project current-month cost USD 0 to date. This satisfies the initial external spending datum; mark it user-supplied, exclude the unrelated `manuel-remote-sensing` USD 3, and continue quote/capacity and per-operation reservation gates without requesting in-scope permission again.
+
 ## P4 — provision and migrate into a staging endpoint
 
 Depends on P2/P3 and corresponding operation approvals; validates AC2/AC4/AC7.
@@ -98,7 +101,7 @@ Depends on P1-P5, all ACs and any final operation approvals.
 
 - [ ] Freeze local writers, create the consistent final snapshot/delta, reconcile again and set cloud as the sole writable tracking authority.
 - [ ] Execute AC8 from a clean native-WSL checkout/container with only explicit inputs mounted. Publish a concise researcher runbook: add/change recipe, run local smoke, submit trial, compare, download/load, and recover.
-- [ ] Write `research/acceptance.json`, `cutover.md` and final inventory status. Explicitly identify incomplete packages and archive exclusions; any required incomplete item prevents claiming full migration.
+- [ ] Write `research/acceptance.json`, `cutover.md` and final inventory status. Explicitly identify incomplete packages and archive exclusions; any unapproved required incomplete item prevents claiming full migration. The approved FEWS exception remains visibly incomplete and can satisfy migration only after preservation/download checks for all extant materials, never as a full-replay pass.
 - [ ] Tell the user which research Dropbox paths can become cloud-only. The user performs that change; do not delete/move original data or stop unrelated operational workflows.
 - [ ] Run focused checks and detect_changes, commit only relevant work/evidence, then close through the bound Claude audit session. Verify accepted audit outcome; queued/launched is not passed. Preserve any incomplete evidence.
 

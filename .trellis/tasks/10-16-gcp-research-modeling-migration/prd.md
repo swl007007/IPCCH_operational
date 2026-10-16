@@ -35,13 +35,18 @@ Move FEWS NET and IPCCH research experiments, versioned inputs and MLflow to `fo
 
 D1-D11 were agreed on 2026-10-16. The subsequent goal request authorizes executing the reviewed design, including its technical defaults, subject to validation and the stated budgets.
 
+### Confirmed historical exception and spending baseline (2026-10-16)
+
+- The user explicitly accepts `FEWSNET/scen-b43ef6a-v1` as an incomplete historical-run exception to full inference acceptance: 18 original regional continuation boosters are missing, affecting 3,746 of 22,872 predictions in four H4/H8 × June/October 2025 cases. Preserve all extant weights, inputs, code, tracking and saved outputs; migrate a clearly labelled incomplete record with the affected keys and missing-component receipt. Do not report full replay or replace the missing weights by retraining under this identity. This exception is limited to these documented missing components; all other retained materials remain in migration scope. See `research/fews/missing-local-boosters-receipt.md`.
+- The user confirms current-month actual spending in `food-crisis-modeling-enso` is **USD 0 to date**. This is user-supplied evidence, not independently verified billing API data. The earlier approximately USD 3 belongs to `manuel-remote-sensing` and is unrelated to this project's budget. Account-level billing visibility remains unavailable; itemized quotes, usage/reservations and both USD 100 monthly envelopes still apply.
+
 ## Acceptance criteria
 
 | ID | Observable outcome | Requirements |
 |---|---|---|
 | AC1 | Inventory identifies retained/incomplete/missing historical packages in the bounded source search, selected input files/hashes, versions, recipes, targets and dependencies. Every retained-weight version stays in the acceptance ledger. | R1, R9, R10 |
 | AC2 | Cloud MLflow preserves tracking/registry identities, histories, values, datasets, metric-model links, descriptions and permissions from a consistent snapshot. URI changes are mapped and original references preserved. Existing models and newly registered FEWS NET entries are navigable; retained packages download and hash correctly. | R1, R6, R12 |
-| AC3 | Every retained package passes keyed Linux/WSL sample inference with declared tolerance; boundary-only classification differences are enumerated. Missing assets or unexplained discrepancies remain incomplete/failed. Future models include the same portable package contract. | R3, R11 |
+| AC3 | Every retained package passes keyed Linux/WSL sample inference with declared tolerance; boundary-only classification differences are enumerated. Missing assets or unexplained discrepancies remain incomplete/failed. The specifically approved `scen-b43ef6a-v1` exception above may migrate as a disclosed incomplete historical record while every extant material is preserved; it is never counted as a full replay pass. Future models include the same portable package contract. | R3, R11 |
 | AC4 | Owner/job writes and collaborator reads succeed; collaborator writes and anonymous content access fail. Permissions/data survive a new Cloud Run revision. Assistant answers a research query and rejects prohibited mutations/tools; it cannot start unrestricted. | R6, R7 |
 | AC5 | Each data family produces a small research feature set, trains/evaluates through a Linux adapter, logs MLflow results and downloads/reloads its package. A bounded two-trial HPT smoke demonstrates trial metrics/links. This tests platform wiring, not scientific improvement. | R8-R11 |
 | AC6 | Before provisioning, an itemized regional quote with volume/usage assumptions fits R4; before jobs, aggregate usage/reservations and conservative job estimates fit R5. Runtime/trial/concurrency and assistant limits are tested. Missing billing visibility is disclosed; estimates are not actual charges. | R4, R5, R7 |

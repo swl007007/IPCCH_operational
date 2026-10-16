@@ -41,6 +41,8 @@ Monthly allocations, **not quotes**: SQL including disk/backup/network USD 45; C
 
 The separate USD 100 training envelope counts used/reserved costs plus workers × maximum duration × regional rate × trials, failed/retried work and relevant overhead. Use one owner-controlled submission path with a serialized reservation ledger. Reject a job exceeding the available envelope; keep estimates and billed observations distinct, and retain reservations until terminal job status is verified. This covers this workflow, not submissions outside it. Billing alerts are supporting signals, not spending caps. Without billing visibility, disclose the gap and obtain administrator figures before assuming funds are available.
 
+On 2026-10-16 the user explicitly confirmed this target project's current-month actual cost is USD 0 to date. Accept that user-supplied baseline for initial available-budget calculations; do not describe it as API-verified or reuse the other project's USD 3. Later operations add their conservative reservations/observations. This resolves the initial missing-spend datum, not the quote/capacity or ongoing cost-control gates.
+
 Initial HPT smoke: two trials, parallel count 1, one CPU worker, at most 15 minutes/trial, no automatic retries. Include failures in cost. Larger future experiments have their own reviewed bounds.
 
 Assistant calls have token/concurrency limits and a durable accumulated-cost check before dispatch against their allocation. Prefer supported existing Gateway limits when verified; otherwise implement only the required small application guard. Missing pricing/usage state prevents new paid calls. Billing delay, overhead and continuing storage cost mean this is not an exact platform-wide spending stop.
@@ -92,6 +94,8 @@ Report classification changes separately. Threshold-decoded changes are allowed 
 
 Future cloud/WSL checks use the exact training image and tighter supported bounds. D11 permits historical platform drift, not changed scientific behavior.
 
+The user-approved historical exception is exactly the 18 missing regional continuation boosters in FEWS `scen-b43ef6a-v1` (3,746/22,872 saved prediction rows; four H4/H8 × June/October 2025 cases). Preserve and transfer all available source material and saved outputs, enumerate affected keys/components, and expose status `incomplete` with an explicit acceptance-exception link. Do not substitute global-only predictions for affected rows, infer a full replay pass, or invent weights/new fits under the historical identity. Other retained components and versions keep the ordinary acceptance contract.
+
 ## Access and assistant
 
 Keep the existing basic-auth experience, with PostgreSQL permission storage. HTTPS transport may admit requests without GCP identity to reach the login challenge, but MLflow authenticates every content/download/API route. Only a content-free health route may be anonymous. Test artifacts, datasets, logged models and assistant endpoints as well as UI; IAM invoker settings alone do not establish content permissions.
@@ -115,6 +119,8 @@ Acceptance runs a small experiment for each data family and two-trial tuning on 
 Cut over only after AC1-AC8 pass. Leave local/Dropbox bytes intact. Publish cloud URI/login, WSL setup and download/load commands. Changing existing Cloudflare DNS/hostname or stopping the old service is a separately reviewed final operation; the Cloud Run HTTPS endpoint suffices for first acceptance.
 
 Local remains writable authority until final freeze/snapshot. Then permit new writes only in cloud. If rollback follows new cloud experiments, preserve/export those writes before reverting; never overwrite them with the old snapshot. Failed packages block archival of their dependencies. Unrelated operational Dropbox consumers are outside this acceptance claim.
+
+For the approved FEWS exception, verify cloud byte preservation and download of every extant material before declaring its source archive eligible for cloud-only. The missing-weight disclosure persists after migration; accepting it does not authorize deleting originals or claiming full inference portability.
 
 ## Verified documentation and remaining checks
 
