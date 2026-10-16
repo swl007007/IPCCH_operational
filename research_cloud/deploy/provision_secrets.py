@@ -17,7 +17,14 @@ Order (each step recorded in an incremental, sanitized receipt that is rewritten
 4. **Secret-level accessor bindings** set exactly as in cloud-deployment-plan.md.
 
 Values travel only in HTTPS request/response bodies; they are never printed, logged, put on a command line or written
-to the receipt.
+to the receipt. Provider errors are reduced to status/reason codes (no remote free text), and every known credential
+value is scrubbed from the receipt and output before they are written.
+
+Resume rules for the admin insert: every known operation is re-polled (also when recorded DONE) and its errors
+inspected; a failed insert with no user allows a new insert, a user present despite a failed insert is refused; a user
+present without any recorded operation (a lost acknowledgement) is accepted only from provider state - exactly one
+error-free CREATE_USER operation on the instance since the admin secret was created - and its stored credential must
+then pass an actual login in db_roles.py.
 
   python -m research_cloud.deploy.provision_secrets --receipt RECEIPT.json [--dry-run]
 """
@@ -82,7 +89,30 @@ SQL = f"https://sqladmin.googleapis.com/v1/projects/{PROJECT}"
 
 
 def message(body):
-    return (body or {}).get("error", {}).get("message", "")[:200]
+    """Provider error as codes only (status and reasons); remote free text never enters receipts or output."""
+    err = (body or {}).get("error", {}) or {}
+    reasons = sorted({str(e.get("reason")) for e in err.get("errors", []) if e.get("reason")}
+                     | {str(d.get("reason")) for d in err.get("details", []) if isinstance(d, dict) and d.get("reason")})
+    return f"[{err.get('status') or 'no-status'}{' ' + ','.join(reasons) if reasons else ''}]"
+
+
+KNOWN = set()     # every credential value seen in this process (generated or read back)
+
+
+def remember(value):
+    KNOWN.add(value)
+    if value.startswith("{"):
+        try:
+            KNOWN.update(str(v) for v in json.loads(value).values())
+        except ValueError:
+            pass
+    return value
+
+
+def scrub(text):
+    for value in sorted((v for v in KNOWN if len(v) >= 8), key=len, reverse=True):
+        text = text.replace(value, "[redacted]")
+    return text
 
 
 class Receipt:
@@ -97,7 +127,7 @@ class Receipt:
     def save(self):
         tmp = self.path + ".tmp"
         with open(tmp, "w") as f:
-            json.dump(self.data, f, indent=1)
+            f.write(scrub(json.dumps(self.data, indent=1)))      # defence in depth: no known credential persists
         os.replace(tmp, self.path)
 
 
@@ -115,7 +145,7 @@ def secret_state(api, name):
         return "task-empty", None
     if status != 200:
         raise ProvisionError(f"secret {name}: cannot read its task-owned version ({status} {message(ver)})")
-    return "task", base64.b64decode(ver["payload"]["data"]).decode()
+    return "task", remember(base64.b64decode(ver["payload"]["data"]).decode())
 
 
 def ensure_secret(api, receipt, name, make_value, accessors, must_equal=None):
@@ -126,7 +156,7 @@ def ensure_secret(api, receipt, name, make_value, accessors, must_equal=None):
             raise ProvisionError(f"secret {name} holds a different value than composed; refusing to rotate it")
         receipt.data["secrets"].setdefault(name, {})["resumed"] = True
     else:
-        value = make_value() if must_equal is None else must_equal
+        value = remember(make_value() if must_equal is None else must_equal)
         if state == "absent":
             status, body = api.call("POST", f"{SM}?secretId={name}", {
                 "replication": {"userManaged": {"replicas": [{"location": REGION}]}}, "labels": LABELS})
@@ -175,18 +205,49 @@ def poll(api, receipt, op_name, wait_s=None, every_s=None, sleep=None):
         sleep(every_s)
 
 
+def recovered_insert(api, receipt):
+    """A lost users.insert acknowledgement, recovered from provider state: exactly one error-free CREATE_USER operation
+    on the instance since the admin credential's secret was created. The stored credential itself is then proven by
+    an actual login in db_roles.py (recorded as pending here)."""
+    status, sec = api.call("GET", f"{SM}/sql-research-admin")
+    if status != 200 or not sec.get("createTime"):
+        return None
+    status, ops = api.call("GET", f"{SQL}/operations?instance={INSTANCE}")
+    if status != 200:
+        raise ProvisionError(f"cannot list instance operations: {status} {message(ops)}")
+    created = [o for o in ops.get("items", []) if o.get("operationType") == "CREATE_USER" and o.get("status") == "DONE"
+               and not o.get("error") and o.get("insertTime", "") >= sec["createTime"]]
+    return created[0] if len(created) == 1 else None
+
+
 def ensure_admin(api, receipt, password):
     known = [n for n, o in receipt.data["sql_ops"].items() if o.get("kind") == "insert-user" and o.get("user") == ADMIN]
-    for op_name in known:                                    # resume a known insert first
-        if receipt.data["sql_ops"][op_name].get("status") != "DONE":
+    succeeded = []
+    for op_name in known:                    # every known insert is re-polled and its errors inspected, even if DONE
+        try:
             poll(api, receipt, op_name)
+            succeeded.append(op_name)
+        except ProvisionError as e:
+            if receipt.data["sql_ops"][op_name].get("status") != "DONE":
+                raise                        # still unknown: never start another insert meanwhile
+            receipt.data["sql_ops"][op_name]["failed"] = True
+            receipt.step("sql-op-failed", operation=op_name, detail=str(e))
     status, users = api.call("GET", f"{SQL}/instances/{INSTANCE}/users")
     if status != 200:
         raise ProvisionError(f"cannot list SQL users: {status} {message(users)}")
     if ADMIN in {u["name"] for u in users.get("items", [])}:
-        if not known:
-            raise ProvisionError(f"{ADMIN} exists but this task's receipt has no insert operation for it; refusing")
-        receipt.step("sql-admin", user=ADMIN, state="present (this task's operation)")
+        if succeeded:
+            receipt.step("sql-admin", user=ADMIN, state="present (this task's operation)")
+            return
+        if known:
+            raise ProvisionError(f"{ADMIN} exists although this task's insert failed; refusing")
+        op = recovered_insert(api, receipt)
+        if op is None:
+            raise ProvisionError(f"{ADMIN} exists without a recorded or recoverable insert of this task; refusing")
+        receipt.data["sql_ops"][op["name"]] = {"kind": "insert-user", "user": ADMIN, "status": "DONE",
+                                               "recovered_from": "instance operation list (CREATE_USER)",
+                                               "credential": "pending login proof in db_roles"}
+        receipt.step("sql-admin", user=ADMIN, state="recovered lost acknowledgement", operation=op["name"])
         return
     status, op = api.call("POST", f"{SQL}/instances/{INSTANCE}/users", {"name": ADMIN, "password": password})
     if status != 200:
@@ -216,17 +277,17 @@ def run(api, receipt, dry_run=False):
     return states
 
 
-def main(argv=None):
+def main(argv=None, api=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--receipt", required=True)
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
     receipt = Receipt(args.receipt)
     try:
-        states = run(Api(), receipt, args.dry_run)
+        states = run(api or Api(), receipt, args.dry_run)
     except ProvisionError as e:
-        receipt.step("stopped", error=str(e))
-        print(json.dumps({"status": "stopped", "error": str(e)}))
+        receipt.step("stopped", error=scrub(str(e)))
+        print(scrub(json.dumps({"status": "stopped", "error": str(e)})))
         return 1
     print(json.dumps({"status": "dry-run" if args.dry_run else "complete", "secrets": len(receipt.data["secrets"]),
                       "absent_before": sum(s == "absent" for s in states.values())}))
