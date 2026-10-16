@@ -57,6 +57,20 @@ def package_env(package_dir):
     raise SystemExit(f"{package_dir}: no recorded Linux runtime env")
 
 
+def report_check(report, current_sha, started):
+    """The replay report's own fields, plus ``fresh``: it exists, was written by this run (mtime >= start) and binds
+    the package.json that exists now. Anything else is not a pass."""
+    if not os.path.exists(report):
+        return {"fresh": False, "why": "no report written"}
+    rep = json.load(open(report))
+    out = {k: rep.get(k) for k in ("passed", "rows", "package_json_sha256", "runtime", "error") if k in rep}
+    if os.path.getmtime(report) < started:
+        return {**out, "fresh": False, "why": "report older than this run"}
+    if rep.get("package_json_sha256") != current_sha:
+        return {**out, "fresh": False, "why": "report does not bind the current package.json"}
+    return {**out, "fresh": True}
+
+
 def sandbox(root, config, packages, out):
     env = dict(e.split("=", 1) for e in config["config"].get("Env", []))
     home = env.get("HOME", "/tmp/home")
@@ -121,18 +135,21 @@ def main(argv=None):
                "packages": len(names), "results": {}, "started": time.strftime("%Y-%m-%dT%H:%M:%S%z")}
     for n in names:
         t0 = time.time()
+        report = os.path.join(out, f"{n}.json")
+        if os.path.exists(report):                     # never accept a report this run did not write
+            os.remove(report)
+        current = hashlib.sha256(open(os.path.join(packages, n, "package.json"), "rb").read()).hexdigest()
         r = subprocess.run(base + [python, "-m", "research_cloud.packages.replay", f"/packages/{n}",
                                    "--report", f"/out/{n}.json"], capture_output=True, text=True, timeout=3600)
-        rec = {"rc": r.returncode, "seconds": round(time.time() - t0, 1)}
-        report = os.path.join(out, f"{n}.json")
-        if os.path.exists(report):
-            rep = json.load(open(report))
-            rec.update({k: rep.get(k) for k in ("passed", "rows", "package_json_sha256", "runtime", "error") if k in rep})
-        else:
+        rec = {"rc": r.returncode, "seconds": round(time.time() - t0, 1), "package_json_sha256_current": current}
+        rec.update(report_check(report, current, t0))
+        if not rec.get("fresh"):
             rec["stderr_tail"] = r.stderr[-600:]
         summary["results"][n] = rec
-        print(json.dumps({"package": n, **{k: rec.get(k) for k in ("rc", "passed", "rows", "seconds")}}), flush=True)
-    summary["passed"] = sum(1 for v in summary["results"].values() if v["rc"] == 0 and v.get("passed") is True)
+        print(json.dumps({"package": n, **{k: rec.get(k) for k in ("rc", "passed", "fresh", "rows", "seconds")}}),
+              flush=True)
+    summary["passed"] = sum(1 for v in summary["results"].values()
+                            if v["rc"] == 0 and v.get("passed") is True and v.get("fresh") is True)
     summary["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
     json.dump(summary, open(os.path.join(out, "summary.json"), "w"), indent=1)
     print(json.dumps({k: summary[k] for k in ("image", "digest", "packages", "passed")}))
