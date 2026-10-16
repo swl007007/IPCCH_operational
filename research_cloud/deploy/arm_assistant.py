@@ -23,7 +23,9 @@ from research_cloud.deploy import provision_secrets as ps
 from research_cloud.deploy.db_roles import connect, secret_value
 
 # a new name: the copied store already holds "ipcch-assistant-gemini", bound to the old project's key (secret
-# "ipcch-vertex-sa", vertex_project manuel-remote-sensing); it stays as migrated data and is never used or granted
+# "ipcch-vertex-sa", vertex_project manuel-remote-sensing); it stays as migrated data and is never called. (The first
+# version of this tool reused it by name and granted ipcch-assistant USE on it; that grant was revoked at
+# 2026-10-16T14:38:19Z - see the G10 receipt's correction step - and the copied principal's own USE is unchanged.)
 ENDPOINT = "ipcch-assistant-gemini-enso"
 GUARD = {"dsn_env": "IPCCH_GUARD_DSN", "project": "food-crisis-modeling-enso", "location": "global",
          "model": "gemini-3.8-flash",
