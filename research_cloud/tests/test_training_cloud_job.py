@@ -32,9 +32,16 @@ class CloudJob(unittest.TestCase):
         self.assertEqual(job["jobSpec"]["scheduling"],
                          {"timeout": "600s", "disableRetries": True, "restartJobOnWorkerRestart": False})
         hpt = cj.spec("m", "repo/img@sha256:" + "b" * 64, "n1-highmem-4", "/gcs/a", "/gcs/b", "fam", 600, 2,
-                      "crisis_f1", cfg["space"])
+                      "crisis_f1", cfg["space"], mlflow_uri="https://svc.run.app", experiment="e")
         self.assertEqual((hpt["maxTrialCount"], hpt["parallelTrialCount"]), (2, 1))
         self.assertIs(hpt["trialJobSpec"]["scheduling"]["disableRetries"], True)
+        linked_hpt = cj.spec("m", "repo/img@sha256:" + "b" * 64, "n1-highmem-4", "/gcs/a", "/gcs/b", "fam", 900, 2,
+                             "crisis_f1", cfg["space"], mlflow_uri="https://svc.run.app", experiment="e", parent_run="p")
+        self.assertEqual(linked_hpt["trialJobSpec"]["scheduling"]["timeout"], "3000s")
+        env = {e["name"]: e["value"] for e in linked_hpt["trialJobSpec"]["workerPoolSpecs"][0]["containerSpec"]["env"]}
+        self.assertEqual(env["IPCCH_TRIAL_TIMEOUT_S"], "900")
+        with self.assertRaises(SystemExit):
+            cj.spec("m", "repo/img@sha256:" + "b" * 64, "n1-highmem-4", "/gcs/a", "/gcs/b", "fam", 900, 2, "crisis_f1", cfg["space"])
         self.assertEqual(hpt["studySpec"]["metrics"], [{"metricId": "crisis_f1", "goal": "MAXIMIZE"}])
         self.assertEqual(hpt["studySpec"]["parameters"][0]["integerValueSpec"], {"minValue": 2, "maxValue": 4})
         linked = cj.spec("research_cloud.training.m", "repo/img@sha256:" + "b" * 64, "n1-standard-4", "/gcs/a", "/gcs/b",

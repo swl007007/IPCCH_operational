@@ -74,7 +74,15 @@ def within_reservation(body, kind, detail):
     elif int((pools[0].get("diskSpec") or {}).get("bootDiskSizeGb", 100)) > int(detail.get("boot_disk_gib", 0)):
         out.append("boot disk larger than reserved")
     sched = job.get("scheduling", {})
-    if sched.get("timeout") != f"{int(detail.get('timeout_s', -1))}s":
+    if kind == "hpt":
+        # the parent deadline covers the serial study; each trial is capped at the reserved timeout by the launcher
+        want = int(body.get("maxTrialCount", 1)) * (int(detail.get("timeout_s", -1)) + int(detail.get("overhead_s", -1)))
+        env = {e["name"]: e["value"] for p in pools for e in p.get("containerSpec", {}).get("env", [])}
+        if sched.get("timeout") != f"{want}s":
+            out.append(f"HPT timeout {sched.get('timeout')} is not trials x (timeout + overhead) = {want}s")
+        if env.get("IPCCH_TRIAL_TIMEOUT_S") != str(int(detail.get("timeout_s", -1))):
+            out.append("HPT trials must carry IPCCH_TRIAL_TIMEOUT_S = the reserved per-trial timeout")
+    elif sched.get("timeout") != f"{int(detail.get('timeout_s', -1))}s":
         out.append(f"timeout {sched.get('timeout')} is not the reserved {detail.get('timeout_s')}s")
     if sched.get("disableRetries") is not True:
         out.append("disableRetries must be true")

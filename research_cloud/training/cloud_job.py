@@ -37,6 +37,7 @@ INPUTS = f"{PROJECT}-research-inputs"
 ARTIFACTS = f"{PROJECT}-research-artifacts"
 TRAINER = f"research-trainer@{PROJECT}.iam.gserviceaccount.com"
 HOST_KEYS = ("fews_src", "geoxgb_src")
+HPT_OVERHEAD_S = 600          # = the reservation's declared per-trial startup/termination overhead
 
 
 def sha256_file(path):
@@ -105,6 +106,14 @@ def spec(adapter, image, machine, manifest, config, family, timeout_s, hpt=None,
                 "scheduling": {"timeout": f"{int(timeout_s)}s", "disableRetries": True,
                                "restartJobOnWorkerRestart": False}}
     labels = {"task": "gcp-research-modeling-migration", "family": family.replace("_", "-")[:63]}
+    if hpt:
+        # the observed HPT parent deadline is the trialJobSpec timeout from the study's start, so it must cover the serial
+        # study (each trial's run + provisioning overhead, as reserved); each trial keeps its own hard cap via the
+        # launcher's SIGALRM (IPCCH_TRIAL_TIMEOUT_S)
+        if not mlflow_uri:
+            raise SystemExit("HPT specs use the launcher (it enforces the per-trial cap)")
+        job_spec["scheduling"]["timeout"] = f"{int(hpt * (timeout_s + HPT_OVERHEAD_S))}s"
+        container["env"].append({"name": "IPCCH_TRIAL_TIMEOUT_S", "value": str(int(timeout_s))})
     if not hpt:
         return {"displayName": f"{family}-trial", "jobSpec": job_spec, "labels": labels}
     params = []
