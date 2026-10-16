@@ -17,7 +17,8 @@ after internal errors once the job runs; it also overrides ``restartJobOnWorkerR
 restarting a whole distributed job) and the per-trial ``timeout``. With ``--mlflow-uri`` the command is the
 ``vertex_launch.LAUNCHER`` source (reads the job writer's credential from Secret Manager at run time) followed by the
 adapter module, and the container env carries only non-secret settings (tracking URI, project, optional HPT parent
-run id); ``--mlflow-experiment`` is passed to the harness.
+run id). Every spec sets ``IPCCH_IMAGE_DIGEST`` to the image's digest, which the baked harness records as the trial's
+image identity; ``--mlflow-experiment`` is passed to the harness.
 
   python -m research_cloud.training.cloud_job manifest --local M.json --snapshot NAME --out CLOUD_M.json
   python -m research_cloud.training.cloud_job config --local C.json --out CLOUD_C.json
@@ -61,13 +62,15 @@ def spec(adapter, image, machine, manifest, config, family, timeout_s, hpt=None,
     if "@sha256:" not in image:
         raise SystemExit("the image must be given by digest")
     args = ["--manifest", manifest, "--config", config, "--output", f"gs://{ARTIFACTS}/trials/{family}"]
-    container = {"imageUri": image, "command": ["python", "-m", adapter], "args": args}
+    # the baked harness records IPCCH_IMAGE_DIGEST as the trial's image identity (runtime_identity/adapter_identity)
+    digest_env = [{"name": "IPCCH_IMAGE_DIGEST", "value": image.split("@", 1)[1]}]
+    container = {"imageUri": image, "command": ["python", "-m", adapter], "args": args, "env": digest_env}
     if mlflow_uri:
         # MLflow linkage: the job writer's credential is read at run time by the launcher (never in the spec)
         from research_cloud.training.vertex_launch import LAUNCHER
         container = {"imageUri": image, "command": ["python", "-c", LAUNCHER, adapter],
                      "args": args + ["--mlflow-experiment", experiment],
-                     "env": [{"name": "MLFLOW_TRACKING_URI", "value": mlflow_uri},
+                     "env": digest_env + [{"name": "MLFLOW_TRACKING_URI", "value": mlflow_uri},
                              {"name": "IPCCH_GCP_PROJECT", "value": PROJECT}]
                      + ([{"name": "IPCCH_PARENT_RUN_ID", "value": parent_run}] if parent_run else [])}
     job_spec = {"workerPoolSpecs": [{"machineSpec": {"machineType": machine}, "replicaCount": "1",

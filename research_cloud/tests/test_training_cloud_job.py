@@ -44,8 +44,10 @@ class CloudJob(unittest.TestCase):
         self.assertEqual(c["command"], ["python", "-c", LAUNCHER, "research_cloud.training.m"])
         self.assertEqual(c["args"][-2:], ["--mlflow-experiment", "exp"])
         env = {e["name"]: e["value"] for e in c["env"]}
-        self.assertEqual(env, {"MLFLOW_TRACKING_URI": "https://svc.run.app", "IPCCH_GCP_PROJECT": cj.PROJECT,
-                               "IPCCH_PARENT_RUN_ID": "r1"})
+        self.assertEqual(env, {"IPCCH_IMAGE_DIGEST": "sha256:" + "b" * 64, "MLFLOW_TRACKING_URI": "https://svc.run.app",
+                               "IPCCH_GCP_PROJECT": cj.PROJECT, "IPCCH_PARENT_RUN_ID": "r1"})
+        self.assertEqual(job["jobSpec"]["workerPoolSpecs"][0]["containerSpec"]["env"],
+                         [{"name": "IPCCH_IMAGE_DIGEST", "value": "sha256:" + "b" * 64}])
         self.assertFalse({"MLFLOW_TRACKING_USERNAME", "MLFLOW_TRACKING_PASSWORD"} & set(env))   # read at run time only
 
 
