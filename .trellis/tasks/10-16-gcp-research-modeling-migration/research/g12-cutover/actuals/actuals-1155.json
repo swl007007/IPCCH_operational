@@ -1,0 +1,296 @@
+{
+ "project": "food-crisis-modeling-enso",
+ "time": "2026-10-16T15:55:55+00:00",
+ "secrets": {
+  "secrets": 16,
+  "versions_by_state": {
+   "ENABLED": 18
+  },
+  "per_secret": {
+   "guard-config": [
+    "ENABLED"
+   ],
+   "guard-dsn": [
+    "ENABLED"
+   ],
+   "mlflow-assistant-credentials": [
+    "ENABLED"
+   ],
+   "mlflow-assistant-password": [
+    "ENABLED"
+   ],
+   "mlflow-auth-db-uri": [
+    "ENABLED",
+    "ENABLED"
+   ],
+   "mlflow-backend-uri": [
+    "ENABLED",
+    "ENABLED"
+   ],
+   "mlflow-flask-secret": [
+    "ENABLED"
+   ],
+   "mlflow-jobwriter": [
+    "ENABLED"
+   ],
+   "mlflow-kek-passphrase": [
+    "ENABLED"
+   ],
+   "mlflow-reader": [
+    "ENABLED"
+   ],
+   "mlflow-temp-admin": [
+    "ENABLED"
+   ],
+   "sql-guard-app": [
+    "ENABLED"
+   ],
+   "sql-mlflow-app": [
+    "ENABLED"
+   ],
+   "sql-research-admin": [
+    "ENABLED"
+   ],
+   "sql-research-import": [
+    "ENABLED"
+   ],
+   "sql-research-read": [
+    "ENABLED"
+   ]
+  }
+ },
+ "builds": {
+  "count": 8,
+  "minutes": 20.5,
+  "rows": [
+   {
+    "location": "us-central1",
+    "status": "SUCCESS",
+    "machine": "default",
+    "seconds": 140.7,
+    "create": "2026-10-16T15:01:20.430789253Z"
+   },
+   {
+    "location": "us-central1",
+    "status": "SUCCESS",
+    "machine": "default",
+    "seconds": 173.6,
+    "create": "2026-10-16T14:10:19.685704821Z"
+   },
+   {
+    "location": "us-central1",
+    "status": "SUCCESS",
+    "machine": "default",
+    "seconds": 110.8,
+    "create": "2026-10-16T11:43:09.871727427Z"
+   },
+   {
+    "location": "us-central1",
+    "status": "SUCCESS",
+    "machine": "default",
+    "seconds": 109.4,
+    "create": "2026-10-16T11:42:54.691411141Z"
+   },
+   {
+    "location": "us-central1",
+    "status": "SUCCESS",
+    "machine": "default",
+    "seconds": 131.7,
+    "create": "2026-10-16T11:42:39.718807046Z"
+   },
+   {
+    "location": "us-central1",
+    "status": "SUCCESS",
+    "machine": "default",
+    "seconds": 264.5,
+    "create": "2026-10-16T11:42:25.385384180Z"
+   },
+   {
+    "location": "us-central1",
+    "status": "SUCCESS",
+    "machine": "default",
+    "seconds": 187.4,
+    "create": "2026-10-16T11:42:10.438861678Z"
+   },
+   {
+    "location": "us-central1",
+    "status": "FAILURE",
+    "machine": "default",
+    "seconds": 114.8,
+    "create": "2026-10-16T11:35:48.400932146Z"
+   }
+  ]
+ },
+ "artifact_registry": [
+  {
+   "name": "research",
+   "format": "DOCKER",
+   "size_bytes": 4105870693
+  }
+ ],
+ "gcs": [
+  {
+   "name": "food-crisis-modeling-enso-han",
+   "excluded": "Earth Engine workload, not read"
+  },
+  {
+   "name": "food-crisis-modeling-enso-research-artifacts",
+   "location": "US-CENTRAL1",
+   "class": "STANDARD",
+   "soft_delete_s": "604800",
+   "objects": 34958,
+   "bytes": 26553343120
+  },
+  {
+   "name": "food-crisis-modeling-enso-research-build",
+   "location": "US-CENTRAL1",
+   "class": "STANDARD",
+   "soft_delete_s": "604800",
+   "objects": 8,
+   "bytes": 2528969
+  },
+  {
+   "name": "food-crisis-modeling-enso-research-inputs",
+   "location": "US-CENTRAL1",
+   "class": "STANDARD",
+   "soft_delete_s": "604800",
+   "objects": 137064,
+   "bytes": 92212519987
+  }
+ ],
+ "cloud_run": {
+  "status": 200,
+  "scaling": {
+   "maxInstanceCount": 1
+  },
+  "max_concurrency": 40,
+  "resources": [
+   {
+    "limits": {
+     "cpu": "1",
+     "memory": "2Gi"
+    },
+    "cpuIdle": true
+   }
+  ],
+  "revision": "projects/food-crisis-modeling-enso/locations/us-central1/services/research-mlflow/revisions/research-mlflow-00007-hld"
+ },
+ "cloud_sql": [
+  {
+   "name": "research-pg",
+   "tier": "db-g1-small",
+   "disk_gb": "30",
+   "edition": "ENTERPRISE",
+   "availability": "ZONAL",
+   "backup": {
+    "enabled": true,
+    "pointInTimeRecoveryEnabled": false,
+    "transactionLogRetentionDays": 7
+   },
+   "ipv4": true
+  }
+ ],
+ "vertex_jobs": [
+  {
+   "kind": "custom",
+   "id": "2786870627582083072",
+   "display": "fewsnet_pooled_fourclass-trial",
+   "state": "JOB_STATE_FAILED",
+   "machine": "n1-standard-4",
+   "seconds": 31.0,
+   "create": "2026-10-16T13:39:10.937572Z"
+  },
+  {
+   "kind": "custom",
+   "id": "6384402304920977408",
+   "display": "fewsnet_pooled_fourclass-trial",
+   "state": "JOB_STATE_SUCCEEDED",
+   "machine": "n1-standard-4",
+   "seconds": 91.0,
+   "create": "2026-10-16T14:10:53.386961Z"
+  },
+  {
+   "kind": "custom",
+   "id": "8508412479179587584",
+   "display": "ipcch_geoxgb_pooled_quartet-trial",
+   "state": "JOB_STATE_SUCCEEDED",
+   "machine": "n1-highmem-4",
+   "seconds": 61.0,
+   "create": "2026-10-16T14:22:38.242976Z"
+  },
+  {
+   "kind": "hpt",
+   "id": "2023229015766073344",
+   "display": "ipcch_geoxgb_pooled_quartet-hpt",
+   "state": "JOB_STATE_FAILED",
+   "machine": "n1-highmem-4",
+   "seconds": 393.0,
+   "create": "2026-10-16T14:29:49.087529Z",
+   "trials": [
+    {
+     "id": "1",
+     "state": "INFEASIBLE",
+     "seconds": 317.6
+    }
+   ]
+  },
+  {
+   "kind": "hpt",
+   "id": "188012167612596224",
+   "display": "hypertune-mount-probe",
+   "state": "JOB_STATE_CANCELLED",
+   "machine": "n1-standard-4",
+   "seconds": 326.0,
+   "create": "2026-10-16T14:44:05.092254Z",
+   "trials": [
+    {
+     "id": "1",
+     "state": "INFEASIBLE",
+     "seconds": 221.6
+    }
+   ]
+  },
+  {
+   "kind": "hpt",
+   "id": "8726300499432701952",
+   "display": "ipcch_geoxgb_pooled_quartet-hpt",
+   "state": "JOB_STATE_CANCELLED",
+   "machine": "n1-highmem-4",
+   "seconds": 928.0,
+   "create": "2026-10-16T15:15:30.737926Z",
+   "trials": [
+    {
+     "id": "1",
+     "state": "SUCCEEDED",
+     "seconds": 254.4
+    },
+    {
+     "id": "2",
+     "state": "ACTIVE",
+     "seconds": 271.6
+    }
+   ]
+  },
+  {
+   "kind": "hpt",
+   "id": "4058600960639893504",
+   "display": "ipcch_geoxgb_pooled_quartet-hpt",
+   "state": "JOB_STATE_RUNNING",
+   "machine": "n1-highmem-4",
+   "seconds": null,
+   "create": "2026-10-16T15:43:33.742454Z",
+   "trials": [
+    {
+     "id": "1",
+     "state": "SUCCEEDED",
+     "seconds": 297.5
+    },
+    {
+     "id": "2",
+     "state": "ACTIVE",
+     "seconds": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,65 @@
+{
+ "package": "/packages/somalia-somalia_q3_optimization_share_history_selected_00--somalia_oracle_v2_q3",
+ "package_json_sha256": "68e7f83452a23235effe3c104cee8705d369aaf55e8295c062ba1006741e2cff",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.2.0",
+  "numpy": "2.4.4",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "somalia_q3_optimization",
+  "logged_model_id": "m-abef4f5843ef4b408520fef1063ec00e",
+  "registered_model": "IPCCH Forecasting Somalia q3 optimization historical | share_history_selected | 0-month",
+  "version": 1
+ },
+ "rows": 132,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 4.625929269271486e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 7.380459879610416e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.8735013540549517e-16,
+   "mean_abs_err": 7.895620184597468e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 7.848217140749308e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q3_mapped": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 6.355396007442302e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q3_final": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 6.355396007442302e-17,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 8.65
+}

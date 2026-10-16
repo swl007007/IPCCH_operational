@@ -1,0 +1,49 @@
+{
+ "package": "/packages/popv1-rich_rf-h06",
+ "package_json_sha256": "100bf7b3417279959f3d5db31060e5fbdd128c6c03a908a35ced0fb78ced1bab",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "arm": "rich_rf",
+  "config_id": "R3",
+  "horizon_months": 6,
+  "registry": "unregistered retained research run (package per arm x horizon)",
+  "run": "pop-v1"
+ },
+ "rows": 814,
+ "columns": {
+  "raw_score": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 5.672162166658316e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "crisis_score": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 5.672162166658316e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "decision": {
+   "max_abs_err": 0.0,
+   "mean_abs_err": 0.0,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true,
+  "exact_support": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 3.79
+}

@@ -1,0 +1,3 @@
+start 11:57:06 runner commit d9ede46
+training-ipcch exit=0 {"image": "training-ipcch", "digest": "sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb", "packages": 28, "passed": 28} 12:00:03
+stopped 12:04:40 by executor during training-fews (duplicate avoidance; the remaining three families run under scratch/pkg-download-all-replay-supervisor). The completed training-ipcch 28/28 above (ledger/image-replays-downloaded/training-ipcch) is the accepted record per supervisor.

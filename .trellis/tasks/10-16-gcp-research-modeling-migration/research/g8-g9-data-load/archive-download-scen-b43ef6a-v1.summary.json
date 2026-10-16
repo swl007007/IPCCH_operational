@@ -1,0 +1,14 @@
+{
+ "root": "/mnt/c/Users/swl00/geoxgb_runs/scen-b43ef6a-v1",
+ "manifest_files": 55899,
+ "verified": 55899,
+ "bytes": 45341699278,
+ "seconds": 2748.1,
+ "set_equal": true,
+ "missing": [],
+ "extra": [],
+ "problems": [],
+ "ok": true,
+ "report_path": "ledger/verify/archive-download-scen-b43ef6a-v1.json (55,899 rows; full report kept outside git)",
+ "report_sha256": "dcf6d5f39ea315f636f19dc05545d27f8f9a2c25de73f644abcc27326c5042e0"
+}

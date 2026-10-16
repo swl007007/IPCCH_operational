@@ -1,0 +1,52 @@
+{
+ "time": "2026-10-16T12:09:07",
+ "identity": "ipcch-jobwriter",
+ "rows": [
+  {
+   "op": "ipcch-hpt2-1",
+   "run": "d774efda370f4fcf94281f9a99c7d241",
+   "job": "2023229015766073344",
+   "job_state": "JOB_STATE_FAILED",
+   "before": "RUNNING",
+   "after": "FAILED",
+   "end_time": 1792161384000,
+   "tags": {
+    "vertex.hpt_job": "2023229015766073344",
+    "vertex.hpt_state": "JOB_STATE_FAILED",
+    "vertex.hpt_end": "2026-10-16T14:36:24Z",
+    "ledger.operation": "G11-vertex-ipcch-hpt2-1"
+   }
+  },
+  {
+   "op": "ipcch-hpt2-2",
+   "run": "573574b0d09e4940ba59e93f3dd82931",
+   "job": "8726300499432701952",
+   "job_state": "JOB_STATE_CANCELLED",
+   "before": "RUNNING",
+   "after": "KILLED",
+   "end_time": 1792164661000,
+   "tags": {
+    "vertex.hpt_job": "8726300499432701952",
+    "vertex.hpt_state": "JOB_STATE_CANCELLED",
+    "vertex.hpt_end": "2026-10-16T15:31:01Z",
+    "ledger.operation": "G11-vertex-ipcch-hpt2-2"
+   }
+  },
+  {
+   "op": "ipcch-hpt2-3",
+   "run": "023613b450c9473e9386b828b4280431",
+   "job": "4058600960639893504",
+   "job_state": "JOB_STATE_SUCCEEDED",
+   "before": "RUNNING",
+   "after": "FINISHED",
+   "end_time": 1792166377000,
+   "tags": {
+    "vertex.hpt_job": "4058600960639893504",
+    "vertex.hpt_state": "JOB_STATE_SUCCEEDED",
+    "vertex.hpt_end": "2026-10-16T15:59:37Z",
+    "ledger.operation": "G11-vertex-ipcch-hpt2-3",
+    "hpt.harvest_sha256": "33b555b5e6a12f63ac8e40589819753718e449cc013d9db7a9e5bf0719f9bb5a"
+   }
+  }
+ ]
+}

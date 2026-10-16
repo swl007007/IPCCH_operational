@@ -1,0 +1,1004 @@
+{
+ "image": "training-fews",
+ "digest": "sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+ "manifest_sha256": "sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+ "config_digest": "sha256:e31c7cc363800894a7c6b1ac23e28765c87db85fc0816a363de5aa0f464b2b99",
+ "rootfs": "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs",
+ "sandbox": [
+  "bwrap",
+  "--unshare-all",
+  "--die-with-parent",
+  "--uid",
+  "65534",
+  "--gid",
+  "65534",
+  "--tmpfs",
+  "/",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/app",
+  "/app",
+  "--symlink",
+  "usr/bin",
+  "/bin",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/boot",
+  "/boot",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/etc",
+  "/etc",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/home",
+  "/home",
+  "--symlink",
+  "usr/lib",
+  "/lib",
+  "--symlink",
+  "usr/lib64",
+  "/lib64",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/media",
+  "/media",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/mnt",
+  "/mnt",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/opt",
+  "/opt",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/root",
+  "/root",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/run",
+  "/run",
+  "--symlink",
+  "usr/sbin",
+  "/sbin",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/srv",
+  "/srv",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/sys",
+  "/sys",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/usr",
+  "/usr",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-fews.rootfs/var",
+  "/var",
+  "--proc",
+  "/proc",
+  "--dev",
+  "/dev",
+  "--tmpfs",
+  "/tmp",
+  "--tmpfs",
+  "/home/app",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/pkg-download-all/packages",
+  "/packages",
+  "--bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/pkg-download-all-replay-supervisor/training-fews",
+  "/out",
+  "--chdir",
+  "/out",
+  "--clearenv",
+  "--setenv",
+  "FEWS_SRC",
+  "/app/sources/FEWSNETGeoXGBExperiment",
+  "--setenv",
+  "GPG_KEY",
+  "7169605F62C751356D054A26A821E680E5FA6305",
+  "--setenv",
+  "HOME",
+  "/home/app",
+  "--setenv",
+  "IPCCH_SOURCE_COMMIT",
+  "36bde42fe1fa4055c97977893ac7f7c429b7af35",
+  "--setenv",
+  "LANG",
+  "C.UTF-8",
+  "--setenv",
+  "PATH",
+  "/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "--setenv",
+  "PYTHONDONTWRITEBYTECODE",
+  "1",
+  "--setenv",
+  "PYTHONPATH",
+  "/app",
+  "--setenv",
+  "PYTHON_GET_PIP_SHA256",
+  "dfe9fd5c28dc98b5ac17979a953ea550cec37ae1b47a5116007395bfacff2ab9",
+  "--setenv",
+  "PYTHON_GET_PIP_URL",
+  "https://github.com/pypa/get-pip/raw/dbf0c85f76fb6e1ab42aa672ffca6f0a675d9ee4/public/get-pip.py",
+  "--setenv",
+  "PYTHON_PIP_VERSION",
+  "24.0",
+  "--setenv",
+  "PYTHON_VERSION",
+  "3.12.3"
+ ],
+ "probe": {
+  "executable": "/usr/local/bin/python",
+  "uid": 65534,
+  "version": "3.12.3",
+  "numpy": [
+   "2.2.6",
+   "/usr/local/lib/python3.12/site-packages/numpy/__init__.py"
+  ],
+  "pandas": [
+   "2.2.3",
+   "/usr/local/lib/python3.12/site-packages/pandas/__init__.py"
+  ],
+  "xgboost": [
+   "3.0.0",
+   "/usr/local/lib/python3.12/site-packages/xgboost/__init__.py"
+  ],
+  "research_cloud": "/app/research_cloud/__init__.py",
+  "mapped": [
+   "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+   "/usr/lib/x86_64-linux-gnu/libc.so.6",
+   "/usr/local/lib/libpython3.12.so.1.0"
+  ],
+  "host_mnt_c_exists": false,
+  "mnt_entries": [],
+  "host_home_exists": false,
+  "network": "OSError",
+  "packages_writable": false
+ },
+ "packages": 53,
+ "results": {
+  "fews-confirm-onset-v1-S0-pooled": {
+   "rc": 0,
+   "seconds": 3.7,
+   "package_json_sha256_current": "b13df408e47015387af58b07ae4fd7b6f7d970f9df74338868ba8a0ff13fd900",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "b13df408e47015387af58b07ae4fd7b6f7d970f9df74338868ba8a0ff13fd900",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-confirm-onset-v1-S3-pooled": {
+   "rc": 0,
+   "seconds": 3.0,
+   "package_json_sha256_current": "f0bf944dd25fd7eeebbc3e31267352a2e6b7a0c3967563bda6030fb4f7dc1d66",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "f0bf944dd25fd7eeebbc3e31267352a2e6b7a0c3967563bda6030fb4f7dc1d66",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d26-20261001": {
+   "rc": 0,
+   "seconds": 98.1,
+   "package_json_sha256_current": "394e2c34f6794dbcfa4dc496e0f4a5f7bc0b23d639b8a3d90fb9eed47a7f60be",
+   "passed": true,
+   "rows": 2504,
+   "package_json_sha256": "394e2c34f6794dbcfa4dc496e0f4a5f7bc0b23d639b8a3d90fb9eed47a7f60be",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d27-tb3-20261001": {
+   "rc": 0,
+   "seconds": 11.2,
+   "package_json_sha256_current": "e7986ac9f27ff0c72010a5fa077ad0df08cf440bf541fcc50cf22fba538533f6",
+   "passed": true,
+   "rows": 536,
+   "package_json_sha256": "e7986ac9f27ff0c72010a5fa077ad0df08cf440bf541fcc50cf22fba538533f6",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d28-rootinc-20261001": {
+   "rc": 0,
+   "seconds": 13.6,
+   "package_json_sha256_current": "79fc57d2e8a668e4579bd50d471c7a4edc7b7b7e2be2a6ada15eecc2e59eabf4",
+   "passed": true,
+   "rows": 688,
+   "package_json_sha256": "79fc57d2e8a668e4579bd50d471c7a4edc7b7b7e2be2a6ada15eecc2e59eabf4",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d29-confirm-20261001": {
+   "rc": 0,
+   "seconds": 16.0,
+   "package_json_sha256_current": "ce713fccd5961d24c74a4bd9f0119c6208b7f3122ca44e302b196a2e4b99732f",
+   "passed": true,
+   "rows": 528,
+   "package_json_sha256": "ce713fccd5961d24c74a4bd9f0119c6208b7f3122ca44e302b196a2e4b99732f",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d30-recent-search-20261001": {
+   "rc": 0,
+   "seconds": 9.6,
+   "package_json_sha256_current": "3dca880ea899eee0d3425db740c0c752f076469e4521e2c414039a32bb5888b4",
+   "passed": true,
+   "rows": 304,
+   "package_json_sha256": "3dca880ea899eee0d3425db740c0c752f076469e4521e2c414039a32bb5888b4",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d31-matched-search-20261001": {
+   "rc": 0,
+   "seconds": 32.1,
+   "package_json_sha256_current": "e255d46b004f849de55056ed67c838357106ec095be186abf4e222a626be2af2",
+   "passed": true,
+   "rows": 1016,
+   "package_json_sha256": "e255d46b004f849de55056ed67c838357106ec095be186abf4e222a626be2af2",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d34-e1-brier-20261002": {
+   "rc": 0,
+   "seconds": 74.9,
+   "package_json_sha256_current": "f1046b3b2f597a54e1e3997a8e2a619ae7ee3f7682e795b43b55fc38c6e5bd8e",
+   "passed": true,
+   "rows": 3112,
+   "package_json_sha256": "f1046b3b2f597a54e1e3997a8e2a619ae7ee3f7682e795b43b55fc38c6e5bd8e",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d35-global-increment-20261002": {
+   "rc": 0,
+   "seconds": 5.5,
+   "package_json_sha256_current": "c04c5b2f3bb92807f283561b36bcaa5fbe107228fa1aad34824d292b0f8527a2",
+   "passed": true,
+   "rows": 1344,
+   "package_json_sha256": "c04c5b2f3bb92807f283561b36bcaa5fbe107228fa1aad34824d292b0f8527a2",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d37-recency-root-20261002": {
+   "rc": 0,
+   "seconds": 6.3,
+   "package_json_sha256_current": "5d0cd4b8f883133d3cb2977cc60839c176de6901ea4c0190d02eefa69b2badb2",
+   "passed": true,
+   "rows": 1344,
+   "package_json_sha256": "5d0cd4b8f883133d3cb2977cc60839c176de6901ea4c0190d02eefa69b2badb2",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d38-persistence-margin-root-20261002": {
+   "rc": 0,
+   "seconds": 5.2,
+   "package_json_sha256_current": "268ebca445de4de98d701cb775084e1523abbf8168653fdf67b4a0bc73ceb02d",
+   "passed": true,
+   "rows": 1344,
+   "package_json_sha256": "268ebca445de4de98d701cb775084e1523abbf8168653fdf67b4a0bc73ceb02d",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d42-map-transfer-20261002": {
+   "rc": 0,
+   "seconds": 30.0,
+   "package_json_sha256_current": "3e7871168ef0a1ce2d3a08f525f4714ed407d42ab919255f57e11c2726645388",
+   "passed": true,
+   "rows": 6083,
+   "package_json_sha256": "3e7871168ef0a1ce2d3a08f525f4714ed407d42ab919255f57e11c2726645388",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d43-temporal-map-refit-20261002": {
+   "rc": 0,
+   "seconds": 68.7,
+   "package_json_sha256_current": "14ace7c278857fb821066d22f735a760f096ef2f0134307daa73c089b9dc7303",
+   "passed": true,
+   "rows": 5273,
+   "package_json_sha256": "14ace7c278857fb821066d22f735a760f096ef2f0134307daa73c089b9dc7303",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d46-class-weight-root-20261002": {
+   "rc": 0,
+   "seconds": 8.0,
+   "package_json_sha256_current": "c5234e06e19a1b40c6128752f5373fef14235d060705dea94609f5d68ce82405",
+   "passed": true,
+   "rows": 1344,
+   "package_json_sha256": "c5234e06e19a1b40c6128752f5373fef14235d060705dea94609f5d68ce82405",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d47-stump-root-20261002": {
+   "rc": 0,
+   "seconds": 6.2,
+   "package_json_sha256_current": "6090ddb9aa0456fc9eb86f1332372fd86bb006749023498f88ec12ecbe5223f3",
+   "passed": true,
+   "rows": 1344,
+   "package_json_sha256": "6090ddb9aa0456fc9eb86f1332372fd86bb006749023498f88ec12ecbe5223f3",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d48-known-origin-fit-20261002": {
+   "rc": 0,
+   "seconds": 5.4,
+   "package_json_sha256_current": "944dc21ed078e4175d6fd129358ff973ecbb94c9a741786e18f18110fbffe07e",
+   "passed": true,
+   "rows": 1344,
+   "package_json_sha256": "944dc21ed078e4175d6fd129358ff973ecbb94c9a741786e18f18110fbffe07e",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d51-history-calendar-root-20261002": {
+   "rc": 0,
+   "seconds": 7.0,
+   "package_json_sha256_current": "fd857a2007d8499682be625827699450bf4e17f6b529120bf9732c842423b952",
+   "passed": true,
+   "rows": 1344,
+   "package_json_sha256": "fd857a2007d8499682be625827699450bf4e17f6b529120bf9732c842423b952",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-d52-binary-root-20261002": {
+   "rc": 0,
+   "seconds": 6.4,
+   "package_json_sha256_current": "7f5de3b3a700f1081c3614837b79fa28769c119b2b49530cef257601426bcd01",
+   "passed": true,
+   "rows": 1344,
+   "package_json_sha256": "7f5de3b3a700f1081c3614837b79fa28769c119b2b49530cef257601426bcd01",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-v1-20261001": {
+   "rc": 0,
+   "seconds": 58.2,
+   "package_json_sha256_current": "84580eb5830f205d341b71f1d7f127a5686fa48e91cbe91fb0cd92f04f9d46ad",
+   "passed": true,
+   "rows": 4224,
+   "package_json_sha256": "84580eb5830f205d341b71f1d7f127a5686fa48e91cbe91fb0cd92f04f9d46ad",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-geoxgb-v1-20261001-globals": {
+   "rc": 0,
+   "seconds": 16.2,
+   "package_json_sha256_current": "406f85ff090adafbd8fe58b867dd2d98853ccb7bdfe4bfcd6c2d7e5706ab3462",
+   "passed": true,
+   "rows": 1152,
+   "package_json_sha256": "406f85ff090adafbd8fe58b867dd2d98853ccb7bdfe4bfcd6c2d7e5706ab3462",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h4-2025-06-pooled": {
+   "rc": 0,
+   "seconds": 4.2,
+   "package_json_sha256_current": "644e42d3651a0ce3d449c12712d213d794823c136f51f05a23d3aec060d54dbf",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "644e42d3651a0ce3d449c12712d213d794823c136f51f05a23d3aec060d54dbf",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h4-2025-06-system": {
+   "rc": 0,
+   "seconds": 3.6,
+   "package_json_sha256_current": "a605bfcdb3b0f399a7b5a4ab78cde9fd3a27979eb3d5c335b36e8aa9da2dd9ae",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "a605bfcdb3b0f399a7b5a4ab78cde9fd3a27979eb3d5c335b36e8aa9da2dd9ae",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h4-2025-10-pooled": {
+   "rc": 0,
+   "seconds": 2.8,
+   "package_json_sha256_current": "c33a3e7f35f249a48393178f5ea3beeca5df352ec821e1b7aba2039b76121248",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "c33a3e7f35f249a48393178f5ea3beeca5df352ec821e1b7aba2039b76121248",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h4-2025-10-system": {
+   "rc": 0,
+   "seconds": 3.5,
+   "package_json_sha256_current": "6ec7b5433d3ecbd8a5c6fa7eef4773255fbd0fb3ba998ec988c4e47bbbf1409e",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "6ec7b5433d3ecbd8a5c6fa7eef4773255fbd0fb3ba998ec988c4e47bbbf1409e",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h8-2025-06-pooled": {
+   "rc": 0,
+   "seconds": 5.1,
+   "package_json_sha256_current": "e125af0c83ca851aefe9f5ae52925a8268afb1bffacb14653065f3f66cacd27d",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "e125af0c83ca851aefe9f5ae52925a8268afb1bffacb14653065f3f66cacd27d",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h8-2025-06-system": {
+   "rc": 0,
+   "seconds": 4.9,
+   "package_json_sha256_current": "36f47b697367d0781ae67714f825de11ea5f6677ca2d609a87165c625da13f96",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "36f47b697367d0781ae67714f825de11ea5f6677ca2d609a87165c625da13f96",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h8-2025-10-pooled": {
+   "rc": 0,
+   "seconds": 6.7,
+   "package_json_sha256_current": "07f4ddd4993619e2a2623360e452e819fb9668aa342a0f319c6335b0ce593cd3",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "07f4ddd4993619e2a2623360e452e819fb9668aa342a0f319c6335b0ce593cd3",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "fews-scen-b43ef6a-v1-actual-h8-2025-10-system": {
+   "rc": 0,
+   "seconds": 5.9,
+   "package_json_sha256_current": "394c88c277834b5134dff4c82d6cdb03e6a669251bdc80428d3ae831727b1217",
+   "passed": true,
+   "rows": 400,
+   "package_json_sha256": "394c88c277834b5134dff4c82d6cdb03e6a669251bdc80428d3ae831727b1217",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-binary_history_xgb-h01": {
+   "rc": 0,
+   "seconds": 12.0,
+   "package_json_sha256_current": "0735159004fca071e7678e223c7ad6ee684fc4b5e1aaa68e6a3095d5f982bafa",
+   "passed": true,
+   "rows": 965,
+   "package_json_sha256": "0735159004fca071e7678e223c7ad6ee684fc4b5e1aaa68e6a3095d5f982bafa",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-binary_history_xgb-h03": {
+   "rc": 0,
+   "seconds": 11.5,
+   "package_json_sha256_current": "fd15be3ef1014c65bf28291ee910da6d34162070f6dee7226c50980855bf3cfd",
+   "passed": true,
+   "rows": 910,
+   "package_json_sha256": "fd15be3ef1014c65bf28291ee910da6d34162070f6dee7226c50980855bf3cfd",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-binary_history_xgb-h06": {
+   "rc": 0,
+   "seconds": 13.4,
+   "package_json_sha256_current": "1512386b797d1cdbbdce44659ac00c45a727afaee112432e426eb463fd723879",
+   "passed": true,
+   "rows": 814,
+   "package_json_sha256": "1512386b797d1cdbbdce44659ac00c45a727afaee112432e426eb463fd723879",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-binary_history_xgb-h12": {
+   "rc": 0,
+   "seconds": 5.5,
+   "package_json_sha256_current": "0ba928d1d089250153f050c059d81e022efe232eb7ee98fc6e719d41e044dae8",
+   "passed": true,
+   "rows": 637,
+   "package_json_sha256": "0ba928d1d089250153f050c059d81e022efe232eb7ee98fc6e719d41e044dae8",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-correction_xgb-h01": {
+   "rc": 0,
+   "seconds": 3.8,
+   "package_json_sha256_current": "f477400fbb57cd1a8eb10e921e953fcee68379f8d41871c9d2eb247cb7ea3910",
+   "passed": true,
+   "rows": 965,
+   "package_json_sha256": "f477400fbb57cd1a8eb10e921e953fcee68379f8d41871c9d2eb247cb7ea3910",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-correction_xgb-h03": {
+   "rc": 0,
+   "seconds": 3.7,
+   "package_json_sha256_current": "9d9395725b42d6d29b6e2a160ea1b6b6981fb3a4c10cd2dbac78a36499440c84",
+   "passed": true,
+   "rows": 910,
+   "package_json_sha256": "9d9395725b42d6d29b6e2a160ea1b6b6981fb3a4c10cd2dbac78a36499440c84",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-correction_xgb-h06": {
+   "rc": 0,
+   "seconds": 3.8,
+   "package_json_sha256_current": "8eb3d8cdc4510377f12416f088047e834e7a8e93ee31c555d9a10570b09446d5",
+   "passed": true,
+   "rows": 814,
+   "package_json_sha256": "8eb3d8cdc4510377f12416f088047e834e7a8e93ee31c555d9a10570b09446d5",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-correction_xgb-h12": {
+   "rc": 0,
+   "seconds": 3.7,
+   "package_json_sha256_current": "a8b7a08e136e6ad5c5c1edd5d42b293874911d9837ff434515644981119d74ed",
+   "passed": true,
+   "rows": 637,
+   "package_json_sha256": "a8b7a08e136e6ad5c5c1edd5d42b293874911d9837ff434515644981119d74ed",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-fullpool_xgb-h01": {
+   "rc": 0,
+   "seconds": 5.7,
+   "package_json_sha256_current": "1c2389887a40335551fd45646f5bd85dc94f2f279ec7ffe08bfd213702a440fe",
+   "passed": true,
+   "rows": 1006,
+   "package_json_sha256": "1c2389887a40335551fd45646f5bd85dc94f2f279ec7ffe08bfd213702a440fe",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-fullpool_xgb-h03": {
+   "rc": 0,
+   "seconds": 3.7,
+   "package_json_sha256_current": "0a3426438acfcfe28e0ba3e0b7756e1682bd6ef137ad8f42f9499926cc78b004",
+   "passed": true,
+   "rows": 947,
+   "package_json_sha256": "0a3426438acfcfe28e0ba3e0b7756e1682bd6ef137ad8f42f9499926cc78b004",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-fullpool_xgb-h06": {
+   "rc": 0,
+   "seconds": 3.5,
+   "package_json_sha256_current": "c72902e74745d52fd0d356c7370b2acab3732d0e77b0a6af922f112554b34fef",
+   "passed": true,
+   "rows": 851,
+   "package_json_sha256": "c72902e74745d52fd0d356c7370b2acab3732d0e77b0a6af922f112554b34fef",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-fullpool_xgb-h12": {
+   "rc": 0,
+   "seconds": 3.8,
+   "package_json_sha256_current": "71a34d4cadb6599289455f88b85e7a138e931e2b4c164522b6d808e61ccb383a",
+   "passed": true,
+   "rows": 672,
+   "package_json_sha256": "71a34d4cadb6599289455f88b85e7a138e931e2b4c164522b6d808e61ccb383a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-rich_direct_xgb-h01": {
+   "rc": 0,
+   "seconds": 3.7,
+   "package_json_sha256_current": "fbdec3e2eb246477bbd0dfa6e120afff5ee315ae44c559fef7ff108732319c95",
+   "passed": true,
+   "rows": 965,
+   "package_json_sha256": "fbdec3e2eb246477bbd0dfa6e120afff5ee315ae44c559fef7ff108732319c95",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-rich_direct_xgb-h03": {
+   "rc": 0,
+   "seconds": 3.4,
+   "package_json_sha256_current": "ffdbd0253afc204fe27e7453f46e5511cc5e8082fea83533519066ea6353aa96",
+   "passed": true,
+   "rows": 910,
+   "package_json_sha256": "ffdbd0253afc204fe27e7453f46e5511cc5e8082fea83533519066ea6353aa96",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-rich_direct_xgb-h06": {
+   "rc": 0,
+   "seconds": 3.6,
+   "package_json_sha256_current": "40be886bd0634c99e7784542b1d3286502977d9177cfc31006f4b2f07f27404a",
+   "passed": true,
+   "rows": 814,
+   "package_json_sha256": "40be886bd0634c99e7784542b1d3286502977d9177cfc31006f4b2f07f27404a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-rich_direct_xgb-h12": {
+   "rc": 0,
+   "seconds": 3.7,
+   "package_json_sha256_current": "15cbc3d8d420b192b603181e38cb603b50d528bef1c1ebcb32cc4ff47776208a",
+   "passed": true,
+   "rows": 637,
+   "package_json_sha256": "15cbc3d8d420b192b603181e38cb603b50d528bef1c1ebcb32cc4ff47776208a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-rich_rf-h01": {
+   "rc": 0,
+   "seconds": 6.7,
+   "package_json_sha256_current": "06507ce6b11747508d2bbdc589708ec88e16bc0d5fe73459e8882f0c7c59912b",
+   "passed": true,
+   "rows": 965,
+   "package_json_sha256": "06507ce6b11747508d2bbdc589708ec88e16bc0d5fe73459e8882f0c7c59912b",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-rich_rf-h03": {
+   "rc": 0,
+   "seconds": 4.9,
+   "package_json_sha256_current": "555acfb1895631846fc997de8865536fe9bdb694a6d96e60f6e5c843c4051d57",
+   "passed": true,
+   "rows": 910,
+   "package_json_sha256": "555acfb1895631846fc997de8865536fe9bdb694a6d96e60f6e5c843c4051d57",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-rich_rf-h06": {
+   "rc": 0,
+   "seconds": 4.6,
+   "package_json_sha256_current": "100bf7b3417279959f3d5db31060e5fbdd128c6c03a908a35ced0fb78ced1bab",
+   "passed": true,
+   "rows": 814,
+   "package_json_sha256": "100bf7b3417279959f3d5db31060e5fbdd128c6c03a908a35ced0fb78ced1bab",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-rich_rf-h12": {
+   "rc": 0,
+   "seconds": 3.8,
+   "package_json_sha256_current": "02cc7704c0cc995def12b7e0375530683d72c62716b3908f9a79999f71c9f2c7",
+   "passed": true,
+   "rows": 637,
+   "package_json_sha256": "02cc7704c0cc995def12b7e0375530683d72c62716b3908f9a79999f71c9f2c7",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-share_xgb-h01": {
+   "rc": 0,
+   "seconds": 5.0,
+   "package_json_sha256_current": "964016f8c75ec0a6d748f62413416e9180dcc7d198d98957b29251393834e854",
+   "passed": true,
+   "rows": 965,
+   "package_json_sha256": "964016f8c75ec0a6d748f62413416e9180dcc7d198d98957b29251393834e854",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-share_xgb-h03": {
+   "rc": 0,
+   "seconds": 5.6,
+   "package_json_sha256_current": "4290e4cf6e4e8efe02664931b0f711549db1beeba01a0b64acab78930c50e7dc",
+   "passed": true,
+   "rows": 910,
+   "package_json_sha256": "4290e4cf6e4e8efe02664931b0f711549db1beeba01a0b64acab78930c50e7dc",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-share_xgb-h06": {
+   "rc": 0,
+   "seconds": 5.2,
+   "package_json_sha256_current": "27ef5efe734f8116f06a0a560887863d62b95cdbe2ceae35b93ce723bdb8382a",
+   "passed": true,
+   "rows": 814,
+   "package_json_sha256": "27ef5efe734f8116f06a0a560887863d62b95cdbe2ceae35b93ce723bdb8382a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  },
+  "popv1-share_xgb-h12": {
+   "rc": 0,
+   "seconds": 4.3,
+   "package_json_sha256_current": "e9189683427313dce800a21fb3745e03ed11adfe4974159ffd131dbec5afcdf2",
+   "passed": true,
+   "rows": 637,
+   "package_json_sha256": "e9189683427313dce800a21fb3745e03ed11adfe4974159ffd131dbec5afcdf2",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   },
+   "fresh": true
+  }
+ },
+ "started": "2026-10-16T12:03:54-0400",
+ "passed": 53,
+ "finished": "2026-10-16T12:14:45-0400"
+}

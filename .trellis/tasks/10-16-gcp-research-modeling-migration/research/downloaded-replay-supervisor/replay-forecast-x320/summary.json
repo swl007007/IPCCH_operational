@@ -1,0 +1,1049 @@
+{
+ "image": "replay-forecast-x320",
+ "digest": "sha256:2810ab7c1bec048dce6c24cb4968937c0461deff68c6cb10c17ecf5c59e9bef7",
+ "manifest_sha256": "sha256:2810ab7c1bec048dce6c24cb4968937c0461deff68c6cb10c17ecf5c59e9bef7",
+ "config_digest": "sha256:38a1ec0ee40c3fc2f8dab47e7016dc3748cc501e136d297db6c6620867e143c5",
+ "rootfs": "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs",
+ "sandbox": [
+  "bwrap",
+  "--unshare-all",
+  "--die-with-parent",
+  "--uid",
+  "65534",
+  "--gid",
+  "65534",
+  "--tmpfs",
+  "/",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/app",
+  "/app",
+  "--symlink",
+  "usr/bin",
+  "/bin",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/boot",
+  "/boot",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/etc",
+  "/etc",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/home",
+  "/home",
+  "--symlink",
+  "usr/lib",
+  "/lib",
+  "--symlink",
+  "usr/lib64",
+  "/lib64",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/media",
+  "/media",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/mnt",
+  "/mnt",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/opt",
+  "/opt",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/root",
+  "/root",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/run",
+  "/run",
+  "--symlink",
+  "usr/sbin",
+  "/sbin",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/srv",
+  "/srv",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/sys",
+  "/sys",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/usr",
+  "/usr",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-forecast-x320.rootfs/var",
+  "/var",
+  "--proc",
+  "/proc",
+  "--dev",
+  "/dev",
+  "--tmpfs",
+  "/tmp",
+  "--tmpfs",
+  "/home/app",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/pkg-download-all/packages",
+  "/packages",
+  "--bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/pkg-download-all-replay-supervisor/replay-forecast-x320",
+  "/out",
+  "--chdir",
+  "/out",
+  "--clearenv",
+  "--setenv",
+  "GPG_KEY",
+  "7169605F62C751356D054A26A821E680E5FA6305",
+  "--setenv",
+  "HOME",
+  "/home/app",
+  "--setenv",
+  "IPCCH_SOURCE_COMMIT",
+  "36bde42fe1fa4055c97977893ac7f7c429b7af35",
+  "--setenv",
+  "LANG",
+  "C.UTF-8",
+  "--setenv",
+  "PATH",
+  "/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "--setenv",
+  "PYTHONDONTWRITEBYTECODE",
+  "1",
+  "--setenv",
+  "PYTHONPATH",
+  "/app",
+  "--setenv",
+  "PYTHON_GET_PIP_SHA256",
+  "dfe9fd5c28dc98b5ac17979a953ea550cec37ae1b47a5116007395bfacff2ab9",
+  "--setenv",
+  "PYTHON_GET_PIP_URL",
+  "https://github.com/pypa/get-pip/raw/dbf0c85f76fb6e1ab42aa672ffca6f0a675d9ee4/public/get-pip.py",
+  "--setenv",
+  "PYTHON_PIP_VERSION",
+  "24.0",
+  "--setenv",
+  "PYTHON_VERSION",
+  "3.12.3"
+ ],
+ "probe": {
+  "executable": "/usr/local/bin/python",
+  "uid": 65534,
+  "version": "3.12.3",
+  "numpy": [
+   "2.3.5",
+   "/usr/local/lib/python3.12/site-packages/numpy/__init__.py"
+  ],
+  "pandas": [
+   "3.0.3",
+   "/usr/local/lib/python3.12/site-packages/pandas/__init__.py"
+  ],
+  "xgboost": [
+   "3.2.0",
+   "/usr/local/lib/python3.12/site-packages/xgboost/__init__.py"
+  ],
+  "research_cloud": "/app/research_cloud/__init__.py",
+  "mapped": [
+   "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+   "/usr/lib/x86_64-linux-gnu/libc.so.6",
+   "/usr/local/lib/libpython3.12.so.1.0"
+  ],
+  "host_mnt_c_exists": false,
+  "mnt_entries": [],
+  "host_home_exists": false,
+  "network": "OSError",
+  "packages_writable": false
+ },
+ "packages": 56,
+ "results": {
+  "forecast-compact_climate_global_baseline_00--compact_global_2026_extension": {
+   "rc": 0,
+   "seconds": 13.6,
+   "package_json_sha256_current": "ad915234ee9cb878f575ef4098a705237065f5ea4873ae2b9066eff3faca5aa5",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "ad915234ee9cb878f575ef4098a705237065f5ea4873ae2b9066eff3faca5aa5",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_baseline_00--compact_global_original": {
+   "rc": 0,
+   "seconds": 12.7,
+   "package_json_sha256_current": "c474e04f43f4d7d7b6817bb4dff5837032cf0832a376802b6b928a8072263e79",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "c474e04f43f4d7d7b6817bb4dff5837032cf0832a376802b6b928a8072263e79",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_baseline_03--compact_global_2026_extension": {
+   "rc": 0,
+   "seconds": 15.3,
+   "package_json_sha256_current": "ee4aa60fc86570f9bc3bc1a3f8277b2049d6b1bfe4a904f7388e7b0c61ac33fc",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "ee4aa60fc86570f9bc3bc1a3f8277b2049d6b1bfe4a904f7388e7b0c61ac33fc",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_baseline_03--compact_global_original": {
+   "rc": 0,
+   "seconds": 10.0,
+   "package_json_sha256_current": "9522cac8dea1c9be1cc3515287d78747ab14ce24005886a5d553b2ebef0a2e90",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "9522cac8dea1c9be1cc3515287d78747ab14ce24005886a5d553b2ebef0a2e90",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_baseline_06--compact_global_2026_extension": {
+   "rc": 0,
+   "seconds": 13.3,
+   "package_json_sha256_current": "d98174738b70c97e3a67683119234791d8f32c500bc2c55b3396b5f8a8fe5685",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "d98174738b70c97e3a67683119234791d8f32c500bc2c55b3396b5f8a8fe5685",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_baseline_06--compact_global_original": {
+   "rc": 0,
+   "seconds": 11.5,
+   "package_json_sha256_current": "b0247ed6d683c0f9ea9910292491fbead9d40d28825e876e00ba12327e841fdd",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "b0247ed6d683c0f9ea9910292491fbead9d40d28825e876e00ba12327e841fdd",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_baseline_12--compact_global_2026_extension": {
+   "rc": 0,
+   "seconds": 8.8,
+   "package_json_sha256_current": "6b23bbbbce8a20ace6caf4eb21370f1f61197a986e10fd06f50890908ada790f",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "6b23bbbbce8a20ace6caf4eb21370f1f61197a986e10fd06f50890908ada790f",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_baseline_12--compact_global_original": {
+   "rc": 0,
+   "seconds": 7.4,
+   "package_json_sha256_current": "3f0edec6b5c38a3c52dcb75ff8fb2694b519cc8870448d25cbe4896e3b9db628",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "3f0edec6b5c38a3c52dcb75ff8fb2694b519cc8870448d25cbe4896e3b9db628",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_weather_oracle_03--compact_global_2026_extension": {
+   "rc": 0,
+   "seconds": 7.3,
+   "package_json_sha256_current": "0523ff92e95e5d0f92ace8b77feeccc449ea41b1ad9de519ac73595fc7476007",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "0523ff92e95e5d0f92ace8b77feeccc449ea41b1ad9de519ac73595fc7476007",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_weather_oracle_03--compact_global_original": {
+   "rc": 0,
+   "seconds": 4.9,
+   "package_json_sha256_current": "293f61bbd72777722cb030df99a43f789a16b7f13c76769e8a205288ec1aa6a6",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "293f61bbd72777722cb030df99a43f789a16b7f13c76769e8a205288ec1aa6a6",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_weather_oracle_06--compact_global_2026_extension": {
+   "rc": 0,
+   "seconds": 6.3,
+   "package_json_sha256_current": "f10d95ae20e9033a2837c47a789ee2346ecb09d6195816ee05592ccc9044bb66",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "f10d95ae20e9033a2837c47a789ee2346ecb09d6195816ee05592ccc9044bb66",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_weather_oracle_06--compact_global_original": {
+   "rc": 0,
+   "seconds": 5.2,
+   "package_json_sha256_current": "21cd3c306635ffc43e8a932e321c62236a9c8e6d5f670327156e1262806e7599",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "21cd3c306635ffc43e8a932e321c62236a9c8e6d5f670327156e1262806e7599",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_weather_oracle_12--compact_global_2026_extension": {
+   "rc": 0,
+   "seconds": 7.0,
+   "package_json_sha256_current": "0c694708118e483da87bd9254c554a04d4a0f8a6855785c1c1563212a685d226",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "0c694708118e483da87bd9254c554a04d4a0f8a6855785c1c1563212a685d226",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_global_weather_oracle_12--compact_global_original": {
+   "rc": 0,
+   "seconds": 6.6,
+   "package_json_sha256_current": "99cc925641b07a654d13bfeb0e4ee219d9a623d7edd2d3dc122e582aabec1531",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "99cc925641b07a654d13bfeb0e4ee219d9a623d7edd2d3dc122e582aabec1531",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_baseline_00--compact_somalia_2026_extension": {
+   "rc": 0,
+   "seconds": 7.2,
+   "package_json_sha256_current": "d9f82a82fa0831ec941fdeea69dd4bf60f962ed7f51a1d30b6cdf5608a479ee8",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "d9f82a82fa0831ec941fdeea69dd4bf60f962ed7f51a1d30b6cdf5608a479ee8",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_baseline_00--compact_somalia_original": {
+   "rc": 0,
+   "seconds": 5.7,
+   "package_json_sha256_current": "aabfaa327131af3bab112cdc7deee67144f3d335d67b753b8daecad224d8b72c",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "aabfaa327131af3bab112cdc7deee67144f3d335d67b753b8daecad224d8b72c",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_baseline_03--compact_somalia_2026_extension": {
+   "rc": 0,
+   "seconds": 7.4,
+   "package_json_sha256_current": "c2b1470cdeb330191d7266ae608cc2b37b85d68a4d9b20c1c7f184058d426b62",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "c2b1470cdeb330191d7266ae608cc2b37b85d68a4d9b20c1c7f184058d426b62",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_baseline_03--compact_somalia_original": {
+   "rc": 0,
+   "seconds": 6.3,
+   "package_json_sha256_current": "c7cca69a8560ebe2af652beffbbfeaf8284b5272aae7c6300088e0862ee2ec03",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "c7cca69a8560ebe2af652beffbbfeaf8284b5272aae7c6300088e0862ee2ec03",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_baseline_06--compact_somalia_2026_extension": {
+   "rc": 0,
+   "seconds": 8.3,
+   "package_json_sha256_current": "7ebb13dd23da3f5be7a9487591fc3cc5eb73c2b817ca3864669b8f4b4e6dd3f4",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "7ebb13dd23da3f5be7a9487591fc3cc5eb73c2b817ca3864669b8f4b4e6dd3f4",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_baseline_06--compact_somalia_original": {
+   "rc": 0,
+   "seconds": 7.6,
+   "package_json_sha256_current": "ce28e6b7e0719e8cfda11c4d169ff59d0425a6782d963a08b51955738fda46fe",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "ce28e6b7e0719e8cfda11c4d169ff59d0425a6782d963a08b51955738fda46fe",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_baseline_12--compact_somalia_2026_extension": {
+   "rc": 0,
+   "seconds": 7.0,
+   "package_json_sha256_current": "f297af7cf502c83ae14090f00740ee2466db2a7d49c20caa6b70b50ffe07545f",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "f297af7cf502c83ae14090f00740ee2466db2a7d49c20caa6b70b50ffe07545f",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_baseline_12--compact_somalia_original": {
+   "rc": 0,
+   "seconds": 7.1,
+   "package_json_sha256_current": "5751a73b51ec6638a49ec608a5e451c8757d3ee59faa0953b06f4bb3a66a7437",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "5751a73b51ec6638a49ec608a5e451c8757d3ee59faa0953b06f4bb3a66a7437",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_2026_extension": {
+   "rc": 0,
+   "seconds": 8.1,
+   "package_json_sha256_current": "c0f3672054b2658cf75472510badcb125d108dfc178d17a251bca38a6881259b",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "c0f3672054b2658cf75472510badcb125d108dfc178d17a251bca38a6881259b",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_03--compact_somalia_original": {
+   "rc": 0,
+   "seconds": 4.9,
+   "package_json_sha256_current": "4947f74866a30ca4dfa7230cb89f79d11a6bf0c674f698d9b4282c91ded07ec8",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "4947f74866a30ca4dfa7230cb89f79d11a6bf0c674f698d9b4282c91ded07ec8",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_2026_extension": {
+   "rc": 0,
+   "seconds": 7.4,
+   "package_json_sha256_current": "a98fd56fe0466c628d76a6b2da84b9fc6c5ee4a1a163ace638d45b517fcb7b4e",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "a98fd56fe0466c628d76a6b2da84b9fc6c5ee4a1a163ace638d45b517fcb7b4e",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_06--compact_somalia_original": {
+   "rc": 0,
+   "seconds": 6.4,
+   "package_json_sha256_current": "d5735ffaab3d9d7d67b2d1efdb73b1211a1002f03ce333906b07419f6adb5ce1",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "d5735ffaab3d9d7d67b2d1efdb73b1211a1002f03ce333906b07419f6adb5ce1",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_2026_extension": {
+   "rc": 0,
+   "seconds": 7.5,
+   "package_json_sha256_current": "ccadec9116846892d5b39bb5a19a763d6c771c26af57eec562e7c21baec36a2f",
+   "passed": true,
+   "rows": 160,
+   "package_json_sha256": "ccadec9116846892d5b39bb5a19a763d6c771c26af57eec562e7c21baec36a2f",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_climate_somalia_weather_oracle_12--compact_somalia_original": {
+   "rc": 0,
+   "seconds": 5.5,
+   "package_json_sha256_current": "71b2987e77d9eb1af3cc3b96fea7917eacec9bdfec779f9269fc8a0a3a5decd8",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "71b2987e77d9eb1af3cc3b96fea7917eacec9bdfec779f9269fc8a0a3a5decd8",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_global_baseline_00--compact_global_launch": {
+   "rc": 0,
+   "seconds": 4.3,
+   "package_json_sha256_current": "42989701e27016560dd67d7bdf3f44561b88bb4831f860e1cc7e3fca165ec9a4",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "42989701e27016560dd67d7bdf3f44561b88bb4831f860e1cc7e3fca165ec9a4",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_global_baseline_06--compact_global_launch": {
+   "rc": 0,
+   "seconds": 3.4,
+   "package_json_sha256_current": "30ba4f4c0225c3f61ef136b094678fcdc66c048566d0f3be48a575d8f1350e01",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "30ba4f4c0225c3f61ef136b094678fcdc66c048566d0f3be48a575d8f1350e01",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_global_baseline_12--compact_global_launch": {
+   "rc": 0,
+   "seconds": 3.2,
+   "package_json_sha256_current": "f0b12a640b8a8856182b4b5741468a802acc750ecc3b1a555333713f8f119823",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "f0b12a640b8a8856182b4b5741468a802acc750ecc3b1a555333713f8f119823",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_global_cds_weather_06--compact_global_launch": {
+   "rc": 0,
+   "seconds": 3.9,
+   "package_json_sha256_current": "559b7856a6ce994cd9b9e317716ace2ecf6c909b44ca09bd3d937579f4533570",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "559b7856a6ce994cd9b9e317716ace2ecf6c909b44ca09bd3d937579f4533570",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_global_cds_weather_12--compact_global_launch": {
+   "rc": 0,
+   "seconds": 3.8,
+   "package_json_sha256_current": "139bd59d17a990040368c6b36932b76641f1b69e835cc6ec4442afad94da9bc6",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "139bd59d17a990040368c6b36932b76641f1b69e835cc6ec4442afad94da9bc6",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_somalia_baseline_00--compact_somalia_launch": {
+   "rc": 0,
+   "seconds": 3.3,
+   "package_json_sha256_current": "f8a655966c63a5f3f5b445d47de9c03a34d6ec20426573c32698ad16b4f6de9e",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "f8a655966c63a5f3f5b445d47de9c03a34d6ec20426573c32698ad16b4f6de9e",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_somalia_baseline_06--compact_somalia_launch": {
+   "rc": 0,
+   "seconds": 3.9,
+   "package_json_sha256_current": "99c19e625104c90cb588b5755f756f12cd69fdf0a7a852a26db9c9bc2d87ab61",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "99c19e625104c90cb588b5755f756f12cd69fdf0a7a852a26db9c9bc2d87ab61",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_somalia_baseline_12--compact_somalia_launch": {
+   "rc": 0,
+   "seconds": 3.9,
+   "package_json_sha256_current": "285cbc347da52429568a7433d1dbe24bbbf40fecafbd80c1d84eb7bf13486e79",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "285cbc347da52429568a7433d1dbe24bbbf40fecafbd80c1d84eb7bf13486e79",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_somalia_cds_weather_06--compact_somalia_launch": {
+   "rc": 0,
+   "seconds": 2.7,
+   "package_json_sha256_current": "d26d5259963eac650bfb159429a79cae7c9ca991aa4961e3f186074e3efd60d4",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "d26d5259963eac650bfb159429a79cae7c9ca991aa4961e3f186074e3efd60d4",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-compact_launch_somalia_cds_weather_12--compact_somalia_launch": {
+   "rc": 0,
+   "seconds": 4.1,
+   "package_json_sha256_current": "c37eef8aa867187d323a768022919cc1d045b392c8a0a2d6dfae9114923d0181",
+   "passed": true,
+   "rows": 32,
+   "package_json_sha256": "c37eef8aa867187d323a768022919cc1d045b392c8a0a2d6dfae9114923d0181",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_no_ipc_history_00--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 7.1,
+   "package_json_sha256_current": "a4b59a1bbb5cbc136cf534bd2e4967fd47ec71dd2cdad2566a4918fb5edb0ce7",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "a4b59a1bbb5cbc136cf534bd2e4967fd47ec71dd2cdad2566a4918fb5edb0ce7",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_no_ipc_history_03--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 6.0,
+   "package_json_sha256_current": "cc2c7c7ade62eb8608b7f2094f363f9b5111a720974bf551310ae55def0fbadd",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "cc2c7c7ade62eb8608b7f2094f363f9b5111a720974bf551310ae55def0fbadd",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_no_ipc_history_06--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 7.4,
+   "package_json_sha256_current": "e6891ce1aae3284ab669cf99f2dd4edb49f957985785a7969ded1352f3a9f488",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "e6891ce1aae3284ab669cf99f2dd4edb49f957985785a7969ded1352f3a9f488",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_no_ipc_history_12--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 7.3,
+   "package_json_sha256_current": "e70139e05f6e5a0e3b222a3b883f54274a618ff5b1b105ed4a196ed6d96e4276",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "e70139e05f6e5a0e3b222a3b883f54274a618ff5b1b105ed4a196ed6d96e4276",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_00--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 6.7,
+   "package_json_sha256_current": "c488f0569f139c70d6fcf4f51e0f73df737f7a0ac9c8e28e880bfd7efafc5bf3",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "c488f0569f139c70d6fcf4f51e0f73df737f7a0ac9c8e28e880bfd7efafc5bf3",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_03--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 7.4,
+   "package_json_sha256_current": "b576d6e1d28fee662e2af985abe85b7235f8766bc8c108d32174ac06c42f9f8a",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "b576d6e1d28fee662e2af985abe85b7235f8766bc8c108d32174ac06c42f9f8a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_06--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 5.4,
+   "package_json_sha256_current": "6d147ab9227576bb0d8ff32ba09029055179ce83a2ee87ff56a2df35ad2a996a",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "6d147ab9227576bb0d8ff32ba09029055179ce83a2ee87ff56a2df35ad2a996a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_12--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 6.5,
+   "package_json_sha256_current": "a45ff890d795405ee28238d65303d4cbaa352faf0ac0872c82138d96874838d5",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "a45ff890d795405ee28238d65303d4cbaa352faf0ac0872c82138d96874838d5",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_idp_00--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 7.9,
+   "package_json_sha256_current": "7ad53fde50d9c00779a4d394913f3436bf18e77131a22e58eb9b03cf124cd4c3",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "7ad53fde50d9c00779a4d394913f3436bf18e77131a22e58eb9b03cf124cd4c3",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_idp_03--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 9.1,
+   "package_json_sha256_current": "77d8d64962a717bf9019da0932f9ffbcf297064782601df3e50ba87a70d5eced",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "77d8d64962a717bf9019da0932f9ffbcf297064782601df3e50ba87a70d5eced",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_idp_06--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 9.9,
+   "package_json_sha256_current": "7987a52aa655a737c9619eb578e127dc0f206cb9363a1c7e33f23e6e4668a9e2",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "7987a52aa655a737c9619eb578e127dc0f206cb9363a1c7e33f23e6e4668a9e2",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_climate_global_safe_ipc_history_idp_12--origin_safe_climate_idp_v1": {
+   "rc": 0,
+   "seconds": 9.4,
+   "package_json_sha256_current": "cf5496d80bc027b2eb2f31467aac015207524b2de8f52228389295bb205ebd3d",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "cf5496d80bc027b2eb2f31467aac015207524b2de8f52228389295bb205ebd3d",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_03--origin_safe_weather_oracle_v1": {
+   "rc": 0,
+   "seconds": 10.3,
+   "package_json_sha256_current": "7f8e726c15e0bf6ec6646c710e9bcb4dae28721da7a9976da48383d4d17ae896",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "7f8e726c15e0bf6ec6646c710e9bcb4dae28721da7a9976da48383d4d17ae896",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_06--origin_safe_weather_oracle_v1": {
+   "rc": 0,
+   "seconds": 9.7,
+   "package_json_sha256_current": "c83d98debf1340b09432a1310c03d0d4943dab1c7556ef985637d6742b256138",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "c83d98debf1340b09432a1310c03d0d4943dab1c7556ef985637d6742b256138",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_12--origin_safe_weather_oracle_v1": {
+   "rc": 0,
+   "seconds": 8.0,
+   "package_json_sha256_current": "280e4ebd9eebb6383ee8e8334fd5cf108d23681008351e0810100a24f23e9085",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "280e4ebd9eebb6383ee8e8334fd5cf108d23681008351e0810100a24f23e9085",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_with_summaries_03--origin_safe_weather_oracle_v1": {
+   "rc": 0,
+   "seconds": 8.8,
+   "package_json_sha256_current": "a4b0fbf055a328fd88e249eeb7325a589e2bc93d75d43dd2b7709b9ede40f015",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "a4b0fbf055a328fd88e249eeb7325a589e2bc93d75d43dd2b7709b9ede40f015",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_with_summaries_06--origin_safe_weather_oracle_v1": {
+   "rc": 0,
+   "seconds": 8.5,
+   "package_json_sha256_current": "7783ecfe86f9ee95b715721bd789cc7d820ded85a430884a74c40c162253a2f2",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "7783ecfe86f9ee95b715721bd789cc7d820ded85a430884a74c40c162253a2f2",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  },
+  "forecast-origin_safe_weather_global_weather_oracle_with_summaries_12--origin_safe_weather_oracle_v1": {
+   "rc": 0,
+   "seconds": 8.6,
+   "package_json_sha256_current": "35070c8280c7a456cbd141c0c7a4775b90f1c99e0b69e28c7adbbcbd2a8ba099",
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "35070c8280c7a456cbd141c0c7a4775b90f1c99e0b69e28c7adbbcbd2a8ba099",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.3"
+   },
+   "fresh": true
+  }
+ },
+ "started": "2026-10-16T12:03:58-0400",
+ "passed": 56,
+ "finished": "2026-10-16T12:10:45-0400"
+}

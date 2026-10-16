@@ -1,0 +1,74 @@
+{
+ "package": "/packages/alphaearth_supervised_partition-regional_calibration-h12",
+ "package_json_sha256": "0fb80fb11a7beda0a97bc247d40b61d0c448cf379922e93834ca4a0e6d21a124",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.2.0",
+  "numpy": "2.4.4",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family_run_id": "9939ac69809949e9923821fa692a7b2a",
+  "logged_model_id": "m-320276e98d0540149c43841761049ee5",
+  "registered_model": "IPCCH AlphaEarth supervised partition | regional_calibration | 12-month",
+  "source_run_id": "p1-formal-d30-20261014",
+  "version": 1
+ },
+ "rows": 96,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 3.700743415417188e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 7.379802787384666e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 8.288725608651681e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.984089975648473e-16,
+   "mean_abs_err": 8.378129936234373e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 3.700743415417188e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 7.379802787384666e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 8.250778532614689e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 1.984089975648473e-16,
+   "mean_abs_err": 7.71127501407685e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 3.25
+}

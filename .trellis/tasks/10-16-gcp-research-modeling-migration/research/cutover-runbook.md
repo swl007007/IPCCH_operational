@@ -44,7 +44,9 @@ Eligible means every file was transferred create-only with a fresh sha256 equal 
 | Local root (exact) | Cloud prefix | Files | Bytes | Fresh verify | Byte download |
 |---|---|---|---|---|---|
 | `/mnt/c/Users/swl00/geoxgb_runs/confirm-onset-v1` (accepted exception; full-system replay unavailable; pooled models packaged) | `gs://food-crisis-modeling-enso-research-inputs/fews-runs/confirm-onset-v1/` | 65 | 62,541,229 | ok | **ok 65/65** |
-| `/mnt/c/Users/swl00/geoxgb_runs/scen-b43ef6a-v1` (accepted exception) | `…/fews-runs/scen-b43ef6a-v1/` | 55,899 | per manifest | pending (running) | **pending (running)** |
+| `/mnt/c/Users/swl00/geoxgb_runs/scen-b43ef6a-v1` (accepted exception; incomplete full-system status unchanged) | `…/fews-runs/scen-b43ef6a-v1/` | 55,899 | 45,341,699,278 | ok (part of the 29-root verify) | **ok 55,899/55,899** (`ledger/verify/archive-download-scen-b43ef6a-v1.json`, sha256 `dcf6d5f3…5042e0`; set equal, no missing/extra/problems; every bucket/object/generation/sha256 equals the frozen upload receipts; supervisor-accepted) |
+
+Both accepted historical exceptions now meet extant-byte download preservation. This does not change their incomplete full-system status: confirm-onset's full system arm stays unreplayable, and neither archive becomes a complete run.
 | The other 27 roots in `scratch/preservation/gate.json`: the d34/d37/d38 evidence roots, geoxgb-d26 … d52, geoxgb-v1, minirun-1/2, smoke-2, scen-b43ef6a-v1.failed_stage1, scen-b43ef6a-v1.actual-inputs-v1, the geoxgb_runs top-level files | `…/fews-runs/<root>/` | per gate (29 roots total 136,927 files, 76,973,948,308 bytes) | per gate | **ok: all 29 roots, 136,927 / 76,973,948,308 exact** (`ledger/verify/fews-*.json`, 11:25) | not required (metadata + hash verify) |
 
 **Declared inputs:** only the 122 exact inventory paths in `scratch/p1/input-inventory.json`, verified 122/122. These are **individual files**, not their parent trees.
@@ -62,5 +64,6 @@ Eligible means every file was transferred create-only with a fresh sha256 equal 
 
 ## 7. Gate status (honest, at writing)
 
-- **Done:** UI acceptance; access matrices; restart persistence (00006 → 00007: armed, guard rows kept, query settled); publish verify 223; reverse links 170 keyed; FEWS registry 29; FEWS archive verify 29 roots / 136,927 files / 76,973,948,308 bytes; confirm-onset bytes 65/65; AC8 both families; trials and provenance.
-- **Pending:** full 223 reader download + 4-image replay; scen archive bytes; SQL import 53/53 + geometry + capacity; HPT 2-trial retry; temporary-admin removal + post-removal checks; writer freeze + r3 keyed delta + artifact re-hash; native commit merge; close.
+- **Done:** UI acceptance; access matrices; restart persistence (00006 → 00007: armed, guard rows kept, query settled); publish verify 223; reverse links 170 keyed; FEWS registry 29; FEWS archive verify 29 roots / 136,927 files / 76,973,948,308 bytes; confirm-onset bytes 65/65; scen bytes 55,899/55,899 (45,341,699,278 B); AC8 both families; trials and provenance.
+- **Per-trial cap:** the 54c9ad6 SIGALRM cap is ineffective, because the trial is PID 1. Native d9ede46 replaces it with `[/usr/local/bin/train-entry] /usr/bin/timeout --kill-after=30s 900s python …`. That sends TERM at 900 s and KILL at 930 s; the 30 s grace is inside the declared 600 s overhead, so this is not a hard 900 s. It was tested as PID 1 in the pinned training-ipcch rootfs, and admission requires that exact prefix. HPT attempt 3 (submitted 11:43 with the ineffective cap) is evaluated on its measured trial durations (each must stay within 900 s). A fourth HPT is not submitted just to repeat wiring. Any future spec must carry the corrected wrapper.
+- **Pending:** full 223 reader download + 4-image replay; SQL import 53/53 + geometry + capacity; HPT attempt 3 outcome; temporary-admin removal + post-removal checks; writer freeze + r3 keyed delta + artifact re-hash; native commit merge; close.

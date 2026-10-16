@@ -73,14 +73,19 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - `scratch/p1/fews/` (hash cache, catalog, search report);
   - `scratch/p1/popv1_models.json`.
 - **SKU catalogs:** `scratch/p3/skus/*.json`.
-- **Live handles at 11:46 (do not duplicate; poll logs):**
+- **Live handles at 12:25 (do not duplicate; poll logs):**
   - Cloud SQL Auth Proxy PID 4174282 (127.0.0.1:5433); loopback IAM proxy PID 570218 (127.0.0.1:8091).
-  - Cloud SQL input import PID 220361 (`ledger/sql-import/run.log`; 48/53 verified, no failures; geometry + capacity follow in the same process).
-  - Full 223 package SDK download as reader PID 1194340 (`ledger/publish/download-all.log`, out `scratch/pkg-download-all`; 153/223 at 11:46). Next: `rootfs_replay` for the 4 images (28/53/86/56) over `scratch/pkg-download-all/packages`.
-  - scen-b43ef6a-v1 archive byte download PID 1266277 (`ledger/verify/archive-download.sh`; 40 GB so far; report `ledger/verify/archive-download-scen-b43ef6a-v1.json`; if it fails, rerun with `--resume`).
-  - HPT attempt 3 `hyperparameterTuningJobs/4058600960639893504` (operation `G11-vertex-ipcch-hpt2-3`, poll `ledger/vertex/ipcch-hpt2-3/poll.log`, spec `scratch/vertex/jobs/spec-ipcch-hpt2-linked-3.json`, parent run 023613b4…; study deadline 3000 s, per-trial SIGALRM 900 s).
-  - Cloud Run research-mlflow revision **00007-hld** (armed; restart check done).
-  - Finished this hour: FEWS 29-root verify (136,927 / 76,973,948,308 exact), reverse links (170 keyed), FEWS registry (29 READY), HPT attempt 2 (CANCELLED by provider after both trials trained and reported; both linked and replayed), G10 keyed guard ledger (5 rows, 7 fields equal) and `g10-endpoint-binding.json`.
+  - Cloud SQL input import PID 220361 (`ledger/sql-import/run.log`; 51/53 verified, no failures; geometry + capacity follow in the same process).
+  - Downloaded-copy replay of the remaining families, **supervisor-owned**: `scratch/pkg-download-all-replay-supervisor/{training-fews,replay-x320}` (forecast 56/56 done). training-ipcch 28/28 was done by the executor (`ledger/image-replays-downloaded/training-ipcch`, accepted).
+  - Runbook FEWS smoke check (`/tmp/rb-smoke.log`, output `scratch/smoke-fews-*`).
+  - Cloud Run research-mlflow revision **00007-hld** (armed).
+  - Finished since 11:46:
+    - scen archive bytes 55,899/55,899 (accepted);
+    - full 223 reader download (15,477 files / 12,578,866,404 B);
+    - HPT attempt 3 SUCCEEDED and harvested (`g11-vertex/ipcch-hpt2-3/`); HPT parents closed with true outcomes;
+    - per-trial cap fix d9ede46 (submission hold lifted);
+    - actuals collector + revised quote d58fcda;
+    - researcher runbook (native `research_cloud/RUNBOOK.md`).
 - **Operator ledger and receipts:**
   - `ledger/spend.sqlite`: platform 2026-10 reserved USD 76.31 (15 operations: incl. G10 allocation 10, exception archive 5.16, package downloads 1.47, publish copies 0.33), training pool 6 operations (FEWS trial 1 failed + 2 ok, IPCCH trial ok, HPT failed, HPT probe cancelled), no actuals. The ledger balance is not plan headroom.
   - Sanitized receipts: `ledger/provision-receipt.json`, `ledger/db-roles-receipt.json`, `ledger/uri-rebind-receipt.json`, `ledger/temp-admin-receipt.json`, `ledger/mlflow-identities-receipt.json`, `ledger/g10-assistant-receipt.json`, `ledger/vertex/*/`, `scratch/ac8/run-*/report.json`, `scratch/trial-packages/{download,replays,provenance}.json`.
@@ -146,7 +151,7 @@ Somalia v1, window-probe comparators, pop-v1, FEWS NET coverage, the URI map, se
 ## Acceptance status at 11:10 (what is done vs open)
 
 - **Done with evidence:** user UI acceptance (personal login/navigation/speed); access 17/17 anonymous + 32/32 principals direct; credential-cache invalidation 18/18; publish `--verify` 223/15,477; image sandbox replays 223/223 of local packages; AC8 clean WSL runs FEWS + IPCCH ok; FEWS/IPCCH Vertex trials with emitted provenance = submissions and downloaded-package replays (200 / 48 rows); G10 armed, query settled (USD 0.0146), deny probe (model self-refused; allowlist not exercised live, rehearsal + startup marker only); legacy largest artifact download; confirm-onset archive bytes 65/65.
-- **Open (11:46):** full 223 reader download + 4-image replay; HPT attempt 3 terminal + harvest; SQL 53/53 + geometry + capacity; scen archive bytes; revised full quote; researcher runbook (own Basic credentials); temp-admin removal + post-removal checks on rev 00007; writer freeze + r3 + artifact re-hash; native merge; close. Previously listed: reverse-link verify keyed reconciliation; FEWS registry verify (29); scen archive bytes; SQL import 53/53 + geometry + capacity; FEWS 29-root final verify; HPT 2-trial retry on the fdbe6d1 image; AC4 restart persistence (permissions/guard after a new revision); MLflow run metric/param comparison persisted for the trials; cutover plan (keyed r1 vs fresh local delta, writer freeze, fallback); temp admin removal after acceptance; merge native commits; close.
+- **Open (12:25):** remaining downloaded-copy replays (training-fews 53, replay-x320 86; supervisor-owned); SQL 53/53 + geometry + capacity; temporary-admin removal, then post-removal checks on revision 00007; writer freeze, then r3 + keyed delta + full artifact re-hash; merge the native commits into the registered lineage (`research_cloud/` only; dirty files preserved); supervisor reconciliation; close.
 
 ## Open user questions
 

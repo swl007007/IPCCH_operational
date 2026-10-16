@@ -1,0 +1,161 @@
+{
+ "package": "/packages/package",
+ "package_json_sha256": "bc55518997319c27adc2bdfa1590ac1bcde662e9fe91c92d9930b141c629a5cb",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "family": "ipcch_geoxgb_pooled_quartet",
+  "horizon": 3,
+  "input_manifest": {
+   "derived_from": {
+    "base_inputs": {
+     "country_lookup": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90",
+     "raw_panel": "ae696087c3bbb280537ae269a05924133acdb51060d31290523404fa8a717673"
+    },
+    "base_manifest": "/home/swl007007/projects/food-crisis-research/scratch/training/manifest-ipcch-base.json",
+    "base_manifest_sha256": "103c6e8547f60c07c8aaee2ea52febd72f4ec04708d965ef653022159afabe06",
+    "builder_code": {
+     "files": {
+      "config/experiment-contract.json": "49a367ce6fbabb7efda3d2f86a78bac8c3f3f1e31790958d290505cd0b6ffd72",
+      "config/feature-schema.json": "a6093121691e5dce5958f7713872561d89f9d3e19646dcce9c62ce16d62c643d",
+      "config/inputs.json": "49826724a8812b66f1941c69cbbd15e816f9a9a43e03f01633a0a27be473d550",
+      "ipcch_geoxgb/artifacts.py": "dc8f39108cf69f7a3d4a5ca202559b5177652e66098ad17ddb48c2e5f9d108c2",
+      "ipcch_geoxgb/contract.py": "e838ff2861569a085a034be0ff8682540b148734d9909cb1e61ded4499c656c1",
+      "ipcch_geoxgb/features.py": "b3fc637b871adeac732fcc285bed6f53ae329be323485e45928213c9eb8fb958",
+      "ipcch_geoxgb/geography.py": "441fecf06eaf7294280392c524316023a11a199860cfdfd8ddc6cae12c10131e",
+      "ipcch_geoxgb/prepare.py": "1dc973c9266f154ad67da002a66153e5909b8fa451fa2353aae8ed04ac9b64f3",
+      "ipcch_geoxgb/targets.py": "87bfb4e04d2af0b7a04de48df480dfa0daf13e1345309c16355f4024292ebc3b"
+     },
+     "geoxgb_src": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment"
+    },
+    "horizon": 3,
+    "local_manifest": {
+     "path": "/home/swl007007/projects/food-crisis-research/scratch/training/features-h03-v2/manifest.json",
+     "sha256": "8a0ab35df9b2735a1ff64f4a3707fbc7ef275390894c880cd81bfee78958e94d"
+    },
+    "recipe": "targets.build_target_ledger -> valid_targets; features.load_covariate_panel -> build_panel_grid; build_history_index; prepare.build_horizon"
+   },
+   "files": {
+    "X": {
+     "sha256": "b924207cc7e9ad1fd67d0826a48ee5220339fc05251f3000cc73a39d7198d51b",
+     "uri": "/gcs/food-crisis-modeling-enso-research-inputs/training-snapshots/features-h03-v2/X_rich561_h03.npy"
+    },
+    "feature_order": {
+     "sha256": "ae4b543b1e6ed77467780773d32fd58313e6b1b5ed68416b5d767156d9adad51",
+     "uri": "/gcs/food-crisis-modeling-enso-research-inputs/training-snapshots/features-h03-v2/feature_order.csv"
+    },
+    "keys": {
+     "sha256": "e8c9e9d5cd740da7a115ce84558cc1937c13ec2317682942050abe5923af2dc7",
+     "uri": "/gcs/food-crisis-modeling-enso-research-inputs/training-snapshots/features-h03-v2/keys_h03.csv.gz"
+    }
+   },
+   "gcp_project": "food-crisis-modeling-enso",
+   "name": "ipcch-rich561-h03-linux"
+  },
+  "job": "4058600960639893504",
+  "params": {
+   "base_score": 0.5,
+   "booster": "gbtree",
+   "colsample_bytree": 0.9196191671654133,
+   "device": "cpu",
+   "eta": 0.05,
+   "gamma": 0,
+   "grow_policy": "depthwise",
+   "max_bin": 256,
+   "max_delta_step": 0,
+   "max_depth": 2,
+   "min_child_weight": 18.8200458655505,
+   "nthread": 4,
+   "num_parallel_tree": 1,
+   "objective": "reg:squarederror",
+   "reg_alpha": 0,
+   "reg_lambda": 33.61581448509764,
+   "seed": 42,
+   "subsample": 0.9124296114077157,
+   "tree_method": "hist"
+  },
+  "rounds": 358,
+  "trial": "1",
+  "trial_code": {
+   "adapter": {
+    "control_plane_commit": "fdbe6d153d28764d1ea562bb687c54241b44f7b7",
+    "files": {
+     "research_cloud/training/common.py": "15716a2aa26c488f2f3e8d16d09208caa070f246163ef5b6ded6af680ed88192",
+     "research_cloud/training/ipcch_quartet.py": "9846ede78467b0789be26d30ae86bccf664db68a4934f4fb6d92b4061ccd547c",
+     "research_cloud/training/trial_package.py": "20c4dc64c2d2db59ddf4cd75b30d397da7dcce72a04c7847cd80afbfdfc1e216"
+    },
+    "image_digest": "sha256:6ad7f46ce03ed3e2db9533d77de87609572dee9a632b3b7b8c431e7fdab16a91",
+    "research_cloud_dirty": null
+   },
+   "files": {
+    "config/feature-schema.json": "a6093121691e5dce5958f7713872561d89f9d3e19646dcce9c62ce16d62c643d",
+    "ipcch_geoxgb/metrics.py": "d7006599a29de17de7d37e7d23745ebacbd1725f53eb2c0822316580fac8a620",
+    "ipcch_geoxgb/modelstore.py": "4b75060335119596ccfd17a0b2155ca7339d2a5598a6d56cff8c5286aba2e671",
+    "ipcch_geoxgb/projection.py": "59bbebf7a433f24ddca5acaeecb36036aa3717966ad6c8a3eeb7c8af07af2ab4",
+    "ipcch_geoxgb/quartet.py": "3ec3dbbf4e2aff6ccaf507b63e21ea4924895dfe344f3bde1833adaa3e4f927b"
+   },
+   "geoxgb_src": "/app/sources/IPCCHGeoXGBExperiment"
+  }
+ },
+ "rows": 48,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.85722573273506e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.7415775010032725e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 9.879792296774159e-17,
+   "mean_abs_err": 5.2447715405354776e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 9.389190813724468e-17,
+   "mean_abs_err": 1.9337479841499926e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.85722573273506e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.7415775010032725e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 4.8114859535833276e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 9.389190813724468e-17,
+   "mean_abs_err": 1.432191541649146e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 2.87
+}

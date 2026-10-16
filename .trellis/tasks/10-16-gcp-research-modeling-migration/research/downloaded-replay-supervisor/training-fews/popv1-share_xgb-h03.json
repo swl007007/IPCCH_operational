@@ -1,0 +1,49 @@
+{
+ "package": "/packages/popv1-share_xgb-h03",
+ "package_json_sha256": "4290e4cf6e4e8efe02664931b0f711549db1beeba01a0b64acab78930c50e7dc",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "arm": "share_xgb",
+  "config_id": "X3",
+  "horizon_months": 3,
+  "registry": "unregistered retained research run (package per arm x horizon)",
+  "run": "pop-v1"
+ },
+ "rows": 910,
+ "columns": {
+  "raw_score": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 6.296474330935598e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "crisis_score": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 6.296474330935598e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "decision": {
+   "max_abs_err": 0.0,
+   "mean_abs_err": 0.0,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true,
+  "exact_support": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 5.05
+}

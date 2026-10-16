@@ -1,0 +1,52 @@
+{
+ "2": {
+  "run_id": "d4030d7288224cf581c74382e98294da",
+  "status": "FINISHED",
+  "params": {
+   "max_depth": "6",
+   "rounds": "279",
+   "min_child_weight": "15.417610287342557",
+   "subsample": "0.8441667924098994",
+   "colsample_bytree": "0.5272856314757198",
+   "reg_lambda": "46.51783380498408"
+  },
+  "crisis_f1": 0.8528198074277854,
+  "tags": {
+   "mlflow.user": "ipcch-jobwriter",
+   "mlflow.source.name": "/app/research_cloud/training/ipcch_quartet.py",
+   "mlflow.source.type": "LOCAL",
+   "trial_status": "succeeded",
+   "vertex.CLOUD_ML_JOB_ID": "4058600960639893504",
+   "vertex.CLOUD_ML_TRIAL_ID": "2",
+   "image_digest": "sha256:6ad7f46ce03ed3e2db9533d77de87609572dee9a632b3b7b8c431e7fdab16a91",
+   "source_commit": "fdbe6d153d28764d1ea562bb687c54241b44f7b7",
+   "mlflow.parentRunId": "023613b450c9473e9386b828b4280431",
+   "mlflow.runName": "2"
+  }
+ },
+ "1": {
+  "run_id": "1576bd8d3d394850965d07734e059eaf",
+  "status": "FINISHED",
+  "params": {
+   "max_depth": "2",
+   "rounds": "358",
+   "min_child_weight": "18.8200458655505",
+   "subsample": "0.9124296114077157",
+   "colsample_bytree": "0.9196191671654133",
+   "reg_lambda": "33.61581448509764"
+  },
+  "crisis_f1": 0.8631284916201117,
+  "tags": {
+   "mlflow.user": "ipcch-jobwriter",
+   "mlflow.source.name": "/app/research_cloud/training/ipcch_quartet.py",
+   "mlflow.source.type": "LOCAL",
+   "trial_status": "succeeded",
+   "vertex.CLOUD_ML_JOB_ID": "4058600960639893504",
+   "vertex.CLOUD_ML_TRIAL_ID": "1",
+   "image_digest": "sha256:6ad7f46ce03ed3e2db9533d77de87609572dee9a632b3b7b8c431e7fdab16a91",
+   "source_commit": "fdbe6d153d28764d1ea562bb687c54241b44f7b7",
+   "mlflow.parentRunId": "023613b450c9473e9386b828b4280431",
+   "mlflow.runName": "1"
+  }
+ }
+}

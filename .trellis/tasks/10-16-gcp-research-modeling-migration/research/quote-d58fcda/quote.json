@@ -1,0 +1,687 @@
+{
+ "project": "food-crisis-modeling-enso",
+ "region": "us-central1 (Gemini: global endpoint)",
+ "prices": "gross list prices, catalog effective 2026-10-15T07:00:00Z; no free tiers or credits subtracted",
+ "volumes_bytes": {
+  "fews_roots": 76949755782,
+  "declared_inputs": 14870642554,
+  "mlflow_artifacts": 1321950132,
+  "packages": 12582279472,
+  "training_snapshots": 367920759
+ },
+ "volumes_basis": {
+  "fews_roots": "transfer-volume-supervisor.md: 27 roots, 136,776 files (metadata walk)",
+  "declared_inputs": "input-inventory.json: 121 files",
+  "mlflow_artifacts": "snapshot r1 artifact tree, 3,573 files",
+  "packages": "packages/ at 223 packages, 15,885 files (du -sb, this checkpoint)",
+  "training_snapshots": "FEWS H4 2019-02 + IPCCH H3 feature snapshots (du -sb)"
+ },
+ "live_gcs_bytes": {
+  "transfer_objects": 106113317859,
+  "publication_copies": 12578866404
+ },
+ "items": [
+  {
+   "pool": "platform",
+   "item": "Cloud SQL db-g1-small instance, 744 h",
+   "sku": {
+    "file": "sql.json",
+    "index": 3383,
+    "id": "2A6B-45EC-D503",
+    "description": "Cloud SQL for PostgreSQL: Zonal - Small instance in Americas",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "h",
+    "unit_price_usd": 0.035
+   },
+   "quantity": 744,
+   "scale": 1.0,
+   "usd": 26.04,
+   "basis": "always on, full month",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud SQL SSD 30 GiB",
+   "sku": {
+    "file": "sql.json",
+    "index": 15396,
+    "id": "C18F-7FE0-0717",
+    "description": "Cloud SQL for PostgreSQL: Zonal - Standard storage in Americas",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy.mo",
+    "unit_price_usd": 0.17
+   },
+   "quantity": 30,
+   "scale": 1.0,
+   "usd": 5.1,
+   "basis": "measured 10.98 GiB data + WAL/temp allowances 13.65 GiB; 30 GiB leaves ~16 GiB headroom",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud SQL backups 30 GiB-month",
+   "sku": {
+    "file": "sql.json",
+    "index": 5732,
+    "id": "46C8-DA82-DF18",
+    "description": "Cloud SQL: Backups in Americas",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy.mo",
+    "unit_price_usd": 0.08
+   },
+   "quantity": 30,
+   "scale": 1.0,
+   "usd": 2.4,
+   "basis": "automated daily backups, 7 retained, point-in-time recovery (WAL archiving) OFF; one full (~11 GiB measured data) + incrementals of a mostly static research DB, reserved at ~2.7x measured data; reconcile with billed usage",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud SQL public IPv4 reservation, 744 h",
+   "sku": {
+    "file": "sql.json",
+    "index": 3944,
+    "id": "3151-8F6A-75C1",
+    "description": "Cloud SQL for PostgreSQL: Zonal - IP address reservation in Americas",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "h",
+    "unit_price_usd": 0.01
+   },
+   "quantity": 744,
+   "scale": 1.0,
+   "usd": 7.44,
+   "basis": "included conservatively; applicability to an attached instance IP unverified",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud SQL internet egress, input-import verification readback 16 GiB",
+   "sku": {
+    "file": "sql.json",
+    "index": 2798,
+    "id": "238B-D94B-7243",
+    "description": "Network Internet Data Transfer Out from Americas to Americas",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy",
+    "unit_price_usd": 0.19
+   },
+   "quantity": 16,
+   "scale": 1.0,
+   "usd": 3.04,
+   "basis": "one-time: the research-input import's every-cell COPY TO readback through the Auth Proxy to the workstation (~12.8 GiB CSV-equivalent + geometry/catalog reads); added before the import ran",
+   "one_time": true
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud Run CPU, 60 active h x 1 vCPU",
+   "sku": {
+    "file": "run.json",
+    "index": 229,
+    "id": "4856-B847-F1EB",
+    "description": "Services CPU (Request-based billing)",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "s",
+    "unit_price_usd": 2.4e-05
+   },
+   "quantity": 216000,
+   "scale": 1.0,
+   "usd": 5.184,
+   "basis": "research use estimate",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud Run memory, 60 active h x 2 GiB",
+   "sku": {
+    "file": "run.json",
+    "index": 8,
+    "id": "02A2-9231-36A6",
+    "description": "Services Memory (Request-based billing)",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy.s",
+    "unit_price_usd": 2.5e-06
+   },
+   "quantity": 432000,
+   "scale": 1.0,
+   "usd": 1.08,
+   "basis": "research use estimate",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud Run requests, 0.1 M",
+   "sku": {
+    "file": "run.json",
+    "index": 149,
+    "id": "2DA5-55D3-E679",
+    "description": "Requests",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "count",
+    "unit_price_usd": 4e-07
+   },
+   "quantity": 100000,
+   "scale": 1.0,
+   "usd": 0.04,
+   "basis": "gross (first 2 M are free tier)",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud Run internet egress 20 GiB",
+   "sku": {
+    "file": "run.json",
+    "index": 646,
+    "id": "DDFD-AE42-E219",
+    "description": "Cloud Run Network Internet Data Transfer Out North America to North America",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy",
+    "unit_price_usd": 0.105
+   },
+   "quantity": 20,
+   "scale": 1.0,
+   "usd": 2.1,
+   "basis": "recurring workload allowance: MLflow UI/API and proxied artifact/package downloads to the workstation",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "GCS standard storage 122 GiB-month",
+   "sku": {
+    "file": "gcs.json",
+    "index": 1124,
+    "id": "E5F0-6A5D-7BAD",
+    "description": "Standard Storage US Regional",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy.mo",
+    "unit_price_usd": 0.02
+   },
+   "quantity": 122,
+   "scale": 1.0,
+   "usd": 2.44,
+   "basis": "measured live 110.54 GiB: 156,113 transferred objects (FEWS roots, inputs, MLflow artifacts, packages, snapshots, jobs) + 15,477 publication copies (12.58 GB, packages copied into MLflow artifact paths) + 10% soft-delete/growth",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "GCS Class A, initial upload + publication 172k",
+   "sku": {
+    "file": "gcs.json",
+    "index": 392,
+    "id": "4DBF-185F-A415",
+    "description": "Regional Standard Class A Operations",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "count",
+    "unit_price_usd": 5e-06
+   },
+   "quantity": 172000,
+   "scale": 1.0,
+   "usd": 0.86,
+   "basis": "one-time: 171,590 logical object writes (156,113 transfer objects + 15,477 publication copies, counted once)",
+   "one_time": true
+  },
+  {
+   "pool": "platform",
+   "item": "GCS Class A, monthly 10k",
+   "sku": {
+    "file": "gcs.json",
+    "index": 392,
+    "id": "4DBF-185F-A415",
+    "description": "Regional Standard Class A Operations",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "count",
+    "unit_price_usd": 5e-06
+   },
+   "quantity": 10000,
+   "scale": 1.0,
+   "usd": 0.05,
+   "basis": "operations",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "GCS Class B, monthly 100k",
+   "sku": {
+    "file": "gcs.json",
+    "index": 596,
+    "id": "7870-010B-2763",
+    "description": "Regional Standard Class B Operations",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "count",
+    "unit_price_usd": 4e-07
+   },
+   "quantity": 100000,
+   "scale": 1.0,
+   "usd": 0.04,
+   "basis": "operations",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "GCS Class B, acceptance reads 400k",
+   "sku": {
+    "file": "gcs.json",
+    "index": 596,
+    "id": "7870-010B-2763",
+    "description": "Regional Standard Class B Operations",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "count",
+    "unit_price_usd": 4e-07
+   },
+   "quantity": 400000,
+   "scale": 1.0,
+   "usd": 0.16,
+   "basis": "one-time (indicative; with the monthly 100k: 500k): upload reload + verify 312,226, publication verify 30,954, archive downloads 55,964, package downloads 15,477",
+   "one_time": true
+  },
+  {
+   "pool": "platform",
+   "item": "GCS direct download, scen archive acceptance 43 GiB",
+   "sku": {
+    "file": "gcs.json",
+    "index": 180,
+    "id": "22EB-AAE8-FBCD",
+    "description": "Download Worldwide Destinations (excluding Asia & Australia)",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy",
+    "unit_price_usd": 0.12
+   },
+   "quantity": 43,
+   "scale": 1.0,
+   "usd": 5.16,
+   "basis": "one-time: every extant scen-b43ef6a-v1 material (42.23 GiB; the exception's source archive), authorized direct GCS download; no other root is re-downloaded",
+   "one_time": true
+  },
+  {
+   "pool": "platform",
+   "item": "GCS direct download, AC8 inputs + confirm-onset archive 3 GiB",
+   "sku": {
+    "file": "gcs.json",
+    "index": 180,
+    "id": "22EB-AAE8-FBCD",
+    "description": "Download Worldwide Destinations (excluding Asia & Australia)",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy",
+    "unit_price_usd": 0.12
+   },
+   "quantity": 3,
+   "scale": 1.0,
+   "usd": 0.36,
+   "basis": "one-time: AC8 clean-run gs:// input reads 2.34 GiB (6 objects, sizes from object metadata) + confirm-onset-v1 every extant byte 0.06 GiB",
+   "one_time": true
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud Run egress, package acceptance via MLflow SDK 12 GiB",
+   "sku": {
+    "file": "run.json",
+    "index": 646,
+    "id": "DDFD-AE42-E219",
+    "description": "Cloud Run Network Internet Data Transfer Out North America to North America",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy",
+    "unit_price_usd": 0.105
+   },
+   "quantity": 12,
+   "scale": 1.0,
+   "usd": 1.26,
+   "basis": "one-time: all retained packages (11.72 GiB) downloaded with authenticated MLflow SDK calls through the service's artifact proxy (the intended user path, incl. the largest-package service check); the pilot, trial, HPT and AC8 package downloads (0.11 GiB) fit in the rounding",
+   "one_time": true
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud Run CPU, package acceptance streaming 2 h",
+   "sku": {
+    "file": "run.json",
+    "index": 229,
+    "id": "4856-B847-F1EB",
+    "description": "Services CPU (Request-based billing)",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "s",
+    "unit_price_usd": 2.4e-05
+   },
+   "quantity": 7200,
+   "scale": 1.0,
+   "usd": 0.1728,
+   "basis": "one-time: proxy time to stream the package acceptance volume (conservative)",
+   "one_time": true
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud Run memory, package acceptance streaming 2 h x 2 GiB",
+   "sku": {
+    "file": "run.json",
+    "index": 8,
+    "id": "02A2-9231-36A6",
+    "description": "Services Memory (Request-based billing)",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy.s",
+    "unit_price_usd": 2.5e-06
+   },
+   "quantity": 14400,
+   "scale": 1.0,
+   "usd": 0.036,
+   "basis": "one-time, as above",
+   "one_time": true
+  },
+  {
+   "pool": "platform",
+   "item": "Artifact Registry pulls to the workstation 11 GiB",
+   "sku": {
+    "file": "ar.json",
+    "index": 1,
+    "id": "108E-9EAE-92D9",
+    "description": "Artifact Registry Network Internet Egress North America to North America",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy",
+    "unit_price_usd": 0.105
+   },
+   "quantity": 11,
+   "scale": 1.0,
+   "usd": 1.155,
+   "basis": "one-time crane pulls of the 5 images (digest verification; historical replay acceptance on the workstation): measured unpacked envs 5.54 GB + base layers, x2 for one rebuild",
+   "one_time": true
+  },
+  {
+   "pool": "platform",
+   "item": "Artifact Registry storage 11 GiB-month",
+   "sku": {
+    "file": "ar.json",
+    "index": 14,
+    "id": "8502-299A-ABAF",
+    "description": "Artifact Registry Storage",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy.mo",
+    "unit_price_usd": 0.1
+   },
+   "quantity": 11,
+   "scale": 1.0,
+   "usd": 1.1,
+   "basis": "7 digests now: the original 5 (service + 2 training + 2 historical replay) + service 4cc5d93b + training-ipcch 6ad7f46c (train-entry); measured repository size 4.11 GB (3.82 GiB), allowance kept for later digests; Cloud Run/Vertex pulls are in-region",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Cloud Build e2-standard-2, 120 min",
+   "sku": {
+    "file": "build.json",
+    "index": 249,
+    "id": "A464-9020-6404",
+    "description": "Build time e2-standard-2",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "min",
+    "unit_price_usd": 0.006
+   },
+   "quantity": 120,
+   "scale": 1.0,
+   "usd": 0.72,
+   "basis": "measured: 7 successful builds 18.64 min + 1 failed ~1.93 min (20.5 min); allowance kept for rebuilds; source contexts ~4.5 MB staged in the build source bucket (2.5 MB live)",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Secret Manager, 18 active versions (replica-months)",
+   "sku": {
+    "file": "secret.json",
+    "index": 0,
+    "id": "7756-ADEF-84F4",
+    "description": "Secret version replica storage",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "mo",
+    "unit_price_usd": 0.06
+   },
+   "quantity": 18,
+   "scale": 1.0,
+   "usd": 1.08,
+   "basis": "measured: 16 secrets, 18 ENABLED versions (13 initial, 2 corrected MLflow URI versions with version 1 kept, 1 temporary migration admin, 2 assistant/guard); all assumed retained the full month (the temporary admin's versions are destroyed after acceptance: 17 steady); user-managed us-central1 replication",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Secret Manager accesses 20k",
+   "sku": {
+    "file": "secret.json",
+    "index": 1,
+    "id": "EBA7-264F-2D2C",
+    "description": "Secret access operations",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "count",
+    "unit_price_usd": 3e-06
+   },
+   "quantity": 20000,
+   "scale": 1.0,
+   "usd": 0.06,
+   "basis": "accesses",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Logging ingestion 10 GiB",
+   "sku": {
+    "file": "logging.json",
+    "index": 0,
+    "id": "143F-A1B0-E0BE",
+    "description": "Log Storage cost",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy",
+    "unit_price_usd": 0.5
+   },
+   "quantity": 10,
+   "scale": 1.0,
+   "usd": 5.0,
+   "basis": "gross (first 50 GiB free tier)",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Logging retention 10 GiB-month",
+   "sku": {
+    "file": "logging.json",
+    "index": 2,
+    "id": "F4AE-5A52-ACE3",
+    "description": "Log Retention cost",
+    "effective": "2026-10-15T07:00:00Z",
+    "unit": "GiBy.mo",
+    "unit_price_usd": 0.01
+   },
+   "quantity": 10,
+   "scale": 1.0,
+   "usd": 0.1,
+   "basis": "beyond default retention",
+   "one_time": false
+  },
+  {
+   "pool": "platform",
+   "item": "Gemini 3.8 Flash (global) assistant, guard allocation",
+   "sku": {
+    "input": {
+     "id": "2A35-AC68-14D6",
+     "usd_per_mtok": 1.5,
+     "effective": "2026-10-15T07:00:00Z",
+     "description": "Gemini 3.8 Flash Global Text Input - Predictions"
+    },
+    "output": {
+     "id": "90FD-DC5F-DC55",
+     "usd_per_mtok": 7.5,
+     "effective": "2026-10-15T07:00:00Z",
+     "description": "Gemini 3.8 Flash Global Text Output - Predictions"
+    }
+   },
+   "quantity": null,
+   "usd": 10.0,
+   "one_time": false,
+   "basis": "the guard admits requests only within its USD 10 monthly allocation, reserving input + 2x max output at gross list prices (output includes reasoning); promotional credits not assumed"
+  },
+  {
+   "pool": "platform",
+   "item": "Contingency",
+   "sku": null,
+   "quantity": null,
+   "usd": 10.0,
+   "one_time": false,
+   "basis": "unmetered allowances (network between services, retries, measurement error)"
+  },
+  {
+   "pool": "training",
+   "item": "FEWS single trial attempt 1 (failed: trainer lacked serviceusage), 1 job",
+   "sku": {
+    "machine": "n1-standard-4",
+    "usd_per_hour": 0.21849885,
+    "core": "2A57-4214-1832",
+    "ram": "DE93-D712-2AE4",
+    "disk_usd_per_gib_hour": 6.3014e-05
+   },
+   "quantity": {
+    "trials": 1,
+    "timeout_s": 900,
+    "overhead_s": 600,
+    "boot_disk_gib": 100,
+    "billed_seconds_per_trial": 1500
+   },
+   "usd": 0.093667,
+   "one_time": true,
+   "basis": "submitted job's reservation (an estimate; billed actual not yet known), held until provider terminal status; disableRetries; 600 s declared startup/termination overhead (not a provider bound); no separate management line (on-demand price)"
+  },
+  {
+   "pool": "training",
+   "item": "FEWS single trial attempt 2 (succeeded), 1 job",
+   "sku": {
+    "machine": "n1-standard-4",
+    "usd_per_hour": 0.21849885,
+    "core": "2A57-4214-1832",
+    "ram": "DE93-D712-2AE4",
+    "disk_usd_per_gib_hour": 6.3014e-05
+   },
+   "quantity": {
+    "trials": 1,
+    "timeout_s": 900,
+    "overhead_s": 600,
+    "boot_disk_gib": 100,
+    "billed_seconds_per_trial": 1500
+   },
+   "usd": 0.093667,
+   "one_time": true,
+   "basis": "submitted job's reservation (an estimate; billed actual not yet known), held until provider terminal status; disableRetries; 600 s declared startup/termination overhead (not a provider bound); no separate management line (on-demand price)"
+  },
+  {
+   "pool": "training",
+   "item": "IPCCH single trial (succeeded), 1 job",
+   "sku": {
+    "machine": "n1-highmem-4",
+    "usd_per_hour": 0.2720969,
+    "core": "2A57-4214-1832",
+    "ram": "DE93-D712-2AE4",
+    "disk_usd_per_gib_hour": 6.3014e-05
+   },
+   "quantity": {
+    "trials": 1,
+    "timeout_s": 900,
+    "overhead_s": 600,
+    "boot_disk_gib": 100,
+    "billed_seconds_per_trial": 1500
+   },
+   "usd": 0.115999,
+   "one_time": true,
+   "basis": "submitted job's reservation (an estimate; billed actual not yet known), held until provider terminal status; disableRetries; 600 s declared startup/termination overhead (not a provider bound); no separate management line (on-demand price)"
+  },
+  {
+   "pool": "training",
+   "item": "HPT smoke attempt 1: 2 serial trials (failed: /var/hypertune permission)",
+   "sku": {
+    "machine": "n1-highmem-4",
+    "usd_per_hour": 0.2720969,
+    "core": "2A57-4214-1832",
+    "ram": "DE93-D712-2AE4",
+    "disk_usd_per_gib_hour": 6.3014e-05
+   },
+   "quantity": {
+    "trials": 2,
+    "timeout_s": 900,
+    "overhead_s": 600,
+    "boot_disk_gib": 100,
+    "billed_seconds_per_trial": 1500
+   },
+   "usd": 0.231999,
+   "one_time": true,
+   "basis": "submitted job's reservation (an estimate; billed actual not yet known), held until provider terminal status; disableRetries; 600 s declared startup/termination overhead (not a provider bound); no separate management line (on-demand price)"
+  },
+  {
+   "pool": "training",
+   "item": "HPT diagnostic: /var/hypertune mount probe (cancelled)",
+   "sku": {
+    "machine": "n1-standard-4",
+    "usd_per_hour": 0.21849885,
+    "core": "2A57-4214-1832",
+    "ram": "DE93-D712-2AE4",
+    "disk_usd_per_gib_hour": 6.3014e-05
+   },
+   "quantity": {
+    "trials": 1,
+    "timeout_s": 300,
+    "overhead_s": 600,
+    "boot_disk_gib": 100,
+    "billed_seconds_per_trial": 900
+   },
+   "usd": 0.0562,
+   "one_time": true,
+   "basis": "submitted job's reservation (an estimate; billed actual not yet known), held until provider terminal status; disableRetries; 600 s declared startup/termination overhead (not a provider bound); no separate management line (on-demand price)"
+  },
+  {
+   "pool": "training",
+   "item": "HPT smoke attempt 2: 2 serial trials (cancelled at the aggregate deadline)",
+   "sku": {
+    "machine": "n1-highmem-4",
+    "usd_per_hour": 0.2720969,
+    "core": "2A57-4214-1832",
+    "ram": "DE93-D712-2AE4",
+    "disk_usd_per_gib_hour": 6.3014e-05
+   },
+   "quantity": {
+    "trials": 2,
+    "timeout_s": 900,
+    "overhead_s": 600,
+    "boot_disk_gib": 100,
+    "billed_seconds_per_trial": 1500
+   },
+   "usd": 0.231999,
+   "one_time": true,
+   "basis": "submitted job's reservation (an estimate; billed actual not yet known), held until provider terminal status; disableRetries; 600 s declared startup/termination overhead (not a provider bound); no separate management line (on-demand price)"
+  },
+  {
+   "pool": "training",
+   "item": "HPT smoke attempt 3: 2 serial trials",
+   "sku": {
+    "machine": "n1-highmem-4",
+    "usd_per_hour": 0.2720969,
+    "core": "2A57-4214-1832",
+    "ram": "DE93-D712-2AE4",
+    "disk_usd_per_gib_hour": 6.3014e-05
+   },
+   "quantity": {
+    "trials": 2,
+    "timeout_s": 900,
+    "overhead_s": 600,
+    "boot_disk_gib": 100,
+    "billed_seconds_per_trial": 1500
+   },
+   "usd": 0.231999,
+   "one_time": true,
+   "basis": "submitted job's reservation (an estimate; billed actual not yet known), held until provider terminal status; disableRetries; 600 s declared startup/termination overhead (not a provider bound); no separate management line (on-demand price)"
+  }
+ ],
+ "totals": {
+  "platform": {
+   "monthly_usd": 79.97,
+   "one_time_usd": 12.2,
+   "first_month_usd": 92.18,
+   "envelope_usd": 100.0,
+   "within_envelope": true
+  },
+  "training": {
+   "monthly_usd": 0,
+   "one_time_usd": 1.06,
+   "first_month_usd": 1.06,
+   "envelope_usd": 100.0,
+   "within_envelope": true
+  }
+ }
+}

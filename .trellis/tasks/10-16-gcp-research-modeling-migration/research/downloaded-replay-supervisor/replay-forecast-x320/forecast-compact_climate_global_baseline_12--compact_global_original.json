@@ -1,0 +1,73 @@
+{
+ "package": "/packages/forecast-compact_climate_global_baseline_12--compact_global_original",
+ "package_json_sha256": "3f0edec6b5c38a3c52dcb75ff8fb2694b519cc8870448d25cbe4896e3b9db628",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.2.0",
+  "numpy": "2.3.5",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "compact_climate_global",
+  "logged_model_id": "m-0a2ad6fce61249deb90b77a80a02dbdc",
+  "registered_model": "IPCCH Forecasting Compact climate global historical | baseline | 12-month",
+  "version": 1
+ },
+ "rows": 128,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 3.426078865054194e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.92227786308419e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 9.8879238130678e-17,
+   "mean_abs_err": 5.287243184232387e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 9.80118763926896e-17,
+   "mean_abs_err": 2.929944701759381e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 3.426078865054194e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.92227786308419e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 9.8879238130678e-17,
+   "mean_abs_err": 5.287243184232387e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 9.80118763926896e-17,
+   "mean_abs_err": 2.929944701759381e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 6.7
+}

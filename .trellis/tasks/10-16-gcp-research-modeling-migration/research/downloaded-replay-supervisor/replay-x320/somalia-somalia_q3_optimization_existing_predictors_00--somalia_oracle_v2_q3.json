@@ -1,0 +1,65 @@
+{
+ "package": "/packages/somalia-somalia_q3_optimization_existing_predictors_00--somalia_oracle_v2_q3",
+ "package_json_sha256": "744f88df242d7304ae61116a19955753144515cd94a098438d002be4b515f622",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.2.0",
+  "numpy": "2.4.4",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "somalia_q3_optimization",
+  "logged_model_id": "m-fbe46a1055054f0d9bbfd8a8c5d78299",
+  "registered_model": "IPCCH Forecasting Somalia q3 optimization historical | existing_predictors | 0-month",
+  "version": 1
+ },
+ "rows": 132,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 5.088522196198634e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 6.917866952683266e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 7.948187562657371e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.953732314818879e-16,
+   "mean_abs_err": 8.102465630316968e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q3_mapped": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 1.0208584819233211e-16,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "q3_final": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 1.0208584819233211e-16,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 7.65
+}

@@ -1,0 +1,82 @@
+{
+ "job": "4058600960639893504",
+ "job_state": "JOB_STATE_SUCCEEDED",
+ "start": "2026-10-16T15:43:36Z",
+ "end": "2026-10-16T15:59:37Z",
+ "job_seconds": 961.0,
+ "scheduling": {
+  "timeout": "3000s",
+  "disableRetries": true
+ },
+ "parent_run": "023613b450c9473e9386b828b4280431",
+ "cap_note": "submitted with the 54c9ad6 launcher SIGALRM cap, which is ineffective for a PID-1 trial (fixed in d9ede46); the trials' measured durations below stayed far inside 900 s, so no cap was exercised",
+ "trials": [
+  {
+   "trial": "1",
+   "run_id": "1576bd8d3d394850965d07734e059eaf",
+   "params": {
+    "colsample_bytree": 0.9196191671654133,
+    "max_depth": 2,
+    "min_child_weight": 18.8200458655505,
+    "reg_lambda": 33.61581448509764,
+    "rounds": 358,
+    "subsample": 0.9124296114077157
+   },
+   "crisis_f1": 0.8631284916201117,
+   "provider_seconds": 297.450883,
+   "container_training_seconds": 77.1,
+   "package_json_sha256": "bc55518997319c27adc2bdfa1590ac1bcde662e9fe91c92d9930b141c629a5cb",
+   "checks": {
+    "vertex_trial_succeeded": true,
+    "mlflow_finished_and_succeeded": true,
+    "parent_link": true,
+    "job_and_trial_ids": true,
+    "image_digest_eq_spec": true,
+    "source_commit_fdbe6d1": true,
+    "input_manifest_sha_eq_submitted": true,
+    "params_vertex_eq_mlflow_eq_trial": true,
+    "objective_vertex_eq_mlflow_eq_trial": true
+   },
+   "replay": {
+    "rc": 0,
+    "passed": true,
+    "rows": 48,
+    "image": "training-ipcch@sha256:6ad7f46ce03e (fdbe6d1)"
+   }
+  },
+  {
+   "trial": "2",
+   "run_id": "d4030d7288224cf581c74382e98294da",
+   "params": {
+    "colsample_bytree": 0.5272856314757198,
+    "max_depth": 6,
+    "min_child_weight": 15.417610287342557,
+    "reg_lambda": 46.51783380498408,
+    "rounds": 279,
+    "subsample": 0.8441667924098994
+   },
+   "crisis_f1": 0.8528198074277854,
+   "provider_seconds": 399.802098,
+   "container_training_seconds": 171.1,
+   "package_json_sha256": "62d4e80147dfeb61c1960f255ab6b3a373839aa8dc840346b253934cedc67ba2",
+   "checks": {
+    "vertex_trial_succeeded": true,
+    "mlflow_finished_and_succeeded": true,
+    "parent_link": true,
+    "job_and_trial_ids": true,
+    "image_digest_eq_spec": true,
+    "source_commit_fdbe6d1": true,
+    "input_manifest_sha_eq_submitted": true,
+    "params_vertex_eq_mlflow_eq_trial": true,
+    "objective_vertex_eq_mlflow_eq_trial": true
+   },
+   "replay": {
+    "rc": 0,
+    "passed": true,
+    "rows": 48,
+    "image": "training-ipcch@sha256:6ad7f46ce03e (fdbe6d1)"
+   }
+  }
+ ],
+ "ok": true
+}
