@@ -191,7 +191,13 @@ def mlflow_log(experiment, record, artifacts_dir):
     mlflow.set_experiment(experiment)
     vertex = record["runtime"]["vertex"]
     tags = {"trial_status": record["status"], **{f"vertex.{k}": v for k, v in vertex.items()},
-            "image_digest": record["runtime"].get("image_digest") or "", "source_commit": record["runtime"].get("source_commit") or ""}
+            "image_digest": record["runtime"].get("image_digest") or "",
+            # the image env commit, else the adapter identity's commit (a checkout run)
+            "source_commit": record["runtime"].get("source_commit")
+            or ((record.get("trial_code") or {}).get("adapter") or {}).get("control_plane_commit") or ""}
+    adapter = (record.get("trial_code") or {}).get("adapter") or {}
+    if adapter.get("research_cloud_dirty") is not None:
+        tags["research_cloud_dirty"] = str(adapter["research_cloud_dirty"]).lower()
     if os.environ.get("IPCCH_PARENT_RUN_ID"):
         tags["mlflow.parentRunId"] = os.environ["IPCCH_PARENT_RUN_ID"]
     if record["status"] == "failed":
