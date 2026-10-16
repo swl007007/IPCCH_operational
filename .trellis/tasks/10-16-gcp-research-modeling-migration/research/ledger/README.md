@@ -1,8 +1,29 @@
 # Acceptance ledger reconciliation (written 2026-10-16 02:43:09 EDT by `date`)
 
+## Current state (2026-10-16 12:40 EDT; supersedes the counts and "pending" items in the dated sections below)
+
+`registry_ledger.json`: **242** registered versions (key set equal to snapshot r1), by class:
+
+| Class | Versions |
+|---|---|
+| packaged_replay_passed | **170** |
+| missing_weights_tracking_only | **72** (MLP 48, window-probe own fits 8, climate swap 8, maps-to-2024 8): tracking records preserved, disclosed |
+| weights_retained_package_pending / unresolved | **0** |
+
+- **Package totals.** All retained packages are built, published to cloud MLflow (`historical-packages`, 223 runs, 15,477 files, verified), downloaded through the reader SDK and replayed in the pinned images. **223/223 accepted:** 97,928 rows, 0 phase changes (`../downloaded-replay-supervisor/keyed-reconciliation.json`). The 223 are the 170 registry versions, pop-v1 24, FEWS NET 29 and others per `../model-inventory.json`.
+- **Package status.** 219 are complete. 4 are approved incomplete scenario systems; they are not full-system replay passes.
+- **Window-probe reused comparators (8):** packaged and passed. **pop-v1:** packaged (24), passed.
+- **FEWS NET:** 29 registry entries `FEWS NET | …` (package pointers), all READY.
+- **`scen-b43ef6a-v1`:** accepted as an incomplete-history exception (user ruling). Every extant byte is preserved and downloadable (55,899/55,899).
+- **`confirm-onset-v1`:** narrow exception. The full system arm is unreplayable (7 missing regional boosters); the pooled packages replay separately; bytes 65/65.
+- **User dispositions:** none pending. Spend baseline USD 0 (user-supplied, not API-verified).
+- **Reverse links:** 170 versions and 170 source runs carry `package.run_id` / `package.name` / `package.json_sha256`.
+
+The sections below are dated working records, kept as written.
+
 Code: native branch `gcp-research-migration` at `a217127` (`research_cloud/inventory/{registry_ledger,fews_catalog,run_files}.py`, with tests). The snapshot is r1 (`mlflow.db` sha256 `54aa6898…`). All counts below are reproducible from the files in this directory.
 
-## 1. Registered versions: `registry_ledger.json`
+## 1. Registered versions: `registry_ledger.json` (historical, 02:43)
 
 - **Construction:** driven from every `model_versions` row with a LEFT JOIN to logged models, so an unresolved source would be kept as `unresolved_registry_identity` (none occur). The (name, version) key set **equals the snapshot exactly** (asserted; a tested failure mode). That gives 242 rows, including MLP seeds v1/v2/v3, the diagnostic local arms and the oracle/realized-future-weather forecasting arms.
 - **Each row carries:** logged-model id, source and parent run, identity tags (logged-model tags plus the run-level `zz_prov.arm_kind` / `zz_prov.original_arm`), member scope and statuses, and the package and replay reference.

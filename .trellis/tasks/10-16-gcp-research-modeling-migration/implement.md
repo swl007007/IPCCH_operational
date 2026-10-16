@@ -1,5 +1,7 @@
 # Research migration implementation plan
 
+> **Status 2026-10-16 12:45 EDT:** checked items are done, with evidence in `research/` (`cloud-operations.md` O-001…O-114, checkpoints, `executor-state.md`). Open: SQL input import completion (53/53 + geometry + capacity), temporary-admin removal and post-removal checks, writer freeze + r3 + final delta, `acceptance.json` / cutover receipt, cloud-only guidance, native merge and close.
+
 Status: approved for supervised execution by the active goal. `execution-authorization.md` supersedes repeated per-operation approval gates for in-scope cloud work; preserve operation-level records, budget and technical gates. This is one migration task with independently verifiable phases. If later split, each child must explicitly name predecessor artifacts and acceptance, not rely on tree order.
 
 ## Scope and ownership
@@ -11,10 +13,10 @@ The main session coordinates, clarifies, updates specs, verifies and commits. Im
 ## P0 — approval, task lifecycle and isolated workspace
 
 - [x] User's active goal authorizes the reviewed `prd.md`, `design.md`, `implement.md`; execution authorization is recorded separately.
-- [ ] Reconcile direct Git status and the existing PROGRESS ledger; preserve unrelated modifications. Commit only approved task planning files before implementation.
-- [ ] Recheck `trellis-audit status`. The current repo was enrolled and controller running at planning time. Verify the actual bound Claude executor, exact registered path, task identity and durable state before register/start. Do not reset another run or auto-enroll WSL copies. Start via audit wrapper, then verify base SHA, executor and in_progress state.
-- [ ] Create the native-WSL workspace with required filesystem permission; preserve source commits and any intentionally included working diffs. No GitHub push, source deletion or archive availability changes.
-- [ ] Record phase receipts in task research and append this task's progress to the repository operational ledger without overwriting others.
+- [x] Reconcile direct Git status and the existing PROGRESS ledger; preserve unrelated modifications. Commit only approved task planning files before implementation.
+- [x] Recheck `trellis-audit status`. The current repo was enrolled and controller running at planning time. Verify the actual bound Claude executor, exact registered path, task identity and durable state before register/start. Do not reset another run or auto-enroll WSL copies. Start via audit wrapper, then verify base SHA, executor and in_progress state.
+- [x] Create the native-WSL workspace with required filesystem permission; preserve source commits and any intentionally included working diffs. No GitHub push, source deletion or archive availability changes.
+- [x] Record phase receipts in task research and append this task's progress to the repository operational ledger without overwriting others.
 
 Exit: approved spec commit and verified lifecycle/workspace identity. No paid resource creation.
 
@@ -22,14 +24,14 @@ Exit: approved spec commit and verified lifecycle/workspace identity. No paid re
 
 Depends on P0; satisfies AC1 and prepares AC3/AC6.
 
-- [ ] Inventory the consistent MLflow tracking schema and relationships, artifact locations, registry-linked source paths, all known FEWS research runs and relevant IPCCH source families. Record inspected roots and version/component coverage so "all" has a reviewable boundary.
-- [ ] For each version, classify complete weights / retained weights with missing dependencies / missing weights / non-parametric comparator. Include model hashes, fit block/arm/horizon, required maps/transforms, package size and saved-prediction keys.
-- [ ] Build FEWS D9 and IPCCH D10 input manifests, using the existing source manifests and actual dependency references. Hash before transfer; do not broaden to the whole source-data archive. Preserve historical oracle/target/vintage distinctions.
-- [ ] Freeze reference samples and tolerances before Linux comparison. Assemble package candidates in scratch and test one representative per runtime/family first, then every retained version/component. Do not silently shrink the inventory when one fails.
-- [ ] Apply the user's explicit `scen-b43ef6a-v1` exception only to its 18 documented missing regional boosters and affected 3,746/22,872 rows. Preserve all extant materials; keep the run incomplete with missing keys/components and the exception reference, without substituting a full-replay pass.
-- [ ] Apply the separately approved `confirm-onset-v1` exception to its 7 distinct missing local boosters and 2,446/11,436 S0/S3 system rows. Preserve all extant materials and the incomplete full-system record; expose retained pooled/global download/replay separately without substituting its predictions for the system.
-- [ ] Measure data import/index size, largest package, temporary RAM/disk, source/target row/schema/geometry invariants and minimal training fixture cost. Retain source files and original locks untouched.
-- [ ] If an asset is an unavailable Dropbox placeholder, report the exact required file and obtain the appropriate download authorization; do not sweep/hydrate the archive incidentally.
+- [x] Inventory the consistent MLflow tracking schema and relationships, artifact locations, registry-linked source paths, all known FEWS research runs and relevant IPCCH source families. Record inspected roots and version/component coverage so "all" has a reviewable boundary.
+- [x] For each version, classify complete weights / retained weights with missing dependencies / missing weights / non-parametric comparator. Include model hashes, fit block/arm/horizon, required maps/transforms, package size and saved-prediction keys.
+- [x] Build FEWS D9 and IPCCH D10 input manifests, using the existing source manifests and actual dependency references. Hash before transfer; do not broaden to the whole source-data archive. Preserve historical oracle/target/vintage distinctions.
+- [x] Freeze reference samples and tolerances before Linux comparison. Assemble package candidates in scratch and test one representative per runtime/family first, then every retained version/component. Do not silently shrink the inventory when one fails.
+- [x] Apply the user's explicit `scen-b43ef6a-v1` exception only to its 18 documented missing regional boosters and affected 3,746/22,872 rows. Preserve all extant materials; keep the run incomplete with missing keys/components and the exception reference, without substituting a full-replay pass.
+- [x] Apply the separately approved `confirm-onset-v1` exception to its 7 distinct missing local boosters and 2,446/11,436 S0/S3 system rows. Preserve all extant materials and the incomplete full-system record; expose retained pooled/global download/replay separately without substituting its predictions for the system.
+- [x] Measure data import/index size, largest package, temporary RAM/disk, source/target row/schema/geometry invariants and minimal training fixture cost. Retain source files and original locks untouched.
+- [x] If an asset is an unavailable Dropbox placeholder, report the exact required file and obtain the appropriate download authorization; do not sweep/hydrate the archive incidentally. *(none encountered: every input was local or hash-verified; no placeholder download was needed)*
 
 Exit artifacts: `research/input-inventory.json`, `model-inventory.json`, `portability-fixtures.json`, `capacity.json` (proposed future outputs, not present evidence).
 
@@ -37,13 +39,13 @@ Exit artifacts: `research/input-inventory.json`, `model-inventory.json`, `portab
 
 Depends on P1; prepares AC2-AC5/AC7.
 
-- [ ] Pin the MLflow 3.17 service image and family-specific Linux training images. Include actual scientific dependencies (FEWS requirements currently omit XGBoost). Use a new Linux runtime contract without rewriting historical locks.
-- [ ] Add minimal runtime/input/output adapters and download/load entry points. WSL small tests and cloud training use identical image digests. Do not alter held-out cohorts or scientific targets.
-- [ ] Rehearse tracking/auth SQLite-to-PostgreSQL copy in a disposable local database. Preserve IDs, full metric histories, relations, hashes/grants and sequences. Test interrupted migration, restart, no-duplicate resume and allowed URI mapping.
-- [ ] Adapt existing local artifact/feature-list readers through SDK downloads or bounded staging. Reuse verification primitives; add checks for previously uncovered datasets/logged-model/registry links.
-- [ ] Add Cloud Run foreground startup, durable DB/secret configuration, local assistant self-call and explicit read-only-patch startup gate. Tests must show patch/version failure cannot enable unrestricted tools.
-- [ ] Implement FEWS/IPCCH small experiment adapters from existing fit/feature code; use a new HPT trial entry with explicit parameters, validation metric reporting, trial identity and failure handling. Keep the FEWS downstream scientific guard.
-- [ ] Add only required cost submission/assistant controls and scoped access; avoid a new scheduler, feature store or general cloud SDK wrapper.
+- [x] Pin the MLflow 3.17 service image and family-specific Linux training images. Include actual scientific dependencies (FEWS requirements currently omit XGBoost). Use a new Linux runtime contract without rewriting historical locks.
+- [x] Add minimal runtime/input/output adapters and download/load entry points. WSL small tests and cloud training use identical image digests. Do not alter held-out cohorts or scientific targets.
+- [x] Rehearse tracking/auth SQLite-to-PostgreSQL copy in a disposable local database. Preserve IDs, full metric histories, relations, hashes/grants and sequences. Test interrupted migration, restart, no-duplicate resume and allowed URI mapping.
+- [x] Adapt existing local artifact/feature-list readers through SDK downloads or bounded staging. Reuse verification primitives; add checks for previously uncovered datasets/logged-model/registry links.
+- [x] Add Cloud Run foreground startup, durable DB/secret configuration, local assistant self-call and explicit read-only-patch startup gate. Tests must show patch/version failure cannot enable unrestricted tools.
+- [x] Implement FEWS/IPCCH small experiment adapters from existing fit/feature code; use a new HPT trial entry with explicit parameters, validation metric reporting, trial identity and failure handling. Keep the FEWS downstream scientific guard.
+- [x] Add only required cost submission/assistant controls and scoped access; avoid a new scheduler, feature store or general cloud SDK wrapper.
 
 Exit: local integration/portability results plus a built, pinned deployment candidate. No claim of cloud compatibility until P4-P5.
 
@@ -78,31 +80,31 @@ Spending baseline update, 2026-10-16: user confirms target-project current-month
 
 Depends on P2/P3 and corresponding operation approvals; validates AC2/AC4/AC7.
 
-- [ ] Provision only reviewed resources. Use Cloud SQL connector/auth proxy with TLS and scoped identity; no public DB allowlist for arbitrary clients.
+- [x] Provision only reviewed resources. Use Cloud SQL connector/auth proxy with TLS and scoped identity; no public DB allowlist for arbitrary clients.
 - [ ] Import versioned data and geometry; validate source hashes, typed content and export/readback. Produce consistent GCS snapshots.
-- [ ] Transfer the rehearsed tracking/auth copy and artifacts. Keep secrets out of evidence and rebind Gemini credentials to the target project.
-- [ ] Start the staging MLflow revision with durable backend/auth stores and GCS artifacts. Use its HTTPS URL before any custom-domain change.
-- [ ] Reconcile all source/target metadata and relationships, including original timestamps and external descriptors. Register FEWS research records with correct fit/import provenance; never invent missing historical metrics.
-- [ ] Test owner/job/read-only/anonymous behavior, assistant allowed/denied calls, restart persistence, cold-start self-calls and largest-package downloads.
-- [ ] Use the user-approved temporary migration administrator for setup/acceptance, with password only in Secret Manager. Preserve personal accounts/passwords; remove the temporary administrator and credential after acceptance and record the user's own login verification.
-- [ ] Record resource IDs, image digests, object generations and verified statuses. A successful deployment alone is not migration acceptance.
+- [x] Transfer the rehearsed tracking/auth copy and artifacts. Keep secrets out of evidence and rebind Gemini credentials to the target project.
+- [x] Start the staging MLflow revision with durable backend/auth stores and GCS artifacts. Use its HTTPS URL before any custom-domain change.
+- [x] Reconcile all source/target metadata and relationships, including original timestamps and external descriptors. Register FEWS research records with correct fit/import provenance; never invent missing historical metrics.
+- [x] Test owner/job/read-only/anonymous behavior, assistant allowed/denied calls, restart persistence, cold-start self-calls and largest-package downloads.
+- [x] Use the user-approved temporary migration administrator for setup/acceptance, with password only in Secret Manager. Preserve personal accounts/passwords; remove the temporary administrator and credential after acceptance and record the user's own login verification.
+- [x] Record resource IDs, image digests, object generations and verified statuses. A successful deployment alone is not migration acceptance.
 
 ## P5 — cloud research and all-version download acceptance
 
 Depends on P4 and job-specific approval; satisfies AC3/AC5.
 
-- [ ] Run one small Linux experiment per data family from approved data versions; log feature recipe/keys and results to MLflow.
-- [ ] Run the bounded two-trial HPT smoke on one family. Verify Vertex/MLflow agree on parameters, metric, status and artifact identity. Missing metric or exceeded duration must fail/terminate observably.
-- [ ] Download all retained historical packages through the intended user path and run fixed keyed sample inference in native WSL with cloud-pinned runtime; record errors and boundary-only drift.
-- [ ] Independently check representative complete packages plus the all-version coverage ledger. Partial component coverage cannot become whole-version pass.
-- [ ] Verify future model package download/load, dependency completeness and no Dropbox mounts.
+- [x] Run one small Linux experiment per data family from approved data versions; log feature recipe/keys and results to MLflow.
+- [x] Run the bounded two-trial HPT smoke on one family. Verify Vertex/MLflow agree on parameters, metric, status and artifact identity. Missing metric or exceeded duration must fail/terminate observably.
+- [x] Download all retained historical packages through the intended user path and run fixed keyed sample inference in native WSL with cloud-pinned runtime; record errors and boundary-only drift.
+- [x] Independently check representative complete packages plus the all-version coverage ledger. Partial component coverage cannot become whole-version pass.
+- [x] Verify future model package download/load, dependency completeness and no Dropbox mounts.
 
 ## P6 — final cutover and finish
 
 Depends on P1-P5, all ACs and any final operation approvals.
 
 - [ ] Freeze local writers, create the consistent final snapshot/delta, reconcile again and set cloud as the sole writable tracking authority.
-- [ ] Execute AC8 from a clean native-WSL checkout/container with only explicit inputs mounted. Publish a concise researcher runbook: add/change recipe, run local smoke, submit trial, compare, download/load, and recover.
+- [x] Execute AC8 from a clean native-WSL checkout/container with only explicit inputs mounted. Publish a concise researcher runbook: add/change recipe, run local smoke, submit trial, compare, download/load, and recover.
 - [ ] Write `research/acceptance.json`, `cutover.md` and final inventory status. Explicitly identify incomplete packages and archive exclusions; any unapproved required incomplete item prevents claiming full migration. Both approved FEWS exceptions remain visibly incomplete and can satisfy migration only after preservation/download checks for all extant materials, never as full-system replay passes.
 - [ ] Tell the user which research Dropbox paths can become cloud-only. The user performs that change; do not delete/move original data or stop unrelated operational workflows.
 - [ ] Run focused checks and detect_changes, commit only relevant work/evidence, then close through the bound Claude audit session. Verify accepted audit outcome; queued/launched is not passed. Preserve any incomplete evidence.

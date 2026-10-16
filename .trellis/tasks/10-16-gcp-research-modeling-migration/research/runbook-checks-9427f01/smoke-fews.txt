@@ -1,0 +1,4 @@
+{"roles": {"fit_variant": 81979, "eval": 81979, "target": 5365}, "features": 129, "seconds": 179.3}
+{"status": "succeeded", "error": null, "metrics": {"crisis_f1": 0.7915766738660908, "crisis_tp": 733, "crisis_fp": 177, "crisis_fn": 209, "crisis_tn": 4246, "fit_rows": 81979, "fit_original_keys": 81979, "target_rows": 5365}}
+trial-0
+exit=0

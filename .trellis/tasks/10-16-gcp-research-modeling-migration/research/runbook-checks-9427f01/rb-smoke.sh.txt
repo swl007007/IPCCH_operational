@@ -1,0 +1,29 @@
+W=/home/swl007007/projects/food-crisis-research
+FAM=fews; IMG=training-fews                 # IPCCH: FAM=ipcch; IMG=training-ipcch-fdbe6d1
+OUT=$W/scratch/smoke-$FAM-$(date +%Y%m%dT%H%M%S)
+cd $W/control-plane
+PYTHONPATH=. python3 - "$W" "$FAM" "$IMG" "$OUT" <<'P'
+import json, os, subprocess, sys
+from research_cloud.images.rootfs_replay import sandbox
+W, fam, img, out = sys.argv[1:]
+os.makedirs(out)
+code, inputs = os.path.realpath("."), f"{W}/scratch/ac8/inputs-{fam}"
+adc = os.path.expanduser("~/.config/gcloud/application_default_credentials.json")
+b = sandbox(f"{W}/scratch/image-pulls/{img}.rootfs", json.load(open(f"{W}/scratch/image-pulls/{img}.config.json")), code, out)
+i = b.index("--clearenv")
+b[i:i] = ["--share-net", "--ro-bind", code, "/work/checkout", "--ro-bind", inputs, "/work/inputs",
+          "--ro-bind", adc, "/work/adc.json", "--ro-bind", "/etc/resolv.conf", "/etc/resolv.conf"]
+b += ["--setenv", "PYTHONPATH", "/work/checkout", "--setenv", "GOOGLE_APPLICATION_CREDENTIALS", "/work/adc.json",
+      "--setenv", "IPCCH_GCP_PROJECT", "food-crisis-modeling-enso"]
+steps = {"fews": [["research_cloud.training.fews_features", "--manifest", "/work/inputs/base.json", "--horizon", "4",
+                   "--target", "2019-02", "--k", "0", "--strategy", "A", "--output", "/out/features"],
+                  ["research_cloud.training.fews_fourclass", "--manifest", "/out/features/manifest.json",
+                   "--config", "/work/inputs/config.json", "--output", "/out/trial"]],
+         "ipcch": [["research_cloud.training.ipcch_features", "--manifest", "/work/inputs/base.json", "--horizon", "3",
+                    "--output", "/out/features"],
+                   ["research_cloud.training.ipcch_quartet", "--manifest", "/out/features/manifest.json",
+                    "--config", "/work/inputs/config.json", "--output", "/out/trial", "--param", "rounds=50"]]}[fam]
+for s in steps:
+    subprocess.run(b + ["/usr/local/bin/python", "-m"] + s, check=True)
+P
+ls $OUT/trial/*/                               # trial.json (status, params, metrics, input/code hashes), metrics.json, package/

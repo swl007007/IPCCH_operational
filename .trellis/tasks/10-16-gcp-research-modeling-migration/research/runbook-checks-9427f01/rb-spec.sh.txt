@@ -1,0 +1,15 @@
+I=us-central1-docker.pkg.dev/food-crisis-modeling-enso/research; G=/gcs/food-crisis-modeling-enso-research-inputs/training-jobs
+U=https://research-mlflow-76571749286.us-central1.run.app
+# FEWS single trial (CustomJob)
+python -m research_cloud.training.cloud_job spec --adapter research_cloud.training.fews_fourclass \
+  --image $I/training-fews@sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456 --machine n1-standard-4 \
+  --manifest $G/manifest-fews-h4-2019-02.json --config $G/config-fews-h4-2019-02.json --family fewsnet_pooled_fourclass \
+  --local-config $W/scratch/training/config-fews-h4-2019-02.json --timeout-s 900 \
+  --mlflow-uri $U --mlflow-experiment cloud-training-acceptance --out SPEC-fews.json
+# IPCCH HPT, 2 serial trials (HyperparameterTuningJob); PARENT = the parent run of step 3
+python -m research_cloud.training.cloud_job spec --adapter research_cloud.training.ipcch_quartet \
+  --image $I/training-ipcch@sha256:6ad7f46ce03ed3e2db9533d77de87609572dee9a632b3b7b8c431e7fdab16a91 --machine n1-highmem-4 \
+  --manifest $G/manifest-ipcch-h03.json --config $G/config-ipcch-h03.json --family ipcch_geoxgb_pooled_quartet \
+  --local-config $W/scratch/training/config-ipcch-h03.json --timeout-s 900 --hpt 2 \
+  --mlflow-uri $U --mlflow-experiment cloud-training-acceptance --parent-run PARENT \
+  --entry /usr/local/bin/train-entry --out SPEC-hpt.json

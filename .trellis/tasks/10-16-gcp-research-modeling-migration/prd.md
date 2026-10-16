@@ -1,6 +1,6 @@
 # GCP research modeling migration — specification
 
-Status: **approved for execution by the user's active goal on 2026-10-16; lifecycle start pending**. This specification, `design.md` and `implement.md` define the approved scope. See `execution-authorization.md` for the supervisor/executor protocol and superseding in-scope cloud authorization. No deployment, training or upload has occurred at approval.
+Status: **approved for execution by the user's active goal on 2026-10-16; lifecycle started (trellis-audit run 1193a92d…), executing**. This specification, `design.md` and `implement.md` define the approved scope. See `execution-authorization.md` for the supervisor/executor protocol and superseding in-scope cloud authorization. (At approval, no deployment, training or upload had occurred.) Current progress and the remaining gates: `implement.md` status note and `research/executor-state.md`.
 
 ## Goal
 

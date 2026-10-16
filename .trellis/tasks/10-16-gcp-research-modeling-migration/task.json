@@ -25,6 +25,6 @@
     ".trellis/tasks/10-16-gcp-research-modeling-migration/design.md",
     ".trellis/tasks/10-16-gcp-research-modeling-migration/implement.md"
   ],
-  "notes": "D1-D11 and final planning approved through the active goal on 2026-10-16. In-scope cloud authority and Herdr executor recorded in execution-authorization.md. Await audit lifecycle start; no target-project operation yet.",
+  "notes": "D1-D11 approved through the active goal on 2026-10-16; audit run 1193a92d started; executing. At 12:45 EDT, cloud platform deployed and accepted, except the pending gates: SQL input import completion, temporary-admin removal and post-removal checks, writer freeze + r3 delta, acceptance.json / cutover receipt, native merge, close via trellis-audit. See research/executor-state.md.",
   "meta": {}
 }

@@ -1,0 +1,18 @@
+PKG=$(realpath pkg); W=/home/swl007007/projects/food-crisis-research; cd $W/control-plane    # run where pkg/ was downloaded
+PYTHONPATH=. python3 - "$W" "$PKG" <<'P'
+import json, subprocess, sys
+from research_cloud.images.rootfs_replay import sandbox
+W, pkg = sys.argv[1:]
+b = sandbox(f"{W}/scratch/image-pulls/training-ipcch.rootfs", json.load(open(f"{W}/scratch/image-pulls/training-ipcch.config.json")), pkg, "/tmp")
+code = """
+import importlib.util, json, numpy as np, pandas as pd
+p = "/packages/package"
+spec = importlib.util.spec_from_file_location("entry", p + "/loader/entry.py"); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+model = m.load(p)
+keys = json.load(open(p + "/package.json")).get("loader", {}).get("keys", ["admin_code", "target_ord"])
+X = np.load(p + "/reference/inputs.npy", allow_pickle=False)
+ref = pd.read_csv(p + "/reference/expected.csv", dtype={"unit": str})
+print(model.predict(ref[keys], X).head())
+"""
+subprocess.run(b + ["/usr/local/bin/python", "-c", code], check=True)
+P

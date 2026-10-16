@@ -132,17 +132,26 @@ The registry ledger stands at 170 passed and 72 tracking-only.
   - Training adapters for both families: features, trials, packages and MLflow linkage.
   - Five pinned images are built.
   - Preservation gate: 29/29 roots.
-- **P3 (cloud), in progress:**
-  - **G5:** APIs enabled (O-025…O-030).
-  - **G6:** 3 SAs, project and resource-scoped grants, 13 task-owned secrets (O-031, O-032, O-036, O-041).
-  - **G7:** inputs/artifacts/build buckets and AR repo (O-033…O-035).
-  - **G8:** `research-pg` RUNNABLE; scoped roles, 4 databases and PostGIS 3.6.4 verified (O-037, O-042).
-  - **G9:** 5 images pushed with in-image self-checks (O-038, O-039).
-  - **Data:** transfer pilot (O-044). MLflow stores loaded and verified in Cloud SQL (O-045: 64 tables / 361,026 rows and 11 / 10, every digest equal). The bulk GCS transfer is running: mlflow-artifacts 3,569/3,569 receipts, packages in progress, then inputs and 28 FEWS roots. Final verify is pending.
-  - **Cloud Run** `research-mlflow` revision 00002-gbm is serving. Public invoker since O-062 (user-approved). Staging 19/19 and 33/33 through the IAM proxy; direct 17/17 anonymous and 32/32 principals (O-063). Temporary admin plus 3 identities; workspace roles applied; URI map 56 applied and idempotent (O-058..O-061).
-  - **Images** pulled by digest; bwrap-sandbox replays 223/223 (O-056, O-057). In-image trial rehearsal: FEWS equals the host trial exactly; IPCCH equals it with rounds=50.
-  - G10/G11 not started.
-- **Quote** (`quote-f45426e`): platform USD 79.23/month + 11.67 one-time (first month 90.91; includes SQL import egress 3.04); training USD 0.78. Ledger: platform reserved 59.05.
+- **P3 (cloud), current at 12:45:**
+  - **G5–G8:** APIs, SAs and scoped grants, 18 secret versions, buckets, AR, `research-pg` (PostGIS) with scoped roles: done.
+  - **Data:**
+    - MLflow stores in Cloud SQL (64 tables / 361,026 rows and 11 / 10, digests equal);
+    - GCS transfer verified (all 29 FEWS roots: 136,927 files / 76,973,948,308 B; inputs 122/122; artifacts 3,569; packages 15,477);
+    - scen and confirm-onset bytes downloaded and verified (accepted exceptions; incomplete full-system status unchanged);
+    - research-input SQL import 51/53 and running (then geometry + capacity).
+  - **G9:**
+    - Cloud Run `research-mlflow` revision 00007-hld (public invoker, user-approved; Basic auth gates content);
+    - access 17/17 + 32/32; credential cache 18/18; UI accepted by the user;
+    - URI map 56; publish 223 / 15,477 verified; reverse links 170; FEWS registry 29 READY;
+    - images: 7 digests.
+  - **G10:** assistant armed on Gemini endpoint `ipcch-assistant-gemini-enso` (target-bound); guard ledger keyed proof (5 rows, USD 0.04063650); deny probe (model self-refused; allowlist not exercised live).
+  - **G11:**
+    - FEWS and IPCCH trials: provenance equals submission; packages replayed.
+    - HPT attempt 3 SUCCEEDED and harvested; parents closed with true outcomes.
+    - The per-trial cap was ineffective for attempt 3 (disclosed). Corrected in d9ede46 and required by admission.
+  - **AC8:** clean WSL runs, both families ok. All 223 packages downloaded through the reader and replayed in the pinned images: accepted (97,928 rows, 0 phase changes; 219 complete + 4 approved incomplete).
+  - **G12 (pending):** temporary-admin removal, post-removal checks, writer freeze, r3 + keyed delta + artifact re-hash, acceptance.json / cutover receipt.
+- **Quote** (`quote-d58fcda`, supersedes the older quotes): platform USD 79.97/month, first month 92.18 (gross list; scoped to this migration; no billing actuals). Training: 7 submitted jobs, reservation estimates 1.06. Ledger: platform 77.10 reserved over 16 operations, actual NULL.
 
 ## Resolved since the earlier pending list
 
@@ -171,26 +180,18 @@ None open at this refresh. Rulings recorded by the supervisor (473467b, f5b6fa1)
   - Label the 18 missing regional boosters and the 3,746 of 22,872 unreplayable rows.
   - No substitute retraining.
 
-## Open items (in order; nothing below is accepted yet)
+## Open items and next actions (current at 12:50; the earlier list is superseded)
 
-1. **G9 data staging (running).** Acceptance requires fresh `--verify` with `--expect-files`: MLflow 3,569; packages 15,477 (223 package.json); inputs 122; FEWS 29 roots, 136,927 files (the actual-inputs root was piloted separately and also needs a final verify).
-   - Transfer tool: fresh local sha256/md5/crc32c pass equal to the frozen manifests, then if-generation-match=0 upload, cloud md5/crc32c equality, and object-generation receipts.
-   - Scope: MLflow artifact tree, packages, declared inputs, the FEWS archive (29 roots) and training snapshots.
-2. **MLflow stores in Cloud SQL: DONE (O-045).** Then:
-   - the Cloud Run `research-mlflow` service (deny mode);
-   - workspace roles and the identities from `mlflow-jobwriter` / `mlflow-reader` / `mlflow-assistant-credentials`;
-   - `feature_list_map --apply`;
-   - the access matrix.
-3. **Research inputs** into Cloud SQL (load_inputs / load_geometry as research_import), with the cloud reconciliation and capacity record.
-4. **G10:** Gemini rebind (custom role `researchGeminiInvoker`) and a bounded read-only assistant query.
-5. **G11:** Vertex jobs and the two-trial HPT smoke, with ledger reservations, plus the Vertex custom-code agent AR reader grant.
-6. **Cloud acceptance** (AC1–AC8). Then merge the native commits into the registered lineage and close.
-7. **Pending user disposition:** the confirm-onset system arm. **Disclosed, no action:** 14 executor-written `.pyc` files stay in the original MLflow artifact store (supervisor ruling; `checkpoint-g7-g8-data-load-20261016.md` §4). **Flag:** default compute SA Editor (O-030).
+1. **SQL input import** (PID 220361): 53/53 verified, then geometry (3 tables) and capacity. Record and commit the evidence.
+2. **Temporary-admin removal** (`temp_admin remove`; receipt + task secret + authenticating credential), then:
+   - **cache proof:** after the 60 s TTL the old credential gets 401, checked in memory only;
+   - **post-removal checks** on revision 00007: `staging_access --direct` and `cloud_access --without-admin`.
+3. **Writer freeze:** confirm `ipcch-mlflow.service` points at `~/.local/share/ipcch-mlflow`, then `systemctl --user stop` + `disable`.
+4. **r3 snapshot** under umask 077 (same SQLite backup method as r2), keyed table delta against r1, and a re-hash of all 3,569 frozen artifacts (the 14 `.pyc` are the only allowed extras).
+   - Empty delta: cut over.
+   - Otherwise: stop and prepare a keyed additive delta for review. Never rerun `copy_store`.
+5. **`research/acceptance.json` + cutover receipt** (AC1–AC8 with evidence pointers; incomplete packages and archive exclusions explicit), and cloud-only guidance (exact verified roots only).
+6. **Native merge:** `git merge --no-ff --no-commit --no-autostash` of the final native SHA (no checkout, stash or reset). Check that `research_cloud` is the only change and that the 72 unrelated dirty-file hashes are unchanged (`scratch/supervisor-premerge-unrelated.json`). Then commit with staged `detect_changes`.
+7. **Supervisor reconciliation**, then `trellis-audit close`.
 
-## Next actions (in order)
-
-Follow the open items above in order; checkpoint-commit the evidence after each.
-
-Service status: launcher, workspace roles, access matrix and assistant end-to-end are done locally (`checkpoint-p2-service-20261016.md`). The remaining service items are the cloud-phase checks listed there.
-
-Continue checkpoint commits after each step.
+**Disclosed, no action:** the 14 executor-written `.pyc` files stay in the original MLflow artifact store. **Flag:** the default compute SA holds Editor (automatic; O-030).

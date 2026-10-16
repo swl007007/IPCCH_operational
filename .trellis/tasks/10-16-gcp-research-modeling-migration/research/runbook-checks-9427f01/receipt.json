@@ -1,0 +1,64 @@
+{
+ "runbook": {
+  "native_commit": "9427f01",
+  "sha256_at_check": "45c2a91a2c8ffa2e58d0792ac46f5164c48b133cd99bf9864af26d717a21860e"
+ },
+ "rerun_as_written": {
+  "s5_manifest": {
+   "cmd": "cloud_job manifest --local scratch/training/features-h03-v2/manifest.json --snapshot features-h03-v2",
+   "equal_to": "scratch/vertex/jobs/manifest-ipcch-h03.json",
+   "byte_identical": true,
+   "sha256": "0fabaf5ee7218a45f9952984de821ebc71890a794686ae19d15eba124f3cf297"
+  },
+  "s5_config": {
+   "cmd": "cloud_job config --local scratch/training/config-ipcch-h03.json",
+   "equal_to": "scratch/vertex/jobs/config-ipcch-h03.json",
+   "byte_identical": true,
+   "sha256": "aaf4a347a46bf57c2800d1bf4bc36f517e4cfdbe05455e3fe74928f9903124f8"
+  },
+  "s5_spec_fews": {
+   "equal_to": "scratch/vertex/jobs/spec-fews-trial-linked-2.json (submitted as fews-trial-2)",
+   "canonical_json_equal": true,
+   "sha256_regenerated": "5d4958f907cd245963105c54be38f78662511faefbb13b6c0ecb38ac77be128f"
+  },
+  "s5_spec_hpt": {
+   "equal_to": "scratch/vertex/jobs/spec-ipcch-hpt2-linked-3.json except the d9ede46 cap (command prefix /usr/bin/timeout --kill-after=30s 900s; no IPCCH_TRIAL_TIMEOUT_S env)",
+   "sha256_regenerated": "fc0ed768811bc16e094ac15da896d277b7e595424d715009f68b79f295a0983c",
+   "parent_run_used": "023613b450c9473e9386b828b4280431"
+  },
+  "s5_reservation": {
+   "ledger": "throwaway copy of ledger/spend.sqlite (deleted after)",
+   "reserved_usd": 0.232,
+   "within_reservation_problems": []
+  },
+  "s3_smoke_fews": {
+   "image": "training-fews@sha256:d7ac74a6\u2026",
+   "features_seconds": 179.3,
+   "crisis_f1": 0.7915766738660908,
+   "reference": 0.7915766738660908,
+   "equal": true,
+   "trial_json": "scratch/smoke-fews-20261016T121555/trial/local-20261016T161856-2/trial-0/trial.json",
+   "trial_json_sha256": "974764cbf97cd0fdd7706ba3a9f21eb5aa096da1bc3faae62ca371bb2a760404",
+   "gcs_egress_note": "~0.7 GiB gs:// input reads (O-114)"
+  },
+  "s7_download_hash_verify_load": {
+   "package": "geoxgb_reference-partitioned_gated-h01",
+   "identity": "ipcch-reader via environment (stand-in for personal credentials)",
+   "package_json_eq_tag": true,
+   "verify_package_problems": [],
+   "load_predict": "5 keyed rows in the training-ipcch 36bde42 sandbox",
+   "supervisor": "independently re-ran verify_package and rb-load.sh"
+  }
+ },
+ "not_rerun": [
+  "s1 auth setup (personal credentials; interactive)",
+  "s2 crane export (images already exported; same commands as scratch/image-pulls/pull-fdbe6d1.sh)",
+  "s4 image build (template)",
+  "s5.3 parent run creation (creates an MLflow run)",
+  "s5.5 submit/poll (paid job)"
+ ],
+ "files": {
+  "smoke-fews.txt": "smoke stdout",
+  "rb-*.txt / rb-dl.py": "the exact blocks as extracted and run"
+ }
+}
