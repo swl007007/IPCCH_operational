@@ -1,0 +1,28 @@
+{
+ "secrets": {},
+ "sql_ops": {},
+ "steps": [
+  {
+   "time": "2026-10-16T08:25:47-0400",
+   "step": "uri-secret",
+   "name": "mlflow-backend-uri",
+   "result": "added version 2 (driver postgresql+psycopg2)"
+  },
+  {
+   "time": "2026-10-16T08:25:48-0400",
+   "step": "uri-secret",
+   "name": "mlflow-auth-db-uri",
+   "result": "added version 2 (driver postgresql+psycopg2)"
+  }
+ ],
+ "uri_rebind": {
+  "mlflow-backend-uri": {
+   "version": "2",
+   "driver": "postgresql+psycopg2"
+  },
+  "mlflow-auth-db-uri": {
+   "version": "2",
+   "driver": "postgresql+psycopg2"
+  }
+ }
+}

@@ -1,0 +1,1357 @@
+{
+ "image": "replay-x320",
+ "digest": "sha256:1e78790933636289e6c59c5d1863126e1558f61d8b20e4a8617e8318b9ce982f",
+ "manifest_sha256": "sha256:1e78790933636289e6c59c5d1863126e1558f61d8b20e4a8617e8318b9ce982f",
+ "config_digest": "sha256:8606ebe5909a11c8cbd9c70fa2188b0dbe32adc4d33df9009d2e2f985032d2f7",
+ "rootfs": "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs",
+ "sandbox": [
+  "bwrap",
+  "--unshare-all",
+  "--die-with-parent",
+  "--uid",
+  "65534",
+  "--gid",
+  "65534",
+  "--tmpfs",
+  "/",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/app",
+  "/app",
+  "--symlink",
+  "usr/bin",
+  "/bin",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/boot",
+  "/boot",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/etc",
+  "/etc",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/home",
+  "/home",
+  "--symlink",
+  "usr/lib",
+  "/lib",
+  "--symlink",
+  "usr/lib64",
+  "/lib64",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/media",
+  "/media",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/mnt",
+  "/mnt",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/opt",
+  "/opt",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/root",
+  "/root",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/run",
+  "/run",
+  "--symlink",
+  "usr/sbin",
+  "/sbin",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/srv",
+  "/srv",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/sys",
+  "/sys",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/usr",
+  "/usr",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/replay-x320.rootfs/var",
+  "/var",
+  "--proc",
+  "/proc",
+  "--dev",
+  "/dev",
+  "--tmpfs",
+  "/tmp",
+  "--tmpfs",
+  "/home/app",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/packages",
+  "/packages",
+  "--bind",
+  "/home/swl007007/projects/food-crisis-research/ledger/image-replays/replay-x320",
+  "/out",
+  "--chdir",
+  "/out",
+  "--clearenv",
+  "--setenv",
+  "GPG_KEY",
+  "7169605F62C751356D054A26A821E680E5FA6305",
+  "--setenv",
+  "HOME",
+  "/home/app",
+  "--setenv",
+  "IPCCH_SOURCE_COMMIT",
+  "36bde42fe1fa4055c97977893ac7f7c429b7af35",
+  "--setenv",
+  "LANG",
+  "C.UTF-8",
+  "--setenv",
+  "PATH",
+  "/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "--setenv",
+  "PYTHONDONTWRITEBYTECODE",
+  "1",
+  "--setenv",
+  "PYTHONPATH",
+  "/app",
+  "--setenv",
+  "PYTHON_GET_PIP_SHA256",
+  "dfe9fd5c28dc98b5ac17979a953ea550cec37ae1b47a5116007395bfacff2ab9",
+  "--setenv",
+  "PYTHON_GET_PIP_URL",
+  "https://github.com/pypa/get-pip/raw/dbf0c85f76fb6e1ab42aa672ffca6f0a675d9ee4/public/get-pip.py",
+  "--setenv",
+  "PYTHON_PIP_VERSION",
+  "24.0",
+  "--setenv",
+  "PYTHON_VERSION",
+  "3.12.3"
+ ],
+ "probe": {
+  "executable": "/usr/local/bin/python",
+  "uid": 65534,
+  "version": "3.12.3",
+  "numpy": [
+   "2.4.4",
+   "/usr/local/lib/python3.12/site-packages/numpy/__init__.py"
+  ],
+  "pandas": [
+   "3.0.3",
+   "/usr/local/lib/python3.12/site-packages/pandas/__init__.py"
+  ],
+  "xgboost": [
+   "3.2.0",
+   "/usr/local/lib/python3.12/site-packages/xgboost/__init__.py"
+  ],
+  "research_cloud": "/app/research_cloud/__init__.py",
+  "mapped": [
+   "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+   "/usr/lib/x86_64-linux-gnu/libc.so.6",
+   "/usr/local/lib/libpython3.12.so.1.0"
+  ],
+  "host_mnt_c_exists": false,
+  "mnt_entries": [],
+  "host_home_exists": false,
+  "network": "OSError",
+  "packages_writable": false
+ },
+ "packages": 86,
+ "results": {
+  "alphaearth_supervised_partition-pooled-h01": {
+   "rc": 0,
+   "seconds": 2.5,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "416068281caa6b6e27d13712fa491db45b10259788de4053df8f1a404f9f0dc4",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-pooled-h03": {
+   "rc": 0,
+   "seconds": 1.8,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "ebd625f8dbc104eadd4e848553808cbff38eb9c20e14a6c58df898212d003007",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-pooled-h06": {
+   "rc": 0,
+   "seconds": 2.7,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "a5a47fcdebcdb5a7095e4e3d1ba3586aa22a6d6d6f47944033adf00f09cd952b",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-pooled-h12": {
+   "rc": 0,
+   "seconds": 1.7,
+   "passed": true,
+   "rows": 96,
+   "package_json_sha256": "094e009e7b9221b6b6fb2f97e940ed79755c8894e3e5ebfcacfe17dacfadc084",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-pooled_plus_alphaearth-h01": {
+   "rc": 0,
+   "seconds": 2.4,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "9642ab1eb66cacf91985c368f0b4b344ef138e6e00f9d5f4a72f90311f8e453b",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-pooled_plus_alphaearth-h03": {
+   "rc": 0,
+   "seconds": 1.8,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "1a7b699cacc72886be3122057118c99cdd80cef113c89656bcd85867a5162479",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-pooled_plus_alphaearth-h06": {
+   "rc": 0,
+   "seconds": 2.0,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "9ea1790050010f10947e351677ff27b167819baf79abac4fa4744826dc996866",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-pooled_plus_alphaearth-h12": {
+   "rc": 0,
+   "seconds": 1.7,
+   "passed": true,
+   "rows": 96,
+   "package_json_sha256": "6d2c58b097859249d92a8237282e18ce6cc8d664699677ce27e1fcd421715536",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-regional_calibration-h01": {
+   "rc": 0,
+   "seconds": 1.9,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "4f07d1ca81f1255f4a5107aabf92a80054410a8d22c1d384f063e1d634054e4d",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-regional_calibration-h03": {
+   "rc": 0,
+   "seconds": 2.1,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "8b4bf75d7fe491be3b04d84d27243de158e03d9fa05a484bf4d57287ac1ed67b",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-regional_calibration-h06": {
+   "rc": 0,
+   "seconds": 2.8,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "2e23dcb92562db5a3369c052a21e683e0cf61c53e3b14d80bfd366e191581331",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-regional_calibration-h12": {
+   "rc": 0,
+   "seconds": 2.2,
+   "passed": true,
+   "rows": 96,
+   "package_json_sha256": "0fb80fb11a7beda0a97bc247d40b61d0c448cf379922e93834ca4a0e6d21a124",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-shared_calibration-h01": {
+   "rc": 0,
+   "seconds": 2.0,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "991b906fba6dd7543a1d989b91a30c482cdca1acac3f52147870f747019d3617",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-shared_calibration-h03": {
+   "rc": 0,
+   "seconds": 2.1,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "d1868aaafbc7121d99acbdd69cf4ad50b46fc3f9e5c11cc38d2a57e05cf2547a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-shared_calibration-h06": {
+   "rc": 0,
+   "seconds": 2.3,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "ccc7c6419b69a7ef15cec010118b34afa5059f0c3ac87beca91f01ba92c0b68c",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "alphaearth_supervised_partition-shared_calibration-h12": {
+   "rc": 0,
+   "seconds": 2.2,
+   "passed": true,
+   "rows": 96,
+   "package_json_sha256": "5c95276de73e63df8db935de15a4a00f8b972ca9329bb76c331027f07b506682",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_calibrated_augmented_calibrated_share_history_00--somalia_oracle_v4_calibrated_d": {
+   "rc": 0,
+   "seconds": 19.5,
+   "passed": true,
+   "rows": 709,
+   "package_json_sha256": "d83701cb37d3b4ab26d74f0e6a597ad1a8bed51ceb9f2d760355bf0997f5006c",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_calibrated_augmented_calibrated_share_history_03--somalia_oracle_v4_calibrated_d": {
+   "rc": 0,
+   "seconds": 12.1,
+   "passed": true,
+   "rows": 652,
+   "package_json_sha256": "94d086f28e0205466b52d787b4d2f999a27a618f8125ef3f0cc5bdd4c6d89fa8",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_calibrated_augmented_calibrated_share_history_06--somalia_oracle_v4_calibrated_d": {
+   "rc": 0,
+   "seconds": 15.9,
+   "passed": true,
+   "rows": 652,
+   "package_json_sha256": "424230b5e1bb3d535699978722dda242ed322d6884e70fb0f6a6ca3bfd3adca9",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_calibrated_augmented_calibrated_share_history_12--somalia_oracle_v4_calibrated_d": {
+   "rc": 0,
+   "seconds": 8.2,
+   "passed": true,
+   "rows": 705,
+   "package_json_sha256": "1c7afd30971e2dc8a8da8c1b1c685d9a9bd46ee732c05350e9832b4396e06f07",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_calibrated_observed_calibrated_share_history_00--somalia_oracle_v4_calibrated_d": {
+   "rc": 0,
+   "seconds": 4.3,
+   "passed": true,
+   "rows": 389,
+   "package_json_sha256": "0036684663903d1935419c5c33eb8e69814879d1734e24d4eabdd08188aa6840",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_calibrated_observed_calibrated_share_history_03--somalia_oracle_v4_calibrated_d": {
+   "rc": 0,
+   "seconds": 3.2,
+   "passed": true,
+   "rows": 332,
+   "package_json_sha256": "cdeb58cef09830f88d426b5c694aa5e1d454fb459443ebcd5ac62d73f17f1d14",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_calibrated_observed_calibrated_share_history_06--somalia_oracle_v4_calibrated_d": {
+   "rc": 0,
+   "seconds": 2.7,
+   "passed": true,
+   "rows": 332,
+   "package_json_sha256": "2b9e7bd0f55a38459656002947dcd16e8c91cfaed44179bd391dd15614c47c02",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_calibrated_observed_calibrated_share_history_12--somalia_oracle_v4_calibrated_d": {
+   "rc": 0,
+   "seconds": 2.5,
+   "passed": true,
+   "rows": 385,
+   "package_json_sha256": "3e5c57ec2cd399487b47724cb3e493f23234844dcdc8aadb54cd8ed47c3be1f8",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_existing_predictors_00--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 2.8,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "a1b9cb7448a29c82d09e1a1b3f3f8246cd7eb07460cc968a8bc028e3102ebf05",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_existing_predictors_03--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 4.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "8e7261a38a6225cacb67e9c280132ce75aa6aad36ed1911463cb876c9b2525d5",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_existing_predictors_06--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 3.2,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "927201df0fd60b6b8498bfa710f060fe0f2b6bfbb5f35503d7e1b1d194aca5ea",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_existing_predictors_12--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 3.7,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "8323bccbf830fb821673925e2346d46d8acb7b31dd843bc5864de24715198852",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_seasonal_climate_00--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 3.6,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "b227917ecf52bc7c25b3111a0692393d9f359ee476b7ecac8fd8f8c66cb880d2",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_seasonal_climate_03--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 3.2,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "5fda36947ce826fd965009f665adb620ac429ec94598118873249c55a7a1a34a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_seasonal_climate_06--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 2.1,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "30b14a1e87f7c94fbaf4adf6b8fc699bbec4b6e0abbfbeb538b0d54c1bb4eb37",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_seasonal_climate_12--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 2.0,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "9ce6d3573eb526bba6cd60d6973b632ef7137f3d1d22e9e5dc314bd6fc0205a9",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_weather_oracle_03--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 2.0,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "a2b589b42ae177b76e3e67b55f7ad84f9b19a74420ea75cd8889dff6c6ea8a59",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_weather_oracle_06--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 3.2,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "c4a2a7f0ee927a355abb37c5a298dfb4e8e575fb59db15a6206d5d81a35a4a31",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_weather_oracle_12--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 2.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "1eb7b3117456cddbcfbcc686e1dc4c9bc1892b6232fd414e67290a0391b7acfc",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_weather_oracle_with_share_history_00--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 2.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "398d920efc890d335a097e5cda758551bd457b96507bc37d8396dbaa2bcb1f0f",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_weather_oracle_with_share_history_03--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 2.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "1abe565a16a8ceabe27272b44caf4873e9b2c89284e7887b508276f21e673a28",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_weather_oracle_with_share_history_06--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 2.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "1342fbe24fb3cbae7e97a3ee9f9db059948dcf6fb1a347e8a51291ce9394a56d",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_oracle_information_weather_oracle_with_share_history_12--somalia_oracle_v1": {
+   "rc": 0,
+   "seconds": 2.5,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "28eadd5dea84819fdb986e603d8b53fa8dc5a78ab3a15e69d58eb3f10d67d9cb",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_existing_predictors_00--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 3.0,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "744f88df242d7304ae61116a19955753144515cd94a098438d002be4b515f622",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_existing_predictors_03--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 3.0,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "476f95d016acad2eeae8dfd1068e464626b0c8aa6448b422516ffffe05a47d5b",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_existing_predictors_06--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 2.9,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "ff8e57752de2491b3b73120b88dc2a40a84349934b5626f3145e3ff7e5386378",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_existing_predictors_12--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 3.6,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "2507fc1d308c7f0da1cf5ba6d3177b906897da667af0fff3dfb7dec557719c10",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_seasonal_climate_00--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 4.1,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "3e5fce33dec7095fb9b06d74d6d064f957d482aba216e89f4d22d64c3a6b80b4",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_seasonal_climate_03--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 3.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "5cc7d71a9f08861f417b82bb3e56a68b64bac91fda91920aa557da3df79ed6dc",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_seasonal_climate_06--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 3.3,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "b2e1b600dbd6e36ed37498bc3f9aa74e3fce4cd73c3decb76677afbbc5342fed",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_seasonal_climate_12--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 3.6,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "4f4099ff23b359642f601f798153ccfa1a9c18875f45d2aa4482a8e86306600e",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_direct_00--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 3.9,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "17e2fd75a797b62c676db458eeb4a69b10970c4fedc55eb4eb457e671d133a53",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_direct_03--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 4.2,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "b560afdc6d1b07ef5ad83b4ce1e79de5d38a41538295d603c61be9172b0f2265",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_direct_06--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 5.5,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "80051ffc8b76919b77d7b78b0b281c5787a7920ffcec2e5b10ffd95beba1ddb6",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_direct_12--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 5.7,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "d8dadaff688e4a03d1293733e49c74a24beb9e71b257c722ef008afdcaf261f9",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_residual_00--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 5.9,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "cc04acfc9665085c31ebae225465051930c0ae33eed6d8f9f793061af8623777",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_residual_03--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 6.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "47859b0e5caef962950f440d92db9526760c1128ea0a7dd093663147c463a853",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_residual_06--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 6.2,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "ec024ddff4f540d1a882ad9333a4585c4cdf0283f10c8fe255bdfbc4967f3051",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_residual_12--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 5.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "d1ed44088ec811c5589e934ef227651fba5953ae9bb8e8dcc3ec90ea8f60ecf9",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_selected_00--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 5.6,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "68e7f83452a23235effe3c104cee8705d369aaf55e8295c062ba1006741e2cff",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_selected_03--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 6.1,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "a16719bd62ce563d8b2ad0e963d3d9d1ef7f56fe60075dcd065764cce5e3e341",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_selected_06--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 7.1,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "93b0740d4a1fc5acd876b2fc8d6959eaf183eca31bb43ad2f37f7b1a3e00fc10",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_share_history_selected_12--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 5.6,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "22ca1841d7804101aabdb9f6ae7469cf5bb17ea047d81930a47c48686151e3a9",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_weather_oracle_03--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 3.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "b42ae13655b7eeeed637df835a30e567d461bca4fac18f48bbb090d3eb6dc95e",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_weather_oracle_06--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 2.7,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "ccf6c3a61808d067f2dbfac32ca27c986d5cd5deb7c6db831e6a453d09ab8dd9",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_q3_optimization_weather_oracle_12--somalia_oracle_v2_q3": {
+   "rc": 0,
+   "seconds": 2.3,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "b37106fbae7046d910f4dd608f208f16faee36a87898ff72948d1854a257ea68",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_direct_00--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.5,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "3720a0858d8111b285df226dae361aee418eb26661550d6e5533c96c1482821a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_direct_03--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 1.7,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "7f9aafb6e84589f3f3e171d2764a6b3471887538ae62d2ed5c47708dd71e0bb5",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_direct_06--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 1.7,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "d89d3e69898101498ac52d4a08c1549f9f9cf476022fee1a6f0553016e83483d",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_direct_12--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.0,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "c7d1878e354e4f7139d45abf10dd6aa4e80e43eee65131290aa0eee8ae62c5e9",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_residual_00--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 3.3,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "95fd6871bf55dd2d52219c6c8b05d2487393141de9bed7147513947d68332681",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_residual_03--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.8,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "3a3de58c4bc6ce795041586e834e89ec5b953ae4f991cfd2abad5c0b3fa5d103",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_residual_06--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.6,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "ed625f56857b38f2fdb2168ff839b8ad92445a85f20370abc43e3c060f6ba343",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_residual_12--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "d2ca0bd34296bf06632d18157b1e467df3ab35c9a81fc154dbea0c3a4be8d0e1",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_selected_00--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.1,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "913e62bc75174d59bb9e6b8206c8bc7650c4fe566477f70be97257a388ff4362",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_selected_03--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.1,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "015c4feb85384e9316f161872aaf403b42178c1cdd2e86076adaff0cdb83851e",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_selected_06--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.1,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "ee50e960c96efd040ebd61c35a976a5bdcf77ec9691758c41851d7eb083a4352",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_augmented_share_history_selected_12--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.4,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "b4bb4598464e12331fabf8fd7b9393ee1b4c2f5e4a27146aa2842f907f9d1db0",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_direct_00--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.5,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "7ec3cb8df78da50fce38463a1bfa6f61fa1f9eb53a68a92c445973590d9e3638",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_direct_03--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.0,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "bb61c9f65dd4c0f8c857f55d12acc8c8623fd370fedab93a4efaf56ac2e5c45d",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_direct_06--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 1.7,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "4fd6ab4a77afde084aba2754eac8cb8526dccea66fecabe14049537944f6f044",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_direct_12--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 1.9,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "bd0bfd35f1d6b58009ac85abe0d78a017177966f25cd37cbd401fb2d7973038c",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_residual_00--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.3,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "a8b1a52a7e1c86ee5eb5b34b501fe84babb0519da220e1ee24a27697e95a7608",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_residual_03--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 1.8,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "86a90f6cfc317d7681d7e182b06dd7ef9e990ffaf84f9d41e338994e6b3b7706",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_residual_06--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.1,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "eb881345fc2401453524e24ee5114ff272b908c934b62baad9954830c047e8fb",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_residual_12--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.1,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "b250153a8523860c6ea9621c55878e85b11c7f82e5c3ac6912a18a0ca4ff0075",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_selected_00--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.3,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "c65961d0c22d935119aedec4b8f8a18d9e47539727d0d4a86b335a56c2711abe",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_selected_03--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 1.9,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "52d18ac5adee567641c13ed255610579cef8e6fe1c4b8f99af7ac5fa709dbf99",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_selected_06--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 1.8,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "f512b62fcc0e88239347b71231aa7cd1f77b9a3ddade0c80ca2640801c4a0b3f",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  },
+  "somalia-somalia_validity_observed_share_history_selected_12--somalia_oracle_v3_validity": {
+   "rc": 0,
+   "seconds": 2.2,
+   "passed": true,
+   "rows": 132,
+   "package_json_sha256": "9d0c94214187473a2ef623eadef127b87b08ad46d4442a5e046d9fa77fc3e499",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.2.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.3"
+   }
+  }
+ },
+ "started": "2026-10-16T08:55:34-0400",
+ "passed": 86,
+ "finished": "2026-10-16T09:00:35-0400"
+}

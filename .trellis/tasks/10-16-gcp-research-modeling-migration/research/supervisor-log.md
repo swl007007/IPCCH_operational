@@ -519,3 +519,27 @@ Next: verify executor start base SHA and in_progress, then inspect P1 inventory 
 
 - User answered: "批准该单项 IAM 变更，保留 MLflow 登录". Exact scope is allUsers/roles.run.invoker on research-mlflow/us-central1/food-crisis-modeling-enso only; MLflow content authentication remains and GCS stays private. Prior automatic rejection was disclosed before this fresh informed approval.
 - Relayed to same bound executor:submit standard explicit action with approval context through normal review;no wrapper/tool bypass of a renewed rejection. Capture IAM before/after and immediately repeat direct-HTTPS unauthenticated/content and authenticated checks without the staging proxy. Recorded authorization in execution-authorization.md.
+
+## S68 — cloud URI mapping not complete; logged-model search HTTP500, 2026-10-16
+
+- URI scout09:19:58found ledger/uri-map empty:no dry/apply/rerun reports. Independent role-receipt comparison confirms original admin/assistant adminflags and assignments preserved;ipcch-reader/ipcch-assistant nonadmin READ roles,ipcch-jobwriter nonadmin workspaceUSE only,no copied-experiment EDIT. This does not prove URI mapping execution.
+- Main read staging IAM proxy log:logged-models/search returned500 repeatedly09:16:22through09:19:24;foreground SDKloop was retrying. Sent ctrl+b to background that command (not terminate imports/transfers) and relayed exact error. Executor then stopped only its dry/apply/rerun task and fetched CloudRunerrorlogs for rootcause. No completed mapping or successful retry inferred from outer pipeline.
+- Scoped invocation approval committedf5b6fa1;application awaits logged-model functional diagnosis and normal review. Inputs116/122andSQL32/53at09:21:23;independent migration continues.
+
+## S69 — logged-model response-size root cause and pagination, 2026-10-16
+
+- Saved logged-models-500.all.json contains8CloudRunWARNINGS "Response size was too large. Please consider reducing response size." Independent scout reconstructed installedMLflow3.17protobuf/prettyJSON from read-only nonsecret snapshot tables:experiment4's126models summed permodel response bytes43771159 (~41.74MiB);maximumsingle3750599bytes,max5modelpage10181523bytes. Original explicit200modelpage exceeded transport limit;metrics are eagerly serialized even though mapper only needs tags.
+- Main read600a932:constantPAGE5replaces200,existing next-page-token loop retained. No records/metrics removed. Default ordering creation_timestamp DESC/model_id ASC is stable for unchanged model set,not a concurrent-write snapshot. Existing new acceptance run has no logged model;retain no-concurrent-model-write ordering until map completes.
+- Realcloud dry run09:24:49-09:26:01succeeded172tagged/56mapped/116unchanged/0writes;apply/rerun ongoing. Independent verification avoids duplicate cloud requests. Executor focused8tests passed;unrelated service-environment numerical tests missingxgboost were not acceptance failures for the separate numerical images.
+
+## S70 — cloud URI mapping and input-transfer completion checkpoints, 2026-10-16
+
+- Cloud dry/apply/rerun now172tagged/56mapped/116unchanged,42distinctmapped specs;writes0/56/0. Main independently compared keyed model_id/name/original/mapped/refusals acrosscloudstagesandlocalrehearsal:identical;allmappedrerunexisting_mappedvalues equal target. ApplyreportSHA2560374bfba93023dd22fe2cc7e08fd63eab84f82fa007ca8a58d3dbe864898d0cd. Fullfeaturedownloadcomparison remains distinct.
+- Inputs retry2finished09:23:58,122unique targetsuccesses (92previous+30thisattempt),exit0;manifest-byte verification still pending. FEWSminirun1finished09:24:48,32681/32681files/8592920008bytes,exit0. Restofarchivecontinuesandgeoxgbv1threeerrorsremainpendingrepair.
+- Backgrounded mapper'sfinalreadonlyrerun withctrl+b toallowexecutorindependentwork;no duplicateorstop. ExactIAMapprovalpresentandexecutorpreparingstandardactionthroughnormalreview.
+
+## S71 — approved IAM change and independent direct anonymous checks, 2026-10-16
+
+- StandardgcloudserviceIAMchangeacceptedbyautomaticreviewafterfreshuserapproval. Savedbeforepolicy09:31:06hasnobindings;addresponsehasexactallUsers/roles.run.invoker,bindingetagBwZd9S4qhd4=. No project-levelorGCSpublicgrant.
+- Supervisorperformed3readonlydirectHTTPSGETstotheexactresearch-mlflowendpoint,noGoogleidentity/noBasiccredentials:health200/2bytes;experiments/search?max_results=1=>401/137bytes;acceptanceartifactworkspaces/default/6/5cbfbecb89084787ab891f43ba23ec3e/artifacts/probe.txt=>401/137bytes. No contentorcredentialsprinted. Fullauthenticateddirectmatrixremainswith executor.
+- Reade0a18d7removeguard:requirescreationreceipt,task-labelledsecret,correctusernameandcurrentlyauthenticatingadminbeforedelete;focused3testsallpassincludingabsentreceipt/wrongcredential/foreignlabelsrefusal. Actualadministratorremovalawaitsacceptance.

@@ -1,0 +1,67 @@
+{
+ "package": "/packages/fews-geoxgb-v1-20261001-globals",
+ "package_json_sha256": "406f85ff090adafbd8fe58b867dd2d98853ccb7bdfe4bfcd6c2d7e5706ab3462",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "code": {
+   "files": 52,
+   "sha256": "bfe559236b415f27e1f9c69e316b4a3b498805c0596faa2758f6dfb87998afa0"
+  },
+  "rule": "per horizon: largest fixed-four macro-F1 over the six development folds on the main cohort (H4/H8 persistence+expert, H12 persistence), confusion counts pooled; exact ties -> fewer rounds, shallower trees, lower config number",
+  "run": "geoxgb-v1-20261001",
+  "selected": {
+   "12": "G2",
+   "4": "G3",
+   "8": "G2"
+  },
+  "stage": "gscreen"
+ },
+ "rows": 1152,
+ "columns": {
+  "p_1": {
+   "max_abs_err": 1.8626451943337674e-09,
+   "mean_abs_err": 1.6169288555098402e-12,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_2": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.401559653021013e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_3": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 4.7245756674564406e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_4\u62165": {
+   "max_abs_err": 1.0061396160665481e-16,
+   "mean_abs_err": 4.728164381353106e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "y_pred_code": {
+   "max_abs_err": 0.0,
+   "mean_abs_err": 0.0,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 8.28
+}

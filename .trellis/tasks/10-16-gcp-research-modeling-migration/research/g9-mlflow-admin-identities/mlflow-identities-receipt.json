@@ -1,0 +1,389 @@
+{
+ "secrets": {},
+ "sql_ops": {},
+ "steps": [
+  {
+   "time": "2026-10-16T09:12:50-0400",
+   "step": "admin-login",
+   "user": "ipcch-migration-admin",
+   "result": "ok, is_admin"
+  },
+  {
+   "time": "2026-10-16T09:12:51-0400",
+   "step": "identity-created",
+   "user": "ipcch-jobwriter",
+   "role": "job"
+  },
+  {
+   "time": "2026-10-16T09:12:53-0400",
+   "step": "identity-created",
+   "user": "ipcch-reader",
+   "role": "reader"
+  },
+  {
+   "time": "2026-10-16T09:12:55-0400",
+   "step": "identity-created",
+   "user": "ipcch-assistant",
+   "role": "assistant"
+  },
+  {
+   "time": "2026-10-16T09:13:16-0400",
+   "step": "workspace-roles",
+   "preserved": {
+    "users": true,
+    "roles": true
+   },
+   "added": {
+    "assistant": [
+     [
+      "experiment",
+      "*",
+      "READ"
+     ],
+     [
+      "prompt",
+      "*",
+      "READ"
+     ],
+     [
+      "registered_model",
+      "*",
+      "READ"
+     ]
+    ],
+    "ipcch-jobwriter": [
+     [
+      "workspace",
+      "*",
+      "USE"
+     ]
+    ],
+    "ipcch-reader": [
+     [
+      "experiment",
+      "*",
+      "READ"
+     ],
+     [
+      "prompt",
+      "*",
+      "READ"
+     ],
+     [
+      "registered_model",
+      "*",
+      "READ"
+     ]
+    ],
+    "ipcch-assistant": [
+     [
+      "experiment",
+      "*",
+      "READ"
+     ],
+     [
+      "prompt",
+      "*",
+      "READ"
+     ],
+     [
+      "registered_model",
+      "*",
+      "READ"
+     ]
+    ]
+   }
+  }
+ ],
+ "identities_created": [
+  "ipcch-assistant",
+  "ipcch-jobwriter",
+  "ipcch-reader"
+ ],
+ "workspace_roles": {
+  "before": {
+   "users": {
+    "admin": {
+     "is_admin": true,
+     "role_ids": [
+      1
+     ]
+    },
+    "assistant": {
+     "is_admin": false,
+     "role_ids": [
+      2
+     ]
+    },
+    "ipcch-migration-admin": {
+     "is_admin": true,
+     "role_ids": []
+    },
+    "ipcch-jobwriter": {
+     "is_admin": false,
+     "role_ids": []
+    },
+    "ipcch-reader": {
+     "is_admin": false,
+     "role_ids": []
+    },
+    "ipcch-assistant": {
+     "is_admin": false,
+     "role_ids": []
+    }
+   },
+   "roles": {
+    "1": {
+     "name": "__user_1__",
+     "workspace": "default",
+     "assignees": [
+      "admin"
+     ],
+     "permissions": [
+      [
+       "gateway_endpoint",
+       "e-9f0a333c965e4418ad1506f44bf12787",
+       "MANAGE"
+      ],
+      [
+       "gateway_model_definition",
+       "d-1781ed87f6404d2d9d90c879c58eccb7",
+       "MANAGE"
+      ],
+      [
+       "gateway_secret",
+       "s-84c34d2bbdcf434abf9ea71ba4e4f8cc",
+       "MANAGE"
+      ]
+     ]
+    },
+    "2": {
+     "name": "__user_2__",
+     "workspace": "default",
+     "assignees": [
+      "assistant"
+     ],
+     "permissions": [
+      [
+       "gateway_endpoint",
+       "e-9f0a333c965e4418ad1506f44bf12787",
+       "USE"
+      ]
+     ]
+    }
+   }
+  },
+  "after": {
+   "users": {
+    "admin": {
+     "is_admin": true,
+     "role_ids": [
+      1
+     ]
+    },
+    "assistant": {
+     "is_admin": false,
+     "role_ids": [
+      2,
+      3
+     ]
+    },
+    "ipcch-migration-admin": {
+     "is_admin": true,
+     "role_ids": []
+    },
+    "ipcch-jobwriter": {
+     "is_admin": false,
+     "role_ids": [
+      4
+     ]
+    },
+    "ipcch-reader": {
+     "is_admin": false,
+     "role_ids": [
+      3
+     ]
+    },
+    "ipcch-assistant": {
+     "is_admin": false,
+     "role_ids": [
+      3
+     ]
+    }
+   },
+   "roles": {
+    "1": {
+     "name": "__user_1__",
+     "workspace": "default",
+     "assignees": [
+      "admin"
+     ],
+     "permissions": [
+      [
+       "gateway_endpoint",
+       "e-9f0a333c965e4418ad1506f44bf12787",
+       "MANAGE"
+      ],
+      [
+       "gateway_model_definition",
+       "d-1781ed87f6404d2d9d90c879c58eccb7",
+       "MANAGE"
+      ],
+      [
+       "gateway_secret",
+       "s-84c34d2bbdcf434abf9ea71ba4e4f8cc",
+       "MANAGE"
+      ]
+     ]
+    },
+    "2": {
+     "name": "__user_2__",
+     "workspace": "default",
+     "assignees": [
+      "assistant"
+     ],
+     "permissions": [
+      [
+       "gateway_endpoint",
+       "e-9f0a333c965e4418ad1506f44bf12787",
+       "USE"
+      ]
+     ]
+    },
+    "3": {
+     "name": "ipcch-readers",
+     "workspace": "default",
+     "assignees": [
+      "assistant",
+      "ipcch-reader",
+      "ipcch-assistant"
+     ],
+     "permissions": [
+      [
+       "experiment",
+       "*",
+       "READ"
+      ],
+      [
+       "prompt",
+       "*",
+       "READ"
+      ],
+      [
+       "registered_model",
+       "*",
+       "READ"
+      ]
+     ]
+    },
+    "4": {
+     "name": "ipcch-job-writers",
+     "workspace": "default",
+     "assignees": [
+      "ipcch-jobwriter"
+     ],
+     "permissions": [
+      [
+       "workspace",
+       "*",
+       "USE"
+      ]
+     ]
+    }
+   }
+  },
+  "preserved": {
+   "users": true,
+   "roles": true
+  },
+  "added": {
+   "admin": {
+    "role_ids": [],
+    "effective_added": []
+   },
+   "assistant": {
+    "role_ids": [
+     3
+    ],
+    "effective_added": [
+     [
+      "experiment",
+      "*",
+      "READ"
+     ],
+     [
+      "prompt",
+      "*",
+      "READ"
+     ],
+     [
+      "registered_model",
+      "*",
+      "READ"
+     ]
+    ]
+   },
+   "ipcch-migration-admin": {
+    "role_ids": [],
+    "effective_added": []
+   },
+   "ipcch-jobwriter": {
+    "role_ids": [
+     4
+    ],
+    "effective_added": [
+     [
+      "workspace",
+      "*",
+      "USE"
+     ]
+    ]
+   },
+   "ipcch-reader": {
+    "role_ids": [
+     3
+    ],
+    "effective_added": [
+     [
+      "experiment",
+      "*",
+      "READ"
+     ],
+     [
+      "prompt",
+      "*",
+      "READ"
+     ],
+     [
+      "registered_model",
+      "*",
+      "READ"
+     ]
+    ]
+   },
+   "ipcch-assistant": {
+    "role_ids": [
+     3
+    ],
+    "effective_added": [
+     [
+      "experiment",
+      "*",
+      "READ"
+     ],
+     [
+      "prompt",
+      "*",
+      "READ"
+     ],
+     [
+      "registered_model",
+      "*",
+      "READ"
+     ]
+    ]
+   }
+  },
+  "scope": "users, workspace roles, role permission rows and assignments read through the admin REST API; legacy per-resource tables are covered by the full-store copier's table comparison"
+ }
+}

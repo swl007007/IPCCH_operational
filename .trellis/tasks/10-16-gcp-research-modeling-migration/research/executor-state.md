@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 08:22 EDT
+# Executor state (continuation record), updated 2026-10-16 09:37 EDT
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `b97ddcd`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `7f09313`; a separate worktree `control-plane-inputs-fix` (branch `transfer-inventory-status`, 760e763) holds the corrected transfer.py and must be merged after the driver ends. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -44,7 +44,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - images writable HOME + self-check ff90981, provider pin 36bde42, replay images b24dfd1; quote bindings 7180734 /
     6d4a9b6 / b24dfd1; preservation gate 50e9a6c; provisioner b497503 → 253a6b2 → b32038d; db_roles 3c8dbad;
     ledger note 6f9cbda; transfer a3eb433 → a524e51; bytecode guards df4bd6b (NOT in the 36bde42 images; see
-    `checkpoint-g7-g8-data-load-20261016.md` §3); MLflow store loader b97ddcd.
+    `checkpoint-g7-g8-data-load-20261016.md` §3); MLflow store loader b97ddcd; URI driver fix 0624d03 + a408376; staging access 344a857; input-import wrapper 779a5c1; image sandbox replay 9a04ded; cloud job specs edb0989 (+disableRetries de1a116); quote f45426e/7d83228; replay freshness gate 4a0080c; temp admin de1a116/e0a18d7; identities/access e0a18d7/7f09313; IAM proxy de1a116; URI map paging 600a932.
   - **Do not change `research_cloud/deploy/transfer.py` until the transfer driver has finished** (its stages import from this checkout).
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
@@ -77,10 +77,11 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - Cloud SQL Auth Proxy v2.26.2 (`tools/cloud-sql-proxy.v2.26.2`, sha verified) on 127.0.0.1:5433 → `research-pg`; log `scratch/sql-proxy.log`.
   - The disposable PG (`scratch/pg-rehearsal`) is still running for local rehearsals.
   - GCS transfer driver `ledger/transfer/run-all.sh` (PID 25168, started 08:04:23; log `ledger/transfer/run-all.log`; per-source JSONL receipts in `ledger/transfer/`). Do not duplicate it. Its DONE line is not acceptance: acceptance is the fresh `--verify` with `--expect-files` per source.
+  - Cloud SQL input import (`ledger/sql-import/run.log`, wrapper 779a5c1; geometry and capacity follow the CSVs). Loopback IAM proxy `deploy.iam_proxy` on 127.0.0.1:8091 (only needed for IAM-header tests now that the invoker is public). Finished: inputs retry 2 (122/122 receipts), training snapshots, image pulls and replays, URI map.
   - No other job is running.
 - **Operator ledger and receipts:**
-  - `ledger/spend.sqlite`: platform 2026-10 reservations USD 46.76, no actual cost claimed yet.
-  - Sanitized receipts: `ledger/provision-receipt.json` and `ledger/db-roles-receipt.json`.
+  - `ledger/spend.sqlite`: platform 2026-10 reservations USD 59.23 (10 operations), no actuals; training pool none yet. The ledger balance is not plan headroom (see `quote-7d83228/README.md`).
+  - Sanitized receipts: `ledger/provision-receipt.json`, `ledger/db-roles-receipt.json`, `ledger/uri-rebind-receipt.json`, `ledger/temp-admin-receipt.json`, `ledger/mlflow-identities-receipt.json`.
 - **Registered-repo lock:** the stale 0-byte `.git/index.lock` (04:21:04, no live git) was moved to `preservation/stale-index.lock-0421`. Evidence was committed in `a99e84c`.
 
 ## Completed rounds: do not redo
@@ -131,17 +132,21 @@ The registry ledger stands at 170 passed and 72 tracking-only.
   - **G8:** `research-pg` RUNNABLE; scoped roles, 4 databases and PostGIS 3.6.4 verified (O-037, O-042).
   - **G9:** 5 images pushed with in-image self-checks (O-038, O-039).
   - **Data:** transfer pilot (O-044). MLflow stores loaded and verified in Cloud SQL (O-045: 64 tables / 361,026 rows and 11 / 10, every digest equal). The bulk GCS transfer is running: mlflow-artifacts 3,569/3,569 receipts, packages in progress, then inputs and 28 FEWS roots. Final verify is pending.
-  - The Cloud Run service is not started.
+  - **Cloud Run** `research-mlflow` revision 00002-gbm is serving. Public invoker since O-062 (user-approved). Staging 19/19 and 33/33 through the IAM proxy; direct 17/17 anonymous and 32/32 principals (O-063). Temporary admin plus 3 identities; workspace roles applied; URI map 56 applied and idempotent (O-058..O-061).
+  - **Images** pulled by digest; bwrap-sandbox replays 223/223 (O-056, O-057). In-image trial rehearsal: FEWS equals the host trial exactly; IPCCH equals it with rounds=50.
   - G10/G11 not started.
-- **Quote** (`quote-6d4a9b6`, amended b24dfd1): platform USD 79.23/month + 8.63 one-time; training USD 0.78.
+- **Quote** (`quote-f45426e`): platform USD 79.23/month + 11.67 one-time (first month 90.91; includes SQL import egress 3.04); training USD 0.78. Ledger: platform reserved 59.05.
 
 ## Resolved since the earlier pending list
 
 Somalia v1, window-probe comparators, pop-v1, FEWS NET coverage, the URI map, service hardening, the SQL input import rehearsal, training adapters, containers and the cost estimate are all done. Their receipts are in the completed-rounds table above and in the checkpoints.
 
-## Open user question
+## Open user questions
 
-- **FEWS NET `confirm-onset-v1`:** 7 local boosters were not retained (2,446 of 11,436 system rows); see `fews/confirm-onset-missing-local-boosters-receipt.md`.
+None open at this refresh. Rulings recorded by the supervisor (473467b, f5b6fa1):
+- **confirm-onset-v1:** accepted as a narrow historical exception. Preserve all material, label the full system arm unreplayable (7 missing regional models; S0/S3 2,446 of 11,436 rows) and separately provide the extant global/pooled download/replay. No substitute retraining and no full-system pass.
+- **Temporary migration admin:** approved. Password only in Secret Manager; removed after acceptance (guarded removal); the owner's account is untouched; the user does their own final login.
+- **Public invoker:** approved as a single IAM change on research-mlflow only (O-062). MLflow Basic auth gates all content.
 
 ## User rulings (recorded by the supervisor in e53de85; no longer open)
 
@@ -168,7 +173,7 @@ Somalia v1, window-probe comparators, pop-v1, FEWS NET coverage, the URI map, se
 4. **G10:** Gemini rebind (custom role `researchGeminiInvoker`) and a bounded read-only assistant query.
 5. **G11:** Vertex jobs and the two-trial HPT smoke, with ledger reservations, plus the Vertex custom-code agent AR reader grant.
 6. **Cloud acceptance** (AC1–AC8). Then merge the native commits into the registered lineage and close.
-7. **Pending user disposition:** the confirm-onset system arm; whether to delete the 14 executor-written `.pyc` files in the original MLflow artifact store (`checkpoint-g7-g8-data-load-20261016.md` §4). **Flag:** default compute SA Editor (O-030).
+7. **Pending user disposition:** the confirm-onset system arm. **Disclosed, no action:** 14 executor-written `.pyc` files stay in the original MLflow artifact store (supervisor ruling; `checkpoint-g7-g8-data-load-20261016.md` §4). **Flag:** default compute SA Editor (O-030).
 
 ## Next actions (in order)
 

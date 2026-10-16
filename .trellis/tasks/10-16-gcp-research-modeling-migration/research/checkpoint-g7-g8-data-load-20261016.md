@@ -54,10 +54,13 @@ What follows:
 - df4bd6b changes no numerical code, and the deploy changes run only on the operator workstation, so the five images are **not** rebuilt for them.
 - Inside the image the bytecode concern does not arise in the same way, because the source tree is not an original artifact store. The image self-check at 36bde42 ran without the guard.
 
-## 4. Finding for a ruling: bytecode written into the original MLflow artifact store
+## 4. Disclosure: bytecode written into the original MLflow artifact store
 
 Executor replay/training processes imported P6 `source_code` modules directly from the original local MLflow artifact store. Python wrote **14 `.pyc` files** (plus their `__pycache__` directories) under run `bdbafe393d…`'s `source_code/`: 4 at 02:19 and 10 at 04:43–04:54 EDT.
-- **What was not affected:** they are the only additions. No original file was modified: the frozen r1 tree is 3,569 files and 1,321,922,679 bytes, and it equals the transferred set.
+- **Observed:** the current tree is exactly the frozen r1 set (3,569 files, 1,321,922,679 bytes, equal to the transferred set) plus these 14 cache files.
+- **Inferred, not proven:** that no pre-existing file changed before r1 was frozen. No keyed pre-work list exists to prove it.
 - **Prevention:** df4bd6b, plus `test_readonly_sources`.
 - **Transfer:** the files are excluded from the r1 manifest and were not transferred.
-- **Current state:** they have **not been deleted**. Deleting executor-created files from an original store is a mutation of a protected source. The decision belongs to the user: delete the 14 executor-created `.pyc` files, or leave them.
+- **Current state:** they have **not been deleted**.
+
+**Ruling (supervisor, 2026-10-16):** leave the 14 files in place and disclose them. Cleanup is outside scope and not required for the migration; no deletion and no approval flow. The 3,573-file reconciliation is an observed-versus-inferred statement: no pre-work keyed list of 3,573 artifacts exists.

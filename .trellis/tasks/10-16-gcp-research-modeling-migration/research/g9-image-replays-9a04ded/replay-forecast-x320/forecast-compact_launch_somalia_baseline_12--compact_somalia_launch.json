@@ -1,0 +1,73 @@
+{
+ "package": "/packages/forecast-compact_launch_somalia_baseline_12--compact_somalia_launch",
+ "package_json_sha256": "285cbc347da52429568a7433d1dbe24bbbf40fecafbd80c1d84eb7bf13486e79",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.2.0",
+  "numpy": "2.3.5",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "compact_launch_somalia",
+  "logged_model_id": "m-f619b0a341ba448989ad96fe2355f60a",
+  "registered_model": "IPCCH Forecasting Compact climate Somalia-local launch | baseline | 12-month",
+  "version": 1
+ },
+ "rows": 32,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 7.806255641895632e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 7.32920668600201e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 9.606031248221569e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.8995222061946038e-16,
+   "mean_abs_err": 6.124567016328785e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 7.806255641895632e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 7.32920668600201e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 9.606031248221569e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 1.8995222061946038e-16,
+   "mean_abs_err": 6.124567016328785e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.15
+}

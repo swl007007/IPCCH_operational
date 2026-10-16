@@ -1,0 +1,548 @@
+{
+ "image": "training-ipcch",
+ "digest": "sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+ "manifest_sha256": "sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+ "config_digest": "sha256:c8086fc9f25c1510b931e83d2fe4b606d833797e1a5da0e31e980aaf5a409673",
+ "rootfs": "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs",
+ "sandbox": [
+  "bwrap",
+  "--unshare-all",
+  "--die-with-parent",
+  "--uid",
+  "65534",
+  "--gid",
+  "65534",
+  "--tmpfs",
+  "/",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/app",
+  "/app",
+  "--symlink",
+  "usr/bin",
+  "/bin",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/boot",
+  "/boot",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/etc",
+  "/etc",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/home",
+  "/home",
+  "--symlink",
+  "usr/lib",
+  "/lib",
+  "--symlink",
+  "usr/lib64",
+  "/lib64",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/media",
+  "/media",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/mnt",
+  "/mnt",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/opt",
+  "/opt",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/root",
+  "/root",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/run",
+  "/run",
+  "--symlink",
+  "usr/sbin",
+  "/sbin",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/srv",
+  "/srv",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/sys",
+  "/sys",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/usr",
+  "/usr",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/scratch/image-pulls/training-ipcch.rootfs/var",
+  "/var",
+  "--proc",
+  "/proc",
+  "--dev",
+  "/dev",
+  "--tmpfs",
+  "/tmp",
+  "--tmpfs",
+  "/home/app",
+  "--ro-bind",
+  "/home/swl007007/projects/food-crisis-research/packages",
+  "/packages",
+  "--bind",
+  "/home/swl007007/projects/food-crisis-research/ledger/image-replays/training-ipcch",
+  "/out",
+  "--chdir",
+  "/out",
+  "--clearenv",
+  "--setenv",
+  "GPG_KEY",
+  "7169605F62C751356D054A26A821E680E5FA6305",
+  "--setenv",
+  "HOME",
+  "/home/app",
+  "--setenv",
+  "IPCCH_GEOXGB_SRC",
+  "/app/sources/IPCCHGeoXGBExperiment",
+  "--setenv",
+  "IPCCH_SOURCE_COMMIT",
+  "36bde42fe1fa4055c97977893ac7f7c429b7af35",
+  "--setenv",
+  "LANG",
+  "C.UTF-8",
+  "--setenv",
+  "PATH",
+  "/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "--setenv",
+  "PYTHONDONTWRITEBYTECODE",
+  "1",
+  "--setenv",
+  "PYTHONPATH",
+  "/app",
+  "--setenv",
+  "PYTHON_GET_PIP_SHA256",
+  "dfe9fd5c28dc98b5ac17979a953ea550cec37ae1b47a5116007395bfacff2ab9",
+  "--setenv",
+  "PYTHON_GET_PIP_URL",
+  "https://github.com/pypa/get-pip/raw/dbf0c85f76fb6e1ab42aa672ffca6f0a675d9ee4/public/get-pip.py",
+  "--setenv",
+  "PYTHON_PIP_VERSION",
+  "24.0",
+  "--setenv",
+  "PYTHON_VERSION",
+  "3.12.3"
+ ],
+ "probe": {
+  "executable": "/usr/local/bin/python",
+  "uid": 65534,
+  "version": "3.12.3",
+  "numpy": [
+   "2.2.6",
+   "/usr/local/lib/python3.12/site-packages/numpy/__init__.py"
+  ],
+  "pandas": [
+   "2.2.3",
+   "/usr/local/lib/python3.12/site-packages/pandas/__init__.py"
+  ],
+  "xgboost": [
+   "3.0.0",
+   "/usr/local/lib/python3.12/site-packages/xgboost/__init__.py"
+  ],
+  "research_cloud": "/app/research_cloud/__init__.py",
+  "mapped": [
+   "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+   "/usr/lib/x86_64-linux-gnu/libc.so.6",
+   "/usr/local/lib/libpython3.12.so.1.0"
+  ],
+  "host_mnt_c_exists": false,
+  "mnt_entries": [],
+  "host_home_exists": false,
+  "network": "OSError",
+  "packages_writable": false
+ },
+ "packages": 28,
+ "results": {
+  "geoxgb_reference-partitioned_gated-h01": {
+   "rc": 0,
+   "seconds": 15.4,
+   "passed": true,
+   "rows": 1389,
+   "package_json_sha256": "326b1039ae3b0d6e7f5e7fcb7314d57a59e7a70ef1d6e0e321a7c6f5a62081a8",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_reference-partitioned_gated-h03": {
+   "rc": 0,
+   "seconds": 14.8,
+   "passed": true,
+   "rows": 1362,
+   "package_json_sha256": "e006582f0c33dbbadf5de2920570d12b90b64619d1b4174573c88e105322ab59",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_reference-partitioned_gated-h06": {
+   "rc": 0,
+   "seconds": 11.5,
+   "passed": true,
+   "rows": 1083,
+   "package_json_sha256": "1c7cf2bb4ed820b2ce774225a419805a4bbf4575f9aa644968cbea0b24e891b9",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_reference-partitioned_gated-h12": {
+   "rc": 0,
+   "seconds": 11.5,
+   "passed": true,
+   "rows": 975,
+   "package_json_sha256": "ce51adc63be00c89238550b0a0756e7fec7d943471d42f66396ab18717a119d6",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_reference-pooled-h01": {
+   "rc": 0,
+   "seconds": 11.7,
+   "passed": true,
+   "rows": 1134,
+   "package_json_sha256": "4c59565e5a7d285dfcc49c9736e5b62cdcbeb08d5a826ca2f7a27ff8676876ef",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_reference-pooled-h03": {
+   "rc": 0,
+   "seconds": 4.1,
+   "passed": true,
+   "rows": 1075,
+   "package_json_sha256": "04324dc186acce1cc47405947a702ab19298ae3b302679b5b7a1933afdb06195",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_reference-pooled-h06": {
+   "rc": 0,
+   "seconds": 3.9,
+   "passed": true,
+   "rows": 979,
+   "package_json_sha256": "d7f042e701f1feb59b5ca238958eb772d2f107ff31bdfe3301b983f7a7a745aa",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_reference-pooled-h12": {
+   "rc": 0,
+   "seconds": 2.7,
+   "passed": true,
+   "rows": 800,
+   "package_json_sha256": "d35bd79645b878c3d78d910918df75a4c7b46c769340baa8ee616f120c524e7a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_window_probe-pooled-h01": {
+   "rc": 0,
+   "seconds": 0.9,
+   "passed": true,
+   "rows": 96,
+   "package_json_sha256": "bdd920d4f42b0a6c36ad4c6f50d459c69aa621cee8618e20af942679770410c4",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_window_probe-pooled-h03": {
+   "rc": 0,
+   "seconds": 0.9,
+   "passed": true,
+   "rows": 96,
+   "package_json_sha256": "e1dc82494ad070202e6524dba7c0c004d5b8718939ee5ca2cddc026d7332037a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_window_probe-pooled-h06": {
+   "rc": 0,
+   "seconds": 0.9,
+   "passed": true,
+   "rows": 96,
+   "package_json_sha256": "f55ffd2dafa6e3dfebd06b76ab0b4d824c3b2bd32bd2227217ac4e10b09ffb85",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_window_probe-pooled-h12": {
+   "rc": 0,
+   "seconds": 0.9,
+   "passed": true,
+   "rows": 64,
+   "package_json_sha256": "a5611f0155977edd880c2667ca4d10870d9c2a374b89307300981a8952b03b1b",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_window_probe-regional_ungated-h01": {
+   "rc": 0,
+   "seconds": 3.5,
+   "passed": true,
+   "rows": 826,
+   "package_json_sha256": "ff4d53824d9f68cd8e62a847e00bc9cce127790032be99facc4af11aeab36625",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_window_probe-regional_ungated-h03": {
+   "rc": 0,
+   "seconds": 2.7,
+   "passed": true,
+   "rows": 737,
+   "package_json_sha256": "a304ad8448405c441b45c6a865490cbcfeeb2a0710f228862012ebabca75c604",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_window_probe-regional_ungated-h06": {
+   "rc": 0,
+   "seconds": 2.6,
+   "passed": true,
+   "rows": 555,
+   "package_json_sha256": "0fd0ec6b1479acc816e100099a4fc8ba0d77d8564a69770fb9c8f70e8e7832cb",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_window_probe-regional_ungated-h12": {
+   "rc": 0,
+   "seconds": 2.6,
+   "passed": true,
+   "rows": 626,
+   "package_json_sha256": "facffec5e0a44acca20970609c3d39946dce07e18f373bdfc256b7703905807d",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-partitioned_gated-h01": {
+   "rc": 0,
+   "seconds": 1.1,
+   "passed": true,
+   "rows": 204,
+   "package_json_sha256": "7caa8753eee210181aa14b46ee1efa49a644ed26dcc08cc3a59de2df2f4e6d5c",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-partitioned_gated-h03": {
+   "rc": 0,
+   "seconds": 2.0,
+   "passed": true,
+   "rows": 274,
+   "package_json_sha256": "5016c118163baed7c9d05b6f9d4a71caf1c45811da3deb6ed373228621290683",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-partitioned_gated-h06": {
+   "rc": 0,
+   "seconds": 1.5,
+   "passed": true,
+   "rows": 224,
+   "package_json_sha256": "b792433d900d53870a4c308616130309ec28077a74bc9838830a7302d96b1d23",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-partitioned_gated-h12": {
+   "rc": 0,
+   "seconds": 1.0,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "3cf0bbd33abcf41c52fe565d0020dae22999e5b90be83bd2fd599ad349a54a4a",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-pooled-h01": {
+   "rc": 0,
+   "seconds": 0.9,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "4538675e6b39d3df187e67de2d37e4d09fb4088d05a25e51528093ac1ed802bf",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-pooled-h03": {
+   "rc": 0,
+   "seconds": 0.8,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "931594274d6371ce4f3d9a7393040f3bf2e3fd82dd16f74a2b3ba23a81523817",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-pooled-h06": {
+   "rc": 0,
+   "seconds": 1.0,
+   "passed": true,
+   "rows": 128,
+   "package_json_sha256": "6009279cbe20a6cf8373363c5ea3ff847deb3611755920a277fee316961d43b4",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-pooled-h12": {
+   "rc": 0,
+   "seconds": 0.9,
+   "passed": true,
+   "rows": 96,
+   "package_json_sha256": "a0087c269d32df1b69c4c7b13f73d18286af29b0be40b2989a7f02d607529403",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-regional_ungated-h01": {
+   "rc": 0,
+   "seconds": 4.3,
+   "passed": true,
+   "rows": 1089,
+   "package_json_sha256": "e9305c5043ca6d9b3bbad948b07da36560e39340d8d60b730c955f4368a59099",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-regional_ungated-h03": {
+   "rc": 0,
+   "seconds": 2.5,
+   "passed": true,
+   "rows": 838,
+   "package_json_sha256": "33feb185a232e7b1495f0ca7b54b71697333fa80ecc9ac95924275b28af1e4fe",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-regional_ungated-h06": {
+   "rc": 0,
+   "seconds": 3.0,
+   "passed": true,
+   "rows": 768,
+   "package_json_sha256": "eb12cfd35c10af168b4e5d12f3860aa02ec5e1c13fc85227d94cb62132d384e7",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  },
+  "geoxgb_yearly_refit-regional_ungated-h12": {
+   "rc": 0,
+   "seconds": 3.3,
+   "passed": true,
+   "rows": 836,
+   "package_json_sha256": "27f05d728d1956fdd8caf5e7e387cd512114de5aa2af4c501843cd77197ce4a6",
+   "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "xgboost": "3.0.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3"
+   }
+  }
+ },
+ "started": "2026-10-16T08:48:35-0400",
+ "passed": 28,
+ "finished": "2026-10-16T08:50:28-0400"
+}

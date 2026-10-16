@@ -1,0 +1,74 @@
+{
+ "package": "/packages/geoxgb_reference-pooled-h12",
+ "package_json_sha256": "d35bd79645b878c3d78d910918df75a4c7b46c769340baa8ee616f120c524e7a",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "family_run_id": "bdbafe393d694439a1c35ccec4d5816a",
+  "logged_model_id": "m-90418887c9b34db682333b42368b6114",
+  "registered_model": "IPCCH GeoXGB reference | pooled | 12-month",
+  "source_run_id": "p6-formal-20261004b",
+  "version": 1
+ },
+ "rows": 800,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 4.430483757644765e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 6.566795718310203e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.97758476261356e-16,
+   "mean_abs_err": 8.045223965106805e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.9949319973733282e-16,
+   "mean_abs_err": 8.253590364362217e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 4.430483757644765e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 6.566795718310203e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 1.97758476261356e-16,
+   "mean_abs_err": 7.816911316372091e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 1.9895109865109006e-16,
+   "mean_abs_err": 4.893659160895309e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 2.36
+}

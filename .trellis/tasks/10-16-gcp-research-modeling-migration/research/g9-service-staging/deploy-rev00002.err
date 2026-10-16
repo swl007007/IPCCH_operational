@@ -1,0 +1,8 @@
+Deploying container to Cloud Run service [research-mlflow] in project [food-crisis-modeling-enso] region [us-central1]
+Deploying...
+Setting IAM Policy...............done
+Creating Revision................................................................................................................................................................................................................................................................................................................................................................................................................................................done
+Routing traffic.....done
+Done.
+Service [research-mlflow] revision [research-mlflow-00002-gbm] has been deployed and is serving 100 percent of traffic.
+Service URL: https://research-mlflow-76571749286.us-central1.run.app

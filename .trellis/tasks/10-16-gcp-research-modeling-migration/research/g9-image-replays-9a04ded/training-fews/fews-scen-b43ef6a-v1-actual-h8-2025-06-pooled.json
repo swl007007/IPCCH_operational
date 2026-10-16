@@ -1,0 +1,84 @@
+{
+ "package": "/packages/fews-scen-b43ef6a-v1-actual-h8-2025-06-pooled",
+ "package_json_sha256": "e125af0c83ca851aefe9f5ae52925a8268afb1bffacb14653065f3f66cacd27d",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "case": "h8_2025-06",
+  "gate_k": {
+   "AF": 0,
+   "BF": 0,
+   "BI": 0,
+   "CD": 0,
+   "CM": 0,
+   "ET": 0,
+   "GT": 0,
+   "HT": 0,
+   "KE": 0,
+   "MG": 0,
+   "ML": 0,
+   "MW": 0,
+   "MZ": 0,
+   "NE": 0,
+   "NG": 0,
+   "SD": 0,
+   "SO": 0,
+   "SS": 0,
+   "TD": 0,
+   "UG": 0,
+   "YE": 0,
+   "ZW": 0
+  },
+  "map_id": "8965af6d6a724ba5d61d",
+  "phase": "scenario_actual",
+  "run": "scen-b43ef6a-v1",
+  "strategy": "A"
+ },
+ "rows": 400,
+ "columns": {
+  "p_1": {
+   "max_abs_err": 3.3306690738754696e-16,
+   "mean_abs_err": 8.685801101797341e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_2": {
+   "max_abs_err": 3.3306690738754696e-16,
+   "mean_abs_err": 7.626386501480286e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_3": {
+   "max_abs_err": 1.4901161249358807e-08,
+   "mean_abs_err": 3.725298040858048e-11,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_4\u62165": {
+   "max_abs_err": 2.9103914753452614e-11,
+   "mean_abs_err": 7.284452333969685e-14,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "y_pred_code": {
+   "max_abs_err": 0.0,
+   "mean_abs_err": 0.0,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 0.69
+}

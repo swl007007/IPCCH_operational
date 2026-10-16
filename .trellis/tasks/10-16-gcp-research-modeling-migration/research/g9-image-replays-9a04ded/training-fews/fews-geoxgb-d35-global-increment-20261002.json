@@ -1,0 +1,69 @@
+{
+ "package": "/packages/fews-geoxgb-d35-global-increment-20261002",
+ "package_json_sha256": "c04c5b2f3bb92807f283561b36bcaa5fbe107228fa1aad34824d292b0f8527a2",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "arm_columns": "p_global20_*",
+  "d34_run": "geoxgb-d34-e1-brier-20261002",
+  "kind": "continuation of D34 root (+20 rounds)",
+  "producer_code": {
+   "files": 57,
+   "sha256": "cad8439de1d1c838ddd8482c6782f4cfa205e5c28670e45dad2ddbe92e69421b"
+  },
+  "producer_rev": "7b2bf6f",
+  "run": "geoxgb-d35-global-increment-20261002",
+  "script_code": {
+   "files": 58,
+   "sha256": "6cbedb34af60b39593142650c5c2f81ddae3d7eb1da6e576be9605b249248cf0"
+  },
+  "stage": "d35_global_increment"
+ },
+ "rows": 1344,
+ "columns": {
+  "p_1": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 5.1339634970737147e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_2": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 4.558102097647541e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_3": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 4.639544315526042e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_4\u62165": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.5301836017989296e-17,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "y_pred_code": {
+   "max_abs_err": 0.0,
+   "mean_abs_err": 0.0,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.42
+}

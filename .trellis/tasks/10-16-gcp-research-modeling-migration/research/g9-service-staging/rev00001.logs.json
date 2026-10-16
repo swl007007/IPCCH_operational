@@ -1,0 +1,392 @@
+[
+  {
+    "insertId": "6ad2172e000b8136f2d48ecb",
+    "labels": {
+      "instanceId": "0010dd8607b7f154eeda48b4523bde7b4fc28da220f92e9b38825abb912a5464e475c56385c14056eddcd61eaa9d7399125ddfac05813e20e3ebd00b16e7439eba0247ce57f5153c6aac4d375b307c6a153b7a602889fcf5f6",
+      "scaling_reason": "DEPLOYMENT_ROLLOUT",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T12:23:10.775231921Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00001-j88",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Starting new instance. Reason: DEPLOYMENT_ROLLOUT - Instance started due to traffic shifting between revisions due to deployment, traffic split adjustment, or deployment health check.",
+    "timestamp": "2026-10-16T12:23:10.753974Z"
+  },
+  {
+    "insertId": "6ad2174100029802980c0a4f",
+    "jsonPayload": {
+      "assistant_mode": "deny",
+      "assistant_refusals": [
+        "assistant not requested"
+      ],
+      "hook": {
+        "markers": {},
+        "mode": "deny"
+      },
+      "port": "8080",
+      "startup": "ok"
+    },
+    "labels": {
+      "instanceId": "0010dd8607b7f154eeda48b4523bde7b4fc28da220f92e9b38825abb912a5464e475c56385c14056eddcd61eaa9d7399125ddfac05813e20e3ebd00b16e7439eba0247ce57f5153c6aac4d375b307c6a153b7a602889fcf5f6",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T12:23:29.177666383Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00001-j88",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "timestamp": "2026-10-16T12:23:29.169986Z"
+  },
+  {
+    "insertId": "6ad2174c0003b371d7ce9756",
+    "labels": {
+      "instanceId": "0010dd8607b7f154eeda48b4523bde7b4fc28da220f92e9b38825abb912a5464e475c56385c14056eddcd61eaa9d7399125ddfac05813e20e3ebd00b16e7439eba0247ce57f5153c6aac4d375b307c6a153b7a602889fcf5f6",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T12:23:40.249302843Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00001-j88",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Registry store URI not provided. Using backend store URI.",
+    "timestamp": "2026-10-16T12:23:40.242545Z"
+  },
+  {
+    "insertId": "6ad2174c0003e086dbfaf4ff",
+    "labels": {
+      "instanceId": "0010dd8607b7f154eeda48b4523bde7b4fc28da220f92e9b38825abb912a5464e475c56385c14056eddcd61eaa9d7399125ddfac05813e20e3ebd00b16e7439eba0247ce57f5153c6aac4d375b307c6a153b7a602889fcf5f6",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T12:23:40.262121276Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00001-j88",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 12:23:40 ERROR mlflow.cli: Error initializing backend store",
+    "timestamp": "2026-10-16T12:23:40.254086Z"
+  },
+  {
+    "insertId": "6ad2174c000531f97c0fb333",
+    "labels": {
+      "instanceId": "0010dd8607b7f154eeda48b4523bde7b4fc28da220f92e9b38825abb912a5464e475c56385c14056eddcd61eaa9d7399125ddfac05813e20e3ebd00b16e7439eba0247ce57f5153c6aac4d375b307c6a153b7a602889fcf5f6",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T12:23:40.594944098Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00001-j88",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 12:23:40 ERROR mlflow.cli: No module named 'psycopg'",
+    "timestamp": "2026-10-16T12:23:40.340473Z"
+  },
+  {
+    "errorGroups": [
+      {
+        "id": "CLS0subXnJS8Ew"
+      }
+    ],
+    "insertId": "6ad2174c0005323fd8838575",
+    "labels": {
+      "instanceId": "0010dd8607b7f154eeda48b4523bde7b4fc28da220f92e9b38825abb912a5464e475c56385c14056eddcd61eaa9d7399125ddfac05813e20e3ebd00b16e7439eba0247ce57f5153c6aac4d375b307c6a153b7a602889fcf5f6",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T12:23:40.594944098Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00001-j88",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "textPayload": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/cli/__init__.py\", line 709, in server\n    initialize_backend_stores(\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/server/handlers.py\", line 835, in initialize_backend_stores\n    tracking_store = _get_tracking_store(backend_store_uri, default_artifact_root)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/server/handlers.py\", line 760, in _get_tracking_store\n    _tracking_store = _tracking_store_registry.get_store(store_uri, artifact_root)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/tracking/_tracking_service/registry.py\", line 45, in get_store\n    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/tracking/_tracking_service/registry.py\", line 56, in _get_store_with_resolved_uri\n    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/server/handlers.py\", line 537, in _get_sqlalchemy_store\n    return store_cls(store_uri, artifact_uri, read_db_uri=read_db_uri)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/store/tracking/sqlalchemy_workspace_store.py\", line 80, in __init__\n    super().__init__(db_uri, default_artifact_root, read_db_uri=read_db_uri)\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/store/tracking/sqlalchemy_store.py\", line 404, in __init__\n    self.engine = self._get_or_create_engine(db_uri)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/store/tracking/sqlalchemy_store.py\", line 379, in _get_or_create_engine\n    mlflow.store.db.utils.create_sqlalchemy_engine_with_retry(db_uri)\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/store/db/utils.py\", line 365, in create_sqlalchemy_engine_with_retry\n    engine = create_sqlalchemy_engine(db_uri)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/mlflow/store/db/utils.py\", line 442, in create_sqlalchemy_engine\n    engine = sqlalchemy.create_engine(db_uri, pool_pre_ping=True, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<sqlalchemy generated warned() wrapper for sqlalchemy.engine.create.create_engine>\", line 2, in create_engine\n    return target(fn, url, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/sqlalchemy/util/deprecations.py\", line 281, in warned\n    return fn(*args, **kwargs)  # type: ignore[no-any-return]\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/create.py\", line 602, in create_engine\n    dbapi = dbapi_meth(**dbapi_args)\n            ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/psycopg.py\", line 497, in import_dbapi\n    import psycopg\nModuleNotFoundError: No module named 'psycopg'",
+    "timestamp": "2026-10-16T12:23:40.340543Z"
+  },
+  {
+    "insertId": "6ad2174e00004def8d7c53ba",
+    "labels": {
+      "container_name": "service-1",
+      "instanceId": "0010dd8607b7f154eeda48b4523bde7b4fc28da220f92e9b38825abb912a5464e475c56385c14056eddcd61eaa9d7399125ddfac05813e20e3ebd00b16e7439eba0247ce57f5153c6aac4d375b307c6a153b7a602889fcf5f6",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T12:23:42.034994618Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00001-j88",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Container called exit(1).",
+    "timestamp": "2026-10-16T12:23:42.019867075Z"
+  },
+  {
+    "insertId": "6ad2174e0003262642c45d7e",
+    "labels": {
+      "instanceId": "0010dd8607b7f154eeda48b4523bde7b4fc28da220f92e9b38825abb912a5464e475c56385c14056eddcd61eaa9d7399125ddfac05813e20e3ebd00b16e7439eba0247ce57f5153c6aac4d375b307c6a153b7a602889fcf5f6",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T12:23:42.361409458Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00001-j88",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "textPayload": "Default STARTUP TCP probe failed 1 time consecutively for container \"service-1\" on port 8080. The instance was not started.\nConnection failed with status CANCELLED.",
+    "timestamp": "2026-10-16T12:23:42.206374Z"
+  },
+  {
+    "insertId": "tp079vd7xnq",
+    "logName": "projects/food-crisis-modeling-enso/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.CreateService",
+      "resourceName": "namespaces/food-crisis-modeling-enso/revisions/research-mlflow-00001-j88",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Revision",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Revision",
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "1",
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "562.0.0",
+            "run.googleapis.com/cloudsql-instances": "food-crisis-modeling-enso:us-central1:research-pg",
+            "run.googleapis.com/cpu-throttling": "true",
+            "run.googleapis.com/operation-id": "2de55df8-6bb7-4883-b6e6-5f034e410ec0",
+            "run.googleapis.com/startup-cpu-boost": "false",
+            "serving.knative.dev/creator": "weilun.shi@cgiar.org"
+          },
+          "creationTimestamp": "2026-10-16T12:22:33.965583Z",
+          "generation": 1,
+          "labels": {
+            "client.knative.dev/nonce": "kzkllkqlky",
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/startupProbeType": "Default",
+            "serving.knative.dev/configuration": "research-mlflow",
+            "serving.knative.dev/configurationGeneration": "1",
+            "serving.knative.dev/route": "research-mlflow",
+            "serving.knative.dev/service": "research-mlflow",
+            "serving.knative.dev/serviceUid": "f15d0436-8972-4a16-87a6-40868a3b1c5f",
+            "task": "gcp-research-modeling-migration"
+          },
+          "name": "research-mlflow-00001-j88",
+          "namespace": "76571749286",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Configuration",
+              "name": "research-mlflow",
+              "uid": "4761b172-ef35-447e-8499-f795d9290756"
+            }
+          ],
+          "resourceVersion": "AAZd9DwdE98",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/76571749286/revisions/research-mlflow-00001-j88",
+          "uid": "dd9755d4-6ced-4f01-8dec-2071c197eda5"
+        },
+        "spec": {
+          "containerConcurrency": 8,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "MLFLOW_ARTIFACTS_DESTINATION",
+                  "value": "gs://food-crisis-modeling-enso-research-artifacts/mlflow-artifacts"
+                },
+                {
+                  "name": "MLFLOW_BASIC_AUTH_FAIL_CLOSED",
+                  "value": "true"
+                },
+                {
+                  "name": "IPCCH_ALLOWED_HOSTS",
+                  "value": "research-mlflow-76571749286.us-central1.run.app,127.0.0.1:8080,localhost:8080"
+                },
+                {
+                  "name": "MLFLOW_BACKEND_STORE_URI",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-backend-uri"
+                    }
+                  }
+                },
+                {
+                  "name": "IPCCH_AUTH_DATABASE_URI",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-auth-db-uri"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_FLASK_SERVER_SECRET_KEY",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-flask-secret"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_CRYPTO_KEK_PASSPHRASE",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-kek-passphrase"
+                    }
+                  }
+                }
+              ],
+              "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:280013b040943028e6d9fb79de750063e28116cbe9a7f683b1690a934caceadf",
+              "name": "service-1",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "2Gi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 1,
+                "periodSeconds": 240,
+                "tcpSocket": {
+                  "port": 8080
+                },
+                "timeoutSeconds": 240
+              }
+            }
+          ],
+          "serviceAccountName": "research-mlflow@food-crisis-modeling-enso.iam.gserviceaccount.com",
+          "timeoutSeconds": 3600
+        },
+        "status": {
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-10-16T12:23:42.205919Z",
+              "message": "The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=food-crisis-modeling-enso&resource=cloud_run_revision/service_name/research-mlflow/revision_name/research-mlflow-00001-j88&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22research-mlflow%22%0Aresource.labels.revision_name%3D%22research-mlflow-00001-j88%22 \nFor more troubleshooting guidance, see https://docs.cloud.google.com/run/docs/troubleshooting#container-failed-to-start",
+              "reason": "HealthCheckContainerError",
+              "status": "False",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T12:23:42.205919Z",
+              "message": "The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=food-crisis-modeling-enso&resource=cloud_run_revision/service_name/research-mlflow/revision_name/research-mlflow-00001-j88&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22research-mlflow%22%0Aresource.labels.revision_name%3D%22research-mlflow-00001-j88%22 \nFor more troubleshooting guidance, see https://docs.cloud.google.com/run/docs/troubleshooting#container-failed-to-start",
+              "reason": "HealthCheckContainerError",
+              "status": "False",
+              "type": "ContainerHealthy"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T12:23:08.940216Z",
+              "message": "Container image import completed in 34.21s.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T12:23:10.641783Z",
+              "message": "Provisioning imported containers completed in 1.7s. Checking container health. This will wait for up to 4m for the configured startup probe, including an initial delay of 0s.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T12:23:10.641783Z",
+              "message": "System will retry after 00:00 from lastTransitionTime for attempt 0.",
+              "reason": "ImmediateRetry",
+              "severity": "Info",
+              "status": "True",
+              "type": "Retry"
+            }
+          ],
+          "containerStatuses": [
+            {
+              "imageDigest": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:280013b040943028e6d9fb79de750063e28116cbe9a7f683b1690a934caceadf",
+              "name": "service-1"
+            }
+          ],
+          "imageDigest": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:280013b040943028e6d9fb79de750063e28116cbe9a7f683b1690a934caceadf",
+          "logUrl": "https://console.cloud.google.com/logs/viewer?project=food-crisis-modeling-enso&resource=cloud_run_revision/service_name/research-mlflow/revision_name/research-mlflow-00001-j88&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22research-mlflow%22%0Aresource.labels.revision_name%3D%22research-mlflow-00001-j88%22",
+          "observedGeneration": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "code": 9,
+        "message": "Ready condition status changed to False for Revision research-mlflow-00001-j88 with message: The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=food-crisis-modeling-enso&resource=cloud_run_revision/service_name/research-mlflow/revision_name/research-mlflow-00001-j88&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22research-mlflow%22%0Aresource.labels.revision_name%3D%22research-mlflow-00001-j88%22 \nFor more troubleshooting guidance, see https://docs.cloud.google.com/run/docs/troubleshooting#container-failed-to-start"
+      }
+    },
+    "receiveTimestamp": "2026-10-16T12:23:42.474729525Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00001-j88",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "timestamp": "2026-10-16T12:23:42.217921Z"
+  }
+]

@@ -1,0 +1,50 @@
+{
+ "secrets": {
+  "mlflow-temp-admin": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": []
+  }
+ },
+ "sql_ops": {},
+ "steps": [
+  {
+   "time": "2026-10-16T09:11:06-0400",
+   "step": "secret",
+   "name": "mlflow-temp-admin",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T09:11:12-0400",
+   "step": "temp-admin-created",
+   "user": "[redacted]",
+   "diff": {
+    "added": [
+     "[redacted]"
+    ],
+    "removed": [],
+    "others_unchanged": 2
+   }
+  }
+ ],
+ "temp_admin_created": true,
+ "create": {
+  "before": {
+   "admin": true,
+   "assistant": false
+  },
+  "after": {
+   "admin": true,
+   "assistant": false,
+   "[redacted]": true
+  },
+  "diff": {
+   "added": [
+    "[redacted]"
+   ],
+   "removed": [],
+   "others_unchanged": 2
+  },
+  "authenticates": true
+ }
+}

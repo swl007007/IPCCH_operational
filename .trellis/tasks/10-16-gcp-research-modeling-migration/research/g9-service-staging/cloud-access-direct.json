@@ -1,0 +1,305 @@
+{
+ "time": "2026-10-16T09:34:48-0400",
+ "url": "https://research-mlflow-76571749286.us-central1.run.app",
+ "transport": "direct HTTPS",
+ "rows": [
+  {
+   "principal": "admin",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/list",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "job",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/experiments/get-by-name",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "acceptance experiment exists (rerun)"
+  },
+  {
+   "principal": "job",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "job",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/log-metric",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "job",
+   "method": "PUT",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/workspaces/default/6/64c341bbeb05419fa146f788342ca33c/artifacts/probe.txt",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "proxied upload"
+  },
+  {
+   "principal": "job",
+   "method": "GET",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/workspaces/default/6/64c341bbeb05419fa146f788342ca33c/artifacts/probe.txt",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "read back own artifact",
+   "bytes_equal": true
+  },
+  {
+   "principal": "job",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "copied experiment (no write grant)"
+  },
+  {
+   "principal": "job",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/experiments/search",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "",
+   "experiments_visible": 7
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/search",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/runs/get",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "GET",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/1/017b1f3dd71f4752b3b41c9a58a62ebc/artifacts/view/evaluation_view.json",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "copied artifact",
+   "sha256_equal_r1": true
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "acceptance experiment"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/set-tag",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "acceptance run"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/delete",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "acceptance experiment"
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/registered-models/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/3.0/mlflow/gateway/secrets/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "reader",
+   "method": "PATCH",
+   "path": "/api/2.0/mlflow/users/update-admin",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/experiments/search",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "",
+   "experiments_visible": 7
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/search",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/runs/get",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "GET",
+   "path": "/api/2.0/mlflow-artifacts/artifacts/1/017b1f3dd71f4752b3b41c9a58a62ebc/artifacts/view/evaluation_view.json",
+   "expected": 200,
+   "observed": 200,
+   "ok": true,
+   "note": "copied artifact",
+   "sha256_equal_r1": true
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "acceptance experiment"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/runs/set-tag",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "acceptance run"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/delete",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": "acceptance experiment"
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/registered-models/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/3.0/mlflow/gateway/secrets/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  },
+  {
+   "principal": "assistant",
+   "method": "PATCH",
+   "path": "/api/2.0/mlflow/users/update-admin",
+   "expected": 403,
+   "observed": 403,
+   "ok": true,
+   "note": ""
+  }
+ ],
+ "passed": 32,
+ "total": 32,
+ "acceptance_experiment": "6",
+ "acceptance_run": "64c341bbeb05419fa146f788342ca33c",
+ "artifact_path": "workspaces/default/6/64c341bbeb05419fa146f788342ca33c/artifacts/probe.txt"
+}

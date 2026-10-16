@@ -1,0 +1,73 @@
+{
+ "package": "/packages/forecast-compact_launch_global_cds_weather_12--compact_global_launch",
+ "package_json_sha256": "139bd59d17a990040368c6b36932b76641f1b69e835cc6ec4442afad94da9bc6",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.2.0",
+  "numpy": "2.3.5",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "compact_launch_global",
+  "logged_model_id": "m-0c4d80e619974d2c9c3e71162a960abb",
+  "registered_model": "IPCCH Forecasting Compact climate global launch | cds_weather | 12-month",
+  "version": 1
+ },
+ "rows": 32,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 7.979727989493313e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 6.895525817007808e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 5.960401443239061e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.9081958235744878e-16,
+   "mean_abs_err": 8.7257946094349e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 2.220446049250313e-16,
+   "mean_abs_err": 7.979727989493313e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 6.895525817007808e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 5.960401443239061e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 1.9081958235744878e-16,
+   "mean_abs_err": 8.7257946094349e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.41
+}

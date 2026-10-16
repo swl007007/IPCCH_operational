@@ -1,0 +1,61 @@
+{
+ "package": "/packages/fews-geoxgb-d31-matched-search-20261001",
+ "package_json_sha256": "e255d46b004f849de55056ed67c838357106ec095be186abf4e222a626be2af2",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "producer": {
+   "files": 56,
+   "sha256": "33e7627423c62087e9d07ce87f759921a0257b8051f9d63dde578f1bc0901de8"
+  },
+  "run": "geoxgb-d31-matched-search-20261001",
+  "stage_dir": "stage1_matchedsize"
+ },
+ "rows": 1016,
+ "columns": {
+  "p_1": {
+   "max_abs_err": 2.980232233218416e-08,
+   "mean_abs_err": 2.933304669876727e-11,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_2": {
+   "max_abs_err": 5.9604644719879474e-08,
+   "mean_abs_err": 5.866603328834166e-11,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_3": {
+   "max_abs_err": 7.45058058304604e-09,
+   "mean_abs_err": 7.33329489887221e-12,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "p_4\u62165": {
+   "max_abs_err": 5.8207619984835396e-11,
+   "mean_abs_err": 5.733582336019875e-14,
+   "failures": 0,
+   "reference_nan": 0
+  },
+  "y_pred_code": {
+   "max_abs_err": 0.0,
+   "mean_abs_err": 0.0,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 32.59
+}

@@ -1,0 +1,73 @@
+{
+ "package": "/packages/forecast-origin_safe_weather_global_weather_oracle_03--origin_safe_weather_oracle_v1",
+ "package_json_sha256": "7f8e726c15e0bf6ec6646c710e9bcb4dae28721da7a9976da48383d4d17ae896",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.2.0",
+  "numpy": "2.3.5",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "origin_safe_weather_global",
+  "logged_model_id": "m-213a4f3fbd5441ad8ab05ebbe3a1a478",
+  "registered_model": "IPCCH Forecasting Origin-safe weather global historical | weather_oracle | 3-month",
+  "version": 1
+ },
+ "rows": 128,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 3.9898639947466563e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.7027269231558755e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 9.8879238130678e-17,
+   "mean_abs_err": 4.786519657463007e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 9.77950359581925e-17,
+   "mean_abs_err": 2.604787116718054e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 3.9898639947466563e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 4.7027269231558755e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 9.8879238130678e-17,
+   "mean_abs_err": 4.786519657463007e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 9.77950359581925e-17,
+   "mean_abs_err": 2.604787116718054e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 4.52
+}

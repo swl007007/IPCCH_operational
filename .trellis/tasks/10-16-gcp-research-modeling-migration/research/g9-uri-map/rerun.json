@@ -1,0 +1,1387 @@
+{
+ "summary": {
+  "tagged_models": 172,
+  "mapped": 56,
+  "unchanged_runs_refs": 116,
+  "written_now": 0,
+  "distinct_mapped_specs": 42
+ },
+ "rows": [
+  {
+   "model_id": "m-c9e79f62e4bb425e897970eb933c71d0",
+   "name": "Origin-safe weather global historical | weather_oracle_with_summaries | 12-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle_b6=true&horizons_months~12",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle_b6=true&horizons_months~12",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle_b6=true&horizons_months~12",
+   "refusals": []
+  },
+  {
+   "model_id": "m-bd57cabe0d2749b4aa36e4a2ce06709e",
+   "name": "Origin-safe weather global historical | weather_oracle_with_summaries | 6-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle_b6=true&horizons_months~6",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle_b6=true&horizons_months~6",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle_b6=true&horizons_months~6",
+   "refusals": []
+  },
+  {
+   "model_id": "m-84ebb0fa989c4df88b1ca1abd9a43f8f",
+   "name": "Origin-safe weather global historical | weather_oracle_with_summaries | 3-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle_b6=true&horizons_months~3",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle_b6=true&horizons_months~3",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle_b6=true&horizons_months~3",
+   "refusals": []
+  },
+  {
+   "model_id": "m-c605af5a2c1d400dba03ce6bab223f2b",
+   "name": "Origin-safe weather global historical | weather_oracle | 12-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle=true&horizons_months~12",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle=true&horizons_months~12",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle=true&horizons_months~12",
+   "refusals": []
+  },
+  {
+   "model_id": "m-878334e516e6408aae086115cfa9cf09",
+   "name": "Origin-safe weather global historical | weather_oracle | 6-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle=true&horizons_months~6",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle=true&horizons_months~6",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle=true&horizons_months~6",
+   "refusals": []
+  },
+  {
+   "model_id": "m-213a4f3fbd5441ad8ab05ebbe3a1a478",
+   "name": "Origin-safe weather global historical | weather_oracle | 3-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle=true&horizons_months~3",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle=true&horizons_months~3",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp_oracle=true&horizons_months~3",
+   "refusals": []
+  },
+  {
+   "model_id": "m-0a97750f9ea64b0eb8cf0dcc4c7e3396",
+   "name": "Origin-safe climate global historical | safe_ipc_history_idp | 12-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~12",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~12",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~12",
+   "refusals": []
+  },
+  {
+   "model_id": "m-533ebac9ff044bc9ade54a2b54ca189a",
+   "name": "Origin-safe climate global historical | safe_ipc_history_idp | 6-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~6",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~6",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~6",
+   "refusals": []
+  },
+  {
+   "model_id": "m-88529f313f3848ac9cc7018529540cce",
+   "name": "Origin-safe climate global historical | safe_ipc_history_idp | 3-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~3",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~3",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~3",
+   "refusals": []
+  },
+  {
+   "model_id": "m-cc75e402114b44baaacbc948f747ff33",
+   "name": "Origin-safe climate global historical | safe_ipc_history_idp | 0-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~0",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~0",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history_idp=true&horizons_months~0",
+   "refusals": []
+  },
+  {
+   "model_id": "m-fb3bdce9f14d4cb2970f1f87bdcfb69b",
+   "name": "Origin-safe climate global historical | safe_ipc_history | 12-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~12",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~12",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~12",
+   "refusals": []
+  },
+  {
+   "model_id": "m-6fc8da0c72a24d6099aa14a485ec485c",
+   "name": "Origin-safe climate global historical | safe_ipc_history | 6-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~6",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~6",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~6",
+   "refusals": []
+  },
+  {
+   "model_id": "m-54a485e34323448b87866d1fb6ab31c6",
+   "name": "Origin-safe climate global historical | safe_ipc_history | 3-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~3",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~3",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~3",
+   "refusals": []
+  },
+  {
+   "model_id": "m-e7ec406ad59e4dbe8044ab349e140051",
+   "name": "Origin-safe climate global historical | safe_ipc_history | 0-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~0",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~0",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_safe_history=true&horizons_months~0",
+   "refusals": []
+  },
+  {
+   "model_id": "m-08c98a6d474149869e1f65530a98cd33",
+   "name": "Origin-safe climate global historical | no_ipc_history | 12-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~12",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~12",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~12",
+   "refusals": []
+  },
+  {
+   "model_id": "m-05503b0e1ebe46cb80b1cb09c083e980",
+   "name": "Origin-safe climate global historical | no_ipc_history | 6-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~6",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~6",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~6",
+   "refusals": []
+  },
+  {
+   "model_id": "m-9e152937930d4447b26518b3591e7c6e",
+   "name": "Origin-safe climate global historical | no_ipc_history | 3-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~3",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~3",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~3",
+   "refusals": []
+  },
+  {
+   "model_id": "m-c12b333847084dd8b6689cd664a71038",
+   "name": "Origin-safe climate global historical | no_ipc_history | 0-month | snapshot 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/1f4f29ce78054398bc216f014b55fd72/artifacts/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~0",
+   "mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~0",
+   "existing_mapped": "codebook=runs:/1f4f29ce78054398bc216f014b55fd72/source.tar!reports/origin_safe_weather_oracle_v1/model_run_codebook/IPCCH_climate_weather_oracle_model_run_codebook_en.csv#predictor?climate_no_history=true&horizons_months~0",
+   "refusals": []
+  },
+  {
+   "model_id": "m-1810d1a357774b4bb90afdd03997f89d",
+   "name": "Compact climate Somalia-local launch | cds_weather | 12-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/a825dfab346e46d5b37325121bda8943/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_cds_weather_12m=true",
+   "mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_cds_weather_12m=true",
+   "existing_mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_cds_weather_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-dbd5ed55101042f3af1e0f0b203b74a1",
+   "name": "Compact climate Somalia-local launch | cds_weather | 6-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/a825dfab346e46d5b37325121bda8943/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_cds_weather_6m=true",
+   "mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_cds_weather_6m=true",
+   "existing_mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_cds_weather_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-f619b0a341ba448989ad96fe2355f60a",
+   "name": "Compact climate Somalia-local launch | baseline | 12-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/a825dfab346e46d5b37325121bda8943/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "existing_mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-c71dc1df0fc94727a183bed2bb23dfdc",
+   "name": "Compact climate Somalia-local launch | baseline | 6-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/a825dfab346e46d5b37325121bda8943/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "existing_mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-e7a3d96074a0405281ea66f319881f2f",
+   "name": "Compact climate Somalia-local launch | baseline | 0-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/a825dfab346e46d5b37325121bda8943/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "existing_mapped": "codebook=runs:/a825dfab346e46d5b37325121bda8943/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1_somalia_local/model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-5a866caff16548b6841ddbb0eff5c389",
+   "name": "Compact climate Somalia-local historical | weather_oracle | 12-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-e059076227f74d318800fe9cabeeba62",
+   "name": "Compact climate Somalia-local historical | weather_oracle | 6-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-34177a7cb0da40aebdedcbb05aa1d0e5",
+   "name": "Compact climate Somalia-local historical | weather_oracle | 3-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-7a52c2f56f1e43cdb136134c396bc440",
+   "name": "Compact climate Somalia-local historical | baseline | 12-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-71b42e2ddd7d4c589d01b8a29af54ada",
+   "name": "Compact climate Somalia-local historical | baseline | 6-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-ba7f9b1de0f14ad18348e0962ed07afa",
+   "name": "Compact climate Somalia-local historical | baseline | 3-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-3bf63c86ef93403bbf14e380f7c904b3",
+   "name": "Compact climate Somalia-local historical | baseline | 0-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-6341bc41ae714f36a10ea1d77118764e",
+   "name": "Compact climate Somalia-local historical | weather_oracle | 12-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-281ddabc4d104ac192a7500f8232f1f6",
+   "name": "Compact climate Somalia-local historical | weather_oracle | 6-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-8de122e1578544a2b09f1fd049de3d22",
+   "name": "Compact climate Somalia-local historical | weather_oracle | 3-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-0e76407b52794fabbb301242b0ca6dc6",
+   "name": "Compact climate Somalia-local historical | baseline | 12-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-35bbdec24d434fbab737a07ce12626e9",
+   "name": "Compact climate Somalia-local historical | baseline | 6-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-b5667155228d489181bd8aaba427d0a8",
+   "name": "Compact climate Somalia-local historical | baseline | 3-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-823b6b47e6fc4a769e32760b848b79b1",
+   "name": "Compact climate Somalia-local historical | baseline | 0-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/2e08142e9c7d4ba88f805ec1c7672746/artifacts/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "existing_mapped": "codebook=runs:/2e08142e9c7d4ba88f805ec1c7672746/source.tar!reports/compact_climate_weather_oracle_v1_somalia_local/model_run_codebook/IPCCH_compact_climate_weather_oracle_somalia_local_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-0c4d80e619974d2c9c3e71162a960abb",
+   "name": "Compact climate global launch | cds_weather | 12-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/cacfb63a15314089bdda91d1070f3bd3/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_cds_weather_12m=true",
+   "mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_cds_weather_12m=true",
+   "existing_mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_cds_weather_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-2c75661e8bae47d09d2c641bf108f2f8",
+   "name": "Compact climate global launch | cds_weather | 6-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/cacfb63a15314089bdda91d1070f3bd3/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_cds_weather_6m=true",
+   "mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_cds_weather_6m=true",
+   "existing_mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_cds_weather_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-c5538eca033d40029ad7e5a8ca9d253c",
+   "name": "Compact climate global launch | baseline | 12-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/cacfb63a15314089bdda91d1070f3bd3/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "existing_mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-4fa6b82547f846b2a51dae484d36164c",
+   "name": "Compact climate global launch | baseline | 6-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/cacfb63a15314089bdda91d1070f3bd3/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "existing_mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-1b90bc1dcaf94d53878d78a488bcb439",
+   "name": "Compact climate global launch | baseline | 0-month | origin 2026-04",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/cacfb63a15314089bdda91d1070f3bd3/artifacts/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "existing_mapped": "codebook=runs:/cacfb63a15314089bdda91d1070f3bd3/source.tar!reports/launch/nowcasting_2026_04_compact_cds_v1/model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-37c7342a70804db69b6fd6042d96ce20",
+   "name": "Compact climate global historical | weather_oracle | 12-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-b87ea87013d24f2eb3f201a506e0ad1e",
+   "name": "Compact climate global historical | weather_oracle | 6-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-d269466933c84110b0e2382423d91596",
+   "name": "Compact climate global historical | weather_oracle | 3-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-69876945f0ff44179e0feea051e31d87",
+   "name": "Compact climate global historical | baseline | 12-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-abf04d589de14f5aba3cf9e98c9bce03",
+   "name": "Compact climate global historical | baseline | 6-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-28cd79cafc144b89a188be4ae65dd2d1",
+   "name": "Compact climate global historical | baseline | 3-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-8ddb379eede443cab2a933813e292146",
+   "name": "Compact climate global historical | baseline | 0-month | snapshot extended 2022-2026",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-795b94ede8324d6b86562d244d66639a",
+   "name": "Compact climate global historical | weather_oracle | 12-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-c9c0140ed8a34d5999e63d5683bd7f9f",
+   "name": "Compact climate global historical | weather_oracle | 6-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-7b02a1ea7e3a45bbae8f1d231e40ef29",
+   "name": "Compact climate global historical | weather_oracle | 3-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_weather_oracle_3m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-0a2ad6fce61249deb90b77a80a02dbdc",
+   "name": "Compact climate global historical | baseline | 12-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_12m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-f82043b030e643fe9986724219e6f707",
+   "name": "Compact climate global historical | baseline | 6-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_6m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-445fac10969843ed9bcca4a106a9689d",
+   "name": "Compact climate global historical | baseline | 3-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_3m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-f60a26cd718d49968fa27ce63b256545",
+   "name": "Compact climate global historical | baseline | 0-month | snapshot original 2022-2025",
+   "original": "codebook=/home/swl007007/.local/share/ipcch-mlflow/artifacts/3/50994de27b5641a0bbbc514ec37e347e/artifacts/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "existing_mapped": "codebook=runs:/50994de27b5641a0bbbc514ec37e347e/source.tar!reports/compact_climate_weather_oracle_v1/model_run_codebook/IPCCH_compact_climate_weather_oracle_model_run_codebook_en.csv#predictor?compact_baseline_0m=true",
+   "refusals": []
+  },
+  {
+   "model_id": "m-c03527a5be704725868021aa2fd51340",
+   "name": "AlphaEarth supervised partition | shared_calibration | 6-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-bd8f51fea3564b97961ae519178a0f9b",
+   "name": "AlphaEarth supervised partition | shared_calibration | 3-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-bdacd985569f4c3e8031f76e5079033e",
+   "name": "AlphaEarth supervised partition | shared_calibration | 12-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-a211e53e80b54d2eb687e100b0b23691",
+   "name": "AlphaEarth supervised partition | shared_calibration | 1-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-7c3c3251560d4184ad38ccb09f10a5ed",
+   "name": "AlphaEarth supervised partition | regional_calibration | 6-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-73a8e7cb2d41425d8f04262164f0d5cb",
+   "name": "AlphaEarth supervised partition | regional_calibration | 3-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-320276e98d0540149c43841761049ee5",
+   "name": "AlphaEarth supervised partition | regional_calibration | 12-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-9bead421855d42a29c8b495b1c0a6c40",
+   "name": "AlphaEarth supervised partition | regional_calibration | 1-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-c9220edf195b46498c8441c3274f4009",
+   "name": "AlphaEarth supervised partition | pooled_plus_alphaearth | 6-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-fdd2518c6e14498b8397189933dd6a48",
+   "name": "AlphaEarth supervised partition | pooled_plus_alphaearth | 3-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-0f59b1fd71f54179bb9e0244a13d5a35",
+   "name": "AlphaEarth supervised partition | pooled_plus_alphaearth | 12-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-326d232399e442dd971e046731f63382",
+   "name": "AlphaEarth supervised partition | pooled_plus_alphaearth | 1-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name ; alphaearth128=runs:/9939ac69809949e9923821fa692a7b2a/source/descriptors/descriptor_table.csv.gz#@header",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-fbaac73e131d4b7b8393a6f443d496db",
+   "name": "AlphaEarth supervised partition | pooled | 6-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-d915c2a32bf544c0a886355de296c5d3",
+   "name": "AlphaEarth supervised partition | pooled | 3-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-41b23a425cec45e4a6d4b8c61c8d1851",
+   "name": "AlphaEarth supervised partition | pooled | 12-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-8168fa64b82248c3b687918f5042a9e2",
+   "name": "AlphaEarth supervised partition | pooled | 1-month | seed 42",
+   "original": "compact296=runs:/9939ac69809949e9923821fa692a7b2a/source/prepared/feature_order_296.csv.gz#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-a0659b1e1f72449a902d6b96549da9e5",
+   "name": "MLP residual on fixed maps | regional_ungated | 6-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-8b7708bdbd2b495691182f1f57036ae7",
+   "name": "MLP residual on fixed maps | regional_ungated | 6-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-a43d980b5e4a441594357a8b32f3e736",
+   "name": "MLP residual on fixed maps | regional_ungated | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-837bf1319caf41409c87ad6fa0201da4",
+   "name": "MLP residual on fixed maps | regional_ungated | 3-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-56ec02ee52ba42028ebbd9b1da0726d5",
+   "name": "MLP residual on fixed maps | regional_ungated | 3-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-1c9cad094103424a9c9710f02198ab91",
+   "name": "MLP residual on fixed maps | regional_ungated | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-73ff5f1076504abd943fa3d349c60c4a",
+   "name": "MLP residual on fixed maps | regional_ungated | 12-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-ce794d3ffd4b46d9a824887119ce6f9a",
+   "name": "MLP residual on fixed maps | regional_ungated | 12-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-b26c8a7efefd41e0be51bde7c3d12740",
+   "name": "MLP residual on fixed maps | regional_ungated | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-9f76340474d645d6a801c35bb6939233",
+   "name": "MLP residual on fixed maps | regional_ungated | 1-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-aa5d378e5819417b92d6e2264cc81459",
+   "name": "MLP residual on fixed maps | regional_ungated | 1-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-aa574665fb6f4252b294478053659635",
+   "name": "MLP residual on fixed maps | regional_ungated | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-38f4dd75ceaa4bc48196cfb437d8beed",
+   "name": "MLP residual on fixed maps | pooled | 6-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-218b184f758043039bb4468bd3a47fc6",
+   "name": "MLP residual on fixed maps | pooled | 6-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-14f564866f884d298c5fe84fcf1a47fc",
+   "name": "MLP residual on fixed maps | pooled | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-5ef83addef244024b9bdc4fd65479eaa",
+   "name": "MLP residual on fixed maps | pooled | 3-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-3173158c86d24d8697dbde73212da83b",
+   "name": "MLP residual on fixed maps | pooled | 3-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-7859f450c1c6495f8e796219679d986f",
+   "name": "MLP residual on fixed maps | pooled | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-5e39218294a5419abf7c08f39d28f82d",
+   "name": "MLP residual on fixed maps | pooled | 12-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-edefd403aa704bd191bef7933b602cd7",
+   "name": "MLP residual on fixed maps | pooled | 12-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-70594abe06474b2ea9e32e68f417915f",
+   "name": "MLP residual on fixed maps | pooled | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-a3e5ee89c64b4e81996e4c925cfb4f6c",
+   "name": "MLP residual on fixed maps | pooled | 1-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-c3650f921da54f609384c55aba5980b5",
+   "name": "MLP residual on fixed maps | pooled | 1-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-d7364c10af014454abd61f89161ce13e",
+   "name": "MLP residual on fixed maps | pooled | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-ee86fe4fddc84c6bbc9ea36ab50ed1e8",
+   "name": "MLP residual on fixed maps | partitioned_gated | 6-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-a79043bbad4b434fa378fbeee5c295f9",
+   "name": "MLP residual on fixed maps | partitioned_gated | 6-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-67570c4a20c84a9484260173bf5fc237",
+   "name": "MLP residual on fixed maps | partitioned_gated | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-5fdc29bcaec649f6893b2ae1768af38d",
+   "name": "MLP residual on fixed maps | partitioned_gated | 3-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-8776ec0bbe6f4e2da8e840bc974f698d",
+   "name": "MLP residual on fixed maps | partitioned_gated | 3-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-a516dc0a5e774785821e502c677a9bbb",
+   "name": "MLP residual on fixed maps | partitioned_gated | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-2dca7474e37d4412978806a0cd7b77e5",
+   "name": "MLP residual on fixed maps | partitioned_gated | 12-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-ae5272007add41d3a127dc4431c9d1ba",
+   "name": "MLP residual on fixed maps | partitioned_gated | 12-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-7cd9beff085e4d6f92afa0365b35db52",
+   "name": "MLP residual on fixed maps | partitioned_gated | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-e18c23378b734972b87c9662aab976d4",
+   "name": "MLP residual on fixed maps | partitioned_gated | 1-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-01bbde9ddc52463e8287ca9ef7a0af40",
+   "name": "MLP residual on fixed maps | partitioned_gated | 1-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-98f6d236eaf44e24afd9504f752f4a97",
+   "name": "MLP residual on fixed maps | partitioned_gated | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-155cad179f5c4079bbe1991fc2f2de0b",
+   "name": "MLP residual on fixed maps | global_base | 6-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-3a7175fe26a045dea625dc886c538727",
+   "name": "MLP residual on fixed maps | global_base | 6-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-99c0e2dd40e545dea84c36ccfabb1b25",
+   "name": "MLP residual on fixed maps | global_base | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-e5e29829d6ad496ea1cd6a43aa6ab4f3",
+   "name": "MLP residual on fixed maps | global_base | 3-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-140b18b259354d07bcaf8db5e8261b20",
+   "name": "MLP residual on fixed maps | global_base | 3-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-4e08fdad8d4047b180de68141b746cb2",
+   "name": "MLP residual on fixed maps | global_base | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-256840f835154a3f9b7c235b690f0f6c",
+   "name": "MLP residual on fixed maps | global_base | 12-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-5011de505dfc4ec192b272b7bdab9039",
+   "name": "MLP residual on fixed maps | global_base | 12-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-628a780a65f54825ac762705a2d61852",
+   "name": "MLP residual on fixed maps | global_base | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-040bd82e75a7441eb5bec60ca36cd0d6",
+   "name": "MLP residual on fixed maps | global_base | 1-month | seed 44",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-11aecbc2a2fe41228ea7949a98036791",
+   "name": "MLP residual on fixed maps | global_base | 1-month | seed 43",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-9090a32f099d4be2a13ff4bb670cf2c7",
+   "name": "MLP residual on fixed maps | global_base | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name ; missingness_flag_for_each_rich561_feature=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-2cae9f4f5c064e22a6eb482ad7fecb4f",
+   "name": "GeoXGB yearly refit | regional_ungated | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-bc4af84fdab842698bf42fc77e1e3aeb",
+   "name": "GeoXGB yearly refit | regional_ungated | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-0c8e62f5483e4ff886be5d1bb2eb93a9",
+   "name": "GeoXGB yearly refit | regional_ungated | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-75a809a399b0444383e196289e34f082",
+   "name": "GeoXGB yearly refit | regional_ungated | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-a11553e52f874ad7a4cf24438ae1cb71",
+   "name": "GeoXGB yearly refit | pooled | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-48a803014a134819ba8c81764ed1b189",
+   "name": "GeoXGB yearly refit | pooled | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-23aab79c8dc44ca7a0857cf0198320a6",
+   "name": "GeoXGB yearly refit | pooled | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-e20175eabd394c7eb093f96deb271330",
+   "name": "GeoXGB yearly refit | pooled | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-8c17f2099f594b9bbcce473a3c3fc167",
+   "name": "GeoXGB yearly refit | partitioned_gated | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-5b8802c218b049efb838e694f81962ec",
+   "name": "GeoXGB yearly refit | partitioned_gated | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-cf04e291f7e04729b7a7f1295ba2246a",
+   "name": "GeoXGB yearly refit | partitioned_gated | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-722c7d8b2d23455c81f0e3ad7c7d8ffa",
+   "name": "GeoXGB yearly refit | partitioned_gated | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-71d00a565b5e4ebf9cbe035fc1857ff2",
+   "name": "GeoXGB window probe | regional_ungated | full-history window | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-c2040cf2f7904c839cd2e8c624188601",
+   "name": "GeoXGB window probe | regional_ungated | full-history window | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-74929e9ea07246a0b8012c9165d905ce",
+   "name": "GeoXGB window probe | regional_ungated | full-history window | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-5b6888cc17cb4365bf23efe864beeef5",
+   "name": "GeoXGB window probe | regional_ungated | full-history window | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-b9a0ccb369144bdfbaca56f54e2bd956",
+   "name": "GeoXGB window probe | regional_ungated | 36-month window | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-3a5e226bbac2407bba1ab8bda1d17b63",
+   "name": "GeoXGB window probe | regional_ungated | 36-month window | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-4ea16f70c34647e499059abc02fba4df",
+   "name": "GeoXGB window probe | regional_ungated | 36-month window | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-979ce857ce9241458f83608301d9dc13",
+   "name": "GeoXGB window probe | regional_ungated | 36-month window | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-2815bb88fbc941368cc112c94dd6a992",
+   "name": "GeoXGB window probe | pooled | full-history window | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-77157d9493714215916863ce86ea608b",
+   "name": "GeoXGB window probe | pooled | full-history window | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-f0a8e3b51d814efb8997efc404f5b0c5",
+   "name": "GeoXGB window probe | pooled | full-history window | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-e294b350ef724c768ff01b307f1b2565",
+   "name": "GeoXGB window probe | pooled | full-history window | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-79d5deb57e37476584642554ad805155",
+   "name": "GeoXGB window probe | pooled | 36-month window | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-325f54bac9a740d7b743a66f19b6bb32",
+   "name": "GeoXGB window probe | pooled | 36-month window | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-abbedbb3bc5749d9a1f2d27a6a9e8641",
+   "name": "GeoXGB window probe | pooled | 36-month window | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-29a71598c68d4ae4bc303a962afea9da",
+   "name": "GeoXGB window probe | pooled | 36-month window | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-c844aed6ab294c95806f7875a0ae9972",
+   "name": "GeoXGB reference | pooled | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-1073d56022124210a75dec17f9df178c",
+   "name": "GeoXGB reference | pooled | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-90418887c9b34db682333b42368b6114",
+   "name": "GeoXGB reference | pooled | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-fc4f1eefd0834502886089b1412d696c",
+   "name": "GeoXGB reference | pooled | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-c00f7a49eeb24f8da41e63288858171e",
+   "name": "GeoXGB reference | partitioned_gated | 6-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-26e9bb79c8714674bd74a1831835fe60",
+   "name": "GeoXGB reference | partitioned_gated | 3-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-6a204335ee0444efa5c8b81708fd9e2a",
+   "name": "GeoXGB reference | partitioned_gated | 12-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-c5251a40147d4390bd71ba4d53f178bf",
+   "name": "GeoXGB reference | partitioned_gated | 1-month | seed 42",
+   "original": "rich561=runs:/bdbafe393d694439a1c35ccec4d5816a/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-b3c9f990857b43adbfc61825f833d0d2",
+   "name": "GeoXGB maps to 2024 | pooled | 6-month | seed 42",
+   "original": "rich561=runs:/9dcddedc0e8e4bc38fd24cb4ce29298f/source/IPCCHGeoXGBExperiment/runs/split2024-20261005/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-c09801f92896462aa66fe88f2719234f",
+   "name": "GeoXGB maps to 2024 | pooled | 3-month | seed 42",
+   "original": "rich561=runs:/9dcddedc0e8e4bc38fd24cb4ce29298f/source/IPCCHGeoXGBExperiment/runs/split2024-20261005/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-b3a5f400e1de4931a7550857d45be0c3",
+   "name": "GeoXGB maps to 2024 | pooled | 12-month | seed 42",
+   "original": "rich561=runs:/9dcddedc0e8e4bc38fd24cb4ce29298f/source/IPCCHGeoXGBExperiment/runs/split2024-20261005/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-37b92040617e46cfa0aa0848c2a71c4d",
+   "name": "GeoXGB maps to 2024 | pooled | 1-month | seed 42",
+   "original": "rich561=runs:/9dcddedc0e8e4bc38fd24cb4ce29298f/source/IPCCHGeoXGBExperiment/runs/split2024-20261005/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-cc2323b9368c4d4ead04a57fea35cd9c",
+   "name": "GeoXGB maps to 2024 | partitioned_gated | 6-month | seed 42",
+   "original": "rich561=runs:/9dcddedc0e8e4bc38fd24cb4ce29298f/source/IPCCHGeoXGBExperiment/runs/split2024-20261005/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-2834838728434131b459b9863a1588a5",
+   "name": "GeoXGB maps to 2024 | partitioned_gated | 3-month | seed 42",
+   "original": "rich561=runs:/9dcddedc0e8e4bc38fd24cb4ce29298f/source/IPCCHGeoXGBExperiment/runs/split2024-20261005/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-d0367daef76341ddb9a1e2f75e180c32",
+   "name": "GeoXGB maps to 2024 | partitioned_gated | 12-month | seed 42",
+   "original": "rich561=runs:/9dcddedc0e8e4bc38fd24cb4ce29298f/source/IPCCHGeoXGBExperiment/runs/split2024-20261005/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-0010070dbf91475db8746489f4e46f45",
+   "name": "GeoXGB maps to 2024 | partitioned_gated | 1-month | seed 42",
+   "original": "rich561=runs:/9dcddedc0e8e4bc38fd24cb4ce29298f/source/IPCCHGeoXGBExperiment/runs/split2024-20261005/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-7f0ddab1f0184ab5844de5d9670d5784",
+   "name": "GeoXGB climate swap | pooled | 6-month | seed 42",
+   "original": "rich601=runs:/0d829cbc36114d2b922bbd0b2ea41ccd/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-54cb4d7f21a2479bb8db1cd2147a6eab",
+   "name": "GeoXGB climate swap | pooled | 3-month | seed 42",
+   "original": "rich601=runs:/0d829cbc36114d2b922bbd0b2ea41ccd/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-823807503100426b9acc26532c7a3e0b",
+   "name": "GeoXGB climate swap | pooled | 12-month | seed 42",
+   "original": "rich601=runs:/0d829cbc36114d2b922bbd0b2ea41ccd/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-4bbe11235db8487cb6d33156bdb6cc63",
+   "name": "GeoXGB climate swap | pooled | 1-month | seed 42",
+   "original": "rich601=runs:/0d829cbc36114d2b922bbd0b2ea41ccd/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-04495ad834d74248983553bae87030cf",
+   "name": "GeoXGB climate swap | partitioned_gated | 6-month | seed 42",
+   "original": "rich601=runs:/0d829cbc36114d2b922bbd0b2ea41ccd/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-d84108f915e245d8ace8da2a0a99fef8",
+   "name": "GeoXGB climate swap | partitioned_gated | 3-month | seed 42",
+   "original": "rich601=runs:/0d829cbc36114d2b922bbd0b2ea41ccd/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-f70218d316e14f4ca61801ab0800fac4",
+   "name": "GeoXGB climate swap | partitioned_gated | 12-month | seed 42",
+   "original": "rich601=runs:/0d829cbc36114d2b922bbd0b2ea41ccd/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  },
+  {
+   "model_id": "m-7e7e5327e8b94e7f816f634d5212aef6",
+   "name": "GeoXGB climate swap | partitioned_gated | 1-month | seed 42",
+   "original": "rich601=runs:/0d829cbc36114d2b922bbd0b2ea41ccd/source/prepared/feature_order.csv#name",
+   "mapped": null,
+   "existing_mapped": null,
+   "refusals": []
+  }
+ ]
+}

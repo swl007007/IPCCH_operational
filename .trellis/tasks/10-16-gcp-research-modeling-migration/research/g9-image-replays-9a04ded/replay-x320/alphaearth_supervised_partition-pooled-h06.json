@@ -1,0 +1,74 @@
+{
+ "package": "/packages/alphaearth_supervised_partition-pooled-h06",
+ "package_json_sha256": "a5a47fcdebcdb5a7095e4e3d1ba3586aa22a6d6d6f47944033adf00f09cd952b",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.2.0",
+  "numpy": "2.4.4",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family_run_id": "9939ac69809949e9923821fa692a7b2a",
+  "logged_model_id": "m-fbaac73e131d4b7b8393a6f443d496db",
+  "registered_model": "IPCCH AlphaEarth supervised partition | pooled | 6-month",
+  "source_run_id": "p1-formal-d30-20261014",
+  "version": 1
+ },
+ "rows": 128,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 5.355958732078392e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.8735013540549517e-16,
+   "mean_abs_err": 6.006480035569695e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.97758476261356e-16,
+   "mean_abs_err": 8.727806312684629e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 4.676298936854628e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 5.355958732078392e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.8735013540549517e-16,
+   "mean_abs_err": 6.006480035569695e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 1.97758476261356e-16,
+   "mean_abs_err": 8.869811386291813e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 4.989818173395395e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 2.28
+}

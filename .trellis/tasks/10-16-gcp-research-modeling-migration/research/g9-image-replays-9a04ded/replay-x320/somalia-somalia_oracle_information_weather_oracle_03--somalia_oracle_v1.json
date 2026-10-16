@@ -1,0 +1,73 @@
+{
+ "package": "/packages/somalia-somalia_oracle_information_weather_oracle_03--somalia_oracle_v1",
+ "package_json_sha256": "a2b589b42ae177b76e3e67b55f7ad84f9b19a74420ea75cd8889dff6c6ea8a59",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "xgboost": "3.2.0",
+  "numpy": "2.4.4",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "family": "somalia_oracle_information",
+  "logged_model_id": "m-b97ff8059241453a88a69c4d31debfcb",
+  "registered_model": "IPCCH Forecasting Somalia oracle information historical | weather_oracle | 3-month",
+  "version": 1
+ },
+ "rows": 132,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 5.803438537813318e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 6.213464086680564e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 7.263826009540006e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 1.973247953923618e-16,
+   "mean_abs_err": 7.940620734995232e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 5.803438537813318e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 1.6653345369377348e-16,
+   "mean_abs_err": 6.213464086680564e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 1.942890293094024e-16,
+   "mean_abs_err": 7.263826009540006e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 1.973247953923618e-16,
+   "mean_abs_err": 7.940620734995232e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.64
+}

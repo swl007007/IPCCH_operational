@@ -1,0 +1,417 @@
+[
+  {
+    "insertId": "6ad2238b000520f5207112ab",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:15:55.342365393Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:15:55 INFO:     169.254.169.126:57488 - \"POST /api/2.0/mlflow/experiments/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:15:55.336117Z"
+  },
+  {
+    "insertId": "6ad2238c000016ffd38dd765",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:15:56.340475644Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:15:56 INFO:     169.254.169.126:57504 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:15:56.005887Z"
+  },
+  {
+    "insertId": "6ad2238c000b6440c2e0bf2e",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:15:57.011798004Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:15:56 INFO:     169.254.169.126:57510 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:15:56.746560Z"
+  },
+  {
+    "insertId": "6ad22398000b1e73764705d6",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:16:08.996737818Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:16:08 INFO:     169.254.169.126:57524 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:16:08.728691Z"
+  },
+  {
+    "insertId": "6ad2239c0000078eb4f7f757",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T13:16:12.008204818Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Response size was too large. Please consider reducing response size.",
+    "timestamp": "2026-10-16T13:16:12.001934Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/65b2115485521e410223f0dfe0956c63"
+  },
+  {
+    "insertId": "6ad223a600046c4888c332b0",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:16:22.300034716Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:16:22 INFO:     169.254.169.126:64476 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:16:22.289864Z"
+  },
+  {
+    "insertId": "6ad223a60004f7601a0280da",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T13:16:22.335691241Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Response size was too large. Please consider reducing response size.",
+    "timestamp": "2026-10-16T13:16:22.325472Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/7519e6311f8c3476cc678eafeb052db1"
+  },
+  {
+    "insertId": "6ad223b5000b2e880aa5ee4d",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:16:37.740592675Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:16:37 INFO:     169.254.169.126:9850 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:16:37.732808Z"
+  },
+  {
+    "insertId": "6ad223b5000bd4805e23c159",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T13:16:37.782798996Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Response size was too large. Please consider reducing response size.",
+    "timestamp": "2026-10-16T13:16:37.775296Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/51773036959bd972ff0a1eb6695f4561"
+  },
+  {
+    "insertId": "6ad223c80004759da69ac52b",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:16:56.302937553Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:16:56 INFO:     169.254.169.126:33168 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:16:56.292253Z"
+  },
+  {
+    "insertId": "6ad223c9000b2d0f18458fd6",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T13:16:57.737368903Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Response size was too large. Please consider reducing response size.",
+    "timestamp": "2026-10-16T13:16:57.732431Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/38bebeca990f532c76e36b1cfada9441"
+  },
+  {
+    "insertId": "6ad223e40003949db2c50878",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:17:24.241895930Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:17:24 INFO:     169.254.169.126:62012 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:17:24.234653Z"
+  },
+  {
+    "insertId": "6ad223e400046bc1eeabf472",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T13:17:24.297872536Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Response size was too large. Please consider reducing response size.",
+    "timestamp": "2026-10-16T13:17:24.289729Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/027455154c7a7e99f326b5862c70f0e8"
+  },
+  {
+    "insertId": "6ad2240f000f3da43226001c",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:18:08.007572404Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:18:07 INFO:     169.254.169.126:8800 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:18:07.998820Z"
+  },
+  {
+    "insertId": "6ad22410000099fb75094a3f",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T13:18:08.049894733Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Response size was too large. Please consider reducing response size.",
+    "timestamp": "2026-10-16T13:18:08.039419Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/ea3969dc2cded70eb7ec5b583318377a"
+  },
+  {
+    "insertId": "6ad2245b000744d1c9756fda",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:19:23.483725390Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:19:23 INFO:     169.254.169.126:56788 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:19:23.476369Z"
+  },
+  {
+    "insertId": "6ad2245c0004f184ef621242",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T13:19:24.330240830Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Response size was too large. Please consider reducing response size.",
+    "timestamp": "2026-10-16T13:19:24.323972Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/8c37b5b36b7744a66d0cfd1ce7023d50"
+  },
+  {
+    "insertId": "6ad224df000a79fa851372b6",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T13:21:35.697464871Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 13:21:35 INFO:     169.254.169.126:52098 - \"POST /api/2.0/mlflow/logged-models/search HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T13:21:35.686586Z"
+  },
+  {
+    "insertId": "6ad224df000b1e62f95383c8",
+    "labels": {
+      "instanceId": "0010dd8607c8aec101cc7aa35387841171dc22e1ea67d2a67e695ecd4e0a934733082201ecba8e094c928f573aac48cbcfd88529d4665325d740a867897c0a66e3cad1631558d32520dbc311a2020ed430a33f469970f787be",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T13:21:35.734690277Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00002-gbm",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Response size was too large. Please consider reducing response size.",
+    "timestamp": "2026-10-16T13:21:35.728674Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/32aaf789f349ae8234cfe518af21c66a"
+  }
+]
