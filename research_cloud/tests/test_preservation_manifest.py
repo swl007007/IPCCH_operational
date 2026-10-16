@@ -65,3 +65,19 @@ class TopLevel(unittest.TestCase):
         m = json.load(open(out))
         self.assertEqual([f["path"] for f in m["files"]], ["loose.log"])
         self.assertEqual((m["recursive"], m["subdirectories_not_walked"]), (False, ["run-a"]))
+
+
+class Gate(unittest.TestCase):
+    def test_missing_incomplete_or_unreadable_manifests_fail(self):
+        from research_cloud.inventory import preservation_gate as pg
+        d = tempfile.mkdtemp()
+        root = tempfile.mkdtemp()
+        open(f"{root}/a.txt", "w").write("x")
+        pm.main(["--root", root, "--out", f"{d}/good.json"])
+        self.assertTrue(pg.gate(d, ["good"])["passed"])
+        m = json.load(open(f"{d}/good.json"))
+        json.dump({**m, "complete": False}, open(f"{d}/incomplete.json", "w"))
+        open(f"{d}/broken.json", "w").write("{")
+        r = pg.gate(d, ["good", "incomplete", "broken", "absent"])
+        self.assertFalse(r["passed"])
+        self.assertEqual([x["root"] for x in r["roots"] if not x["passed"]], ["incomplete", "broken", "absent"])
