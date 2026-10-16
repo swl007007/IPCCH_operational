@@ -1,0 +1,224 @@
+{
+  "attempt": 1,
+  "audited_sha": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+  "completion_sha": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+  "created": 1792170591.8943756,
+  "error": null,
+  "gate_checkpoints": "[]",
+  "gate_open": 0,
+  "id": "4b7c22cfcecc2b8e8c67e36a",
+  "manifest": {
+    "archive_path": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/archive/2026-10/10-16-gcp-research-modeling-migration",
+    "audited_sha": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+    "base_sha": "99d390b7df536ba8d2661b94a80f29d5abac09fd",
+    "closed_at": 1792170479.022713,
+    "completion_sha": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+    "executor": {
+      "agent": "claude",
+      "agent_session": {
+        "agent": "claude",
+        "kind": "id",
+        "source": "herdr:claude",
+        "value": "228d9075-d67a-41c9-9f4c-7830cdac3b87"
+      },
+      "terminal_id": "term_65dee2e4ca9b6a"
+    },
+    "mode": "close-audit",
+    "repo": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational",
+    "skill_dir": "/home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/4b7c22cfcecc2b8e8c67e36a/input/skill",
+    "snapshot_path": "/home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/4b7c22cfcecc2b8e8c67e36a/input/task_snapshot.json",
+    "snapshot_sha256": "d5d6fda20b3ac1413c292d0703f99c46a52daa1940659eab643128028f6c480d",
+    "task_dir": ".trellis/tasks/10-16-gcp-research-modeling-migration",
+    "task_id": "gcp-research-modeling-migration"
+  },
+  "mode": "close-audit",
+  "notice": null,
+  "recheck_of": null,
+  "repo": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational",
+  "resolved_by": null,
+  "result": {
+    "audited_sha": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+    "base_sha": "99d390b7df536ba8d2661b94a80f29d5abac09fd",
+    "completion_sha": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+    "coverage": [
+      {
+        "criterion": "New registry/package migration evidence preserves identities and distinguishes the approved incomplete historical systems (scoped AC1-AC3).",
+        "evidence": [
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/prd.md:37-51 records the two narrow missing-booster exceptions; these do not authorize full-system replay claims.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/ledger/registry_ledger.json:1-7 has 242 unique (registered_model, version) keys. Independently read the local read-only r1 snapshot, verified SHA256 54aa68980b25df0a07be313d471e51c226ffc7245ae455679aaadb4242e4dcd9 against the committed store-import receipt, and confirmed its model_versions key set exactly equals this ledger. Classes are 170 packaged_replay_passed and 72 missing_weights_tracking_only.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/downloaded-replay-supervisor/keyed-reconciliation.json:1-12 was checked against all 223 individual report digests, publication run IDs, download package/tag hashes and image identities. The joined receipts total 97,928 sample rows, zero phase changes and 15,477 files. Publication receipt SHA256 33809d9c82454b326e0f56e6df097d0d78f7467ea00040538be54623a1847adc and download receipt SHA256 8ecc4995387288e1ec5804e2943deadf05f680cc56faec40ab3ef336bc1efa13 match the reconciliation record. This verifies the stored receipt chain, not a fresh all-package replay.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/packages/replay.py:115-176 checks package file hashes, key order, routes and numerical outputs; the targeted GeoXGB tests also exercise wrong inputs, corruption and incomplete components."
+        ],
+        "status": "met"
+      },
+      {
+        "criterion": "Changed SQLite-to-PostgreSQL copier, artifact transport and final cutover preserve stored tracking/auth data (scoped AC2/AC7).",
+        "evidence": [
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/mlflow_migrate/copy_store.py:197-287 binds a source snapshot, orders foreign keys, verifies typed table digests, supports interrupted-table resume and resets sequences. All 11 copier tests passed in a new disposable PostgreSQL instance.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/g8-g9-data-load/mlflow-store-load/mlflow-verify.json:1-6 (SHA256 d1954d7183a74853d3bdf0d920bb0165116d60773e10fa23ed45dfcefc89a755) contains 64 matching source/target table digests covering 361,026 rows; the corresponding mlflow_auth-verify.json (SHA256 8de48aedbcb98f66dad50f34fc4d2bb4094b134f53cf740446f8f3795a3c5d30) contains 11 matching table digests covering 10 rows. These exclude the schema-version rows.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/g12-cutover/cutover-receipt.json:12-50 records the final stopped-writer r3 snapshot, no data-table delta, 3,569 unchanged frozen artifact hashes, and preservation of cloud-only writes. The rollback instructions keep the old store offline and require exporting new cloud writes before reverting.",
+          "The focused transfer tests passed with local fakes, including same-size corruption, incomplete manifests, resume receipts and failed verification. No transfer or cloud operation was executed by this audit."
+        ],
+        "status": "met"
+      },
+      {
+        "criterion": "New typed SQL input loader preserves exact numeric values across the complete source file (R12 and design data contract).",
+        "evidence": [
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/design.md:52-58 requires numeric roundtrip validation and immutable source/snapshot identities.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/sqlimport/load_inputs.py:137-166 infers types incrementally but forgets large integer values from earlier chunks when a later chunk promotes bigint to double precision; A01 reproduces the resulting false verification.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/g8-g9-data-load/sql-import-final/csv-import-report.json:1-4 has 53 verified tables with no failed/stale/absent entries; its SHA256 a431c4a0f09dfd77836ea52a67ed27b237781f424784b85ee73f617711a16bd7 agrees with sql-final-supervisor.json. The geometry receipt SHA256 b64a683bc99eb99f727a0f819a945b034910f5dd92272862fdb90cda19e78499 also agrees. These existing receipts do not rule out the newly reproduced large-integer edge case."
+        ],
+        "status": "violated"
+      },
+      {
+        "criterion": "New service configuration preserves authenticated access and restricts assistant execution and spend (scoped AC4/AC6).",
+        "evidence": [
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/service/start.py:45-168 enforces MLflow 3.17.0, PostgreSQL stores, fail-closed auth, workspace permissions, disabled server job execution and verified assistant hook activation.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/service/assistant_patch.py:76-122 and e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/service/assistant_patch.py:159-171 restrict tool commands and force full_access=False. The directly called installed MLflow 3.17.0 tool_executor.py uses subprocess.run(shell=full_access); its experiments --output option is a json/table format choice. These dependency reads were bounded to the new allowlist contract.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/service/guard.py:189-240 and e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/service/guard.py:287-328 serialize paid-call admission and retain uncertain reservations. All seven PostgreSQL ledger/egress tests passed, including concurrency, partial usage and hung-stream timeout cases.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/auth-final-supervisor.json:14-19 receipt digests were independently matched to the five referenced removal/reconstruction/disposition/access files. All 17 post-removal anonymous checks and 31 principal checks have expected statuses matching their observed statuses. Live assistant deny-tool invocation was not demonstrated by the provider self-refusal; this limitation is retained below."
+        ],
+        "status": "met"
+      },
+      {
+        "criterion": "New training path protects development/holdout boundaries and preserves Vertex/MLflow identities; admission bounds paid jobs (scoped AC5/AC6).",
+        "evidence": [
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/training/fews_fourclass.py:62-118 checks declared development targets, origin/target alignment, fit labels and protected model parameters. e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/training/ipcch_quartet.py:71-130 checks frozen feature order, key uniqueness, horizons, fold boundaries and fitting-key identities. The IPCCH boundary and saved-comparison tests passed.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/training/vertex_submit.py:66-129 validates worker/trial/runtime/retry bounds and atomically claims the reservation before posting. Concurrent submissions, lost acknowledgements, claim reconciliation and cap-prefix checks passed with a fake provider.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/g11-vertex/ipcch-hpt2-3/harvest.json:1-79 is supported by saved final.json and runs.json: both provider trial parameter sets and final crisis_f1 values exactly match the MLflow records (0.8631284916201117 and 0.8528198074277854), with the expected parent/job/trial and image identities.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/training/cloud_job.py:44-50 and e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/training/cloud_job.py:119-139 supply the corrected external per-trial timeout wrapper, and current admission tests reject the older missing/oversized wrapper. The historical HPT smoke did not exercise this corrected cap; its earlier ineffective SIGALRM cap and measured sub-900-second durations are explicitly disclosed.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/quote-d58fcda/README.md:3-28 records platform estimates of USD 79.97/month and USD 92.18 first month, training reservations of USD 1.06, unavailable billing actuals and post-hoc/unreserved items. These are estimates for this workflow, not verified project-wide spending or a billing stop."
+        ],
+        "status": "met"
+      },
+      {
+        "criterion": "Changed WSL/download/runbook paths account for Dropbox-independent operation and limited cutover scope (scoped AC8).",
+        "evidence": [
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/deploy/clean_wsl_run.py:96-150 runs feature generation, a local trial, authenticated download and replay with only explicit mounts, checks /mnt/c and host-home absence, and removes temporary credentials in finally.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/ac8/report-fews.json:1-65 and e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/ac8/report-ipcch.json:1-65 bind their clean checkouts to 56d10082de3e74202f3cdd89c5c450d47b267a89. Both record absent Dropbox/host-home paths, matching feature hashes, expected trial objectives, package-tag identity and successful replay. Pinned diff from that revision to audited_sha leaves feature builders, fit adapters, package replay and the sandbox unchanged; clean_wsl_run changes add failure cleanup/report persistence, and training-submission changes are separately reviewed.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/RUNBOOK.md:204-269 documents authenticated download, manifest verification before loading, the two historical exceptions, recovery and cost limitations. e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/research/cutover-runbook.md:40-63 limits cloud-only eligibility to named verified roots and leaves archive availability changes to the user."
+        ],
+        "status": "met"
+      }
+    ],
+    "evidence_gaps": [],
+    "findings": [
+      {
+        "category": "data_integrity",
+        "claim": "Remember large integer values from earlier chunks before promoting a numeric column to double precision.",
+        "evidence": [
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/sqlimport/load_inputs.py:137-166 processes 50,000-row chunks. A bigint chunk with 9007199254740993 takes the ints.all() continue branch; a later fractional value promotes the column to double precision, and the exact-integer check examines only that later chunk.",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/sqlimport/load_inputs.py:169-174 and e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/sqlimport/load_inputs.py:237-249 then convert source and SQL values to the same rounded float during comparison, so the loss is invisible to the verifier.",
+          "Confirmed against audited_sha in disposable PostgreSQL: CSV value column containing 9007199254740993, followed by 49,999 rows of 1, then 0.5 imported as double precision. The first SQL value was 9007199254740992.0, but load_one returned verified with all 50,001 cells compared and no mismatches. Exact output is in /tmp/4b7c22-pg-tests.log (SHA256 f69c89ee38bd3758b1322d15c374c939210c6a6960b24b1c10f1165da8be90a1).",
+          "e0a3b4521799a254380b4ef68e5969be76c3564b:.trellis/tasks/10-16-gcp-research-modeling-migration/design.md:52-52 requires validating numeric roundtrips. e0a3b4521799a254380b4ef68e5969be76c3564b:research_cloud/tests/test_sqlimport.py:70-87 covers a mixed large integer/fractional column within one chunk, so it misses the cross-chunk case."
+        ],
+        "file": "research_cloud/sqlimport/load_inputs.py",
+        "id": "gcp-research-modeling-migration-A01",
+        "impact": "A mixed numeric source column can silently lose integer precision depending on row order and still receive a verified import receipt. Identifier columns are separately kept as text and immutable source files remain available; this audit did not establish that the migrated corpus contains the triggering values. The confirmed defect is therefore limited to this import edge case rather than a demonstrated corruption of current scientific outputs.",
+        "lines": {
+          "end": 165,
+          "start": 154
+        },
+        "origin": "task_change",
+        "remediation": "Carry each column's integer precision constraints across all chunks, and retain text when any observed integer cannot safely enter a later floating-point column. Add a cross-CHUNK-boundary roundtrip test, in both row orders, that checks the original integer before any float conversion.",
+        "revision": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+        "severity": "minor"
+      }
+    ],
+    "limitations": [
+      "Scope is the supplied two-endpoint task diff and demonstrated dependencies. No prior audit reports were supplied or reused. Older scientific source trees, unrelated operational workflows and the full historical experiment/acceptance matrix were not re-audited.",
+      "GitNexus list_repos returned no exact-case match for the supplied gitnexus_repo. Its IPCCH_operational entry used the differently cased source path and lastCommit 8feec3a113829364483e226e4ef56ec66227a183 (177 commits behind reported HEAD), not audited_sha. Used bounded pinned-source reads instead; did not reindex or mutate either checkout.",
+      "Cloud state was assessed from committed receipts and explicit source/dependency checks, not refreshed through external services. No paid calls, cloud jobs, installation, executor transcripts, sub-agents or Trellis state changes were used. The only external-dependency expansions were the installed MLflow CLI/tool-executor semantics and archived P6 loader needed by the changed callers/tests.",
+      "The live assistant deny probe was a model self-refusal and did not execute a prohibited tool. Static allowlist/dependency inspection, startup checks and local guard tests support the scoped conclusion; no live adversarial provider call was made.",
+      "The accepted historical HPT attempt ran before the external timeout correction and never reached its per-trial cap. Current code/admission tests cover the corrected wrapper; no new paid HPT run was launched. Billing actuals remain unavailable, and the recorded estimates, post-hoc reservations and unrelated-project exclusions are not a project-wide spending guarantee.",
+      "The first focused suite attempt used the read-only clone as cwd and failed its local MLflow fixture because the default artifact directory needed a writable working directory. Repeating the unchanged tests with cwd=/tmp passed. An initial Bubblewrap mount at /repo also failed before tests because the host root was read-only; the successful sandbox uses /tmp/repo. These audit-runner setup errors were not treated as implementation findings.",
+      "The existing CSV receipt checks were reconciled, but the 13.76 GB source corpus was not rescanned to determine whether A01 occurred historically. Raw/source bytes were not changed. Scratch logs live in /tmp and may be ephemeral; the reproduction and hashes are retained in this result.",
+      "Both the frozen audit repository and independent test clone remained clean at audited_sha after verification. No repair was made; the controller owns disposition of the finding."
+    ],
+    "mode": "close-audit",
+    "schema_version": "1.0",
+    "summary": "Controller-close diff-first audit of 99d390b7df536ba8d2661b94a80f29d5abac09fd..e0a3b4521799a254380b4ef68e5969be76c3564b: the new research_cloud integration and directly linked migration, access, training, package and cutover evidence. review_base_sha equals base_sha; review-scope.json contains no prior reports or unresolved prior findings, so no prior audit acceptance was inferred. One minor data-integrity defect is confirmed: cross-chunk numeric type inference can round a previously read large integer while reporting a verified SQL import. Ninety-two focused tests passed (49 service/admission/transfer tests, 27 PostgreSQL tests, 16 package/IPCCH boundary tests), and a separate 50,001-row fixture reproduced the defect. The stored 242-version registry and 223-package publication/download/replay chain reconcile. This is a scoped change review, not a new certification of every historical experiment or the live cloud deployment.",
+    "task": "gcp-research-modeling-migration",
+    "tests": [
+      {
+        "command": "python3 /home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/4b7c22cfcecc2b8e8c67e36a/attempt-1/skill/scripts/collect_audit_context.py --repo /home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/4b7c22cfcecc2b8e8c67e36a/attempt-1/repo --task-id gcp-research-modeling-migration --mode close-audit --base-sha 99d390b7df536ba8d2661b94a80f29d5abac09fd --completion-sha e0a3b4521799a254380b4ef68e5969be76c3564b --scoped --review-base-sha 99d390b7df536ba8d2661b94a80f29d5abac09fd --task-dir .trellis/tasks/10-16-gcp-research-modeling-migration --task-snapshot /home/swl007007/.local/state/trellis-audit-controller/19ea69ef13d88fde/jobs/4b7c22cfcecc2b8e8c67e36a/input/task_snapshot.json",
+        "environment": "Python stdlib and Git; frozen read-only audit repository. Output /tmp/4b7c22-audit-context.json.",
+        "evidence": [
+          "collection_status=collected; no collector gaps; snapshot digest d5d6fda20b3ac1413c292d0703f99c46a52daa1940659eab643128028f6c480d matches input/manifest.json; close-audit revisions and task identity agree."
+        ],
+        "exit_code": 0,
+        "revision": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+        "status": "passed"
+      },
+      {
+        "command": "bwrap --ro-bind / / --dev /dev --proc /proc --unshare-net --unshare-pid --tmpfs /tmp --ro-bind /tmp/4b7c22-audit-repo /tmp/repo --dir /tmp/home --chdir /tmp --clearenv --setenv HOME /tmp/home --setenv PATH /home/swl007007/projects/food-crisis-research/envs/mlflow-svc/bin:/usr/bin:/bin --setenv PYTHONPATH /tmp/repo --setenv PYTHONDONTWRITEBYTECODE 1 --setenv MLFLOW_DISABLE_AGENT_HINT 1 /home/swl007007/projects/food-crisis-research/envs/mlflow-svc/bin/python -B -m unittest research_cloud.tests.test_cost_ledger research_cloud.tests.test_training_vertex_submit research_cloud.tests.test_training_cloud_job research_cloud.tests.test_training_common research_cloud.tests.test_service_start research_cloud.tests.test_service_guard research_cloud.tests.test_deploy_transfer -v",
+        "environment": "Independent git clone --no-hardlinks --no-checkout, detached at audited_sha. Bubblewrap read-only host/source, private PID/network namespaces, cleared environment, writable /tmp; existing mlflow-svc Python with MLflow 3.17.0. No credentials, external network or dependency installation.",
+        "evidence": [
+          "/tmp/4b7c22-focused-tests-scratch-cwd.log SHA256 f0632611112ed3b6605381d41cfef85aa9b3e7b1bfca7534469aedc1235a6ec6: Ran 56 tests in 7.325s; OK (skipped=7). The seven skipped database tests were subsequently run successfully in the isolated PostgreSQL test below."
+        ],
+        "exit_code": 0,
+        "revision": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+        "status": "passed"
+      },
+      {
+        "command": "/home/swl007007/projects/food-crisis-research/envs/mlflow-svc/bin/python -B -m unittest research_cloud.tests.test_copy_store research_cloud.tests.test_sqlimport research_cloud.tests.test_service_guard.LedgerAndEgress -v",
+        "environment": "Same network-isolated Bubblewrap setup, read-only source and writable /tmp. Existing pg16 binaries initialized a fresh /tmp/pg-data cluster, Unix socket /tmp/pg-socket, no TCP listener, RC_TEST_PG=host=/tmp/pg-socket port=55439 user=audit. Cluster stopped after tests.",
+        "evidence": [
+          "/tmp/4b7c22-pg-tests.log SHA256 f69c89ee38bd3758b1322d15c374c939210c6a6960b24b1c10f1165da8be90a1: Ran 27 tests in 2.051s; OK; PG_TEST_EXIT 0.",
+          "After the suite, a separate fixture imported a one-column CSV with first value 9007199254740993, 49,999 integer 1 values and final value 0.5. load_one returned status=verified, cells_compared=50001 and mismatched_columns=[], while PostgreSQL stored the first value as 9007199254740992.0. This is evidence for A01, not a passing precision assertion."
+        ],
+        "exit_code": 0,
+        "revision": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+        "status": "passed"
+      },
+      {
+        "command": "bwrap --ro-bind / / --dev /dev --proc /proc --unshare-net --unshare-pid --tmpfs /tmp --ro-bind /tmp/4b7c22-audit-repo /tmp/repo --dir /tmp/home --chdir /tmp --clearenv --setenv HOME /tmp/home --setenv PATH /usr/bin:/bin --setenv PYTHONPATH /tmp/repo --setenv PYTHONDONTWRITEBYTECODE 1 --setenv OMP_NUM_THREADS 4 /home/swl007007/projects/food-crisis-research/envs/rt-geoxgb-x300/bin/python -B -m unittest research_cloud.tests.test_packages_geoxgb research_cloud.tests.test_training_ipcch -v",
+        "environment": "Network-isolated Bubblewrap, read-only source and existing archived P6 loader; Python 3.12.3, NumPy 2.2.6, pandas 2.2.3, XGBoost 3.0.0. Synthetic fixtures only, no historical training rerun.",
+        "evidence": [
+          "/tmp/4b7c22-package-tests.log SHA256 de5e79b72d56adffa84f6e670e9ac211233882666b3ad91b55f38abbfa1b416d: Ran 16 tests in 0.923s; OK."
+        ],
+        "exit_code": 0,
+        "revision": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+        "status": "passed"
+      },
+      {
+        "command": "Read and reconcile committed publication/download/replay, SQL-copy, post-removal access, Vertex HPT and clean-WSL receipts; no live provider invocation.",
+        "environment": "Pinned repository JSON; r1 SQLite snapshot opened mode=ro and hash-bound to the import receipt. Receipt hashes, keyed identities, status rows and HPT parameters/objectives independently compared.",
+        "evidence": [
+          "223 package receipt chains reconcile and all 242 model-version keys equal the bound source snapshot; 64 tracking and 11 auth table digests agree; all 17 anonymous and 31 principal access rows reconcile; two HPT parameter/objective sets agree with MLflow. The historical run revisions and disclosed limitations are recorded in coverage."
+        ],
+        "exit_code": null,
+        "revision": "e0a3b4521799a254380b4ef68e5969be76c3564b",
+        "status": "existing_evidence"
+      }
+    ],
+    "verdict": "findings"
+  },
+  "runtime": {
+    "agent_name": "audit-4b7c22cfcecc2b8e-1",
+    "cleaned": true,
+    "created": 1792170631.8608289,
+    "identity": {
+      "agent": "codex",
+      "agent_session": {
+        "agent": "codex",
+        "kind": "id",
+        "source": "herdr:codex",
+        "value": "01a145b1-bbb8-7bd1-b5c6-11a5d9383b73"
+      },
+      "name": "audit-4b7c22cfcecc2b8e-1",
+      "terminal_id": "term_65df83de76777b"
+    },
+    "initial_prompt": true,
+    "label": "audit-4b7c22cfcecc-1",
+    "pane_id": "w1A:p1",
+    "sent_at": 1792170632.1295881,
+    "stage": "running",
+    "terminal_id": "term_65df83de76777b",
+    "working_seen": true,
+    "workspace_id": "w1A"
+  },
+  "severity": "minor",
+  "status": "done",
+  "task_id": "gcp-research-modeling-migration"
+}
