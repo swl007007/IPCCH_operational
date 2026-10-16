@@ -31,6 +31,10 @@ class Loader(unittest.TestCase):
             model.predict(keys, np.zeros((2, 162)))
         with self.assertRaises(KeyError):
             model.predict(keys.assign(g_config="G2"), np.zeros((1, 162)))
+        self.assertEqual(len(model.predict(keys.assign(horizon=4.0), np.zeros((1, 162)))), 1)   # whole number accepted
+        for bad in (4.9, float("nan"), float("inf"), "four"):
+            with self.assertRaisesRegex(ValueError, "whole numbers"):
+                model.predict(keys.assign(horizon=bad), np.zeros((1, 162)))
 
 
 if __name__ == "__main__":

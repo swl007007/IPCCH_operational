@@ -57,7 +57,10 @@ class Model:
             raise ValueError(f"{len(keys)} keys but {len(X)} feature rows")
         X[np.isinf(X)] = np.nan                      # native_xgb.clean
         keys = keys.reset_index(drop=True)
-        units = [f"h{int(h)}/{g}/O{o}" for h, g, o in zip(keys["horizon"], keys["g_config"], keys["origin_month"])]
+        horizon = pd.to_numeric(keys["horizon"], errors="coerce").to_numpy(np.float64)
+        if not np.isfinite(horizon).all() or (horizon != np.round(horizon)).any():
+            raise ValueError("horizon values must be finite whole numbers")
+        units = [f"h{int(h)}/{g}/O{o}" for h, g, o in zip(horizon, keys["g_config"], keys["origin_month"])]
         for u in set(units):
             if u not in self.meta["units"]:
                 raise KeyError(f"{u} is not a retained global of this run")
