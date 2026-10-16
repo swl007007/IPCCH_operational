@@ -7,7 +7,9 @@ and run_id = the package run. These are package pointers, not MLflow models: the
 loader: download ``package`` from the run (MLflow SDK, Basic auth) and load ``loader/entry.py`` (the package contract;
 ``research_cloud.packages.replay`` replays it). Tags carry the package name, package.json sha256, status (including
 the accepted incomplete-history exceptions) and the FEWS run. Existing registered models and versions are not touched.
-Idempotent: an existing entry must already point at the same run and package.json, else refuse. ``--verify`` is
+Idempotent: an existing entry must have exactly one READY version with the exact ``runs:/`` source, run and tags, else
+refuse; a model left without versions by an interruption gets its version (no duplicate model); any registry error
+other than "does not exist" fails. ``--verify`` is
 read-only.
 
   python -m research_cloud.deploy.register_fews_packages --url URL --out REPORT.json [--verify] [--expect 29]
@@ -23,6 +25,44 @@ DESCRIPTION = ("Package pointer (not an MLflow pyfunc model). Download with mlfl
                "package.json sha256 {sha}.")
 
 
+def model_exists(client, name):
+    from mlflow.exceptions import MlflowException
+    try:
+        client.get_registered_model(name)
+        return True
+    except MlflowException as e:
+        if e.error_code == "RESOURCE_DOES_NOT_EXIST":
+            return False
+        raise                                             # any other registry error is a failure, not "absent"
+
+
+def ensure_entry(client, name, source, run, want, t, verify=False):
+    """Check (and unless verify, create) one entry: exactly one version, READY, with the exact source, run and tags."""
+    out = {"entry": None, "created": 0, "problems": []}
+    exists = model_exists(client, name)
+    versions = client.search_model_versions(f"name = '{name}'") if exists else []
+    if versions:
+        v = versions[0]
+        bad = [k for k, val in want.items() if v.tags.get(k) != val]
+        if len(versions) != 1 or v.run_id != run.info.run_id or v.source != source or v.status != "READY" or bad:
+            out["problems"].append(f"{name}: entry differs ({len(versions)} versions, source {v.source}, status "
+                                   f"{v.status}, tags {bad})")
+        out["entry"] = {"version": v.version, "run_id": v.run_id, "source": v.source, "status": v.status}
+        return out
+    if verify:
+        out["problems"].append(f"{name}: no registry entry")
+        return out
+    if not exists:                                        # a model left without versions by an interruption is resumed
+        client.create_registered_model(name, tags={"family": t["package.family"], "kind": "package-pointer"},
+                                       description=f"FEWS NET historical package {t['package.name']} (package pointer).")
+    v = client.create_model_version(name, source, run_id=run.info.run_id, tags=want,
+                                    description=DESCRIPTION.format(run=run.info.run_id, status=t["package.status"],
+                                                                   sha=t["package.json_sha256"]))
+    out["created"] = 1
+    out["entry"] = {"version": v.version, "run_id": v.run_id, "source": v.source, "status": v.status}
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", required=True)
@@ -31,7 +71,6 @@ def main(argv=None):
     ap.add_argument("--expect", type=int)
     ap.add_argument("--only", action="append", default=[], help="pilot: these package names only")
     args = ap.parse_args(argv)
-    from mlflow.exceptions import MlflowException
     from mlflow.tracking import MlflowClient
 
     from research_cloud.deploy import provision_secrets as ps
@@ -54,27 +93,10 @@ def main(argv=None):
                 "package.loader": "loader/entry.py (research_cloud package contract); not an MLflow pyfunc model",
                 "source.run": t.get("source.run", "")}
         source = f"runs:/{run.info.run_id}/package"
-        try:
-            versions = client.search_model_versions(f"name = '{name}'")
-        except MlflowException:
-            versions = []
-        if versions:
-            v = versions[0]
-            bad = [k for k, val in want.items() if v.tags.get(k) != val]
-            if len(versions) != 1 or v.run_id != run.info.run_id or bad:
-                report["problems"].append(f"{name}: existing entry differs ({len(versions)} versions, tags {bad})")
-            report["entries"][name] = {"version": v.version, "run_id": v.run_id, "source": v.source}
-            continue
-        if args.verify:
-            report["problems"].append(f"{name}: no registry entry")
-            continue
-        client.create_registered_model(name, tags={"family": t["package.family"], "kind": "package-pointer"},
-                                       description=f"FEWS NET historical package {t['package.name']} (package pointer).")
-        v = client.create_model_version(name, source, run_id=run.info.run_id, tags=want,
-                                        description=DESCRIPTION.format(run=run.info.run_id, status=t["package.status"],
-                                                                       sha=t["package.json_sha256"]))
-        report["created"] += 1
-        report["entries"][name] = {"version": v.version, "run_id": v.run_id, "source": v.source}
+        result = ensure_entry(client, name, source, run, want, t, verify=args.verify)
+        report["entries"][name] = result["entry"]
+        report["created"] += result["created"]
+        report["problems"] += result["problems"]
     if args.expect is not None and len(report["entries"]) != args.expect:
         report["problems"].append(f"{len(report['entries'])} entries, expected {args.expect}")
     report["ok"] = not report["problems"]
