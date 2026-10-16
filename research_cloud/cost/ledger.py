@@ -138,12 +138,40 @@ def attach(conn, operation_id, provider_resource):
         _event(conn, operation_id, "attached", {"provider_resource": provider_resource})
 
 
+def bind(conn, operation_id, claim, provider_resource):
+    """Replace this admission's pre-submission claim marker (set with ``attach`` before the provider call) by the
+    provider resource the call returned; any other current value refuses."""
+    if not claim.startswith("claim:") or not provider_resource or provider_resource.startswith("claim:"):
+        raise LedgerError("bind needs a claim marker and a provider resource")
+    with transaction(conn):
+        status, existing, _ = _get(conn, operation_id)
+        if status != "reserved" or existing != claim:
+            raise LedgerError(f"{operation_id}: claim {claim} is not the current marker (status {status}, resource {existing})")
+        conn.execute("UPDATE operations SET provider_resource = ?, updated_at = ? WHERE operation_id = ? "
+                     "AND status = 'reserved' AND provider_resource = ?", (provider_resource, now(), operation_id, claim))
+        _event(conn, operation_id, "bound", {"claim": claim, "provider_resource": provider_resource})
+
+
+def release_claim(conn, operation_id, claim, no_resource_evidence):
+    """Release an admission whose provider call never produced a resource: only with its claim marker still current
+    and a provider lookup (by the claim label) showing no resource."""
+    if not no_resource_evidence:
+        raise LedgerError(f"{operation_id}: release needs a provider lookup showing no resource was created")
+    with transaction(conn):
+        status, existing, _ = _get(conn, operation_id)
+        if status != "reserved" or existing != claim or not claim.startswith("claim:"):
+            raise LedgerError(f"{operation_id}: only an unbound claim can be released this way")
+        conn.execute("UPDATE operations SET status = 'released', updated_at = ? WHERE operation_id = ? "
+                     "AND status = 'reserved' AND provider_resource = ?", (now(), operation_id, claim))
+        _event(conn, operation_id, "released", {"claim": claim, "no_resource_evidence": no_resource_evidence})
+
+
 def observe(conn, operation_id, provider_state, source):
     """Record a provider-reported state (source: the read command/receipt that returned it)."""
     with transaction(conn):
         status, resource, _ = _get(conn, operation_id)
-        if status != "reserved" or not resource:
-            raise LedgerError(f"{operation_id}: states are observed only for an attached open reservation")
+        if status != "reserved" or not resource or resource.startswith("claim:"):
+            raise LedgerError(f"{operation_id}: states are observed only for an attached (bound) open reservation")
         conn.execute("UPDATE operations SET provider_state = ?, updated_at = ? WHERE operation_id = ?",
                      (provider_state, now(), operation_id))
         _event(conn, operation_id, "observed", {"provider_state": provider_state, "source": source,
