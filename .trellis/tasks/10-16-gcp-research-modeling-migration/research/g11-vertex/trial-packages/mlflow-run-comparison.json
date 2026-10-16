@@ -1,0 +1,26 @@
+{
+ "fews": {
+  "run_id": "213cec733ca244eca2e06d9837541f83",
+  "checks": {
+   "status_FINISHED": true,
+   "trial_status_tag": true,
+   "params_equal": true,
+   "metrics_equal": true,
+   "image_digest_tag": true,
+   "job_tag": true
+  },
+  "metric_count": 8
+ },
+ "ipcch": {
+  "run_id": "d3d1833d04ed427fbcfd97d9ef3cb1aa",
+  "checks": {
+   "status_FINISHED": true,
+   "trial_status_tag": true,
+   "params_equal": true,
+   "metrics_equal": true,
+   "image_digest_tag": true,
+   "job_tag": true
+  },
+  "metric_count": 7
+ }
+}

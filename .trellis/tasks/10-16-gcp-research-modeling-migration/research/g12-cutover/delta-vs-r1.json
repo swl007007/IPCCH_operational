@@ -1,0 +1,15 @@
+{
+ "taken_at": "2026-10-16T11:21:40-0400",
+ "stores": {
+  "mlflow.db": {
+   "tables": 65,
+   "rows": 361027,
+   "differing_tables": {}
+  },
+  "basic_auth.db": {
+   "tables": 12,
+   "rows": 11,
+   "differing_tables": {}
+  }
+ }
+}
