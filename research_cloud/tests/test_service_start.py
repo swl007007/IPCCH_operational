@@ -44,6 +44,12 @@ class BaseContract(unittest.TestCase):
         self.assertEqual(path.stat().st_mode & 0o777, 0o600)
         text = path.read_text()
         self.assertIn("default_permission = READ", text)
+        self.assertIn("auth_cache_ttl_seconds = 60", text)
+        start.write_auth_config({**base_env(), "IPCCH_AUTH_CACHE_TTL_SECONDS": "0"}, path)
+        self.assertIn("auth_cache_ttl_seconds = 0", path.read_text())
+        for bad in ("-1", "301", "x"):
+            with self.assertRaises(start.StartupRefused):
+                start.write_auth_config({**base_env(), "IPCCH_AUTH_CACHE_TTL_SECONDS": bad}, path)
         self.assertIn("database_uri = postgresql", text)
 
 

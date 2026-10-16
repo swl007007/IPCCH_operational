@@ -65,13 +65,24 @@ def check_base(env):
         raise StartupRefused("PORT must be an integer")
 
 
+def auth_cache_ttl(env):
+    raw = env.get("IPCCH_AUTH_CACHE_TTL_SECONDS", "60").strip()
+    if not raw.isdigit() or int(raw) > 300:
+        raise StartupRefused("IPCCH_AUTH_CACHE_TTL_SECONDS must be an integer 0..300")
+    return int(raw)
+
+
 def write_auth_config(env, path):
     """Auth ini from the environment; default READ for authenticated users as in the source service."""
     cfg = configparser.ConfigParser()
     cfg["mlflow"] = {"default_permission": "READ", "database_uri": env["IPCCH_AUTH_DATABASE_URI"],
                      "admin_username": env.get("IPCCH_ADMIN_USERNAME", "admin"),
                      "authorization_function": "mlflow.server.auth:authenticate_request_basic_auth",
-                     "grant_default_workspace_access": "false"}
+                     "grant_default_workspace_access": "false",
+                     # MLflow's own HMAC-keyed, bounded credential cache: without it every request re-runs the
+                     # password hash (~0.17 s CPU on the service, serialized on its single worker). Password, admin
+                     # and user-deletion routes invalidate it in-process; one worker / one instance makes that complete.
+                     "auth_cache_ttl_seconds": str(auth_cache_ttl(env))}
     path.parent.mkdir(parents=True, exist_ok=True)
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, "w") as f:
