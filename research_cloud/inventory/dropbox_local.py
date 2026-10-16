@@ -13,6 +13,7 @@ Exit status 2 if any path is ``inspection_error`` or the batch failed.
 """
 import json
 import subprocess
+import time
 import sys
 
 OFFLINE = 0x1000
@@ -72,6 +73,12 @@ def parse_rows(stdout, count):
     return rows
 
 
+# WSL interop occasionally fails to accept the powershell.exe connection under load ("UtilAcceptVsock ... accept4
+# failed"); the script never ran, so it is safe to run it again. Any other failure, or a persistent one, still raises.
+INTEROP_FAILURE = "UtilAcceptVsock"
+INTEROP_RETRIES = 3
+
+
 def classify(paths, batch=400, runner=run_powershell):
     out = []
     for start in range(0, len(paths), batch):
@@ -79,6 +86,11 @@ def classify(paths, batch=400, runner=run_powershell):
         script = "$ErrorActionPreference='Stop'\n" + "".join(
             ROW % (to_windows(p).replace("'", "''"), n, n, n) for n, p in enumerate(chunk))
         res = runner(script)
+        for attempt in range(1, INTEROP_RETRIES + 1):   # only the transient WSL interop failure is retried
+            if res.returncode == 0 or INTEROP_FAILURE not in res.stderr.decode("utf-8", "replace"):
+                break
+            time.sleep(2 * attempt)
+            res = runner(script)
         if res.returncode != 0:
             raise InspectionError(f"powershell exit {res.returncode}: "
                                   f"{res.stderr.decode('utf-8', 'replace')[:500]}")

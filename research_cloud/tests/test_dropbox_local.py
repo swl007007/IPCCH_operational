@@ -38,5 +38,38 @@ class ClassifyFailureModes(unittest.TestCase):
         self.assertEqual(out[1]["status"], "inspection_error")
 
 
+class InteropRetry(unittest.TestCase):
+    def runner(self, failures, stderr):
+        calls = []
+
+        class R:
+            def __init__(self, rc, out, err):
+                self.returncode, self.stdout, self.stderr = rc, out, err
+
+        def run(script):
+            calls.append(1)
+            if len(calls) <= failures:
+                return R(1, b"", stderr)
+            return R(0, b"R|0|missing||\n", b"")
+        return run, calls
+
+    def test_transient_interop_failure_is_retried(self):
+        dl.time.sleep = lambda s: None
+        run, calls = self.runner(2, b"<3>WSL (1 - ) ERROR: UtilAcceptVsock:251: accept4 failed 110")
+        self.assertEqual(dl.classify(["/mnt/c/x"], runner=run)[0]["status"], "missing")
+        self.assertEqual(len(calls), 3)
+
+    def test_other_or_persistent_failures_still_raise(self):
+        dl.time.sleep = lambda s: None
+        run, calls = self.runner(1, b"some other error")
+        with self.assertRaises(dl.InspectionError):
+            dl.classify(["/mnt/c/x"], runner=run)
+        self.assertEqual(len(calls), 1)
+        run, calls = self.runner(9, b"UtilAcceptVsock: accept4 failed")
+        with self.assertRaises(dl.InspectionError):
+            dl.classify(["/mnt/c/x"], runner=run)
+        self.assertEqual(len(calls), 1 + dl.INTEROP_RETRIES)
+
+
 if __name__ == "__main__":
     unittest.main()
