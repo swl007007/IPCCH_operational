@@ -29,6 +29,8 @@ import uuid
 
 import requests
 
+ENTRY = "/usr/local/bin/train-entry"   # the only command allowed before the per-trial cap
+
 PROJECT, REGION = "food-crisis-modeling-enso", "us-central1"
 BASE = f"https://{REGION}-aiplatform.googleapis.com/v1"
 PARENT = f"projects/{PROJECT}/locations/{REGION}"
@@ -75,13 +77,16 @@ def within_reservation(body, kind, detail):
         out.append("boot disk larger than reserved")
     sched = job.get("scheduling", {})
     if kind == "hpt":
-        # the parent deadline covers the serial study; each trial is capped at the reserved timeout by the launcher
+        # the parent deadline covers the serial study; each trial is capped by the timeout wrapper at its command prefix
         want = int(body.get("maxTrialCount", 1)) * (int(detail.get("timeout_s", -1)) + int(detail.get("overhead_s", -1)))
-        env = {e["name"]: e["value"] for p in pools for e in p.get("containerSpec", {}).get("env", [])}
         if sched.get("timeout") != f"{want}s":
             out.append(f"HPT timeout {sched.get('timeout')} is not trials x (timeout + overhead) = {want}s")
-        if env.get("IPCCH_TRIAL_TIMEOUT_S") != str(int(detail.get("timeout_s", -1))):
-            out.append("HPT trials must carry IPCCH_TRIAL_TIMEOUT_S = the reserved per-trial timeout")
+        from research_cloud.training.cloud_job import cap_command
+        cap = cap_command(int(detail.get("timeout_s", -1)))
+        cmd = pools[0].get("containerSpec", {}).get("command", []) if pools else []
+        rest = cmd[1:] if cmd[:1] == [ENTRY] else cmd                # optional root-start entry, then cap, then python
+        if rest[:len(cap) + 1] != cap + ["python"]:
+            out.append(f"HPT trial command must start [{ENTRY}] {' '.join(cap)} python (the per-trial cap)")
     elif sched.get("timeout") != f"{int(detail.get('timeout_s', -1))}s":
         out.append(f"timeout {sched.get('timeout')} is not the reserved {detail.get('timeout_s')}s")
     if sched.get("disableRetries") is not True:

@@ -38,6 +38,16 @@ ARTIFACTS = f"{PROJECT}-research-artifacts"
 TRAINER = f"research-trainer@{PROJECT}.iam.gserviceaccount.com"
 HOST_KEYS = ("fews_src", "geoxgb_src")
 HPT_OVERHEAD_S = 600          # = the reservation's declared per-trial startup/termination overhead
+KILL_AFTER = "30s"            # TERM at timeout_s, KILL 30 s later (inside HPT_OVERHEAD_S)
+
+
+def cap_command(timeout_s):
+    """Per-trial cap: coreutils timeout (present in both training images) runs the trial as its child, so the trial is
+    never the container's PID 1 (PID 1 ignores signals it has no handler for, so an in-process SIGALRM is no cap).
+    It sends TERM at ``timeout_s`` (900 s: TERM at 900 s) and KILL ``KILL_AFTER`` later (KILL at 930 s); the 30 s
+    grace lies inside the declared 600 s per-trial overhead, so the bound is "TERM 900 s / KILL 930 s", not a hard
+    900 s."""
+    return ["/usr/bin/timeout", f"--kill-after={KILL_AFTER}", f"{int(timeout_s)}s"]
 
 
 def sha256_file(path):
@@ -108,12 +118,14 @@ def spec(adapter, image, machine, manifest, config, family, timeout_s, hpt=None,
     labels = {"task": "gcp-research-modeling-migration", "family": family.replace("_", "-")[:63]}
     if hpt:
         # the observed HPT parent deadline is the trialJobSpec timeout from the study's start, so it must cover the serial
-        # study (each trial's run + provisioning overhead, as reserved); each trial keeps its own hard cap via the
-        # launcher's SIGALRM (IPCCH_TRIAL_TIMEOUT_S)
+        # study (each trial's run + provisioning overhead, as reserved); each trial keeps its own hard cap through the
+        # coreutils timeout wrapper in its command
         if not mlflow_uri:
             raise SystemExit("HPT specs use the launcher (it enforces the per-trial cap)")
         job_spec["scheduling"]["timeout"] = f"{int(hpt * (timeout_s + HPT_OVERHEAD_S))}s"
-        container["env"].append({"name": "IPCCH_TRIAL_TIMEOUT_S", "value": str(int(timeout_s))})
+        cmd = container["command"]
+        at = 1 if entry else 0                      # after the root-start entry, before python
+        container["command"] = cmd[:at] + cap_command(timeout_s) + cmd[at:]
     if not hpt:
         return {"displayName": f"{family}-trial", "jobSpec": job_spec, "labels": labels}
     params = []

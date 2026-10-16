@@ -38,8 +38,13 @@ class CloudJob(unittest.TestCase):
         linked_hpt = cj.spec("m", "repo/img@sha256:" + "b" * 64, "n1-highmem-4", "/gcs/a", "/gcs/b", "fam", 900, 2,
                              "crisis_f1", cfg["space"], mlflow_uri="https://svc.run.app", experiment="e", parent_run="p")
         self.assertEqual(linked_hpt["trialJobSpec"]["scheduling"]["timeout"], "3000s")
-        env = {e["name"]: e["value"] for e in linked_hpt["trialJobSpec"]["workerPoolSpecs"][0]["containerSpec"]["env"]}
-        self.assertEqual(env["IPCCH_TRIAL_TIMEOUT_S"], "900")
+        self.assertEqual(linked_hpt["trialJobSpec"]["workerPoolSpecs"][0]["containerSpec"]["command"][:4],
+                         ["/usr/bin/timeout", "--kill-after=30s", "900s", "python"])
+        entered = cj.spec("m", "repo/img@sha256:" + "b" * 64, "n1-highmem-4", "/gcs/a", "/gcs/b", "fam", 900, 2,
+                          "crisis_f1", cfg["space"], mlflow_uri="https://svc.run.app", experiment="e",
+                          entry="/usr/local/bin/train-entry")
+        self.assertEqual(entered["trialJobSpec"]["workerPoolSpecs"][0]["containerSpec"]["command"][:5],
+                         ["/usr/local/bin/train-entry", "/usr/bin/timeout", "--kill-after=30s", "900s", "python"])
         with self.assertRaises(SystemExit):
             cj.spec("m", "repo/img@sha256:" + "b" * 64, "n1-highmem-4", "/gcs/a", "/gcs/b", "fam", 900, 2, "crisis_f1", cfg["space"])
         self.assertEqual(hpt["studySpec"]["metrics"], [{"metricId": "crisis_f1", "goal": "MAXIMIZE"}])

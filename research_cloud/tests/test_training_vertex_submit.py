@@ -122,15 +122,16 @@ class Submit(unittest.TestCase):
         detail = {"machine": "n1-highmem-4", "trials": 2, "timeout_s": 900, "overhead_s": 600, "boot_disk_gib": 100}
 
         def hpt(timeout, cap):
-            env = [{"name": "IPCCH_TRIAL_TIMEOUT_S", "value": cap}] if cap else []
+            cmd = (["/usr/local/bin/train-entry"] + (["/usr/bin/timeout", "--kill-after=30s", cap] if cap else [])
+                   + ["python", "-c", "x", "m"])
             return {"maxTrialCount": 2, "parallelTrialCount": 1, "trialJobSpec": {
                 "workerPoolSpecs": [{"machineSpec": {"machineType": "n1-highmem-4"}, "replicaCount": "1",
-                                     "containerSpec": {"imageUri": "i@sha256:x", "env": env}}],
+                                     "containerSpec": {"imageUri": "i@sha256:x", "command": cmd}}],
                 "scheduling": {"timeout": timeout, "disableRetries": True}}}
-        self.assertEqual(vs.within_reservation(hpt("3000s", "900"), "hpt", detail), [])
-        self.assertTrue(vs.within_reservation(hpt("900s", "900"), "hpt", detail))       # old per-trial-only deadline
-        self.assertTrue(vs.within_reservation(hpt("3000s", None), "hpt", detail))       # no per-trial cap
-        self.assertTrue(vs.within_reservation(hpt("3000s", "1800"), "hpt", detail))     # cap above the reservation
+        self.assertEqual(vs.within_reservation(hpt("3000s", "900s"), "hpt", detail), [])
+        self.assertTrue(vs.within_reservation(hpt("900s", "900s"), "hpt", detail))       # old per-trial-only deadline
+        self.assertTrue(vs.within_reservation(hpt("3000s", None), "hpt", detail))        # no wrapper (env-only cap)
+        self.assertTrue(vs.within_reservation(hpt("3000s", "1800s"), "hpt", detail))     # cap above the reservation
 
     def test_poll_requires_bound_name_and_200(self):
         path = self.write(spec())
