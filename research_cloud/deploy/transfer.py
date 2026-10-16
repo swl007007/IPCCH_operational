@@ -36,6 +36,10 @@ import threading
 import time
 
 PROJECT = "food-crisis-modeling-enso"
+# Large files go up as resumable uploads in bounded requests: with the SDK default (100 MiB per request, 60 s timeout)
+# every input >= ~68 MB failed with RetryError while three uploaders shared the workstation uplink (O-053).
+CHUNK_BYTES = 16 * 1024 * 1024          # a multiple of 256 KiB, as GCS requires
+REQUEST_TIMEOUT_S = (60, 600)           # (connect, read) per request
 
 
 class TransferError(Exception):
@@ -53,18 +57,41 @@ def from_preservation(manifest_path, prefix):
              "bytes": f["bytes"], "manifest": os.path.basename(manifest_path)} for f in m["files"]]
 
 
+# inventory vocabulary (research_cloud/inventory/dropbox_local.py): files on a native Linux filesystem are recorded as
+# "local (non-DrvFS)"; Dropbox files present on disk as "local". Anything else (online-only, missing, error) is refused.
+LOCAL_STATUSES = ("local", "local (non-DrvFS)")
+
+
+def inventory_basis(e):
+    """Why an inventory entry's sha256 is the frozen identity, or raise. ``match`` is True (the freshly computed P1
+    hash equals the recorded/declared hash) or the string "no_recorded_value" (nothing was declared; the P1 fresh hash
+    is the identity). Strings are never accepted by truthiness."""
+    if e.get("local_status") not in LOCAL_STATUSES:
+        raise TransferError(f"{e['id']}: inventory local_status {e.get('local_status')!r} is not local; refusing")
+    if not e.get("actual_sha256") or not isinstance(e.get("actual_bytes"), int):
+        raise TransferError(f"{e['id']}: inventory entry has no fresh hash/size; refusing")
+    if e.get("match") is True:
+        if e.get("actual_sha256") != e.get("recorded_sha256") or (
+                e.get("recorded_bytes") is not None and e["recorded_bytes"] != e["actual_bytes"]):
+            raise TransferError(f"{e['id']}: inventory says match but hashes/sizes differ; refusing")
+        return "recorded hash matched"
+    if e.get("match") == "no_recorded_value" and not e.get("recorded_sha256"):
+        return "P1 fresh hash (no recorded value)"
+    raise TransferError(f"{e['id']}: inventory match {e.get('match')!r} is not a hash match; refusing")
+
+
 def from_inventory(inventory_path, prefix):
     inv = json.load(open(inventory_path))
     out, seen = [], set()
     for ns, block in inv["namespaces"].items():
         for e in block["files"]:
+            basis = inventory_basis(e)
             if e["path"] in seen:          # shared files appear in both namespaces; transferred once
                 continue
-            if not e.get("match") or e.get("local_status") != "local":
-                raise TransferError(f"{e['id']}: inventory entry is not a local, hash-matched file; refusing")
             seen.add(e["path"])
             out.append({"local": e["path"], "object": f"{prefix.rstrip('/')}/{e['id']}/{os.path.basename(e['path'])}",
-                        "sha256": e["actual_sha256"], "bytes": e["actual_bytes"], "manifest": "input-inventory"})
+                        "sha256": e["actual_sha256"], "bytes": e["actual_bytes"],
+                        "manifest": f"input-inventory ({basis})"})
     return out
 
 
@@ -108,11 +135,12 @@ def transfer_one(bucket, entry):
     if local["sha256"] != entry["sha256"] or local["bytes"] != entry["bytes"]:
         return {**record, "status": "rejected: local bytes differ from the frozen manifest"}
     blob = bucket.blob(entry["object"])
+    blob.chunk_size = CHUNK_BYTES
     blob.metadata = {"sha256": entry["sha256"]}
     blob.md5_hash = local["md5"]                     # GCS validates the upload against this
     state = "uploaded"
     try:
-        blob.upload_from_filename(entry["local"], if_generation_match=0, checksum=None)
+        blob.upload_from_filename(entry["local"], if_generation_match=0, checksum=None, timeout=REQUEST_TIMEOUT_S)
     except PreconditionFailed:
         state = "already present"
     blob.reload()
@@ -223,8 +251,10 @@ def main(argv=None, bucket=None):
             try:
                 rec = fut.result()
             except Exception as e:      # noqa: BLE001 - recorded per object; a rerun retries it
+                cause = getattr(e, "cause", None) or e.__cause__ or e.__context__
                 rec = {"object": futures[fut]["object"], "local": futures[fut]["local"],
-                       "status": f"error: {type(e).__name__}"}
+                       "status": f"error: {type(e).__name__}",          # exception types only, never remote text
+                       "error_cause": type(cause).__name__ if cause is not None else None}
             rec["time"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
             with lock:
                 out.write(json.dumps(rec) + "\n")
