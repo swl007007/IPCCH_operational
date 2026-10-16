@@ -71,6 +71,24 @@ class TempAdmin(unittest.TestCase):
             self.assertTrue(any(u.endswith(":destroy") for _, u in api.calls))
             self.assertNotIn(pw, open(receipt).read() + out + out2)
 
+    def test_remove_needs_this_tasks_receipt_and_credential(self):
+        api, store = Api([]), FakeStore({"admin": True})
+        with tempfile.TemporaryDirectory() as d:
+            receipt = os.path.join(d, "r.json")
+            self.assertEqual(self.run_main("create", api, store, receipt)[0], 0)
+            other = os.path.join(d, "other.json")                      # absent receipt: refused, nothing deleted
+            rc, out = self.run_main("remove", api, store, other)
+            self.assertEqual(rc, 1)
+            self.assertIn(ta.USERNAME, store.u)
+            store.u[ta.USERNAME][1] = "changed"                        # credential no longer authenticates
+            rc, out = self.run_main("remove", api, store, receipt)
+            self.assertEqual(rc, 1)
+            self.assertIn(ta.USERNAME, store.u)
+            api.secrets[ta.SECRET] = {"owner": "someone-else"}         # foreign labels
+            store.u[ta.USERNAME][1] = json.loads(api.versions[ta.SECRET])["password"]
+            self.assertEqual(self.run_main("remove", api, store, receipt)[0], 1)
+            self.assertIn(ta.USERNAME, store.u)
+
     def test_foreign_user_refused(self):
         api, store = Api([]), FakeStore({"admin": True, ta.USERNAME: True})
         with tempfile.TemporaryDirectory() as d:

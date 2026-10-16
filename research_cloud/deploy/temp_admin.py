@@ -4,8 +4,9 @@ admin steps, remove after acceptance; the owner's personal account and password 
 ``create``: the credential is generated into this task's Secret Manager secret ``mlflow-temp-admin`` (task labels,
 no accessor bindings: operator only; resumed, never rotated) and the user is created directly in the ``mlflow_auth``
 database as ``mlflow_app`` through the Auth Proxy, with MLflow 3.17's own auth store (its password hashing). An
-existing user of that name is accepted only when this task's receipt records its creation. ``remove``: the user is
-deleted through the same store and its secret versions are disabled and destroyed. Both record a before/after user
+existing user of that name is accepted only when this task's receipt records its creation. ``remove``: only with this task's
+creation receipt, the task-labelled secret and a credential that still authenticates as that admin, the user is
+deleted through the same store and its secret versions are destroyed. Both record a before/after user
 snapshot (username, is_admin) and the diff: exactly the temporary admin is added/removed, every other user unchanged.
 No credential is printed or receipted (scrubbed receipt as in ``provision_secrets``).
 
@@ -18,7 +19,7 @@ import sys
 
 from research_cloud.deploy.db_roles import secret_value
 from research_cloud.deploy.provision_secrets import (SM, Api, ProvisionError, Receipt, ensure_secret, message,
-                                                     remember, scrub)
+                                                     remember, scrub, secret_state)
 
 USERNAME = "ipcch-migration-admin"
 SECRET = "mlflow-temp-admin"
@@ -59,9 +60,22 @@ def create(api, receipt, port):
 
 
 def remove(api, receipt, port):
+    """Only the admin this task created: its receipt must record the creation, the secret must carry this task's
+    labels, and (while the user exists) the stored credential must authenticate as it. Anything else refuses."""
+    if not receipt.data.get("temp_admin_created"):
+        raise ProvisionError("this task's receipt does not record creating the temporary admin; refusing removal")
+    state, value = secret_state(api, SECRET)            # raises unless the secret carries this task's labels
+    if state != "task":
+        raise ProvisionError(f"secret {SECRET} is {state}; refusing removal")
+    cred = json.loads(value)
+    remember(cred["password"])
+    if cred.get("username") != USERNAME:
+        raise ProvisionError("the stored credential is not the temporary admin's; refusing removal")
     s = store(api, port)
     before = users(s)
     if USERNAME in before:
+        if before[USERNAME] is not True or not s.authenticate_user(USERNAME, cred["password"]):
+            raise ProvisionError(f"{USERNAME} is not the admin this task's credential authenticates; refusing removal")
         s.delete_user(USERNAME)
     after = users(s)
     diff = check(before, after, removed=USERNAME)
