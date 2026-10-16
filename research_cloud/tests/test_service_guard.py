@@ -69,11 +69,17 @@ class ConfigAndContract(unittest.TestCase):
             with self.assertRaises(guard.GuardRefusal, msg=json.dumps(payload)[:80]):
                 guard.check_contract(payload)
 
-    def test_bounds_force_one_candidate_and_clamp_output(self):
+    def test_one_candidate_only_and_output_clamped(self):
         cfg = config()
-        body, out = guard.bound_payload(cfg, chat(candidateCount=4, maxOutputTokens=99_999, thinkingConfig={"thinkingLevel": "HIGH"}))
+        body, out = guard.bound_payload(cfg, chat(maxOutputTokens=99_999, thinkingConfig={"thinkingLevel": "HIGH"}))
         gen = body["generationConfig"]
-        self.assertEqual((gen["candidateCount"], gen["maxOutputTokens"], out), (1, 1000, 1000))
+        self.assertNotIn("candidateCount", gen)                              # nothing injected (Gemini 3.8 guide)
+        self.assertEqual((gen["maxOutputTokens"], out), (1000, 1000))
+        self.assertEqual(guard.bound_payload(cfg, chat(candidateCount=1))[1], 1000)
+        with self.assertRaises(guard.GuardRefusal):
+            guard.bound_payload(cfg, chat(candidateCount=4))
+        with self.assertRaises(guard.GuardRefusal):                          # 3.8 has no thinking budget
+            guard.check_contract(chat(thinkingConfig={"thinkingBudget": 1024}))
         self.assertEqual(guard.bound_payload(cfg, chat())[1], 1000)        # absent cap -> configured cap
         for gen_bad in ({"maxOutputTokens": 0}, {"maxOutputTokens": 2.5}, {"maxOutputTokens": "10"}):
             with self.assertRaises(guard.GuardRefusal):

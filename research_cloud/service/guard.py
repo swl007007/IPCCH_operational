@@ -11,7 +11,9 @@ on as supporting signals. This guard is the small application guard design.md al
 * Payload contract: only the research assistant's text/function-calling shape is admitted (text, functionCall,
   functionResponse parts; function declarations only; a fixed set of generationConfig keys). Inline/file data,
   cached content, grounding/search/code-execution tools and non-text modalities, which carry inputs or charges the
-  text input rate does not cover, are refused. candidateCount is forced to 1 and maxOutputTokens is clamped.
+  text input rate does not cover, are refused. Only one candidate is admitted (an explicit candidateCount other
+  than 1 is refused; none is injected, as the Gemini 3.8 guide asks not to send it), ``thinkingBudget`` is refused
+  (3.8 uses ``thinkingLevel``) and maxOutputTokens, which bounds response plus reasoning, is clamped.
 * Reservation (no token estimate): every call reserves the pinned model's whole accepted input context
   (``model_max_input_tokens``, from the model card) at the highest applicable text input rate, plus the clamped
   maxOutputTokens times ``output_reservation_factor`` at the output rate. Google documents that maxOutputTokens
@@ -58,7 +60,7 @@ TOP_KEYS = {"contents", "system_instruction", "systemInstruction", "generationCo
 TOOL_KEYS = {"functionDeclarations", "function_declarations"}
 GENERATION_KEYS = {"temperature", "topP", "topK", "maxOutputTokens", "stopSequences", "candidateCount", "presencePenalty",
                    "frequencyPenalty", "seed", "responseMimeType", "responseJsonSchema", "responseSchema", "thinkingConfig"}
-THINKING_KEYS = {"thinkingLevel", "thinkingBudget", "includeThoughts"}
+THINKING_KEYS = {"thinkingLevel", "includeThoughts"}   # Gemini 3.8 controls reasoning by level, not budget
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS ipcch_assistant_ledger (
     id bigserial PRIMARY KEY,
@@ -173,9 +175,10 @@ def reservation(cfg, out_tokens):
 
 
 def bound_payload(cfg, payload):
-    """Force one candidate and clamp maxOutputTokens (which includes thinking); return (payload, output cap)."""
+    """Admit one candidate only and clamp maxOutputTokens (which includes thinking); return (payload, output cap)."""
     gen = dict(payload.get("generationConfig") or {})
-    gen["candidateCount"] = 1
+    if gen.get("candidateCount", 1) != 1:
+        raise GuardRefusal(f"candidateCount {gen['candidateCount']!r} is not admitted (one candidate only)")
     requested = gen.get("maxOutputTokens", cfg["max_output_tokens"])
     if not (_is_int(requested) and requested > 0):
         raise GuardRefusal(f"unsupported maxOutputTokens {requested!r}")
