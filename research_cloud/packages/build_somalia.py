@@ -12,7 +12,7 @@ from research_cloud.packages import somalia
 
 STORE = "/home/swl007007/.local/share/ipcch-mlflow"
 IPCCH = "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH"
-RUNS = {"somalia_oracle_v2_q3": somalia, "somalia_oracle_v3_validity": somalia}
+RUNS = {"somalia_oracle_v2_q3": somalia, "somalia_oracle_v3_validity": somalia, "somalia_oracle_v4_calibrated_d": somalia}
 RUNTIME = {"python": "3.12", "xgboost": "3.2.0", "numpy": "2.4.4", "pandas": "3.0.3", "scikit-learn": "1.8.0",
            "env": "rt-ipcchgeo-x320", "note": "matches the run manifest's recorded Linux runtime"}
 
