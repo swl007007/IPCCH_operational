@@ -39,6 +39,8 @@ CASES = (("h4", "2025-06"), ("h4", "2025-10"), ("h8", "2025-06"), ("h8", "2025-1
 CLASS_LABELS = ("1", "2", "3", "4或5")
 PROB = [f"p_{c}" for c in CLASS_LABELS]
 LOCAL = "local_model"
+RECEIPT = Path("/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/"
+               "10-16-gcp-research-modeling-migration/research/fews/missing-local-boosters-receipt.md")
 
 ENTRY = '''"""Keyed loader for one FEWS NET scen-b43ef6a-v1 actual-case package (generated; see package.json)."""
 import json
@@ -229,6 +231,15 @@ def build_case(out_root, horizon_label, target, src, runtime, per_unit=400):
                     .to_csv(index=False, float_format="%.17g").encode())
         b.add_bytes("loader/entry.py", ENTRY.encode())
         local_rows = saved.loc[~served, ["area", "cluster_id"]] if arm == "system" else saved.iloc[:0]
+        exception = None
+        if arm == "system":   # the user-approved receipt travels with the package, hash-bound
+            b.add_file(str(RECEIPT), "deps/exception/missing-local-boosters-receipt.md")
+            exception = {"receipt": "deps/exception/missing-local-boosters-receipt.md", "receipt_sha256": sha256_file(RECEIPT),
+                         "disposition": "user-approved incomplete-history exception for scen-b43ef6a-v1 actual cases only",
+                         "missing_local_units": [{"region": str(region), "child_sha256": rec.get("booster_sha256"),
+                                                  "parent_sha256": rec.get("parent_sha256"), "rounds_total": rec.get("rounds_total")}
+                                                 for region, rec in sorted(gate.get("locals", {}).items())],
+                         "limits": "no full system replay; no global or pooled substitution under the system identity"}
         gaps = [] if arm == "pooled" else [f"{len(local_rows)} local_model rows: continuation boosters not retained "
                                             "(accepted incomplete-history exception)"]
         metas[arm] = b.finalize({
@@ -237,7 +248,8 @@ def build_case(out_root, horizon_label, target, src, runtime, per_unit=400):
                          "strategy": fold["strategy"], "map_id": fold["map_id"], "gate_k": fold["gate_k"]},
             "status": "complete" if arm == "pooled" else "incomplete_history_accepted_exception", "gaps": gaps,
             "unreplayable": {"rows": int(len(local_rows)), "areas": local_rows["area"].astype(int).tolist(),
-                             "receipt": "fews/missing-local-boosters-receipt.md"} if arm == "system" else None,
+                             "clusters": sorted(set(local_rows["cluster_id"].astype(int).tolist())), **exception}
+            if arm == "system" else None,
             "fitted_units": 1, "global": {"booster_sha256": record["booster_sha256"], "origin_month": record["origin_month"],
                                           "fit_keys_sha256": record["fit_keys_sha256"], "file": ubj.name},
             "binding": {"availability_inputs_sha256": fold["availability_inputs_sha256"],
@@ -254,7 +266,11 @@ def build_case(out_root, horizon_label, target, src, runtime, per_unit=400):
                      "original_code_sha256": actual.get("code")},
             "loader": {"entry": "loader/entry.py", "keys": ["area", "target_month"],
                        "call": "load(package_dir).predict(keys[area,target_month], X)",
-                       "inputs": f"float64 rows ({len(features)} features) in deps/feature_order.csv order",
+                       "inputs": f"prepared float64 X: {len(features)} columns in deps/feature_order.csv order (FEWS scenario "
+                                 "features at the case origin). This package does not rebuild raw features; their "
+                                 "reconstruction uses the versioned input/source snapshot (pinned panel, hashed covariate "
+                                 "extension, prepared ledgers) preserved separately. Windows paths in deps/source records are "
+                                 "provenance only.",
                        "unserved_keys": "KeyError; system arm local_model rows: LocalBoosterNotRetained"},
             "reference": {"rows": int(len(ref)), "per_unit_cap": per_unit, "compare_columns": PROB + ["y_pred_code"],
                           "routes_covered": sorted(ref["route"].unique()),
