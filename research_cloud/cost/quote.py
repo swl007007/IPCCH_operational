@@ -100,8 +100,10 @@ def lines(skus):
     add("platform", "Cloud Build e2-standard-2, 120 min", ("build.json", 249, "A464-9020-6404"), 120,
         "5 images x ~12 min x 2 builds; source contexts total ~4.5 MB (0.004 GiB) staged in the build source bucket, "
         "deleted after the build (negligible storage)")
-    add("platform", "Secret Manager, 10 replica-months", ("secret.json", 0, "7756-ADEF-84F4"), 10,
-        "Flask secret, KEK, DB and identity credentials; user-managed us-central1 replication")
+    add("platform", "Secret Manager, 16 active versions (replica-months)", ("secret.json", 0, "7756-ADEF-84F4"), 16,
+        "actual versions created: 13 initial (Flask secret, KEK, DB and identity credentials), 2 corrected MLflow URI "
+        "versions (version 1 kept), 1 temporary migration admin; all assumed retained the full month; user-managed "
+        "us-central1 replication")
     add("platform", "Secret Manager accesses 20k", ("secret.json", 1, "EBA7-264F-2D2C"), 20_000, "accesses")
     add("platform", "Logging ingestion 10 GiB", ("logging.json", 0, "143F-A1B0-E0BE"), 10, "gross (first 50 GiB free tier)")
     add("platform", "Logging retention 10 GiB-month", ("logging.json", 2, "F4AE-5A52-ACE3"), 10, "beyond default retention")
