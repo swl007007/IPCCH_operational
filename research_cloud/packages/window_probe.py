@@ -16,7 +16,14 @@ their own packages, because their served keys, routing and references are the pr
 * references: the probe's saved ``predictions_hHH_U.csv.gz`` (``base_global_*`` / ``base_local_*``), whose sha256
   values and the plan's are checked against the probe's ``artifact-hashes.json`` before use.
 
-Unit bytes come from the P6 run root, enforced against P6's member manifest; inputs are P6's prepared rich561 rows.
+Unit bytes come from the P6 run root, enforced against P6's member manifest. Inputs are P6's prepared rich561 rows,
+bound to the probe's own record before they are read: ``keys_hHH``, ``X_rich561_hHH`` and ``feature_order.csv`` must
+hash to ``start.json`` ``prepared ... artifacts_sha256`` and the frozen map to ``source-hashes.json``; both of those
+files are bound by ``artifact-hashes.json``.
+
+Serving scope: a key is served when its target month is one of the version's selected months; within such a month
+the admin code resolves through the frozen P6 map (an admin outside the map takes the unmapped/global route). Keys in
+other months raise KeyError. Unknown admin codes in a selected month are therefore not rejected.
 """
 import io
 import json
@@ -41,6 +48,23 @@ def probe_files(probe_dir):
             raise PackageError(f"probe artifact {name} does not match artifact-hashes.json")
         return path
     return verified
+
+
+def prepared_hashes(start):
+    """The single ``artifacts_sha256`` block of start.json's ``prepared`` record."""
+    found = []
+
+    def walk(o):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if k == "artifacts_sha256" and isinstance(v, dict):
+                    found.append(v)
+                else:
+                    walk(v)
+    walk(start.get("prepared", {}))
+    if len(found) != 1:
+        raise PackageError(f"start.json prepared record holds {len(found)} artifacts_sha256 blocks")
+    return found[0]
 
 
 def routing_for(cell, arm):
@@ -73,6 +97,20 @@ def build(out_dir, *, probe_dir, p6_root, p6_source_code, p6_members_manifest, v
     rel = {"keys": f"prepared/keys_{h}.csv.gz", "X": f"prepared/X_rich561_{h}.npy",
            "feature_order": "prepared/feature_order.csv", "frozen_map": f"stage1/frozen_map_{h}.csv"}
     ensure_local([os.path.join(p6_root, r) for r in rel.values()])
+    recorded = prepared_hashes(json.load(open(verified("start.json"))))
+    source_hashes = json.load(open(verified("source-hashes.json")))
+    provenance = {}
+    for key, name, rec in (("keys", f"keys_{h}.csv.gz", recorded), ("X", f"X_rich561_{h}.npy", recorded),
+                           ("feature_order", "feature_order.csv", recorded)):
+        expected_sha = rec.get(name)
+        actual = sha256_file(os.path.join(p6_root, rel[key]))   # hashed before any read
+        if expected_sha is None or actual != expected_sha:
+            raise PackageError(f"P6 prepared {name} does not match the probe's start.json record")
+        provenance[rel[key]] = {"sha256": actual, "bound_by": "start.json prepared artifacts_sha256"}
+    map_key = "IPCCHGeoXGBExperiment\\runs\\p6-formal-20261004b\\" + rel["frozen_map"].replace("/", "\\")
+    if sha256_file(os.path.join(p6_root, rel["frozen_map"])) != source_hashes.get(map_key):
+        raise PackageError(f"P6 {rel['frozen_map']} does not match the probe's source-hashes.json record")
+    provenance[rel["frozen_map"]] = {"sha256": source_hashes[map_key], "bound_by": "source-hashes.json"}
     keys = pd.read_csv(os.path.join(p6_root, rel["keys"]))
     X = np.load(os.path.join(p6_root, rel["X"]), mmap_mode="r")
     if len(keys) != len(X) or keys.duplicated(["admin_code", "target_ord"]).any():
@@ -119,6 +157,8 @@ def build(out_dir, *, probe_dir, p6_root, p6_source_code, p6_members_manifest, v
     b.add_file(os.path.join(p6_root, rel["feature_order"]), "deps/" + rel["feature_order"])
     b.add_file(os.path.join(p6_root, rel["frozen_map"]), "deps/" + rel["frozen_map"])
     b.add_file(verified("plan.json"), "deps/probe/plan.json")
+    for name in ("start.json", "source-hashes.json", "artifact-hashes.json"):
+        b.add_file(verified(name) if name != "artifact-hashes.json" else os.path.join(probe_dir, name), f"deps/probe/{name}")
     for cell in cells:
         b.add_file(verified(f"predictions_{h}_{cell['U']}.csv.gz"), f"deps/probe/predictions_{h}_{cell['U']}.csv.gz")
     b.add_bytes("deps/routing.csv", routing.to_csv(index=False).encode())
@@ -159,14 +199,17 @@ def build(out_dir, *, probe_dir, p6_root, p6_source_code, p6_members_manifest, v
         "source": {"probe_run": "runs:/e9cfa99f94dd4a67b0e3b6ed511708ad/source", "probe_dir": probe_dir,
                    "artifact_hashes_sha256": sha256_file(os.path.join(probe_dir, "artifact-hashes.json")),
                    "p6_run_root": p6_root, "p6_members_manifest": p6_members_manifest,
-                   "p6_members_manifest_sha256": sha256_file(p6_members_manifest)},
+                   "p6_members_manifest_sha256": sha256_file(p6_members_manifest),
+                   "input_provenance": provenance},
         "code": {"identity": code_identity, "package": "ipcch_geoxgb", "vendored_from": src_pkg,
                  "vendored_files": {n: sha256_file(os.path.join(src_pkg, n)) for n in geoxgb.LOADER_FILES},
                  "routing_source": "source/run_probe.py:131-141 (global), 148-176 (local_routed)"},
         "runtime": {"original": original_runtime, "linux": linux_runtime},
         "loader": {"entry": "loader/entry.py", "call": "load(package_dir).predict(keys[admin_code,target_ord], X)",
                    "inputs": f"float64 rows ({n_features} features) in feature_order.csv order; NaN = missing",
-                   "unserved_keys": "KeyError (outside the probe's selected cells)"},
+                   "unserved_keys": "KeyError for target months outside the version's selected cells; within a selected "
+                                    "month any admin_code resolves through the frozen P6 map (unknown admins take the "
+                                    "unmapped/global route), so unknown admins are not rejected"},
         "reference": {"rows": int(len(expected)), "per_unit_cap": per_unit,
                       "selection": "per unit (cap): >=1 row per route, half nearest a 0.20 boundary, rest by key hash",
                       "routes_covered": sorted(expected["route"].unique()),
