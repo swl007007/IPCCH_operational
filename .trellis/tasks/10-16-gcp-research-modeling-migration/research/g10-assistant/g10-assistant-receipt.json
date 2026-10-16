@@ -73,29 +73,37 @@
    "allowlist": false,
    "rows": 1,
    "all_settled": true
+  },
+  {
+   "time": "2026-10-16T11:27:40-0400",
+   "step": "query",
+   "post": 200,
+   "stream": 200,
+   "rows": 2,
+   "all_settled": true
   }
  ],
  "query": {
   "post": 200,
   "stream": 200,
-  "answer_tail": "                cloud-training-acceptance            mlflow-artifacts:/workspaces/default/7\\\\n8                historical-packages                  mlflow-artifacts:/workspaces/default/8\\\\n9                gateway/ipcch-assistant-gemini-enso  mlflow-artifacts:/workspaces/default/9\\\"}, {\\\"role\\\": \\\"assistant\\\", \\\"content\\\": \\\"Default\\\\nIPCCH detailed runs\\\\nIPCCH dashboard\\\\nIPCCH forecasting detailed runs\\\\nIPCCH forecasting dashboard\\\\ngateway/ipcch-assistant-gemini\\\\ncloud-acceptance-access-matrix\\\\ncloud-training-acceptance\\\\nhistorical-packages\\\\ngateway/ipcch-assistant-gemini-enso\\\"}]\"}\n\n",
+  "answer_tail": "d-training-acceptance            mlflow-artifacts:/workspaces/default/7\\\\n8                historical-packages                  mlflow-artifacts:/workspaces/default/8\\\\n9                gateway/ipcch-assistant-gemini-enso  mlflow-artifacts:/workspaces/default/9\\\"}, {\\\"role\\\": \\\"assistant\\\", \\\"content\\\": \\\"- Default\\\\n- IPCCH detailed runs\\\\n- IPCCH dashboard\\\\n- IPCCH forecasting detailed runs\\\\n- IPCCH forecasting dashboard\\\\n- gateway/ipcch-assistant-gemini\\\\n- cloud-acceptance-access-matrix\\\\n- cloud-training-acceptance\\\\n- historical-packages\\\\n- gateway/ipcch-assistant-gemini-enso\\\"}]\"}\n\n",
   "ledger_rows": [
    [
-    "1",
+    "4",
     "settled",
     "1.69574400",
-    "0.00712950",
+    "0.00832200",
     "4463",
-    "58",
-    "34"
+    "217",
+    "193"
    ],
    [
-    "2",
+    "5",
     "settled",
     "1.69574400",
-    "0.00748200",
+    "0.00755700",
     "4683",
-    "61",
+    "71",
     "0"
    ]
   ],

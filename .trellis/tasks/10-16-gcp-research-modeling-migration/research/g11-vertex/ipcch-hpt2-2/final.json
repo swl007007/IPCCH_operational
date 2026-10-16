@@ -1,0 +1,220 @@
+{
+ "name": "projects/76571749286/locations/us-central1/hyperparameterTuningJobs/8726300499432701952",
+ "displayName": "ipcch_geoxgb_pooled_quartet-hpt",
+ "studySpec": {
+  "metrics": [
+   {
+    "metricId": "crisis_f1",
+    "goal": "MAXIMIZE"
+   }
+  ],
+  "parameters": [
+   {
+    "parameterId": "colsample_bytree",
+    "doubleValueSpec": {
+     "minValue": 0.5,
+     "maxValue": 1
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "max_depth",
+    "integerValueSpec": {
+     "minValue": "2",
+     "maxValue": "6"
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "min_child_weight",
+    "doubleValueSpec": {
+     "minValue": 1,
+     "maxValue": 50
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "reg_lambda",
+    "doubleValueSpec": {
+     "maxValue": 50
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "rounds",
+    "integerValueSpec": {
+     "minValue": "50",
+     "maxValue": "400"
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "subsample",
+    "doubleValueSpec": {
+     "minValue": 0.5,
+     "maxValue": 1
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   }
+  ],
+  "algorithm": "RANDOM_SEARCH"
+ },
+ "maxTrialCount": 2,
+ "parallelTrialCount": 1,
+ "maxFailedTrialCount": 1,
+ "trialJobSpec": {
+  "workerPoolSpecs": [
+   {
+    "machineSpec": {
+     "machineType": "n1-highmem-4"
+    },
+    "replicaCount": "1",
+    "diskSpec": {
+     "bootDiskType": "pd-ssd",
+     "bootDiskSizeGb": 100
+    },
+    "containerSpec": {
+     "imageUri": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch@sha256:6ad7f46ce03ed3e2db9533d77de87609572dee9a632b3b7b8c431e7fdab16a91",
+     "command": [
+      "/usr/local/bin/train-entry",
+      "python",
+      "-c",
+      "import base64, json, os, runpy, sys\nimport google.auth\nfrom google.auth.transport.requests import AuthorizedSession\ncreds, _ = google.auth.default(scopes=[\"https://www.googleapis.com/auth/cloud-platform\"])\nr = AuthorizedSession(creds).get(\"https://secretmanager.googleapis.com/v1/projects/food-crisis-modeling-enso/secrets/mlflow-jobwriter/versions/1:access\", timeout=60)\nr.raise_for_status()\nc = json.loads(base64.b64decode(r.json()[\"payload\"][\"data\"]))\nos.environ[\"MLFLOW_TRACKING_USERNAME\"], os.environ[\"MLFLOW_TRACKING_PASSWORD\"] = c[\"username\"], c[\"password\"]\nmodule, sys.argv = sys.argv[1], [sys.argv[1]] + sys.argv[2:]\nrunpy.run_module(module, run_name=\"__main__\", alter_sys=True)\n",
+      "research_cloud.training.ipcch_quartet"
+     ],
+     "args": [
+      "--manifest",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/manifest-ipcch-h03.json",
+      "--config",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/config-ipcch-h03.json",
+      "--output",
+      "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_geoxgb_pooled_quartet",
+      "--mlflow-experiment",
+      "cloud-training-acceptance"
+     ],
+     "env": [
+      {
+       "name": "IPCCH_IMAGE_DIGEST",
+       "value": "sha256:6ad7f46ce03ed3e2db9533d77de87609572dee9a632b3b7b8c431e7fdab16a91"
+      },
+      {
+       "name": "MLFLOW_TRACKING_URI",
+       "value": "https://research-mlflow-76571749286.us-central1.run.app"
+      },
+      {
+       "name": "IPCCH_GCP_PROJECT",
+       "value": "food-crisis-modeling-enso"
+      },
+      {
+       "name": "IPCCH_PARENT_RUN_ID",
+       "value": "573574b0d09e4940ba59e93f3dd82931"
+      }
+     ]
+    }
+   }
+  ],
+  "scheduling": {
+   "timeout": "900s",
+   "disableRetries": true
+  },
+  "serviceAccount": "research-trainer@food-crisis-modeling-enso.iam.gserviceaccount.com"
+ },
+ "trials": [
+  {
+   "id": "1",
+   "state": "SUCCEEDED",
+   "parameters": [
+    {
+     "parameterId": "colsample_bytree",
+     "value": 0.7956340273668452
+    },
+    {
+     "parameterId": "max_depth",
+     "value": 4
+    },
+    {
+     "parameterId": "min_child_weight",
+     "value": 8.933520627961853
+    },
+    {
+     "parameterId": "reg_lambda",
+     "value": 35.0772266657619
+    },
+    {
+     "parameterId": "rounds",
+     "value": 148
+    },
+    {
+     "parameterId": "subsample",
+     "value": 0.9009938550266821
+    }
+   ],
+   "finalMeasurement": {
+    "stepCount": "1",
+    "metrics": [
+     {
+      "metricId": "crisis_f1",
+      "value": 0.8595505617977528
+     }
+    ]
+   },
+   "startTime": "2026-10-16T15:15:38.610524471Z",
+   "endTime": "2026-10-16T15:19:53Z"
+  },
+  {
+   "id": "2",
+   "state": "ACTIVE",
+   "parameters": [
+    {
+     "parameterId": "colsample_bytree",
+     "value": 0.7662074213007506
+    },
+    {
+     "parameterId": "max_depth",
+     "value": 4
+    },
+    {
+     "parameterId": "min_child_weight",
+     "value": 42.594864161216115
+    },
+    {
+     "parameterId": "reg_lambda",
+     "value": 32.97723986092713
+    },
+    {
+     "parameterId": "rounds",
+     "value": 364
+    },
+    {
+     "parameterId": "subsample",
+     "value": 0.85356373272087
+    }
+   ],
+   "finalMeasurement": {
+    "stepCount": "1",
+    "metrics": [
+     {
+      "metricId": "crisis_f1",
+      "value": 0.8595271210013908
+     }
+    ]
+   },
+   "startTime": "2026-10-16T15:24:10.397833881Z",
+   "endTime": "2026-10-16T15:28:42Z"
+  }
+ ],
+ "state": "JOB_STATE_CANCELLED",
+ "createTime": "2026-10-16T15:15:30.737926Z",
+ "startTime": "2026-10-16T15:15:33Z",
+ "endTime": "2026-10-16T15:31:01Z",
+ "updateTime": "2026-10-16T15:31:07.477814Z",
+ "error": {
+  "code": 1,
+  "message": "CANCELED"
+ },
+ "labels": {
+  "task": "gcp-research-modeling-migration",
+  "family": "ipcch-geoxgb-pooled-quartet",
+  "ipcch-claim": "783ba26e4b83468da8af"
+ }
+}

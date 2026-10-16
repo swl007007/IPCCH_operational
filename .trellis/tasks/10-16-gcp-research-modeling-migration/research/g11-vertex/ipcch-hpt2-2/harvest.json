@@ -1,0 +1,52 @@
+{
+ "job": "8726300499432701952",
+ "job_state": "JOB_STATE_CANCELLED",
+ "trials": [
+  {
+   "trial": "1",
+   "vertex_state": "SUCCEEDED",
+   "vertex_objective": 0.8595505617977528,
+   "mlflow": {
+    "run_id": "e7b283a6fa6d44348b59d247902983fa",
+    "status": "FINISHED",
+    "parent": "573574b0d09e4940ba59e93f3dd82931",
+    "trial_status": "succeeded",
+    "image_digest": "sha256:6ad7f46ce03ed3e2db9533d77de87609572dee9a632b3b7b8c431e7fdab16a91",
+    "crisis_f1": 0.8595505617977528,
+    "params": {
+     "max_depth": "4",
+     "rounds": "148",
+     "min_child_weight": "8.933520627961853",
+     "subsample": "0.9009938550266821",
+     "colsample_bytree": "0.7956340273668452",
+     "reg_lambda": "35.0772266657619"
+    }
+   },
+   "params_equal": true,
+   "objective_equal": true
+  },
+  {
+   "trial": "2",
+   "vertex_state": "ACTIVE",
+   "vertex_objective": 0.8595271210013908,
+   "mlflow": {
+    "run_id": "ec6088c6ad1643d0a3197fc4cda37489",
+    "status": "FINISHED",
+    "parent": "573574b0d09e4940ba59e93f3dd82931",
+    "trial_status": "succeeded",
+    "image_digest": "sha256:6ad7f46ce03ed3e2db9533d77de87609572dee9a632b3b7b8c431e7fdab16a91",
+    "crisis_f1": 0.8595271210013908,
+    "params": {
+     "max_depth": "4",
+     "rounds": "364",
+     "min_child_weight": "42.594864161216115",
+     "subsample": "0.85356373272087",
+     "colsample_bytree": "0.7662074213007506",
+     "reg_lambda": "32.97723986092713"
+    }
+   },
+   "params_equal": true,
+   "objective_equal": true
+  }
+ ]
+}

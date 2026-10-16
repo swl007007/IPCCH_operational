@@ -1,0 +1,2129 @@
+[
+  {
+    "insertId": "6ad2419d000a4ab09f96e81c",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "scaling_reason": "DEPLOYMENT_ROLLOUT",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T15:24:13.680778976Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Starting new instance. Reason: DEPLOYMENT_ROLLOUT - Instance started due to traffic shifting between revisions due to deployment, traffic split adjustment, or deployment health check.",
+    "timestamp": "2026-10-16T15:24:13.674480Z"
+  },
+  {
+    "insertId": "6ad241bd000396ddf9123bc7",
+    "jsonPayload": {
+      "assistant_mode": "armed",
+      "assistant_refusals": [],
+      "hook": {
+        "markers": {
+          "catalog_command": true,
+          "guide": true,
+          "provider_patched": true,
+          "signature_fill": true,
+          "tool_allowlist": true
+        },
+        "mode": "armed"
+      },
+      "port": "8080",
+      "startup": "ok"
+    },
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:24:45.244224881Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "timestamp": "2026-10-16T15:24:45.235229Z"
+  },
+  {
+    "insertId": "6ad241c5000cef555c623f2b",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:24:53.898712371Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Registry store URI not provided. Using backend store URI.",
+    "timestamp": "2026-10-16T15:24:53.847701Z"
+  },
+  {
+    "insertId": "6ad241c8000467af9e65eda6",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:24:56.296907834Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "[MLflow] Security middleware enabled. Allowed hosts: research-mlflow-76571749286.us-central1.run.app, 127.0.0.1:8080, localhost:8080. CORS origins: https://research-mlflow-76571749286.us-central1.run.app.",
+    "timestamp": "2026-10-16T15:24:56.288687Z"
+  },
+  {
+    "insertId": "6ad241c800069a6c41df7324",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:24:56.632324839Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "/usr/local/lib/python3.12/site-packages/mlflow/server/fastapi_app.py:23: StarletteDeprecationWarning: starlette.middleware.wsgi is deprecated and will be removed in a future release. Please refer to https://github.com/abersheeran/a2wsgi as a replacement.",
+    "timestamp": "2026-10-16T15:24:56.432748Z"
+  },
+  {
+    "insertId": "6ad241c800069a77fcec5975",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:24:56.632324839Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "  from starlette.middleware.wsgi import WSGIResponder, build_environ",
+    "timestamp": "2026-10-16T15:24:56.432759Z"
+  },
+  {
+    "insertId": "6ad241d4000058a8cf42e882",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:25:08.045364202Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "/usr/local/lib/python3.12/site-packages/mlflow/server/fastapi_app.py:23: StarletteDeprecationWarning: starlette.middleware.wsgi is deprecated and will be removed in a future release. Please refer to https://github.com/abersheeran/a2wsgi as a replacement.",
+    "timestamp": "2026-10-16T15:25:08.022696Z"
+  },
+  {
+    "insertId": "6ad241d4000058c0272d45de",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:25:08.045364202Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "  from starlette.middleware.wsgi import WSGIResponder, build_environ",
+    "timestamp": "2026-10-16T15:25:08.022720Z"
+  },
+  {
+    "insertId": "6ad241d4000a9c02fb5f4a62",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:25:09.033157374Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:08 WARNING mlflow.server.auth: This feature is still experimental and may change in a future release without warning",
+    "timestamp": "2026-10-16T15:25:08.695298Z"
+  },
+  {
+    "insertId": "6ad241d500013872e6652182",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:25:09.358601025Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:09 INFO:     Started server process [14]",
+    "timestamp": "2026-10-16T15:25:09.079986Z"
+  },
+  {
+    "insertId": "6ad241d5000138b8761a3624",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:25:09.358601025Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:09 INFO:     Waiting for application startup.",
+    "timestamp": "2026-10-16T15:25:09.080056Z"
+  },
+  {
+    "insertId": "6ad241d50003be37f4412f4d",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:25:09.358601025Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:09 WARNING mlflow.server.fastapi_app: The MLflow Assistant is in remote mode but the Docker sandbox is not active (no `docker` executable found, or MLFLOW_ENABLE_ASSISTANT_SANDBOX=false); the assistant will run its Bash tool on the server host. Install Docker, or set MLFLOW_ENABLE_ASSISTANT_SANDBOX=true to require the sandbox.",
+    "timestamp": "2026-10-16T15:25:09.245303Z"
+  },
+  {
+    "insertId": "6ad241d50003bef24a97c1ce",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:25:09.358601025Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:09 INFO:     Application startup complete.",
+    "timestamp": "2026-10-16T15:25:09.245490Z"
+  },
+  {
+    "insertId": "6ad241d50003c21dd49a7b4b",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-10-16T15:25:09.358601025Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:09 INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)",
+    "timestamp": "2026-10-16T15:25:09.246301Z"
+  },
+  {
+    "insertId": "6ad241d50003c399038ac4a0",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-16T15:25:09.256353396Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Default STARTUP TCP probe succeeded after 1 attempt for container \"service-1\" on port 8080.",
+    "timestamp": "2026-10-16T15:25:09.246681Z"
+  },
+  {
+    "insertId": "-586izid788g",
+    "logName": "projects/food-crisis-modeling-enso/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.ReplaceService",
+      "resourceName": "namespaces/food-crisis-modeling-enso/revisions/research-mlflow-00007-hld",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Revision",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Revision",
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "1",
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "562.0.0",
+            "run.googleapis.com/cloudsql-instances": "food-crisis-modeling-enso:us-central1:research-pg",
+            "run.googleapis.com/cpu-throttling": "true",
+            "run.googleapis.com/operation-id": "59eef7f2-371a-4e33-9e74-49adda5d7ca1",
+            "run.googleapis.com/startup-cpu-boost": "false",
+            "serving.knative.dev/creator": "weilun.shi@cgiar.org"
+          },
+          "creationTimestamp": "2026-10-16T15:24:11.312360Z",
+          "generation": 1,
+          "labels": {
+            "client.knative.dev/nonce": "ubegmnaexf",
+            "cloud.googleapis.com/location": "us-central1",
+            "restart-check": "20261016t1130",
+            "run.googleapis.com/startupProbeType": "Default",
+            "serving.knative.dev/configuration": "research-mlflow",
+            "serving.knative.dev/configurationGeneration": "7",
+            "serving.knative.dev/route": "research-mlflow",
+            "serving.knative.dev/service": "research-mlflow",
+            "serving.knative.dev/serviceUid": "f15d0436-8972-4a16-87a6-40868a3b1c5f",
+            "task": "gcp-research-modeling-migration"
+          },
+          "name": "research-mlflow-00007-hld",
+          "namespace": "76571749286",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Configuration",
+              "name": "research-mlflow",
+              "uid": "4761b172-ef35-447e-8499-f795d9290756"
+            }
+          ],
+          "resourceVersion": "AAZd9sVgidE",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/76571749286/revisions/research-mlflow-00007-hld",
+          "uid": "49c8e48c-6cca-4aeb-b253-f3e672bb1ff6"
+        },
+        "spec": {
+          "containerConcurrency": 40,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "MLFLOW_ARTIFACTS_DESTINATION",
+                  "value": "gs://food-crisis-modeling-enso-research-artifacts/mlflow-artifacts"
+                },
+                {
+                  "name": "MLFLOW_BASIC_AUTH_FAIL_CLOSED",
+                  "value": "true"
+                },
+                {
+                  "name": "IPCCH_ALLOWED_HOSTS",
+                  "value": "research-mlflow-76571749286.us-central1.run.app,127.0.0.1:8080,localhost:8080"
+                },
+                {
+                  "name": "MLFLOW_BACKEND_STORE_URI",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "2",
+                      "name": "mlflow-backend-uri"
+                    }
+                  }
+                },
+                {
+                  "name": "IPCCH_AUTH_DATABASE_URI",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "2",
+                      "name": "mlflow-auth-db-uri"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_FLASK_SERVER_SECRET_KEY",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-flask-secret"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_CRYPTO_KEK_PASSPHRASE",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-kek-passphrase"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_SERVER_CORS_ALLOWED_ORIGINS",
+                  "value": "https://research-mlflow-76571749286.us-central1.run.app"
+                },
+                {
+                  "name": "IPCCH_ASSISTANT_ENABLE",
+                  "value": "1"
+                },
+                {
+                  "name": "IPCCH_ASSISTANT_ENDPOINT",
+                  "value": "ipcch-assistant-gemini-enso"
+                },
+                {
+                  "name": "IPCCH_ASSISTANT_GUARD_CONFIG",
+                  "value": "/secrets/guard/guard.json"
+                },
+                {
+                  "name": "MLFLOW_TRACKING_USERNAME",
+                  "value": "ipcch-assistant"
+                },
+                {
+                  "name": "MLFLOW_GATEWAY_ROUTE_TIMEOUT_SECONDS",
+                  "value": "120"
+                },
+                {
+                  "name": "IPCCH_GUARD_DSN",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "guard-dsn"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_TRACKING_PASSWORD",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-assistant-password"
+                    }
+                  }
+                }
+              ],
+              "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:4cc5d93be9792a893e6f65492f6bafd94f2a91463906629c0c6d0eb0549e8cce",
+              "name": "service-1",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "2Gi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 1,
+                "periodSeconds": 240,
+                "tcpSocket": {
+                  "port": 8080
+                },
+                "timeoutSeconds": 240
+              },
+              "volumeMounts": [
+                {
+                  "mountPath": "/secrets/guard",
+                  "name": "guard-config-leb-muk"
+                }
+              ]
+            }
+          ],
+          "serviceAccountName": "research-mlflow@food-crisis-modeling-enso.iam.gserviceaccount.com",
+          "timeoutSeconds": 3600,
+          "volumes": [
+            {
+              "name": "guard-config-leb-muk",
+              "secret": {
+                "items": [
+                  {
+                    "key": "1",
+                    "path": "guard.json"
+                  }
+                ],
+                "secretName": "guard-config"
+              }
+            }
+          ]
+        },
+        "status": {
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-10-16T15:25:15.040209Z",
+              "message": "Deploying revision succeeded in 1m3.73s.",
+              "status": "True",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T15:25:09.258812Z",
+              "message": "Containers became healthy in 55.26s.",
+              "status": "True",
+              "type": "ContainerHealthy"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T15:24:12.031917Z",
+              "message": "Container image import completed.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T15:24:14.553912Z",
+              "message": "Provisioning imported containers completed in 2.53s. Checking container health. This will wait for up to 4m for the configured startup probe, including an initial delay of 0s.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            }
+          ],
+          "containerStatuses": [
+            {
+              "imageDigest": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:4cc5d93be9792a893e6f65492f6bafd94f2a91463906629c0c6d0eb0549e8cce",
+              "name": "service-1"
+            }
+          ],
+          "imageDigest": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:4cc5d93be9792a893e6f65492f6bafd94f2a91463906629c0c6d0eb0549e8cce",
+          "logUrl": "https://console.cloud.google.com/logs/viewer?project=food-crisis-modeling-enso&resource=cloud_run_revision/service_name/research-mlflow/revision_name/research-mlflow-00007-hld&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22research-mlflow%22%0Aresource.labels.revision_name%3D%22research-mlflow-00007-hld%22",
+          "observedGeneration": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Ready condition status changed to True for Revision research-mlflow-00007-hld with message: Deploying revision succeeded in 1m3.73s."
+      }
+    },
+    "receiveTimestamp": "2026-10-16T15:25:15.116046423Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-10-16T15:25:15.055792Z"
+  },
+  {
+    "insertId": "-ik8gadc4hg",
+    "logName": "projects/food-crisis-modeling-enso/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.ReplaceService",
+      "resourceName": "namespaces/food-crisis-modeling-enso/revisions/research-mlflow-00007-hld",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Revision",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Revision",
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "1",
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "562.0.0",
+            "run.googleapis.com/cloudsql-instances": "food-crisis-modeling-enso:us-central1:research-pg",
+            "run.googleapis.com/cpu-throttling": "true",
+            "run.googleapis.com/operation-id": "59eef7f2-371a-4e33-9e74-49adda5d7ca1",
+            "run.googleapis.com/startup-cpu-boost": "false",
+            "serving.knative.dev/creator": "weilun.shi@cgiar.org"
+          },
+          "creationTimestamp": "2026-10-16T15:24:11.312360Z",
+          "generation": 1,
+          "labels": {
+            "client.knative.dev/nonce": "ubegmnaexf",
+            "cloud.googleapis.com/location": "us-central1",
+            "restart-check": "20261016t1130",
+            "run.googleapis.com/startupProbeType": "Default",
+            "serving.knative.dev/configuration": "research-mlflow",
+            "serving.knative.dev/configurationGeneration": "7",
+            "serving.knative.dev/route": "research-mlflow",
+            "serving.knative.dev/service": "research-mlflow",
+            "serving.knative.dev/serviceUid": "f15d0436-8972-4a16-87a6-40868a3b1c5f",
+            "task": "gcp-research-modeling-migration"
+          },
+          "name": "research-mlflow-00007-hld",
+          "namespace": "76571749286",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Configuration",
+              "name": "research-mlflow",
+              "uid": "4761b172-ef35-447e-8499-f795d9290756"
+            }
+          ],
+          "resourceVersion": "AAZd9sV4A/o",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/76571749286/revisions/research-mlflow-00007-hld",
+          "uid": "49c8e48c-6cca-4aeb-b253-f3e672bb1ff6"
+        },
+        "spec": {
+          "containerConcurrency": 40,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "MLFLOW_ARTIFACTS_DESTINATION",
+                  "value": "gs://food-crisis-modeling-enso-research-artifacts/mlflow-artifacts"
+                },
+                {
+                  "name": "MLFLOW_BASIC_AUTH_FAIL_CLOSED",
+                  "value": "true"
+                },
+                {
+                  "name": "IPCCH_ALLOWED_HOSTS",
+                  "value": "research-mlflow-76571749286.us-central1.run.app,127.0.0.1:8080,localhost:8080"
+                },
+                {
+                  "name": "MLFLOW_BACKEND_STORE_URI",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "2",
+                      "name": "mlflow-backend-uri"
+                    }
+                  }
+                },
+                {
+                  "name": "IPCCH_AUTH_DATABASE_URI",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "2",
+                      "name": "mlflow-auth-db-uri"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_FLASK_SERVER_SECRET_KEY",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-flask-secret"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_CRYPTO_KEK_PASSPHRASE",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-kek-passphrase"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_SERVER_CORS_ALLOWED_ORIGINS",
+                  "value": "https://research-mlflow-76571749286.us-central1.run.app"
+                },
+                {
+                  "name": "IPCCH_ASSISTANT_ENABLE",
+                  "value": "1"
+                },
+                {
+                  "name": "IPCCH_ASSISTANT_ENDPOINT",
+                  "value": "ipcch-assistant-gemini-enso"
+                },
+                {
+                  "name": "IPCCH_ASSISTANT_GUARD_CONFIG",
+                  "value": "/secrets/guard/guard.json"
+                },
+                {
+                  "name": "MLFLOW_TRACKING_USERNAME",
+                  "value": "ipcch-assistant"
+                },
+                {
+                  "name": "MLFLOW_GATEWAY_ROUTE_TIMEOUT_SECONDS",
+                  "value": "120"
+                },
+                {
+                  "name": "IPCCH_GUARD_DSN",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "guard-dsn"
+                    }
+                  }
+                },
+                {
+                  "name": "MLFLOW_TRACKING_PASSWORD",
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "1",
+                      "name": "mlflow-assistant-password"
+                    }
+                  }
+                }
+              ],
+              "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:4cc5d93be9792a893e6f65492f6bafd94f2a91463906629c0c6d0eb0549e8cce",
+              "name": "service-1",
+              "ports": [
+                {
+                  "containerPort": 8080,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "2Gi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 1,
+                "periodSeconds": 240,
+                "tcpSocket": {
+                  "port": 8080
+                },
+                "timeoutSeconds": 240
+              },
+              "volumeMounts": [
+                {
+                  "mountPath": "/secrets/guard",
+                  "name": "guard-config-leb-muk"
+                }
+              ]
+            }
+          ],
+          "serviceAccountName": "research-mlflow@food-crisis-modeling-enso.iam.gserviceaccount.com",
+          "timeoutSeconds": 3600,
+          "volumes": [
+            {
+              "name": "guard-config-leb-muk",
+              "secret": {
+                "items": [
+                  {
+                    "key": "1",
+                    "path": "guard.json"
+                  }
+                ],
+                "secretName": "guard-config"
+              }
+            }
+          ]
+        },
+        "status": {
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-10-16T15:25:16.578810Z",
+              "message": "Deploying revision succeeded in 1m5.27s.",
+              "status": "True",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T15:25:15.193261Z",
+              "severity": "Info",
+              "status": "True",
+              "type": "Active"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T15:25:09.258812Z",
+              "message": "Containers became healthy in 55.26s.",
+              "status": "True",
+              "type": "ContainerHealthy"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T15:24:12.031917Z",
+              "message": "Container image import completed.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-10-16T15:24:14.553912Z",
+              "message": "Provisioning imported containers completed in 2.53s. Checking container health. This will wait for up to 4m for the configured startup probe, including an initial delay of 0s.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            }
+          ],
+          "containerStatuses": [
+            {
+              "imageDigest": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:4cc5d93be9792a893e6f65492f6bafd94f2a91463906629c0c6d0eb0549e8cce",
+              "name": "service-1"
+            }
+          ],
+          "imageDigest": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:4cc5d93be9792a893e6f65492f6bafd94f2a91463906629c0c6d0eb0549e8cce",
+          "logUrl": "https://console.cloud.google.com/logs/viewer?project=food-crisis-modeling-enso&resource=cloud_run_revision/service_name/research-mlflow/revision_name/research-mlflow-00007-hld&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22research-mlflow%22%0Aresource.labels.revision_name%3D%22research-mlflow-00007-hld%22",
+          "observedGeneration": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Ready condition status changed to True for Revision research-mlflow-00007-hld with message: Deploying revision succeeded in 1m5.27s."
+      }
+    },
+    "receiveTimestamp": "2026-10-16T15:25:17.474652241Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-10-16T15:25:16.594515Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "4.126497819s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "684",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches",
+      "responseSize": "534",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e0000bef61e711ef65",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:20.787538357Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "003c56cccea4ba63",
+    "timestamp": "2026-10-16T15:25:16.644945Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/9478f6ccb1e0da1e5ecae4a2f6e4b568",
+    "traceSampled": true
+  },
+  {
+    "insertId": "6ad241e0000be6e6a19fc5fd",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:20.792878174Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:20 INFO:     169.254.169.126:64340 - \"GET /api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:20.780006Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.259120589s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "692",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches%2F2022",
+      "responseSize": "593",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e100044205f189bba2",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:21.455779561Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "57990639ba985a9b",
+    "timestamp": "2026-10-16T15:25:21.018268Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/e21cab6215b1890d5ecae4a2f6e4bf42"
+  },
+  {
+    "insertId": "6ad241e100043c4480ddae99",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:21.451697323Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:21 INFO:     169.254.169.126:64354 - \"GET /api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches%2F2022 HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:21.277572Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "1.139125373s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "692",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches%2F2023",
+      "responseSize": "593",
+      "serverIp": "34.143.76.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e20007fa014783724d",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:22.786934494Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "7a2c5fcc1cb4a3e0",
+    "timestamp": "2026-10-16T15:25:21.381748Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/0e2d3523dea34f8a5fb6acaf4da87727"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.589976359s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "674",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2022/fit_keys.csv.gz",
+      "responseSize": "3074",
+      "serverIp": "34.143.73.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e1000ee1312bb78dec",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:22.121376186Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "bb205eb8c0e13245",
+    "timestamp": "2026-10-16T15:25:21.383588Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/2ae61f3411e7b5444b6c3356b840d114"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.893334805s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "676",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2022/batch_record.json",
+      "responseSize": "1705",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e200044503167da602",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:22.450962628Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "1647f4b123b271a3",
+    "timestamp": "2026-10-16T15:25:21.384749Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/400b0a87d83562fd5ecae4a2f6e4bf00"
+  },
+  {
+    "httpRequest": {
+      "latency": "1.049229318s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "675",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2022/predictions.csv",
+      "responseSize": "313016",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e20006bd918a613f2e",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:22.450962628Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "e6ac19483c18e424",
+    "timestamp": "2026-10-16T15:25:21.390445Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/951f4fdd99cd487bd0d60e0b1e480aba"
+  },
+  {
+    "insertId": "6ad241e1000ed419e5a14579",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:22.123161495Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:21 INFO:     169.254.169.126:64380 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2022/fit_keys.csv.gz HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:21.971801Z"
+  },
+  {
+    "insertId": "6ad241e200042ee791ed9534",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:22.450820528Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:22 INFO:     169.254.169.126:64384 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2022/batch_record.json HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:22.274151Z"
+  },
+  {
+    "insertId": "6ad241e20006ad1df8bb1175",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:22.450820528Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:22 INFO:     169.254.169.126:64392 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2022/predictions.csv HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:22.437533Z"
+  },
+  {
+    "insertId": "6ad241e20007f4b0e7541c87",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:22.782629717Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:22 INFO:     169.254.169.126:64370 - \"GET /api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches%2F2023 HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:22.521392Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.568359078s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "675",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2023/fit_keys.csv.gz",
+      "responseSize": "4996",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e30002b3d3a3d5b1c1",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:23.451735456Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "e75580ef24615261",
+    "timestamp": "2026-10-16T15:25:22.606868Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/5392f215a88e6049d0d60e0b1e4803a6"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.566479208s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "675",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2023/batch_record.json",
+      "responseSize": "1691",
+      "serverIp": "34.143.76.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e30002ad41385f07c3",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:23.451735456Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "4d88765fc38e40bf",
+    "timestamp": "2026-10-16T15:25:22.606972Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/2755d653af6299be5fb6acaf4da87716"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.642435408s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "674",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2023/predictions.csv",
+      "responseSize": "323328",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e30003edb9a8e1e7c4",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:23.451735456Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "ff9b7142cb05f9c6",
+    "timestamp": "2026-10-16T15:25:22.613431Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/79c5157ab2848c805ecae4a2f6e4bdf8"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.905973179s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "692",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches%2F2024",
+      "responseSize": "593",
+      "serverIp": "34.143.73.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e30007f604a5a3c814",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:23.784002011Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "29a7be9849b3ec00",
+    "timestamp": "2026-10-16T15:25:22.614304Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/2aa490f667ca2c954b6c3356b840debb"
+  },
+  {
+    "insertId": "6ad241e3000282c3aaea58db",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:23.449708690Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:23 INFO:     169.254.169.126:64418 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2023/fit_keys.csv.gz HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:23.164547Z"
+  },
+  {
+    "insertId": "6ad241e300029a404f1be346",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:23.449708690Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:23 INFO:     169.254.169.126:64406 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2023/batch_record.json HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:23.170560Z"
+  },
+  {
+    "insertId": "6ad241e30003dd5e4cbf255a",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:23.449708690Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:23 INFO:     169.254.169.126:64428 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2023/predictions.csv HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:23.253278Z"
+  },
+  {
+    "insertId": "6ad241e30007ef9dd42250ed",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:23.781580703Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:23 INFO:     169.254.169.126:64440 - \"GET /api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches%2F2024 HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:23.520093Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.358672893s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "677",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2024/batch_record.json",
+      "responseSize": "1675",
+      "serverIp": "34.143.73.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e40000ab43326f808f",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:24.117537174Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "8dc786f8f8cdbc91",
+    "timestamp": "2026-10-16T15:25:23.682983Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/a4547b35ec21e0de4b6c3356b840d6a4"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.505579741s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "675",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2024/fit_keys.csv.gz",
+      "responseSize": "9132",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e40002f27078d979d8",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:24.451599655Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "29b996cef30b9a0a",
+    "timestamp": "2026-10-16T15:25:23.685868Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/e6e2d0bbf5ece2945ecae4a2f6e4bf66"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.513012681s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "674",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2024/predictions.csv",
+      "responseSize": "183164",
+      "serverIp": "34.143.76.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e4000324c01662951e",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:24.451599655Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "dedb30453cf53e04",
+    "timestamp": "2026-10-16T15:25:23.690977Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/c37fef5a622de7bca9338112f6135210"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.793427255s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "691",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches%2F2025",
+      "responseSize": "594",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e40007fa51693bd183",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:24.784346930Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "d9737755d36e5911",
+    "timestamp": "2026-10-16T15:25:23.727664Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/91eeea3a4ab389ecd0d60e0b1e48086f"
+  },
+  {
+    "insertId": "6ad241e40000916f2cfd5cf3",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:24.115494807Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:24 INFO:     169.254.169.126:39742 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2024/batch_record.json HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:24.037231Z"
+  },
+  {
+    "insertId": "6ad241e40002e4764b59e7dc",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:24.451424597Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:24 INFO:     169.254.169.126:39752 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2024/fit_keys.csv.gz HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:24.189558Z"
+  },
+  {
+    "insertId": "6ad241e4000312ec19d0101c",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:24.451424597Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:24 INFO:     169.254.169.126:39764 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2024/predictions.csv HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:24.201452Z"
+  },
+  {
+    "insertId": "6ad241e40007f5737e5c9275",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:24.794150759Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:24 INFO:     169.254.169.126:39776 - \"GET /api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Fdeps%2Fresults%2Fexperiments%2Fcompact_climate_weather_oracle_v1_somalia_local%2Fruns%2Fcompact_weather_oracle%2F6m%2Fbatches%2F2025 HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:24.521587Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.610615429s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "674",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2025/fit_keys.csv.gz",
+      "responseSize": "12778",
+      "serverIp": "34.143.76.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e50003a35cf7e8550c",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:25.452331107Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "5d4bcaf07ec91d9f",
+    "timestamp": "2026-10-16T15:25:24.626053Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/c049bb53d9f0be70a9338112f613576b"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.688460862s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "664",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/run_metadata.json",
+      "responseSize": "26485",
+      "serverIp": "34.143.73.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e50004f85a57d65bda",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:25.452331107Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "d5297052650dd1ff",
+    "timestamp": "2026-10-16T15:25:24.634763Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/92a0310d6e31f2424b6c3356b840d06a"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.574738533s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "559",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/routing.csv",
+      "responseSize": "85532",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e500033c27a454408a",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:25.452331107Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "ac9231035766da81",
+    "timestamp": "2026-10-16T15:25:24.635327Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/4a1b526b5cf8b8ba73f8077540bf8d3b"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.574539543s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "676",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2025/batch_record.json",
+      "responseSize": "1707",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e500033c23e189882f",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:25.452331107Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "eaa7c8d802a75d95",
+    "timestamp": "2026-10-16T15:25:24.635363Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/d20f2ee16aa7c89dd0d60e0b1e480ca5"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.884522446s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "566",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Floader",
+      "responseSize": "396",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e50007fc964fc583bc",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:25.783231188Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "5ea8a14d9060620c",
+    "timestamp": "2026-10-16T15:25:24.635706Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/5442f7d737912b9115430a99522f3aec"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.709570258s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "674",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2025/predictions.csv",
+      "responseSize": "490142",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e500055135dd60fa1c",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:25.452331107Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "af40ef7a289deb82",
+    "timestamp": "2026-10-16T15:25:24.635939Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/de9f4ac3896d91835ecae4a2f6e4ba34"
+  },
+  {
+    "insertId": "6ad241e50002ca7dae13821d",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:25.447311707Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:25 INFO:     169.254.169.126:39800 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2025/batch_record.json HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:25.182909Z"
+  },
+  {
+    "insertId": "6ad241e500032bf20eb3df5f",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:25.447311707Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:25 INFO:     169.254.169.126:39802 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/routing.csv HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:25.207858Z"
+  },
+  {
+    "insertId": "6ad241e500037e5a36c34a8a",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:25.447311707Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:25 INFO:     169.254.169.126:39786 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2025/fit_keys.csv.gz HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:25.228954Z"
+  },
+  {
+    "insertId": "6ad241e50004d0946a93ff71",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:25.447311707Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:25 INFO:     169.254.169.126:39824 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/run_metadata.json HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:25.315540Z"
+  },
+  {
+    "insertId": "6ad241e500052712259f10d1",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:25.447311707Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:25 INFO:     169.254.169.126:39830 - \"GET /api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/deps/results/experiments/compact_climate_weather_oracle_v1_somalia_local/runs/compact_weather_oracle/6m/batches/2025/predictions.csv HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:25.337682Z"
+  },
+  {
+    "insertId": "6ad241e50007f8d995e3a85c",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-16T15:25:25.782456167Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "2026/10/16 15:25:25 INFO:     169.254.169.126:39844 - \"GET /api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Floader HTTP/1.1\" 200 OK",
+    "timestamp": "2026-10-16T15:25:25.522457Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.585168392s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "568",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts?path=workspaces%2Fdefault%2F8%2F3eb5b025184a43d08a3e71603e0452a8%2Fartifacts%2Fpackage%2Freference",
+      "responseSize": "491",
+      "serverIp": "34.143.73.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e60004292745f34154",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:26.448407375Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "0e5624074552e956",
+    "timestamp": "2026-10-16T15:25:25.685473Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/49a29c53d7dba08970464c1d2f983f09"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.300087375s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "555",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/package.json",
+      "responseSize": "19000",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e5000f11ed5cd330e0",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:26.114936646Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "dc15834a0d8e6ce0",
+    "timestamp": "2026-10-16T15:25:25.686102Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/dc23290198fd5d255818273d8cae4f42"
+  },
+  {
+    "httpRequest": {
+      "latency": "0.301225935s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "173.73.45.149",
+      "requestMethod": "GET",
+      "requestSize": "557",
+      "requestUrl": "https://research-mlflow-76571749286.us-central1.run.app/api/2.0/mlflow-artifacts/artifacts/workspaces/default/8/3eb5b025184a43d08a3e71603e0452a8/artifacts/package/loader/entry.py",
+      "responseSize": "3608",
+      "serverIp": "34.143.79.2",
+      "status": 200,
+      "userAgent": "mlflow-python-client/3.17.0"
+    },
+    "insertId": "6ad241e5000f1f2b168f88cd",
+    "labels": {
+      "instanceId": "0010dd8607b9aa06328b242cce564f054b0e15ea1551ff5d6f30ab161aa20e249ac639c3112964a1ba8ab6a3f9e88ec3ec5254fc7df61f421335f3116561d07c806c04a0e313558b49fff6597e44bb24246bcab07acdf6",
+      "restart-check": "20261016t1130",
+      "task": "gcp-research-modeling-migration"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-16T15:25:26.114936646Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "research-mlflow",
+        "location": "us-central1",
+        "project_id": "food-crisis-modeling-enso",
+        "revision_name": "research-mlflow-00007-hld",
+        "service_name": "research-mlflow"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "9ca70d2bbaaf2d4d",
+    "timestamp": "2026-10-16T15:25:25.688343Z",
+    "trace": "projects/food-crisis-modeling-enso/traces/f54a71e46e34940a5ecae4a2f6e4bb5c"
+  }
+]

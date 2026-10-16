@@ -1,0 +1,2837 @@
+[
+  {
+    "insertId": "oggzkre1sot2",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "QUEUED",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:15:39.525847394Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Waiting for job to be provisioned.",
+    "timestamp": "2026-10-16T15:15:38.776374742Z"
+  },
+  {
+    "insertId": "oggzkre1sot3",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:15:39.525847394Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Vertex AI is provisioning job running framework. First time usage might take couple of minutes, and subsequent runs can be much faster.",
+    "timestamp": "2026-10-16T15:15:38.791337613Z"
+  },
+  {
+    "insertId": "oggzkre1sot4",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:15:39.525847394Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Vertex AI is setting up this job.",
+    "timestamp": "2026-10-16T15:15:38.808036969Z"
+  },
+  {
+    "insertId": "oggzkre1sot5",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:15:39.525847394Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Waiting for training program to start.",
+    "timestamp": "2026-10-16T15:15:38.861422858Z"
+  },
+  {
+    "insertId": "oggzkre1soto",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "PREPARING",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:15:43.515919042Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job is preparing.",
+    "timestamp": "2026-10-16T15:15:42.601153898Z"
+  },
+  {
+    "insertId": "oggzkre1sp9f",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "RUNNING",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:18:54.551956886Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job is running.",
+    "timestamp": "2026-10-16T15:18:53.328165880Z"
+  },
+  {
+    "insertId": "ilh35seoz9xu",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026/10/16 15:19:31 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git SHA is not available. Error: Failed to initialize: Bad git executable.",
+    "timestamp": "2026-10-16T15:19:31.504682604Z"
+  },
+  {
+    "insertId": "ilh35seoz9xv",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "The git executable must be specified in one of the following ways:",
+    "timestamp": "2026-10-16T15:19:31.504745246Z"
+  },
+  {
+    "insertId": "ilh35seoz9xw",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be included in your $PATH",
+    "timestamp": "2026-10-16T15:19:31.504749379Z"
+  },
+  {
+    "insertId": "ilh35seoz9xx",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be set via $GIT_PYTHON_GIT_EXECUTABLE",
+    "timestamp": "2026-10-16T15:19:31.504752480Z"
+  },
+  {
+    "insertId": "ilh35seoz9xy",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- explicitly set via git.refresh(<full-path-to-git-executable>)",
+    "timestamp": "2026-10-16T15:19:31.504755187Z"
+  },
+  {
+    "insertId": "ilh35seoz9xz",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.496274434Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504757806Z"
+  },
+  {
+    "insertId": "ilh35seoz9y0",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "All git commands will error until this is rectified.",
+    "timestamp": "2026-10-16T15:19:31.504760393Z"
+  },
+  {
+    "insertId": "ilh35seoz9y1",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.496282401Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504764578Z"
+  },
+  {
+    "insertId": "ilh35seoz9y2",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "This initial message can be silenced or aggravated in the future by setting the",
+    "timestamp": "2026-10-16T15:19:31.504767977Z"
+  },
+  {
+    "insertId": "ilh35seoz9y3",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "$GIT_PYTHON_REFRESH environment variable. Use one of the following values:",
+    "timestamp": "2026-10-16T15:19:31.504772766Z"
+  },
+  {
+    "insertId": "ilh35seoz9y4",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- quiet|q|silence|s|silent|none|n|0: for no message or exception",
+    "timestamp": "2026-10-16T15:19:31.504775604Z"
+  },
+  {
+    "insertId": "ilh35seoz9y5",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)",
+    "timestamp": "2026-10-16T15:19:31.504778319Z"
+  },
+  {
+    "insertId": "ilh35seoz9y6",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- error|e|exception|raise|r|2: for a raised exception",
+    "timestamp": "2026-10-16T15:19:31.504781046Z"
+  },
+  {
+    "insertId": "ilh35seoz9y7",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.496300606Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504784143Z"
+  },
+  {
+    "insertId": "ilh35seoz9y8",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "Example:",
+    "timestamp": "2026-10-16T15:19:31.504787184Z"
+  },
+  {
+    "insertId": "ilh35seoz9y9",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "export GIT_PYTHON_REFRESH=quiet",
+    "timestamp": "2026-10-16T15:19:31.504789998Z"
+  },
+  {
+    "insertId": "ilh35seoz9ya",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.496307638Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504792705Z"
+  },
+  {
+    "insertId": "ilh35seoz9yb",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026/10/16 15:19:31 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git branch is not available. Error: Failed to initialize: Bad git executable.",
+    "timestamp": "2026-10-16T15:19:31.504795218Z"
+  },
+  {
+    "insertId": "ilh35seoz9yc",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "The git executable must be specified in one of the following ways:",
+    "timestamp": "2026-10-16T15:19:31.504797954Z"
+  },
+  {
+    "insertId": "ilh35seoz9yd",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be included in your $PATH",
+    "timestamp": "2026-10-16T15:19:31.504800786Z"
+  },
+  {
+    "insertId": "ilh35seoz9ye",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be set via $GIT_PYTHON_GIT_EXECUTABLE",
+    "timestamp": "2026-10-16T15:19:31.504803735Z"
+  },
+  {
+    "insertId": "ilh35seoz9yf",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- explicitly set via git.refresh(<full-path-to-git-executable>)",
+    "timestamp": "2026-10-16T15:19:31.504806504Z"
+  },
+  {
+    "insertId": "ilh35seoz9yg",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.49807039Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504809071Z"
+  },
+  {
+    "insertId": "ilh35seoz9yh",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "All git commands will error until this is rectified.",
+    "timestamp": "2026-10-16T15:19:31.504811818Z"
+  },
+  {
+    "insertId": "ilh35seoz9yi",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.498077697Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504815104Z"
+  },
+  {
+    "insertId": "ilh35seoz9yj",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "This initial message can be silenced or aggravated in the future by setting the",
+    "timestamp": "2026-10-16T15:19:31.504817396Z"
+  },
+  {
+    "insertId": "ilh35seoz9yk",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "$GIT_PYTHON_REFRESH environment variable. Use one of the following values:",
+    "timestamp": "2026-10-16T15:19:31.504821985Z"
+  },
+  {
+    "insertId": "ilh35seoz9yl",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- quiet|q|silence|s|silent|none|n|0: for no message or exception",
+    "timestamp": "2026-10-16T15:19:31.504824087Z"
+  },
+  {
+    "insertId": "ilh35seoz9ym",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)",
+    "timestamp": "2026-10-16T15:19:31.504826260Z"
+  },
+  {
+    "insertId": "ilh35seoz9yn",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- error|e|exception|raise|r|2: for a raised exception",
+    "timestamp": "2026-10-16T15:19:31.504828646Z"
+  },
+  {
+    "insertId": "ilh35seoz9yo",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.498102156Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504831177Z"
+  },
+  {
+    "insertId": "ilh35seoz9yp",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "Example:",
+    "timestamp": "2026-10-16T15:19:31.504833973Z"
+  },
+  {
+    "insertId": "ilh35seoz9yq",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "export GIT_PYTHON_REFRESH=quiet",
+    "timestamp": "2026-10-16T15:19:31.504836664Z"
+  },
+  {
+    "insertId": "ilh35seoz9yr",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.498113716Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504839300Z"
+  },
+  {
+    "insertId": "ilh35seoz9ys",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026/10/16 15:19:31 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git repository URL is not available. Error: Failed to initialize: Bad git executable.",
+    "timestamp": "2026-10-16T15:19:31.504841806Z"
+  },
+  {
+    "insertId": "ilh35seoz9yt",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "The git executable must be specified in one of the following ways:",
+    "timestamp": "2026-10-16T15:19:31.504844221Z"
+  },
+  {
+    "insertId": "ilh35seoz9yu",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be included in your $PATH",
+    "timestamp": "2026-10-16T15:19:31.504846178Z"
+  },
+  {
+    "insertId": "ilh35seoz9yv",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be set via $GIT_PYTHON_GIT_EXECUTABLE",
+    "timestamp": "2026-10-16T15:19:31.504848475Z"
+  },
+  {
+    "insertId": "ilh35seoz9yw",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- explicitly set via git.refresh(<full-path-to-git-executable>)",
+    "timestamp": "2026-10-16T15:19:31.504850698Z"
+  },
+  {
+    "insertId": "ilh35seoz9yx",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.499607161Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504852635Z"
+  },
+  {
+    "insertId": "ilh35seoz9yy",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "All git commands will error until this is rectified.",
+    "timestamp": "2026-10-16T15:19:31.504854924Z"
+  },
+  {
+    "insertId": "ilh35seoz9yz",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.499614524Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504856947Z"
+  },
+  {
+    "insertId": "ilh35seoz9z0",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "This initial message can be silenced or aggravated in the future by setting the",
+    "timestamp": "2026-10-16T15:19:31.504859086Z"
+  },
+  {
+    "insertId": "ilh35seoz9z1",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "$GIT_PYTHON_REFRESH environment variable. Use one of the following values:",
+    "timestamp": "2026-10-16T15:19:31.504860952Z"
+  },
+  {
+    "insertId": "ilh35seoz9z2",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- quiet|q|silence|s|silent|none|n|0: for no message or exception",
+    "timestamp": "2026-10-16T15:19:31.504863202Z"
+  },
+  {
+    "insertId": "ilh35seoz9z3",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)",
+    "timestamp": "2026-10-16T15:19:31.504865128Z"
+  },
+  {
+    "insertId": "ilh35seoz9z4",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- error|e|exception|raise|r|2: for a raised exception",
+    "timestamp": "2026-10-16T15:19:31.504868044Z"
+  },
+  {
+    "insertId": "ilh35seoz9z5",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.499701084Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504870266Z"
+  },
+  {
+    "insertId": "ilh35seoz9z6",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "Example:",
+    "timestamp": "2026-10-16T15:19:31.504872322Z"
+  },
+  {
+    "insertId": "ilh35seoz9z7",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "export GIT_PYTHON_REFRESH=quiet",
+    "timestamp": "2026-10-16T15:19:31.504874235Z"
+  },
+  {
+    "insertId": "ilh35seoz9z8",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:31.631815965Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:19:31.499726832Z stderr F",
+    "timestamp": "2026-10-16T15:19:31.504876393Z"
+  },
+  {
+    "insertId": "p0o6iqf2oigyq",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:46.631796284Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "🏃 View run 1 at: https://research-mlflow-76571749286.us-central1.run.app/#/experiments/7/runs/e7b283a6fa6d44348b59d247902983fa",
+    "timestamp": "2026-10-16T15:19:42.503945674Z"
+  },
+  {
+    "insertId": "p0o6iqf2oigyr",
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:46.631796284Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "🧪 View experiment at: https://research-mlflow-76571749286.us-central1.run.app/#/experiments/7",
+    "timestamp": "2026-10-16T15:19:42.503955729Z"
+  },
+  {
+    "insertId": "p0o6iqf2oigys",
+    "jsonPayload": {
+      "error": null,
+      "metrics": {
+        "crisis_f1": 0.8595505617977528,
+        "crisis_fn": 57,
+        "crisis_fp": 43,
+        "crisis_tp": 306,
+        "folds": 2,
+        "mean_q3_r2_projected": -0.10231514784372586,
+        "mean_q3_r2_raw": -0.10231514784372586
+      },
+      "status": "succeeded"
+    },
+    "labels": {
+      "compute.googleapis.com/resource_id": "7206744088203198805",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-432fe5d0-v7cq",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:19:46.631796284Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "timestamp": "2026-10-16T15:19:42.503961982Z"
+  },
+  {
+    "insertId": "oggzkre1sped",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:19:54.560063276Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Tearing down training program.",
+    "timestamp": "2026-10-16T15:19:53.914847063Z"
+  },
+  {
+    "insertId": "oggzkre1spqh",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:22:49.593470699Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Finished tearing down training program.",
+    "timestamp": "2026-10-16T15:22:48.762847009Z"
+  },
+  {
+    "insertId": "oggzkre1spqj",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "SUCCEEDED",
+      "ml.googleapis.com/trial_id": "1"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:22:49.593470699Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job completed successfully.",
+    "timestamp": "2026-10-16T15:22:49.210923856Z"
+  },
+  {
+    "insertId": "o7aomye1ht2i",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "QUEUED",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:24:11.533277897Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Waiting for job to be provisioned.",
+    "timestamp": "2026-10-16T15:24:10.549086256Z"
+  },
+  {
+    "insertId": "o7aomye1ht2j",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:24:11.533277897Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Vertex AI is provisioning job running framework. First time usage might take couple of minutes, and subsequent runs can be much faster.",
+    "timestamp": "2026-10-16T15:24:10.561069120Z"
+  },
+  {
+    "insertId": "o7aomye1ht2k",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:24:11.533277897Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Vertex AI is setting up this job.",
+    "timestamp": "2026-10-16T15:24:10.572145498Z"
+  },
+  {
+    "insertId": "o7aomye1ht2l",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:24:11.533277897Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Waiting for training program to start.",
+    "timestamp": "2026-10-16T15:24:10.634496259Z"
+  },
+  {
+    "insertId": "o7aomye1ht2r",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "PREPARING",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:24:12.525993832Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job is preparing.",
+    "timestamp": "2026-10-16T15:24:12.281981629Z"
+  },
+  {
+    "insertId": "o7aomye1htb1",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "RUNNING",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:26:11.675958073Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job is running.",
+    "timestamp": "2026-10-16T15:26:11.098274266Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsro",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026/10/16 15:28:21 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git SHA is not available. Error: Failed to initialize: Bad git executable.",
+    "timestamp": "2026-10-16T15:28:21.327655802Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsrp",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "The git executable must be specified in one of the following ways:",
+    "timestamp": "2026-10-16T15:28:21.327676386Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsrq",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be included in your $PATH",
+    "timestamp": "2026-10-16T15:28:21.327679566Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsrr",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be set via $GIT_PYTHON_GIT_EXECUTABLE",
+    "timestamp": "2026-10-16T15:28:21.327682548Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsrs",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- explicitly set via git.refresh(<full-path-to-git-executable>)",
+    "timestamp": "2026-10-16T15:28:21.327685416Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsrt",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.26802651Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327688014Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsru",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "All git commands will error until this is rectified.",
+    "timestamp": "2026-10-16T15:28:21.327690554Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsrv",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.268033636Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327693921Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsrw",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "This initial message can be silenced or aggravated in the future by setting the",
+    "timestamp": "2026-10-16T15:28:21.327728819Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsrx",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "$GIT_PYTHON_REFRESH environment variable. Use one of the following values:",
+    "timestamp": "2026-10-16T15:28:21.327731314Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsry",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- quiet|q|silence|s|silent|none|n|0: for no message or exception",
+    "timestamp": "2026-10-16T15:28:21.327733822Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsrz",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)",
+    "timestamp": "2026-10-16T15:28:21.327736158Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss0",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- error|e|exception|raise|r|2: for a raised exception",
+    "timestamp": "2026-10-16T15:28:21.327738981Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss1",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.268058127Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327741458Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss2",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "Example:",
+    "timestamp": "2026-10-16T15:28:21.327743758Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss3",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "export GIT_PYTHON_REFRESH=quiet",
+    "timestamp": "2026-10-16T15:28:21.327747759Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss4",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.268070038Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327750801Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss5",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026/10/16 15:28:21 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git branch is not available. Error: Failed to initialize: Bad git executable.",
+    "timestamp": "2026-10-16T15:28:21.327753041Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss6",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "The git executable must be specified in one of the following ways:",
+    "timestamp": "2026-10-16T15:28:21.327757428Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss7",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be included in your $PATH",
+    "timestamp": "2026-10-16T15:28:21.327759794Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss8",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be set via $GIT_PYTHON_GIT_EXECUTABLE",
+    "timestamp": "2026-10-16T15:28:21.327762652Z"
+  },
+  {
+    "insertId": "190bgnqfjlrss9",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- explicitly set via git.refresh(<full-path-to-git-executable>)",
+    "timestamp": "2026-10-16T15:28:21.327764840Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssa",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.270808153Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327767511Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssb",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "All git commands will error until this is rectified.",
+    "timestamp": "2026-10-16T15:28:21.327769993Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssc",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.270816802Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327772550Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssd",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "This initial message can be silenced or aggravated in the future by setting the",
+    "timestamp": "2026-10-16T15:28:21.327774823Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsse",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "$GIT_PYTHON_REFRESH environment variable. Use one of the following values:",
+    "timestamp": "2026-10-16T15:28:21.327777085Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssf",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- quiet|q|silence|s|silent|none|n|0: for no message or exception",
+    "timestamp": "2026-10-16T15:28:21.327780080Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssg",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)",
+    "timestamp": "2026-10-16T15:28:21.327782741Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssh",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- error|e|exception|raise|r|2: for a raised exception",
+    "timestamp": "2026-10-16T15:28:21.327785328Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssi",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.27084028Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327790493Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssj",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "Example:",
+    "timestamp": "2026-10-16T15:28:21.327792786Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssk",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "export GIT_PYTHON_REFRESH=quiet",
+    "timestamp": "2026-10-16T15:28:21.327795280Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssl",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.270871944Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327797998Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssm",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026/10/16 15:28:21 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git repository URL is not available. Error: Failed to initialize: Bad git executable.",
+    "timestamp": "2026-10-16T15:28:21.327800951Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssn",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "The git executable must be specified in one of the following ways:",
+    "timestamp": "2026-10-16T15:28:21.327803851Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsso",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be included in your $PATH",
+    "timestamp": "2026-10-16T15:28:21.327805847Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssp",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- be set via $GIT_PYTHON_GIT_EXECUTABLE",
+    "timestamp": "2026-10-16T15:28:21.327810471Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssq",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- explicitly set via git.refresh(<full-path-to-git-executable>)",
+    "timestamp": "2026-10-16T15:28:21.327813599Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssr",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.273303788Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327815975Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsss",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "All git commands will error until this is rectified.",
+    "timestamp": "2026-10-16T15:28:21.327818350Z"
+  },
+  {
+    "insertId": "190bgnqfjlrsst",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.273311429Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327820778Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssu",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "This initial message can be silenced or aggravated in the future by setting the",
+    "timestamp": "2026-10-16T15:28:21.327823050Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssv",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "$GIT_PYTHON_REFRESH environment variable. Use one of the following values:",
+    "timestamp": "2026-10-16T15:28:21.327825394Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssw",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- quiet|q|silence|s|silent|none|n|0: for no message or exception",
+    "timestamp": "2026-10-16T15:28:21.327828518Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssx",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)",
+    "timestamp": "2026-10-16T15:28:21.327831055Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssy",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "- error|e|exception|raise|r|2: for a raised exception",
+    "timestamp": "2026-10-16T15:28:21.327835022Z"
+  },
+  {
+    "insertId": "190bgnqfjlrssz",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.273367446Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327837621Z"
+  },
+  {
+    "insertId": "190bgnqfjlrst0",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "Example:",
+    "timestamp": "2026-10-16T15:28:21.327839892Z"
+  },
+  {
+    "insertId": "190bgnqfjlrst1",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "export GIT_PYTHON_REFRESH=quiet",
+    "timestamp": "2026-10-16T15:28:21.327843052Z"
+  },
+  {
+    "insertId": "190bgnqfjlrst2",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:21.452366150Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026-10-16T15:28:21.273377929Z stderr F",
+    "timestamp": "2026-10-16T15:28:21.327845808Z"
+  },
+  {
+    "insertId": "15s9lhffx9stv",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:41.542056347Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "🏃 View run 2 at: https://research-mlflow-76571749286.us-central1.run.app/#/experiments/7/runs/ec6088c6ad1643d0a3197fc4cda37489",
+    "timestamp": "2026-10-16T15:28:36.327186835Z"
+  },
+  {
+    "insertId": "15s9lhffx9stw",
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:41.542056347Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "🧪 View experiment at: https://research-mlflow-76571749286.us-central1.run.app/#/experiments/7",
+    "timestamp": "2026-10-16T15:28:36.327196100Z"
+  },
+  {
+    "insertId": "15s9lhffx9stx",
+    "jsonPayload": {
+      "error": null,
+      "metrics": {
+        "crisis_f1": 0.8595271210013908,
+        "crisis_fn": 54,
+        "crisis_fp": 47,
+        "crisis_tp": 309,
+        "folds": 2,
+        "mean_q3_r2_projected": -0.02643647689339257,
+        "mean_q3_r2_raw": -0.02643647689339257
+      },
+      "status": "succeeded"
+    },
+    "labels": {
+      "compute.googleapis.com/resource_id": "1876272834406252400",
+      "compute.googleapis.com/resource_name": "gk3-cml-1016-134230-7aee-nap-8ldvriwm-28a2bff5-kllc",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "8726300499432701952",
+      "ml.googleapis.com/task_name": "workerpool0-0",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-16T15:28:41.542056347Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "timestamp": "2026-10-16T15:28:36.327199518Z"
+  },
+  {
+    "insertId": "o7aomye1htng",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:28:42.841201669Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Tearing down training program.",
+    "timestamp": "2026-10-16T15:28:42.250780367Z"
+  }
+]

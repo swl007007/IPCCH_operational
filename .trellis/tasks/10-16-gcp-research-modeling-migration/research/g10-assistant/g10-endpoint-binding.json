@@ -1,0 +1,15 @@
+{
+ "time": "2026-10-16T11:44:29-0400",
+ "endpoint": "ipcch-assistant-gemini-enso",
+ "endpoint_id": "e-992fea289989480995fa0dd0be8c0b39",
+ "target_bound": true,
+ "expected": {
+  "project": "food-crisis-modeling-enso",
+  "location": "global",
+  "model": "gemini-3.8-flash"
+ },
+ "copied_old_endpoint": {
+  "endpoint_id": "e-9f0a333c965e4418ad1506f44bf12787",
+  "target_bound": "secret s-84c34d2bbdcf434abf9ea71ba4e4f8cc targets {'vertex_location': 'global', 'vertex_project': 'manuel-remote-sensing'}"
+ }
+}

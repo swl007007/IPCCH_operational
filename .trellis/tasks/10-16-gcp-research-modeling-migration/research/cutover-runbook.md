@@ -1,6 +1,6 @@
 # Cutover and fallback runbook (executor draft, 2026-10-16 ≈11:25 EDT; not executed)
 
-This is the reviewed plan for G12. Stopping the local service or changing the Cloudflare tunnel/DNS is a separately reviewed final operation (design: "Cutover and rollback"). Nothing below has been run unless marked **done**.
+This is the plan for G12, which the active approved goal authorizes; there is no additional user-go gate. Supervisor-reviewed: stop and disable `ipcch-mlflow.service` after all remaining ACs pass, provided the unit points at the inventoried local store. This is a reversible writer freeze within the migration. Cloudflare tunnel and DNS stay unchanged. Nothing below has been run unless marked **done**.
 
 ## 1. Current delta evidence (done)
 
@@ -22,20 +22,20 @@ None of it exists locally, and none of it is touched by any step below:
 - users `ipcch-jobwriter`, `ipcch-reader`, `ipcch-assistant` and roles `ipcch-readers` / `ipcch-job-writers`;
 - Gateway endpoint `ipcch-assistant-gemini-enso`, the guard ledger (database `guard`) and the temporary migration admin (removed after acceptance, see §6).
 
-## 3. Writer freeze and final delta (proposed; requires the user's go)
+## 3. Writer freeze and final delta (after all remaining ACs pass)
 
-1. Announce the freeze. The local service stays readable until step 2.
+1. Confirm the unit's identity: `systemctl --user cat ipcch-mlflow.service` must point at `~/.local/share/ipcch-mlflow` (the inventoried `mlflow.db`, `auth/basic_auth.db` and `artifacts/`).
 2. Stop the local writer and prevent restart: `systemctl --user stop ipcch-mlflow.service` and `systemctl --user disable ipcch-mlflow.service`. Note that `manage.sh stop` stops only the API, and `import.lock` excludes only the importer.
 3. Take snapshot r3 with the same read-only backup method under `umask 077` (directory 700, databases 600, like r1/r2), and compute the same keyed table delta versus r1. Then re-hash **every** one of the 3,569 frozen artifacts against the r1 manifest sha256 (r2 compared sizes only). The 14 disclosed `.pyc` files are the only allowed extras and are not deleted.
 4. **Decision:**
    - **Empty delta (only the 14 `.pyc` files may differ in the artifact tree):** cut over; nothing is imported.
    - **Non-empty delta:** stop. Enumerate the changed keys and prepare a keyed, additive delta for review. Never rerun `copy_store`, never reset its journal, and never overwrite cloud rows.
-5. Point users to `https://research-mlflow-76571749286.us-central1.run.app` (Basic auth; existing accounts unchanged). Changing `ipcch-cloudflared.service` or DNS is a separate reviewed operation.
+5. Point users to `https://research-mlflow-76571749286.us-central1.run.app` (Basic auth; existing accounts unchanged). The Cloudflare tunnel and DNS are not changed.
 
-## 4. Read-only fallback
+## 4. Fallback
 
-- **Before the user's go:** the local service remains the writable authority (design).
-- **After cutover:** restart the local service only for reads. Re-enable the unit with the local auth `default_permission` unchanged, and do not write to it. Any rollback that would make local writable again first exports the cloud's new writes (the keyed delta from r1 to the cloud) and never overwrites them with an old snapshot.
+- The original local service stays **stopped and disabled**, and the store is not written. Snapshots r1, r2 and r3 (private: directory 700, databases 600) and the untouched local store remain for read-only, offline inspection. No new read-only web server is created.
+- Any later writable rollback first preserves the cloud's additions: export the keyed delta from r1 to the cloud, then decide. Cloud writes are never overwritten with an old snapshot.
 
 ## 5. Archives eligible for cloud-only (exact verified roots only)
 
@@ -45,7 +45,7 @@ Eligible means every file was transferred create-only with a fresh sha256 equal 
 |---|---|---|---|---|---|
 | `/mnt/c/Users/swl00/geoxgb_runs/confirm-onset-v1` (accepted exception; full-system replay unavailable; pooled models packaged) | `gs://food-crisis-modeling-enso-research-inputs/fews-runs/confirm-onset-v1/` | 65 | 62,541,229 | ok | **ok 65/65** |
 | `/mnt/c/Users/swl00/geoxgb_runs/scen-b43ef6a-v1` (accepted exception) | `…/fews-runs/scen-b43ef6a-v1/` | 55,899 | per manifest | pending (running) | **pending (running)** |
-| The other 27 roots in `scratch/preservation/gate.json`: the d34/d37/d38 evidence roots, geoxgb-d26 … d52, geoxgb-v1, minirun-1/2, smoke-2, scen-b43ef6a-v1.failed_stage1, scen-b43ef6a-v1.actual-inputs-v1, the geoxgb_runs top-level files | `…/fews-runs/<root>/` | per gate (29 roots total 136,927 files, 76,973,948,308 bytes) | per gate | per root in `ledger/verify/fews-*.json` (to be completed) | not required (metadata + hash verify) |
+| The other 27 roots in `scratch/preservation/gate.json`: the d34/d37/d38 evidence roots, geoxgb-d26 … d52, geoxgb-v1, minirun-1/2, smoke-2, scen-b43ef6a-v1.failed_stage1, scen-b43ef6a-v1.actual-inputs-v1, the geoxgb_runs top-level files | `…/fews-runs/<root>/` | per gate (29 roots total 136,927 files, 76,973,948,308 bytes) | per gate | **ok: all 29 roots, 136,927 / 76,973,948,308 exact** (`ledger/verify/fews-*.json`, 11:25) | not required (metadata + hash verify) |
 
 **Declared inputs:** only the 122 exact inventory paths in `scratch/p1/input-inventory.json`, verified 122/122. These are **individual files**, not their parent trees.
 
@@ -55,6 +55,12 @@ Eligible means every file was transferred create-only with a fresh sha256 equal 
 
 ## 6. After acceptance (temporary admin removal)
 
-1. Run `temp_admin remove`. It requires this task's receipt, the task-labelled secret and an authenticating credential. It deletes exactly that user (before/after diff) and destroys its secret versions.
-2. Re-run the access matrix to show nothing else changed.
-3. The user then confirms their own login, which was already done at 10:35.
+1. Run `temp_admin remove`. It requires this task's receipt, the task-labelled secret and an authenticating credential. It deletes exactly that user directly in the auth store (before/after diff) and destroys its secret versions.
+2. **Credential-cache proof:** the restart was already done (revision 00007-hld), so no new revision is needed. After the 60 s cache TTL, the old credential must get 401. It is checked in memory only, never persisted or logged.
+3. **Post-removal access checks without the temporary admin:** `staging_access --direct` (anonymous) and `cloud_access --without-admin` (bec579d; never reads `mlflow-temp-admin`), using reader, job writer and assistant only.
+4. The user's personal login was already accepted (10:35); it is not asked again absent a regression.
+
+## 7. Gate status (honest, at writing)
+
+- **Done:** UI acceptance; access matrices; restart persistence (00006 → 00007: armed, guard rows kept, query settled); publish verify 223; reverse links 170 keyed; FEWS registry 29; FEWS archive verify 29 roots / 136,927 files / 76,973,948,308 bytes; confirm-onset bytes 65/65; AC8 both families; trials and provenance.
+- **Pending:** full 223 reader download + 4-image replay; scen archive bytes; SQL import 53/53 + geometry + capacity; HPT 2-trial retry; temporary-admin removal + post-removal checks; writer freeze + r3 keyed delta + artifact re-hash; native commit merge; close.

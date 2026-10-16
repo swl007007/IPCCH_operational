@@ -1,0 +1,63 @@
+[
+  {
+    "insertId": "o7aomye1htng",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:28:42.841201669Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Tearing down training program.",
+    "timestamp": "2026-10-16T15:28:42.250780367Z"
+  },
+  {
+    "insertId": "o7aomye1htu0",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:30:02.948135218Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Finished tearing down training program.",
+    "timestamp": "2026-10-16T15:30:01.957091100Z"
+  },
+  {
+    "insertId": "o7aomye1htu1",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "SUCCEEDED",
+      "ml.googleapis.com/trial_id": "2"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F8726300499432701952",
+    "receiveTimestamp": "2026-10-16T15:30:02.948135218Z",
+    "resource": {
+      "labels": {
+        "job_id": "8726300499432701952",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job completed successfully.",
+    "timestamp": "2026-10-16T15:30:02.430484689Z"
+  }
+]

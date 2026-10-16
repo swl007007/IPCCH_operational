@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 11:10 EDT
+# Executor state (continuation record), updated 2026-10-16 11:46 EDT
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `fc11c69`; a separate worktree `control-plane-inputs-fix` (branch `transfer-inventory-status`, 760e763) holds the corrected transfer.py and must be merged after the driver ends. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `34a83ca`; a separate worktree `control-plane-inputs-fix` (branch `transfer-inventory-status`, 760e763) holds the corrected transfer.py and must be merged after the driver ends. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -73,16 +73,14 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - `scratch/p1/fews/` (hash cache, catalog, search report);
   - `scratch/p1/popv1_models.json`.
 - **SKU catalogs:** `scratch/p3/skus/*.json`.
-- **Live handles at 11:10 (do not duplicate; poll logs):**
-  - Cloud SQL Auth Proxy PID 4174282 (127.0.0.1:5433); loopback IAM proxy PID 570218 (127.0.0.1:8091, now only for IAM-header tests).
-  - Cloud SQL input import PID 220361 (`ledger/sql-import/run.log`; 45/53 verified, no failures; geometry + capacity follow).
-  - FEWS 29-root fresh verify (`ledger/verify/verify-fews.sh`, PID 1064814; `ledger/verify/fews-run.log`; geoxgb-v1 retry already 3,612/3,612).
-  - Full 223 package SDK download as reader (PID 1194340; `ledger/publish/download-all.log`, out `scratch/pkg-download-all`; then 4-image replay of the downloaded copies, not yet started).
-  - Reverse links apply then verify (PID 1197691; `ledger/links/{apply,verify}.json`; then reconcile the keyed set of 170 versions + source runs).
-  - Exception archive downloads (`ledger/verify/archive-download.sh`; confirm-onset-v1 65/65 done; scen-b43ef6a-v1 PID 1266277 running; resume with `--resume` if it fails).
-  - FEWS registry entries apply then verify (PID 1309435; `ledger/fews-registry/{apply,verify}.json`; pilot entry already created).
-  - Build `ba804b1d…` training-ipcch at fdbe6d1 (train-entry) **SUCCESS**, digest sha256:6ad7f46ce03ed3e2db9533d77de87609572dee9a632b3b7b8c431e7fdab16a91; next: confirm its self-check log lines, regenerate the HPT spec with `--entry /usr/local/bin/train-entry` and the new digest, new reservation, guarded submit.
-  - Cloud Run research-mlflow revision 00006-wrw (assistant armed, credential cache, CORS origin, concurrency 40, allUsers invoker).
+- **Live handles at 11:46 (do not duplicate; poll logs):**
+  - Cloud SQL Auth Proxy PID 4174282 (127.0.0.1:5433); loopback IAM proxy PID 570218 (127.0.0.1:8091).
+  - Cloud SQL input import PID 220361 (`ledger/sql-import/run.log`; 48/53 verified, no failures; geometry + capacity follow in the same process).
+  - Full 223 package SDK download as reader PID 1194340 (`ledger/publish/download-all.log`, out `scratch/pkg-download-all`; 153/223 at 11:46). Next: `rootfs_replay` for the 4 images (28/53/86/56) over `scratch/pkg-download-all/packages`.
+  - scen-b43ef6a-v1 archive byte download PID 1266277 (`ledger/verify/archive-download.sh`; 40 GB so far; report `ledger/verify/archive-download-scen-b43ef6a-v1.json`; if it fails, rerun with `--resume`).
+  - HPT attempt 3 `hyperparameterTuningJobs/4058600960639893504` (operation `G11-vertex-ipcch-hpt2-3`, poll `ledger/vertex/ipcch-hpt2-3/poll.log`, spec `scratch/vertex/jobs/spec-ipcch-hpt2-linked-3.json`, parent run 023613b4…; study deadline 3000 s, per-trial SIGALRM 900 s).
+  - Cloud Run research-mlflow revision **00007-hld** (armed; restart check done).
+  - Finished this hour: FEWS 29-root verify (136,927 / 76,973,948,308 exact), reverse links (170 keyed), FEWS registry (29 READY), HPT attempt 2 (CANCELLED by provider after both trials trained and reported; both linked and replayed), G10 keyed guard ledger (5 rows, 7 fields equal) and `g10-endpoint-binding.json`.
 - **Operator ledger and receipts:**
   - `ledger/spend.sqlite`: platform 2026-10 reserved USD 76.31 (15 operations: incl. G10 allocation 10, exception archive 5.16, package downloads 1.47, publish copies 0.33), training pool 6 operations (FEWS trial 1 failed + 2 ok, IPCCH trial ok, HPT failed, HPT probe cancelled), no actuals. The ledger balance is not plan headroom.
   - Sanitized receipts: `ledger/provision-receipt.json`, `ledger/db-roles-receipt.json`, `ledger/uri-rebind-receipt.json`, `ledger/temp-admin-receipt.json`, `ledger/mlflow-identities-receipt.json`, `ledger/g10-assistant-receipt.json`, `ledger/vertex/*/`, `scratch/ac8/run-*/report.json`, `scratch/trial-packages/{download,replays,provenance}.json`.
@@ -148,7 +146,7 @@ Somalia v1, window-probe comparators, pop-v1, FEWS NET coverage, the URI map, se
 ## Acceptance status at 11:10 (what is done vs open)
 
 - **Done with evidence:** user UI acceptance (personal login/navigation/speed); access 17/17 anonymous + 32/32 principals direct; credential-cache invalidation 18/18; publish `--verify` 223/15,477; image sandbox replays 223/223 of local packages; AC8 clean WSL runs FEWS + IPCCH ok; FEWS/IPCCH Vertex trials with emitted provenance = submissions and downloaded-package replays (200 / 48 rows); G10 armed, query settled (USD 0.0146), deny probe (model self-refused; allowlist not exercised live, rehearsal + startup marker only); legacy largest artifact download; confirm-onset archive bytes 65/65.
-- **Open:** full 223 reader download + 4-image replay; reverse-link verify keyed reconciliation; FEWS registry verify (29); scen archive bytes; SQL import 53/53 + geometry + capacity; FEWS 29-root final verify; HPT 2-trial retry on the fdbe6d1 image; AC4 restart persistence (permissions/guard after a new revision); MLflow run metric/param comparison persisted for the trials; cutover plan (keyed r1 vs fresh local delta, writer freeze, fallback); temp admin removal after acceptance; merge native commits; close.
+- **Open (11:46):** full 223 reader download + 4-image replay; HPT attempt 3 terminal + harvest; SQL 53/53 + geometry + capacity; scen archive bytes; revised full quote; researcher runbook (own Basic credentials); temp-admin removal + post-removal checks on rev 00007; writer freeze + r3 + artifact re-hash; native merge; close. Previously listed: reverse-link verify keyed reconciliation; FEWS registry verify (29); scen archive bytes; SQL import 53/53 + geometry + capacity; FEWS 29-root final verify; HPT 2-trial retry on the fdbe6d1 image; AC4 restart persistence (permissions/guard after a new revision); MLflow run metric/param comparison persisted for the trials; cutover plan (keyed r1 vs fresh local delta, writer freeze, fallback); temp admin removal after acceptance; merge native commits; close.
 
 ## Open user questions
 

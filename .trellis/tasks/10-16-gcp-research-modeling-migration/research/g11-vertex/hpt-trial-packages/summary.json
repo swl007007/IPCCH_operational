@@ -1,0 +1,28 @@
+{
+ "download": {
+  "hpt-trial-1": {
+   "run_id": "e7b283a6fa6d44348b59d247902983fa",
+   "package_json_sha256": "adb5a4833fa3000773a02c4ca5024b87c10df3ba1616c27b3b1e27fd02d92fbc"
+  },
+  "hpt-trial-2": {
+   "run_id": "ec6088c6ad1643d0a3197fc4cda37489",
+   "package_json_sha256": "73781bc45723859349085caa2f4dd74bc1fea7a612839e97ad89a0edbc1b63f4"
+  }
+ },
+ "replays": {
+  "hpt-trial-1": {
+   "rc": 0,
+   "passed": true,
+   "rows": 48,
+   "package_json_sha256": "adb5a4833fa3000773a02c4ca5024b87c10df3ba1616c27b3b1e27fd02d92fbc",
+   "image": "training-ipcch@sha256:6ad7f46c (fdbe6d1)"
+  },
+  "hpt-trial-2": {
+   "rc": 0,
+   "passed": true,
+   "rows": 48,
+   "package_json_sha256": "73781bc45723859349085caa2f4dd74bc1fea7a612839e97ad89a0edbc1b63f4",
+   "image": "training-ipcch@sha256:6ad7f46c (fdbe6d1)"
+  }
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "saved_ids": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "current_ids": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "extra_current_rows": [],
+ "keyed": [
+  {
+   "id": 1,
+   "saved_from": "registered copy: query (rev 00006)",
+   "saved": {
+    "id": "1",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.00712950",
+    "prompt_tokens": "4463",
+    "output_tokens": "58",
+    "thought_tokens": "34"
+   },
+   "current": {
+    "id": "1",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.00712950",
+    "prompt_tokens": "4463",
+    "output_tokens": "58",
+    "thought_tokens": "34"
+   },
+   "equal_all_7": true
+  },
+  {
+   "id": 2,
+   "saved_from": "registered copy: query (rev 00006)",
+   "saved": {
+    "id": "2",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.00748200",
+    "prompt_tokens": "4683",
+    "output_tokens": "61",
+    "thought_tokens": "0"
+   },
+   "current": {
+    "id": "2",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.00748200",
+    "prompt_tokens": "4683",
+    "output_tokens": "61",
+    "thought_tokens": "0"
+   },
+   "equal_all_7": true
+  },
+  {
+   "id": 3,
+   "saved_from": "live receipt: deny_probe (rev 00006)",
+   "saved": {
+    "id": "3",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.01014600",
+    "prompt_tokens": "4529",
+    "output_tokens": "447",
+    "thought_tokens": "349"
+   },
+   "current": {
+    "id": "3",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.01014600",
+    "prompt_tokens": "4529",
+    "output_tokens": "447",
+    "thought_tokens": "349"
+   },
+   "equal_all_7": true
+  },
+  {
+   "id": 4,
+   "saved_from": "live receipt: query (rev 00007)",
+   "saved": {
+    "id": "4",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.00832200",
+    "prompt_tokens": "4463",
+    "output_tokens": "217",
+    "thought_tokens": "193"
+   },
+   "current": {
+    "id": "4",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.00832200",
+    "prompt_tokens": "4463",
+    "output_tokens": "217",
+    "thought_tokens": "193"
+   },
+   "equal_all_7": true
+  },
+  {
+   "id": 5,
+   "saved_from": "live receipt: query (rev 00007)",
+   "saved": {
+    "id": "5",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.00755700",
+    "prompt_tokens": "4683",
+    "output_tokens": "71",
+    "thought_tokens": "0"
+   },
+   "current": {
+    "id": "5",
+    "status": "settled",
+    "reserved_usd": "1.69574400",
+    "actual_usd": "0.00755700",
+    "prompt_tokens": "4683",
+    "output_tokens": "71",
+    "thought_tokens": "0"
+   },
+   "equal_all_7": true
+  }
+ ],
+ "mismatches": [],
+ "actual_total_usd": "0.0406365"
+}
