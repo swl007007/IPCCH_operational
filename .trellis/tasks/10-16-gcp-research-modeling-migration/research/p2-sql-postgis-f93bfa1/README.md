@@ -7,7 +7,11 @@ These are disposable-PG rehearsal results: PostgreSQL 16 with PostGIS 3.5.0 at `
 - **Reconciliation:** 53 expected and 53 verified. The stale_receipt, failed, not_imported and verified_but_table_absent lists are all empty.
 - **Verification:** every cell is compared, with floats exact and NULL positions exact. Source bytes total 13,763,421,380.
 - **Irregular row:** the single FEWS outcome irregular row is preserved in `fewsnet.outcome_ea382f78__irregular_rows` (source row 302949, `System.IO.MemoryStream`).
-- **Key-profile coverage:** 26 of 53 tables have a source key profile. All 26 agree with the profile: 0 duplicate rows and 0 null/empty keys in SQL. The other 27 have no profile. They are row- and cell-verified only, with no key semantics invented:
+- **Key-profile coverage:** 26 of 53 tables have a source key profile, and all 26 agree with it exactly (`agrees_with_profile`). The source key anomalies are preserved, not deduplicated:
+  - `fewsnet.extension_component_2025_combined` (`FEWSNET_admin_code`, `date`): 2 duplicate rows in SQL, as in the profile;
+  - `fewsnet.outcome` (`admin_code`, `year`, `month`): 1 null-key row, kept in the irregular side table, as in the profile.
+
+  The other 24 profiled tables have 0 duplicates and 0 null/empty keys. The 27 unprofiled tables are row- and cell-verified only, with no key semantics invented:
   - fewsnet.coordinates, ipcch.country_lookup, ipcch.region_mapping, ipcch.reference_coordinates_source, ipcch.saved_country_lookup, ipcch.saved_reference_coordinates;
   - ipcch.model_ready.expected_feature_contract/expected_run_index;
   - origin_safe_climate_idp_v1 cohort_keys plus history/idp ledgers (h0/h3/h6/h12);
@@ -55,7 +59,7 @@ Disposable `svc_*`, `ws_*` and `wsc_*` rehearsal databases are excluded.
 
 The largest relation is `ipcch.interim_b19556da` at 1,797,226,496 bytes.
 
-- **WAL:** `pg_wal` is 1,023,410,176 bytes now, at `max_wal_size` 1 GB.
+- **WAL:** `pg_wal` is 1,023,410,176 bytes now. `max_wal_size` (1 GB) is a checkpoint target, not a hard cap; WAL can exceed it under load.
 - **Server temp:** `research` shows 103 temp files and 4,671,954,944 bytes cumulative since cluster creation, across all import runs and readback sorts. This is not a peak and cannot be reconstructed from it.
 - **Client-side readback temp** (load_inputs `COPY ... TO` tempfile on the importing host) is importer disk, not Cloud SQL disk, and is excluded.
 - **Sizing (conservative allowances, no import re-run):**
@@ -63,8 +67,8 @@ The largest relation is `ipcch.interim_b19556da` at 1,797,226,496 bytes.
   | Component | GiB |
   |---|---|
   | Data | 10.98 |
-  | WAL allowance (max_wal_size) | 1.0 |
-  | Temp allowance (one largest-relation sort) | 1.67 |
+  | WAL allowance (max_wal_size target; WAL can exceed it under load) | 1.0 |
+  | Temp allowance (assumption: one sort the size of the largest relation; not a measured peak) | 1.67 |
   | **Total** | **≈ 13.65** |
 
   - 20 GiB would leave ≈ 6.3 GiB (32%), and each further immutable IPCCH panel version adds ≈ 1.6 GB.

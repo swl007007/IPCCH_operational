@@ -1,0 +1,58 @@
+[
+ {
+  "package": "fews-confirm-onset-v1-S0-pooled",
+  "receipt": "/home/swl007007/projects/food-crisis-research/scratch/replay/fews-confirm/fews-confirm-onset-v1-S0-pooled.json",
+  "family": "fewsnet_confirm_onset_pooled",
+  "registered_model": null,
+  "logged_model_id": null,
+  "status": "complete",
+  "gaps": 0,
+  "package_json_sha256": "1009f3958c87f7fb3e0ee457c4df9179f77cb6cbd423393fbfaae949f3b54c1a",
+  "receipt_package_json_sha256": "1009f3958c87f7fb3e0ee457c4df9179f77cb6cbd423393fbfaae949f3b54c1a",
+  "receipt_matches_package": true,
+  "replay_passed": true,
+  "reference_rows": 400,
+  "fitted_units": 1,
+  "max_abs_err": 1.8626451873948735e-09,
+  "routing_mismatches": 0,
+  "phase_changes": 0,
+  "routes_covered": "1/1",
+  "content_sha256": "feee2cda36a502d9c2bc484acbe9d73c56f5e08cf09171d1fff4701ba630f2a7",
+  "package_bytes": 2018318,
+  "runtime": {
+   "python": "3.12.3",
+   "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "xgboost": "3.0.0",
+   "numpy": "2.2.6",
+   "pandas": "2.2.3"
+  }
+ },
+ {
+  "package": "fews-confirm-onset-v1-S3-pooled",
+  "receipt": "/home/swl007007/projects/food-crisis-research/scratch/replay/fews-confirm/fews-confirm-onset-v1-S3-pooled.json",
+  "family": "fewsnet_confirm_onset_pooled",
+  "registered_model": null,
+  "logged_model_id": null,
+  "status": "complete",
+  "gaps": 0,
+  "package_json_sha256": "9ac6ad73dd81c81be7454c510cc7cb7b5245c356917d553ef33c67140c1ad138",
+  "receipt_package_json_sha256": "9ac6ad73dd81c81be7454c510cc7cb7b5245c356917d553ef33c67140c1ad138",
+  "receipt_matches_package": true,
+  "replay_passed": true,
+  "reference_rows": 400,
+  "fitted_units": 1,
+  "max_abs_err": 1.8626451873948735e-09,
+  "routing_mismatches": 0,
+  "phase_changes": 0,
+  "routes_covered": "1/1",
+  "content_sha256": "74d3d12bedff31dd607a7aebcc475f2a389867681e15a0b078dc82322c66157f",
+  "package_bytes": 2011965,
+  "runtime": {
+   "python": "3.12.3",
+   "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "xgboost": "3.0.0",
+   "numpy": "2.2.6",
+   "pandas": "2.2.3"
+  }
+ }
+]

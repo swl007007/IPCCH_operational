@@ -1,0 +1,43 @@
+{
+ "package": "/home/swl007007/projects/food-crisis-research/packages/fews-geoxgb-d52-binary-root-20261002",
+ "package_json_sha256": "7f5de3b3a700f1081c3614837b79fa28769c119b2b49530cef257601426bcd01",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "arm_columns": "p_binary_*",
+  "d34_run": "geoxgb-d34-e1-brier-20261002",
+  "kind": "binary:logistic crisis root",
+  "producer_code": {
+   "files": 57,
+   "sha256": "cad8439de1d1c838ddd8482c6782f4cfa205e5c28670e45dad2ddbe92e69421b"
+  },
+  "producer_rev": "7b2bf6f",
+  "run": "geoxgb-d52-binary-root-20261002",
+  "script_code": null,
+  "stage": "d52_binary_root"
+ },
+ "rows": 1344,
+ "columns": {
+  "p_binary": {
+   "max_abs_err": 5.820763716943983e-11,
+   "mean_abs_err": 4.335635037056812e-14,
+   "failures": 0,
+   "reference_nan": 0
+  }
+ },
+ "phase_changes": [],
+ "checks": {
+  "keys_and_order": true,
+  "exact_call_binary": true
+ },
+ "failed_rows": [],
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.48
+}
