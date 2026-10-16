@@ -28,6 +28,30 @@ KEYS = ["area_id", "target_ord"]
 VIEW_OF_ARM = {"existing_predictors": "A", "seasonal_climate": "B", "weather_oracle": "C",
                "share_history_direct": "D_direct", "share_history_residual": "D_residual",
                "share_history_selected": "D_selected"}
+# src/ipcch/somalia_oracle/__init__.py:56 (identical at d75378d, 1f3bfcec, a787257)
+ORACLE_WEATHER_VARIABLES = ("Rainf_f_tavg_mean", "Tair_f_tavg_mean")
+VINTAGE_LIMITATION = ("inputs are the run's saved feature matrices built from revised/latest-vintage sources; real-time "
+                      "vintages are not certified by this migration")
+
+
+def oracle_feature_names(horizon):
+    return [f"oracle_{var}_o{k}" for k in range(1, min(int(horizon), 6) + 1) for var in ORACLE_WEATHER_VARIABLES]
+
+
+def information_status(schema, horizon):
+    """Realized-future (oracle) inputs actually in the version's schema; H0 has none by definition. Says nothing
+    about data vintages."""
+    declared = oracle_feature_names(horizon)
+    served = [c for c in schema if c in declared]
+    stray = [c for c in schema if c.startswith("oracle_") and c not in declared]
+    if stray:
+        raise PackageError(f"schema has oracle-named inputs outside the source definition: {stray[:3]}")
+    if served:
+        return {"status": "oracle_realized_future_information", "oracle_features": served,
+                "evidence": f"schema serves {len(served)} oracle_feature_names({horizon}) inputs"}
+    return {"status": "no_declared_oracle_input", "evidence": f"schema serves none of oracle_feature_names({horizon})"}
+
+
 SCHEMA_ARM = {"A": "A", "B": "B", "C": "C", "D_direct": "D", "D_residual": "D", "D_selected": "D"}   # q3opt.VIEW_SPEC
 
 
@@ -249,8 +273,8 @@ def build(out_dir, *, source_key, ipcch_root, plan_version, version_key, version
     return b.finalize({
         "family": version.get("family"), "identity": version, "version_key": version_key, "source_key": source_key,
         "lead_months": h, "arm": plan_version["arm"], "view": view,
-        "information": {"status": "oracle_realized_future_information" if view == "C" else "per the run's information-set design",
-                        "evidence": "IPCCHMLflow/naming.py ARMS: C = weather_oracle (realized weather)"},
+        "information": information_status(schema, h),
+        "vintage_limitation": VINTAGE_LIMITATION,
         "status": "complete" if not gaps else "retained_weights_missing_dependencies", "gaps": gaps,
         "fitted_units": int(rows["stem"].nunique()),
         "dependency_hashes": {"enforced_against_plan": sorted(os.path.join(spec["run"], paths[p]) for p in paths

@@ -71,3 +71,19 @@ class JobScopedCalibration(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OracleStatusFromSchema(unittest.TestCase):
+    def test_schema_and_horizon_drive_status(self):
+        from research_cloud.packages.somalia import information_status, oracle_feature_names
+        self.assertEqual(oracle_feature_names(0), [])
+        self.assertEqual(information_status(["f1", "hist_q3_obs1"], 0)["status"], "no_declared_oracle_input")
+        d3 = ["f1"] + oracle_feature_names(3) + ["hist_q3_obs1"]
+        self.assertEqual(information_status(d3, 3)["status"], "oracle_realized_future_information")
+        self.assertEqual(len(information_status(d3, 3)["oracle_features"]), 6)
+
+    def test_unexpected_oracle_columns_refused(self):
+        from research_cloud.packages.common import PackageError
+        from research_cloud.packages.somalia import information_status
+        with self.assertRaises(PackageError):
+            information_status(["oracle_Rainf_f_tavg_mean_o9"], 12)
