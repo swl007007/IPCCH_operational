@@ -35,6 +35,50 @@ class Names(unittest.TestCase):
         self.assertFalse(li.is_identifier("date", {"date"}))
 
 
+BIG = "9007199254740993"          # 2**53 + 1: not exactly representable as a double
+
+
+def cross_chunk_csv(big_first, n_small, extra_ints=()):
+    """area_id + v (one big integer and one fraction on opposite sides of a CHUNK boundary, small integers between)
+    + n (pure integers incl. 16-18 digits) + d (small integers, then a fraction: an ordinary double column)."""
+    first, last = (BIG, "0.5") if big_first else ("0.5", BIG)
+    rows = [(first, "1")] + [("1", "1")] * n_small + [(last, "2.5")]
+    ints = list(extra_ints) or ["123456789012345678"]
+    lines = ["area_id,v,n,d"] + [f"{i},{v},{ints[i % len(ints)]},{d}" for i, (v, d) in enumerate(rows, 1)]
+    return "\n".join(lines) + "\n"
+
+
+class CrossChunk(unittest.TestCase):
+    """A01: an integer that a double cannot hold, seen in any chunk, keeps a later double column as text."""
+
+    def infer(self, text, chunk):
+        d = tempfile.mkdtemp()
+        path = os.path.join(d, "f.csv")
+        open(path, "w").write(text)
+        original = li.CHUNK
+        li.CHUNK = chunk
+        try:
+            header = li.read_header(path)
+            return li.infer_types(path, header, set(), li.short_rows(path, header))[0]
+        finally:
+            li.CHUNK = original
+
+    def test_both_orders_across_a_small_chunk_boundary(self):
+        for big_first in (True, False):
+            kinds = self.infer(cross_chunk_csv(big_first, n_small=5), chunk=4)
+            self.assertEqual(kinds["v"], "text", f"big_first={big_first}")
+            self.assertEqual(kinds["n"], "bigint")               # pure integers (<= 18 digits) unchanged
+            self.assertEqual(kinds["d"], "double precision")     # small integers then a fraction: still double
+
+    def test_big_integer_before_the_real_chunk_boundary(self):
+        kinds = self.infer(cross_chunk_csv(True, n_small=li.CHUNK), chunk=li.CHUNK)
+        self.assertEqual((kinds["v"], kinds["n"], kinds["d"]), ("text", "bigint", "double precision"))
+
+    def test_safe_integers_before_a_fraction_stay_double(self):
+        kinds = self.infer(cross_chunk_csv(True, n_small=5).replace(BIG, "900719925474099"), chunk=4)
+        self.assertEqual(kinds["v"], "double precision")         # 15 digits, below 2**53: exactly representable
+
+
 @unittest.skipUnless(PG, "RC_TEST_PG not set")
 class Load(unittest.TestCase):
     @classmethod
@@ -85,6 +129,29 @@ class Load(unittest.TestCase):
         self.assertEqual(catalog, {"area_id": "text", "big": "text", "mixed": "text", "x": "double precision", "label": "text"})
         self.assertEqual((r["status"], r["typed_rows"], side_rows, r["cell_comparison"]["cells_compared"]), ("verified", 3, 1, 15))
         self.assertEqual(r["empty_to_null_numeric"], {"x": 1})
+
+    def test_cross_chunk_big_integer_round_trips_verbatim(self):
+        """A01, both row orders across a CHUNK boundary: the stored value is the original integer text, read back
+        before any float conversion; the pure-integer column stays bigint."""
+        original = li.CHUNK
+        li.CHUNK = 4
+        try:
+            for big_first in (True, False):
+                e = self.entry(cross_chunk_csv(big_first, n_small=5), f"fewsnet.a01_{int(big_first)}")
+                table = li.table_name(e["id"])
+                with self.connect() as conn:
+                    r = li.load_one(conn, e, "fewsnet", table, None)
+                big_row = 1 if big_first else 7
+                with self.connect() as conn, conn.cursor() as cur:
+                    cur.execute("SELECT source_header, sql_type FROM public._column_catalog WHERE table_name = %s", (r["table"],))
+                    catalog = dict(cur.fetchall())
+                    cur.execute(f'SELECT v::text, n::text FROM fewsnet."{table}" WHERE _source_row = %s', (big_row,))
+                    v, n = cur.fetchone()
+                self.assertEqual(r["status"], "verified")
+                self.assertEqual((catalog["v"], catalog["n"], catalog["d"]), ("text", "bigint", "double precision"))
+                self.assertEqual((v, n), (BIG, "123456789012345678"), f"big_first={big_first}")
+        finally:
+            li.CHUNK = original
 
     def test_failed_verification_commits_nothing(self):
         e = self.entry("area_id,v\n1,0.5\n", "fewsnet.rollback")
