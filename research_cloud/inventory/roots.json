@@ -1,0 +1,13 @@
+{
+  "_note": "Source run roots for MLflow-registered families. Dashboard roots come from Food_Crisis_Cluster/IPCCHMLflow/sources.json ({repo}/{temp} expanded); forecasting member paths are relative to the IPCCH repository root. Candidates are tried in order; the first existing root is used and recorded.",
+  "dashboard": {
+    "p6_geoxgb/p6-formal-20261004b": ["/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/Food_Crisis_Cluster/IPCCHGeoXGBExperiment/runs/p6-formal-20261004b"],
+    "mlp_fixed_map/mlp-formal-20261005": ["/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-mlp-runs/mlp-formal-20261005"],
+    "yearly_geoxgb/yearly-formal-20261007": ["/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-yearly-xgb-runs/yearly-formal-20261007", "/home/swl007007/ipcch-legacy-source-preservation/yearly-formal-20261007"],
+    "climate_perturbation/climate-20261005": ["/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-climate-runs/climate-20261005"],
+    "history_window_sensitivity/ipcch-window-probe-20261005-zckpq9hf": ["/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-window-probe-20261005-zckpq9hf"],
+    "split2024_sensitivity/split2024-20261005": ["/mnt/c/Users/swl00/AppData/Local/Temp/ipcch-split2024-20261005-3moikuh3"],
+    "alphaearth_partition/p1-formal-d30-20261014": ["/home/swl007007/ipcch-alphaearth-runs/p1-formal-d30-20261014"]
+  },
+  "forecasting_root": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/google fund/analysis/2.source_code/step5_geo_rf_trial/IPCCH"
+}

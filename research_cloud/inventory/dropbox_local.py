@@ -11,7 +11,6 @@ or malformed batch raises InspectionError; it is never reported as missing.
 Usage: python3 dropbox_local.py PATH...   (or paths on stdin) -> JSON lines
 Exit status 2 if any path is ``inspection_error`` or the batch failed.
 """
-import base64
 import json
 import subprocess
 import sys
@@ -40,9 +39,18 @@ def to_windows(path):
 
 
 def run_powershell(script):
-    encoded = base64.b64encode(script.encode("utf-16-le")).decode()
-    return subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-EncodedCommand", encoded],
-                          capture_output=True, timeout=600, cwd="/mnt/c")
+    """Run via a UTF-8 (BOM) .ps1 in Windows %TEMP%: no command-line length limit, no codepage loss."""
+    import os
+    import tempfile
+    temp_dir = "/mnt/c/Users/swl00/AppData/Local/Temp"
+    fd, path = tempfile.mkstemp(prefix="dropbox_local_", suffix=".ps1", dir=temp_dir)
+    try:
+        with os.fdopen(fd, "wb") as handle:
+            handle.write(b"\xef\xbb\xbf" + script.encode("utf-8"))
+        return subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
+                               "-File", to_windows(path)], capture_output=True, timeout=1800, cwd="/mnt/c")
+    finally:
+        os.unlink(path)
 
 
 def parse_rows(stdout, count):
@@ -64,7 +72,7 @@ def parse_rows(stdout, count):
     return rows
 
 
-def classify(paths, batch=60, runner=run_powershell):
+def classify(paths, batch=400, runner=run_powershell):
     out = []
     for start in range(0, len(paths), batch):
         chunk = paths[start:start + batch]
