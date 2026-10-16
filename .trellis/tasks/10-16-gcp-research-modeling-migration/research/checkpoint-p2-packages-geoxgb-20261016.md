@@ -65,3 +65,27 @@ See `fews/missing-local-boosters-receipt.md`. Eighteen local continuation booste
 | IPCCH forecasting (12 source keys) | 126 | Recover xgboost version from booster metadata; somalia_oracle families have no saved predictions (reference gap to resolve); constant-model fits to check against `model_inventory.csv` |
 | FEWS NET | n/a | G-3 catalog; disposition for `scen-b43ef6a-v1` |
 | Missing-weight families (80 versions) | 80 | Tracking-only records, disclosed |
+
+## Update 2026-10-16 02:51:43 EDT: AlphaEarth packages and identity-bound receipts
+
+- **Code:** native commit `bf3da00`.
+  - `research_cloud/packages/alphaearth.py` (+ `build_alphaearth.py`) adds AlphaEarth packages.
+    - Arms: B0 on compact296; B1 on 296 + 128 descriptors attached by admin_code under the frozen descriptor contract; B2/G as `CorrectionFit.from_record` of the B1 raw output per block.
+    - G is `b2_reuse` at every lead; no map was selected. A selected map would remain an explicit gap.
+    - Unit resolution requires exactly one distinct request-ledger identity per serving arm/block, and agreement with the saved predictions' own `B0_identity`/`B1_identity` on every served row. Reference units are taken from the saved predictions.
+    - The loader is vendored from `runs:/9939…/source_code` (recorded code identity: uncommitted 57ca2ef1 + 385a8db8).
+    - Runtime: Linux xgboost 3.2.0 / numpy 2.4.4 / pandas 3.0.3, the same as the original lock.
+    - All saved h01–h12 prediction rows are routable. No non-routable row exists to sample, so that path is validated by the loader's contract tests, not by historical reference rows.
+  - Replay receipts now record the `package.json` sha256. `research_cloud/packages/summarize.py` and the registry ledger accept a pass only when it matches the current package (`packaged_replay_stale` otherwise; tested).
+  - Tests: `test_packages_alphaearth.py` (6: conflicting/mismatched identities, descriptor contract) and the stale-receipt test in `test_registry_ledger.py`.
+- **Replay round `replay-bf3da00/`:**
+
+| Family | Packages | Status |
+|---|---|---|
+| GeoXGB P6 | 8 | complete, pass |
+| GeoXGB yearly | 12 | complete, pass |
+| AlphaEarth | 16 | complete, pass |
+
+  In total 36 packages, **36 pass, 0 stale**, 15,558 reference rows, maximum error ≤ 2.2e-16, 0 routing mismatches, 0 phase changes, 1.89 GB of packages.
+- **Ledger** (`ledger/registry_ledger.json`, regenerated against these receipts): 36 packaged_replay_passed, 134 weights_retained_package_pending (forecasting 126 + window-probe comparators 8), 72 missing_weights_tracking_only.
+- All of this is local Linux/WSL evidence. Cloud-pinned container replay and download acceptance are still pending.

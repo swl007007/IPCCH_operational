@@ -3,12 +3,12 @@
  "versions": 242,
  "key_set_equals_snapshot": true,
  "by_class": {
-  "weights_retained_package_pending": 150,
-  "missing_weights_tracking_only": 72,
-  "packaged_replay_passed": 20
+  "packaged_replay_passed": 36,
+  "weights_retained_package_pending": 134,
+  "missing_weights_tracking_only": 72
  },
  "by_family_class": {
-  "alphaearth_supervised_partition | weights_retained_package_pending": 16,
+  "alphaearth_supervised_partition | packaged_replay_passed": 16,
   "compact_climate_global | weights_retained_package_pending": 14,
   "compact_climate_somalia | weights_retained_package_pending": 14,
   "compact_launch_global | weights_retained_package_pending": 5,
@@ -56,9 +56,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-pooled-h01",
+    "status": "complete",
+    "content_sha256": "ca5b5ef0219152b3889a29bc4721e99dca2a4e8b2a2c6f2db2a2b48553a42cf3",
+    "gaps": [],
+    "package_json_sha256": "416068281caa6b6e27d13712fa491db45b10259788de4053df8f1a404f9f0dc4"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.95590071916385e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "416068281caa6b6e27d13712fa491db45b10259788de4053df8f1a404f9f0dc4"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -87,9 +99,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-pooled-h12",
+    "status": "complete",
+    "content_sha256": "61ea9b72cf743a3b88be5d21d3f0c9ba5430347a28917e577adfabf3b35b6283",
+    "gaps": [],
+    "package_json_sha256": "094e009e7b9221b6b6fb2f97e940ed79755c8894e3e5ebfcacfe17dacfadc084"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 96,
+    "max_abs_err": 1.986258379993444e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "094e009e7b9221b6b6fb2f97e940ed79755c8894e3e5ebfcacfe17dacfadc084"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -118,9 +142,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-pooled-h03",
+    "status": "complete",
+    "content_sha256": "f7c18bc55408caa7a4c19a277785eebe060afd9851711377dbedb1d8972c8d19",
+    "gaps": [],
+    "package_json_sha256": "ebd625f8dbc104eadd4e848553808cbff38eb9c20e14a6c58df898212d003007"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.97758476261356e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "ebd625f8dbc104eadd4e848553808cbff38eb9c20e14a6c58df898212d003007"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -149,9 +185,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-pooled-h06",
+    "status": "complete",
+    "content_sha256": "7542302c77a2d31f598a20db00748fb6d306e41d95516223bc392fb4acca829c",
+    "gaps": [],
+    "package_json_sha256": "a5a47fcdebcdb5a7095e4e3d1ba3586aa22a6d6d6f47944033adf00f09cd952b"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.97758476261356e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "a5a47fcdebcdb5a7095e4e3d1ba3586aa22a6d6d6f47944033adf00f09cd952b"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -180,9 +228,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-pooled_plus_alphaearth-h01",
+    "status": "complete",
+    "content_sha256": "2d978e1f1dc8642f58cf58d94b4c8421bae2d5583c308e6a1a3d970cf5581795",
+    "gaps": [],
+    "package_json_sha256": "9642ab1eb66cacf91985c368f0b4b344ef138e6e00f9d5f4a72f90311f8e453b"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.97758476261356e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "9642ab1eb66cacf91985c368f0b4b344ef138e6e00f9d5f4a72f90311f8e453b"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -211,9 +271,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-pooled_plus_alphaearth-h12",
+    "status": "complete",
+    "content_sha256": "38dc07654129581de4ba00e6e08d23f36cf1686948692c967afb005544cf89be",
+    "gaps": [],
+    "package_json_sha256": "6d2c58b097859249d92a8237282e18ce6cc8d664699677ce27e1fcd421715536"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 96,
+    "max_abs_err": 1.9808373691310166e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "6d2c58b097859249d92a8237282e18ce6cc8d664699677ce27e1fcd421715536"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -242,9 +314,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-pooled_plus_alphaearth-h03",
+    "status": "complete",
+    "content_sha256": "f2bc824f04e452b381491564515cddf19ae9434e025eb61922eda63ddb7ce63b",
+    "gaps": [],
+    "package_json_sha256": "1a7b699cacc72886be3122057118c99cdd80cef113c89656bcd85867a5162479"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.951563910473908e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "1a7b699cacc72886be3122057118c99cdd80cef113c89656bcd85867a5162479"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -273,9 +357,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-pooled_plus_alphaearth-h06",
+    "status": "complete",
+    "content_sha256": "8904999e0d78bd37236dec08be87d8879862d6f4635b6f03ca52c20acb5c4738",
+    "gaps": [],
+    "package_json_sha256": "9ea1790050010f10947e351677ff27b167819baf79abac4fa4744826dc996866"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.9949319973733282e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "9ea1790050010f10947e351677ff27b167819baf79abac4fa4744826dc996866"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -304,9 +400,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-regional_calibration-h01",
+    "status": "complete",
+    "content_sha256": "2bb1280eee5f33457937f5b9fbf2cb3c3f537994d1f606bc2e379a716ea78d37",
+    "gaps": [],
+    "package_json_sha256": "4f07d1ca81f1255f4a5107aabf92a80054410a8d22c1d384f063e1d634054e4d"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.968911145233676e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "4f07d1ca81f1255f4a5107aabf92a80054410a8d22c1d384f063e1d634054e4d"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -335,9 +443,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-regional_calibration-h12",
+    "status": "complete",
+    "content_sha256": "ed559c849f0cb8202ecf84303d130ceae654ea891f4907cd2cf1d0be8d813ffc",
+    "gaps": [],
+    "package_json_sha256": "0fb80fb11a7beda0a97bc247d40b61d0c448cf379922e93834ca4a0e6d21a124"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 96,
+    "max_abs_err": 1.984089975648473e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "0fb80fb11a7beda0a97bc247d40b61d0c448cf379922e93834ca4a0e6d21a124"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -366,9 +486,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-regional_calibration-h03",
+    "status": "complete",
+    "content_sha256": "e4e4d9f18603ba5106850d82f6312c3518765b7596d1d18427e9a6d4d09230fc",
+    "gaps": [],
+    "package_json_sha256": "8b4bf75d7fe491be3b04d84d27243de158e03d9fa05a484bf4d57287ac1ed67b"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.975416358268589e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "8b4bf75d7fe491be3b04d84d27243de158e03d9fa05a484bf4d57287ac1ed67b"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -397,9 +529,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-regional_calibration-h06",
+    "status": "complete",
+    "content_sha256": "efc812ce52e78fe2cce306a486bec7b61c16aa76dd76ba8d6322664951f3bcd3",
+    "gaps": [],
+    "package_json_sha256": "2e23dcb92562db5a3369c052a21e683e0cf61c53e3b14d80bfd366e191581331"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.9949319973733282e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "2e23dcb92562db5a3369c052a21e683e0cf61c53e3b14d80bfd366e191581331"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -428,9 +572,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-shared_calibration-h01",
+    "status": "complete",
+    "content_sha256": "fa03be10ed14111073b79bf0221e22b70450ac98d3d0b9e21ccf16e34b8f4961",
+    "gaps": [],
+    "package_json_sha256": "991b906fba6dd7543a1d989b91a30c482cdca1acac3f52147870f747019d3617"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.968911145233676e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "991b906fba6dd7543a1d989b91a30c482cdca1acac3f52147870f747019d3617"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -459,9 +615,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-shared_calibration-h12",
+    "status": "complete",
+    "content_sha256": "ac18017c847789492c8fb83eff9d13ab4f639fb8602c1f97ffdebd29d077be97",
+    "gaps": [],
+    "package_json_sha256": "5c95276de73e63df8db935de15a4a00f8b972ca9329bb76c331027f07b506682"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 96,
+    "max_abs_err": 1.984089975648473e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "5c95276de73e63df8db935de15a4a00f8b972ca9329bb76c331027f07b506682"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -490,9 +658,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-shared_calibration-h03",
+    "status": "complete",
+    "content_sha256": "1a40890828ba07f64ea4b8c5680f16262099a14e65a58776406760a80a629427",
+    "gaps": [],
+    "package_json_sha256": "d1868aaafbc7121d99acbdd69cf4ad50b46fc3f9e5c11cc38d2a57e05cf2547a"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.975416358268589e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "d1868aaafbc7121d99acbdd69cf4ad50b46fc3f9e5c11cc38d2a57e05cf2547a"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -521,9 +701,21 @@
    "member_status_counts": {
     "verified": 305
    },
-   "package": null,
-   "replay": null,
-   "ledger_class": "weights_retained_package_pending",
+   "package": {
+    "package": "/home/swl007007/projects/food-crisis-research/packages/alphaearth_supervised_partition-shared_calibration-h06",
+    "status": "complete",
+    "content_sha256": "7f4d1748702efd94a9d38f6d204f195ee14706f970df82658c41314a888d0ebb",
+    "gaps": [],
+    "package_json_sha256": "ccc7c6419b69a7ef15cec010118b34afa5059f0c3ac87beca91f01ba92c0b68c"
+   },
+   "replay": {
+    "replay_passed": true,
+    "reference_rows": 128,
+    "max_abs_err": 1.9949319973733282e-16,
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "ccc7c6419b69a7ef15cec010118b34afa5059f0c3ac87beca91f01ba92c0b68c"
+   },
+   "ledger_class": "packaged_replay_passed",
    "reason": null
   },
   {
@@ -4958,13 +5150,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_reference-partitioned_gated-h01",
     "status": "complete",
     "content_sha256": "b0ec8a6237945b68ee248f9c7c47ac8f728d2ce60f3915f3e52a1fc2e1283508",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "326b1039ae3b0d6e7f5e7fcb7314d57a59e7a70ef1d6e0e321a7c6f5a62081a8"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 1389,
     "max_abs_err": 1.9895109865109006e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "326b1039ae3b0d6e7f5e7fcb7314d57a59e7a70ef1d6e0e321a7c6f5a62081a8"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -4999,13 +5193,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_reference-partitioned_gated-h12",
     "status": "complete",
     "content_sha256": "c70003534ba9f09a50f85d47d5915b05bf1505cd808371e82b5448a6ffae3b8d",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "ce51adc63be00c89238550b0a0756e7fec7d943471d42f66396ab18717a119d6"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 975,
     "max_abs_err": 1.9949319973733282e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "ce51adc63be00c89238550b0a0756e7fec7d943471d42f66396ab18717a119d6"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -5040,13 +5236,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_reference-partitioned_gated-h03",
     "status": "complete",
     "content_sha256": "e7aa5640179beed222f5be784c84319b24cf1d40e1b3d078d175ea944930b454",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "e006582f0c33dbbadf5de2920570d12b90b64619d1b4174573c88e105322ab59"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 1362,
     "max_abs_err": 1.9971004017182992e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "e006582f0c33dbbadf5de2920570d12b90b64619d1b4174573c88e105322ab59"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -5081,13 +5279,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_reference-partitioned_gated-h06",
     "status": "complete",
     "content_sha256": "6c2ab1dbe730ab2af3bb083bbc83548a42765c4b86ae0c7dd6580ddc6832cea9",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "1c7cf2bb4ed820b2ce774225a419805a4bbf4575f9aa644968cbea0b24e891b9"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 1083,
     "max_abs_err": 1.9971004017182992e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "1c7cf2bb4ed820b2ce774225a419805a4bbf4575f9aa644968cbea0b24e891b9"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -5122,13 +5322,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_reference-pooled-h01",
     "status": "complete",
     "content_sha256": "561239758bb9a0f6f1ee6b0d087ffe4caf778ee8e2950a0e372a7d26a166654f",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "4c59565e5a7d285dfcc49c9736e5b62cdcbeb08d5a826ca2f7a27ff8676876ef"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 1134,
     "max_abs_err": 1.9895109865109006e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "4c59565e5a7d285dfcc49c9736e5b62cdcbeb08d5a826ca2f7a27ff8676876ef"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -5163,13 +5365,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_reference-pooled-h12",
     "status": "complete",
     "content_sha256": "b010f9ef1d0a3911d324a34f4158f15acfaef1f132de64bd0dc130c1902cf41e",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "d35bd79645b878c3d78d910918df75a4c7b46c769340baa8ee616f120c524e7a"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 800,
     "max_abs_err": 1.9949319973733282e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "d35bd79645b878c3d78d910918df75a4c7b46c769340baa8ee616f120c524e7a"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -5204,13 +5408,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_reference-pooled-h03",
     "status": "complete",
     "content_sha256": "be7cea35a98aa8fe1661a938a0e0d3b330a70812f50847e6f085315c4094f021",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "04324dc186acce1cc47405947a702ab19298ae3b302679b5b7a1933afdb06195"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 1075,
     "max_abs_err": 1.9971004017182992e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "04324dc186acce1cc47405947a702ab19298ae3b302679b5b7a1933afdb06195"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -5245,13 +5451,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_reference-pooled-h06",
     "status": "complete",
     "content_sha256": "1a0f730da9d53c12219eea76a63296bc20d4a1b767c42a19c47b0147947927e7",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "d7f042e701f1feb59b5ca238958eb772d2f107ff31bdfe3301b983f7a7a745aa"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 979,
     "max_abs_err": 1.9960161995458137e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "d7f042e701f1feb59b5ca238958eb772d2f107ff31bdfe3301b983f7a7a745aa"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -5971,13 +6179,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-partitioned_gated-h01",
     "status": "complete",
     "content_sha256": "2c2a06a2ec0f77e000e53e6dcf4e68276963eec751a8dfdcff33ec63e7604660",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "7caa8753eee210181aa14b46ee1efa49a644ed26dcc08cc3a59de2df2f4e6d5c"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 204,
     "max_abs_err": 1.97758476261356e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "7caa8753eee210181aa14b46ee1efa49a644ed26dcc08cc3a59de2df2f4e6d5c"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6012,13 +6222,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-partitioned_gated-h12",
     "status": "complete",
     "content_sha256": "83a7595cbe464a5c1e6857d6da320fe98f86337587b0c9b8219553c57472d460",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "3cf0bbd33abcf41c52fe565d0020dae22999e5b90be83bd2fd599ad349a54a4a"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 128,
     "max_abs_err": 1.968911145233676e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "3cf0bbd33abcf41c52fe565d0020dae22999e5b90be83bd2fd599ad349a54a4a"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6053,13 +6265,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-partitioned_gated-h03",
     "status": "complete",
     "content_sha256": "3ed0505f1169ae6d2da74751f5052a71b337dd72ed6c8ea12c6e220437cc4e20",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "5016c118163baed7c9d05b6f9d4a71caf1c45811da3deb6ed373228621290683"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 274,
     "max_abs_err": 1.97758476261356e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "5016c118163baed7c9d05b6f9d4a71caf1c45811da3deb6ed373228621290683"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6094,13 +6308,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-partitioned_gated-h06",
     "status": "complete",
     "content_sha256": "a4abf79c21320624579228c32a7947e1deb612e0820afaa4d3501adf6e1b4e82",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "b792433d900d53870a4c308616130309ec28077a74bc9838830a7302d96b1d23"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 224,
     "max_abs_err": 1.997642502804542e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "b792433d900d53870a4c308616130309ec28077a74bc9838830a7302d96b1d23"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6135,13 +6351,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-pooled-h01",
     "status": "complete",
     "content_sha256": "e1a9db82c6128cf6d465e0730623f7ec047061a3a5c0ad443a90719b87355aeb",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "4538675e6b39d3df187e67de2d37e4d09fb4088d05a25e51528093ac1ed802bf"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 128,
     "max_abs_err": 1.97758476261356e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "4538675e6b39d3df187e67de2d37e4d09fb4088d05a25e51528093ac1ed802bf"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6176,13 +6394,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-pooled-h12",
     "status": "complete",
     "content_sha256": "f71ddd809d63dcb0f8033251eb63995650b02883c43f9e7e6ce48422ca95c342",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "a0087c269d32df1b69c4c7b13f73d18286af29b0be40b2989a7f02d607529403"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 96,
     "max_abs_err": 1.9830057734759876e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "a0087c269d32df1b69c4c7b13f73d18286af29b0be40b2989a7f02d607529403"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6217,13 +6437,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-pooled-h03",
     "status": "complete",
     "content_sha256": "54fc1432613b3bdc3bc1fab3e8d2676a43fe8003a653a301bc65b9825bd7285e",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "931594274d6371ce4f3d9a7393040f3bf2e3fd82dd16f74a2b3ba23a81523817"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 128,
     "max_abs_err": 1.942890293094024e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "931594274d6371ce4f3d9a7393040f3bf2e3fd82dd16f74a2b3ba23a81523817"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6258,13 +6480,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-pooled-h06",
     "status": "complete",
     "content_sha256": "e7f24d134fca1c30c18d9ba7ff9f2055165e110a0457d1c4ca27d7c0bc93bcf5",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "6009279cbe20a6cf8373363c5ea3ff847deb3611755920a277fee316961d43b4"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 128,
     "max_abs_err": 1.997642502804542e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "6009279cbe20a6cf8373363c5ea3ff847deb3611755920a277fee316961d43b4"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6299,13 +6523,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-regional_ungated-h01",
     "status": "complete",
     "content_sha256": "cbba71d4ee38d70ada5ac02364be95cd5e95be424dffa32f8307710f19526116",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "e9305c5043ca6d9b3bbad948b07da36560e39340d8d60b730c955f4368a59099"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 1089,
     "max_abs_err": 1.9884267843384151e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "e9305c5043ca6d9b3bbad948b07da36560e39340d8d60b730c955f4368a59099"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6340,13 +6566,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-regional_ungated-h12",
     "status": "complete",
     "content_sha256": "bdbe6441d2a920bb827e8eaa047cdf0b94979e13260468de70b7e40ce50b9e38",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "27f05d728d1956fdd8caf5e7e387cd512114de5aa2af4c501843cd77197ce4a6"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 836,
     "max_abs_err": 1.9981846038907847e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "27f05d728d1956fdd8caf5e7e387cd512114de5aa2af4c501843cd77197ce4a6"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6381,13 +6609,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-regional_ungated-h03",
     "status": "complete",
     "content_sha256": "c5bfbc792566d3e53b1d785ea6542f1c98c813ce44ef4e06398b2f40fabc8d57",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "33feb185a232e7b1495f0ca7b54b71697333fa80ecc9ac95924275b28af1e4fe"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 838,
     "max_abs_err": 1.9973714522614205e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "33feb185a232e7b1495f0ca7b54b71697333fa80ecc9ac95924275b28af1e4fe"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
@@ -6422,13 +6652,15 @@
     "package": "/home/swl007007/projects/food-crisis-research/packages/geoxgb_yearly_refit-regional_ungated-h06",
     "status": "complete",
     "content_sha256": "cf2dabe6ad7d5301513f8ca048c2c4fc5a737b32bfb45e5a1dd67534a5d55615",
-    "gaps": []
+    "gaps": [],
+    "package_json_sha256": "eb12cfd35c10af168b4e5d12f3860aa02ec5e1c13fc85227d94cb62132d384e7"
    },
    "replay": {
     "replay_passed": true,
     "reference_rows": 768,
     "max_abs_err": 2.220446049250313e-16,
-    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/a2e4a0d/summary.json"
+    "replay_summary": "/home/swl007007/projects/food-crisis-research/scratch/replay/bf3da00/summary.json",
+    "package_json_sha256": "eb12cfd35c10af168b4e5d12f3860aa02ec5e1c13fc85227d94cb62132d384e7"
    },
    "ledger_class": "packaged_replay_passed",
    "reason": null
