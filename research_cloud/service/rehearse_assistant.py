@@ -22,6 +22,8 @@ from decimal import Decimal
 
 import requests
 
+from research_cloud.service.rehearsal_upstream import quoted_tool_result
+
 REMOTE = {"X-Forwarded-For": "203.0.113.9"}
 ENDPOINT = "ipcch-assistant-gemini"
 
@@ -36,6 +38,20 @@ def stream_turn(url, auth, message, experiment_id):
                      stream=True, timeout=300)
     body = "".join(chunk.decode("utf-8", "replace") for chunk in s.iter_content(None))
     return r.status_code, s.status_code, body
+
+
+def listing_ok(stream_text, experiment_name):
+    """The quoted tool result is a successful experiment listing containing the expected experiment."""
+    result = quoted_tool_result(stream_text)
+    if result is None or experiment_name not in result:
+        return False
+    lowered = result.lower()
+    return "experiment id" in lowered and "permission denied" not in lowered and "error" not in lowered
+
+
+def denial_ok(stream_text):
+    result = quoted_tool_result(stream_text)
+    return result is not None and result.startswith("Permission denied: this assistant may only run read-only commands")
 
 
 def ledger_rows(dsn):
@@ -81,11 +97,12 @@ def main():
     check("assistant identity holds USE on the endpoint", perm.get("permission") == "USE", perm)
 
     rows0 = len(ledger_rows(args.guard_dsn))
+    exp_name = requests.get(url + "/api/2.0/mlflow/experiments/get", params={"experiment_id": state["experiment_id"]},
+                            auth=admin, timeout=60).json()["experiment"]["name"]
     post, got, body = stream_turn(url, reader, "Which experiments exist?", state["experiment_id"])
     check("reader message accepted and stream read", (post, got) == (200, 200), [post, got])
-    check("tool ran with the read-only identity and answer quotes it",
-          "REHEARSAL-ANSWER tool said:" in body and "experiment" in body.split("REHEARSAL-ANSWER", 1)[-1].lower(),
-          body[-400:])
+    check("tool ran with the read-only identity and the quoted result lists the probe experiment",
+          listing_ok(body, exp_name), (quoted_tool_result(body) or body[-400:])[:600])
     rows = ledger_rows(args.guard_dsn)[rows0:]
     unit = (Decimal(120) * Decimal("1.5") + Decimal(80) * Decimal("7.5")) / Decimal(1_000_000)
     check("one settled ledger row per model call at the exact usage price",
@@ -93,9 +110,9 @@ def main():
           [[str(x) for x in r] for r in rows])
 
     rows0 = len(ledger_rows(args.guard_dsn))
-    post, got, body = stream_turn(url, reader, "PROBE-DENY please clean up", state["experiment_id"])
-    check("prohibited command denied by the allowlist", (post, got) == (200, 200) and "Permission denied" in body,
-          body[-400:])
+    post, got, body = stream_turn(url, reader, f"PROBE-DENY run={state['run_id']} please clean up", state["experiment_id"])
+    check("prohibited delete of the real probe run denied by the allowlist", (post, got) == (200, 200) and denial_ok(body),
+          (quoted_tool_result(body) or body[-400:])[:400])
     run = requests.get(url + "/api/2.0/mlflow/runs/get", params={"run_id": state["run_id"]}, auth=admin, timeout=60)
     check("probe run still active", run.status_code == 200 and run.json()["run"]["info"]["lifecycle_stage"] == "active")
     check("deny turn also settled", all(r[0] == "settled" for r in ledger_rows(args.guard_dsn)[rows0:]))
@@ -104,7 +121,8 @@ def main():
     rows0 = len(ledger_rows(args.guard_dsn))
     post, got, body = stream_turn(url, reader, "Which experiments exist?", state["experiment_id"])
     check("without endpoint USE the turn fails before any model call",
-          len(ledger_rows(args.guard_dsn)) == rows0 and "REHEARSAL-ANSWER" not in body and ("403" in body or "ermission" in body),
+          len(ledger_rows(args.guard_dsn)) == rows0 and "REHEARSAL-ANSWER" not in body
+          and "MLflow AI Gateway error 403: Permission denied" in body,
           body[-300:])
     requests.post(url + "/api/3.0/mlflow/users/permissions/grant", json=dict(grant, permission="USE"), auth=admin, timeout=60)
 
@@ -113,7 +131,9 @@ def main():
               indent=1, default=str)
     for c in checks:
         print("OK " if c["ok"] else "FAIL", c["check"], "" if c["ok"] else str(c["detail"])[:300])
+    return 0 if all(c["ok"] for c in checks) else 1
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    sys.exit(main())

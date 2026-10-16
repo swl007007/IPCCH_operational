@@ -18,6 +18,7 @@ import argparse
 import json
 import os
 import secrets
+import sys
 
 import requests
 
@@ -51,7 +52,13 @@ class Rehearsal:
         self.auth[role] = (name, password)
 
 
-def run(url, mode):
+def run(url, mode, service_assistant=None, prior=None):
+    """service_assistant: the (username, password) the server itself uses for assistant self-calls; required when
+    armed so every assistant probe targets the real service identity, optional (bootstrapped) in deny mode.
+    prior: an earlier rehearsal state on the same stores, whose job identity and experiment must be declared to the
+    role precondition (it refuses undeclared writers)."""
+    if mode == "armed" and not service_assistant:
+        raise SystemExit("armed mode needs the service assistant credentials (IPCCH_SERVICE_ASSISTANT_USERNAME/_PASSWORD)")
     t = Rehearsal(url)
     t.auth["admin"] = ("admin", os.environ["MLFLOW_AUTH_ADMIN_PASSWORD"])
     t.call("anonymous", "GET", "/health", 200, note="content-free health")
@@ -64,17 +71,26 @@ def run(url, mode):
     t.call("anonymous", "POST", "/api/2.0/mlflow/users/create", 401, json_body={"username": "x", "password": "y" * 12})
 
     suffix = secrets.token_hex(3)
-    for role in ("reader", "jobwriter", "assistant"):
+    for role in ("reader", "jobwriter") if service_assistant else ("reader", "jobwriter", "assistant"):
         t.user(role, suffix)
+    if service_assistant:
+        t.auth["assistant"] = tuple(service_assistant)
+    me = t.call("assistant", "GET", "/api/2.0/mlflow/users/current", 200, note="service assistant identity")
+    who = me.json().get("user", {}) if me.status_code == 200 else {}
+    t.results[-1].update(ok=t.results[-1]["ok"] and who.get("username") == t.auth["assistant"][0] and who.get("is_admin") is False,
+                         note=f"service assistant identity is the configured account and non-admin: {who.get('is_admin') is False}")
     exp = t.setup("admin", "POST", "/api/2.0/mlflow/experiments/create", 200,
                  json_body={"name": f"rehearsal-{secrets.token_hex(3)}"}).json()["experiment_id"]
     from research_cloud.service import workspace_roles
+    job_users, job_exps = [t.auth["jobwriter"][0]], [exp]
+    if prior:
+        job_users.append(prior["auth"]["jobwriter"][0])
+        job_exps.append(prior["experiment_id"])
     roles = workspace_roles.apply(workspace_roles.Admin(t.url, t.auth["admin"][1], t.auth["admin"][0]),
-                                  [t.auth["jobwriter"][0]], [exp])
+                                  job_users, job_exps, assistant_user=t.auth["assistant"][0])
     t.results.append({"principal": "admin", "method": "APPLY", "path": "workspace_roles", "remote": False,
-                      "expected": "no copied grant removed", "observed": "applied", "ok": True,
-                      "note": json.dumps({k: {kk: len(vv) for kk, vv in v.items()} for k, v in roles["diff"].items()
-                                          if k in (t.auth["reader"][0], t.auth["jobwriter"][0], t.auth["assistant"][0])})})
+                      "expected": "precondition met; copied users/roles/rows/assignments preserved",
+                      "observed": roles["preserved"], "ok": all(roles["preserved"].values()), "note": ""})
 
     run_id = t.setup("jobwriter", "POST", "/api/2.0/mlflow/runs/create", 200,
                     json_body={"experiment_id": exp}).json()["run"]["info"]["run_id"]
@@ -170,11 +186,14 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--state")
     ap.add_argument("--verify-restart")
+    ap.add_argument("--prior-state", help="state of an earlier rehearsal on the same stores (declares its job identity)")
     args = ap.parse_args()
     if args.verify_restart:
         t = verify_restart(args.url, json.load(open(args.verify_restart)))
     else:
-        t, state = run(args.url, args.mode)
+        svc = (os.environ.get("IPCCH_SERVICE_ASSISTANT_USERNAME"), os.environ.get("IPCCH_SERVICE_ASSISTANT_PASSWORD"))
+        t, state = run(args.url, args.mode, svc if all(svc) else None,
+                       json.load(open(args.prior_state)) if args.prior_state else None)
         if args.state:
             fd = os.open(args.state, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
             with os.fdopen(fd, "w") as f:
@@ -187,7 +206,8 @@ def main():
         if not r["ok"]:
             print("MISMATCH", r)
     print(f"{sum(r['ok'] for r in results)}/{len(results)} as expected")
+    return 0 if all(r["ok"] for r in results) else 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

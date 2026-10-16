@@ -6,14 +6,16 @@ and gives Vertex credentials a dummy token, so everything above it runs unchange
 self-call with the read-only identity, the provider allowlist, the guard's URL pin, payload contract, reservation
 and settlement, and the assistant patch's tool allowlist.
 
-Scripted model: the first turn calls the Bash tool with an ``mlflow experiments search`` command (or, when the
-user message contains ``PROBE-DENY``, with a prohibited ``mlflow runs delete`` command); once a tool result is in
-the history it answers with text that quotes the tool result's first 120 characters. Each response carries exact
+Scripted model: the first turn calls the Bash tool with an ``mlflow experiments search`` command, or, when the user
+message contains ``PROBE-DENY run=<run_id>``, with the prohibited ``mlflow runs delete --run-id <run_id>`` aimed at
+that real run. Once a tool result is in the history it answers ``REHEARSAL-ANSWER <<<`` + the full tool result
+(up to 4,000 characters) + ``>>>``. Each response carries exact
 usageMetadata (including thinking tokens) so the ledger settles.
 """
 import contextlib
 import json
 import os
+import re
 
 USAGE = {"promptTokenCount": 120, "candidatesTokenCount": 30, "thoughtsTokenCount": 50, "totalTokenCount": 200}
 
@@ -52,11 +54,18 @@ def respond(payload):
     contents = payload.get("contents") or []
     results = [p["functionResponse"] for c in contents for p in c.get("parts") or [] if "functionResponse" in p]
     if results:
-        quoted = json.dumps(results[-1].get("response"))[:120]
-        part = {"text": f"REHEARSAL-ANSWER tool said: {quoted}"}
+        response = results[-1].get("response")
+        text = response.get("result") if isinstance(response, dict) and isinstance(response.get("result"), str) else json.dumps(response)
+        part = {"text": f"REHEARSAL-ANSWER <<<{text[:4000]}>>>"}
     else:
         asked = json.dumps(contents)
-        command = ("mlflow runs delete --run-id 0" if "PROBE-DENY" in asked else "mlflow experiments search --max-results 5")
+        if "PROBE-DENY" in asked:
+            target = re.search(r"PROBE-DENY run=([0-9a-f]{32})", asked)
+            if not target:
+                raise ValueError("PROBE-DENY needs run=<32-hex run id>")
+            command = f"mlflow runs delete --run-id {target.group(1)}"
+        else:
+            command = "mlflow experiments search --max-results 50"
         part = {"functionCall": {"name": "Bash", "args": {"command": command}}}
     return {"candidates": [{"content": {"role": "model", "parts": [part]}, "finishReason": "STOP", "index": 0}],
             "usageMetadata": dict(USAGE)}
@@ -77,3 +86,14 @@ def install():
 
     utils._aiohttp_post = fake_post
     VertexAIProvider._get_credentials = lambda self: _Token()
+
+
+def quoted_tool_result(stream_text):
+    """The tool result the scripted model quoted back, or None. Stream text is JSON-escaped SSE."""
+    m = re.search(r"REHEARSAL-ANSWER <<<(.*?)>>>", stream_text, re.S)
+    if not m:
+        return None
+    try:
+        return json.loads('"' + m.group(1) + '"')   # undo one level of JSON string escaping
+    except ValueError:
+        return m.group(1)
