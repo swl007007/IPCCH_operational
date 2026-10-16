@@ -1,0 +1,7 @@
+{
+ "operation": "G11-vertex-ipcch-trial-1",
+ "claim": "claim:de7d2a604b044841bea9:7efb4adfd51742f0f871d857f2311994f99403c795afbefb22242d3005829e15",
+ "spec": "/home/swl007007/projects/food-crisis-research/scratch/vertex/jobs/spec-ipcch-trial-linked.json",
+ "spec_sha256": "7efb4adfd51742f0f871d857f2311994f99403c795afbefb22242d3005829e15",
+ "time": "2026-10-16T10:22:11-0400"
+}

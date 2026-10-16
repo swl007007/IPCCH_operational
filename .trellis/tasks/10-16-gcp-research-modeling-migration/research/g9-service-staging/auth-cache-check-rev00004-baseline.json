@@ -1,0 +1,153 @@
+{
+ "time": "2026-10-16T10:12:34-0400",
+ "url": "https://research-mlflow-76571749286.us-central1.run.app",
+ "probe_user": "cache-probe-1ef9d4ce",
+ "rows": [
+  {
+   "step": "create",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/users/create",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "warm",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/current",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "warm",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/current",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "warm",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/current",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "read-write-denied",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "step": "password-change",
+   "method": "PATCH",
+   "path": "/api/2.0/mlflow/users/update-password",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "old-password-immediately-denied",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/current",
+   "expected": 401,
+   "observed": 401,
+   "ok": true
+  },
+  {
+   "step": "new-password",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/current",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "non-admin-users-list",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/list",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "step": "promote",
+   "method": "PATCH",
+   "path": "/api/2.0/mlflow/users/update-admin",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "admin-users-list",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/list",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "demote",
+   "method": "PATCH",
+   "path": "/api/2.0/mlflow/users/update-admin",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "demoted-immediately-denied",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/list",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "step": "read-write-still-denied",
+   "method": "POST",
+   "path": "/api/2.0/mlflow/experiments/create",
+   "expected": 403,
+   "observed": 403,
+   "ok": true
+  },
+  {
+   "step": "rewarm",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/current",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "rewarm",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/current",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "delete",
+   "method": "DELETE",
+   "path": "/api/2.0/mlflow/users/delete",
+   "expected": 200,
+   "observed": 200,
+   "ok": true
+  },
+  {
+   "step": "deleted-immediately-denied",
+   "method": "GET",
+   "path": "/api/2.0/mlflow/users/current",
+   "expected": 401,
+   "observed": 401,
+   "ok": true
+  }
+ ],
+ "passed": 18,
+ "total": 18
+}

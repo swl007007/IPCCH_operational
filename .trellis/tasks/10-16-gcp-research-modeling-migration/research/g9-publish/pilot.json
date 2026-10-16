@@ -1,0 +1,18 @@
+{
+ "experiment_id": "8",
+ "packages": {
+  "fews-confirm-onset-v1-S0-pooled": {
+   "run_id": "0d2550c952734f20901f05091d056100",
+   "files": 19,
+   "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-fews@sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+   "registry": "not in the MLflow registry"
+  },
+  "geoxgb_reference-partitioned_gated-h01": {
+   "run_id": "ee4f2558ea0e4947bd108e3b7bcc8f14",
+   "files": 255,
+   "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch@sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+   "registry": "linked"
+  }
+ },
+ "files": 274
+}

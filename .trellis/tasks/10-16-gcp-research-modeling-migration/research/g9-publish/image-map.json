@@ -1,0 +1,7 @@
+{
+ "replay-forecast-x320": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/replay-forecast-x320@sha256:2810ab7c1bec048dce6c24cb4968937c0461deff68c6cb10c17ecf5c59e9bef7",
+ "replay-x320": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/replay-x320@sha256:1e78790933636289e6c59c5d1863126e1558f61d8b20e4a8617e8318b9ce982f",
+ "service": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:280013b040943028e6d9fb79de750063e28116cbe9a7f683b1690a934caceadf",
+ "training-fews": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-fews@sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+ "training-ipcch": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch@sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb"
+}

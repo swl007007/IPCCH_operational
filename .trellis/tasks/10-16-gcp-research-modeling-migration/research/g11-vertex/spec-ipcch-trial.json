@@ -1,0 +1,39 @@
+{
+ "displayName": "ipcch_geoxgb_pooled_quartet-trial",
+ "jobSpec": {
+  "workerPoolSpecs": [
+   {
+    "machineSpec": {
+     "machineType": "n1-highmem-4"
+    },
+    "replicaCount": "1",
+    "containerSpec": {
+     "imageUri": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch@sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+     "command": [
+      "python",
+      "-m",
+      "research_cloud.training.ipcch_quartet"
+     ],
+     "args": [
+      "--manifest",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/manifest-ipcch-h03.json",
+      "--config",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/config-ipcch-h03.json",
+      "--output",
+      "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_geoxgb_pooled_quartet"
+     ]
+    }
+   }
+  ],
+  "serviceAccount": "research-trainer@food-crisis-modeling-enso.iam.gserviceaccount.com",
+  "scheduling": {
+   "timeout": "900s",
+   "disableRetries": true,
+   "restartJobOnWorkerRestart": false
+  }
+ },
+ "labels": {
+  "task": "gcp-research-modeling-migration",
+  "family": "ipcch-geoxgb-pooled-quartet"
+ }
+}

@@ -1,0 +1,170 @@
+{
+  "apiVersion": "serving.knative.dev/v1",
+  "kind": "Service",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/ingress": "all",
+      "run.googleapis.com/ingress-status": "all",
+      "run.googleapis.com/maxScale": "20",
+      "run.googleapis.com/operation-id": "02ff777a-854e-4c69-b6ce-8aaaab3b5ddf",
+      "run.googleapis.com/urls": "[\"https://research-mlflow-76571749286.us-central1.run.app\",\"https://research-mlflow-357xpe2jva-uc.a.run.app\"]",
+      "serving.knative.dev/creator": "weilun.shi@cgiar.org",
+      "serving.knative.dev/lastModifier": "weilun.shi@cgiar.org"
+    },
+    "creationTimestamp": "2026-10-16T12:22:33.711007Z",
+    "generation": 5,
+    "labels": {
+      "cloud.googleapis.com/location": "us-central1",
+      "task": "gcp-research-modeling-migration"
+    },
+    "name": "research-mlflow",
+    "namespace": "76571749286",
+    "resourceVersion": "AAZd9c5w10c",
+    "selfLink": "/apis/serving.knative.dev/v1/namespaces/76571749286/services/research-mlflow",
+    "uid": "f15d0436-8972-4a16-87a6-40868a3b1c5f"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "autoscaling.knative.dev/maxScale": "1",
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "562.0.0",
+          "run.googleapis.com/cloudsql-instances": "food-crisis-modeling-enso:us-central1:research-pg",
+          "run.googleapis.com/cpu-throttling": "true",
+          "run.googleapis.com/startup-cpu-boost": "false"
+        },
+        "labels": {
+          "client.knative.dev/nonce": "ejoqnmgifj",
+          "run.googleapis.com/startupProbeType": "Default",
+          "task": "gcp-research-modeling-migration"
+        }
+      },
+      "spec": {
+        "containerConcurrency": 40,
+        "containers": [
+          {
+            "env": [
+              {
+                "name": "MLFLOW_ARTIFACTS_DESTINATION",
+                "value": "gs://food-crisis-modeling-enso-research-artifacts/mlflow-artifacts"
+              },
+              {
+                "name": "MLFLOW_BASIC_AUTH_FAIL_CLOSED",
+                "value": "true"
+              },
+              {
+                "name": "IPCCH_ALLOWED_HOSTS",
+                "value": "research-mlflow-76571749286.us-central1.run.app,127.0.0.1:8080,localhost:8080"
+              },
+              {
+                "name": "MLFLOW_BACKEND_STORE_URI",
+                "valueFrom": {
+                  "secretKeyRef": {
+                    "key": "2",
+                    "name": "mlflow-backend-uri"
+                  }
+                }
+              },
+              {
+                "name": "IPCCH_AUTH_DATABASE_URI",
+                "valueFrom": {
+                  "secretKeyRef": {
+                    "key": "2",
+                    "name": "mlflow-auth-db-uri"
+                  }
+                }
+              },
+              {
+                "name": "MLFLOW_FLASK_SERVER_SECRET_KEY",
+                "valueFrom": {
+                  "secretKeyRef": {
+                    "key": "1",
+                    "name": "mlflow-flask-secret"
+                  }
+                }
+              },
+              {
+                "name": "MLFLOW_CRYPTO_KEK_PASSPHRASE",
+                "valueFrom": {
+                  "secretKeyRef": {
+                    "key": "1",
+                    "name": "mlflow-kek-passphrase"
+                  }
+                }
+              },
+              {
+                "name": "MLFLOW_SERVER_CORS_ALLOWED_ORIGINS",
+                "value": "https://research-mlflow-76571749286.us-central1.run.app"
+              }
+            ],
+            "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/service@sha256:4cc5d93be9792a893e6f65492f6bafd94f2a91463906629c0c6d0eb0549e8cce",
+            "ports": [
+              {
+                "containerPort": 8080,
+                "name": "http1"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "1",
+                "memory": "2Gi"
+              }
+            },
+            "startupProbe": {
+              "failureThreshold": 1,
+              "periodSeconds": 240,
+              "tcpSocket": {
+                "port": 8080
+              },
+              "timeoutSeconds": 240
+            }
+          }
+        ],
+        "serviceAccountName": "research-mlflow@food-crisis-modeling-enso.iam.gserviceaccount.com",
+        "timeoutSeconds": 3600
+      }
+    },
+    "traffic": [
+      {
+        "latestRevision": true,
+        "percent": 100
+      }
+    ]
+  },
+  "status": {
+    "address": {
+      "url": "https://research-mlflow-357xpe2jva-uc.a.run.app"
+    },
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-10-16T14:16:12.136263Z",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2026-10-16T14:15:34.639063Z",
+        "status": "True",
+        "type": "ConfigurationsReady"
+      },
+      {
+        "lastTransitionTime": "2026-10-16T14:16:12.085162Z",
+        "status": "True",
+        "type": "RoutesReady"
+      }
+    ],
+    "latestCreatedRevisionName": "research-mlflow-00005-6vq",
+    "latestReadyRevisionName": "research-mlflow-00005-6vq",
+    "observedGeneration": 5,
+    "traffic": [
+      {
+        "latestRevision": true,
+        "percent": 100,
+        "revisionName": "research-mlflow-00005-6vq"
+      }
+    ],
+    "url": "https://research-mlflow-357xpe2jva-uc.a.run.app"
+  }
+}

@@ -1,0 +1,7 @@
+{
+ "operation": "G11-vertex-fews-trial-2",
+ "claim": "claim:aa2efe83a02d42f4bafe:5d4958f907cd245963105c54be38f78662511faefbb13b6c0ecb38ac77be128f",
+ "spec": "/home/swl007007/projects/food-crisis-research/scratch/vertex/jobs/spec-fews-trial-linked-2.json",
+ "spec_sha256": "5d4958f907cd245963105c54be38f78662511faefbb13b6c0ecb38ac77be128f",
+ "time": "2026-10-16T10:10:38-0400"
+}

@@ -1,0 +1,600 @@
+{
+ "time": "2026-10-16T10:19:01-0400",
+ "url": "https://research-mlflow-76571749286.us-central1.run.app",
+ "rows": [
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/experiments/search",
+   "experiment": null,
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.159,
+     "total_s": 0.164,
+     "wire_bytes": 10595,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.132,
+     "total_s": 0.132,
+     "wire_bytes": 10595,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.126,
+     "total_s": 0.129,
+     "wire_bytes": 10595,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.132,
+   "median_total_s": 0.132
+  },
+  {
+   "method": "GET",
+   "path": "/ajax-api/2.0/mlflow/experiments/get",
+   "experiment": "1",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.113,
+     "total_s": 0.113,
+     "wire_bytes": 269,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.154,
+     "total_s": 0.154,
+     "wire_bytes": 269,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.132,
+     "total_s": 0.132,
+     "wire_bytes": 269,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.132,
+   "median_total_s": 0.132
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/runs/search",
+   "experiment": "1",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 2.693,
+     "total_s": 3.341,
+     "wire_bytes": 3599923,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 2.086,
+     "total_s": 2.969,
+     "wire_bytes": 3599923,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 2.138,
+     "total_s": 2.617,
+     "wire_bytes": 3599923,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 2.138,
+   "median_total_s": 2.969
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/logged-models/search",
+   "experiment": "1",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.271,
+     "total_s": 0.271,
+     "wire_bytes": 2,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.25,
+     "total_s": 0.25,
+     "wire_bytes": 2,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.257,
+     "total_s": 0.257,
+     "wire_bytes": 2,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.257,
+   "median_total_s": 0.257
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+   "experiment": "1",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.255,
+     "total_s": 0.255,
+     "wire_bytes": 2,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.234,
+     "total_s": 0.234,
+     "wire_bytes": 2,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.262,
+     "total_s": 0.262,
+     "wire_bytes": 2,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.255,
+   "median_total_s": 0.255
+  },
+  {
+   "method": "GET",
+   "path": "/ajax-api/2.0/mlflow/experiments/get",
+   "experiment": "2",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.242,
+     "total_s": 0.246,
+     "wire_bytes": 5855,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.271,
+     "total_s": 0.271,
+     "wire_bytes": 5855,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.239,
+     "total_s": 0.239,
+     "wire_bytes": 5855,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.242,
+   "median_total_s": 0.246
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/runs/search",
+   "experiment": "2",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 1.938,
+     "total_s": 2.289,
+     "wire_bytes": 2260693,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.684,
+     "total_s": 1.023,
+     "wire_bytes": 2260693,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 1.345,
+     "total_s": 1.647,
+     "wire_bytes": 2260693,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 1.345,
+   "median_total_s": 1.647
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/logged-models/search",
+   "experiment": "2",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.325,
+     "total_s": 0.616,
+     "wire_bytes": 1524578,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.307,
+     "total_s": 0.754,
+     "wire_bytes": 1524578,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.582,
+     "total_s": 1.089,
+     "wire_bytes": 1524578,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.325,
+   "median_total_s": 0.754
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+   "experiment": "2",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.104,
+     "total_s": 0.104,
+     "wire_bytes": 20348,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.118,
+     "total_s": 0.118,
+     "wire_bytes": 20348,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.11,
+     "total_s": 0.11,
+     "wire_bytes": 20348,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.11,
+   "median_total_s": 0.11
+  },
+  {
+   "method": "GET",
+   "path": "/ajax-api/2.0/mlflow/experiments/get",
+   "experiment": "3",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.09,
+     "total_s": 0.09,
+     "wire_bytes": 982,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.094,
+     "total_s": 0.094,
+     "wire_bytes": 982,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.092,
+     "total_s": 0.093,
+     "wire_bytes": 982,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.092,
+   "median_total_s": 0.093
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/runs/search",
+   "experiment": "3",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 1.974,
+     "total_s": 2.414,
+     "wire_bytes": 3077761,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 1.416,
+     "total_s": 2.227,
+     "wire_bytes": 3077761,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 1.166,
+     "total_s": 1.62,
+     "wire_bytes": 3077761,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 1.416,
+   "median_total_s": 2.227
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/logged-models/search",
+   "experiment": "3",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.095,
+     "total_s": 0.095,
+     "wire_bytes": 2,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.109,
+     "total_s": 0.109,
+     "wire_bytes": 2,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.099,
+     "total_s": 0.099,
+     "wire_bytes": 2,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.099,
+   "median_total_s": 0.099
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+   "experiment": "3",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.165,
+     "total_s": 0.169,
+     "wire_bytes": 125426,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.123,
+     "total_s": 0.126,
+     "wire_bytes": 125426,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.111,
+     "total_s": 0.142,
+     "wire_bytes": 125426,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.123,
+   "median_total_s": 0.142
+  },
+  {
+   "method": "GET",
+   "path": "/ajax-api/2.0/mlflow/experiments/get",
+   "experiment": "4",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.096,
+     "total_s": 0.096,
+     "wire_bytes": 1892,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.096,
+     "total_s": 0.096,
+     "wire_bytes": 1892,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.289,
+     "total_s": 0.289,
+     "wire_bytes": 1892,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.096,
+   "median_total_s": 0.096
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/runs/search",
+   "experiment": "4",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 1.507,
+     "total_s": 2.678,
+     "wire_bytes": 2946272,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 1.295,
+     "total_s": 1.872,
+     "wire_bytes": 2946272,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 1.522,
+     "total_s": 2.312,
+     "wire_bytes": 2946272,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 1.507,
+   "median_total_s": 2.312
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/logged-models/search",
+   "experiment": "4",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 1.622,
+     "total_s": 3.211,
+     "wire_bytes": 8956920,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 2.096,
+     "total_s": 4.927,
+     "wire_bytes": 8956920,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 1.78,
+     "total_s": 3.506,
+     "wire_bytes": 8956920,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 1.78,
+   "median_total_s": 3.506
+  },
+  {
+   "method": "POST",
+   "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+   "experiment": "4",
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.108,
+     "total_s": 0.117,
+     "wire_bytes": 122167,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.109,
+     "total_s": 0.117,
+     "wire_bytes": 122167,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.103,
+     "total_s": 0.112,
+     "wire_bytes": 122167,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.108,
+   "median_total_s": 0.117
+  },
+  {
+   "method": "GET",
+   "path": "/ajax-api/2.0/mlflow/runs/get",
+   "experiment": null,
+   "samples": [
+    {
+     "status": 200,
+     "ttfb_s": 0.128,
+     "total_s": 0.13,
+     "wire_bytes": 61082,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.136,
+     "total_s": 0.159,
+     "wire_bytes": 61082,
+     "content_encoding": null,
+     "content_type": "application/json"
+    },
+    {
+     "status": 200,
+     "ttfb_s": 0.136,
+     "total_s": 0.137,
+     "wire_bytes": 61082,
+     "content_encoding": null,
+     "content_type": "application/json"
+    }
+   ],
+   "median_ttfb_s": 0.136,
+   "median_total_s": 0.137
+  }
+ ]
+}

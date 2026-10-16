@@ -1,0 +1,66 @@
+{
+ "name": "projects/76571749286/locations/us-central1/customJobs/6384402304920977408",
+ "displayName": "fewsnet_pooled_fourclass-trial",
+ "jobSpec": {
+  "workerPoolSpecs": [
+   {
+    "machineSpec": {
+     "machineType": "n1-standard-4"
+    },
+    "replicaCount": "1",
+    "diskSpec": {
+     "bootDiskType": "pd-ssd",
+     "bootDiskSizeGb": 100
+    },
+    "containerSpec": {
+     "imageUri": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-fews@sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+     "command": [
+      "python",
+      "-c",
+      "import base64, json, os, runpy, sys\nimport google.auth\nfrom google.auth.transport.requests import AuthorizedSession\ncreds, _ = google.auth.default(scopes=[\"https://www.googleapis.com/auth/cloud-platform\"])\nr = AuthorizedSession(creds).get(\"https://secretmanager.googleapis.com/v1/projects/food-crisis-modeling-enso/secrets/mlflow-jobwriter/versions/1:access\", timeout=60)\nr.raise_for_status()\nc = json.loads(base64.b64decode(r.json()[\"payload\"][\"data\"]))\nos.environ[\"MLFLOW_TRACKING_USERNAME\"], os.environ[\"MLFLOW_TRACKING_PASSWORD\"] = c[\"username\"], c[\"password\"]\nmodule, sys.argv = sys.argv[1], [sys.argv[1]] + sys.argv[2:]\nrunpy.run_module(module, run_name=\"__main__\", alter_sys=True)\n",
+      "research_cloud.training.fews_fourclass"
+     ],
+     "args": [
+      "--manifest",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/manifest-fews-h4-2019-02.json",
+      "--config",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/config-fews-h4-2019-02.json",
+      "--output",
+      "gs://food-crisis-modeling-enso-research-artifacts/trials/fewsnet_pooled_fourclass",
+      "--mlflow-experiment",
+      "cloud-training-acceptance"
+     ],
+     "env": [
+      {
+       "name": "IPCCH_IMAGE_DIGEST",
+       "value": "sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456"
+      },
+      {
+       "name": "MLFLOW_TRACKING_URI",
+       "value": "https://research-mlflow-76571749286.us-central1.run.app"
+      },
+      {
+       "name": "IPCCH_GCP_PROJECT",
+       "value": "food-crisis-modeling-enso"
+      }
+     ]
+    }
+   }
+  ],
+  "scheduling": {
+   "timeout": "900s",
+   "disableRetries": true
+  },
+  "serviceAccount": "research-trainer@food-crisis-modeling-enso.iam.gserviceaccount.com"
+ },
+ "state": "JOB_STATE_SUCCEEDED",
+ "createTime": "2026-10-16T14:10:53.386961Z",
+ "startTime": "2026-10-16T14:13:42Z",
+ "endTime": "2026-10-16T14:15:13Z",
+ "updateTime": "2026-10-16T14:15:15.530443Z",
+ "labels": {
+  "task": "gcp-research-modeling-migration",
+  "family": "fewsnet-pooled-fourclass",
+  "ipcch-claim": "aa2efe83a02d42f4bafe"
+ }
+}

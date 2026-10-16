@@ -1,0 +1,88 @@
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-76571749286@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-76571749286@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-76571749286@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:76571749286@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-76571749286@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:research-mlflow@food-crisis-modeling-enso.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudsql.client"
+    },
+    {
+      "members": [
+        "serviceAccount:service-76571749286@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:76571749286-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:research-build@food-crisis-modeling-enso.iam.gserviceaccount.com",
+        "serviceAccount:research-trainer@food-crisis-modeling-enso.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.logWriter"
+    },
+    {
+      "members": [
+        "user:mbb704107@gmail.com",
+        "user:soonho.kim@cgiar.org",
+        "user:weilun.shi@cgiar.org",
+        "user:y.liu@cgiar.org"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-76571749286@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-76571749286@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:research-trainer@food-crisis-modeling-enso.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageConsumer"
+    }
+  ],
+  "etag": "BwZd9bHyvuY=",
+  "version": 1
+}

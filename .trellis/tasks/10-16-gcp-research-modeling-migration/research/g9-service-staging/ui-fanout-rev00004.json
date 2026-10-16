@@ -1,0 +1,15 @@
+{
+ "requests": 200,
+ "workers": 40,
+ "status": {
+  "200": 87,
+  "429": 113
+ },
+ "wall_s": 53.1,
+ "throughput_rps": 3.77,
+ "latency_ok_s": {
+  "p50": 10.72,
+  "p90": 10.96,
+  "max": 11.57
+ }
+}

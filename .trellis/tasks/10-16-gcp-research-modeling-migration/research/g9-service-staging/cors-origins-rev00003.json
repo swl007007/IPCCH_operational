@@ -1,0 +1,20 @@
+[
+ {
+  "origin": "https://evil.example",
+  "status": 429,
+  "body_head": "Rate exceeded.",
+  "acao": null
+ },
+ {
+  "origin": "https://research-mlflow-76571749286.us-central1.run.app",
+  "status": 429,
+  "body_head": "Rate exceeded.",
+  "acao": null
+ },
+ {
+  "origin": null,
+  "status": 429,
+  "body_head": "Rate exceeded.",
+  "acao": null
+ }
+]

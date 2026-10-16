@@ -1,0 +1,24 @@
+[
+ {
+  "package": "fews-confirm-onset-v1-S0-pooled",
+  "run_id": "0d2550c952734f20901f05091d056100",
+  "files": 19,
+  "bytes": 2026077,
+  "seconds": 20.0,
+  "package_json_sha256": "b13df408e47015387af58b07ae4fd7b6f7d970f9df74338868ba8a0ff13fd900",
+  "tag_sha256": "b13df408e47015387af58b07ae4fd7b6f7d970f9df74338868ba8a0ff13fd900",
+  "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-fews@sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+  "ok": true
+ },
+ {
+  "package": "geoxgb_reference-partitioned_gated-h01",
+  "run_id": "ee4f2558ea0e4947bd108e3b7bcc8f14",
+  "files": 255,
+  "bytes": 52642510,
+  "seconds": 39.5,
+  "package_json_sha256": "326b1039ae3b0d6e7f5e7fcb7314d57a59e7a70ef1d6e0e321a7c6f5a62081a8",
+  "tag_sha256": "326b1039ae3b0d6e7f5e7fcb7314d57a59e7a70ef1d6e0e321a7c6f5a62081a8",
+  "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch@sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+  "ok": true
+ }
+]

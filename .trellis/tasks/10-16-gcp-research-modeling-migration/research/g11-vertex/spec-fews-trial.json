@@ -1,0 +1,39 @@
+{
+ "displayName": "fewsnet_pooled_fourclass-trial",
+ "jobSpec": {
+  "workerPoolSpecs": [
+   {
+    "machineSpec": {
+     "machineType": "n1-standard-4"
+    },
+    "replicaCount": "1",
+    "containerSpec": {
+     "imageUri": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-fews@sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+     "command": [
+      "python",
+      "-m",
+      "research_cloud.training.fews_fourclass"
+     ],
+     "args": [
+      "--manifest",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/manifest-fews-h4-2019-02.json",
+      "--config",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/config-fews-h4-2019-02.json",
+      "--output",
+      "gs://food-crisis-modeling-enso-research-artifacts/trials/fewsnet_pooled_fourclass"
+     ]
+    }
+   }
+  ],
+  "serviceAccount": "research-trainer@food-crisis-modeling-enso.iam.gserviceaccount.com",
+  "scheduling": {
+   "timeout": "900s",
+   "disableRetries": true,
+   "restartJobOnWorkerRestart": false
+  }
+ },
+ "labels": {
+  "task": "gcp-research-modeling-migration",
+  "family": "fewsnet-pooled-fourclass"
+ }
+}

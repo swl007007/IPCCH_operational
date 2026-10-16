@@ -1,0 +1,101 @@
+{
+ "displayName": "ipcch_geoxgb_pooled_quartet-hpt",
+ "maxTrialCount": 2,
+ "parallelTrialCount": 1,
+ "maxFailedTrialCount": 1,
+ "studySpec": {
+  "metrics": [
+   {
+    "metricId": "crisis_f1",
+    "goal": "MAXIMIZE"
+   }
+  ],
+  "parameters": [
+   {
+    "parameterId": "colsample_bytree",
+    "doubleValueSpec": {
+     "minValue": 0.5,
+     "maxValue": 1.0
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "max_depth",
+    "integerValueSpec": {
+     "minValue": 2,
+     "maxValue": 6
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "min_child_weight",
+    "doubleValueSpec": {
+     "minValue": 1,
+     "maxValue": 50
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "reg_lambda",
+    "doubleValueSpec": {
+     "minValue": 0,
+     "maxValue": 50
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "rounds",
+    "integerValueSpec": {
+     "minValue": 50,
+     "maxValue": 400
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   },
+   {
+    "parameterId": "subsample",
+    "doubleValueSpec": {
+     "minValue": 0.5,
+     "maxValue": 1.0
+    },
+    "scaleType": "UNIT_LINEAR_SCALE"
+   }
+  ],
+  "algorithm": "RANDOM_SEARCH"
+ },
+ "trialJobSpec": {
+  "workerPoolSpecs": [
+   {
+    "machineSpec": {
+     "machineType": "n1-highmem-4"
+    },
+    "replicaCount": "1",
+    "containerSpec": {
+     "imageUri": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch@sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+     "command": [
+      "python",
+      "-m",
+      "research_cloud.training.ipcch_quartet"
+     ],
+     "args": [
+      "--manifest",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/manifest-ipcch-h03.json",
+      "--config",
+      "/gcs/food-crisis-modeling-enso-research-inputs/training-jobs/config-ipcch-h03.json",
+      "--output",
+      "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_geoxgb_pooled_quartet"
+     ]
+    }
+   }
+  ],
+  "serviceAccount": "research-trainer@food-crisis-modeling-enso.iam.gserviceaccount.com",
+  "scheduling": {
+   "timeout": "900s",
+   "disableRetries": true,
+   "restartJobOnWorkerRestart": false
+  }
+ },
+ "labels": {
+  "task": "gcp-research-modeling-migration",
+  "family": "ipcch-geoxgb-pooled-quartet"
+ }
+}

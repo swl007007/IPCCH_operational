@@ -1,0 +1,170 @@
+[
+ {
+  "exp": "6",
+  "path": "/ajax-api/2.0/mlflow/runs/search",
+  "status": 200,
+  "bytes": 1692,
+  "seconds": 1.9,
+  "next_page": false
+ },
+ {
+  "exp": "6",
+  "path": "/ajax-api/2.0/mlflow/logged-models/search",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 1.1,
+  "next_page": false
+ },
+ {
+  "exp": "6",
+  "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 1.5,
+  "next_page": false
+ },
+ {
+  "exp": "5",
+  "path": "/ajax-api/2.0/mlflow/runs/search",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 1.2,
+  "next_page": false
+ },
+ {
+  "exp": "5",
+  "path": "/ajax-api/2.0/mlflow/logged-models/search",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 0.9,
+  "next_page": false
+ },
+ {
+  "exp": "5",
+  "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 0.8,
+  "next_page": false
+ },
+ {
+  "exp": "4",
+  "path": "/ajax-api/2.0/mlflow/runs/search",
+  "status": 200,
+  "bytes": 2946272,
+  "seconds": 3.9,
+  "next_page": true
+ },
+ {
+  "exp": "4",
+  "path": "/ajax-api/2.0/mlflow/logged-models/search",
+  "status": 200,
+  "bytes": 8956920,
+  "seconds": 14.1,
+  "next_page": true
+ },
+ {
+  "exp": "4",
+  "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+  "status": 200,
+  "bytes": 122167,
+  "seconds": 3.5,
+  "next_page": false
+ },
+ {
+  "exp": "3",
+  "path": "/ajax-api/2.0/mlflow/runs/search",
+  "status": 200,
+  "bytes": 3077761,
+  "seconds": 5.5,
+  "next_page": true
+ },
+ {
+  "exp": "3",
+  "path": "/ajax-api/2.0/mlflow/logged-models/search",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 8.6,
+  "next_page": false
+ },
+ {
+  "exp": "3",
+  "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+  "status": 200,
+  "bytes": 125426,
+  "seconds": 10.7,
+  "next_page": false
+ },
+ {
+  "exp": "2",
+  "path": "/ajax-api/2.0/mlflow/runs/search",
+  "status": 200,
+  "bytes": 2260693,
+  "seconds": 4.1,
+  "next_page": true
+ },
+ {
+  "exp": "2",
+  "path": "/ajax-api/2.0/mlflow/logged-models/search",
+  "status": 200,
+  "bytes": 1524578,
+  "seconds": 10.4,
+  "next_page": true
+ },
+ {
+  "exp": "2",
+  "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+  "status": 200,
+  "bytes": 20348,
+  "seconds": 3.7,
+  "next_page": false
+ },
+ {
+  "exp": "1",
+  "path": "/ajax-api/2.0/mlflow/runs/search",
+  "status": 200,
+  "bytes": 3599923,
+  "seconds": 14.4,
+  "next_page": true
+ },
+ {
+  "exp": "1",
+  "path": "/ajax-api/2.0/mlflow/logged-models/search",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 4.8,
+  "next_page": false
+ },
+ {
+  "exp": "1",
+  "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 10.4,
+  "next_page": false
+ },
+ {
+  "exp": "0",
+  "path": "/ajax-api/2.0/mlflow/runs/search",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 2.7,
+  "next_page": false
+ },
+ {
+  "exp": "0",
+  "path": "/ajax-api/2.0/mlflow/logged-models/search",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 4.5,
+  "next_page": false
+ },
+ {
+  "exp": "0",
+  "path": "/ajax-api/2.0/mlflow/experiments/search-datasets",
+  "status": 200,
+  "bytes": 2,
+  "seconds": 6.8,
+  "next_page": false
+ }
+]
