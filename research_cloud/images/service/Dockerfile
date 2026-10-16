@@ -14,7 +14,10 @@ RUN cp /app/research_cloud/service/ipcch_service_hook.pth "$(python -c 'import s
  && chmod 0755 /usr/local/bin/ipcch-model
 
 ARG SOURCE_COMMIT
-ENV PYTHONPATH=/app PYTHONDONTWRITEBYTECODE=1 IPCCH_SERVICE_HOOK=1 IPCCH_MODEL_CLOUD=1 IPCCH_SOURCE_COMMIT=${SOURCE_COMMIT}
+# The hook .pth loads in EVERY interpreter of this image, including the launcher itself before start.prepare runs, and the
+# guard refuses unless the Gateway provider allowlist is pinned to vertex_ai - so the pin is part of the image.
+ENV PYTHONPATH=/app PYTHONDONTWRITEBYTECODE=1 IPCCH_SERVICE_HOOK=1 IPCCH_MODEL_CLOUD=1 IPCCH_SOURCE_COMMIT=${SOURCE_COMMIT} \
+    MLFLOW_GATEWAY_ALLOWED_PROVIDERS=vertex_ai
 # an owned, writable HOME for the runtime user (start.py writes $HOME/.mlflow; tools cache under HOME)
 RUN mkdir -p /home/app && chown 65534:65534 /home/app
 ENV HOME=/home/app
