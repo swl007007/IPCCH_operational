@@ -1,4 +1,4 @@
-# Executor state (continuation record), updated 2026-10-16 07:04 EDT by `date`
+# Executor state (continuation record), updated 2026-10-16 07:59 EDT by `date`
 
 This file is kept current by the executor so work continues unchanged across context compaction. It is not a source of approval; see `execution-authorization.md`.
 
@@ -18,7 +18,7 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
 - The other 72 pre-existing dirty paths are untouched. `PROGRESS.md`'s close-time check uses `expected-after-executor-appends.txt`.
 
 - **Preservation:** `refs/preserve/gcp-migration-predirty-20261016` and the tarball in `/home/swl007007/projects/food-crisis-research/preservation/`. The close-time stash/restore plan is in `p0-receipt.md`: no bulk tar extraction, verified per-file restore only.
-- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `3aec3ab`. Recent commits:
+- **Code lineage:** native clone `/home/swl007007/projects/food-crisis-research/control-plane`, branch `gcp-research-migration`, HEAD `6f9cbda`. Recent commits:
   - forecasting batch/launch 81d6fb3, provenance fix 602558c;
   - somalia v2 74e00f6, job-scoped bf77ccd, oracle status 99c6588;
   - PROGRESS ledger c509a39;
@@ -40,7 +40,10 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - cost ledger ccd1fd2 + atomic transitions/validation e79ccad;
   - stage-1 explicit system/root 78ae83f; v1 globals 78ae83f + horizon validation 1cde8f6; shared scen/confirm loader
     width + NaN-safe builders 22150fe; preservation --no-recurse 991e27a; FEWS training adapter 713e350;
-  - training label/horizon/identity checks aeec007, MLflow tag fallback b49ccc7; images e24de64; quote 3aec3ab.
+  - training label/horizon/identity checks aeec007, MLflow tag fallback b49ccc7; images e24de64; quote 3aec3ab;
+  - images writable HOME + self-check ff90981, provider pin 36bde42, replay images b24dfd1; quote bindings 7180734 /
+    6d4a9b6 / b24dfd1; preservation gate 50e9a6c; provisioner b497503 → 253a6b2 → b32038d; db_roles 3c8dbad;
+    ledger note 6f9cbda.
 
   All code is committed; there is no uncommitted forecasting or somalia code. (**Correction** of the earlier "forecast code uncommitted" statement.) These commits **must be merged into the registered repo lineage before close.**
 
@@ -69,11 +72,12 @@ The registered-repo evidence commits so far are e19b2c5, 1115e49, 7b449f6, c90ca
   - `scratch/p1/popv1_models.json`.
 - **SKU catalogs:** `scratch/p3/skus/*.json`.
 - **Background processes:**
-  - SQL import run3 (PID 2856914; code 8868583): 50 verified, 0 failed at 05:42. Log `scratch/sqlimport/run3.log`, report `scratch/sqlimport/report.json`; the final reconciliation is written when it finishes. Do not start another import.
-  - The disposable PG (PID 1262386) is running. All rehearsal MLflow servers are stopped.
-  - Rehearsal data:
-    - `scratch/uri/artifacts-copy`: a copy of the artifact tree, served for the URI rehearsal.
-    - `wsc_*` DBs: the copied stores, with roles applied and the 56 mapped tags written.
+  - Cloud SQL Auth Proxy v2.26.2 (`tools/cloud-sql-proxy.v2.26.2`, sha verified) on 127.0.0.1:5433 → `research-pg`; log `scratch/sql-proxy.log`.
+  - The disposable PG (`scratch/pg-rehearsal`) is still running for local rehearsals.
+  - No other job is running.
+- **Operator ledger and receipts:**
+  - `ledger/spend.sqlite`: platform 2026-10 reservations USD 46.76, no actual cost claimed yet.
+  - Sanitized receipts: `ledger/provision-receipt.json` and `ledger/db-roles-receipt.json`.
 - **Registered-repo lock:** the stale 0-byte `.git/index.lock` (04:21:04, no live git) was moved to `preservation/stale-index.lock-0421`. Evidence was committed in `a99e84c`.
 
 ## Completed rounds: do not redo
@@ -111,45 +115,24 @@ The registry ledger stands at 170 passed and 72 tracking-only.
 
 ## Status by phase
 
-- **P1:** inventory reconciled (`ledger/README.md`).
-  - 242 registry versions with exact key equality: 36 packaged and passing, 134 retained with packages pending (forecasting 126 + window-probe comparators 8, linked to P6 units), 72 tracking-only.
-  - Unregistered and in scope: `pop-v1` (660 local models), and the FEWS NET bounded root (27 runs, 34,085 `.ubj` files, 59.9 GB, labelled).
-  - Current ledger: **170 packaged_replay_passed, 0 pending, 72 missing tracking-only**. The unregistered pop-v1 run has 24 packages, all passing (`checkpoint-p2-packages-complete-service-corrections-20261016.md`).
-  - Environment `envs/rt-popv1-x300` (scikit-learn 1.6.1) was added for pop-v1.
-  - Inputs: 121 declared files, 14.87 GB, hashes match (`input-inventory.json`; agent-produced, partial).
-- **P2:**
-  - Store-copy rehearsal r3 passes (tracking + auth).
-  - Packages: P6, yearly and AlphaEarth are done.
-  - Forecasting batch/launch and Somalia v2/v3/v4 are done and committed.
-  - The service (guard, launcher, workspace roles, access matrix, assistant end-to-end) is done locally; see `checkpoint-p2-service-20261016.md`.
-- **P3:** preflight done (`cloud-preflight.json`, `cloud-operations.md` O-001…O-024); support APIs `cloudbilling` and `billingbudgets` enabled; SKU prices collected; the spend-information gate is resolved by user ruling (USD 0). **No paid resource has been created yet**; the final itemized quote comes next.
+- **P1/P2 (local): complete.**
+  - All 223 packages have current replay receipts (registry 170 passed + 72 tracking-only; pop-v1 24; FEWS 29 + confirm 2 + scen 8, etc.).
+  - SQL/PostGIS rehearsal and capacity are done.
+  - Training adapters for both families: features, trials, packages and MLflow linkage.
+  - Five pinned images are built.
+  - Preservation gate: 29/29 roots.
+- **P3 (cloud), in progress:**
+  - **G5:** APIs enabled (O-025…O-030).
+  - **G6:** 3 SAs, project and resource-scoped grants, 13 task-owned secrets (O-031, O-032, O-036, O-041).
+  - **G7:** inputs/artifacts/build buckets and AR repo (O-033…O-035).
+  - **G8:** `research-pg` RUNNABLE; scoped roles, 4 databases and PostGIS 3.6.4 verified (O-037, O-042).
+  - **G9:** 5 images pushed with in-image self-checks (O-038, O-039). Data staging and the Cloud Run service are not started.
+  - G10/G11 not started.
+- **Quote** (`quote-6d4a9b6`, amended b24dfd1): platform USD 79.23/month + 8.63 one-time; training USD 0.78.
 
-## Pending items and gaps
+## Resolved since the earlier pending list
 
-1. **Forecasting:** remaining is **somalia v1** (15 versions, `run_somalia_oracle_experiment.py`, `predictions/predictions.csv.gz` with `q*_pred`/`phase_pred`, arms A-D ensembles).
-   - **Correction:** the somalia runs DO have saved predictions in their original run directories (`predictions/*.csv.gz`, `selection/*`); they were only absent from the MLflow plan members.
-2. **Window-probe comparator packages (8):** these cannot alias the P6 packages. `regional_ungated` needs 77 local P6 units, which are absent from the current packages and retained in the original P6 root. Routing uses `local_fit_ok` regardless of gate adoption, on selected dates only. Keep the eight original registry identities and references (`remaining-packages-supervisor.md`).
-3. **pop-v1 packages:**
-   - Weights: all 660 weight basenames match 110 fold identity JSONs across six arms; the originals inventory covers the files beyond the 24 in the native clone.
-   - RandomForest: reuse the saved imputer `fill_values` from each `model_identity` (do not refit).
-   - Threshold and correction: the threshold is strict `>` with ±Infinity literals; the correction arm flips by persistence.
-   - Pointers: `remaining-packages-supervisor.md`.
-4. **FEWS NET:** run-record treatment per `ledger/README.md`; packages only for runs with a servable model and saved predictions. For `scen-b43ef6a-v1`, apply the accepted incomplete-history exception: preserve all material and label the 18 missing boosters and the 3,746 unreplayable rows.
-5. **URI map:** 56 `card.feature_list` logged-model tags embed the local store path. The plan is to keep the original tag, add a mapped cloud reference and adapt the `ipcch_model.py` reader.
-6. **Service (Cloud Run):** follow `service-readiness-supervisor.md`:
-   - provider `vertex_ai` with ADC (`auth_config` project/location);
-   - keep uvicorn/FastAPI permission middleware;
-   - `MLFLOW_BASIC_AUTH_FAIL_CLOSED`;
-   - stable KEK and Flask secret from Secret Manager;
-   - explicit fail-closed assistant gate (the existing `.pth` patch only logs failures).
-   Local rehearsal against PG first; test owner, job, reader and anonymous access, plus assistant allow/deny.
-7. **SQL input import:** raw tables verbatim with a source row number. No dedup, drop or date coercion. Record the FEWSNET.csv null key and `0000-00` sentinel, and the 2 duplicate keys in the 2025 combined panel. Shapefiles go to PostGIS plus the original bytes in GCS. Max width is 897 columns (under PG's 1,600).
-8. **Training adapters + HPT trial entry** (AC5) and Linux training images.
-9. **Containers:** no Docker or sudo in WSL. Images will be built by Cloud Build (paid, deferred), and exact digests run locally rootless via `crane export` + `bwrap`.
-10. **Cost estimate (G4/AC6):** `cost-estimate.md` from SKUs plus measured volumes.
-    - Package volume is about 1.9 GB so far plus forecasting/somalia packages; FEWS NET retained weights are 59.9 GB.
-    - Historical MLflow artifacts are 3,573 files / 1.32 GB (max `source.tar` 130 MB; 9 files over 32 MiB).
-    - Transport: per-file/directory via the MLflow proxy (`artifact-transport-supervisor.md`); no signing infrastructure. The final freeze must include the artifact tree, not only the DB.
+Somalia v1, window-probe comparators, pop-v1, FEWS NET coverage, the URI map, service hardening, the SQL input import rehearsal, training adapters, containers and the cost estimate are all done. Their receipts are in the completed-rounds table above and in the checkpoints.
 
 ## Open user question
 
@@ -168,17 +151,19 @@ The registry ledger stands at 170 passed and 72 tracking-only.
 
 ## Open items (in order; nothing below is accepted yet)
 
-1. **Preservation manifests** for all roots and loose files are running (`scratch/preservation/all-roots.sh`).
-2. **Pending user disposition:** the confirm-onset system arm.
-3. **G5-G11 cloud operations**, each with a receipt in `cloud-operations.md` and a ledger entry (`cost/ledger.py`, pools platform/training):
-   - GCS buckets and transfer with fresh hash verification;
-   - Artifact Registry plus Cloud Build of the 3 images (contexts re-assembled at the final HEAD);
-   - Cloud SQL and import;
-   - Secret Manager;
-   - Cloud Run service;
-   - Vertex feature/trial jobs and the two-trial HPT smoke;
-   - cloud acceptance.
-4. **Merge** the native commits into the registered lineage before close.
+1. **G9 data staging.**
+   - Transfer tool: fresh local sha256/md5/crc32c pass equal to the frozen manifests, then if-generation-match=0 upload, cloud md5/crc32c equality, and object-generation receipts.
+   - Scope: MLflow artifact tree, packages, declared inputs, the FEWS archive (29 roots) and training snapshots.
+2. **MLflow stores into Cloud SQL** (copy_store from snapshot r1 as mlflow_app via the proxy). Then:
+   - the Cloud Run `research-mlflow` service (deny mode);
+   - workspace roles and the identities from `mlflow-jobwriter` / `mlflow-reader` / `mlflow-assistant-credentials`;
+   - `feature_list_map --apply`;
+   - the access matrix.
+3. **Research inputs** into Cloud SQL (load_inputs / load_geometry as research_import), with the cloud reconciliation and capacity record.
+4. **G10:** Gemini rebind (custom role `researchGeminiInvoker`) and a bounded read-only assistant query.
+5. **G11:** Vertex jobs and the two-trial HPT smoke, with ledger reservations, plus the Vertex custom-code agent AR reader grant.
+6. **Cloud acceptance** (AC1–AC8). Then merge the native commits into the registered lineage and close.
+7. **Pending user disposition:** the confirm-onset system arm. **Flag:** default compute SA Editor (O-030).
 
 ## Next actions (in order)
 

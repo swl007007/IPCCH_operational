@@ -1,0 +1,225 @@
+{
+ "secrets": {
+  "sql-research-admin": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": []
+  },
+  "sql-mlflow-app": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": []
+  },
+  "sql-guard-app": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": []
+  },
+  "sql-research-import": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": []
+  },
+  "sql-research-read": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": []
+  },
+  "mlflow-flask-secret": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": [
+    "research-mlflow"
+   ]
+  },
+  "mlflow-kek-passphrase": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": [
+    "research-mlflow"
+   ]
+  },
+  "mlflow-assistant-credentials": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": [
+    "research-mlflow"
+   ]
+  },
+  "mlflow-jobwriter": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": [
+    "research-trainer"
+   ]
+  },
+  "mlflow-reader": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": []
+  },
+  "mlflow-backend-uri": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": [
+    "research-mlflow"
+   ]
+  },
+  "mlflow-auth-db-uri": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": [
+    "research-mlflow"
+   ]
+  },
+  "guard-dsn": {
+   "version": "1",
+   "replication": "us-central1",
+   "accessors": [
+    "research-mlflow"
+   ]
+  }
+ },
+ "sql_ops": {
+  "fe18ef61-7f2c-4b8a-b0d2-43b100000032": {
+   "kind": "insert-user",
+   "user": "research_admin",
+   "status": "DONE",
+   "errors": []
+  }
+ },
+ "steps": [
+  {
+   "time": "2026-10-16T07:56:41-0400",
+   "step": "preflight",
+   "states": {
+    "sql-research-admin": "absent",
+    "sql-mlflow-app": "absent",
+    "sql-guard-app": "absent",
+    "sql-research-import": "absent",
+    "sql-research-read": "absent",
+    "mlflow-flask-secret": "absent",
+    "mlflow-kek-passphrase": "absent",
+    "mlflow-assistant-credentials": "absent",
+    "mlflow-jobwriter": "absent",
+    "mlflow-reader": "absent",
+    "mlflow-backend-uri": "absent",
+    "mlflow-auth-db-uri": "absent",
+    "guard-dsn": "absent"
+   }
+  },
+  {
+   "time": "2026-10-16T07:57:16-0400",
+   "step": "preflight",
+   "states": {
+    "sql-research-admin": "absent",
+    "sql-mlflow-app": "absent",
+    "sql-guard-app": "absent",
+    "sql-research-import": "absent",
+    "sql-research-read": "absent",
+    "mlflow-flask-secret": "absent",
+    "mlflow-kek-passphrase": "absent",
+    "mlflow-assistant-credentials": "absent",
+    "mlflow-jobwriter": "absent",
+    "mlflow-reader": "absent",
+    "mlflow-backend-uri": "absent",
+    "mlflow-auth-db-uri": "absent",
+    "guard-dsn": "absent"
+   }
+  },
+  {
+   "time": "2026-10-16T07:57:17-0400",
+   "step": "secret",
+   "name": "sql-research-admin",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:19-0400",
+   "step": "secret",
+   "name": "sql-mlflow-app",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:20-0400",
+   "step": "secret",
+   "name": "sql-guard-app",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:21-0400",
+   "step": "secret",
+   "name": "sql-research-import",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:23-0400",
+   "step": "secret",
+   "name": "sql-research-read",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:24-0400",
+   "step": "secret",
+   "name": "mlflow-flask-secret",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:25-0400",
+   "step": "secret",
+   "name": "mlflow-kek-passphrase",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:27-0400",
+   "step": "secret",
+   "name": "mlflow-assistant-credentials",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:28-0400",
+   "step": "secret",
+   "name": "mlflow-jobwriter",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:29-0400",
+   "step": "secret",
+   "name": "mlflow-reader",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:30-0400",
+   "step": "sql-op-started",
+   "operation": "fe18ef61-7f2c-4b8a-b0d2-43b100000032",
+   "user": "research_admin"
+  },
+  {
+   "time": "2026-10-16T07:57:30-0400",
+   "step": "sql-op-done",
+   "operation": "fe18ef61-7f2c-4b8a-b0d2-43b100000032",
+   "errors": []
+  },
+  {
+   "time": "2026-10-16T07:57:32-0400",
+   "step": "secret",
+   "name": "mlflow-backend-uri",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:33-0400",
+   "step": "secret",
+   "name": "mlflow-auth-db-uri",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:35-0400",
+   "step": "secret",
+   "name": "guard-dsn",
+   "resumed": false
+  },
+  {
+   "time": "2026-10-16T07:57:35-0400",
+   "step": "complete"
+  }
+ ]
+}

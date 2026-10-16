@@ -1,0 +1,159 @@
+{
+ "secrets": {},
+ "sql_ops": {},
+ "steps": [
+  {
+   "time": "2026-10-16T07:58:28-0400",
+   "step": "admin-login",
+   "user": "research_admin",
+   "result": "ok (stored credential proven)"
+  },
+  {
+   "time": "2026-10-16T07:58:28-0400",
+   "step": "role-created",
+   "role": "mlflow_app",
+   "attributes": "NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS INHERIT"
+  },
+  {
+   "time": "2026-10-16T07:58:28-0400",
+   "step": "role-created",
+   "role": "guard_app",
+   "attributes": "NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS INHERIT"
+  },
+  {
+   "time": "2026-10-16T07:58:29-0400",
+   "step": "role-created",
+   "role": "research_import",
+   "attributes": "NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS INHERIT"
+  },
+  {
+   "time": "2026-10-16T07:58:29-0400",
+   "step": "role-created",
+   "role": "research_read",
+   "attributes": "NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS INHERIT"
+  },
+  {
+   "time": "2026-10-16T07:58:30-0400",
+   "step": "database-created",
+   "database": "mlflow",
+   "owner": "mlflow_app"
+  },
+  {
+   "time": "2026-10-16T07:58:30-0400",
+   "step": "database-created",
+   "database": "mlflow_auth",
+   "owner": "mlflow_app"
+  },
+  {
+   "time": "2026-10-16T07:58:30-0400",
+   "step": "database-created",
+   "database": "guard",
+   "owner": "guard_app"
+  },
+  {
+   "time": "2026-10-16T07:58:31-0400",
+   "step": "database-created",
+   "database": "research",
+   "owner": "research_import"
+  },
+  {
+   "time": "2026-10-16T07:58:36-0400",
+   "step": "verified",
+   "problems": []
+  }
+ ],
+ "roles_created": [
+  "guard_app",
+  "mlflow_app",
+  "research_import",
+  "research_read"
+ ],
+ "verification": {
+  "roles": {
+   "guard_app": {
+    "super": false,
+    "createdb": false,
+    "createrole": false,
+    "replication": false,
+    "bypassrls": false,
+    "login": true
+   },
+   "mlflow_app": {
+    "super": false,
+    "createdb": false,
+    "createrole": false,
+    "replication": false,
+    "bypassrls": false,
+    "login": true
+   },
+   "research_import": {
+    "super": false,
+    "createdb": false,
+    "createrole": false,
+    "replication": false,
+    "bypassrls": false,
+    "login": true
+   },
+   "research_read": {
+    "super": false,
+    "createdb": false,
+    "createrole": false,
+    "replication": false,
+    "bypassrls": false,
+    "login": true
+   }
+  },
+  "memberships": [],
+  "databases": {
+   "mlflow": {
+    "owner": "mlflow_app",
+    "default_acl": false,
+    "grants": [
+     "mlflow_app:CONNECT",
+     "mlflow_app:CREATE",
+     "mlflow_app:TEMPORARY",
+     "research_admin:CONNECT"
+    ]
+   },
+   "mlflow_auth": {
+    "owner": "mlflow_app",
+    "default_acl": false,
+    "grants": [
+     "mlflow_app:CONNECT",
+     "mlflow_app:CREATE",
+     "mlflow_app:TEMPORARY",
+     "research_admin:CONNECT"
+    ]
+   },
+   "guard": {
+    "owner": "guard_app",
+    "default_acl": false,
+    "grants": [
+     "guard_app:CONNECT",
+     "guard_app:CREATE",
+     "guard_app:TEMPORARY",
+     "research_admin:CONNECT"
+    ]
+   },
+   "research": {
+    "owner": "research_import",
+    "default_acl": false,
+    "grants": [
+     "research_admin:CONNECT",
+     "research_import:CONNECT",
+     "research_import:CREATE",
+     "research_import:TEMPORARY",
+     "research_read:CONNECT"
+    ]
+   }
+  },
+  "problems": [],
+  "postgis": "3.6.4",
+  "logins": {
+   "mlflow_app": "ok",
+   "guard_app": "ok",
+   "research_import": "ok",
+   "research_read": "ok"
+  }
+ }
+}
