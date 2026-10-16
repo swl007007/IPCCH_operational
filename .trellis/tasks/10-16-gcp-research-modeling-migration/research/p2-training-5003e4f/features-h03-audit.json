@@ -1,0 +1,53 @@
+{
+ "horizon": 3,
+ "rows": 42695,
+ "audit": {
+  "rows": 42695,
+  "rows_with_missing_origin_panel_row": 0,
+  "rows_without_label_history": 6254,
+  "rows_without_prior_crisis": 22764,
+  "panel_infinities_converted": {},
+  "assembled_infinities_converted": {},
+  "aliases_verified": {
+   "hist_age_obs1": "last_observed_label_age_months",
+   "hist_crisis_obs1": "last_observed_label",
+   "hist_crisis_age": "months_since_last_observed_crisis",
+   "hist_no_crisis": "no_prior_observed_crisis",
+   "hist_support_common_all_age": "last_observed_label_age_months"
+  },
+  "nan_fraction_original93": 0.10502098530839525,
+  "nan_fraction_history468": 0.3852182494997813,
+  "all_nan_columns": [],
+  "persistence_available": 36441
+ },
+ "comparison": {
+  "reference": "/home/swl007007/projects/food-crisis-research/scratch/training/manifest-ipcch-h03.json",
+  "keys_identical": true,
+  "X_identical": false,
+  "X_sha256_equal": false,
+  "shape": [
+   42695,
+   561
+  ],
+  "reference_shape": [
+   42695,
+   561
+  ],
+  "differing_cells": 12576,
+  "differing_columns": 45
+ },
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "packages": {
+   "numpy": "2.2.6",
+   "pandas": "2.2.3",
+   "xgboost": "3.0.0"
+  },
+  "image_digest": null,
+  "source_commit": null,
+  "vertex": {}
+ },
+ "seconds": 99.5
+}

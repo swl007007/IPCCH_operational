@@ -1,0 +1,190 @@
+{
+ "arm": "pooled",
+ "built_at": "2026-10-16T05:09:59-0400",
+ "code": {
+  "package": "ipcch_geoxgb",
+  "vendored_files": {
+   "errors.py": "23916edd77c486286d65d9c2849b36f4b71517c5728bf9c1da4879d5cef26c1e",
+   "projection.py": "59bbebf7a433f24ddca5acaeecb36036aa3717966ad6c8a3eeb7c8af07af2ab4",
+   "quartet.py": "3ec3dbbf4e2aff6ccaf507b63e21ea4924895dfe344f3bde1833adaa3e4f927b"
+  },
+  "vendored_from": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb"
+ },
+ "content_sha256": "d80b4e9bd772d0c5c40fc61c858a95d6396bb06db58b9d522426911c6357d218",
+ "family": "ipcch_geoxgb_pooled_quartet_trial",
+ "files": {
+  "deps/feature_order.csv": {
+   "bytes": 13011,
+   "sha256": "ae4b543b1e6ed77467780773d32fd58313e6b1b5ed68416b5d767156d9adad51",
+   "source": "/home/swl007007/projects/food-crisis-research/scratch/training/features-h03/feature_order.csv"
+  },
+  "deps/frozen_map.csv": {
+   "bytes": 19,
+   "sha256": "9bc3006f0f0c30ac02e978ca28e105c240cdb4f8518d96bbdf47c09606c0ec0a"
+  },
+  "deps/routing.csv": {
+   "bytes": 119,
+   "sha256": "9b8bdc7f8f932468c087fd55f7bf512c0664e25a1e0e4d609758a41b4fa84e7e"
+  },
+  "loader/entry.py": {
+   "bytes": 3452,
+   "sha256": "a9542e1c7cb420428d3dd12ccf8f2f087106d35822f9ea4f4ae7bff4141436b1"
+  },
+  "loader/ipcch_geoxgb/__init__.py": {
+   "bytes": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "loader/ipcch_geoxgb/errors.py": {
+   "bytes": 842,
+   "sha256": "23916edd77c486286d65d9c2849b36f4b71517c5728bf9c1da4879d5cef26c1e",
+   "source": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/errors.py"
+  },
+  "loader/ipcch_geoxgb/projection.py": {
+   "bytes": 3633,
+   "sha256": "59bbebf7a433f24ddca5acaeecb36036aa3717966ad6c8a3eeb7c8af07af2ab4",
+   "source": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/projection.py"
+  },
+  "loader/ipcch_geoxgb/quartet.py": {
+   "bytes": 11926,
+   "sha256": "3ec3dbbf4e2aff6ccaf507b63e21ea4924895dfe344f3bde1833adaa3e4f927b",
+   "source": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment/ipcch_geoxgb/quartet.py"
+  },
+  "reference/expected.csv": {
+   "bytes": 10433,
+   "sha256": "cafd08804550697374c9d912007a2a1c86aad6e8ab7a1379c110050c869caa90"
+  },
+  "reference/inputs.npy": {
+   "bytes": 215552,
+   "sha256": "ff33d5909de3477bbebf76639758b05b7f1e79bf95fffd25321e0f3af01b3243"
+  },
+  "weights/o24269_f778385f28bc1cfe/q2.ubj": {
+   "bytes": 59163,
+   "sha256": "8db55b74ab345c5f0c033c7fafa13d8e559529950cbe1673b38fa5adf38f8cf5"
+  },
+  "weights/o24269_f778385f28bc1cfe/q3.ubj": {
+   "bytes": 59163,
+   "sha256": "f778385f28bc1cfe798141e339bcbb47bf4ff0e770884216059f6542acc7d24a"
+  },
+  "weights/o24269_f778385f28bc1cfe/q4.ubj": {
+   "bytes": 56845,
+   "sha256": "618fc03b0fee6ed2cafceab764b0ffab6c460c7e9d3102963777c35ce0f477e3"
+  },
+  "weights/o24269_f778385f28bc1cfe/q5.ubj": {
+   "bytes": 35993,
+   "sha256": "ab688c75a6d57afef50fd4ff90f7c19578970dccb97bc8d679992a6e2db680f2"
+  },
+  "weights/o24269_f778385f28bc1cfe/record.json": {
+   "bytes": 14269,
+   "sha256": "cee5ce349295fcaa090d42497ba836b7ffa39c27434e9952517ffc0fe90ec5a4"
+  },
+  "weights/o24272_fcb5f9e968aabd16/q2.ubj": {
+   "bytes": 59095,
+   "sha256": "59c47d4f2a6fba4bac81a48322b051fea8c35c0d7046dc136a13ad465b303fca"
+  },
+  "weights/o24272_fcb5f9e968aabd16/q3.ubj": {
+   "bytes": 58619,
+   "sha256": "fcb5f9e968aabd164c4ea19f91edcd9178282707ff093ecd191719b5fcb78753"
+  },
+  "weights/o24272_fcb5f9e968aabd16/q4.ubj": {
+   "bytes": 55685,
+   "sha256": "143874896173b278ec3d53a5b0f31d881f50534ff4385a88322f10cef45bb3c6"
+  },
+  "weights/o24272_fcb5f9e968aabd16/q5.ubj": {
+   "bytes": 37625,
+   "sha256": "0581dc95355bc635ee80bec2f715b8299bc58f737b923162af23d409d1096391"
+  },
+  "weights/o24272_fcb5f9e968aabd16/record.json": {
+   "bytes": 14270,
+   "sha256": "5d1f6fefb456b53b0416c442ac9d9f84f1c1ad007e31052ce47e0081e63a4f86"
+  }
+ },
+ "fitted_units": 2,
+ "gaps": [],
+ "identity": {
+  "family": "ipcch_geoxgb_pooled_quartet",
+  "horizon": 3,
+  "inputs": {
+   "X": "b924207cc7e9ad1fd67d0826a48ee5220339fc05251f3000cc73a39d7198d51b",
+   "feature_order": "ae4b543b1e6ed77467780773d32fd58313e6b1b5ed68416b5d767156d9adad51",
+   "keys": "e8c9e9d5cd740da7a115ce84558cc1937c13ec2317682942050abe5923af2dc7"
+  },
+  "job": "local-linkage",
+  "params": {
+   "base_score": 0.5,
+   "booster": "gbtree",
+   "colsample_bytree": 0.8,
+   "device": "cpu",
+   "eta": 0.05,
+   "gamma": 0,
+   "grow_policy": "depthwise",
+   "max_bin": 256,
+   "max_delta_step": 0,
+   "max_depth": 3,
+   "min_child_weight": 10.0,
+   "nthread": 4,
+   "num_parallel_tree": 1,
+   "objective": "reg:squarederror",
+   "reg_alpha": 0,
+   "reg_lambda": 10.0,
+   "seed": 42,
+   "subsample": 0.8,
+   "tree_method": "hist"
+  },
+  "rounds": 50,
+  "trial": "1"
+ },
+ "lead_months": 3,
+ "loader": {
+  "call": "load(package_dir).predict(keys[admin_code,target_ord], X)",
+  "entry": "loader/entry.py",
+  "inputs": "float64 rows (561 features) in feature_order.csv order; NaN = missing",
+  "unserved_keys": "KeyError for target months that are not a fold's validation month"
+ },
+ "reference": {
+  "per_unit_cap": 32,
+  "routes_covered": [
+   "pooled_global"
+  ],
+  "rows": 48,
+  "selection": "per fold unit (cap): half nearest a 0.20 boundary, rest by key hash"
+ },
+ "routing": {
+  "feature_order": "deps/feature_order.csv",
+  "frozen_map": "deps/frozen_map.csv",
+  "routes_in_version": [
+   "pooled_global"
+  ],
+  "rule": "each fold's quartet serves every admin of its validation target month",
+  "served_keys": 1391,
+  "table": "deps/routing.csv"
+ },
+ "runtime": {
+  "linux": {
+   "image_digest": null,
+   "machine": "x86_64",
+   "packages": {
+    "cloudml-hypertune": "0.1.0.dev6",
+    "mlflow-skinny": "3.17.0",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "xgboost": "3.0.0"
+   },
+   "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "python": "3.12.3",
+   "source_commit": "5003e4f",
+   "vertex": {
+    "CLOUD_ML_JOB_ID": "local-linkage",
+    "CLOUD_ML_TRIAL_ID": "1"
+   }
+  }
+ },
+ "schema": "rc-inference-package/1",
+ "status": "complete",
+ "tolerance": {
+  "declared_before_comparison": true,
+  "phase": "new phase must decode from new projected shares",
+  "projected_shares": "abs(new-ref) <= 1e-3 + 1e-3*abs(ref)",
+  "raw_shares": "abs(new-ref) <= 1e-3 + 1e-3*abs(ref)",
+  "routing": "unit and route exactly"
+ }
+}

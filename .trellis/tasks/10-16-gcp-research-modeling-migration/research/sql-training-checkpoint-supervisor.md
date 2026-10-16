@@ -21,3 +21,12 @@
 - Official hypertune report function signature matches usage, but library JSON stores metric values as strings. Focused test numeric equality must normalize parsing and exercise installed library, not only fallback.
 
 Positive checks: allowed positive horizons, [O-35,O] fitting, target=O+H before holdout, correct PAVA/clip/decoder and pooled confusion counts/F1. Base-input feature generation, portable future package, pinned-image/cloud/HPT integration remain separate pending work, not implied by successful local fitting.
+
+## SQL correction checkpoint643d1a4
+
+Supervisor directly read revised importer/tests and independently ran6 tests with RC_TEST_PG against newly created disposable databases; all passed, none skipped. Naming/preflight, area-ID typing, commit-after-verification and report merge now have tests. Remaining narrow findings sent to executor:
+
+- Executed `typed(DataFrame(v=['9007199254740993','']), ['v'], {'v':'bigint'})`: first value became9007199254740992. `pd.to_numeric` promotes to float because of missingness. DB readback repeats this conversion, allowing a false pass. Parse source/readback bigint directly as nullable integer; test exact large+NULL and one-unit corruption rejection.
+- compare_table uses whole COPY output in io.StringIO before chunking, despite streaming claim. Standard tempfile-backed COPY buffer avoids whole-table memory.
+- Reconciliation must compare old receipt SHA/table identity with current inventory, not merely id and presence; otherwise --only can reuse stale acceptance after source version changes.
+- csv reader counts blank logical rows while pandas chunks defaults to skipping them. Preserve consistent logical row numbering; current mismatch fails rather than silently discards, but valid archived blank rows still need handling.

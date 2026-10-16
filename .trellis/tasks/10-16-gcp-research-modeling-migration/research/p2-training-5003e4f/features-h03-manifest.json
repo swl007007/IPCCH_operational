@@ -1,0 +1,26 @@
+{
+ "name": "ipcch-rich561-h03-linux",
+ "gcp_project": null,
+ "derived_from": {
+  "base_manifest": "/home/swl007007/projects/food-crisis-research/scratch/training/manifest-ipcch-base.json",
+  "base_manifest_sha256": "103c6e8547f60c07c8aaee2ea52febd72f4ec04708d965ef653022159afabe06",
+  "base_inputs": {
+   "raw_panel": "ae696087c3bbb280537ae269a05924133acdb51060d31290523404fa8a717673",
+   "country_lookup": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90"
+  }
+ },
+ "files": {
+  "keys": {
+   "uri": "/home/swl007007/projects/food-crisis-research/scratch/training/features-h03/keys_h03.csv.gz",
+   "sha256": "e8c9e9d5cd740da7a115ce84558cc1937c13ec2317682942050abe5923af2dc7"
+  },
+  "X": {
+   "uri": "/home/swl007007/projects/food-crisis-research/scratch/training/features-h03/X_rich561_h03.npy",
+   "sha256": "b924207cc7e9ad1fd67d0826a48ee5220339fc05251f3000cc73a39d7198d51b"
+  },
+  "feature_order": {
+   "uri": "/home/swl007007/projects/food-crisis-research/scratch/training/features-h03/feature_order.csv",
+   "sha256": "ae4b543b1e6ed77467780773d32fd58313e6b1b5ed68416b5d767156d9adad51"
+  }
+ }
+}

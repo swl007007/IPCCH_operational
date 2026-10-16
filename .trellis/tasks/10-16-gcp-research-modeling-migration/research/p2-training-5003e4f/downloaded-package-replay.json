@@ -1,0 +1,100 @@
+{
+ "package": "/home/swl007007/projects/food-crisis-research/scratch/training/linkage-download/package",
+ "package_json_sha256": "eedcbf16b0fd1c856611c5b043a87d6c98c3a320c1f4f79ceb81b8ec756b3f57",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "xgboost": "3.0.0",
+  "numpy": "2.2.6",
+  "pandas": "2.2.3"
+ },
+ "identity": {
+  "family": "ipcch_geoxgb_pooled_quartet",
+  "horizon": 3,
+  "inputs": {
+   "X": "b924207cc7e9ad1fd67d0826a48ee5220339fc05251f3000cc73a39d7198d51b",
+   "feature_order": "ae4b543b1e6ed77467780773d32fd58313e6b1b5ed68416b5d767156d9adad51",
+   "keys": "e8c9e9d5cd740da7a115ce84558cc1937c13ec2317682942050abe5923af2dc7"
+  },
+  "job": "local-linkage",
+  "params": {
+   "base_score": 0.5,
+   "booster": "gbtree",
+   "colsample_bytree": 0.8,
+   "device": "cpu",
+   "eta": 0.05,
+   "gamma": 0,
+   "grow_policy": "depthwise",
+   "max_bin": 256,
+   "max_delta_step": 0,
+   "max_depth": 3,
+   "min_child_weight": 10.0,
+   "nthread": 4,
+   "num_parallel_tree": 1,
+   "objective": "reg:squarederror",
+   "reg_alpha": 0,
+   "reg_lambda": 10.0,
+   "seed": 42,
+   "subsample": 0.8,
+   "tree_method": "hist"
+  },
+  "rounds": 50,
+  "trial": "1"
+ },
+ "rows": 48,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 3.8163916471489756e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 3.5272710678195076e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 6.085988194885299e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 9.020562075079397e-17,
+   "mean_abs_err": 7.170190367370803e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 3.8163916471489756e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 3.5272710678195076e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 6.085988194885299e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 9.020562075079397e-17,
+   "mean_abs_err": 7.170190367370803e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.03
+}

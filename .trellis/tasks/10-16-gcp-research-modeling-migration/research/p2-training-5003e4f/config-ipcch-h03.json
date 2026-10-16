@@ -1,0 +1,72 @@
+{
+ "family": "ipcch_geoxgb_pooled_quartet",
+ "horizon": 3,
+ "holdout_start_ord": 24276,
+ "holdout_note": "P6 development ends 2022-12; main evaluation (2023-01 onward) is excluded from search",
+ "folds": [
+  {
+   "origin_ord": 24269,
+   "label": "origin 2022-06 -> target 2022-09"
+  },
+  {
+   "origin_ord": 24272,
+   "label": "origin 2022-09 -> target 2022-12"
+  }
+ ],
+ "objective": "crisis_f1",
+ "fixed": {
+  "booster": "gbtree",
+  "tree_method": "hist",
+  "device": "cpu",
+  "num_parallel_tree": 1,
+  "seed": 42,
+  "nthread": 4,
+  "gamma": 0,
+  "max_delta_step": 0,
+  "max_bin": 256,
+  "grow_policy": "depthwise",
+  "eta": 0.05,
+  "objective": "reg:squarederror",
+  "base_score": 0.5,
+  "reg_alpha": 0
+ },
+ "space": {
+  "max_depth": {
+   "type": "int",
+   "min": 2,
+   "max": 6,
+   "default": 3
+  },
+  "rounds": {
+   "type": "int",
+   "min": 50,
+   "max": 400,
+   "default": 200
+  },
+  "min_child_weight": {
+   "type": "float",
+   "min": 1,
+   "max": 50,
+   "default": 10
+  },
+  "subsample": {
+   "type": "float",
+   "min": 0.5,
+   "max": 1.0,
+   "default": 0.8
+  },
+  "colsample_bytree": {
+   "type": "float",
+   "min": 0.5,
+   "max": 1.0,
+   "default": 0.8
+  },
+  "reg_lambda": {
+   "type": "float",
+   "min": 0,
+   "max": 50,
+   "default": 10
+  }
+ },
+ "geoxgb_src": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment"
+}

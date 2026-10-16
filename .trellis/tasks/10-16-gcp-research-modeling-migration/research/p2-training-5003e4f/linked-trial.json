@@ -1,0 +1,187 @@
+{
+ "status": "succeeded",
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "packages": {
+   "numpy": "2.2.6",
+   "pandas": "2.2.3",
+   "xgboost": "3.0.0",
+   "mlflow-skinny": "3.17.0",
+   "cloudml-hypertune": "0.1.0.dev6"
+  },
+  "image_digest": null,
+  "source_commit": "5003e4f",
+  "vertex": {
+   "CLOUD_ML_JOB_ID": "local-linkage",
+   "CLOUD_ML_TRIAL_ID": "1"
+  }
+ },
+ "trial_arguments": {
+  "max_depth": "3",
+  "rounds": "50"
+ },
+ "started": 1792141759.2313654,
+ "output": "/home/swl007007/projects/food-crisis-research/scratch/training/linkage/local-linkage/trial-1",
+ "config": {
+  "family": "ipcch_geoxgb_pooled_quartet",
+  "horizon": 3,
+  "holdout_start_ord": 24276,
+  "holdout_note": "P6 development ends 2022-12; main evaluation (2023-01 onward) is excluded from search",
+  "folds": [
+   {
+    "origin_ord": 24269,
+    "label": "origin 2022-06 -> target 2022-09"
+   },
+   {
+    "origin_ord": 24272,
+    "label": "origin 2022-09 -> target 2022-12"
+   }
+  ],
+  "objective": "crisis_f1",
+  "fixed": {
+   "booster": "gbtree",
+   "tree_method": "hist",
+   "device": "cpu",
+   "num_parallel_tree": 1,
+   "seed": 42,
+   "nthread": 4,
+   "gamma": 0,
+   "max_delta_step": 0,
+   "max_bin": 256,
+   "grow_policy": "depthwise",
+   "eta": 0.05,
+   "objective": "reg:squarederror",
+   "base_score": 0.5,
+   "reg_alpha": 0
+  },
+  "space": {
+   "max_depth": {
+    "type": "int",
+    "min": 2,
+    "max": 6,
+    "default": 3
+   },
+   "rounds": {
+    "type": "int",
+    "min": 50,
+    "max": 400,
+    "default": 200
+   },
+   "min_child_weight": {
+    "type": "float",
+    "min": 1,
+    "max": 50,
+    "default": 10
+   },
+   "subsample": {
+    "type": "float",
+    "min": 0.5,
+    "max": 1.0,
+    "default": 0.8
+   },
+   "colsample_bytree": {
+    "type": "float",
+    "min": 0.5,
+    "max": 1.0,
+    "default": 0.8
+   },
+   "reg_lambda": {
+    "type": "float",
+    "min": 0,
+    "max": 50,
+    "default": 10
+   }
+  },
+  "geoxgb_src": "/home/swl007007/.local/share/ipcch-mlflow/artifacts/1/bdbafe393d694439a1c35ccec4d5816a/artifacts/source_code/IPCCHGeoXGBExperiment"
+ },
+ "input_sha256": {
+  "keys": "e8c9e9d5cd740da7a115ce84558cc1937c13ec2317682942050abe5923af2dc7",
+  "X": "b924207cc7e9ad1fd67d0826a48ee5220339fc05251f3000cc73a39d7198d51b",
+  "feature_order": "ae4b543b1e6ed77467780773d32fd58313e6b1b5ed68416b5d767156d9adad51"
+ },
+ "params": {
+  "max_depth": 3,
+  "rounds": 50,
+  "min_child_weight": 10.0,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "reg_lambda": 10.0
+ },
+ "resolved_params": {
+  "booster": "gbtree",
+  "tree_method": "hist",
+  "device": "cpu",
+  "num_parallel_tree": 1,
+  "seed": 42,
+  "nthread": 4,
+  "gamma": 0,
+  "max_delta_step": 0,
+  "max_bin": 256,
+  "grow_policy": "depthwise",
+  "eta": 0.05,
+  "objective": "reg:squarederror",
+  "base_score": 0.5,
+  "reg_alpha": 0,
+  "max_depth": 3,
+  "rounds": 50,
+  "min_child_weight": 10.0,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "reg_lambda": 10.0
+ },
+ "metrics": {
+  "crisis_f1": 0.8626907073509015,
+  "crisis_tp": 311,
+  "crisis_fp": 47,
+  "crisis_fn": 52,
+  "folds": 2,
+  "mean_q3_r2_projected": 0.21472155054941677,
+  "mean_q3_r2_raw": 0.21472155054941677
+ },
+ "artifacts": [
+  "folds/o24269",
+  "folds/o24272",
+  "package"
+ ],
+ "model_params": {
+  "booster": "gbtree",
+  "tree_method": "hist",
+  "device": "cpu",
+  "num_parallel_tree": 1,
+  "seed": 42,
+  "nthread": 4,
+  "gamma": 0,
+  "max_delta_step": 0,
+  "max_bin": 256,
+  "grow_policy": "depthwise",
+  "eta": 0.05,
+  "objective": "reg:squarederror",
+  "base_score": 0.5,
+  "reg_alpha": 0,
+  "max_depth": 3,
+  "min_child_weight": 10.0,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "reg_lambda": 10.0
+ },
+ "rounds": 50,
+ "package": {
+  "path": "package",
+  "content_sha256": "d80b4e9bd772d0c5c40fc61c858a95d6396bb06db58b9d522426911c6357d218",
+  "units": 2
+ },
+ "identity": {
+  "family": "ipcch_geoxgb_pooled_quartet",
+  "kind": "new Linux research run (not a historical version)",
+  "horizon": 3,
+  "folds": [
+   24269,
+   24272
+  ]
+ },
+ "objective_report": "cloudml-hypertune",
+ "finished": 1792141799.8517752,
+ "mlflow_run_id": "62067cddce5d4be984b3f9f9489e68a2"
+}

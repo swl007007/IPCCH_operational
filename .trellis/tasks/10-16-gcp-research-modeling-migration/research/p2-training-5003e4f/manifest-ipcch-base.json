@@ -1,0 +1,14 @@
+{
+ "name": "ipcch-base-inputs",
+ "source": "P6 config/inputs.json recorded identities",
+ "files": {
+  "raw_panel": {
+   "uri": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/raw/IPCCH_2026_completed.csv",
+   "sha256": "ae696087c3bbb280537ae269a05924133acdb51060d31290523404fa8a717673"
+  },
+  "country_lookup": {
+   "uri": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_IPCCH/country_area_id_lookup.csv",
+   "sha256": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90"
+  }
+ }
+}

@@ -1,0 +1,192 @@
+{
+ "pooled_crisis_counts": {
+  "tp": 311,
+  "fp": 47,
+  "fn": 52,
+  "tn": 981
+ },
+ "folds": [
+  {
+   "origin_ord": 24269,
+   "target_ord": 24272,
+   "fit_rows": 10465,
+   "validation_rows": 1375,
+   "panel": {
+    "n": 1375,
+    "binary": {
+     "counts": {
+      "tp": 298,
+      "fp": 44,
+      "fn": 52,
+      "tn": 981
+     },
+     "na_reasons": {},
+     "accuracy": 0.9301818181818182,
+     "precision": 0.8713450292397661,
+     "recall": 0.8514285714285714,
+     "f1": 0.861271676300578,
+     "f2": 0.8553386911595867
+    },
+    "four_class": {
+     "accuracy": 0.5614545454545454,
+     "macro_f1": 0.4292648219659857,
+     "per_class": {
+      "1": {
+       "support": 460,
+       "predicted": 32,
+       "tp": 26,
+       "fp": 6,
+       "fn": 434,
+       "f1": 0.10569105691056911
+      },
+      "2": {
+       "support": 565,
+       "predicted": 1001,
+       "tp": 517,
+       "fp": 484,
+       "fn": 48,
+       "f1": 0.6602809706257982
+      },
+      "3": {
+       "support": 277,
+       "predicted": 326,
+       "tp": 219,
+       "fp": 107,
+       "fn": 58,
+       "f1": 0.7263681592039801
+      },
+      "4/5": {
+       "support": 73,
+       "predicted": 16,
+       "tp": 10,
+       "fp": 6,
+       "fn": 63,
+       "f1": 0.2247191011235955
+      }
+     },
+     "confusion_rows_truth_cols_pred": [
+      [
+       26,
+       432,
+       2,
+       0
+      ],
+      [
+       6,
+       517,
+       42,
+       0
+      ],
+      [
+       0,
+       52,
+       219,
+       6
+      ],
+      [
+       0,
+       0,
+       63,
+       10
+      ]
+     ],
+     "na_reasons": {}
+    },
+    "q3_r2_projected": 0.7256041435956682,
+    "q3_r2_raw": 0.7256041435956682
+   }
+  },
+  {
+   "origin_ord": 24272,
+   "target_ord": 24275,
+   "fit_rows": 10963,
+   "validation_rows": 16,
+   "panel": {
+    "n": 16,
+    "binary": {
+     "counts": {
+      "tp": 13,
+      "fp": 3,
+      "fn": 0,
+      "tn": 0
+     },
+     "na_reasons": {},
+     "accuracy": 0.8125,
+     "precision": 0.8125,
+     "recall": 1.0,
+     "f1": 0.896551724137931,
+     "f2": 0.9558823529411765
+    },
+    "four_class": {
+     "accuracy": 0.8125,
+     "macro_f1": null,
+     "per_class": {
+      "1": {
+       "support": 0,
+       "predicted": 0,
+       "tp": 0,
+       "fp": 0,
+       "fn": 0,
+       "f1": null
+      },
+      "2": {
+       "support": 3,
+       "predicted": 0,
+       "tp": 0,
+       "fp": 0,
+       "fn": 3,
+       "f1": 0.0
+      },
+      "3": {
+       "support": 13,
+       "predicted": 16,
+       "tp": 13,
+       "fp": 3,
+       "fn": 0,
+       "f1": 0.896551724137931
+      },
+      "4/5": {
+       "support": 0,
+       "predicted": 0,
+       "tp": 0,
+       "fp": 0,
+       "fn": 0,
+       "f1": null
+      }
+     },
+     "confusion_rows_truth_cols_pred": [
+      [
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       3,
+       0
+      ],
+      [
+       0,
+       0,
+       13,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0
+      ]
+     ],
+     "na_reasons": {
+      "macro_f1": "class absent from truth and prediction: ['1', '4/5']"
+     }
+    },
+    "q3_r2_projected": -0.2961610424968346,
+    "q3_r2_raw": -0.2961610424968346
+   }
+  }
+ ]
+}
