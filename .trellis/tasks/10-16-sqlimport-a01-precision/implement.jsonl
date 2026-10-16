@@ -1,0 +1,5 @@
+{"file": ".trellis/tasks/10-16-sqlimport-a01-precision/prd.md", "reason": "A01 requirements and acceptance"}
+{"file": ".trellis/tasks/10-16-sqlimport-a01-precision/design.md", "reason": "infer_types change, tests, exposure scan design"}
+{"file": "research_cloud/sqlimport/load_inputs.py", "reason": "infer_types (A01 site), parse_column/compare_table contract"}
+{"file": "research_cloud/tests/test_sqlimport.py", "reason": "existing sqlimport tests; RC_TEST_PG round-trip pattern"}
+{"file": ".trellis/tasks/archive/2026-10/10-16-gcp-research-modeling-migration/research/close-out/close-audit-4b7c22cf-result.json", "reason": "accepted close audit with finding A01"}

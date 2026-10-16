@@ -3,7 +3,7 @@
   "name": "sqlimport-a01-precision",
   "title": "A01 repair: carry integer precision across import chunks",
   "description": "Repair close-audit finding gcp-research-modeling-migration-A01 (job 4b7c22cf): infer_types must carry earlier-chunk integer precision constraints so a later double promotion retains text instead of rounding; regression tests across the CHUNK boundary in both row orders; bounded read-only exposure scan of the migrated corpus, cloud repair only if proven affected.",
-  "status": "planning",
+  "status": "in_progress",
   "dev_type": null,
   "scope": null,
   "package": null,
