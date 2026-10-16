@@ -24,6 +24,20 @@ def seeded(uri_scheme="postgresql"):
     return api
 
 
+class Driver(unittest.TestCase):
+    def test_templates_select_the_installed_psycopg2_driver(self):
+        """SQLAlchemy resolves the generated URIs to psycopg2 and imports it (no connection is made)."""
+        import sqlalchemy as sa
+        for name in rb.NAMES:
+            engine = sa.create_engine(ps.DEPENDENT[name][0]({"sql-mlflow-app": PW}))
+            self.assertEqual(engine.dialect.driver, "psycopg2")
+            engine.dispose()
+        import importlib.util
+        if importlib.util.find_spec("psycopg") is None:   # as in the service image: the defect was a bare postgresql://
+            with self.assertRaises(ModuleNotFoundError):  # resolving to psycopg (v3)
+                sa.create_engine(f"postgresql://u:{PW}@/mlflow?host={ps.SOCKET}")
+
+
 class Rebind(unittest.TestCase):
     def call(self, api, receipt):
         out = io.StringIO()
