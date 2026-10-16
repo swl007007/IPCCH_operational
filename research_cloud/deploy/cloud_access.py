@@ -10,7 +10,7 @@ personal account is not used (the user performs their own login). Each row recor
   artifact route (bytes must equal the frozen r1 manifest sha256) - 200; create an experiment / registered model /
   Gateway secret, a user, self-escalate to admin - 403; and the denied write/delete probes (create a run, tag a run,
   delete the experiment) target the acceptance-only experiment and run, never historical copied data.
-* temporary admin: list users - 200.
+* temporary admin: list users - 200 (skipped with ``--without-admin``, which never reads its secret).
 Writes go only to the acceptance experiment ``cloud-acceptance-access-matrix`` (created by the job writer).
 
   python -m research_cloud.deploy.cloud_access --url http://127.0.0.1:8091 --artifact REL --artifact-sha256 SHA
@@ -41,11 +41,12 @@ class Matrix:
         return r
 
 
-def run(api, url, artifact, artifact_sha, exp_id, run_id):
+def run(api, url, artifact, artifact_sha, exp_id, run_id, with_admin=True):
     m = Matrix(url)
-    ids = {k: cred(api, s) for k, s in (("admin", "mlflow-temp-admin"), ("reader", "mlflow-reader"),
-                                        ("assistant", "mlflow-assistant-credentials"), ("job", "mlflow-jobwriter"))}
-    m.call("admin", ids["admin"], "GET", "/api/2.0/mlflow/users/list", 200)
+    names = [("reader", "mlflow-reader"), ("assistant", "mlflow-assistant-credentials"), ("job", "mlflow-jobwriter")]
+    ids = {k: cred(api, s) for k, s in ([("admin", "mlflow-temp-admin")] if with_admin else []) + names}
+    if with_admin:      # after the temporary admin is removed, the matrix runs without it (no secret read)
+        m.call("admin", ids["admin"], "GET", "/api/2.0/mlflow/users/list", 200)
     # the job writer first: the acceptance experiment/run are the targets of every denied write/delete probe below
     j = ids["job"]
     r = requests.get(url + "/api/2.0/mlflow/experiments/get-by-name", params={"experiment_name": EXPERIMENT}, auth=j, timeout=60)
@@ -101,9 +102,10 @@ def main(argv=None, api=None):
     ap.add_argument("--copied-experiment", required=True)
     ap.add_argument("--copied-run", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--without-admin", action="store_true", help="post-removal: never reads mlflow-temp-admin")
     args = ap.parse_args(argv)
     rows, created = run(api or ps.Api(), args.url.rstrip("/"), args.artifact, args.artifact_sha256,
-                        args.copied_experiment, args.copied_run)
+                        args.copied_experiment, args.copied_run, with_admin=not args.without_admin)
     report = {"time": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "url": args.url,
               "transport": "loopback IAM proxy (deploy.iam_proxy)" if args.url.startswith("http://127.0.0.1") else "direct HTTPS",
               "rows": rows, "passed": sum(r["ok"] for r in rows), "total": len(rows), **created}
