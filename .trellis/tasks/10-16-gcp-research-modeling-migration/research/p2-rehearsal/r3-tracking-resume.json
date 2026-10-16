@@ -1,0 +1,433 @@
+{
+ "source": "/home/swl007007/projects/food-crisis-research/scratch/mlflow-snapshot-r1/mlflow.db",
+ "source_sha256": "54aa68980b25df0a07be313d471e51c226ffc7245ae455679aaadb4242e4dcd9",
+ "revision": [
+  [
+   "dc11669786a5"
+  ]
+ ],
+ "order": [
+  "budget_policies",
+  "entity_associations",
+  "evaluation_datasets",
+  "experiments",
+  "input_tags",
+  "inputs",
+  "jobs",
+  "mcp_servers",
+  "registered_models",
+  "scheduler_leases",
+  "secrets",
+  "sql_assessment_daily_rollups",
+  "sql_span_cost_daily_rollups",
+  "sql_trace_metric_daily_rollups",
+  "sql_trace_rollup_rebuild_queue",
+  "webhooks",
+  "workspaces",
+  "datasets",
+  "endpoints",
+  "evaluation_dataset_records",
+  "evaluation_dataset_tags",
+  "experiment_tags",
+  "job_locks",
+  "label_schemas",
+  "logged_models",
+  "mcp_access_endpoints",
+  "mcp_server_aliases",
+  "mcp_server_tags",
+  "mcp_server_versions",
+  "model_definitions",
+  "model_versions",
+  "registered_model_aliases",
+  "registered_model_tags",
+  "review_queues",
+  "runs",
+  "scorers",
+  "trace_info",
+  "webhook_events",
+  "assessments",
+  "endpoint_bindings",
+  "endpoint_model_mappings",
+  "endpoint_tags",
+  "issues",
+  "latest_metrics",
+  "logged_model_metrics",
+  "logged_model_params",
+  "logged_model_tags",
+  "mcp_server_version_tags",
+  "metrics",
+  "model_version_tags",
+  "online_scoring_configs",
+  "params",
+  "review_queue_items",
+  "review_queue_label_schemas",
+  "review_queue_users",
+  "scorer_versions",
+  "spans",
+  "tags",
+  "trace_metrics",
+  "trace_request_metadata",
+  "trace_tags",
+  "guardrails",
+  "span_metrics",
+  "guardrail_configs"
+ ],
+ "tables": {
+  "budget_policies": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "entity_associations": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "evaluation_datasets": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "experiments": {
+   "status": "skipped_complete",
+   "rows": 6
+  },
+  "input_tags": {
+   "status": "skipped_complete",
+   "rows": 11728
+  },
+  "inputs": {
+   "status": "skipped_complete",
+   "rows": 3722
+  },
+  "jobs": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "mcp_servers": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "registered_models": {
+   "status": "skipped_complete",
+   "rows": 196
+  },
+  "scheduler_leases": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "secrets": {
+   "status": "skipped_complete",
+   "rows": 1
+  },
+  "sql_assessment_daily_rollups": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "sql_span_cost_daily_rollups": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "sql_trace_metric_daily_rollups": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "sql_trace_rollup_rebuild_queue": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "webhooks": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "workspaces": {
+   "status": "skipped_complete",
+   "rows": 1
+  },
+  "datasets": {
+   "status": "skipped_complete",
+   "rows": 1104
+  },
+  "endpoints": {
+   "status": "skipped_complete",
+   "rows": 1
+  },
+  "evaluation_dataset_records": {
+   "status": "skipped_complete",
+   "rows": 0
+  },
+  "evaluation_dataset_tags": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "experiment_tags": {
+   "status": "loaded",
+   "rows": 12,
+   "digest": "c70e661f411407b5499e7ed7c5f336cddff43dc4c51cd82e4fb470fed77dc9ea",
+   "seconds": 0.01
+  },
+  "job_locks": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "label_schemas": {
+   "status": "loaded",
+   "rows": 1,
+   "digest": "9bff3d747095a2d31ee467548482edcf75dff307d3a6841b572fc565c672261b",
+   "seconds": 0.0
+  },
+  "logged_models": {
+   "status": "loaded",
+   "rows": 242,
+   "digest": "3f65db3354aaf27ca1d4652e66ceb383e59a158cafaccc262e0f85c56e97dbf3",
+   "seconds": 0.01
+  },
+  "mcp_access_endpoints": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "mcp_server_aliases": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "mcp_server_tags": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "mcp_server_versions": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "model_definitions": {
+   "status": "loaded",
+   "rows": 1,
+   "digest": "29b1f08457b0868d84226609f81f87b1e5026c73aa722ebd50accdcd7873c0f1",
+   "seconds": 0.0
+  },
+  "model_versions": {
+   "status": "loaded",
+   "rows": 242,
+   "digest": "d9917cdf475b518e7d58078ecf36d83ff40e04eb1e18cc8bbecef813b29d3b0d",
+   "seconds": 0.02
+  },
+  "registered_model_aliases": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "registered_model_tags": {
+   "status": "loaded",
+   "rows": 2956,
+   "digest": "43c1e935dd133e5137053363bf85bb0187e4e2ddbcff407d9bfdc00644276aa1",
+   "seconds": 0.09
+  },
+  "review_queues": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "runs": {
+   "status": "loaded",
+   "rows": 679,
+   "digest": "231e5fa6e6709bab1718d907c07faca81eb6c6d3ad1caab2875c0a511ef6912a",
+   "seconds": 0.03
+  },
+  "scorers": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "trace_info": {
+   "status": "loaded",
+   "rows": 157,
+   "digest": "a92448efc939ece813f86d43af72b14fcaca6ee2d40ed95ad0f61b2213143710",
+   "seconds": 0.01
+  },
+  "webhook_events": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "assessments": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "endpoint_bindings": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "endpoint_model_mappings": {
+   "status": "loaded",
+   "rows": 1,
+   "digest": "8744da4b1ac135a7e6c81de682bcfc293b44ba863336b4a7a73509f4ff4a2120",
+   "seconds": 0.0
+  },
+  "endpoint_tags": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "issues": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "latest_metrics": {
+   "status": "loaded",
+   "rows": 109268,
+   "digest": "9ae97166cd2cb374e437f8929dae1467d21dce5001c88619f00ff4b9598c507b",
+   "seconds": 2.57
+  },
+  "logged_model_metrics": {
+   "status": "loaded",
+   "rows": 84487,
+   "digest": "a3321e6b5634d84c8060699cff87edec3a6f52eb55d968741537967194f0545a",
+   "seconds": 3.18
+  },
+  "logged_model_params": {
+   "status": "loaded",
+   "rows": 1356,
+   "digest": "525053880cf79fc44cba01f9a52090be27086cfe853042263dcca25b2bd660ca",
+   "seconds": 0.04
+  },
+  "logged_model_tags": {
+   "status": "loaded",
+   "rows": 8008,
+   "digest": "ad23bc64f376c2c9112e20cf59077836961479f266a0b2cc7879a22b331213ef",
+   "seconds": 0.21
+  },
+  "mcp_server_version_tags": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.03
+  },
+  "metrics": {
+   "status": "loaded",
+   "rows": 109268,
+   "digest": "20d3d808d4a9d023b4d1e25370030bc516c971cb4d2f323534423d5d935a892a",
+   "seconds": 3.74
+  },
+  "model_version_tags": {
+   "status": "loaded",
+   "rows": 968,
+   "digest": "1d8439bafdcf2e6c864feb51747436592dea54b3589b97f7a0e06d4bce45bcde",
+   "seconds": 0.04
+  },
+  "online_scoring_configs": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.02
+  },
+  "params": {
+   "status": "loaded",
+   "rows": 2619,
+   "digest": "0de4a8b9a9bbc7770524ab35c544e7f6fbd04a0b37192587022e6870fca0e239",
+   "seconds": 0.05
+  },
+  "review_queue_items": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.01
+  },
+  "review_queue_label_schemas": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.02
+  },
+  "review_queue_users": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.02
+  },
+  "scorer_versions": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.02
+  },
+  "spans": {
+   "status": "loaded",
+   "rows": 314,
+   "digest": "0d03c889a3c720a166cf757f59380a070ba30c454ff90e10380dfb99b84fced0",
+   "seconds": 0.43,
+   "generated_columns_recomputed_and_compared": [
+    "duration_ns"
+   ]
+  },
+  "tags": {
+   "status": "loaded",
+   "rows": 20705,
+   "digest": "96be40181c1ad35b57c9d5475dde7f84a6d88abeca7cadd174d8f5825cd3fd24",
+   "seconds": 0.38
+  },
+  "trace_metrics": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.04
+  },
+  "trace_request_metadata": {
+   "status": "loaded",
+   "rows": 2669,
+   "digest": "08a0e999ee137170f766a680572043faf2cd2a639acd36d2538dc152c4bb79cb",
+   "seconds": 0.09
+  },
+  "trace_tags": {
+   "status": "loaded",
+   "rows": 314,
+   "digest": "5ee630096f82de972c642f19b10e5ebad66c4d217b7cc8a7c75c5f09061944f1",
+   "seconds": 0.03
+  },
+  "guardrails": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.03
+  },
+  "span_metrics": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.04
+  },
+  "guardrail_configs": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.06
+  }
+ },
+ "sequences": {
+  "experiments.experiment_id": 5,
+  "sql_assessment_daily_rollups.id": null,
+  "sql_span_cost_daily_rollups.id": null,
+  "sql_trace_metric_daily_rollups.id": null
+ },
+ "complete": true,
+ "seconds": 11.66,
+ "finished_at": "2026-10-16T02:04:40-0400"
+}

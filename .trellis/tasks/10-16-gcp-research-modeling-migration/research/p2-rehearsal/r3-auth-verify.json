@@ -1,0 +1,104 @@
+{
+ "source": "/home/swl007007/projects/food-crisis-research/scratch/mlflow-snapshot-r1/basic_auth.db",
+ "source_sha256": "3797d7d06c0c1ff1a81727b29a000cbc90f06028870bc939b5faa4cbfebc5b6b",
+ "revision": [
+  [
+   "f1a2b3c4d5e6"
+  ]
+ ],
+ "order": [
+  "roles",
+  "users",
+  "experiment_permissions",
+  "gateway_endpoint_permissions",
+  "gateway_model_definition_permissions",
+  "gateway_secret_permissions",
+  "registered_model_permissions",
+  "role_permissions",
+  "scorer_permissions",
+  "user_role_assignments",
+  "workspace_permissions"
+ ],
+ "tables": {
+  "roles": {
+   "source_rows": 2,
+   "target_rows": 2,
+   "source_digest": "0df0a54a80dbe98e9897c4f04fea1dbce802d8fb22e21301a9db289aa44667ed",
+   "target_digest": "0df0a54a80dbe98e9897c4f04fea1dbce802d8fb22e21301a9db289aa44667ed",
+   "match": true
+  },
+  "users": {
+   "source_rows": 2,
+   "target_rows": 2,
+   "source_digest": "a45de91c910b003c60f4a89a1258e4f12910fc7337eea32c950c6f380c2d30d7",
+   "target_digest": "a45de91c910b003c60f4a89a1258e4f12910fc7337eea32c950c6f380c2d30d7",
+   "match": true
+  },
+  "experiment_permissions": {
+   "source_rows": 0,
+   "target_rows": 0,
+   "source_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "target_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "match": true
+  },
+  "gateway_endpoint_permissions": {
+   "source_rows": 0,
+   "target_rows": 0,
+   "source_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "target_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "match": true
+  },
+  "gateway_model_definition_permissions": {
+   "source_rows": 0,
+   "target_rows": 0,
+   "source_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "target_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "match": true
+  },
+  "gateway_secret_permissions": {
+   "source_rows": 0,
+   "target_rows": 0,
+   "source_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "target_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "match": true
+  },
+  "registered_model_permissions": {
+   "source_rows": 0,
+   "target_rows": 0,
+   "source_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "target_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "match": true
+  },
+  "role_permissions": {
+   "source_rows": 4,
+   "target_rows": 4,
+   "source_digest": "debf69f5be3046d74bf301e078ef8b3437ee75b5a13e0d64e3ac3b8a144c9c8f",
+   "target_digest": "debf69f5be3046d74bf301e078ef8b3437ee75b5a13e0d64e3ac3b8a144c9c8f",
+   "match": true
+  },
+  "scorer_permissions": {
+   "source_rows": 0,
+   "target_rows": 0,
+   "source_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "target_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "match": true
+  },
+  "user_role_assignments": {
+   "source_rows": 2,
+   "target_rows": 2,
+   "source_digest": "ab383758910270b811912d9c5810b24e71320e8e6fa3fc44ad275dc5eb99306c",
+   "target_digest": "ab383758910270b811912d9c5810b24e71320e8e6fa3fc44ad275dc5eb99306c",
+   "match": true
+  },
+  "workspace_permissions": {
+   "source_rows": 0,
+   "target_rows": 0,
+   "source_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "target_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "match": true
+  }
+ },
+ "verified": true,
+ "seconds": 0.02,
+ "finished_at": "2026-10-16T02:04:44-0400"
+}

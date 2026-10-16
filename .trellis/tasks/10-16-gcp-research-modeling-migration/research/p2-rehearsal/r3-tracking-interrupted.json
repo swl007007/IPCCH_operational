@@ -1,0 +1,200 @@
+{
+ "source": "/home/swl007007/projects/food-crisis-research/scratch/mlflow-snapshot-r1/mlflow.db",
+ "source_sha256": "54aa68980b25df0a07be313d471e51c226ffc7245ae455679aaadb4242e4dcd9",
+ "revision": [
+  [
+   "dc11669786a5"
+  ]
+ ],
+ "order": [
+  "budget_policies",
+  "entity_associations",
+  "evaluation_datasets",
+  "experiments",
+  "input_tags",
+  "inputs",
+  "jobs",
+  "mcp_servers",
+  "registered_models",
+  "scheduler_leases",
+  "secrets",
+  "sql_assessment_daily_rollups",
+  "sql_span_cost_daily_rollups",
+  "sql_trace_metric_daily_rollups",
+  "sql_trace_rollup_rebuild_queue",
+  "webhooks",
+  "workspaces",
+  "datasets",
+  "endpoints",
+  "evaluation_dataset_records",
+  "evaluation_dataset_tags",
+  "experiment_tags",
+  "job_locks",
+  "label_schemas",
+  "logged_models",
+  "mcp_access_endpoints",
+  "mcp_server_aliases",
+  "mcp_server_tags",
+  "mcp_server_versions",
+  "model_definitions",
+  "model_versions",
+  "registered_model_aliases",
+  "registered_model_tags",
+  "review_queues",
+  "runs",
+  "scorers",
+  "trace_info",
+  "webhook_events",
+  "assessments",
+  "endpoint_bindings",
+  "endpoint_model_mappings",
+  "endpoint_tags",
+  "issues",
+  "latest_metrics",
+  "logged_model_metrics",
+  "logged_model_params",
+  "logged_model_tags",
+  "mcp_server_version_tags",
+  "metrics",
+  "model_version_tags",
+  "online_scoring_configs",
+  "params",
+  "review_queue_items",
+  "review_queue_label_schemas",
+  "review_queue_users",
+  "scorer_versions",
+  "spans",
+  "tags",
+  "trace_metrics",
+  "trace_request_metadata",
+  "trace_tags",
+  "guardrails",
+  "span_metrics",
+  "guardrail_configs"
+ ],
+ "tables": {
+  "budget_policies": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "entity_associations": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "evaluation_datasets": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "experiments": {
+   "status": "loaded",
+   "rows": 6,
+   "digest": "85a3e8deace6cf51a24dad3e262ca3667a7ba326182ed32d07a19cf9d6fdfed6",
+   "seconds": 0.0
+  },
+  "input_tags": {
+   "status": "loaded",
+   "rows": 11728,
+   "digest": "ad5bb36a6e38cadfb62db5dfe9b78d04221ea769ce987e9d4ddcec237ed85ab3",
+   "seconds": 0.15
+  },
+  "inputs": {
+   "status": "loaded",
+   "rows": 3722,
+   "digest": "d97181ad5a4ab405fa6dc0390ce57518fedb51c6216c8b3e47ed3d1a886c0522",
+   "seconds": 0.07
+  },
+  "jobs": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "mcp_servers": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "registered_models": {
+   "status": "loaded",
+   "rows": 196,
+   "digest": "46dffdb7e3a65bb99591bb31a3511b1863e0bcce4f47d0abef418620707d59e5",
+   "seconds": 0.02
+  },
+  "scheduler_leases": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "secrets": {
+   "status": "loaded",
+   "rows": 1,
+   "digest": "a9bd27c94fbf97e0ee7ccbebcbd8fbb178839ca579d00630407e6822bf7a4d58",
+   "seconds": 0.0
+  },
+  "sql_assessment_daily_rollups": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "sql_span_cost_daily_rollups": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "sql_trace_metric_daily_rollups": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "sql_trace_rollup_rebuild_queue": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "webhooks": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  },
+  "workspaces": {
+   "status": "loaded",
+   "rows": 1,
+   "digest": "e6c465d2fbb8b4a6625181eeb8d98bb6f6e1287b0413f5408c966919922dedab",
+   "seconds": 0.0
+  },
+  "datasets": {
+   "status": "loaded",
+   "rows": 1104,
+   "digest": "5256fff53b57b4772f0c5b4d53886c4e62d4c2c16972cce6cb9231c379b8e5a1",
+   "seconds": 0.04
+  },
+  "endpoints": {
+   "status": "loaded",
+   "rows": 1,
+   "digest": "4fd6d10c9198c1e90a7b77260c79fe1feb11a6470dcf8a8546372633080533d1",
+   "seconds": 0.0
+  },
+  "evaluation_dataset_records": {
+   "status": "loaded",
+   "rows": 0,
+   "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "seconds": 0.0
+  }
+ },
+ "stopped_early": "evaluation_dataset_tags",
+ "seconds": 0.46,
+ "finished_at": "2026-10-16T02:04:29-0400"
+}
