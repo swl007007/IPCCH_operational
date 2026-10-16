@@ -63,3 +63,18 @@ The required budget prerequisite above is therefore satisfied:
 - The platform (USD 100/month) and training/HPT (USD 100/month) used-and-reserved ledgers stay separate.
 - Every operation keeps its own receipt.
 - The Earth Engine usage signal above stays an unverified observation. The conditional EE billing item applies only if a material recurring cost appears.
+
+## G5 — service enablement (2026-10-16, times by `date`)
+
+Every command pins `--project=food-crisis-modeling-enso --billing-project=food-crisis-modeling-enso --quiet`. The gcloud global core/project is still `manuel-remote-sensing` and is unchanged.
+
+| ID | Time (EDT) | Operation | Consumer | Effect | Result | Cost |
+|---|---|---|---|---|---|---|
+| O-025 | 07:06:27 | `gcloud services list --enabled` (G5 precheck) | target | read | 25 services enabled. sqladmin, run, artifactregistry, cloudbuild, secretmanager, aiplatform, iam and iamcredentials were not among them | none |
+| O-026 | 07:07:03 – 07:07:36 | `gcloud services enable sqladmin run artifactregistry cloudbuild secretmanager aiplatform iam iamcredentials (.googleapis.com)` | target | **write: API enable** (G5) | operation `operations/acf.p2-76571749286-61fbb5e4-…` finished successfully | none (enablement is free) |
+| O-027 | 07:07:36 – 07:08:13 | `gcloud services list --enabled`; `gcloud iam service-accounts list` | target | read | 35 services. Dependencies were auto-enabled: containerregistry, pubsub. The default compute SA `76571749286-compute@developer.gserviceaccount.com` now exists | none |
+| O-028 | 07:08:46 – 07:09:06 | `gcloud projects get-iam-policy` | target | read | failed: Cloud Resource Manager API not enabled in the target | none |
+| O-029 | 07:09:13 – 07:09:31 | `gcloud services enable cloudresourcemanager.googleapis.com` | target | **write: API enable** (G5; needed for G6 IAM) | operation `operations/acat.p2-76571749286-0c1a9172-…` finished successfully | none |
+| O-030 | ≈07:10 (after a 30 s wait) – 07:10:15 | `gcloud projects get-iam-policy` | target | read | 7 bindings. Service-account bindings: cloudbuild legacy SA `roles/cloudbuild.builds.builder`; agents for cloudbuild, containerregistry, pubsub, run; **default compute SA `roles/editor`** (granted automatically when Compute-dependent APIs were enabled) | none |
+
+**Flag (supervisor/user):** the default compute SA now holds project Editor (automatic Google behaviour, not a grant by us). The design forbids Editor/Owner for jobs and the assistant. No workload of ours will run as this SA: Cloud Build, Cloud Run and Vertex jobs get dedicated scoped SAs in G6. Removing the automatic Editor grant is a project-level IAM change outside the planned grants, so it is not done unilaterally; it is recommended if nothing else in the shared project relies on the default SA.
