@@ -1,0 +1,1 @@
+Step #1: {"selfcheck": "ok", "image": "replay-x320", "uid": 65534, "home": "/home/app", "lock_pins": 11}

@@ -1,0 +1,91 @@
+{
+ "id": "56ae637b-84f7-47b1-b6a2-d340764b890d",
+ "status": "SUCCESS",
+ "createTime": "2026-10-16T11:42:25.385384180Z",
+ "startTime": "2026-10-16T11:42:25.983910625Z",
+ "finishTime": "2026-10-16T11:46:50.480930Z",
+ "serviceAccount": "projects/food-crisis-modeling-enso/serviceAccounts/research-build@food-crisis-modeling-enso.iam.gserviceaccount.com",
+ "logsBucket": null,
+ "options": {
+  "logging": "CLOUD_LOGGING_ONLY",
+  "pool": {},
+  "workerRelease": "legacy"
+ },
+ "timing": {
+  "BUILD": {
+   "endTime": "2026-10-16T11:44:55.991676265Z",
+   "startTime": "2026-10-16T11:42:29.402934880Z"
+  },
+  "FETCHSOURCE": {
+   "endTime": "2026-10-16T11:42:29.402671090Z",
+   "startTime": "2026-10-16T11:42:26.012857378Z"
+  },
+  "PUSH": {
+   "endTime": "2026-10-16T11:46:50.215739283Z",
+   "startTime": "2026-10-16T11:44:55.991868955Z"
+  },
+  "STORAGE_SOURCE": {
+   "endTime": "2026-10-16T11:42:29.402671090Z",
+   "startTime": "2026-10-16T11:42:26.012857378Z"
+  }
+ },
+ "images": [
+  {
+   "artifactRegistryPackage": "projects/food-crisis-modeling-enso/locations/us-central1/repositories/research/packages/training-fews/versions/sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+   "digest": "sha256:d7ac74a690e72e031ac9e7fe04612c6f851c023cef03023781fc5b67ed9f0456",
+   "name": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-fews:36bde42fe1fa",
+   "pushTiming": {
+    "endTime": "2026-10-16T11:46:50.215477284Z",
+    "startTime": "2026-10-16T11:44:55.991892054Z"
+   }
+  }
+ ],
+ "steps": [
+  {
+   "name": "gcr.io/cloud-builders/docker",
+   "args": [
+    "build",
+    "--build-arg",
+    "SOURCE_COMMIT=36bde42fe1fa4055c97977893ac7f7c429b7af35",
+    "-t",
+    "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-fews:36bde42fe1fa",
+    "."
+   ],
+   "status": "SUCCESS",
+   "timing": {
+    "endTime": "2026-10-16T11:44:52.153927004Z",
+    "startTime": "2026-10-16T11:42:30.106060565Z"
+   }
+  },
+  {
+   "name": "gcr.io/cloud-builders/docker",
+   "args": [
+    "run",
+    "--rm",
+    "--user",
+    "65534:65534",
+    "--network",
+    "none",
+    "--entrypoint",
+    "python",
+    "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-fews:36bde42fe1fa",
+    "-m",
+    "research_cloud.images.selfcheck",
+    "--image",
+    "training-fews"
+   ],
+   "status": "SUCCESS",
+   "timing": {
+    "endTime": "2026-10-16T11:44:55.944965666Z",
+    "startTime": "2026-10-16T11:44:52.154169863Z"
+   }
+  }
+ ],
+ "source": {
+  "storageSource": {
+   "bucket": "food-crisis-modeling-enso-research-build",
+   "generation": "1792150945068251",
+   "object": "source/1792150944.45-70da0c5bb5b04cf1bf056deca0d4f8b5.tgz"
+  }
+ }
+}

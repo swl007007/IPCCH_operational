@@ -1,0 +1,1 @@
+Step #1: {"selfcheck": "ok", "image": "training-fews", "uid": 65534, "home": "/home/app", "commit": "36bde42fe1fa4055c97977893ac7f7c429b7af35"}

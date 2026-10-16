@@ -1,0 +1,91 @@
+{
+ "id": "c1d72240-2bb8-46a0-ba09-a925d23b8deb",
+ "status": "SUCCESS",
+ "createTime": "2026-10-16T11:42:39.718807046Z",
+ "startTime": "2026-10-16T11:42:40.389908171Z",
+ "finishTime": "2026-10-16T11:44:52.125589Z",
+ "serviceAccount": "projects/food-crisis-modeling-enso/serviceAccounts/research-build@food-crisis-modeling-enso.iam.gserviceaccount.com",
+ "logsBucket": null,
+ "options": {
+  "logging": "CLOUD_LOGGING_ONLY",
+  "pool": {},
+  "workerRelease": "legacy"
+ },
+ "timing": {
+  "BUILD": {
+   "endTime": "2026-10-16T11:44:02.294822135Z",
+   "startTime": "2026-10-16T11:42:42.867696527Z"
+  },
+  "FETCHSOURCE": {
+   "endTime": "2026-10-16T11:42:42.867505837Z",
+   "startTime": "2026-10-16T11:42:40.698138686Z"
+  },
+  "PUSH": {
+   "endTime": "2026-10-16T11:44:51.877470438Z",
+   "startTime": "2026-10-16T11:44:02.294955344Z"
+  },
+  "STORAGE_SOURCE": {
+   "endTime": "2026-10-16T11:42:42.867505837Z",
+   "startTime": "2026-10-16T11:42:40.698138686Z"
+  }
+ },
+ "images": [
+  {
+   "artifactRegistryPackage": "projects/food-crisis-modeling-enso/locations/us-central1/repositories/research/packages/training-ipcch/versions/sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+   "digest": "sha256:7c59d674ceb0dae7869f78c10e1751ff2d2e2217063e59626d0261c227a000fb",
+   "name": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch:36bde42fe1fa",
+   "pushTiming": {
+    "endTime": "2026-10-16T11:44:51.877408216Z",
+    "startTime": "2026-10-16T11:44:02.294956529Z"
+   }
+  }
+ ],
+ "steps": [
+  {
+   "name": "gcr.io/cloud-builders/docker",
+   "args": [
+    "build",
+    "--build-arg",
+    "SOURCE_COMMIT=36bde42fe1fa4055c97977893ac7f7c429b7af35",
+    "-t",
+    "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch:36bde42fe1fa",
+    "."
+   ],
+   "status": "SUCCESS",
+   "timing": {
+    "endTime": "2026-10-16T11:44:00.474664409Z",
+    "startTime": "2026-10-16T11:42:43.379548995Z"
+   }
+  },
+  {
+   "name": "gcr.io/cloud-builders/docker",
+   "args": [
+    "run",
+    "--rm",
+    "--user",
+    "65534:65534",
+    "--network",
+    "none",
+    "--entrypoint",
+    "python",
+    "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch:36bde42fe1fa",
+    "-m",
+    "research_cloud.images.selfcheck",
+    "--image",
+    "training-ipcch"
+   ],
+   "status": "SUCCESS",
+   "timing": {
+    "endTime": "2026-10-16T11:44:02.276768459Z",
+    "startTime": "2026-10-16T11:44:00.474885023Z"
+   }
+  }
+ ],
+ "source": {
+  "storageSource": {
+   "bucket": "food-crisis-modeling-enso-research-build",
+   "generation": "1792150959371620",
+   "object": "source/1792150958.793204-89c0c7443dce459d88b33170e4108ee6.tgz"
+  }
+ }
+}

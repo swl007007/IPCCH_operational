@@ -101,3 +101,20 @@ Committed total: USD 4.22 of 100. These are reservations, not actual cost.
 | O-034 | 07:25:36 – 07:26:52 | `gcloud artifacts repositories create research --repository-format=docker --location=us-central1`; describes | target | **write: AR repository** | `projects/food-crisis-modeling-enso/locations/us-central1/repositories/research`, DOCKER, STANDARD_REPOSITORY, Google-managed key | storage by usage (reserved above) |
 | O-035 | 07:27:09 – 07:27:46 | `gcloud storage buckets create gs://food-crisis-modeling-enso-research-build` (same flags) + `buckets update --lifecycle-file` (Delete at age 7 days) | target | **write: build-staging bucket + lifecycle** | created; lifecycle Delete age 7 confirmed by describe | negligible (≈4.5 MB contexts) |
 | O-036 | 07:27:46 – 07:30:38 | bucket IAM: artifacts → research-mlflow `objectUser`, research-trainer `objectCreator`; inputs → research-trainer `objectViewer`; build → research-build `objectViewer`. Repo `research` → research-build `artifactregistry.writer`. Then get-iam-policy of each bucket | target | **write: 5 resource-scoped bindings** | the policies show exactly these research-* bindings | none |
+
+## G8 — Cloud SQL instance (2026-10-16)
+
+Ledger, before creation: `G8-cloudsql-research-pg-2026-10`, USD 40.98, full-month reservation for an instance created mid-month. Platform committed USD 45.20.
+
+| ID | Time (EDT) | Operation | Consumer | Effect | Result | Cost |
+|---|---|---|---|---|---|---|
+| O-037 | 07:32:11 – 07:37:24 (the supervisor backgrounded the same shell; not resubmitted) | `gcloud sql instances create research-pg --database-version=POSTGRES_16 --edition=ENTERPRISE --tier=db-g1-small --region=us-central1 --availability-type=zonal --storage-type=SSD --storage-size=30 --no-storage-auto-increase --backup-start-time=07:00 --retained-backups-count=7 --no-enable-point-in-time-recovery --ssl-mode=ENCRYPTED_ONLY --deletion-protection` | target | **write: Cloud SQL instance** | RUNNABLE; tier db-g1-small; primary address 34.123.136.49; no private address; no authorized networks (none passed) | per hour (reserved above) |
+
+## G9 — images (2026-10-16)
+
+Ledger: `G9-cloud-build-images`, USD 0.72 one-time (120 build-minutes); the failed pilot's minutes count against it. Every submission used `--project/--billing-project=food-crisis-modeling-enso --region=us-central1 --gcs-source-staging-dir=gs://food-crisis-modeling-enso-research-build/source`, with `serviceAccount: research-build@…` and logging CLOUD_LOGGING_ONLY in cloudbuild.yaml.
+
+| ID | Time (EDT) | Operation | Consumer | Effect | Result | Cost |
+|---|---|---|---|---|---|---|
+| O-038 | ≈07:35 – 07:37:55 | `gcloud builds submit` service, context at b497503 (pilot) | target | **write: Cloud Build** | build `fd2129fa-32fb-4924-a3f8-6291b639286e` **FAILURE** at step 1 (in-image self-check, exit 78): the hook's guard refused because `MLFLOW_GATEWAY_ALLOWED_PROVIDERS` was not in the image ENV (the .pth loads before start.prepare). **Nothing was pushed.** Complete Cloud Logging saved (`g9-images-36bde42/pilot-fd2129fa-FAILED.cloud-logging.json`). Fixed in native 36bde42 | build minutes |
+| O-039 | 07:42 – 07:43:12 (submissions); builds 11:42:11–11:46:50 UTC | `gcloud builds submit --async` ×5, contexts at native 36bde42 | target | **write: 5 Cloud Builds + 5 pushed images** | all SUCCESS. Each build: build → self-check as UID 65534 with no network (ok, lines in `*.selfcheck.txt`) → push. Digests: service `sha256:280013b0…`, training-fews `sha256:d7ac74a6…`, training-ipcch `sha256:7c59d674…`, replay-x320 `sha256:1e787909…`, replay-forecast-x320 `sha256:2810ab7c…` (full values in `g9-images-36bde42/*.build.json`) | build minutes; AR storage (reserved) |
