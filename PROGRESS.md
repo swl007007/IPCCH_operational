@@ -2973,3 +2973,11 @@ Supersedes the in-progress bullets above, which are kept as written.
 - Weights: 0m 69b90bf03aea, 6m a0802145992e, 12m 62520a04c0cb; map/123 features/RF parameters/fixed thresholds unchanged; no evaluation.
 - Prepared snapshot succeeded, generation 1792650679865065 / a5db2c8b; four FEWS output hashes/keys and post-overlay history retention independently verified.
 - P3 release implementation continues. Required remaining checks include initial/resolved intent binding, duplicate/preparation-only dispatch, inherited identity without recomputation, maintenance/candidate/promotion gates and new-image six-slot loading. No production activation.
+
+### 2026-10-22 08:30Z — FEWS fixed-map retrain: P4 candidate verified and promoted (executor)
+
+- Runtime `runtime@sha256:487a2315…97fae` (Cloud Build ce6e6cbf, clean source 0d60a4e); in-image six-slot evidence: FEWS packages loaded and scored byte-identically to the exact-lock reference, IPCCH scopes loaded only.
+- Candidate baseline b77cb29b (FEWS history = v2 source panel a83f5f4b, snapshot fewsnet-retrain-20261022a, frozen October FEWS confidence, IPCCH unchanged); separate operator state `food-crisis-test-fews-retrain-20261022/operator-state`.
+- Maintenance fews-retrain-20261022: hold → gate (hold-aware workflow; a non-admitted probe was refused before any claim/job) → apply (both jobs and the workflow on the new image).
+- Candidate fews-candidate-20261022a (remote off, FEWS scored, IPCCH inherited byte-for-byte from oct-confidence-20261009b): job oct-delivery-hfddt 24m10s; manifest 54dd0f14 / archive f3870914; release checks 43/43; operator receipt 241e9c96 (relocated FEWS-only replay all equal with the bundled runtime); supervisor artifact, replay, confidence-lineage and clearance receipts.
+- Promoted 08:29Z: current.json#1792657760445077 → releases/fews-candidate-20261022a; normal config 93293916 → 8eddc1bc (new image, candidate operator state); fallback october_2026 = candidate, predecessor kept as october_2026.predecessor-fews-retrain-20261022. Hold kept until supervisor live verification; recovery: `pipeline.py maintenance --operation-id fews-retrain-20261022 --execute restore`, then `release`.

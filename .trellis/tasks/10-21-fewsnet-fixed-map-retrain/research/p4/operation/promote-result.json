@@ -1,0 +1,14 @@
+{
+  "status": "activated",
+  "reconciled": {
+    "pointer": true,
+    "operator_config": true,
+    "fallback": true,
+    "shared_runtime": true
+  },
+  "states": {
+    "pointer": "intended",
+    "operator_config": "intended",
+    "fallback": "intended"
+  }
+}

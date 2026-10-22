@@ -1,0 +1,393 @@
+{
+  "active_at_hold": {
+    "batch_jobs": [],
+    "job_executions": [],
+    "workflow_executions": []
+  },
+  "admitted_run_ids": [
+    "fews-candidate-20261022a"
+  ],
+  "applied_commands": [
+    [
+      "gcloud",
+      "run",
+      "jobs",
+      "deploy",
+      "monthly-prepare",
+      "--project",
+      "feisty-flames-511718-d4",
+      "--region",
+      "us-central1",
+      "--image",
+      "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+      "--service-account",
+      "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "--max-retries",
+      "0",
+      "--tasks",
+      "1",
+      "--command",
+      "python3",
+      "--memory",
+      "8Gi",
+      "--cpu",
+      "2",
+      "--task-timeout",
+      "4h",
+      "--args=-m,cloud.orchestrator.prepare,--help"
+    ],
+    [
+      "gcloud",
+      "run",
+      "jobs",
+      "deploy",
+      "oct-delivery",
+      "--project",
+      "feisty-flames-511718-d4",
+      "--region",
+      "us-central1",
+      "--image",
+      "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+      "--service-account",
+      "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "--max-retries",
+      "0",
+      "--tasks",
+      "1",
+      "--command",
+      "python3",
+      "--memory",
+      "32Gi",
+      "--cpu",
+      "8",
+      "--task-timeout",
+      "4h",
+      "--args=-m,cloud.orchestrator.delivery_job,run,--output-root,gs://food-crisis-test-ipcch-data,--release-namespace,monthly-staging,--image-uri,us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae"
+    ],
+    [
+      "gcloud",
+      "run",
+      "jobs",
+      "add-iam-policy-binding",
+      "oct-delivery",
+      "--project",
+      "feisty-flames-511718-d4",
+      "--region",
+      "us-central1",
+      "--member",
+      "serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "--role",
+      "roles/run.developer"
+    ],
+    [
+      "gcloud",
+      "run",
+      "jobs",
+      "add-iam-policy-binding",
+      "monthly-prepare",
+      "--project",
+      "feisty-flames-511718-d4",
+      "--region",
+      "us-central1",
+      "--member",
+      "serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "--role",
+      "roles/run.developer"
+    ],
+    [
+      "gcloud",
+      "storage",
+      "buckets",
+      "add-iam-policy-binding",
+      "gs://food-crisis-test-ipcch-requests",
+      "--member",
+      "serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "--role",
+      "roles/storage.objectViewer",
+      "--condition=None"
+    ],
+    [
+      "gcloud",
+      "storage",
+      "buckets",
+      "add-iam-policy-binding",
+      "gs://food-crisis-test-ipcch-data",
+      "--member",
+      "serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "--role",
+      "roles/storage.objectViewer",
+      "--condition=None"
+    ],
+    [
+      "gcloud",
+      "storage",
+      "buckets",
+      "add-iam-policy-binding",
+      "gs://food-crisis-test-ipcch-data",
+      "--member",
+      "serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "--role",
+      "roles/storage.objectCreator",
+      "--condition=expression=resource.name.startsWith(\"projects/_/buckets/food-crisis-test-ipcch-data/objects/dispatch/\"),title=workflow-dispatch-claims"
+    ],
+    [
+      "gcloud",
+      "workflows",
+      "deploy",
+      "oct-delivery-trigger",
+      "--project",
+      "feisty-flames-511718-d4",
+      "--location",
+      "us-central1",
+      "--source",
+      "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/deploy/workflow.yaml",
+      "--service-account",
+      "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "--set-env-vars",
+      "DELIVERY_LOCATION=us-central1,DELIVERY_JOB=oct-delivery,DELIVERY_OUTPUT_ROOT=gs://food-crisis-test-ipcch-data,DELIVERY_RELEASE_NAMESPACE=monthly-staging,DELIVERY_IMAGE_URI=us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae,PREPARE_JOB=monthly-prepare,EARTH_ENGINE_PROJECT=feisty-flames-511718-d4,BATCH_PARENT=projects/feisty-flames-511718-d4/locations/us-central1,BATCH_SERVICE_ACCOUNT=monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com,PREPARE_POLL_SECONDS=300,PREPARE_MAX_POLLS=96"
+    ]
+  ],
+  "created_utc": "2026-10-22T07:40:02Z",
+  "directory": "/home/swl007007/ipcch-operator/food-crisis-test-fews-retrain-20261022/operator-state/operations/fews-retrain-20261022",
+  "gate": {
+    "active_after_gate": {
+      "batch_jobs": [],
+      "job_executions": [],
+      "workflow_executions": []
+    },
+    "source_sha256": "c8b8e031e00f1da65e6f0f7ecf71d704eb72eaf3364f071fc13f095baf64e7f6",
+    "workflow_revision": "000002-c24"
+  },
+  "hold": {
+    "generation": "1792654802244430",
+    "sha256": "c4e75669afbe84e024abd6dd584205f9c9fb2dabce4f379f028d78e0f2aaf82e",
+    "uri": "gs://food-crisis-test-ipcch-data/maintenance/hold.json"
+  },
+  "intended": {
+    "jobs": {
+      "monthly-prepare": {
+        "args": [
+          "-m",
+          "cloud.orchestrator.prepare",
+          "--help"
+        ],
+        "command": [
+          "python3"
+        ],
+        "env": [],
+        "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae"
+      },
+      "oct-delivery": {
+        "args": [
+          "-m",
+          "cloud.orchestrator.delivery_job",
+          "run",
+          "--output-root",
+          "gs://food-crisis-test-ipcch-data",
+          "--release-namespace",
+          "monthly-staging",
+          "--image-uri",
+          "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae"
+        ],
+        "command": [
+          "python3"
+        ],
+        "env": [],
+        "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae"
+      }
+    },
+    "workflow": {
+      "env": {
+        "BATCH_PARENT": "projects/feisty-flames-511718-d4/locations/us-central1",
+        "BATCH_SERVICE_ACCOUNT": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "DELIVERY_IMAGE_URI": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+        "DELIVERY_JOB": "oct-delivery",
+        "DELIVERY_LOCATION": "us-central1",
+        "DELIVERY_OUTPUT_ROOT": "gs://food-crisis-test-ipcch-data",
+        "DELIVERY_RELEASE_NAMESPACE": "monthly-staging",
+        "EARTH_ENGINE_PROJECT": "feisty-flames-511718-d4",
+        "PREPARE_JOB": "monthly-prepare",
+        "PREPARE_MAX_POLLS": "96",
+        "PREPARE_POLL_SECONDS": "300"
+      },
+      "service_account": "projects/feisty-flames-511718-d4/serviceAccounts/monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "source_sha256": "c8b8e031e00f1da65e6f0f7ecf71d704eb72eaf3364f071fc13f095baf64e7f6"
+    }
+  },
+  "operation_id": "fews-retrain-20261022",
+  "owner": "weilun.shi",
+  "phase": "activated",
+  "predecessor": {
+    "grants": [
+      [
+        "gs://food-crisis-test-ipcch-data",
+        "roles/storage.legacyBucketOwner",
+        "projectEditor:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-data",
+        "roles/storage.legacyBucketOwner",
+        "projectOwner:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-data",
+        "roles/storage.legacyBucketReader",
+        "projectViewer:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-data",
+        "roles/storage.legacyObjectOwner",
+        "projectEditor:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-data",
+        "roles/storage.legacyObjectOwner",
+        "projectOwner:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-data",
+        "roles/storage.legacyObjectReader",
+        "projectViewer:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-data",
+        "roles/storage.objectAdmin",
+        "serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-requests",
+        "roles/storage.legacyBucketOwner",
+        "projectEditor:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-requests",
+        "roles/storage.legacyBucketOwner",
+        "projectOwner:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-requests",
+        "roles/storage.legacyBucketReader",
+        "projectViewer:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-requests",
+        "roles/storage.legacyObjectOwner",
+        "projectEditor:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-requests",
+        "roles/storage.legacyObjectOwner",
+        "projectOwner:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-requests",
+        "roles/storage.legacyObjectReader",
+        "projectViewer:feisty-flames-511718-d4",
+        null
+      ],
+      [
+        "gs://food-crisis-test-ipcch-requests",
+        "roles/storage.objectAdmin",
+        "serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        null
+      ],
+      [
+        "oct-delivery",
+        "roles/run.developer",
+        "serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        null
+      ]
+    ],
+    "jobs": {
+      "monthly-prepare": {
+        "args": [
+          "-m",
+          "cloud.orchestrator.prepare",
+          "--help"
+        ],
+        "command": [
+          "python3"
+        ],
+        "env": [],
+        "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+        "service_account": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "template_sha256": "4f866e3d8fd8239925a805505f65f4c8c1a8b2c8001f815dac7662b594fc6e03"
+      },
+      "oct-delivery": {
+        "args": [
+          "-m",
+          "cloud.orchestrator.delivery_job",
+          "run",
+          "--output-root",
+          "gs://food-crisis-test-ipcch-data",
+          "--release-namespace",
+          "monthly-staging",
+          "--image-uri",
+          "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0"
+        ],
+        "command": [
+          "python3"
+        ],
+        "env": [],
+        "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+        "service_account": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "template_sha256": "0899ec39e1c8874ca445bd810a756b6a993ff70ec878902ade16a94b98a31013"
+      }
+    },
+    "workflow": {
+      "env": {
+        "DELIVERY_IMAGE_URI": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+        "DELIVERY_JOB": "oct-delivery",
+        "DELIVERY_LOCATION": "us-central1",
+        "DELIVERY_OUTPUT_ROOT": "gs://food-crisis-test-ipcch-data",
+        "DELIVERY_RELEASE_NAMESPACE": "monthly-staging"
+      },
+      "revision_id": "000001-2cf",
+      "service_account": "projects/feisty-flames-511718-d4/serviceAccounts/monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "source_sha256": "e5f14a4407ea7ca4eacb94b4f457b2eadcf60144a01a2c53eabedd53bd8ee62e"
+    }
+  },
+  "promotion": {
+    "config_backup": "/home/swl007007/ipcch-operator/food-crisis-test-fews-retrain-20261022/operator-state/operations/fews-retrain-20261022/predecessor-normal-config.json",
+    "fallback": {
+      "active": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/fallback/october_2026",
+      "predecessor": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/fallback/october_2026.predecessor-fews-retrain-20261022",
+      "staged": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/fallback/october_2026.staged-fews-retrain-20261022"
+    },
+    "intended": {
+      "config_sha256": "8eddc1bc49661f0ff0e5a87cc8dda6ce5ecc628939c0305e63c108e625fa5e6d",
+      "fallback_manifest_sha256": "54dd0f1417f64f5848dea38abe1b77ecd8cfe859f772347a26154f043df65fc0",
+      "release_record": "gs://food-crisis-test-ipcch-data/monthly-staging/releases/fews-candidate-20261022a/release.json"
+    },
+    "intended_config_text": "{\n  \"bucket\": \"food-crisis-test-ipcch-data\",\n  \"earth_engine_project\": \"feisty-flames-511718-d4\",\n  \"image_uri\": \"us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae\",\n  \"namespace\": \"monthly-staging\",\n  \"operator\": \"weilun.shi\",\n  \"prepare_job\": \"monthly-prepare\",\n  \"project\": \"feisty-flames-511718-d4\",\n  \"region\": \"us-central1\",\n  \"request_bucket\": \"food-crisis-test-ipcch-requests\",\n  \"service_account\": \"monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com\",\n  \"work_dir\": \"/home/swl007007/ipcch-operator/food-crisis-test-fews-retrain-20261022/operator-state\",\n  \"workflow_service_account\": \"monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com\"\n}\n",
+    "prior": {
+      "config_path": "/home/swl007007/ipcch-operator/food-crisis-test/project.json",
+      "config_sha256": "93293916d1b07d13a64645217baadf5c40745c629258473ead2ffc2f8a0a5b45",
+      "fallback_manifest_sha256": "265a0fb95a8dbeda49a09d6a9fcafe149d3e4033438b38ec91d3b795a39aebe4",
+      "pointer_body": null,
+      "pointer_generation": "0",
+      "pointer_uri": "gs://food-crisis-test-ipcch-data/monthly-staging/current.json"
+    },
+    "receipt_sha256": "241e9c966efcce25f21f816aaf16c04e237e31a660669a1b035f3775bf5b57d3",
+    "reconciled": {
+      "fallback": true,
+      "operator_config": true,
+      "pointer": true,
+      "shared_runtime": true
+    },
+    "run_id": "fews-candidate-20261022a"
+  },
+  "reconciled": null
+}
