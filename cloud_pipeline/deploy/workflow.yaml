@@ -1,9 +1,19 @@
-# October delivery trigger: Cloud Storage object.v1.finalized (Eventarc) -> this workflow -> Cloud Run job.
+# Monthly delivery trigger: Cloud Storage object.v1.finalized (Eventarc) -> this workflow -> Cloud Run jobs.
 # Only gs://<bucket>/requests/<run_id>/run_manifest.json starts work; every other object (reports,
-# sources, outputs) is ignored. The event's exact generation is passed through; the job never reads
-# a "latest" request. Submission is not success: the run's status object is the durable outcome.
-# The job is configured with --max-retries 0 (deploy_delivery.sh): a failed run is never resumed;
-# retry = new run ID. Duplicate events for the same generation return the original status.
+# sources, outputs, resolved_requests/...) is ignored, so the workflow's own writes never re-trigger it.
+# The event's exact generation is read here and passed through; nothing reads a "latest" request.
+#
+# The pinned request's optional ``execution`` block selects the cloud steps:
+# * absent (legacy) or remote_update false: run the delivery job on the request as before; it scores
+#   only the selected systems and inherits the others from their pinned accepted delivery.
+# * remote_update true: run the preparation job on the intent's exact prepare request, then wait
+#   (bounded) for the durable prepared/<prepare_id>/prepare_status.json. The prepare job finishing
+#   only means its Batch extraction was submitted; it is never the readiness signal. A failed or
+#   timed-out preparation stops here. With no inference selected (prepare-only) the workflow returns
+#   the snapshot; otherwise the delivery job's ``resolve`` binds the intent to that succeeded
+#   snapshot (create-only resolved_requests/<run_id>/run_manifest.json) and runs it.
+# Jobs are configured with --max-retries 0: a failed run is never resumed; retry = new run ID.
+# Duplicate events for the same generation return the original status (create-only run sentinels).
 main:
   params: [event]
   steps:
@@ -12,11 +22,17 @@ main:
           - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
           - location: ${sys.get_env("DELIVERY_LOCATION")}
           - job: ${sys.get_env("DELIVERY_JOB")}
+          - prepare_job: ${sys.get_env("PREPARE_JOB")}
           # Container overrides REPLACE the job's args, so the full argv is rebuilt here from the
           # configured deployment values (never from the event) plus the event's exact request.
           - output_root: ${sys.get_env("DELIVERY_OUTPUT_ROOT")}
           - release_namespace: ${sys.get_env("DELIVERY_RELEASE_NAMESPACE")}
           - image_uri: ${sys.get_env("DELIVERY_IMAGE_URI")}
+          - earth_engine_project: ${sys.get_env("EARTH_ENGINE_PROJECT")}
+          - batch_parent: ${sys.get_env("BATCH_PARENT")}
+          - batch_service_account: ${sys.get_env("BATCH_SERVICE_ACCOUNT")}
+          - poll_seconds: ${int(sys.get_env("PREPARE_POLL_SECONDS"))}
+          - max_polls: ${int(sys.get_env("PREPARE_MAX_POLLS"))}
           - bucket: ${event.data.bucket}
           - name: ${event.data.name}
           - generation: ${string(event.data.generation)}
@@ -26,6 +42,124 @@ main:
             return: ${"ignored " + name}
           - condition: ${not(text.match_regex(generation, "^[1-9][0-9]*$"))}
             raise: ${"event without an exact generation for " + name}
+    - read_intent:
+        call: googleapis.storage.v1.objects.get
+        args:
+          bucket: ${bucket}
+          object: ${text.url_encode(name)}
+          generation: ${generation}
+          alt: media
+        result: raw_intent
+    - parse_intent:
+        assign:
+          - intent: ${if(get_type(raw_intent) == "map", raw_intent, json.decode(raw_intent))}
+          - execution: ${map.get(intent, "execution")}
+    - route:
+        switch:
+          - condition: ${execution == null}
+            next: run_job
+          - condition: ${not(execution.remote_update)}
+            next: run_job
+    - locate_preparation:
+        assign:
+          - prepare_uri: ${execution.prepare_request.uri}
+          - prepare_generation: ${execution.prepare_request.generation}
+          # gs://<bucket>/prepare_requests/<prepare_id>/prepare_request.json
+          - prepare_id: ${text.split(prepare_uri, "/")[4]}
+          - data_bucket: ${text.split(output_root, "/")[2]}
+          - status_object: ${"prepared/" + prepare_id + "/prepare_status.json"}
+          - polls: 0
+    - run_prepare_job:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project + "/locations/" + location + "/jobs/" + prepare_job}
+          body:
+            overrides:
+              containerOverrides:
+                - args:
+                    - "-m"
+                    - "cloud.orchestrator.prepare"
+                    - "plan"
+                    - "--request-uri"
+                    - ${prepare_uri}
+                    - "--request-generation"
+                    - ${prepare_generation}
+                    - "--output-root"
+                    - ${output_root}
+                    - "--earth-engine-project"
+                    - ${earth_engine_project}
+                    - "--batch-parent"
+                    - ${batch_parent}
+                    - "--batch-image-uri"
+                    - ${image_uri}
+                    - "--batch-service-account"
+                    - ${batch_service_account}
+          connector_params:
+            skip_polling: true
+        result: prepare_execution
+    - wait_for_preparation:
+        try:
+          call: googleapis.storage.v1.objects.get
+          args:
+            bucket: ${data_bucket}
+            object: ${text.url_encode(status_object)}
+            alt: media
+          result: raw_status
+        except:
+          as: e
+          steps:
+            - status_not_written:
+                switch:
+                  - condition: ${e.code == 404 and polls < max_polls}
+                    next: sleep_before_poll
+            - preparation_unavailable:
+                raise: ${"preparation " + prepare_id + " not finished after " + string(polls) + " polls"}
+    - check_preparation:
+        assign:
+          - prepare_status: ${if(get_type(raw_status) == "map", raw_status, json.decode(raw_status))}
+    - preparation_outcome:
+        switch:
+          - condition: ${prepare_status.status != "succeeded"}
+            raise: ${"preparation " + prepare_id + " " + prepare_status.status + "; no inference is started"}
+          - condition: ${len(execution.inference_systems) == 0}
+            return:
+              prepared: ${prepare_id}
+              status_object: ${"gs://" + data_bucket + "/" + status_object}
+              delivery: "not selected"
+        next: run_resolve_job
+    - sleep_before_poll:
+        call: sys.sleep
+        args:
+          seconds: ${poll_seconds}
+    - count_poll:
+        assign:
+          - polls: ${polls + 1}
+        next: wait_for_preparation
+    - run_resolve_job:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+          body:
+            overrides:
+              containerOverrides:
+                - args:
+                    - "-m"
+                    - "cloud.orchestrator.delivery_job"
+                    - "resolve"
+                    - "--request-uri"
+                    - ${"gs://" + bucket + "/" + name}
+                    - "--request-generation"
+                    - ${generation}
+                    - "--output-root"
+                    - ${output_root}
+                    - "--release-namespace"
+                    - ${release_namespace}
+                    - "--image-uri"
+                    - ${image_uri}
+          connector_params:
+            skip_polling: true
+        result: execution_result
+        next: done
     - run_job:
         call: googleapis.run.v2.projects.locations.jobs.run
         args:
@@ -51,6 +185,6 @@ main:
             # Submit only: the run's status object (runs/<run_id>/run_status.json) is the durable outcome.
             # Polling the long-running operation would need project-level run.operations.get.
             skip_polling: true
-        result: execution
+        result: execution_result
     - done:
-        return: ${execution}
+        return: ${execution_result}

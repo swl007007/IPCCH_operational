@@ -81,6 +81,10 @@ _NAMESPACE_RE = re.compile(r"^[a-z0-9][a-z0-9_-]{0,62}$")
 _REQUEST_PATH_RE = re.compile(
     r"^gs://[a-z0-9][a-z0-9._-]{1,220}[a-z0-9]/requests/([^/]+)/run_manifest\.json$"
 )
+# A remote-update intent bound to its succeeded preparation; never an event trigger path.
+_RESOLVED_REQUEST_PATH_RE = re.compile(
+    r"^gs://[a-z0-9][a-z0-9._-]{1,220}[a-z0-9]/resolved_requests/([^/]+)/run_manifest\.json$"
+)
 
 
 class DeliveryManifestError(ValueError):
@@ -113,7 +117,8 @@ def validate_delivery_request(
     run_id = data["run_id"]
     if not isinstance(run_id, str) or _RUN_ID_RE.fullmatch(run_id) is None:
         raise DeliveryManifestError("run_id must be 3-63 lowercase [a-z0-9._-] characters")
-    path_match = _REQUEST_PATH_RE.fullmatch(request_uri or "")
+    resolved_match = _RESOLVED_REQUEST_PATH_RE.fullmatch(request_uri or "")
+    path_match = _REQUEST_PATH_RE.fullmatch(request_uri or "") or resolved_match
     if path_match is None:
         raise DeliveryManifestError("request_uri must be gs://<bucket>/requests/<run_id>/run_manifest.json")
     if path_match.group(1) != run_id:
@@ -128,6 +133,8 @@ def validate_delivery_request(
     execution = _execution(data["execution"], origin) if "execution" in data else None
     if data["prepared_snapshot"] is None and not (execution and execution["remote_update"]):
         raise DeliveryManifestError("prepared_snapshot may be null only in a remote-update intent")
+    if resolved_match and (data["prepared_snapshot"] is None or not (execution and execution["remote_update"])):
+        raise DeliveryManifestError("a resolved request is a remote-update intent bound to its prepared snapshot")
     if data["prepared_snapshot"] is not None:
         prepared = _object(data["prepared_snapshot"], ("prepare_id", "origin_month", "manifest"),
                            "prepared_snapshot")

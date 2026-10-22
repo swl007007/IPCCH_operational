@@ -517,6 +517,59 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
     return run_once(store, output_root, run_id=request["run_id"], request_ref=request_ref, compute=compute)
 
 
+def resolve_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, output_root: str, store,
+                   reader) -> tuple[dict[str, str], bytes]:
+    """Bind a remote-update intent to its succeeded preparation as an immutable resolved request.
+
+    Readiness is the preparation's durable status and manifest (never the prepare job's own
+    completion, which only means Batch was submitted). The snapshot must be the one prepared
+    from this intent's exact prepare request. The intent object is never modified; the
+    resolved request is create-only and an identical replay reuses it.
+    """
+    from cloud.common.object_store import GenerationConflict
+    from cloud.orchestrator.delivery_manifest import validate_delivery_request
+    from cloud.orchestrator.prepare import read_pinned
+
+    intent = validate_delivery_request(json.loads(intent_bytes), request_uri=intent_ref["uri"],
+                                       request_generation=intent_ref["generation"])
+    execution = intent.get("execution") or {}
+    if not execution.get("remote_update") or not execution["inference_systems"] or intent["prepared_snapshot"]:
+        raise AcceptanceError("only an unresolved remote-update intent with selected inference can be resolved")
+    prepare_ref = execution["prepare_request"]
+    prepare_id = json.loads(read_pinned(reader, prepare_ref))["prepare_id"]
+    root = f"{output_root.rstrip('/')}/prepared/{prepare_id}"
+    status_meta = store.get_metadata(f"{root}/prepare_status.json")
+    status = json.loads(store.read_text(f"{root}/prepare_status.json")) if status_meta else {}
+    if status.get("status") != "succeeded":
+        raise AcceptanceError(f"preparation {prepare_id} is {status.get('status', 'not finished')}; no inference")
+    manifest_uri = f"{root}/prepared_manifest.json"
+    meta = store.get_metadata(manifest_uri)
+    data = reader.read_bytes(manifest_uri, str(meta.generation)) if meta else None
+    if data is None:
+        raise AcceptanceError(f"preparation {prepare_id} has no prepared manifest")
+    manifest = json.loads(data)
+    expected_request = {key: str(prepare_ref[key]) for key in ("uri", "generation", "sha256")}
+    if (manifest.get("status"), manifest.get("origin_month"), manifest.get("prepare_id")) != (
+            "succeeded", intent["origin_month"], prepare_id) or {
+            key: str(value) for key, value in manifest.get("request", {}).items()} != expected_request:
+        raise AcceptanceError("prepared snapshot is not the succeeded preparation of this intent's request")
+    resolved = json.loads(intent_bytes)
+    resolved["prepared_snapshot"] = {"prepare_id": prepare_id, "origin_month": intent["origin_month"],
+                                     "manifest": {"uri": manifest_uri, "generation": str(meta.generation),
+                                                  "sha256": hashlib.sha256(data).hexdigest()}}
+    resolved_bytes = (json.dumps(resolved, indent=2, sort_keys=True) + "\n").encode()
+    bucket = intent_ref["uri"].split("/requests/")[0]
+    resolved_uri = f"{bucket}/resolved_requests/{intent['run_id']}/run_manifest.json"
+    try:
+        generation = store.write_text(resolved_uri, resolved_bytes.decode(), if_generation_match=0).generation
+    except GenerationConflict:  # event replay: only the identical resolution may be reused
+        if store.read_text(resolved_uri).encode() != resolved_bytes:
+            raise AcceptanceError(f"{resolved_uri} already holds a different resolution") from None
+        generation = store.get_metadata(resolved_uri).generation
+    return ({"uri": resolved_uri, "generation": str(generation),
+             "sha256": hashlib.sha256(resolved_bytes).hexdigest()}, resolved_bytes)
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Request-driven October delivery.")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -527,6 +580,10 @@ def main(argv=None) -> int:
     run.add_argument("--release-namespace", required=True)
     run.add_argument("--image-uri", required=True)
     run.add_argument("--work-dir", default="/tmp/delivery-work")
+    resolve = commands.add_parser("resolve", help="bind a remote-update intent to its succeeded snapshot, then run")
+    for flag in ("--request-uri", "--request-generation", "--output-root", "--release-namespace", "--image-uri"):
+        resolve.add_argument(flag, required=True)
+    resolve.add_argument("--work-dir", default="/tmp/delivery-work")
     system = commands.add_parser("system")
     system.add_argument("--spec", required=True)
     system.add_argument("--system", choices=["fewsnet", "ipcch"], required=True)
@@ -549,6 +606,9 @@ def main(argv=None) -> int:
         raise AcceptanceError(f"request {args.request_uri}#{args.request_generation} not found")
     request_ref = {"uri": args.request_uri, "generation": args.request_generation,
                    "sha256": hashlib.sha256(data).hexdigest()}
+    if args.command == "resolve":
+        request_ref, data = resolve_intent(intent_ref=request_ref, intent_bytes=data, output_root=args.output_root,
+                                           store=GCSObjectStore(client), reader=GcsPinnedReader(client))
 
     def score(spec_path, name, out):
         subprocess.run([sys.executable, "-m", "cloud.orchestrator.delivery_job", "system", "--spec", str(spec_path),
