@@ -1,0 +1,127 @@
+{
+  "executable": "/home/swl007007/.venvs/fewsnet-fit-lock-20261022/bin/python",
+  "fewsnet": {
+    "0m": {
+      "areas": 5718,
+      "input_sha256": "0c8be9fc20295d32e74c2778045222b64324a875e7da0d9358b0fa7a8b50a5d8",
+      "package_checksums": {
+        "feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+        "local_model_manifest.json": "bef83934b66618d7c61b2bad68ce142a6e4057805f59ae8a47c027a826718edc",
+        "model.joblib": "69b90bf03aea31b1e24d45cb2ad0f66994cf4c014da3cb7dfa20c68d51fdf1bd",
+        "partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+        "threshold_report.json": "18d4a4f1d525921f91021973177b21c71ce6ae284aa1d80e4441dc53b8f10cef",
+        "training_report.json": "244ef199317c456f4d44f55bfc6cb6b0d80e5e7b38f59f41a54a2959f9494058"
+      },
+      "prediction_sha256": "6a99ec8f792ae15f3919e3756f8d5c6bb10caba2ddc76c224edecc34a88fafc4",
+      "rows": 5718,
+      "threshold": 0.48
+    },
+    "12m": {
+      "areas": 5718,
+      "input_sha256": "a8af7bda754467979db5b94c20ac6cd44b72f39107cd0e861ddea632db388b76",
+      "package_checksums": {
+        "feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+        "local_model_manifest.json": "37a5c703ecdf777c7fbc06e356b1d7b1f1e6bca350afa37c19215e89b0e67093",
+        "model.joblib": "62520a04c0cb8780cc12a0319056aed2fdb96a681b1bc347c4e7d8bb571b0806",
+        "partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+        "threshold_report.json": "65a4de1084e3548b6fc826edf52cffcf6a831adabd69c9cbd5c5181edc95fced",
+        "training_report.json": "9063b9decae1b5f43447d88600c4ff7c13c9eccb78d8f0b20916957a7d189ab3"
+      },
+      "prediction_sha256": "aacb139b6da8d66e29827deefd0cf5fff310860102ccac5ac376f4ffae4d5ae7",
+      "rows": 5718,
+      "threshold": 0.45
+    },
+    "6m": {
+      "areas": 5718,
+      "input_sha256": "6e48f864a9a14b853a4bd3bebca37b5545fad5600480e7aa798cc0da833d08e2",
+      "package_checksums": {
+        "feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+        "local_model_manifest.json": "ab2a202e550028ac2c89a42e4f55cfc3684769e993f3058275455a2403d94881",
+        "model.joblib": "a0802145992eeed81182eed4c25392e6dda1f544a8f361e5d18ba091858d9744",
+        "partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+        "threshold_report.json": "1d4f1965e0332254a3a6191fbcfb947959e4e73b6971ccb5011ef688cbf5ad33",
+        "training_report.json": "2357c6682de4c41ce99dfd9dc03df4ec554fb651face98488e36be52538438a9"
+      },
+      "prediction_sha256": "84e553eb67a708ef254f7db410848c7b86188036166a8936215381d1264d5043",
+      "rows": 5718,
+      "threshold": 0.41
+    }
+  },
+  "ipcch": {
+    "0m": {
+      "feature_columns": 128,
+      "members": {
+        "feature_columns.json": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+        "feature_contract.csv": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+        "model_metadata.json": "adf2965fcb9d830609a1ca908f151f7958d936d2ab44f310909f18136294da27",
+        "phase2_worse_model.json": "1623ffb2ad5dfc543a16649aa09d3aaa8f72279d864492ad340f495fb7efbc03",
+        "phase3_worse_model.json": "d187f943cfa5a623da6de680857dc1c65ef71ae8be7b02a971d20d5de8160757",
+        "phase4_worse_model.json": "177d201b628c49f90306971bb5d9504913b5c88edcd6ca1dc4133555ceaeeef3",
+        "phase5_worse_model.json": "21d25364c6225868ec1ea45f60c9bfd0e0c3c91023d9b33c4424bbd8e443ede2"
+      },
+      "targets": [
+        "phase2_worse",
+        "phase3_worse",
+        "phase4_worse",
+        "phase5_worse"
+      ]
+    },
+    "12m": {
+      "feature_columns": 128,
+      "members": {
+        "feature_columns.json": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+        "feature_contract.csv": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+        "model_metadata.json": "df8a81aa62c6f8be2226e8f6ba64dfa53786425d5e29e715f17219176da62582",
+        "phase2_worse_model.json": "39e5bed8ca3063fa3004edabcd02838cb873a9c7a384c7aa5fd9867eff6cb41f",
+        "phase3_worse_model.json": "eb97f722d941fa95ca18cbf971492420af55f7eab44df68fddc7ddacc3bb7cb6",
+        "phase4_worse_model.json": "22c8a847317b5eb800c14d4fe6dfef320500741e1cb46830af7859c3c6eed1bf",
+        "phase5_worse_model.json": "17f76bdd82ccad753138029d62fa7e04cf8c40c50c3b3feaf7e7f64f74b370a8"
+      },
+      "targets": [
+        "phase2_worse",
+        "phase3_worse",
+        "phase4_worse",
+        "phase5_worse"
+      ]
+    },
+    "6m": {
+      "feature_columns": 128,
+      "members": {
+        "feature_columns.json": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+        "feature_contract.csv": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+        "model_metadata.json": "6dc4600831bf705bb1c6884f4e1925b3e737b2f68bda23d570f3da2ff4598e06",
+        "phase2_worse_model.json": "aafb1f83f6d70b16d782d765b565a55ebcf004d3a5659636f78852da74c5e354",
+        "phase3_worse_model.json": "664c8f57589372c98cef8853f939eaa44ac615a3a85f0c7ed1d6e7311683f753",
+        "phase4_worse_model.json": "7460239dc5c42cbfa008486ab013018d2bb081da4874949ce3365b6f106e2b00",
+        "phase5_worse_model.json": "3959dbb21b7e432430bebb2fc54bc79c63a246cdaa3869b1f22b67857e1e248d"
+      },
+      "targets": [
+        "phase2_worse",
+        "phase3_worse",
+        "phase4_worse",
+        "phase5_worse"
+      ]
+    }
+  },
+  "ipcch_shared_members": {
+    "model_package_manifest.json": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+    "training_export_summary.json": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a"
+  },
+  "module_roots": {
+    "fewsnet_partitioned_rf_pipeline": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/image-source-0d60a4e/cloud_pipeline/fewsnet_partitioned_rf_pipeline",
+    "model_pipeline": [
+      "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/image-source-0d60a4e/cloud_pipeline/model_pipeline"
+    ]
+  },
+  "python": "3.12.3",
+  "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+  "versions": {
+    "imbalanced-learn": "0.14.0",
+    "joblib": "1.5.3",
+    "numpy": "2.4.2",
+    "pandas": "3.0.0",
+    "scikit-learn": "1.8.0",
+    "scipy": "1.17.0",
+    "xgboost": "3.2.0"
+  }
+}

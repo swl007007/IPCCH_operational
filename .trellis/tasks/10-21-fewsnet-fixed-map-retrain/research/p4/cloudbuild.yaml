@@ -1,0 +1,23 @@
+# FEWS retrain runtime image: build from the clean 0d60a4e worktree context, push, record the
+# digest, then run six-slot load/scoring evidence inside the pushed image (no IPCCH inference).
+steps:
+- id: build
+  name: gcr.io/cloud-builders/docker
+  args: ["build", "--no-cache", "-t", "${_IMAGE}", "."]
+- id: push
+  name: gcr.io/cloud-builders/docker
+  args: ["push", "${_IMAGE}"]
+- id: digest
+  name: gcr.io/cloud-builders/docker
+  entrypoint: bash
+  args: ["-c", "docker image inspect --format 'IMAGE_IDENTITY {{.Id}} {{json .RepoDigests}}' ${_IMAGE}"]
+- id: six-slot-evidence
+  name: "${_IMAGE}"
+  entrypoint: python3
+  args: ["/workspace/evidence/six_slot_check.py", "/workspace/evidence"]
+images: ["${_IMAGE}"]
+substitutions:
+  _IMAGE: us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:fews-retrain-0d60a4e
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: 3600s

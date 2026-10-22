@@ -9,7 +9,6 @@ import re
 import shutil
 import subprocess
 import sys
-import time
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -17,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SYSTEMS = ("fewsnet", "ipcch")
 HORIZONS = (0, 6, 12)
+HOLD = "maintenance/hold.json"
 
 
 def sha(path):
@@ -95,6 +95,12 @@ class Cloud:
         self.client = storage.Client(project=cfg["project"])
         self.cfg = cfg
 
+    @property
+    def store(self):
+        from cloud.common.object_store import GCSObjectStore
+
+        return GCSObjectStore(self.client)
+
     def blob(self, uri, generation=None):
         bucket, name = uri.removeprefix("gs://").split("/", 1)
         return self.client.bucket(bucket).blob(
@@ -135,6 +141,21 @@ class Cloud:
             raise ValueError("upload returned no generation")
         return {"uri": uri, "generation": str(blob.generation), "sha256": sha(path)}
 
+    def pin(self, spec):
+        """gs://bucket/object#generation -> exact ref with the SHA-256 of those bytes."""
+        uri, _, generation = spec.partition("#")
+        if not uri.startswith("gs://") or not re.fullmatch(r"[1-9][0-9]*", generation):
+            raise ValueError(f"pin objects as gs://bucket/object#generation: {spec}")
+        from cloud.orchestrator.delivery_job import PinnedDownloader
+
+        digest = PinnedDownloader(
+            self.client, Path(self.cfg["work_dir"]) / "verify"
+        ).resolve(uri, generation)
+        return {"uri": uri, "generation": generation, "sha256": digest}
+
+    def delete(self, uri, generation):
+        self.blob(uri).delete(if_generation_match=int(generation))
+
     def fetch(self, ref, destination):
         from cloud.orchestrator.delivery_job import PinnedDownloader
 
@@ -143,50 +164,6 @@ class Cloud:
         ).fetch(ref)
         Path(destination).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, destination)
-
-    def launch(self, ref, deadline):
-        cfg = self.cfg
-        argv = [
-            "-m",
-            "cloud.orchestrator.prepare",
-            "plan",
-            "--request-uri",
-            ref["uri"],
-            "--request-generation",
-            ref["generation"],
-            "--output-root",
-            f"gs://{cfg['bucket']}",
-            "--earth-engine-project",
-            cfg["earth_engine_project"],
-            "--batch-parent",
-            f"projects/{cfg['project']}/locations/{cfg['region']}",
-            "--batch-image-uri",
-            cfg["image_uri"],
-            "--batch-service-account",
-            cfg["service_account"],
-            "--deadline-utc",
-            deadline,
-        ]
-        completed = subprocess.run(
-            [
-                "gcloud",
-                "run",
-                "jobs",
-                "execute",
-                cfg["prepare_job"],
-                "--project",
-                cfg["project"],
-                "--region",
-                cfg["region"],
-                "--async",
-                "--format=json",
-                "--args=" + ",".join(argv),
-            ],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        return json.loads(completed.stdout)
 
 
 def put_json(cloud, uri, body, work):
@@ -352,6 +329,16 @@ def publish_model(model, directory, cfg, cloud, runtime):
     }
 
 
+FROZEN_REF_FIELDS = ("evidence", "source_availability", "source_evidence", "source_declarations")
+
+
+def baseline_ref_fields(entry):
+    """Diagnostic fields the baseline supplies as local files (pinned on upload)."""
+    if entry["status"] == "available":
+        return ("evidence",)
+    return FROZEN_REF_FIELDS if entry["status"] == "frozen_output" else ()
+
+
 def initialize(args, cfg, cloud=None):
     root = Path(args.baseline).resolve()
     baseline = read(root / "baseline.json")
@@ -420,10 +407,10 @@ def initialize(args, cfg, cloud=None):
         )
     diagnostics = copy.deepcopy(baseline["delivery"]["diagnostics"])
     for entry in diagnostics:
-        if entry["status"] == "available":
-            relative = entry["evidence"]["local_path"]
+        for field in baseline_ref_fields(entry):
+            relative = entry[field]["local_path"]
             required_assets.add(relative)
-            entry["evidence"] = {
+            entry[field] = {
                 "uri": f"gs://{cfg['bucket']}/baseline/{relative}",
                 "generation": "1",
                 "sha256": baseline["files"][relative]["sha256"],
@@ -470,8 +457,8 @@ def initialize(args, cfg, cloud=None):
     ]
     delivery = copy.deepcopy(baseline["delivery"])
     for entry in delivery["diagnostics"]:
-        if entry["status"] == "available":
-            entry["evidence"] = refs[entry["evidence"]["local_path"]]
+        for field in baseline_ref_fields(entry):
+            entry[field] = refs[entry[field]["local_path"]]
     initialized = {
         "baseline_id": baseline_id,
         "refs": refs,
@@ -591,6 +578,8 @@ def preparation(cfg, init, args, run_id):
 
 
 def status(cfg, run_id, cloud):
+    """Durable cloud state of a run: preparation (this run's or the reused snapshot), dispatch
+    records, the delivery run status and, for candidates, the candidate record."""
     valid_run_id(run_id)
     root = f"gs://{cfg['bucket']}"
     state_path = Path(cfg["work_dir"]) / "runs" / run_id / "state.json"
@@ -599,27 +588,49 @@ def status(cfg, run_id, cloud):
         if state_path.exists()
         else {"run_id": run_id, "phase": "unknown"}
     )
-    prepared = cloud.latest(f"{root}/prepared/{run_id}/prepare_status.json")
+    prepare_id = state.get("prepare_id", run_id)
+    prepared = cloud.latest(f"{root}/prepared/{prepare_id}/prepare_status.json")
     delivery = cloud.latest(f"{root}/runs/{run_id}/run_status.json")
+    dispatch = {
+        stage: (cloud.latest(f"{root}/dispatch/{run_id}/{stage}.json") or [None])[0]
+        for stage in ("claim", "admission", "resolution")
+    }
+    candidate = cloud.latest(f"{root}/candidates/{run_id}/candidate.json")
+    selection = state.get("intent", {}).get("execution")
+    rejected = [r for r in dispatch.values() if r and r.get("status") == "rejected"]
+    resolution = dispatch["resolution"]
+    prepare_only = selection is not None and not selection["inference_systems"]
+    if prepare_only and resolution and resolution["status"] == "resolved":
+        terminal = "prepared"  # the immutable snapshot ref is the result; no delivery is dispatched
+    else:
+        terminal = None
     return {
         **state,
         "preparation": prepared[0] if prepared else None,
+        "preparation_mode": None
+        if selection is None
+        else ("prepared by the workflow" if selection["remote_update"] else f"reused {prepare_id}"),
+        "dispatch": dispatch,
         "delivery": delivery[0] if delivery else None,
-        "status": delivery[0]["status"]
-        if delivery
-        else (
-            "preparation_failed"
-            if prepared and prepared[0]["status"] == "failed"
-            else state["phase"]
+        "candidate": {"record": candidate[0], "ref": candidate[1]} if candidate else None,
+        "prepared_snapshot": resolution["prepared_snapshot"] if terminal else None,
+        "status": terminal
+        or (
+            delivery[0]["status"]
+            if delivery
+            else (
+                "preparation_failed"
+                if prepared and prepared[0]["status"] == "failed"
+                else ("dispatch_rejected" if rejected else state["phase"])
+            )
         ),
     }
 
 
 def run(args, cfg, cloud=None):
-    from cloud.orchestrator.delivery_manifest import (
-        validate_delivery_request,
-        _timestamp,
-    )
+    """Publish this month's initial workflow intent. The cloud Workflow runs the selected steps
+    (preparation, snapshot binding, delivery); this process never launches or polls them."""
+    from cloud.orchestrator.delivery_manifest import _timestamp
 
     _timestamp(args.deadline, "deadline")
     deadline = datetime.fromisoformat(args.deadline.replace("Z", "+00:00"))
@@ -644,15 +655,17 @@ def run(args, cfg, cloud=None):
         "refs": init["refs"],
         "delivery": init["delivery"],
         "sources": init["sources"],
+        "execution": execution_options(args),
     }
     if not args.execute:
         return {
             "mode": "preview",
             "run_id": run_id,
-            "prepare_request": body,
+            "prepare_request": body if intent["execution"]["remote_update"] else None,
             "intent": intent,
         }
     cloud = cloud or Cloud(cfg)
+    require_admission(cfg, cloud, run_id)
     work = Path(cfg["work_dir"]) / "runs" / run_id
     state_path = work / "state.json"
     state = (
@@ -663,48 +676,14 @@ def run(args, cfg, cloud=None):
     if state["intent"] != intent:
         raise ValueError("run ID is bound to different inputs; use a new ID")
     save(state_path, state)
-    if state["phase"] == "created":
-        state["prepare_request"] = put_json(cloud, uri, body, work)
-        # Save before submission: an interrupted API call must never be silently repeated.
-        state["phase"] = "preparation_submission_pending"
-        save(state_path, state)
-        state["execution"] = cloud.launch(state["prepare_request"], args.deadline)
-        state["phase"] = "preparing"
-        save(state_path, state)
-    until = time.monotonic() + args.wait_seconds
-    while True:
-        if deadline <= datetime.now(timezone.utc):
-            raise ValueError(
-                "execution deadline has passed; delivery was not submitted"
-            )
-        current = status(cfg, run_id, cloud)
-        if current["delivery"] or state["phase"] == "submitted":
-            return current
-        prepared = current["preparation"]
-        if prepared and prepared["status"] == "failed":
-            raise ValueError(
-                "preparation failed; retain this attempt and use a new run ID"
-            )
-        if prepared and prepared["status"] == "succeeded":
-            break
-        if time.monotonic() >= until:
-            return current
-        time.sleep(min(10, max(0, until - time.monotonic())))
-    snapshot = cloud.latest(
-        f"gs://{cfg['bucket']}/prepared/{run_id}/prepared_manifest.json"
-    )
-    if (
-        not snapshot
-        or snapshot[0].get("status") != "succeeded"
-        or snapshot[0].get("origin_month") != args.month
-        or snapshot[0].get("prepare_id") != run_id
-    ):
-        raise ValueError("missing or mismatched successful prepared snapshot")
-    state.setdefault(
-        "prepared_at", datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    )
-    state.setdefault("prepared_snapshot", snapshot[1])
-    save(state_path, state)
+    if state["phase"] == "submitted":  # resume: the intent is already published
+        return status(cfg, run_id, cloud)
+    return submit_intent(args, cfg, cloud, init, choices, body, uri, state, state_path, deadline)
+
+
+def delivery_request(cfg, cloud, init, args, choices, state, snapshot):
+    """The delivery request for this run's bound inputs (legacy and selected runs alike)."""
+    run_id = state["run_id"]
     request = copy.deepcopy(init["delivery"])
     refs = init["refs"]
     request.update(
@@ -712,11 +691,7 @@ def run(args, cfg, cloud=None):
         origin_month=args.month,
         models=init["models"],
         runtime=init["runtime"],
-        prepared_snapshot={
-            "prepare_id": run_id,
-            "origin_month": args.month,
-            "manifest": state["prepared_snapshot"],
-        },
+        prepared_snapshot=snapshot,
         operator=cfg["operator"],
         prepared_at=state.setdefault(
             "prepared_at", datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -757,6 +732,89 @@ def run(args, cfg, cloud=None):
         "namespace": cfg["namespace"],
         "expected_pointer_generation": state["pointer_generation"],
     }
+    return request
+
+
+def execution_options(args):
+    """Manifest step selection. Default = the monthly run: remote update, both systems, current."""
+    remote = getattr(args, "remote_update", None) or "on"
+    infer = getattr(args, "infer", None)
+    systems = list(SYSTEMS) if infer is None else ([] if infer in ("", "none") else infer.split(","))
+    inherit = {}
+    if getattr(args, "inherit", None):
+        system, _, source = args.inherit.partition("=")
+        if not (system and source and args.inherit_manifest and args.inherit_archive):
+            raise ValueError(
+                "--inherit SYSTEM=SOURCE_DELIVERY_ID needs --inherit-manifest and --inherit-archive"
+            )
+        inherit[system] = {
+            "source_delivery_id": source,
+            "manifest": args.inherit_manifest,
+            "archive": args.inherit_archive,
+        }
+    prepared = getattr(args, "prepared_manifest", None)
+    if (remote == "on") == bool(prepared):
+        raise ValueError(
+            "--remote-update on prepares a new snapshot; off requires --prepared-manifest"
+        )
+    return {
+        "remote_update": remote == "on",
+        "inference_systems": systems,
+        "inherit": inherit,
+        "prepared_manifest": prepared,
+        "publication": getattr(args, "publication", None) or "current",
+    }
+
+
+def submit_intent(args, cfg, cloud, init, choices, body, uri, state, state_path, deadline):
+    """Publish the initial workflow intent; the cloud Workflow (not this process) runs the
+    selected steps. Remote update on: its exact prepare request is published here and prepared
+    in the cloud. Off: the named succeeded snapshot is reused; no preparation is started."""
+    from cloud.orchestrator.delivery_manifest import validate_delivery_request
+
+    run_id, work = state["run_id"], Path(state_path).parent
+    selection = state["intent"]["execution"]
+    if "pinned" not in state:
+        state["pinned"] = {
+            "inherit": {
+                system: {
+                    "source_delivery_id": source["source_delivery_id"],
+                    "origin_month": args.month,
+                    "manifest": cloud.pin(source["manifest"]),
+                    "archive": cloud.pin(source["archive"]),
+                }
+                for system, source in selection["inherit"].items()
+            },
+            "prepared_manifest": cloud.pin(selection["prepared_manifest"])
+            if selection["prepared_manifest"]
+            else None,
+        }
+        save(state_path, state)
+    pinned = state["pinned"]
+    if selection["remote_update"]:
+        if "prepare_request" not in state:
+            state["prepare_request"] = put_json(cloud, uri, body, work)
+        state["prepare_id"], snapshot = body["prepare_id"], None
+    else:
+        cloud.fetch(pinned["prepared_manifest"], work / "prepared_manifest.json")
+        manifest = read(work / "prepared_manifest.json")
+        if manifest.get("status") != "succeeded" or manifest.get("origin_month") != args.month:
+            raise ValueError("--prepared-manifest is not a succeeded snapshot for this month")
+        state["prepare_id"] = manifest["prepare_id"]
+        snapshot = {
+            "prepare_id": manifest["prepare_id"],
+            "origin_month": args.month,
+            "manifest": pinned["prepared_manifest"],
+        }
+    save(state_path, state)
+    request = delivery_request(cfg, cloud, init, args, choices, state, snapshot)
+    request["execution"] = {
+        "remote_update": selection["remote_update"],
+        "inference_systems": selection["inference_systems"],
+        "prepare_request": state.get("prepare_request") if selection["remote_update"] else None,
+        "inherit": pinned["inherit"],
+        "publication": selection["publication"],
+    }
     request_uri = f"gs://{cfg['request_bucket']}/requests/{run_id}/run_manifest.json"
     validate_delivery_request(
         request,
@@ -764,35 +822,56 @@ def run(args, cfg, cloud=None):
         request_generation="1",
         expected_release_namespace=cfg["namespace"],
     )
-    save(state_path, state)
     if "request_body" not in state:
         state["request_body"] = request
         save(state_path, state)
     if deadline <= datetime.now(timezone.utc):
-        raise ValueError("execution deadline has passed; delivery was not submitted")
-    state["delivery_request"] = put_json(
-        cloud, request_uri, state["request_body"], work
-    )
+        raise ValueError("execution deadline has passed; the intent was not submitted")
+    state["delivery_request"] = put_json(cloud, request_uri, state["request_body"], work)
     state["phase"] = "submitted"
     save(state_path, state)
     return status(cfg, run_id, cloud)
 
 
+def require_admission(cfg, cloud, run_id):
+    """Both operator and cloud dispatch respect a maintenance hold: only its bound runs proceed."""
+    hold = cloud.latest(f"gs://{cfg['bucket']}/{HOLD}")
+    if hold and run_id not in hold[0]["admitted_run_ids"]:
+        raise ValueError(
+            f"monthly admission is paused by maintenance {hold[0]['operation_id']}; {run_id} is not admitted"
+        )
+
+
 def download(args, cfg, cloud):
+    """Download and verify a published release or, with ``--candidate``, the run's exact validated
+    candidate (before promotion; the current pointer is never read or changed)."""
     current = status(cfg, args.run_id, cloud)
     if current["status"] != "succeeded":
         raise ValueError("delivery has not succeeded")
-    release = cloud.latest(current["delivery"]["release"]["release_record"])
-    if (
-        not release
-        or release[0]["run_id"] != args.run_id
-        or release[0]["validation"] != "passed"
-    ):
-        raise ValueError("accepted release record missing")
+    if getattr(args, "candidate", False):
+        found = current["candidate"]
+        if (
+            not found
+            or found["record"]["run_id"] != args.run_id
+            or found["record"]["validation"] != "passed"
+        ):
+            raise ValueError("validated candidate record missing")
+        record, record_ref = found["record"], found["ref"]
+    else:
+        if not (current["delivery"].get("release") or {}).get("release_record"):
+            raise ValueError("run has no published release (a candidate? use --candidate)")
+        release = cloud.latest(current["delivery"]["release"]["release_record"])
+        if (
+            not release
+            or release[0]["run_id"] != args.run_id
+            or release[0]["validation"] != "passed"
+        ):
+            raise ValueError("accepted release record missing")
+        record, record_ref = release
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=False)
-    cloud.fetch(release[0]["manifest"], out / "manifest.json")
-    cloud.fetch(release[0]["archive"], out / "webapp_model_bundle.tar.gz")
+    cloud.fetch(record["manifest"], out / "manifest.json")
+    cloud.fetch(record["archive"], out / "webapp_model_bundle.tar.gz")
     inventory = read(out / "manifest.json")
     seen = set()
     for item in inventory["files"]:
@@ -815,7 +894,581 @@ def download(args, cfg, cloud):
     from cloud.orchestrator.delivery_bundle import verify_inventory
 
     verify_inventory(out)
-    return {"status": "verified", "output": str(out)}
+    receipt = {
+        "run_id": args.run_id,
+        "kind": "candidate" if getattr(args, "candidate", False) else "release",
+        "record": record_ref,
+        "record_sha256": record_ref["sha256"],
+        "manifest": record["manifest"],
+        "archive": record["archive"],
+        "members": len(seen),
+        "output": str(out),
+    }
+    save(out.parent / f"{out.name}.download.json", receipt)
+    return {"status": "verified", **receipt}
+
+
+RECEIPT_SCHEMA = "operator-candidate-receipt-v1"
+HOLD_SCHEMA = "maintenance-hold-v1"
+SHARED_WORKFLOW = "oct-delivery-trigger"
+
+
+def verify_candidate(args, cfg, cloud):
+    """Bind a downloaded candidate's integrity and relocated replay into a receipt (no promotion).
+
+    Checks: the download is this run's candidate record, inventory and pre-package validation pass,
+    and a relocated replay with the bundle's own runtime reproduces every table while inherited
+    systems are copied, never scored. Inherited sources must be the request's pinned sources.
+    """
+    import os
+    import tarfile
+
+    from cloud.orchestrator.delivery_bundle import inherited_systems, validate_delivery, verify_inventory
+
+    out = Path(args.download).resolve()
+    downloaded = read(out.parent / f"{out.name}.download.json")
+    found = status(cfg, args.run_id, cloud)["candidate"]
+    if downloaded["kind"] != "candidate" or not found or found["ref"] != downloaded["record"]:
+        raise ValueError("download is not this run's current candidate record")
+    record = found["record"]
+    for name, key in (("manifest.json", "manifest"), ("webapp_model_bundle.tar.gz", "archive")):
+        if sha(out / name) != record[key]["sha256"]:
+            raise ValueError(f"downloaded {name} is not the candidate's {key}")
+    verify_inventory(out)
+    validation = validate_delivery(out)
+    work = Path(cfg["work_dir"]) / "runs" / args.run_id
+    cloud.fetch(record["request"], work / "executed_request.json")
+    request = read(work / "executed_request.json")
+    relocated, replayed = out.parent / f"{out.name}-relocated", out.parent / f"{out.name}-replay"
+    relocated.mkdir(exist_ok=False)
+    with tarfile.open(out / "webapp_model_bundle.tar.gz", "r:gz") as archive:
+        archive.extractall(relocated, filter="data")
+    isolated = out.parent / f"{out.name}-replay-cwd"
+    isolated.mkdir(exist_ok=False)
+    probe = ("import sys, cloud.orchestrator.delivery_bundle as b, fewsnet_partitioned_rf_pipeline as f, "
+             "model_pipeline as m; print('REPLAY_RUNTIME ' + __import__('json').dumps([b.__file__, f.__file__, "
+             "list(m.__path__)]), file=sys.stderr); sys.exit(b.main(sys.argv[1:]))")
+    completed = subprocess.run(  # -P and an empty cwd: only the bundle's runtime/ is importable as source
+        [args.python or sys.executable, "-P", "-c", probe, "rescore", "--root", str(relocated), "--output", str(replayed)],
+        capture_output=True, text=True, cwd=isolated, env={**os.environ, "PYTHONPATH": str(relocated / "runtime")},
+    )
+    (out.parent / f"{out.name}-replay.json").write_text(completed.stdout + completed.stderr[-4000:])
+    replay = json.loads(completed.stdout) if completed.returncode in (0, 1) and completed.stdout else {}
+    runtime = next((json.loads(line.split(" ", 1)[1]) for line in completed.stderr.splitlines()
+                    if line.startswith("REPLAY_RUNTIME ")), None)
+    bundled = str((relocated / "runtime").resolve())
+    inherited = inherited_systems(out)
+    expected = (request.get("execution") or {}).get("inherit", {})
+    checks = {
+        "candidate_record_bound": True,
+        "inventory_verified": True,
+        "pre_package_validation": validation["status"] == "passed",
+        "relocated_replay_all_equal": completed.returncode == 0 and replay.get("all_equal") is True,
+        "replay_used_bundled_runtime": runtime is not None and all(
+            str(Path(item).resolve()).startswith(bundled) for item in [runtime[0], runtime[1], *runtime[2]]),
+        "inherited_not_rescored": all(
+            replay.get("summary", {}).get(str(h), {}).get(system) == "inherited"
+            for h in HORIZONS for system in inherited
+        ),
+        "inherited_sources_match_request": set(inherited) == set(expected) and all(
+            inherited[system]["manifest"] == expected[system]["manifest"]
+            and inherited[system]["archive"] == expected[system]["archive"]
+            for system in inherited
+        ),
+    }
+    extra = []
+    for path in args.check or []:
+        body = read(path)
+        extra.append({"path": str(Path(path).resolve()), "sha256": sha(path), "status": body.get("status")})
+        checks[f"extra:{Path(path).name}"] = body.get("status") == "passed"
+    inventory = read(out / "manifest.json")
+    receipt = {
+        "schema_version": RECEIPT_SCHEMA,
+        "run_id": args.run_id,
+        "verified_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "candidate": found["ref"],
+        "manifest": record["manifest"],
+        "archive": record["archive"],
+        "request": record["request"],
+        "execution": record.get("execution"),
+        "image_uri": inventory.get("provenance", {}).get("image_uri"),
+        "model_inventory_sha256": sha(out / "model_inventory.json"),
+        "validation_failures": validation["failures"],
+        "replay": {"summary": replay.get("summary"), "all_equal": replay.get("all_equal"), "runtime": runtime,
+                   "output_sha256": hashlib.sha256(completed.stdout.encode()).hexdigest()},
+        "extra_checks": extra,
+        "checks": checks,
+        "status": "passed" if all(checks.values()) else "failed",
+    }
+    path = work / "candidate_receipt.json"
+    save(path, receipt)
+    if args.execute and receipt["status"] == "passed":
+        receipt_ref = cloud.put(
+            f"gs://{cfg['bucket']}/candidates/{args.run_id}/verification_receipt.json", path
+        )
+        return {**receipt, "receipt": receipt_ref, "local": str(path)}
+    return {**receipt, "local": str(path)}
+
+
+def gcloud_json(argv):
+    completed = subprocess.run(argv, check=True, capture_output=True, text=True)
+    return json.loads(completed.stdout or "null")
+
+
+def shared_runtime(cfg, runner):
+    """Live shared job/workflow settings: the predecessor a failed switch restores."""
+    project, region = cfg["project"], cfg["region"]
+    jobs = {}
+    for name in ("oct-delivery", cfg["prepare_job"]):
+        body = runner(["gcloud", "run", "jobs", "describe", name, "--project", project, "--region", region,
+                       "--format=json"])
+        container = body["spec"]["template"]["spec"]["template"]["spec"]["containers"][0]
+        jobs[name] = {
+            "image": container["image"],
+            "command": container.get("command", []),
+            "args": container.get("args", []),
+            "env": container.get("env", []),
+            "service_account": body["spec"]["template"]["spec"]["template"]["spec"].get("serviceAccountName"),
+            "template_sha256": hashlib.sha256(
+                json.dumps(body["spec"]["template"], sort_keys=True).encode()
+            ).hexdigest(),
+        }
+    workflow = runner(["gcloud", "workflows", "describe", SHARED_WORKFLOW, "--project", project,
+                       "--location", region, "--format=json"])
+    source = workflow.get("sourceContents", "")
+    return {
+        "jobs": jobs,
+        "workflow": {
+            "revision_id": workflow.get("revisionId"),
+            "service_account": workflow.get("serviceAccount"),
+            "env": workflow.get("userEnvVars", {}),
+            "source_sha256": hashlib.sha256(source.encode()).hexdigest(),
+        },
+        "workflow_source": source,
+    }
+
+
+def active_work(cfg, runner):
+    """Running shared-job executions, active workflow executions and unfinished Batch jobs."""
+    project, region = cfg["project"], cfg["region"]
+    running = []
+    for name in ("oct-delivery", cfg["prepare_job"]):
+        executions = runner(["gcloud", "run", "jobs", "executions", "list", "--job", name, "--project", project,
+                             "--region", region, "--format=json"]) or []
+        running += [
+            {"job": name, "execution": item["metadata"]["name"]}
+            for item in executions
+            if not item.get("status", {}).get("completionTime")
+        ]
+    workflows = runner(["gcloud", "workflows", "executions", "list", SHARED_WORKFLOW, "--project", project,
+                        "--location", region, "--filter=state:ACTIVE", "--format=json"]) or []
+    batch = runner(["gcloud", "batch", "jobs", "list", "--project", project, "--location", region,
+                    "--filter=status.state:(QUEUED OR SCHEDULED OR RUNNING)", "--format=json"]) or []
+    return {
+        "job_executions": running,
+        "workflow_executions": [item["name"] for item in workflows],
+        "batch_jobs": [item["name"] for item in batch],
+    }
+
+
+def _setup_commands(cfg):
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("deploy_setup", ROOT / "deploy" / "setup.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    # The Eventarc trigger already exists and is unchanged; only jobs, grants and workflow move.
+    return [c for c in module.commands(cfg) if c[:3] != ["gcloud", "eventarc", "triggers"]]
+
+
+def _grant_identity(argv):
+    """(resource, role, member, condition) of one setup add-iam-policy-binding command."""
+    resource = argv[4]
+    condition = next((a.split("=", 1)[1].split("),title=")[0] + ")" for a in argv
+                      if a.startswith("--condition=expression=")), None)
+    return (resource, argv[argv.index("--role") + 1], argv[argv.index("--member") + 1], condition)
+
+
+def _policy_grants(resource, policy):
+    return {(resource, binding["role"], member, (binding.get("condition") or {}).get("expression"))
+            for binding in (policy or {}).get("bindings", []) for member in binding.get("members", [])}
+
+
+def gate_commands(cfg, operation):
+    """Install the hold-aware Workflow before any job change: the new grants it needs (prepare job,
+    request/data object read, dispatch-claim create) then the new source with the predecessor
+    delivery image (jobs unchanged), so only the bound runs are admitted from here on."""
+    commands = _setup_commands(cfg)
+    grants = [c for c in commands if "add-iam-policy-binding" in c]
+    workflow = next(c for c in commands if c[:3] == ["gcloud", "workflows", "deploy"])
+    env = dict(item.split("=", 1) for item in workflow[-1].split(","))
+    env["DELIVERY_IMAGE_URI"] = operation["predecessor"]["workflow"]["env"]["DELIVERY_IMAGE_URI"]
+    return grants + [workflow[:-1] + [",".join(f"{k}={v}" for k, v in env.items())]]
+
+
+def restore_commands(cfg, operation):
+    """Concrete commands that put the recorded predecessor shared settings back: job images/args,
+    the predecessor workflow source and env, and removal of only the grants it did not have."""
+    project, region = cfg["project"], cfg["region"]
+    predecessor = operation["predecessor"]
+    commands = [
+        ["gcloud", "run", "jobs", "update", name, "--project", project, "--region", region,
+         "--image", job["image"], "--args=" + ",".join(job["args"])]
+        for name, job in predecessor["jobs"].items()
+    ]
+    env = predecessor["workflow"]["env"]
+    commands.append(["gcloud", "workflows", "deploy", SHARED_WORKFLOW, "--project", project, "--location",
+                     region, "--source", str(Path(operation["directory"]) / "predecessor-workflow.yaml"),
+                     "--service-account", predecessor["workflow"]["service_account"],
+                     "--set-env-vars", ",".join(f"{k}={v}" for k, v in sorted(env.items()))])
+    existing = {tuple(item) for item in predecessor["grants"]}
+    for argv in _setup_commands(cfg):
+        if "add-iam-policy-binding" in argv and _grant_identity(argv) not in existing:
+            commands.append([a.replace("add-iam-policy-binding", "remove-iam-policy-binding") for a in argv])
+    return commands
+
+
+def _identities(runtime):
+    return {"jobs": {name: {k: job[k] for k in ("image", "command", "args", "env")}
+                     for name, job in runtime["jobs"].items()},
+            "workflow": {k: runtime["workflow"][k] for k in ("env", "source_sha256", "service_account")}}
+
+
+def _grants(cfg, runner):
+    project, region = cfg["project"], cfg["region"]
+    grants = set()
+    for name in ("oct-delivery", cfg["prepare_job"]):
+        grants |= _policy_grants(name, runner(["gcloud", "run", "jobs", "get-iam-policy", name, "--project", project,
+                                               "--region", region, "--format=json"]))
+    for bucket in (cfg["request_bucket"], cfg["bucket"]):
+        grants |= _policy_grants("gs://" + bucket, runner(["gcloud", "storage", "buckets", "get-iam-policy",
+                                                           "gs://" + bucket, "--format=json"]))
+    return sorted(grants, key=str)
+
+
+def maintenance(args, cfg, cloud=None, runner=gcloud_json):
+    """Bounded maintenance operation on the shared jobs/workflow, owned by one operation ID.
+
+    hold: record the predecessor shared settings/grants, then pause operator admission (create-only
+    hold object admitting only the bound runs). gate: install the hold-aware Workflow (grants + new
+    source, predecessor job image) and verify it, so cloud dispatch is paused too; then reconcile
+    active work again. apply: change the jobs/workflow image once nothing else is running.
+    restore: put every predecessor back (pointer first checked for drift, then fallback, config,
+    pointer and shared settings). release: verify all live identities equal the activated (or
+    restored) record, then delete the hold at its generation. Interruption keeps the hold.
+    """
+    directory = Path(cfg["work_dir"]) / "operations" / args.operation_id
+    path = directory / "operation.json"
+    hold_uri = f"gs://{cfg['bucket']}/{HOLD}"
+    operation = read(path) if path.exists() else None
+    command = args.maintenance_command
+    if command == "hold":
+        admitted = args.admit.split(",")
+        for run_id in admitted:
+            valid_run_id(run_id)
+        if not args.execute:
+            return {"mode": "preview", "operation_id": args.operation_id, "admitted_run_ids": admitted}
+        cloud = cloud or Cloud(cfg)
+        existing = cloud.latest(hold_uri)
+        if existing and existing[0]["operation_id"] != args.operation_id:
+            raise ValueError(f"maintenance {existing[0]['operation_id']} already holds admission")
+        if operation is None:
+            predecessor = shared_runtime(cfg, runner)
+            predecessor["grants"] = _grants(cfg, runner)
+            directory.mkdir(parents=True, exist_ok=True)
+            (directory / "predecessor-workflow.yaml").write_text(predecessor.pop("workflow_source"))
+            operation = {
+                "operation_id": args.operation_id,
+                "owner": cfg["operator"],
+                "directory": str(directory),
+                "admitted_run_ids": admitted,
+                "created_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "predecessor": predecessor,
+                "phase": "hold_pending",
+            }
+            save(path, operation)  # durable before admission is paused
+        if operation["admitted_run_ids"] != admitted:
+            raise ValueError("operation is bound to different admitted runs")
+        body = {
+            "schema_version": HOLD_SCHEMA,
+            "operation_id": args.operation_id,
+            "owner": operation["owner"],
+            "admitted_run_ids": admitted,
+            "created_utc": operation["created_utc"],
+            "predecessor_sha256": hashlib.sha256(
+                json.dumps(operation["predecessor"], sort_keys=True).encode()
+            ).hexdigest(),
+        }
+        operation["hold"] = put_json(cloud, hold_uri, body, directory)
+        if operation["phase"] == "hold_pending":
+            operation["phase"] = "holding"
+        operation["active_at_hold"] = active_work(cfg, runner)
+        save(path, operation)
+        return {"status": operation["phase"], "hold": operation["hold"], "active_work": operation["active_at_hold"],
+                "next": gate_commands(cfg, operation), "restore_commands": restore_commands(cfg, operation)}
+    if operation is None:
+        raise ValueError(f"no maintenance operation {args.operation_id}")
+    cloud = cloud or Cloud(cfg)
+    hold = cloud.latest(hold_uri)
+    if command == "status":
+        return {**operation, "hold_object": hold, "active_work": active_work(cfg, runner),
+                "live": _identities(shared_runtime(cfg, runner)),
+                "restore_commands": restore_commands(cfg, operation)}
+    if not hold or hold[0]["operation_id"] != args.operation_id:
+        raise ValueError("this operation does not hold admission")
+    if command == "gate":
+        commands = gate_commands(cfg, operation)
+        if not args.execute:
+            return {"mode": "preview", "commands": commands}
+        if operation["phase"] not in ("holding", "gating"):
+            raise ValueError(f"operation is {operation['phase']}; the gate follows the hold")
+        operation["phase"] = "gating"
+        save(path, operation)
+        for argv in commands:
+            subprocess.run(argv, check=True)
+        live = shared_runtime(cfg, runner)
+        source = (ROOT / "deploy" / "workflow.yaml").read_text()
+        if live["workflow"]["source_sha256"] != hashlib.sha256(source.encode()).hexdigest() or any(
+                job["image"] != operation["predecessor"]["jobs"][name]["image"] for name, job in live["jobs"].items()):
+            raise ValueError("live workflow is not the hold-aware source over the unchanged jobs")
+        operation["gate"] = {"workflow_revision": live["workflow"]["revision_id"],
+                             "source_sha256": live["workflow"]["source_sha256"],
+                             "active_after_gate": active_work(cfg, runner)}
+        operation["phase"] = "gated"
+        save(path, operation)
+        return {"status": "gated", **operation["gate"]}
+    if command == "apply":
+        if operation["phase"] not in ("gated", "applying"):
+            raise ValueError(f"operation is {operation['phase']}; install and verify the gate before job changes")
+        busy = active_work(cfg, runner)
+        if any(busy.values()) and not args.reconciled:
+            raise ValueError(f"active work must be finished or reconciled first: {busy}")
+        commands = _setup_commands(cfg)
+        if not args.execute:
+            return {"mode": "preview", "commands": commands, "active_work": busy}
+        operation.update(phase="applying", reconciled=args.reconciled, applied_commands=commands)
+        save(path, operation)
+        for argv in commands:
+            subprocess.run(argv, check=True)
+        operation["intended"] = _identities(shared_runtime(cfg, runner))
+        operation["phase"] = "shared_changed"
+        save(path, operation)
+        return {"status": "shared_changed", "intended": operation["intended"]}
+    if command == "restore":
+        commands = restore_commands(cfg, operation)
+        if not args.execute:
+            return {"mode": "preview", "commands": commands, "promotion": operation.get("promotion")}
+        operation["phase"] = "restoring"
+        save(path, operation)
+        _restore_activation(cfg, cloud, operation)
+        for argv in commands:
+            subprocess.run(argv, check=True)
+        operation["phase"] = "restored"
+        save(path, operation)
+        return {"status": "restored"}
+    if command == "release":
+        outcome = operation["phase"]
+        if outcome not in ("activated", "restored"):
+            raise ValueError(f"operation is {outcome}; release only after activation or restoration")
+        live = _identities(shared_runtime(cfg, runner))
+        checks = {"shared_runtime": live == (operation.get("intended") if outcome == "activated"
+                                             else _identities(operation["predecessor"]))}
+        if outcome == "activated":
+            checks["images"] = all(job["image"] == cfg["image_uri"] for job in live["jobs"].values())
+        if operation.get("promotion"):
+            want = "intended" if outcome == "activated" else "prior"
+            checks.update({f"{name}_{want}": state == want
+                           for name, state in _activation_states(cloud, operation["promotion"]).items()})
+        if not all(checks.values()):
+            raise ValueError(f"live identities differ from the recorded {outcome} state; the hold stays: {checks}")
+        if not args.execute:
+            return {"mode": "preview", "release": outcome, "checks": checks}
+        cloud.delete(hold_uri, operation["hold"]["generation"])
+        operation["phase"] = "released_" + outcome
+        operation["released_utc"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        save(path, operation)
+        return {"status": operation["phase"], "checks": checks}
+    raise ValueError(f"unknown maintenance command {command}")
+
+
+def _manifest_sha(directory):
+    member = Path(directory) / "manifest.json"
+    return sha(member) if member.is_file() else None
+
+
+def _activation_states(cloud, promotion):
+    """Actual state of each promotion step by inspection: prior, intended or foreign (drift)."""
+    prior, intended = promotion["prior"], promotion["intended"]
+    current = cloud.latest(prior["pointer_uri"])
+    if current and current[0].get("release_record") == intended["release_record"]:
+        pointer = "intended"
+    elif (current[1]["generation"] if current else "0") == prior["pointer_generation"] or (
+            current and prior["pointer_body"] is not None and current[0] == json.loads(prior["pointer_body"])):
+        pointer = "prior"  # untouched, or the predecessor body CAS-restored at a new generation
+    else:
+        pointer = "foreign"
+    config = Path(prior["config_path"])
+    digest = sha(config) if config.is_file() else None
+    config_state = ("intended" if digest == intended["config_sha256"]
+                    else "prior" if digest == prior["config_sha256"] else "foreign")
+    f = promotion["fallback"]
+    layout = (_manifest_sha(f["active"]), _manifest_sha(f["staged"]), _manifest_sha(f["predecessor"]))
+    old, new = prior["fallback_manifest_sha256"], intended["fallback_manifest_sha256"]
+    fallback = {(old, new, None): "prior", (None, new, old): "midway", (new, None, old): "intended"}.get(layout, "foreign")
+    return {"pointer": pointer, "operator_config": config_state, "fallback": fallback}
+
+
+def _restore_activation(cfg, cloud, operation):
+    """Undo promotion steps by inspection, never by ledger flags: pointer drift stops everything
+    before local defaults change; each step moves only from its recorded intended (or midway)
+    state back to its recorded prior."""
+    promotion = operation.get("promotion")
+    if not promotion:
+        return
+    states = _activation_states(cloud, promotion)
+    if "foreign" in states.values():
+        raise ValueError(f"state changed outside this operation; nothing restored: {states}")
+    f, prior = promotion["fallback"], promotion["prior"]
+    if states["fallback"] == "intended":
+        Path(f["active"]).rename(f["staged"])
+        states["fallback"] = "midway"
+    if states["fallback"] == "midway":
+        Path(f["predecessor"]).rename(f["active"])
+    if states["operator_config"] == "intended":
+        _write_bytes(prior["config_path"], Path(promotion["config_backup"]).read_bytes())
+    if states["pointer"] == "intended":
+        current = cloud.latest(prior["pointer_uri"])
+        if prior["pointer_body"] is None:  # the predecessor was an absent pointer
+            cloud.delete(prior["pointer_uri"], current[1]["generation"])
+        else:  # CAS the recorded predecessor body back over exactly our pointer generation
+            cloud.store.write_text(prior["pointer_uri"], prior["pointer_body"],
+                                   if_generation_match=int(current[1]["generation"]))
+    after = _activation_states(cloud, promotion)
+    if set(after.values()) != {"prior"}:
+        raise ValueError(f"restore did not reach every recorded predecessor: {after}")
+
+
+def _write_bytes(path, data):
+    path = Path(path)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_bytes(data)
+    temporary.replace(path)
+
+
+def _publish_resumable(store, root, run_id, namespace, expected, record):
+    """The existing publish CAS; after an interruption between the immutable release record and the
+    pointer write, an identical record is reused and only the pointer CAS is repeated."""
+    from cloud.orchestrator.delivery_run import publish
+
+    record_uri = f"{root}/{namespace}/releases/{run_id}/release.json"
+    existing = store.get_metadata(record_uri)
+    if existing is None:
+        return publish(store, root, run_id=run_id, namespace=namespace, expected_pointer_generation=expected,
+                       release_record=record, validate=lambda: None)
+    if store.read_text(record_uri) != json.dumps(dict(record), indent=2, sort_keys=True) + "\n":
+        raise ValueError(f"{record_uri} already holds a different release record")
+    pointer = {"run_id": run_id, "release_record": record_uri, "release_record_generation": existing.generation}
+    moved = store.write_text(f"{root}/{namespace}/current.json", json.dumps(pointer, indent=2, sort_keys=True) + "\n",
+                             if_generation_match=int(expected))
+    return {"pointer_uri": f"{root}/{namespace}/current.json", "pointer_generation": moved.generation,
+            "release_record": record_uri}
+
+
+def promote(args, cfg, cloud=None, runner=gcloud_json):
+    """Promote the exact verified candidate: release pointer CAS against the expected predecessor,
+    then the normal operator config and the active fallback. Prior and intended identities are
+    recorded before any change; every step (and resume/restore) acts on the inspected actual state,
+    so an interrupted switch finishes or restores without rescoring and never overwrites a
+    concurrent pointer or config change."""
+    directory = Path(cfg["work_dir"]) / "operations" / args.operation_id
+    path = directory / "operation.json"
+    operation = read(path)
+    if operation["phase"] not in ("shared_changed", "promoting", "activation_inconsistent"):
+        raise ValueError(f"operation is {operation['phase']}; promotion needs the applied shared change")
+    if args.run_id not in operation["admitted_run_ids"]:
+        raise ValueError("run is not bound to this maintenance operation")
+    cloud = cloud or Cloud(cfg)
+    hold = cloud.latest(f"gs://{cfg['bucket']}/{HOLD}")
+    if not hold or hold[0]["operation_id"] != args.operation_id:
+        raise ValueError("this operation does not hold admission")
+    receipt = read(args.receipt)
+    found = status(cfg, args.run_id, cloud)["candidate"]
+    if (receipt.get("schema_version") != RECEIPT_SCHEMA or receipt["status"] != "passed"
+            or receipt["run_id"] != args.run_id or not found or receipt["candidate"] != found["ref"]
+            or receipt["manifest"] != found["record"]["manifest"] or receipt["archive"] != found["record"]["archive"]):
+        raise ValueError("receipt is not a passed verification of this run's candidate")
+    if receipt["image_uri"] != cfg["image_uri"]:
+        raise ValueError("candidate runtime is not this operator config's image")
+    run_state = read(Path(cfg["work_dir"]) / "runs" / args.run_id / "state.json")
+    expected = run_state["request_body"]["release"]["expected_pointer_generation"]
+    root, namespace = f"gs://{cfg['bucket']}", cfg["namespace"]
+    pointer_uri = f"{root}/{namespace}/current.json"
+    normal, staged, active = Path(args.normal_config), Path(args.fallback_staged), Path(args.fallback_active)
+    promotion = operation.get("promotion")
+    if promotion is None:
+        current = cloud.latest(pointer_uri)
+        if (current[1]["generation"] if current else "0") != expected:
+            raise ValueError(f"current pointer is not the expected predecessor generation {expected}")
+        if _manifest_sha(staged) != receipt["manifest"]["sha256"]:
+            raise ValueError("staged fallback is not the verified candidate")
+        backup = directory / "predecessor-normal-config.json"
+        prior_config = normal.read_bytes()
+        intended_config = (json.dumps({**json.loads(prior_config), "image_uri": cfg["image_uri"],
+                                       "work_dir": cfg["work_dir"]}, indent=2, sort_keys=True) + "\n").encode()
+        promotion = {
+            "run_id": args.run_id,
+            "receipt_sha256": sha(args.receipt),
+            "config_backup": str(backup),
+            "intended_config_text": intended_config.decode(),
+            "fallback": {"active": str(active), "staged": str(staged),
+                         "predecessor": str(active.with_name(active.name + ".predecessor-" + args.operation_id))},
+            "prior": {"pointer_uri": pointer_uri, "pointer_generation": expected,
+                      "pointer_body": cloud.store.read_text(pointer_uri) if current else None,
+                      "config_path": str(normal), "config_sha256": hashlib.sha256(prior_config).hexdigest(),
+                      "fallback_manifest_sha256": _manifest_sha(active)},
+            "intended": {"release_record": f"{root}/{namespace}/releases/{args.run_id}/release.json",
+                         "config_sha256": hashlib.sha256(intended_config).hexdigest(),
+                         "fallback_manifest_sha256": receipt["manifest"]["sha256"]},
+        }
+        if not args.execute:
+            return {"mode": "preview", "promotion": promotion}
+        directory.mkdir(parents=True, exist_ok=True)
+        if backup.exists() and backup.read_bytes() != prior_config:
+            raise ValueError("an older predecessor config backup differs from the current normal config")
+        backup.write_bytes(prior_config)
+        operation["promotion"] = promotion
+    elif promotion["run_id"] != args.run_id or promotion["receipt_sha256"] != sha(args.receipt):
+        raise ValueError("operation is promoting a different candidate/receipt")
+    if not args.execute:
+        return {"mode": "preview", "promotion": promotion, "states": _activation_states(cloud, promotion)}
+    operation["phase"] = "promoting"
+    save(path, operation)  # prior/intended identities are durable before any change
+    states = _activation_states(cloud, promotion)
+    if "foreign" in states.values():
+        operation["phase"] = "activation_inconsistent"
+        save(path, operation)
+        raise ValueError(f"state changed outside this operation; stopping: {states}")
+    if states["pointer"] == "prior":
+        receipt_ref = cloud.put(f"{root}/candidates/{args.run_id}/verification_receipt.json", args.receipt)
+        _publish_resumable(cloud.store, root, args.run_id, namespace, expected,
+                           {**found["record"], "candidate": found["ref"], "verification_receipt": receipt_ref})
+    if states["operator_config"] == "prior":
+        _write_bytes(normal, promotion["intended_config_text"].encode())
+    f = promotion["fallback"]
+    if states["fallback"] == "prior":
+        Path(f["active"]).rename(f["predecessor"])
+        states["fallback"] = "midway"
+    if states["fallback"] == "midway":
+        Path(f["staged"]).rename(f["active"])
+    after = _activation_states(cloud, promotion)
+    live = _identities(shared_runtime(cfg, runner))
+    reconciled = {**{name: state == "intended" for name, state in after.items()},
+                  "shared_runtime": live == operation.get("intended")
+                  and all(job["image"] == cfg["image_uri"] for job in live["jobs"].values())}
+    promotion["reconciled"] = reconciled
+    operation["phase"] = "activated" if all(reconciled.values()) else "activation_inconsistent"
+    save(path, operation)
+    return {"status": operation["phase"], "reconciled": reconciled, "states": after}
 
 
 def models(args, cfg, cloud=None):
@@ -925,21 +1578,49 @@ def models(args, cfg, cloud=None):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    for name in ("init", "run", "status", "download", "models"):
+    for name in ("init", "run", "status", "download", "models", "verify", "maintenance", "promote"):
         command = commands.add_parser(name)
         command.add_argument("--config", required=True)
         command.add_argument("--execute", action="store_true")
         if name == "init":
             command.add_argument("--baseline", default=str(ROOT / "bootstrap"))
-        if name in ("status", "download"):
+        if name in ("status", "download", "verify", "promote"):
             command.add_argument("--run-id", required=True)
         if name == "download":
             command.add_argument("--output", required=True)
+            command.add_argument("--candidate", action="store_true",
+                                 help="the run's validated candidate (before promotion)")
+        if name == "verify":
+            command.add_argument("--download", required=True, help="directory from download --candidate")
+            command.add_argument("--python", help="interpreter for the relocated replay (exact-lock env)")
+            command.add_argument("--check", action="append", help="extra passed-check JSON to bind")
+        if name in ("maintenance", "promote"):
+            command.add_argument("--operation-id", required=True)
+        if name == "maintenance":
+            sub = command.add_subparsers(dest="maintenance_command", required=True)
+            for action in ("hold", "status", "gate", "apply", "restore", "release"):
+                item = sub.add_parser(action)
+                if action == "hold":
+                    item.add_argument("--admit", required=True, help="comma-separated admitted run IDs")
+                if action == "apply":
+                    item.add_argument("--reconciled", help="how still-active work was resolved")
+        if name == "promote":
+            command.add_argument("--receipt", required=True)
+            command.add_argument("--normal-config", required=True)
+            command.add_argument("--fallback-staged", required=True)
+            command.add_argument("--fallback-active", required=True)
         if name == "run":
             for field in ("month", "cutoff", "deadline"):
                 command.add_argument("--" + field, required=True)
             command.add_argument("--run-id")
-            command.add_argument("--wait-seconds", type=int, default=3600)
+            command.add_argument("--remote-update", choices=["on", "off"],
+                                 help="default on: the cloud Workflow prepares this month's snapshot")
+            command.add_argument("--infer", help="comma-separated systems, or none (default: both)")
+            command.add_argument("--prepared-manifest", help="remote off: succeeded snapshot gs://...#generation")
+            command.add_argument("--inherit", help="SYSTEM=SOURCE_DELIVERY_ID for an unscored system")
+            command.add_argument("--inherit-manifest", help="gs://...#generation of the source manifest")
+            command.add_argument("--inherit-archive", help="gs://...#generation of the source archive")
+            command.add_argument("--publication", choices=["candidate", "current"])
             for family in ("acled", "wfp"):
                 command.add_argument(
                     "--" + family, choices=["keep", "refresh"], required=True
@@ -967,6 +1648,12 @@ def main(argv=None):
             result = models(args, cfg)
         elif args.command == "status":
             result = status(cfg, args.run_id, Cloud(cfg))
+        elif args.command == "verify":
+            result = verify_candidate(args, cfg, Cloud(cfg))
+        elif args.command == "maintenance":
+            result = maintenance(args, cfg)
+        elif args.command == "promote":
+            result = promote(args, cfg)
         elif not args.execute:
             result = {
                 "mode": "preview",

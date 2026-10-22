@@ -1,0 +1,42 @@
+{
+  "checked_utc": "2026-10-22T07:09:35.591897+00:00",
+  "cloud_operation": {
+    "argv": [
+      "gcloud",
+      "--configuration=food-crisis-test",
+      "builds",
+      "describe",
+      "ce6e6cbf-9e19-4cda-bb94-f68953314d0b",
+      "--project",
+      "feisty-flames-511718-d4",
+      "--region",
+      "us-central1",
+      "--format=json"
+    ],
+    "started_utc": "2026-10-22T07:09:26.686055+00:00",
+    "scope": "read-only Cloud Build metadata; local evidence writes",
+    "exit_code": 0,
+    "stdout_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/cloud-ops/supervisor-image-build.json",
+    "stdout_sha256": "909e3e6a82f05a02398b7ebde6b711a10100a5d543c009a97e061d96aad72c8d"
+  },
+  "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+  "source_commit": "0d60a4ebcd5250a529677b9e9af8f9537ead2484",
+  "raw_build_log_sha256": "70abb3bad4b78eae1f05b8c352987ed1677986c43cada53e2771f4084d9a056d",
+  "checks": {
+    "live_build_succeeded_and_digest_matches": true,
+    "raw_build_log_equals_six_slot_receipt": true,
+    "all_three_new_fews_weight_hashes_match_accepted_fit": true,
+    "all_three_ipcch_packages_loaded_without_prediction_call": true,
+    "in_image_python_lock_and_module_roots": true,
+    "in_image_results_match_exact_lock_reference": true,
+    "84_context_files_match_inventory": true,
+    "runtime_source_matches_clean_0d60a4e_and_deploy_Dockerfile": true
+  },
+  "limits": [
+    "This verifies image 487a2315 from 0d60a4e; any changed final runtime image needs matching fresh evidence.",
+    "FEWS scoring here uses earlier frozen October inputs for compatibility, not final candidate export.",
+    "No shared Cloud Run deployment or production activation verified."
+  ],
+  "context_file_count": 84,
+  "build_context_note": "Dockerfile is copied from deploy/Dockerfile. Generated .dockerignore excludes evidence, cloudbuild.yaml and itself from image COPY; evidence remains in Cloud Build workspace for the loading step."
+}

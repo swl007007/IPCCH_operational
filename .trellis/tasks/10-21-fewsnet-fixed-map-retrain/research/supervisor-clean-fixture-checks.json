@@ -1,0 +1,25 @@
+{
+  "checked_utc": "2026-10-22T07:17:13.720354+00:00",
+  "source_commit": "0d60a4ebcd5250a529677b9e9af8f9537ead2484",
+  "argv": [
+    "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/cloud/test_frozen_confidence.py",
+    "tests/fewsnet_partitioned_rf/test_full_history_fit.py"
+  ],
+  "cwd": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/image-source-0d60a4e/cloud_pipeline",
+  "started_utc": "2026-10-22T07:17:03.034196+00:00",
+  "exit_code": 0,
+  "fixture_symlinks": [
+    "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/image-source-0d60a4e/cloud_pipeline/bootstrap",
+    "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/image-source-0d60a4e/cloud_pipeline/fallback"
+  ],
+  "stdout_log": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/runtime/supervisor-fixture-checks-0d60a4e.log",
+  "stdout_sha256": "23468808c957d8186b516537887e77cd8c256b51df8c554d2b0ae42fd4545289",
+  "summary": "16 passed in 10.36s",
+  "scope": "software package wiring, compatibility and frozen confidence; RF/SMOTE fitting blocked by existing autouse guards; no evaluation and no IPCCH inference"
+}

@@ -213,7 +213,6 @@ def run_args(**kwargs):
                 cutoff="2026-10-08T00:00:00Z",
                 deadline="2099-10-08T00:00:00Z",
                 run_id="operator-test",
-                wait_seconds=0,
                 acled="keep",
                 wfp="keep",
                 acled_raw=None,
@@ -230,24 +229,20 @@ def test_init_run_resume_download(setup):
     p.initialize(args, cfg, cloud)
     assert not any("credentials" in key for key in cloud.objects)
     assert p.initialize(args, cfg, cloud)["status"] == "initialized"
-    assert p.run(run_args(), cfg, cloud)["status"] == "preparing"
     base = "gs://destination-bucket"
-    cloud.json(
-        base + "/prepared/operator-test/prepare_status.json", dict(status="succeeded")
-    )
-    cloud.json(
-        base + "/prepared/operator-test/prepared_manifest.json",
-        dict(status="succeeded", origin_month="2026-10", prepare_id="operator-test"),
-    )
-    cloud.fail_request = True
+    cloud.fail_request = True  # interrupted after the intent landed: resume never duplicates it
     with pytest.raises(OSError):
         p.run(run_args(), cfg, cloud)
     result = p.run(run_args(), cfg, cloud)
-    assert result["status"] == "submitted" and cloud.launches == 1
+    assert result["status"] == "submitted" and result["preparation_mode"] == "prepared by the workflow"
+    assert cloud.launches == 0  # the operator never launches or polls preparation itself
     uri = "gs://requests-bucket/requests/operator-test/run_manifest.json"
-    validate_delivery_request(
-        cloud.latest(uri)[0], request_uri=uri, request_generation="1"
-    )
+    intent = validate_delivery_request(cloud.latest(uri)[0], request_uri=uri, request_generation="1")
+    assert intent["prepared_snapshot"] is None
+    assert intent["execution"] == {
+        "remote_update": True, "inference_systems": ["fewsnet", "ipcch"], "inherit": {}, "publication": "current",
+        "prepare_request": cloud.latest(base + "/prepare_requests/operator-test/prepare_request.json")[1]}
+    assert p.run(run_args(), cfg, cloud)["status"] == "submitted"  # resume: already published
     raw = b"result"
     cloud.objects[base + "/deliveries/operator-test/results.csv"] = raw
     manifest = cloud.json(
@@ -292,16 +287,15 @@ def test_init_run_resume_download(setup):
     assert (out / "results.csv").read_bytes() == raw
 
 
-def test_ambiguous_launch_never_repeats(setup):
+def test_run_binding_and_destination_checks(setup):
     cfg, root, b, args, cloud = setup
     p.initialize(args, cfg, cloud)
-    cloud.fail_launch = True
-    with pytest.raises(OSError):
-        p.run(run_args(), cfg, cloud)
-    assert p.run(run_args(), cfg, cloud)["status"] == "preparation_submission_pending"
-    assert cloud.launches == 1
+    p.run(run_args(), cfg, cloud)
     with pytest.raises(ValueError, match="different inputs"):
         p.run(run_args(cutoff="2026-10-09T00:00:00Z"), cfg, cloud)
+    with pytest.raises(ValueError, match="different inputs"):
+        p.run(run_args(infer="fewsnet", inherit="ipcch=src", inherit_manifest="gs://s/m.json#1",
+                       inherit_archive="gs://s/a.tgz#1"), cfg, cloud)
     with pytest.raises(ValueError, match="deadline"):
         p.run(run_args(deadline="2000-01-01T00:00:00Z"), cfg, cloud)
     with pytest.raises(ValueError, match="run ID"):
@@ -378,27 +372,6 @@ def test_preview_no_cloud_and_select_rollback(setup, monkeypatch):
     ) == sorted(original, key=str)
 
 
-def test_launch_overrides_entire_argv(monkeypatch):
-    calls = []
-    monkeypatch.setattr(
-        p.subprocess,
-        "run",
-        lambda command, **kwargs: calls.append(command) or NS(stdout="{}"),
-    )
-    client = object.__new__(p.Cloud)
-    client.cfg = dict(
-        project="p",
-        region="r",
-        bucket="b",
-        earth_engine_project="e",
-        image_uri="i",
-        service_account="s",
-        prepare_job="job",
-    )
-    client.launch(dict(uri="gs://bucket/r", generation="1"), "2099-01-01T00:00:00Z")
-    assert calls[0][-1].startswith("--args=-m,cloud.orchestrator.prepare,plan,")
-
-
 def test_model_diagnostics_and_shared_members_rejected_before_mutation(
     setup, monkeypatch
 ):
@@ -442,7 +415,7 @@ def test_init_missing_assets_stops_before_upload(setup):
     assert not cloud.objects
 
 
-def test_deadline_expires_during_preparation_without_submission(setup, monkeypatch):
+def test_deadline_expires_before_the_intent_is_submitted(setup, monkeypatch):
     from datetime import datetime, timezone
 
     cfg, root, baseline, args, cloud = setup
@@ -453,15 +426,15 @@ def test_deadline_expires_during_preparation_without_submission(setup, monkeypat
         "datetime",
         NS(fromisoformat=datetime.fromisoformat, now=lambda tz: clock.value),
     )
-    original_launch = cloud.launch
+    original_put = cloud.put
 
-    def launch(ref, deadline):
-        result = original_launch(ref, deadline)
-        clock.value = datetime(2100, 1, 1, tzinfo=timezone.utc)
+    def put(uri, path):
+        result = original_put(uri, path)
+        if uri.endswith("/prepare_request.json"):
+            clock.value = datetime(2100, 1, 1, tzinfo=timezone.utc)
         return result
 
-    monkeypatch.setattr(cloud, "launch", launch)
+    monkeypatch.setattr(cloud, "put", put)
     with pytest.raises(ValueError, match="deadline"):
         p.run(run_args(), cfg, cloud)
-    assert cloud.launches == 1
     assert not any(uri.endswith("/run_manifest.json") for uri in cloud.objects)
