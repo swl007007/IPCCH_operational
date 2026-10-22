@@ -1,0 +1,80 @@
+{
+ "panel_info": {
+  "row_count": 1149318,
+  "area_count": 5718,
+  "latest_feature_month": "2026-09",
+  "latest_label_month": "2026-06"
+ },
+ "feature_rows": 1149318,
+ "horizons": {
+  "0m": {
+   "eligible_rows": 273353,
+   "excluded": {
+    "missing_target_row": 0,
+    "null_target_value": 875965
+   },
+   "target_month_range": [
+    "2010-01",
+    "2026-06"
+   ],
+   "target_months": 54,
+   "class_counts": {
+    "0.0": 224570,
+    "1.0": 48783
+   },
+   "rows_by_recent_target_month": {
+    "2024-06": 5697,
+    "2024-10": 5686,
+    "2025-10": 4810,
+    "2026-02": 4714,
+    "2026-06": 4039
+   }
+  },
+  "6m": {
+   "eligible_rows": 264005,
+   "excluded": {
+    "missing_target_row": 34308,
+    "null_target_value": 851005
+   },
+   "target_month_range": [
+    "2010-07",
+    "2026-06"
+   ],
+   "target_months": 52,
+   "class_counts": {
+    "0.0": 216930,
+    "1.0": 47075
+   },
+   "rows_by_recent_target_month": {
+    "2024-06": 5697,
+    "2024-10": 5686,
+    "2025-10": 4810,
+    "2026-02": 4714,
+    "2026-06": 4039
+   }
+  },
+  "12m": {
+   "eligible_rows": 254291,
+   "excluded": {
+    "missing_target_row": 68616,
+    "null_target_value": 826411
+   },
+   "target_month_range": [
+    "2011-01",
+    "2026-06"
+   ],
+   "target_months": 50,
+   "class_counts": {
+    "0.0": 208505,
+    "1.0": 45786
+   },
+   "rows_by_recent_target_month": {
+    "2024-06": 5697,
+    "2024-10": 5686,
+    "2025-10": 4810,
+    "2026-02": 4714,
+    "2026-06": 4039
+   }
+  }
+ }
+}

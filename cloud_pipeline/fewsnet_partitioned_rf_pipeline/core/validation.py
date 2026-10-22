@@ -17,6 +17,8 @@ from typing import Any, Mapping
 import pandas as pd
 
 from fewsnet_partitioned_rf_pipeline.config import (
+    FIXED_THRESHOLD_REPORT_SCHEMA,
+    FULL_DATA_TRAINING_REPORT_SCHEMA,
     HORIZON_KEYS,
     PARTITION_ASSET_PATH,
     PARTITION_ASSET_SHA256,
@@ -368,8 +370,26 @@ def _bounded_metric(value: object, name: str, *, nullable: bool) -> float | None
     return number
 
 
+def _validate_fixed_threshold_report(report: Mapping) -> dict:
+    _exact_fields(
+        report,
+        {"schema_version", "threshold", "selection", "source"},
+        "threshold_report",
+    )
+    _bounded_metric(report["threshold"], "threshold_report.threshold", nullable=False)
+    if report["selection"] != "fixed_operational_threshold_no_search":
+        raise PackageValidationError(
+            "threshold_report.selection must be fixed_operational_threshold_no_search"
+        )
+    if not isinstance(report["source"], str) or not report["source"]:
+        raise PackageValidationError("threshold_report.source must be a non-empty string")
+    return dict(report)
+
+
 def validate_threshold_report(value: object) -> dict:
     report = _mapping(value, "threshold_report")
+    if report.get("schema_version") == FIXED_THRESHOLD_REPORT_SCHEMA:
+        return _validate_fixed_threshold_report(report)
     required = {
         "threshold",
         "precision",
@@ -405,31 +425,7 @@ def validate_threshold_report(value: object) -> dict:
     return dict(report)
 
 
-def validate_horizon_training_report(value: object) -> dict:
-    report = _mapping(value, "training_report")
-    required = {
-        "schema_version",
-        "horizon_key",
-        "horizon_months",
-        "feature_schema_sha256",
-        "partition_asset_sha256",
-        "partition_coverage_pct",
-        "training_target_month_range",
-        "fit_target_month_range",
-        "validation_target_month_range",
-        "sample_count",
-        "fit_sample_count",
-        "validation_sample_count",
-        "pooled_class_counts",
-        "cluster_states",
-        "smote_results",
-        "fallback_counts",
-    }
-    _exact_fields(report, required, "training_report")
-    if report["schema_version"] != "fewsnet-horizon-training-report-v1":
-        raise PackageValidationError(
-            "training_report schema_version must be fewsnet-horizon-training-report-v1"
-        )
+def _validate_training_report_identity(report: Mapping) -> None:
     horizon_months = report["horizon_months"]
     if (
         isinstance(horizon_months, bool)
@@ -457,36 +453,9 @@ def validate_horizon_training_report(value: object) -> dict:
         raise PackageValidationError(
             "training_report.partition_coverage_pct must be between 0 and 100"
         )
-    for name in (
-        "training_target_month_range",
-        "fit_target_month_range",
-        "validation_target_month_range",
-    ):
-        validate_month_range(report[name], f"training_report.{name}")
-    sample_count = _nonnegative_integer(
-        report["sample_count"],
-        "training_report.sample_count",
-    )
-    fit_count = _nonnegative_integer(
-        report["fit_sample_count"],
-        "training_report.fit_sample_count",
-    )
-    validation_count = _nonnegative_integer(
-        report["validation_sample_count"],
-        "training_report.validation_sample_count",
-    )
-    if fit_count + validation_count != sample_count:
-        raise PackageValidationError(
-            "training_report fit and validation counts must sum to sample_count"
-        )
-    pooled_counts = _binary_class_counts(
-        report["pooled_class_counts"],
-        "training_report.pooled_class_counts",
-    )
-    if sum(pooled_counts.values()) != sample_count:
-        raise PackageValidationError(
-            "training_report pooled class counts must sum to sample_count"
-        )
+
+
+def _validate_partition_sections(report: Mapping) -> None:
     cluster_states = _mapping(
         report["cluster_states"],
         "training_report.cluster_states",
@@ -542,6 +511,111 @@ def validate_horizon_training_report(value: object) -> dict:
         raise PackageValidationError(
             "training_report.fallback_counts do not match cluster_states"
         )
+
+
+def _validate_full_data_training_report(report: Mapping) -> dict:
+    required = {
+        "schema_version",
+        "fit_mode",
+        "evaluation",
+        "horizon_key",
+        "horizon_months",
+        "feature_schema_sha256",
+        "partition_asset_sha256",
+        "partition_coverage_pct",
+        "training_target_month_range",
+        "sample_count",
+        "pooled_class_counts",
+        "cluster_states",
+        "smote_results",
+        "fallback_counts",
+    }
+    _exact_fields(report, required, "training_report")
+    if report["fit_mode"] != "all_eligible_history" or report["evaluation"] != "none":
+        raise PackageValidationError(
+            "full-data training_report must record fit_mode all_eligible_history "
+            "and evaluation none"
+        )
+    _validate_training_report_identity(report)
+    validate_month_range(
+        report["training_target_month_range"],
+        "training_report.training_target_month_range",
+    )
+    sample_count = _nonnegative_integer(
+        report["sample_count"],
+        "training_report.sample_count",
+    )
+    pooled_counts = _binary_class_counts(
+        report["pooled_class_counts"],
+        "training_report.pooled_class_counts",
+    )
+    if sum(pooled_counts.values()) != sample_count:
+        raise PackageValidationError(
+            "training_report pooled class counts must sum to sample_count"
+        )
+    _validate_partition_sections(report)
+    return dict(report)
+
+
+def validate_horizon_training_report(value: object) -> dict:
+    report = _mapping(value, "training_report")
+    if report.get("schema_version") == FULL_DATA_TRAINING_REPORT_SCHEMA:
+        return _validate_full_data_training_report(report)
+    required = {
+        "schema_version",
+        "horizon_key",
+        "horizon_months",
+        "feature_schema_sha256",
+        "partition_asset_sha256",
+        "partition_coverage_pct",
+        "training_target_month_range",
+        "fit_target_month_range",
+        "validation_target_month_range",
+        "sample_count",
+        "fit_sample_count",
+        "validation_sample_count",
+        "pooled_class_counts",
+        "cluster_states",
+        "smote_results",
+        "fallback_counts",
+    }
+    _exact_fields(report, required, "training_report")
+    if report["schema_version"] != "fewsnet-horizon-training-report-v1":
+        raise PackageValidationError(
+            "training_report schema_version must be fewsnet-horizon-training-report-v1"
+        )
+    _validate_training_report_identity(report)
+    for name in (
+        "training_target_month_range",
+        "fit_target_month_range",
+        "validation_target_month_range",
+    ):
+        validate_month_range(report[name], f"training_report.{name}")
+    sample_count = _nonnegative_integer(
+        report["sample_count"],
+        "training_report.sample_count",
+    )
+    fit_count = _nonnegative_integer(
+        report["fit_sample_count"],
+        "training_report.fit_sample_count",
+    )
+    validation_count = _nonnegative_integer(
+        report["validation_sample_count"],
+        "training_report.validation_sample_count",
+    )
+    if fit_count + validation_count != sample_count:
+        raise PackageValidationError(
+            "training_report fit and validation counts must sum to sample_count"
+        )
+    pooled_counts = _binary_class_counts(
+        report["pooled_class_counts"],
+        "training_report.pooled_class_counts",
+    )
+    if sum(pooled_counts.values()) != sample_count:
+        raise PackageValidationError(
+            "training_report pooled class counts must sum to sample_count"
+        )
+    _validate_partition_sections(report)
     return dict(report)
 
 

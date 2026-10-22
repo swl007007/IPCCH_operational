@@ -18,6 +18,8 @@ from sklearn.utils._dataframe import is_pandas_df
 
 from fewsnet_partitioned_rf_pipeline.config import (
     ADMIN_CANONICAL_COLUMN,
+    FIXED_THRESHOLD_REPORT_SCHEMA,
+    FULL_DATA_TRAINING_REPORT_SCHEMA,
     HORIZON_KEYS,
     PARTITION_ASSET_PATH,
     PARTITION_ASSET_SHA256,
@@ -591,4 +593,149 @@ def train_horizon_model(
         predictor=predictor,
         training_report=training_report,
         threshold_report=asdict(threshold_result),
+    )
+
+
+def train_full_history_model(
+    aligned_frame: pd.DataFrame,
+    feature_contract: FeatureContract,
+    partition_map: PartitionMap,
+    horizon_key: str,
+    *,
+    threshold: float,
+    threshold_source: str,
+) -> HorizonTrainingResult:
+    """Fit the existing recipe once on every supplied labeled row.
+
+    No validation split, threshold search or evaluation: the operational
+    threshold is supplied and recorded as fixed.
+    """
+    horizon_months = _validate_horizon_key(horizon_key)
+    if not isinstance(aligned_frame, pd.DataFrame):
+        raise TypeError("aligned_frame must be a pandas.DataFrame")
+    if not isinstance(feature_contract, FeatureContract):
+        raise TypeError("feature_contract must be a FeatureContract")
+    if not isinstance(partition_map, PartitionMap):
+        raise TypeError("partition_map must be a PartitionMap")
+    if (
+        isinstance(threshold, bool)
+        or not isinstance(threshold, (int, float))
+        or not 0.0 <= float(threshold) <= 1.0
+    ):
+        raise ValueError("threshold must be a number between 0 and 1")
+    if not isinstance(threshold_source, str) or not threshold_source:
+        raise ValueError("threshold_source must be a non-empty string")
+
+    feature_columns = tuple(feature_contract.feature_columns)
+    if not feature_columns or len(feature_columns) != len(set(feature_columns)):
+        raise ValueError("feature_contract must contain unique feature names")
+    required_columns = {
+        ADMIN_CANONICAL_COLUMN,
+        FEATURE_MONTH_COLUMN,
+        TARGET_MONTH_COLUMN,
+        TARGET_COLUMN,
+        *feature_columns,
+    }
+    missing_columns = sorted(required_columns - set(aligned_frame.columns))
+    if missing_columns:
+        raise ValueError(
+            f"aligned_frame is missing required columns: {missing_columns}"
+        )
+    if aligned_frame.empty:
+        raise ValueError("aligned_frame must contain labeled rows")
+    if aligned_frame.duplicated(
+        [ADMIN_CANONICAL_COLUMN, FEATURE_MONTH_COLUMN]
+    ).any():
+        raise ValueError("aligned_frame has duplicate area/feature-month rows")
+    misaligned = aligned_frame[TARGET_MONTH_COLUMN].ne(
+        aligned_frame[FEATURE_MONTH_COLUMN] + horizon_months
+    )
+    if misaligned.any():
+        raise ValueError(
+            "aligned_frame feature_month and target_month do not match "
+            f"horizon_key {horizon_key}"
+        )
+    coverage_pct = partition_map.assert_release_coverage(
+        aligned_frame[ADMIN_CANONICAL_COLUMN]
+    )
+    _assert_partition_asset_identity(partition_map)
+
+    final_y = _as_binary_target(
+        aligned_frame[TARGET_COLUMN],
+        expected_rows=len(aligned_frame),
+    )
+    final_clusters = partition_map.route(
+        aligned_frame[ADMIN_CANONICAL_COLUMN]
+    ).to_numpy(dtype=object)
+    final_imputer = MaxPlusImputer(multiplier=100.0)
+    final_X = final_imputer.fit_transform(
+        aligned_frame.loc[:, list(feature_columns)].to_numpy()
+    )
+    final_models = train_partition_models(
+        final_X,
+        final_y,
+        final_clusters,
+        min_samples=PARTITION_MIN_SAMPLES,
+    )
+    final_models = _with_expected_clusters(
+        final_models,
+        partition_map.cluster_ids,
+        min_samples=PARTITION_MIN_SAMPLES,
+    )
+    predictor = PartitionedRFPredictor(
+        imputer=final_imputer,
+        pooled_model=final_models.pooled_model,
+        partition_models=final_models.partition_models,
+        partition_status=final_models.partition_status,
+        partition_metadata=final_models.partition_metadata,
+        partition_map=dict(partition_map._clusters_by_admin),
+        feature_contract=feature_contract,
+        threshold=float(threshold),
+        horizon_key=horizon_key,
+        horizon_months=horizon_months,
+    )
+    metadata = final_models.partition_metadata
+    training_report = {
+        "schema_version": FULL_DATA_TRAINING_REPORT_SCHEMA,
+        "fit_mode": "all_eligible_history",
+        "evaluation": "none",
+        "horizon_key": horizon_key,
+        "horizon_months": horizon_months,
+        "feature_schema_sha256": feature_contract.feature_schema_sha256,
+        "partition_asset_sha256": PARTITION_ASSET_SHA256,
+        "partition_coverage_pct": coverage_pct,
+        "training_target_month_range": _month_range(aligned_frame),
+        "sample_count": len(aligned_frame),
+        "pooled_class_counts": _class_counts(final_y),
+        "cluster_states": {
+            str(cluster_id): {
+                "status": state["status"],
+                "sample_count": state["sample_count"],
+                "class_counts": state["class_counts"],
+                "smote_status": state["smote_status"],
+                "fallback_reason": state["fallback_reason"],
+            }
+            for cluster_id, state in metadata.items()
+        },
+        "smote_results": {
+            str(cluster_id): {
+                "status": state["smote_status"],
+                "original_class_counts": state["original_class_counts"],
+                "resampled_class_counts": state["resampled_class_counts"],
+                "failure_reason": state["smote_failure_reason"],
+            }
+            for cluster_id, state in metadata.items()
+        },
+        "fallback_counts": _fallback_counts(final_models.partition_status),
+    }
+    threshold_report = {
+        "schema_version": FIXED_THRESHOLD_REPORT_SCHEMA,
+        "threshold": float(threshold),
+        "selection": "fixed_operational_threshold_no_search",
+        "source": threshold_source,
+    }
+    return HorizonTrainingResult(
+        predictor=predictor,
+        training_report=training_report,
+        threshold_report=threshold_report,
     )

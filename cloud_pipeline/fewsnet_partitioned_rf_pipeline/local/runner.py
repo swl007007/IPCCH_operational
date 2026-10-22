@@ -17,12 +17,16 @@ from pathlib import Path
 import pandas as pd
 
 from fewsnet_partitioned_rf_pipeline.config import (
+    ADMIN_CANONICAL_COLUMN,
     ADMIN_SOURCE_COLUMN,
     FEATURE_CONTRACT_PATH,
+    FULL_DATA_THRESHOLD_SOURCE_SUITE,
+    FULL_DATA_THRESHOLDS,
     HORIZON_KEYS,
     HORIZON_MONTHS,
     PARTITION_ASSET_PATH,
     PARTITION_ASSET_SHA256,
+    TARGET_COLUMN,
     TRAIN_WINDOW_MONTHS,
 )
 from fewsnet_partitioned_rf_pipeline.core.data import (
@@ -31,6 +35,8 @@ from fewsnet_partitioned_rf_pipeline.core.data import (
     normalize_admin_code,
 )
 from fewsnet_partitioned_rf_pipeline.core.horizons import (
+    FEATURE_MONTH_COLUMN,
+    TARGET_MONTH_COLUMN,
     align_horizon,
     select_latest_inference_frame,
     select_training_window,
@@ -43,7 +49,10 @@ from fewsnet_partitioned_rf_pipeline.core.preprocessing import (
     Stage3FeatureBuilder,
     load_feature_contract,
 )
-from fewsnet_partitioned_rf_pipeline.core.training import train_horizon_model
+from fewsnet_partitioned_rf_pipeline.core.training import (
+    train_full_history_model,
+    train_horizon_model,
+)
 from fewsnet_partitioned_rf_pipeline.core.types import FeatureContract
 from fewsnet_partitioned_rf_pipeline.core.validation import (
     runtime_dependency_versions,
@@ -2259,3 +2268,292 @@ def run_local_experiment(config: LocalExperimentConfig) -> LocalExperimentResult
     ) as staging_root:
         staged = build_staged_local_experiment(config, staging_root)
         return publish_staged_local_experiment(staged, config)
+
+
+# --- full-history production fit (2026-10) -------------------------------------
+# One fit per horizon on every eligible labeled row: no 36-period cap, no
+# validation split, no threshold search and no evaluation. Thresholds are the
+# fixed operational values in config.FULL_DATA_THRESHOLDS.
+
+_FULL_RUN_MANIFEST_SCHEMA = "fewsnet-full-history-fit-run-manifest-v1"
+_FIT_KEY_COLUMNS = (
+    ADMIN_CANONICAL_COLUMN,
+    FEATURE_MONTH_COLUMN,
+    TARGET_MONTH_COLUMN,
+    TARGET_COLUMN,
+)
+
+
+@dataclass(frozen=True)
+class FullHistoryFitConfig:
+    panel_path: Path
+    normalization_audit_path: Path
+    origin_month: str
+    latest_label_month: str
+    output_root: Path
+    max_workers: int = 1
+
+
+def _full_history_preflight(config: FullHistoryFitConfig) -> dict[str, object]:
+    panel_path = _resolve_input_file(config.panel_path, "panel_path")
+    audit_path = _resolve_input_file(
+        config.normalization_audit_path,
+        "normalization_audit_path",
+    )
+    if _paths_equal(panel_path, audit_path):
+        raise ValueError("panel and normalization audit paths must be different")
+    output_root = _resolve_output_root(config.output_root)
+    origin = _normalize_feature_month(config.origin_month)
+    label_month = _normalize_feature_month(config.latest_label_month)
+    if label_month > origin:
+        raise ValueError("latest_label_month must not be after origin_month")
+    audit_sha256 = _sha256(audit_path)
+    audit_size = audit_path.stat().st_size
+    audit_payload = validate_normalization_audit(audit_path, panel_path)
+    panel_info = inspect_panel(panel_path)
+    if panel_info["row_count"] != audit_payload["output_panel"]["row_count"]:
+        raise ValueError("panel row count does not match normalization audit")
+    if panel_info["area_count"] != EXPECTED_AREA_COUNT:
+        raise ValueError(
+            f"panel area_count {panel_info['area_count']} does not equal "
+            f"required area_count {EXPECTED_AREA_COUNT}"
+        )
+    if panel_info["latest_label_month"] != label_month:
+        raise ValueError(
+            f"panel latest label month {panel_info['latest_label_month']} does not "
+            f"equal requested latest_label_month {label_month}"
+        )
+    if panel_info["latest_feature_month"] > origin:
+        raise ValueError("panel contains feature months after origin_month")
+    if _sha256(FEATURE_CONTRACT_PATH) != FEATURE_CONTRACT_FILE_SHA256:
+        raise ValueError("feature contract SHA-256 mismatch")
+    panel_sha256 = str(audit_payload["output_panel"]["sha256"])
+    if _sha256(panel_path) != panel_sha256:
+        raise ValueError("panel SHA-256 does not match normalization audit")
+    commit = resolve_clean_git_commit(_REPOSITORY_ROOT)
+    return {
+        "panel_path": panel_path,
+        "panel_sha256": panel_sha256,
+        "panel_size_bytes": panel_path.stat().st_size,
+        "panel_row_count": int(panel_info["row_count"]),
+        "audit_path": audit_path,
+        "audit_sha256": audit_sha256,
+        "audit_size_bytes": audit_size,
+        "output_root": output_root,
+        "origin_month": origin,
+        "latest_label_month": label_month,
+        "latest_feature_month": panel_info["latest_feature_month"],
+        "feature_contract": load_feature_contract(FEATURE_CONTRACT_PATH),
+        "partition_map": PartitionMap.load(PARTITION_ASSET_PATH, PARTITION_ASSET_SHA256),
+        "source_git_commit": commit,
+        "dependency_versions": runtime_dependency_versions(),
+        "suite_version": (
+            f"full-{origin.replace('-', '')}-{commit[:12]}-{panel_sha256[:12]}"
+        ),
+    }
+
+
+def _fit_full_history_horizon(
+    aligned: pd.DataFrame,
+    feature_contract: FeatureContract,
+    partition_map: PartitionMap,
+    horizon_key: str,
+):
+    """Process-pool entry point: one horizon's full-history fit."""
+    return train_full_history_model(
+        aligned,
+        feature_contract,
+        partition_map,
+        horizon_key,
+        threshold=FULL_DATA_THRESHOLDS[horizon_key],
+        threshold_source=(
+            f"{FULL_DATA_THRESHOLD_SOURCE_SUITE}/{horizon_key} operational "
+            "threshold, retained without search"
+        ),
+    )
+
+
+def _fit_key_frame(aligned: pd.DataFrame) -> pd.DataFrame:
+    keys = aligned.loc[:, list(_FIT_KEY_COLUMNS)].copy()
+    keys[FEATURE_MONTH_COLUMN] = keys[FEATURE_MONTH_COLUMN].astype(str)
+    keys[TARGET_MONTH_COLUMN] = keys[TARGET_MONTH_COLUMN].astype(str)
+    keys[TARGET_COLUMN] = keys[TARGET_COLUMN].astype(int)
+    return keys.sort_values(
+        [ADMIN_CANONICAL_COLUMN, FEATURE_MONTH_COLUMN],
+        kind="stable",
+    ).reset_index(drop=True)
+
+
+def run_full_history_fit(config: FullHistoryFitConfig) -> dict[str, object]:
+    """Fit, package and reload all three horizons on every eligible labeled row."""
+    if not isinstance(config, FullHistoryFitConfig):
+        raise TypeError("config must be a FullHistoryFitConfig")
+    preflight = _full_history_preflight(config)
+    started_at = utc_now()
+    suite_version = str(preflight["suite_version"])
+    output_root = Path(preflight["output_root"])
+    suite_root = output_root / suite_version
+    if suite_root.exists():
+        raise ValueError(f"output already exists: {suite_root}")
+    panel = pd.read_csv(
+        preflight["panel_path"],
+        dtype={ADMIN_SOURCE_COLUMN: "string"},
+        low_memory=False,
+    )
+    if _sha256(Path(preflight["panel_path"])) != preflight["panel_sha256"]:
+        raise ValueError("panel changed after preflight")
+    feature_frame = Stage3FeatureBuilder().transform(
+        panel,
+        preflight["feature_contract"],
+    )
+    del panel
+    label_month = pd.Period(str(preflight["latest_label_month"]), freq="M")
+    aligned_frames: dict[str, pd.DataFrame] = {}
+    alignment: dict[str, dict[str, object]] = {}
+    for horizon_months in HORIZON_MONTHS:
+        horizon_key = HORIZON_KEYS[horizon_months]
+        result = align_horizon(feature_frame, horizon_months)
+        aligned = result.frame
+        if aligned[TARGET_MONTH_COLUMN].gt(label_month).any():
+            raise ValueError("aligned targets exceed latest_label_month")
+        aligned_frames[horizon_key] = aligned
+        alignment[horizon_key] = {
+            "feature_rows": int(len(feature_frame)),
+            "excluded_rows_by_reason": dict(result.dropped_rows_by_reason),
+            "eligible_rows": int(len(aligned)),
+        }
+    del feature_frame
+
+    suite_root.mkdir(parents=True)
+    keys_root = suite_root / "fit_keys"
+    keys_root.mkdir()
+    horizons: dict[str, dict[str, object]] = {}
+    for horizon_key, aligned in aligned_frames.items():
+        key_path = keys_root / f"{horizon_key}_fit_keys.csv"
+        keys = _fit_key_frame(aligned)
+        keys.to_csv(key_path, index=False)
+        horizons[horizon_key] = {
+            **alignment[horizon_key],
+            "fit_keys": {
+                "relative_path": f"fit_keys/{horizon_key}_fit_keys.csv",
+                "rows": int(len(keys)),
+                "sha256": _sha256(key_path),
+            },
+            "feature_month_range": {
+                "start": keys[FEATURE_MONTH_COLUMN].min(),
+                "end": keys[FEATURE_MONTH_COLUMN].max(),
+            },
+            "target_month_count": int(keys[TARGET_MONTH_COLUMN].nunique()),
+        }
+
+    jobs = {
+        key: (aligned_frames[key], preflight["feature_contract"],
+              preflight["partition_map"], key)
+        for key in _HORIZON_ORDER
+    }
+    if config.max_workers > 1:
+        import multiprocessing
+        from concurrent.futures import ProcessPoolExecutor
+
+        with ProcessPoolExecutor(
+            max_workers=min(config.max_workers, len(jobs)),
+            mp_context=multiprocessing.get_context("spawn"),
+        ) as pool:
+            futures = {
+                key: pool.submit(_fit_full_history_horizon, *args)
+                for key, args in jobs.items()
+            }
+            results = {key: future.result() for key, future in futures.items()}
+    else:
+        results = {
+            key: _fit_full_history_horizon(*args) for key, args in jobs.items()
+        }
+
+    package_root = suite_root / "model_artifacts"
+    for horizon_months in HORIZON_MONTHS:
+        horizon_key = HORIZON_KEYS[horizon_months]
+        result = results[horizon_key]
+        package_dir = package_root / horizon_key
+        metadata = LocalPackageMetadata(
+            suite_version=suite_version,
+            feature_month=str(preflight["origin_month"]),
+            target_month=str(
+                pd.Period(str(preflight["origin_month"]), freq="M") + horizon_months
+            ),
+            latest_label_month=str(preflight["latest_label_month"]),
+            source_git_commit=str(preflight["source_git_commit"]),
+            panel_path=str(preflight["panel_path"]),
+            panel_sha256=str(preflight["panel_sha256"]),
+            panel_size_bytes=int(preflight["panel_size_bytes"]),
+            panel_row_count=int(preflight["panel_row_count"]),
+            normalization_audit_path=str(preflight["audit_path"]),
+            normalization_audit_sha256=str(preflight["audit_sha256"]),
+            normalization_audit_size_bytes=int(preflight["audit_size_bytes"]),
+        )
+        write_local_model_package(
+            package_dir,
+            result.predictor,
+            metadata,
+            {
+                "training_report": result.training_report,
+                "threshold_report": result.threshold_report,
+            },
+        )
+        loaded = load_local_model_package(
+            package_dir,
+            expected_suite_version=suite_version,
+            expected_source_git_commit=str(preflight["source_git_commit"]),
+            expected_panel_sha256=str(preflight["panel_sha256"]),
+        )
+        horizons[horizon_key].update({
+            "package_relative_path": f"model_artifacts/{horizon_key}",
+            "member_checksums": dict(loaded.checksums),
+            "threshold": float(loaded.predictor.threshold),
+            "training_target_month_range": dict(
+                loaded.training_report["training_target_month_range"]
+            ),
+            "sample_count": loaded.training_report["sample_count"],
+            "pooled_class_counts": loaded.training_report["pooled_class_counts"],
+            "fallback_counts": loaded.training_report["fallback_counts"],
+        })
+    manifest = {
+        "schema_version": _FULL_RUN_MANIFEST_SCHEMA,
+        "suite_version": suite_version,
+        "fit_mode": "all_eligible_history",
+        "evaluation": "none",
+        "started_at_utc": started_at,
+        "completed_at_utc": utc_now(),
+        "runtime_backend": "local_python",
+        "gcp_write_performed": False,
+        "source_git_commit": preflight["source_git_commit"],
+        "dependency_versions": preflight["dependency_versions"],
+        "panel": {
+            "path": str(preflight["panel_path"]),
+            "sha256": preflight["panel_sha256"],
+            "size_bytes": preflight["panel_size_bytes"],
+            "row_count": preflight["panel_row_count"],
+        },
+        "normalization_audit": {
+            "path": str(preflight["audit_path"]),
+            "sha256": preflight["audit_sha256"],
+            "size_bytes": preflight["audit_size_bytes"],
+        },
+        "feature_contract": {
+            "sha256": FEATURE_CONTRACT_FILE_SHA256,
+            "feature_schema_sha256": (
+                preflight["feature_contract"].feature_schema_sha256
+            ),
+        },
+        "partition_asset": {"sha256": PARTITION_ASSET_SHA256},
+        "origin_month": preflight["origin_month"],
+        "latest_feature_month": preflight["latest_feature_month"],
+        "latest_label_month": preflight["latest_label_month"],
+        "thresholds": {
+            "values": dict(FULL_DATA_THRESHOLDS),
+            "source_suite": FULL_DATA_THRESHOLD_SOURCE_SUITE,
+            "selection": "fixed_operational_threshold_no_search",
+        },
+        "horizons": horizons,
+    }
+    _write_json(suite_root / "run_manifest.json", manifest)
+    return manifest

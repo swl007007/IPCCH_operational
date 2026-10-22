@@ -1,0 +1,236 @@
+{
+  "started_utc": "2026-10-22T05:19:14.987627Z",
+  "geometry": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/bootstrap/assets/fewsnet/geometry.geojson",
+    "sha256": "4a491eae5f88f99226f57b93542dcb9f527609787fb81059043a9c8721999386"
+  },
+  "roster": {
+    "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/bootstrap/assets/fewsnet/roster.csv",
+    "sha256": "57c3ffaec68103321bb8da485e86026e1ef0e861db3f6274709fab84bcdfb2ef"
+  },
+  "method": "cloud.batch.remote_sources.zonal_statistics family=gosif_mean (mean, DATA, all_touched=False)",
+  "months": {
+    "2025-01": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M01_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "9638414",
+        "last-modified": "Sun, 16 Aug 2026 20:07:30 GMT",
+        "etag": "\"93120e-6592f9a75a480\"",
+        "date": "Thu, 22 Oct 2026 05:19:16 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:19:15.905302Z",
+      "retrieval_completed_utc": "2026-10-22T05:19:16.738429Z",
+      "gz_sha256": "ecc6c65a325785650135ccc218eb01e6f880db8e52f288c70be59daa7ad8b8af",
+      "gz_bytes": 9638414,
+      "tif_sha256": "6c27904d13f9128591771f5b5c83e6a3af9383602801125ed0b933ed3198c400",
+      "local_tif_sha256": "6c27904d13f9128591771f5b5c83e6a3af9383602801125ed0b933ed3198c400",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-02": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M02_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "9524988",
+        "last-modified": "Sun, 16 Aug 2026 20:07:32 GMT",
+        "etag": "\"9156fc-6592f9a942900\"",
+        "date": "Thu, 22 Oct 2026 05:19:23 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:19:23.622046Z",
+      "retrieval_completed_utc": "2026-10-22T05:19:24.323430Z",
+      "gz_sha256": "50e3c46aa39a5d674f4b1e2ea3fcdf888cb2f0d33dcecda4e54560002a40e678",
+      "gz_bytes": 9524988,
+      "tif_sha256": "ae62c6c563dbe7483bf592e692a3915caa6362c9450595189bf18113c64e33cc",
+      "local_tif_sha256": "ae62c6c563dbe7483bf592e692a3915caa6362c9450595189bf18113c64e33cc",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-03": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M03_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "9440471",
+        "last-modified": "Sun, 16 Aug 2026 20:07:34 GMT",
+        "etag": "\"900cd7-6592f9ab2ad80\"",
+        "date": "Thu, 22 Oct 2026 05:19:29 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:19:29.635899Z",
+      "retrieval_completed_utc": "2026-10-22T05:19:30.315866Z",
+      "gz_sha256": "7643ecdd61ce6677492fb6139f209f02583ef8952c0757cbf86733ed52a1119e",
+      "gz_bytes": 9440471,
+      "tif_sha256": "750263b687bcc11de7f7f1d8b1377b99f6aeb0ae5382c79261c9684535bd07d7",
+      "local_tif_sha256": "750263b687bcc11de7f7f1d8b1377b99f6aeb0ae5382c79261c9684535bd07d7",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-04": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M04_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "8599359",
+        "last-modified": "Sun, 16 Aug 2026 20:07:36 GMT",
+        "etag": "\"83373f-6592f9ad13200\"",
+        "date": "Thu, 22 Oct 2026 05:19:35 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:19:35.678046Z",
+      "retrieval_completed_utc": "2026-10-22T05:19:36.447598Z",
+      "gz_sha256": "a46a7ef98b0351f6fef5087831b2fdea0f0235d930094b6b07dd9c02848a2271",
+      "gz_bytes": 8599359,
+      "tif_sha256": "0567c1c7e263b827bd8a34782a65fab4e49d584264c90eb5475ca786e4ad85ac",
+      "local_tif_sha256": "0567c1c7e263b827bd8a34782a65fab4e49d584264c90eb5475ca786e4ad85ac",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-05": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M05_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "8855171",
+        "last-modified": "Sun, 16 Aug 2026 20:07:38 GMT",
+        "etag": "\"871e83-6592f9aefb680\"",
+        "date": "Thu, 22 Oct 2026 05:19:41 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:19:41.664827Z",
+      "retrieval_completed_utc": "2026-10-22T05:19:42.243012Z",
+      "gz_sha256": "172c6f02ae3a5abbb7ee70ca736a41d32d2487a3e9f4431582a91d47a59bc089",
+      "gz_bytes": 8855171,
+      "tif_sha256": "f3f7ba6d8dc2623ab3a1405831b469b01abb12e393d8b1a66f9dbb883b92b6e1",
+      "local_tif_sha256": "f3f7ba6d8dc2623ab3a1405831b469b01abb12e393d8b1a66f9dbb883b92b6e1",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-06": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M06_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "9912736",
+        "last-modified": "Sun, 16 Aug 2026 20:07:40 GMT",
+        "etag": "\"9741a0-6592f9b0e3b00\"",
+        "date": "Thu, 22 Oct 2026 05:19:47 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:19:47.370219Z",
+      "retrieval_completed_utc": "2026-10-22T05:19:48.124871Z",
+      "gz_sha256": "6c1bdd614511abe5d19661796b5d2da2307f9ec5a796a6a1079d55fdad720791",
+      "gz_bytes": 9912736,
+      "tif_sha256": "f07f0b7a1cd476f64dece9acc1e72a5e29dd4599f1c927d7e407e1346f4d5736",
+      "local_tif_sha256": "f07f0b7a1cd476f64dece9acc1e72a5e29dd4599f1c927d7e407e1346f4d5736",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-07": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M07_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "10444555",
+        "last-modified": "Sun, 16 Aug 2026 20:07:43 GMT",
+        "etag": "\"9f5f0b-6592f9b3c01c0\"",
+        "date": "Thu, 22 Oct 2026 05:19:53 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:19:53.334671Z",
+      "retrieval_completed_utc": "2026-10-22T05:19:54.088783Z",
+      "gz_sha256": "e9ecf5885c3911d0c0f76a4b24ab6e299b4d298346bb96288097a984cc81e195",
+      "gz_bytes": 10444555,
+      "tif_sha256": "bce75b47b6a4622487c7d454bd63fa1ec643570a183a4f23a3772efd7afd067e",
+      "local_tif_sha256": "bce75b47b6a4622487c7d454bd63fa1ec643570a183a4f23a3772efd7afd067e",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-08": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M08_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "10528866",
+        "last-modified": "Sun, 16 Aug 2026 20:07:45 GMT",
+        "etag": "\"a0a862-6592f9b5a8640\"",
+        "date": "Thu, 22 Oct 2026 05:19:59 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:19:59.275905Z",
+      "retrieval_completed_utc": "2026-10-22T05:19:59.973868Z",
+      "gz_sha256": "3f33389edeb463557f2041011a938885aac49cbcd3fcc23b057f55a7385872c2",
+      "gz_bytes": 10528866,
+      "tif_sha256": "7bfcc07ffa0979ae3b4152036d5c77b1a44dc14dc7d396747296a0a205608f3c",
+      "local_tif_sha256": "7bfcc07ffa0979ae3b4152036d5c77b1a44dc14dc7d396747296a0a205608f3c",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-09": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M09_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "10250120",
+        "last-modified": "Sun, 16 Aug 2026 20:07:48 GMT",
+        "etag": "\"9c6788-6592f9b884d00\"",
+        "date": "Thu, 22 Oct 2026 05:20:05 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:20:04.969422Z",
+      "retrieval_completed_utc": "2026-10-22T05:20:05.689227Z",
+      "gz_sha256": "e4ab07ac4b26b2fd8831ee87bf2360e09968fa732a764c525d5821044563b21a",
+      "gz_bytes": 10250120,
+      "tif_sha256": "0bb654115127208d04d1807469556891b5532d52432bf85ef9108c75b8919f15",
+      "local_tif_sha256": "0bb654115127208d04d1807469556891b5532d52432bf85ef9108c75b8919f15",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-10": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M10_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "9955221",
+        "last-modified": "Sun, 16 Aug 2026 20:07:50 GMT",
+        "etag": "\"97e795-6592f9ba6d180\"",
+        "date": "Thu, 22 Oct 2026 05:20:10 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:20:10.747275Z",
+      "retrieval_completed_utc": "2026-10-22T05:20:11.555737Z",
+      "gz_sha256": "59db1ef7cca9cdec94e439ad56ffa981d5a89e4579e1b0a2f617606ecdf9a300",
+      "gz_bytes": 9955221,
+      "tif_sha256": "22d9d71a96877c40e2f62815af4833d90f00fb8c353da4dffbb87bcbe16e1c33",
+      "local_tif_sha256": "22d9d71a96877c40e2f62815af4833d90f00fb8c353da4dffbb87bcbe16e1c33",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-11": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M11_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "9776442",
+        "last-modified": "Sun, 16 Aug 2026 20:07:52 GMT",
+        "etag": "\"952d3a-6592f9bc55600\"",
+        "date": "Thu, 22 Oct 2026 05:20:17 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:20:17.192672Z",
+      "retrieval_completed_utc": "2026-10-22T05:20:17.896630Z",
+      "gz_sha256": "bbc5ecf5d330fc468f25e67af940c8ea58032d3b61759033a5243c4a91d52618",
+      "gz_bytes": 9776442,
+      "tif_sha256": "ce75f192bd3fcc7d4d65007f365e162e6bdece3137e19a6c554096acd8f991a3",
+      "local_tif_sha256": "ce75f192bd3fcc7d4d65007f365e162e6bdece3137e19a6c554096acd8f991a3",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    },
+    "2025-12": {
+      "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M12_Mean.tif.gz",
+      "http_status": 200,
+      "headers": {
+        "content-length": "9424574",
+        "last-modified": "Sun, 16 Aug 2026 20:07:55 GMT",
+        "etag": "\"8fcebe-6592f9bf31cc0\"",
+        "date": "Thu, 22 Oct 2026 05:20:23 GMT"
+      },
+      "retrieval_started_utc": "2026-10-22T05:20:23.020804Z",
+      "retrieval_completed_utc": "2026-10-22T05:20:23.713412Z",
+      "gz_sha256": "a4430b321e7b670ab5c6756d54f74bd9f439973c9f14458fe9797cd11f9f899a",
+      "gz_bytes": 9424574,
+      "tif_sha256": "6bd3aba2c948db76fad6138fb661122f96580cb42378ec01d166a6288aa8a465",
+      "local_tif_sha256": "6bd3aba2c948db76fad6138fb661122f96580cb42378ec01d166a6288aa8a465",
+      "local_tif_identical": true,
+      "areas_with_value": 5494
+    }
+  },
+  "output": {
+    "path": "fewsnet_gosif_v3_mean_2025.csv",
+    "rows": 68616,
+    "sha256": "a1ad53fac2498a2f97d60d134caa7bd5ec2153729ac6d4cbde6ed1f18b354dd9"
+  },
+  "completed_utc": "2026-10-22T05:20:28.888121Z"
+}

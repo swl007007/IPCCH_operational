@@ -13,6 +13,8 @@ import joblib
 
 from fewsnet_partitioned_rf_pipeline.config import (
     FEATURE_CONTRACT_PATH,
+    FULL_DATA_PACKAGE_SCHEMA,
+    FULL_DATA_TRAINING_REPORT_SCHEMA,
     PARTITION_ASSET_PATH,
     PARTITION_ASSET_SHA256,
 )
@@ -45,6 +47,11 @@ _CONTENT_FILES = tuple(
     filename for filename in LOCAL_PACKAGE_FILES if filename != "checksums.json"
 )
 _REPORT_FIELDS = {"training_report", "threshold_report"}
+# Manifest schema name and suite-version prefix per package variant.
+_MANIFEST_VARIANTS = {
+    "fewsnet-local-model-package-v1": ("local-model-package", "local"),
+    FULL_DATA_PACKAGE_SCHEMA: ("local-model-package-full-data", "full"),
+}
 _APPROVED_FEATURE_CONTRACT_SHA256 = (
     "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b"
 )
@@ -345,12 +352,19 @@ def _shift_month(month: str, months: int) -> str:
     return f"{shifted_year:04d}-{shifted_zero_based_month + 1:02d}"
 
 
+def _month_ranges(manifest: Mapping[str, object]) -> tuple[str, ...]:
+    if manifest["schema_version"] == FULL_DATA_PACKAGE_SCHEMA:
+        return ("training_target_month_range",)
+    return ("training_target_month_range", "validation_target_month_range")
+
+
 def _expected_suite_version(manifest: Mapping[str, object]) -> str:
     feature_month = str(manifest["feature_month"])
     source_git_commit = str(manifest["source_git_commit"])
     panel_sha256 = str(manifest["source_panel"]["sha256"])
+    prefix = _MANIFEST_VARIANTS[str(manifest["schema_version"])][1]
     return (
-        f"local-{feature_month.replace('-', '')}-"
+        f"{prefix}-{feature_month.replace('-', '')}-"
         f"{source_git_commit[:12]}-{panel_sha256[:12]}"
     )
 
@@ -370,10 +384,7 @@ def _validate_manifest_identities(manifest: Mapping[str, object]) -> None:
             "local package target_month does not match feature_month and horizon"
         )
     latest_label_month = manifest["latest_label_month"]
-    for range_name in (
-        "training_target_month_range",
-        "validation_target_month_range",
-    ):
+    for range_name in _month_ranges(manifest):
         if manifest[range_name]["end"] != latest_label_month:
             raise PackageValidationError(
                 f"local package {range_name} must end at latest_label_month"
@@ -385,8 +396,11 @@ def _manifest(
     metadata: LocalPackageMetadata,
     training_report: Mapping,
 ) -> dict[str, object]:
+    full_data = training_report["schema_version"] == FULL_DATA_TRAINING_REPORT_SCHEMA
     manifest: dict[str, object] = {
-        "schema_version": "fewsnet-local-model-package-v1",
+        "schema_version": (
+            FULL_DATA_PACKAGE_SCHEMA if full_data else "fewsnet-local-model-package-v1"
+        ),
         "runtime_backend": "local_python",
         "suite_version": metadata.suite_version,
         "feature_month": metadata.feature_month,
@@ -413,14 +427,17 @@ def _manifest(
         "training_target_month_range": dict(
             training_report["training_target_month_range"]
         ),
-        "validation_target_month_range": dict(
-            training_report["validation_target_month_range"]
-        ),
         "files": list(LOCAL_PACKAGE_FILES),
         "status": "validated",
     }
+    if full_data:
+        manifest["fit_mode"] = "all_eligible_history_no_evaluation"
+    else:
+        manifest["validation_target_month_range"] = dict(
+            training_report["validation_target_month_range"]
+        )
     try:
-        validate_payload("local-model-package", manifest)
+        validate_payload(_MANIFEST_VARIANTS[manifest["schema_version"]][0], manifest)
     except ValueError as exc:
         raise PackageValidationError(str(exc)) from exc
     _validate_manifest_identities(manifest)
@@ -534,8 +551,11 @@ def _read_and_validate_manifest(package_dir: Path) -> dict[str, object]:
         package_dir / "local_model_manifest.json",
         "local_model_manifest.json",
     )
+    variant = _MANIFEST_VARIANTS.get(manifest.get("schema_version"))
+    if variant is None:
+        raise PackageValidationError("local model manifest has an unknown schema_version")
     try:
-        validate_payload("local-model-package", manifest)
+        validate_payload(variant[0], manifest)
     except ValueError as exc:
         raise PackageValidationError(str(exc)) from exc
     if set(manifest["files"]) != set(LOCAL_PACKAGE_FILES):
@@ -624,10 +644,16 @@ def _validate_contract_partition_and_reports(
             "threshold_report.json",
         )
     )
-    for range_name in (
-        "training_target_month_range",
-        "validation_target_month_range",
-    ):
+    expected_report_schema = (
+        FULL_DATA_TRAINING_REPORT_SCHEMA
+        if manifest["schema_version"] == FULL_DATA_PACKAGE_SCHEMA
+        else "fewsnet-horizon-training-report-v1"
+    )
+    if training_report["schema_version"] != expected_report_schema:
+        raise PackageValidationError(
+            "training_report schema_version does not match the package variant"
+        )
+    for range_name in _month_ranges(manifest):
         if manifest[range_name] != training_report[range_name]:
             raise PackageValidationError(
                 f"manifest {range_name} does not match training_report.json"

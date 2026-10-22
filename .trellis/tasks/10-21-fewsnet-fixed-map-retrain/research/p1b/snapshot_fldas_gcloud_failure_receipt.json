@@ -1,0 +1,10 @@
+{"recorded_utc": "2026-10-22T05:37:52Z", "command": "gcloud storage cp gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/fewsnet/fldas.csv#1791482199705845 <local>", "observed": "sliced download temp file reached object size 53615227 bytes at ~05:32:30Z but the process never finalized (no progress for >5 min)", "action": "stopped task-owned gcloud PIDs (251546
+251867
+251877
+251881
+251883
+251886
+251889
+251892
+251895
+251898) and loop shell 251468; temp file discarded; replaced by single-stream generation-pinned Python download", "temp_file_bytes": 53615227}

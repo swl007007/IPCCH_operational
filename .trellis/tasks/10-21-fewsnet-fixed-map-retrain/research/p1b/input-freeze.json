@@ -1,0 +1,74 @@
+{
+  "frozen_at_utc": "2026-10-22T05:52:09.660336+00:00",
+  "fit_input": {
+    "normalized_panel": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/FEWSNET_versioned_panel_20261022.normalized-v1.csv",
+      "sha256": "e2ddba022aa00a1b575df044fe64ef04ed723b5d6855349c58fb1bfe149c20c5",
+      "rows": 1149318
+    },
+    "normalization_audit": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/FEWSNET_versioned_panel_20261022.normalized-v1.audit.json",
+      "sha256": "c5b83faf1a2fa764d51e8e7766df5082d428fc5c72e1e2bf52dad1ffb69b87ce"
+    },
+    "origin_month": "2026-10",
+    "latest_label_month": "2026-06",
+    "latest_feature_month": "2026-09"
+  },
+  "built_from": {
+    "source_panel": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/FEWSNET_versioned_source_panel_20261022.csv",
+      "sha256": "4e6b93f27bf7df3330c95fb5b1fa697aeaa1ba011626fb747213698ed1e83d03"
+    },
+    "change_ledger": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/change_ledger.csv.gz",
+      "sha256": "0fe55eaae1924fdb5f7326f954f57abddd37a751659549289e5908ada5f0c80d",
+      "rows": 586031
+    },
+    "build_report": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/build_report.json",
+      "sha256": "69ebc02a019e2030e831ac13861de4dda89cd159238dfed38c74dd29a74f5eb1"
+    },
+    "build_config": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1-config.json",
+      "sha256": "23304882094ba76219f6ea915a3ffe3520fd68b37c0ba291d29a9d181632a076"
+    },
+    "builder": "research/p1b/build_versioned_panel.py"
+  },
+  "sources": {
+    "base_panel": {
+      "path": "cloud_pipeline/bootstrap/assets/fewsnet/history_panel.csv",
+      "sha256": "ddcd30f255e86e2465819a28f11facaca87221c0fd8be6e6fd4ff5fd677149b8",
+      "provenance": "training panel 510375f5 + September refresh_h5_inputs WFP (2025-02..2026-04) and ACLED (2025-05..07); research/p1b/bootstrap_vs_training.json"
+    },
+    "labels": {
+      "hdx_freeze": "hdx-cs-20261022T043937Z",
+      "crosswalk_decisions_sha256": "665a9feaad22184b2b4e0645e600ab3336fc0d6654eef87d1af50c951946e900",
+      "acceptance": "research/p1a-acceptance.md"
+    },
+    "remote_snapshot": {
+      "prefix": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/fewsnet",
+      "receipt": "research/p1b/snapshot_features_download_receipt.jsonl"
+    },
+    "gosif_v3_2025": {
+      "output_sha256": "a1ad53fac2498a2f97d60d134caa7bd5ec2153729ac6d4cbde6ed1f18b354dd9",
+      "receipt": "research/p1b/gosif_v3_receipt.json"
+    },
+    "wfp": {
+      "fews_country_month_sha256": "9bdbc2c78a9061b56e560aeba644def9fd3d2c69f3c2e82311be69e10eaf3101",
+      "report": "research/p1b/wfp_report.json",
+      "raw_dir": "food-crisis-research/staging/ipcch-update-202610/sources/wfp_price/raw/hdx_2026-10-19"
+    },
+    "acled": {
+      "raw_sha256": "793070a27fb3f854879fa9bbae8b90bd676295fa9ea38989de262f6beb313f3d",
+      "meta": "research/p1b/acled_fetch_meta.json",
+      "as_of_evidence": "research/supervisor-acled-source-check.json"
+    },
+    "ee_availability": "research/p1b/ee_latest_months.json"
+  },
+  "runtime": {
+    "fit_env": "/home/swl007007/.venvs/fewsnet-fit-lock-20261022",
+    "lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+    "verification": "research/supervisor-fit-runtime-verification.json"
+  },
+  "eligibility": "research/p1b/eligibility_preview.json"
+}

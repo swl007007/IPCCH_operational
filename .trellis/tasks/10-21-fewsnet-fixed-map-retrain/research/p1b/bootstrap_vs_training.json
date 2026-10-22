@@ -1,0 +1,182 @@
+{
+ "training_shape": [
+  1120728,
+  88
+ ],
+ "bootstrap_shape": [
+  1120728,
+  88
+ ],
+ "same_columns_in_order": true,
+ "same_keys": true,
+ "differing_columns": {
+  "distance_to_nearest_acled": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "event_count_battles": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "event_count_explosions": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "event_count_violence": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "sum_fatalities_battles": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "sum_fatalities_explosions": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "sum_fatalities_violence": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "event_count_battles_w5": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "event_count_explosions_w5": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "event_count_violence_w5": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "sum_fatalities_battles_w5": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "sum_fatalities_explosions_w5": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "sum_fatalities_violence_w5": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "event_count_battles_w10": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "event_count_explosions_w10": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "event_count_violence_w10": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "sum_fatalities_battles_w10": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "sum_fatalities_explosions_w10": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "sum_fatalities_violence_w10": {
+   "rows": 16061,
+   "months": [
+    "2025-05",
+    "2025-07"
+   ],
+   "n_months": 3
+  },
+  "WFP_Price": {
+   "rows": 55834,
+   "months": [
+    "2025-02",
+    "2026-04"
+   ],
+   "n_months": 15
+  },
+  "WFP_Price_std": {
+   "rows": 55834,
+   "months": [
+    "2025-02",
+    "2026-04"
+   ],
+   "n_months": 15
+  }
+ }
+}

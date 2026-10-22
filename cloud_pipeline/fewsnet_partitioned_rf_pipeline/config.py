@@ -17,6 +17,12 @@ RF_PARAMS = {
     "random_state": 5,
     "n_jobs": 1,
 }
+# Full-history production fit (2026-10): thresholds are fixed, never searched.
+FULL_DATA_THRESHOLDS = {"0m": 0.48, "6m": 0.41, "12m": 0.45}
+FULL_DATA_THRESHOLD_SOURCE_SUITE = "local-202604-57cb3b981198-510375f58cd8"
+FULL_DATA_TRAINING_REPORT_SCHEMA = "fewsnet-horizon-training-report-full-data-v1"
+FIXED_THRESHOLD_REPORT_SCHEMA = "fewsnet-fixed-threshold-report-v1"
+FULL_DATA_PACKAGE_SCHEMA = "fewsnet-local-model-package-full-data-v1"
 PARENT_MODEL_IDS = {
     "0m": "fewsnet-partitioned-rf-0m",
     "6m": "fewsnet-partitioned-rf-6m",

@@ -1,0 +1,19 @@
+{
+ "url": "https://acleddata.com/api/acled/read",
+ "params": {
+  "_format": "json",
+  "event_date": "2025-01-01|2026-10-21",
+  "event_date_where": "BETWEEN",
+  "event_type": "Battles|Explosions/Remote violence|Violence against civilians",
+  "iso": "4|24|50|108|120|140|148|180|204|214|218|222|231|275|288|320|324|332|340|384|404|422|430|450|454|466|478|508|562|566|586|626|686|694|706|710|716|728|729|768|800|834|854|887|132|262|270|426|516|624|748|762|894",
+  "limit": 5000
+ },
+ "fetched_utc": "2026-10-22T05:22:53Z",
+ "pages": 10,
+ "rows": 48706,
+ "api_total": 48706,
+ "unique_event_ids": 48706,
+ "extra_fields": [],
+ "file": "sources/acled/raw/acled_api_2025-01-01_2026-10-21_fetched_2026-10-22.csv",
+ "sha256": "793070a27fb3f854879fa9bbae8b90bd676295fa9ea38989de262f6beb313f3d"
+}

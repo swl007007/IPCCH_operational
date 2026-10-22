@@ -1,0 +1,707 @@
+{
+  "inputs": {
+    "base_panel": {
+      "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/bootstrap/assets/fewsnet/history_panel.csv",
+      "sha256": "ddcd30f255e86e2465819a28f11facaca87221c0fd8be6e6fd4ff5fd677149b8"
+    },
+    "crosswalk_decisions": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/crosswalk/strict-v3/strict_crosswalk_decisions.csv",
+      "sha256": "665a9feaad22184b2b4e0645e600ab3336fc0d6654eef87d1af50c951946e900"
+    },
+    "snapshot_evi": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/remote/pinned-full-window-20261008c/features_fewsnet/evi.csv",
+      "sha256": "32fbe9676480de1c43e0e8c1cf3446f7350a58cfa7fb9389bdc975329371645d"
+    },
+    "snapshot_fldas": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/remote/pinned-full-window-20261008c/features_fewsnet/fldas.csv",
+      "sha256": "a8a47ff2b7ded7d7de2ff7aab24d5bb7406ecb797674fa8149fd7808034b934e"
+    },
+    "snapshot_viirs": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/remote/pinned-full-window-20261008c/features_fewsnet/viirs.csv",
+      "sha256": "0ece15a599befcb67c9d7725ec7458696f1013acb8c7fb59c5fe58c862156dec"
+    },
+    "snapshot_gosif_mean": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/remote/pinned-full-window-20261008c/features_fewsnet/gosif_mean.csv",
+      "sha256": "22fc39cb49e6cb6b8fcb9843a3b3d9b42dedc460dadaf9a12caf3db15ade7ad2"
+    },
+    "gosif_v3_2025": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/gosif_v3/fewsnet_gosif_v3_mean_2025.csv",
+      "sha256": "a1ad53fac2498a2f97d60d134caa7bd5ec2153729ac6d4cbde6ed1f18b354dd9"
+    },
+    "wfp_fews_country_month": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/wfp/fewsnet_wfp_country_month.csv",
+      "sha256": "9bdbc2c78a9061b56e560aeba644def9fd3d2c69f3c2e82311be69e10eaf3101"
+    },
+    "acled_raw": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/acled/raw/acled_api_2025-01-01_2026-10-21_fetched_2026-10-22.csv",
+      "sha256": "793070a27fb3f854879fa9bbae8b90bd676295fa9ea38989de262f6beb313f3d"
+    }
+  },
+  "calendar": {
+    "base_rows": 1120728,
+    "appended_rows": 28590,
+    "appended_months": [
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09"
+    ],
+    "copied_time_invariant_columns": [
+      "FEWSNET_admin_code",
+      "unit_name",
+      "ADMIN0",
+      "ADMIN1",
+      "ADMIN2",
+      "ADMIN3",
+      "ISO",
+      "lat",
+      "lon",
+      "AEZ_9000",
+      "AEZ_12000",
+      "AEZ_19000",
+      "sg_phh2o_5-15cm",
+      "AEZ_34000",
+      "slope",
+      "AEZ_7000",
+      "AEZ_17000",
+      "AEZ_10000",
+      "crop",
+      "range",
+      "sg_cec_5-15cm",
+      "AEZ_4000",
+      "ISO3",
+      "AEZ_38000",
+      "sg_cfvo_5-15cm",
+      "sg_soc_5-15cm",
+      "distance_to_river",
+      "market_access",
+      "AEZ_15000",
+      "AEZ_40000",
+      "AEZ_33000",
+      "AEZ_36000",
+      "ruggedness",
+      "AEZ_32000",
+      "elevation",
+      "AEZ_25000",
+      "AEZ_31000",
+      "sg_nitrogen_5-15cm",
+      "AEZ_43000"
+    ]
+  },
+  "labels": {
+    "cleared_proven_fills": 2632,
+    "cleared_rows_other_label_columns_nonnull": {
+      "fews_ha": 0,
+      "fews_ipc_adjusted": 0,
+      "fews_proj_near": 0,
+      "fews_proj_med": 0
+    },
+    "attached_observations_by_month": {
+      "2024-10": 350,
+      "2025-10": 351,
+      "2026-02": 369,
+      "2026-06": 4039
+    }
+  },
+  "remote": {
+    "EVI:snapshot_evi": {
+      "filled": 22864,
+      "cells_both_present": 40012,
+      "exact": 2104,
+      "abs_diff_median": 2.5577264750609174e-09,
+      "abs_diff_p90": 1641.7864182434696,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "Rainf_f_tavg_mean:snapshot_fldas": {
+      "filled": 20524,
+      "cells_both_present": 35917,
+      "exact": 2196,
+      "abs_diff_median": 8.604160678209183e-18,
+      "abs_diff_p90": 5.626890362529754e-06,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "Tair_f_tavg_mean:snapshot_fldas": {
+      "filled": 20524,
+      "cells_both_present": 35917,
+      "exact": 153,
+      "abs_diff_median": 2.914362084993627e-10,
+      "abs_diff_p90": 0.4610046387125067,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "nightlight:snapshot_viirs": {
+      "filled": 22476,
+      "cells_both_present": 39333,
+      "exact": 154,
+      "abs_diff_median": 0.23562500268212716,
+      "abs_diff_p90": 11.826218789815927,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "nightlight_sd:snapshot_viirs": {
+      "filled": 22476,
+      "cells_both_present": 39333,
+      "exact": 1067,
+      "abs_diff_median": 7.489619872329961e-05,
+      "abs_diff_p90": 0.04769279072711012,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "Rainf_f_tavg_mean:replace_proven_carry_forward_2026-04": {
+      "rows_in_month": 5718,
+      "share_equal_to_previous_month": 1.0,
+      "replaced_with_observation": 5131,
+      "kept_carried_value_no_observation": 587,
+      "cells_both_present": 5131,
+      "exact": 50,
+      "abs_diff_median": 1.3165463315e-05,
+      "abs_diff_p90": 5.2217785922633544e-05,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "Tair_f_tavg_mean:replace_proven_carry_forward_2026-04": {
+      "rows_in_month": 5718,
+      "share_equal_to_previous_month": 1.0,
+      "replaced_with_observation": 5131,
+      "kept_carried_value_no_observation": 587,
+      "cells_both_present": 5131,
+      "exact": 0,
+      "abs_diff_median": 0.8159354071704001,
+      "abs_diff_p90": 3.340357462918007,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "gpp_mean:gosif_v3_2025": {
+      "filled": 65928,
+      "cells_both_present": 0,
+      "exact": 0,
+      "abs_diff_median": null,
+      "abs_diff_p90": null,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "gpp_mean:snapshot_gosif_v2": {
+      "filled": 0,
+      "cells_both_present": 5494,
+      "exact": 123,
+      "abs_diff_median": 0.3125,
+      "abs_diff_p90": 2.0,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "pending": {
+      "EVI 2026-09": "provider published (EE 2026_09_01); extraction pending, cell missing"
+    }
+  },
+  "wfp": {
+    "WFP_Price:hdx_wfp_fews_mom": {
+      "filled": 36785,
+      "cells_both_present": 64661,
+      "exact": 0,
+      "abs_diff_median": 2.7944130725565373,
+      "abs_diff_p90": 10.11196349973261,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "WFP_Price_std:hdx_wfp_fews_mom": {
+      "filled": 36785,
+      "cells_both_present": 64661,
+      "exact": 0,
+      "abs_diff_median": 7.338683724798532,
+      "abs_diff_p90": 33.6753027021615,
+      "panel_only": 0,
+      "source_only_filled": 0
+    },
+    "not_filled_before_mom_era": {
+      "reason": "historical WFP_Price before 2025-02 follows a different level-type definition (April training panel e.g. ETH 2450.9, SSD 1943.4, YEM 551.0, ZWE 4591.9); MoM index values would mix definitions within that era",
+      "area_month_cells_with_hdx_value": 589425,
+      "country_months": 2719,
+      "month_range": [
+        "2010-01",
+        "2025-01"
+      ]
+    }
+  },
+  "acled": {
+    "aggregation": {
+      "cutoff": "2025-09",
+      "raw_rows": 48706,
+      "rows_through_cutoff": 45299,
+      "actual_date_min": "2025-01-01",
+      "actual_date_max": "2025-10-22",
+      "admin3_rows": 6649,
+      "missing_location_key_rows_excluded_by_legacy_groupby": 28959,
+      "event_type_counts": {
+        "Violence against civilians": 17873,
+        "Battles": 15030,
+        "Explosions/Remote violence": 12396
+      },
+      "matching": "same month, globally nearest admin3 mean point, haversine radius 6371km, <=500km"
+    },
+    "fill_gap_rows:2025-01..2025-06": {
+      "rows": 34308,
+      "rows_applied": 4862,
+      "rows_without_match_after": 2788,
+      "existing_rows_kept": 26658,
+      "kept_rows_revision_event_count_battles": {
+        "cells_both_present": 26419,
+        "exact": 23115,
+        "abs_diff_median": 0.0,
+        "abs_diff_p90": 1.0,
+        "panel_only": 239,
+        "source_only_filled": 0
+      },
+      "kept_rows_revision_distance": {
+        "cells_both_present": 26419,
+        "exact": 15713,
+        "abs_diff_median": 0.0,
+        "abs_diff_p90": 88.66073241845653,
+        "panel_only": 239,
+        "source_only_filled": 0
+      },
+      "by_month_rows_applied": {
+        "2025-01": 891,
+        "2025-02": 882,
+        "2025-03": 946,
+        "2025-04": 2140,
+        "2025-05": 3
+      }
+    },
+    "replace_truncated:2025-07..2025-07": {
+      "rows": 5718,
+      "rows_applied": 5381,
+      "rows_without_match_after": 337,
+      "existing_rows_kept": 0,
+      "kept_rows_revision_event_count_battles": {
+        "cells_both_present": 0,
+        "exact": 0,
+        "abs_diff_median": null,
+        "abs_diff_p90": null,
+        "panel_only": 0,
+        "source_only_filled": 0
+      },
+      "kept_rows_revision_distance": {
+        "cells_both_present": 0,
+        "exact": 0,
+        "abs_diff_median": null,
+        "abs_diff_p90": null,
+        "panel_only": 0,
+        "source_only_filled": 0
+      },
+      "by_month_rows_applied": {
+        "2025-07": 5381
+      }
+    },
+    "append_complete:2025-08..2025-09": {
+      "rows": 11436,
+      "rows_applied": 10476,
+      "rows_without_match_after": 960,
+      "existing_rows_kept": 0,
+      "kept_rows_revision_event_count_battles": {
+        "cells_both_present": 0,
+        "exact": 0,
+        "abs_diff_median": null,
+        "abs_diff_p90": null,
+        "panel_only": 0,
+        "source_only_filled": 0
+      },
+      "kept_rows_revision_distance": {
+        "cells_both_present": 0,
+        "exact": 0,
+        "abs_diff_median": null,
+        "abs_diff_p90": null,
+        "panel_only": 0,
+        "source_only_filled": 0
+      },
+      "by_month_rows_applied": {
+        "2025-08": 5296,
+        "2025-09": 5180
+      }
+    },
+    "not_filled": {
+      "months_before_2025-01": "outside the new API pull (event dates from 2025-01-01)",
+      "months_after_2025-09": "incomplete (2025-10 partial) or unavailable under the account's ~12-month delay; left missing"
+    }
+  },
+  "invariants": {
+    "rows": 1149318,
+    "areas": 5718,
+    "month_min": "2010-01",
+    "month_max": "2026-09",
+    "base_cells_changed_without_ledger": 0,
+    "latest_label_month": "2026-06",
+    "label_rows": 273353
+  },
+  "outputs": {
+    "source_panel": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/FEWSNET_versioned_source_panel_20261022.csv",
+      "sha256": "4e6b93f27bf7df3330c95fb5b1fa697aeaa1ba011626fb747213698ed1e83d03",
+      "rows": 1149318
+    },
+    "change_ledger": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/change_ledger.csv.gz",
+      "sha256": "0fe55eaae1924fdb5f7326f954f57abddd37a751659549289e5908ada5f0c80d",
+      "rows": 596293,
+      "by_reason_column": [
+        {
+          "reason": "acled_append_complete",
+          "column": "distance_to_nearest_acled",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "event_count_battles",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "event_count_battles_w10",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "event_count_battles_w5",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "event_count_explosions",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "event_count_explosions_w10",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "event_count_explosions_w5",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "event_count_violence",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "event_count_violence_w10",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "event_count_violence_w5",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "sum_fatalities_battles",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "sum_fatalities_battles_w10",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "sum_fatalities_battles_w5",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "sum_fatalities_explosions",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "sum_fatalities_explosions_w10",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "sum_fatalities_explosions_w5",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "sum_fatalities_violence",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "sum_fatalities_violence_w10",
+          "n": 10476
+        },
+        {
+          "reason": "acled_append_complete",
+          "column": "sum_fatalities_violence_w5",
+          "n": 10476
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "distance_to_nearest_acled",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "event_count_battles",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "event_count_battles_w10",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "event_count_battles_w5",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "event_count_explosions",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "event_count_explosions_w10",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "event_count_explosions_w5",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "event_count_violence",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "event_count_violence_w10",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "event_count_violence_w5",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "sum_fatalities_battles",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "sum_fatalities_battles_w10",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "sum_fatalities_battles_w5",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "sum_fatalities_explosions",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "sum_fatalities_explosions_w10",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "sum_fatalities_explosions_w5",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "sum_fatalities_violence",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "sum_fatalities_violence_w10",
+          "n": 4862
+        },
+        {
+          "reason": "acled_fill_gap_rows",
+          "column": "sum_fatalities_violence_w5",
+          "n": 4862
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "distance_to_nearest_acled",
+          "n": 2808
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "event_count_battles",
+          "n": 1234
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "event_count_battles_w10",
+          "n": 2958
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "event_count_battles_w5",
+          "n": 1794
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "event_count_explosions",
+          "n": 527
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "event_count_explosions_w10",
+          "n": 1514
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "event_count_explosions_w5",
+          "n": 658
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "event_count_violence",
+          "n": 1568
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "event_count_violence_w10",
+          "n": 3478
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "event_count_violence_w5",
+          "n": 1981
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "sum_fatalities_battles",
+          "n": 959
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "sum_fatalities_battles_w10",
+          "n": 2768
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "sum_fatalities_battles_w5",
+          "n": 1421
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "sum_fatalities_explosions",
+          "n": 316
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "sum_fatalities_explosions_w10",
+          "n": 1105
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "sum_fatalities_explosions_w5",
+          "n": 408
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "sum_fatalities_violence",
+          "n": 1079
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "sum_fatalities_violence_w10",
+          "n": 2763
+        },
+        {
+          "reason": "acled_replace_truncated",
+          "column": "sum_fatalities_violence_w5",
+          "n": 1426
+        },
+        {
+          "reason": "clear_proven_fillna1_target",
+          "column": "fews_ipc",
+          "n": 2632
+        },
+        {
+          "reason": "clear_proven_fillna1_target",
+          "column": "fews_ipc_crisis",
+          "n": 2632
+        },
+        {
+          "reason": "gosif_v3_2025",
+          "column": "gpp_mean",
+          "n": 65928
+        },
+        {
+          "reason": "hdx_strict_crosswalk_observation",
+          "column": "fews_ipc",
+          "n": 5109
+        },
+        {
+          "reason": "hdx_strict_crosswalk_observation",
+          "column": "fews_ipc_crisis",
+          "n": 5109
+        },
+        {
+          "reason": "hdx_wfp_fews_mom",
+          "column": "WFP_Price",
+          "n": 36785
+        },
+        {
+          "reason": "hdx_wfp_fews_mom",
+          "column": "WFP_Price_std",
+          "n": 36785
+        },
+        {
+          "reason": "replace_proven_carry_forward_2026-04",
+          "column": "Rainf_f_tavg_mean",
+          "n": 5131
+        },
+        {
+          "reason": "replace_proven_carry_forward_2026-04",
+          "column": "Tair_f_tavg_mean",
+          "n": 5131
+        },
+        {
+          "reason": "snapshot_evi",
+          "column": "EVI",
+          "n": 22864
+        },
+        {
+          "reason": "snapshot_fldas",
+          "column": "Rainf_f_tavg_mean",
+          "n": 20524
+        },
+        {
+          "reason": "snapshot_fldas",
+          "column": "Tair_f_tavg_mean",
+          "n": 20524
+        },
+        {
+          "reason": "snapshot_viirs",
+          "column": "nightlight",
+          "n": 22476
+        },
+        {
+          "reason": "snapshot_viirs",
+          "column": "nightlight_sd",
+          "n": 22476
+        }
+      ]
+    }
+  }
+}
