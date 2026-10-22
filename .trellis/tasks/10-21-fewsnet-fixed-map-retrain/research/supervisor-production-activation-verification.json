@@ -1,0 +1,149 @@
+{
+  "checked_utc": "2026-10-22T08:33:25.885863+00:00",
+  "status": "passed",
+  "checks": {
+    "normal_config_intended": true,
+    "normal_models_exact_candidate": true,
+    "default_weights_new": true,
+    "runtime_image_agrees": true,
+    "published_candidate_identity": true,
+    "published_receipt_identity": true,
+    "pointer_matches": true,
+    "delivery-job_matches": true,
+    "prepare-job_matches": true,
+    "workflow_matches": true,
+    "hold_preserved": true,
+    "active_fallback_inventory_exact": true,
+    "fallback:README.md": true,
+    "fallback:manifest.json": true,
+    "fallback:replay_evidence/candidate-release-checks.json": true,
+    "fallback:replay_evidence/candidate_receipt.json": true,
+    "fallback:replay_evidence/cloud_run.json": true,
+    "fallback:replay_evidence/download.json": true,
+    "fallback:replay_evidence/rescore.log": true,
+    "fallback:replay_evidence/supervisor-candidate-artifact-verification.json": true,
+    "fallback:replay_evidence/verify_result.json": true,
+    "fallback:reports/delivery.json": true,
+    "fallback:reports/diagnostic_availability.csv": true,
+    "fallback:reports/fewsnet_assembly.json": true,
+    "fallback:reports/fewsnet_diagnostic_declarations.json": true,
+    "fallback:reports/fewsnet_normalization_audit.json": true,
+    "fallback:reports/inherited_members.json": true,
+    "fallback:reports/ipcch_assembly.json": true,
+    "fallback:reports/ipcch_diagnostic_declarations.json": true,
+    "fallback:scopes/0m/fewsnet/country_confidence.csv": true,
+    "fallback:scopes/0m/fewsnet/country_predictions.csv": true,
+    "fallback:scopes/0m/fewsnet/polygon_confidence.csv": true,
+    "fallback:scopes/0m/fewsnet/polygon_model_mapping.csv": true,
+    "fallback:scopes/0m/fewsnet/polygon_predictions.csv": true,
+    "fallback:scopes/0m/ipcch/country_confidence.csv": true,
+    "fallback:scopes/0m/ipcch/country_predictions.csv": true,
+    "fallback:scopes/0m/ipcch/polygon_model_mapping.csv": true,
+    "fallback:scopes/0m/ipcch/polygon_predictions.csv": true,
+    "fallback:scopes/0m/ipcch/polygon_training_errors.csv": true,
+    "fallback:scopes/12m/fewsnet/country_confidence.csv": true,
+    "fallback:scopes/12m/fewsnet/country_predictions.csv": true,
+    "fallback:scopes/12m/fewsnet/polygon_confidence.csv": true,
+    "fallback:scopes/12m/fewsnet/polygon_model_mapping.csv": true,
+    "fallback:scopes/12m/fewsnet/polygon_predictions.csv": true,
+    "fallback:scopes/12m/ipcch/country_confidence.csv": true,
+    "fallback:scopes/12m/ipcch/country_predictions.csv": true,
+    "fallback:scopes/12m/ipcch/polygon_model_mapping.csv": true,
+    "fallback:scopes/12m/ipcch/polygon_predictions.csv": true,
+    "fallback:scopes/12m/ipcch/polygon_training_errors.csv": true,
+    "fallback:scopes/6m/fewsnet/country_confidence.csv": true,
+    "fallback:scopes/6m/fewsnet/country_predictions.csv": true,
+    "fallback:scopes/6m/fewsnet/polygon_confidence.csv": true,
+    "fallback:scopes/6m/fewsnet/polygon_model_mapping.csv": true,
+    "fallback:scopes/6m/fewsnet/polygon_predictions.csv": true,
+    "fallback:scopes/6m/ipcch/country_confidence.csv": true,
+    "fallback:scopes/6m/ipcch/country_predictions.csv": true,
+    "fallback:scopes/6m/ipcch/polygon_model_mapping.csv": true,
+    "fallback:scopes/6m/ipcch/polygon_predictions.csv": true,
+    "fallback:scopes/6m/ipcch/polygon_training_errors.csv": true,
+    "fallback:shared/fewsnet/country_population_reference.csv": true,
+    "fallback:shared/fewsnet/polygons.geojson": true,
+    "fallback:shared/ipcch/country_population_reference.csv": true,
+    "fallback:shared/ipcch/polygons.geojson": true,
+    "fallback:webapp_model_bundle.tar.gz": true,
+    "active_fallback_manifest": true,
+    "prior_manifest_restorable": true,
+    "prior_archive_restorable": true,
+    "prior_config_restorable": true,
+    "current_pointer_generation": true
+  },
+  "active_models": [
+    {
+      "system": "fewsnet",
+      "horizon_months": 0,
+      "package_id": "full-202610-ff389b11af93-02caeb861750/0m",
+      "package_manifest": {
+        "generation": "1792654968460716",
+        "sha256": "360a58a02d8cd3d9076d60907885af68f3ce4e57cdadc6eb4e3abd7c777853b1",
+        "uri": "gs://food-crisis-test-ipcch-data/models/487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae/fewsnet/0m/full-202610-ff389b11af93-02caeb861750/0m/package.json"
+      }
+    },
+    {
+      "system": "fewsnet",
+      "horizon_months": 6,
+      "package_id": "full-202610-ff389b11af93-02caeb861750/6m",
+      "package_manifest": {
+        "generation": "1792654975994149",
+        "sha256": "43beeb69dfd190dbb85887fa6b6e5bac6a27dd24f6a8c130a6fb24fe1039caa7",
+        "uri": "gs://food-crisis-test-ipcch-data/models/487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae/fewsnet/6m/full-202610-ff389b11af93-02caeb861750/6m/package.json"
+      }
+    },
+    {
+      "system": "fewsnet",
+      "horizon_months": 12,
+      "package_id": "full-202610-ff389b11af93-02caeb861750/12m",
+      "package_manifest": {
+        "generation": "1792654982728868",
+        "sha256": "f5880880c9c4f4927063d54a028a16e62ae1e3182d6f1231252ae8d84ac69734",
+        "uri": "gs://food-crisis-test-ipcch-data/models/487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae/fewsnet/12m/full-202610-ff389b11af93-02caeb861750/12m/package.json"
+      }
+    },
+    {
+      "system": "ipcch",
+      "horizon_months": 0,
+      "package_id": "launch_2026_04_production_safe/scope_0m",
+      "package_manifest": {
+        "generation": "1792654984726710",
+        "sha256": "698a75021f8f3d4083b1da81a2d5a955e09e3ce573bb8d71c22be87ecf64b50c",
+        "uri": "gs://food-crisis-test-ipcch-data/models/487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae/ipcch/0m/launch_2026_04_production_safe/scope_0m/package.json"
+      }
+    },
+    {
+      "system": "ipcch",
+      "horizon_months": 6,
+      "package_id": "launch_2026_04_production_safe/scope_6m",
+      "package_manifest": {
+        "generation": "1792654986795835",
+        "sha256": "93254f49d2e6640c5d0b749b344999df3f8eda51098fc676dc119c15947fcc48",
+        "uri": "gs://food-crisis-test-ipcch-data/models/487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae/ipcch/6m/launch_2026_04_production_safe/scope_6m/package.json"
+      }
+    },
+    {
+      "system": "ipcch",
+      "horizon_months": 12,
+      "package_id": "launch_2026_04_production_safe/scope_12m",
+      "package_manifest": {
+        "generation": "1792654988849840",
+        "sha256": "5799e83acdd42153514966a63b5c03e7288c978d2589a306de77843f2607a0a1",
+        "uri": "gs://food-crisis-test-ipcch-data/models/487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae/ipcch/12m/launch_2026_04_production_safe/scope_12m/package.json"
+      }
+    }
+  ],
+  "pointer": {
+    "release_record": "gs://food-crisis-test-ipcch-data/monthly-staging/releases/fews-candidate-20261022a/release.json",
+    "release_record_generation": "1792657760321065",
+    "run_id": "fews-candidate-20261022a"
+  },
+  "pointer_generation": "1792657760445077",
+  "normal_config": "/home/swl007007/ipcch-operator/food-crisis-test/project.json",
+  "normal_work_dir": "/home/swl007007/ipcch-operator/food-crisis-test-fews-retrain-20261022/operator-state",
+  "fallback": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/fallback/october_2026",
+  "predecessor_fallback": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/fallback/october_2026.predecessor-fews-retrain-20261022",
+  "raw_cloud_evidence": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/supervisor/activated",
+  "next": "Maintenance admission may now be reopened after its built-in fresh reconciliation; task finalization still pending."
+}

@@ -1,0 +1,11 @@
+{
+  "checked_utc": "2026-10-22T08:34:57.018800+00:00",
+  "status": "passed",
+  "checks": {
+    "durable_operation_released": true,
+    "cloud_hold_absent": true
+  },
+  "operation_phase": "released_activated",
+  "operation_file": "/home/swl007007/ipcch-operator/food-crisis-test-fews-retrain-20261022/operator-state/operations/fews-retrain-20261022/operation.json",
+  "raw_cloud_evidence": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/supervisor/activated/hold-after-release-read.json"
+}

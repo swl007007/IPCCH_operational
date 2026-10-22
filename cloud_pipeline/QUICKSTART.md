@@ -25,11 +25,11 @@ Run commands from this directory. This is the monthly FEWSNET/IPCCH pipeline, in
    python pipeline.py run --config /private/project.json      --month 2026-11 --cutoff 2026-11-08T00:00:00Z      --deadline 2026-11-09T00:00:00Z --run-id nov-2026-a      --acled keep --wfp keep
    ```
 
-   Replace the example dates. `--cutoff` fixes the discovery vintage; `--deadline` is the preparation deadline and latest allowed local submission time. Allow several hours for provider extraction. It does not cancel a delivery job already submitted; delivery has its configured four-hour task timeout. Remote sensing is refreshed through the latest eligible published period. A selected origin does not imply every provider has already published that month's observations; gaps/staleness retain the accepted fill and disclosure behavior.
+   Replace the example dates. `--cutoff` fixes the discovery vintage; `--deadline` is the latest allowed submission time of the month's intent. Allow several hours for provider extraction. It does not cancel a delivery job already submitted; delivery has its configured four-hour task timeout. Remote sensing is refreshed through the latest eligible published period. A selected origin does not imply every provider has already published that month's observations; gaps/staleness retain the accepted fill and disclosure behavior.
 
    Replace either source choice with `--acled refresh --acled-raw /private/acled.csv` or `--wfp refresh --wfp-raw /private/wfp.csv`. See [compatible raw formats](OPERATIONS.md#compatible-raw-formats). These choices are independent. Fixed variables and the initial history are reused.
 
-5. The run command waits up to one hour by default. If it returns while preparation is running, repeat the **same complete command, dates and run ID with `--execute`** to finish submission. `status` alone never submits the delivery manifest. Track and download:
+5. The run command publishes the month's workflow intent and returns `submitted`; the cloud Workflow then prepares the snapshot, binds it and runs delivery, so nothing local has to keep running. Repeating the **same complete command and run ID** only resumes an interrupted submission; a changed intent is rejected. Track and download:
 
    ```bash
    python pipeline.py status --config /private/project.json --run-id nov-2026-a

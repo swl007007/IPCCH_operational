@@ -536,3 +536,19 @@ def test_a_config_edit_during_restore_is_never_overwritten(release, monkeypatch)
     with pytest.raises(ValueError, match="normal operator config changed outside this operation"):
         _maintain(r, "restore")
     assert p.read(r.normal)["image_uri"] == "edited-meanwhile"
+
+
+def test_rollback_after_release_rehold_restore_release(release):
+    r = release
+    _ready(r)
+    _promote(r)
+    assert _maintain(r, "release")["status"] == "released_activated"
+    assert r.cloud.latest("gs://data/" + p.HOLD) is None
+    with pytest.raises(ValueError, match="does not hold admission"):
+        _maintain(r, "restore")
+    _maintain(r, "hold")  # the same operation re-pauses admission before rolling back
+    assert _maintain(r, "restore")["status"] == "restored"
+    assert r.cloud.latest(POINTER) is None and p.read(r.normal)["image_uri"] == OLD
+    assert (r.active / "manifest.json").read_bytes() == b'{"old": true}'
+    assert {job["image"] for job in r.shared.jobs.values()} == {OLD}
+    assert _maintain(r, "release")["status"] == "released_restored"

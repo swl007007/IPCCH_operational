@@ -216,7 +216,7 @@
   },
   "operation_id": "fews-retrain-20261022",
   "owner": "weilun.shi",
-  "phase": "activated",
+  "phase": "released_activated",
   "predecessor": {
     "grants": [
       [
@@ -389,5 +389,6 @@
     },
     "run_id": "fews-candidate-20261022a"
   },
-  "reconciled": null
+  "reconciled": null,
+  "released_utc": "2026-10-22T08:34:30Z"
 }

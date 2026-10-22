@@ -10,7 +10,21 @@ from cloud.orchestrator import delivery_manifest as dm
 from cloud.orchestrator import delivery_outputs as do
 from fewsnet_partitioned_rf_pipeline.local.outputs import _read_local_prediction_csv
 
-FALLBACK = Path(__file__).resolve().parents[2] / "fallback/october_2026"
+# The accepted October source (oct-confidence-20261009b), found by its manifest identity: after the 2026-10-22
+# promotion it is kept as fallback/october_2026.predecessor-<operation>, not the active fallback.
+SOURCE_MANIFEST_SHA256 = "265a0fb95a8dbeda49a09d6a9fcafe149d3e4033438b38ec91d3b795a39aebe4"
+
+
+def _accepted_october_source() -> Path:
+    root = Path(__file__).resolve().parents[2] / "fallback"
+    for directory in sorted(root.glob("october_2026*")):
+        manifest = directory / "manifest.json"
+        if manifest.is_file() and hashlib.sha256(manifest.read_bytes()).hexdigest() == SOURCE_MANIFEST_SHA256:
+            return directory
+    return root / "october_2026-accepted-source-absent"
+
+
+FALLBACK = _accepted_october_source()
 EVIDENCE = Path(__file__).resolve().parents[2] / "bootstrap/evidence"
 RAW = {0: "fewsnet_0m_stage3_fs1_area.csv", 6: "fewsnet_6m_stage3_fs2_area.csv", 12: "fewsnet_12m_stage3_fs3_area.csv"}
 SOURCE_PACKAGE = "local-202604-57cb3b981198-510375f58cd8"
