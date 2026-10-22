@@ -167,6 +167,17 @@ def check_environment(manifest_path: Path, runtime: Mapping[str, Any]) -> None:
         raise AcceptanceError(f"environment manifest {actual} does not describe the running image {expected}")
 
 
+def require_supported_extraction_contract(prepared: Mapping[str, Any]) -> str:
+    """A prepared snapshot must use a readable extraction contract (legacy v1 or current)."""
+    from cloud.batch.remote_sources import ACCEPTED_EXTRACTION_CONTRACT_VERSIONS
+
+    version = prepared.get("extraction_contract_version")
+    if version not in ACCEPTED_EXTRACTION_CONTRACT_VERSIONS:
+        raise AcceptanceError(f"prepared extraction contract {version} is not one of "
+                              f"{ACCEPTED_EXTRACTION_CONTRACT_VERSIONS}")
+    return version
+
+
 def prepare_inputs(request: Mapping[str, Any], downloader: PinnedDownloader, work: Path, *, image_uri: str) -> dict:
     """Verify every pinned reference, acceptance and runtime; return the local scoring spec."""
     from cloud.orchestrator.delivery_manifest import verify_reference_identities
@@ -181,11 +192,9 @@ def prepare_inputs(request: Mapping[str, Any], downloader: PinnedDownloader, wor
     if (prepared.get("prepare_id"), prepared.get("origin_month"), prepared.get("status")) != (
             request["prepared_snapshot"]["prepare_id"], request["origin_month"], "succeeded"):
         raise AcceptanceError("prepared manifest is not a succeeded snapshot for the requested prepare_id/origin")
-    from cloud.batch.remote_sources import EXTRACTION_CONTRACT_VERSION, SYSTEM_FAMILIES
+    from cloud.batch.remote_sources import SYSTEM_FAMILIES
 
-    if prepared.get("extraction_contract_version") != EXTRACTION_CONTRACT_VERSION:
-        raise AcceptanceError(f"prepared extraction contract {prepared.get('extraction_contract_version')} is not "
-                              f"{EXTRACTION_CONTRACT_VERSION}")
+    require_supported_extraction_contract(prepared)
     for system, kinds in request["assets"].items():  # a bounded smoke preparation never serves a full roster
         for kind in ("roster", "geometry"):
             prepared_ref = prepared.get("systems", {}).get(system, {}).get(kind, {}).get("sha256")

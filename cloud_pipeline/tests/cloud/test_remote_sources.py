@@ -84,7 +84,7 @@ def test_viirs_emits_sum_std_and_mean(tmp_path):
     assert stats.loc["00", "avg_rad__sum"] == pytest.approx(sum(values))
     assert stats.loc["00", "avg_rad__mean"] == pytest.approx(np.mean(values))
     assert stats.loc["00", "avg_rad__std"] == pytest.approx(np.std(values))
-    assert rs.MODEL_COLUMN_MAPPING["fewsnet"]["nightlight"] == "avg_rad__mean"
+    assert rs.MODEL_COLUMN_MAPPING["fewsnet"]["nightlight"] == "avg_rad__sum"
     assert rs.MODEL_COLUMN_MAPPING["ipcch"]["nightlight_mean"] == "avg_rad__sum"
     assert rs.MODEL_COLUMN_MAPPING["ipcch"]["GPP_std"] == "GPP_SD__mean"
 

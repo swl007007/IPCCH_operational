@@ -14,11 +14,13 @@ refresh). Changes, each recorded per (admin_code, month, column) in a change led
   for missing gpp_mean. Existing panel values are kept; snapshot differences are reported.
   Exception: the April assembly forward-filled FLDAS into 2026-04 (every area equals its
   2026-03 value); those proven carry-forward cells take the snapshot's 2026-04 observation.
-* WFP: HDX-derived FEWS MoM index for missing cells in the MoM-index era (>= 2025-02, the
-  first month both the April training panel and the September refresh carry index-type
-  values) and the appended months; existing values kept, differences reported. Earlier
-  gaps are not filled: values there follow a different, level-type historical definition
-  (e.g. ETH 2450.9, ZWE 4591.9), so they are counted and reported instead.
+* WFP: HDX-derived FEWS MoM index for missing cells from 2025-01 and the appended months;
+  existing values kept, differences reported. 2025-01 is the earliest provably compatible
+  month: assemble_latest_FEWSNET/01_extract_invariables_and_scaffold.ipynb (cells 27-31)
+  built every 2025-01+ row as 100 + country-month mean of ALPS "Monthly percentage change",
+  the same MoM index as tools.refresh_h5_inputs. Rows <= 2024-12 come from the older
+  FEWSNET_forecast_unadjusted_bm.csv, whose WFP definition is unverified and level-type for
+  several countries (ETH 2450.9, SSD 1943.4, YEM 551.0, ZWE 4591.9); their gaps stay missing.
 * ACLED (new API pull covers event dates from 2025-01-01; complete months <= 2025-09):
   rows of 2025-01..2025-06 whose whole conflict family is missing are filled from the
   complete-month aggregation, existing values kept and differences reported; 2025-07 was
@@ -48,7 +50,7 @@ REMOTE = {"evi": {"EVI": "EVI__mean"},
 CARRIED_FORWARD = {"2026-04": ("Rainf_f_tavg_mean", "Tair_f_tavg_mean")}
 NEW_MONTHS = [f"2026-{m:02d}" for m in range(5, 10)]
 FILLED_MONTHS = ("2025-10", "2026-02")
-WFP_MOM_START = "2025-02"
+WFP_MOM_START = "2025-01"
 ACLED_REPLACE = ("2025-07",)
 ACLED_APPEND = ("2025-08", "2025-09")
 ACLED_GAP_FILL = ("2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06")
@@ -236,7 +238,12 @@ def main() -> None:
     snap_gosif = snap_gosif.rename(columns={"admin_code": "FEWSNET_admin_code", "month": "month_key"}).set_index(KEY)
     apply_fill(panel, ledger, snap_gosif["GPP_Mean__mean"], "gpp_mean", ["2024-12"],
                "snapshot_gosif_v2", remote_report)
-    remote_report["pending"] = {"EVI 2026-09": "provider published (EE 2026_09_01); extraction pending, cell missing"}
+    if cfg["inputs"].get("evi_2026_09"):
+        evi9 = pd.read_csv(cfg["inputs"]["evi_2026_09"], dtype={"admin_code": str})
+        evi9 = evi9.rename(columns={"admin_code": "FEWSNET_admin_code", "month": "month_key"}).set_index(KEY)
+        apply_fill(panel, ledger, evi9["EVI__mean"], "EVI", ["2026-09"], "evi_2026_09_acquisition", remote_report)
+    else:
+        remote_report["pending"] = {"EVI 2026-09": "provider published (EE 2026_09_01); not supplied"}
     report["remote"] = remote_report
 
     # --- WFP ---------------------------------------------------------------------
@@ -254,9 +261,9 @@ def main() -> None:
     early = (panel["month_key"] < WFP_MOM_START).to_numpy()
     early_gap = early & panel["WFP_Price"].isna().to_numpy() & merged["WFP_Price"].notna().to_numpy()
     wfp_report["not_filled_before_mom_era"] = {
-        "reason": "historical WFP_Price before 2025-02 follows a different level-type definition "
-                  "(April training panel e.g. ETH 2450.9, SSD 1943.4, YEM 551.0, ZWE 4591.9); "
-                  "MoM index values would mix definitions within that era",
+        "reason": "rows <= 2024-12 come from FEWSNET_forecast_unadjusted_bm.csv whose WFP definition "
+                  "is unverified and level-type for several countries (ETH 2450.9, SSD 1943.4, YEM 551.0, "
+                  "ZWE 4591.9); the MoM index is provably used only from 2025-01 (notebook 01 cells 27-31)",
         "area_month_cells_with_hdx_value": int(early_gap.sum()),
         "country_months": int(merged.loc[early_gap, ["ISO3", "month_key"]].drop_duplicates().shape[0]),
         "month_range": [str(panel.loc[early_gap, "month_key"].min()),

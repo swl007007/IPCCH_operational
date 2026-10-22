@@ -182,6 +182,9 @@ def validate_prepare_request(data: Mapping[str, Any], *, request_uri: str, reque
         raise DeliveryManifestError(f"refresh_from keys must be among {FAMILIES}")
     for family, month in refresh.items():
         _month(month, f"refresh_from.{family}")
+        if month < SOURCE_CONTRACTS[family].first_month:
+            raise DeliveryManifestError(f"refresh_from.{family} {month} precedes the contract start "
+                                        f"{SOURCE_CONTRACTS[family].first_month}")
     validated = dict(data)
     validated["request"] = {"uri": request_uri, "generation": request_generation, "sha256": request_sha256}
     return validated
@@ -228,6 +231,7 @@ def plan_prepare(request, *, store: ObjectStore, reader: PinnedReader, acquirer:
             query_start = months_between(earliest, latest)[0] if earliest < latest else latest
             if refresh_from and refresh_from < query_start:
                 query_start = refresh_from
+            query_start = max(query_start, floor)  # never before the contract start (version boundary)
             if query_start < latest:
                 between = acquirer.published_months(family, start_month=query_start, end_month=latest)
                 if between.get(latest, latest_id) != latest_id:
@@ -253,6 +257,7 @@ def plan_prepare(request, *, store: ObjectStore, reader: PinnedReader, acquirer:
                 else:
                     system_months[system] = months_between(through, latest)
                     beyond[system] = []
+                system_months[system] = [month for month in system_months[system] if month >= floor]
             wanted = sorted(set().union(*system_months.values()))
             families[family] = {
                 "product": SOURCE_CONTRACTS[family].product,

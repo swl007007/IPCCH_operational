@@ -7,7 +7,7 @@ define product, grid, reducer and scaling; historical panel parity is not claime
 |------------|-------------------------------------------------------|-------------------------------------------------|----------|
 | evi        | EVI/00_ee_export_evi.txt, EVI/02_arcpy_extract_evi.py | MODIS/061/MOD13A3 band EVI, scale 1000 m, raw scaled integers | mean, std |
 | fldas      | FLDAS/00_ee_export_fldas_all_bands.txt, 02_*part1-4   | NASA/FLDAS/NOAH01/C/GL/M/V001 all 28 bands, EPSG:4326 0.1 deg | mean, std per band |
-| gosif_mean | GOSIF_GPP/00_download_*_mean.py, 02_*_mean.py         | GOSIF-GPP v2 Monthly Mean .tif.gz, provider grid | mean |
+| gosif_mean | GOSIF_GPP/00_download_*_mean.py, 02_*_mean.py         | GOSIF-GPP v3 Monthly Mean .tif.gz, provider grid | mean |
 | gosif_sd   | GOSIF_GPP/00_download_*_sd.py, 02_*_sd.py             | GOSIF-GPP v2 Monthly SD .tif.gz (provider SD raster) | mean of the SD raster |
 | viirs      | VIIRS_nightlight/00_ee_export_*.txt, 02_mosaic, 03_extract | NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG avg_rad, bilinear to 1/30 deg EPSG:4326 | sum, std (+ mean emitted, see note) |
 
@@ -33,7 +33,12 @@ import numpy as np
 import pandas as pd
 
 
-EXTRACTION_CONTRACT_VERSION = "current-repo-remote-scripts-v1"
+# v2 (2026-10): GOSIF mean from the provider's v3 directory (v2 stopped at 2024-12; the
+# v2/v3 break is disclosed by the FEWS retrain). FEWS nightlight maps to the VIIRS sum.
+EXTRACTION_CONTRACT_VERSION = "current-repo-remote-scripts-v2"
+# Prepared snapshots a delivery may consume: v1 snapshots (GOSIF mean v2 product) stay readable;
+# their outputs carry every VIIRS reducer, so assembly applies the current column mapping.
+ACCEPTED_EXTRACTION_CONTRACT_VERSIONS = ("current-repo-remote-scripts-v1", EXTRACTION_CONTRACT_VERSION)
 NATIVE_KEY = "admin_code"
 FLDAS_BANDS = (
     "Evap_tavg", "LWdown_f_tavg", "Lwnet_tavg", "Psurf_f_tavg", "Qair_f_tavg", "Qg_tavg",
@@ -44,12 +49,15 @@ FLDAS_BANDS = (
     "SoilTemp40_100cm_tavg", "Swnet_tavg", "Tair_f_tavg", "Wind_f_tavg",
 )
 GOSIF_BASE_URL = "http://data.globalecology.unh.edu/data/GOSIF-GPP_v2/Monthly"
+GOSIF_V3_BASE_URL = "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly"
 VIIRS_TRANSFORM = (0.0041666667 * 8, 0, -180.00208525335, 0, -0.0041666667 * 8, 75.00208393335001)
 
 # Chosen current operational construction: model/raw-panel column <- prepared statistic.
 # IPCCH follows this repository's CH harmonisation (nightlight_mean <- VIIRS SUM,
-# GPP_std <- mean of the provider SD raster); FEWS uses the already-known FEWS
-# construction (nightlight <- VIIRS MEAN). Recorded, not a historical-parity claim.
+# GPP_std <- mean of the provider SD raster). FEWS nightlight is also the VIIRS zonal SUM:
+# the FEWS assembly read nightlight_sum_extraction_results.csv into ``nightlight``
+# (assemble_latest_FEWSNET 01 cell 1 -> 02 cell 3), and the trained history matches
+# avg_rad__sum (2026-10 retrain evidence); nightlight_sd is the zonal STD.
 MODEL_COLUMN_MAPPING = {
     "ipcch": {
         "EVI_mean": "EVI__mean", "EVI_std": "EVI__std",
@@ -60,7 +68,7 @@ MODEL_COLUMN_MAPPING = {
     },
     "fewsnet": {
         "EVI": "EVI__mean", "gpp_mean": "GPP_Mean__mean",
-        "nightlight": "avg_rad__mean", "nightlight_sd": "avg_rad__std",
+        "nightlight": "avg_rad__sum", "nightlight_sd": "avg_rad__std",
         "Rainf_f_tavg_mean": "Rainf_f_tavg__mean", "Tair_f_tavg_mean": "Tair_f_tavg__mean",
     },
 }
@@ -75,7 +83,8 @@ class SourceContract:
     reducers: tuple[str, ...]
     script: str
     export: Mapping[str, object]
-    # Product catalog start: discovery searches back to here, never to a baseline's first row.
+    # Contract start: discovery and extraction never reach earlier months (the product catalog
+    # start, or a version boundary such as GOSIF v3 from 2025-01), never a baseline's first row.
     first_month: str
 
 
@@ -92,9 +101,11 @@ SOURCE_CONTRACTS = {
         "1982-01",
     ),
     "gosif_mean": SourceContract(
-        "gosif_mean", "http", "GOSIF-GPP_v2/Monthly/Mean", ("GPP_Mean",), ("mean",),
+        # Approved boundary: v2 history through 2024-12 stays as inherited; v3 only from 2025-01.
+        "gosif_mean", "http", "GOSIF-GPP_v3/Monthly/Mean from 2025-01 (earlier months: inherited v2 history)",
+        ("GPP_Mean",), ("mean",),
         "GOSIF_GPP/00_download_gosif_gpp_mean.py; GOSIF_GPP/02_arcpy_extract_gosif_gpp_mean.py",
-        {"url": GOSIF_BASE_URL + "/Mean/GOSIF_GPP_{year}.M{month:02d}_Mean.tif.gz"}, "2000-03",
+        {"url": GOSIF_V3_BASE_URL + "/Mean/GOSIF_GPP_{year}.M{month:02d}_Mean.tif.gz"}, "2025-01",
     ),
     "gosif_sd": SourceContract(
         "gosif_sd", "http", "GOSIF-GPP_v2/Monthly/SD", ("GPP_SD",), ("mean",),

@@ -641,10 +641,10 @@ def test_plan_and_submit_passes_pinned_plan_to_batch(tmp_path):
 
 
 class Gosif2024Acquirer(FakeAcquirer):
-    """GOSIF provider vintage ends 2024-12, before the baseline's first row."""
+    """GOSIF SD (v2) provider vintage ends 2024-12, before the baseline's first row."""
 
     def latest_published(self, family, *, floor_month, end_month):
-        if family.startswith("gosif"):
+        if family == "gosif_sd":
             self.queries.append(("latest", family, floor_month, end_month))
             return ("2024-12", f"{family}:2024-12") if floor_month <= "2024-12" <= end_month else None
         return super().latest_published(family, floor_month=floor_month, end_month=end_month)
@@ -655,18 +655,18 @@ def test_provider_latest_before_baseline_start_is_found_and_fetched(tmp_path):
     request = _request(gcs, "prep-202610-g")
     # Baseline runs 2025-01..2026-07 (filled rows); the provider's latest is 2024-12.
     for system in ("fewsnet", "ipcch"):
-        for family in [f for f in rs.SYSTEM_FAMILIES[system] if f.startswith("gosif")]:
+        for family in [f for f in rs.SYSTEM_FAMILIES[system] if f == "gosif_sd"]:
             request["systems"][system]["history"][family] = gcs.ref(
                 f"gs://assets/{system}/history/{family}-2025.csv", _history_csv(system, family, "2026-07", start="2025-01"))
     acquirer = Gosif2024Acquirer(tmp_path)
 
     manifest = prepare.run_prepare(request, store=gcs, reader=gcs, acquirer=acquirer, output_root=ROOT, workdir=tmp_path)
 
-    assert ("latest", "gosif_mean", "2000-03", "2026-09") in acquirer.queries  # product inception, not baseline
-    gosif = manifest["families"]["gosif_mean"]
+    assert ("latest", "gosif_sd", "2000-03", "2026-09") in acquirer.queries  # product inception, not baseline
+    gosif = manifest["families"]["gosif_sd"]
     assert gosif["provider_latest_completed_month"] == "2024-12"
-    assert ("gosif_mean", "2024-12", "gosif_mean:2024-12") in acquirer.acquired
-    assert gosif["latest_observation_month"] == {"fewsnet": "2024-12", "ipcch": "2024-12"}
+    assert ("gosif_sd", "2024-12", "gosif_sd:2024-12") in acquirer.acquired
+    assert gosif["latest_observation_month"] == {"ipcch": "2024-12"}
     assert len(gosif["history_beyond_provider_vintage"]["ipcch"]) == 19  # 2025-01..2026-07 all excluded
 
 
@@ -685,11 +685,11 @@ def test_empty_history_rows_after_vintage_are_not_reported_as_excluded_observati
 
 def test_production_http_discovery_walks_back_to_product_inception(tmp_path):
     gcs = FakeGcs()
-    url = rs.gosif_url(rs.SOURCE_CONTRACTS["gosif_mean"].export["url"], "2024-12")
+    url = rs.gosif_url(rs.SOURCE_CONTRACTS["gosif_sd"].export["url"], "2024-12")
     http = FakeHttp({url: b"x"})
 
     found = _acquirer(gcs, http=http).latest_published(
-        "gosif_mean", floor_month=rs.SOURCE_CONTRACTS["gosif_mean"].first_month, end_month="2026-09")
+        "gosif_sd", floor_month=rs.SOURCE_CONTRACTS["gosif_sd"].first_month, end_month="2026-09")
 
     assert found == ("2024-12", url)
     assert len(http.requests) == 22  # 2026-09 back to 2024-12, then stop
