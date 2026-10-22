@@ -1,0 +1,280 @@
+{
+  "checked_at": "2026-10-22T06:25:13.832332+00:00",
+  "operation": "GCS get_blob plus generation-pinned download for three prepare state objects",
+  "project": "feisty-flames-511718-d4",
+  "objects": {
+    "prepare_plan.json": {
+      "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/prepare_plan.json",
+      "generation": "1792649514772069",
+      "sha256": "42b6422fa46ed0c20a24b43d15e8c8b2e43428722f82f5eaa8b661263e6963d1",
+      "payload": {
+        "cutoff_utc": "2026-10-21T23:59:59Z",
+        "extraction_contract_version": "current-repo-remote-scripts-v2",
+        "families": {
+          "evi": {
+            "history_beyond_provider_vintage": {
+              "fewsnet": [],
+              "ipcch": []
+            },
+            "history_through": {
+              "fewsnet": "2026-08",
+              "ipcch": "2026-08"
+            },
+            "months": {
+              "2026-09": "MODIS/061/MOD13A3/2026_09_01"
+            },
+            "not_published_months": [],
+            "product": "MODIS/061/MOD13A3",
+            "provider_latest_completed_month": "2026-09",
+            "refresh_from": null,
+            "system_months": {
+              "fewsnet": [
+                "2026-09"
+              ],
+              "ipcch": [
+                "2026-09"
+              ]
+            },
+            "systems": [
+              "fewsnet",
+              "ipcch"
+            ]
+          },
+          "fldas": {
+            "history_beyond_provider_vintage": {
+              "fewsnet": [],
+              "ipcch": []
+            },
+            "history_through": {
+              "fewsnet": "2026-08",
+              "ipcch": "2026-08"
+            },
+            "months": {
+              "2026-08": "NASA/FLDAS/NOAH01/C/GL/M/V001/202608"
+            },
+            "not_published_months": [],
+            "product": "NASA/FLDAS/NOAH01/C/GL/M/V001",
+            "provider_latest_completed_month": "2026-08",
+            "refresh_from": null,
+            "system_months": {
+              "fewsnet": [
+                "2026-08"
+              ],
+              "ipcch": [
+                "2026-08"
+              ]
+            },
+            "systems": [
+              "fewsnet",
+              "ipcch"
+            ]
+          },
+          "gosif_mean": {
+            "history_beyond_provider_vintage": {
+              "fewsnet": [],
+              "ipcch": []
+            },
+            "history_through": {
+              "fewsnet": "2024-12",
+              "ipcch": "2024-12"
+            },
+            "months": {
+              "2025-01": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M01_Mean.tif.gz",
+              "2025-02": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M02_Mean.tif.gz",
+              "2025-03": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M03_Mean.tif.gz",
+              "2025-04": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M04_Mean.tif.gz",
+              "2025-05": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M05_Mean.tif.gz",
+              "2025-06": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M06_Mean.tif.gz",
+              "2025-07": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M07_Mean.tif.gz",
+              "2025-08": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M08_Mean.tif.gz",
+              "2025-09": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M09_Mean.tif.gz",
+              "2025-10": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M10_Mean.tif.gz",
+              "2025-11": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M11_Mean.tif.gz",
+              "2025-12": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2025.M12_Mean.tif.gz"
+            },
+            "not_published_months": [],
+            "product": "GOSIF-GPP_v3/Monthly/Mean from 2025-01 (earlier months: inherited v2 history)",
+            "provider_latest_completed_month": "2025-12",
+            "refresh_from": null,
+            "system_months": {
+              "fewsnet": [
+                "2025-01",
+                "2025-02",
+                "2025-03",
+                "2025-04",
+                "2025-05",
+                "2025-06",
+                "2025-07",
+                "2025-08",
+                "2025-09",
+                "2025-10",
+                "2025-11",
+                "2025-12"
+              ],
+              "ipcch": [
+                "2025-01",
+                "2025-02",
+                "2025-03",
+                "2025-04",
+                "2025-05",
+                "2025-06",
+                "2025-07",
+                "2025-08",
+                "2025-09",
+                "2025-10",
+                "2025-11",
+                "2025-12"
+              ]
+            },
+            "systems": [
+              "fewsnet",
+              "ipcch"
+            ]
+          },
+          "gosif_sd": {
+            "history_beyond_provider_vintage": {
+              "ipcch": []
+            },
+            "history_through": {
+              "ipcch": "2024-12"
+            },
+            "months": {
+              "2024-12": "http://data.globalecology.unh.edu/data/GOSIF-GPP_v2/Monthly/SD/GOSIF_GPP_2024.M12_SD.tif.gz"
+            },
+            "not_published_months": [],
+            "product": "GOSIF-GPP_v2/Monthly/SD",
+            "provider_latest_completed_month": "2024-12",
+            "refresh_from": null,
+            "system_months": {
+              "ipcch": [
+                "2024-12"
+              ]
+            },
+            "systems": [
+              "ipcch"
+            ]
+          },
+          "viirs": {
+            "history_beyond_provider_vintage": {
+              "fewsnet": [],
+              "ipcch": []
+            },
+            "history_through": {
+              "fewsnet": "2026-08",
+              "ipcch": "2026-08"
+            },
+            "months": {
+              "2026-08": "NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG/20260801"
+            },
+            "not_published_months": [],
+            "product": "NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG",
+            "provider_latest_completed_month": "2026-08",
+            "refresh_from": null,
+            "system_months": {
+              "fewsnet": [
+                "2026-08"
+              ],
+              "ipcch": [
+                "2026-08"
+              ]
+            },
+            "systems": [
+              "fewsnet",
+              "ipcch"
+            ]
+          }
+        },
+        "origin_month": "2026-10",
+        "prepare_id": "fewsnet-retrain-20261022a",
+        "prepare_root": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/",
+        "request": {
+          "generation": "1792649463991739",
+          "sha256": "3797ead15654d65d8faedb01a6ddf83937c8726805823a2aaf0c47800d2addeb",
+          "uri": "gs://food-crisis-test-ipcch-data/prepare_requests/fewsnet-retrain-20261022a/prepare_request.json"
+        },
+        "schema_version": "fewsnet-ipcch-prepare-plan-v1",
+        "systems": {
+          "fewsnet": {
+            "geometry": {
+              "generation": "1792649290641240",
+              "sha256": "4a491eae5f88f99226f57b93542dcb9f527609787fb81059043a9c8721999386",
+              "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/fewsnet/geometry.geojson"
+            },
+            "history": {
+              "evi": {
+                "generation": "1792649403892111",
+                "sha256": "6d2f2f993333670f5914cde872159219ef77fef0f0c40f2cd3bc7a1dd7aa9a40",
+                "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/fewsnet/history/evi.csv"
+              },
+              "fldas": {
+                "generation": "1792649414695689",
+                "sha256": "b461547689d074535ce4d290934f42dc7c93dd4e3560e81daf950687a820dcb2",
+                "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/fewsnet/history/fldas.csv"
+              },
+              "gosif_mean": {
+                "generation": "1792649415818797",
+                "sha256": "d0e4765f28ea30261a72c0943596504ba7e7ffab5f6219abbde1a423abc2f7f1",
+                "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/fewsnet/history/gosif_mean.csv"
+              },
+              "viirs": {
+                "generation": "1792649418846307",
+                "sha256": "27523619a6bba3ad9ddc1e47df6d3377653adad329958508df6f080b9e31a9c2",
+                "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/fewsnet/history/viirs.csv"
+              }
+            },
+            "roster": {
+              "generation": "1792649291211387",
+              "sha256": "57c3ffaec68103321bb8da485e86026e1ef0e861db3f6274709fab84bcdfb2ef",
+              "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/fewsnet/roster.csv"
+            }
+          },
+          "ipcch": {
+            "geometry": {
+              "generation": "1792649431311377",
+              "sha256": "6d0460bbc45292986fdb6da33215e34501e9ad4d8f7b20ff23117c43f1e66268",
+              "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/ipcch/geometry.geojson"
+            },
+            "history": {
+              "evi": {
+                "generation": "1792649434080716",
+                "sha256": "85275c6393714098669ff40e16d338c6077e494a6eea1f102de409e851be099d",
+                "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/ipcch/history/evi.csv"
+              },
+              "fldas": {
+                "generation": "1792649458477643",
+                "sha256": "fb7fbf20bff7878e2b599b9e629a903bc810276a1d0fc54f3ca9f89ad55316ba",
+                "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/ipcch/history/fldas.csv"
+              },
+              "gosif_mean": {
+                "generation": "1792649459670687",
+                "sha256": "2cfdb8c94c55bed7ce2db948cd99f480cd5d97c13c098a0337f0fc0a7584cd48",
+                "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/ipcch/history/gosif_mean.csv"
+              },
+              "gosif_sd": {
+                "generation": "1792649460769243",
+                "sha256": "f70d12b2760dac5fc5c01dd3d83b5eb27174f061f5fbb45239958676a217fb18",
+                "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/ipcch/history/gosif_sd.csv"
+              },
+              "viirs": {
+                "generation": "1792649463778170",
+                "sha256": "ea8322d27c5559f9f8721e710e5d67de52795d15d23d28ece3ffb4ddad4f8445",
+                "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/ipcch/history/viirs.csv"
+              }
+            },
+            "roster": {
+              "generation": "1792649431788775",
+              "sha256": "248acd133782d814d55ca24fd0d3040b92356c903b79c8ed7f736981991b15ee",
+              "uri": "gs://food-crisis-test-ipcch-data/assets/fewsnet-retrain-20261022/ipcch/roster.csv"
+            }
+          }
+        }
+      }
+    },
+    "prepare_status.json": {
+      "exists": false
+    },
+    "prepared_manifest.json": {
+      "exists": false
+    }
+  }
+}

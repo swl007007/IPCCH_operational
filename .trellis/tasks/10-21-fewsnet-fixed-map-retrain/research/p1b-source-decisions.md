@@ -1,6 +1,6 @@
 # Supervisor source decisions after P1b, 2026-10-22
 
-This resolves the source-method questions in `p1b/p1b-checkpoint.md`. It does not yet authorize fitting: finish September EVI integration and bind the final dataset/audit/source snapshot first. `supervisor-p1b-input-verification.json` verifies the initial frozen panel's label edits, hashes and horizon eligibility.
+This resolves the source-method questions in `p1b/p1b-checkpoint.md`. These initial decisions were conditional on September EVI integration and final data binding. Supervisor S10 subsequently accepted v2 and released local fitting; see `p1b-fit-acceptance.md`. `supervisor-p1b-input-verification.json` verifies the initial frozen panel's label edits, hashes and horizon eligibility.
 
 ## Nightlight: restore the trained sum definition
 
@@ -20,8 +20,12 @@ Accept retaining complete historical values and leaving earlier gaps missing whe
 
 The verified September overlay establishes the compatible MoM path from February 2025 onward (`bootstrap_vs_training.json` and the archived raw-upload contract). A few January values near 100 do not by themselves establish the same definition. Describe the earlier definition as incompatible or unverified, not a fully reconstructed historical formula. If direct source evidence establishes additional compatible earlier keys, include them and regenerate the input freeze before fitting. No rewrite/harmonization of complete old values is authorized by this decision.
 
+S10 resolves January with direct source evidence: the original scaffold notebook cells 27-31 aggregate `Monthly percentage change` by country/month and add 100 to its mean. Independently scanning the actual two source CSVs confirms the old source ends December 2024 and the new assembled source begins January 2025. Accept January missing-value fills in v2: 3358 area rows, each with price and standard deviation (6716 cells). Keep pre-2025 unverified gaps missing. Receipt: `supervisor-wfp-boundary-verification.json`.
+
 ## GOSIF and September EVI
 
 Preserve v2 history; use v3 for the 2025 additions only. Guard planning/acquisition against silently refetching pre-2025 history from v3 and retain accurate mixed-version source metadata. Existing prepared references remain immutable.
 
 The supervisor queried the September MOD13A3 asset metadata: `updateTime=2026-10-21T08:07:17.666923Z`, supporting the non-label source cutoff; see `supervisor-evi-provider-metadata.json`. Export task `TEE3NHA7YUJMWU7LHH2KTKOS` was RUNNING at 06:04:51Z. Final successful extraction, panel integration and compatible prepared snapshot remain pending. Release-time selection is still remote off / FEWS on / IPCCH off.
+
+S10 follow-up: the same EE task was independently confirmed COMPLETED, and the retained extraction has all 5718 keys, 5716 nonmissing EVI means and the expected output hash. Its final v2 integration is verified. The separate release snapshot still needs succeeded/output/overlay evidence; this does not prevent fitting the independently frozen input. `supervisor-evi-completion.json` and `supervisor-v2-input-verification.json` record these checks.

@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-10-22T06:26:52.398811+00:00",
+  "notebook_path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/2.source_code/Step5_Geo_RF_trial/assemble_latest_FEWSNET/01_extract_invariables_and_scaffold.ipynb",
+  "notebook_sha256": "49ea1acc16bc8babb956faeaaa09596412b9be4917197b28ce542b92586b81c8",
+  "cells": {
+    "27": "PATH_WFP = r\"C:\\Users\\swl00\\IFPRI Dropbox\\Weilun Shi\\Google fund\\Analysis\\1.Source Data\\WFP\\Price_ALPS.xlsx\"\nWFP_price_updated = pd.read_excel(PATH_WFP)",
+    "28": "# convert Date to datetime\nWFP_price_updated['Date'] = pd.to_datetime(WFP_price_updated['Date'])\n\n#extract year and month from Date\nWFP_price_updated['year'] = WFP_price_updated['Date'].dt.year\nWFP_price_updated['month'] = WFP_price_updated['Date'].dt.month\n\n# summarize using year month and CountryName,keep mean and std of the Monthly percentage change\nWFP_price_updated = WFP_price_updated.groupby(['year', 'month', 'CountryName'])['Monthly percentage change'].agg(['mean', 'std']).reset_index()",
+    "29": "#rename CountryName as ADMIN0\nWFP_price_updated = WFP_price_updated.rename(columns={'CountryName': 'ADMIN0'})\n\n#rename mean as 'WFP_Price', std as 'WFP_Price_std'\nWFP_price_updated = WFP_price_updated.rename(columns={'mean': 'WFP_Price', 'std': 'WFP_Price_std'})\n\n",
+    "30": "# merge on ADMIN0, year month\ndf_FEWS = df_FEWS.merge(WFP_price_updated, on=['ADMIN0', 'year', 'month'], how='left')",
+    "31": "#WFP_price=WFP_price+100\ndf_FEWS['WFP_Price'] = df_FEWS['WFP_Price'] + 100"
+  },
+  "independent_source_date_scans": [
+    {
+      "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/FEWSNET_forecast_unadjusted_bm.csv",
+      "rows": 1029240,
+      "min": "2010-01-01",
+      "max": "2024-12-01"
+    },
+    {
+      "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Google fund/Analysis/1.Source Data/assembled_FEWSNET/FEWSNET_forecast_unadjusted_bm_2025.csv",
+      "rows": 91490,
+      "min": "2025-01-01",
+      "max": "2026-04-01"
+    }
+  ],
+  "decision": "MoM construction applies to the new-source rows starting January 2025; allow same-definition missing-cell fills for that month. Preserve complete old values and pre-2025 unknown-definition gaps."
+}

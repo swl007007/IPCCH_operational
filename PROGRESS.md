@@ -2959,3 +2959,10 @@ Supersedes the in-progress bullets above, which are kept as written.
 - Frozen v1 panel independently verified: 1,149,318 rows / 5,718 areas; all accepted label changes exact; eligibility 273,353 / 264,005 / 254,291. Source decisions in research/p1b-source-decisions.md.
 - EVI September task TEE3NHA7YUJMWU7LHH2KTKOS observed RUNNING; provider asset update time is before the source cutoff. Final EVI integration/freeze still gates production-data fitting.
 - Executor commits ff389b1 (full-history component) and 38c1ccb (remote mapping/version boundary); same Claude session continues P3. No shared runtime, production default/pointer or fallback switch.
+
+### 2026-10-22 06:29Z - FEWS fixed-map retrain: supervisor S10 / fit released
+
+- Final v2 input independently accepted: normalized 02caeb86, audit 65ea96d5; all v1 labels/other fields unchanged. Delta = 5716 EVI cells + 6716 WFP cells (3358 areas x price/std).
+- WFP January 2025 MoM boundary verified directly from original notebook and source date ranges; pre-2025 gaps retained. EVI EE task COMPLETED and output hash/roster verified.
+- Released approved local all-history fit from clean ff389b1 / exact-lock environment, expected suite full-202610-ff389b11af93-02caeb861750. Fit results and AC2-AC9 remain pending.
+- Initial confidence lineage gap repaired in 82a4a0f; raw evidence and original declarations retain distinct portable paths. Separate release snapshot/Workflow/inheritance/candidate/maintenance/promotion work continues.

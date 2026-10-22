@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-10-22T06:26:40.386952+00:00",
+  "frozen_refs": [
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/FEWSNET_versioned_panel_20261022.normalized-v1.csv",
+      "sha256": "02caeb8617507028943efee21a68066daded66857de0dff758062b2859fd583a",
+      "rows": 1149318
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/FEWSNET_versioned_panel_20261022.normalized-v1.audit.json",
+      "sha256": "65ea96d5e34315ea160b85c5ad20e995401e9d77234520380fff84529b04cdcc"
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/FEWSNET_versioned_source_panel_20261022.csv",
+      "sha256": "a83f5f4b5eb33022960e43606f32afaec0cb15c10110ad1b56564790d637b722"
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/change_ledger.csv.gz",
+      "sha256": "9dffea614d1109f61115da380b81d30148b268938848096ac1885dcdc7c326f8"
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/build_report.json",
+      "sha256": "a158c5faabc1f1970efba8dd2eff5ca9e0563468d33d91edccb90295ae6cc33f"
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2-config.json",
+      "sha256": "26e915762865a594b024e0e880b86c3455fffc32fcc258b3c9566da59a63531d"
+    }
+  ],
+  "rows": 1149318,
+  "v1_sha256": "e2ddba022aa00a1b575df044fe64ef04ed723b5d6855349c58fb1bfe149c20c5",
+  "only_changed_columns": [
+    "EVI",
+    "WFP_Price",
+    "WFP_Price_std"
+  ],
+  "labels_and_all_other_fields_unchanged": true,
+  "only_missing_cells_filled": true,
+  "changed_cells": 12432,
+  "evi_202609_cells": 5716,
+  "wfp_202501_cells": 6716,
+  "wfp_202501_area_rows": 3358,
+  "source_value_comparison": {
+    "absolute_tolerance": 1e-10,
+    "relative_tolerance": 0,
+    "evi_max_absolute_difference": 1.3642420526593924e-12,
+    "wfp_max_absolute_difference": 1.4210854715202004e-14,
+    "reason": "existing pandas CSV parse/write round trips; prior strict comparison observed EVI differences at 1e-12 scale"
+  },
+  "delta_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/supervisor-v1-v2-delta.csv",
+  "delta_sha256": "b2c90ff9a8000584e6e2765f1683303cffbe58f5a32e81cc117a1035736a2aca",
+  "model_fitting_or_evaluation": false
+}

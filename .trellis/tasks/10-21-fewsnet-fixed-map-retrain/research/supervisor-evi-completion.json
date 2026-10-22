@@ -1,0 +1,51 @@
+{
+  "checked_at": "2026-10-22T06:16:46.314323+00:00",
+  "operation": "ee.data.getTaskStatus for exact retained export task; local FEWS extraction hash/key check",
+  "project": "feisty-flames-511718-d4",
+  "ee_status": {
+    "state": "COMPLETED",
+    "description": "fewsnet_retrain_evi202609_20261022_evi_2026_09",
+    "priority": 100,
+    "creation_timestamp_ms": 1792648757635,
+    "update_timestamp_ms": 1792649318915,
+    "start_timestamp_ms": 1792648764088,
+    "task_type": "EXPORT_IMAGE",
+    "destination_uris": [
+      "https://console.developers.google.com/storage/browser/food-crisis-test-ipcch-data/prepared/fewsnet-retrain-evi202609-20261022/sources/evi/"
+    ],
+    "attempt": 1,
+    "batch_eecu_usage_seconds": 448.4664611816406,
+    "id": "TEE3NHA7YUJMWU7LHH2KTKOS",
+    "name": "projects/feisty-flames-511718-d4/operations/TEE3NHA7YUJMWU7LHH2KTKOS"
+  },
+  "file": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/evi_202609/fewsnet_evi_2026-09.csv",
+  "sha256": "8b80e1be2687da1574464e23d0737f72bb8bc034f83161bd73f88d0810e52309",
+  "rows": 5718,
+  "roster_equal": true,
+  "areas_with_value": 5716,
+  "receipt": {
+    "started_utc": "2026-10-22T06:12:16.316296+00:00",
+    "prefix": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-evi202609-20261022/sources/evi/evi_2026-09",
+    "provider_id": "MODIS/061/MOD13A3/2026_09_01",
+    "ee_task_id": "TEE3NHA7YUJMWU7LHH2KTKOS",
+    "shards": [
+      {
+        "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-evi202609-20261022/sources/evi/evi_2026-09.tif",
+        "generation": "1792649290344922",
+        "sha256": "928d4529b5f8c735c3014804f00fa2d7fd43e02b14c73123cf35b93f53be6314",
+        "size": 280654591
+      }
+    ],
+    "fewsnet": {
+      "rows": 5718,
+      "areas_with_value": 5716,
+      "sha256": "8b80e1be2687da1574464e23d0737f72bb8bc034f83161bd73f88d0810e52309"
+    },
+    "ipcch": {
+      "rows": 6227,
+      "areas_with_value": 6223,
+      "sha256": "78c4471019634d1d613dbbc5f67ef2c9c899add5df7f09db6a69039a715b0f6a"
+    },
+    "completed_utc": "2026-10-22T06:12:51.200074+00:00"
+  }
+}
