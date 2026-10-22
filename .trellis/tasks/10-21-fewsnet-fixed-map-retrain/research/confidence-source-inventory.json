@@ -1,0 +1,114 @@
+{
+  "recorded_on": "2026-10-21",
+  "purpose": "Frozen FEWS confidence source inventory; planning evidence, not a new runtime schema.",
+  "source_delivery_id": "oct-confidence-20261009b",
+  "origin_month": "2026-10",
+  "evidence_period": "2021-02..2024-10",
+  "source_declarations": "cloud_pipeline/fallback/october_2026/reports/fewsnet_diagnostic_declarations.json",
+  "source_availability": "cloud_pipeline/fallback/october_2026/reports/diagnostic_availability.csv",
+  "copy_contract": {
+    "polygon_key": "polygon_id",
+    "prediction_polygon_key": "admin_code",
+    "polygon_frozen_columns": [
+      "polygon_id",
+      "ISO3",
+      "population",
+      "population_reference_period",
+      "population_source",
+      "historical_sample_count",
+      "historical_error_count",
+      "polygon_error_rate",
+      "polygon_confidence",
+      "country_error_eligible",
+      "evidence_basis",
+      "evidence_period"
+    ],
+    "country_key": "ISO3",
+    "country_frozen_columns": [
+      "country_error_rate",
+      "country_confidence_flag",
+      "country_error_basis",
+      "country_error_weighting",
+      "country_error_evidence_period",
+      "country_confidence_thresholds",
+      "country_error_eligible_area_count",
+      "country_error_excluded_area_count",
+      "country_error_missing_evidence_area_count",
+      "country_error_missing_population_area_count",
+      "country_error_nonpositive_population_area_count",
+      "country_error_sample_count",
+      "country_error_mistake_count",
+      "country_error_eligible_population_sum",
+      "country_error_known_population_sum",
+      "country_error_known_population_coverage",
+      "country_error_population_field",
+      "country_error_population_vintage",
+      "country_error_population_source"
+    ],
+    "country_current_prediction_columns": [
+      "country_outcome_crisis",
+      "country_outcome_crisis_threshold"
+    ],
+    "country_outcome_threshold": 0.5,
+    "preserve_blank_masks": true,
+    "recompute_confidence": false,
+    "source_hashes_are_not_required_hashes_for_new_country_output": true,
+    "note": "Country output has new current-outcome fields. Preserve all other source cells by key; do not require whole-file identity for that output. Keep old evidence package distinct from new scoring package."
+  },
+  "sources": [
+    {
+      "horizon_months": 0,
+      "source_model_package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+      "evidence_basis": "h0_validation_error_proxy_stage3_fs1_lag4_2021_2024",
+      "polygon": {
+        "path": "cloud_pipeline/fallback/october_2026/scopes/0m/fewsnet/polygon_confidence.csv",
+        "sha256": "be50a58bceea9b10931ba14bec484beb447718d35b877a25c95721571e175d17",
+        "rows": 5718,
+        "unique_keys": 5718,
+        "unavailable_rows": 5
+      },
+      "country": {
+        "path": "cloud_pipeline/fallback/october_2026/scopes/0m/fewsnet/country_confidence.csv",
+        "sha256": "978e694f1abc17b4f674916a72fbbb2e9b1eb42a6b86d0f21dc20bd20ba00684",
+        "rows": 22,
+        "unique_keys": 22
+      }
+    },
+    {
+      "horizon_months": 6,
+      "source_model_package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+      "evidence_basis": "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024",
+      "polygon": {
+        "path": "cloud_pipeline/fallback/october_2026/scopes/6m/fewsnet/polygon_confidence.csv",
+        "sha256": "3ba4d9d2dfcf166d115fa54db9531f06e949b1c3f7980cdea790b1dad9870a72",
+        "rows": 5718,
+        "unique_keys": 5718,
+        "unavailable_rows": 5
+      },
+      "country": {
+        "path": "cloud_pipeline/fallback/october_2026/scopes/6m/fewsnet/country_confidence.csv",
+        "sha256": "158eb31d318398a30406d8ab7ed039afa3e43243e292162cedfd73a6088e839f",
+        "rows": 22,
+        "unique_keys": 22
+      }
+    },
+    {
+      "horizon_months": 12,
+      "source_model_package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+      "evidence_basis": "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024",
+      "polygon": {
+        "path": "cloud_pipeline/fallback/october_2026/scopes/12m/fewsnet/polygon_confidence.csv",
+        "sha256": "65bbdc35d44a70ea5c2d051d594c8b0cf7a0d036b27b8c40f5268d031d54c07c",
+        "rows": 5718,
+        "unique_keys": 5718,
+        "unavailable_rows": 5
+      },
+      "country": {
+        "path": "cloud_pipeline/fallback/october_2026/scopes/12m/fewsnet/country_confidence.csv",
+        "sha256": "651e0d33f89f27b5f164efca36dc0d67dc7fb311224a11ccc726a1b95131df98",
+        "rows": 22,
+        "unique_keys": 22
+      }
+    }
+  ]
+}

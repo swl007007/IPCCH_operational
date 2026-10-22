@@ -1,0 +1,372 @@
+{
+  "base_sha": "8970523e917e269585008222436ae3588290ac3b",
+  "backup_root": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/preexisting-worktree",
+  "tracked_count": 73,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 769,
+      "sha256": "a857b2e46c62dc75e1a848e3d14a3815a56ca269ca294eb63594fadba3999155"
+    },
+    {
+      "path": ".gitignore",
+      "size": 1507,
+      "sha256": "c3de850320c41accc6305fbe3c3437b83ea8c8ac92d3ca25fd27ae3499538137"
+    },
+    {
+      "path": ".trellis/spec/backend/index.md",
+      "size": 1562,
+      "sha256": "9d6d045f8660d4a99f47d2eac88fd58d8f8e747711635d9cfbba70272b1a8634"
+    },
+    {
+      "path": ".trellis/spec/guides/index.md",
+      "size": 3931,
+      "sha256": "741b6ce68405e97b648fb01c5f40d39ee689f990e091f2132aec3dfc033c417e"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/check.jsonl",
+      "size": 827,
+      "sha256": "fe50bfeaf14cc844ad114fe99c897272347fc0915f74962bf7c38071ae0cbc59"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/design.md",
+      "size": 7949,
+      "sha256": "6cfb2a28b085daf0385e7bf21c710c5562b62c71e85d819fd15decac27ef929a"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/implement.jsonl",
+      "size": 827,
+      "sha256": "fe50bfeaf14cc844ad114fe99c897272347fc0915f74962bf7c38071ae0cbc59"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/implement.md",
+      "size": 4051,
+      "sha256": "3da3345483b8f8c47c6ba4009e7042a1aa358765ef20aeae3865286779abde9e"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/prd.md",
+      "size": 6045,
+      "sha256": "47a01c273bc0c78e73504261e1cfb78dff5a096f338add9ddb50ebd9ebaf4788"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/archive-map.md",
+      "size": 3032,
+      "sha256": "0c8f8518807e976d3999fe21b5ffc792cf2572adbef08e328effc336a800494f"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/bootstrap-evidence.json",
+      "size": 205,
+      "sha256": "b262ebb07d684f70f233566c3e1ba3bc1a5ee692aa3dd5c6b5b6cc3ff504b2d3"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/closure-findings.md",
+      "size": 3828,
+      "sha256": "2c7e279c02785f74b3fbfab98c1c7a0683938323c61a53ac7854141e90376246"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/closure-package-build.log",
+      "size": 38,
+      "sha256": "b20e63f330d93909fbb784f45e00563430f4c5aa2e5ae13bdc03331aab72cbe4"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/completion.md",
+      "size": 2197,
+      "sha256": "697ea585887c4d2b773c2a6a9ab17028c193703e59f2ce12a3acd9f2d6b2a966"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/delivery-moves.json",
+      "size": 13440,
+      "sha256": "98193ee5a76a78372cb9605e2de73339ce55c3418d2146f65d0ad7360e9cf236"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/external-archive-manifest.json",
+      "size": 162734,
+      "sha256": "87fce1f48a3f29350d1553b791bb33e98e7ef4ac3c06535e9b86e0a054571de6"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/gitnexus-limitations.md",
+      "size": 1180,
+      "sha256": "6d80bee7e1b171bcf3dd0e3b891f6b1e042cecb30a9bf12b3f465b99e0a41449"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/handover-receipt.json",
+      "size": 645,
+      "sha256": "03cf951444e22ac11894c7fcbbc4af98650fbc339a5a15ab650e8caa3ad13219"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/retained-output-check.json",
+      "size": 268,
+      "sha256": "203b68227aa495ee88eb72633a8480a1b9fb22508938e024fed013a9f9f963ce"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/verification-summary.md",
+      "size": 2021,
+      "sha256": "427ccc44a80d87e094ca37f3e48a95648c7b1a76d7c18325f7648756b1bcd3ae"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/research/windows-git-change-map.txt",
+      "size": 27752,
+      "sha256": "272248b24bafa99e00e29c1568822b0ebd807eea84c6d80c67e225a5a9b6148e"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/task.json",
+      "size": 1314,
+      "sha256": "ee87f2b99ac86ee5afb9898372430f70a051361aee40ec4a190053e31dd478e4"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/check.jsonl",
+      "size": 559,
+      "sha256": "514bf8921383554aebfce82c1a3e4e115821bfb260d98f36e7e5374e8de6cdd4"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/completion.md",
+      "size": 2308,
+      "sha256": "c49f7678e03cd269a811dcb5b09117cc840b4e32bfbd1d293acabce02a9d5cab"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/design.md",
+      "size": 4815,
+      "sha256": "9139c2bebfec178bc9b12392f81e954ffe98adb7b201e9b4bceb45a858861231"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/implement.jsonl",
+      "size": 559,
+      "sha256": "514bf8921383554aebfce82c1a3e4e115821bfb260d98f36e7e5374e8de6cdd4"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/implement.md",
+      "size": 3509,
+      "sha256": "16c5fc5a8a21fe759c87d65b105fae10751766bb3065d78b9cfb4a874015b10b"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/prd.md",
+      "size": 5332,
+      "sha256": "cc72144c557f022b76577e9e3a77d39e1255592b2f25747e6d94f3da9139a2c1"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/research/checks.json",
+      "size": 472,
+      "sha256": "f64378b98c2b47d909ecfcbf26648a92d06dbf85d6a4d966c77e4e1392ce887e"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/research/cleanup.json",
+      "size": 79418,
+      "sha256": "829d58ee2cd9ba92141c1980f3db5d41a7e365c9c44dbbb7c30844ce52ba7da7"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/research/local-inventory.md",
+      "size": 5698,
+      "sha256": "c4593f8c0468a61c224c6dd6a0e4d73cf89ac87b26c0186321281ddab722cb76"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/research/package-result.json",
+      "size": 532,
+      "sha256": "53b16ecce14926bfa0445f4d0e81c45363020734203b320d83bcf488cf8fface"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-10/10-08-migration-package-layout/task.json",
+      "size": 789,
+      "sha256": "cf35cdf8c4fca1f25027d57daaee3b208bf0c79a6af7892599646b1a847ec501"
+    },
+    {
+      "path": "AGENTS.md",
+      "size": 17530,
+      "sha256": "292680f6473c1c50624ac5654a22964fc6ec8706da3f2a051f510a63b13df3a8"
+    },
+    {
+      "path": "PROGRESS.md",
+      "size": 385073,
+      "sha256": "ff80ae96e84879a0f93104ef91cf1eb484ceae1c51300ca12ac20153cc2ac63f"
+    },
+    {
+      "path": "README.md",
+      "size": 1394,
+      "sha256": "231cdbdb43c310b014a8e98eaa7ae9f11a13e0591b9f7df3bfbeb9c4a0693d6f"
+    },
+    {
+      "path": "cloud_pipeline/OPERATIONS.md",
+      "size": 19919,
+      "sha256": "0321243234cc561a904fe2fc4ec86dc91a28bf0b94749c0655719c7729b036b0"
+    },
+    {
+      "path": "cloud_pipeline/QUICKSTART.md",
+      "size": 3386,
+      "sha256": "90150e42b0fa4d064e203c3752f45061973cea344f32e00d1064bca9bd9b7a13"
+    },
+    {
+      "path": "cloud_pipeline/deploy/handover_package.py",
+      "size": 4767,
+      "sha256": "ce10e351faf6ee1dadd8381b0aed483e43351a969aa0fb21f55756dd20b27a8b"
+    },
+    {
+      "path": "cloud_pipeline/deploy/wind_down.py",
+      "size": 10617,
+      "sha256": "c05e9c8bc8d01f0d9e32ea36ef6a61f242c93e3488ad5d88d13de2072fdd2cb8"
+    },
+    {
+      "path": "cloud_pipeline/fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv",
+      "size": 193190,
+      "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b"
+    },
+    {
+      "path": "cloud_pipeline/project.example.json",
+      "size": 529,
+      "sha256": "f1ca08c55dc9df6c743a31e89f9755847e25021dc596472e668d34b4caa0737d"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/__init__.py",
+      "size": 37,
+      "sha256": "f78ab274f225c25b2878ccc70a70d528c86f581ddccaebe168c8fba6030dba2e"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_causal_fill.py",
+      "size": 9963,
+      "sha256": "50443ee600512d215e7801c0f47034ac9e5d88d085f170df7532380cf197635a"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_cloud_batch_evi_worker.py",
+      "size": 25209,
+      "sha256": "ab7f0cc3e7d53561824faf6fac21ee630258a7ef55f708a07fe84242bba69121"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_deliver.py",
+      "size": 9478,
+      "sha256": "94911ccadb318c3ed9223923260649e06ad911a90cedf55a17523aed2d548b33"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_delivery_bundle.py",
+      "size": 20891,
+      "sha256": "15e084c8353818d95d95cff0c3c9b64cf08ed2b331f7b9422f08cd342beb6599"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_delivery_inputs.py",
+      "size": 15440,
+      "sha256": "75af896bbd33f0ea1f0b68b64bc19390ab9ed4959a2f395f5b1316449688d61b"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_delivery_job.py",
+      "size": 20622,
+      "sha256": "669d7818c3af163e9d105f5cbf649e9ac0388a78012f2d70e0764a5fc2094848"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_delivery_manifest.py",
+      "size": 11552,
+      "sha256": "c256981efd748425a86da51e3a7614e167c20a8cab4f68c38d11265600fecacc"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_delivery_run.py",
+      "size": 6323,
+      "sha256": "275a855c0a9a9c19de8df9faa2a519006bd8c269084f339ec2ab67fa2687cd40"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_delivery_scoring.py",
+      "size": 4569,
+      "sha256": "e9bc60e781b74ee5306cd3f90ca44cca421534cc6183decdd1b1a49ec801a9b3"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_delivery_workflow.py",
+      "size": 2198,
+      "sha256": "17fd8c1de352ba6a45c320cb7c64ff10c210538a4658e29227485bfc44a60998"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_evi_reference_comparison.py",
+      "size": 2318,
+      "sha256": "d11fa3a5ee9a12597502e7448316431fc3b55e5d453c856fc8847660a9b4d88c"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_evi_validation_report.py",
+      "size": 2997,
+      "sha256": "0ce7313507f25b4c4182e53adfda93684f5f0e6d0d9040f6b5c4b68e5f437284"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_gee_export_manifest.py",
+      "size": 2988,
+      "sha256": "6084cb15b778552d4b50017f4d2ec9db877ee71f60457aac8e24c071da176d06"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_ipcch_chunked.py",
+      "size": 11562,
+      "sha256": "750e19df3419dd24e3406feebf4b287bf14af8e94c7e625772f2d84556c96967"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_manifest_contract.py",
+      "size": 6007,
+      "sha256": "c9816d42c67a9b1332d33547e949369af3b8db26c46047139079f210ea648b87"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_object_refs.py",
+      "size": 1646,
+      "sha256": "96b163a20dcbbb5e38be70604b7f437988e0ec1fcad206411403e66ac6c343a7"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_object_store.py",
+      "size": 4400,
+      "sha256": "e12caea0c36b125a62c1b5e0bbedda11790b0f7deedc80194d720b2d5f38ace6"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_prepare.py",
+      "size": 42929,
+      "sha256": "0f52e55a89b94a5fa3d3f6e61b35e9036acee8cdade00dc0db42759c4401cc4f"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_rasterio_evi_extraction.py",
+      "size": 5666,
+      "sha256": "16c1d74dcbeb973ceac4b5d85db595cf3f09b64678c5a76df9094dae3836f740"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_remote_sources.py",
+      "size": 14257,
+      "sha256": "3d884744792a0962aa3a88ce96700dce3d65ccd7f90500b36baa41e11a63a1e1"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_report_contracts.py",
+      "size": 4169,
+      "sha256": "988b870e8c6a6d8f7e314bef108fe35a7d49085824fe848da2f7bb83774ca348"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_runtime_defaults.py",
+      "size": 1052,
+      "sha256": "a8ba31a0e39ad44da1a108ef0ecd6d3284da3d5dff0fb9e2862d5d1f9b0451be"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_runtime_image_contract.py",
+      "size": 1435,
+      "sha256": "8bb4dec9a6dd1591692adea1686eeb00c1638e9d3ee79484a0619b4ca9c7daa7"
+    },
+    {
+      "path": "cloud_pipeline/tests/cloud/test_wind_down_rest.py",
+      "size": 2577,
+      "sha256": "30a3773a3859692be3e85d6288247639b7df23e713013da76535a6e717f0417a"
+    },
+    {
+      "path": "cloud_pipeline/tests/test_handover_package.py",
+      "size": 1046,
+      "sha256": "7f0274c07540d2ab75a1f0f1b23288a76b89dadfcce8352eeff1edb890ff3bd2"
+    },
+    {
+      "path": "cloud_pipeline/tests/test_runtime_closure.py",
+      "size": 878,
+      "sha256": "f15d42111e8946a5576e75b82e4751a22f7cdd8b853f237038bff6594b23875a"
+    },
+    {
+      "path": "cloud_pipeline/tools/refresh_h5_inputs.py",
+      "size": 14238,
+      "sha256": "c3685ce8f260f1c450f074ae1e50e1954602954f5bb2b29b2bc6c714a3504bf8"
+    },
+    {
+      "path": "cloud_pipeline/tools/revise_h5_country_v3.py",
+      "size": 7691,
+      "sha256": "c49cd1367de5cbe0c257a34c3ea021ff0165fa71a8b6195a057b9a961d12cd58"
+    },
+    {
+      "path": "september_manual/README.md",
+      "size": 4192,
+      "sha256": "f05434db6223455ae1a7055f813ee9b484385ff4e0a69efcaedf808a9f65ba65"
+    },
+    {
+      "path": "september_manual/inventory.json",
+      "size": 5479,
+      "sha256": "4dbbf8cbc7cd71e55eeea0765fe244d838456bb39c630d147818d4c101d6c4f1"
+    }
+  ]
+}

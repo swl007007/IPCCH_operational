@@ -1,0 +1,103 @@
+# Design: full-history FEWS fit and production refresh
+
+Status: approved for execution under the Supervisor–Executor protocol; implements the decisions in `prd.md`. Existing operational modules remain the implementation boundary. No new research adapter, training framework or dependency is proposed.
+
+## 1. Assemble one versioned FEWS dataset
+
+Start from the operational FEWS historical panel, fixed 5,718-area roster/geometry and feature contract. Inventory candidate local raw data and pinned GCS extracts as described in `research/discovery.md`. Retain raw snapshots separately from the assembled panel and record changed `(area, month, field)` values, their source and the append/gap-fill reason.
+
+Discover FEWS CS resources through the HDX catalog for all 22 roster countries. Follow the resource's registered official URL, retaining HDX dataset/resource IDs, catalog metadata, retrieval timestamps and raw content hashes. HDX currently points relevant resources to FDW; this is an HDX-registered source chain, not authorization to reuse the old hardcoded scraper as proof of freshness. Inspect content dates and scenario/status/phase fields: the Nigeria/Somalia samples in `research/hdx-discovery.json` reach June 2026 even though their catalog coverage ends October 2025. Freeze actual fetched versions; label assessment months remain no later than October 2026. Retain existing complete historical values unless revisions are separately accepted.
+
+Preserve source IDs/country/geometry and build an auditable crosswalk to production admin codes; accept only unambiguous matches. Retain original phases and unmatched/conflicting records. Require unique accepted `(admin_code, assessment_month)` labels and explicit nonmissing valid-phase target derivation. Record country/month added, matched, missing and ambiguous counts. Partial gaps are allowed, but zero credible additions after checking all target-country sources stops the data-to-fit transition. Do not use the notebook's name-only merge or missing-to-zero expression, and do not invent nearest-neighbor labels to pass this gate.
+
+Reuse existing FEWS feature builders for WFP, ACLED and remote sensing. WFP raw annual files and GOSIF raw 2025 v3 data can be reused; IPCCH-derived panels cannot. Keep historical complete values unless a revision decision is obtained. Preserve existing causal fills and record source latest month, per-area coverage, fill counts and unresolved missingness. Existing inference filling covers the origin window; do not silently extend it to refill all historical training rows. Freeze the input manifest before fitting.
+
+Before the release invocation, materialize and pin the intended inference remote inputs and their actual preparation provenance. Existing artifacts may be reused where compatible; completed additions must be represented in the referenced snapshot and its vintage/refresh metadata. The old October snapshot has GOSIF v2 through 2024-12: referencing it unchanged can clear new 2025 values in `remote_overlay`. Check the assembled inference inputs against the intended refreshed dataset, including GOSIF 2025, and record any source-version contract changes truthfully. Do not fabricate a successful prepare execution or relabel old metadata. This data preparation is separate from the release-time decision to skip Cloud Run preparation.
+
+## 2. Reuse fit primitives; bypass temporal split/search
+
+`core/horizons.py::align_horizon` supplies observed target joins. Run it across the entire eligible history for each horizon, then fit the existing `MaxPlusImputer` and `core/training.py::train_partition_models` recipe. Reuse final predictor construction and pooled/local fallback handling. Bypass the last-N selector, held-out fit/validation path and F1 threshold selection. The actual fit ranges can differ across horizons because observed future labels differ.
+
+Update the existing local runner for an explicit full-data production fit with supplied origin, frozen HDX retrieval provenance/label-month limit and fixed thresholds. Remove April/February assumptions from that path without changing legacy behavior. Persist per-horizon included keys/counts and exclusion reasons, not performance predictions. Existing input-gap handling does not authorize manufacturing absent target labels. Preserve the current SMOTE fallback behavior; estimator fitting failure remains a failed fit, not permission to silently drop a horizon or publish old weights as new.
+
+Extend training-report/package validation and serialization together: an explicit all-data/no-evaluation variant carries actual fitting ranges/counts, source/map/schema/runtime identities, fixed threshold provenance and no validation range or metrics. Keep legacy report/package readers. Update all consumers that assume `validation_target_month_range`, including online/offline delivery; historical proxy period comes from its frozen declaration, not the new training report. Use the existing package inventory and checksum mechanisms instead of a second packaging system.
+
+Relevant implementation sites (paths below `cloud_pipeline/`):
+
+| Layer | Existing files and responsibility |
+| --- | --- |
+| Fit/alignment | `fewsnet_partitioned_rf_pipeline/core/{training,horizons}.py`: alignment, fit primitives and final predictor |
+| Local entrypoint | `fewsnet_partitioned_rf_pipeline/local/runner.py`: cutoff/origin and full-data path |
+| Report/package | `fewsnet_partitioned_rf_pipeline/core/validation.py`, `local/package.py`, schemas `training-report`, `local-model-package`, `model-package` |
+| Delivery consumers | `cloud/orchestrator/{deliver,delivery_outputs,delivery_bundle}.py`: no mandatory validation period for full-data packages |
+
+## 3. Attach frozen confidence without recomputing it
+
+Use `research/confidence-source-inventory.json` as the source contract. Preserve each original source CSV and its SHA256 in the candidate baseline/bundle. Polygon confidence is copied byte-for-byte where possible; keyed validation checks membership and blanks without deriving confidence. Country historical fields are copied by `ISO3` through the existing `country_tables(..., country_errors=...)` injection point; that function updates current outcome fields from the new scores.
+
+Extend the existing diagnostic declaration with an explicit frozen-output variant. Each family declares its source delivery, source/evidence package identity, horizon, historical basis/period and immutable file reference. The scored model identity remains the new package from the delivery request. Allow this deliberate source/scored-package difference only for the frozen-output variant; retain legacy evidence identity checks otherwise. Do not rename the historical evidence package to make it appear to be new-model validation.
+
+Frozen mode loads and checks the exported tables directly, preserving the original availability disclosure rows and their evidence references; it bypasses `area_evidence`, rate arithmetic and country error aggregation. Keep both original confidence-source declarations and new attachment provenance in existing JSON reports, not additional CSV columns. Retain raw diagnostic evidence and references already needed for portable lineage. Do not recompute confidence from that evidence.
+
+Apply the same loader/attachment logic to `scope_diagnostics` and offline `regenerate_diagnostics`; do not create independent formulas. Update request parsing in `delivery_manifest.py` and `deliver.request_diagnostics`, evidence freezing, bundle packaging and diagnostic checks. Preserve exact polygon and country key sets, headers and null masks. Historical population metadata remains the population used by the frozen confidence, distinct from any current prediction aggregation metadata.
+
+Frozen country fields are explicitly enumerated in the inventory. The only current-prediction columns in `country_confidence.csv` are `country_outcome_crisis` and its configured threshold. Other prediction tables and mapping/model routing fields come from the new scored release.
+
+## 4. Select steps and inherit the unscored system
+
+Keep the existing two Cloud Run jobs: preparation plans/submits extraction; delivery invokes per-system subprocesses. Extend the existing cloud Workflow to read the pinned initial manifest and dispatch the three logical choices. The local operator validates/uploads intent and referenced request files, then observes cloud state; it no longer owns the prepare-to-inference transition. The execution block is conceptually:
+
+```json
+{"execution": {"remote_update": false, "inference_systems": ["fewsnet"]}}
+```
+
+`inference_systems` accepts unique members of `fewsnet` and `ipcch`. The release's existing `systems`, models and assets still describe complete two-system/six-slot content; execution selection describes what is computed now. Preserve legacy requests with their prior behavior. No new jobs, workflow engine, generic DAG or per-system remote-extraction mode is needed.
+
+| Selection | Behavior |
+| --- | --- |
+| Remote on, inference empty | Run existing preparation, return its pinned result, do not publish prediction `current.json`. |
+| Remote on, inference nonempty | Run existing preparation, then score selected systems against its completed snapshot. |
+| Remote off, inference nonempty | Require an explicit compatible `prepared_snapshot`; do not submit or wait for a preparation with the delivery run ID. |
+| Remote off, inference empty | Reject the no-op request. |
+
+Reuse the singular `{prepare_id, origin_month, manifest}` snapshot shape; its prepare ID can already differ from delivery run ID. This replaces the earlier proposal for per-system prepared-snapshot mappings and FEWS-only extraction. Keep existing succeeded/origin/geometry/roster/contract/hash checks. For this task, complete preparation during data building before invoking the release. The release then scores FEWS only, and IPCCH's actual frozen inference inputs come from its prior accepted bundle rather than applying the new remote overlay.
+
+Use two immutable records: the initial workflow intent, available before preparation, and the resolved delivery request with its completed snapshot. An intent selecting remote update references its exact preparation request; a skip intent references its completed snapshot instead. The cloud Workflow reads the requested object generation, validates the selection/dependencies, invokes the existing prepare job when selected, then waits with a bounded timeout for durable preparation status and `prepared_manifest.json`. The prepare job returns after Batch submission; its completion must never be used as the readiness signal. Failed/timed-out preparation stops the chain. Preparation-only returns its snapshot and never dispatches delivery.
+
+After readiness checks, create the resolved delivery request under a distinct, create-only path and bind it to the initial intent identity and snapshot. Invoke the existing delivery job directly with that pinned request. Keep the initial manifest unchanged. Distinguish initial-intent events from internal resolved-request writes so Eventarc does not trigger the workflow recursively or dispatch delivery twice. Reuse existing run/state generation checks to reject conflicting intent and avoid duplicate launches on event replay or resume. Legacy request formats remain readable; retain their prior stage-selection semantics.
+
+Extend `deploy/workflow.yaml` and its setup/configuration for manifest/status reads, selected preparation-job execution and resolved-request writes. The current Workflow merely forwards to delivery and currently lacks source-code evidence of the corresponding preparation-job grant. Prepare exact scoped deployment/IAM changes for individual approval; do not assume live permissions or change them during planning. Preserve the extraction algorithm and existing service identities where possible.
+
+An inference selection omitting a system must specify its accepted source delivery and pinned manifest/archive references using existing object-reference machinery. Validate same origin, every horizon target, geography, package/member identity and archive inventory before scoring or publishing. Missing/incompatible dependencies stop the requested run; they do not enable additional steps. Carry forward only the required members for the skipped system: its 15 result tables, geometry/population, frozen inference inputs, diagnostic declarations/evidence, per-system fill/availability reports and matching model members. The compact fallback directory alone is insufficient; missing expanded members live in its pinned complete archive.
+
+Preserve inherited scientific members byte-for-byte and their original computation/runtime provenance. Regenerate new release-level manifests, combined reports, model inventory and archive to describe the mixed source delivery truthfully. Record which system was scored now and which was inherited. Do not present inherited IPCCH outputs as predictions computed by the new image. Retain complete 30-table and portable-member checks; for inherited diagnostics use source identity/content checks rather than recomputing them. Extend offline replay to selected systems and verify skipped members remain unchanged.
+
+In `pipeline.py`, include execution selection, snapshot refs and inherited release refs in the existing run intent/resume binding. Observe Workflow/durable step status and show reused preparation instead of polling for a nonexistent same-run prepare. In `delivery_job.execute`, run only selected system subprocesses, materialize inherited members, then finalize/upload the complete candidate without updating `current.json`. Reuse existing CAS publication only at the later promotion step. No partial release can become current.
+
+Put refreshed FEWS WFP/ACLED values in the new FEWS history panel and preserve the IPCCH panel. Use global `keep`; regenerate combined retained WFP/ACLED snapshots from the exact two panels for existing input validation. Loading preserved IPCCH packages/assets remains allowed; inference and diagnostic recomputation for IPCCH are skipped for this release.
+
+Files reached: `pipeline.py`, `deploy/{workflow.yaml,setup.py}`, existing deployment/config handling, `cloud/orchestrator/{delivery_manifest,delivery_job,delivery_run,deliver,delivery_bundle}.py` and their operator/workflow/request/bundle tests. Keep existing preparation/extraction semantics. `delivery_inputs.remote_overlay` needs correct prepared metadata, not a new fill algorithm. Eventarc remains the trigger; its current forwarding-only Workflow body must change.
+
+## 5. Build a candidate, verify it, then promote
+
+Use the operational Python 3.12.3 lock environment locally. Build the existing runtime image from the same lock, record its digest, then obtain fresh loading/runtime/package-identity evidence for the three new FEWS and three unchanged IPCCH slots. This is serialization/scoring compatibility evidence, not model evaluation or new IPCCH training.
+
+Reuse baseline inventory, `init`, model registration/selection and release/export entrypoints. Create a versioned baseline and separate operator state/work directory for the new runtime; the initialized destination includes image identity, so old initialized state cannot be reused blindly. Carry the frozen confidence sources and declarations as pinned baseline assets. Keep old accepted package selection/image/baseline/fallback references for rollback.
+
+Before changing the shared job image/workflow configuration, pause other monthly run admission with durable maintenance state bound to this candidate operation. Check already-running work and finish or explicitly resolve it before changing shared runtime settings; do not cancel it silently. Both operator and cloud dispatch respect the hold, permitting only the bound candidate/recovery actions. Existing published files remain readable. This uses the existing jobs, not a temporary candidate job. On failure restore recorded old runtime/configuration and verify consistency before releasing the hold; interruption leaves a recoverable hold rather than admitting mixed-configuration runs. Store the candidate owner, prior identities and recovery progress with existing operation state rather than adding a general scheduling service.
+
+Following each required cloud operation approval, publish the completed input snapshot/packages and runtime digest, initialize/select the six slots in candidate operator state, and submit the October workflow manifest with remote update disabled and only FEWS inference selected. Inherit accepted same-origin IPCCH members. Record consumed packages and skipped-step evidence. Cloud success produces an immutable, downloadable candidate; it does not change current production pointers, normal-operation defaults or active fallback.
+
+Adapt the existing download path to accept that exact candidate before promotion. Verify its inventory, all 30 result tables, copied confidence, inherited IPCCH members and a relocated FEWS-only replay. No labeled evaluation or IPCCH inference is involved. Stage the new fallback separately from the active directory and bind the verification receipt to the candidate's manifest/archive hashes, input/model identities and runtime digest. Failure here leaves the accepted predecessor active.
+
+Promotion checks that exact receipt/candidate and the expected predecessor generation, then uses the existing immutable release/CAS pointer mechanism. Activate the real normal-operation configuration, including the new image and initialized work directory, rather than selecting packages only inside a candidate directory. Activate the staged fallback with its README/inventory/reports. These cloud/local switches are not a distributed atomic transaction: record prior and intended identities plus completed steps, detect interruption, and finish or restore the recorded predecessor without rerunning valid candidate inference. Never overwrite a concurrently changed pointer/config. Completion requires cloud current release, actual operator defaults and local fallback to agree.
+
+Rollback evidence must include previous deployed job/workflow settings, image, operator config/state/model selection and the current accepted confidence-bearing fallback (`oct-confidence-20261009b`), not merely the older confidence-blank smoke archive. Reconcile deployed runtime with the intended operator config before declaring activation successful. Do not describe copied confidence as newly estimated accuracy.
+
+## 6. Focused verification and compatibility
+
+Use existing data/package/delivery check helpers and small regression fixtures for changed branches. Required cases: missing labels stay absent; ambiguous joins are reported; all eligible historical keys survive horizon alignment; fixed thresholds bypass search; old/new package formats load; incorrect map/schema/hashes fail; frozen confidence fields/blanks remain unchanged while current country outcomes update; online/offline attachment agrees; skipped preparation is neither submitted nor awaited; only selected systems run online/offline; inherited members are complete and unchanged; mismatched origins/targets/identities and changed resume intent fail; prepare-only does not publish predictions; refreshed inference inputs survive overlay; new-image loading/identity checks still cover six slots. Verify the successful release's default model selection resolves the new FEWS packages.
+
+Add focused checks for stale HDX catalog dates versus content dates, zero credible label additions, cloud dispatch without a live local polling process, pending/failed Batch after prepare-job success, duplicate events/resolved-request recursion, maintenance admission/ownership, candidate download without current-pointer mutation, failed replay preventing promotion, receipt/candidate mismatch, competing pointer generation and restoration-before-reopening after interruption. Exercise these control paths with existing fakes/fixtures; do not launch unapproved cloud experiments to test them.
+
+Run relevant software tests, input checks and actual package load/scoring checks. Do not run model evaluate/test, backtests, split-based experiments, new confidence estimation or synthetic model fitting experiments. No performance-improvement claim is an acceptance criterion.
