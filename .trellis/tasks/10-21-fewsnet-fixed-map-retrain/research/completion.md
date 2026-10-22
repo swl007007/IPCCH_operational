@@ -1,6 +1,6 @@
 # FEWS fixed-map retrain — completion record (executor, 2026-10-22)
 
-Native finish waits for the final supervisor checkpoint. No Trellis Audit was used.
+Final supervisor acceptance: 2026-10-22T08:43:45Z on reviewed HEAD 49ed4bb11ddccca817654bfff8e6576a469657f7 (`research/supervisor-final-acceptance.json`; AC1-AC9 accepted). Completed with the native Trellis lifecycle (task archived to `.trellis/tasks/archive/2026-10/10-21-fewsnet-fixed-map-retrain/`). No Trellis Audit was used.
 
 ## Outcome
 

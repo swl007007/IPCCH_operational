@@ -1,0 +1,29 @@
+{
+  "checked_utc": "2026-10-22T08:43:45.427307+00:00",
+  "status": "passed",
+  "head": "49ed4bb11ddccca817654bfff8e6576a469657f7",
+  "checks": {
+    "prior_changes_preserved": true,
+    "progress_original_prefix_preserved": true,
+    "all_ac_marked": true,
+    "only_lifecycle_plan_item_open": true,
+    "supervisor-candidate-artifact-verification.json": true,
+    "supervisor-candidate-confidence-lineage.json": true,
+    "supervisor-candidate-replay-verification.json": true,
+    "supervisor-promotion-clearance.json": true,
+    "supervisor-production-activation-verification.json": true,
+    "supervisor-maintenance-release-verification.json": true,
+    "only_line_endings_unstaged:PROGRESS.md": true,
+    "only_line_endings_unstaged:cloud_pipeline/OPERATIONS.md": true,
+    "only_line_endings_unstaged:cloud_pipeline/QUICKSTART.md": true
+  },
+  "preexisting_unchanged": 68,
+  "intentional_changes": [
+    "PROGRESS.md",
+    "cloud_pipeline/OPERATIONS.md",
+    "cloud_pipeline/QUICKSTART.md",
+    "cloud_pipeline/tests/cloud/test_prepare.py",
+    "cloud_pipeline/tests/cloud/test_remote_sources.py"
+  ],
+  "remaining": "Native task completion and final metadata commit only; product and AC1-AC9 accepted."
+}
