@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "gcloud",
+    "--configuration=food-crisis-test",
+    "run",
+    "jobs",
+    "describe",
+    "monthly-prepare",
+    "--region=us-central1",
+    "--project=feisty-flames-511718-d4",
+    "--format=json"
+  ],
+  "authorization": "task-scoped cloud preapproval until 2026-10-22T13:00:00Z",
+  "time": "2026-10-22T04:39:53.532269+00:00",
+  "purpose": "record deployed runtime configuration for later candidate change and recovery",
+  "scope": "read only",
+  "output": ".trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/live-monthly-prepare-before.json",
+  "sha256": "6bfc535ffcff2ec64120a3372a90964d93f2cb70f44c18a04c53b492a029bfe5"
+}

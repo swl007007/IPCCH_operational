@@ -2921,3 +2921,20 @@ Supersedes the in-progress bullets above, which are kept as written.
 - **Native code:** merged as 12a5dd7 (`research_cloud/`, native 6ee56f5).
 - **Evidence:** `research/acceptance.json`, `research/g12-cutover/cutover-receipt.json`, `research/cloud-operations.md` (O-001…O-120).
 - **Unchanged:** Cloudflare/DNS, Dropbox and source data. Cloud-only eligibility is listed in `research/cutover-runbook.md` §5; any change is the user's decision.
+
+## 2026-10-22 - FEWS fixed-map retrain: execution initialization
+
+- Authority: .trellis/tasks/10-21-fewsnet-fixed-map-retrain/{prd,design,implement}.md and research/execution-authority.md; full spec approved, no Trellis Audit or independent audit.
+- Supervisor: Codex w1B:p1; primary executor: Claude Opus 5.5 1M w1B:p2, session bfb1fb18-3db6-4d5a-898b-5f4f86719ec9.
+- Status: initialization in progress; AC1-AC9 pending. Base 8970523e917e269585008222436ae3588290ac3b. Native task activation follows approved-spec commit.
+- Preserved 73 unrelated modified tracked files with byte backups and research/preexisting-worktree.json.
+- Next: executor HDX all-country retrieval/crosswalk and data/runtime preflight; supervisor verifies before fitting. GCS reads authorized; other GCP operations retain individual approval.
+
+### 2026-10-22 05:10Z — FEWS fixed-map retrain: P1a checkpoint (executor)
+
+- Native task pointer bound in executor session (`session:claude_bfb1fb18…`); no Trellis Audit.
+- Runtime: `~/.venvs/ipcch-cloud-operator` (Py 3.12.3) equals the lock except certifi CA wheel; map, contract, roster, geometry and the six frozen confidence CSV hashes verified.
+- HDX CS raw freeze `hdx-cs-20261022T043937Z` (22/22 countries, supervisor hash-verified); all countries reach 2026-06; no 2025-02/2025-06 CS exists.
+- Strict geometric crosswalk (measured tolerance 1e-6, record gate, one-to-one, valid phase): 2026-06 candidates 4,039 labels in 21 countries (ET 0); 100% agreement with every overlapping source-backed production label.
+- Proven: current training panel imputes 1,259 (2025-10) and 1,373 (2026-02) missing labels as phase 1 (notebook cell 38 + keyed equality).
+- Evidence: `.trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/p1/p1a-checkpoint.md`. Not fitted; awaiting supervisor label acceptance. WFP/ACLED/remote/GOSIF assembly pending.

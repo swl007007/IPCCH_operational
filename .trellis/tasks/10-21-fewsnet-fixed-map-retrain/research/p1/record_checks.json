@@ -1,0 +1,119 @@
+{
+  "hdx_id_unique_whole_freeze": true,
+  "hdx_rows": 226100,
+  "months": {
+    "2021-06": {
+      "fdw_records": 5718,
+      "fdw_id_unique": true,
+      "hdx_records": 5718,
+      "hdx_id_unique_in_month": true,
+      "hdx_id_unique_whole_freeze_for_month": true,
+      "join": {
+        "both": 5718,
+        "left_only": 0,
+        "right_only": 0
+      },
+      "records_with_unique_ids": 5718,
+      "records_passing_all_checks": 5718,
+      "failing_record_ids": [],
+      "unit_types": {
+        "fsc_admin_lhz": 4596,
+        "fsc_admin": 1119,
+        "national_park": 3
+      },
+      "pairs": 33627
+    },
+    "2024-10": {
+      "fdw_records": 5893,
+      "fdw_id_unique": true,
+      "hdx_records": 5893,
+      "hdx_id_unique_in_month": true,
+      "hdx_id_unique_whole_freeze_for_month": true,
+      "join": {
+        "both": 5893,
+        "left_only": 0,
+        "right_only": 0
+      },
+      "records_with_unique_ids": 5893,
+      "records_passing_all_checks": 5893,
+      "failing_record_ids": [],
+      "unit_types": {
+        "fsc_admin_lhz": 4603,
+        "fsc_admin": 1220,
+        "idp_camp": 66,
+        "national_park": 3,
+        "fsc_urban": 1
+      },
+      "pairs": 33847
+    },
+    "2025-10": {
+      "fdw_records": 5573,
+      "fdw_id_unique": true,
+      "hdx_records": 5573,
+      "hdx_id_unique_in_month": true,
+      "hdx_id_unique_whole_freeze_for_month": true,
+      "join": {
+        "both": 5573,
+        "left_only": 0,
+        "right_only": 0
+      },
+      "records_with_unique_ids": 5573,
+      "records_passing_all_checks": 5573,
+      "failing_record_ids": [],
+      "unit_types": {
+        "fsc_admin_lhz": 4286,
+        "fsc_admin": 1220,
+        "idp_camp": 62,
+        "fsc_urban": 3,
+        "national_park": 2
+      },
+      "pairs": 32137
+    },
+    "2026-02": {
+      "fdw_records": 5589,
+      "fdw_id_unique": true,
+      "hdx_records": 5589,
+      "hdx_id_unique_in_month": true,
+      "hdx_id_unique_whole_freeze_for_month": true,
+      "join": {
+        "both": 5589,
+        "left_only": 0,
+        "right_only": 0
+      },
+      "records_with_unique_ids": 5589,
+      "records_passing_all_checks": 5589,
+      "failing_record_ids": [],
+      "unit_types": {
+        "fsc_admin_lhz": 4283,
+        "fsc_admin": 1220,
+        "idp_camp": 82,
+        "national_park": 2,
+        "fsc_urban": 2
+      },
+      "pairs": 32207
+    },
+    "2026-06": {
+      "fdw_records": 5871,
+      "fdw_id_unique": true,
+      "hdx_records": 5871,
+      "hdx_id_unique_in_month": true,
+      "hdx_id_unique_whole_freeze_for_month": true,
+      "join": {
+        "both": 5871,
+        "left_only": 0,
+        "right_only": 0
+      },
+      "records_with_unique_ids": 5871,
+      "records_passing_all_checks": 5871,
+      "failing_record_ids": [],
+      "unit_types": {
+        "fsc_admin_lhz": 4553,
+        "fsc_admin": 1220,
+        "idp_camp": 93,
+        "national_park": 3,
+        "fsc_urban": 2
+      },
+      "pairs": 33965
+    }
+  }
+}

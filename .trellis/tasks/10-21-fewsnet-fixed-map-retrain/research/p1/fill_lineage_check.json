@@ -1,0 +1,36 @@
+{
+ "2025-10": {
+  "intermediate_rows": 5719,
+  "unique_admin": 5718,
+  "rows_with_source_value": 4462,
+  "equal_to_source": 4462,
+  "rows_without_source_value": 1259,
+  "without_source_value_eq_1": 1259,
+  "without_source_crisis_eq_0": 1259,
+  "panel_vs_intermediate_join": {
+   "both": 5718,
+   "left_only": 0,
+   "right_only": 0
+  },
+  "panel_equal_intermediate": 5718
+ },
+ "2026-02": {
+  "intermediate_rows": 5719,
+  "unique_admin": 5718,
+  "rows_with_source_value": 4348,
+  "equal_to_source": 4348,
+  "rows_without_source_value": 1373,
+  "without_source_value_eq_1": 1373,
+  "without_source_crisis_eq_0": 1373,
+  "panel_vs_intermediate_join": {
+   "both": 5718,
+   "left_only": 0,
+   "right_only": 0
+  },
+  "panel_equal_intermediate": 5718
+ },
+ "hashes": {
+  "FEWS_2025.csv": "4987356a80bbeff64b851548b0d06aaa347b73ecd03ff57001319bd7fec24c1f",
+  "FEWSNET_forecast_unadjusted_bm_2025.csv": "5c8aefc116232175c3c07fc8495ec177fd04094c01a535cf67cd6e783772613f"
+ }
+}

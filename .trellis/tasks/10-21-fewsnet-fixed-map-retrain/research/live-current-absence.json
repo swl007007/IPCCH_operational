@@ -1,0 +1,15 @@
+{
+  "observed_at": "2026-10-22T04:58:22.444645+00:00",
+  "argv": [
+    "gcloud",
+    "--configuration=food-crisis-test",
+    "storage",
+    "objects",
+    "describe",
+    "gs://food-crisis-test-ipcch-data/monthly-staging/current.json",
+    "--format=json"
+  ],
+  "result": "404 not found",
+  "scope": "read only; conversation GCS preapproval",
+  "interpretation": "No current release pointer at configured production namespace at this observation. Do not fabricate predecessor generation; recheck before candidate promotion. Accepted external October source/fallback remain separate references."
+}

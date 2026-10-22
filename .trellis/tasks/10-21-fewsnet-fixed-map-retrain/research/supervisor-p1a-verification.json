@@ -1,0 +1,388 @@
+{
+  "verified_at": "2026-10-22T05:11:39.987383+00:00",
+  "hdx_country_content": {
+    "AF": {
+      "rows": 22562,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 509,
+      "valid_phase_not_collected": 0
+    },
+    "BF": {
+      "rows": 2606,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 68,
+      "valid_phase_not_collected": 0
+    },
+    "BI": {
+      "rows": 828,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 46,
+      "valid_phase_not_collected": 0
+    },
+    "CD": {
+      "rows": 6614,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 345,
+      "valid_phase_not_collected": 0
+    },
+    "CM": {
+      "rows": 1728,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 96,
+      "valid_phase_not_collected": 0
+    },
+    "ET": {
+      "rows": 40396,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 1161,
+      "valid_phase_not_collected": 0
+    },
+    "GT": {
+      "rows": 16937,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 353,
+      "valid_phase_not_collected": 0
+    },
+    "HT": {
+      "rows": 6348,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 174,
+      "valid_phase_not_collected": 0
+    },
+    "KE": {
+      "rows": 28336,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 642,
+      "valid_phase_not_collected": 0
+    },
+    "MG": {
+      "rows": 4664,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 154,
+      "valid_phase_not_collected": 0
+    },
+    "ML": {
+      "rows": 5392,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 61,
+      "valid_phase_not_collected": 0
+    },
+    "MW": {
+      "rows": 4423,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Available",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 84,
+      "valid_phase_not_collected": 0
+    },
+    "MZ": {
+      "rows": 9320,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 233,
+      "valid_phase_not_collected": 0
+    },
+    "NE": {
+      "rows": 6997,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 176,
+      "valid_phase_not_collected": 0
+    },
+    "NG": {
+      "rows": 8610,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Missing Historic Data"
+      ],
+      "id_unique": true,
+      "count_2026_06": 303,
+      "valid_phase_not_collected": 0
+    },
+    "SD": {
+      "rows": 8377,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 390,
+      "valid_phase_not_collected": 0
+    },
+    "SO": {
+      "rows": 11514,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 217,
+      "valid_phase_not_collected": 0
+    },
+    "SS": {
+      "rows": 3970,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 79,
+      "valid_phase_not_collected": 0
+    },
+    "TD": {
+      "rows": 4370,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 92,
+      "valid_phase_not_collected": 0
+    },
+    "UG": {
+      "rows": 18394,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Available",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 339,
+      "valid_phase_not_collected": 0
+    },
+    "YE": {
+      "rows": 4585,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 145,
+      "valid_phase_not_collected": 0
+    },
+    "ZW": {
+      "rows": 9129,
+      "latest_month": "2026-06",
+      "collection_status": [
+        "Published"
+      ],
+      "scenario": [
+        "CS"
+      ],
+      "record_status": [
+        "Collected",
+        "Not Available",
+        "Not Projected"
+      ],
+      "id_unique": true,
+      "count_2026_06": 204,
+      "valid_phase_not_collected": 0
+    }
+  },
+  "fill_lineage_key_checks": {
+    "2025-10": {
+      "unique_panel_keys": 5718,
+      "proven_fill_unique_keys": 1259,
+      "duplicate_intermediate_keys_consistent": true,
+      "panel_equals_intermediate": true
+    },
+    "2026-02": {
+      "unique_panel_keys": 5718,
+      "proven_fill_unique_keys": 1373,
+      "duplicate_intermediate_keys_consistent": true,
+      "panel_equals_intermediate": true
+    }
+  },
+  "software_checks": "10 unittest cases passed independently",
+  "scope": "No model fitting or evaluation; data/code integrity verification only"
+}

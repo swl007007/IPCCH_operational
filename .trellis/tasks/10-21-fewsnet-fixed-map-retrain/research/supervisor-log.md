@@ -26,3 +26,23 @@ AC1–AC9 remain pending. Task status and spec commit do not establish data, mod
 ## S2 — time-bounded cloud preapproval
 
 The user explicitly opened cloud preapproval until 2026-10-22 09:00 ET, i.e. 13:00 UTC. Task-scoped necessary cloud operations may proceed in that window without individual questions; record exact operations/results and check time before consequential actions. Existing candidate-verification/hold/promotion/recovery gates remain. GCS read-only preapproval persists independently in this conversation. Spec and execution authority synchronized.
+
+## S3 — deployed jobs and raw HDX verification
+
+- Read both production jobs under timed preapproval; original resources/command receipts are `live-monthly-prepare-before.json`, `live-oct-delivery-before.json` and matching read receipts. Both generation 1, monthly-runtime service account, original accepted image. No mutation. Recheck mutable state before future shared-runtime changes.
+- Independently verified all 44 raw resource SHA256 and byte counts in `/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/hdx/hdx-cs-20261022T043937Z/retrieval_receipt.json`: 22 countries, 176548777 bytes, zero mismatches. This verifies raw retrieval preservation only; CS content validity/geographic mapping/additions remain pending.
+- P1 feedback: retain per-country failures/incremental receipts and verify HDX dataset metadata; no repeated all-country download is needed to test that change.
+- Executor launched second retrieval `hdx-cs-20261022T044133Z`. AF receipt reported decoded bytes 16512857 versus compressed Content-Length about 634252; its new equality check is invalid with requests decompression. Sent concrete correction and stopped only PID 180341 after exact argv verification. First complete freeze and all second-attempt bytes retained. This is a recoverable downloader-check error, not missing scientific data.
+
+## S4 — geographic-label gate (pending)
+
+- Reviewed `research/p1/crosswalk_cs_labels.py`: its initial reciprocal 0.90 overlap called identical and 0.95 containment could admit materially changed or coarser supports without equivalent-area evidence. These trial decisions are not accepted training labels.
+- Feedback requires persistent source-ID evidence or unique same-country boundary equivalence with measured numerical/simplification tolerance; unresolved changed/split/coarser supports remain gaps. Requested .99/.999/.999999 overlap distributions, competing-source/phase conflicts, raw record uniqueness, one-to-one joins and source-country/month agreement. Fit remains gated on credible additions.
+- Existing raw HDX content has June 2026 labels; February/June 2025 are absent in current downloaded records as well as baseline and must not be fabricated.
+- Reminded executor to inspect/stop its two exploratory scouts at the repository ten-minute bound and use existing partial evidence, rather than continue broad searches.
+
+## S5 — P1a accepted; fitting still pending
+
+See `p1a-acceptance.md` and `supervisor-p1a-verification.json`. Independently reran 10 data checks; verified all 22 country CSV contents and keyed fill lineage. Accepted 5109 new observed targets and clearing 2632 proven synthetic targets in a new versioned panel before attaching 720 replacements; 1912 remain missing. No raw source change or model fitting. Strict geometry gaps, including Ethiopia, are explicit. Operator certifi differs from exact lock; require a separate frozen fitting/runtime environment. AC1 as a whole remains pending feature/source assembly.
+
+Configured production current.json was absent (404); bucket root contains baselines/environments/models only. Absence is recorded in live-current-absence.json; revalidate generation zero before eventual first publication and preserve the accepted external October archive/fallback.

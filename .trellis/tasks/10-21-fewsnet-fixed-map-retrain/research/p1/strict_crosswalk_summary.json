@@ -1,0 +1,273 @@
+{
+  "tolerance": 0.999999,
+  "vintage_month": "2021-06",
+  "vintage_strict_links": 5640,
+  "months": {
+    "2024-10": {
+      "areas_with_overlap": 5718,
+      "best_reciprocal_at_least": {
+        "0.99": 5292,
+        "0.999": 4603,
+        "0.9999": 4558,
+        "0.99999": 4549,
+        "0.999999": 4541
+      },
+      "strict_equivalent_units": 4541,
+      "accepted_valid_phase": 4528,
+      "accepted_countries": 21,
+      "accepted_fnid_persistent_from_vintage": 3679,
+      "accepted_name_equal": 4178,
+      "accepted_unit_types": {
+        "fsc_admin_lhz": 4449,
+        "fsc_admin": 79
+      },
+      "strict_equivalent_unit_types": {
+        "fsc_admin_lhz": 4460,
+        "fsc_admin": 79,
+        "national_park": 2
+      },
+      "vintage_fnid_reported_in_month": 3681,
+      "vintage_fnid_reported_but_not_strict": 0,
+      "accepted_with_competing_overlap": 7,
+      "gap_reason": {
+        "no_boundary_equivalent_unit": 1177,
+        "equivalent_unit_phase_missing_or_invalid": 13
+      },
+      "nonstrict_areas_with_conflicting_overlap_phases": 602,
+      "comparison": {
+        "agrees_with_production": 4178,
+        "production_label_no_strict_label": 1158,
+        "addition_no_production_label": 350,
+        "gap_no_production_label": 32
+      },
+      "accepted_by_country": {
+        "AF": 509,
+        "BF": 65,
+        "BI": 46,
+        "CD": 330,
+        "CM": 96,
+        "GT": 353,
+        "HT": 174,
+        "KE": 640,
+        "MG": 154,
+        "ML": 112,
+        "MW": 3,
+        "MZ": 233,
+        "NE": 182,
+        "NG": 284,
+        "SD": 348,
+        "SO": 199,
+        "SS": 79,
+        "TD": 56,
+        "UG": 317,
+        "YE": 145,
+        "ZW": 203
+      },
+      "accepted_phase_counts": {
+        "1": 1271,
+        "2": 1710,
+        "3": 1308,
+        "4": 239
+      }
+    },
+    "2025-10": {
+      "areas_with_overlap": 5400,
+      "best_reciprocal_at_least": {
+        "0.99": 4973,
+        "0.999": 4284,
+        "0.9999": 4239,
+        "0.99999": 4230,
+        "0.999999": 4222
+      },
+      "strict_equivalent_units": 4222,
+      "accepted_valid_phase": 4210,
+      "accepted_countries": 20,
+      "accepted_fnid_persistent_from_vintage": 3362,
+      "accepted_name_equal": 3860,
+      "accepted_unit_types": {
+        "fsc_admin_lhz": 4131,
+        "fsc_admin": 79
+      },
+      "strict_equivalent_unit_types": {
+        "fsc_admin_lhz": 4142,
+        "fsc_admin": 79,
+        "national_park": 1
+      },
+      "vintage_fnid_reported_in_month": 3363,
+      "vintage_fnid_reported_but_not_strict": 0,
+      "accepted_with_competing_overlap": 7,
+      "gap_reason": {
+        "no_boundary_equivalent_unit": 1178,
+        "no_overlapping_unit": 318,
+        "equivalent_unit_phase_missing_or_invalid": 12
+      },
+      "nonstrict_areas_with_conflicting_overlap_phases": 641,
+      "comparison": {
+        "agrees_with_production": 3859,
+        "proven_imputed_fill_no_strict_label": 908,
+        "production_label_no_strict_label": 600,
+        "replaces_proven_imputed_fill": 351
+      },
+      "accepted_by_country": {
+        "AF": 509,
+        "BF": 65,
+        "BI": 46,
+        "CD": 330,
+        "CM": 96,
+        "GT": 353,
+        "HT": 174,
+        "KE": 640,
+        "MG": 154,
+        "ML": 112,
+        "MW": 3,
+        "MZ": 233,
+        "NE": 182,
+        "NG": 284,
+        "SD": 347,
+        "SO": 199,
+        "SS": 79,
+        "TD": 56,
+        "YE": 145,
+        "ZW": 203
+      },
+      "accepted_phase_counts": {
+        "1": 990,
+        "2": 1834,
+        "3": 1185,
+        "4": 201
+      }
+    },
+    "2026-02": {
+      "areas_with_overlap": 5400,
+      "best_reciprocal_at_least": {
+        "0.99": 4929,
+        "0.999": 4191,
+        "0.9999": 4116,
+        "0.99999": 4079,
+        "0.999999": 4044
+      },
+      "strict_equivalent_units": 4044,
+      "accepted_valid_phase": 4032,
+      "accepted_countries": 20,
+      "accepted_fnid_persistent_from_vintage": 3115,
+      "accepted_name_equal": 3664,
+      "accepted_unit_types": {
+        "fsc_admin_lhz": 3953,
+        "fsc_admin": 79
+      },
+      "strict_equivalent_unit_types": {
+        "fsc_admin_lhz": 3964,
+        "fsc_admin": 79,
+        "national_park": 1
+      },
+      "vintage_fnid_reported_in_month": 3116,
+      "vintage_fnid_reported_but_not_strict": 0,
+      "accepted_with_competing_overlap": 7,
+      "gap_reason": {
+        "no_boundary_equivalent_unit": 1356,
+        "no_overlapping_unit": 318,
+        "equivalent_unit_phase_missing_or_invalid": 12
+      },
+      "nonstrict_areas_with_conflicting_overlap_phases": 624,
+      "comparison": {
+        "agrees_with_production": 3663,
+        "proven_imputed_fill_no_strict_label": 1004,
+        "production_label_no_strict_label": 682,
+        "replaces_proven_imputed_fill": 369
+      },
+      "accepted_by_country": {
+        "AF": 509,
+        "BF": 6,
+        "BI": 46,
+        "CD": 330,
+        "CM": 96,
+        "GT": 353,
+        "HT": 174,
+        "KE": 640,
+        "MG": 154,
+        "ML": 112,
+        "MW": 3,
+        "MZ": 233,
+        "NE": 63,
+        "NG": 284,
+        "SD": 347,
+        "SO": 199,
+        "SS": 79,
+        "TD": 56,
+        "YE": 145,
+        "ZW": 203
+      },
+      "accepted_phase_counts": {
+        "1": 793,
+        "2": 1358,
+        "3": 1619,
+        "4": 262
+      }
+    },
+    "2026-06": {
+      "areas_with_overlap": 5718,
+      "best_reciprocal_at_least": {
+        "0.99": 5067,
+        "0.999": 4240,
+        "0.9999": 4142,
+        "0.99999": 4091,
+        "0.999999": 4051
+      },
+      "strict_equivalent_units": 4051,
+      "accepted_valid_phase": 4039,
+      "accepted_countries": 21,
+      "accepted_fnid_persistent_from_vintage": 3115,
+      "accepted_name_equal": 3685,
+      "accepted_unit_types": {
+        "fsc_admin_lhz": 3960,
+        "fsc_admin": 79
+      },
+      "strict_equivalent_unit_types": {
+        "fsc_admin_lhz": 3971,
+        "fsc_admin": 79,
+        "national_park": 1
+      },
+      "vintage_fnid_reported_in_month": 3116,
+      "vintage_fnid_reported_but_not_strict": 0,
+      "accepted_with_competing_overlap": 7,
+      "gap_reason": {
+        "no_boundary_equivalent_unit": 1667,
+        "equivalent_unit_phase_missing_or_invalid": 12
+      },
+      "nonstrict_areas_with_conflicting_overlap_phases": 571,
+      "comparison": {
+        "addition_no_production_label": 4039,
+        "gap_no_production_label": 1679
+      },
+      "accepted_by_country": {
+        "AF": 509,
+        "BF": 6,
+        "BI": 46,
+        "CD": 330,
+        "CM": 96,
+        "GT": 353,
+        "HT": 174,
+        "KE": 640,
+        "MG": 154,
+        "ML": 5,
+        "MW": 3,
+        "MZ": 233,
+        "NE": 63,
+        "NG": 284,
+        "SD": 347,
+        "SO": 199,
+        "SS": 79,
+        "TD": 56,
+        "UG": 114,
+        "YE": 145,
+        "ZW": 203
+      },
+      "accepted_phase_counts": {
+        "1": 748,
+        "2": 1693,
+        "3": 1344,
+        "4": 254
+      }
+    }
+  }
+}

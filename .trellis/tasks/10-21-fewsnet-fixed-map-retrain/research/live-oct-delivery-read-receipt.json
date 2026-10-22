@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "gcloud",
+    "--configuration=food-crisis-test",
+    "run",
+    "jobs",
+    "describe",
+    "oct-delivery",
+    "--region=us-central1",
+    "--project=feisty-flames-511718-d4",
+    "--format=json"
+  ],
+  "authorization": "task-scoped cloud preapproval until 2026-10-22T13:00:00Z",
+  "time": "2026-10-22T04:39:53.531436+00:00",
+  "purpose": "record deployed runtime configuration for later candidate change and recovery",
+  "scope": "read only",
+  "output": ".trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/live-oct-delivery-before.json",
+  "sha256": "5417cc329d087e19fe043d10909e34ea5029ff3bbb960159e155734067b30460"
+}
