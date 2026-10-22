@@ -144,3 +144,51 @@ Migration to food-crisis-modeling-enso completed and closed: PID-1-safe per-tria
 ### Next Steps
 
 - None for these tasks; audit debt sqlimport-a01-precision-A01 stays recorded. Archived: .trellis/tasks/archive/2026-10/{10-16-gcp-research-modeling-migration,10-16-sqlimport-a01-precision}.
+
+
+## Session 6: FEWS fixed-map retrain: all-history fit, manifest dispatch, candidate and promotion
+<!-- trellis-session: v=2 fp=f586f00538742508 -->
+
+**Date**: 2026-10-22
+**Task**: FEWS fixed-map retrain: all-history fit, manifest dispatch, candidate and promotion
+**Branch**: `feat/fewsnet-fixed-map-retrain`
+
+### Summary
+
+Refreshed FEWS labels (HDX CS, strict crosswalk), refit 0/6/12m on all eligible history with the fixed map/features/thresholds (no evaluation), built workflow-owned manifest dispatch with maintenance hold, candidate receipt and recoverable promotion, and promoted fews-candidate-20261022a (FEWS scored, IPCCH inherited, frozen October confidence) under supervisor acceptance.
+
+### Main Changes
+
+- Full-data runner/package path; GOSIF v3 boundary and FEWS nightlight sum; frozen_output confidence; execution selection with IPCCH inheritance and candidate publication
+- Workflow: hold, run claim, admission, one snapshot gate; operator: intent-only runs, candidate download/verify, maintenance hold/gate/apply/restore/release, receipt-bound promotion
+- Production: runtime sha256:487a2315, baseline b77cb29b, current.json -> fews-candidate-20261022a, fallback swapped (predecessor kept)
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ff389b1` | feat(fewsnet): full-history fixed-threshold fit path and versioned input freeze |
+| `dbfc196` | fix(fewsnet): keep full-history pool job arguments picklable |
+| `38c1ccb` | fix(remote): FEWS nightlight sum mapping, GOSIF mean v3 from 2025, contract v2 |
+| `1dd5e70` | feat(delivery): attach frozen FEWS confidence outputs unchanged |
+| `82a4a0f` | feat(delivery): retain raw Stage3 evidence and source declarations with frozen outputs |
+| `f9506bc` | feat(delivery): manifest step selection, inherited systems and candidate publication |
+| `9e5a375` | feat(workflow): dispatch selected steps from the pinned request |
+| `0d60a4e` | fix(dispatch): gate cloud steps on claim, admission and one snapshot check |
+| `48d3d1e` | feat(operator): workflow-owned runs, candidate receipt and recoverable promotion |
+| `7e458e2` | fix(operator): condition restore and activation writes on inspected state |
+| `53d5f87` | fix(deploy): pass --condition=None on unconditional bucket grants |
+| `49ed4bb` | docs(release): reopen admission, reconcile docs/checklist, pin retained-source fixture |
+| `f545eb0` | docs(task): final supervisor acceptance of the FEWS retrain release |
+
+### Testing
+
+- [OK] Full suite 619 passed + 4 fixture-corrected (623); in-image six-slot evidence; candidate release checks 43/43; relocated FEWS-only replay all equal; supervisor final acceptance (AC1-AC9)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Next monthly run uses the activated normal config; rollback via the recorded operation (OPERATIONS.md)
