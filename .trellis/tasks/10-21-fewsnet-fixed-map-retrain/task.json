@@ -3,7 +3,7 @@
   "name": "fewsnet-fixed-map-retrain",
   "title": "FEWS NET fixed-map retraining and production refresh",
   "description": "Refresh latest HDX-registered FEWS CS labels and other inputs; fit all eligible history with fixed RF map/schema/thresholds and retain confidence directly. Manifest drives actual cloud Workflow dispatch: this release skips prepare, scores FEWS only and inherits same-origin IPCCH. Verify the candidate before promoting production defaults/fallback, with other monthly computations held during shared-runtime changes. No model evaluation or confidence recalculation.",
-  "status": "planning",
+  "status": "in_progress",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -12,7 +12,7 @@
   "assignee": "William Shi",
   "createdAt": "2026-10-21",
   "completedAt": null,
-  "branch": null,
+  "branch": "feat/fewsnet-fixed-map-retrain",
   "base_branch": "feat/october-cloud-delivery",
   "worktree_path": null,
   "commit": null,
@@ -28,11 +28,12 @@
     ".trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/confidence-source-inventory.json",
     ".trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/hdx-discovery.json"
   ],
-  "notes": "Final-grill decisions recorded 2026-10-22. Execution approved by the 2026-10-22 Supervisor-Executor protocol; native activation pending. HDX label versions freeze at actual retrieval; assessment<=2026-10, exogenous months<=2026-09, other source availability cutoff remains 2026-10-21. Partial label gaps allowed; zero credible additions stops fitting. Cloud Workflow reads the immutable manifest, dispatches selected existing jobs and waits for durable preparation success. This release scores FEWS only and inherits same-origin IPCCH into a complete package. Download/integrity/FEWS replay precede promotion of current/defaults/fallback. Pause other monthly computations during shared-runtime changes, reopen only after acceptance/restoration. All-history fitting, fixed contracts and direct confidence reuse remain. Scoped GCS reads preauthorized in this conversation; other GCP operations require individual approval. Explicit no-audit override: native Trellis only; verified Herdr Claude executor with Codex supervision. See research/execution-authority.md.",
+  "notes": "Final-grill decisions recorded 2026-10-22. Execution approved by the 2026-10-22 Supervisor-Executor protocol; native task activated. HDX label versions freeze at actual retrieval; assessment<=2026-10, exogenous months<=2026-09, other source availability cutoff remains 2026-10-21. Partial label gaps allowed; zero credible additions stops fitting. Cloud Workflow reads the immutable manifest, dispatches selected existing jobs and waits for durable preparation success. This release scores FEWS only and inherits same-origin IPCCH into a complete package. Download/integrity/FEWS replay precede promotion of current/defaults/fallback. Pause other monthly computations during shared-runtime changes, reopen only after acceptance/restoration. All-history fitting, fixed contracts and direct confidence reuse remain. Scoped GCS reads preauthorized in this conversation; necessary task-scoped cloud operations preapproved until 2026-10-22T13:00:00Z (09:00 ET); individual approval resumes afterward. Explicit no-audit override: native Trellis only; verified Herdr Claude executor with Codex supervision. See research/execution-authority.md.",
   "meta": {
     "execution_authority": "research/execution-authority.md",
     "supervisor_thread": "01a16167-c7f6-7fa2-bbe3-bf1451082c94",
     "executor_session": "bfb1fb18-3db6-4d5a-898b-5f4f86719ec9",
-    "audit_workflow": "disabled_by_explicit_user_instruction"
+    "audit_workflow": "disabled_by_explicit_user_instruction",
+    "cloud_preapproval_expires_at": "2026-10-22T13:00:00Z"
   }
 }

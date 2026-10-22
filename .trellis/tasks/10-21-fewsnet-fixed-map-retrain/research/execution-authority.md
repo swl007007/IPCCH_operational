@@ -14,7 +14,7 @@ The user's 2026-10-22 `/goal` instruction authorizes execution of this task's fu
 
 ## Authorization boundaries
 
-Implementation, public HDX/official resource retrieval, local data assembly/fitting and necessary software/data/package integrity checks are authorized. All GCS read-only commands within this conversation/task are preauthorized. Other GCP operations still require an individually presented exact command/API, target, purpose, read/write scope and side effects before execution. Do not interpret the execution protocol as blanket cloud permission.
+Implementation, public HDX/official resource retrieval, local data assembly/fitting and necessary software/data/package integrity checks are authorized. All GCS read-only commands within this conversation/task are preauthorized. The user subsequently explicitly stated: `云端权限预批准开放到10/22 09:00 ET`. This grants necessary task-scoped cloud operations through **2026-10-22T13:00:00Z**, superseding individual cloud approval during that window. Record concrete operations/results, check fresh UTC time before consequential actions and retain spec acceptance/recovery gates. After expiry, do not launch new cloud mutations; non-GCS operations again require individual approval. Long-running submitted work may be observed; do not use preapproval to expand task scope.
 
 No model evaluation/test split, backtest, threshold search, confidence recalculation or IPCCH inference. Respect PRD source cutoffs, all-history fitting, fixed map/features/recipe and frozen-confidence rules. Do not fabricate mapping, preparation or acceptance evidence.
 

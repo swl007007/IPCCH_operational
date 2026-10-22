@@ -4,7 +4,7 @@
 
 Approved execution specification, updated on 2026-10-22 after the final grill and the user's Supervisor–Executor instruction. Refresh the FEWS NET dataset from HDX-registered latest CS resources, fit new operational binary Random Forest weights on all eligible history, and make those weights the production default after candidate acceptance. Target project: `feisty-flames-511718-d4` (food crisis modelling test). HDX label versions are frozen at actual retrieval; the other source-vintage and observation-month limits below remain unchanged.
 
-The user's latest decisions supersede the earlier rolling-window proposal: **no last-36-period restriction, no validation/test split, no model evaluation, no threshold search, and no confidence recalculation**. Existing confidence outputs are retained directly. Implementation and local fitting are authorized; the separate per-operation GCP approval boundary below remains.
+The user's latest decisions supersede the earlier rolling-window proposal: **no last-36-period restriction, no validation/test split, no model evaluation, no threshold search, and no confidence recalculation**. Existing confidence outputs are retained directly. Implementation and local fitting are authorized; cloud operations follow the time-bounded authorization below.
 
 ## Requirements
 
@@ -88,6 +88,6 @@ The second grill confirmed that skipping preparation during release does not can
 
 ## Execution boundary
 
-Within this conversation and task scope, **all GCS read-only commands are preauthorized**. Other GCP operations retain individual approval: disclose exact command/API, purpose, read/write scope and side effects. This includes new Cloud Run/EE queries, builds, image pushes, job executions and cloud writes; the earlier approved Cloud Run query is not blanket authorization.
+Latest user authorization: **cloud permissions are preapproved for this task until 2026-10-22 09:00 America/New_York (13:00 UTC)**. Within that window, execute necessary task-scoped cloud reads, data preparation, builds/pushes, configuration/IAM changes, job executions, candidate publication and promotion without repeated permission questions; record exact commands/APIs, targets, purposes and effects. Preserve all scientific, candidate-verification, maintenance and recovery gates. Do not launch new cloud mutations after the deadline; use fresh UTC time before consequential operations. Previously authorized work already running may be observed, and interrupted activation must remain recoverable. Beyond the window, non-GCS operations return to individual approval. **All GCS read-only commands remain preauthorized within this conversation/task** independently of the temporary window.
 
 The user's execution protocol at `/home/swl007007/.codex/attachments/ac2a3527-2eb9-4323-b1e8-0ab34be5176c/pasted-text-1.txt` authorizes the full spec and explicitly supersedes the earlier audit lifecycle: **do not start Trellis Audit or any automatic/independent audit workflow**. Codex supervises and verifies checkpoints; the verified existing Herdr Claude Opus 5.5 1M executor implements and runs the work. Commit the approved spec/plan, use native Trellis activation/checkpoints, and preserve unrelated workspace changes. Only actual AC1–AC9 evidence permits completion. See `research/execution-authority.md` for current identities and handoff protocol.

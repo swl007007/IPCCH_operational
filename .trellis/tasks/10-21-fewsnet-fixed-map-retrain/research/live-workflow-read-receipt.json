@@ -1,0 +1,17 @@
+{
+  "operation": "GCP-R001",
+  "argv": [
+    "gcloud",
+    "--configuration=food-crisis-test",
+    "workflows",
+    "describe",
+    "oct-delivery-trigger",
+    "--location=us-central1",
+    "--project=feisty-flames-511718-d4",
+    "--format=json"
+  ],
+  "authorization": "user approved this exact read-only query in this conversation",
+  "retrieved_at": "2026-10-22T04:37:35.737197+00:00",
+  "output": ".trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/live-workflow-before.json",
+  "sha256": "dd3a3f916445f84d03d71c8f61d14ee740b0ea87add3c59ff5cd6dcc7a7a7790"
+}
