@@ -483,7 +483,11 @@ def _diagnostics_regeneration_checks(root: Path) -> dict[str, bool]:
         return pd.read_csv(io.StringIO(frame.to_csv(index=False)), dtype=str, keep_default_na=False)
 
     checks = {}
+    inherited = inherited_systems(root)
     for system in SYSTEMS:
+        if system in inherited:
+            checks.update(_inherited_identity_checks(root, system, inherited[system]))
+            continue
         for horizon in HORIZONS:
             scope = root / f"scopes/{horizon}m/{system}"
             if system == "fewsnet":
@@ -515,6 +519,7 @@ def rescore(root: Path, output: Path) -> dict:
     root, output = Path(root), Path(output)
     output.mkdir(parents=True, exist_ok=False)
     origin = json.loads((root / "reports/delivery.json").read_text())["origin_month"]
+    inherited = inherited_systems(root)  # copied unchanged, never rescored (no IPCCH inference when inherited)
     identity = pd.read_csv(root / "inputs/fewsnet_identity_population.csv", dtype={"admin_code": str},
                            float_precision="round_trip")
     rows = pd.read_csv(root / "inputs/ipcch_origin_rows.csv", low_memory=False, float_precision="round_trip",
@@ -525,21 +530,33 @@ def rescore(root: Path, output: Path) -> dict:
                                   keep_default_na=False).replace({"": pd.NA}) for system in SYSTEMS}
     iso = lookup.merge(census["ipcch"][["country", "ISO3"]], on="country", how="left").set_index("area_id")["ISO3"]
     summary, availability = {}, []
+    delivered_availability = _text(root / AVAILABILITY)
     for horizon in HORIZONS:
         target = add_calendar_months(origin, horizon)
-        package = load_local_model_package(root / f"fewsnet/model_package/{horizon}m")
-        frame = pd.read_csv(root / f"inputs/fewsnet_scope_{horizon}m_inference.csv", dtype={"admin_code": str},
-                            float_precision="round_trip", low_memory=False)
-        fews = enrich_local_predictions(package.predictor.predict_frame(frame), identity,
-                                        model_artifact_path=f"fewsnet/model_package/{horizon}m",
-                                        source_input="inputs/fewsnet_normalized_panel.csv")
-        ipcch, _ = run_scope(monthly_rows=monthly, model_package_root=root / "ipcch/model_package", feature_month=origin,
-                             scope_months=horizon, target_month=target, source_input="inputs/ipcch_origin_rows.csv",
-                             include_uncertainty=False)
-        ipcch.insert(0, "polygon_id", ipcch["area_id"].astype(str))
-        for system, predictions, lookup_frame, package_path in (
-                ("fewsnet", fews, None, f"fewsnet/model_package/{horizon}m"),
-                ("ipcch", ipcch, lookup, f"ipcch/model_package/scope_{horizon}m")):
+        scored = []
+        if "fewsnet" not in inherited:
+            package = load_local_model_package(root / f"fewsnet/model_package/{horizon}m")
+            frame = pd.read_csv(root / f"inputs/fewsnet_scope_{horizon}m_inference.csv", dtype={"admin_code": str},
+                                float_precision="round_trip", low_memory=False)
+            fews = enrich_local_predictions(package.predictor.predict_frame(frame), identity,
+                                            model_artifact_path=f"fewsnet/model_package/{horizon}m",
+                                            source_input="inputs/fewsnet_normalized_panel.csv")
+            scored.append(("fewsnet", fews, None, f"fewsnet/model_package/{horizon}m"))
+        if "ipcch" not in inherited:
+            ipcch, _ = run_scope(monthly_rows=monthly, model_package_root=root / "ipcch/model_package",
+                                 feature_month=origin, scope_months=horizon, target_month=target,
+                                 source_input="inputs/ipcch_origin_rows.csv", include_uncertainty=False)
+            ipcch.insert(0, "polygon_id", ipcch["area_id"].astype(str))
+            scored.append(("ipcch", ipcch, lookup, f"ipcch/model_package/scope_{horizon}m"))
+        for system in inherited:
+            for name in SCOPE_TABLES[system]:
+                destination = output / f"scopes/{horizon}m/{system}/{name}.csv"
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(root / f"scopes/{horizon}m/{system}/{name}.csv", destination)
+            rows = delivered_availability[(delivered_availability["model_system"] == system)
+                                          & (delivered_availability["horizon_months"] == str(horizon))]
+            availability.append(rows)
+        for system, predictions, lookup_frame, package_path in scored:
             scope = output / f"scopes/{horizon}m/{system}"
             ordered = predictions[list(do.SEPTEMBER_HEADERS[system]["polygon_predictions"])]
             do.write_table(ordered, scope / "polygon_predictions.csv", system=system, name="polygon_predictions")
@@ -553,9 +570,25 @@ def rescore(root: Path, output: Path) -> dict:
             do.write_table(diag["polygon_table"], scope / f"{diag['polygon_name']}.csv", system=system,
                            name=diag["polygon_name"])
             availability.append(diag["availability"])
-        summary[horizon] = {"fewsnet_rows": len(fews), "ipcch_rows": len(ipcch)}
+        summary[horizon] = {system: ("inherited" if system in inherited else
+                                     len(next(frame for name, frame, *_ in scored if name == system)))
+                            for system in SYSTEMS}
     do.write_table(pd.concat(availability, ignore_index=True), output / AVAILABILITY)
     return summary
+
+
+def inherited_systems(root: Path) -> dict:
+    """Systems carried unchanged from an accepted delivery (``reports/inherited_members.json``)."""
+    path = Path(root) / "reports/inherited_members.json"
+    return json.loads(path.read_text()) if path.is_file() else {}
+
+
+def _inherited_identity_checks(root: Path, system: str, record: dict) -> dict[str, bool]:
+    """Inherited members are checked by source identity, never recomputed."""
+    same = bool(record.get("members")) and all(
+        (Path(root) / name).is_file() and _sha256(Path(root) / name) == digest
+        for name, digest in record["members"].items())
+    return {f"{system}_{horizon}m_diagnostics_regenerated": same for horizon in HORIZONS}
 
 
 def _compare_frames(a: pd.DataFrame, b: pd.DataFrame, atol: float = 1e-12) -> tuple[bool, float, list[str]]:

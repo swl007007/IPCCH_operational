@@ -105,7 +105,8 @@ def validate_delivery_request(
     """
     if not isinstance(data, Mapping):
         raise DeliveryManifestError("request must be a JSON object")
-    _exact_keys(data, TOP_LEVEL_FIELDS, "request")
+    # ``execution`` is optional: legacy requests keep their prepare-plus-both-systems meaning.
+    _exact_keys(data, TOP_LEVEL_FIELDS + (("execution",) if "execution" in data else ()), "request")
     if data["schema_version"] != SCHEMA_VERSION:
         raise DeliveryManifestError(f"schema_version must be {SCHEMA_VERSION}")
 
@@ -124,11 +125,16 @@ def validate_delivery_request(
     _exact_sequence(data["systems"], SYSTEMS, "systems")
     _exact_sequence(data["horizons_months"], HORIZONS_MONTHS, "horizons_months")
 
-    prepared = _object(data["prepared_snapshot"], ("prepare_id", "origin_month", "manifest"), "prepared_snapshot")
-    _text(prepared["prepare_id"], "prepared_snapshot.prepare_id")
-    if _month(prepared["origin_month"], "prepared_snapshot.origin_month") != origin:
-        raise DeliveryManifestError("prepared_snapshot.origin_month must equal origin_month")
-    _ref(prepared["manifest"], "prepared_snapshot.manifest")
+    execution = _execution(data["execution"], origin) if "execution" in data else None
+    if data["prepared_snapshot"] is None and not (execution and execution["remote_update"]):
+        raise DeliveryManifestError("prepared_snapshot may be null only in a remote-update intent")
+    if data["prepared_snapshot"] is not None:
+        prepared = _object(data["prepared_snapshot"], ("prepare_id", "origin_month", "manifest"),
+                           "prepared_snapshot")
+        _text(prepared["prepare_id"], "prepared_snapshot.prepare_id")
+        if _month(prepared["origin_month"], "prepared_snapshot.origin_month") != origin:
+            raise DeliveryManifestError("prepared_snapshot.origin_month must equal origin_month")
+        _ref(prepared["manifest"], "prepared_snapshot.manifest")
 
     for source in ("acled", "wfp"):
         _source_choice(data[source], source)
@@ -148,9 +154,63 @@ def validate_delivery_request(
     return validated
 
 
+EXECUTION_FIELDS = ("remote_update", "inference_systems", "prepare_request", "inherit", "publication")
+INHERIT_FIELDS = ("source_delivery_id", "origin_month", "manifest", "archive")
+PUBLICATIONS = ("candidate", "current")
+
+
+def _execution(value: Any, origin: str) -> Mapping[str, Any]:
+    """Selected steps: remote update on/off, the systems scored now, and the accepted same-origin
+    delivery each unselected system is inherited from. Nothing is ever enabled implicitly."""
+    execution = _object(value, EXECUTION_FIELDS, "execution")
+    if not isinstance(execution["remote_update"], bool):
+        raise DeliveryManifestError("execution.remote_update must be a boolean")
+    systems = execution["inference_systems"]
+    if (not isinstance(systems, list) or len(set(systems)) != len(systems)
+            or any(system not in SYSTEMS for system in systems)):
+        raise DeliveryManifestError(f"execution.inference_systems must be unique members of {SYSTEMS}")
+    if not systems and not execution["remote_update"]:
+        raise DeliveryManifestError("execution selects no step")
+    if execution["remote_update"]:
+        _ref(execution["prepare_request"], "execution.prepare_request")
+    elif execution["prepare_request"] is not None:
+        raise DeliveryManifestError("execution.prepare_request must be null without a remote update")
+    inherit = execution["inherit"]
+    expected = set(SYSTEMS) - set(systems) if systems else set()
+    if not isinstance(inherit, Mapping) or set(inherit) != expected:
+        raise DeliveryManifestError(f"execution.inherit must name exactly {sorted(expected)}")
+    for system, source in inherit.items():
+        source = _object(source, INHERIT_FIELDS, f"execution.inherit.{system}")
+        _text(source["source_delivery_id"], f"execution.inherit.{system}.source_delivery_id")
+        if _month(source["origin_month"], f"execution.inherit.{system}.origin_month") != origin:
+            raise DeliveryManifestError(f"execution.inherit.{system} must have the same origin month {origin}")
+        _ref(source["manifest"], f"execution.inherit.{system}.manifest")
+        _ref(source["archive"], f"execution.inherit.{system}.archive")
+    if execution["publication"] not in PUBLICATIONS:
+        raise DeliveryManifestError(f"execution.publication must be one of {PUBLICATIONS}")
+    return execution
+
+
+def selected_systems(request: Mapping[str, Any]) -> tuple[str, ...]:
+    """Systems scored by this run (legacy requests: both)."""
+    execution = request.get("execution")
+    if execution is None:
+        return SYSTEMS
+    return tuple(system for system in SYSTEMS if system in execution["inference_systems"])
+
+
 def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str, str]]]:
     """Every pinned object reference in a structurally valid request, with its field path."""
-    refs = [("prepared_snapshot.manifest", request["prepared_snapshot"]["manifest"])]
+    refs = []
+    if request["prepared_snapshot"] is not None:
+        refs.append(("prepared_snapshot.manifest", request["prepared_snapshot"]["manifest"]))
+    execution = request.get("execution")
+    if execution is not None:
+        if execution["prepare_request"] is not None:
+            refs.append(("execution.prepare_request", execution["prepare_request"]))
+        for system, source in execution["inherit"].items():
+            refs.append((f"execution.inherit.{system}.manifest", source["manifest"]))
+            refs.append((f"execution.inherit.{system}.archive", source["archive"]))
     for source in ("acled", "wfp"):
         choice = request[source]
         field = "retained_snapshot" if choice["action"] == "keep" else "raw_upload"

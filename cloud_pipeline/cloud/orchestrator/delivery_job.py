@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from collections.abc import Callable, Mapping
@@ -184,6 +185,8 @@ def prepare_inputs(request: Mapping[str, Any], downloader: PinnedDownloader, wor
 
     if request["runtime"]["image_uri"] != image_uri:
         raise AcceptanceError(f"job image {image_uri} is not the request runtime {request['runtime']['image_uri']}")
+    if request["prepared_snapshot"] is None:
+        raise AcceptanceError("unresolved remote-update intent: resolve it against its succeeded preparation first")
     verified = verify_reference_identities(request, downloader.resolve)
     index = {f"{ref['uri']}#{ref['generation']}": str(downloader.paths[f"{ref['uri']}#{ref['generation']}"])
              for ref in verified}
@@ -308,14 +311,101 @@ def run_system(spec_path: Path, system: str, out: Path) -> None:
             system=system, diagnostics=request_diagnostics({**request, "validation_level": "structural"}, system, reader))
 
 
-def package_delivery(out: Path, spec: Mapping[str, Any], request: Mapping[str, Any], *, image_uri: str) -> dict:
+# Per-system members carried from an accepted same-origin delivery when that system is not scored
+# now (its model package is installed from the request and checked for identity instead).
+INHERITED_MEMBERS = {
+    system: re.compile(rf"^(scopes/(0|6|12)m/{system}/[^/]+\.csv|{system}/(polygons\.geojson|"
+                       rf"country_population_reference\.csv)|inputs/{inputs}|inputs/evidence/(frozen/)?{system}_[^/]+|"
+                       rf"reports/{system}_[^/]+)$")
+    for system, inputs in (("ipcch", r"ipcch_origin_rows\.csv"),
+                           ("fewsnet", r"fewsnet_(scope_(0|6|12)m_inference|identity_population)\.csv"))
+}
+INHERITED_PACKAGE_PREFIX = {"ipcch": "ipcch/model_package/", "fewsnet": "fewsnet/model_package/"}
+
+
+def inherit_system(out: Path, system: str, source: Mapping[str, Any], downloader: PinnedDownloader, *,
+                   origin: str, package_dirs: Mapping[str, Path]) -> dict:
+    """Copy one unscored system's members byte-for-byte from a pinned accepted delivery.
+
+    The source must have the same origin and every horizon's targets; each member must match the
+    source inventory hash; its model package must equal the package installed for this release.
+    Nothing is recomputed: the inherited computation provenance stays the source's.
+    """
+    import tarfile
+
+    import pandas as pd
+
+    from cloud.orchestrator.delivery_bundle import SCOPE_TABLES, _directory_inventory
+    from model_pipeline.run_operational_launch_inference import add_calendar_months
+
+    manifest = json.loads(downloader.fetch(source["manifest"]).read_text())
+    inventory = {entry["path"]: entry["sha256"] for entry in manifest["files"]}
+    pattern, prefix = INHERITED_MEMBERS[system], INHERITED_PACKAGE_PREFIX[system]
+    members, package, source_delivery = {}, {}, None
+    with tarfile.open(downloader.fetch(source["archive"]), "r:gz") as archive:
+        for info in archive.getmembers():
+            name = info.name.removeprefix("./")
+            wanted = pattern.match(name) or name.startswith(prefix) or name == "reports/delivery.json"
+            if not info.isfile() or not wanted:
+                continue
+            data = archive.extractfile(info).read()
+            digest = hashlib.sha256(data).hexdigest()
+            if inventory.get(name) != digest:
+                raise AcceptanceError(f"inherited {name} does not match the source inventory")
+            if name == "reports/delivery.json":  # source identity only; this release writes its own
+                source_delivery = json.loads(data)
+                continue
+            if name.startswith(prefix):
+                package[name.removeprefix(prefix)] = digest
+                continue
+            destination = Path(out) / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            with destination.open("xb") as handle:
+                handle.write(data)
+            members[name] = digest
+    if source_delivery is None or source_delivery.get("origin_month") != origin:
+        raise AcceptanceError(f"inherited {system} source is not an origin {origin} delivery")
+    expected = {f"scopes/{h}m/{system}/{name}.csv" for h in (0, 6, 12) for name in SCOPE_TABLES[system]}
+    if not expected <= set(members):
+        raise AcceptanceError(f"inherited {system} lacks scope tables {sorted(expected - set(members))[:3]}")
+    for horizon in (0, 6, 12):
+        target = add_calendar_months(origin, horizon)
+        table = Path(out) / f"scopes/{horizon}m/{system}/polygon_predictions.csv"
+        frame = pd.read_csv(table, dtype=str, keep_default_na=False)
+        months = ({"feature_period": origin, "target_period": target} if system == "ipcch"
+                  else {"feature_month": origin, "target_month": target})
+        if any(set(frame[column]) != {value} for column, value in months.items()):
+            raise AcceptanceError(f"inherited {system} {horizon}m targets differ from {origin}->{target}")
+    installed = {}
+    for key, directory in package_dirs.items():
+        relative = "" if system == "ipcch" else f"{key}m/"
+        installed.update({relative + path: digest for path, digest in _directory_inventory(directory).items()})
+    if package != installed:
+        raise AcceptanceError(f"inherited {system} model package differs from the package installed for this release")
+    return {"source_delivery_id": source["source_delivery_id"], "manifest": dict(source["manifest"]),
+            "archive": dict(source["archive"]), "origin_month": origin, "members": members,
+            "model_package": package, "source_run_id": source_delivery.get("run_id"),
+            "source_provenance": manifest.get("provenance", {})}
+
+
+def package_delivery(out: Path, spec: Mapping[str, Any], request: Mapping[str, Any], *, image_uri: str,
+                     inherited: Mapping[str, Any] | None = None) -> dict:
     from cloud.orchestrator import delivery_bundle
     from cloud.orchestrator.deliver import finalize
+    from cloud.orchestrator.delivery_manifest import selected_systems
 
     finalize(out)
     (out / "reports/delivery.json").write_text(json.dumps(
         {"origin_month": spec["origin"], "run_id": request["run_id"], "request": request["request"],
-         "prepare_id": request["prepared_snapshot"]["prepare_id"]}, indent=2, sort_keys=True) + "\n")
+         "prepare_id": request["prepared_snapshot"]["prepare_id"],
+         "execution": {"scored_systems": list(selected_systems(request)),
+                       "inherited_systems": sorted(inherited or {}),
+                       "remote_update": bool((request.get("execution") or {}).get("remote_update", True)),
+                       "publication": (request.get("execution") or {}).get("publication", "current")}},
+        indent=2, sort_keys=True) + "\n")
+    if inherited:
+        (out / "reports/inherited_members.json").write_text(
+            json.dumps(dict(inherited), indent=2, sort_keys=True) + "\n")
     lock = REPO / "requirements.lock.txt"
     delivery_bundle.install_runtime_and_models(
         out, repo=REPO, fewsnet_packages={int(h): Path(p) for h, p in spec["packages"]["fewsnet"].items()},
@@ -374,6 +464,12 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
                                         request_generation=request_ref["generation"],
                                         expected_release_namespace=release_namespace)
 
+    from cloud.orchestrator.delivery_manifest import selected_systems
+
+    execution = request.get("execution") or {}
+    if execution and not execution["inference_systems"]:
+        raise AcceptanceError("a prepare-only intent never runs delivery")
+
     def compute():
         spec = prepare_inputs(request, downloader, work, image_uri=image_uri)
         request_path = work / "request.json"
@@ -381,22 +477,42 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
         spec_path = work / "spec.json"
         spec_path.write_text(json.dumps({**spec, "request_path": str(request_path)}, default=str))
         out = work / "delivery"
-        for system in ("ipcch", "fewsnet"):  # separate processes: bounded memory
-            score(spec_path, system, out)
-        packaged = package(out, spec, request, image_uri=image_uri)
+        selected = selected_systems(request)
+        for system in ("ipcch", "fewsnet"):  # separate processes: bounded memory; only selected systems score
+            if system in selected:
+                score(spec_path, system, out)
+        inherited = {}
+        for system, source in (execution.get("inherit") or {}).items():
+            packages = ({"": Path(spec["packages"]["ipcch"])} if system == "ipcch"
+                        else {str(h): Path(p) for h, p in spec["packages"]["fewsnet"].items()})
+            inherited[system] = inherit_system(out, system, source, downloader, origin=request["origin_month"],
+                                               package_dirs=packages)
+        packaged = (package(out, spec, request, image_uri=image_uri, inherited=inherited) if inherited
+                    else package(out, spec, request, image_uri=image_uri))
         refs = upload(out, request["run_id"])
         record = {"run_id": request["run_id"], "request": dict(request_ref), "origin_month": request["origin_month"],
                   "manifest": refs["manifest.json"], "archive": refs["webapp_model_bundle.tar.gz"],
-                  "validation": packaged["validation"]}
+                  "validation": packaged["validation"],
+                  **({"execution": {"scored_systems": list(selected), "inherited_systems": sorted(inherited)}}
+                     if execution else {})}
 
         def validate():
             if packaged["validation"] != "passed":
                 raise AcceptanceError("delivery validation did not pass; the release pointer is unchanged")
 
+        outputs = f"{output_root.rstrip('/')}/deliveries/{request['run_id']}/"
+        if execution.get("publication") == "candidate":
+            # A checked candidate is promoted later (download/replay receipt + pointer CAS); never now.
+            validate()
+            candidate = store.write_text(f"{output_root.rstrip('/')}/candidates/{request['run_id']}/candidate.json",
+                                         json.dumps(record, indent=2, sort_keys=True) + "\n", if_generation_match=0)
+            return {"outputs": outputs, "release": None,
+                    "candidate": {"uri": f"{output_root.rstrip('/')}/candidates/{request['run_id']}/candidate.json",
+                                  "generation": str(candidate.generation)}}
         release = publish(store, output_root, run_id=request["run_id"], namespace=request["release"]["namespace"],
                           expected_pointer_generation=request["release"]["expected_pointer_generation"],
                           release_record=record, validate=validate)
-        return {"outputs": f"{output_root.rstrip('/')}/deliveries/{request['run_id']}/", "release": release}
+        return {"outputs": outputs, "release": release}
 
     return run_once(store, output_root, run_id=request["run_id"], request_ref=request_ref, compute=compute)
 
