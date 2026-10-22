@@ -1,0 +1,5 @@
+{"source_delivery_id": "oct-confidence-20261009b",
+ "original": {"manifest": {"uri": "gs://manuel-remote-sensing-oct-delivery-debug/deliveries/oct-confidence-20261009b/manifest.json", "generation": "1791584105266047", "sha256": "265a0fb95a8dbeda49a09d6a9fcafe149d3e4033438b38ec91d3b795a39aebe4"},
+              "archive": {"uri": "gs://manuel-remote-sensing-oct-delivery-debug/deliveries/oct-confidence-20261009b/webapp_model_bundle.tar.gz", "generation": "1791584164926460", "sha256": "ac3bfceab55274d0feaad5395d16298fbf84e7baf9ffccb67fcca3d23327b4d9"}},
+ "published": {"manifest": {"uri": "gs://food-crisis-test-ipcch-data/inherited/oct-confidence-20261009b/manifest.json", "generation": "1792653996979392", "sha256": "265a0fb95a8dbeda49a09d6a9fcafe149d3e4033438b38ec91d3b795a39aebe4"},
+               "archive": {"uri": "gs://food-crisis-test-ipcch-data/inherited/oct-confidence-20261009b/webapp_model_bundle.tar.gz", "generation": "1792654027016952", "sha256": "ac3bfceab55274d0feaad5395d16298fbf84e7baf9ffccb67fcca3d23327b4d9"}}}

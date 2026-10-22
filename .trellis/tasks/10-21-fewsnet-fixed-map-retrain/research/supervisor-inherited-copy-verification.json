@@ -1,0 +1,23 @@
+{
+  "checked_utc": "2026-10-22T07:33:57.288791+00:00",
+  "checks": {
+    "manifest.json": {
+      "uri": "gs://food-crisis-test-ipcch-data/inherited/oct-confidence-20261009b/manifest.json",
+      "generation": "1792653996979392",
+      "sha256": "265a0fb95a8dbeda49a09d6a9fcafe149d3e4033438b38ec91d3b795a39aebe4",
+      "size_bytes": 66151,
+      "local_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/inherit-check/manifest.json"
+    },
+    "webapp_model_bundle.tar.gz": {
+      "uri": "gs://food-crisis-test-ipcch-data/inherited/oct-confidence-20261009b/webapp_model_bundle.tar.gz",
+      "generation": "1792654027016952",
+      "sha256": "ac3bfceab55274d0feaad5395d16298fbf84e7baf9ffccb67fcca3d23327b4d9",
+      "size_bytes": 401337529,
+      "local_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/inherit-check/webapp_model_bundle.tar.gz"
+    }
+  },
+  "source_delivery_id": "oct-confidence-20261009b",
+  "source_image": "us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+  "status": "passed",
+  "scope": "Independent local SHA256 verification of executor generation-pinned redownloads; matches supervisor previously checked 195-member source bundle. No IPCCH inference or diagnostics recalculation."
+}

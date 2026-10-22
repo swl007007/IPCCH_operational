@@ -777,12 +777,7 @@ def submit_intent(args, cfg, cloud, init, choices, body, uri, state, state_path,
     if "pinned" not in state:
         state["pinned"] = {
             "inherit": {
-                system: {
-                    "source_delivery_id": source["source_delivery_id"],
-                    "origin_month": args.month,
-                    "manifest": cloud.pin(source["manifest"]),
-                    "archive": cloud.pin(source["archive"]),
-                }
+                system: inherited_source(cloud, work, system, source, args.month)
                 for system, source in selection["inherit"].items()
             },
             "prepared_manifest": cloud.pin(selection["prepared_manifest"])
@@ -831,6 +826,18 @@ def submit_intent(args, cfg, cloud, init, choices, body, uri, state, state_path,
     state["phase"] = "submitted"
     save(state_path, state)
     return status(cfg, run_id, cloud)
+
+
+def inherited_source(cloud, work, system, source, month):
+    """Pinned refs of an inherited system's accepted source; its named delivery ID must be the
+    source manifest's recorded run (the archive's own run ID is checked again in the receipt)."""
+    manifest, archive = cloud.pin(source["manifest"]), cloud.pin(source["archive"])
+    cloud.fetch(manifest, Path(work) / f"inherited_{system}_manifest.json")
+    recorded = read(Path(work) / f"inherited_{system}_manifest.json").get("provenance", {}).get("run_id")
+    if recorded != source["source_delivery_id"]:
+        raise ValueError(f"inherited {system} source is run {recorded}, not {source['source_delivery_id']}")
+    return {"source_delivery_id": source["source_delivery_id"], "origin_month": month,
+            "manifest": manifest, "archive": archive}
 
 
 def require_admission(cfg, cloud, run_id):
@@ -974,6 +981,11 @@ def verify_candidate(args, cfg, cloud):
             inherited[system]["manifest"] == expected[system]["manifest"]
             and inherited[system]["archive"] == expected[system]["archive"]
             for system in inherited
+        ),
+        "inherited_source_runs_match": all(
+            inherited[system].get("source_run_id") == expected[system]["source_delivery_id"]
+            == inherited[system].get("source_delivery_id")
+            for system in inherited if system in expected
         ),
     }
     extra = []
@@ -1296,13 +1308,15 @@ def _manifest_sha(directory):
     return sha(member) if member.is_file() else None
 
 
-def _activation_states(cloud, promotion):
-    """Actual state of each promotion step by inspection: prior, intended or foreign (drift)."""
+def _inspect(cloud, promotion):
+    """Actual state of each promotion step (prior, midway, intended or foreign) and the observed
+    pointer generation the next pointer mutation must be conditioned on."""
     prior, intended = promotion["prior"], promotion["intended"]
     current = cloud.latest(prior["pointer_uri"])
+    generation = current[1]["generation"] if current else "0"
     if current and current[0].get("release_record") == intended["release_record"]:
         pointer = "intended"
-    elif (current[1]["generation"] if current else "0") == prior["pointer_generation"] or (
+    elif generation == prior["pointer_generation"] or (
             current and prior["pointer_body"] is not None and current[0] == json.loads(prior["pointer_body"])):
         pointer = "prior"  # untouched, or the predecessor body CAS-restored at a new generation
     else:
@@ -1311,38 +1325,60 @@ def _activation_states(cloud, promotion):
     digest = sha(config) if config.is_file() else None
     config_state = ("intended" if digest == intended["config_sha256"]
                     else "prior" if digest == prior["config_sha256"] else "foreign")
-    f = promotion["fallback"]
+    states = {"pointer": pointer, "operator_config": config_state, "fallback": _fallback_state(promotion)}
+    return states, generation
+
+
+def _activation_states(cloud, promotion):
+    return _inspect(cloud, promotion)[0]
+
+
+def _fallback_state(promotion):
+    f, prior, intended = promotion["fallback"], promotion["prior"], promotion["intended"]
     layout = (_manifest_sha(f["active"]), _manifest_sha(f["staged"]), _manifest_sha(f["predecessor"]))
     old, new = prior["fallback_manifest_sha256"], intended["fallback_manifest_sha256"]
-    fallback = {(old, new, None): "prior", (None, new, old): "midway", (new, None, old): "intended"}.get(layout, "foreign")
-    return {"pointer": pointer, "operator_config": config_state, "fallback": fallback}
+    return {(old, new, None): "prior", (None, new, old): "midway", (new, None, old): "intended"}.get(layout, "foreign")
+
+
+def _rename_from(promotion, expected, source, target):
+    """One fallback rename, only from the expected layout re-checked immediately before it."""
+    if _fallback_state(promotion) != expected:
+        raise ValueError(f"fallback layout changed outside this operation (expected {expected})")
+    Path(source).rename(target)
+
+
+def _write_config_from(path, expected_sha256, data):
+    """Write the normal config only if its current bytes are still the recorded expected bytes."""
+    if sha(path) != expected_sha256:
+        raise ValueError("normal operator config changed outside this operation; not overwritten")
+    _write_bytes(path, data)
 
 
 def _restore_activation(cfg, cloud, operation):
-    """Undo promotion steps by inspection, never by ledger flags: pointer drift stops everything
-    before local defaults change; each step moves only from its recorded intended (or midway)
-    state back to its recorded prior."""
+    """Undo promotion steps by inspection, never by ledger flags. Drift anywhere stops before any
+    change; the pointer goes first, conditioned on the inspected generation of our pointer, so a
+    concurrent release landing after inspection fails the precondition before local defaults or
+    the fallback change; every local write re-checks its recorded identity immediately before."""
     promotion = operation.get("promotion")
     if not promotion:
         return
-    states = _activation_states(cloud, promotion)
+    states, generation = _inspect(cloud, promotion)
     if "foreign" in states.values():
         raise ValueError(f"state changed outside this operation; nothing restored: {states}")
     f, prior = promotion["fallback"], promotion["prior"]
+    if states["pointer"] == "intended":
+        if prior["pointer_body"] is None:  # the predecessor was an absent pointer
+            cloud.delete(prior["pointer_uri"], generation)
+        else:  # CAS the recorded predecessor body back over exactly the inspected pointer generation
+            cloud.store.write_text(prior["pointer_uri"], prior["pointer_body"], if_generation_match=int(generation))
+    if states["operator_config"] == "intended":
+        _write_config_from(prior["config_path"], promotion["intended"]["config_sha256"],
+                           Path(promotion["config_backup"]).read_bytes())
     if states["fallback"] == "intended":
-        Path(f["active"]).rename(f["staged"])
+        _rename_from(promotion, "intended", f["active"], f["staged"])
         states["fallback"] = "midway"
     if states["fallback"] == "midway":
-        Path(f["predecessor"]).rename(f["active"])
-    if states["operator_config"] == "intended":
-        _write_bytes(prior["config_path"], Path(promotion["config_backup"]).read_bytes())
-    if states["pointer"] == "intended":
-        current = cloud.latest(prior["pointer_uri"])
-        if prior["pointer_body"] is None:  # the predecessor was an absent pointer
-            cloud.delete(prior["pointer_uri"], current[1]["generation"])
-        else:  # CAS the recorded predecessor body back over exactly our pointer generation
-            cloud.store.write_text(prior["pointer_uri"], prior["pointer_body"],
-                                   if_generation_match=int(current[1]["generation"]))
+        _rename_from(promotion, "midway", f["predecessor"], f["active"])
     after = _activation_states(cloud, promotion)
     if set(after.values()) != {"prior"}:
         raise ValueError(f"restore did not reach every recorded predecessor: {after}")
@@ -1452,14 +1488,19 @@ def promote(args, cfg, cloud=None, runner=gcloud_json):
         receipt_ref = cloud.put(f"{root}/candidates/{args.run_id}/verification_receipt.json", args.receipt)
         _publish_resumable(cloud.store, root, args.run_id, namespace, expected,
                            {**found["record"], "candidate": found["ref"], "verification_receipt": receipt_ref})
-    if states["operator_config"] == "prior":
-        _write_bytes(normal, promotion["intended_config_text"].encode())
-    f = promotion["fallback"]
-    if states["fallback"] == "prior":
-        Path(f["active"]).rename(f["predecessor"])
-        states["fallback"] = "midway"
-    if states["fallback"] == "midway":
-        Path(f["staged"]).rename(f["active"])
+    try:
+        if states["operator_config"] == "prior":  # re-checked now: no edit during cloud publication
+            _write_config_from(normal, promotion["prior"]["config_sha256"], promotion["intended_config_text"].encode())
+        f = promotion["fallback"]
+        if states["fallback"] == "prior":
+            _rename_from(promotion, "prior", f["active"], f["predecessor"])
+            states["fallback"] = "midway"
+        if states["fallback"] == "midway":
+            _rename_from(promotion, "midway", f["staged"], f["active"])
+    except ValueError:
+        operation["phase"] = "activation_inconsistent"
+        save(path, operation)
+        raise
     after = _activation_states(cloud, promotion)
     live = _identities(shared_runtime(cfg, runner))
     reconciled = {**{name: state == "intended" for name, state in after.items()},

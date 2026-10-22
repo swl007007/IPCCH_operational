@@ -36,7 +36,7 @@ def _world(setup):
     p.initialize(args, cfg, cloud)
     cloud.json(SNAPSHOT, dict(status="succeeded", origin_month="2026-10", prepare_id="snap"))
     cloud.json("gs://destination-bucket/prepared/snap/prepare_status.json", dict(status="succeeded"))
-    cloud.objects["gs://src/manifest.json"] = b"{}"
+    cloud.objects["gs://src/manifest.json"] = json.dumps({"provenance": {"run_id": "oct-confidence-20261009b"}}).encode()
     cloud.objects["gs://src/bundle.tar.gz"] = b"archive"
     return cfg, cloud
 
@@ -57,6 +57,13 @@ def test_candidate_intent_reuses_the_snapshot_and_pins_the_inherited_source(setu
     assert execution["inherit"]["ipcch"]["archive"]["sha256"] == hashlib.sha256(b"archive").hexdigest()
     with pytest.raises(ValueError, match="different inputs"):
         p.run(_candidate_args(publication="current"), cfg, cloud)
+
+
+def test_an_inherited_source_must_be_the_named_delivery_run(setup):
+    cfg, cloud = _world(setup)
+    with pytest.raises(ValueError, match="inherited ipcch source is run oct-confidence-20261009b, not oct-other"):
+        p.run(_candidate_args(inherit="ipcch=oct-other"), cfg, cloud)
+    assert not any(uri.endswith("/run_manifest.json") for uri in cloud.objects)
 
 
 @pytest.mark.parametrize("override,message", [
@@ -457,7 +464,8 @@ def test_candidate_receipt_requires_a_bundled_runtime_replay(setup, tmp_path, mo
     monkeypatch.setattr(delivery_bundle, "validate_delivery", lambda root: {"status": "passed", "failures": []})
     inherit = cloud.latest(request_uri)[0]["execution"]["inherit"]
     monkeypatch.setattr(delivery_bundle, "inherited_systems", lambda root: {
-        system: {"manifest": source["manifest"], "archive": source["archive"]} for system, source in inherit.items()})
+        system: {"manifest": source["manifest"], "archive": source["archive"], "source_run_id": source["source_delivery_id"],
+                 "source_delivery_id": source["source_delivery_id"]} for system, source in inherit.items()})
     seen = {}
 
     def replay(argv, **kwargs):
@@ -474,3 +482,57 @@ def test_candidate_receipt_requires_a_bundled_runtime_replay(setup, tmp_path, mo
     assert seen["env"]["PYTHONPATH"].endswith("candidate-relocated/runtime")
     assert (receipt["status"] == "passed") is passed, receipt["checks"]
     assert receipt["checks"]["replay_used_bundled_runtime"] is (runtime == "bundle")
+
+
+def test_a_foreign_pointer_after_restore_inspection_is_never_deleted(release, monkeypatch):
+    r = release
+    _ready(r)
+    _promote(r)
+    inspect = p._inspect
+    landed = {"done": False}
+
+    def inspect_then_race(cloud, promotion):
+        result = inspect(cloud, promotion)
+        if not landed["done"]:  # a newer release lands right after restore inspected our pointer
+            landed["done"] = True
+            r.cloud.store.write_text(POINTER, json.dumps({"run_id": "newer-release"}), if_generation_match=1)
+        return result
+
+    monkeypatch.setattr(p, "_inspect", inspect_then_race)
+    with pytest.raises(GenerationConflict):
+        _maintain(r, "restore")
+    assert r.cloud.latest(POINTER)[0] == {"run_id": "newer-release"}
+    assert p.read(r.normal)["image_uri"] == NEW and (r.active / "manifest.json").read_bytes() == b'{"files": []}'
+
+
+def test_a_config_edit_during_cloud_publication_is_never_overwritten(release, monkeypatch):
+    r = release
+    _ready(r)
+    publish = p._publish_resumable
+
+    def publish_then_edit(*args):
+        result = publish(*args)
+        p.save(r.normal, {"project": "dest", "image_uri": "edited-meanwhile", "work_dir": "x"})
+        return result
+
+    monkeypatch.setattr(p, "_publish_resumable", publish_then_edit)
+    with pytest.raises(ValueError, match="normal operator config changed outside this operation"):
+        _promote(r)
+    assert p.read(r.normal)["image_uri"] == "edited-meanwhile"
+    assert (r.active / "manifest.json").read_bytes() == b'{"old": true}' and _operation(r)["phase"] == "activation_inconsistent"
+
+
+def test_a_config_edit_during_restore_is_never_overwritten(release, monkeypatch):
+    r = release
+    _ready(r)
+    _promote(r)
+    delete = r.cloud.delete
+
+    def delete_then_edit(uri, generation):
+        delete(uri, generation)
+        p.save(r.normal, {"project": "dest", "image_uri": "edited-meanwhile", "work_dir": "x"})
+
+    monkeypatch.setattr(r.cloud, "delete", delete_then_edit)
+    with pytest.raises(ValueError, match="normal operator config changed outside this operation"):
+        _maintain(r, "restore")
+    assert p.read(r.normal)["image_uri"] == "edited-meanwhile"
