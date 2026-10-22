@@ -130,10 +130,14 @@ def validate_delivery_request(
     _exact_sequence(data["systems"], SYSTEMS, "systems")
     _exact_sequence(data["horizons_months"], HORIZONS_MONTHS, "horizons_months")
 
-    execution = _execution(data["execution"], origin) if "execution" in data else None
+    if resolved_match and "execution" not in data:
+        raise DeliveryManifestError("a resolved request is a remote-update intent bound to its prepared snapshot")
+    # A resolved request names its exact initial intent: the same run's request at one generation.
+    intent_uri = request_uri.replace("/resolved_requests/", "/requests/") if resolved_match else None
+    execution = _execution(data["execution"], origin, intent_uri=intent_uri) if "execution" in data else None
     if data["prepared_snapshot"] is None and not (execution and execution["remote_update"]):
         raise DeliveryManifestError("prepared_snapshot may be null only in a remote-update intent")
-    if resolved_match and (data["prepared_snapshot"] is None or not (execution and execution["remote_update"])):
+    if resolved_match and (data["prepared_snapshot"] is None or not execution["remote_update"]):
         raise DeliveryManifestError("a resolved request is a remote-update intent bound to its prepared snapshot")
     if data["prepared_snapshot"] is not None:
         prepared = _object(data["prepared_snapshot"], ("prepare_id", "origin_month", "manifest"),
@@ -166,10 +170,13 @@ INHERIT_FIELDS = ("source_delivery_id", "origin_month", "manifest", "archive")
 PUBLICATIONS = ("candidate", "current")
 
 
-def _execution(value: Any, origin: str) -> Mapping[str, Any]:
+def _execution(value: Any, origin: str, *, intent_uri: str | None = None) -> Mapping[str, Any]:
     """Selected steps: remote update on/off, the systems scored now, and the accepted same-origin
-    delivery each unselected system is inherited from. Nothing is ever enabled implicitly."""
-    execution = _object(value, EXECUTION_FIELDS, "execution")
+    delivery each unselected system is inherited from. Nothing is ever enabled implicitly.
+    ``intent_uri`` (resolved requests only): ``execution.intent`` must pin that initial request."""
+    execution = _object(value, EXECUTION_FIELDS + (("intent",) if intent_uri else ()), "execution")
+    if intent_uri and _ref(execution["intent"], "execution.intent")["uri"] != intent_uri:
+        raise DeliveryManifestError(f"execution.intent must pin this run's initial request {intent_uri}")
     if not isinstance(execution["remote_update"], bool):
         raise DeliveryManifestError("execution.remote_update must be a boolean")
     systems = execution["inference_systems"]
@@ -215,6 +222,8 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
     if execution is not None:
         if execution["prepare_request"] is not None:
             refs.append(("execution.prepare_request", execution["prepare_request"]))
+        if "intent" in execution:
+            refs.append(("execution.intent", execution["intent"]))
         for system, source in execution["inherit"].items():
             refs.append((f"execution.inherit.{system}.manifest", source["manifest"]))
             refs.append((f"execution.inherit.{system}.archive", source["archive"]))

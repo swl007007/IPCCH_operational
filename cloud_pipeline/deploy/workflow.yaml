@@ -3,17 +3,24 @@
 # sources, outputs, resolved_requests/...) is ignored, so the workflow's own writes never re-trigger it.
 # The event's exact generation is read here and passed through; nothing reads a "latest" request.
 #
+# Before any job is launched, for every request format:
+# * a maintenance hold (gs://<data>/maintenance/hold.json) admits only the run IDs bound to it;
+# * the run is claimed create-only (gs://<data>/dispatch/<run_id>/claim.json, request URI + generation).
+#   A duplicate event of the claimed generation returns without dispatching anything; another
+#   generation of a claimed run is a conflicting intent (a changed request needs a new run ID).
+#
 # The pinned request's optional ``execution`` block selects the cloud steps:
 # * absent (legacy) or remote_update false: run the delivery job on the request as before; it scores
 #   only the selected systems and inherits the others from their pinned accepted delivery.
-# * remote_update true: run the preparation job on the intent's exact prepare request, then wait
-#   (bounded) for the durable prepared/<prepare_id>/prepare_status.json. The prepare job finishing
-#   only means its Batch extraction was submitted; it is never the readiness signal. A failed or
-#   timed-out preparation stops here. With no inference selected (prepare-only) the workflow returns
-#   the snapshot; otherwise the delivery job's ``resolve`` binds the intent to that succeeded
-#   snapshot (create-only resolved_requests/<run_id>/run_manifest.json) and runs it.
+# * remote_update true: the delivery job's ``admit`` validates the complete intent and its exact
+#   prepare-request binding (dispatch/<run_id>/admission.json); only an admitted intent starts the
+#   preparation job on the admitted prepare request. Readiness is the durable
+#   prepared/<prepare_id>/prepare_status.json (bounded wait): the prepare job finishing only means its
+#   Batch extraction was submitted. A failed or timed-out preparation stops here. Then ``resolve``
+#   applies one snapshot gate to prepare-only and inference intents alike (this intent's request,
+#   origin, compatible snapshot) and records dispatch/<run_id>/resolution.json; prepare-only returns
+#   the immutable snapshot ref, otherwise the same job runs the create-only resolved request.
 # Jobs are configured with --max-retries 0: a failed run is never resumed; retry = new run ID.
-# Duplicate events for the same generation return the original status (create-only run sentinels).
 main:
   params: [event]
   steps:
@@ -42,6 +49,59 @@ main:
             return: ${"ignored " + name}
           - condition: ${not(text.match_regex(generation, "^[1-9][0-9]*$"))}
             raise: ${"event without an exact generation for " + name}
+    - identify:
+        assign:
+          - run_id: ${text.split(name, "/")[1]}
+          - request_uri: ${"gs://" + bucket + "/" + name}
+          - data_bucket: ${text.split(output_root, "/")[2]}
+          - dispatch_prefix: ${"dispatch/" + run_id + "/"}
+    - read_hold:
+        try:
+          call: googleapis.storage.v1.objects.get
+          args:
+            bucket: ${data_bucket}
+            object: ${text.url_encode("maintenance/hold.json")}
+            alt: media
+          result: raw_hold
+        except:
+          as: e
+          steps:
+            - no_hold:
+                switch:
+                  - condition: ${e.code == 404}
+                    next: claim
+            - hold_unreadable:
+                raise: ${e}
+    - check_hold:
+        call: as_map
+        args:
+          raw: ${raw_hold}
+        result: hold
+    - hold_admission:
+        switch:
+          - condition: ${not(run_id in hold.admitted_run_ids)}
+            raise: ${"monthly admission is paused by maintenance " + hold.operation_id + "; run " + run_id + " is not admitted"}
+    - claim:
+        try:
+          call: googleapis.storage.v1.objects.insert
+          args:
+            bucket: ${data_bucket}
+            name: ${dispatch_prefix + "claim.json"}
+            ifGenerationMatch: 0
+            uploadType: media
+            body:
+              request_uri: ${request_uri}
+              generation: ${generation}
+          result: claim_object
+        except:
+          as: e
+          steps:
+            - already_claimed:
+                switch:
+                  - condition: ${e.code == 412}
+                    next: read_claim
+            - claim_failed:
+                raise: ${e}
     - read_intent:
         call: googleapis.storage.v1.objects.get
         args:
@@ -51,8 +111,12 @@ main:
           alt: media
         result: raw_intent
     - parse_intent:
+        call: as_map
+        args:
+          raw: ${raw_intent}
+        result: intent
+    - select_steps:
         assign:
-          - intent: ${if(get_type(raw_intent) == "map", raw_intent, json.decode(raw_intent))}
           - execution: ${map.get(intent, "execution")}
     - route:
         switch:
@@ -60,15 +124,37 @@ main:
             next: run_job
           - condition: ${not(execution.remote_update)}
             next: run_job
-    - locate_preparation:
-        assign:
-          - prepare_uri: ${execution.prepare_request.uri}
-          - prepare_generation: ${execution.prepare_request.generation}
-          # gs://<bucket>/prepare_requests/<prepare_id>/prepare_request.json
-          - prepare_id: ${text.split(prepare_uri, "/")[4]}
-          - data_bucket: ${text.split(output_root, "/")[2]}
-          - status_object: ${"prepared/" + prepare_id + "/prepare_status.json"}
-          - polls: 0
+    - run_admit_job:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+          body:
+            overrides:
+              containerOverrides:
+                - args:
+                    - "-m"
+                    - "cloud.orchestrator.delivery_job"
+                    - "admit"
+                    - "--request-uri"
+                    - ${request_uri}
+                    - "--request-generation"
+                    - ${generation}
+                    - "--output-root"
+                    - ${output_root}
+          connector_params:
+            skip_polling: true
+    - wait_for_admission:
+        call: await_record
+        args:
+          bucket: ${data_bucket}
+          object: ${dispatch_prefix + "admission.json"}
+          poll_seconds: ${poll_seconds}
+          max_polls: ${max_polls}
+        result: admission
+    - admission_outcome:
+        switch:
+          - condition: ${admission.status != "admitted" or admission.intent.uri != request_uri or admission.intent.generation != generation}
+            raise: '${"intent " + run_id + "#" + generation + " was not admitted: " + default(map.get(admission, "reason"), "admission is for another request generation")}'
     - run_prepare_job:
         call: googleapis.run.v2.projects.locations.jobs.run
         args:
@@ -81,9 +167,9 @@ main:
                     - "cloud.orchestrator.prepare"
                     - "plan"
                     - "--request-uri"
-                    - ${prepare_uri}
+                    - ${admission.prepare_request.uri}
                     - "--request-generation"
-                    - ${prepare_generation}
+                    - ${admission.prepare_request.generation}
                     - "--output-root"
                     - ${output_root}
                     - "--earth-engine-project"
@@ -98,43 +184,17 @@ main:
             skip_polling: true
         result: prepare_execution
     - wait_for_preparation:
-        try:
-          call: googleapis.storage.v1.objects.get
-          args:
-            bucket: ${data_bucket}
-            object: ${text.url_encode(status_object)}
-            alt: media
-          result: raw_status
-        except:
-          as: e
-          steps:
-            - status_not_written:
-                switch:
-                  - condition: ${e.code == 404 and polls < max_polls}
-                    next: sleep_before_poll
-            - preparation_unavailable:
-                raise: ${"preparation " + prepare_id + " not finished after " + string(polls) + " polls"}
-    - check_preparation:
-        assign:
-          - prepare_status: ${if(get_type(raw_status) == "map", raw_status, json.decode(raw_status))}
+        call: await_record
+        args:
+          bucket: ${data_bucket}
+          object: ${"prepared/" + admission.prepare_id + "/prepare_status.json"}
+          poll_seconds: ${poll_seconds}
+          max_polls: ${max_polls}
+        result: prepare_status
     - preparation_outcome:
         switch:
           - condition: ${prepare_status.status != "succeeded"}
-            raise: ${"preparation " + prepare_id + " " + prepare_status.status + "; no inference is started"}
-          - condition: ${len(execution.inference_systems) == 0}
-            return:
-              prepared: ${prepare_id}
-              status_object: ${"gs://" + data_bucket + "/" + status_object}
-              delivery: "not selected"
-        next: run_resolve_job
-    - sleep_before_poll:
-        call: sys.sleep
-        args:
-          seconds: ${poll_seconds}
-    - count_poll:
-        assign:
-          - polls: ${polls + 1}
-        next: wait_for_preparation
+            raise: ${"preparation " + admission.prepare_id + " " + prepare_status.status + "; no inference is started"}
     - run_resolve_job:
         call: googleapis.run.v2.projects.locations.jobs.run
         args:
@@ -147,7 +207,7 @@ main:
                     - "cloud.orchestrator.delivery_job"
                     - "resolve"
                     - "--request-uri"
-                    - ${"gs://" + bucket + "/" + name}
+                    - ${request_uri}
                     - "--request-generation"
                     - ${generation}
                     - "--output-root"
@@ -158,8 +218,30 @@ main:
                     - ${image_uri}
           connector_params:
             skip_polling: true
-        result: execution_result
-        next: done
+    - wait_for_resolution:
+        call: await_record
+        args:
+          bucket: ${data_bucket}
+          object: ${dispatch_prefix + "resolution.json"}
+          poll_seconds: ${poll_seconds}
+          max_polls: ${max_polls}
+        result: resolution
+    - resolution_outcome:
+        switch:
+          - condition: ${resolution.status != "resolved" or resolution.intent.uri != request_uri or resolution.intent.generation != generation}
+            raise: '${"intent " + run_id + "#" + generation + " has no compatible succeeded snapshot: " + default(map.get(resolution, "reason"), "resolution is for another request generation")}'
+          - condition: ${len(execution.inference_systems) == 0}
+            return:
+              run_id: ${run_id}
+              prepared_snapshot: ${resolution.prepared_snapshot}
+              resolved_request: ${resolution.resolved_request}
+              delivery: "not selected"
+    - resolved_delivery:
+        return:
+          run_id: ${run_id}
+          prepared_snapshot: ${resolution.prepared_snapshot}
+          resolved_request: ${resolution.resolved_request}
+          delivery_status: ${"gs://" + data_bucket + "/runs/" + run_id + "/run_status.json"}
     - run_job:
         call: googleapis.run.v2.projects.locations.jobs.run
         args:
@@ -188,3 +270,76 @@ main:
         result: execution_result
     - done:
         return: ${execution_result}
+    # Reached only from a create-only claim conflict.
+    - read_claim:
+        call: googleapis.storage.v1.objects.get
+        args:
+          bucket: ${data_bucket}
+          object: ${text.url_encode(dispatch_prefix + "claim.json")}
+          alt: media
+        result: raw_claim
+    - parse_claim:
+        call: as_map
+        args:
+          raw: ${raw_claim}
+        result: claim
+    - replay_or_conflict:
+        switch:
+          - condition: ${claim.request_uri == request_uri and claim.generation == generation}
+            return:
+              run_id: ${run_id}
+              duplicate_event: ${generation}
+              dispatched: false
+    - conflicting_intent:
+        raise: ${"run " + run_id + " is already claimed by " + claim.request_uri + "#" + claim.generation + "; a changed intent needs a new run ID"}
+
+# Bounded wait for one durable JSON object (absent = not written yet); never a job's own completion.
+await_record:
+  params: [bucket, object, poll_seconds, max_polls]
+  steps:
+    - start:
+        assign:
+          - polls: 0
+    - read:
+        try:
+          call: googleapis.storage.v1.objects.get
+          args:
+            bucket: ${bucket}
+            object: ${text.url_encode(object)}
+            alt: media
+          result: raw
+        except:
+          as: e
+          steps:
+            - not_written:
+                switch:
+                  - condition: ${e.code == 404 and polls < max_polls}
+                    next: sleep_before_poll
+            - unavailable:
+                raise: ${"gs://" + bucket + "/" + object + " not written after " + string(polls) + " polls"}
+    - parsed:
+        call: as_map
+        args:
+          raw: ${raw}
+        result: record
+    - found:
+        return: ${record}
+    - sleep_before_poll:
+        call: sys.sleep
+        args:
+          seconds: ${poll_seconds}
+    - count_poll:
+        assign:
+          - polls: ${polls + 1}
+        next: read
+
+# A JSON object body: the storage connector returns a map for JSON content, otherwise text/bytes.
+as_map:
+  params: [raw]
+  steps:
+    - already_map:
+        switch:
+          - condition: ${get_type(raw) == "map"}
+            return: ${raw}
+    - decode:
+        return: ${json.decode(raw)}

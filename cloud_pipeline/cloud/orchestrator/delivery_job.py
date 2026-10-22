@@ -179,6 +179,37 @@ def require_supported_extraction_contract(prepared: Mapping[str, Any]) -> str:
     return version
 
 
+def check_prepared_snapshot(request: Mapping[str, Any], prepared: Mapping[str, Any], prepare_id: str) -> None:
+    """The one snapshot gate (delivery and remote-update dispatch alike): a succeeded, supported-contract
+    snapshot of ``prepare_id`` for the request's origin, rosters and geometries, with every consumed family."""
+    from cloud.batch.remote_sources import SYSTEM_FAMILIES
+
+    if (prepared.get("prepare_id"), prepared.get("origin_month"), prepared.get("status")) != (
+            prepare_id, request["origin_month"], "succeeded"):
+        raise AcceptanceError("prepared manifest is not a succeeded snapshot for the requested prepare_id/origin")
+    require_supported_extraction_contract(prepared)
+    for system, kinds in request["assets"].items():  # a bounded smoke preparation never serves a full roster
+        for kind in ("roster", "geometry"):
+            prepared_ref = prepared.get("systems", {}).get(system, {}).get(kind, {}).get("sha256")
+            if prepared_ref != kinds[kind]["sha256"]:
+                raise AcceptanceError(f"{system}: prepared snapshot {kind} {prepared_ref} is not the delivery {kind} "
+                                      f"{kinds[kind]['sha256']}")
+        for family in SYSTEM_FAMILIES[system]:
+            if system not in prepared.get("families", {}).get(family, {}).get("outputs", {}):
+                raise AcceptanceError(f"prepared snapshot lacks {family} outputs for {system}")
+
+
+def verify_resolution(request: Mapping[str, Any], intent_bytes: bytes) -> None:
+    """A resolved request differs from its pinned initial intent only by the bound snapshot and
+    the intent identity itself."""
+    initial = json.loads(intent_bytes)
+    resolved = {key: value for key, value in request.items() if key not in ("request", "validation_level")}
+    resolved["prepared_snapshot"] = None
+    resolved["execution"] = {key: value for key, value in request["execution"].items() if key != "intent"}
+    if initial.get("prepared_snapshot") is not None or resolved != initial:
+        raise AcceptanceError("resolved request is not its pinned initial intent bound to a snapshot")
+
+
 def prepare_inputs(request: Mapping[str, Any], downloader: PinnedDownloader, work: Path, *, image_uri: str) -> dict:
     """Verify every pinned reference, acceptance and runtime; return the local scoring spec."""
     from cloud.orchestrator.delivery_manifest import verify_reference_identities
@@ -190,23 +221,12 @@ def prepare_inputs(request: Mapping[str, Any], downloader: PinnedDownloader, wor
     verified = verify_reference_identities(request, downloader.resolve)
     index = {f"{ref['uri']}#{ref['generation']}": str(downloader.paths[f"{ref['uri']}#{ref['generation']}"])
              for ref in verified}
+    intent = (request.get("execution") or {}).get("intent")
+    if intent is not None:  # resolved request: equal to its exact initial intent plus the bound snapshot
+        verify_resolution(request, downloader.fetch(intent).read_bytes())
     prepared_path = downloader.fetch(request["prepared_snapshot"]["manifest"])
     prepared = json.loads(prepared_path.read_text())
-    if (prepared.get("prepare_id"), prepared.get("origin_month"), prepared.get("status")) != (
-            request["prepared_snapshot"]["prepare_id"], request["origin_month"], "succeeded"):
-        raise AcceptanceError("prepared manifest is not a succeeded snapshot for the requested prepare_id/origin")
-    from cloud.batch.remote_sources import SYSTEM_FAMILIES
-
-    require_supported_extraction_contract(prepared)
-    for system, kinds in request["assets"].items():  # a bounded smoke preparation never serves a full roster
-        for kind in ("roster", "geometry"):
-            prepared_ref = prepared.get("systems", {}).get(system, {}).get(kind, {}).get("sha256")
-            if prepared_ref != kinds[kind]["sha256"]:
-                raise AcceptanceError(f"{system}: prepared snapshot {kind} {prepared_ref} is not the delivery {kind} "
-                                      f"{kinds[kind]['sha256']}")
-        for family in SYSTEM_FAMILIES[system]:
-            if system not in prepared["families"].get(family, {}).get("outputs", {}):
-                raise AcceptanceError(f"prepared snapshot lacks {family} outputs for {system}")
+    check_prepared_snapshot(request, prepared, request["prepared_snapshot"]["prepare_id"])
     for family in prepared["families"].values():
         for ref in family.get("outputs", {}).values():
             index[f"{ref['uri']}#{ref['generation']}"] = str(downloader.fetch(ref))
@@ -517,26 +537,63 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
     return run_once(store, output_root, run_id=request["run_id"], request_ref=request_ref, compute=compute)
 
 
+DISPATCH_SCHEMA = "delivery-dispatch-record-v1"
+
+
+def _remote_intent(intent_ref: Mapping[str, str], intent_bytes: bytes) -> dict:
+    from cloud.orchestrator.delivery_manifest import validate_delivery_request
+
+    try:
+        intent = validate_delivery_request(json.loads(intent_bytes), request_uri=intent_ref["uri"],
+                                           request_generation=intent_ref["generation"])
+    except ValueError as exc:
+        raise AcceptanceError(f"invalid intent: {exc}") from None
+    if not (intent.get("execution") or {}).get("remote_update") or intent["prepared_snapshot"] is not None:
+        raise AcceptanceError("only an unresolved remote-update intent is dispatched through preparation")
+    return intent
+
+
+def admit_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, reader) -> dict:
+    """Before any cloud step: the complete intent and its exact prepare-request binding (pinned bytes,
+    path prepare_id, same origin, the intent's rosters and geometries)."""
+    from cloud.orchestrator.prepare import read_pinned, validate_prepare_request
+
+    intent = _remote_intent(intent_ref, intent_bytes)
+    ref = intent["execution"]["prepare_request"]
+    try:
+        prepare = validate_prepare_request(json.loads(read_pinned(reader, ref)), request_uri=ref["uri"],
+                                           request_generation=str(ref["generation"]), request_sha256=ref["sha256"])
+    except ValueError as exc:
+        raise AcceptanceError(f"prepare request: {exc}") from None
+    if prepare["origin_month"] != intent["origin_month"]:
+        raise AcceptanceError(f"prepare request origin {prepare['origin_month']} is not {intent['origin_month']}")
+    for system, kinds in intent["assets"].items():
+        for kind in ("roster", "geometry"):
+            if prepare["systems"][system][kind]["sha256"] != kinds[kind]["sha256"]:
+                raise AcceptanceError(f"prepare request {system} {kind} is not the intent's {kind}")
+    return {"schema_version": DISPATCH_SCHEMA, "stage": "admission", "status": "admitted", "run_id": intent["run_id"],
+            "intent": {key: str(intent_ref[key]) for key in ("uri", "generation", "sha256")},
+            "prepare_request": {key: str(ref[key]) for key in ("uri", "generation", "sha256")},
+            "prepare_id": prepare["prepare_id"], "origin_month": intent["origin_month"],
+            "inference_systems": list(intent["execution"]["inference_systems"])}
+
+
 def resolve_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, output_root: str, store,
-                   reader) -> tuple[dict[str, str], bytes]:
-    """Bind a remote-update intent to its succeeded preparation as an immutable resolved request.
+                   reader) -> tuple[dict[str, str], bytes, dict]:
+    """Bind an admitted remote-update intent to its succeeded, compatible preparation.
 
     Readiness is the preparation's durable status and manifest (never the prepare job's own
-    completion, which only means Batch was submitted). The snapshot must be the one prepared
-    from this intent's exact prepare request. The intent object is never modified; the
-    resolved request is create-only and an identical replay reuses it.
+    completion, which only means Batch was submitted). Prepare-only and inference intents pass the
+    same gate: this intent's exact prepare request, its origin and the delivery snapshot checks.
+    The intent object is never modified; the resolved request pins the exact initial intent
+    (URI, generation, SHA-256) and is create-only, so only an identical replay reuses it.
+    Returns the resolved request ref, its bytes and the immutable snapshot ref.
     """
     from cloud.common.object_store import GenerationConflict
-    from cloud.orchestrator.delivery_manifest import validate_delivery_request
-    from cloud.orchestrator.prepare import read_pinned
 
-    intent = validate_delivery_request(json.loads(intent_bytes), request_uri=intent_ref["uri"],
-                                       request_generation=intent_ref["generation"])
-    execution = intent.get("execution") or {}
-    if not execution.get("remote_update") or not execution["inference_systems"] or intent["prepared_snapshot"]:
-        raise AcceptanceError("only an unresolved remote-update intent with selected inference can be resolved")
-    prepare_ref = execution["prepare_request"]
-    prepare_id = json.loads(read_pinned(reader, prepare_ref))["prepare_id"]
+    admission = admit_intent(intent_ref=intent_ref, intent_bytes=intent_bytes, reader=reader)
+    intent = json.loads(intent_bytes)
+    prepare_id = admission["prepare_id"]
     root = f"{output_root.rstrip('/')}/prepared/{prepare_id}"
     status_meta = store.get_metadata(f"{root}/prepare_status.json")
     status = json.loads(store.read_text(f"{root}/prepare_status.json")) if status_meta else {}
@@ -548,26 +605,65 @@ def resolve_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, output
     if data is None:
         raise AcceptanceError(f"preparation {prepare_id} has no prepared manifest")
     manifest = json.loads(data)
-    expected_request = {key: str(prepare_ref[key]) for key in ("uri", "generation", "sha256")}
-    if (manifest.get("status"), manifest.get("origin_month"), manifest.get("prepare_id")) != (
-            "succeeded", intent["origin_month"], prepare_id) or {
-            key: str(value) for key, value in manifest.get("request", {}).items()} != expected_request:
+    if {key: str(value) for key, value in manifest.get("request", {}).items()} != admission["prepare_request"]:
         raise AcceptanceError("prepared snapshot is not the succeeded preparation of this intent's request")
-    resolved = json.loads(intent_bytes)
-    resolved["prepared_snapshot"] = {"prepare_id": prepare_id, "origin_month": intent["origin_month"],
-                                     "manifest": {"uri": manifest_uri, "generation": str(meta.generation),
-                                                  "sha256": hashlib.sha256(data).hexdigest()}}
+    check_prepared_snapshot(intent, manifest, prepare_id)
+    snapshot = {"prepare_id": prepare_id, "origin_month": intent["origin_month"],
+                "manifest": {"uri": manifest_uri, "generation": str(meta.generation),
+                             "sha256": hashlib.sha256(data).hexdigest()}}
+    resolved = {**intent, "prepared_snapshot": snapshot,
+                "execution": {**intent["execution"], "intent": admission["intent"]}}
     resolved_bytes = (json.dumps(resolved, indent=2, sort_keys=True) + "\n").encode()
     bucket = intent_ref["uri"].split("/requests/")[0]
     resolved_uri = f"{bucket}/resolved_requests/{intent['run_id']}/run_manifest.json"
     try:
         generation = store.write_text(resolved_uri, resolved_bytes.decode(), if_generation_match=0).generation
-    except GenerationConflict:  # event replay: only the identical resolution may be reused
+    except GenerationConflict:  # event replay: only the identical resolution of this exact intent
         if store.read_text(resolved_uri).encode() != resolved_bytes:
             raise AcceptanceError(f"{resolved_uri} already holds a different resolution") from None
         generation = store.get_metadata(resolved_uri).generation
     return ({"uri": resolved_uri, "generation": str(generation),
-             "sha256": hashlib.sha256(resolved_bytes).hexdigest()}, resolved_bytes)
+             "sha256": hashlib.sha256(resolved_bytes).hexdigest()}, resolved_bytes, snapshot)
+
+
+def dispatch_record_uri(output_root: str, run_id: str, stage: str) -> str:
+    return f"{output_root.rstrip('/')}/dispatch/{run_id}/{stage}.json"
+
+
+def dispatch_step(stage: str, *, intent_ref: Mapping[str, str], intent_bytes: bytes, output_root: str, store,
+                  reader) -> tuple[dict, tuple[dict[str, str], bytes] | None]:
+    """Run ``admission`` or ``resolution`` and record its outcome (admitted/resolved or rejected with
+    the reason) create-only at dispatch/<run_id>/<stage>.json: the Workflow's durable gate. A replay
+    reuses an identical record; any different recorded outcome is a conflict."""
+    from cloud.common.object_store import GenerationConflict
+
+    run_id = intent_ref["uri"].split("/requests/")[-1].split("/")[0]
+    identity = {key: str(intent_ref[key]) for key in ("uri", "generation", "sha256")}
+    resolved = None
+    try:
+        if stage == "admission":
+            record = admit_intent(intent_ref=intent_ref, intent_bytes=intent_bytes, reader=reader)
+        else:
+            resolved_ref, resolved_bytes, snapshot = resolve_intent(
+                intent_ref=intent_ref, intent_bytes=intent_bytes, output_root=output_root, store=store, reader=reader)
+            resolved = (resolved_ref, resolved_bytes)
+            record = {"schema_version": DISPATCH_SCHEMA, "stage": "resolution", "status": "resolved",
+                      "run_id": run_id, "intent": identity, "prepared_snapshot": snapshot,
+                      "resolved_request": resolved_ref,
+                      "inference_systems": json.loads(intent_bytes)["execution"]["inference_systems"]}
+    except (AcceptanceError, ValueError) as exc:
+        record = {"schema_version": DISPATCH_SCHEMA, "stage": stage, "status": "rejected", "run_id": run_id,
+                  "intent": identity, "reason": str(exc)}
+    uri = dispatch_record_uri(output_root, run_id, stage)
+    text = json.dumps(record, indent=2, sort_keys=True) + "\n"
+    try:
+        store.write_text(uri, text, if_generation_match=0)
+    except GenerationConflict:
+        if json.loads(store.read_text(uri)) != record:
+            raise AcceptanceError(f"{uri} already records a different {stage}") from None
+    if record["status"] == "rejected":
+        raise AcceptanceError(f"{stage} rejected: {record['reason']}")
+    return record, resolved
 
 
 def main(argv=None) -> int:
@@ -580,6 +676,9 @@ def main(argv=None) -> int:
     run.add_argument("--release-namespace", required=True)
     run.add_argument("--image-uri", required=True)
     run.add_argument("--work-dir", default="/tmp/delivery-work")
+    admit = commands.add_parser("admit", help="validate a remote-update intent before its preparation starts")
+    for flag in ("--request-uri", "--request-generation", "--output-root"):
+        admit.add_argument(flag, required=True)
     resolve = commands.add_parser("resolve", help="bind a remote-update intent to its succeeded snapshot, then run")
     for flag in ("--request-uri", "--request-generation", "--output-root", "--release-namespace", "--image-uri"):
         resolve.add_argument(flag, required=True)
@@ -599,16 +698,21 @@ def main(argv=None) -> int:
     from cloud.orchestrator.prepare import GcsPinnedReader
 
     client = storage.Client()
-    work = Path(args.work_dir)
-    work.mkdir(parents=True, exist_ok=False)
     data = GcsPinnedReader(client).read_bytes(args.request_uri, args.request_generation)
     if data is None:
         raise AcceptanceError(f"request {args.request_uri}#{args.request_generation} not found")
     request_ref = {"uri": args.request_uri, "generation": args.request_generation,
                    "sha256": hashlib.sha256(data).hexdigest()}
-    if args.command == "resolve":
-        request_ref, data = resolve_intent(intent_ref=request_ref, intent_bytes=data, output_root=args.output_root,
-                                           store=GCSObjectStore(client), reader=GcsPinnedReader(client))
+    if args.command in ("admit", "resolve"):
+        record, resolved = dispatch_step("admission" if args.command == "admit" else "resolution",
+                                         intent_ref=request_ref, intent_bytes=data, output_root=args.output_root,
+                                         store=GCSObjectStore(client), reader=GcsPinnedReader(client))
+        print(json.dumps(record, indent=2, sort_keys=True))
+        if args.command == "admit" or not record["inference_systems"]:  # prepare-only: the snapshot ref is the result
+            return 0
+        request_ref, data = resolved
+    work = Path(args.work_dir)
+    work.mkdir(parents=True, exist_ok=False)
 
     def score(spec_path, name, out):
         subprocess.run([sys.executable, "-m", "cloud.orchestrator.delivery_job", "system", "--spec", str(spec_path),

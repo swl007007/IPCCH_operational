@@ -266,7 +266,12 @@ def _country_consistency_checks(root: Path) -> dict[str, bool]:
     checks = {}
     lookup = pd.read_csv(root / "inputs/ipcch_origin_rows.csv", dtype={"area_id": str, "admin_code": str},
                          usecols=["area_id", "country", "country_en"])
+    inherited = inherited_systems(root)
     for system in SYSTEMS:
+        if system in inherited:  # pinned source members, never re-aggregated
+            checks.update(_inherited_identity_checks(root, system, inherited[system], "country",
+                                                     ("country_predictions", "country_confidence")))
+            continue
         census = pd.read_csv(root / f"{system}/country_population_reference.csv", dtype=str,
                              keep_default_na=False).replace({"": pd.NA})
         for horizon in HORIZONS:
@@ -486,7 +491,8 @@ def _diagnostics_regeneration_checks(root: Path) -> dict[str, bool]:
     inherited = inherited_systems(root)
     for system in SYSTEMS:
         if system in inherited:
-            checks.update(_inherited_identity_checks(root, system, inherited[system]))
+            checks.update(_inherited_identity_checks(root, system, inherited[system], "diagnostics",
+                                                     SCOPE_TABLES[system], availability=delivered))
             continue
         for horizon in HORIZONS:
             scope = root / f"scopes/{horizon}m/{system}"
@@ -583,12 +589,35 @@ def inherited_systems(root: Path) -> dict:
     return json.loads(path.read_text()) if path.is_file() else {}
 
 
-def _inherited_identity_checks(root: Path, system: str, record: dict) -> dict[str, bool]:
-    """Inherited members are checked by source identity, never recomputed."""
-    same = bool(record.get("members")) and all(
-        (Path(root) / name).is_file() and _sha256(Path(root) / name) == digest
-        for name, digest in record["members"].items())
-    return {f"{system}_{horizon}m_diagnostics_regenerated": same for horizon in HORIZONS}
+def _inherited_identity_checks(root: Path, system: str, record: dict, kind: str, tables,
+                               availability: pd.DataFrame | None = None) -> dict[str, bool]:
+    """Inherited members verified against the source-inventory digests recorded at inheritance; nothing
+    inherited is recomputed, so the checks are named ``*_inherited_identical`` (scored systems keep
+    their regeneration/consistency names). With ``availability`` the delivered rows of the system must
+    equal its inherited per-system availability member."""
+    root, members = Path(root), record.get("members") or {}
+
+    def same(relative):
+        return relative in members and (root / relative).is_file() and _sha256(root / relative) == members[relative]
+
+    rows = None
+    if availability is not None:
+        member = f"reports/{system}_diagnostic_availability.csv"
+        rows = _text(root / member) if same(member) else None
+    checks = {}
+    for horizon in HORIZONS:
+        ok = all(same(f"scopes/{horizon}m/{system}/{name}.csv") for name in tables)
+        if availability is not None:
+            delivered = availability[(availability["model_system"] == system)
+                                     & (availability["horizon_months"] == str(horizon))]
+            source = None if rows is None else rows[rows["horizon_months"] == str(horizon)]
+            ok &= (source is not None and len(source) > 0 and list(source.columns) == list(delivered.columns)
+                   and sorted(map(tuple, source.itertuples(index=False)))
+                   == sorted(map(tuple, delivered.itertuples(index=False))))
+        checks[f"{system}_{horizon}m_{kind}_inherited_identical"] = bool(ok)
+    if availability is not None:
+        checks[f"{system}_inherited_members_identical"] = bool(members) and all(map(same, members))
+    return checks
 
 
 def _compare_frames(a: pd.DataFrame, b: pd.DataFrame, atol: float = 1e-12) -> tuple[bool, float, list[str]]:

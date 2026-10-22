@@ -18,6 +18,7 @@ def commands(cfg):
         "workflow_service_account",
         "namespace",
         "prepare_job",
+        "earth_engine_project",
     )
     if any(not cfg.get(k) or "REPLACE" in str(cfg[k]) for k in required):
         raise ValueError("fill deployment config including workflow_service_account")
@@ -91,12 +92,59 @@ def commands(cfg):
         "--role",
         "roles/run.developer",
     ]
+    # The workflow launches the prepare job for remote-update intents and reads/claims its durable
+    # objects: the exact request, maintenance hold, dispatch records and preparation status.
+    yield [
+        "gcloud",
+        "run",
+        "jobs",
+        "add-iam-policy-binding",
+        cfg["prepare_job"],
+        *run,
+        "--member",
+        "serviceAccount:" + workflow_sa,
+        "--role",
+        "roles/run.developer",
+    ]
+    for bucket in (cfg["request_bucket"], cfg["bucket"]):
+        yield [
+            "gcloud",
+            "storage",
+            "buckets",
+            "add-iam-policy-binding",
+            "gs://" + bucket,
+            "--member",
+            "serviceAccount:" + workflow_sa,
+            "--role",
+            "roles/storage.objectViewer",
+        ]
+    yield [
+        "gcloud",
+        "storage",
+        "buckets",
+        "add-iam-policy-binding",
+        "gs://" + cfg["bucket"],
+        "--member",
+        "serviceAccount:" + workflow_sa,
+        "--role",
+        "roles/storage.objectCreator",
+        "--condition=expression=resource.name.startsWith("
+        + json.dumps("projects/_/buckets/" + cfg["bucket"] + "/objects/dispatch/")
+        + "),title=workflow-dispatch-claims",
+    ]
     environment = {
         "DELIVERY_LOCATION": region,
         "DELIVERY_JOB": "oct-delivery",
         "DELIVERY_OUTPUT_ROOT": "gs://" + cfg["bucket"],
         "DELIVERY_RELEASE_NAMESPACE": cfg["namespace"],
         "DELIVERY_IMAGE_URI": image,
+        "PREPARE_JOB": cfg["prepare_job"],
+        "EARTH_ENGINE_PROJECT": cfg["earth_engine_project"],
+        "BATCH_PARENT": "projects/" + p + "/locations/" + region,
+        "BATCH_SERVICE_ACCOUNT": sa,
+        # Bounded wait for the durable preparation status (default 96 x 300 s = the 8 h Batch limit).
+        "PREPARE_POLL_SECONDS": str(int(cfg.get("prepare_poll_seconds", 300))),
+        "PREPARE_MAX_POLLS": str(int(cfg.get("prepare_max_polls", 96))),
     }
     yield [
         "gcloud",
