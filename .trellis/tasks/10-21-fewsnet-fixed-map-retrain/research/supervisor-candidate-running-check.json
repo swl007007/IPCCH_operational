@@ -1,0 +1,46 @@
+{
+  "observed_utc": "2026-10-22T08:02Z",
+  "scope": "read-only",
+  "purpose": "Verify current candidate execution and terminal-status behavior after supervisor continuation",
+  "checks": [
+    {
+      "argv": [
+        "gcloud",
+        "--configuration=food-crisis-test",
+        "run",
+        "jobs",
+        "executions",
+        "describe",
+        "oct-delivery-hfddt",
+        "--project=feisty-flames-511718-d4",
+        "--region=us-central1",
+        "--format=json"
+      ],
+      "chunk_id": "7520ce",
+      "wall_time_seconds": 6.500982155,
+      "exit_code": 0,
+      "original_token_count": 1111,
+      "output": "{\n  \"apiVersion\": \"run.googleapis.com/v1\",\n  \"kind\": \"Execution\",\n  \"metadata\": {\n    \"annotations\": {\n      \"run.googleapis.com/client-name\": \"gcloud\",\n      \"run.googleapis.com/client-version\": \"562.0.0\",\n      \"run.googleapis.com/creator\": \"monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com\",\n      \"run.googleapis.com/execution-environment\": \"gen2\",\n      \"run.googleapis.com/lastModifier\": \"monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com\",\n      \"run.googleapis.com/operation-id\": \"ae796433-80b8-4994-a46a-ed275a7cb4d3\"\n    },\n    \"creationTimestamp\": \"2026-10-22T07:51:04.345623Z\",\n    \"generation\": 1,\n    \"labels\": {\n      \"client.knative.dev/nonce\": \"van_ziz_pic\",\n      \"cloud.googleapis.com/location\": \"us-central1\",\n      \"run.googleapis.com/job\": \"oct-delivery\",\n      \"run.googleapis.com/jobGeneration\": \"3\",\n      \"run.googleapis.com/jobResourceVersion\": \"1792655322712473\",\n      \"run.googleapis.com/jobUid\": \"d924f6aa-c55d-4adf-8fed-d1137eb18f63\"\n    },\n    \"name\": \"oct-delivery-hfddt\",\n    \"namespace\": \"968355701450\",\n    \"ownerReferences\": [\n      {\n        \"apiVersion\": \"serving.knative.dev/v1\",\n        \"blockOwnerDeletion\": true,\n        \"controller\": true,\n        \"kind\": \"Job\",\n        \"name\": \"oct-delivery\",\n        \"uid\": \"d924f6aa-c55d-4adf-8fed-d1137eb18f63\"\n      }\n    ],\n    \"resourceVersion\": \"AAZeaSaF594\",\n    \"selfLink\": \"/apis/run.googleapis.com/v1/namespaces/968355701450/executions/oct-delivery-hfddt\",\n    \"uid\": \"76d97fe3-caef-4681-9036-e6be437cc97e\"\n  },\n  \"spec\": {\n    \"parallelism\": 1,\n    \"taskCount\": 1,\n    \"template\": {\n      \"spec\": {\n        \"containers\": [\n          {\n            \"args\": [\n              \"-m\",\n              \"cloud.orchestrator.delivery_job\",\n              \"run\",\n              \"--request-uri\",\n              \"gs://food-crisis-test-ipcch-requests/requests/fews-candidate-20261022a/run_manifest.json\",\n              \"--request-generation\",\n              \"1792655462447117\",\n              \"--output-root\",\n              \"gs://food-crisis-test-ipcch-data\",\n              \"--release-namespace\",\n              \"monthly-staging\",\n              \"--image-uri\",\n              \"us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae\"\n            ],\n            \"command\": [\n              \"python3\"\n            ],\n            \"image\": \"us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae\",\n            \"resources\": {\n              \"limits\": {\n                \"cpu\": \"8\",\n                \"memory\": \"32Gi\"\n              }\n            }\n          }\n        ],\n        \"maxRetries\": 0,\n        \"serviceAccountName\": \"monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com\",\n        \"timeoutSeconds\": \"14400\"\n      }\n    }\n  },\n  \"status\": {\n    \"conditions\": [\n      {\n        \"lastTransitionTime\": \"2026-10-22T07:52:40.926697Z\",\n        \"message\": \"Waiting for execution to complete.\",\n        \"status\": \"Unknown\",\n        \"type\": \"Completed\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-22T07:51:42.319594Z\",\n        \"message\": \"Provisioned imported containers.\",\n        \"status\": \"True\",\n        \"type\": \"ResourcesAvailable\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-22T07:52:40.129848Z\",\n        \"message\": \"Started deployed execution in 57.81s.\",\n        \"status\": \"True\",\n        \"type\": \"Started\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-22T07:51:42.191087Z\",\n        \"message\": \"Imported container image in 37.84s.\",\n        \"status\": \"True\",\n        \"type\": \"ContainerReady\"\n      },\n      {\n        \"lastTransitionTime\": \"2026-10-22T07:52:51.150814Z\",\n        \"message\": \"System will retry after 01:00 from lastTransitionTime for polling interval\",\n        \"reason\": \"WaitingForOperation\",\n        \"severity\": \"Info\",\n        \"status\": \"True\",\n        \"type\": \"Retry\"\n      }\n    ],\n    \"logUri\": \"https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-delivery%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-delivery-hfddt%22\",\n    \"observedGeneration\": 1,\n    \"runningCount\": 1,\n    \"startTime\": \"2026-10-22T07:51:56.624385Z\"\n  }\n}\n"
+    },
+    {
+      "argv": [
+        "gcloud",
+        "--configuration=food-crisis-test",
+        "logging",
+        "read",
+        "resource.type=\"cloud_run_job\" AND resource.labels.job_name=\"oct-delivery\" AND labels.\"run.googleapis.com/execution_name\"=\"oct-delivery-hfddt\"",
+        "--project=feisty-flames-511718-d4",
+        "--freshness=2h",
+        "--limit=25",
+        "--format=json"
+      ],
+      "chunk_id": "779171",
+      "wall_time_seconds": 3.162411844,
+      "exit_code": 0,
+      "original_token_count": 1,
+      "output": "[]\n"
+    }
+  ],
+  "source_reason": "delivery_run.py:54-78 writes run_status only after compute finishes or raises; no run_status while compute runs is expected. Empty execution logs do not prove progress.",
+  "status": "running_not_accepted"
+}

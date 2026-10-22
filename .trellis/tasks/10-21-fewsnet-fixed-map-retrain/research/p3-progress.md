@@ -43,3 +43,22 @@ Tests: 511 passed (test env = lock + pytest + pyyaml).
 4. Image build/push, six-slot loading evidence, candidate request (remote off, FEWS only, IPCCH inherited
    from oct-confidence-20261009b archive sha ac3bfcea…, frozen confidence, v2 history panel, snapshot above),
    candidate run, download + FEWS-only relocated replay, then promotion. Cloud mutations end 13:00Z.
+
+## P4 state (07:57Z)
+
+- Image `runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae` (Cloud Build ce6e6cbf,
+  source 0d60a4e clean worktree); in-image six-slot evidence `research/p4/six-slot-runtime-evidence.json` (accepted).
+- Commits: 0d60a4e dispatch gates · 48d3d1e operator chain · 7e458e2 recovery concurrency · 53d5f87 grant flag.
+- Candidate baseline `S/baseline/fews-retrain-20261022` sha b77cb29b (82 files; FEWS history = v2 SOURCE a83f5f4b);
+  candidate operator config `/home/swl007007/ipcch-operator/food-crisis-test-fews-retrain-20261022/project.json`
+  (operator-state/initialized.json). Normal config untouched: `/home/swl007007/ipcch-operator/food-crisis-test/project.json`
+  sha 93293916.
+- Inherited source published byte-identically: `gs://food-crisis-test-ipcch-data/inherited/oct-confidence-20261009b/`
+  manifest#1792653996979392, archive#1792654027016952 (`research/p4/inherit-refs.json`).
+- Maintenance `fews-retrain-20261022` (owner weilun.shi, admits fews-candidate-20261022a):
+  hold gen 1792654802244430 -> gate (workflow rev 000002-c24, probe refused) -> apply (jobs + workflow on new image,
+  phase shared_changed). State: `<candidate work_dir>/operations/fews-retrain-20261022/operation.json`.
+  Restore: `pipeline.py maintenance --operation-id fews-retrain-20261022 --execute restore` then `release`.
+- Candidate `fews-candidate-20261022a` submitted 07:50Z (request gen 1792655462447117), job execution
+  oct-delivery-hfddt running. Next: download --candidate, verify (+ verify_candidate_release.py), stage fallback
+  (stage_fallback.py), then promotion only when cleared.

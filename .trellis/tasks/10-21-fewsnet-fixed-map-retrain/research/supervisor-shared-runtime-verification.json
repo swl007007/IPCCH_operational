@@ -1,0 +1,90 @@
+{
+  "checked_utc": "2026-10-22T07:51:11.190719+00:00",
+  "scope": "Independent read-only live describe of both Cloud Run jobs and deployed Workflow; no job execution or mutation.",
+  "status": "passed",
+  "operation_id": "fews-retrain-20261022",
+  "operation_phase": "shared_changed",
+  "records": {
+    "oct-delivery": {
+      "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+      "args": [
+        "-m",
+        "cloud.orchestrator.delivery_job",
+        "run",
+        "--output-root",
+        "gs://food-crisis-test-ipcch-data",
+        "--release-namespace",
+        "monthly-staging",
+        "--image-uri",
+        "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae"
+      ],
+      "generation": 3,
+      "source_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/cloud-ops/supervisor-oct-delivery-after.json",
+      "source_sha256": "5843aae7753766c2c5f1a2b79cccddc1f734a29414df6f60860cb9fc7d22291c"
+    },
+    "monthly-prepare": {
+      "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+      "args": [
+        "-m",
+        "cloud.orchestrator.prepare",
+        "--help"
+      ],
+      "generation": 3,
+      "source_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/cloud-ops/supervisor-monthly-prepare-after.json",
+      "source_sha256": "bc39f409925599e12b7ce7b5d74deda72d903fba60ee89cca3e7fc4bfec3894d"
+    },
+    "workflow": {
+      "revision_id": "000003-22c",
+      "source_sha256": "c8b8e031e00f1da65e6f0f7ecf71d704eb72eaf3364f071fc13f095baf64e7f6",
+      "env": {
+        "BATCH_PARENT": "projects/feisty-flames-511718-d4/locations/us-central1",
+        "BATCH_SERVICE_ACCOUNT": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "DELIVERY_IMAGE_URI": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+        "DELIVERY_JOB": "oct-delivery",
+        "DELIVERY_LOCATION": "us-central1",
+        "DELIVERY_OUTPUT_ROOT": "gs://food-crisis-test-ipcch-data",
+        "DELIVERY_RELEASE_NAMESPACE": "monthly-staging",
+        "EARTH_ENGINE_PROJECT": "feisty-flames-511718-d4",
+        "PREPARE_JOB": "monthly-prepare",
+        "PREPARE_MAX_POLLS": "96",
+        "PREPARE_POLL_SECONDS": "300"
+      },
+      "source_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/cloud-ops/supervisor-workflow-after.json",
+      "record_sha256": "9b04cc4e4a202da8f002fd265e84d83cc72745b41c1f51f46b7a3417a987415a"
+    }
+  },
+  "read_only_commands": [
+    [
+      "gcloud",
+      "--configuration=food-crisis-test",
+      "run",
+      "jobs",
+      "describe",
+      "oct-delivery",
+      "--project=feisty-flames-511718-d4",
+      "--region=us-central1",
+      "--format=json"
+    ],
+    [
+      "gcloud",
+      "--configuration=food-crisis-test",
+      "run",
+      "jobs",
+      "describe",
+      "monthly-prepare",
+      "--project=feisty-flames-511718-d4",
+      "--region=us-central1",
+      "--format=json"
+    ],
+    [
+      "gcloud",
+      "--configuration=food-crisis-test",
+      "workflows",
+      "describe",
+      "oct-delivery-trigger",
+      "--project=feisty-flames-511718-d4",
+      "--location=us-central1",
+      "--format=json"
+    ]
+  ]
+}

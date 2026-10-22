@@ -4,13 +4,15 @@ No evaluation, no IPCCH inference, no confidence recomputation. Per horizon:
 * FEWS: 5,718 unique admin codes in 22 countries, feature month 2026-10 and the exact target month,
   every row scored by the new all-history package (suite/model path), mapping/table keys consistent;
 * frozen confidence: every frozen polygon/country column (blank masks included) equals the accepted
-  October source by key, per the recorded copy contract; current country outcome columns present;
+  October source by key, per the recorded copy contract; the current country outcome equals
+  1[country probability_crisis >= 0.5] for every country, with the recorded threshold 0.5;
 * inherited IPCCH: all 15 scope tables (and its inherited inputs/evidence/reports) byte-identical to the
   accepted October source inventory; IPCCH package digests unchanged;
 * package and provenance identities: FEWS model inventory = the fit packages; delivery.json records
   FEWS scored now and IPCCH inherited.
 
-usage: verify_candidate_release.py CANDIDATE_DIR OUT_JSON
+usage: verify_candidate_release.py CANDIDATE_DIR OUT_JSON   (exit 1 unless every check passes)
+       verify_candidate_release.py --self-check            (outcome rule on the accepted October tables)
 """
 
 import hashlib
@@ -20,7 +22,7 @@ from pathlib import Path
 
 import pandas as pd
 
-TASK = Path(__file__).resolve().parents[1]
+RESEARCH = Path(__file__).resolve().parents[1]  # .trellis/tasks/<task>/research
 REPO = Path(__file__).resolve().parents[5] / "cloud_pipeline"
 FALLBACK = REPO / "fallback/october_2026"
 FIT = Path("/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022"
@@ -47,8 +49,37 @@ def same_by_key(candidate: pd.DataFrame, source: pd.DataFrame, key: str, columns
     return {"equal": bool(equal), "rows": int(len(left)), "differing_columns": differing}
 
 
+def outcome_agreement(predictions: pd.DataFrame, confidence: pd.DataFrame, threshold: float) -> dict:
+    """Current country outcome = 1[country probability_crisis >= threshold] (blank when the probability is
+    blank) for every country, with the recorded threshold equal to the contract threshold."""
+    probability = predictions.set_index("ISO3")["probability_crisis"]
+    expected = {iso: "" if value == "" else str(int(float(value) >= threshold)) for iso, value in probability.items()}
+    actual = confidence.set_index("ISO3")["country_outcome_crisis"].to_dict()
+    thresholds = set(confidence["country_outcome_crisis_threshold"])
+    mismatches = sorted(iso for iso in expected if actual.get(iso) != expected[iso])
+    equal = set(expected) == set(actual) and not mismatches and all(t != "" and float(t) == threshold
+                                                                    for t in thresholds)
+    return {"equal": bool(equal), "countries": len(expected), "mismatches": mismatches,
+            "crisis_countries": sum(v == "1" for v in expected.values()), "thresholds": sorted(thresholds)}
+
+
+def self_check() -> dict:
+    """The outcome rule reproduces the accepted October delivery's FEWS country outcomes and rejects a flip."""
+    threshold = float(json.loads((RESEARCH / "confidence-source-inventory.json").read_text())
+                      ["copy_contract"]["country_outcome_threshold"])
+    result = {}
+    for horizon in (0, 6, 12):
+        scope = FALLBACK / f"scopes/{horizon}m/fewsnet"
+        predictions, confidence = text(scope / "country_predictions.csv"), text(scope / "country_confidence.csv")
+        flipped = confidence.copy()
+        flipped.loc[0, "country_outcome_crisis"] = "0" if flipped.loc[0, "country_outcome_crisis"] == "1" else "1"
+        result[f"{horizon}m"] = {"accepted": outcome_agreement(predictions, confidence, threshold)["equal"],
+                                 "flip_rejected": not outcome_agreement(predictions, flipped, threshold)["equal"]}
+    return {"status": "passed" if all(all(v.values()) for v in result.values()) else "failed", "horizons": result}
+
+
 def main(root: Path) -> dict:
-    contract = json.loads((TASK / "research/confidence-source-inventory.json").read_text())["copy_contract"]
+    contract = json.loads((RESEARCH / "confidence-source-inventory.json").read_text())["copy_contract"]
     source_inventory = {e["path"]: e["sha256"] for e in json.loads((FALLBACK / "manifest.json").read_text())["files"]}
     candidate_inventory = {e["path"]: e["sha256"] for e in json.loads((root / "manifest.json").read_text())["files"]}
     delivery = json.loads((root / "reports/delivery.json").read_text())
@@ -78,9 +109,10 @@ def main(root: Path) -> dict:
                               [contract["country_key"], *contract["country_frozen_columns"]])
         checks[f"fewsnet_{horizon}m_polygon_confidence_frozen"] = polygon["equal"] and polygon["rows"] == 5718
         checks[f"fewsnet_{horizon}m_country_confidence_frozen"] = country["equal"] and country["rows"] == 22
-        checks[f"fewsnet_{horizon}m_current_outcome_columns"] = all(
-            c in country_candidate.columns for c in contract["country_current_prediction_columns"])
-        detail[f"{horizon}m"] = {"polygon_confidence": polygon, "country_confidence": country,
+        outcome = outcome_agreement(text(scope / "country_predictions.csv"), country_candidate,
+                                    float(contract["country_outcome_threshold"]))
+        checks[f"fewsnet_{horizon}m_current_outcome_agrees"] = outcome["equal"]
+        detail[f"{horizon}m"] = {"polygon_confidence": polygon, "country_confidence": country, "current_outcome": outcome,
                                  "predicted_crisis_areas": int((predictions["predicted_crisis"] == "1").sum())}
         for name in IPCCH_TABLES:
             relative = f"scopes/{horizon}m/ipcch/{name}.csv"
@@ -99,6 +131,11 @@ def main(root: Path) -> dict:
 
 
 if __name__ == "__main__":
-    report = main(Path(sys.argv[1]))
-    Path(sys.argv[2]).write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
-    print(json.dumps({"status": report["status"], "failed": [k for k, v in report["checks"].items() if not v]}))
+    if sys.argv[1] == "--self-check":
+        report = self_check()
+        print(json.dumps(report, sort_keys=True))
+    else:
+        report = main(Path(sys.argv[1]))
+        Path(sys.argv[2]).write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+        print(json.dumps({"status": report["status"], "failed": [k for k, v in report["checks"].items() if not v]}))
+    sys.exit(0 if report["status"] == "passed" else 1)

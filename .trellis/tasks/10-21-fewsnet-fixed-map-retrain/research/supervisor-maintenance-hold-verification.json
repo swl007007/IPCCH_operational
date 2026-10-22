@@ -1,0 +1,24 @@
+{
+  "checked_utc": "2026-10-22T07:41:37.258097+00:00",
+  "argv": [
+    "gcloud",
+    "--configuration=food-crisis-test",
+    "storage",
+    "cat",
+    "gs://food-crisis-test-ipcch-data/maintenance/hold.json#1792654802244430"
+  ],
+  "started_utc": "2026-10-22T07:41:26.821729+00:00",
+  "exit_code": 0,
+  "sha256": "c4e75669afbe84e024abd6dd584205f9c9fb2dabce4f379f028d78e0f2aaf82e",
+  "hold": {
+    "admitted_run_ids": [
+      "fews-candidate-20261022a"
+    ],
+    "created_utc": "2026-10-22T07:40:02Z",
+    "operation_id": "fews-retrain-20261022",
+    "owner": "weilun.shi",
+    "predecessor_sha256": "95dd7f93328b34878afdeb61ba29d073b77b5718109b62b2984bac06cc911da3",
+    "schema_version": "maintenance-hold-v1"
+  },
+  "scope": "Read exact-generation maintenance hold only; deployed gate and job change checks follow separately."
+}

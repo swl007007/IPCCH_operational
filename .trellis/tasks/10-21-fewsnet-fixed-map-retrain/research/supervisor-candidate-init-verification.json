@@ -1,0 +1,55 @@
+{
+  "checked_utc": "2026-10-22T07:45:24.790015+00:00",
+  "status": "passed",
+  "initialized_path": "/home/swl007007/ipcch-operator/food-crisis-test-fews-retrain-20261022/operator-state/initialized.json",
+  "initialized_sha256": "b0ec182e0886a0e821d9c7dbcb72d8c1aa199dde45962bc1d179e288995e4b7d",
+  "baseline_id": "b77cb29bd648c428cce6503bd10a2834bc976290115dd98b331ff67c1dd66c8b",
+  "runtime": {
+    "environment_manifest": {
+      "generation": "1792654962103927",
+      "sha256": "172f1d826d727b804605b50fabedd8ff0cf75d71d3e57d1c6b82bddb308854e8",
+      "uri": "gs://food-crisis-test-ipcch-data/environments/487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae.json"
+    },
+    "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae"
+  },
+  "asset_refs_matched": 82,
+  "selected_models": [
+    {
+      "system": "fewsnet",
+      "horizon_months": 0,
+      "package_id": "full-202610-ff389b11af93-02caeb861750/0m"
+    },
+    {
+      "system": "fewsnet",
+      "horizon_months": 6,
+      "package_id": "full-202610-ff389b11af93-02caeb861750/6m"
+    },
+    {
+      "system": "fewsnet",
+      "horizon_months": 12,
+      "package_id": "full-202610-ff389b11af93-02caeb861750/12m"
+    },
+    {
+      "system": "ipcch",
+      "horizon_months": 0,
+      "package_id": "launch_2026_04_production_safe/scope_0m"
+    },
+    {
+      "system": "ipcch",
+      "horizon_months": 6,
+      "package_id": "launch_2026_04_production_safe/scope_6m"
+    },
+    {
+      "system": "ipcch",
+      "horizon_months": 12,
+      "package_id": "launch_2026_04_production_safe/scope_12m"
+    }
+  ],
+  "normal_config_still_predecessor": {
+    "path": "/home/swl007007/ipcch-operator/food-crisis-test/project.json",
+    "sha256": "93293916d1b07d13a64645217baadf5c40745c629258473ead2ffc2f8a0a5b45",
+    "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0",
+    "work_dir": "operator-state"
+  },
+  "scope": "Local initialized-state refs verified against independently checked baseline; cloud consumption is verified by actual candidate next."
+}

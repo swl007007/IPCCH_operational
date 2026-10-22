@@ -1,0 +1,66 @@
+{
+  "checked_utc": "2026-10-22T07:52:13.961488+00:00",
+  "argv": [
+    "gcloud",
+    "--configuration=food-crisis-test",
+    "storage",
+    "cat",
+    "gs://food-crisis-test-ipcch-requests/requests/fews-candidate-20261022a/run_manifest.json#1792655462447117"
+  ],
+  "exit_code": 0,
+  "status": "passed",
+  "request": {
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/fews-candidate-20261022a/run_manifest.json",
+    "generation": "1792655462447117",
+    "sha256": "c081eca3df075f3e0c7da57daf1e9bc59a44ac7ec9c70f707987bd3999d3a33e"
+  },
+  "local_evidence_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/cloud-ops/supervisor-candidate-request.json",
+  "execution": {
+    "inference_systems": [
+      "fewsnet"
+    ],
+    "inherit": {
+      "ipcch": {
+        "archive": {
+          "generation": "1792654027016952",
+          "sha256": "ac3bfceab55274d0feaad5395d16298fbf84e7baf9ffccb67fcca3d23327b4d9",
+          "uri": "gs://food-crisis-test-ipcch-data/inherited/oct-confidence-20261009b/webapp_model_bundle.tar.gz"
+        },
+        "manifest": {
+          "generation": "1792653996979392",
+          "sha256": "265a0fb95a8dbeda49a09d6a9fcafe149d3e4033438b38ec91d3b795a39aebe4",
+          "uri": "gs://food-crisis-test-ipcch-data/inherited/oct-confidence-20261009b/manifest.json"
+        },
+        "origin_month": "2026-10",
+        "source_delivery_id": "oct-confidence-20261009b"
+      }
+    },
+    "prepare_request": null,
+    "publication": "candidate",
+    "remote_update": false
+  },
+  "prepared_snapshot": {
+    "manifest": {
+      "generation": "1792650679865065",
+      "sha256": "a5db2c8ba11ae075d58096961f4a1131dc030b6c842c88912b9f4cf5bffb2ab9",
+      "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/prepared_manifest.json"
+    },
+    "origin_month": "2026-10",
+    "prepare_id": "fewsnet-retrain-20261022a"
+  },
+  "fewsnet_history_panel": {
+    "generation": "1792654789129170",
+    "sha256": "a83f5f4b5eb33022960e43606f32afaec0cb15c10110ad1b56564790d637b722",
+    "uri": "gs://food-crisis-test-ipcch-data/baselines/b77cb29bd648c428cce6503bd10a2834bc976290115dd98b331ff67c1dd66c8b/assets/fewsnet/history_panel.csv"
+  },
+  "runtime": {
+    "environment_manifest": {
+      "generation": "1792654962103927",
+      "sha256": "172f1d826d727b804605b50fabedd8ff0cf75d71d3e57d1c6b82bddb308854e8",
+      "uri": "gs://food-crisis-test-ipcch-data/environments/487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae.json"
+    },
+    "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae"
+  },
+  "expected_predecessor_pointer_generation": "0",
+  "scope": "Pinned actual cloud request verified before result acceptance. No inference/activation result asserted."
+}

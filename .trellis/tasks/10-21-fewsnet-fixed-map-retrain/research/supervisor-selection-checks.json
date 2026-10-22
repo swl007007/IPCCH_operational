@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-22T06:50:03.292183+00:00",
+  "command": "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -q -p no:cacheprovider tests/cloud/test_execution_selection.py tests/cloud/test_frozen_confidence.py",
+  "result": "22 passed in 3.34s",
+  "exit_code": 0,
+  "scope": "selected execution, inherited source identities/date/package rejects, candidate pointer separation and frozen confidence; not deployed cloud or actual candidate acceptance",
+  "fitting_inference_or_evaluation": false,
+  "post_run_source_hashes": {
+    "cloud_pipeline/cloud/orchestrator/delivery_job.py": "b2b73b8ccb97bcd56c57c9cbd339b23323ba536b599d3e1e3599cdb4d63c950f",
+    "cloud_pipeline/cloud/orchestrator/delivery_manifest.py": "708a930009085160deb0f90ebfc90f1c9c1e9f15bccac3ec7329020e676aa629",
+    "cloud_pipeline/tests/cloud/test_execution_selection.py": "d03ab9740924fe9f989f2d23750873f2f82937c61392b59f4406ea42cfe7bcec",
+    "cloud_pipeline/tests/cloud/test_frozen_confidence.py": "df1df3940b8be92a40002f2fb0c53a94bbb8ddb04a0f0103c9b6fb2ca9f21d2b"
+  },
+  "hash_scope": "Hashes captured after the command while executor continued editing; informational, not a claim that the tested working tree was immutable. Recheck affected new branches at the committed implementation checkpoint."
+}
