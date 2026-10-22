@@ -430,11 +430,14 @@ def frozen_declarations(root: Path, system: str, horizon: int):
 
     saved = json.loads((Path(root) / f"reports/{system}_diagnostic_declarations.json").read_text())[f"{horizon}m"]
     declarations = do.normalise_declarations(
-        system, horizon, {family: {k: v for k, v in entry.items() if k not in ("frozen_path", "evidence_identity")}
+        system, horizon, {family: {k: v for k, v in entry.items()
+                                   if k not in ("frozen_path", "frozen_availability_path", "evidence_identity")}
                           for family, entry in saved.items()})
 
     def evidence_bytes(family):
-        return (Path(root) / saved[family]["frozen_path"]).read_bytes()
+        base, _, part = family.partition(".")
+        key = "frozen_availability_path" if part == "availability" else "frozen_path"
+        return (Path(root) / saved[base][key]).read_bytes()
 
     return declarations, evidence_bytes
 

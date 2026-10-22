@@ -70,6 +70,13 @@ def request_diagnostics(request: Mapping, system: str, reader) -> dict[int, dict
                     "evidence_model_package_id": entry["evidence_model_package_id"],
                     "evidence_horizon_months": entry["evidence_horizon_months"],
                     "evidence_bytes": read_pinned(reader, entry["evidence"])}
+        elif entry["status"] == do.FROZEN_OUTPUT:
+            item = {"status": do.FROZEN_OUTPUT, "ref": dict(entry["evidence"]),
+                    "availability_ref": dict(entry["source_availability"]),
+                    **{key: entry[key] for key in ("source_delivery_id", "evidence_model_package_id",
+                                                   "evidence_horizon_months", "evidence_basis", "evidence_period")},
+                    "evidence_bytes": read_pinned(reader, entry["evidence"]),
+                    "availability_bytes": read_pinned(reader, entry["source_availability"])}
         else:
             item = {"status": "unavailable", "reason": entry["reason"]}
         out.setdefault(entry["horizon_months"], {})[entry["family"]] = item
@@ -345,6 +352,8 @@ def freeze_diagnostic_evidence(out: Path, system: str, horizon: int, declaration
             handle.write(data)
         frozen_paths[family] = path.relative_to(out).as_posix()
     return {family: {**entry, "frozen_path": frozen_paths.get(family),
+                     **({"frozen_availability_path": frozen_paths[f"{family}.availability"]}
+                        if f"{family}.availability" in frozen_paths else {}),
                      "evidence_identity": diag["evidence_identity"].get(family)}
             for family, entry in declarations.items()}
 
@@ -375,9 +384,15 @@ def _write_scopes(out, system, origin, results, audits, availability, report, di
         package_id = result["package_id"] + ("" if system == "fewsnet" else f"/scope_{horizon}m")
         declared = diagnostics.get(horizon) or {}
         declarations = do.normalise_declarations(system, horizon, {
-            family: {k: v for k, v in entry.items() if k != "evidence_bytes"} for family, entry in declared.items()})
+            family: {k: v for k, v in entry.items() if k not in ("evidence_bytes", "availability_bytes")}
+            for family, entry in declared.items()})
+
+        def evidence_bytes(family, declared=declared):
+            base, _, part = family.partition(".")
+            return declared[base]["availability_bytes" if part == "availability" else "evidence_bytes"]
+
         diag = do.scope_diagnostics(system, horizon, predictions, declarations=declarations,
-                                    evidence_bytes=lambda family: declared[family]["evidence_bytes"],
+                                    evidence_bytes=evidence_bytes,
                                     package_id=package_id, polygons=mapping["polygon_id"], census=results["census"],
                                     area_lookup=lookup, iso_by_polygon=results["iso_by_polygon"], origin=origin,
                                     accepted_period=results["validation_periods"].get(horizon),

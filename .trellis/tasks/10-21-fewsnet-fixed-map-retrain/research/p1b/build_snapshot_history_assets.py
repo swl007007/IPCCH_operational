@@ -1,7 +1,8 @@
 """Pinned preparation inputs for the retrain release snapshot (create-only, production bucket).
 
-History per system/family = the accepted `full-20261008a` history asset followed by the
-accepted `full-window-20261008c` prepared outputs (no overlapping months; checked). Geometry
+History per system/family = the accepted `full-window-20261008c` effective baseline (its
+`full-20261008a` history rows up to the provider vintage that were not re-extracted, exactly
+as that preparation kept them) followed by that preparation's outputs (no overlap; checked). Geometry
 and roster are server-side copies of the same pinned assets. A preparation over these
 inputs then only re-extracts each provider's latest month (and GOSIF mean 2025 under the v3
 contract). Writes `assets_manifest.json` and the prepare request; never overwrites.
@@ -35,8 +36,17 @@ def read(client, uri, generation, expected_sha):
 
 
 def write_create_only(client, name, data, content_type="text/csv"):
+    """Create-only; an existing object is reused only when its bytes are identical."""
+    from google.api_core.exceptions import PreconditionFailed
+
     blob = client.bucket(BUCKET).blob(name)
-    blob.upload_from_string(data, content_type=content_type, if_generation_match=0)
+    try:
+        blob.upload_from_string(data, content_type=content_type, if_generation_match=0)
+    except PreconditionFailed:
+        existing = client.bucket(BUCKET).get_blob(name)
+        if sha(existing.download_as_bytes(raw_download=True)) != sha(data):
+            raise
+        blob = existing
     blob.reload()
     return {"uri": f"gs://{BUCKET}/{name}", "generation": str(blob.generation), "sha256": sha(data)}
 
@@ -75,6 +85,10 @@ def main():
             columns = ["admin_code", "month"] + [f"{b}__{r}" for b in contract.bands for r in contract.reducers]
             if list(history.columns) != columns or list(prepared.columns) != columns:
                 raise ValueError(f"{system}/{family}: column contract mismatch")
+            family_plan = old["families"][family]
+            vintage = family_plan["provider_latest_completed_month"]
+            reextracted = family_plan["system_months"][system]
+            history = history[(history["month"] <= vintage) & ~history["month"].isin(reextracted)]
             overlap = set(history["month"]) & set(prepared["month"])
             if overlap:
                 raise ValueError(f"{system}/{family}: overlapping months {sorted(overlap)[:3]}")
@@ -88,6 +102,7 @@ def main():
                                                          data)
             report["systems"][system][f"history_{family}"] = {
                 "from_history": href, "from_prepared_output": out, "to": entry["history"][family],
+                "history_rows_kept_through_vintage": vintage, "history_months_replaced": reextracted,
                 "rows": len(combined), "months": [combined["month"].min(), combined["month"].max()]}
         systems[system] = entry
     request = {

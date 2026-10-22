@@ -198,10 +198,73 @@ def ipcch_training_cutoff_month(package_root) -> str:
     return str(pd.Period(cutoff[:7], "M"))
 
 
-def fewsnet_validation_period(package_dir) -> str:
-    """``start..end`` of the package's recorded validation target months (training_report.json)."""
-    window = json.loads((Path(package_dir) / "training_report.json").read_text())["validation_target_month_range"]
-    return f"{window['start']}..{window['end']}"
+def fewsnet_validation_period(package_dir) -> str | None:
+    """``start..end`` of the package's recorded validation target months (training_report.json);
+    None for an all-history package, which has no validation period."""
+    report = json.loads((Path(package_dir) / "training_report.json").read_text())
+    window = report.get("validation_target_month_range")
+    return None if window is None else f"{window['start']}..{window['end']}"
+
+
+# Frozen confidence outputs (2026-10 FEWS retrain): historical confidence tables from an accepted
+# delivery are attached unchanged to new scores; only current prediction outcomes are recomputed.
+FROZEN_OUTPUT = "frozen_output"
+FROZEN_FEWSNET_COUNTRY_COLUMNS = (
+    "country_error_rate", "country_confidence_flag", "country_error_basis", "country_error_weighting",
+    "country_error_evidence_period", "country_confidence_thresholds", "country_error_eligible_area_count",
+    "country_error_excluded_area_count", "country_error_missing_evidence_area_count",
+    "country_error_missing_population_area_count", "country_error_nonpositive_population_area_count",
+    "country_error_sample_count", "country_error_mistake_count", "country_error_eligible_population_sum",
+    "country_error_known_population_sum", "country_error_known_population_coverage",
+    "country_error_population_field", "country_error_population_vintage", "country_error_population_source")
+FROZEN_DECLARATION_FIELDS = ("status", "ref", "availability_ref", "source_delivery_id",
+                             "evidence_model_package_id", "evidence_horizon_months", "evidence_basis",
+                             "evidence_period")
+
+
+def _frozen_text(data: bytes, label: str) -> pd.DataFrame:
+    import io
+
+    try:
+        return pd.read_csv(io.BytesIO(data), dtype=str, keep_default_na=False)
+    except (ValueError, UnicodeDecodeError) as exc:
+        raise EvidenceIntegrityError(f"{label}: unreadable frozen output ({exc})") from exc
+
+
+def frozen_polygon_table(data: bytes, *, polygons, declared: dict, label: str) -> pd.DataFrame:
+    """The source polygon confidence table, unchanged, after header/key/identity checks."""
+    table = _frozen_text(data, label)
+    if list(table.columns) != list(SEPTEMBER_HEADERS["fewsnet"]["polygon_confidence"]):
+        raise EvidenceIntegrityError(f"{label}: frozen polygon table header differs from the contract")
+    keys = table["polygon_id"]
+    if keys.duplicated().any() or set(keys) != set(map(str, polygons)):
+        raise EvidenceIntegrityError(f"{label}: frozen polygon keys must equal the delivery roster")
+    for column, value in (("evidence_basis", declared["evidence_basis"]), ("evidence_period", declared["evidence_period"])):
+        if set(table[column]) - {"", value}:
+            raise EvidenceIntegrityError(f"{label}: frozen {column} differs from the declaration")
+    return table.set_index("polygon_id").loc[list(map(str, polygons))].reset_index()
+
+
+def frozen_country_fields(data: bytes, *, countries, label: str) -> pd.DataFrame:
+    """The 19 historical country fields of the source country confidence table, keyed by ISO3."""
+    table = _frozen_text(data, label)
+    if list(table.columns) != list(SEPTEMBER_HEADERS["fewsnet"]["country_confidence"]):
+        raise EvidenceIntegrityError(f"{label}: frozen country table header differs from the contract")
+    if table["ISO3"].duplicated().any() or set(table["ISO3"]) != set(countries):
+        raise EvidenceIntegrityError(f"{label}: frozen country keys must equal the delivery countries")
+    return table[["ISO3", *FROZEN_FEWSNET_COUNTRY_COLUMNS]]
+
+
+def frozen_availability(data: bytes, *, horizon: int, family: str, entities, label: str) -> pd.DataFrame:
+    """The source availability disclosure rows for one FEWS family/horizon, unchanged."""
+    table = _frozen_text(data, label)
+    if list(table.columns) != AVAILABILITY_COLUMNS:
+        raise EvidenceIntegrityError(f"{label}: availability header differs from the contract")
+    rows = table[(table["model_system"] == "fewsnet") & (table["horizon_months"] == str(horizon))
+                 & (table["diagnostic_family"] == family)]
+    if rows["entity_id"].duplicated().any() or set(rows["entity_id"]) != set(map(str, entities)):
+        raise EvidenceIntegrityError(f"{label}: availability rows must cover exactly the delivery entities")
+    return rows.reset_index(drop=True)
 MAXIMUM_PHASE_FIELDS = ("country_maximum_phase_error_probability_proxy", "country_maximum_phase_error_probability_ci_lower",
                         "country_maximum_phase_error_probability_ci_upper", "country_maximum_phase_history_month_count",
                         "country_maximum_phase_uncertainty_status", "country_maximum_phase_uncertainty_method")
@@ -505,8 +568,20 @@ def normalise_declarations(system: str, horizon: int, declared_families) -> dict
         elif entry.get("status") == "unavailable":
             if not entry.get("reason"):
                 raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: unavailable needs a reason")
+        elif entry.get("status") == FROZEN_OUTPUT:
+            if system != "fewsnet" or set(entry) != set(FROZEN_DECLARATION_FIELDS):
+                raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: frozen outputs are FEWS-only and need "
+                                             f"exactly {FROZEN_DECLARATION_FIELDS}")
+            for name in ("ref", "availability_ref"):
+                if not all((entry.get(name) or {}).get(key) for key in ("uri", "generation", "sha256")):
+                    raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: frozen {name} must be hash-bound")
+            if (entry["evidence_horizon_months"] != horizon
+                    or (entry["evidence_basis"], entry["evidence_period"]) != APPROVED_PROXY_EVIDENCE[(system, horizon)]):
+                raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: frozen outputs must carry this horizon's "
+                                             "approved historical basis and period")
         else:
-            raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: status must be available or unavailable")
+            raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: status must be available, unavailable or "
+                                         f"{FROZEN_OUTPUT}")
         out[family] = entry
     return out
 
@@ -547,13 +622,41 @@ def scope_diagnostics(system: str, horizon: int, predictions: pd.DataFrame, *, d
 
     polygon_family = POLYGON_FAMILY[system]
     errors, evidence, maximum = None, None, None
-    if declarations[polygon_family]["status"] == "available":
+    frozen_rows = {}
+
+    def frozen_bytes(family, key, name):
+        data = evidence_bytes(family if key == "ref" else f"{family}.availability")
+        if hashlib.sha256(data).hexdigest() != declarations[family][key]["sha256"]:
+            raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: frozen {name} bytes do not match the ref")
+        frozen[family if key == "ref" else f"{family}.availability"] = data
+        identities[family] = {"model_package_id": declarations[family]["evidence_model_package_id"],
+                              "horizon_months": horizon, "basis": declarations[family]["evidence_basis"],
+                              "period": declarations[family]["evidence_period"],
+                              "source_delivery_id": declarations[family]["source_delivery_id"]}
+        return data
+
+    if declarations[polygon_family]["status"] == FROZEN_OUTPUT:
+        label = f"{system}/{horizon}m/{polygon_family}"
+        polygon_table = frozen_polygon_table(frozen_bytes(polygon_family, "ref", "output"), polygons=polygons,
+                                             declared=declarations[polygon_family], label=label)
+        frozen_rows[polygon_family] = frozen_availability(
+            frozen_bytes(polygon_family, "availability_ref", "availability"), horizon=horizon,
+            family=polygon_family, entities=polygons, label=label)
+    elif declarations[polygon_family]["status"] == "available":
         evidence = load(polygon_family, area_evidence)
         polygon_table, _ = supported_diagnostics(system, predictions, evidence, identity=identities[polygon_family],
                                                  iso_by_polygon=iso_by_polygon)
     else:
         polygon_table = polygon_diagnostics_unavailable(system, predictions, iso_by_polygon)
-    if declarations["country_confidence"]["status"] == "available":
+    if declarations["country_confidence"]["status"] == FROZEN_OUTPUT:
+        label = f"{system}/{horizon}m/country_confidence"
+        countries = sorted(census["ISO3"].dropna().unique())
+        errors = frozen_country_fields(frozen_bytes("country_confidence", "ref", "output"), countries=countries,
+                                       label=label)
+        frozen_rows["country_confidence"] = frozen_availability(
+            frozen_bytes("country_confidence", "availability_ref", "availability"), horizon=horizon,
+            family="country_confidence", entities=countries, label=label)
+    elif declarations["country_confidence"]["status"] == "available":
         country_evidence = load("country_confidence", area_evidence)
         _, errors = supported_diagnostics(system, predictions, country_evidence,
                                           identity=identities["country_confidence"], iso_by_polygon=iso_by_polygon)
@@ -567,6 +670,9 @@ def scope_diagnostics(system: str, horizon: int, predictions: pd.DataFrame, *, d
     rows = []
     for family, level in DIAGNOSTIC_FAMILIES[system].items():
         entry = declarations[family]
+        if entry["status"] == FROZEN_OUTPUT:  # the source disclosure rows and evidence refs, unchanged
+            rows.extend(frozen_rows[family].to_dict("records"))
+            continue
         ref = f"{entry['ref']['uri']}#{entry['ref']['generation']}" if entry["status"] == "available" else pd.NA
         if entry["status"] != "available":
             entities = [(e, "unavailable", entry["reason"]) for e in (polygons if level == "polygon" else confidence["ISO3"])]
@@ -583,8 +689,11 @@ def scope_diagnostics(system: str, horizon: int, predictions: pd.DataFrame, *, d
         rows.extend({"model_system": system, "horizon_months": horizon, "level": level, "entity_id": str(entity),
                      "diagnostic_family": family, "status": status, "reason": reason, "evidence_ref": ref}
                     for entity, status, reason in entities)
+    availability = pd.DataFrame(rows, columns=AVAILABILITY_COLUMNS)
+    if frozen_rows:
+        availability = availability.astype(str).replace({"<NA>": "", "nan": ""})
     return {"polygon_table": polygon_table, "polygon_name": polygon_family, "country": country,
-            "confidence": confidence, "availability": pd.DataFrame(rows, columns=AVAILABILITY_COLUMNS),
+            "confidence": confidence, "availability": availability,
             "frozen_evidence": frozen, "evidence_identity": identities}
 
 

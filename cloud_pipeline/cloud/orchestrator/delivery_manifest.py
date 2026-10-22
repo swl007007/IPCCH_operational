@@ -163,9 +163,11 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
         for kind in ASSET_KINDS[system]:
             refs.append((f"assets.{system}.{kind}", request["assets"][system][kind]))
     for entry in request["diagnostics"]:
-        if entry["status"] == "available":
-            label = f"diagnostics[{entry['system']}/{entry['horizon_months']}m/{entry['family']}]"
+        label = f"diagnostics[{entry['system']}/{entry['horizon_months']}m/{entry['family']}]"
+        if entry["status"] in ("available", "frozen_output"):
             refs.append((f"{label}.evidence", entry["evidence"]))
+        if entry["status"] == "frozen_output":
+            refs.append((f"{label}.source_availability", entry["source_availability"]))
     refs.append(("runtime.environment_manifest", request["runtime"]["environment_manifest"]))
     return refs
 
@@ -272,8 +274,14 @@ def _diagnostics(value: Any, models: Mapping[tuple[str, int], str]) -> None:
         elif status == "unavailable":
             # Canonical design section 4.2 form: explicit ``evidence: null`` plus a reason.
             fields = ("system", "horizon_months", "family", "status", "evidence", "reason")
+        elif status == "frozen_output":
+            # Accepted historical confidence outputs attached unchanged (FEWS 2026-10 retrain); the
+            # evidence/source package stays distinct from the scored package.
+            fields = ("system", "horizon_months", "family", "status", "evidence", "source_availability",
+                      "source_delivery_id", "evidence_model_package_id", "evidence_horizon_months",
+                      "evidence_basis", "evidence_period")
         else:
-            raise DeliveryManifestError(f"{label}.status must be available or unavailable")
+            raise DeliveryManifestError(f"{label}.status must be available, unavailable or frozen_output")
         _exact_keys(entry, fields, label)
         system, horizon, family = entry["system"], entry["horizon_months"], entry["family"]
         if system not in SYSTEMS or horizon not in HORIZONS_MONTHS or type(horizon) is not int:
@@ -284,7 +292,20 @@ def _diagnostics(value: Any, models: Mapping[tuple[str, int], str]) -> None:
         if key in seen:
             raise DeliveryManifestError(f"duplicate diagnostics entry {key}")
         seen.add(key)
-        if status == "available":
+        if status == "frozen_output":
+            from cloud.orchestrator.delivery_outputs import APPROVED_PROXY_EVIDENCE
+
+            if system != "fewsnet":
+                raise DeliveryManifestError(f"{label}: frozen outputs are FEWS-only")
+            _ref(entry["evidence"], f"{label}.evidence")
+            _ref(entry["source_availability"], f"{label}.source_availability")
+            _text(entry["source_delivery_id"], f"{label}.source_delivery_id")
+            _text(entry["evidence_model_package_id"], f"{label}.evidence_model_package_id")
+            if entry["evidence_horizon_months"] != horizon or type(entry["evidence_horizon_months"]) is not int:
+                raise DeliveryManifestError(f"{label} evidence horizon must equal {horizon}")
+            if (entry["evidence_basis"], entry["evidence_period"]) != APPROVED_PROXY_EVIDENCE[(system, horizon)]:
+                raise DeliveryManifestError(f"{label} must carry the approved {horizon}m historical basis/period")
+        elif status == "available":
             _ref(entry["evidence"], f"{label}.evidence")
             # Evidence must belong to this exact package and horizon: no h5 proxy default.
             if entry["evidence_horizon_months"] != horizon or type(entry["evidence_horizon_months"]) is not int:
