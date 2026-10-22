@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-10-22T06:32:44.176976+00:00",
+  "operation": "GCS generation-pinned final preparation manifest and status reads",
+  "objects": {
+    "prepare_status.json": {
+      "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/prepare_status.json",
+      "generation": "1792650680273453",
+      "sha256": "4e641d93de3629d5b25651d5a56ab18c61a33b685dcf26dd9a870bf8f634ca47",
+      "local_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/remote/supervisor-final-snapshot/prepare_status.json",
+      "status": "succeeded"
+    },
+    "prepared_manifest.json": {
+      "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/prepared_manifest.json",
+      "generation": "1792650679865065",
+      "sha256": "a5db2c8ba11ae075d58096961f4a1131dc030b6c842c88912b9f4cf5bffb2ab9",
+      "local_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/remote/supervisor-final-snapshot/prepared_manifest.json",
+      "status": "succeeded"
+    }
+  }
+}

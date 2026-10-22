@@ -1,0 +1,65 @@
+{
+  "checked_at": "2026-10-22T06:44:06.730679+00:00",
+  "operation": "load all three locally fitted packages and inspect estimator/report identities; no predict or evaluation",
+  "suite": "full-202610-ff389b11af93-02caeb861750",
+  "run_manifest_sha256": "ff026e3a7536e3255135dbf45a1d19c3f41f53455067defd5992fbf12c6c3882",
+  "python": "3.12.3",
+  "source_git_commit": "ff389b11af93f08e748ffdf86ab8cccae09fb3ff",
+  "panel_sha256": "02caeb8617507028943efee21a68066daded66857de0dff758062b2859fd583a",
+  "packages": {
+    "0m": {
+      "sample_count": 273353,
+      "threshold": 0.48,
+      "model_sha256": "69b90bf03aea31b1e24d45cb2ad0f66994cf4c014da3cb7dfa20c68d51fdf1bd",
+      "loaded_estimator_count": 18,
+      "all_rf_hyperparameters_match": true,
+      "all_estimator_features": 123,
+      "imputer_multiplier": 100.0,
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "partition_asset_sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+      "fallback_counts": {
+        "pooled_missing_partition_model": 0,
+        "pooled_single_class": 0,
+        "pooled_small_partition": 0,
+        "pooled_unmapped": 0
+      },
+      "full_data_report_has_no_validation_or_metrics": true
+    },
+    "6m": {
+      "sample_count": 264005,
+      "threshold": 0.41,
+      "model_sha256": "a0802145992eeed81182eed4c25392e6dda1f544a8f361e5d18ba091858d9744",
+      "loaded_estimator_count": 17,
+      "all_rf_hyperparameters_match": true,
+      "all_estimator_features": 123,
+      "imputer_multiplier": 100.0,
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "partition_asset_sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+      "fallback_counts": {
+        "pooled_missing_partition_model": 0,
+        "pooled_single_class": 1,
+        "pooled_small_partition": 0,
+        "pooled_unmapped": 0
+      },
+      "full_data_report_has_no_validation_or_metrics": true
+    },
+    "12m": {
+      "sample_count": 254291,
+      "threshold": 0.45,
+      "model_sha256": "62520a04c0cb8780cc12a0319056aed2fdb96a681b1bc347c4e7d8bb571b0806",
+      "loaded_estimator_count": 17,
+      "all_rf_hyperparameters_match": true,
+      "all_estimator_features": 123,
+      "imputer_multiplier": 100.0,
+      "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+      "partition_asset_sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+      "fallback_counts": {
+        "pooled_missing_partition_model": 0,
+        "pooled_single_class": 1,
+        "pooled_small_partition": 0,
+        "pooled_unmapped": 0
+      },
+      "full_data_report_has_no_validation_or_metrics": true
+    }
+  }
+}

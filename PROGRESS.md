@@ -2966,3 +2966,10 @@ Supersedes the in-progress bullets above, which are kept as written.
 - WFP January 2025 MoM boundary verified directly from original notebook and source date ranges; pre-2025 gaps retained. EVI EE task COMPLETED and output hash/roster verified.
 - Released approved local all-history fit from clean ff389b1 / exact-lock environment, expected suite full-202610-ff389b11af93-02caeb861750. Fit results and AC2-AC9 remain pending.
 - Initial confidence lineage gap repaired in 82a4a0f; raw evidence and original declarations retain distinct portable paths. Separate release snapshot/Workflow/inheritance/candidate/maintenance/promotion work continues.
+
+### 2026-10-22 06:48Z - FEWS fixed-map retrain: local fit and snapshot accepted
+
+- AC1/AC2 accepted (supervisor S11/S12): final data/crosswalk/source evidence verified; all three models fitted and independently loaded. Fit completed 06:40:24Z, exit 0; full-history keys exactly match independent alignment.
+- Weights: 0m 69b90bf03aea, 6m a0802145992e, 12m 62520a04c0cb; map/123 features/RF parameters/fixed thresholds unchanged; no evaluation.
+- Prepared snapshot succeeded, generation 1792650679865065 / a5db2c8b; four FEWS output hashes/keys and post-overlay history retention independently verified.
+- P3 release implementation continues. Required remaining checks include initial/resolved intent binding, duplicate/preparation-only dispatch, inherited identity without recomputation, maintenance/candidate/promotion gates and new-image six-slot loading. No production activation.

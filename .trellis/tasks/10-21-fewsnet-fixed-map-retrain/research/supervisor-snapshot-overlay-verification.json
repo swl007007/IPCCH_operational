@@ -1,0 +1,117 @@
+{
+  "checked_at": "2026-10-22T06:34:24.517542+00:00",
+  "operation": "four generation-pinned GCS FEWS output downloads, hash/key checks, local existing remote_overlay on refreshed source panel only; no inference",
+  "snapshot_manifest_sha256": "a5db2c8ba11ae075d58096961f4a1131dc030b6c842c88912b9f4cf5bffb2ab9",
+  "outputs": {
+    "evi": {
+      "generation": "1792650107996723",
+      "sha256": "8b80e1be2687da1574464e23d0737f72bb8bc034f83161bd73f88d0810e52309",
+      "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/features/fewsnet/evi.csv"
+    },
+    "fldas": {
+      "generation": "1792650139585801",
+      "sha256": "7f8e7e15184e1031b7db161d8e1b3d33b481240b86c9868758a99ba7ff443d0b",
+      "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/features/fewsnet/fldas.csv"
+    },
+    "gosif_mean": {
+      "generation": "1792650237360761",
+      "sha256": "a1ad53fac2498a2f97d60d134caa7bd5ec2153729ac6d4cbde6ed1f18b354dd9",
+      "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/features/fewsnet/gosif_mean.csv"
+    },
+    "viirs": {
+      "generation": "1792650678507880",
+      "sha256": "e3080b67264f248fb91267f333065478c6d7103b1c330e54be036cde2b5d7152",
+      "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/features/fewsnet/viirs.csv"
+    }
+  },
+  "families": {
+    "evi": {
+      "retained_rows_unchanged": 1143600,
+      "planned_rows": 5718,
+      "planned_old_nonmissing_cells": 5716,
+      "planned_new_nonmissing_cells": 5716,
+      "overlap_max_abs_difference": 9.094947017729282e-13,
+      "old_nonmissing_new_missing_cells": 0,
+      "months": [
+        "2026-09"
+      ],
+      "output_sha256": "8b80e1be2687da1574464e23d0737f72bb8bc034f83161bd73f88d0810e52309"
+    },
+    "fldas": {
+      "retained_rows_unchanged": 1137882,
+      "planned_rows": 5718,
+      "planned_old_nonmissing_cells": 10262,
+      "planned_new_nonmissing_cells": 10262,
+      "overlap_max_abs_difference": 5.684341886080802e-14,
+      "old_nonmissing_new_missing_cells": 0,
+      "months": [
+        "2026-08"
+      ],
+      "output_sha256": "7f8e7e15184e1031b7db161d8e1b3d33b481240b86c9868758a99ba7ff443d0b"
+    },
+    "gosif_mean": {
+      "retained_rows_unchanged": 1029240,
+      "planned_rows": 68616,
+      "planned_old_nonmissing_cells": 65928,
+      "planned_new_nonmissing_cells": 65928,
+      "overlap_max_abs_difference": 7.275957614183426e-12,
+      "old_nonmissing_new_missing_cells": 0,
+      "months": [
+        "2025-01",
+        "2025-02",
+        "2025-03",
+        "2025-04",
+        "2025-05",
+        "2025-06",
+        "2025-07",
+        "2025-08",
+        "2025-09",
+        "2025-10",
+        "2025-11",
+        "2025-12"
+      ],
+      "output_sha256": "a1ad53fac2498a2f97d60d134caa7bd5ec2153729ac6d4cbde6ed1f18b354dd9"
+    },
+    "viirs": {
+      "retained_rows_unchanged": 1137882,
+      "planned_rows": 5718,
+      "planned_old_nonmissing_cells": 11238,
+      "planned_new_nonmissing_cells": 11238,
+      "overlap_max_abs_difference": 9.094947017729282e-13,
+      "old_nonmissing_new_missing_cells": 0,
+      "months": [
+        "2026-08"
+      ],
+      "output_sha256": "e3080b67264f248fb91267f333065478c6d7103b1c330e54be036cde2b5d7152"
+    }
+  },
+  "overlay_report": {
+    "evi": {
+      "provider_vintage": "2026-09",
+      "history_rows_cleared_after_vintage_or_planned": 5716,
+      "prepared_rows_applied": 5718,
+      "prepared_rows_outside_panel_calendar": 0
+    },
+    "fldas": {
+      "provider_vintage": "2026-08",
+      "history_rows_cleared_after_vintage_or_planned": 5131,
+      "prepared_rows_applied": 5718,
+      "prepared_rows_outside_panel_calendar": 0
+    },
+    "gosif_mean": {
+      "provider_vintage": "2025-12",
+      "history_rows_cleared_after_vintage_or_planned": 65928,
+      "prepared_rows_applied": 68616,
+      "prepared_rows_outside_panel_calendar": 0
+    },
+    "viirs": {
+      "provider_vintage": "2026-08",
+      "history_rows_cleared_after_vintage_or_planned": 5619,
+      "prepared_rows_applied": 5718,
+      "prepared_rows_outside_panel_calendar": 0
+    }
+  },
+  "gosif_v2_pre2025_preserved": true,
+  "retained_history_preserved": true,
+  "current_prediction_or_ipcch_inference_executed": false
+}

@@ -1,0 +1,38 @@
+{
+  "checked_at": "2026-10-22T06:32:09.830249+00:00",
+  "suite": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/fit/full-202610-ff389b11af93-02caeb861750",
+  "method": "independent calendar join of feature-month roster to nonmissing target labels; no production feature builder or fit routine used",
+  "model_fitting_or_evaluation": false,
+  "horizons": {
+    "0": {
+      "rows": 273353,
+      "unique_keys": 273353,
+      "target_months": 54,
+      "first_target": "2010-01",
+      "last_target": "2026-06",
+      "june_2026_rows": 4039,
+      "saved_fit_keys_sha256": "ef326c6c8de7187b14befd2f5ab57d12d2c3923e9245cab0fa3817f723ce8dd6",
+      "exact_frame_equality": true
+    },
+    "6": {
+      "rows": 264005,
+      "unique_keys": 264005,
+      "target_months": 52,
+      "first_target": "2010-07",
+      "last_target": "2026-06",
+      "june_2026_rows": 4039,
+      "saved_fit_keys_sha256": "b493a0665b261d5f62e997ab897eeeb3ae057097208ab0f6a39aa217b0631e02",
+      "exact_frame_equality": true
+    },
+    "12": {
+      "rows": 254291,
+      "unique_keys": 254291,
+      "target_months": 50,
+      "first_target": "2011-01",
+      "last_target": "2026-06",
+      "june_2026_rows": 4039,
+      "saved_fit_keys_sha256": "2d239a9f71aa9a737fc8929b07497647750252b6a6aa13d2412f520d7050e6a8",
+      "exact_frame_equality": true
+    }
+  }
+}
