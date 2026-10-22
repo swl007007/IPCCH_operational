@@ -1,0 +1,66 @@
+{
+  "checked_at": "2026-10-22T06:00:07.599968+00:00",
+  "frozen_refs": [
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/FEWSNET_versioned_panel_20261022.normalized-v1.csv",
+      "sha256": "e2ddba022aa00a1b575df044fe64ef04ed723b5d6855349c58fb1bfe149c20c5",
+      "matches": true
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/FEWSNET_versioned_panel_20261022.normalized-v1.audit.json",
+      "sha256": "c5b83faf1a2fa764d51e8e7766df5082d428fc5c72e1e2bf52dad1ffb69b87ce",
+      "matches": true
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/FEWSNET_versioned_source_panel_20261022.csv",
+      "sha256": "4e6b93f27bf7df3330c95fb5b1fa697aeaa1ba011626fb747213698ed1e83d03",
+      "matches": true
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/change_ledger.csv.gz",
+      "sha256": "0fe55eaae1924fdb5f7326f954f57abddd37a751659549289e5908ada5f0c80d",
+      "matches": true
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1/build_report.json",
+      "sha256": "69ebc02a019e2030e831ac13861de4dda89cd159238dfed38c74dd29a74f5eb1",
+      "matches": true
+    },
+    {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v1-config.json",
+      "sha256": "23304882094ba76219f6ea915a3ffe3520fd68b37c0ba291d29a9d181632a076",
+      "matches": true
+    }
+  ],
+  "rows": 1149318,
+  "areas": 5718,
+  "accepted_label_additions": 5109,
+  "proven_synthetic_targets_cleared": 2632,
+  "remaining_missing_proven_fill_keys": 1912,
+  "all_other_base_labels_preserved": true,
+  "source_and_normalized_labels_equal": true,
+  "independent_horizon_alignment": {
+    "0m": {
+      "eligible_rows": 273353,
+      "target_months": 54,
+      "missing_target_row": 0,
+      "null_target_value": 875965,
+      "june_2026_rows": 4039
+    },
+    "6m": {
+      "eligible_rows": 264005,
+      "target_months": 52,
+      "missing_target_row": 34308,
+      "null_target_value": 851005,
+      "june_2026_rows": 4039
+    },
+    "12m": {
+      "eligible_rows": 254291,
+      "target_months": 50,
+      "missing_target_row": 68616,
+      "null_target_value": 826411,
+      "june_2026_rows": 4039
+    }
+  },
+  "model_fitting_or_evaluation": false
+}

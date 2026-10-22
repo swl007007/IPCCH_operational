@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-10-22T05:36:27.431667+00:00",
+  "command": [
+    "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/fewsnet_partitioned_rf/test_full_history_fit.py"
+  ],
+  "cwd": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline",
+  "exit_code": 0,
+  "sources_unchanged": true,
+  "source_hashes": {
+    "cloud_pipeline/tests/fewsnet_partitioned_rf/test_full_history_fit.py": "531029dfbd58d649034a394c7b9826c59b82ec4060f9882b8b2b36fccfb3217b",
+    "cloud_pipeline/fewsnet_partitioned_rf_pipeline/config.py": "571bd0c9b93892af277e416600a1b34fd8e8fe609a4dc56c24bc020c64d9110a",
+    "cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/training.py": "820269d33becc4b88b91a57abea35d79ae28c834956b83cd2e1d0d973ba6d75c",
+    "cloud_pipeline/fewsnet_partitioned_rf_pipeline/core/validation.py": "68639996af8a9d88b56ec8dd8e3a725dcaa6fd17327b557e55b6e32833471dc7",
+    "cloud_pipeline/fewsnet_partitioned_rf_pipeline/local/package.py": "ad49e914b3d87bfbf303ca2ed2a67afef591aa224bb63a12de2ae7b23ac7f263",
+    "cloud_pipeline/fewsnet_partitioned_rf_pipeline/local/runner.py": "7209f90d2214419782bac88087eccf06deb1c8d67a016b8c9fb404d14341333a",
+    "cloud_pipeline/fewsnet_partitioned_rf_pipeline/schemas/local-model-package-full-data.schema.json": "10d885fa30883e2a0460ab6e776304a9a102ebd5953a455b7e1b68bd997c628c"
+  },
+  "log_sha256": "9c501a1499d849538351e44261576fcd8e6f934622fc8004196e50e5c8e16b36",
+  "scope": "Ten focused software checks; RandomForestClassifier.fit and SMOTE.fit_resample are forbidden by autouse guard. No production fit or model evaluation."
+}

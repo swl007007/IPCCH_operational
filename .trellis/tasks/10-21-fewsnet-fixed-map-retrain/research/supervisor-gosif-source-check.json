@@ -1,0 +1,29 @@
+{
+  "checked_at": "2026-10-22T05:30:04.110642+00:00",
+  "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/gosif_v3/fewsnet_gosif_v3_mean_2025.csv",
+  "sha256": "a1ad53fac2498a2f97d60d134caa7bd5ec2153729ac6d4cbde6ed1f18b354dd9",
+  "columns": [
+    "admin_code",
+    "month",
+    "GPP_Mean__mean"
+  ],
+  "rows": 68616,
+  "unique_keys": 68616,
+  "rows_per_month": {
+    "2025-01": 5718,
+    "2025-02": 5718,
+    "2025-03": 5718,
+    "2025-04": 5718,
+    "2025-05": 5718,
+    "2025-06": 5718,
+    "2025-07": 5718,
+    "2025-08": 5718,
+    "2025-09": 5718,
+    "2025-10": 5718,
+    "2025-11": 5718,
+    "2025-12": 5718
+  },
+  "all_month_rosters_match": true,
+  "all_12_provider_local_tif_hashes_match": true,
+  "scope": "Output key/hash and receipt consistency only; actual panel merge/overlay not yet verified."
+}

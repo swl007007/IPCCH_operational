@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-10-22T06:04:51.835122+00:00",
+  "operation": "read pinned task record from GCS, then ee.data.getTaskStatus for that single task",
+  "project": "feisty-flames-511718-d4",
+  "record_uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-evi202609-20261022/provider_tasks/evi_2026-09.json",
+  "record_generation": "1792648757787214",
+  "record": {
+    "description": "fewsnet_retrain_evi202609_20261022_evi_2026_09",
+    "family": "evi",
+    "month": "2026-09",
+    "provider_id": "MODIS/061/MOD13A3/2026_09_01",
+    "task_id": "TEE3NHA7YUJMWU7LHH2KTKOS"
+  },
+  "status": {
+    "state": "RUNNING",
+    "description": "fewsnet_retrain_evi202609_20261022_evi_2026_09",
+    "priority": 100,
+    "creation_timestamp_ms": 1792648757635,
+    "update_timestamp_ms": 1792649084470,
+    "start_timestamp_ms": 1792648764088,
+    "task_type": "EXPORT_IMAGE",
+    "attempt": 1,
+    "batch_eecu_usage_seconds": 93.482,
+    "id": "TEE3NHA7YUJMWU7LHH2KTKOS",
+    "name": "projects/feisty-flames-511718-d4/operations/TEE3NHA7YUJMWU7LHH2KTKOS"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-22T05:29:39.958308+00:00",
+  "source_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/sources/acled/raw/acled_api_2025-01-01_2026-10-21_fetched_2026-10-22.csv",
+  "sha256": "793070a27fb3f854879fa9bbae8b90bd676295fa9ea38989de262f6beb313f3d",
+  "receipt_hash_match": true,
+  "row_count": 48706,
+  "unique_event_ids": 48706,
+  "api_total": 48706,
+  "event_date_min": "2025-01-01",
+  "event_date_max": "2025-10-22",
+  "provider_update_min_utc": "2025-01-14T08:55:10+00:00",
+  "provider_update_max_utc": "2026-10-21T18:27:38+00:00",
+  "records_updated_after_20261021_utc": 0,
+  "latest_eligible_complete_event_month": "2025-09",
+  "observation_months_after_202509_must_be_excluded": true,
+  "scope": "Raw source integrity and provider timestamp evidence only; feature mapping/aggregation/history reconciliation not verified."
+}

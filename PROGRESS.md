@@ -2938,3 +2938,24 @@ Supersedes the in-progress bullets above, which are kept as written.
 - Strict geometric crosswalk (measured tolerance 1e-6, record gate, one-to-one, valid phase): 2026-06 candidates 4,039 labels in 21 countries (ET 0); 100% agreement with every overlapping source-backed production label.
 - Proven: current training panel imputes 1,259 (2025-10) and 1,373 (2026-02) missing labels as phase 1 (notebook cell 38 + keyed equality).
 - Evidence: `.trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/p1/p1a-checkpoint.md`. Not fitted; awaiting supervisor label acceptance. WFP/ACLED/remote/GOSIF assembly pending.
+
+### 2026-10-22 05:21Z - FEWS fixed-map retrain: supervisor S6
+
+- P1a label evidence accepted in ad2db5b; 5,109 observed additions and removal of 2,632 proven synthetic targets in the new dataset, with 720 verified replacements. Raw originals retained.
+- Exact-lock fitting runtime independently verified: Python 3.12.3, all 57 lock pins match, core imports pass; research/supervisor-fit-runtime-verification.json. No fit yet.
+- Same executor continues P1b/P2; complete feature/input freeze and focused software checks precede fitting. AC1-AC9 remain pending overall.
+- Necessary task-scoped cloud operations are preapproved until 2026-10-22T13:00:00Z; GCS reads remain conversation-scoped. This supersedes the earlier individual-approval ledger line.
+
+### 2026-10-22 06:00Z - FEWS fixed-map retrain: P1b/P2 checkpoint (executor)
+
+- Frozen fit input: versioned normalized panel e2ddba02 (1,149,318 rows, labels to 2026-06; 5,109 HDX observations attached, 2,632 proven fills cleared), keyed change ledger, research/p1b/input-freeze.json.
+- Sources: GOSIF v3 2025 extracted locally (5,494 areas/month); WFP FEWS MoM from HDX for MoM-era gaps and 2026-05..09; ACLED API (as-of 2026-10-21) gap rows 2025-01..06, truncated 2025-07 replaced, 2025-08/09 appended; EVI/FLDAS/VIIRS 2026-05..08 from pinned snapshot; EVI 2026-09 pending.
+- Runtime: exact-lock fit env verified; clean source worktree ff389b1; runner preflight passed (suite full-202610-ff389b11af93-e2ddba022aa0). Not fitted.
+- Escalation: FEWS nightlight history is VIIRS sum but the delivery mapping uses mean (pre-existing). Evidence: research/p1b/p1b-checkpoint.md.
+
+### 2026-10-22 06:12Z - FEWS fixed-map retrain: supervisor source/data checkpoint
+
+- S7-S9 evidence: all 195 accepted source-bundle members verified; 10 guarded full-history software checks and 2 positional-comparison checks passed. Initial synthetic-unit-fit deviation retained and corrected.
+- Frozen v1 panel independently verified: 1,149,318 rows / 5,718 areas; all accepted label changes exact; eligibility 273,353 / 264,005 / 254,291. Source decisions in research/p1b-source-decisions.md.
+- EVI September task TEE3NHA7YUJMWU7LHH2KTKOS observed RUNNING; provider asset update time is before the source cutoff. Final EVI integration/freeze still gates production-data fitting.
+- Executor commits ff389b1 (full-history component) and 38c1ccb (remote mapping/version boundary); same Claude session continues P3. No shared runtime, production default/pointer or fallback switch.

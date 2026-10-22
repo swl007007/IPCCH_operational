@@ -1,0 +1,312 @@
+{
+  "queried_at": "2026-10-22T06:05:44.914509+00:00",
+  "operation": "ee.data.getAsset read-only metadata",
+  "project": "feisty-flames-511718-d4",
+  "asset": "MODIS/061/MOD13A3/2026_09_01",
+  "metadata": {
+    "type": "IMAGE",
+    "name": "projects/earthengine-public/assets/MODIS/061/MOD13A3/2026_09_01",
+    "id": "MODIS/061/MOD13A3/2026_09_01",
+    "properties": {
+      "google:max_source_file_timestamp": 1792222569000,
+      "num_tiles": 294
+    },
+    "updateTime": "2026-10-21T08:07:17.666923Z",
+    "startTime": "2026-09-01T00:00:00Z",
+    "endTime": "2026-10-01T00:00:00Z",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            "-Infinity",
+            "-Infinity"
+          ],
+          [
+            "Infinity",
+            "-Infinity"
+          ],
+          [
+            "Infinity",
+            "Infinity"
+          ],
+          [
+            "-Infinity",
+            "Infinity"
+          ],
+          [
+            "-Infinity",
+            "-Infinity"
+          ]
+        ]
+      ]
+    },
+    "bands": [
+      {
+        "id": "NDVI",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -32768,
+            "max": 32767
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MEAN"
+      },
+      {
+        "id": "EVI",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -32768,
+            "max": 32767
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MEAN"
+      },
+      {
+        "id": "DetailedQA",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "max": 65535
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MODE"
+      },
+      {
+        "id": "sur_refl_b01",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -32768,
+            "max": 32767
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MEAN"
+      },
+      {
+        "id": "sur_refl_b02",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -32768,
+            "max": 32767
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MEAN"
+      },
+      {
+        "id": "sur_refl_b03",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -32768,
+            "max": 32767
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MEAN"
+      },
+      {
+        "id": "sur_refl_b07",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -32768,
+            "max": 32767
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MEAN"
+      },
+      {
+        "id": "ViewZenith",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -32768,
+            "max": 32767
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MEAN"
+      },
+      {
+        "id": "SolarZenith",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -32768,
+            "max": 32767
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MEAN"
+      },
+      {
+        "id": "RelativeAzimuth",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -32768,
+            "max": 32767
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MEAN"
+      },
+      {
+        "id": "SummaryQA",
+        "dataType": {
+          "precision": "INT",
+          "range": {
+            "min": -128,
+            "max": 127
+          }
+        },
+        "grid": {
+          "crsCode": "SR-ORG:6974",
+          "dimensions": {
+            "width": 43200,
+            "height": 18000
+          },
+          "affineTransform": {
+            "scaleX": 926.625433055833,
+            "translateX": -20015109.354,
+            "scaleY": -926.6254330558334,
+            "translateY": 10007554.677003
+          }
+        },
+        "pyramidingPolicy": "MODE"
+      }
+    ],
+    "sizeBytes": "2706926884"
+  },
+  "note": "Observation time is not release/ingestion availability; retain explicit metadata evidence."
+}
