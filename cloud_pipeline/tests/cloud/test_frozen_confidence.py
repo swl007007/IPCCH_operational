@@ -11,25 +11,34 @@ from cloud.orchestrator import delivery_outputs as do
 from fewsnet_partitioned_rf_pipeline.local.outputs import _read_local_prediction_csv
 
 FALLBACK = Path(__file__).resolve().parents[2] / "fallback/october_2026"
+EVIDENCE = Path(__file__).resolve().parents[2] / "bootstrap/evidence"
+RAW = {0: "fewsnet_0m_stage3_fs1_area.csv", 6: "fewsnet_6m_stage3_fs2_area.csv", 12: "fewsnet_12m_stage3_fs3_area.csv"}
 SOURCE_PACKAGE = "local-202604-57cb3b981198-510375f58cd8"
-needs_fallback = pytest.mark.skipif(not (FALLBACK / "scopes/0m/fewsnet/polygon_confidence.csv").is_file(),
-                                    reason="accepted October fallback outputs not present")
+needs_fallback = pytest.mark.skipif(not (FALLBACK / "scopes/0m/fewsnet/polygon_confidence.csv").is_file()
+                                    or not (EVIDENCE / RAW[0]).is_file(),
+                                    reason="accepted October fallback outputs/evidence not present")
 
 
 def _ref(data: bytes, name: str) -> dict:
     return {"uri": f"gs://source/{name}", "generation": "1", "sha256": hashlib.sha256(data).hexdigest()}
 
 
-def _scope(horizon: int, *, polygon_bytes=None, country_bytes=None, period=None):
+def _scope(horizon: int, *, polygon_bytes=None, country_bytes=None, period=None, raw_bytes=None):
     scope = FALLBACK / f"scopes/{horizon}m/fewsnet"
     polygon = polygon_bytes if polygon_bytes is not None else (scope / "polygon_confidence.csv").read_bytes()
     country = country_bytes if country_bytes is not None else (scope / "country_confidence.csv").read_bytes()
     availability = (FALLBACK / "reports/diagnostic_availability.csv").read_bytes()
+    raw = raw_bytes if raw_bytes is not None else (EVIDENCE / RAW[horizon]).read_bytes()
+    source = (FALLBACK / "reports/fewsnet_diagnostic_declarations.json").read_bytes()
     basis, approved_period = do.APPROVED_PROXY_EVIDENCE[("fewsnet", horizon)]
-    blobs = {"polygon_confidence": polygon, "country_confidence": country,
-             "polygon_confidence.availability": availability, "country_confidence.availability": availability}
-    declared = {family: {"status": do.FROZEN_OUTPUT, "ref": _ref(blobs[family], f"{family}.csv"),
+    blobs = {}
+    for family, table in (("polygon_confidence", polygon), ("country_confidence", country)):
+        blobs.update({f"{family}.output": table, f"{family}.availability": availability,
+                      f"{family}.source_evidence": raw, f"{family}.source_declarations": source})
+    declared = {family: {"status": do.FROZEN_OUTPUT, "ref": _ref(blobs[f"{family}.output"], f"{family}.csv"),
                          "availability_ref": _ref(availability, "diagnostic_availability.csv"),
+                         "source_evidence_ref": _ref(raw, RAW[horizon]),
+                         "source_declarations_ref": _ref(source, "fewsnet_diagnostic_declarations.json"),
                          "source_delivery_id": "oct-confidence-20261009b",
                          "evidence_model_package_id": f"{SOURCE_PACKAGE}/{horizon}m",
                          "evidence_horizon_months": horizon, "evidence_basis": basis,
@@ -64,7 +73,7 @@ def test_frozen_tables_are_copied_and_current_outcomes_recomputed(tmp_path, hori
 
     written = do.write_table(diag["polygon_table"], tmp_path / "polygon_confidence.csv", system="fewsnet",
                              name="polygon_confidence")
-    assert written.read_bytes() == blobs["polygon_confidence"]  # byte-identical copy
+    assert written.read_bytes() == blobs["polygon_confidence.output"]  # byte-identical copy
 
     source = pd.read_csv(FALLBACK / f"scopes/{horizon}m/fewsnet/country_confidence.csv", dtype=str,
                          keep_default_na=False).set_index("ISO3")
@@ -81,7 +90,18 @@ def test_frozen_tables_are_copied_and_current_outcomes_recomputed(tmp_path, hori
                             & (availability["horizon_months"] == str(horizon))]
     got = diag["availability"].astype(str)
     assert sorted(map(tuple, got.itertuples(index=False))) == sorted(map(tuple, expected.itertuples(index=False)))
-    assert set(diag["frozen_evidence"]) == set(blobs)
+    assert set(diag["frozen_evidence"]) == set(blobs)  # raw evidence + source declarations retained too
+    identity = diag["evidence_identity"]["polygon_confidence"]
+    assert identity["attachment"] == {"mode": "frozen_output", "recomputed": False,
+                                      "scored_model_package_id": f"full-202610-aaaaaaaaaaaa-bbbbbbbbbbbb/{horizon}m"}
+
+    from cloud.orchestrator.deliver import freeze_diagnostic_evidence
+    record = freeze_diagnostic_evidence(tmp_path / "bundle", "fewsnet", horizon,
+                                        do.normalise_declarations("fewsnet", horizon, declared), diag)
+    paths = record["polygon_confidence"]["frozen_paths"]
+    assert set(paths) == {"output", "availability", "source_evidence", "source_declarations"}
+    assert all(path.startswith("inputs/evidence/frozen/") for path in paths.values())
+    assert (tmp_path / "bundle" / paths["source_evidence"]).read_bytes() == (EVIDENCE / RAW[horizon]).read_bytes()
 
 
 @needs_fallback
@@ -90,13 +110,17 @@ def test_frozen_outputs_reject_tampering_and_wrong_lineage():
     blobs, declared = _scope(0)
     with pytest.raises(do.EvidenceIntegrityError, match="approved historical basis"):
         do.normalise_declarations("fewsnet", 0, _scope(0, period="2023-10..2026-02")[1])
-    tampered = dict(blobs, polygon_confidence=blobs["polygon_confidence"] + b"\n")
+    tampered = dict(blobs, **{"polygon_confidence.output": blobs["polygon_confidence.output"] + b"\n"})
     with pytest.raises(do.EvidenceIntegrityError, match="do not match"):
         _run(0, predictions, census, tampered, declared)
-    short = b"\n".join(blobs["polygon_confidence"].split(b"\n")[:-2]) + b"\n"
+    short = b"\n".join(blobs["polygon_confidence.output"].split(b"\n")[:-2]) + b"\n"
     blobs_short, declared_short = _scope(0, polygon_bytes=short)
     with pytest.raises(do.EvidenceIntegrityError, match="keys must equal"):
         _run(0, predictions, census, blobs_short, declared_short)
+    wrong_raw = (EVIDENCE / RAW[6]).read_bytes()  # another horizon's raw evidence: lineage must fail
+    blobs_raw, declared_raw = _scope(0, raw_bytes=wrong_raw)
+    with pytest.raises(do.EvidenceIntegrityError, match="does not bind these raw evidence bytes"):
+        _run(0, predictions, census, blobs_raw, declared_raw)
     with pytest.raises(do.EvidenceIntegrityError, match="FEWS-only"):
         do.normalise_declarations("ipcch", 0, {"country_confidence": declared["country_confidence"]})
 
@@ -111,6 +135,8 @@ def _manifest_entries(frozen):
                     entries.append({"system": system, "horizon_months": horizon, "family": family,
                                     "status": "frozen_output", "evidence": _ref(b"x", family),
                                     "source_availability": _ref(b"y", "availability"),
+                                    "source_evidence": _ref(b"z", "raw"),
+                                    "source_declarations": _ref(b"w", "declarations"),
                                     "source_delivery_id": "oct-confidence-20261009b",
                                     "evidence_model_package_id": f"{SOURCE_PACKAGE}/{horizon}m",
                                     "evidence_horizon_months": horizon, "evidence_basis": basis,

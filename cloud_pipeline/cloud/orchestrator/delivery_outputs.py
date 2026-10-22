@@ -217,9 +217,31 @@ FROZEN_FEWSNET_COUNTRY_COLUMNS = (
     "country_error_sample_count", "country_error_mistake_count", "country_error_eligible_population_sum",
     "country_error_known_population_sum", "country_error_known_population_coverage",
     "country_error_population_field", "country_error_population_vintage", "country_error_population_source")
-FROZEN_DECLARATION_FIELDS = ("status", "ref", "availability_ref", "source_delivery_id",
-                             "evidence_model_package_id", "evidence_horizon_months", "evidence_basis",
-                             "evidence_period")
+FROZEN_DECLARATION_FIELDS = ("status", "ref", "availability_ref", "source_evidence_ref", "source_declarations_ref",
+                             "source_delivery_id", "evidence_model_package_id", "evidence_horizon_months",
+                             "evidence_basis", "evidence_period")
+# Frozen parts, each pinned by its own declaration ref and retained under its own portable path.
+FROZEN_PARTS = {"output": "ref", "availability": "availability_ref", "source_evidence": "source_evidence_ref",
+                "source_declarations": "source_declarations_ref"}
+
+
+def frozen_source_lineage(declarations_bytes: bytes, evidence_bytes_: bytes, *, horizon: int, family: str,
+                          declared: dict, label: str) -> None:
+    """The source delivery's own declaration must name these raw evidence bytes and this identity."""
+    import hashlib
+
+    try:
+        source = json.loads(declarations_bytes)[f"{horizon}m"][family]
+    except (ValueError, KeyError, TypeError) as exc:
+        raise EvidenceIntegrityError(f"{label}: source declarations lack {horizon}m/{family}") from exc
+    identity = source.get("evidence_identity") or {}
+    if (source.get("status") != "available"
+            or (source.get("ref") or {}).get("sha256") != hashlib.sha256(evidence_bytes_).hexdigest()):
+        raise EvidenceIntegrityError(f"{label}: source declaration does not bind these raw evidence bytes")
+    if (identity.get("model_package_id"), identity.get("basis"), identity.get("period"),
+            identity.get("horizon_months")) != (declared["evidence_model_package_id"], declared["evidence_basis"],
+                                                declared["evidence_period"], horizon):
+        raise EvidenceIntegrityError(f"{label}: source declaration identity differs from the frozen declaration")
 
 
 def _frozen_text(data: bytes, label: str) -> pd.DataFrame:
@@ -572,7 +594,7 @@ def normalise_declarations(system: str, horizon: int, declared_families) -> dict
             if system != "fewsnet" or set(entry) != set(FROZEN_DECLARATION_FIELDS):
                 raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: frozen outputs are FEWS-only and need "
                                              f"exactly {FROZEN_DECLARATION_FIELDS}")
-            for name in ("ref", "availability_ref"):
+            for name in FROZEN_PARTS.values():
                 if not all((entry.get(name) or {}).get(key) for key in ("uri", "generation", "sha256")):
                     raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: frozen {name} must be hash-bound")
             if (entry["evidence_horizon_months"] != horizon
@@ -624,23 +646,35 @@ def scope_diagnostics(system: str, horizon: int, predictions: pd.DataFrame, *, d
     errors, evidence, maximum = None, None, None
     frozen_rows = {}
 
-    def frozen_bytes(family, key, name):
-        data = evidence_bytes(family if key == "ref" else f"{family}.availability")
-        if hashlib.sha256(data).hexdigest() != declarations[family][key]["sha256"]:
-            raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: frozen {name} bytes do not match the ref")
-        frozen[family if key == "ref" else f"{family}.availability"] = data
-        identities[family] = {"model_package_id": declarations[family]["evidence_model_package_id"],
-                              "horizon_months": horizon, "basis": declarations[family]["evidence_basis"],
-                              "period": declarations[family]["evidence_period"],
-                              "source_delivery_id": declarations[family]["source_delivery_id"]}
+    def frozen_bytes(family, part):
+        """Pinned frozen part: hash-checked, lineage-checked once, retained for portable replay."""
+        declared = declarations[family]
+        data = evidence_bytes(f"{family}.{part}")
+        if hashlib.sha256(data).hexdigest() != declared[FROZEN_PARTS[part]]["sha256"]:
+            raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: frozen {part} bytes do not match the ref")
+        frozen[f"{family}.{part}"] = data
+        if f"{family}.source_declarations" not in frozen:
+            raw = evidence_bytes(f"{family}.source_evidence")
+            source = evidence_bytes(f"{family}.source_declarations")
+            for name, blob in (("source_evidence", raw), ("source_declarations", source)):
+                if hashlib.sha256(blob).hexdigest() != declared[FROZEN_PARTS[name]]["sha256"]:
+                    raise EvidenceIntegrityError(f"{system}/{horizon}m/{family}: frozen {name} bytes do not match the ref")
+            frozen_source_lineage(source, raw, horizon=horizon, family=family, declared=declared,
+                                  label=f"{system}/{horizon}m/{family}")
+            frozen[f"{family}.source_evidence"], frozen[f"{family}.source_declarations"] = raw, source
+        identities[family] = {"model_package_id": declared["evidence_model_package_id"], "horizon_months": horizon,
+                              "basis": declared["evidence_basis"], "period": declared["evidence_period"],
+                              "source_delivery_id": declared["source_delivery_id"],
+                              "attachment": {"mode": FROZEN_OUTPUT, "scored_model_package_id": package_id,
+                                             "recomputed": False}}
         return data
 
     if declarations[polygon_family]["status"] == FROZEN_OUTPUT:
         label = f"{system}/{horizon}m/{polygon_family}"
-        polygon_table = frozen_polygon_table(frozen_bytes(polygon_family, "ref", "output"), polygons=polygons,
+        polygon_table = frozen_polygon_table(frozen_bytes(polygon_family, "output"), polygons=polygons,
                                              declared=declarations[polygon_family], label=label)
         frozen_rows[polygon_family] = frozen_availability(
-            frozen_bytes(polygon_family, "availability_ref", "availability"), horizon=horizon,
+            frozen_bytes(polygon_family, "availability"), horizon=horizon,
             family=polygon_family, entities=polygons, label=label)
     elif declarations[polygon_family]["status"] == "available":
         evidence = load(polygon_family, area_evidence)
@@ -651,10 +685,10 @@ def scope_diagnostics(system: str, horizon: int, predictions: pd.DataFrame, *, d
     if declarations["country_confidence"]["status"] == FROZEN_OUTPUT:
         label = f"{system}/{horizon}m/country_confidence"
         countries = sorted(census["ISO3"].dropna().unique())
-        errors = frozen_country_fields(frozen_bytes("country_confidence", "ref", "output"), countries=countries,
+        errors = frozen_country_fields(frozen_bytes("country_confidence", "output"), countries=countries,
                                        label=label)
         frozen_rows["country_confidence"] = frozen_availability(
-            frozen_bytes("country_confidence", "availability_ref", "availability"), horizon=horizon,
+            frozen_bytes("country_confidence", "availability"), horizon=horizon,
             family="country_confidence", entities=countries, label=label)
     elif declarations["country_confidence"]["status"] == "available":
         country_evidence = load("country_confidence", area_evidence)

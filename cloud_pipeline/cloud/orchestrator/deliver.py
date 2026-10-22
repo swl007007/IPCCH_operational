@@ -71,12 +71,13 @@ def request_diagnostics(request: Mapping, system: str, reader) -> dict[int, dict
                     "evidence_horizon_months": entry["evidence_horizon_months"],
                     "evidence_bytes": read_pinned(reader, entry["evidence"])}
         elif entry["status"] == do.FROZEN_OUTPUT:
-            item = {"status": do.FROZEN_OUTPUT, "ref": dict(entry["evidence"]),
-                    "availability_ref": dict(entry["source_availability"]),
+            refs = {"output": entry["evidence"], "availability": entry["source_availability"],
+                    "source_evidence": entry["source_evidence"], "source_declarations": entry["source_declarations"]}
+            item = {"status": do.FROZEN_OUTPUT,
+                    **{do.FROZEN_PARTS[part]: dict(ref) for part, ref in refs.items()},
                     **{key: entry[key] for key in ("source_delivery_id", "evidence_model_package_id",
                                                    "evidence_horizon_months", "evidence_basis", "evidence_period")},
-                    "evidence_bytes": read_pinned(reader, entry["evidence"]),
-                    "availability_bytes": read_pinned(reader, entry["source_availability"])}
+                    "part_bytes": {part: read_pinned(reader, ref) for part, ref in refs.items()}}
         else:
             item = {"status": "unavailable", "reason": entry["reason"]}
         out.setdefault(entry["horizon_months"], {})[entry["family"]] = item
@@ -345,17 +346,25 @@ def freeze_diagnostic_evidence(out: Path, system: str, horizon: int, declaration
     """Write the exact evidence bytes used (create-only) for offline replay through the same
     path; returns the declarations record saved in ``reports/{system}_diagnostic_declarations.json``."""
     frozen_paths = {}
-    for family, data in diag["frozen_evidence"].items():
-        path = Path(out) / f"inputs/evidence/{system}_{horizon}m_{family}.csv"
+    for key, data in diag["frozen_evidence"].items():
+        family, _, part = key.partition(".")
+        # Frozen-output parts get their own names; legacy raw evidence keeps its original path.
+        name = (f"inputs/evidence/{system}_{horizon}m_{family}.csv" if not part else
+                f"inputs/evidence/frozen/{system}_{horizon}m_{family}.{part}."
+                + ("json" if part == "source_declarations" else "csv"))
+        path = Path(out) / name
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("xb") as handle:
             handle.write(data)
-        frozen_paths[family] = path.relative_to(out).as_posix()
-    return {family: {**entry, "frozen_path": frozen_paths.get(family),
-                     **({"frozen_availability_path": frozen_paths[f"{family}.availability"]}
-                        if f"{family}.availability" in frozen_paths else {}),
-                     "evidence_identity": diag["evidence_identity"].get(family)}
-            for family, entry in declarations.items()}
+        frozen_paths[key] = path.relative_to(out).as_posix()
+    record = {}
+    for family, entry in declarations.items():
+        parts = {key.partition(".")[2]: path for key, path in frozen_paths.items()
+                 if key.partition(".")[0] == family and key.partition(".")[2]}
+        record[family] = {**entry, "frozen_path": frozen_paths.get(family),
+                          **({"frozen_paths": parts} if parts else {}),
+                          "evidence_identity": diag["evidence_identity"].get(family)}
+    return record
 
 
 def _write_scopes(out, system, origin, results, audits, availability, report, diagnostics):
@@ -384,12 +393,12 @@ def _write_scopes(out, system, origin, results, audits, availability, report, di
         package_id = result["package_id"] + ("" if system == "fewsnet" else f"/scope_{horizon}m")
         declared = diagnostics.get(horizon) or {}
         declarations = do.normalise_declarations(system, horizon, {
-            family: {k: v for k, v in entry.items() if k not in ("evidence_bytes", "availability_bytes")}
+            family: {k: v for k, v in entry.items() if k not in ("evidence_bytes", "part_bytes")}
             for family, entry in declared.items()})
 
         def evidence_bytes(family, declared=declared):
             base, _, part = family.partition(".")
-            return declared[base]["availability_bytes" if part == "availability" else "evidence_bytes"]
+            return declared[base]["part_bytes"][part] if part else declared[base]["evidence_bytes"]
 
         diag = do.scope_diagnostics(system, horizon, predictions, declarations=declarations,
                                     evidence_bytes=evidence_bytes,

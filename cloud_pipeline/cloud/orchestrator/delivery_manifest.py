@@ -167,7 +167,8 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
         if entry["status"] in ("available", "frozen_output"):
             refs.append((f"{label}.evidence", entry["evidence"]))
         if entry["status"] == "frozen_output":
-            refs.append((f"{label}.source_availability", entry["source_availability"]))
+            for part in ("source_availability", "source_evidence", "source_declarations"):
+                refs.append((f"{label}.{part}", entry[part]))
     refs.append(("runtime.environment_manifest", request["runtime"]["environment_manifest"]))
     return refs
 
@@ -278,8 +279,8 @@ def _diagnostics(value: Any, models: Mapping[tuple[str, int], str]) -> None:
             # Accepted historical confidence outputs attached unchanged (FEWS 2026-10 retrain); the
             # evidence/source package stays distinct from the scored package.
             fields = ("system", "horizon_months", "family", "status", "evidence", "source_availability",
-                      "source_delivery_id", "evidence_model_package_id", "evidence_horizon_months",
-                      "evidence_basis", "evidence_period")
+                      "source_evidence", "source_declarations", "source_delivery_id", "evidence_model_package_id",
+                      "evidence_horizon_months", "evidence_basis", "evidence_period")
         else:
             raise DeliveryManifestError(f"{label}.status must be available, unavailable or frozen_output")
         _exact_keys(entry, fields, label)
@@ -298,7 +299,8 @@ def _diagnostics(value: Any, models: Mapping[tuple[str, int], str]) -> None:
             if system != "fewsnet":
                 raise DeliveryManifestError(f"{label}: frozen outputs are FEWS-only")
             _ref(entry["evidence"], f"{label}.evidence")
-            _ref(entry["source_availability"], f"{label}.source_availability")
+            for part in ("source_availability", "source_evidence", "source_declarations"):
+                _ref(entry[part], f"{label}.{part}")
             _text(entry["source_delivery_id"], f"{label}.source_delivery_id")
             _text(entry["evidence_model_package_id"], f"{label}.evidence_model_package_id")
             if entry["evidence_horizon_months"] != horizon or type(entry["evidence_horizon_months"]) is not int:
