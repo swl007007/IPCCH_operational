@@ -1,0 +1,22 @@
+{
+  "archive": {
+    "generation": "1792656963111614",
+    "sha256": "f387091499fbe7ac31a363345cba224de816829e004bbb37f7e10d2187e936d5",
+    "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/webapp_model_bundle.tar.gz"
+  },
+  "kind": "candidate",
+  "manifest": {
+    "generation": "1792656899775363",
+    "sha256": "54dd0f1417f64f5848dea38abe1b77ecd8cfe859f772347a26154f043df65fc0",
+    "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/manifest.json"
+  },
+  "members": 219,
+  "output": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a",
+  "record": {
+    "generation": "1792656963565594",
+    "sha256": "fcc530b12fe809f36fdfb5188cab7e21f408408893950699c9af5b5ca95105e9",
+    "uri": "gs://food-crisis-test-ipcch-data/candidates/fews-candidate-20261022a/candidate.json"
+  },
+  "record_sha256": "fcc530b12fe809f36fdfb5188cab7e21f408408893950699c9af5b5ca95105e9",
+  "run_id": "fews-candidate-20261022a"
+}

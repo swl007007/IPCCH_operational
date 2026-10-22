@@ -1,0 +1,182 @@
+{
+  "summary": {
+    "0": {
+      "fewsnet": 5718,
+      "ipcch": "inherited"
+    },
+    "6": {
+      "fewsnet": 5718,
+      "ipcch": "inherited"
+    },
+    "12": {
+      "fewsnet": 5718,
+      "ipcch": "inherited"
+    }
+  },
+  "all_equal": true,
+  "tables": {
+    "_inventory": {
+      "equal": true,
+      "missing": [],
+      "unexpected": [],
+      "delivered_missing": [],
+      "delivered_unexpected": []
+    },
+    "scopes/0m/fewsnet/country_confidence.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/0m/fewsnet/country_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/0m/fewsnet/polygon_confidence.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/0m/fewsnet/polygon_model_mapping.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/0m/fewsnet/polygon_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/0m/ipcch/country_confidence.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/0m/ipcch/country_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/0m/ipcch/polygon_model_mapping.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/0m/ipcch/polygon_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/0m/ipcch/polygon_training_errors.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/fewsnet/country_confidence.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/fewsnet/country_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/fewsnet/polygon_confidence.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/fewsnet/polygon_model_mapping.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/fewsnet/polygon_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/ipcch/country_confidence.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/ipcch/country_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/ipcch/polygon_model_mapping.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/ipcch/polygon_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/12m/ipcch/polygon_training_errors.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/fewsnet/country_confidence.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/fewsnet/country_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/fewsnet/polygon_confidence.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/fewsnet/polygon_model_mapping.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/fewsnet/polygon_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/ipcch/country_confidence.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/ipcch/country_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/ipcch/polygon_model_mapping.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/ipcch/polygon_predictions.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "scopes/6m/ipcch/polygon_training_errors.csv": {
+      "equal": true,
+      "max_abs_diff": 0.0,
+      "exact_mismatch_columns": []
+    },
+    "reports/diagnostic_availability.csv": {
+      "equal": true,
+      "delivered_rows": 36219,
+      "rescored_rows": 36219
+    }
+  }
+}
+REPLAY_RUNTIME ["/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a-relocated/runtime/cloud/orchestrator/delivery_bundle.py", "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a-relocated/runtime/fewsnet_partitioned_rf_pipeline/__init__.py", ["/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a-relocated/runtime/model_pipeline"]]

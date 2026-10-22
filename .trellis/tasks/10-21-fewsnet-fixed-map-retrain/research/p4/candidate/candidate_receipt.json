@@ -1,0 +1,80 @@
+{
+  "archive": {
+    "generation": "1792656963111614",
+    "sha256": "f387091499fbe7ac31a363345cba224de816829e004bbb37f7e10d2187e936d5",
+    "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/webapp_model_bundle.tar.gz"
+  },
+  "candidate": {
+    "generation": "1792656963565594",
+    "sha256": "fcc530b12fe809f36fdfb5188cab7e21f408408893950699c9af5b5ca95105e9",
+    "uri": "gs://food-crisis-test-ipcch-data/candidates/fews-candidate-20261022a/candidate.json"
+  },
+  "checks": {
+    "candidate_record_bound": true,
+    "extra:candidate-release-checks.json": true,
+    "inherited_not_rescored": true,
+    "inherited_source_runs_match": true,
+    "inherited_sources_match_request": true,
+    "inventory_verified": true,
+    "pre_package_validation": true,
+    "relocated_replay_all_equal": true,
+    "replay_used_bundled_runtime": true
+  },
+  "execution": {
+    "inherited_systems": [
+      "ipcch"
+    ],
+    "scored_systems": [
+      "fewsnet"
+    ]
+  },
+  "extra_checks": [
+    {
+      "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/p4/candidate-release-checks.json",
+      "sha256": "b94959a0a4db48532665b7ed31db0a4e39aaa6f92e762700ed1102241c086124",
+      "status": "passed"
+    }
+  ],
+  "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+  "manifest": {
+    "generation": "1792656899775363",
+    "sha256": "54dd0f1417f64f5848dea38abe1b77ecd8cfe859f772347a26154f043df65fc0",
+    "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/manifest.json"
+  },
+  "model_inventory_sha256": "affba760648786beb81a2812eba69c4423ab5d05d977a9ccb6a9cda106ae8b53",
+  "replay": {
+    "all_equal": true,
+    "output_sha256": "902a36393ea4aebfc977719f7c53d23e27ba3a61b5e1dff53c36141b568cebdc",
+    "runtime": [
+      "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a-relocated/runtime/cloud/orchestrator/delivery_bundle.py",
+      "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a-relocated/runtime/fewsnet_partitioned_rf_pipeline/__init__.py",
+      [
+        "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a-relocated/runtime/model_pipeline"
+      ]
+    ],
+    "summary": {
+      "0": {
+        "fewsnet": 5718,
+        "ipcch": "inherited"
+      },
+      "12": {
+        "fewsnet": 5718,
+        "ipcch": "inherited"
+      },
+      "6": {
+        "fewsnet": 5718,
+        "ipcch": "inherited"
+      }
+    }
+  },
+  "request": {
+    "generation": "1792655462447117",
+    "sha256": "c081eca3df075f3e0c7da57daf1e9bc59a44ac7ec9c70f707987bd3999d3a33e",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/fews-candidate-20261022a/run_manifest.json"
+  },
+  "run_id": "fews-candidate-20261022a",
+  "schema_version": "operator-candidate-receipt-v1",
+  "status": "passed",
+  "validation_failures": [],
+  "verified_utc": "2026-10-22T08:24:05Z"
+}

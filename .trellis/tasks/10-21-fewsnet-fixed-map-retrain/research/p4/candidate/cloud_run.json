@@ -1,0 +1,63 @@
+{
+  "execution": {
+    "args": [
+      "-m",
+      "cloud.orchestrator.delivery_job",
+      "run",
+      "--request-uri",
+      "gs://food-crisis-test-ipcch-requests/requests/fews-candidate-20261022a/run_manifest.json",
+      "--request-generation",
+      "1792655462447117",
+      "--output-root",
+      "gs://food-crisis-test-ipcch-data",
+      "--release-namespace",
+      "monthly-staging",
+      "--image-uri",
+      "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae"
+    ],
+    "completed": "2026-10-22T08:16:07.009337Z",
+    "conditions": [
+      {
+        "message": "Execution completed successfully in 24m10.38s.",
+        "status": "True",
+        "type": "Completed"
+      },
+      {
+        "message": "Provisioned imported containers.",
+        "status": "True",
+        "type": "ResourcesAvailable"
+      },
+      {
+        "message": "Started deployed execution in 57.81s.",
+        "status": "True",
+        "type": "Started"
+      },
+      {
+        "message": "Imported container image in 37.84s.",
+        "status": "True",
+        "type": "ContainerReady"
+      }
+    ],
+    "created": "2026-10-22T07:51:04.345623Z",
+    "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+    "name": "oct-delivery-hfddt"
+  },
+  "maintenance_operation": "fews-retrain-20261022",
+  "run_id": "fews-candidate-20261022a",
+  "run_status": {
+    "candidate": {
+      "generation": "1792656963565594",
+      "uri": "gs://food-crisis-test-ipcch-data/candidates/fews-candidate-20261022a/candidate.json"
+    },
+    "outputs": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/",
+    "release": null,
+    "request": {
+      "generation": "1792655462447117",
+      "sha256": "c081eca3df075f3e0c7da57daf1e9bc59a44ac7ec9c70f707987bd3999d3a33e",
+      "uri": "gs://food-crisis-test-ipcch-requests/requests/fews-candidate-20261022a/run_manifest.json"
+    },
+    "run_id": "fews-candidate-20261022a",
+    "status": "succeeded"
+  },
+  "workflow_execution": "e785df4e-df75-45d2-a8cb-34138f0eeb15"
+}

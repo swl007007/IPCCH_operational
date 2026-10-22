@@ -1,0 +1,119 @@
+{
+  "candidate_manifest_sha256": "54dd0f1417f64f5848dea38abe1b77ecd8cfe859f772347a26154f043df65fc0",
+  "checks": {
+    "execution_recorded": true,
+    "fewsnet_0m_areas": true,
+    "fewsnet_0m_country_confidence_frozen": true,
+    "fewsnet_0m_current_outcome_agrees": true,
+    "fewsnet_0m_mapping_keys": true,
+    "fewsnet_0m_months": true,
+    "fewsnet_0m_new_package_scored": true,
+    "fewsnet_0m_package_is_fit": true,
+    "fewsnet_0m_polygon_confidence_frozen": true,
+    "fewsnet_12m_areas": true,
+    "fewsnet_12m_country_confidence_frozen": true,
+    "fewsnet_12m_current_outcome_agrees": true,
+    "fewsnet_12m_mapping_keys": true,
+    "fewsnet_12m_months": true,
+    "fewsnet_12m_new_package_scored": true,
+    "fewsnet_12m_package_is_fit": true,
+    "fewsnet_12m_polygon_confidence_frozen": true,
+    "fewsnet_6m_areas": true,
+    "fewsnet_6m_country_confidence_frozen": true,
+    "fewsnet_6m_current_outcome_agrees": true,
+    "fewsnet_6m_mapping_keys": true,
+    "fewsnet_6m_months": true,
+    "fewsnet_6m_new_package_scored": true,
+    "fewsnet_6m_package_is_fit": true,
+    "fewsnet_6m_polygon_confidence_frozen": true,
+    "ipcch_0m_country_confidence_inherited": true,
+    "ipcch_0m_country_predictions_inherited": true,
+    "ipcch_0m_polygon_model_mapping_inherited": true,
+    "ipcch_0m_polygon_predictions_inherited": true,
+    "ipcch_0m_polygon_training_errors_inherited": true,
+    "ipcch_12m_country_confidence_inherited": true,
+    "ipcch_12m_country_predictions_inherited": true,
+    "ipcch_12m_polygon_model_mapping_inherited": true,
+    "ipcch_12m_polygon_predictions_inherited": true,
+    "ipcch_12m_polygon_training_errors_inherited": true,
+    "ipcch_6m_country_confidence_inherited": true,
+    "ipcch_6m_country_predictions_inherited": true,
+    "ipcch_6m_polygon_model_mapping_inherited": true,
+    "ipcch_6m_polygon_predictions_inherited": true,
+    "ipcch_6m_polygon_training_errors_inherited": true,
+    "ipcch_inherited_members_match_source": true,
+    "ipcch_inherited_source_run": true,
+    "ipcch_package_unchanged": true
+  },
+  "detail": {
+    "0m": {
+      "country_confidence": {
+        "differing_columns": [],
+        "equal": true,
+        "rows": 22
+      },
+      "current_outcome": {
+        "countries": 22,
+        "crisis_countries": 5,
+        "equal": true,
+        "mismatches": [],
+        "thresholds": [
+          "0.5"
+        ]
+      },
+      "polygon_confidence": {
+        "differing_columns": [],
+        "equal": true,
+        "rows": 5718
+      },
+      "predicted_crisis_areas": 1988
+    },
+    "12m": {
+      "country_confidence": {
+        "differing_columns": [],
+        "equal": true,
+        "rows": 22
+      },
+      "current_outcome": {
+        "countries": 22,
+        "crisis_countries": 5,
+        "equal": true,
+        "mismatches": [],
+        "thresholds": [
+          "0.5"
+        ]
+      },
+      "polygon_confidence": {
+        "differing_columns": [],
+        "equal": true,
+        "rows": 5718
+      },
+      "predicted_crisis_areas": 2201
+    },
+    "6m": {
+      "country_confidence": {
+        "differing_columns": [],
+        "equal": true,
+        "rows": 22
+      },
+      "current_outcome": {
+        "countries": 22,
+        "crisis_countries": 4,
+        "equal": true,
+        "mismatches": [],
+        "thresholds": [
+          "0.5"
+        ]
+      },
+      "polygon_confidence": {
+        "differing_columns": [],
+        "equal": true,
+        "rows": 5718
+      },
+      "predicted_crisis_areas": 2091
+    }
+  },
+  "inherited_members": 31,
+  "source_manifest_sha256": "265a0fb95a8dbeda49a09d6a9fcafe149d3e4033438b38ec91d3b795a39aebe4",
+  "status": "passed"
+}
