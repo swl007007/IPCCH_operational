@@ -1,0 +1,54 @@
+{
+  "checked_utc": "2026-10-22T07:38:49.447401+00:00",
+  "status": "passed",
+  "baseline_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/baseline/fews-retrain-20261022/baseline.json",
+  "baseline_sha256": "b77cb29bd648c428cce6503bd10a2834bc976290115dd98b331ff67c1dd66c8b",
+  "verified_members": 82,
+  "verified_bytes": 3914041473,
+  "models": [
+    [
+      "fewsnet",
+      "0m",
+      "full-202610-ff389b11af93-02caeb861750/0m"
+    ],
+    [
+      "fewsnet",
+      "6m",
+      "full-202610-ff389b11af93-02caeb861750/6m"
+    ],
+    [
+      "fewsnet",
+      "12m",
+      "full-202610-ff389b11af93-02caeb861750/12m"
+    ],
+    [
+      "ipcch",
+      "0m",
+      "launch_2026_04_production_safe/scope_0m"
+    ],
+    [
+      "ipcch",
+      "6m",
+      "launch_2026_04_production_safe/scope_6m"
+    ],
+    [
+      "ipcch",
+      "12m",
+      "launch_2026_04_production_safe/scope_12m"
+    ]
+  ],
+  "checks": {
+    "all_actual_file_hashes_and_sizes_match_inventory": true,
+    "v2_source_panel_bound": true,
+    "unchanged_ipcch_history_panel": true,
+    "all_six_packages_match_image_load_evidence_and_original_ipcch_source": true,
+    "all_snapshot_history_assets_match_pinned_prepare_request": true,
+    "frozen_output_sources_match_accepted_original_inventory": true,
+    "ipcch_diagnostic_declarations_unchanged": true,
+    "image_matches_verified_digest": true
+  },
+  "limits": [
+    "Combined retained WFP/ACLED reconstruction used the inspected existing helper and builder assertions; this check independently rehashed the resulting files but did not duplicate that calculation.",
+    "No candidate scoring, export, activation or offline replay is asserted by baseline validation."
+  ]
+}

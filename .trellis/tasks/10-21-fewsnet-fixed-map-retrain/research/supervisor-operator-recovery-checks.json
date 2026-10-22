@@ -1,0 +1,27 @@
+{
+  "checked_utc": "2026-10-22T07:35:52.781099+00:00",
+  "argv": [
+    "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_operator_cli.py",
+    "tests/test_operator_release.py"
+  ],
+  "head_before": "48d3d1ef9248d81d8176789ad72d4ec85ac5f8e7",
+  "working_source_sha256": {
+    "pipeline.py": "c72db8c9f547a75329b9242e8eb5c024940847d8f66075e6dfb65915b90e397f",
+    "tests/test_operator_cli.py": "432ead763df76b59bce586c9ebc604eadeb79c35d304af8200d37c00a8250f6a",
+    "tests/test_operator_release.py": "7f46e956cbec7fa676011eaa0283f1ea8ff9525c7069f43335f0ad0219d538b7",
+    "deploy/workflow.yaml": "c8b8e031e00f1da65e6f0f7ecf71d704eb72eaf3364f071fc13f095baf64e7f6",
+    "deploy/setup.py": "7656af4a2f2b76a74fdfe4da2765ab32cff04879751186b0353f96dca855d487"
+  },
+  "source_unchanged_during_checks": true,
+  "exit_code": 0,
+  "output": ".....................................                                    [100%]\n37 passed in 3.34s\n",
+  "log_path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/runtime/supervisor-operator-recovery-checks.log",
+  "log_sha256": "194295c13c81157183748aec764358610dc1d73e6c5efaf2929e43a24d626c02",
+  "scope": "Focused software checks for operator manifest submission, candidate download/receipt, maintenance order, activation interruptions and concurrent changes. Uses fakes; actual cloud candidate/activation remains pending."
+}

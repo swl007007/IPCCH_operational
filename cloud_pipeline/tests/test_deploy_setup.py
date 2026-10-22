@@ -33,6 +33,7 @@ def test_workflow_grants_are_scoped_to_its_jobs_reads_and_dispatch_claims():
     assert {(c[4], c[c.index("--role") + 1]) for c in grants if c[1] == "storage"} == {
         ("gs://request", "roles/storage.objectViewer"), ("gs://out", "roles/storage.objectViewer"),
         ("gs://out", "roles/storage.objectCreator")}
+    assert all(c[-1] == "--condition=None" for c in grants if "roles/storage.objectViewer" in c)
     creator = next(c for c in grants if "roles/storage.objectCreator" in c)
     assert creator[-1] == ('--condition=expression=resource.name.startsWith("projects/_/buckets/out/objects/dispatch/"),'
                            "title=workflow-dispatch-claims")

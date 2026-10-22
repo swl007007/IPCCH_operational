@@ -117,6 +117,8 @@ def commands(cfg):
             "serviceAccount:" + workflow_sa,
             "--role",
             "roles/storage.objectViewer",
+            # Explicit: required non-interactively once the bucket policy holds a conditional binding.
+            "--condition=None",
         ]
     yield [
         "gcloud",
