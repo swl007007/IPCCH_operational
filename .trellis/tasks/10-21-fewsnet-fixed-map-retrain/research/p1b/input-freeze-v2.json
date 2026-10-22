@@ -1,0 +1,89 @@
+{
+  "frozen_at_utc": "2026-10-22T06:19:53.582409+00:00",
+  "fit_input": {
+    "normalized_panel": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/FEWSNET_versioned_panel_20261022.normalized-v1.csv",
+      "sha256": "02caeb8617507028943efee21a68066daded66857de0dff758062b2859fd583a",
+      "rows": 1149318
+    },
+    "normalization_audit": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/FEWSNET_versioned_panel_20261022.normalized-v1.audit.json",
+      "sha256": "65ea96d5e34315ea160b85c5ad20e995401e9d77234520380fff84529b04cdcc"
+    },
+    "origin_month": "2026-10",
+    "latest_label_month": "2026-06",
+    "latest_feature_month": "2026-09"
+  },
+  "built_from": {
+    "source_panel": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/FEWSNET_versioned_source_panel_20261022.csv",
+      "sha256": "a83f5f4b5eb33022960e43606f32afaec0cb15c10110ad1b56564790d637b722"
+    },
+    "change_ledger": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/change_ledger.csv.gz",
+      "sha256": "9dffea614d1109f61115da380b81d30148b268938848096ac1885dcdc7c326f8"
+    },
+    "build_report": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2/build_report.json",
+      "sha256": "a158c5faabc1f1970efba8dd2eff5ca9e0563468d33d91edccb90295ae6cc33f"
+    },
+    "build_config": {
+      "path": "/home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/panel/v2-config.json",
+      "sha256": "26e915762865a594b024e0e880b86c3455fffc32fcc258b3c9566da59a63531d"
+    },
+    "builder": {
+      "path": "research/p1b/build_versioned_panel.py",
+      "sha256": "40cde368871dea678f3214f5992d1c6b7a54d1ee692e50324785f00aa22743af",
+      "commit": "38c1ccb"
+    }
+  },
+  "sources": {
+    "base_panel": {
+      "path": "cloud_pipeline/bootstrap/assets/fewsnet/history_panel.csv",
+      "sha256": "ddcd30f255e86e2465819a28f11facaca87221c0fd8be6e6fd4ff5fd677149b8",
+      "provenance": "training panel 510375f5 + September refresh_h5_inputs WFP (2025-02..2026-04) and ACLED (2025-05..07); research/p1b/bootstrap_vs_training.json"
+    },
+    "labels": {
+      "hdx_freeze": "hdx-cs-20261022T043937Z",
+      "crosswalk_decisions_sha256": "665a9feaad22184b2b4e0645e600ab3336fc0d6654eef87d1af50c951946e900",
+      "acceptance": "research/p1a-acceptance.md"
+    },
+    "remote_snapshot": {
+      "prefix": "gs://manuel-remote-sensing-oct-delivery-debug/prepared/full-window-20261008c/features/fewsnet",
+      "receipt": "research/p1b/snapshot_features_download_receipt.jsonl"
+    },
+    "gosif_v3_2025": {
+      "output_sha256": "a1ad53fac2498a2f97d60d134caa7bd5ec2153729ac6d4cbde6ed1f18b354dd9",
+      "receipt": "research/p1b/gosif_v3_receipt.json"
+    },
+    "wfp": {
+      "fews_country_month_sha256": "9bdbc2c78a9061b56e560aeba644def9fd3d2c69f3c2e82311be69e10eaf3101",
+      "report": "research/p1b/wfp_report.json",
+      "raw_dir": "food-crisis-research/staging/ipcch-update-202610/sources/wfp_price/raw/hdx_2026-10-19",
+      "mom_boundary": "2025-01 (assemble_latest_FEWSNET/01 cells 27-31, notebook sha 49ea1acc)"
+    },
+    "acled": {
+      "raw_sha256": "793070a27fb3f854879fa9bbae8b90bd676295fa9ea38989de262f6beb313f3d",
+      "meta": "research/p1b/acled_fetch_meta.json",
+      "as_of_evidence": "research/supervisor-acled-source-check.json"
+    },
+    "ee_availability": "research/p1b/ee_latest_months.json",
+    "evi_2026_09": {
+      "output_sha256": "8b80e1be2687da1574464e23d0737f72bb8bc034f83161bd73f88d0810e52309",
+      "receipt": "research/p1b/evi_202609_receipt.json",
+      "ee_task": "TEE3NHA7YUJMWU7LHH2KTKOS",
+      "provider_metadata": "research/supervisor-evi-provider-metadata.json",
+      "first_attempt_failure": "research/p1b/evi_202609_attempt1.txt (AttributeError after export; finished from retained shards)"
+    }
+  },
+  "runtime": {
+    "fit_env": "/home/swl007007/.venvs/fewsnet-fit-lock-20261022",
+    "lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+    "verification": "research/supervisor-fit-runtime-verification.json"
+  },
+  "eligibility": "research/p1b/eligibility_preview_v2.json",
+  "supersedes": {
+    "v1_normalized_panel_sha256": "e2ddba022aa00a1b575df044fe64ef04ed723b5d6855349c58fb1bfe149c20c5",
+    "reason": "adds EVI 2026-09 (provider asset updateTime 2026-10-21T08:07:17Z) and WFP 2025-01 gap fill (notebook-01 MoM evidence); labels unchanged"
+  }
+}

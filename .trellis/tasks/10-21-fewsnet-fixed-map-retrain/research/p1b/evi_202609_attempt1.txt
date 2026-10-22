@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/p1b/evi_202609_acquire.py", line 66, in <module>
+    main()
+  File "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/p1b/evi_202609_acquire.py", line 49, in main
+    receipt["raster_ref"] = raster.ref
+                            ^^^^^^^^^^
+AttributeError: 'AcquiredRaster' object has no attribute 'ref'
