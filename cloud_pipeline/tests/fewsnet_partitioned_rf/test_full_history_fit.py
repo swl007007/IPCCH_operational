@@ -250,3 +250,22 @@ def test_full_data_report_requires_declared_no_evaluation(recorded_fit):
     del undeclared["fit_mode"]
     with pytest.raises(PackageValidationError):
         validate_horizon_training_report(undeclared)
+
+
+def test_pool_job_arguments_are_picklable_and_worker_loads_the_approved_map(monkeypatch):
+    import pickle
+
+    from fewsnet_partitioned_rf_pipeline.local import runner
+
+    aligned = _aligned(months=8)
+    pickle.dumps((aligned, CONTRACT, "6m"))  # what the spawn pool sends
+    seen = {}
+
+    def capture(frame, contract, partition_map, horizon_key, *, threshold, threshold_source):
+        seen.update(rows=len(frame), contract=contract, map=partition_map, key=horizon_key, threshold=threshold)
+        return "fitted"
+
+    monkeypatch.setattr(runner, "train_full_history_model", capture)
+    assert runner._fit_full_history_horizon(aligned, CONTRACT, "6m") == "fitted"
+    assert seen["map"]._clusters_by_admin == PARTITIONS._clusters_by_admin
+    assert seen["contract"] == CONTRACT and seen["threshold"] == 0.41 and seen["rows"] == len(aligned)

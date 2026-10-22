@@ -2356,10 +2356,14 @@ def _full_history_preflight(config: FullHistoryFitConfig) -> dict[str, object]:
 def _fit_full_history_horizon(
     aligned: pd.DataFrame,
     feature_contract: FeatureContract,
-    partition_map: PartitionMap,
     horizon_key: str,
 ):
-    """Process-pool entry point: one horizon's full-history fit."""
+    """Process-pool entry point: one horizon's full-history fit.
+
+    Arguments stay picklable: the checksum-validated partition map (whose mapping is a
+    read-only proxy) is loaded here, in the worker, from the approved asset.
+    """
+    partition_map = PartitionMap.load(PARTITION_ASSET_PATH, PARTITION_ASSET_SHA256)
     return train_full_history_model(
         aligned,
         feature_contract,
@@ -2447,8 +2451,7 @@ def run_full_history_fit(config: FullHistoryFitConfig) -> dict[str, object]:
         }
 
     jobs = {
-        key: (aligned_frames[key], preflight["feature_contract"],
-              preflight["partition_map"], key)
+        key: (aligned_frames[key], preflight["feature_contract"], key)
         for key in _HORIZON_ORDER
     }
     if config.max_workers > 1:
