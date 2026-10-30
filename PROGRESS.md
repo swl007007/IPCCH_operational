@@ -3019,3 +3019,13 @@ Operational ledger only; it does not grant authority. Authority: `.trellis/tasks
 - Real unmocked final pinned gates at 9aa9e54: H2/H8/H14 all exit 0; 13 digests identical to the discovery builds; cohort 15,317; 527-name order == retained H0 package. Fit rows 128,090 / 121,096 / 110,762 at cutoffs 2025-11 / 2025-05 / 2024-11; unique keys.
 - Concrete paid packet prepared, NOT released: `R/staging/ipcch-h2h8h14-20261030/` (SHA256SUMS, verify_packet.sh, overlay context c9575d08…, plan 9e36cb19… USD 6.9119 estimate, max two concurrent jobs). Hold on paid/cloud writes remains.
 - Checkpoint: `.trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp1/cp1-checkpoint.md`; packet: `research/cp1/cp1-packet.md`.
+
+### 2026-10-30 — CP2 ACCEPTED (supervisor explicit acceptance); CP3 in progress (executor)
+
+- CP2 closed: the supervisor accepted package_manifest 18b91d45… and r5 handoff manifest e6e3ebc6…, with documented imported historical/method/availability limits. Accepted envelope v2 `R/scratch/h2h8h14-final/envelope/ipcch-combination-envelope-v2-accepted.json` sha256 03b93842… (Codex Supervisor, 2026-10-30) binds those two, feature order 0ef1ffec… (527), roster 9ff2c420… (6,226) and finalized entries cb14a956… (57) in `handoff-build/out-r5-accepted-v1`. Real-mode readback in a local temporary store succeeded (c9c080a). Originals preserved (the package's own status field still reads candidate; r5 draft entries 3621c350…). Real-mode runtime tests use envelope v2 + out-r5-accepted-v1; the original candidate remains smoke-compatibility evidence. This is research handoff acceptance, not live-data readiness or deployment.
+- Assembly parity r2 finished with exit 0. Both input configurations are effectively identical on all three horizons: float32 inputs and raw q2..q5 match. Float64 caveats remain: lat/lon ≤5e-11 and ACLED ulp-level parse differences (df83cbc). This is historical compatibility evidence only, not CP5.
+- CP3 commits since CP2 binding:
+  - 8d031db/72f8cd8/35ee322: concrete EE/GCS transport.
+  - f1af645/35ee322: IPCCH GPP v3 adapter (research units: fill mask ×0.01) with ledger and retry repair.
+  - Strict climate roster output filter.
+- Open CP3 work: nightlight and WFP appends (WFP provenance scout running), generation orchestration, R52 batch writer, R19 inference validation, integrated FEWS preflight. Then CP4–CP6. Durable state: `.trellis/tasks/10-29-ipcch-validity-feature-inference/research/executor-handoff.md`.
