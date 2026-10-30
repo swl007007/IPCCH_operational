@@ -1,0 +1,93 @@
+{
+  "areas": {
+    "fewsnet_areas": [
+      "2679",
+      "2680",
+      "2681",
+      "2682",
+      "2683",
+      "2684",
+      "5335",
+      "5336",
+      "5337",
+      "5338",
+      "5339",
+      "5340"
+    ],
+    "ipcch_areas": [
+      "0",
+      "1",
+      "10"
+    ]
+  },
+  "modes": {
+    "keep": {
+      "acquired": [
+        "evi",
+        "fldas",
+        "gosif_mean",
+        "viirs"
+      ],
+      "all_identical_modulo_output_root": true,
+      "differ": [
+        "inputs/fewsnet_fill_sources.json",
+        "reports/fewsnet_feature_fill_audit.csv",
+        "reports/fewsnet_normalization_audit.json"
+      ],
+      "differ_identical_after_output_root_normalization": {
+        "inputs/fewsnet_fill_sources.json": true,
+        "reports/fewsnet_feature_fill_audit.csv": true,
+        "reports/fewsnet_normalization_audit.json": true
+      },
+      "identical": 28,
+      "missing_in_v2": [],
+      "pointer": "parity-keep-fewsnet",
+      "prediction_sha256": {
+        "scopes/0m/fewsnet/polygon_predictions.csv": "c114afadac494cd0a475623c3136c934b19efb74f0a4a3fdc552c957c899ea6f",
+        "scopes/12m/fewsnet/polygon_predictions.csv": "a8eb824382998c49e8f601833d94e0ea0c709fc6c531ff16f772bf4613af8a3f",
+        "scopes/6m/fewsnet/polygon_predictions.csv": "d803cf8c36ee7e97b58c250bb5388a97bd5e21e3fec68c98535f02531e35f027"
+      },
+      "reference_files": 31,
+      "scope_tables_identical": true,
+      "v2_reason": null,
+      "v2_status": "succeeded"
+    },
+    "refresh": {
+      "acquired": [
+        "evi",
+        "fldas",
+        "gosif_mean",
+        "viirs"
+      ],
+      "all_identical_modulo_output_root": true,
+      "differ": [
+        "inputs/fewsnet_fill_sources.json",
+        "reports/fewsnet_feature_fill_audit.csv",
+        "reports/fewsnet_normalization_audit.json"
+      ],
+      "differ_identical_after_output_root_normalization": {
+        "inputs/fewsnet_fill_sources.json": true,
+        "reports/fewsnet_feature_fill_audit.csv": true,
+        "reports/fewsnet_normalization_audit.json": true
+      },
+      "identical": 28,
+      "missing_in_v2": [],
+      "pointer": "parity-refresh-fewsnet",
+      "prediction_sha256": {
+        "scopes/0m/fewsnet/polygon_predictions.csv": "3d29a49a2de9679175b897fe802411ce78ba3fb843ceef4f327bd7bfb686f3d2",
+        "scopes/12m/fewsnet/polygon_predictions.csv": "a4cf3447d874fbf23c55e34f4fac9022bacaf72f113ac2b1ad292fda6fce45ae",
+        "scopes/6m/fewsnet/polygon_predictions.csv": "d622cece1b060bc1b098b0b042e2346ca22b046281711ce4c7e00bcef9d1d8b4"
+      },
+      "reference_files": 31,
+      "scope_tables_identical": true,
+      "v2_reason": null,
+      "v2_status": "succeeded"
+    }
+  },
+  "origin": "2026-07",
+  "packages": {
+    "0": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
+    "6": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
+    "12": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e"
+  }
+}

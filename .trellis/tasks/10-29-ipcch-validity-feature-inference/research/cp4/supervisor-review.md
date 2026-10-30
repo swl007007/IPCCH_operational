@@ -104,3 +104,7 @@ A archive convention and R60 keep projection P1 close: isolated locked 89 tests 
 - locks.acquire:95 catches only LockConflict during holder lookup; metadata OSError leaves earlier fresh locks. Roll back fresh acquisitions on arbitrary lookup failure; preserve adopted/other-owner locks and error.
 
 Independent pinned reproductions confirmed; Executor notified. C/D and actual FEWS scorer parity remain pending. No live cloud deployment or full-suite repetition by reviewers.
+
+## C/D closure 77cc319
+
+Independent read-only review from git archive77cc319: locked lock/workflow suites54passed. Outer workflow submission_error declared and populated in both exception handlers; interpreter now respects exception-local variables. CLI resolve cleanup includes initial pinned-request read and derives owner from exact request URI contract. Metadata lookup errors roll back fresh acquisitions without releasing adopted or other-owner locks. No remaining concrete C/D defect found in scoped diff. Patch-specific mutation receipts not located; closure based on inspected code and independent tests. Live deployment/lint/full-suite/FEWS parity not claimed. A-D and retained projection findings are now closed; checkpoint acceptance still requires actual scorer evidence, CP5 and complete requirement coverage.
