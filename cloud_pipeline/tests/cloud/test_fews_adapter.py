@@ -100,7 +100,18 @@ def prepare_request(store, prepare_id):
     return put(store, f"{ROOT}/prepare_requests/{prepare_id}/prepare_request.json", json.dumps(body).encode()), systems
 
 
-def world(tmp_path, *, refresh=False):
+def shared_retained(tmp_path, family, edit=None):
+    """The canonical combined FEWS+IPCCH retained stream of the same histories (the existing shared retained file)."""
+    panels = tj._history_panels()
+    paths = {}
+    for system in ("fewsnet", "ipcch"):
+        paths[system] = tmp_path / f"retained-{system}.csv"
+        paths[system].write_bytes(panels[system])
+    text = "".join(dj.retained_family_rows({k: str(v) for k, v in paths.items()}, family))
+    return (edit(text) if edit else text).encode()
+
+
+def world(tmp_path, *, refresh=False, retained=None):
     store = LocalObjectStore(tmp_path / "gcs")
     prep_ref, systems = prepare_request(store, "prep-2604")
     panel = tj._history_panels()["fewsnet"]
@@ -112,10 +123,10 @@ def world(tmp_path, *, refresh=False):
         if refresh:
             choices[name] = {"action": "refresh", "raw_upload": put(store, f"gs://assets/raw/{name}.csv", b"raw " + name.encode()),
                              "converter_contract": contract}
-        else:                                        # D2: the FEWS-row projection of the canonical retained stream
-            projection = "".join(dj.retained_family_rows({"fewsnet": str(tmp_path / "panel.csv")}, name)).encode()
+        else:                                        # the operator's SHARED retained file (both systems, canonical)
+            data = (retained or shared_retained)(tmp_path, name)
             choices[name] = {"action": "keep", "retained_snapshot": put(store, f"gs://assets/retained/{name}.csv",
-                                                                        projection), "converter_contract": contract}
+                                                                        data), "converter_contract": contract}
     env = put(store, "gs://assets/env.json", json.dumps({"image_uri": IMAGE,
                                                          "requirements_lock_sha256": dj.lock_sha256()}).encode())
     models = []
@@ -250,7 +261,7 @@ def test_keep_checks_the_fews_row_projection_against_the_pinned_history(tmp_path
     data["fewsnet"]["acled"] = {**data["fewsnet"]["acled"], "retained_snapshot": wrong}
     out, _ = execute(w, data)
     fews = out["systems"]["fewsnet"]
-    assert fews["status"] == "failed" and "retained snapshot does not equal" in fews["reason"]
+    assert fews["status"] == "failed" and "retained snapshot rows" in fews["reason"]
     assert fews["result"]["generation"]["prepared_snapshot"]                          # the snapshot stays reported
 
 
@@ -341,3 +352,39 @@ def test_two_system_partial_failure_keeps_the_successful_fews_member(tmp_path):
     assert out["status"] == "partial_success" and out["systems"]["ipcch"]["status"] == "failed"
     assert pub.read_current(store, ROOT, "prod")["record"]["systems"]["fewsnet"]["published_by_run"] == "both-sys-fewsnet"
     assert not store.list(f"{ROOT}/locks/")
+
+
+def _edit_first(system):
+    """Change one family value of the first ``system`` row of the canonical stream."""
+    def edit(text):
+        lines = text.splitlines(True)
+        i = next(n for n, line in enumerate(lines) if line.startswith(system + ","))
+        cells = lines[i].rstrip("\n").split(",")
+        cells[-1] = "9.75"
+        lines[i] = ",".join(cells) + "\n"
+        return "".join(lines)
+    return edit
+
+
+@pytest.mark.parametrize("edit,accepted", [(None, True), ("ipcch", True), ("fewsnet", False), ("fews_only", True)])
+def test_keep_accepts_the_shared_retained_file_by_its_fews_rows(tmp_path, edit, accepted):
+    """43c6d12 P1: keep verifies the whole pinned retained ref, then compares ITS canonical FEWS rows (same columns and
+    order) with the pinned FEWS history: the shared FEWS+IPCCH file is accepted, an altered IPCCH row does not enter
+    the FEWS comparison, an altered FEWS row is refused; a FEWS-only canonical file is accepted too."""
+    if edit == "fews_only":
+        retained = lambda tmp, name: "".join(dj.retained_family_rows(
+            {"fewsnet": str(_panel(tmp))}, name)).encode()
+    else:
+        retained = lambda tmp, name: shared_retained(tmp, name, _edit_first(edit) if edit else None)
+    w = world(tmp_path, retained=retained)
+    out, _ = execute(w, request(w, "fews-keep"))
+    fews = out["systems"]["fewsnet"]
+    assert (fews["status"] == "succeeded") == accepted, fews
+    if not accepted:
+        assert "retained snapshot rows" in fews["reason"]
+
+
+def _panel(tmp):
+    path = tmp / "fews-panel.csv"
+    path.write_bytes(tj._history_panels()["fewsnet"])
+    return path

@@ -1,5 +1,7 @@
 """Task 10-29: per-system v2 run locks (R50, final convergence corrections)."""
 
+import json
+
 import pytest
 
 from cloud.common.object_store import GenerationConflict, LocalObjectStore
@@ -88,3 +90,46 @@ def test_cleanup_attempts_every_lock_and_reports_failures(tmp_path):
     with pytest.raises(locks.LockAcquisitionError) as info:
         locks.acquire(store2, REAL, ["ipcch", "fewsnet"], "run-c")
     assert info.value.cleanup_failures and "fewsnet" in info.value.cleanup_failures[0]   # reported, not swallowed
+
+
+class SwapOnRead:
+    """Store wrapper: on the first body read of ``uri`` the lock is replaced by run B's lock (deterministic race),
+    either before the body is returned (``when='before'``: the body read is B's) or after (A's body, B's object)."""
+
+    def __init__(self, inner, uri, when):
+        self.inner, self.uri, self.when, self.done = inner, uri, when, False
+
+    def __getattr__(self, name):
+        return getattr(self.inner, name)
+
+    def _swap(self):
+        self.done = True
+        self.inner.delete(self.uri, if_generation_match=self.inner.get_metadata(self.uri).generation)
+        self.inner.write_text(self.uri, '{"run_id": "run-B", "system": "fewsnet"}\n', if_generation_match=0)
+
+    def read_text(self, uri):
+        if uri == self.uri and not self.done:
+            if self.when == "before":
+                self._swap()
+                return self.inner.read_text(uri)
+            body = self.inner.read_text(uri)
+            self._swap()
+            return body
+        return self.inner.read_text(uri)
+
+
+@pytest.mark.parametrize("when", ["before", "after"])
+@pytest.mark.parametrize("path", ["adopt", "release_owned"])
+def test_a_lock_replaced_between_reads_is_never_adopted_or_deleted(tmp_path, when, path):
+    """Supervisor residual B on 78a2aeb: owner and generation come from one stable read; a lock replaced by run B
+    between the reads is refused - run A never adopts B's generation and never deletes B's lock."""
+    store = LocalObjectStore(tmp_path / "gcs")
+    locks.acquire(store, REAL, ["fewsnet"], "run-A")
+    uri = locks.lock_uri(REAL, "fewsnet")
+    racing = SwapOnRead(store, uri, when)
+    with pytest.raises(locks.LockConflict):
+        if path == "adopt":
+            locks.acquire(racing, REAL, ["fewsnet"], "run-A", adopt_own=True)
+        else:
+            locks.release_owned(racing, REAL, "run-A")
+    assert json.loads(store.read_text(uri))["run_id"] == "run-B"                    # B's lock intact

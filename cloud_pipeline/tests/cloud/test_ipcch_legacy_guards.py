@@ -353,3 +353,74 @@ def test_post_activation_fews_only_delivery_from_a_fews_scoped_snapshot_adopts_i
     scored_ipcch["origin_month"] = fmf.ORIGIN
     with pytest.raises(dj.AcceptanceError):                                       # activated: IPCCH never scored
         run(tmp_path, client, scored_ipcch, store, score=lambda *a: pytest.fail("scored"))
+
+
+def seed_legacy_both(store, origin):
+    """A legacy v1 release scoring BOTH systems (one v1 delivery with its real archive)."""
+    import hashlib
+    files = {}
+    y, m = (int(x) for x in origin.split("-"))
+    for lead in (0, 6, 12):
+        o = y * 12 + m - 1 + lead
+        t = f"{o // 12:04d}-{o % 12 + 1:02d}"
+        files[f"scopes/{lead}m/fewsnet/polygon_predictions.csv"] = f"admin_code,feature_month,target_month\n1,{origin},{t}\n"
+        files[f"scopes/{lead}m/ipcch/polygon_predictions.csv"] = f"polygon_id,feature_period,target_period\na,{origin},{t}\n"
+    files.update({"fewsnet/polygons.geojson": "{}\n", "ipcch/polygons.geojson": "{}\n",
+                  "reports/fewsnet_diagnostic_availability.csv": "model_system\n",
+                  "reports/ipcch_diagnostic_availability.csv": "model_system\n",
+                  "reports/fewsnet_feature_fill_audit.csv": "system\n", "reports/ipcch_feature_fill_audit.csv": "system\n"})
+    base = f"{tj.ROOT}/deliveries/legacy-both"
+    for rel, text in files.items():
+        store.write_text(f"{base}/{rel}", text, if_generation_match=0)
+    inv = json.dumps({"files": [{"path": r, "sha256": hashlib.sha256(t.encode()).hexdigest()} for r, t in sorted(files.items())]})
+    mm = store.write_text(f"{base}/manifest.json", inv, if_generation_match=0)
+    am = store.write_bytes(f"{base}/webapp_model_bundle.tar.gz", b"legacy archive", if_generation_match=0)
+    record = {"run_id": "legacy-both", "origin_month": origin,
+              "manifest": {"uri": f"{base}/manifest.json", "generation": mm.generation,
+                           "sha256": hashlib.sha256(inv.encode()).hexdigest()},
+              "archive": {"uri": f"{base}/webapp_model_bundle.tar.gz", "generation": am.generation,
+                          "sha256": hashlib.sha256(b"legacy archive").hexdigest()},
+              "execution": {"scored_systems": ["fewsnet", "ipcch"], "inherited_systems": []}}
+    rec = store.write_text(f"{tj.ROOT}/{NS_}/releases/legacy-both/release.json", json.dumps(record))
+    store.write_text(pub.pointer_uri(tj.ROOT, NS_), json.dumps({
+        "run_id": "legacy-both", "release_record": f"{tj.ROOT}/{NS_}/releases/legacy-both/release.json",
+        "release_record_generation": rec.generation}))
+    return record
+
+
+def test_mixed_format_inheritance_follows_the_members_own_delivery_format(tmp_path, monkeypatch):
+    """Supervisor residual A on 78a2aeb: legacy both-system release -> FEWS v2 publication (v2 record, legacy IPCCH
+    member carried with its real archive, no activation) -> a v1 FEWS-only run naming the legacy IPCCH member's exact
+    manifest AND real archive is accepted; repeating the manifest as archive (the v2 convention) is refused for it."""
+    from cloud.ipcch import fews_v2
+    from cloud.ipcch import release_v2 as rv
+    from tests.cloud import fews_member_fixture as fmf
+    store = LocalObjectStore(tmp_path / "gcs")
+    legacy = seed_legacy_both(store, fmf.ORIGIN)
+    fixture = fmf.build(tmp_path / "fx")
+    g = pub.read_current(store, tj.ROOT, NS_)["generation"]
+    assert rv.publish_member_run(store, tj.ROOT, system="fewsnet", namespace=NS_, run_id="fews-v2", mode="real",
+                                 publication="current", expected_pointer_generation=g, request_ref=trv.REQ,
+                                 write_member=lambda o: fews_v2.write_member(
+                                     o, score=fmf.score_from(fixture), spec_path=tmp_path / "s.json", origin=fmf.ORIGIN,
+                                     packages=fixture["packages"], mode="real"),
+                                 workdir=str(tmp_path), now=trv.NOW)["status"] == "published"
+    rec = pub.read_current(store, tj.ROOT, NS_)["record"]
+    assert rec["schema"] == pub.RELEASE_SCHEMA and rec["activation"] is None
+    assert rec["systems"]["ipcch"]["contract"] == pub.LEGACY_CONTRACT and rec["systems"]["ipcch"]["archive"] == legacy["archive"]
+    client = tj._world(tmp_path)
+    for ref, data in ((legacy["manifest"], store.read_bytes(legacy["manifest"]["uri"])),
+                      (legacy["archive"], b"legacy archive")):
+        client[0].put(ref["uri"], ref["generation"], data)
+    source = {"source_delivery_id": "legacy-both", "origin_month": fmf.ORIGIN, "manifest": dict(legacy["manifest"]),
+              "archive": dict(legacy["archive"])}
+    request = v1(client, store, inherit={"ipcch": source})
+    fews_ready(tmp_path, client, request)
+    status, _, _ = run(tmp_path, client, request, store, score=fmf.score_from(fixture))
+    assert status["status"] == "succeeded"
+    after = pub.read_current(store, tj.ROOT, NS_)["record"]
+    assert after["systems"]["ipcch"]["archive"] == legacy["archive"] and after["activation"] is None
+    wrong = v1(client, store, inherit={"ipcch": {**source, "archive": dict(legacy["manifest"])}})
+    wrong["origin_month"], wrong["prepared_snapshot"] = fmf.ORIGIN, request["prepared_snapshot"]
+    with pytest.raises(dj.AcceptanceError, match="is not the current member's archive"):
+        run(tmp_path, client, wrong, store, score=lambda *a: pytest.fail("scored"))

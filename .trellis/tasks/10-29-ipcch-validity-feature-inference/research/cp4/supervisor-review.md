@@ -86,3 +86,11 @@ Isolated pinned reviews: operator/legacy 57 passed; workflow/prepare/legacy 78 p
 - dispatch_step resolution RuntimeError escapes its narrow catch; execute bind_current rejection happens before cleanup; dispatch-record write failure precedes cleanup. Reproduced remaining admission locks. Cover terminal errors with owned cleanup and actual execution-path tests.
 
 No code edits by reviewers. Finding 4 closes within reviewed scope; findings 1/3 retain the mixed-member residual, finding 2 remains open. Executor notified; CP4 not accepted.
+
+## R60 adapter 43c6d12 — pending retained projection and real parity
+
+Independent scoped suite 35 passed. Exact prepared-manifest source binding, FEWS-only collection and inference-only without EE construction verified. P1 reproduced: prepare_inputs:265-270 compares FEWS-history hash to whole retained snapshot SHA, so canonical shared FEWS+IPCCH retained files fail despite identical FEWS rows. Tests preproject fixtures and hide this. Verify pinned full bytes, then canonical FEWS-row projection against FEWS history; preserve legacy both-system comparison. Add mixed-system retained acceptance and FEWS-row tamper tests.
+
+Current split/combined and legacy/v2 equality tests copy fixture scorer output and use invalid placeholder refresh bytes; they do not prove converter/scorer equivalence. Executor agreed to actual deliver fixture with valid raw refresh inputs, local shipped assets and no retraining. No R60 acceptance until that evidence exists.
+
+Executor briefly over-applied /home/swl007007/.claude/CLAUDE.md close-audit repeat-repair rule to this Supervisor review. It confirmed no newer human override; existing execution-protocol governs, work resumed. No Trellis Audit or change to completion gates.

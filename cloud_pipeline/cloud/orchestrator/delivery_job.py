@@ -264,11 +264,18 @@ def prepare_inputs(request: Mapping[str, Any], downloader: PinnedDownloader, wor
               for system, kinds in request["assets"].items()}
     history = {system: assets[system]["history_panel"] for system in assets}
     for name in ("acled", "wfp"):  # keep = the exact family values of the consumed history panels
-        if request[name]["action"] == "keep":
+        if request[name]["action"] != "keep":
+            continue
+        if set(history) == {"fewsnet", "ipcch"}:      # v1 both-system request: the whole canonical stream (unchanged)
             expected = retained_family_sha256(history, name)
             if expected != request[name]["retained_snapshot"]["sha256"]:
                 raise AcceptanceError(f"{name}: retained snapshot does not equal the {name} family of the consumed "
                                       f"history panels ({expected})")
+        else:                                         # FEWS NET-only (v2 adapter): its rows of the pinned stream
+            retained = downloader.fetch(request[name]["retained_snapshot"])   # whole pinned ref verified first
+            if not retained_projection_matches(retained, history, name):
+                raise AcceptanceError(f"{name}: retained snapshot rows of {sorted(history)} do not equal the {name} "
+                                      "family of the consumed history panels")
     sources = {name: {"action": request[name]["action"],
                       "path": str(downloader.fetch(request[name]["retained_snapshot" if request[name]["action"] == "keep"
                                                              else "raw_upload"]))}
@@ -302,6 +309,29 @@ def pd_read_chunks(path, usecols, chunksize):
     import pandas as pd
 
     return pd.read_csv(path, usecols=usecols, dtype=str, keep_default_na=False, chunksize=chunksize)
+
+
+def retained_projection_matches(path: Path, history: Mapping[str, str], family: str) -> bool:
+    """Whether a pinned retained snapshot in the canonical streamed form (``retained_family_rows``: header, then rows
+    ``system, admin_code, month, <family columns>``; the operator's shared file holds both systems) carries, for the
+    systems of ``history``, exactly their family rows in order under the SAME columns. Rows of other known systems
+    (e.g. IPCCH in the shared file) are skipped - never compared with these panels; unknown systems fail. Streamed."""
+    import csv
+    import io
+
+    expected = (row for block in retained_family_rows(history, family) for row in csv.reader(io.StringIO(block)))
+    with Path(path).open(encoding="utf-8", newline="") as handle:
+        actual = csv.reader(handle)
+        if next(actual, None) != next(expected, None):        # the same canonical column contract
+            return False
+        for row in actual:
+            if not row or row[0] not in ("fewsnet", "ipcch"):
+                return False
+            if row[0] not in history:
+                continue
+            if row != next(expected, None):
+                return False
+    return next(expected, None) is None
 
 
 def retained_family_sha256(history: Mapping[str, str], family: str) -> str:
@@ -491,7 +521,30 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
             image_uri: str, store, downloader: PinnedDownloader, work: Path,
             score: Callable[[Path, str, Path], None], package: Callable[..., dict],
             upload: Callable[[Path, str], dict]) -> dict:
-    """The whole request lifecycle with injectable side effects (tests drive this directly)."""
+    """The whole request lifecycle with injectable side effects (tests drive this directly).
+
+    A resolved remote-update run holds its admission locks on entry: ANY terminal error - including a rejection by
+    the current-release binding before scoring - releases them (owner cleanup, error preserved)."""
+    try:
+        body = json.loads(request_bytes)
+        remote = bool(((body.get("execution") or {}) if isinstance(body, Mapping) else {}).get("intent"))
+        run_id = body.get("run_id") if isinstance(body, Mapping) else None
+    except ValueError:
+        remote, run_id = False, None
+    try:
+        return _execute(request_ref=request_ref, request_bytes=request_bytes, output_root=output_root,
+                        release_namespace=release_namespace, image_uri=image_uri, store=store, downloader=downloader,
+                        work=work, score=score, package=package, upload=upload)
+    except BaseException as exc:
+        if remote and isinstance(run_id, str):
+            _cleanup_locks(exc, store, output_root, run_id)
+        raise
+
+
+def _execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root: str, release_namespace: str,
+             image_uri: str, store, downloader: PinnedDownloader, work: Path,
+             score: Callable[[Path, str, Path], None], package: Callable[..., dict],
+             upload: Callable[[Path, str], dict]) -> dict:
     from cloud.ipcch import locks
     from cloud.orchestrator.delivery_manifest import validate_delivery_request
     from cloud.orchestrator.delivery_run import publish, run_once
@@ -601,9 +654,11 @@ def bind_current(store, output_root: str, request: Mapping[str, Any]) -> dict[st
       with the migration message; before activation legacy IPCCH stays available whatever the record format;
     * every ``execution.inherit`` source (current publication; a legacy-record candidate binds at promotion) names
       exactly that system's member of the current release by its delivery manifest identity:
-      - a v1-record member: the v1 same-origin rule and the record's archive;
-      - a legacy-format member stored in a v2 record: the same-origin rule against its own origin, and - v2 deliveries
-        have no archive - ``archive`` repeats the member's delivery manifest ref (documented operator construction);
+      - a member delivered in a legacy v1 delivery (in a v1 record or carried unchanged into a v2 record): the v1
+        same-origin rule and that delivery's real archive;
+      - a legacy-format member delivered in a v2 delivery: the same-origin rule against its own origin, and - v2
+        deliveries have no archive - ``archive`` repeats the member's delivery manifest ref (documented operator
+        construction);
       - a new-contract IPCCH member: its own feature origin (R63) and the same manifest-as-archive convention;
     * a request scoring ONE system against a v2 record publishes it as a legacy-format v2 member (existing deliver,
       exact packages, system-scoped checks), inheriting the other member and the activation from the bound snapshot;
@@ -636,11 +691,15 @@ def bind_current(store, output_root: str, request: Mapping[str, Any]) -> dict[st
                 raise AcceptanceError(f"execution.inherit.{system} must have the same origin month {request['origin_month']}")
         if source["origin_month"] != own:
             raise AcceptanceError(f"execution.inherit.{system}.origin_month must be the member's own origin {own}")
-        archive = member["delivery"]["manifest"] if v2_record else member.get("archive")
-        if _ref_identity(source["archive"]) != _ref_identity(archive):
+        # the archive convention follows the MEMBER's own delivery format, not the record holding it: a legacy v1
+        # delivery (also when carried unchanged into a v2 record) has its real archive; a v2 delivery has none, so the
+        # operator repeats the member's delivery manifest ref
+        legacy_delivery = member.get("contract") == pub.LEGACY_CONTRACT
+        archive = member.get("archive") if legacy_delivery else member["delivery"]["manifest"]
+        if not archive or _ref_identity(source["archive"]) != _ref_identity(archive):
             raise AcceptanceError(f"execution.inherit.{system}.archive is not the current member's "
-                                  + ("delivery manifest (a v2 delivery has no archive; repeat the manifest ref)"
-                                     if v2_record else "archive"))
+                                  + ("archive" if legacy_delivery else
+                                     "delivery manifest (a v2 delivery has no archive; repeat the manifest ref)"))
     return {"snapshot": snapshot, "v2_route": bool(v2_record and len(selected) == 1),
             "system": selected[0] if len(selected) == 1 else None}
 
@@ -821,14 +880,45 @@ def dispatch_record_uri(output_root: str, run_id: str, stage: str) -> str:
     return f"{output_root.rstrip('/')}/dispatch/{run_id}/{stage}.json"
 
 
+def _cleanup_locks(exc: BaseException, store, output_root: str, run_id: str, keep: set[str] | None = None) -> None:
+    """Owner cleanup on a terminal error: release this run's locks (except ``keep``: locks it held before this step,
+    e.g. adopted on an admission replay); the original error is preserved, cleanup problems are attached to it."""
+    from cloud.ipcch import locks
+
+    try:
+        mine = [lock for lock in locks.owned(store, output_root, run_id) if lock.system not in (keep or set())]
+        problems = locks.release(store, mine)
+    except Exception as cleanup:                     # e.g. a lock changed while read: never released on a guess
+        problems = [f"{type(cleanup).__name__}: {cleanup}"]
+    if problems and hasattr(exc, "add_note"):
+        exc.add_note(f"lock cleanup problems for run {run_id}: {problems}")
+
+
 def dispatch_step(stage: str, *, intent_ref: Mapping[str, str], intent_bytes: bytes, output_root: str, store,
                   reader) -> tuple[dict, tuple[dict[str, str], bytes] | None]:
     """Run ``admission`` or ``resolution`` and record its outcome (admitted/resolved or rejected with
     the reason) create-only at dispatch/<run_id>/<stage>.json: the Workflow's durable gate. A replay
-    reuses an identical record; any different recorded outcome is a conflict."""
-    from cloud.common.object_store import GenerationConflict
+    reuses an identical record; any different recorded outcome is a conflict.
+
+    R50 cleanup envelope: on ANY terminal error the owner releases what this step owns - at admission the locks it
+    freshly acquired (never those adopted from an earlier admission of the same run), at resolution every lock the
+    run holds - preserving the error."""
+    from cloud.ipcch import locks
 
     run_id = intent_ref["uri"].split("/requests/")[-1].split("/")[0]
+    keep = {lock.system for lock in locks.owned(store, output_root, run_id)} if stage == "admission" else None
+    try:
+        return _dispatch_step(stage, run_id=run_id, intent_ref=intent_ref, intent_bytes=intent_bytes,
+                              output_root=output_root, store=store, reader=reader)
+    except BaseException as exc:
+        _cleanup_locks(exc, store, output_root, run_id, keep)
+        raise
+
+
+def _dispatch_step(stage: str, *, run_id: str, intent_ref: Mapping[str, str], intent_bytes: bytes, output_root: str,
+                   store, reader) -> tuple[dict, tuple[dict[str, str], bytes] | None]:
+    from cloud.common.object_store import GenerationConflict
+
     identity = {key: str(intent_ref[key]) for key in ("uri", "generation", "sha256")}
     resolved = None
     from cloud.ipcch import locks
@@ -944,7 +1034,12 @@ def main(argv=None) -> int:
             return 0
         request_ref, data = resolved
     work = Path(args.work_dir)
-    work.mkdir(parents=True, exist_ok=False)
+    try:
+        work.mkdir(parents=True, exist_ok=False)
+    except BaseException as exc:                    # resolved remote run: its admission locks are released
+        if args.command == "resolve":
+            _cleanup_locks(exc, GCSObjectStore(client), args.output_root, json.loads(data)["run_id"])
+        raise
 
     def score(spec_path, name, out):
         subprocess.run([sys.executable, "-m", "cloud.orchestrator.delivery_job", "system", "--spec", str(spec_path),

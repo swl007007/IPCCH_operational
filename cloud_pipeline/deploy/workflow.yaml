@@ -161,35 +161,46 @@ main:
           - condition: ${admission.status != "admitted" or admission.intent.uri != request_uri or admission.intent.generation != generation}
             raise: '${"intent " + run_id + "#" + generation + " was not admitted: " + default(map.get(admission, "reason"), "admission is for another request generation")}'
     - run_prepare_job:
-        call: googleapis.run.v2.projects.locations.jobs.run
-        args:
-          name: ${"projects/" + project + "/locations/" + location + "/jobs/" + prepare_job}
-          body:
-            overrides:
-              containerOverrides:
-                - args:
-                    - "-m"
-                    - "cloud.orchestrator.prepare"
-                    - "plan"
-                    - "--request-uri"
-                    - ${admission.prepare_request.uri}
-                    - "--request-generation"
-                    - ${admission.prepare_request.generation}
-                    - "--output-root"
-                    - ${output_root}
-                    - "--earth-engine-project"
-                    - ${earth_engine_project}
-                    - "--batch-parent"
-                    - ${batch_parent}
-                    - "--batch-image-uri"
-                    - ${image_uri}
-                    - "--batch-service-account"
-                    - ${batch_service_account}
-                    - "--systems"
-                    - ${default(map.get(admission, "prepare_scope"), "fewsnet,ipcch")}
-          connector_params:
-            skip_polling: true
-        result: prepare_execution
+        try:
+          call: googleapis.run.v2.projects.locations.jobs.run
+          args:
+            name: ${"projects/" + project + "/locations/" + location + "/jobs/" + prepare_job}
+            body:
+              overrides:
+                containerOverrides:
+                  - args:
+                      - "-m"
+                      - "cloud.orchestrator.prepare"
+                      - "plan"
+                      - "--request-uri"
+                      - ${admission.prepare_request.uri}
+                      - "--request-generation"
+                      - ${admission.prepare_request.generation}
+                      - "--output-root"
+                      - ${output_root}
+                      - "--earth-engine-project"
+                      - ${earth_engine_project}
+                      - "--batch-parent"
+                      - ${batch_parent}
+                      - "--batch-image-uri"
+                      - ${image_uri}
+                      - "--batch-service-account"
+                      - ${batch_service_account}
+                      - "--systems"
+                      - ${default(map.get(admission, "prepare_scope"), "fewsnet,ipcch")}
+            connector_params:
+              skip_polling: true
+          result: prepare_execution
+        except:
+          as: e
+          steps:
+            - prepare_submission_outcome:
+                switch:
+                  # a definitive rejection of the submission: nothing runs, so the owner releases its locks
+                  - condition: ${default(map.get(e, "code"), 0) in [400, 401, 403, 404]}
+                    next: release_after_rejected_submission
+            - prepare_submission_unknown:
+                raise: ${e}   # timeout / 5xx / unknown: the job may be running; its locks are kept
     - wait_for_preparation:
         call: await_record
         args:
@@ -203,28 +214,38 @@ main:
           - condition: ${prepare_status.status != "succeeded"}
             next: release_after_failed_preparation
     - run_resolve_job:
-        call: googleapis.run.v2.projects.locations.jobs.run
-        args:
-          name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
-          body:
-            overrides:
-              containerOverrides:
-                - args:
-                    - "-m"
-                    - "cloud.orchestrator.delivery_job"
-                    - "resolve"
-                    - "--request-uri"
-                    - ${request_uri}
-                    - "--request-generation"
-                    - ${generation}
-                    - "--output-root"
-                    - ${output_root}
-                    - "--release-namespace"
-                    - ${release_namespace}
-                    - "--image-uri"
-                    - ${image_uri}
-          connector_params:
-            skip_polling: true
+        try:
+          call: googleapis.run.v2.projects.locations.jobs.run
+          args:
+            name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+            body:
+              overrides:
+                containerOverrides:
+                  - args:
+                      - "-m"
+                      - "cloud.orchestrator.delivery_job"
+                      - "resolve"
+                      - "--request-uri"
+                      - ${request_uri}
+                      - "--request-generation"
+                      - ${generation}
+                      - "--output-root"
+                      - ${output_root}
+                      - "--release-namespace"
+                      - ${release_namespace}
+                      - "--image-uri"
+                      - ${image_uri}
+            connector_params:
+              skip_polling: true
+        except:
+          as: e
+          steps:
+            - resolve_submission_outcome:
+                switch:
+                  - condition: ${default(map.get(e, "code"), 0) in [400, 401, 403, 404]}
+                    next: release_after_rejected_submission
+            - resolve_submission_unknown:
+                raise: ${e}
     - wait_for_resolution:
         call: await_record
         args:
@@ -297,6 +318,26 @@ main:
             skip_polling: true
     - failed_preparation:
         raise: ${"preparation " + admission.prepare_id + " " + prepare_status.status + "; no inference is started"}
+    # Reached only from a definitively rejected job submission (prepare or resolve): release, then stop with the error.
+    - release_after_rejected_submission:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+          body:
+            overrides:
+              containerOverrides:
+                - args:
+                    - "-m"
+                    - "cloud.orchestrator.delivery_job"
+                    - "release"
+                    - "--request-uri"
+                    - ${request_uri}
+                    - "--output-root"
+                    - ${output_root}
+          connector_params:
+            skip_polling: true
+    - rejected_submission:
+        raise: ${e}
     # Reached only from a create-only claim conflict.
     - read_claim:
         call: googleapis.storage.v1.objects.get

@@ -60,6 +60,21 @@ def _holder(store: ObjectStore, uri: str) -> Any:
         return f"unreadable lock ({type(exc).__name__})"
 
 
+def _stable_holder(store: ObjectStore, uri: str) -> tuple[Any, str | None]:
+    """(holder, generation) from ONE stable read: the generation before and after reading the body must be equal, so
+    the owner and the generation always describe the same lock object; a lock that changed while read raises
+    ``LockConflict`` (never adopted or released on a guess); an absent lock is (None, None)."""
+    before = store.get_metadata(uri)
+    if before is None:
+        return None, None
+    holder = _holder(store, uri)
+    after = store.get_metadata(uri)
+    if after is None or str(after.generation) != str(before.generation):
+        raise LockConflict(uri.rsplit("/", 1)[-1], f"changed while read (generation {before.generation} -> "
+                                                   f"{None if after is None else after.generation})")
+    return holder, str(before.generation)
+
+
 def acquire(store: ObjectStore, mode_root: str, systems: Iterable[str], run_id: str,
             now: datetime | None = None, adopt_own: bool = False) -> list[Lock]:
     """All selected systems' locks or none (only this submission's own acquisitions are released on failure).
@@ -76,10 +91,12 @@ def acquire(store: ObjectStore, mode_root: str, systems: Iterable[str], run_id: 
         try:
             meta = store.write_text(uri, body, if_generation_match=0)
         except GenerationConflict as exc:
-            holder = _holder(store, uri)
-            current = store.get_metadata(uri)
-            if adopt_own and holder == run_id and current is not None:
-                held.append(Lock(system, uri, str(current.generation), run_id))
+            try:
+                holder, generation = _stable_holder(store, uri)
+            except LockConflict as changed:
+                raise LockConflict(system, changed.holder, release(store, fresh)) from exc
+            if adopt_own and holder == run_id and generation is not None:
+                held.append(Lock(system, uri, generation, run_id))   # owner and generation of the same object
                 continue
             raise LockConflict(system, holder, release(store, fresh)) from exc
         except Exception as exc:                              # any other failure: release own locks, keep the cause
@@ -95,9 +112,9 @@ def owned(store: ObjectStore, mode_root: str, run_id: str) -> list[Lock]:
     out = []
     for system in SYSTEMS:
         uri = lock_uri(mode_root, system)
-        meta = store.get_metadata(uri)
-        if meta is not None and _holder(store, uri) == run_id:
-            out.append(Lock(system, uri, str(meta.generation), run_id))
+        holder, generation = _stable_holder(store, uri)
+        if holder == run_id:
+            out.append(Lock(system, uri, generation, run_id))
     return out
 
 

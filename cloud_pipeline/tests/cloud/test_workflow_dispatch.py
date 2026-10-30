@@ -187,6 +187,7 @@ class Cloud:
         self.store, self.preparation = store, preparation
         self.jobs, self.sleeps, self.executed = [], 0, []
         self.prepare_flags, self.locks_during_preparation, self.released = [], [], []
+        self.fail_submission = {}                         # job verb -> exception raised by the submission itself
         self.connectors = {"googleapis.storage.v1.objects.get": self.get,
                            "googleapis.storage.v1.objects.insert": self.insert,
                            "googleapis.run.v2.projects.locations.jobs.run": self.run_job,
@@ -213,6 +214,8 @@ class Cloud:
         assert connector_params == {"skip_polling": True}
         args = body["overrides"]["containerOverrides"][0]["args"]
         flags = dict(zip(args[3::2], args[4::2]))
+        if args[2] in self.fail_submission:
+            raise self.fail_submission.pop(args[2])
         self.jobs.append((name.rsplit("/", 1)[-1], args[2]))
         if args[1] == "cloud.orchestrator.prepare":
             self.prepare_flags.append(flags)
@@ -607,3 +610,100 @@ def test_after_activation_legacy_ipcch_remote_intents_are_rejected_before_any_co
     with pytest.raises(WorkflowRaised, match="was not admitted: .*v2 manifest"):
         _run(cloud, generation)
     assert cloud.jobs == [("oct-delivery", "admit")] and cloud.prepare_flags == [] and _owned(store) == []
+
+
+# --- residuals C/D on 78a2aeb: definitive submission rejection and every terminal path release the owned locks -------
+
+
+class FailingStore:
+    """Store wrapper failing writes (``fail_write``) or reads (``fail_read``) of one URI suffix."""
+
+    def __init__(self, inner, fail_write=None, fail_read=None):
+        self.inner, self.fail_write, self.fail_read = inner, fail_write, fail_read
+
+    def __getattr__(self, name):
+        return getattr(self.inner, name)
+
+    def write_text(self, uri, content, **kw):
+        if self.fail_write and uri.endswith(self.fail_write):
+            raise OSError(f"write of {uri} failed")
+        return self.inner.write_text(uri, content, **kw)
+
+    def read_text(self, uri):
+        if self.fail_read and uri.endswith(self.fail_read):
+            raise RuntimeError(f"read of {uri} failed")
+        return self.inner.read_text(uri)
+
+
+@pytest.mark.parametrize("verb", ["plan", "resolve"])
+@pytest.mark.parametrize("code,released", [(403, True), (404, True), (503, False)])
+def test_a_definitively_rejected_job_submission_releases_the_admission_locks(tmp_path, verb, code, released):
+    """C: a definitive rejection (4xx) of the prepare or resolve job submission means nothing runs - the owner
+    releases; an ambiguous outcome (5xx / timeout) keeps the locks (the job may be running)."""
+    store, cloud, generation = _world(tmp_path)
+    cloud.fail_submission[verb] = HttpError(code)
+    with pytest.raises(WorkflowRaised):
+        _run(cloud, generation)
+    assert _owned(store) == ([] if released else ["fewsnet", "ipcch"])
+    assert (("oct-delivery", "release") in cloud.jobs) == released
+
+
+def test_resolution_read_failure_releases_the_admission_locks(tmp_path):
+    """D: a non-acceptance error during resolution (here: the prepared manifest read) releases and is re-raised."""
+    store, cloud, generation = _world(tmp_path)
+    real = cloud.store
+    cloud.store = FailingStore(real, fail_read="prepared/prep-a/prepared_manifest.json")
+    try:
+        with pytest.raises(RuntimeError, match="prepared_manifest.json failed"):
+            _run(cloud, generation)
+    finally:
+        cloud.store = real
+    assert _owned(store) == []
+
+
+@pytest.mark.parametrize("record", ["admission.json", "resolution.json"])
+def test_dispatch_record_write_failure_releases_what_the_step_owns(tmp_path, record):
+    store, cloud, generation = _world(tmp_path)
+    real = cloud.store
+    cloud.store = FailingStore(real, fail_write=f"dispatch/{RUN}/{record}")
+    try:
+        with pytest.raises(OSError, match="failed"):
+            _run(cloud, generation)
+    finally:
+        cloud.store = real
+    assert _owned(store) == []
+
+
+def test_admission_replay_failure_never_releases_locks_adopted_from_the_first_admission(tmp_path):
+    """The cleanup at admission releases only what that call freshly acquired: a replayed admission whose record
+    write fails keeps the locks the first admission holds."""
+    store, cloud, generation = _world(tmp_path)
+    data = store.read_text(f"gs://{REQUEST_BUCKET}/{NAME}").encode()
+    ref = {"uri": f"gs://{REQUEST_BUCKET}/{NAME}", "generation": generation, "sha256": hashlib.sha256(data).hexdigest()}
+    dj.dispatch_step("admission", intent_ref=ref, intent_bytes=data, output_root="gs://data", store=store,
+                     reader=StoreReader(store))
+    held = _owned(store)
+    with pytest.raises(OSError):
+        dj.dispatch_step("admission", intent_ref=ref, intent_bytes=data, output_root="gs://data",
+                         store=FailingStore(store, fail_write="admission.json"), reader=StoreReader(store))
+    assert held == ["fewsnet", "ipcch"] and _owned(store) == held
+
+
+def test_delivery_rejected_by_a_changed_current_release_releases_the_admission_locks(tmp_path):
+    """D: after resolution the current release changes (now a v2 record without the inherited member): the delivery's
+    binding rejects it before scoring and the run's admission locks are released."""
+    store, cloud, generation = _world(tmp_path)
+    result = _run(cloud, generation)
+    assert _owned(store) == ["fewsnet", "ipcch"]
+    record = {"schema": pub.RELEASE_SCHEMA, "run_id": "other", "mode": "real", "activation": None, "systems": {}}
+    meta = store.write_text("gs://data/dual-system/releases/other/release.json", json.dumps(record))
+    store.write_text("gs://data/dual-system/current.json", json.dumps({
+        "run_id": "other", "release_record": "gs://data/dual-system/releases/other/release.json",
+        "release_record_generation": meta.generation}))
+    resolved = result["resolved_request"]
+    data = store.read_text(resolved["uri"]).encode()
+    with pytest.raises(dj.AcceptanceError, match="must name exactly"):
+        dj.execute(request_ref=resolved, request_bytes=data, output_root="gs://data", release_namespace="dual-system",
+                   image_uri="unused", store=store, downloader=None, work=tmp_path / "w",
+                   score=lambda *a: pytest.fail("scored"), package=None, upload=None)
+    assert _owned(store) == []
