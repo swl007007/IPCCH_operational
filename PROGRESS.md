@@ -3051,3 +3051,11 @@ Operational ledger only; it does not grant authority. Authority: `.trellis/tasks
 - CP6 artifacts (d57a3fb): `research/cp6/cp6-evidence-matrix.md` (116 rows AC1-40 / R1-R66 / FCC1-10, machine-checked), `operator-handoff.md`, validated `examples/`, the `entrypoint_v2 initialise` route, and the R53/R62 warning carry-through into prediction metadata.
 - Final regression (0d484d8 receipt): whole `cloud_pipeline/tests` `957 passed, 1015 warnings` at bbf21a4 (code == d57a3fb), exit 0; py_compile clean.
 - Final report: `research/cp6/cp6-final-report.md`. Live/cloud/full-area/production items remain DEFERRED (D-live-1..8), not blocking. Final acceptance, native finish and archive pending the Supervisor; no Audit, PR, merge or deploy.
+
+
+### 2026-10-30 — Supervisor final acceptance at 0d484d8
+
+- CP0–CP6 accepted within execution-protocol.md local scope; supersedes the prior CP3/CP4 open-work lists. Full requirement matrix covers 116 rows. Final executable code d57a3fb; whole locked test tree at bbf21a4: 957 passed, exit 0. CP5 actual-model fixture smoke and real FEWS scorer parity accepted with their stated limits.
+- CP6 found and closed prediction-metadata warning loss (R53/R62) and the FEWS prepared-snapshot example allowlist mismatch. Operator initialization/runbook/examples and source recovery are documented. No known blocking finding remains.
+- Final authority/evidence: task research/cp6/supervisor-final-acceptance.md, cp6-evidence-matrix.md, final-tests-summary.md and operator-handoff.md. Native finish/archive released after acceptance commit and checklist reconciliation; no Audit, merge or deployment.
+- Live EE/cloud/full-area acquisition, production current/activation, container validation and production-state rollback remain deferred, not passed. All large artifacts remain at their recorded local paths.
