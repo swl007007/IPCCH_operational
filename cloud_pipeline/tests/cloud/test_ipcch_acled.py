@@ -6,7 +6,7 @@ import pytest
 
 from cloud.common.object_store import LocalObjectStore
 from cloud.ipcch import acled as ac
-from cloud.ipcch.stores import StoreRoot, VersionedTable
+from cloud.ipcch.stores import StoreError, StoreRoot, VersionedTable
 
 
 def tables():
@@ -172,3 +172,18 @@ def test_mixed_format_duplicate_and_noncanonical_declarations_rejected(table):
         ac.coverage_end(records, tb, "2026-8")
     with pytest.raises(ac.AcledRefreshError, match="months"):
         series(table, ["2026-5"])
+
+
+def test_outputs_cover_exactly_the_roster_although_fixed_tables_carry_an_extra_admin(table):
+    """The byte-preserved ACLED unit tables include admin 1315 (outside the 6,226 roster): computed series must still
+    cover exactly the requested roster, and a roster area without weights fails."""
+    tb = tables()
+    tb.weights = pd.concat([tb.weights, pd.DataFrame({"admin_code": ["1315"], "poly_id": ["pA1"], "weight": [1.0]})], ignore_index=True)
+    tb.unit_iso3 = pd.concat([tb.unit_iso3, pd.DataFrame({"admin_code": ["1315"], "iso3": ["AAA"]})], ignore_index=True)
+    rows, _ = ac.parse_export(export([{"week": "2026-05-02", "events": "7"}]), start=START, end=END, regions=REG, tables=tb)
+    ac.refresh(table, rows, start=START, end=END, regions=REG, source_ref={}, feature_origin="2026-08", tables=tb)
+    weekly, records, _ = ac.saved_weekly(table)
+    out = ac.monthly_series(weekly, records, tb, ["2026-05"], ["1", "2"])
+    assert sorted(set(out["admin_code"])) == ["1", "2"]
+    with pytest.raises(StoreError, match="without ACLED unit weights"):
+        ac.monthly_series(weekly, records, tb, ["2026-05"], ["1", "2", "3"])

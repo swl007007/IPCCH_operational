@@ -172,9 +172,8 @@ def coverage_end(frame: pd.DataFrame) -> str | None:
 # --------------------------------------------------------------------------- reported-phase history snapshot (R62)
 
 
-def replace_snapshot(table: VersionedTable, snapshot: pd.DataFrame, *, source_ref: Mapping[str, str]) -> dict[str, Any]:
-    """Atomic full replacement by a complete snapshot through its preparation cutoff (FCC8)."""
-    label = table.table
+def validate_snapshot(snapshot: pd.DataFrame, label: str) -> tuple[pd.DataFrame, str]:
+    """(validated snapshot, its single preparation cutoff): the rules shared by refresh and initialisation (R62)."""
     if list(snapshot.columns) != list(SNAPSHOT_COLUMNS):
         raise StoreError(f"{label}: snapshot columns must be exactly {SNAPSHOT_COLUMNS}")
     snap = snapshot.assign(area_id=snapshot["area_id"].astype(str))
@@ -190,9 +189,19 @@ def replace_snapshot(table: VersionedTable, snapshot: pd.DataFrame, *, source_re
     if not phase.isin([1, 2, 3, 4, 5]).all():
         raise StoreError(f"{label}: phases must be 1..5")
     _unique(snap, ["area_id", "report_month"], label)
+    return snap, cutoff
+
+
+def snapshot_record(action: str, snap: pd.DataFrame, cutoff: str, source_ref: Mapping[str, Any]) -> dict[str, Any]:
+    """HEAD metadata of a saved snapshot; ``snapshot_warning`` reads its preparation cutoff."""
+    return {"action": action, "preparation_cutoff": cutoff, "source": dict(source_ref), "rows": int(len(snap))}
+
+
+def replace_snapshot(table: VersionedTable, snapshot: pd.DataFrame, *, source_ref: Mapping[str, str]) -> dict[str, Any]:
+    """Atomic full replacement by a complete snapshot through its preparation cutoff (FCC8)."""
+    snap, cutoff = validate_snapshot(snapshot, table.table)
     _, generation = table.head()
-    return table.commit(snap, {"action": "refresh", "preparation_cutoff": cutoff, "source": dict(source_ref),
-                               "rows": int(len(snap))}, expected_generation=generation)
+    return table.commit(snap, snapshot_record("refresh", snap, cutoff, source_ref), expected_generation=generation)
 
 
 def snapshot_warning(head: Mapping[str, Any] | None, feature_origin: str) -> str | None:
