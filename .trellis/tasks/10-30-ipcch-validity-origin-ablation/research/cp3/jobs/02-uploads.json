@@ -1,0 +1,268 @@
+{
+ "bucket": "food-crisis-modeling-enso-research-inputs",
+ "objects": [
+  {
+   "key": "baseline_predictions_h00",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h00.csv.gz",
+   "local": {
+    "bytes": 4668775,
+    "sha256": "e00ee843a5ec35f1b6a0d3fe12442069d686386e85da12a7a8cabdd8b09dc81d",
+    "md5": "Iij0wvsK+4d4Zo79EpfFkQ==",
+    "crc32c": "B/HFzw=="
+   },
+   "upload_mode": {
+    "if_generation_match": 0,
+    "retry": null,
+    "timeout": 900,
+    "checksum": "crc32c"
+   },
+   "upload": "created",
+   "remote": {
+    "generation": 1793384179245711,
+    "size": 4668775,
+    "md5": "Iij0wvsK+4d4Zo79EpfFkQ==",
+    "crc32c": "B/HFzw==",
+    "content_type": "application/gzip",
+    "time_created": "2026-10-30 18:16:19.253000+00:00"
+   },
+   "equal": true
+  },
+  {
+   "key": "baseline_predictions_h06",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h06.csv.gz",
+   "local": {
+    "bytes": 3774651,
+    "sha256": "bc90625a05b5f38654c382b615a74a2d9a3e59488e8146a0658fe17a7dc28c29",
+    "md5": "ARv12uagMlnbz6y5gBFhxg==",
+    "crc32c": "jsYDZA=="
+   },
+   "upload_mode": {
+    "if_generation_match": 0,
+    "retry": null,
+    "timeout": 900,
+    "checksum": "crc32c"
+   },
+   "upload": "created",
+   "remote": {
+    "generation": 1793384179994385,
+    "size": 3774651,
+    "md5": "ARv12uagMlnbz6y5gBFhxg==",
+    "crc32c": "jsYDZA==",
+    "content_type": "application/gzip",
+    "time_created": "2026-10-30 18:16:20.001000+00:00"
+   },
+   "equal": true
+  },
+  {
+   "key": "baseline_predictions_h12",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h12.csv.gz",
+   "local": {
+    "bytes": 3221416,
+    "sha256": "8c1c2c64e8144011555ec6a3dd4348bffd9d2b41069b568687065e6dd5cc3f54",
+    "md5": "8bdaJfF4+L5iqYcR8Jb1fw==",
+    "crc32c": "uvhS6A=="
+   },
+   "upload_mode": {
+    "if_generation_match": 0,
+    "retry": null,
+    "timeout": 900,
+    "checksum": "crc32c"
+   },
+   "upload": "created",
+   "remote": {
+    "generation": 1793384180661224,
+    "size": 3221416,
+    "md5": "8bdaJfF4+L5iqYcR8Jb1fw==",
+    "crc32c": "uvhS6A==",
+    "content_type": "application/gzip",
+    "time_created": "2026-10-30 18:16:20.668000+00:00"
+   },
+   "equal": true
+  },
+  {
+   "key": "manifest-formal-h00.json",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/manifest-formal-h00.json",
+   "local": {
+    "bytes": 5709,
+    "sha256": "453e25caa64f1b685a33c2d851dd30e2a4661c1d9529bf751755964047321c2d",
+    "md5": "JsX9poYbP6ppG9YrBpi9zQ==",
+    "crc32c": "1xHJ+A=="
+   },
+   "upload_mode": {
+    "if_generation_match": 0,
+    "retry": null,
+    "timeout": 900,
+    "checksum": "crc32c"
+   },
+   "upload": "created",
+   "remote": {
+    "generation": 1793384180902499,
+    "size": 5709,
+    "md5": "JsX9poYbP6ppG9YrBpi9zQ==",
+    "crc32c": "1xHJ+A==",
+    "content_type": "application/json",
+    "time_created": "2026-10-30 18:16:20.912000+00:00"
+   },
+   "equal": true
+  },
+  {
+   "key": "manifest-formal-h06.json",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/manifest-formal-h06.json",
+   "local": {
+    "bytes": 5709,
+    "sha256": "2770f820deda2a8a1b1657d15edd8683feacfd679bcb22f59036511eb715eec8",
+    "md5": "tNvCKJuUbjZ8cmPnHhqwYA==",
+    "crc32c": "ZgHOIg=="
+   },
+   "upload_mode": {
+    "if_generation_match": 0,
+    "retry": null,
+    "timeout": 900,
+    "checksum": "crc32c"
+   },
+   "upload": "created",
+   "remote": {
+    "generation": 1793384181227087,
+    "size": 5709,
+    "md5": "tNvCKJuUbjZ8cmPnHhqwYA==",
+    "crc32c": "ZgHOIg==",
+    "content_type": "application/json",
+    "time_created": "2026-10-30 18:16:21.236000+00:00"
+   },
+   "equal": true
+  },
+  {
+   "key": "manifest-formal-h12.json",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/manifest-formal-h12.json",
+   "local": {
+    "bytes": 5709,
+    "sha256": "c808cd6201cd3e9dee1e0cd2d39d3550b9ec10f8323f701243bde2a428090469",
+    "md5": "0azwpSdBfZzDdMnJ6kulGg==",
+    "crc32c": "EdfQjA=="
+   },
+   "upload_mode": {
+    "if_generation_match": 0,
+    "retry": null,
+    "timeout": 900,
+    "checksum": "crc32c"
+   },
+   "upload": "created",
+   "remote": {
+    "generation": 1793384181461715,
+    "size": 5709,
+    "md5": "0azwpSdBfZzDdMnJ6kulGg==",
+    "crc32c": "EdfQjA==",
+    "content_type": "application/json",
+    "time_created": "2026-10-30 18:16:21.468000+00:00"
+   },
+   "equal": true
+  },
+  {
+   "key": "config-formal-h00.json",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/config-formal-h00.json",
+   "local": {
+    "bytes": 90098,
+    "sha256": "169d504b44fe707e0aed6b7803b0559f4f834971a6c0b31ceca17e014d5ef060",
+    "md5": "j6uBo5Efbup2EAeMc10P4g==",
+    "crc32c": "EO9tag=="
+   },
+   "upload_mode": {
+    "if_generation_match": 0,
+    "retry": null,
+    "timeout": 900,
+    "checksum": "crc32c"
+   },
+   "upload": "created",
+   "remote": {
+    "generation": 1793384181723032,
+    "size": 90098,
+    "md5": "j6uBo5Efbup2EAeMc10P4g==",
+    "crc32c": "EO9tag==",
+    "content_type": "application/json",
+    "time_created": "2026-10-30 18:16:21.729000+00:00"
+   },
+   "equal": true
+  },
+  {
+   "key": "config-formal-h06.json",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/config-formal-h06.json",
+   "local": {
+    "bytes": 91551,
+    "sha256": "5356d1b6086fb90bd8408c9d49a45fece3ab1ac8fe0751ac27e752e0616458bd",
+    "md5": "SGg0KC8Y60wshe9lZRPBmQ==",
+    "crc32c": "C8KkNQ=="
+   },
+   "upload_mode": {
+    "if_generation_match": 0,
+    "retry": null,
+    "timeout": 900,
+    "checksum": "crc32c"
+   },
+   "upload": "created",
+   "remote": {
+    "generation": 1793384181973486,
+    "size": 91551,
+    "md5": "SGg0KC8Y60wshe9lZRPBmQ==",
+    "crc32c": "C8KkNQ==",
+    "content_type": "application/json",
+    "time_created": "2026-10-30 18:16:21.981000+00:00"
+   },
+   "equal": true
+  },
+  {
+   "key": "config-formal-h12.json",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/config-formal-h12.json",
+   "local": {
+    "bytes": 91351,
+    "sha256": "805274c8ba41474ffe75319bd37665ad76403786792e1e3b9cce2858b66e9414",
+    "md5": "GxO6kPnahmkxFGP1wMK5YQ==",
+    "crc32c": "yrn9Mg=="
+   },
+   "upload_mode": {
+    "if_generation_match": 0,
+    "retry": null,
+    "timeout": 900,
+    "checksum": "crc32c"
+   },
+   "upload": "created",
+   "remote": {
+    "generation": 1793384182237397,
+    "size": 91351,
+    "md5": "GxO6kPnahmkxFGP1wMK5YQ==",
+    "crc32c": "yrn9Mg==",
+    "content_type": "application/json",
+    "time_created": "2026-10-30 18:16:22.244000+00:00"
+   },
+   "equal": true
+  }
+ ],
+ "transport": "google-cloud-storage client (ADC), create-only if_generation_match=0, retry=None, server-validated CRC32C (no SDK delete path), size/MD5/CRC32C readback",
+ "precheck_existing": {
+  "baseline_predictions_h00": null,
+  "baseline_predictions_h06": null,
+  "baseline_predictions_h12": null,
+  "manifest-formal-h00.json": null,
+  "manifest-formal-h06.json": null,
+  "manifest-formal-h12.json": null,
+  "config-formal-h00.json": null,
+  "config-formal-h06.json": null,
+  "config-formal-h12.json": null
+ },
+ "manifests": {
+  "rc": 0,
+  "stdout": "{\n \"0\": {\n  \"rel\": \"manifest-formal-h00.json\",\n  \"sha256\": \"453e25caa64f1b685a33c2d851dd30e2a4661c1d9529bf751755964047321c2d\"\n },\n \"6\": {\n  \"rel\": \"manifest-formal-h06.json\",\n  \"sha256\": \"2770f820deda2a8a1b1657d15edd8683feacfd679bcb22f59036511eb715eec8\"\n },\n \"12\": {\n  \"rel\": \"manifest-formal-h12.json\",\n  \"sha256\": \"c808cd6201cd3e9dee1e0cd2d39d3550b9ec10f8323f701243bde2a428090469\"\n }\n}\n",
+  "stderr": ""
+ },
+ "generations": {
+  "baseline_predictions_h00": 1793384179245711,
+  "baseline_predictions_h06": 1793384179994385,
+  "baseline_predictions_h12": 1793384180661224,
+  "manifest-formal-h00.json": 1793384180902499,
+  "manifest-formal-h06.json": 1793384181227087,
+  "manifest-formal-h12.json": 1793384181461715,
+  "config-formal-h00.json": 1793384181723032,
+  "config-formal-h06.json": 1793384181973486,
+  "config-formal-h12.json": 1793384182237397
+ },
+ "ok": true
+}

@@ -1,0 +1,15 @@
+{
+ "targets_sha256": "001f8c7297e210b01206e87a595c01172b1d396de056904361dc91c1d88667de",
+ "targets": 14,
+ "identities": 6,
+ "run_metric_targets": 3,
+ "recompute_passed": true,
+ "logs_ok": true,
+ "log_reads": 3,
+ "identity_chain_ok": true,
+ "readback_all_pass": true,
+ "readback_items": 6,
+ "ui_pass": true,
+ "reader_accesses": 2,
+ "final_pass": true
+}

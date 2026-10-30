@@ -1,0 +1,8 @@
+assert h00_main_2023: cutoff 2022-12 fitting targets 2021-01..2022-10 (24 rows, expanding, halving24, identity) scored 12 keys 15f9d92d61a1dcc6 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2024: cutoff 2023-12 fitting targets 2021-01..2023-10 (36 rows, expanding, halving24, identity) scored 12 keys a468d7a5e3fb2d2c checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2025: cutoff 2024-12 fitting targets 2021-01..2024-10 (48 rows, expanding, halving24, identity) scored 12 keys 01ac4d2ea95f3913 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_supp_2026: cutoff 2025-12 fitting targets 2021-01..2025-10 (60 rows, expanding, halving24, identity) scored 12 keys 94dc6633fa927067 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+[      0s] h00_main_2023: backbone train 24 scored 12 calibration identity_no_support (0 rows)
+[      0s] h00_main_2024: backbone train 36 scored 12 calibration identity_no_support (0 rows)
+[      0s] h00_main_2025: backbone train 48 scored 12 calibration identity_no_support (0 rows)
+[      0s] h00_supp_2026: backbone train 60 scored 12 calibration identity_no_support (0 rows)

@@ -1,0 +1,56 @@
+1c1
+< """Rendered-UI targets for task 10-28, built only from passed readback receipts (readback/formal-hHH.json and
+---
+> """Rendered-UI targets for task 10-30, built only from passed readback receipts (readback/formal-hHH.json and
+3,5c3,5
+< harness-cap5000/browser_check.py and verify_run_rows.py. Adapted from task 10-27 cp5/ui_targets.py (base copy in
+< base-10-27/): CH artifacts, the ch_links tag and one common-support metric row added; the six identities are the three CH
+< runs and the three GOSIF-v3 baseline runs (unchanged, from their baseline readback); a CH run has one DatasetInput.
+---
+> harness-cap5000/browser_check.py and verify_run_rows.py. Adapted from task 10-28 ui_targets_ch.py (base copy in
+> base-10-28/): origin artifacts, the fit-label/origin provenance tags and origin.* metric rows; the six identities are the
+> three origin-ablation runs and the three CH-final baseline runs (unchanged, from their baseline readback); one DatasetInput.
+15c15
+< Per CH run: run page (names, dataset, tags incl. family_title / data version / code overlay, metric rows incl.
+---
+> Per origin-ablation run: run page (names, dataset, tags incl. family_title / data version / code overlay, metric rows incl.
+17c17
+< Experiments tab ("Model training") listing all six run names (GOSIF-v3 + CH H0/H6/H12), and the Models table with
+---
+> Experiments tab ("Model training") listing all six run names (CH-final + origin-ablation H0/H6/H12), and the Models table with
+28c28,29
+<         "common.historical_pooled.delta_vs_baseline.binary_f1")
+---
+>         "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1", "origin.holdout_2026_01_10.original.binary_f1",
+>         "origin.holdout_2026_01_10.augmented_total.n_rows")
+30c31
+<              "report_region_mapping.csv", "region_mapping.csv", "ch_comparison.csv", "ch_common_report.csv")
+---
+>              "report_region_mapping.csv", "region_mapping.csv", "origin_comparison.csv", "origin_comparison.json", "origin_tui.csv")
+32c33,34
+<             "provenance.code_overlay", "provenance.hpt_freeze_sha256", "vertex.CLOUD_ML_JOB_ID", "provenance.ch_links")
+---
+>             "provenance.code_overlay", "provenance.hpt_freeze_sha256", "vertex.CLOUD_ML_JOB_ID", "provenance.ch_links",
+>             "provenance.fit_labels", "provenance.origin_ablation")
+41c43
+<     ds, legacy = run["authoritative_dataset"], []      # a CH run publishes in-job: exactly one DatasetInput (readback-checked)
+---
+>     ds, legacy = run["authoritative_dataset"], []      # an origin run publishes in-job: exactly one DatasetInput (readback-checked)
+68c70
+<     return {"group": f"ch-{g}", "run_id": rb["run"]["id"], "run_name": rb["run"]["name"], "model_id": rb["logged_model"]["id"],
+---
+>     return {"group": f"origin-{g}", "run_id": rb["run"]["id"], "run_name": rb["run"]["name"], "model_id": rb["logged_model"]["id"],
+74,75c76,77
+<     """GOSIF-v3 baseline identities come only from its passed baseline readback (anchored to the task 10-27 receipt; its
+<     LoggedModel's Dataset is the authoritative corrected-input DatasetInput)."""
+---
+>     """CH-final baseline identities come only from its passed baseline readback (anchored to the task 10-28 supplemental
+>     receipt; its LoggedModel's Dataset is its authoritative CH DatasetInput)."""
+79c81
+<     return {"group": f"gosif-v3-{g}", "run_id": rb["anchors"]["run_id"], "run_name": rb["run"]["name"], "model_id": rb["anchors"]["model_id"],
+---
+>     return {"group": f"ch-final-{g}", "run_id": rb["anchors"]["run_id"], "run_name": rb["run"]["name"], "model_id": rb["anchors"]["model_id"],
+100c102
+<         raise SystemExit("exactly the three CH run targets must exist, each with run_metric_rows (verify_run_rows ui_pass)")
+---
+>         raise SystemExit("exactly the three origin run targets must exist, each with run_metric_rows (verify_run_rows ui_pass)")

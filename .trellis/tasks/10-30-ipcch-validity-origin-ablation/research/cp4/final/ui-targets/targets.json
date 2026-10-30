@@ -1,0 +1,532 @@
+[
+ {
+  "label": "h00-run",
+  "fragment": "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730",
+  "expect": [
+   "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+   "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index",
+   "Metrics (311)"
+  ],
+  "segments": [
+   {
+    "after": "Logged models (1)",
+    "before": "About this run",
+    "expect": [
+     "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month | seed 42",
+     "Ready",
+     "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+     "v1"
+    ]
+   },
+   {
+    "after": "Datasets",
+    "before": "Tags",
+    "expect": [
+     "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (dba329f9b115d4de10e294133bf91d41)"
+    ]
+   },
+   {
+    "after": "\nTags\n",
+    "before": "\nRegistered models",
+    "expect": [
+     "family\n: ipcch_validity_pooled",
+     "family_title\n: Original-label fit ablation (GOSIF v3 + CH validity 20261028)",
+     "arm\n: validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+     "arm_role\n: candidate",
+     "record_kind\n: dashboard_row",
+     "lead_months\n: 00",
+     "baseline.run_id\n: 298c4718b4d64e6f8a5c315e8c22d25d",
+     "provenance.data_version\n: gosif-v3-input-20261027+ch-validity-20261028",
+     "provenance.code_overlay\n: overlay manifest sha256 e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834; modules research_cloud/training/dataset_input.py sha256 2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4 (origin DatasetInput name, fit-subset tags and saved-membership check; publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path); image us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197 (build 22176002-a56f-47df-ab67-ede2ba8c68da; source task/ipcch-validity-origin-ablation 868db9f51ffd6c45a7673cbaf10111b5dd46adde) = base training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939 (control-plane 439a488) + these three modules",
+     "provenance.hpt_freeze_sha256\n: dc152d4ea6e719a32093a9e4ae35f9bdf2d24e1f52ebc30b3660b9a97791b622",
+     "vertex.CLOUD_ML_JOB_ID\n: 2842603222726606848",
+     "provenance.ch_links\n: ch_links.csv.gz sha256 ac4ad6aaa8dc9e0efad6a7ba95456c536355d66ad0f3fa4225b811307aeb5153",
+     "provenance.fit_labels\n: original_only: backbone fitting labels = final label_kind == original rows of each CH-final fitting pool; copies scored, never fitted",
+     "provenance.origin_ablation\n: gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030; task 10-30 original-label fit ablation (fit membership only)"
+    ]
+   }
+  ],
+  "run_metric_rows": [
+   {
+    "key": "historical_pooled.binary_f1",
+    "value": 0.7969987494789496,
+    "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics"
+   },
+   {
+    "key": "holdout_2026_01_10.binary_f1",
+    "value": 0.7687947991331888,
+    "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics"
+   },
+   {
+    "key": "report.region.east_africa.holdout.binary_f1",
+    "value": 0.8310955438801323,
+    "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics"
+   },
+   {
+    "key": "report.temporal.somalia.holdout.binary_f1",
+    "value": 0.7986743993371996,
+    "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics"
+   },
+   {
+    "key": "report.temporal.all_regions.2024.macro_f1",
+    "value": 0.5793414094549598,
+    "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics"
+   },
+   {
+    "key": "scored_rows",
+    "value": 70972.0,
+    "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics"
+   },
+   {
+    "key": "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1",
+    "value": -0.011448425903416437,
+    "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics"
+   },
+   {
+    "key": "origin.holdout_2026_01_10.original.binary_f1",
+    "value": 0.8167436651266975,
+    "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics"
+   },
+   {
+    "key": "origin.holdout_2026_01_10.augmented_total.n_rows",
+    "value": 15317.0,
+    "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics"
+   }
+  ]
+ },
+ {
+  "label": "h00-artifacts",
+  "fragment": "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/artifacts",
+  "expect": [
+   "predictions.csv.gz",
+   "metrics.json",
+   "model-card.md",
+   "equivalence.json",
+   "trial.json",
+   "report_tables.csv",
+   "report_region_mapping.csv",
+   "region_mapping.csv",
+   "origin_comparison.csv",
+   "origin_comparison.json",
+   "origin_tui.csv"
+  ]
+ },
+ {
+  "label": "h00-dataset",
+  "fragment": "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730",
+  "clicks": [
+   "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index"
+  ],
+  "expect": [
+   "Data details for",
+   "dba329f9b115d4de10e294133bf91d41",
+   "num rows: 147268",
+   "row\nlong\nadmin_code\nlong\ntarget_ord\nlong\nlabel_kind\nstring\nsource_family\nlong\nsource_available_ord\nlong"
+  ]
+ },
+ {
+  "label": "h00-logged-model",
+  "fragment": "#/experiments/2/models/m-055654f09a78436593ce720f4c52be10",
+  "expect": [
+   "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month | seed 42",
+   "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index",
+   "Ready",
+   "Metrics (1)",
+   "dataset.modeling_panel_index.rows"
+  ],
+  "rows_checks": {
+   "metric_rows": [
+    {
+     "key": "dataset.modeling_panel_index.rows",
+     "value": 147268.0,
+     "dataset": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)",
+     "href_contains": "/runs/bd24976069ee4530bb97343c1ec6e730"
+    }
+   ]
+  }
+ },
+ {
+  "label": "h06-run",
+  "fragment": "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f",
+  "expect": [
+   "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+   "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index",
+   "Metrics (311)"
+  ],
+  "segments": [
+   {
+    "after": "Logged models (1)",
+    "before": "About this run",
+    "expect": [
+     "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42",
+     "Ready",
+     "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+     "v1"
+    ]
+   },
+   {
+    "after": "Datasets",
+    "before": "Tags",
+    "expect": [
+     "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (dba329f9b115d4de10e294133bf91d41)"
+    ]
+   },
+   {
+    "after": "\nTags\n",
+    "before": "\nRegistered models",
+    "expect": [
+     "family\n: ipcch_validity_pooled",
+     "family_title\n: Original-label fit ablation (GOSIF v3 + CH validity 20261028)",
+     "arm\n: validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+     "arm_role\n: candidate",
+     "record_kind\n: dashboard_row",
+     "lead_months\n: 06",
+     "baseline.run_id\n: 00d4e94c824343bf86a0c2b79d5b9ed0",
+     "provenance.data_version\n: gosif-v3-input-20261027+ch-validity-20261028",
+     "provenance.code_overlay\n: overlay manifest sha256 e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834; modules research_cloud/training/dataset_input.py sha256 2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4 (origin DatasetInput name, fit-subset tags and saved-membership check; publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path); image us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197 (build 22176002-a56f-47df-ab67-ede2ba8c68da; source task/ipcch-validity-origin-ablation 868db9f51ffd6c45a7673cbaf10111b5dd46adde) = base training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939 (control-plane 439a488) + these three modules",
+     "provenance.hpt_freeze_sha256\n: fe6be936989d045d2d020870700d24fa2ceca4e33d68d5ec96acd0fd3f57137c",
+     "vertex.CLOUD_ML_JOB_ID\n: 2596031143128072192",
+     "provenance.ch_links\n: ch_links.csv.gz sha256 ac4ad6aaa8dc9e0efad6a7ba95456c536355d66ad0f3fa4225b811307aeb5153",
+     "provenance.fit_labels\n: original_only: backbone fitting labels = final label_kind == original rows of each CH-final fitting pool; copies scored, never fitted",
+     "provenance.origin_ablation\n: gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030; task 10-30 original-label fit ablation (fit membership only)"
+    ]
+   }
+  ],
+  "run_metric_rows": [
+   {
+    "key": "historical_pooled.binary_f1",
+    "value": 0.7834375,
+    "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics"
+   },
+   {
+    "key": "holdout_2026_01_10.binary_f1",
+    "value": 0.7702391904323828,
+    "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics"
+   },
+   {
+    "key": "report.region.east_africa.holdout.binary_f1",
+    "value": 0.8279754106620981,
+    "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics"
+   },
+   {
+    "key": "report.temporal.somalia.holdout.binary_f1",
+    "value": 0.7877385772122614,
+    "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics"
+   },
+   {
+    "key": "report.temporal.all_regions.2024.macro_f1",
+    "value": 0.5320230224891804,
+    "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics"
+   },
+   {
+    "key": "scored_rows",
+    "value": 61042.0,
+    "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics"
+   },
+   {
+    "key": "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1",
+    "value": 0.003607418682212371,
+    "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics"
+   },
+   {
+    "key": "origin.holdout_2026_01_10.original.binary_f1",
+    "value": 0.8089490727112157,
+    "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics"
+   },
+   {
+    "key": "origin.holdout_2026_01_10.augmented_total.n_rows",
+    "value": 15317.0,
+    "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics"
+   }
+  ]
+ },
+ {
+  "label": "h06-artifacts",
+  "fragment": "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/artifacts",
+  "expect": [
+   "predictions.csv.gz",
+   "metrics.json",
+   "model-card.md",
+   "equivalence.json",
+   "trial.json",
+   "report_tables.csv",
+   "report_region_mapping.csv",
+   "region_mapping.csv",
+   "origin_comparison.csv",
+   "origin_comparison.json",
+   "origin_tui.csv"
+  ]
+ },
+ {
+  "label": "h06-dataset",
+  "fragment": "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f",
+  "clicks": [
+   "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index"
+  ],
+  "expect": [
+   "Data details for",
+   "dba329f9b115d4de10e294133bf91d41",
+   "num rows: 147268",
+   "row\nlong\nadmin_code\nlong\ntarget_ord\nlong\nlabel_kind\nstring\nsource_family\nlong\nsource_available_ord\nlong"
+  ]
+ },
+ {
+  "label": "h06-logged-model",
+  "fragment": "#/experiments/2/models/m-daad991238a5430eb504eaacd4046d36",
+  "expect": [
+   "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42",
+   "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index",
+   "Ready",
+   "Metrics (1)",
+   "dataset.modeling_panel_index.rows"
+  ],
+  "rows_checks": {
+   "metric_rows": [
+    {
+     "key": "dataset.modeling_panel_index.rows",
+     "value": 147268.0,
+     "dataset": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)",
+     "href_contains": "/runs/eb33b087fe314237ad1c6432bcfe140f"
+    }
+   ]
+  }
+ },
+ {
+  "label": "h12-run",
+  "fragment": "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2",
+  "expect": [
+   "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+   "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index",
+   "Metrics (266)"
+  ],
+  "segments": [
+   {
+    "after": "Logged models (1)",
+    "before": "About this run",
+    "expect": [
+     "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month | seed 42",
+     "Ready",
+     "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+     "v1"
+    ]
+   },
+   {
+    "after": "Datasets",
+    "before": "Tags",
+    "expect": [
+     "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (dba329f9b115d4de10e294133bf91d41)"
+    ]
+   },
+   {
+    "after": "\nTags\n",
+    "before": "\nRegistered models",
+    "expect": [
+     "family\n: ipcch_validity_pooled",
+     "family_title\n: Original-label fit ablation (GOSIF v3 + CH validity 20261028)",
+     "arm\n: validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+     "arm_role\n: candidate",
+     "record_kind\n: dashboard_row",
+     "lead_months\n: 12",
+     "baseline.run_id\n: f436da15c71c469199784db065f3b63b",
+     "provenance.data_version\n: gosif-v3-input-20261027+ch-validity-20261028",
+     "provenance.code_overlay\n: overlay manifest sha256 e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834; modules research_cloud/training/dataset_input.py sha256 2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4 (origin DatasetInput name, fit-subset tags and saved-membership check; publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path); image us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197 (build 22176002-a56f-47df-ab67-ede2ba8c68da; source task/ipcch-validity-origin-ablation 868db9f51ffd6c45a7673cbaf10111b5dd46adde) = base training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939 (control-plane 439a488) + these three modules",
+     "provenance.hpt_freeze_sha256\n: b094e05934931eb1cc0bf2f403b7b2898c1b76c0c33401ecf093ed49b6c5fb90",
+     "vertex.CLOUD_ML_JOB_ID\n: 3377405678476853248",
+     "provenance.ch_links\n: ch_links.csv.gz sha256 ac4ad6aaa8dc9e0efad6a7ba95456c536355d66ad0f3fa4225b811307aeb5153",
+     "provenance.fit_labels\n: original_only: backbone fitting labels = final label_kind == original rows of each CH-final fitting pool; copies scored, never fitted",
+     "provenance.origin_ablation\n: gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030; task 10-30 original-label fit ablation (fit membership only)"
+    ]
+   }
+  ],
+  "run_metric_rows": [
+   {
+    "key": "historical_pooled.binary_f1",
+    "value": 0.7519104084321475,
+    "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics"
+   },
+   {
+    "key": "holdout_2026_01_10.binary_f1",
+    "value": 0.7635624576580332,
+    "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics"
+   },
+   {
+    "key": "report.region.east_africa.holdout.binary_f1",
+    "value": 0.8188946261235418,
+    "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics"
+   },
+   {
+    "key": "report.temporal.somalia.holdout.binary_f1",
+    "value": 0.7686350435624395,
+    "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics"
+   },
+   {
+    "key": "report.temporal.all_regions.2024.macro_f1",
+    "value": 0.4528552253705152,
+    "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics"
+   },
+   {
+    "key": "scored_rows",
+    "value": 52027.0,
+    "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics"
+   },
+   {
+    "key": "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1",
+    "value": -0.00968410266526143,
+    "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics"
+   },
+   {
+    "key": "origin.holdout_2026_01_10.original.binary_f1",
+    "value": 0.7913088732760863,
+    "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics"
+   },
+   {
+    "key": "origin.holdout_2026_01_10.augmented_total.n_rows",
+    "value": 15317.0,
+    "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics"
+   }
+  ]
+ },
+ {
+  "label": "h12-artifacts",
+  "fragment": "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/artifacts",
+  "expect": [
+   "predictions.csv.gz",
+   "metrics.json",
+   "model-card.md",
+   "equivalence.json",
+   "trial.json",
+   "report_tables.csv",
+   "report_region_mapping.csv",
+   "region_mapping.csv",
+   "origin_comparison.csv",
+   "origin_comparison.json",
+   "origin_tui.csv"
+  ]
+ },
+ {
+  "label": "h12-dataset",
+  "fragment": "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2",
+  "clicks": [
+   "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index"
+  ],
+  "expect": [
+   "Data details for",
+   "dba329f9b115d4de10e294133bf91d41",
+   "num rows: 147268",
+   "row\nlong\nadmin_code\nlong\ntarget_ord\nlong\nlabel_kind\nstring\nsource_family\nlong\nsource_available_ord\nlong"
+  ]
+ },
+ {
+  "label": "h12-logged-model",
+  "fragment": "#/experiments/2/models/m-9f73aac99f444c91b8022ec9f6e41df3",
+  "expect": [
+   "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month | seed 42",
+   "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index",
+   "Ready",
+   "Metrics (1)",
+   "dataset.modeling_panel_index.rows"
+  ],
+  "rows_checks": {
+   "metric_rows": [
+    {
+     "key": "dataset.modeling_panel_index.rows",
+     "value": 147268.0,
+     "dataset": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)",
+     "href_contains": "/runs/8237e829dc4b42169ccb3136c19aafb2"
+    }
+   ]
+  }
+ },
+ {
+  "label": "dashboard-experiment",
+  "fragment": "#/experiments/2",
+  "clicks": [
+   "Model training"
+  ],
+  "expect": [
+   "IPCCH dashboard",
+   "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+   "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+   "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+   "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+   "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+   "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month"
+  ]
+ },
+ {
+  "label": "models-table",
+  "fragment": "#/experiments/2/models",
+  "clicks": [
+   "Model training",
+   "Models"
+  ],
+  "expect": [
+   "Model attributes",
+   "Dataset"
+  ],
+  "rows_checks": {
+   "models_rows": [
+    {
+     "group": "origin-h00",
+     "run_id": "bd24976069ee4530bb97343c1ec6e730",
+     "run_name": "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+     "model_id": "m-055654f09a78436593ce720f4c52be10",
+     "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+     "model_version": "1",
+     "dataset_name": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index",
+     "expected_digest": "dba329f9b115d4de10e294133bf91d41"
+    },
+    {
+     "group": "origin-h06",
+     "run_id": "eb33b087fe314237ad1c6432bcfe140f",
+     "run_name": "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+     "model_id": "m-daad991238a5430eb504eaacd4046d36",
+     "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+     "model_version": "1",
+     "dataset_name": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index",
+     "expected_digest": "dba329f9b115d4de10e294133bf91d41"
+    },
+    {
+     "group": "origin-h12",
+     "run_id": "8237e829dc4b42169ccb3136c19aafb2",
+     "run_name": "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+     "model_id": "m-9f73aac99f444c91b8022ec9f6e41df3",
+     "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+     "model_version": "1",
+     "dataset_name": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index",
+     "expected_digest": "dba329f9b115d4de10e294133bf91d41"
+    },
+    {
+     "group": "ch-final-h00",
+     "run_id": "298c4718b4d64e6f8a5c315e8c22d25d",
+     "run_name": "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+     "model_id": "m-698519b8daeb456ea5e9126b6fc18e8f",
+     "registered_model": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+     "model_version": "1",
+     "dataset_name": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index",
+     "expected_digest": "dba329f9b115d4de10e294133bf91d41"
+    },
+    {
+     "group": "ch-final-h06",
+     "run_id": "00d4e94c824343bf86a0c2b79d5b9ed0",
+     "run_name": "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+     "model_id": "m-46beb4c7d5674c1abd874b3bd90c1f87",
+     "registered_model": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+     "model_version": "1",
+     "dataset_name": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index",
+     "expected_digest": "dba329f9b115d4de10e294133bf91d41"
+    },
+    {
+     "group": "ch-final-h12",
+     "run_id": "f436da15c71c469199784db065f3b63b",
+     "run_name": "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+     "model_id": "m-9da8be7f46c946e69a8e759d9064a77a",
+     "registered_model": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+     "model_version": "1",
+     "dataset_name": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index",
+     "expected_digest": "dba329f9b115d4de10e294133bf91d41"
+    }
+   ]
+  }
+ }
+]

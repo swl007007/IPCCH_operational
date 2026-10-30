@@ -1,0 +1,338 @@
+{
+ "package": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/package",
+ "package_json_sha256": "4da75633842dd9daa3ce9ea7142301eaaf02fa5efe35f2ee626ab4de58e793a6",
+ "integrity_problems": [],
+ "runtime": {
+  "python": "3.12.3",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "xgboost": "3.2.0",
+  "numpy": "2.4.4",
+  "pandas": "3.0.3"
+ },
+ "identity": {
+  "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+  "family": "ipcch_validity_pooled",
+  "fixed": {
+   "b2_ridge_penalty": 0.01,
+   "calibration": "none (identity): no B2 or provider fits by design; the backbone quartet is projected (bounded, decreasing) and decoded with inclusive q_k >= 0.20",
+   "early_stopping": "none",
+   "half_life_months": 24,
+   "n_threads": 16,
+   "other_colsample_bytree": 0.7269756250210765,
+   "other_learning_rate": 0.027538515460387113,
+   "other_max_depth": 5,
+   "other_min_child_weight": 23.072391682325758,
+   "other_n_estimators": 398,
+   "other_subsample": 0.6716682260833845,
+   "parameter_groups": "{\"other\": [\"q2\", \"q4\", \"q5\"], \"q3\": [\"q3\"]}",
+   "q3_colsample_bytree": 0.4327978267528363,
+   "q3_learning_rate": 0.08536359461483287,
+   "q3_max_depth": 4,
+   "q3_min_child_weight": 18.162407873411354,
+   "q3_n_estimators": 346,
+   "q3_subsample": 0.8118788081985475,
+   "seed": 42,
+   "untuned": "{\"other\": {\"gamma\": 0.0, \"reg_alpha\": 0.0, \"reg_lambda\": 1.0}, \"q3\": {\"gamma\": 0.1, \"reg_alpha\": 0.0, \"reg_lambda\": 1.0}}",
+   "xgb_fixed": "{\"booster\": \"gbtree\", \"device\": \"cpu\", \"n_jobs\": 16, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"scale_pos_weight\": 1.0, \"tree_method\": \"hist\"}"
+  },
+  "frozen": {
+   "freeze_index_sha256": "d85582b3ca1d6364e9021957ea4695d75905aafcb435ac9c7819eccdc7ef424f",
+   "freeze_sha256": "fe6be936989d045d2d020870700d24fa2ceca4e33d68d5ec96acd0fd3f57137c",
+   "params_sha256": "8d098996e3104d31d80ebef406ebcb8295d5edc6b8bebdbc69ee99b62d8fe116",
+   "winner_role": "search",
+   "winner_trial_id": "18"
+  },
+  "horizon": 6,
+  "input_manifest": {
+   "derived_from": {
+    "ch_final_formal_manifest": {
+     "gcs_generation": 1793219072084269,
+     "name": "ipcch-ch-validity-refits-r1-formal-h06",
+     "sha256": "1407b2db46ed969121d01c7de6bcd76a65b8be419ad497c914a23d9bb8fb0567",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h06.json"
+    },
+    "replaced_roles": {
+     "baseline_predictions": {
+      "gcs_generation": 1793219071144730,
+      "sha256": "e3801e0c4f5679853c78a8b56f2a9000d185eb2a2f0afd3643ce1ce3c94ede16",
+      "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/baseline-predictions-gosifv3-h06.csv.gz"
+     }
+    }
+   },
+   "files": {
+    "analyses": {
+     "gcs_generation": 1792462894893588,
+     "sha256": "1c7dfb786a8f82476542437445931fc5ab1ffdb5329aadc570616357f449b4b6",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.validity-20261019/analyses_combined_2026-10-19.json"
+    },
+    "areas": {
+     "gcs_generation": 1792462922478447,
+     "sha256": "200f5dcaad88e18babbc9a4882a2ca920231702f6d5bcb11969af82742fa5ee6",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.validity-20261019/areas_combined_2026-10-19.geojson"
+    },
+    "baseline_predictions": {
+     "gcs_generation": 1793384179994385,
+     "sha256": "bc90625a05b5f38654c382b615a74a2d9a3e59488e8146a0658fe17a7dc28c29",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h06.csv.gz"
+    },
+    "ch_links": {
+     "gcs_generation": 1793219070023026,
+     "sha256": "ac4ad6aaa8dc9e0efad6a7ba95456c536355d66ad0f3fa4225b811307aeb5153",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.ch-validity-links-20261028/ch_links.csv.gz"
+    },
+    "climate_monthly": {
+     "gcs_generation": 1792155988779628,
+     "sha256": "8082b72ea5fa5c30a7b975b89c1fbbb4530f27a9ce6c5ba4d0e1a4f923320c89",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.climate_monthly/climate_monthly_2015_2026_MODELING_READY.csv"
+    },
+    "climate_seasonal": {
+     "gcs_generation": 1792155829679604,
+     "sha256": "f024a66c8979fb4a8c66fba1f04e7e69355fa75b499793d29001a146d8c2958e",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.climate_seasonal/climate_2015_2026_MODELING_READY.csv"
+    },
+    "compact_manifest": {
+     "gcs_generation": 1792154075204519,
+     "sha256": "456360536a3929e1571d96ba9f16e2f0de54bc1b20019f797bbe62c0c89732ca",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.compact.manifest/compact_climate_weather_oracle_v1_manifest.json"
+    },
+    "country_lookup": {
+     "gcs_generation": 1792153966578810,
+     "sha256": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.country_lookup/country_area_id_lookup.csv"
+    },
+    "descriptors": {
+     "gcs_generation": 1792154225849272,
+     "sha256": "362c58b0f3396fd8ecc3bd42fe0257f979dd371780f70af6edd3a59f633e26d4",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.alphaearth.descriptors.descriptor_table.csv.gz/descriptor_table.csv.gz"
+    },
+    "freeze": {
+     "gcs_generation": 1792690601509870,
+     "sha256": "fe6be936989d045d2d020870700d24fa2ceca4e33d68d5ec96acd0fd3f57137c",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-acledagg-hpt/r1/freeze/freeze-h06.json"
+    },
+    "freeze_index": {
+     "gcs_generation": 1792690601692816,
+     "sha256": "d85582b3ca1d6364e9021957ea4695d75905aafcb435ac9c7819eccdc7ef424f",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-acledagg-hpt/r1/freeze/index.json"
+    },
+    "idp_admin0_monthly": {
+     "gcs_generation": 1792154074942115,
+     "sha256": "a1ebb82a8e14fc0fb8103d6086217b93da351fc4a8f7fcfbe9eaa44a9df602e1",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.idp_admin0_monthly/idp_admin0_monthly.csv"
+    },
+    "idp_ipcch_monthly": {
+     "gcs_generation": 1792258101675874,
+     "sha256": "8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.idp-20261017/idp_ipcch_monthly.parquet"
+    },
+    "interim": {
+     "gcs_generation": 1793144581875896,
+     "sha256": "b2d5d2ce6bd6a78da7caac2c070fcc2ced55aa4c4e7bd5725df0ce514e902b62",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.panel-acledagg-gosifv3-20261027/IPCCH_202610_interim_acledagg_gosifv3_20261027.csv"
+    },
+    "raw_panel": {
+     "gcs_generation": 1792463222777994,
+     "sha256": "09002869ecc25667d78d972185c8ea24340eabc4d6e1f8a6d560ebda214e1373",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.panel-20261019/IPCCH_202610_completed.csv"
+    },
+    "region_mapping": {
+     "gcs_generation": 1792154473935553,
+     "sha256": "18ab5099ce2d1154fb5686183ee399124e18427cc1594923f7abe2769da1611d",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.region_mapping/area_id_country_region_mapping.csv"
+    },
+    "report_region_mapping": {
+     "gcs_generation": 1793144440149174,
+     "sha256": "5d1fd7f8b0dbf5e43e9644280bab7e521da6b9897531cba4fc1479f8deef5676",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.report-region-map-20261027/area_id_report_region_mapping_20261027.csv"
+    },
+    "static29": {
+     "gcs_generation": 1792213590853844,
+     "sha256": "229d593ef8fc96b3747cfffd82ffd6a294217ae3f0442888872abe3c0ed668d4",
+     "uri": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.validity-20261017/static29_by_admin.csv.gz"
+    }
+   },
+   "gcp_project": "food-crisis-modeling-enso",
+   "name": "ipcch-validity-origin-ablation-r1-formal-h06"
+  },
+  "job": "2596031143128072192",
+  "mode": "formal",
+  "origin_ablation": {
+   "ch_baseline": {
+    "ch_correction_sha256": "37b66537c22fb6f01805584a174bbf0094e6a8cff46c9eff3cc321898b79250f",
+    "package_json_sha256": "813b343c335d27065a572d0129554c53be7f1d29854d073daae6aeede1b3ab8f",
+    "params_sha256": "8d098996e3104d31d80ebef406ebcb8295d5edc6b8bebdbc69ee99b62d8fe116",
+    "predictions_sha256": "bc90625a05b5f38654c382b615a74a2d9a3e59488e8146a0658fe17a7dc28c29",
+    "recipe_sha256": "29c4418d78aa4ade13f2b4832eab1f84d0ec2b26ec9f9c52eed3f6ef32e228e2",
+    "run_id": "00d4e94c824343bf86a0c2b79d5b9ed0"
+   },
+   "ch_data_version": "gosif-v3-input-20261027+ch-validity-20261028",
+   "comparison_files": [
+    "origin_comparison.json",
+    "origin_comparison.csv",
+    "origin_tui.csv"
+   ],
+   "data_version": "gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030",
+   "fit_counts": {
+    "h06_main_2023": {
+     "fit_label_removed": 57059,
+     "train_keys_sha256": "26fa0ce569a8b984b59239f664fa642ebf236058c34ffbe80e1e5f91e2e831cd",
+     "train_rows": 21282
+    },
+    "h06_main_2024": {
+     "fit_label_removed": 64301,
+     "train_keys_sha256": "85f40a26812b5dce78868f880b2f31d30e3d74c0562dcd954c6b47b7db697104",
+     "train_rows": 22478
+    },
+    "h06_main_2025": {
+     "fit_label_removed": 77220,
+     "train_keys_sha256": "0f9a5ba8f1f61719f284a18b64ae4c67ab6a727ba718aab652a1a089bdefb08f",
+     "train_rows": 27134
+    },
+    "h06_supp_2026": {
+     "fit_label_removed": 87890,
+     "train_keys_sha256": "de8dfe8cf5ba7ae992c7013e78cb8a912c8885a075a0b4ca2c5240a22a8cbcd4",
+     "train_rows": 34004
+    }
+   },
+   "fit_labels": "original_only",
+   "kind": "original_label_fit_ablation",
+   "packages": {
+    "gcs-only/annual-package": "temporary: annual units h06_main_2023, h06_main_2024, h06_main_2025 (package replay verification, then task-owned removal; never published to MLflow)",
+    "package": "retained: holdout unit h06_supp_2026 only"
+   },
+   "relation": "original-only backbone fitting labels on the CH-final panel; every input, label, scored row, exclusion, history, feature, parameter, weight, context and cutoff inherited from the CH-final run",
+   "report_files": [
+    "report_tables.json",
+    "report_tables.csv",
+    "report_region_mapping.csv"
+   ]
+  },
+  "package_role": "retained: holdout unit h06_supp_2026 only",
+  "quartet": {
+   "q2": {
+    "colsample_bytree": 0.7269756250210765,
+    "gamma": 0.0,
+    "learning_rate": 0.027538515460387113,
+    "max_depth": 5,
+    "min_child_weight": 23.072391682325758,
+    "n_estimators": 398,
+    "reg_alpha": 0.0,
+    "reg_lambda": 1.0,
+    "subsample": 0.6716682260833845
+   },
+   "q3": {
+    "colsample_bytree": 0.4327978267528363,
+    "gamma": 0.1,
+    "learning_rate": 0.08536359461483287,
+    "max_depth": 4,
+    "min_child_weight": 18.162407873411354,
+    "n_estimators": 346,
+    "reg_alpha": 0.0,
+    "reg_lambda": 1.0,
+    "subsample": 0.8118788081985475
+   },
+   "q4": {
+    "colsample_bytree": 0.7269756250210765,
+    "gamma": 0.0,
+    "learning_rate": 0.027538515460387113,
+    "max_depth": 5,
+    "min_child_weight": 23.072391682325758,
+    "n_estimators": 398,
+    "reg_alpha": 0.0,
+    "reg_lambda": 1.0,
+    "subsample": 0.6716682260833845
+   },
+   "q5": {
+    "colsample_bytree": 0.7269756250210765,
+    "gamma": 0.0,
+    "learning_rate": 0.027538515460387113,
+    "max_depth": 5,
+    "min_child_weight": 23.072391682325758,
+    "n_estimators": 398,
+    "reg_alpha": 0.0,
+    "reg_lambda": 1.0,
+    "subsample": 0.6716682260833845
+   }
+  },
+  "trial": null,
+  "trial_code": {
+   "adapter": {
+    "control_plane_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f",
+    "files": {
+     "research_cloud/packages/validity_pooled.py": "6000aaaec5007298f0185ec069a7aa819bb226eb10c18f2e6ab36fdd162eaad0",
+     "research_cloud/training/common.py": "cdc7a6eb014915325a3eacd91e8883d497949c40eac61300b2c2a32debf8f6bd",
+     "research_cloud/training/ipcch_validity_features.py": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6",
+     "research_cloud/training/ipcch_validity_pooled.py": "d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f"
+    },
+    "image_digest": "sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197",
+    "research_cloud_dirty": null
+   },
+   "ae_src": "/app/sources/IPCCHAlphaEarthExperiment",
+   "files": {
+    "ipcch_alphaearth/__init__.py": "7ea2ca7382368f14eea5acfad345156da2bfb9cafc9d689b64f86d4815c72aaa",
+    "ipcch_alphaearth/compact.py": "824233163023c796bc729389b3f6c6cc473ba56c7a1cb5509009c12940194c53",
+    "ipcch_alphaearth/correction.py": "d59d1059b3d847c5e9539c2afe80e281058e2f7343c75a95f4e4807437d72121",
+    "ipcch_alphaearth/errors.py": "b550d85c7ff493161ed5b672cc6af5a9d634f053ddb4dc4fcfa9b234876e224b",
+    "ipcch_alphaearth/metrics.py": "24c9c442a6e3efe4b6b11d6ae578588bac1d147af819cdb8f7f6fb99aa6d38ff",
+    "ipcch_alphaearth/months.py": "4ffcb34f519ca91c90348ed3946e429b21a8348a9220ff4f4b515d066b8afbc9",
+    "ipcch_alphaearth/projection.py": "c191ecfbad03e634cc07b476655f3fbe7f2ac095e151fbdb29008a225b094094",
+    "ipcch_alphaearth/targets.py": "e7bdce1a5b97b8e9518fdfb3f9e579b0a99dbf19824ed94883637571372ca23f"
+   }
+  }
+ },
+ "rows": 32,
+ "columns": {
+  "q2_raw": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 2.7755575615628914e-17,
+   "failures": 0
+  },
+  "q3_raw": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 3.903127820947816e-17,
+   "failures": 0
+  },
+  "q4_raw": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 5.0523821237824507e-17,
+   "failures": 0
+  },
+  "q5_raw": {
+   "max_abs_err": 9.98821251402271e-17,
+   "mean_abs_err": 4.353706997239741e-17,
+   "failures": 0
+  },
+  "q2_star": {
+   "max_abs_err": 1.1102230246251565e-16,
+   "mean_abs_err": 2.7755575615628914e-17,
+   "failures": 0
+  },
+  "q3_star": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 3.903127820947816e-17,
+   "failures": 0
+  },
+  "q4_star": {
+   "max_abs_err": 9.71445146547012e-17,
+   "mean_abs_err": 5.0523821237824507e-17,
+   "failures": 0
+  },
+  "q5_star": {
+   "max_abs_err": 9.194034422677078e-17,
+   "mean_abs_err": 1.6126660282774624e-17,
+   "failures": 0
+  }
+ },
+ "phase_changes": [],
+ "failed_rows": [],
+ "checks": {
+  "shapes": true,
+  "finite": true,
+  "new_phase_decodes": true,
+  "reference_phase_decodes": true,
+  "keys_and_order": true
+ },
+ "passed": true,
+ "routing_mismatches": 0,
+ "seconds": 1.86
+}

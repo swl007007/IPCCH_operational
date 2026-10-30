@@ -1,0 +1,89 @@
+{
+ "kind": "dry run on a temporary COPY of ledger/spend.sqlite (real ledger not written)",
+ "plan_sha256": "27ec849ca8bb6780a3628975df8af0095977234c2ac60f2f0fa9289ffdd3c2c7",
+ "before": {
+  "platform": {
+   "cap_usd": 100.0,
+   "committed_usd": 99.09,
+   "headroom_usd": 0.9099999999999966,
+   "by_status": {
+    "reserved": {
+     "operations": 59,
+     "reserved_usd": 99.09,
+     "actual_usd": 0
+    }
+   }
+  },
+  "training": {
+   "cap_usd": 200.0,
+   "committed_usd": 146.57918520245434,
+   "headroom_usd": 53.42081479754566,
+   "by_status": {
+    "reserved": {
+     "operations": 60,
+     "reserved_usd": 146.57918520245434,
+     "actual_usd": 0
+    }
+   }
+  }
+ },
+ "after": {
+  "platform": {
+   "cap_usd": 100.0,
+   "committed_usd": 99.99,
+   "headroom_usd": 0.010000000000005116,
+   "by_status": {
+    "reserved": {
+     "operations": 60,
+     "reserved_usd": 99.99,
+     "actual_usd": 0
+    }
+   }
+  },
+  "training": {
+   "cap_usd": 200.0,
+   "committed_usd": 152.3011142065639,
+   "headroom_usd": 47.69888579343609,
+   "by_status": {
+    "reserved": {
+     "operations": 63,
+     "reserved_usd": 152.3011142065639,
+     "actual_usd": 0
+    }
+   }
+  }
+ },
+ "reserved": [
+  {
+   "operation_id": "ipcch-origin-ablation-r1-platform",
+   "pool": "platform",
+   "month": "2026-10",
+   "reserved_usd": 0.9,
+   "status": "reserved"
+  },
+  {
+   "operation_id": "ipcch-origin-ablation-r1-formal-h00",
+   "pool": "training",
+   "month": "2026-10",
+   "reserved_usd": 1.9073096680365293,
+   "status": "reserved"
+  },
+  {
+   "operation_id": "ipcch-origin-ablation-r1-formal-h06",
+   "pool": "training",
+   "month": "2026-10",
+   "reserved_usd": 1.9073096680365293,
+   "status": "reserved"
+  },
+  {
+   "operation_id": "ipcch-origin-ablation-r1-formal-h12",
+   "pool": "training",
+   "month": "2026-10",
+   "reserved_usd": 1.9073096680365293,
+   "status": "reserved"
+  }
+ ],
+ "second_run": "refused",
+ "real_ledger_sha256_before": "cbfedefb7dec8c57171019caf3f7f1e28f69a81277f430af35acd6f535c748bc",
+ "real_ledger_sha256_after": "cbfedefb7dec8c57171019caf3f7f1e28f69a81277f430af35acd6f535c748bc"
+}

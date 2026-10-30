@@ -1,0 +1,9 @@
+{
+  "image_summary": {
+    "digest": "sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197",
+    "fully_qualified_digest": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197",
+    "registry": "us-central1-docker.pkg.dev",
+    "repository": "research",
+    "slsa_build_level": "unknown"
+  }
+}

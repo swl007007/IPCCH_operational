@@ -1,0 +1,1985 @@
+diff --git a/research_cloud/training/dataset_input.py b/research_cloud/training/dataset_input.py
+index b63951e..bcc70e7 100644
+--- a/research_cloud/training/dataset_input.py
++++ b/research_cloud/training/dataset_input.py
+@@ -50,6 +50,14 @@ def object_generation(uri, project=None):
+ DATASET_TITLES = {"ipcch_direct_fourclass": "IPCCH direct four-class"}
+ 
+ 
++def keys_sha256(keys):
++    """Digest of an (n, 2) int64 (admin_code, target_ord) key array: the convention of
++    ``ipcch_validity_pooled.array_digest`` / ``keys_sha256`` (dtype, shape and bytes) without importing the trainer."""
++    import numpy as np
++    keys =np.ascontiguousarray(np.asarray(keys, dtype=np.int64).reshape(-1, 2))
++    return hashlib.sha256(str(keys.dtype).encode() + str(keys.shape).encode() + keys.tobytes()).hexdigest()
++
++
+ def payload(root, record, generation=object_generation):
+     """Validated dataset/input-tag payload for one saved trial directory (``root``) and its record."""
+     import numpy as np
+@@ -103,6 +111,36 @@ def payload(root, record, generation=object_generation):
+         tags.update({"region": region["name"], "region_iso2": ",".join(region["iso2"])})
+     scope = f"{region['name']} | " if region else ""
+     title = DATASET_TITLES.get((record.get("identity") or {}).get("family"), "IPCCH validity")
++    corrected = cfg.get("origin_ablation") or cfg.get("corrected_input") or cfg.get("ch_correction")
++    if corrected:   # task 10-27: a corrected-input refit keeps the original run's row index (same digest) but not its inputs;
++        title = f"{title} ({corrected['data_version']})"   # its own dataset entity, never the original run's
++    oa = cfg.get("origin_ablation")
++    if oa:      # task 10-30: same modeling panel index as the CH-final run, fitted on its original labels only
++        kinds_of = rows["label_kind"].astype(str).to_numpy()
++        keys = np.column_stack([rows["admin_code"].to_numpy(np.int64), rows["target_ord"].to_numpy(np.int64)])
++        members = dict(np.load(os.path.join(root, "contexts", "memberships.npz")))
++        fit = {k.split("|")[0]: np.asarray(v, np.int64) for k, v in members.items() if k.endswith("|backbone|train")}
++
++        def exact(c, v):      # strictly increasing in-range row ids (unique), originals only, the pinned count and keys
++            pin = oa["fit_counts"][c]
++            return (len(v) == pin["train_rows"] and (len(v) == 0 or (v[0] >= 0 and v[-1] < len(rows))) and bool((np.diff(v) > 0).all())
++                    and not (kinds_of[v] != "original").any() and keys_sha256(keys[v]) == pin["train_keys_sha256"])
++        if set(fit) != set(oa["fit_counts"]) or not all(exact(c, v) for c, v in fit.items()):
++            raise ValueError("saved fitting memberships are not the pinned original-only fitting rows")
++    if cfg.get("ch_correction"):    # task 10-28: the CH links input and lineage counts identify the label preparation
++        ch_src = files.get("ch_links") or {}
++        if not ch_src.get("sha256"):
++            raise ValueError("input manifest lacks the ch_links source")
++        tags.update({"ch_links.uri": ch_src["uri"], "ch_links.sha256": ch_src["sha256"],
++                     "ch_links.gcs.generation": str(ch_src.get("gcs_generation", "local")),
++                     "ch_correction.data_version": cfg["ch_correction"]["data_version"]})
++    if oa:
++        tags.update({"fit_labels": oa["fit_labels"],
++                     "fit_subset": "backbone fitting labels = the final label_kind == original rows of each context's CH-final "
++                                   "fitting pool (memberships.npz <context>|backbone|train); this row index is the full "
++                                   "modeling/scoring panel, not the fitting subset",
++                     "fit_rows_by_context": json.dumps({c: v["train_rows"] for c, v in sorted(oa["fit_counts"].items())}, sort_keys=True),
++                     "origin_ablation.data_version": oa["data_version"], "ablation_baseline.run_id": oa["ch_baseline"]["run_id"]})
+     return {"dataset": {"name": f"{title} | {scope}{arm} | H{h:02d} | modeling panel index", "digest": full[:32], "source_type": "gs" if uri.startswith("gs://") else "local",
+                         "source": json.dumps({"uri": uri}),
+                         "schema": json.dumps({"mlflow_colspec": [{"name": c, "type": t} for c, t in COLUMNS]}),
+diff --git a/research_cloud/training/ipcch_validity_features.py b/research_cloud/training/ipcch_validity_features.py
+index 1876492..daf3f3d 100644
+--- a/research_cloud/training/ipcch_validity_features.py
++++ b/research_cloud/training/ipcch_validity_features.py
+@@ -412,10 +412,295 @@ def augment(ledger: pd.DataFrame, countries: pd.DataFrame, reports: pd.DataFrame
+             "country_codes": codes}
+ 
+ 
++# --------------------------------------------------------------------------- CH validity correction (task 10-28)
++#
++# Task ``10-28-ipcch-ch-validity-refits`` (prd.md R2-R5, design.md sections 2-4). An optional keyed input (role
++# ``ch_links``, one row per nonempty raw label row attributed to a Cadre Harmonise source route) adds CH current
++# reference windows to the existing preparation; without it nothing here runs and every output is unchanged.
++#
++# * Only ``linked`` rows (current, source country == destination country, not CAF) expand: their window
++#   (Jan-May 1-5, Jun-Aug 6-8, Sep-Dec 9-12 of reference_year) fills existing raw rows of the same admin whose six raw
++#   label fields are blank. Every new row is a copy; existing nonempty rows (QC-invalid included) keep their values.
++# * ``storage_role = upstream_copy`` rows (the 150 May-2026 copies stored raw) become copies of their own report, with
++#   nominal source/availability = window start, the report family (source country, window start) by a verified pure
++#   rename of their old (country, storage month) family, and ONE history event per area moved to the nominal month
++#   with its storage month retained. No synthetic original is created.
++# * ``cross_country`` rows keep every value and their old family and gain the evidenced source-report family as a
++#   non-transitive alias (``source_family_alias``; also on their history events). ``caf_excluded`` / ``unresolved``
++#   rows are untouched. No row of these statuses donates a copy or adds a history event.
++# * A CH candidate on a recipient the IPC route already tries, or an eligible CH row the IPC route already links,
++#   stops the build (no silent cross-framework replacement).
++
++CH_LINKS_ROLE = "ch_links"
++CH_REF_MONTHS = {"Jan-May": (1, 5), "Jun-Aug": (6, 8), "Sep-Dec": (9, 12)}
++CH_STATUSES = ("linked", "cross_country", "caf_excluded", "unresolved")
++CH_STORAGE_ROLES = ("reference_start", "upstream_copy")
++CH_CAF = "CF"
++CH_LINK_COLUMNS = ("admin_code", "month_ord", "dest_iso2", "route", "source_record", "source_iso2", "reference_year",
++                   "reference_label", "start_ord", "end_ord", "nominal_source_ord", "storage_role", "link_status", "reason",
++                   "eligible_new_copies")
++CH_LABEL_COLUMNS = ("ch_role", "ch_report_id", "ch_source_record", "source_family_alias", "storage_month_ord")
++
++
++def ch_report_id(source_iso2, reference_label, reference_year):
++    return f"CH:{source_iso2}:{reference_label} {int(reference_year)}"
++
++
++def ch_link_table(path, ledger: pd.DataFrame, countries: pd.DataFrame) -> pd.DataFrame:
++    """Validated CH link rows. Every row is a nonempty raw key with the lookup's destination ISO2; every evidenced row
++    (linked / cross_country / caf_excluded) has a reference window containing its storage month; ``linked`` implies
++    source == destination country and not CAF; ``eligible_new_copies`` is exactly ``linked``."""
++    t = pd.read_csv(path, dtype=str, keep_default_na=False, na_filter=False)
++    missing = [c for c in CH_LINK_COLUMNS if c not in t.columns]
++    if missing:
++        raise DataContractError(f"ch_links lacks {missing}")
++    t = t[list(CH_LINK_COLUMNS)].copy()
++    for c in ("admin_code", "month_ord", "reference_year", "start_ord", "end_ord", "nominal_source_ord"):
++        t[c] = t[c].astype(np.int64)
++    t["eligible_new_copies"] = t["eligible_new_copies"].map({"True": True, "False": False})
++    if t["eligible_new_copies"].isna().any():
++        raise DataContractError("ch_links eligible_new_copies must be True/False")
++    key = t["admin_code"].to_numpy(np.int64) * SCALE + t["month_ord"].to_numpy(np.int64)
++    if pd.Series(key).duplicated().any():
++        raise DataContractError("ch_links has duplicate raw keys")
++    lk = ledger.assign(_k=ledger["admin_code"].to_numpy(np.int64) * SCALE + ledger["month_ord"].to_numpy(np.int64)).set_index("_k")
++    if not pd.Index(key).isin(lk.index).all() or lk.loc[key, "label_blank"].to_numpy().any():
++        raise DataContractError("every ch_links row must be a nonempty raw label row")
++    dest = countries.set_index("admin_code")["iso2"].reindex(t["admin_code"].to_numpy()).to_numpy(dtype=object)
++    if (dest != t["dest_iso2"].to_numpy(dtype=object)).any():
++        raise DataContractError("ch_links destination country differs from the country lookup")
++    if not t["link_status"].isin(CH_STATUSES).all() or not t["storage_role"].isin(CH_STORAGE_ROLES).all():
++        raise DataContractError("ch_links has an unknown link_status or storage_role")
++    if not (t["eligible_new_copies"] == (t["link_status"] == "linked")).all():
++        raise DataContractError("ch_links eligibility must be exactly the linked status")
++    ev = t["link_status"] != "unresolved"
++    for r in t[ev].itertuples(index=False):
++        if r.reference_label not in CH_REF_MONTHS:
++            raise DataContractError(f"ch_links unknown reference label {r.reference_label!r}")
++        lo, hi = CH_REF_MONTHS[r.reference_label]
++        s, e = r.reference_year * 12 + lo - 1, r.reference_year * 12 + hi - 1
++        if (r.start_ord, r.end_ord, r.nominal_source_ord) != (s, e, s) or not s <= r.month_ord <= e:
++            raise DataContractError(f"ch_links window of {r.admin_code}/{r.month_ord} is not its reference window")
++        if (r.storage_role == "reference_start") != (r.month_ord == s):
++            raise DataContractError(f"ch_links storage role of {r.admin_code}/{r.month_ord} contradicts its window start")
++    linked = t["link_status"] == "linked"
++    if ((t.loc[linked, "source_iso2"] != t.loc[linked, "dest_iso2"]) | (t.loc[linked, "source_iso2"] == CH_CAF)).any():
++        raise DataContractError("a linked CH row must have source country == destination country and not be CAF")
++    cross = t["link_status"] == "cross_country"
++    if (t.loc[cross, "source_iso2"] == t.loc[cross, "dest_iso2"]).any():
++        raise DataContractError("a cross_country CH row must have different source and destination countries")
++    if (t.loc[t["link_status"] == "caf_excluded", "source_iso2"] != CH_CAF).any():
++        raise DataContractError("caf_excluded CH rows must have the CAF source")
++    if ((t["storage_role"] == "upstream_copy") & ~linked).any():
++        raise DataContractError("only linked rows may be upstream copies")
++    return t.sort_values(["admin_code", "month_ord"], kind="mergesort").reset_index(drop=True)
++
++
++def ch_augment(aug: dict, ledger: pd.DataFrame, countries: pd.DataFrame, ch: pd.DataFrame) -> dict:
++    """The IPC-route ``augment`` result plus CH copies, reclassified upstream copies, family renames and aliases.
++
++    Returns {"labels", "ch_relationships", "reclassified_keys", "renames" {old: new}, "aliases" {packed key: alias},
++    "counts"}; the IPC labels/relationships are never rewritten except the explicit provenance fields of CH rows."""
++    labels = aug["labels"].copy()
++    codes = aug["country_codes"]
++    cidx = {c: i for i, c in enumerate(codes)}
++    lkey = ledger["admin_code"].to_numpy(np.int64) * SCALE + ledger["month_ord"].to_numpy(np.int64)
++    lpos = pd.Series(np.arange(len(ledger)), index=lkey)
++    ckey = ch["admin_code"].to_numpy(np.int64) * SCALE + ch["month_ord"].to_numpy(np.int64)
++    labkey = labels["admin_code"].to_numpy(np.int64) * SCALE + labels["month_ord"].to_numpy(np.int64)
++    lab_pos = pd.Series(np.arange(len(labels)), index=labkey)
++    valid = ledger["target_valid"].to_numpy()[lpos.loc[ckey].to_numpy()] == 1
++    ch = ch.assign(target_valid=valid, key=ckey)
++    ch["src_family"] = [family_code(cidx[s], o) if s in cidx else -1 for s, o in zip(ch["source_iso2"], ch["start_ord"])]
++    ch["old_family"] = family_code([cidx[d] for d in ch["dest_iso2"]], ch["month_ord"])
++    if (ch.loc[ch["link_status"] != "unresolved", "src_family"] < 0).any():
++        raise DataContractError("a CH source country has no country index")
++    # an eligible CH row must not be a donor the IPC route already links (no double donor)
++    don = aug["donors"]
++    dkey = don["admin_code"].to_numpy(np.int64) * SCALE + don["month_ord"].to_numpy(np.int64)
++    ipc_linked = set(dkey[(don["link_status"] == "linked").to_numpy()])
++    elig = ch[ch["link_status"] == "linked"]
++    if any(k in ipc_linked for k in elig["key"]):
++        raise DataContractError("an eligible CH row is already linked by the IPC route")
++    # family renames: an upstream copy's old (country, storage month) family must hold exactly these rows
++    renames = {}
++    up = elig[elig["storage_role"] == "upstream_copy"]
++    for old, g in up.groupby("old_family"):
++        new = set(g["src_family"])
++        if len(new) != 1:
++            raise DataContractError(f"upstream copies of family {old} map to several report families")
++        members = set(labkey[labels["source_family"].to_numpy(np.int64) == old])
++        if members != set(g.loc[g["target_valid"], "key"]):
++            raise DataContractError(f"family {old} is not exactly its upstream copies; a rename would split it")
++        new = new.pop()
++        if (labels["source_family"].to_numpy(np.int64) == new).any():
++            raise DataContractError(f"report family {new} already exists; a rename would merge")
++        renames[int(old)] = int(new)
++    same = elig[elig["storage_role"] == "reference_start"]
++    if (same["src_family"].to_numpy() != same["old_family"].to_numpy()).any():
++        raise DataContractError("a same-country reference-start CH row must already carry its report family")
++    # CH relationships of eligible, share-valid donors
++    donors = elig[elig["target_valid"]]
++    span = (donors["end_ord"] - donors["start_ord"] + 1).to_numpy(np.int64)
++    rel = pd.DataFrame({"admin_code": np.repeat(donors["admin_code"].to_numpy(np.int64), span),
++                        "donor_month_ord": np.repeat(donors["month_ord"].to_numpy(np.int64), span),
++                        "nominal_source_ord": np.repeat(donors["nominal_source_ord"].to_numpy(np.int64), span),
++                        "report_id": np.repeat([ch_report_id(s, l, y) for s, l, y in zip(donors["source_iso2"], donors["reference_label"],
++                                                                                          donors["reference_year"])], span),
++                        "storage_role": np.repeat(donors["storage_role"].to_numpy(dtype=object), span)})
++    rel["recipient_month_ord"] = (np.repeat(donors["start_ord"].to_numpy(np.int64), span)
++                                  + (np.concatenate([np.arange(s) for s in span]) if len(span) else np.zeros(0, np.int64)))
++    rel = rel[rel["recipient_month_ord"] != rel["donor_month_ord"]].reset_index(drop=True)
++    rkey = rel["admin_code"].to_numpy(np.int64) * SCALE + rel["recipient_month_ord"].to_numpy(np.int64)
++    pos = lpos.reindex(rkey).to_numpy()
++    has = ~np.isnan(pos)
++    rp = np.where(has, pos, 0).astype(np.int64)
++    blank, rvalid = ledger["label_blank"].to_numpy()[rp], ledger["target_valid"].to_numpy()[rp]
++    disp = np.full(len(rel), "candidate", dtype=object)
++    disp[~has] = "no_raw_row"
++    disp[has & ~blank & (rvalid == 1)] = "existing_label_valid"
++    disp[has & ~blank & (rvalid == 0)] = "existing_label_not_valid"
++    rel["recipient_row"] = np.where(has, rp, -1)
++    rel["disposition"] = disp
++    # cross-framework collision: the IPC route already tries this recipient (any candidate outcome) or copied into it
++    irel = aug["relationships"]
++    tried = set(irel.loc[(irel["recipient_row"] >= 0) & irel["disposition"].isin(
++        ["candidate", "copied", "overlap_not_selected", "equal_date_conflict"]), "recipient_row"].astype(np.int64))
++    ipc_copy = set(labkey[(labels["label_kind"] == "copy").to_numpy()])
++    cand = rel["disposition"] == "candidate"
++    clash = cand & (rel["recipient_row"].isin(tried) | pd.Series(rkey).isin(ipc_copy).to_numpy())
++    if clash.any():
++        raise DataContractError(f"{int(clash.sum())} CH candidates collide with the IPC route (cross-framework recipient)")
++    # overlap among CH candidates: latest nominal source month; equal-date conflicting truths stay unfilled
++    qstr = ledger[[f"{q}_str" for q in TARGETS]].to_numpy(dtype=object)
++    donor_row = lpos.loc[rel["admin_code"].to_numpy(np.int64) * SCALE + rel["donor_month_ord"].to_numpy(np.int64)].to_numpy()
++    rel["donor_row"] = donor_row
++    sig = ["|".join(qstr[d]) for d in donor_row]
++    for rrow, g in rel[cand].groupby("recipient_row"):
++        if len(g) == 1:
++            continue
++        top = g[g["nominal_source_ord"] == g["nominal_source_ord"].max()]
++        sigs = {sig[i] for i in top.index}
++        keep = top.index[0] if len(sigs) == 1 else None
++        for i in g.index:
++            if i != keep:
++                rel.at[i, "disposition"] = "overlap_not_selected" if keep is not None else "equal_date_conflict"
++    copied = rel["disposition"] == "candidate"
++    rel.loc[copied, "disposition"] = "copied"
++    # new CH copy rows
++    keep = ["admin_code", "year", "month", "month_ord", *[f"{q}_str" for q in TARGETS], *TARGETS, "phase_truth", "crisis_truth",
++            *[f"raw_{c}" for c in LABEL_FIELDS], "raw_estimated_population"]
++    cp = rel[copied]
++    rec = ledger.iloc[cp["recipient_row"].to_numpy()][["admin_code", "year", "month", "month_ord", *[f"raw_{c}" for c in LABEL_FIELDS],
++                                                        "raw_estimated_population"]].reset_index(drop=True)
++    don_rows = ledger.iloc[cp["donor_row"].to_numpy()].reset_index(drop=True)
++    for c in LABEL_FIELDS:
++        if not rec[f"raw_{c}"].map(is_blank).all():
++            raise DataContractError("a CH copy recipient has a nonblank raw label field")
++    new = rec.copy()
++    for c in [*[f"{q}_str" for q in TARGETS], *TARGETS, "phase_truth", "crisis_truth"]:
++        new[c] = don_rows[c].to_numpy()
++    by_key = ch.set_index("key")
++    dk = cp["admin_code"].to_numpy(np.int64) * SCALE + cp["donor_month_ord"].to_numpy(np.int64)
++    fam = by_key.loc[dk, "src_family"].to_numpy(np.int64)
++    new["label_kind"] = "copy"
++    new["source_admin_code"], new["source_month_ord"] = cp["admin_code"].to_numpy(np.int64), cp["nominal_source_ord"].to_numpy(np.int64)
++    new["source_family"], new["anl_id"], new["link_status"] = fam, cp["report_id"].to_numpy(dtype=object), "linked_ch"
++    new["valid_from_ord"], new["valid_to_ord"] = by_key.loc[dk, "start_ord"].to_numpy(np.int64), by_key.loc[dk, "end_ord"].to_numpy(np.int64)
++    new["source_available_ord"] = new["source_month_ord"]
++    by_admin = countries.set_index("admin_code")
++    new["iso2"] = by_admin["iso2"].reindex(new["admin_code"].to_numpy()).to_numpy(dtype=object)
++    new["country_key"] = by_admin["country_key"].reindex(new["admin_code"].to_numpy()).to_numpy(dtype=object)
++    new["ch_role"], new["ch_report_id"] = "added_copy", new["anl_id"]
++    new["ch_source_record"] = by_key.loc[dk, "source_record"].to_numpy(dtype=object)
++    new["source_family_alias"], new["storage_month_ord"] = np.int64(-1), np.int64(-1)
++    # provenance of existing CH rows (values untouched)
++    for c, v in (("ch_role", ""), ("ch_report_id", ""), ("ch_source_record", "")):
++        labels[c] = v
++    labels["source_family_alias"], labels["storage_month_ord"] = np.int64(-1), np.int64(-1)
++    # aliases of EVERY evidenced cross-country raw row, share-valid or not: a share-invalid row is no label but its
++    # reported phase can still be a history event, which must carry the alias too (no new event is created)
++    cross = ch[ch["link_status"] == "cross_country"]
++    aliases = {int(k): int(f) for k, f in zip(cross["key"], cross["src_family"])}
++    for r in ch[ch["key"].isin(lab_pos.index)].itertuples(index=False):
++        i = int(lab_pos[r.key])
++        if labels.at[i, "label_kind"] != "original":
++            raise DataContractError("a CH link row is not an original label")
++        rid = ch_report_id(r.source_iso2, r.reference_label, r.reference_year) if r.link_status != "unresolved" else ""
++        if r.link_status == "linked":
++            labels.at[i, "anl_id"], labels.at[i, "ch_report_id"], labels.at[i, "ch_source_record"] = rid, rid, r.source_record
++            labels.at[i, "valid_from_ord"], labels.at[i, "valid_to_ord"] = r.start_ord, r.end_ord
++            if r.storage_role == "upstream_copy":
++                labels.at[i, "label_kind"], labels.at[i, "ch_role"] = "copy", "reclassified_upstream_copy"
++                labels.at[i, "link_status"] = "linked_ch_upstream_copy"
++                labels.at[i, "source_month_ord"], labels.at[i, "source_available_ord"] = r.nominal_source_ord, r.nominal_source_ord
++                labels.at[i, "storage_month_ord"] = r.month_ord
++            else:
++                labels.at[i, "ch_role"], labels.at[i, "link_status"] = "linked_original", "linked_ch"
++        else:
++            labels.at[i, "ch_role"], labels.at[i, "ch_report_id"], labels.at[i, "ch_source_record"] = r.link_status, rid, r.source_record
++            if r.link_status == "cross_country":
++                labels.at[i, "source_family_alias"] = r.src_family
++    if renames:
++        labels["source_family"] = labels["source_family"].map(lambda f: renames.get(int(f), int(f))).astype(np.int64)
++    out = pd.concat([labels, new[list(labels.columns)]], ignore_index=True)
++    out = out.sort_values(["admin_code", "month_ord"], kind="mergesort").reset_index(drop=True)
++    if out.duplicated(["admin_code", "month_ord"]).any():
++        raise DataContractError("a CH copy shares an area-month with another label")
++    if (out["source_available_ord"].to_numpy() > out["month_ord"].to_numpy()).any():
++        raise DataContractError("a CH label is available after its target month")
++    reclassified = set(int(k) for k in up.loc[up["target_valid"], "key"])
++    counts = {"link_rows": int(len(ch)), "link_status": ch["link_status"].value_counts().to_dict(),
++              "eligible_rows": int(len(elig)), "eligible_share_invalid_rows": int((~elig["target_valid"]).sum()),
++              "relationships": int(len(rel)), "relationship_dispositions": rel["disposition"].value_counts().to_dict(),
++              "added_copies": int(len(new)), "reclassified_upstream_copies": len(reclassified),
++              "added_copies_by_year": new["year"].value_counts().sort_index().astype(int).to_dict(),
++              "added_copies_by_iso2": new["iso2"].value_counts().to_dict(),
++              "cross_country_aliases": len(aliases),
++              "cross_country_alias_labels": int((labels["source_family_alias"].to_numpy(np.int64) >= 0).sum()),
++              "family_renames": {str(k): v for k, v in renames.items()},
++              "labels_before": int(len(labels)), "labels_after": int(len(out)),
++              "label_kind_after": out["label_kind"].value_counts().to_dict()}
++    return {"labels": out, "ch_relationships": rel, "reclassified_keys": reclassified, "renames": renames, "aliases": aliases,
++            "counts": counts}
++
++
++def ch_history_observations(obs: pd.DataFrame, ch: pd.DataFrame, renames: dict, aliases: dict):
++    """Raw reported-phase events with the CH corrections: an upstream copy's event moves to its nominal source month
++    (one event per area; ``storage_month_ord`` keeps the raw month) under its renamed report family; a cross-country
++    row's event keeps its family and gains the alias. No event is created for a row without a raw reported phase.
++    Returns (observations with ``family_alias`` and ``storage_month_ord``, number of moved events)."""
++    o = obs.copy()
++    o["family_alias"], o["storage_month_ord"] = np.int64(-1), o["month_ord"].to_numpy(np.int64)
++    okey = o["admin_code"].to_numpy(np.int64) * SCALE + o["month_ord"].to_numpy(np.int64)
++    opos = pd.Series(np.arange(len(o)), index=okey)
++    up = ch[(ch["link_status"] == "linked") & (ch["storage_role"] == "upstream_copy")]
++    moved = 0
++    for r in up.itertuples(index=False):
++        k = int(r.admin_code) * SCALE + int(r.month_ord)
++        if k not in opos.index:
++            continue
++        i = int(opos[k])
++        target = int(r.admin_code) * SCALE + int(r.nominal_source_ord)
++        if target in opos.index:
++            raise DataContractError(f"admin {r.admin_code}: an event already exists at the nominal source month")
++        o.iat[i, o.columns.get_loc("month_ord")] = int(r.nominal_source_ord)
++        moved += 1
++    if renames:
++        o["family"] = o["family"].map(lambda f: renames.get(int(f), int(f))).astype(np.int64)
++    if aliases:
++        k2 = o["admin_code"].to_numpy(np.int64) * SCALE + o["storage_month_ord"].to_numpy(np.int64)
++        o["family_alias"] = np.array([aliases.get(int(k), -1) for k in k2], dtype=np.int64)
++    o = o.sort_values(["admin_code", "month_ord"], kind="mergesort").reset_index(drop=True)
++    if o.duplicated(["admin_code", "month_ord"]).any():
++        raise DataContractError("two history events share one area-month after the CH relocation")
++    return o, moved
++
++
+ # --------------------------------------------------------------------------- reported-phase history (context dependent)
+ 
+ 
+-HISTORY_VALUES = ("overall_phase_history_1", "overall_phase_history_2", "overall_phase_history_3")
++HISTORY_VALUES =("overall_phase_history_1", "overall_phase_history_2", "overall_phase_history_3")
+ HISTORY_FEATURES = HISTORY_VALUES + ("overall_phase_history_change_1_2", "overall_phase_history_change_1_3")
+ 
+ 
+@@ -435,13 +720,21 @@ def history_bound(target_ord, horizon):
+     return np.asarray(target_ord, dtype=np.int64) - max(int(horizon), 1)
+ 
+ 
+-def history_block(admin, target_ord, horizon, obs: pd.DataFrame, excluded_families=None):
++def history_block(admin, target_ord, horizon, obs: pd.DataFrame, excluded_families=None, return_alias=False):
+     """Latest three original reported phases with month <= bound after removing excluded families.
+ 
+-    Returns (block (n, 5) in HISTORY_FEATURES order, source months (n, 3), source families (n, 3); -1 = none)."""
++    Returns (block (n, 5) in HISTORY_FEATURES order, source months (n, 3), source families (n, 3); -1 = none). An
++    observation table with a ``family_alias`` column (task 10-28 CH correction: the evidenced source-report family of a
++    preserved cross-country label, -1 = none) drops an event when its family OR its alias is excluded; with
++    ``return_alias`` the selected events' aliases (n, 3) are returned fourth. Without the column nothing changes."""
+     o = obs
++    aliased = "family_alias" in obs.columns
+     if excluded_families is not None and len(excluded_families):
+-        o = obs[~np.isin(obs["family"].to_numpy(), np.asarray(list(excluded_families), dtype=np.int64))]
++        ex = np.asarray(list(excluded_families), dtype=np.int64)
++        drop = np.isin(obs["family"].to_numpy(), ex)
++        if aliased:
++            drop |= np.isin(obs["family_alias"].to_numpy(np.int64), ex)
++        o = obs[~drop]
+     okey = o["admin_code"].to_numpy(np.int64) * SCALE + o["month_ord"].to_numpy(np.int64)
+     admin = np.asarray(admin, dtype=np.int64)
+     bound = history_bound(target_ord, horizon)
+@@ -449,16 +742,20 @@ def history_block(admin, target_ord, horizon, obs: pd.DataFrame, excluded_famili
+     vals, srcs, fams = np.full((len(admin), 3), np.nan), np.full((len(admin), 3), -1, np.int64), np.full((len(admin), 3), -1, np.int64)
+     oadmin, omonth = o["admin_code"].to_numpy(np.int64), o["month_ord"].to_numpy(np.int64)
+     ophase, ofam = o["reported_phase"].to_numpy(np.float64), o["family"].to_numpy(np.int64)
++    oalias = o["family_alias"].to_numpy(np.int64) if aliased else None
++    aliases = np.full((len(admin), 3), -1, np.int64)
+     for k in range(3):
+         s = slot - k
+         ok = s >= 0
+         sc = np.clip(s, 0, None)
+         ok &= (oadmin[sc] == admin) if len(o) else np.zeros(len(admin), bool)
+         vals[ok, k], srcs[ok, k], fams[ok, k] = ophase[sc[ok]], omonth[sc[ok]], ofam[sc[ok]]
++        if aliased:
++            aliases[ok, k] = oalias[sc[ok]]
+     if (srcs[srcs >= 0] > np.repeat(bound[:, None], 3, axis=1)[srcs >= 0]).any():
+         raise DataContractError("history source after its bound")
+     block = np.column_stack([vals, vals[:, 0] - vals[:, 1], vals[:, 0] - vals[:, 2]])
+-    return block, srcs, fams
++    return (block, srcs, fams, aliases) if return_alias else (block, srcs, fams)
+ 
+ 
+ def reference_history_check(admin, target_ord, horizon, obs: pd.DataFrame, excluded_families, block, sources) -> dict:
+@@ -466,8 +763,9 @@ def reference_history_check(admin, target_ord, horizon, obs: pd.DataFrame, exclu
+     raises on any disagreement in source month, value or change column."""
+     excluded = set(int(f) for f in (excluded_families or ()))
+     records = {}
+-    for a, m, p, f in obs.loc[:, ["admin_code", "month_ord", "reported_phase", "family"]].itertuples(index=False, name=None):
+-        if int(f) not in excluded:
++    alias = obs["family_alias"].to_numpy(np.int64) if "family_alias" in obs.columns else np.full(len(obs), -1, np.int64)
++    for (a, m, p, f), al in zip(obs.loc[:, ["admin_code", "month_ord", "reported_phase", "family"]].itertuples(index=False, name=None), alias):
++        if int(f) not in excluded and int(al) not in excluded:
+             records.setdefault(int(a), []).append((int(m), float(p)))
+     for a in records:
+         records[a].sort()
+@@ -859,12 +1157,15 @@ INPUT_ROLES = ("raw_panel", "country_lookup", "areas", "analyses", "interim", "c
+                "idp_admin0_monthly", "static29", "descriptors", "compact_manifest")
+ 
+ 
+-def raw_qc_ledger(ledger: pd.DataFrame, labels: pd.DataFrame, relationships: pd.DataFrame, countries: pd.DataFrame, codes) -> pd.DataFrame:
++def raw_qc_ledger(ledger: pd.DataFrame, labels: pd.DataFrame, relationships: pd.DataFrame, countries: pd.DataFrame, codes,
++                  reclassified_keys=None) -> pd.DataFrame:
+     """One compact row per raw area-month: target-QC verdict/reason, missing-P5 fill, reported phase, the raw row's
+     own round family and augmentation role. Full source values stay in the hashed raw input (not duplicated).
+ 
+     ``raw_row_family`` is the (country, this raw month) family of the raw row itself. For a copy recipient it is NOT
+-    the donor family: the copy's report family is ``labels.source_family`` (donor country/original month)."""
++    the donor family: the copy's report family is ``labels.source_family`` (donor country/original month).
++    ``reclassified_keys`` (task 10-28): packed keys of nonempty share-valid raw rows that are verified upstream copies
++    (role ``upstream_copy_reclassified``); the valid raw keys must then equal the originals plus exactly these keys."""
+     iso2 = countries.set_index("admin_code")["iso2"].reindex(ledger["admin_code"].to_numpy()).to_numpy(dtype=object)
+     cidx = {c: i for i, c in enumerate(codes)}
+     fam = np.array([family_code(cidx[c], m) if isinstance(c, str) else -1
+@@ -885,11 +1186,17 @@ def raw_qc_ledger(ledger: pd.DataFrame, labels: pd.DataFrame, relationships: pd.
+     tkey = tried["admin_code"].to_numpy(np.int64) * SCALE + tried["recipient_month_ord"].to_numpy(np.int64)
+     blocked = np.isin(key, tkey) & (role == "none")
+     role[blocked] = "candidate_recipient_not_filled"
++    reclassified = np.zeros(0, np.int64) if reclassified_keys is None else np.asarray(sorted(reclassified_keys), dtype=np.int64)
++    if len(reclassified):
++        rk = np.isin(key, reclassified)
++        if int(rk.sum()) != len(reclassified) or (out["target_valid"].to_numpy()[rk] != 1).any():
++            raise DataContractError("reclassified upstream copies must be share-valid raw rows")
++        role[rk] = "upstream_copy_reclassified"
+     out["augmentation_role"] = role
+     if len(out) != len(ledger) or out.duplicated(["admin_code", "month_ord"]).any():
+         raise DataContractError("raw-QC ledger rows differ from the raw input")
+     orig = labels.loc[labels["label_kind"] == "original"]
+-    if set(key[out["target_valid"].to_numpy() == 1]) != set(orig["admin_code"].to_numpy(np.int64) * SCALE + orig["month_ord"].to_numpy(np.int64)):
++    if set(key[out["target_valid"].to_numpy() == 1]) != set(orig["admin_code"].to_numpy(np.int64) * SCALE + orig["month_ord"].to_numpy(np.int64)) | set(reclassified.tolist()):
+         raise DataContractError("raw-QC valid keys differ from the original-arm labels")
+     return out
+ 
+@@ -979,7 +1286,7 @@ def source_support_check(sources: dict, labels, countries, horizon, cutoff_ord,
+ 
+ 
+ def build_dataset(inputs: dict, out_dir, horizons=HORIZONS, log=print, matrix_dir=None, keep=False, idp_local=False,
+-                  acled_agg=False) -> dict:
++                  acled_agg=False, ch_links=False) -> dict:
+     """Targets, lineage, augmentation and context-free features from pinned inputs into a new directory.
+ 
+     ``inputs`` maps every INPUT_ROLES role to a verified local path. Writes keyed ledgers, per-H base matrices
+@@ -990,10 +1297,12 @@ def build_dataset(inputs: dict, out_dir, horizons=HORIZONS, log=print, matrix_di
+     rows per H). With ``idp_local`` the ``idp_ipcch_monthly`` role is required and the three local-IDP columns are
+     appended after every existing feature, with a keyed ledger and completeness table per H. With ``acled_agg`` (task
+     10-20) the interim must carry the 18 aggregated-ACLED series: the 14 compact conflict columns are replaced by the
+-    114 lag-1 columns before the local-IDP suffix, with a completeness table per H."""
++    114 lag-1 columns before the local-IDP suffix, with a completeness table per H. With ``ch_links`` (task 10-28) the
++    ``ch_links`` role is required and the CH validity correction (``ch_augment`` / ``ch_history_observations``) is
++    applied after the IPC route; ``ch_links.csv.gz`` (validated) and ``ch_relationships.csv.gz`` are added."""
+     import time
+     t0 = time.time()
+-    missing = sorted(set(INPUT_ROLES + ((IDP_LOCAL_ROLE,) if idp_local else ())) - set(inputs))
++    missing = sorted(set(INPUT_ROLES + ((IDP_LOCAL_ROLE,) if idp_local else ()) + ((CH_LINKS_ROLE,) if ch_links else ())) - set(inputs))
+     if missing:
+         raise DataContractError(f"inputs lack roles {missing}")
+     os.makedirs(out_dir, exist_ok=False)
+@@ -1007,6 +1316,15 @@ def build_dataset(inputs: dict, out_dir, horizons=HORIZONS, log=print, matrix_di
+     aug = augment(ledger, countries, reports, index)
+     labels = aug["labels"]
+     log(f"[{time.time() - t0:6.0f}s] labels {aug['counts']['share_valid_originals']} originals + {aug['counts']['copies']} copies")
++    cha = None
++    if ch_links:      # task 10-28: CH reference windows after the unchanged IPC route
++        ch = ch_link_table(inputs[CH_LINKS_ROLE], ledger, countries)
++        cha = ch_augment(aug, ledger, countries, ch)
++        labels = cha["labels"]
++        ch.to_csv(path("ch_links.csv.gz"), index=False)
++        cha["ch_relationships"].to_csv(path("ch_relationships.csv.gz"), index=False)
++        log(f"[{time.time() - t0:6.0f}s] CH: {cha['counts']['added_copies']} added copies, "
++            f"{cha['counts']['reclassified_upstream_copies']} reclassified upstream copies, {cha['counts']['cross_country_aliases']} aliases")
+     labels.to_csv(path("labels.csv.gz"), index=False)
+     aug["donors"].drop(columns=[c for c in aug["donors"].columns if c.startswith("p") and c[1:].isdigit()], errors="ignore") \
+         .to_csv(path("donors.csv.gz"), index=False)
+@@ -1015,8 +1333,16 @@ def build_dataset(inputs: dict, out_dir, horizons=HORIZONS, log=print, matrix_di
+     reports.to_csv(path("reports.csv.gz"), index=False)
+     ambiguous = {f"{c}/{month_label(m)}": ids for (c, m), ids in index.items() if len(ids) > 1}
+     obs = history_observations(ledger, countries, aug["country_codes"])
++    moved = None
++    if cha is not None:
++        obs, moved = ch_history_observations(obs, ch, cha["renames"], cha["aliases"])
+     obs.to_csv(path("history_observations.csv.gz"), index=False)
+-    qc = raw_qc_ledger(ledger, labels, aug["relationships"], countries, aug["country_codes"])
++    if cha is None:
++        qc = raw_qc_ledger(ledger, labels, aug["relationships"], countries, aug["country_codes"])
++    else:
++        tried = pd.concat([aug["relationships"][["admin_code", "recipient_month_ord", "recipient_row"]],
++                           cha["ch_relationships"][["admin_code", "recipient_month_ord", "recipient_row"]]], ignore_index=True)
++        qc = raw_qc_ledger(ledger, labels, tried, countries, aug["country_codes"], reclassified_keys=cha["reclassified_keys"])
+     qc.to_csv(path("raw_qc_ledger.csv.gz"), index=False)
+     qc_summary = {"rows": int(len(qc)), "raw_rows": int(len(ledger)), "valid": int(qc["target_valid"].sum()),
+                   "reasons": qc["target_reason"].value_counts().to_dict(), "augmentation_role": qc["augmentation_role"].value_counts().to_dict()}
+@@ -1085,6 +1411,11 @@ def build_dataset(inputs: dict, out_dir, horizons=HORIZONS, log=print, matrix_di
+                                                 "trailing MA3/6/12 (>= 2/3/6 observed) and sample SD12 (>= 6) ending at A; "
+                                                 "persistence of x > 0 ending at A; never month O or later; retrospective "
+                                                 "2026-10-20 export vintage"} if acled_agg else {}),
++               **({"ch_correction": {**cha["counts"], "history_events_moved_to_nominal_month": moved,
++                                     "history_events": int(len(obs)), "history_aliased_events": int((obs["family_alias"] >= 0).sum()),
++                                     "time_convention": "CH copies and reclassified upstream copies: nominal source and availability "
++                                                        "= reference-window start month end (a retrospective modeling convention, not "
++                                                        "a verified publication date)"}} if cha is not None else {}),
+                "elapsed_seconds": round(time.time() - t0, 1)}
+     with open(path("dataset-summary.json"), "w") as f:
+         json.dump(summary, f, indent=1, default=str)
+diff --git a/research_cloud/training/ipcch_validity_pooled.py b/research_cloud/training/ipcch_validity_pooled.py
+index 9127d4d..f48dc8b 100644
+--- a/research_cloud/training/ipcch_validity_pooled.py
++++ b/research_cloud/training/ipcch_validity_pooled.py
+@@ -154,6 +154,10 @@ ACLED_BASELINE_RUNS = {0: "a13398698cec4fc393136efc535dcb63", 6: "5d6f32fdaaa344
+ FREEZE_KIND, FREEZE_INDEX_KIND = "ipcch_acledagg_hpt_freeze", "ipcch_acledagg_hpt_freeze_index"
+ FROZEN_KEYS = ("freeze_sha256", "freeze_index_sha256", "winner_role", "winner_trial_id", "params_sha256")
+ FORMAL_ROLES = ("baseline_predictions", "region_mapping", "freeze", "freeze_index")
++# Task 10-30 (origin ablation): ``all`` fits every eligible label (originals and copies, the default everywhere);
++# ``original_only`` keeps only final ``label_kind == original`` rows in each backbone's fitting labels, after the
++# existing cutoff and family/alias exclusions. Scored rows, S_E, histories and per-row weights are unchanged.
++FIT_LABELS = ("all", "original_only")
+ 
+ 
+ def fixed_settings(arm):
+@@ -425,15 +429,26 @@ class ArmData:
+     rows: pd.DataFrame        # row ledger (origins, oracle months)
+     hist_groups: list = None  # [(history column indices, horizon)]: own block first, then any stacked blocks
+     schedule: Schedule = None  # calendar/training scheme (task 10-19); None = DEFAULT_SCHEDULE (module constants)
++    fit_labels: str = "all"   # task 10-30: backbone fitting-label policy (FIT_LABELS); scoring is never affected
+ 
+     def __post_init__(self):
+         if self.schedule is None:
+             self.schedule = DEFAULT_SCHEDULE
++        if self.fit_labels not in FIT_LABELS:
++            raise ValidityError(f"unknown fit-label policy {self.fit_labels!r}")
+         L = self.labels
+         self.admin = L["admin_code"].to_numpy(np.int64)
+         self.target = L["month_ord"].to_numpy(np.int64)
+         self.avail = L["source_available_ord"].to_numpy(np.int64)
+         self.family = L["source_family"].to_numpy(np.int64)
++        # task 10-28: evidenced source-report family of a preserved cross-country CH label (-1 = none); every row-level
++        # exclusion tests BOTH ids and every scored row contributes both to S_E. Labels without the column: all -1.
++        self.family_alias = (L["source_family_alias"].to_numpy(np.int64) if "source_family_alias" in L.columns
++                             else np.full(len(L), -1, np.int64))
++        self.has_alias = bool((self.family_alias >= 0).any())
++        # history events carry their own alias column in a CH build (a share-invalid cross-country row is no label but
++        # its reported phase is an event); the saved dependency ledgers then record the selected events' aliases
++        self.obs_aliased = "family_alias" in self.obs.columns
+         self.Y = L[list(TARGETS)].to_numpy(np.float64)
+         self.phase = L["phase_truth"].to_numpy(np.int64)
+         self.kind = L["label_kind"].to_numpy(dtype=object)
+@@ -458,6 +473,26 @@ def select_arm(labels, X, arm):
+     return labels.loc[mask].reset_index(drop=True), X[mask]
+ 
+ 
++def row_families(d: ArmData, rows):
++    """Sorted unique family ids of ``rows``: their families plus (task 10-28) their aliases. Without aliases this is
++    exactly ``np.unique(d.family[rows])``."""
++    f = np.unique(d.family[rows])
++    if not d.has_alias:
++        return f
++    a = d.family_alias[rows]
++    return np.union1d(f, a[a >= 0])
++
++
++def in_families(d: ArmData, families, rows=None):
++    """Row mask: family OR (task 10-28) alias in ``families``. Without aliases exactly ``np.isin(d.family, families)``."""
++    fam = d.family if rows is None else d.family[rows]
++    m = np.isin(fam, families)
++    if d.has_alias:
++        al = d.family_alias if rows is None else d.family_alias[rows]
++        m |= (al >= 0) & np.isin(al, families)
++    return m
++
++
+ def fitting_window(d: ArmData, cutoff):
+     """Fitting-target mask of the schedule's scheme at ``cutoff`` (the <= cutoff rule is applied separately)."""
+     s = d.schedule
+@@ -469,13 +504,20 @@ def fitting_window(d: ArmData, cutoff):
+     return np.ones(len(d.target), dtype=bool)
+ 
+ 
+-def plan_contexts(d: ArmData):
++def plan_contexts(d: ArmData, fit_labels=None):
+     """No-fit enumeration of every scoring context, its backbone and its providers (row index arrays).
+ 
+     A declared schedule may restrict the fitting labels (fixed_window / rolling_months), drop the providers, or serve
+     named hindcast contexts with one shared backbone: that backbone excludes the union of every context's scored
+     families (``train_excluded``) from its fitting labels and histories; each context's scored rows keep their own
+-    S_E for their histories, as in the annual design."""
++    S_E for their histories, as in the annual design.
++
++    ``fit_labels`` (default ``d.fit_labels``; task 10-30) = ``original_only`` then drops validity copies from each
++    backbone's fitting labels only (``fit_label_removed`` rows per plan); ``excluded_eligible`` keeps its family
++    meaning. Providers are refused under that policy (no provider arm is defined for it)."""
++    policy = d.fit_labels if fit_labels is None else fit_labels
++    if policy not in FIT_LABELS:
++        raise ValidityError(f"unknown fit-label policy {policy!r}")
+     s = d.schedule
+     blocks = scoring_blocks(d.horizon, s)
+     shared = None
+@@ -483,28 +525,35 @@ def plan_contexts(d: ArmData):
+         scored = np.zeros(len(d.target), dtype=bool)
+         for E in blocks:
+             scored |= (d.target >= E.target_lo) & (d.target <= E.target_hi)
+-        shared = np.unique(d.family[scored])
++        shared = row_families(d, np.flatnonzero(scored))
+     plans = []
+     for E in blocks:
+         score = np.flatnonzero((d.target >= E.target_lo) & (d.target <= E.target_hi))
+-        S_E = np.unique(d.family[score])
++        S_E = row_families(d, score)
+         eligible = (d.target <= E.cutoff) & (d.avail <= E.cutoff)
+         if s.scheme != "expanding":
+             eligible &= fitting_window(d, E.cutoff)
+-        train = np.flatnonzero(eligible & ~np.isin(d.family, S_E if shared is None else shared))
++        train = np.flatnonzero(eligible & ~in_families(d, S_E if shared is None else shared))
++        n_family_kept = len(train)
++        if policy == "original_only":
++            if provider_blocks(d.horizon, s):
++                raise ValidityError("original_only fitting labels are defined only without providers")
++            train = train[d.kind[train] == "original"]
+         providers = []
+         for P in provider_blocks(d.horizon, s):
+             if P.target_lo > E.cutoff:
+                 continue
+             pred = np.flatnonzero((d.target >= P.target_lo) & (d.target <= min(P.target_hi, E.cutoff))
+-                                  & (d.avail <= E.cutoff) & ~np.isin(d.family, S_E))
+-            S_P = np.unique(d.family[pred])
++                                  & (d.avail <= E.cutoff) & ~in_families(d, S_E))
++            S_P = row_families(d, pred)
+             excl = np.union1d(S_E, S_P)
+-            ptrain = np.flatnonzero((d.target <= P.cutoff) & (d.avail <= P.cutoff) & ~np.isin(d.family, excl))
++            ptrain = np.flatnonzero((d.target <= P.cutoff) & (d.avail <= P.cutoff) & ~in_families(d, excl))
+             providers.append({"block": P, "pred": pred, "train": ptrain, "excluded": excl, "S_P": S_P,
+                               "excluded_eligible": int(((d.target <= P.cutoff) & (d.avail <= P.cutoff)).sum() - len(ptrain))})
+         plan = {"block": E, "score": score, "S_E": S_E, "train": train, "providers": providers,
+-                "excluded_eligible": int(eligible.sum() - len(train))}
++                "excluded_eligible": int(eligible.sum() - n_family_kept)}
++        if policy != "all":
++            plan.update(fit_labels=policy, fit_label_removed=int(n_family_kept - len(train)))
+         if shared is not None:
+             plan.update(train_excluded=shared, shared_fit=blocks[0].block_id)
+         plans.append(plan)
+@@ -534,7 +583,7 @@ def plan_assertions(d: ArmData, plans):
+         t = d.target[tr]
+         excl = p.get("train_excluded", p["S_E"])
+         checks = {"fitting_targets_le_cutoff": bool((t <= E.cutoff).all() and (d.avail[tr] <= E.cutoff).all()),
+-                  "no_excluded_family_in_fitting_labels": bool(not np.isin(d.family[tr], excl).any()),
++                  "no_excluded_family_in_fitting_labels": bool(not in_families(d, excl, tr).any()),
+                   "no_scored_row_in_fitting_labels": bool(not np.intersect1d(tr, sc).size)}
+         if s.scheme == "fixed_window":
+             lo, hi = (parse_month(m) for m in s.window)
+@@ -543,6 +592,8 @@ def plan_assertions(d: ArmData, plans):
+             checks[f"fitting_targets_in_rolling_{s.months}m"] = bool(((t > E.cutoff - s.months) & (t <= E.cutoff)).all())
+         if s.scoring_contexts:
+             checks["no_fitting_label_in_scored_years"] = bool(not np.isin(t // 12, scored_years).any())
++        if "fit_labels" in p:      # task 10-30: original-only fitting labels
++            checks["fitting_labels_original_only"] = bool(len(tr) and (d.kind[tr] == "original").all())
+         rec = {"context": E.block_id, "role": E.role, "cutoff": label(E.cutoff), "scheme": s.scheme,
+                "sample_weights": s.sample_weights, "calibration": s.calibration, "providers": len(p["providers"]),
+                "train_rows": int(len(tr)), "train_copies": int((d.kind[tr] == "copy").sum()),
+@@ -553,6 +604,8 @@ def plan_assertions(d: ArmData, plans):
+                "train_keys_sha256": keys_sha256(d, tr), "shared_fit": p.get("shared_fit"), "checks": checks}
+         if s.scoring_contexts:
+             rec["scored_years"] = scored_years
++        if "fit_labels" in p:
++            rec.update(fit_labels=p["fit_labels"], fit_label_removed_rows=p["fit_label_removed"])
+         if not all(checks.values()):
+             raise ValidityError(f"{E.block_id}: plan assertion failed {[k for k, v in checks.items() if not v]}")
+         out[E.block_id] = rec
+@@ -575,7 +628,8 @@ def plan_summary(d: ArmData, plans):
+                      "excluded_families": len(p.get("train_excluded", p["S_E"])), "excluded_eligible_rows": p["excluded_eligible"],
+                      "predicted_rows": len(p["score"]), "predicted_copies": int((d.kind[p["score"]] == "copy").sum()),
+                      "scored_countries": int(pd.Series(d.labels["iso2"].to_numpy()[p["score"]]).nunique()),
+-                     "scored_families": len(p["S_E"]), "scalar_fits": 4 if len(p["score"]) and not reused(p) else 0})
++                     "scored_families": len(p["S_E"]), "scalar_fits": 4 if len(p["score"]) and not reused(p) else 0,
++                     **({"fit_labels": p["fit_labels"], "fit_label_removed_rows": p["fit_label_removed"]} if "fit_labels" in p else {})})
+         if d.schedule.declared:
+             extra.append(fit_extra(d, p["train"], p["score"], p.get("shared_fit", "")))
+         for pv in p["providers"]:
+@@ -605,6 +659,21 @@ EQUIVALENCE_KEYS = ("rows", "arm_rows_csv_sha256", "targets_sha256", "phase_sha2
+                     "memberships_sha256", "history_overlays_sha256", "calibration_keys_sha256", "schedule_sha256",
+                     "fit_keys_sha256", "feature_prefix_order_sha256", "feature_prefix_X_sha256",
+                     "feature_prefix_nan_mask_sha256")
++# Task 10-27 (GOSIF-GPP v3 corrected input): a formal refit of the tuned arm with its frozen parameters on a corrected
++# interim panel whose only change is the replaced GPP_mean/GPP_std columns (GPP_std is not a model input). The recipe's
++# ``corrected_input`` block pins every input role (the replaced interim included), re-pins only the feature X / NaN-mask
++# digests, and pins per-column digests of every unchanged feature column from the original formal no-fit build. The
++# other eleven equivalence digests (labels, cohort, histories, memberships, schedule, fitting keys, order) must still
++# equal the original formal run's ``baseline.equivalence``. Recipes without the block keep the original contract.
++CORRECTED_INPUT_KIND = "gpp_input_replacement"
++CORRECTED_INPUT_KEYS = ("kind", "data_version", "replaced_role", "inputs", "original_inputs", "changed_columns", "corrected",
++                        "unchanged_columns", "original_run", "relation", "report")
++REPORT_ROLE = "report_region_mapping"      # report-only region map (task 10-27 R7); never a model input
++GPP_INPUT_FEATURES = tuple([f"GPP_mean__{k}_at_origin" for k in ("value", "ma3", "ma6", "ma12", "sd12")]
++                           + [f"GPP_mean__hist_same_month_z{k}_at_origin" for k in ("", "_ma3", "_ma6", "_ma12")]
++                           + [f"GPP_mean__vegetation_stress__{k}_at_origin" for k in ("share12", "months_since", "longest_run12", "any12")])
++CORRECTED_REPINNED = ("feature_prefix_X_sha256", "feature_prefix_nan_mask_sha256")
++CORRECTED_PRESERVED = tuple(k for k in EQUIVALENCE_KEYS if k not in CORRECTED_REPINNED)
+ POOL_KEY_COLUMNS = ("row", "admin_code", "target_ord", "label_kind", "source_family", "provider_block", "provider_cutoff", "weight")
+ FIT_KEY_COLUMNS = ("context", "fit_block", "role", "cutoff", "train_rows", "predicted_rows", "excluded_families",
+                    "excluded_families_sha256", "train_keys_sha256", "y_sha256", "w_sha256")
+@@ -656,7 +725,11 @@ def history_overlay_arrays(d: ArmData, plans):
+     out = {}
+ 
+     def put(prefix, rows, excluded):
+-        _, src, fam = vf.history_block(d.admin[rows], d.target[rows], d.horizon, d.obs, excluded)
++        if d.obs_aliased:      # task 10-28: the selected events' aliases are part of the saved dependency ledger
++            _, src, fam, ali = vf.history_block(d.admin[rows], d.target[rows], d.horizon, d.obs, excluded, return_alias=True)
++            out[f"{prefix}_alias"] = ali
++        else:
++            _, src, fam = vf.history_block(d.admin[rows], d.target[rows], d.horizon, d.obs, excluded)
+         out[f"{prefix}_src"], out[f"{prefix}_fam"] = src, fam
+ 
+     for p in plans:
+@@ -962,15 +1035,23 @@ def paired_gate(d: ArmData, plans, reference, manifest):
+ # --------------------------------------------------------------------------- history-materialized matrices
+ 
+ 
+-def materialize(d: ArmData, rows, excluded):
++def materialize(d: ArmData, rows, excluded, with_alias=False):
+     """Rows of the base matrix with history rebuilt after removing ``excluded`` families; returns (X, sources,
+     families) and refuses any excluded family among the selected history sources. Every history group (own block and
+     any stacked longer-horizon block) is rebuilt with its own horizon's bound and the same exclusions; sources and
+-    families of the groups are returned side by side (own group first)."""
++    families of the groups are returned side by side (own group first). With aliased observations (task 10-28) an
++    excluded alias is refused too, and ``with_alias`` appends the selected events' aliases as a fourth value."""
+     X = np.array(d.X[rows], dtype=np.float64, copy=True)
+-    srcs, fams = [], []
++    srcs, fams, alis = [], [], []
+     for idx, horizon in d.hist_groups:
+-        block, src, fam = vf.history_block(d.admin[rows], d.target[rows], horizon, d.obs, excluded)
++        if d.obs_aliased:
++            block, src, fam, ali = vf.history_block(d.admin[rows], d.target[rows], horizon, d.obs, excluded, return_alias=True)
++            if len(excluded) and np.isin(ali[ali >= 0], excluded).any():
++                raise ValidityError("an excluded alias family supplies a history value")
++            alis.append(ali)
++        else:
++            block, src, fam = vf.history_block(d.admin[rows], d.target[rows], horizon, d.obs, excluded)
++            alis.append(np.full(src.shape, -1, np.int64))
+         used = fam[fam >= 0]
+         if len(excluded) and np.isin(used, excluded).any():
+             raise ValidityError("an excluded family supplies a history value")
+@@ -978,8 +1059,10 @@ def materialize(d: ArmData, rows, excluded):
+         srcs.append(src)
+         fams.append(fam)
+     if len(srcs) == 1:
+-        return X, srcs[0], fams[0]
+-    return X, np.hstack(srcs), np.hstack(fams)
++        out = (X, srcs[0], fams[0], alis[0])
++    else:
++        out = (X, np.hstack(srcs), np.hstack(fams), np.hstack(alis))
++    return out if with_alias else out[:3]
+ 
+ 
+ def stack_features(horizons, h, invariant=None):
+@@ -1051,12 +1134,14 @@ def run_fit(d: ArmData, role, block: Block, train, pred, excluded, cutoff, pred_
+         raise ValidityError(f"{block.block_id}: empty fitting pool (no invented labels)")
+     if (d.target[train] > cutoff).any() or (d.avail[train] > cutoff).any():
+         raise ValidityError(f"{block.block_id}: a fitting label or its source is after the cutoff")
+-    if len(excluded) and np.isin(d.family[train], excluded).any():
++    if len(excluded) and in_families(d, excluded, train).any():
+         raise ValidityError(f"{block.block_id}: an excluded family is in the fitting labels")
+     if np.intersect1d(train, pred).size:
+         raise ValidityError(f"{block.block_id}: a predicted row is in its own fitting pool")
+-    Xt, tsrc, tfam = materialize(d, train, excluded)
+-    Xp, psrc, pfam = materialize(d, pred, pred_excluded)
++    if d.fit_labels == "original_only" and (d.kind[train] != "original").any():
++        raise ValidityError(f"{block.block_id}: a validity copy is in an original-only fitting pool")
++    Xt, tsrc, tfam, tali = materialize(d, train, excluded, with_alias=True)
++    Xp, psrc, pfam, pali = materialize(d, pred, pred_excluded, with_alias=True)
+     w = fit_weights(d, train, cutoff)
+     boosters, payloads, recs = fit_quartet(Xt, d.Y[train], w, quartet)
+     P = predict_quartet(boosters, Xp) if len(pred) else np.zeros((0, 4))
+@@ -1071,8 +1156,10 @@ def run_fit(d: ArmData, role, block: Block, train, pred, excluded, cutoff, pred_
+     if d.schedule.declared:
+         record.update(min_train_target=label(int(d.target[train].min())), sample_weights=d.schedule.sample_weights,
+                       scheme=d.schedule.scheme)
+-    return {"record": record, "boosters": boosters, "payloads": payloads, "P": P, "Xp": Xp,
+-            "history": {"train_src": tsrc, "train_fam": tfam, "pred_src": psrc, "pred_fam": pfam}}
++    history = {"train_src": tsrc, "train_fam": tfam, "pred_src": psrc, "pred_fam": pfam}
++    if d.obs_aliased:      # task 10-28: the same alias evidence as the no-fit history_overlay_arrays
++        history.update(train_alias=tali, pred_alias=pali)
++    return {"record": record, "boosters": boosters, "payloads": payloads, "P": P, "Xp": Xp, "history": history}
+ 
+ 
+ def predict_rows(d: ArmData, boosters, rows, excluded):
+@@ -1174,6 +1261,10 @@ def mlflow_metrics(period_blocks):
+ 
+ 
+ def check_config(config, horizon, arm):
++    if "ch_correction" in config and (arm != HPT_ARM or config.get("mode") != "formal"):
++        raise ValidityError(f"ch_correction (task 10-28) is defined only for formal {HPT_ARM} recipes")
++    if "origin_ablation" in config and "ch_correction" not in config:
++        raise ValidityError("origin_ablation (task 10-30) is defined only for formal CH-correction recipes")
+     if arm == HPT_ARM:      # task 10-21: its own mode-specific contract (tuning search/reference or formal refit)
+         return check_hpt_config(config, horizon)
+     if config.get("fixed") != fixed_settings(arm):
+@@ -1372,6 +1463,8 @@ def run_contexts(d: ArmData, out_dir, log=print, quartet=None):
+             members[f"{fid}|train"], members[f"{fid}|pred"] = pv["train"].astype(np.int32), pv["pred"].astype(np.int32)
+             overlays[f"{fid}|train_src"], overlays[f"{fid}|train_fam"] = fit["history"]["train_src"], fit["history"]["train_fam"]
+             overlays[f"{fid}|pred_src"], overlays[f"{fid}|pred_fam"] = fit["history"]["pred_src"], fit["history"]["pred_fam"]
++            if d.obs_aliased:
++                overlays[f"{fid}|train_alias"], overlays[f"{fid}|pred_alias"] = fit["history"]["train_alias"], fit["history"]["pred_alias"]
+             cal_parts.append(pd.DataFrame({"row": pv["pred"], "provider_block": pv["block"].block_id,
+                                            "provider_cutoff": pv["block"].cutoff,
+                                            **{f"p_{q}": fit["P"][:, k] for k, q in enumerate(TARGETS)}}))
+@@ -1394,6 +1487,8 @@ def run_contexts(d: ArmData, out_dir, log=print, quartet=None):
+         pool.to_csv(os.path.join(out_dir, "contexts", f"calibration_pool_{E.block_id}.csv.gz"), index=False)
+         sid = p.get("shared_fit")
+         if reused(p):      # hindcast: the shared backbone of the first context predicts this context (no refit)
++            if d.obs_aliased:
++                raise ValidityError("aliased (CH) history is not supported with a shared hindcast backbone")
+             first = shared[sid]
+             if np.intersect1d(p["train"], p["score"]).size or not np.array_equal(p["train"], first["train"]):
+                 raise ValidityError(f"{E.block_id}: shared backbone rows differ or contain a scored row")
+@@ -1413,6 +1508,9 @@ def run_contexts(d: ArmData, out_dir, log=print, quartet=None):
+         members[f"{E.block_id}|backbone|train"], members[f"{E.block_id}|score"] = p["train"].astype(np.int32), p["score"].astype(np.int32)
+         overlays[f"{E.block_id}|backbone|train_src"], overlays[f"{E.block_id}|backbone|train_fam"] = fit["history"]["train_src"], fit["history"]["train_fam"]
+         overlays[f"{E.block_id}|score_src"], overlays[f"{E.block_id}|score_fam"] = fit["history"]["pred_src"], fit["history"]["pred_fam"]
++        if d.obs_aliased:      # task 10-28: identical keys to history_overlay_arrays; a missing array is an error, never skipped
++            overlays[f"{E.block_id}|backbone|train_alias"] = fit["history"]["train_alias"]
++            overlays[f"{E.block_id}|score_alias"] = fit["history"]["pred_alias"]
+         Zs = d.X[p["score"]][:, d.core_idx]
+         corrected, delta = apply_b2(cal, fit["P"], Zs)
+         star, phase = ae("projection").project_and_decode(corrected)
+@@ -1981,9 +2079,17 @@ def check_formal_contract(c, horizon):
+     from research_cloud.training.model_metadata import BASELINE_KEYS
+     h = int(horizon)
+     base = c.get("baseline") or {}
++    ch = "ch_correction" in c      # task 10-28: the GOSIF-v3 corrected run of this horizon is the linked baseline
+     if base.get("kind") != FROZEN_BASELINE or any(not isinstance(base.get(k), str) or not base[k].strip() for k in BASELINE_KEYS):
+-        raise ValidityError("the formal baseline links the selected ACLED run (frozen_baseline with every link key)")
+-    if base["arm"] != ACLED_ARM or base["run_id"] != ACLED_BASELINE_RUNS[h]:
++        raise ValidityError("the formal baseline links the selected ACLED run (frozen_baseline with every link key)" if not ch else
++                            "the CH-correction baseline links the GOSIF-v3 run (frozen_baseline with every link key)")
++    if ch and "origin_ablation" in c:      # task 10-30: the CH-final run of this horizon is the linked baseline
++        if base["arm"] != HPT_ARM or base["run_id"] != CH_FINAL_RUNS[h]:
++            raise ValidityError(f"the origin-ablation baseline is the CH-final {HPT_ARM} H{h} run {CH_FINAL_RUNS[h]}")
++    elif ch:
++        if base["arm"] != HPT_ARM or base["run_id"] != GPP_BASELINE_RUNS[h]:
++            raise ValidityError(f"the CH-correction baseline is the GOSIF-v3 {HPT_ARM} H{h} run {GPP_BASELINE_RUNS[h]}")
++    elif base["arm"] != ACLED_ARM or base["run_id"] != ACLED_BASELINE_RUNS[h]:
+         raise ValidityError(f"the formal baseline is the selected {ACLED_ARM} H{h} run {ACLED_BASELINE_RUNS[h]}")
+     if not isinstance(base.get("relation"), str) or not base["relation"].strip():
+         raise ValidityError("the formal baseline states its relation explicitly")
+@@ -1993,7 +2099,12 @@ def check_formal_contract(c, horizon):
+     if (not isinstance(comp, dict) or set(comp) != {"baseline_predictions", "region_mapping"}
+             or not all(is_sha256(v) for v in comp.values()) or comp["region_mapping"] != REGION_MAPPING_SHA256):
+         raise ValidityError("formal comparison pins the baseline predictions and the frozen region map")
+-    if c.get("cohort") != {"final_rows": FINAL_ROWS[h], "holdout_rows": HOLDOUT_ROWS}:
++    cohort = c.get("cohort")
++    if ch:      # measured on the reviewed local no-fit build (never forced to the GOSIF-v3 counts)
++        if (not isinstance(cohort, dict) or set(cohort) != {"final_rows", "holdout_rows"}
++                or not all(isinstance(v, int) and not isinstance(v, bool) and v > 0 for v in cohort.values())):
++            raise ValidityError("the CH-correction cohort pins its measured final and holdout rows")
++    elif cohort != {"final_rows": FINAL_ROWS[h], "holdout_rows": HOLDOUT_ROWS}:
+         raise ValidityError(f"formal cohort must be {FINAL_ROWS[h]} rows with {HOLDOUT_ROWS} 2026 rows")
+     if c.get("objective") != HPT_FORMAL_OBJECTIVE or not isinstance(c.get("dataset_input"), dict):
+         raise ValidityError(f"formal recipes report {HPT_FORMAL_OBJECTIVE} and declare a dataset_input")
+@@ -2030,8 +2141,9 @@ def check_hpt_config(config, horizon):
+             raise ValidityError(f"{role} recipes declare exactly their fixed settings, space and {HPT_OBJECTIVE}")
+         if base.get("kind") != SELF_CONSISTENCY or config.get("cohort") != selection_cohort(horizon):
+             raise ValidityError("tuning recipes pin self-consistency digests of the D7 selection cohort")
+-        if any(k in config for k in ("comparison", "frozen", "dataset_input")) or not isinstance(config.get("formal"), dict):
+-            raise ValidityError("tuning recipes carry the formal contract only under 'formal'")
++        if any(k in config for k in ("comparison", "frozen", "dataset_input", "corrected_input", "ch_correction", "origin_ablation")) \
++                or not isinstance(config.get("formal"), dict):
++            raise ValidityError("tuning recipes carry the formal contract only under 'formal' (no corrected_input)")
+         check_formal_contract(config["formal"], horizon)
+         return
+     fixed = config.get("fixed") or {}
+@@ -2044,6 +2156,739 @@ def check_hpt_config(config, horizon):
+             or not is_sha256(fr["freeze_index_sha256"]) or fr["winner_role"] not in HPT_ROLES
+             or not isinstance(fr["winner_trial_id"], str) or not fr["winner_trial_id"] or fr["params_sha256"] != digest(values)):
+         raise ValidityError("formal fitting requires the frozen winner record of all-horizon freezes")
++    if "origin_ablation" in config:      # task 10-30: the inherited CH contract is checked as the CH-final recipe saw it
++        check_ch_correction(config["ch_correction"], ch_recipe_view(config))
++        check_origin_ablation(config["origin_ablation"], config)
++    elif "ch_correction" in config:
++        check_ch_correction(config["ch_correction"], config)
++    elif "corrected_input" in config:
++        check_corrected_input(config["corrected_input"], config)
++
++
++def check_corrected_input(ci, config):
++    """Structure of a formal recipe's corrected-input contract (task 10-27); ``corrected_gate`` checks the build."""
++    if not isinstance(ci, dict) or set(ci) != set(CORRECTED_INPUT_KEYS):
++        raise ValidityError(f"corrected_input declares exactly {list(CORRECTED_INPUT_KEYS)}")
++    if (ci["kind"] != CORRECTED_INPUT_KIND or ci["replaced_role"] != "interim" or not isinstance(ci["data_version"], str)
++            or not ci["data_version"].strip() or not isinstance(ci["relation"], str) or not ci["relation"].strip()):
++        raise ValidityError(f"corrected_input is a {CORRECTED_INPUT_KIND} of the interim role with a data_version and relation")
++    pins, orig = ci["inputs"], ci["original_inputs"]
++    need = {"interim", "raw_panel", *FORMAL_ROLES}
++    if (not isinstance(pins, dict) or not need <= set(pins) or not all(is_sha256(v) for v in pins.values())
++            or not isinstance(orig, dict) or set(orig) != {"interim"} or not is_sha256(orig["interim"])
++            or orig["interim"] == pins["interim"]):
++        raise ValidityError("corrected_input pins every input role and replaces exactly the interim panel")
++    fr, comp = config["frozen"], config["comparison"]
++    if (pins["freeze"], pins["freeze_index"]) != (fr["freeze_sha256"], fr["freeze_index_sha256"]) \
++            or any(pins[r] != comp[r] for r in comp):
++        raise ValidityError("corrected_input input pins agree with the frozen and comparison pins")
++    if list(ci["changed_columns"]) != list(GPP_INPUT_FEATURES):
++        raise ValidityError("corrected_input changes exactly the GPP_mean-derived feature columns")
++    corr, un, run = ci["corrected"], ci["unchanged_columns"], ci["original_run"]
++    if not isinstance(corr, dict) or set(corr) != set(CORRECTED_REPINNED) or not all(is_sha256(v) for v in corr.values()):
++        raise ValidityError(f"corrected_input re-pins exactly {list(CORRECTED_REPINNED)}")
++    values = un.get("values") if isinstance(un, dict) else None
++    if (set(un or {}) != {"order_sha256", "nan_mask_sha256", "values"} or not isinstance(values, dict)
++            or len(values) != config["n_features"] - len(GPP_INPUT_FEATURES) or set(values) & set(GPP_INPUT_FEATURES)
++            or not all(is_sha256(v) for v in (un["order_sha256"], un["nan_mask_sha256"], *values.values()))):
++        raise ValidityError("corrected_input pins per-column digests and the NaN mask of every unchanged feature column")
++    if (not isinstance(run, dict) or set(run) != {"run_id", "recipe_sha256", "journal_sha256"}
++            or not isinstance(run["run_id"], str) or not run["run_id"] or not all(is_sha256(run[k]) for k in ("recipe_sha256", "journal_sha256"))):
++        raise ValidityError("corrected_input names the original formal run (run_id, recipe and journal sha256)")
++    rep = ci["report"]
++    if (not isinstance(rep, dict) or set(rep) != {"role", "regions", "somalia_iso2"} or rep["role"] != REPORT_ROLE
++            or REPORT_ROLE not in pins or pins[REPORT_ROLE] == comp["region_mapping"] or not isinstance(rep["regions"], dict)
++            or not rep["regions"] or not all(str(k).isdigit() and isinstance(v, str) and v.strip() for k, v in rep["regions"].items())
++            or rep["somalia_iso2"] != "SO"):
++        raise ValidityError(f"corrected_input.report pins its own {REPORT_ROLE} (not the frozen pairing map), named regions and SO")
++
++
++def corrected_gate(d: "ArmData", inputs, config, got):
++    """(differing names, record) of a corrected-input formal build (task 10-27): every pinned input role's bytes, the
++    eleven preserved digests against the original formal ``baseline.equivalence``, the two re-pinned feature digests,
++    and the per-column digests / NaN mask of every column outside the declared GPP-derived columns."""
++    from research_cloud.training.common import sha256_file
++    ci = config["corrected_input"]
++    roles = {r: bool(r in inputs and sha256_file(inputs[r]) == want) for r, want in sorted(ci["inputs"].items())}
++    unpinned = sorted(set(inputs) - set(ci["inputs"]))
++    base = config["baseline"]["equivalence"]
++    preserved = [k for k in CORRECTED_PRESERVED if got[k] != base[k]]
++    repinned = [k for k in CORRECTED_REPINNED if got[k] != ci["corrected"][k]]
++    changed = list(ci["changed_columns"])
++    missing = [c for c in changed if c not in d.order]
++    names = [c for c in d.order if c not in changed]
++    cols, mask = non_acled_digests(d.X, d.order, names)
++    want = ci["unchanged_columns"]
++    columns = sorted({c for c in names if cols[c] != want["values"].get(c)} | (set(want["values"]) - set(names)))
++    order_ok, mask_ok = vf.list_sha256(names) == want["order_sha256"], mask == want["nan_mask_sha256"]
++    differ = (preserved + repinned + [f"input:{r}" for r, ok in roles.items() if not ok] + [f"unpinned_input:{r}" for r in unpinned]
++              + [f"missing_column:{c}" for c in missing] + ([] if not columns and order_ok and mask_ok else ["unchanged_columns"]))
++    record = {"kind": ci["kind"], "data_version": ci["data_version"], "inputs_verified": roles, "unpinned_inputs": unpinned,
++              "preserved_keys": list(CORRECTED_PRESERVED), "preserved_differing": preserved,
++              "repinned_keys": list(CORRECTED_REPINNED), "repinned_differing": repinned,
++              "changed_columns": changed, "unchanged_columns": len(names), "unchanged_columns_differing": columns[:50],
++              "unchanged_columns_differing_count": len(columns), "unchanged_order_ok": order_ok, "unchanged_nan_mask_ok": mask_ok,
++              "original_run": ci["original_run"], "passed": not differ}
++    return differ, record
++
++
++# --------------------------------------------------------------------------- CH validity correction (task 10-28)
++#
++# A formal refit of the tuned arm with the frozen parameters of the GOSIF-v3 corrected run on the same corrected inputs
++# plus a keyed CH reference-window input (role ``ch_links``). Labels, report families, histories, cohort and fitting rows
++# change by design, so the recipe's ``ch_correction`` block replaces the GPP-only ``corrected_input`` contract (never
++# both): it pins every input role, links the GPP run (run, recipe, journal, retained predictions, frozen parameters),
++# pins the reviewed local no-fit build's self-consistency digests (the 13 equivalence keys plus label and history lineage
++# digests that include CH roles, aliases and storage months), the measured CH counts, and preservation digests on the
++# common rows (every GPP row; the added CH copies are the only new rows): keys, exact targets/phases and every
++# non-history feature column. Comparisons pair (context, admin_code, target_ord) with exact phase and q2..q5 truth;
++# whole-population and common-support results are reported separately.
++
++CH_CORRECTION_KIND = "ch_validity_correction"
++CH_CORRECTION_KEYS = ("kind", "data_version", "inputs", "gpp_baseline", "preserved", "self_consistency", "ch_counts",
++                      "relation", "report")
++GPP_BASELINE_RUNS = {0: "8e07686349304eecb9a52ff36e41bc63", 6: "ac709d280d8a435bad7fb80266c051c7",
++                     12: "0bc109fa7cfe4411a33fca47b907c0b1"}
++CH_GPP_KEYS = ("run_id", "recipe_sha256", "journal_sha256", "predictions_sha256", "params_sha256")
++CH_PRESERVED_KEYS = ("common_rows", "common_keys_sha256", "targets_sha256", "phase_sha256", "feature_order_sha256",
++                     "non_history_columns", "non_history_nan_mask_sha256")
++CH_LINEAGE_KEYS = ("labels_lineage_sha256", "observations_lineage_sha256")
++CH_LABEL_LINEAGE = ("admin_code", "month_ord", "label_kind", "source_admin_code", "source_month_ord", "source_available_ord",
++                    "source_family", "source_family_alias", "anl_id", "link_status", "valid_from_ord", "valid_to_ord", "ch_role",
++                    "ch_report_id", "storage_month_ord")
++CH_OBS_LINEAGE = ("admin_code", "month_ord", "reported_phase", "family", "family_alias", "storage_month_ord")
++CH_COUNT_KEYS = ("added_copies", "reclassified_upstream_copies", "cross_country_aliases", "labels_after", "label_kind_after",
++                 "relationship_dispositions", "family_renames", "history_events_moved_to_nominal_month", "history_aliased_events")
++CH_PAIR_KEYS = ("context", "admin_code", "target_ord")
++CH_TRUTH = ("phase_truth", "q2_truth", "q3_truth", "q4_truth", "q5_truth")
++
++
++def check_ch_correction(cc, config):
++    """Structure of a formal recipe's CH-correction contract (task 10-28); ``ch_gate`` checks the build."""
++    h = int(config["horizon"])
++    if "corrected_input" in config:
++        raise ValidityError("ch_correction replaces the GPP-only corrected_input contract (never both)")
++    if not isinstance(cc, dict) or set(cc) != set(CH_CORRECTION_KEYS):
++        raise ValidityError(f"ch_correction declares exactly {list(CH_CORRECTION_KEYS)}")
++    if (cc["kind"] != CH_CORRECTION_KIND or not isinstance(cc["data_version"], str) or not cc["data_version"].strip()
++            or not isinstance(cc["relation"], str) or not cc["relation"].strip()):
++        raise ValidityError(f"ch_correction is a {CH_CORRECTION_KIND} with a data_version and relation")
++    pins = cc["inputs"]
++    need = {"interim", "raw_panel", vf.CH_LINKS_ROLE, REPORT_ROLE, *FORMAL_ROLES}
++    if not isinstance(pins, dict) or not need <= set(pins) or not all(is_sha256(v) for v in pins.values()):
++        raise ValidityError(f"ch_correction pins every input role including {sorted(need)}")
++    fr, comp = config["frozen"], config["comparison"]
++    if (pins["freeze"], pins["freeze_index"]) != (fr["freeze_sha256"], fr["freeze_index_sha256"]) or any(pins[r] != comp[r] for r in comp):
++        raise ValidityError("ch_correction input pins agree with the frozen and comparison pins")
++    g = cc["gpp_baseline"]
++    if (not isinstance(g, dict) or set(g) != set(CH_GPP_KEYS) or g["run_id"] != GPP_BASELINE_RUNS[h]
++            or g["run_id"] != (config.get("baseline") or {}).get("run_id")
++            or not all(is_sha256(g[k]) for k in CH_GPP_KEYS if k != "run_id")
++            or g["predictions_sha256"] != comp["baseline_predictions"] or g["params_sha256"] != fr["params_sha256"]):
++        raise ValidityError("ch_correction links the GOSIF-v3 run of this horizon (run, recipe, journal, retained predictions, "
++                            "frozen parameters)")
++    p = cc["preserved"]
++    cols = p.get("non_history_columns") if isinstance(p, dict) else None
++    if (not isinstance(p, dict) or set(p) != set(CH_PRESERVED_KEYS) or not isinstance(p["common_rows"], int) or p["common_rows"] < 1
++            or not isinstance(cols, dict) or len(cols) != config["n_features"] - len(vf.HISTORY_FEATURES)
++            or set(cols) & set(vf.HISTORY_FEATURES) or not all(is_sha256(v) for v in cols.values())
++            or not all(is_sha256(p[k]) for k in CH_PRESERVED_KEYS if k not in ("common_rows", "non_history_columns"))):
++        raise ValidityError("ch_correction pins the common rows, their keys/truths and every non-history feature column")
++    sc = cc["self_consistency"]
++    if not isinstance(sc, dict) or set(sc) != set(EQUIVALENCE_KEYS) | set(CH_LINEAGE_KEYS):
++        raise ValidityError("ch_correction pins the 13 no-fit digests and the label/history lineage digests of the reviewed build")
++    if not isinstance(cc["ch_counts"], dict) or set(cc["ch_counts"]) != set(CH_COUNT_KEYS):
++        raise ValidityError(f"ch_correction pins the measured CH counts {list(CH_COUNT_KEYS)}")
++    rep = cc["report"]
++    if (not isinstance(rep, dict) or set(rep) != {"role", "regions", "somalia_iso2"} or rep["role"] != REPORT_ROLE
++            or pins[REPORT_ROLE] == comp["region_mapping"] or not isinstance(rep["regions"], dict) or not rep["regions"]
++            or not all(str(k).isdigit() and isinstance(v, str) and v.strip() for k, v in rep["regions"].items())
++            or rep["somalia_iso2"] != "SO"):
++        raise ValidityError(f"ch_correction.report pins its own {REPORT_ROLE}, named regions and SO")
++
++
++def ch_lineage_digests(d: "ArmData"):
++    """Label and history lineage digests of a CH build: CH roles, report ids, aliases, storage and source months."""
++    return {"labels_lineage_sha256": frame_sha256(d.labels[list(CH_LABEL_LINEAGE)]),
++            "observations_lineage_sha256": frame_sha256(d.obs[list(CH_OBS_LINEAGE)])}
++
++
++def alias_exclusion_record(d: "ArmData", plans, overlays):
++    """Per-context provenance checks (both family ids of every scored row are in S_E; no fitting label and no selected
++    history event carries an excluded family or alias) and the exact changes the aliases cause against a family-only
++    exclusion of the same plans: fitting rows and history sources removed only because of an alias."""
++    out, bad = {}, []
++    alias_rows = np.flatnonzero(d.family_alias >= 0)
++    obs_alias = d.obs["family_alias"].to_numpy(np.int64) if "family_alias" in d.obs.columns else np.full(len(d.obs), -1, np.int64)
++    for p in plans:
++        E, score, train, S_E = p["block"], p["score"], p["train"], p["S_E"]
++        ids = np.concatenate([d.family[score], d.family_alias[score][d.family_alias[score] >= 0]])
++        checks = {"scored_ids_in_S_E": bool(np.isin(ids, S_E).all()),
++                  "no_fitting_label_family_or_alias_excluded": bool(not in_families(d, S_E, train).any())}
++        for key in (f"{E.block_id}|backbone|train", f"{E.block_id}|score"):
++            fam, ali = overlays[f"{key}_fam"], overlays.get(f"{key}_alias")
++            checks[f"{key.split('|', 1)[1]}_history_clean"] = bool(not np.isin(fam[fam >= 0], S_E).any()
++                                                                  and (ali is None or not np.isin(ali[ali >= 0], S_E).any()))
++        eligible = (d.target <= E.cutoff) & (d.avail <= E.cutoff)
++        only_alias_rows = int((eligible & np.isin(d.family_alias, S_E) & ~np.isin(d.family, np.unique(d.family[score]))).sum())
++        alias_only_events = int((np.isin(obs_alias, S_E) & ~np.isin(d.obs["family"].to_numpy(np.int64), S_E)).sum())
++        out[E.block_id] = {"checks": checks, "S_E_ids": int(len(S_E)), "alias_ids_in_S_E": int(len(np.setdiff1d(S_E, np.unique(d.family[score])))),
++                           "fitting_rows_excluded_only_by_alias": only_alias_rows,
++                           "history_events_excluded_only_by_alias": alias_only_events}
++        bad += [f"{E.block_id}:{k}" for k, v in checks.items() if not v]
++    return {"alias_rows": int(len(alias_rows)), "aliased_events": int((obs_alias >= 0).sum()), "contexts": out}, bad
++
++
++def ch_gate(d: "ArmData", inputs, config, got, plans, built):
++    """(differing names, record) of a CH-correction formal build (task 10-28)."""
++    from research_cloud.training.common import sha256_file
++    cc = config["ch_correction"]
++    roles = {r: bool(r in inputs and sha256_file(inputs[r]) == want) for r, want in sorted(cc["inputs"].items())}
++    unpinned = sorted(set(inputs) - set(cc["inputs"]))
++    sc, p = cc["self_consistency"], cc["preserved"]
++    lineage = ch_lineage_digests(d)
++    have = {**{k: got[k] for k in EQUIVALENCE_KEYS}, **lineage}
++    self_diff = sorted(k for k in sc if have.get(k) != sc[k])
++    if "ch_role" not in d.labels.columns:
++        raise ValidityError("a CH-correction build lacks the CH label columns")
++    common = np.flatnonzero(d.labels["ch_role"].to_numpy(dtype=object) != "added_copy")
++    names = [c for c in d.order if c not in vf.HISTORY_FEATURES]
++    cols, mask = non_acled_digests(d.X[common], d.order, names)
++    want_cols = p["non_history_columns"]
++    col_diff = sorted({c for c in names if cols[c] != want_cols.get(c)} | (set(want_cols) - set(names)))
++    preserved = {"common_rows": int(len(common)), "common_keys_sha256": array_digest(np.column_stack([d.admin[common], d.target[common]])),
++                 "targets_sha256": array_digest(d.Y[common]), "phase_sha256": array_digest(d.phase[common]),
++                 "feature_order_sha256": vf.list_sha256(d.order), "non_history_nan_mask_sha256": mask}
++    pres_diff = sorted(k for k, v in preserved.items() if v != p[k]) + (["non_history_columns"] if col_diff else [])
++    overlays = history_overlay_arrays(d, plans)
++    aliases, alias_bad = alias_exclusion_record(d, plans, overlays)
++    counts = built.get("ch_correction") or {}
++    count_diff = sorted(k for k in CH_COUNT_KEYS if json.dumps(counts.get(k), sort_keys=True, default=str)
++                        != json.dumps(cc["ch_counts"][k], sort_keys=True, default=str))
++    no_providers = sum(len(q["providers"]) for q in plans) == 0 and not any(reused(q) for q in plans)
++    differ = ([f"self_consistency:{k}" for k in self_diff] + [f"preserved:{k}" for k in pres_diff]
++              + [f"input:{r}" for r, ok in roles.items() if not ok] + [f"unpinned_input:{r}" for r in unpinned]
++              + [f"ch_count:{k}" for k in count_diff] + [f"alias:{k}" for k in alias_bad] + ([] if no_providers else ["providers_or_shared_backbone_present"]))
++    record = {"kind": cc["kind"], "data_version": cc["data_version"], "inputs_verified": roles, "unpinned_inputs": unpinned,
++              "self_consistency": have, "self_consistency_differing": self_diff, "preserved": preserved,
++              "preserved_differing": pres_diff, "non_history_columns": len(names), "non_history_columns_differing": col_diff[:50],
++              "added_copy_rows": int(len(d.admin) - len(common)), "ch_counts": {k: counts.get(k) for k in CH_COUNT_KEYS},
++              "ch_counts_differing": count_diff, "aliases": aliases, "gpp_baseline": cc["gpp_baseline"], "passed": not differ}
++    return differ, record
++
++
++def ch_pairing(new_pred, baseline_path, horizon, schedule):
++    """(common rows, new-only rows, old-only rows, reclassification counts): one-to-one (context, admin_code, target_ord)
++    keys on both sides; both files are this horizon and every row's context/period is the scheduled block of its target
++    (origin = target - H by construction); on common keys the period and the exact phase and q2..q5 truths must be equal
++    (a changed truth stops the job, it is never dropped). label_kind/source_family/iso2 may differ (old/new kept)."""
++    h = int(horizon)
++    cols = ["horizon", *CH_PAIR_KEYS, "period", "iso2", "label_kind", "source_family", *CH_TRUTH, "phase", *[f"{q}_star" for q in TARGETS]]
++    base = pd.read_csv(baseline_path, float_precision="round_trip", keep_default_na=False, na_values=[""], dtype={"iso2": str},
++                       usecols=cols)
++    new = new_pred[cols].copy()
++    blocks = scoring_blocks(h, schedule)
++    for side, f in (("new", new), ("baseline", base)):
++        if (f["horizon"].to_numpy() != h).any():
++            raise ValidityError(f"{side} predictions are not all horizon {h}")
++        if f.duplicated(list(CH_PAIR_KEYS)).any():
++            raise ValidityError(f"{side} predictions have duplicate (context, admin_code, target_ord) keys")
++        t = f["target_ord"].to_numpy(np.int64)
++        want_ctx, want_role = np.full(len(f), "", dtype=object), np.full(len(f), "", dtype=object)
++        for b in blocks:
++            m = (t >= b.target_lo) & (t <= b.target_hi)
++            want_ctx[m], want_role[m] = b.block_id, b.role
++        if (want_ctx != f["context"].to_numpy(dtype=object)).any() or (want_role != f["period"].to_numpy(dtype=object)).any():
++            raise ValidityError(f"{side} predictions have a row outside its scheduled context/period")
++    m = new.merge(base, on=list(CH_PAIR_KEYS), how="outer", suffixes=("", "_old"), indicator=True)
++    both = m[m["_merge"] == "both"].copy()
++    for c in ("period", *CH_TRUTH):
++        if not np.array_equal(both[c].to_numpy(), both[f"{c}_old"].to_numpy()):
++            raise ValidityError(f"common keys differ in {c} (truth/period must be preserved)")
++    reclass = {"label_kind": int((both["label_kind"] != both["label_kind_old"]).sum()),
++               "source_family": int((both["source_family"] != both["source_family_old"]).sum()),
++               "iso2": int((both["iso2"] != both["iso2_old"]).sum()),
++               "label_kind_transitions": {f"{a}->{b}": int(n) for (a, b), n in
++                                          both.loc[both["label_kind"] != both["label_kind_old"]].groupby(["label_kind_old", "label_kind"]).size().items()}}
++    old_only = m[m["_merge"] == "right_only"]
++    old_only = pd.DataFrame({**{k: old_only[k].to_numpy() for k in CH_PAIR_KEYS},
++                             **{c: old_only[f"{c}_old"].to_numpy() for c in ("period", "iso2", "label_kind", "source_family", *CH_TRUTH,
++                                                                              "phase", *[f"{q}_star" for q in TARGETS])}})
++    return both, m[m["_merge"] == "left_only"][[c for c in new.columns]].copy(), old_only, reclass
++
++
++def _ch_cell(f, old=False):
++    """Six metrics of one common-support frame for the new (default) or the old (GOSIF-v3) outputs."""
++    T, q3 = f["phase_truth"].to_numpy(np.int64), f["q3_truth"].to_numpy(np.float64)
++    if old:
++        return lean_metrics(T, f["phase_old"].to_numpy(np.int64), q3, f["q3_star_old"].to_numpy(np.float64), FORMAL_METRICS)
++    return lean_metrics(T, f["phase"].to_numpy(np.int64), q3, f["q3_star"].to_numpy(np.float64), FORMAL_METRICS)
++
++
++def _ch_compare(f, counts):
++    new, old = _ch_cell(f), _ch_cell(f, old=True)
++    delta, why = {}, {}
++    for k in FORMAL_METRICS:
++        delta[k] = None if new[k] is None or old[k] is None else float(new[k]) - float(old[k])
++        if delta[k] is None:
++            why[k] = "; ".join(f"{side} undefined: {b['na_reasons'][k]}" for side, b in (("baseline", old), ("new", new)) if b[k] is None)
++    return {**counts, "n_rows": int(len(f)), "original_rows_new": int((f["label_kind"] == "original").sum()),
++            "copy_rows_new": int((f["label_kind"] == "copy").sum()), "original_rows_old": int((f["label_kind_old"] == "original").sum()),
++            "copy_rows_old": int((f["label_kind_old"] == "copy").sum()),
++            "reclassified_rows": int((f["label_kind"] != f["label_kind_old"]).sum()),
++            "new": new, "baseline": old, "delta": delta, "delta_na_reasons": why}
++
++
++def ch_comparison(new_pred, baseline_path, schedule, horizon, baseline):
++    """Common-support comparison per formal scope and per scheduled context: six metrics for the GOSIF-v3 run's delivered
++    outputs (old) and this run (new) on the same keys and truths, the delta, and the whole-population / added / removed /
++    reclassified row counts with old and new original/copy counts."""
++    both, new_only, old_only, reclass = ch_pairing(new_pred, baseline_path, horizon, schedule)
++    t_all, role_all = new_pred["target_ord"].to_numpy(np.int64), new_pred["period"].to_numpy()
++    t, role = both["target_ord"].to_numpy(np.int64), both["period"].to_numpy()
++    tn, rn = new_only["target_ord"].to_numpy(np.int64), new_only["period"].to_numpy()
++    to, ro = old_only["target_ord"].to_numpy(np.int64), old_only["period"].to_numpy()
++    cells = {}
++    for s in hpt_scopes(schedule, horizon):
++        within = lambda tt, rr: (rr == s["period"]) & (tt >= s["lo"]) & (tt <= s["hi"])
++        cells[s["scope"]] = {"target_from": label(s["lo"]), "target_to": label(s["hi"]),
++                             **_ch_compare(both[within(t, role)], {"new_population_rows": int(within(t_all, role_all).sum()),
++                                                                   "added_rows": int(within(tn, rn).sum()), "removed_rows": int(within(to, ro).sum())})}
++    contexts = {}
++    for b in scoring_blocks(horizon, schedule):
++        sel = lambda f: (f["context"] == b.block_id).to_numpy()
++        contexts[b.block_id] = {"role": b.role, "target_from": label(b.target_lo), "target_to": label(b.target_hi), "cutoff": label(b.cutoff),
++                                **_ch_compare(both[sel(both)], {"new_population_rows": int(sel(new_pred).sum()), "added_rows": int(sel(new_only).sum()),
++                                                                "removed_rows": int(sel(old_only).sum())})}
++    return {"kind": "ch_common_support_comparison", "arm": HPT_ARM, "horizon": int(horizon), "baseline": baseline,
++            "pairing": {"keys": list(CH_PAIR_KEYS), "truth": list(CH_TRUTH), "horizon_checked": int(horizon),
++                        "scheduled_context_checked": True, "common_rows": int(len(both)), "new_only_rows": int(len(new_only)),
++                        "old_only_rows": int(len(old_only)), "truth_mismatches": 0, "reclassified": reclass},
++            "scopes": [{**s, "lo": label(s["lo"]), "hi": label(s["hi"])} for s in hpt_scopes(schedule, horizon)],
++            "metrics": list(FORMAL_METRICS), "definitions": {k: METRIC_DEFINITIONS[k] for k in (*FORMAL_METRICS, "n_rows")},
++            "cells": cells, "contexts": contexts,
++            "semantics": "common support = keys scored by both runs with identical phase and q2..q5 truth; old = the GOSIF-v3 run's "
++                         "delivered (uncalibrated) outputs with its own label kinds; new = this run; unweighted rows; delta = new - "
++                         "old; differing populations are reported separately and a delta is not an isolated model effect"}, (both, new_only, old_only)
++
++
++def ch_common_report(frames, map_path, schedule, horizon, spec, new_pred):
++    """Every inherited report cell (``corrected_report`` layout) on the common support for old and new, with deltas, the
++    declared/observed windows, NA reasons and per-cell common / whole-population / added / removed / reclassified counts
++    and old and new original/copy counts (old counts use the GOSIF-v3 run's own label kinds)."""
++    both, new_only, old_only = frames
++    old = both.drop(columns=["phase", "q3_star", "label_kind", "iso2"]).rename(
++        columns={"phase_old": "phase", "q3_star_old": "q3_star", "label_kind_old": "label_kind", "iso2_old": "iso2"})
++    rep = lambda f: corrected_report(f, map_path, schedule, horizon, spec)[0]
++    new_rows, old_rows = rep(both), rep(old)
++    count_rows = {name: rep(f) for name, f in (("population", new_pred), ("added", new_only), ("removed", old_only),
++                                                ("reclassified", both[both["label_kind"] != both["label_kind_old"]]))}
++    rows, scalars = [], {}
++    for i, (n, o) in enumerate(zip(new_rows, old_rows)):
++        cells = [n, o] + [count_rows[k][i] for k in count_rows]
++        if len({(c["table"], c["subset"], c["scope"]) for c in cells}) != 1 or n["n_rows"] != o["n_rows"]:
++            raise ValidityError("common-support report cells differ in layout")
++        rec = {"horizon": n["horizon"], "table": n["table"], "subset": n["subset"], "scope": n["scope"],
++               "declared_from": n["declared_from"], "declared_to": n["declared_to"], "observed_from": n["observed_from"],
++               "observed_to": n["observed_to"], "common_rows": n["n_rows"],
++               "original_rows_new": n["original_rows"], "copy_rows_new": n["copy_rows"],
++               "original_rows_old": o["original_rows"], "copy_rows_old": o["copy_rows"],
++               **{f"{k}_rows": count_rows[k][i]["n_rows"] for k in count_rows},
++               "population_original_rows": count_rows["population"][i]["original_rows"],
++               "population_copy_rows": count_rows["population"][i]["copy_rows"]}
++        key = f"common.{n['table']}.{n['subset'].lower().replace(' ', '_')}.{n['scope']}"
++        scalars[f"{key}.n_rows"] = float(n["n_rows"])
++        for k in FORMAL_METRICS:
++            a, b = n[k], o[k]
++            rec[f"new.{k}"], rec[f"old.{k}"] = a, b
++            rec[f"delta.{k}"] = None if a is None or b is None else float(a) - float(b)
++            rec[f"new_na_reason.{k}"], rec[f"old_na_reason.{k}"] = n["na_reasons"].get(k), o["na_reasons"].get(k)
++            for name, v in ((f"{key}.{k}", a), (f"{key}.baseline.{k}", b), (f"{key}.delta_vs_baseline.{k}", rec[f"delta.{k}"])):
++                if isinstance(v, (int, float)) and not isinstance(v, bool) and np.isfinite(v):
++                    scalars[name] = float(v)
++        rows.append(rec)
++    return rows, scalars
++
++
++CH_COUNT_FIELDS = ("n_rows", "new_population_rows", "added_rows", "removed_rows", "reclassified_rows", "original_rows_new",
++                   "copy_rows_new", "original_rows_old", "copy_rows_old")
++
++
++def write_ch_comparison(out, comp, common_rows):
++    """ch_comparison.json (null for undefined), ch_comparison.csv (scope and context level x metric, with every count) and
++    ch_common_report.csv (every inherited report cell on the common support)."""
++    with open(out.path("ch_comparison.json"), "w") as f:
++        f.write(json.dumps(comp, indent=1, allow_nan=False, default=lambda o: o.item() if hasattr(o, "item") else str(o)))
++    rows = []
++    for level, items in (("scope", comp["cells"]), ("context", comp["contexts"])):
++        for name, c in items.items():
++            for k in FORMAL_METRICS:
++                rows.append({"horizon": comp["horizon"], "level": level, "name": name, "target_from": c["target_from"],
++                             "target_to": c["target_to"], **{f: c[f] for f in CH_COUNT_FIELDS}, "metric": k,
++                             "baseline": c["baseline"][k], "new": c["new"][k], "delta": c["delta"][k],
++                             "baseline_na_reason": c["baseline"]["na_reasons"].get(k), "new_na_reason": c["new"]["na_reasons"].get(k),
++                             "delta_na_reason": c["delta_na_reasons"].get(k)})
++    pd.DataFrame(rows).to_csv(out.path("ch_comparison.csv"), index=False, float_format="%.17g")
++    pd.DataFrame(common_rows).to_csv(out.path("ch_common_report.csv"), index=False, float_format="%.17g")
++    return ["ch_comparison.json", "ch_comparison.csv", "ch_common_report.csv"]
++
++
++# --------------------------------------------------------------------------- original-label fit ablation (task 10-30)
++#
++# A fixed-parameter refit of the CH-final run of each horizon whose only intervention is the backbone fitting-label
++# membership: final ``label_kind == original`` rows only (``FIT_LABELS``), after the inherited cutoff and family/alias
++# exclusions. The recipe keeps the CH-final recipe's ``ch_correction`` block byte for byte (same inputs, label
++# preparation and full-panel self-consistency), links the CH-final run as its baseline (``baseline``/``comparison``), and
++# pins in ``origin_ablation`` each context's original-only fitting rows and the no-fit digests of the filtered plans. The
++# job scores the full inherited cohort; the paired view selects the baseline's original rows (``origin_comparison``).
++
++ORIGIN_KIND = "original_label_fit_ablation"
++ORIGIN_KEYS = ("kind", "data_version", "fit_labels", "ch_baseline", "fit_counts", "self_consistency", "relation")
++ORIGIN_CH_KEYS = ("run_id", "recipe_sha256", "predictions_sha256", "package_json_sha256", "ch_correction_sha256", "params_sha256")
++ORIGIN_FIT_KEYS = ("train_rows", "fit_label_removed", "train_keys_sha256")
++CH_FINAL_RUNS = {0: "298c4718b4d64e6f8a5c315e8c22d25d", 6: "00d4e94c824343bf86a0c2b79d5b9ed0",
++                 12: "f436da15c71c469199784db065f3b63b"}
++ORIGIN_GROUPS = ("original", "matched_augmented", "augmented_total")
++ORIGIN_DELTA = "delta_matched_augmented_minus_original"
++TUI_METRICS = ("binary_f1", "phase3plus_r2")
++ORIGIN_GROUP_TEXT = {
++    "original": "original-only fitted model (this run) on the baseline's original-label evaluation rows",
++    "matched_augmented": "retained CH-final augmented model on exactly those keys and truths",
++    "augmented_total": "retained CH-final augmented model on every inherited (original + copy) evaluation row",
++    ORIGIN_DELTA: "matched_augmented - original (both defined); total vs matched is a population contrast, not a model effect"}
++
++
++def ch_recipe_view(config):
++    """The recipe as the CH-final run's contract saw it (baseline = its GOSIF-v3 run, comparison = that run's
++    predictions); the inherited ``ch_correction`` block itself is unchanged."""
++    cc = config["ch_correction"]
++    return {**config, "baseline": {**config["baseline"], "run_id": cc["gpp_baseline"]["run_id"]},
++            "comparison": {**config["comparison"], "baseline_predictions": cc["inputs"]["baseline_predictions"]}}
++
++
++def ch_gate_view(config):
++    """The inherited CH input pins with exactly one substitution: the manifest's ``baseline_predictions`` is the CH-final
++    run's retained predictions (pinned by ``comparison``), not the GOSIF-v3 predictions the CH contract compared with."""
++    cc = config["ch_correction"]
++    return {**config, "ch_correction": {**cc, "inputs": {**cc["inputs"], "baseline_predictions": config["comparison"]["baseline_predictions"]}}}
++
++
++def check_origin_ablation(oa, config):
++    """Structure of a formal recipe's origin-ablation contract; ``origin_gate`` checks the build."""
++    h = int(config["horizon"])
++    if not isinstance(oa, dict) or set(oa) != set(ORIGIN_KEYS):
++        raise ValidityError(f"origin_ablation declares exactly {list(ORIGIN_KEYS)}")
++    if (oa["kind"] != ORIGIN_KIND or oa["fit_labels"] != "original_only"
++            or any(not isinstance(oa[k], str) or not oa[k].strip() for k in ("data_version", "relation"))):
++        raise ValidityError(f"origin_ablation is an {ORIGIN_KIND} with original_only fitting labels, a data_version and relation")
++    cb, base, comp = oa["ch_baseline"], config["baseline"], config["comparison"]
++    if (not isinstance(cb, dict) or set(cb) != set(ORIGIN_CH_KEYS) or cb["run_id"] != CH_FINAL_RUNS[h] or base["run_id"] != cb["run_id"]
++            or not all(is_sha256(cb[k]) for k in ORIGIN_CH_KEYS if k != "run_id")
++            or cb["predictions_sha256"] != comp["baseline_predictions"] or cb["package_json_sha256"] != base["package_json_sha256"]
++            or cb["ch_correction_sha256"] != digest(config["ch_correction"]) or cb["params_sha256"] != config["frozen"]["params_sha256"]):
++        raise ValidityError("origin_ablation links the CH-final run of this horizon (run, recipe, retained predictions, package, "
++                            "the unchanged ch_correction block and the frozen parameters)")
++    sc = config["ch_correction"]["self_consistency"]
++    if base["equivalence"] != {k: sc[k] for k in EQUIVALENCE_KEYS}:
++        raise ValidityError("the origin-ablation baseline.equivalence is the CH-final build's 13 no-fit digests")
++    fc = oa["fit_counts"]
++    if (not isinstance(fc, dict) or not fc or any(not isinstance(v, dict) or set(v) != set(ORIGIN_FIT_KEYS) for v in fc.values())
++            or any(isinstance(v[k], bool) or not isinstance(v[k], int) or v[k] < 1 for v in fc.values() for k in ORIGIN_FIT_KEYS[:2])
++            or not all(is_sha256(v["train_keys_sha256"]) for v in fc.values())):
++        raise ValidityError("origin_ablation pins each context's original-only fitting rows, removed copies and key digest")
++    if not isinstance(oa["self_consistency"], dict) or set(oa["self_consistency"]) != set(EQUIVALENCE_KEYS):
++        raise ValidityError("origin_ablation pins the 13 no-fit digests of the original-only plans")
++
++
++def origin_gate(d: "ArmData", base_plans, plans, config, got):
++    """(differing names, record) of the original-only intervention against the unfiltered (CH-final) plans of the same
++    build: the same contexts, scored rows, S_E and family exclusions; each fitting pool is exactly the baseline pool's
++    final originals, with their targets, weights, history sources and materialized history values unchanged (base
++    feature rows are the same matrix rows by index equality); scored histories unchanged; pinned counts and digests."""
++    oa = config["origin_ablation"]
++    if [p["block"] for p in plans] != [b["block"] for b in base_plans]:
++        raise ValidityError("original-only plans have different contexts than the unfiltered plans")
++    hist_new, hist_base = history_overlay_arrays(d, plans), history_overlay_arrays(d, base_plans)
++    suffixes = ("src", "fam", "alias") if d.obs_aliased else ("src", "fam")
++    bad, contexts = [], {}
++    for p, b in zip(plans, base_plans):
++        E = p["block"]
++        keep = d.kind[b["train"]] == "original"
++        excl = b.get("train_excluded", b["S_E"])
++        values = {}
++        for name, rows in (("new", p["train"]), ("base", b["train"])):
++            values[name] = [canonical(vf.history_block(d.admin[rows], d.target[rows], hz, d.obs, excl)[0]) for _, hz in d.hist_groups]
++        tr, sc = f"{E.block_id}|backbone|train", f"{E.block_id}|score"
++        checks = {
++            "scored_rows_equal": np.array_equal(p["score"], b["score"]),
++            "S_E_equal": np.array_equal(p["S_E"], b["S_E"]),
++            "excluded_eligible_equal": p["excluded_eligible"] == b["excluded_eligible"],
++            "no_providers": not p["providers"] and not b["providers"],
++            "train_is_baseline_originals": np.array_equal(p["train"], b["train"][keep]),
++            "train_nonempty_original_only": bool(len(p["train"]) and (d.kind[p["train"]] == "original").all()),
++            "removed_rows_are_baseline_copies": p.get("fit_label_removed") == int((~keep).sum())
++                                                and bool((d.kind[b["train"][~keep]] == "copy").all()),
++            "targets_equal_on_originals": np.array_equal(d.Y[p["train"]], d.Y[b["train"]][keep]),
++            "weights_equal_on_originals": np.array_equal(fit_weights(d, p["train"], E.cutoff), fit_weights(d, b["train"], E.cutoff)[keep]),
++            "train_history_values_equal_on_originals": all(np.array_equal(a, c[keep], equal_nan=True)
++                                                           for a, c in zip(values["new"], values["base"])),
++            "train_history_sources_equal_on_originals": all(np.array_equal(hist_new[f"{tr}_{s}"], hist_base[f"{tr}_{s}"][keep]) for s in suffixes),
++            "score_history_unchanged": all(np.array_equal(hist_new[f"{sc}_{s}"], hist_base[f"{sc}_{s}"]) for s in suffixes)}
++        pinned = {"train_rows": int(len(p["train"])), "fit_label_removed": int(p.get("fit_label_removed", -1)),
++                  "train_keys_sha256": keys_sha256(d, p["train"])}
++        checks["fit_counts_pinned"] = oa["fit_counts"].get(E.block_id) == pinned
++        checks = {k: bool(v) for k, v in checks.items()}
++        t = d.target[p["train"]]
++        contexts[E.block_id] = {**pinned, "checks": checks, "cutoff": label(E.cutoff), "baseline_train_rows": int(len(b["train"])),
++                                "fit_target_min": label(int(t.min())) if len(t) else None,
++                                "fit_target_max": label(int(t.max())) if len(t) else None,
++                                "score_rows": int(len(p["score"])), "score_originals": int((d.kind[p["score"]] == "original").sum()),
++                                "score_copies": int((d.kind[p["score"]] == "copy").sum()), "S_E_families": int(len(p["S_E"]))}
++        bad += [f"origin:{E.block_id}:{k}" for k, v in checks.items() if not v]
++    unknown = sorted(set(oa["fit_counts"]) - set(contexts))
++    if unknown:
++        bad.append(f"origin:fit_counts_unknown_contexts:{unknown}")
++    self_diff = sorted(k for k in EQUIVALENCE_KEYS if got[k] != oa["self_consistency"][k])
++    bad += [f"origin_self_consistency:{k}" for k in self_diff]
++    base_eq = config["baseline"]["equivalence"]
++    return bad, {"kind": oa["kind"], "data_version": oa["data_version"], "fit_labels": oa["fit_labels"], "contexts": contexts,
++                 "self_consistency": got, "self_consistency_differing": self_diff,
++                 "digests_equal_to_ch_final": sorted(k for k in EQUIVALENCE_KEYS if got[k] == base_eq[k]),
++                 "digests_changed_by_fit_membership": sorted(k for k in EQUIVALENCE_KEYS if got[k] != base_eq[k]),
++                 "input_substitution": "baseline_predictions = the CH-final run's retained predictions (comparison pin); every "
++                                       "other input is the inherited ch_correction pin",
++                 "ch_baseline": oa["ch_baseline"], "passed": not bad}
++
++
++def origin_score_check(d: "ArmData", plans, baseline_path, schedule):
++    """(differing names, record): before any fit, the prepared scored rows of every context must equal the CH-final run's
++    retained prediction rows one to one on (context, admin_code, target_ord) with the same period, exact phase and q2..q5
++    truth, label kind, source family and country (``ch_pairing``; a truth or period difference raises). The prepared
++    frame's outputs are placeholders and never compared."""
++    parts = []
++    for p in plans:
++        E, s = p["block"], p["score"]
++        parts.append(pd.DataFrame({"horizon": d.horizon, "context": E.block_id, "period": E.role, "admin_code": d.admin[s],
++                                   "target_ord": d.target[s], "iso2": d.labels["iso2"].to_numpy()[s], "label_kind": d.kind[s],
++                                   "source_family": d.family[s], "phase_truth": d.phase[s],
++                                   **{f"{q}_truth": d.Y[s, k] for k, q in enumerate(TARGETS)}, "phase": d.phase[s],
++                                   **{f"{q}_star": d.Y[s, k] for k, q in enumerate(TARGETS)}}))
++    prepared = pd.concat(parts, ignore_index=True)
++    both, new_only, old_only, reclass = ch_pairing(prepared, baseline_path, d.horizon, schedule)
++    bad = ([] if not len(new_only) and not len(old_only) else ["origin:score_pairing_unmatched"]) + \
++          (["origin:score_pairing_reclassified"] if reclass["label_kind"] or reclass["source_family"] or reclass["iso2"] else [])
++    return bad, {"prepared_rows": int(len(prepared)), "matched": int(len(both)), "prepared_only": int(len(new_only)),
++                 "baseline_only": int(len(old_only)), "reclassified": reclass, "truth_mismatches": 0,
++                 "originals": int((prepared["label_kind"] == "original").sum()), "copies": int((prepared["label_kind"] == "copy").sum()),
++                 "by_context": {c: int(n) for c, n in prepared.groupby("context").size().items()}, "passed": not bad}
++
++
++def origin_periods(schedule, horizon):
++    """The five TUI periods (R5): each report year (an empty declared window keeps its NA reason), the pooled historical
++    window and the 2026 holdout; the holdout never enters a historical period."""
++    h = int(horizon)
++    first, last = parse_month(schedule.first(h)), parse_month(schedule.main_last)
++    s0, s1 = (parse_month(m) for m in schedule.supplement)
++    out = []
++    for y in REPORT_TEMPORAL_YEARS:
++        lo, hi = max(first, y * 12), min(last, y * 12 + 11)
++        out.append({"period": f"historical_{y}", "role": "main", "lo": lo, "hi": hi} if lo <= hi else
++                   {"period": f"historical_{y}", "role": "main", "lo": None, "hi": None,
++                    "empty_reason": f"no evaluation rows: {y} precedes the H{h} historical window starting {label(first)}"})
++    out.append({"period": "historical_pooled", "role": "main", "lo": first, "hi": last})
++    out.append({"period": holdout_name(*schedule.supplement), "role": "supplement", "lo": s0, "hi": s1})
++    return out
++
++
++def _origin_group(f, old, why=None):
++    m = _ch_cell(f, old=old)
++    if why:
++        m = {**m, "na_reasons": {k: why for k in FORMAL_METRICS}}
++    t = f["target_ord"].to_numpy(np.int64)
++    return {"n_rows": int(len(f)), "original_rows": int((f["label_kind"] == "original").sum()),
++            "copy_rows": int((f["label_kind"] == "copy").sum()),
++            "observed_from": label(int(t.min())) if len(t) else None, "observed_to": label(int(t.max())) if len(t) else None,
++            **{k: m[k] for k in FORMAL_METRICS}, "na_reasons": m["na_reasons"], "support": m["support"]}
++
++
++def origin_comparison(new_pred, baseline_path, schedule, horizon, baseline):
++    """Three groups per TUI period on exactly paired keys: (context, admin_code, target_ord) one to one in both
++    directions with identical truths, periods, label kinds, source families and countries (``ch_pairing`` plus a
++    refusal of any unmatched or reclassified key); the original subset is the baseline's ``label_kind == original``.
++    Pooled cells are recomputed from rows; undefined values stay null with their reason; a delta needs both values."""
++    both, new_only, old_only, reclass = ch_pairing(new_pred, baseline_path, horizon, schedule)
++    if len(new_only) or len(old_only) or len(both) != len(new_pred):
++        raise ValidityError(f"unmatched scored keys: {len(new_only)} new-only, {len(old_only)} baseline-only")
++    if reclass["label_kind"] or reclass["source_family"] or reclass["iso2"]:
++        raise ValidityError(f"paired keys differ in label kind / source family / country: {reclass}")
++    t, role = both["target_ord"].to_numpy(np.int64), both["period"].to_numpy()
++    orig = both["label_kind_old"].to_numpy() == "original"
++    periods, cells = origin_periods(schedule, horizon), {}
++    for P in periods:
++        why = P.get("empty_reason")
++        sel = np.zeros(len(both), dtype=bool) if why else (role == P["role"]) & (t >= P["lo"]) & (t <= P["hi"])
++        if not why and not sel.any():
++            raise ValidityError(f"{P['period']}: a declared evaluation window has no scored rows")
++        groups = {"original": _origin_group(both[sel & orig], False, why),
++                  "matched_augmented": _origin_group(both[sel & orig], True, why),
++                  "augmented_total": _origin_group(both[sel], True, why)}
++        if groups["original"]["n_rows"] == 0 and not why:
++            why_orig = f"no original-label evaluation rows in {P['period']}"
++            for g in ("original", "matched_augmented"):
++                groups[g]["na_reasons"] = {k: why_orig for k in FORMAL_METRICS}
++        a, o = groups["matched_augmented"], groups["original"]
++        delta = {k: None if a[k] is None or o[k] is None else float(a[k]) - float(o[k]) for k in FORMAL_METRICS}
++        dwhy = {k: "; ".join(f"{g} undefined: {groups[g]['na_reasons'].get(k)}" for g in ("matched_augmented", "original")
++                             if groups[g][k] is None) for k in FORMAL_METRICS if delta[k] is None}
++        cells[P["period"]] = {"role": P["role"], "declared_from": label(P["lo"]) if P["lo"] is not None else None,
++                              "declared_to": label(P["hi"]) if P["hi"] is not None else None, "empty_reason": why,
++                              "groups": groups, ORIGIN_DELTA: delta, "delta_na_reasons": dwhy}
++    years = sum(cells[P["period"]]["groups"]["augmented_total"]["n_rows"] for P in periods if P["period"][-4:].isdigit())
++    if years != cells["historical_pooled"]["groups"]["augmented_total"]["n_rows"]:
++        raise ValidityError("annual periods do not add up to the pooled historical period")
++    return {"kind": "origin_ablation_paired_comparison", "arm": HPT_ARM, "horizon": int(horizon), "baseline": baseline,
++            "pairing": {"keys": list(CH_PAIR_KEYS), "truth": list(CH_TRUTH), "rows": int(len(both)), "unmatched": 0,
++                        "truth_mismatches": 0, "reclassified": 0, "originals": int(orig.sum()), "copies": int((~orig).sum())},
++            "periods": [{**P, "lo": label(P["lo"]) if P["lo"] is not None else None,
++                         "hi": label(P["hi"]) if P["hi"] is not None else None} for P in periods],
++            "groups": ORIGIN_GROUP_TEXT, "metrics": list(FORMAL_METRICS), "tui_metrics": list(TUI_METRICS),
++            "definitions": {k: METRIC_DEFINITIONS[k] for k in (*FORMAL_METRICS, "n_rows")}, "cells": cells,
++            "semantics": "unweighted rows; new = this original-only fitted run; baseline = the CH-final run's delivered "
++                         "(uncalibrated) outputs; the comparable delta is matched_augmented - original on identical keys "
++                         "and truths; pooled cells are recomputed from rows; undefined values are null with their reason"}
++
++
++def origin_comparison_metrics(comp):
++    """Finite MLflow scalars ``origin.<period>.<group>.<metric>``, ``origin.<period>.<group>.n_rows`` and
++    ``origin.<period>.delta_matched_augmented_minus_original.<metric>``."""
++    out = {}
++    for period, cell in comp["cells"].items():
++        for g in ORIGIN_GROUPS:
++            block = cell["groups"][g]
++            out[f"origin.{period}.{g}.n_rows"] = float(block["n_rows"])
++            for k in FORMAL_METRICS:
++                if isinstance(block[k], (int, float)) and not isinstance(block[k], bool) and np.isfinite(block[k]):
++                    out[f"origin.{period}.{g}.{k}"] = float(block[k])
++        for k, v in cell[ORIGIN_DELTA].items():
++            if v is not None and np.isfinite(v):
++                out[f"origin.{period}.{ORIGIN_DELTA}.{k}"] = float(v)
++    return out
++
++
++def write_origin_comparison(out, comp):
++    """origin_comparison.json (null for undefined), origin_comparison.csv (period x group x metric, with the delta as its
++    own group) and origin_tui.csv (the five periods x three groups + delta with F1, phase-3+ share R2 and N)."""
++    with open(out.path("origin_comparison.json"), "w") as f:
++        f.write(json.dumps(comp, indent=1, allow_nan=False, default=lambda o: o.item() if hasattr(o, "item") else str(o)))
++    rows, tui = [], []
++    for period, c in comp["cells"].items():
++        base = {"horizon": comp["horizon"], "period": period, "declared_from": c["declared_from"], "declared_to": c["declared_to"]}
++        for g in (*ORIGIN_GROUPS, ORIGIN_DELTA):
++            b = c["groups"].get(g)
++            values = c[ORIGIN_DELTA] if b is None else b
++            reasons = c["delta_na_reasons"] if b is None else b["na_reasons"]
++            counts = {"n_rows": None if b is None else b["n_rows"], "original_rows": None if b is None else b["original_rows"],
++                      "copy_rows": None if b is None else b["copy_rows"], "observed_from": None if b is None else b["observed_from"],
++                      "observed_to": None if b is None else b["observed_to"]}
++            for k in FORMAL_METRICS:
++                rows.append({**base, "group": g, **counts, "metric": k, "value": values[k], "na_reason": reasons.get(k)})
++            n = c["groups"]["original"]["n_rows"] if b is None else b["n_rows"]
++            tui.append({**base, "group": g, "n_rows": n, **{k: values[k] for k in TUI_METRICS},
++                        **{f"{k}_na_reason": reasons.get(k) for k in TUI_METRICS}})
++    pd.DataFrame(rows).to_csv(out.path("origin_comparison.csv"), index=False, float_format="%.17g")
++    pd.DataFrame(tui).to_csv(out.path("origin_tui.csv"), index=False, float_format="%.17g")
++    return ["origin_comparison.json", "origin_comparison.csv", "origin_tui.csv"]
++
++
++def origin_caveat(h, oa, cc):
++    return (f"Original-label fit ablation of the CH-final tuned aggregated-ACLED run, lead {h} ({oa['data_version']}): each annual "
++            "backbone is refitted with the same frozen q3 and q2/q4/q5 parameters, seed, per-row 24-month half-life weights "
++            "(not renormalized), features, histories, contexts, cutoffs and identity calibration, on only the final CH-corrected "
++            f"label_kind == original rows of the CH-final fitting pool ({cc['data_version']}); validity copies are removed from "
++            "fitting labels only. Copy report families stay excluded from fitting labels and histories exactly as in the CH-final "
++            "run, and the full inherited cohort (originals and copies) is scored. Comparisons pair the CH-final run's retained "
++            "predictions on identical keys and truths; the original-subset delta (matched augmented minus original) isolates the "
++            "fitting-label change for one seed; the augmented-total row is a different population. CH copies keep the nominal "
++            "reference-start availability convention of the CH-final run (not a strict real-time forecast). Historical results "
++            "were inspected during tuning and 2026-01..10 outcomes were already inspected; descriptive point estimates only, no "
++            "significance or causal claim.")
++
++
++def origin_formal(prep, inputs, manifest, config, values, quartet, out, t0):
++    """Task 10-30 refit: every annual context of the CH-final plan with original-only fitting labels and the frozen
++    quartet; the full inherited cohort's scope metrics and report tables; the paired original/matched/total comparison
++    with the CH-final run's retained predictions; the retained package holds only the 2026 holdout unit, the annual units
++    go to ``gcs-only/annual-package`` (replayed, then removed by the task; never published to MLflow)."""
++    import shutil
++    from research_cloud.packages import validity_pooled
++    from research_cloud.training.common import runtime_identity
++    from research_cloud.training.model_metadata import BASELINE_KEYS
++    d, cc, oa = prep["d"], config["ch_correction"], config["origin_ablation"]
++    h = d.horizon
++    if d.fit_labels != "original_only":
++        raise ValidityError("an origin-ablation job fits original labels only")
++    result = run_contexts(d, out.local, quartet=quartet)
++    pred = result["predictions"]
++    if len(pred) != config["cohort"]["final_rows"]:
++        raise ValidityError(f"{len(pred)} final rows, not the pinned {config['cohort']['final_rows']}")
++    fitted = {r["context"]: r for r in result["fit_ledger"]}
++    if set(fitted) != set(oa["fit_counts"]) or any(
++            (fitted[c]["train_rows"], fitted[c]["train_copies"], fitted[c]["train_keys_sha256"]) != (w["train_rows"], 0, w["train_keys_sha256"])
++            for c, w in oa["fit_counts"].items()):
++        raise ValidityError("actual fits differ from the pinned original-only fitting memberships")
++    baseline = {k: config["baseline"][k] for k in BASELINE_KEYS}
++    comp = origin_comparison(pred, inputs["baseline_predictions"], d.schedule, h, baseline)
++    files = write_origin_comparison(out, comp)
++    rows, report_scalars = corrected_report(pred, inputs[REPORT_ROLE], d.schedule, h, cc["report"])
++    report_files = write_corrected_report(out, rows, cc["report"], inputs[REPORT_ROLE])
++    shutil.copyfile(inputs["region_mapping"], out.path("region_mapping.csv"))
++    metrics, scope_cells = ch_scope_metrics(pred, d.schedule, h)
++    for extra in (origin_comparison_metrics(comp), report_scalars):
++        clash = sorted(set(extra) & set(metrics))
++        if clash:
++            raise ValidityError(f"metric keys collide: {clash[:5]}")
++        metrics.update(extra)
++    metrics["scored_rows"], metrics["scalar_fits"] = float(len(pred)), float(4 * len(result["fit_ledger"]))
++    metrics["fit_rows"] = float(sum(r["train_rows"] for r in result["fit_ledger"]))
++    hold = [u for u in result["units"] if u["context"].role == "supplement"]
++    annual = [u for u in result["units"] if u["context"].role != "supplement"]
++    if len(hold) != 1 or not annual:
++        raise ValidityError("an origin-ablation run has one holdout unit and at least one annual unit")
++    packages = {"package": f"retained: holdout unit {hold[0]['context'].block_id} only",
++                "gcs-only/annual-package": "temporary: annual units " + ", ".join(u["context"].block_id for u in annual)
++                                           + " (package replay verification, then task-owned removal; never published to MLflow)"}
++    info = {"kind": oa["kind"], "data_version": oa["data_version"], "fit_labels": oa["fit_labels"], "relation": oa["relation"],
++            "ch_baseline": oa["ch_baseline"], "fit_counts": oa["fit_counts"], "ch_data_version": cc["data_version"],
++            "comparison_files": files, "report_files": report_files, "packages": packages}
++    out.write_json("metrics.json", {"arm": HPT_ARM, "horizon": h, "mode": "formal", "params": values, "quartet": quartet,
++                                    "frozen": config["frozen"], "freeze": prep["freeze"], "schedule": d.schedule.record(),
++                                    "assertions": result["assertions"], "dataset": prep["built"], "caveat": origin_caveat(h, oa, cc),
++                                    "scopes": scope_cells,
++                                    "comparison": {"files": files, "pairing": comp["pairing"], "baseline": baseline,
++                                                   "periods": comp["periods"]},
++                                    "origin_ablation": info})
++    identity = {"family": FAMILY, "arm": HPT_ARM, "horizon": h, "mode": "formal", "trial": os.environ.get("CLOUD_ML_TRIAL_ID"),
++                "job": os.environ.get("CLOUD_ML_JOB_ID"), "fixed": config["fixed"], "quartet": quartet, "frozen": config["frozen"],
++                "input_manifest": manifest, "trial_code": code_identity(), "origin_ablation": info}
++    note = {"mode": "identity", "b2": "disabled by design (no B2 or provider fits)",
++            "raw": "equals the backbone quartet before projection and 0.20 decoding"}
++    build = lambda path, units, role: validity_pooled.build(out.path(path), units=units, order=d.order,
++                                                            identity={**identity, "package_role": role}, runtime=runtime_identity(),
++                                                            ae_src=vf.ae_source(), core_inputs=d.core_inputs, calibration_note=note)
++    meta = build("package", hold, packages["package"])
++    annual_meta = build("gcs-only/annual-package", annual, packages["gcs-only/annual-package"])
++    return {"metrics": metrics,
++            "artifacts": ["dataset", "contexts", "predictions.csv.gz", "package", "gcs-only", "equivalence.json", "region_mapping.csv",
++                          *files, *report_files],
++            "trial_code": code_identity(),
++            "package": {"path": "package", "content_sha256": meta["content_sha256"], "units": meta["fitted_units"]},
++            "annual_package": {"path": "gcs-only/annual-package", "content_sha256": annual_meta["content_sha256"],
++                               "units": annual_meta["fitted_units"], "retention": "temporary (task-owned)"},
++            "identity": {"family": FAMILY, "kind": "new Linux research run", "mode": "formal", "arm": HPT_ARM, "horizon": h,
++                         "contexts": [u["context"].block_id for u in result["units"]], "scalar_fits": 4 * len(result["fit_ledger"]),
++                         "params": values, "quartet_sha256": digest(quartet), "frozen": config["frozen"],
++                         "fit_labels": oa["fit_labels"], "data_version": oa["data_version"],
++                         "ch_baseline_run_id": oa["ch_baseline"]["run_id"], "elapsed_seconds": round(time.time() - t0, 1)}}
+ 
+ 
+ def reference_recipe(tuning):
+@@ -2108,16 +2953,19 @@ def hpt_prepare(inputs, config, out, schedule):
+     from research_cloud.training.common import TrialError
+     h, mode = config["horizon"], config["mode"]
+     formal = mode == "formal"
++    ch = formal and "ch_correction" in config      # task 10-28: CH reference windows added to the label preparation
++    ablation = ch and "origin_ablation" in config  # task 10-30: original-only fitting labels on the CH-final panel
+     freeze = verify_freeze_inputs(inputs, config, h) if formal else None
+     built = vf.build_dataset(inputs, out.path("dataset" if formal else "inputs/selection-build/dataset"), horizons=(h,),
+                              matrix_dir=out.path("gcs-only/dataset" if formal else "inputs/selection-build/matrices"),
+-                             keep=True, idp_local=True, acled_agg=True)
++                             keep=True, idp_local=True, acled_agg=True, **({"ch_links": True} if ch else {}))
+     objs = built.pop("objects")
+     labels, X = select_arm(objs["labels"], objs["horizons"][h]["X"], HPT_ARM)
+     order = objs["horizons"][h]["order"]
+     if len(order) != config["n_features"]:
+         raise TrialError("feature order length differs from the recipe")
+-    d = ArmData(HPT_ARM, h, labels, X, order, objs["observations"], objs["horizons"][h]["rows"], None, schedule)
++    d = ArmData(HPT_ARM, h, labels, X, order, objs["observations"], objs["horizons"][h]["rows"], None, schedule,
++                fit_labels="original_only" if ablation else "all")
+     del objs
+     n = len(order)
+     if (order[n - 3:] != list(vf.IDP_LOCAL_FEATURES) or order[n - 117:n - 3] != list(vf.ACLED_AGG_FEATURES)
+@@ -2140,12 +2988,38 @@ def hpt_prepare(inputs, config, out, schedule):
+             not np.isin(d.family[p["score"]], excluded).any() and np.isin(excluded, p["S_E"]).all()
+             and not np.isin(d.family[p["train"]], excluded).any() for p in plans)
+     got = equivalence_digests(d, plans, n)
+-    differ = check_equivalence(got, config["baseline"]["equivalence"])
++    corrected = ch_record = origin_record = None
++    if ablation:      # task 10-30: the unfiltered plans must be the CH-final build; then the fit-only intervention
++        base_plans = plan_contexts(d, fit_labels="all")
++        base_got = equivalence_digests(d, base_plans, n)
++        try:
++            differ = [f"baseline_equivalence:{k}" for k in check_equivalence(base_got, config["baseline"]["equivalence"])]
++            ch_differ, ch_record = ch_gate(d, inputs, ch_gate_view(config), base_got, base_plans, built)
++            ab_differ, origin_record = origin_gate(d, base_plans, plans, config, got)
++            sc_differ, origin_record["score_pairing"] = origin_score_check(d, plans, inputs["baseline_predictions"], schedule)
++        except ValidityError as e:
++            raise TrialError(str(e)) from e
++        origin_record["passed"] = origin_record["passed"] and not sc_differ
++        differ += ch_differ + ab_differ + sc_differ
++    elif ch:      # task 10-28: CH-correction contract (self-consistency, preservation on common rows, aliases, counts)
++        check_equivalence(got, config["baseline"]["equivalence"])     # the GOSIF-v3 reference must still list every key
++        try:
++            differ, ch_record = ch_gate(d, inputs, config, got, plans, built)
++        except ValidityError as e:
++            raise TrialError(str(e)) from e
++    elif formal and "corrected_input" in config:      # task 10-27: explicit corrected-input contract, never old-feature equality
++        check_equivalence(got, config["baseline"]["equivalence"])     # the reference must still list every key
++        differ, corrected = corrected_gate(d, inputs, config, got)
++    else:
++        differ = check_equivalence(got, config["baseline"]["equivalence"])
+     out.write_json("equivalence.json", {"arm": HPT_ARM, "horizon": h, "mode": mode, "candidate_role": config.get("candidate_role"),
+                                         "kind": baseline_kind(config), "relation": config["baseline"]["relation"], "width": n,
+                                         "treatment": got, "differing": differ, "cohort": counts, "cohort_pinned": cohort,
+                                         "cohort_passed": bool(cohort_ok), "passed": not differ and bool(cohort_ok),
+-                                        "stage": "pre-fit", "schedule": schedule.record()})
++                                        "stage": "pre-fit", "schedule": schedule.record(),
++                                        **({"corrected_input": corrected} if corrected is not None else {}),
++                                        **({"ch_correction": ch_record} if ch_record is not None else {}),
++                                        **({"origin_ablation": origin_record} if origin_record is not None else {})})
+     if not cohort_ok:
+         raise TrialError(f"{mode} cohort {counts} differs from the pinned {cohort}")
+     if differ:
+@@ -2353,7 +3227,95 @@ def write_hpt_comparison(out, comp):
+     return ["lean_comparison.json", "lean_comparison.csv", "lean_confusion.csv"]
+ 
+ 
+-def hpt_caveat(h, schedule):
++REPORT_TEMPORAL_YEARS = (2023, 2024, 2025)
++
++
++def corrected_report(pred, map_path, schedule, horizon, spec):
++    """Task 10-27 report tables (PRD R6-R8, R10) from this run's keyed predictions and the pinned report-only region map
++    (never a model input; the frozen map stays the inherited pairing artifact): every report region x {primary,
++    holdout}, and all regions / the Somalia subset (country identity) x {2023, 2024, 2025, holdout}. Rows are pooled
++    unweighted (originals and validity copies alike); declared windows are listed beside the observed first/last target
++    months; an empty declared window (H12 2023) is NA with an explicit reason. Returns (rows, finite MLflow scalars)."""
++    h = int(horizon)
++    regions = pd.read_csv(map_path)
++    names = {int(k): v for k, v in spec["regions"].items()}
++    if list(regions.columns) != ["area_id", "region"] or regions["area_id"].duplicated().any() \
++            or not regions["region"].isin(list(names)).all():
++        raise ValidityError("report region map must be unique area_id -> a declared report region")
++    f = pred[["admin_code", "iso2", "target_ord", "period", "label_kind", "phase_truth", "phase", "q3_truth", "q3_star"]].copy()
++    f["report_region"] = f["admin_code"].map(regions.set_index("area_id")["region"])
++    if f["report_region"].isna().any():
++        raise ValidityError(f"{int(f['report_region'].isna().sum())} scored rows have no report region")
++    t, per = f["target_ord"].to_numpy(np.int64), f["period"].to_numpy()
++    first, last = parse_month(schedule.first(h)), parse_month(schedule.main_last)
++    s0, s1 = (parse_month(m) for m in schedule.supplement)
++    rows, scalars = [], {}
++
++    def cell(table, subset, scope, sel, lo, hi, why=None):
++        g = f[sel]
++        m = lean_metrics(g["phase_truth"].to_numpy(np.int64), g["phase"].to_numpy(np.int64), g["q3_truth"].to_numpy(np.float64),
++                         g["q3_star"].to_numpy(np.float64), FORMAL_METRICS)
++        reasons = {k: why for k in FORMAL_METRICS} if why else m["na_reasons"]
++        row = {"horizon": h, "table": table, "subset": subset, "scope": scope,
++               "declared_from": label(lo) if lo is not None else None, "declared_to": label(hi) if hi is not None else None,
++               "observed_from": label(int(g["target_ord"].min())) if len(g) else None,
++               "observed_to": label(int(g["target_ord"].max())) if len(g) else None,
++               "n_rows": int(len(g)), "original_rows": int((g["label_kind"] == "original").sum()),
++               "copy_rows": int((g["label_kind"] == "copy").sum()),
++               **{k: m[k] for k in FORMAL_METRICS}, "na_reasons": reasons}
++        rows.append(row)
++        key = f"report.{table}.{subset.lower().replace(' ', '_')}.{scope}"
++        scalars[f"{key}.n_rows"] = float(len(g))
++        for k in FORMAL_METRICS:
++            v = m[k]
++            if isinstance(v, (int, float)) and not isinstance(v, bool) and np.isfinite(v):
++                scalars[f"{key}.{k}"] = float(v)
++
++    for p, (role, lo, hi) in (("primary", ("main", first, last)), ("holdout", ("supplement", s0, s1))):
++        for r in sorted(names):
++            cell("region", names[r], p, ((f["report_region"].to_numpy() == r) & (per == role) & (t >= lo) & (t <= hi)), lo, hi)
++        if sum(x["n_rows"] for x in rows if x["table"] == "region" and x["scope"] == p) != int(((per == role) & (t >= lo) & (t <= hi)).sum()):
++            raise ValidityError(f"report regions do not partition the {p} rows")
++    somalia = f["iso2"].to_numpy() == spec["somalia_iso2"]
++    for subset, base in (("All regions", np.ones(len(f), dtype=bool)), ("Somalia", somalia)):
++        for y in REPORT_TEMPORAL_YEARS:
++            lo, hi = max(first, y * 12), min(last, y * 12 + 11)
++            if lo > hi:
++                cell("temporal", subset, str(y), np.zeros(len(f), dtype=bool), None, None,
++                     f"no evaluation rows: {y} precedes the H{h} historical window starting {label(first)}")
++            else:
++                cell("temporal", subset, str(y), base & (per == "main") & (t >= lo) & (t <= hi), lo, hi)
++        cell("temporal", subset, "holdout", base & (per == "supplement") & (t >= s0) & (t <= s1), s0, s1)
++    return rows, scalars
++
++
++def write_corrected_report(out, rows, spec, map_path):
++    """report_tables.json/.csv (one row per cell, NA reasons kept) and the pinned report map, distinct from the frozen
++    pairing map ``region_mapping.csv``."""
++    import shutil
++    shutil.copyfile(map_path, out.path("report_region_mapping.csv"))
++    with open(out.path("report_tables.json"), "w") as f:
++        f.write(json.dumps({"kind": "corrected_input_report", "regions": spec["regions"], "somalia_iso2": spec["somalia_iso2"],
++                            "metrics": list(FORMAL_METRICS), "definitions": {k: METRIC_DEFINITIONS[k] for k in (*FORMAL_METRICS, "n_rows")},
++                            "region_map": "report_region_mapping.csv (report-only; region_mapping.csv is the frozen pairing map)",
++                            "rows": rows}, indent=1, allow_nan=False, default=lambda o: o.item() if hasattr(o, "item") else str(o)))
++    flat = [{**{k: v for k, v in r.items() if k != "na_reasons"},
++             **{f"{k}_na_reason": r["na_reasons"].get(k) for k in FORMAL_METRICS}} for r in rows]
++    pd.DataFrame(flat).to_csv(out.path("report_tables.csv"), index=False, float_format="%.17g")
++    return ["report_tables.json", "report_tables.csv", "report_region_mapping.csv"]
++
++
++def hpt_caveat(h, schedule, corrected=None):
++    if corrected is not None:      # task 10-27: the frozen parameters on a corrected GPP input (never "every input equal")
++        return (f"Corrected-input refit of the tuned aggregated-ACLED arm, lead {h} ({corrected['data_version']}): the q3 "
++                "and shared q2/q4/q5 parameters are the ones frozen by the original search for this horizon, unchanged and "
++                "not re-tuned. The interim panel's GPP_mean/GPP_std columns were replaced by zonal means of the official "
++                "GOSIF-GPP v3 monthly Mean/SD rasters (all years and areas; no old-series fallback), so the 13 GPP_mean-derived "
++                "features differ from the original run. Labels, validity copies, report families, histories, contexts, cutoffs, "
++                "weights, every other feature column (values and missingness) and the identity calibration equal the original "
++                "formal run (verified before fitting). Historical results were inspected during the original tuning and are "
++                "descriptive, not an independent test; 2026-01..10 outcomes were already inspected; the inputs are retrospective "
++                "vintages. One seed; no significance or causal claim.")
+     return (f"Tuned candidate of the aggregated-ACLED arm, lead {h}: the q3 group and the shared q2/q4/q5 group of the "
+             f"quartet were searched separately for this horizon (Vertex, binary-F1 objective) on {schedule.first(h)}.."
+             f"{schedule.main_last} historical validation with two cross-window report families excluded, ranked by binary "
+@@ -2364,6 +3326,111 @@ def hpt_caveat(h, schedule):
+             "and 2026-01..10 outcomes were already inspected for the baseline. One seed; no significance or causal claim.")
+ 
+ 
++def ch_caveat(h, cc):
++    """Runtime caveat of a CH-correction refit (task 10-28); never the GPP-only feature-preservation sentence."""
++    return (f"CH validity-correction refit of the tuned aggregated-ACLED arm, lead {h} ({cc['data_version']}): the q3 and shared "
++            "q2/q4/q5 parameters, seed, weights, calendar, identity calibration and the GOSIF-v3 corrected inputs are those of the "
++            f"GOSIF-v3 run {cc['gpp_baseline']['run_id']} (not re-tuned). Cadre Harmonise current reference windows (Jan-May, "
++            "Jun-Aug, Sep-Dec; CAF and projected rows excluded) now fill existing blank area-months of the same country as copies "
++            "of the existing CH label; 150 May-2026 rows stored raw are reclassified as copies of their Jan-May report; preserved "
++            "cross-country labels are not expanded and carry their source report family for exclusions. Label support, report "
++            "families, histories, cohorts and fitting rows therefore differ from the GOSIF-v3 run, while existing label values and "
++            "every non-history feature value on the GOSIF-v3 rows are unchanged (verified before fitting). Copies use the "
++            "reference-window start month as their nominal source/availability month - a retrospective modeling convention, not a "
++            "verified publication date, so this is not a strict real-time forecast. Unresolved, ambiguous or cross-country source "
++            "routes stay unexpanded. Historical results were inspected during the original tuning and are descriptive; "
++            "2026-01..10 outcomes were already inspected; comparisons with the GOSIF-v3 run on common keys are descriptive, not "
++            "an isolated model effect. One seed; no significance or causal claim.")
++
++
++def ch_scope_metrics(pred, schedule, horizon):
++    """This run's six metrics and counts per formal scope on its whole (augmented) scored population."""
++    t, role = pred["target_ord"].to_numpy(np.int64), pred["period"].to_numpy()
++    out, cells = {}, {}
++    for s in hpt_scopes(schedule, horizon):
++        f = pred[(role == s["period"]) & (t >= s["lo"]) & (t <= s["hi"])]
++        m = lean_metrics(f["phase_truth"].to_numpy(np.int64), f["phase"].to_numpy(np.int64), f["q3_truth"].to_numpy(np.float64),
++                         f["q3_star"].to_numpy(np.float64), FORMAL_METRICS)
++        cells[s["scope"]] = {"n_rows": int(len(f)), "original_rows": int((f["label_kind"] == "original").sum()),
++                             "copy_rows": int((f["label_kind"] == "copy").sum()), **{k: m[k] for k in FORMAL_METRICS},
++                             "na_reasons": m["na_reasons"]}
++        out[f"{s['scope']}.n_rows"] = float(len(f))
++        for k in FORMAL_METRICS:
++            if isinstance(m[k], (int, float)) and not isinstance(m[k], bool) and np.isfinite(m[k]):
++                out[f"{s['scope']}.{k}"] = float(m[k])
++    return out, cells
++
++
++def ch_common_metrics(comp):
++    """``common.<scope>.<metric>`` (new), ``common.<scope>.baseline.<metric>``, ``common.<scope>.delta_vs_baseline.<metric>``
++    and ``common.<scope>.n_rows`` on the common support (never the unprefixed whole-population keys)."""
++    out = {}
++    for scope, cell in comp["cells"].items():
++        out[f"common.{scope}.n_rows"] = float(cell["n_rows"])
++        for k in FORMAL_METRICS:
++            for key, v in ((f"common.{scope}.{k}", cell["new"][k]), (f"common.{scope}.baseline.{k}", cell["baseline"][k]),
++                           (f"common.{scope}.delta_vs_baseline.{k}", cell["delta"][k])):
++                if isinstance(v, (int, float)) and not isinstance(v, bool) and np.isfinite(v):
++                    out[key] = float(v)
++    return out
++
++
++def ch_formal(prep, inputs, manifest, config, values, quartet, out, t0):
++    """Task 10-28 final refit with the CH correction: every annual context with the GOSIF-v3 run's frozen quartet, the
++    whole-population scope metrics and inherited report tables, the common-support comparison and report cells against
++    the GOSIF-v3 run's retained predictions, and the identity package (no B2 inputs)."""
++    import shutil
++    from research_cloud.packages import validity_pooled
++    from research_cloud.training.common import runtime_identity
++    from research_cloud.training.model_metadata import BASELINE_KEYS
++    d, cc = prep["d"], config["ch_correction"]
++    h = d.horizon
++    result = run_contexts(d, out.local, quartet=quartet)
++    pred = result["predictions"]
++    if len(pred) != config["cohort"]["final_rows"]:
++        raise ValidityError(f"{len(pred)} final rows, not the pinned {config['cohort']['final_rows']}")
++    baseline = {k: config["baseline"][k] for k in BASELINE_KEYS}
++    comp, frames = ch_comparison(pred, inputs["baseline_predictions"], d.schedule, h, baseline)
++    common_rows, common_scalars = ch_common_report(frames, inputs[REPORT_ROLE], d.schedule, h, cc["report"], pred)
++    files = write_ch_comparison(out, comp, common_rows)
++    rows, report_scalars = corrected_report(pred, inputs[REPORT_ROLE], d.schedule, h, cc["report"])
++    report_files = write_corrected_report(out, rows, cc["report"], inputs[REPORT_ROLE])
++    shutil.copyfile(inputs["region_mapping"], out.path("region_mapping.csv"))
++    metrics, scope_cells = ch_scope_metrics(pred, d.schedule, h)
++    for extra in (ch_common_metrics(comp), report_scalars, common_scalars):
++        clash = sorted(set(extra) & set(metrics))
++        if clash:
++            raise ValidityError(f"metric keys collide: {clash[:5]}")
++        metrics.update(extra)
++    metrics["scored_rows"], metrics["scalar_fits"] = float(len(pred)), float(4 * len(result["fit_ledger"]))
++    info = {"kind": cc["kind"], "data_version": cc["data_version"], "relation": cc["relation"], "gpp_baseline": cc["gpp_baseline"],
++            "report": cc["report"], "interim_sha256": cc["inputs"]["interim"], "ch_links_sha256": cc["inputs"][vf.CH_LINKS_ROLE],
++            "counts": prep["built"].get("ch_correction"), "report_files": report_files, "comparison_files": files}
++    out.write_json("metrics.json", {"arm": HPT_ARM, "horizon": h, "mode": "formal", "params": values, "quartet": quartet,
++                                    "frozen": config["frozen"], "freeze": prep["freeze"], "schedule": d.schedule.record(),
++                                    "assertions": result["assertions"], "dataset": prep["built"], "caveat": ch_caveat(h, cc),
++                                    "scopes": scope_cells,
++                                    "comparison": {"files": files, "pairing": comp["pairing"], "baseline": baseline, "scopes": comp["scopes"]},
++                                    "ch_correction": info})
++    identity = {"family": FAMILY, "arm": HPT_ARM, "horizon": h, "mode": "formal", "trial": os.environ.get("CLOUD_ML_TRIAL_ID"),
++                "job": os.environ.get("CLOUD_ML_JOB_ID"), "fixed": config["fixed"], "quartet": quartet, "frozen": config["frozen"],
++                "input_manifest": manifest, "trial_code": code_identity(), "ch_correction": info}
++    meta = validity_pooled.build(out.path("package"), units=result["units"], order=d.order, identity=identity,
++                                 runtime=runtime_identity(), ae_src=vf.ae_source(), core_inputs=d.core_inputs,
++                                 calibration_note={"mode": "identity", "b2": "disabled by design (no B2 or provider fits)",
++                                                   "raw": "equals the backbone quartet before projection and 0.20 decoding"})
++    return {"metrics": metrics,
++            "artifacts": ["dataset", "contexts", "predictions.csv.gz", "package", "gcs-only", "equivalence.json", "region_mapping.csv",
++                          *files, *report_files],
++            "trial_code": code_identity(),
++            "package": {"path": "package", "content_sha256": meta["content_sha256"], "units": meta["fitted_units"]},
++            "identity": {"family": FAMILY, "kind": "new Linux research run", "mode": "formal", "arm": HPT_ARM, "horizon": h,
++                         "contexts": [u["context"].block_id for u in result["units"]], "scalar_fits": 4 * len(result["fit_ledger"]),
++                         "params": values, "quartet_sha256": digest(quartet), "frozen": config["frozen"],
++                         "data_version": cc["data_version"], "interim_sha256": cc["inputs"]["interim"],
++                         "ch_links_sha256": cc["inputs"][vf.CH_LINKS_ROLE], "elapsed_seconds": round(time.time() - t0, 1)}}
++
++
+ def hpt_formal(prep, inputs, manifest, config, values, quartet, out, t0):
+     """Final refit: every annual context of the ordinary plan (D7 selection mask restored, inherited exclusions kept)
+     with the frozen quartet, lean six-metric comparison with the selected ACLED baseline, retained keyed predictions and
+@@ -2384,25 +3451,38 @@ def hpt_formal(prep, inputs, manifest, config, values, quartet, out, t0):
+     shutil.copyfile(inputs["region_mapping"], out.path("region_mapping.csv"))
+     metrics = hpt_comparison_metrics(comp)
+     metrics["scored_rows"], metrics["scalar_fits"] = float(len(pred)), float(4 * len(result["fit_ledger"]))
++    ci = config.get("corrected_input")
++    report_files = []
++    if ci is not None:      # task 10-27: report tables on the report-only map (MLflow-visible as report.* scalars)
++        rows, scalars = corrected_report(pred, inputs[REPORT_ROLE], d.schedule, h, ci["report"])
++        report_files = write_corrected_report(out, rows, ci["report"], inputs[REPORT_ROLE])
++        metrics.update(scalars)
++    corrected = None if ci is None else {k: ci[k] for k in ("kind", "data_version", "replaced_role", "original_inputs", "changed_columns",
++                                                           "original_run", "relation", "report")} | {"interim_sha256": ci["inputs"]["interim"],
++                                                                                                "report_files": report_files}
+     out.write_json("metrics.json", {"arm": HPT_ARM, "horizon": h, "mode": "formal", "params": values, "quartet": quartet,
+                                     "frozen": config["frozen"], "freeze": prep["freeze"], "schedule": d.schedule.record(),
+-                                    "assertions": result["assertions"], "dataset": prep["built"], "caveat": hpt_caveat(h, d.schedule),
++                                    "assertions": result["assertions"], "dataset": prep["built"], "caveat": hpt_caveat(h, d.schedule, ci),
+                                     "comparison": {"files": files, "pairing": comp["pairing"], "baseline": baseline,
+-                                                   "scopes": comp["scopes"]}})
++                                                   "scopes": comp["scopes"]},
++                                    **({"corrected_input": corrected} if corrected is not None else {})})
+     identity = {"family": FAMILY, "arm": HPT_ARM, "horizon": h, "mode": "formal", "trial": os.environ.get("CLOUD_ML_TRIAL_ID"),
+                 "job": os.environ.get("CLOUD_ML_JOB_ID"), "fixed": config["fixed"], "quartet": quartet, "frozen": config["frozen"],
+-                "input_manifest": manifest, "trial_code": code_identity()}
++                "input_manifest": manifest, "trial_code": code_identity(), **({"corrected_input": corrected} if corrected is not None else {})}
+     meta = validity_pooled.build(out.path("package"), units=result["units"], order=d.order, identity=identity,
+                                  runtime=runtime_identity(), ae_src=vf.ae_source(), core_inputs=d.core_inputs,
+                                  calibration_note={"mode": "identity", "b2": "disabled by design (no B2 or provider fits)",
+                                                    "raw": "equals the backbone quartet before projection and 0.20 decoding"})
+     return {"metrics": metrics,
+-            "artifacts": ["dataset", "contexts", "predictions.csv.gz", "package", "gcs-only", "equivalence.json", "region_mapping.csv", *files],
++            "artifacts": ["dataset", "contexts", "predictions.csv.gz", "package", "gcs-only", "equivalence.json", "region_mapping.csv", *files,
++                          *report_files],
+             "trial_code": code_identity(),
+             "package": {"path": "package", "content_sha256": meta["content_sha256"], "units": meta["fitted_units"]},
+             "identity": {"family": FAMILY, "kind": "new Linux research run", "mode": "formal", "arm": HPT_ARM, "horizon": h,
+                          "contexts": [u["context"].block_id for u in result["units"]], "scalar_fits": 4 * len(result["fit_ledger"]),
+                          "params": values, "quartet_sha256": digest(quartet), "frozen": config["frozen"],
++                         **({"data_version": corrected["data_version"], "interim_sha256": corrected["interim_sha256"]}
++                            if corrected is not None else {}),
+                          "elapsed_seconds": round(time.time() - t0, 1)}}
+ 
+ 
+@@ -2414,6 +3494,10 @@ def hpt_fit(inputs, manifest, config, params, out):
+     quartet = hpt_quartet(values)
+     if config["mode"] == "tuning":
+         return hpt_tune(prep, config, values, quartet, out, t0)
++    if "origin_ablation" in config:    # task 10-30
++        return origin_formal(prep, inputs, manifest, config, values, quartet, out, t0)
++    if "ch_correction" in config:      # task 10-28
++        return ch_formal(prep, inputs, manifest, config, values, quartet, out, t0)
+     return hpt_formal(prep, inputs, manifest, config, values, quartet, out, t0)
+ 
+ 
+@@ -2532,7 +3616,8 @@ def plan_main(argv):
+     order = pd.read_csv(os.path.join(a.dataset, f"feature_order_h{a.horizon:02d}.csv"))["name"].tolist()
+     obs = pd.read_csv(os.path.join(a.dataset, "history_observations.csv.gz"))
+     L, Xa = select_arm(labels, X, a.arm)
+-    d = ArmData(a.arm, a.horizon, L, Xa, order, obs, pd.DataFrame(), None, schedule)
++    d = ArmData(a.arm, a.horizon, L, Xa, order, obs, pd.DataFrame(), None, schedule,
++                fit_labels="original_only" if "origin_ablation" in (config or {}) else "all")
+     plans = hpt_plans(d, config)[0] if a.arm == HPT_ARM else plan_contexts(d)
+     s = plan_summary(d, plans)
+     os.makedirs(a.out, exist_ok=True)
+@@ -2547,10 +3632,19 @@ def plan_main(argv):
+         width = len(order) if a.arm == HPT_ARM else equivalence_width(a.arm, a.horizon, kind, order)
+         got = equivalence_digests(d, plans, width)
+         want = ((config or {}).get("baseline") or {}).get("equivalence")
+-        differ = check_equivalence(got, want) if want else None
++        extra = {}
++        if d.fit_labels != "all":      # task 10-30: filtered plans vs the origin pins; the unfiltered plans vs the CH-final pins
++            full = equivalence_digests(d, plan_contexts(d, fit_labels="all"), width)
++            origin_want = config["origin_ablation"]["self_consistency"]
++            differ = ([f"origin:{k}" for k in check_equivalence(got, origin_want)]
++                      + ([f"baseline:{k}" for k in check_equivalence(full, want)] if want else ["baseline:absent"]))
++            extra = {"fit_labels": d.fit_labels, "full_label_digests": full, "full_label_pinned": want}
++            want = origin_want
++        else:
++            differ = check_equivalence(got, want) if want else None
+         rec = {"arm": a.arm, "horizon": a.horizon, "kind": kind, "width": width, "rows": got["rows"], "digests": got,
+                "pinned": want, "differing": differ, "dataset": os.path.abspath(a.dataset),
+-               "recipe": os.path.abspath(a.config) if a.config else None}
++               "recipe": os.path.abspath(a.config) if a.config else None, **extra}
+         with open(os.path.join(a.out, f"digests_{a.arm}_h{a.horizon:02d}.json"), "w") as f:
+             json.dump(rec, f, indent=1)
+         print(json.dumps({"digests": got, "differing": differ}, indent=1))

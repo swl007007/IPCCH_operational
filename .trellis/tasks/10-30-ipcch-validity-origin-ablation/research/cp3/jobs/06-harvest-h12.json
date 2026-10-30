@@ -1,0 +1,717 @@
+{
+ "horizon": 12,
+ "job": "projects/76571749286/locations/us-central1/customJobs/3377405678476853248",
+ "job_id": "3377405678476853248",
+ "source": "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_validity_pooled/3377405678476853248/trial-0",
+ "trial_dir": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0",
+ "cp_rc": 0,
+ "cp_error": "",
+ "files": 81,
+ "bytes": 26433263,
+ "objects": [
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/arm_rows.csv.gz",
+   "generation": 1793385894334776,
+   "size": 805829,
+   "crc32c": "1++H7w==",
+   "md5": "BbWoDrfntdN5bcoiTGAfbw==",
+   "local_bytes": 805829
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/assertions.json",
+   "generation": 1793385893500617,
+   "size": 3833,
+   "crc32c": "TQEPrw==",
+   "md5": "uprHZRVWZ96gvjpJZJVybg==",
+   "local_bytes": 3833
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/calibration_pool_h12_main_2024.csv.gz",
+   "generation": 1793385893921457,
+   "size": 144,
+   "crc32c": "bpw9xw==",
+   "md5": "02w+USMl4QsqcYQ71KplEw==",
+   "local_bytes": 144
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/calibration_pool_h12_main_2025.csv.gz",
+   "generation": 1793385894750323,
+   "size": 144,
+   "crc32c": "a8i4NA==",
+   "md5": "BQGBeKgCvP0hSf0ymxkibw==",
+   "local_bytes": 144
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/calibration_pool_h12_supp_2026.csv.gz",
+   "generation": 1793385893739797,
+   "size": 144,
+   "crc32c": "idd84g==",
+   "md5": "JkpSKVlGaB0ZZA7itGuqHQ==",
+   "local_bytes": 144
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/fit_ledger.csv",
+   "generation": 1793385894006826,
+   "size": 1724,
+   "crc32c": "8nslLg==",
+   "md5": "A9dDPXKdydQgHrAkvgBPGA==",
+   "local_bytes": 1724
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/h12_main_2024.json",
+   "generation": 1793385894424742,
+   "size": 6319,
+   "crc32c": "mPaCzA==",
+   "md5": "7tP1wmHvnUEFlQ8l5E/Ovg==",
+   "local_bytes": 6319
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/h12_main_2025.json",
+   "generation": 1793385893653183,
+   "size": 6336,
+   "crc32c": "IQ+q7A==",
+   "md5": "FF7qLgQHGLZCKa74+AAy2w==",
+   "local_bytes": 6336
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/h12_supp_2026.json",
+   "generation": 1793385894183418,
+   "size": 6370,
+   "crc32c": "DsNPpQ==",
+   "md5": "6OLyEyNz0WG5v82beIa6JQ==",
+   "local_bytes": 6370
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/memberships.npz",
+   "generation": 1793385893832055,
+   "size": 187872,
+   "crc32c": "bThRPw==",
+   "md5": "UBE3fonCNIqyYZOqLfiwoQ==",
+   "local_bytes": 187872
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/schedule.csv",
+   "generation": 1793385894094649,
+   "size": 1270,
+   "crc32c": "IAXxjg==",
+   "md5": "7amL2FoV98UDLWlxPREsVQ==",
+   "local_bytes": 1270
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/contexts/scored_nan_by_month.csv",
+   "generation": 1793385894498963,
+   "size": 2576,
+   "crc32c": "yaeFKw==",
+   "md5": "eKetGbmrjLxCFX0Cvk+B2Q==",
+   "local_bytes": 2576
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/acled_agg_completeness_h12.csv",
+   "generation": 1793385895516336,
+   "size": 22492,
+   "crc32c": "2NSYig==",
+   "md5": "KVtDJr+9l2vZffXpWocueg==",
+   "local_bytes": 22492
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/ch_links.csv.gz",
+   "generation": 1793385896448092,
+   "size": 232886,
+   "crc32c": "An2mIA==",
+   "md5": "DLiGgLexyFWcnAN1DVipog==",
+   "local_bytes": 232886
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/ch_relationships.csv.gz",
+   "generation": 1793385895026298,
+   "size": 410194,
+   "crc32c": "5x32hg==",
+   "md5": "wrvmd9HdkDOwlQWE7Te2XA==",
+   "local_bytes": 410194
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/country_codes.csv",
+   "generation": 1793385896637830,
+   "size": 327,
+   "crc32c": "P6jAmg==",
+   "md5": "HCCLE4CaiImbtLQH7qEMHw==",
+   "local_bytes": 327
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/dataset-summary.json",
+   "generation": 1793385896254989,
+   "size": 14163,
+   "crc32c": "i+y5Jg==",
+   "md5": "d4ou6qqIx1608aqvHmUAZQ==",
+   "local_bytes": 14163
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/donors.csv.gz",
+   "generation": 1793385896853570,
+   "size": 1865039,
+   "crc32c": "hw1SUA==",
+   "md5": "OJIFeyWL2iXDNDgSeTDKmA==",
+   "local_bytes": 1865039
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/feature_order_h12.csv",
+   "generation": 1793385896359715,
+   "size": 20552,
+   "crc32c": "SnLJQw==",
+   "md5": "dEil8PkgIxFSxz77dNok7A==",
+   "local_bytes": 20552
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/history_observations.csv.gz",
+   "generation": 1793385895119310,
+   "size": 156560,
+   "crc32c": "e6mGHQ==",
+   "md5": "3GDeuorMwKWNYFXFdUL+nw==",
+   "local_bytes": 156560
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/idp_local_completeness_h12.csv",
+   "generation": 1793385895702677,
+   "size": 28024,
+   "crc32c": "uQ8ksw==",
+   "md5": "CERNs4RXVUeikyjhJsRFhw==",
+   "local_bytes": 28024
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/idp_local_ledger_h12.csv.gz",
+   "generation": 1793385896050283,
+   "size": 2526842,
+   "crc32c": "9322Jg==",
+   "md5": "bDKFRp7woDPeEcJT0WnpYA==",
+   "local_bytes": 2526842
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/labels.csv.gz",
+   "generation": 1793385894926347,
+   "size": 3491207,
+   "crc32c": "y1zp2Q==",
+   "md5": "JFlKmO7MN8uFhAckqE2XCg==",
+   "local_bytes": 3491207
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/labels_by_country.csv",
+   "generation": 1793385896176230,
+   "size": 627,
+   "crc32c": "1GsVEQ==",
+   "md5": "YUqYNKl2SJdfjhYODVHZdw==",
+   "local_bytes": 627
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/oracle_completeness_h12.csv",
+   "generation": 1793385895201014,
+   "size": 4025,
+   "crc32c": "OW0PUQ==",
+   "md5": "K+evSTeAaSe/j9RozI1HAw==",
+   "local_bytes": 4025
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/raw_qc_ledger.csv.gz",
+   "generation": 1793385895439977,
+   "size": 5278492,
+   "crc32c": "pvNNWw==",
+   "md5": "/gTP+SmcDk0IbOok+BZLwA==",
+   "local_bytes": 5278492
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/recipients.csv.gz",
+   "generation": 1793385895808256,
+   "size": 148857,
+   "crc32c": "tgdogQ==",
+   "md5": "XzHC3FOebahoukFB9NuiAA==",
+   "local_bytes": 148857
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/relationships.csv.gz",
+   "generation": 1793385896544565,
+   "size": 419945,
+   "crc32c": "UtkzOg==",
+   "md5": "5eUpRQoDJ41592Wm3LywSw==",
+   "local_bytes": 419945
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/reports.csv.gz",
+   "generation": 1793385895598355,
+   "size": 4115,
+   "crc32c": "7UCujg==",
+   "md5": "YuCnMWp/tcqf0UjlINnwgQ==",
+   "local_bytes": 4115
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/dataset/row_ledger_h12.csv.gz",
+   "generation": 1793385896736476,
+   "size": 1411736,
+   "crc32c": "vKcfqQ==",
+   "md5": "YtZv2HyyUNA42qyvr6UuNw==",
+   "local_bytes": 1411736
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/equivalence.json",
+   "generation": 1793385881477361,
+   "size": 13646,
+   "crc32c": "lq3FJw==",
+   "md5": "xM6l9+KLGbUpuThFkpLQKg==",
+   "local_bytes": 13646
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/deps/feature_order.csv",
+   "generation": 1793385883457314,
+   "size": 20552,
+   "crc32c": "SnLJQw==",
+   "md5": "dEil8PkgIxFSxz77dNok7A==",
+   "local_bytes": 20552
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/deps/routing.csv",
+   "generation": 1793385883336119,
+   "size": 173,
+   "crc32c": "pOTubg==",
+   "md5": "4fQew/r8oI5vulHGp2msTg==",
+   "local_bytes": 173
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/loader/entry.py",
+   "generation": 1793385882868540,
+   "size": 4089,
+   "crc32c": "Fif+Lg==",
+   "md5": "ld4tj4gs0VhQHcgu9eNk1g==",
+   "local_bytes": 4089
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/loader/ipcch_alphaearth/__init__.py",
+   "generation": 1793385883257594,
+   "size": 727,
+   "crc32c": "2BnhjQ==",
+   "md5": "OHbPjRz08v2oXecELX9XPA==",
+   "local_bytes": 727
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/loader/ipcch_alphaearth/correction.py",
+   "generation": 1793385883071983,
+   "size": 16831,
+   "crc32c": "3W43Zg==",
+   "md5": "yUzBXyD8DM/ZeGs1lyyBuw==",
+   "local_bytes": 16831
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/loader/ipcch_alphaearth/errors.py",
+   "generation": 1793385882947923,
+   "size": 495,
+   "crc32c": "0sd54w==",
+   "md5": "5L41N/eqAVc4S5nUypCXCg==",
+   "local_bytes": 495
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/loader/ipcch_alphaearth/projection.py",
+   "generation": 1793385883173232,
+   "size": 3885,
+   "crc32c": "vdgJ3g==",
+   "md5": "uxRhCeeyZ+sGt5/1sNyYzA==",
+   "local_bytes": 3885
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/package.json",
+   "generation": 1793385882568943,
+   "size": 19645,
+   "crc32c": "CD+59A==",
+   "md5": "a+CySNe5jvFXVz0VoermQA==",
+   "local_bytes": 19645
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/reference/expected.csv",
+   "generation": 1793385882785719,
+   "size": 19602,
+   "crc32c": "Xr5V7Q==",
+   "md5": "Q7lYnnMG8NfAuPZRJMi00w==",
+   "local_bytes": 19602
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/reference/inputs.npy",
+   "generation": 1793385882688163,
+   "size": 276096,
+   "crc32c": "ctZMRw==",
+   "md5": "6QFE7wh2EL2m77BuWdaSWg==",
+   "local_bytes": 276096
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/calibration.json",
+   "generation": 1793385884592833,
+   "size": 590,
+   "crc32c": "iAsKLA==",
+   "md5": "sMqFy+tzLGfRMj+wVMcynw==",
+   "local_bytes": 590
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/q2.ubj",
+   "generation": 1793385884486506,
+   "size": 503129,
+   "crc32c": "KiQbPw==",
+   "md5": "Y6F1Mn4MxD+KDcnavUODQQ==",
+   "local_bytes": 503129
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/q3.ubj",
+   "generation": 1793385884276317,
+   "size": 429267,
+   "crc32c": "btwTJg==",
+   "md5": "wgOQ7ukBBiiLccCa6N5b1A==",
+   "local_bytes": 429267
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/q4.ubj",
+   "generation": 1793385884393999,
+   "size": 375459,
+   "crc32c": "RtpzTA==",
+   "md5": "Zh90E61HigA3KJ2Mc4+x+Q==",
+   "local_bytes": 375459
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/q5.ubj",
+   "generation": 1793385884724108,
+   "size": 253256,
+   "crc32c": "Z4uhYg==",
+   "md5": "Iyu4aCgXxbiUjx2AHe8hjg==",
+   "local_bytes": 253256
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/record.json",
+   "generation": 1793385884811852,
+   "size": 3554,
+   "crc32c": "RnpDEw==",
+   "md5": "pnYwo3shadB9kBIdpoYrng==",
+   "local_bytes": 3554
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/calibration.json",
+   "generation": 1793385883953148,
+   "size": 590,
+   "crc32c": "iAsKLA==",
+   "md5": "sMqFy+tzLGfRMj+wVMcynw==",
+   "local_bytes": 590
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/q2.ubj",
+   "generation": 1793385883872256,
+   "size": 558694,
+   "crc32c": "+3AIVA==",
+   "md5": "R5fdrIBPCWBfrWl3SiytNw==",
+   "local_bytes": 558694
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/q3.ubj",
+   "generation": 1793385883544814,
+   "size": 434373,
+   "crc32c": "kRDz1g==",
+   "md5": "1NuTJRuAQGARkFtrcXOn0A==",
+   "local_bytes": 434373
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/q4.ubj",
+   "generation": 1793385883756128,
+   "size": 407012,
+   "crc32c": "wi62mA==",
+   "md5": "bAnvxLrMRu3kcHwHVqRKwg==",
+   "local_bytes": 407012
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/q5.ubj",
+   "generation": 1793385884065368,
+   "size": 270257,
+   "crc32c": "VU1IMA==",
+   "md5": "lW0O2Ra97nUJcYNa5/gx7Q==",
+   "local_bytes": 270257
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/record.json",
+   "generation": 1793385884176946,
+   "size": 3553,
+   "crc32c": "+66n2Q==",
+   "md5": "qIU1MfT4+rS/HXhOo4u3GQ==",
+   "local_bytes": 3553
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/dataset/base_X_h12.npy",
+   "generation": 1793385893403912,
+   "size": 635019744,
+   "crc32c": "knwhoA==",
+   "md5": "I1WN27Lz/yz7BVRrIDpO9w==",
+   "not_downloaded": "immutable feature matrix; retained in GCS"
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/history_overlays.npz",
+   "generation": 1793385882480585,
+   "size": 137889,
+   "crc32c": "1icgSg==",
+   "md5": "rtAeLkrMgrbwhoNN3u5/2A==",
+   "local_bytes": 137889
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/metrics.json",
+   "generation": 1793385881364712,
+   "size": 126834,
+   "crc32c": "ohet2g==",
+   "md5": "Yb0W5q/nE5bYVCL4g538ng==",
+   "local_bytes": 126834
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/origin_comparison.csv",
+   "generation": 1793385881970482,
+   "size": 15199,
+   "crc32c": "Gip5Aw==",
+   "md5": "+Nc5/pTECDtsWjRKZ5HN3w==",
+   "local_bytes": 15199
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/origin_comparison.json",
+   "generation": 1793385882071712,
+   "size": 21248,
+   "crc32c": "4zdcFQ==",
+   "md5": "54ZE9Vaqk1/ZKDvrPhHelA==",
+   "local_bytes": 21248
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/origin_tui.csv",
+   "generation": 1793385881598661,
+   "size": 2858,
+   "crc32c": "0YHQKw==",
+   "md5": "+FY/oi1XddkFuTI0n/J4Eg==",
+   "local_bytes": 2858
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/deps/feature_order.csv",
+   "generation": 1793385897770148,
+   "size": 20552,
+   "crc32c": "SnLJQw==",
+   "md5": "dEil8PkgIxFSxz77dNok7A==",
+   "local_bytes": 20552
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/deps/routing.csv",
+   "generation": 1793385897656848,
+   "size": 122,
+   "crc32c": "QP3m7w==",
+   "md5": "ALLTBvSdMB22kJiPV1VfjQ==",
+   "local_bytes": 122
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/loader/entry.py",
+   "generation": 1793385897220319,
+   "size": 4089,
+   "crc32c": "Fif+Lg==",
+   "md5": "ld4tj4gs0VhQHcgu9eNk1g==",
+   "local_bytes": 4089
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/loader/ipcch_alphaearth/__init__.py",
+   "generation": 1793385897569519,
+   "size": 727,
+   "crc32c": "2BnhjQ==",
+   "md5": "OHbPjRz08v2oXecELX9XPA==",
+   "local_bytes": 727
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/loader/ipcch_alphaearth/correction.py",
+   "generation": 1793385897392549,
+   "size": 16831,
+   "crc32c": "3W43Zg==",
+   "md5": "yUzBXyD8DM/ZeGs1lyyBuw==",
+   "local_bytes": 16831
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/loader/ipcch_alphaearth/errors.py",
+   "generation": 1793385897322485,
+   "size": 495,
+   "crc32c": "0sd54w==",
+   "md5": "5L41N/eqAVc4S5nUypCXCg==",
+   "local_bytes": 495
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/loader/ipcch_alphaearth/projection.py",
+   "generation": 1793385897485496,
+   "size": 3885,
+   "crc32c": "vdgJ3g==",
+   "md5": "uxRhCeeyZ+sGt5/1sNyYzA==",
+   "local_bytes": 3885
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/package.json",
+   "generation": 1793385896937243,
+   "size": 18655,
+   "crc32c": "BDZo3Q==",
+   "md5": "/J0Lg1jY0cXi3ytYcb2DSQ==",
+   "local_bytes": 18655
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/reference/expected.csv",
+   "generation": 1793385897130172,
+   "size": 9780,
+   "crc32c": "TkQY3w==",
+   "md5": "S5uXGPUohLVjBI1Vl6JkFw==",
+   "local_bytes": 9780
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/reference/inputs.npy",
+   "generation": 1793385897026771,
+   "size": 138112,
+   "crc32c": "Wt08dA==",
+   "md5": "kOyiXYq3fswOxPURzaJhcQ==",
+   "local_bytes": 138112
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/weights/h12_supp_2026/calibration.json",
+   "generation": 1793385898113184,
+   "size": 590,
+   "crc32c": "iAsKLA==",
+   "md5": "sMqFy+tzLGfRMj+wVMcynw==",
+   "local_bytes": 590
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/weights/h12_supp_2026/q2.ubj",
+   "generation": 1793385898034301,
+   "size": 588345,
+   "crc32c": "G3GA6g==",
+   "md5": "NzCh4wttTr297zhmGqJS6A==",
+   "local_bytes": 588345
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/weights/h12_supp_2026/q3.ubj",
+   "generation": 1793385897860751,
+   "size": 436406,
+   "crc32c": "eLdHog==",
+   "md5": "OZ9dBJs1J81eQCczt+zL3w==",
+   "local_bytes": 436406
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/weights/h12_supp_2026/q4.ubj",
+   "generation": 1793385897947511,
+   "size": 404019,
+   "crc32c": "f47pjw==",
+   "md5": "8zNU+AOn+J9c8kkODXBpTA==",
+   "local_bytes": 404019
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/weights/h12_supp_2026/q5.ubj",
+   "generation": 1793385898274897,
+   "size": 252101,
+   "crc32c": "SJgoRQ==",
+   "md5": "q6/HAGBsjuy7ELGzGB5dAQ==",
+   "local_bytes": 252101
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/package/weights/h12_supp_2026/record.json",
+   "generation": 1793385898374310,
+   "size": 3560,
+   "crc32c": "jjrsuA==",
+   "md5": "YxWJrjPYVg60nqtCGAzIJw==",
+   "local_bytes": 3560
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/predictions.csv.gz",
+   "generation": 1793385882367916,
+   "size": 3319589,
+   "crc32c": "pmtm2Q==",
+   "md5": "h8o0DAN7Kl7Oxt51srzT7Q==",
+   "local_bytes": 3319589
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/publication.json",
+   "generation": 1793385945665311,
+   "size": 122606,
+   "crc32c": "INF3kQ==",
+   "md5": "63jCLqXa7OlAzfaeSmc5TQ==",
+   "local_bytes": 122606
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/region_mapping.csv",
+   "generation": 1793385881277494,
+   "size": 51343,
+   "crc32c": "OtxmWQ==",
+   "md5": "3xUEkvoDRQM5wpt3rZB1uQ==",
+   "local_bytes": 51343
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/report_region_mapping.csv",
+   "generation": 1793385881879780,
+   "size": 45115,
+   "crc32c": "QVdMDQ==",
+   "md5": "gUDHnlREbggAKoXlMhxY+Q==",
+   "local_bytes": 45115
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/report_tables.csv",
+   "generation": 1793385881787244,
+   "size": 5083,
+   "crc32c": "Yn5N3Q==",
+   "md5": "0QwNy6DRMmGW6m6WrPh65Q==",
+   "local_bytes": 5083
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/report_tables.json",
+   "generation": 1793385881702122,
+   "size": 13031,
+   "crc32c": "5yP10g==",
+   "md5": "v1tiU5YnWnyw5afVmzWaXg==",
+   "local_bytes": 13031
+  },
+  {
+   "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/training-attempt.json",
+   "generation": 1793385397952233,
+   "size": 80,
+   "crc32c": "rVeblg==",
+   "md5": "ze9XOZitWxK+3Y4u9o2kHA==",
+   "local_bytes": 80
+  }
+ ],
+ "ok": true,
+ "fits": {
+  "contexts": [
+   "h12_main_2024",
+   "h12_main_2025",
+   "h12_supp_2026"
+  ],
+  "train_rows": {
+   "h12_main_2024": 21282,
+   "h12_main_2025": 25960,
+   "h12_supp_2026": 30784
+  },
+  "train_copies": 0,
+  "memberships_exact": true,
+  "retained_package_contexts": [
+   "h12_supp_2026"
+  ],
+  "annual_package_contexts": [
+   "h12_main_2024",
+   "h12_main_2025"
+  ],
+  "scalar_fits_packaged": 12
+ },
+ "checks": {
+  "publication": true,
+  "trial": true,
+  "recipe_equal": true,
+  "image_ok": true,
+  "source_commit_composite": true,
+  "adapter_module_sha": true,
+  "retained_package_verifies": true,
+  "annual_package_verifies": true,
+  "rows": true,
+  "gates_passed": true,
+  "fits": true,
+  "origin_outputs": true,
+  "report_rows": true,
+  "report_metrics": true,
+  "maps": true,
+  "code_overlay_tag": true,
+  "names_and_dataset": true
+ },
+ "code_overlay_tag": "overlay manifest sha256 e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834; modules research_cloud/training/dataset_input.py sha256 2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4 (origin DatasetInput name, fit-subset tags and saved-membership check; publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path); image us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197 (build 22176002-a56f-47df-ab67-ede2ba8c68da; source task/ipcch-validity-origin-ablation 868db9f51ffd6c45a7673cbaf10111b5dd46adde) = base training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939 (control-plane 439a488) + these three modules",
+ "run_id": "8237e829dc4b42169ccb3136c19aafb2",
+ "model_id": "m-9f73aac99f444c91b8022ec9f6e41df3",
+ "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+ "model_version": "1",
+ "elapsed_seconds": 413.0
+}

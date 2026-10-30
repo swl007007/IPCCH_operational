@@ -1,0 +1,73 @@
+{
+ "month": "2026-10",
+ "task": "10-30-ipcch-validity-origin-ablation",
+ "task_cap": {
+  "total_usd": 7.0,
+  "proposed": "fresh task cap for Supervisor decision; no earlier task budget or reservation inherited or counted",
+  "lines": {
+   "ipcch-origin-ablation-r1-build (this packet)": 0.19,
+   "job-phase platform line (job packet; uploads, storage, publication, harvest, logging)": "<= 0.90 (platform pool headroom after this line: 0.91)",
+   "training: 3 formal CustomJobs (job packet)": "<= 5.73 (3 x n1-standard-16 x 7,800 s bound)"
+  },
+  "platform_usd_max": 0.19,
+  "resources": "one Cloud Build (default pool, 1800 s timeout) of the three-module origin-ablation overlay; no other paid operation"
+ },
+ "price_evidence": {
+  "freshness": "copied from the task 10-28 build packet (itself from 10-27/10-26/10-21 priced plans); no fresh catalogue read"
+ },
+ "platform": [
+  {
+   "pool": "platform",
+   "month": "2026-10",
+   "operation": "ipcch-origin-ablation-r1-build",
+   "usd": 0.19,
+   "detail": {
+    "scope": "task 10-30 three-module origin-ablation overlay build (tag gosifv3-chvalidity-originfit-20261030) only",
+    "items": [
+     {
+      "item": "cloud_build_e2_standard_2",
+      "quantity": 30,
+      "unit": "min (build timeout)",
+      "rate": 0.006,
+      "rate_unit": "USD/min",
+      "months": 1,
+      "source": "A464-9020-6404 (Q2)",
+      "usd": 0.18
+     },
+     {
+      "item": "build_source_tar_storage",
+      "quantity": 0.01,
+      "unit": "GiB (overlay context < 1 MB)",
+      "rate": 0.02,
+      "rate_unit": "USD/GiB-month",
+      "months": 3,
+      "source": "E5F0-6A5D-7BAD",
+      "usd": 0.0006
+     },
+     {
+      "item": "artifact_registry_overlay_layer",
+      "quantity": 0.01,
+      "unit": "GiB (three-module layer < 1 MB on the shared base layers)",
+      "rate": 0.1,
+      "rate_unit": "USD/GiB-month",
+      "months": 3,
+      "source": "8502-299A-ABAF",
+      "usd": 0.003
+     },
+     {
+      "item": "cloud_logging_build_log",
+      "quantity": 0.01,
+      "unit": "GiB",
+      "rate": 0.5,
+      "rate_unit": "USD/GiB",
+      "months": 1,
+      "source": "143F-A1B0-E0BE",
+      "usd": 0.005
+     }
+    ],
+    "items_total_usd": 0.1886,
+    "basis": "gross bound: full build timeout, 3 months of storage"
+   }
+  }
+ ]
+}

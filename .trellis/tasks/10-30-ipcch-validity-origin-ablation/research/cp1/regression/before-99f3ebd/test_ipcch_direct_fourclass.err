@@ -1,0 +1,47 @@
+........./home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-99f3ebd/research_cloud/packages/common.py:118: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl3tmqkyx/package/package.json' mode='r' encoding='UTF-8'>
+  meta = json.load(open(os.path.join(root, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-99f3ebd/research_cloud/packages/replay.py:155: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl3tmqkyx/package/package.json' mode='r' encoding='UTF-8'>
+  meta = json.load(open(os.path.join(args.package, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpl3tmqkyx/package/loader/entry.py:15: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl3tmqkyx/package/package.json' mode='r' encoding='UTF-8'>
+  self.meta = json.load(open(os.path.join(package_dir, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpl3tmqkyx/package/loader/entry.py:29: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl3tmqkyx/package/weights/h06_main_2023/model.ubj'>
+  b.load_model(bytearray(open(os.path.join(self.root, "weights", context, "model.ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpl3tmqkyx/package/loader/entry.py:29: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl3tmqkyx/package/weights/h06_main_2024/model.ubj'>
+  b.load_model(bytearray(open(os.path.join(self.root, "weights", context, "model.ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpl3tmqkyx/package/loader/entry.py:29: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl3tmqkyx/package/weights/h06_main_2025/model.ubj'>
+  b.load_model(bytearray(open(os.path.join(self.root, "weights", context, "model.ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpl3tmqkyx/package/loader/entry.py:29: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpl3tmqkyx/package/weights/h06_supp_2026/model.ubj'>
+  b.load_model(bytearray(open(os.path.join(self.root, "weights", context, "model.ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpl3tmqkyx/package/loader/entry.py:15: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl3tmqkyx/package/package.json' mode='r' encoding='UTF-8'>
+  self.meta = json.load(open(os.path.join(package_dir, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+......../home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-99f3ebd/research_cloud/training/ipcch_direct_fourclass.py:625: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp5sglb_qz/cv_h06.npz.json' mode='r' encoding='UTF-8'>
+  receipt = json.load(open(inputs["cv_staged_receipt"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-99f3ebd/research_cloud/training/ipcch_direct_fourclass.py:625: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp5sglb_qz/cv_h06.npz.json' mode='r' encoding='UTF-8'>
+  receipt = json.load(open(inputs["cv_staged_receipt"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-99f3ebd/research_cloud/training/ipcch_direct_fourclass.py:625: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpiupjss98/cv_h06.npz.json' mode='r' encoding='UTF-8'>
+  receipt = json.load(open(inputs["cv_staged_receipt"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-99f3ebd/research_cloud/training/ipcch_direct_fourclass.py:625: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3f9u4z_d/cv_h06.npz.json' mode='r' encoding='UTF-8'>
+  receipt = json.load(open(inputs["cv_staged_receipt"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-99f3ebd/research_cloud/training/ipcch_direct_fourclass.py:625: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe2v4kae7/cv_h06.npz.json' mode='r' encoding='UTF-8'>
+  receipt = json.load(open(inputs["cv_staged_receipt"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-99f3ebd/research_cloud/training/ipcch_direct_fourclass.py:625: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpzzt96hp7/cv_h06.npz.json' mode='r' encoding='UTF-8'>
+  receipt = json.load(open(inputs["cv_staged_receipt"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.
+----------------------------------------------------------------------
+Ran 21 tests in 136.299s
+
+OK

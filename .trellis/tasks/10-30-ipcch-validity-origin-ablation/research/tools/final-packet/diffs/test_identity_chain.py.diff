@@ -1,0 +1,48 @@
+1c1
+< """Offline fixtures for identity_chain.py (task 10-28): a consistent fabricated receipt tree passes pre and post; swapping
+---
+> """Offline fixtures for identity_chain.py (task 10-30; task 10-28 fixtures with the origin paths): a consistent fabricated receipt tree passes pre and post; swapping
+21c21
+<         led = os.path.join(root, "ledger/vertex", f"ipcch-ch-validity-r1-formal-h{h}")
+---
+>         led = os.path.join(root, "ledger/vertex", f"ipcch-origin-ablation-r1-formal-h{h}")
+25c25
+<         cp4 = os.path.join(root, ".trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp4")
+---
+>         cp4 = os.path.join(root, "receipts")
+28c28
+<         tr = os.path.join(root, f"scratch/ch-validity-20261028/harvest/formal-h{h}/trial-0")
+---
+>         tr = os.path.join(root, f"scratch/origin-ablation-20261030/harvest/formal-h{h}/trial-0")
+41c41
+<     chain, problems = ic.pre(root)
+---
+>     chain, problems = ic.pre(root, os.path.join(root, "receipts"))
+68,69c68,69
+<                 f"{r}/.trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp4/06-harvest-h00.json",
+<                 f"{r}/.trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp4/06-harvest-h06.json", ("run_id", "model_id")),
+---
+>                 f"{r}/receipts/06-harvest-h00.json",
+>                 f"{r}/receipts/06-harvest-h06.json", ("run_id", "model_id")),
+73,74c73,74
+<                 for p in (f"{r}/.trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp4/06-harvest-h06.json",
+<                           f"{r}/scratch/ch-validity-20261028/harvest/formal-h06/trial-0/publication.json")],
+---
+>                 for p in (f"{r}/receipts/06-harvest-h06.json",
+>                           f"{r}/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/publication.json")],
+78,79c78,79
+<                 for p in (f"{r}/.trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp4/06-harvest-h12.json",
+<                           f"{r}/scratch/ch-validity-20261028/harvest/formal-h12/trial-0/publication.json")],
+---
+>                 for p in (f"{r}/receipts/06-harvest-h12.json",
+>                           f"{r}/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0/publication.json")],
+82,83c82,83
+<                 for p in (f"{r}/.trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp4/06-harvest-h00.json",
+<                           f"{r}/scratch/ch-validity-20261028/harvest/formal-h00/trial-0/publication.json")],
+---
+>                 for p in (f"{r}/receipts/06-harvest-h00.json",
+>                           f"{r}/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/publication.json")],
+85c85
+<                 open(f"{r}/ledger/vertex/ipcch-ch-validity-r1-formal-h00/final.json", "w")),
+---
+>                 open(f"{r}/ledger/vertex/ipcch-origin-ablation-r1-formal-h00/final.json", "w")),

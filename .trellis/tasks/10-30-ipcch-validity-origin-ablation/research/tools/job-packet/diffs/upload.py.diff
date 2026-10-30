@@ -1,0 +1,42 @@
+1,2c1,2
+< """CH job packet step (create-only GCS writes; run only after release): the input objects of task 10-28. Adapted from
+< task 10-27 ``upload.py``: the transport (``upload_args``/``put``, readback, reconcile) is unchanged; only the objects differ.
+---
+> """Origin-ablation job packet step (create-only GCS writes; run only after release): the input objects of task 10-30.
+> Adapted from the task 10-28 CH ``upload.py``: the transport (``upload_args``/``put``, readback, reconcile) is unchanged; only the objects differ.
+5,10c5,10
+<   1. precheck (reads): none of the 10 target objects exists; local bytes equal ``objects.json`` (sha256/md5/crc32c/size);
+<   2. the four DATA objects create-only (``if_generation_match=0``, ``retry=None``): ``ch_links`` and byte-equal copies of
+<      the GOSIF-v3 run's three retained prediction files, each read back (size, MD5, CRC32C equal); generations recorded;
+<   3. local ``make_packet.py manifests --ch-links-generation G --pred-generations G0 G6 G12`` writes the three formal
+<      cloud manifests (the GOSIF-v3 run's 17 generation-pinned roles, ``baseline_predictions`` replaced, ``ch_links``
+<      added); their pins are re-checked against the recipes' ``ch_correction.inputs`` inside that command;
+---
+>   1. precheck (reads): none of the 9 target objects exists; local bytes equal ``objects.json`` (sha256/md5/crc32c/size);
+>   2. the three DATA objects create-only (``if_generation_match=0``, ``retry=None``): byte-equal copies of the CH-final
+>      run's three retained prediction files, each read back (size, MD5, CRC32C equal); generations recorded;
+>   3. local ``make_packet.py manifests --pred-generations G0 G6 G12`` writes the three formal cloud manifests (the CH-final
+>      run's generation-pinned roles, ``baseline_predictions`` replaced); their pins are re-checked against the recipes'
+>      inherited inputs with the CH-final comparison input inside that command;
+21c21
+<   cd $W/control-plane && IPCCH_CH_UPLOAD_CONFIRM=r1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B upload.py --objects-sha256 SHA --out RECEIPT.json
+---
+>   cd $W/control-plane-origin-ablation && IPCCH_ORIGIN_UPLOAD_CONFIRM=r1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B upload.py --objects-sha256 SHA --out RECEIPT.json
+28c28
+< STORE = "training-jobs/ipcch-ch-validity-refits/r1/inputs"
+---
+> STORE = "training-jobs/ipcch-validity-origin-ablation/r1/inputs"
+62,63c62,63
+<     if os.environ.get("IPCCH_CH_UPLOAD_CONFIRM") != "r1" or os.path.exists(a.out):
+<         raise SystemExit("needs IPCCH_CH_UPLOAD_CONFIRM=r1 and a new receipt path")
+---
+>     if os.environ.get("IPCCH_ORIGIN_UPLOAD_CONFIRM") != "r1" or os.path.exists(a.out):
+>         raise SystemExit("needs IPCCH_ORIGIN_UPLOAD_CONFIRM=r1 and a new receipt path")
+129c129
+<     for role in ("ch_links", "baseline_predictions_h00", "baseline_predictions_h06", "baseline_predictions_h12"):
+---
+>     for role in ("baseline_predictions_h00", "baseline_predictions_h06", "baseline_predictions_h12"):
+132c132
+<     r = subprocess.run([sys.executable, "-B", os.path.join(HERE, "make_packet.py"), "manifests", "--ch-links-generation", str(gens["ch_links"]),
+---
+>     r = subprocess.run([sys.executable, "-B", os.path.join(HERE, "make_packet.py"), "manifests",

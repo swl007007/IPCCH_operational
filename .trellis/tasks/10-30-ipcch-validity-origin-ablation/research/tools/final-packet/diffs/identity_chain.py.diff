@@ -1,0 +1,32 @@
+1c1,3
+< """Closed per-horizon identity chain of the CH final packet (task 10-28; local only, no calls).
+---
+> """Closed per-horizon identity chain of the origin-ablation final packet (task 10-30; local only, no calls). Adapted from
+> the task 10-28 ``identity_chain.py``: operations/harvest paths, and the harvest receipts directory is an argument
+> (``--receipts``; default the task's research/cp3/jobs in the operational checkout).
+10c12
+<   python3 -B identity_chain.py --stage pre|post --final FINAL_DIR --out JSON [--root W]
+---
+>   python3 -B identity_chain.py --stage pre|post --final FINAL_DIR --out JSON [--root W] [--receipts DIR]
+16a19
+> RECEIPTS = "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-30-ipcch-validity-origin-ablation/research/cp3/jobs"
+19c22
+< def pre(root):
+---
+> def pre(root, receipts=RECEIPTS):
+22c25
+<         op = f"ipcch-ch-validity-r1-formal-h{h}"
+---
+>         op = f"ipcch-origin-ablation-r1-formal-h{h}"
+26,27c29,30
+<             hv = json.load(open(f"{root}/.trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp4/06-harvest-h{h}.json"))
+<             pub = json.load(open(f"{root}/scratch/ch-validity-20261028/harvest/formal-h{h}/trial-0/publication.json"))
+---
+>             hv = json.load(open(f"{receipts}/06-harvest-h{h}.json"))
+>             pub = json.load(open(f"{root}/scratch/origin-ablation-20261030/harvest/formal-h{h}/trial-0/publication.json"))
+70a74
+>     ap.add_argument("--receipts", default=RECEIPTS)
+72c76
+<     chain, problems = pre(a.root)
+---
+>     chain, problems = pre(a.root, a.receipts)

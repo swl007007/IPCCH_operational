@@ -1,0 +1,13 @@
+steps:
+- name: gcr.io/cloud-builders/docker
+  args: [build, -t, 'us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030', .]
+- name: gcr.io/cloud-builders/docker
+  args: [run, --rm, --user, '65534:65534', --network, none, --entrypoint, python, 'us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030',
+         -m, research_cloud.images.selfcheck, --image, training-ipcch-validity]
+- name: gcr.io/cloud-builders/docker
+  args: [run, --rm, --user, '65534:65534', --network, none, --entrypoint, python, 'us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030', /app/overlay/overlay_check.py]
+images: ['us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030']
+options:
+  logging: CLOUD_LOGGING_ONLY
+serviceAccount: projects/food-crisis-modeling-enso/serviceAccounts/research-build@food-crisis-modeling-enso.iam.gserviceaccount.com
+timeout: 1800s

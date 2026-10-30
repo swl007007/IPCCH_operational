@@ -1,0 +1,12 @@
+1c1
+< """Bounded job-log verification of the three CH formal CustomJobs (task 10-28; run only under the released final packet).
+---
+> """Bounded job-log verification of the three origin-ablation formal CustomJobs (task 10-30; task 10-28 tool, paths only; run only under the released final packet).
+17c17
+< D = f"{W}/.trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp4"
+---
+> D = "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-30-ipcch-validity-origin-ablation/research/cp3/jobs"
+54c54
+<         op = f"ipcch-ch-validity-r1-formal-h{h}"
+---
+>         op = f"ipcch-origin-ablation-r1-formal-h{h}"

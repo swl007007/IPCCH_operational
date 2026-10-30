@@ -1,0 +1,46 @@
+{
+ "label": "h06-logged-model",
+ "url": "https://mlflow.weilunshi.com/#/experiments/2/models/m-daad991238a5430eb504eaacd4046d36",
+ "expect": [
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42",
+  "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index",
+  "Ready",
+  "Metrics (1)",
+  "dataset.modeling_panel_index.rows"
+ ],
+ "wait": {
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42": 819,
+  "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index": 4,
+  "Ready": 3,
+  "Metrics (1)": 802,
+  "dataset.modeling_panel_index.rows": 3
+ },
+ "navigation": "in-app hash",
+ "clicks": {},
+ "title": "Model m-daad991238a5430eb504eaacd4046d36 - MLflow",
+ "screenshot": "h06-logged-model.png",
+ "final_url": "https://mlflow.weilunshi.com/#/experiments/2/models/m-daad991238a5430eb504eaacd4046d36?workspace=default",
+ "rows": 27,
+ "found": {
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42": true,
+  "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index": true,
+  "Ready": true,
+  "Metrics (1)": true,
+  "dataset.modeling_panel_index.rows": true
+ },
+ "segments": [],
+ "text_chars": 9947,
+ "text_head": "3.17.0\ndefault\nGenAI\nModel training\nIPCCH dashboard\nOverview\nTraining runs\nObservability\nTraces\nSessions\nEvaluation\nJudges\nReview\nDatasets\nEvaluation runs\nPrompts & versions\nPlayground\nPrompts\nAgent versions\nAI Gateway\nNew\nDocs\nSettings\nI\nipcch-reader\nIPCCH dashboard\nModels\nOriginal-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42\nRegister model\nOverview\nTraces\nArtifacts\nDescription\ncard\n\nmodel-card-v1; new research training; optional unrecorded facts are marked unavailable.\n\nidentity\n\n{\"family\": \"ipcch_validity_pooled\", \"kind\": \"new Linux research run\", \"mode\": \"formal\", \"arm\": \"validity_augmented_idp_202610_acledagg_lag1_uncal_hpt\", \"horizon\": 6, \"contexts\": [\"h06_main_2023\", \"h06_main_2024\", \"h06_main_2025\", \"h06_supp_2026\"], \"scalar_fits\": 16, \"params\": {\"q3_n_estimators\": 346, \"q3_learning_rate\": 0.08536359461483287, \"q3_max_depth\": 4, \"q3_min_child_weight\": 18.162407873411354, \"q3_subsample\": 0.8118788081985475, \"q3_colsample_bytree\": 0.4327978267528363, \"other_n_estimators\": 398, \"other_learning … [see full card]\n\nsummary\n\nFixed-parameter refit of the CH-final run of validity_augmented_idp_202610_acledagg_lag1_uncal_hpt, lead 6 months (MLflow 00d4e94c824343bf86a0c2b79d5b9ed0; gosif-v3-input-20261027+ch-validity-20261028), whose only change is the backbone fitting-label membership: each annual context keeps only the final CH-corrected label_kind == original rows of its CH-final fitting pool (h06_main_2023 21,282, h06_main_2024 22,478, h06_main_2025 27,134, h06_supp_2026 34,004); IPC and CH validity copies are removed from fitting labels onl … [see full card]\n\nbaseline\n\n{\"run_id\": \"00d4e94c824343bf86a0c2b79d5b9ed0\", \"model_id\": \"m-46beb4c7d5674c1abd874b3bd90c1f87\", \"registered_model\": \"IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month\", \"model_version\": \"1\", \"package_json_sha256\": \"813b343c335d27065a572d0129554c53be7f1d29854d073daae6aeede1b3ab8f\", \"arm\": \"validity_augmented_idp_202610_acledagg_lag1_uncal_hpt\", \"relation\": \"Linked comparison baseline: the CH-final run of this horizon (MLflow 00d4e94c824343b … [see full card]\n\nstatus\n\nResearch tracking only; execution success does not establish scientific acceptance. Versus the linked CH-final run (MLflow 00d4e94c824343bf86a0c2b79d5b9ed0): only the backbone fitting-label membership differs (validity copies removed; the retained original rows keep their CH-final weights, which are not renormalized, so the total fitting weight is smaller); labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified befor … [see full card]\n\ndata\n\n{\"sha256\": \"2770f820deda2a8a1b1657d15edd8683feacfd679bcb22f59036511eb715eec8\", \"content\": {\"derived_from\": {\"ch_final_formal_manifest\": {\"gcs_generation\": 1793219072084269, \"name\": \"ipcch-ch-validity-refits-r1-formal-h06\", \"sha256\": \"1407b2db46ed969121d01c7de6bcd76a65b8be419ad497c914a23d9bb8fb0567\", \"uri\": \"gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h06.json\"}, \"replaced_roles\": {\"baseline_predictions\": {\"gcs_generation\": 1793219071144730, \"sha256\": \"e3 … [see full card]\n\nfeatures\n\n{\"n_features\": 539, \"uri\": \"features=runs:/eb33b087fe314237ad1c6432bcfe140f/metadata/feature_order.csv#name\"}\n\nfeature_engineering\n\nOriginal-label fit ablation (task 10-30): label preparation, CH validity correction, features and reported-phase histories are exactly those of the CH-final run; validity copies are scored but excluded from the backbone fitting labels. Inherited description: CH validity correction (task 10-28, ch_links.csv.gz sha256 ac4ad6aaa8dc…): Eligible Cadre Harmonise raw labels are linked through their documented source route (legacy gdf_ch features with may25 current records; the dec25 2025 centroid join; the mars26 refresh line",
+ "api_statuses": [
+  200,
+  200,
+  200
+ ],
+ "api_errors": 0,
+ "route_ok": true,
+ "navigation_ok": true,
+ "clicks_ok": true,
+ "rendered": true,
+ "api_ok": true,
+ "passed": true
+}

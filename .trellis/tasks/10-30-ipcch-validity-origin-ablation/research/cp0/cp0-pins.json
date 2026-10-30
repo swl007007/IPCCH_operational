@@ -1,0 +1,167 @@
+{
+ "kind": "cp0_workspace_and_baseline_pins",
+ "task": "10-30-ipcch-validity-origin-ablation",
+ "utc": "2026-10-30T17:17:09.280465Z",
+ "executor": {
+  "pane": "w19:pE",
+  "claude_session": "b9db2dbb-7cea-4332-9733-e49ab8204e28",
+  "note": "a98cf837 was the prior session (identity corrected by Supervisor; authorization commit 351aa0e)"
+ },
+ "supervisor": "w19:p1",
+ "integration_checkout": {
+  "path": "/home/swl007007/projects/food-crisis-research/control-plane",
+  "head": "5e94e12c4c5597af248859951bba5d0f33365565",
+  "branch": "task/ipcch-acledagg-hpt",
+  "status_porcelain": [
+   "M PROGRESS.md",
+   " M research_cloud/RUNBOOK.md",
+   " M research_cloud/training/dataset_input.py",
+   " M research_cloud/training/ipcch_validity_features.py",
+   " M research_cloud/training/ipcch_validity_pooled.py",
+   "?? mlruns/",
+   "?? research_cloud/tests/test_ipcch_ch_dataset_identity.py",
+   "?? research_cloud/tests/test_ipcch_ch_validity.py",
+   "?? research_cloud/tests/test_ipcch_gosif_corrected.py",
+   "?? research_cloud/tests/test_ipcch_gosif_dataset_identity.py"
+  ],
+  "preserved_file_sha256": {
+   "PROGRESS.md": "cc4406f4c016e16e1279bb71c0e6e37c3cf63b13ce2a8e0801d7fc973766f6b3",
+   "research_cloud/RUNBOOK.md": "dda438f8893220df6bc7fc4e803603fd4b04d14513499d3e43d33710af42659f",
+   "research_cloud/training/dataset_input.py": "a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c",
+   "research_cloud/training/ipcch_validity_features.py": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6",
+   "research_cloud/training/ipcch_validity_pooled.py": "d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28",
+   "research_cloud/tests/test_ipcch_ch_dataset_identity.py": "431fe563538af41add53cb4b1e70f509d96f22a1f484df45096b10d9fac9ea6f",
+   "research_cloud/tests/test_ipcch_ch_validity.py": "8104fd6b09d8f7c64f58b9a3549731bff4e89536965e10444ca209a6246c97b3",
+   "research_cloud/tests/test_ipcch_gosif_corrected.py": "7dd77f1c6105da710e195c697aaf487b75ec0effe5e3fb7572ebb573487a7dc0",
+   "research_cloud/tests/test_ipcch_gosif_dataset_identity.py": "7a8d1a7edec56a014bf4f3b5b53025b7a6b4616ee8f2a5b6cea5bf16d7bd4529"
+  },
+  "untouched": "no edit/reset/stash; mlruns/ pre-existing, not a fallback or cleanup target"
+ },
+ "worktree": {
+  "path": "/home/swl007007/projects/food-crisis-research/control-plane-origin-ablation",
+  "branch": "task/ipcch-validity-origin-ablation",
+  "base": "5e94e12c4c5597af248859951bba5d0f33365565",
+  "snapshot_commit": "99f3ebdb6a350f70c62dfb54b7c6a44d0160c323",
+  "snapshot_files_sha256": {
+   "research_cloud/training/dataset_input.py": "a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c",
+   "research_cloud/training/ipcch_validity_features.py": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6",
+   "research_cloud/training/ipcch_validity_pooled.py": "d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28",
+   "research_cloud/tests/test_ipcch_ch_dataset_identity.py": "431fe563538af41add53cb4b1e70f509d96f22a1f484df45096b10d9fac9ea6f",
+   "research_cloud/tests/test_ipcch_ch_validity.py": "8104fd6b09d8f7c64f58b9a3549731bff4e89536965e10444ca209a6246c97b3",
+   "research_cloud/tests/test_ipcch_gosif_corrected.py": "7dd77f1c6105da710e195c697aaf487b75ec0effe5e3fb7572ebb573487a7dc0",
+   "research_cloud/tests/test_ipcch_gosif_dataset_identity.py": "7a8d1a7edec56a014bf4f3b5b53025b7a6b4616ee8f2a5b6cea5bf16d7bd4529"
+  },
+  "commands": [
+   "git -C control-plane worktree add -b task/ipcch-validity-origin-ablation control-plane-origin-ablation 5e94e12",
+   "cp -p control-plane/<7 files> control-plane-origin-ablation/<same paths>",
+   "git commit (pin snapshot, no content edits)"
+  ]
+ },
+ "baseline_runtime": {
+  "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:2b18cf721cb09af0d1633a20087874155e8af49aa822979c0554507bcb68ccc3",
+  "build": "3a577f07-7153-43df-9c13-cc0d844bb0d7",
+  "image_base_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4 (+3-module overlay)",
+  "overlay_manifest_sha256": "3fa26b4a542f52fdda0f5f0fa13f913b22a0ba1d3bf76ecf344f611c6bc99c49",
+  "overlay_modules": {
+   "dataset_input.py": "a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c",
+   "ipcch_validity_features.py": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6",
+   "ipcch_validity_pooled.py": "d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28"
+  },
+  "head_vs_image_base": "5e94e12 adds only ipcch_hpt_control.py/its test, RUNBOOK and a spec doc (controller, not the training path)"
+ },
+ "baseline_runs": {
+  "00": {
+   "run_id": "298c4718b4d64e6f8a5c315e8c22d25d",
+   "vertex_job": "6867303963549499392",
+   "model_id": "m-698519b8daeb456ea5e9126b6fc18e8f",
+   "registered_model": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+   "model_version": "1",
+   "package_json_sha256": "a111ab7ef80c303be0f2d576c1f57deff124bf6006b410788292b62db33afbec",
+   "trial_dir": "/home/swl007007/projects/food-crisis-research/scratch/ch-validity-20261028/harvest/formal-h00/trial-0",
+   "files_sha256": {
+    "predictions.csv.gz": "e00ee843a5ec35f1b6a0d3fe12442069d686386e85da12a7a8cabdd8b09dc81d",
+    "metrics.json": "55163f731c3194fa454933233ac7fab5cb2260e422e6ccf897ec58ff7508fc6d",
+    "publication.json": "5d88e203a0f4efbebb344f5a8c5a9179b52effb8f2f80d183b60909fb1f1dd39",
+    "contexts/memberships.npz": "a2001094e33b876c390f3bae8dd602caa0eeb828b74a9f1ffb9b60375b64425d",
+    "contexts/arm_rows.csv.gz": "0c42171e07b25db2b4bd95e66f5cc664695650aaa2cdc8034886b7b693c04366",
+    "contexts/fit_ledger.csv": "5f7e7c78184e817f0c5ee541de5d2cc31a355bdbc2e276b9ee0862a8c490e57b",
+    "contexts/schedule.csv": "4fc4e5c5071c77fd766f3574dd091ff44044404b129bbc8c64aacb9f4b957e9e",
+    "gcs-only/history_overlays.npz": "d192cfbaeb66377f1cda434c382da20e88d153b1b2fcfc0bd19f0c14e9e9f202",
+    "dataset/labels.csv.gz": "62d38e8d2ab19b1268cdc1abe965cd12cefec8af35b89116c9472d3a1510fcfe",
+    "dataset/history_observations.csv.gz": "f63f280c4d5f15211750931c639e6d74fe61069ad76bea2fa5b3cb2ca3b6590a",
+    "package/package.json": "a111ab7ef80c303be0f2d576c1f57deff124bf6006b410788292b62db33afbec"
+   },
+   "uploaded_config": {
+    "path": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/config-formal-h00.json",
+    "sha256": "fca3f2db9c62483c61fbb2089799f0fe86b676c5d74f9023d92a41642ba571df"
+   },
+   "uploaded_manifest": {
+    "path": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/manifest-formal-h00.json",
+    "sha256": "f1509cc1f6eb58e04802fe48a28c463070ed860c342f6a37c40a279c8534cca6"
+   },
+   "recipe_equals_trial_config": true
+  },
+  "06": {
+   "run_id": "00d4e94c824343bf86a0c2b79d5b9ed0",
+   "vertex_job": "3518877640599535616",
+   "model_id": "m-46beb4c7d5674c1abd874b3bd90c1f87",
+   "registered_model": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+   "model_version": "1",
+   "package_json_sha256": "813b343c335d27065a572d0129554c53be7f1d29854d073daae6aeede1b3ab8f",
+   "trial_dir": "/home/swl007007/projects/food-crisis-research/scratch/ch-validity-20261028/harvest/formal-h06/trial-0",
+   "files_sha256": {
+    "predictions.csv.gz": "bc90625a05b5f38654c382b615a74a2d9a3e59488e8146a0658fe17a7dc28c29",
+    "metrics.json": "d3f999ae029f0e1d98ef07bd22969175500573a34de4b2ac39b1ce112a259eee",
+    "publication.json": "a564188bb595aa5fcc0c6e6694e12dfdc0c65b7200f2f8fb09afafd669b16bea",
+    "contexts/memberships.npz": "d0bf3b87a3b0be6896cec1aa3eac7da0a41a210a99dc04a2577e325e37fb6885",
+    "contexts/arm_rows.csv.gz": "86d9c80de43576e994a64faac0aff4f0df4177f6fc04319dc6f86b9da8d376cb",
+    "contexts/fit_ledger.csv": "95268dbf0f848f0dcbf66adf85d52f5b434557e7a96e2bf4c207e43a6c800a15",
+    "contexts/schedule.csv": "557e140ee7b668fe62ab319fa52be0a69848a984db05b1f6ab5a99c506b1d194",
+    "gcs-only/history_overlays.npz": "b71d4cf60acbc1cdc15be52ca20c2cf415e56f54582739e18d02bd398da2cd37",
+    "dataset/labels.csv.gz": "d0137676e7623fb730ccb7ae988198b8d52acc57c937159c978754b73070af7c",
+    "dataset/history_observations.csv.gz": "034698444002d86584b45453d44d006f6b7898903373a6558bc192d6dab0b2b5",
+    "package/package.json": "813b343c335d27065a572d0129554c53be7f1d29854d073daae6aeede1b3ab8f"
+   },
+   "uploaded_config": {
+    "path": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/config-formal-h06.json",
+    "sha256": "29c4418d78aa4ade13f2b4832eab1f84d0ec2b26ec9f9c52eed3f6ef32e228e2"
+   },
+   "uploaded_manifest": {
+    "path": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/manifest-formal-h06.json",
+    "sha256": "1407b2db46ed969121d01c7de6bcd76a65b8be419ad497c914a23d9bb8fb0567"
+   },
+   "recipe_equals_trial_config": true
+  },
+  "12": {
+   "run_id": "f436da15c71c469199784db065f3b63b",
+   "vertex_job": "8594997370599505920",
+   "model_id": "m-9da8be7f46c946e69a8e759d9064a77a",
+   "registered_model": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+   "model_version": "1",
+   "package_json_sha256": "e88ac65bdd5e670883bcf80409ba82a69f16a097c418cdecf36f87ee9e80cf83",
+   "trial_dir": "/home/swl007007/projects/food-crisis-research/scratch/ch-validity-20261028/harvest/formal-h12/trial-0",
+   "files_sha256": {
+    "predictions.csv.gz": "8c1c2c64e8144011555ec6a3dd4348bffd9d2b41069b568687065e6dd5cc3f54",
+    "metrics.json": "284565c7528fc0c79e4e8f68781a55f2afa57c409c2e4fe029f05a772c619e5d",
+    "publication.json": "6632d05efde2e4780817f4039b835e953e6b8e5a0560f87211a236c1a0411b56",
+    "contexts/memberships.npz": "62f73e5337bc681ec7d4ff3f6813b43965fa51d41216f281ea104df85eddc6de",
+    "contexts/arm_rows.csv.gz": "22c7ab92112a5f910e490d499238aac1c341b93c924261f3bb495e32c1e364ee",
+    "contexts/fit_ledger.csv": "de157794e04c6e9316e7989e23229eafc231e2eacf866d15b869a0f2e813df17",
+    "contexts/schedule.csv": "239693a9bd2921da734794037603f62822ab2b914ce392df396c6ca70a585244",
+    "gcs-only/history_overlays.npz": "f14829101a84bda88d2d3c68a1b5d863d7e01f46dc074a4adba4313580f4a532",
+    "dataset/labels.csv.gz": "427c83fa90fca023279f0afd0636112e59e7dca0e3b056d5ca84dcb3e9b53eea",
+    "dataset/history_observations.csv.gz": "b56d46abcba124ab0950f98cdc6ebc14e6f41ab93453cb050d6bfa1c101415ae",
+    "package/package.json": "e88ac65bdd5e670883bcf80409ba82a69f16a097c418cdecf36f87ee9e80cf83"
+   },
+   "uploaded_config": {
+    "path": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/config-formal-h12.json",
+    "sha256": "8673b0946ac9b80eac7efdb629c62046eb94b1d77889251d568854f4d7b5d84e"
+   },
+   "uploaded_manifest": {
+    "path": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/manifest-formal-h12.json",
+    "sha256": "e3e20b2e9876e2106f7e94e122c3eaf87997862e47f71c65a8d98b886af7be4a"
+   },
+   "recipe_equals_trial_config": true
+  }
+ }
+}

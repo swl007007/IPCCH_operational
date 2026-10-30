@@ -1,0 +1,8 @@
+1c1
+< """Read-only occupancy check before a released submission (task 10-28; task 10-27 script, task label changed): Vertex customJobs.list of active jobs with full
+---
+> """Read-only occupancy check before a released submission (task 10-30; task 10-28 script, task label changed): Vertex customJobs.list of active jobs with full
+10c10
+< PROJECT, REGION, QUOTA, PER_JOB, TASK = "food-crisis-modeling-enso", "us-central1", 42, 16, "ipcch-ch-validity-refits"
+---
+> PROJECT, REGION, QUOTA, PER_JOB, TASK = "food-crisis-modeling-enso", "us-central1", 42, 16, "ipcch-validity-origin-ablation"

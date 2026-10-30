@@ -1,0 +1,357 @@
+3.17.0
+default
+GenAI
+Model training
+IPCCH dashboard
+Runs
+Models
+Traces
+Model registry
+Docs
+Settings
+I
+ipcch-reader
+Experiments
+IPCCH dashboard
+Models
+
+IPCCH dashboard - one row per model family x arm x lead time (x seed), copied from 'IPCCH detailed runs' without rescoring. 156 rows; MLP rows per seed plus a 'mean of 3 seeds' row.
+
+Vocabulary. family = experiment design (tag family / family_title). arm = predictor within a family: persistence: No model: predicts the phase observed most recently at or before the forecast origin in the same area. Defined only on persistence_available rows.; pooled: One model for all areas.; partitioned_gated: Regional model where the historical gate accepted it for that region, pooled model elsewhere.; regional_ungated: The regional model's own prediction wherever a regional model was fitted, whatever the gate decided. Diagnostic: scored on regional_model_fitted rows only.; global_base: The global MLP alone, without a residual model.. arm_role: baseline = not trained in this run (persistence, or a model reused for comparison); candidate = trained in this run; part of the main comparison; diagnostic = trained in this run for diagnosis only (not a deployable arm). lead_months = forecast lead (origin = target month minus lead). AlphaEarth supervised partition arms: pooled: Pooled XGB quartet on compact296 (no AlphaEarth descriptors).; pooled_plus_alphaearth: Pooled XGB quartet on compact296 plus 128 AlphaEarth 2017 admin descriptors.; shared_calibration: pooled_plus_alphaearth raw outputs with one shared ridge calibration refitted each year.; regional_calibration: pooled_plus_alphaearth with shared plus regional calibration on a supervised partition map. No map was selected at any lead, so this arm equals shared_calibration exactly.. Its evaluation datasets are family-qualified (saved truth text differs in the last digits from the other families' datasets with the same keys and phases).
+
+Metric keys read ... period_role: primary = main evaluation period of the family; holdout = later months reported separately (2026-01..2026-04, 4 target months, point estimates); combined = primary and holdout together (GeoXGB maps to 2024 only); selected_months = selected target months only (GeoXGB window probe), not a full period (actual spans in tags period.). Cohorts: all_scored: Every scored row: one area x one target month in the period with a valid IPCCH truth value. persistence_available: Rows whose area has at least one valid IPCCH observation at or before the forecast origin (target month minus lead). Only these rows have a persistence forecast, so every comparison with persistence uses this cohort. regional_model_fitted: Rows whose region got a regional model at that refit (training data with at least 500 rows, 50 areas and 6 target months), whatever the gate later decided. regional_model_fitted_and_persistence_available: regional_model_fitted rows that also have a persistence forecast; used to compare the regional model with persistence on exactly the same rows. in_partition_map: Rows whose area is covered by the frozen partition map. regional_model_fitted_both_windows: Rows in regions that can fit a regional model under both the 36-month window and full history; the only rows where the two regional arms are both real regional fits. regional_model_fitted_full_history_only: Rows in regions with too little data for a regional model in the 36-month window but enough with full history (from 2014-01); shows what a longer window adds. Metrics: binary. = crisis (phase 3+) vs not; four_class.* = phase 1|2|3|4-5; share_phase3plus_r2 = R2 of the population share in phase 3+; n_rows = rows scored. *.binary.f1.minus_persistence / minus_pooled = crisis-F1 difference to persistence / pooled on the same rows (ci_low/ci_high where a bootstrap was saved).
+
+Comparability. Compare values only on the same evaluation dataset (Inputs; the dataset name states lead, period span and cohort). GeoXGB maps to 2024 has a different primary period (2025 only), so its primary values are not comparable with the other families' primary values. The window probe covers selected months only. No global best-model ranking is implied.
+
+Start here. Filter tags.lead_months = '03' AND tags.aggregation != 'single_seed' (one row per family x arm; the MLP as its mean of 3 seeds), or tags.family = 'geoxgb_reference'. Then chart primary.persistence_available.binary.f1 grouped by tag arm, or primary.persistence_available.binary.f1.minus_persistence with its ci_low / ci_high.
+
+Models tab: external catalog descriptors only (not loadable). Details, gate-decision subsets, coverage and per-period diagnostics stay in 'IPCCH detailed runs' (tag zz_prov.original_run_id). Model bundle URI/SHA tags (zz_prov.model_bundle_uri, zz_prov.model_bundle_sha256) on the older families are historical references only: their local model weights (models.tar) were intentionally removed (research retention policy, 2026-10-14) and cannot be downloaded. AlphaEarth descriptors carry an empty bundle URI; the family run's manifests/models.tar.members.json lists its model files with SHA256.
+
+Validity-augmented pooled (trained research rows, 2026-10-17). Family ipcch_validity_pooled (family_title
+"Validity-augmented pooled"), leads 0/6/12, seed 42: six rows and downloadable models trained on Vertex AI and published
+directly in this experiment (record_kind=dashboard_row, aggregation=single_run, catalog=trained_research); they are not
+projections of 'IPCCH detailed runs' and carry no zz_prov plan keys or plan fingerprint. Arms: original = share-QC-valid
+original IPC/CH labels; validity_augmented = originals plus monthly copies within each uniquely linked current IPC analysis's
+validity window (round-level linkage assumption). Both arms: pooled XGBoost quartet on compact296 + 128 AlphaEarth 2017
+descriptors (+ realized O+1..O+6 weather oracle at leads 6/12) with annual shared ridge calibration. Metric keys
+primary.all_scored.* (main window) and holdout.all_scored.* (2026-01..2026-04). Samples differ between arms; metrics are generally not directly comparable (descriptive augmentation comparison, not an isolated effect). Cards: ipcch-model get <model_id> (m-…); packages: models:/.
+
+Table view
+Chart view
+Sort: Created
+Columns
+Group by
+Model attributes
+Model name
+Status
+Created
+Model attributes
+Dataset:
+IPCCH direct four-class | validity_augmented_idp | H00 | modeling panel index (#91b0456e03ea11db48124ea30f2444da)
+Dataset:
+IPCCH direct four-class | validity_augmented_idp | H06 | modeling panel index (#91b0456e03ea11db48124ea30f2444da)
+Logged from
+Source run
+Registered models
+Dataset
+dataset.modeling_panel_index.rows
+dataset.modeling_panel_index.rows
+#be501e
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month | seed 42
+Ready
+9 minutes ago
+#f792a6
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month | seed 42
+Ready
+21 minutes ago
+#8a63bf
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42
+Ready
+25 minutes ago
+#2272b4
+Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 14-month | seed 42
+Ready
+12 hours ago
+#3ba65e
+Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 2-month | seed 42
+Ready
+12 hours ago
+#a6630c
+Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month | seed 42
+Ready
+12 hours ago
+#0e538b
+Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month | seed 42
+Ready
+1 day ago
+#4299e0
+Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month | seed 42
+Ready
+1 day ago
+#3ba65e
+Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42
+Ready
+1 day ago
+#445461
+Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month | seed 42
+Ready
+2 days ago
+#1f272d
+Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month | seed 42
+Ready
+2 days ago
+#4299e0
+Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42
+Ready
+2 days ago
+#b45091
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | 6-month | seed 42
+Ready
+3 days ago
+#8acaff
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | 6-month | seed 42
+Ready
+3 days ago
+#8acaff
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | 0-month | seed 42
+Ready
+3 days ago
+#3ba65e
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | 0-month | seed 42
+Ready
+3 days ago
+#93320b
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month | seed 42
+Ready
+8 days ago
+#277c43
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42
+Ready
+8 days ago
+#8ddda8
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month | seed 42
+Ready
+8 days ago
+#8acaff
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 12-month | seed 42
+Ready
+9 days ago
+#facb66
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 6-month | seed 42
+Ready
+9 days ago
+#8396a5
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 0-month | seed 42
+Ready
+9 days ago
+#4299e0
+Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 12-month | seed 42
+Ready
+10 days ago
+#f2be88
+Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 6-month | seed 42
+Ready
+10 days ago
+#a6630c
+Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 0-month | seed 42
+Ready
+10 days ago
+#2272b4
+Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 12-month | seed 42
+Ready
+10 days ago
+#0e538b
+Validity-augmented pooled | validity_augmented_idp_202610 | 12-month | seed 42
+Ready
+10 days ago
+#e65b77
+Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 6-month | seed 42
+Ready
+10 days ago
+#b45091
+Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 0-month | seed 42
+Ready
+10 days ago
+#4299e0
+Validity-augmented pooled | validity_augmented_idp_202610 | 6-month | seed 42
+Ready
+10 days ago
+#8ddda8
+Validity-augmented pooled | validity_augmented_idp_202610 | 0-month | seed 42
+Ready
+10 days ago
+#434a93
+Direct four-class XGBoost | validity_augmented_idp | 12-month | seed 42
+Ready
+11 days ago
+#434a93
+Direct four-class XGBoost | validity_augmented_idp | 6-month | seed 42
+Ready
+11 days ago
+—
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+—
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+—
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+—
+a4bf0a5d2bef4418b31503d679ac3194
+IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 14-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | H14 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+—
+f55ddf45198f427eade6d68c2a3a04f2
+IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 2-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | H02 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+—
+Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month
+IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | H08 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+—
+f436da15c71c469199784db065f3b63b
+IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+—
+Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+—
+Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+—
+Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+IPCCH Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+v1
+IPCCH validity (gosif-v3-input-20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+8e07686349304eecb9a52ff36e41bc63
+IPCCH Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+v1
+IPCCH validity (gosif-v3-input-20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+ac709d280d8a435bad7fb80266c051c7
+IPCCH Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+v1
+IPCCH validity (gosif-v3-input-20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+6d24a2c0e0154a458fc75a0196a18578
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | 6-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | H06 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+803e3e30d2314422b93ef59b04cee9c3
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | 6-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | H06 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+70384ef6615c4f8c8d66ef350f32a3a2
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | 0-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | H00 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+d66c9d501c05483b93be7c6e4fa85359
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | 0-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | H00 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+428aad3660a94b9396c454e002d8ad56
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 12-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal | H12 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+5d6f32fdaaa344d389286324d0d0f778
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 6-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal | H06 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+a13398698cec4fc393136efc535dcb63
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 0-month
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal | H00 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 12-month
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 12-month
+v1
+IPCCH validity | validity_augmented_idp_202610_hindcast2325 | H12 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+cdcc55f0107d4551adb836e9f21b01e1
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 6-month
+v1
+IPCCH validity | validity_augmented_idp_202610_hindcast2325 | H06 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 0-month
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 0-month
+v1
+IPCCH validity | validity_augmented_idp_202610_hindcast2325 | H00 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 12-month
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 12-month
+v1
+IPCCH validity | validity_augmented_idp_202610_rolling36 | H12 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+Validity-augmented pooled | validity_augmented_idp_202610 | 12-month
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610 | 12-month
+v1
+IPCCH validity | validity_augmented_idp_202610 | H12 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 6-month
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 6-month
+v1
+IPCCH validity | validity_augmented_idp_202610_rolling36 | H06 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+3569b68fc58e462d99eb4b30f652f25c
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 0-month
+v1
+IPCCH validity | validity_augmented_idp_202610_rolling36 | H00 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+Validity-augmented pooled | validity_augmented_idp_202610 | 6-month
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610 | 6-month
+v1
+IPCCH validity | validity_augmented_idp_202610 | H06 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+96b22a50aae440a5901b9f13862d3a43
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610 | 0-month
+v1
+IPCCH validity | validity_augmented_idp_202610 | H00 | modeling panel index (#708d46066d1bca7d91cde001f0a8e5b2)
+—
+c8bd04e57dc34546bf3e1db05e534125
+IPCCH Direct four-class XGBoost | validity_augmented_idp | 12-month
+v1
+IPCCH direct four-class | validity_augmented_idp | H12 | modeling panel index (#91b0456e03ea11db48124ea30f2444da)
+—
+f2d308078abe4de280ef6d695b9d79bd
+IPCCH Direct four-class XGBoost | validity_augmented_idp | 6-month
+v1
+IPCCH direct four-class | validity_augmented_idp | H06 | modeling panel index (#91b0456e03ea11db48124ea30f2444da)
+81316
+MLflow Assistant

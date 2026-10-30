@@ -1,0 +1,26 @@
+1c1
+< """CH build packet step 1 (ledger write; run only after release): reserve the task 10-28 build platform line in the shared
+---
+> """Origin-ablation build packet step 1 (ledger write; run only after release): reserve the task 10-30 build platform line in the shared
+3c3
+< exist and the platform pool's committed + 0.19 must stay within its cap. No 10-27 line is required or reused. Receipt with
+---
+> exist and the platform pool's committed + 0.19 must stay within its cap. No earlier task line is required, reused or counted. Receipt with
+6,7c6,7
+<   cd $W/control-plane && IPCCH_CH_PLATFORM_RESERVE_CONFIRM=r1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B \
+<     $W/staging/ipcch-ch-validity-20261028/build-packet-ch/reserve_platform.py --plan-sha256 SHA --out RECEIPT.json
+---
+>   cd $W/control-plane && IPCCH_ORIGIN_PLATFORM_RESERVE_CONFIRM=r1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B \
+>     $W/staging/ipcch-origin-ablation-20261030/build-packet/reserve_platform.py --plan-sha256 SHA --out RECEIPT.json
+23,24c23,24
+<     if os.environ.get("IPCCH_CH_PLATFORM_RESERVE_CONFIRM") != "r1" or os.path.exists(a.out):
+<         raise SystemExit("needs IPCCH_CH_PLATFORM_RESERVE_CONFIRM=r1 and a new receipt path")
+---
+>     if os.environ.get("IPCCH_ORIGIN_PLATFORM_RESERVE_CONFIRM") != "r1" or os.path.exists(a.out):
+>         raise SystemExit("needs IPCCH_ORIGIN_PLATFORM_RESERVE_CONFIRM=r1 and a new receipt path")
+30,31c30,31
+<     if len(entries) != 1 or entries[0]["operation"] != "ipcch-ch-validity-r1-build" or entries[0]["usd"] > plan["task_cap"]["platform_usd_max"]:
+<         raise SystemExit("the CH build packet reserves exactly the build line within the task cap")
+---
+>     if len(entries) != 1 or entries[0]["operation"] != "ipcch-origin-ablation-r1-build" or entries[0]["usd"] > plan["task_cap"]["platform_usd_max"]:
+>         raise SystemExit("the origin-ablation build packet reserves exactly the build line within the task cap")

@@ -1,0 +1,428 @@
+{
+ "render": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-30-ipcch-validity-origin-ablation/research/cp4/final/ui-render",
+ "harness_acceptance_all_pass": true,
+ "run_metric_rows": {
+  "h00-run": {
+   "ok": true,
+   "rows": [
+    {
+     "key": "historical_pooled.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "historical_pooled.binary_f1",
+       "0.7969987494789496",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "holdout_2026_01_10.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "holdout_2026_01_10.binary_f1",
+       "0.7687947991331888",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "report.region.east_africa.holdout.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "report.region.east_africa.holdout.binary_f1",
+       "0.8310955438801323",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "report.temporal.somalia.holdout.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "report.temporal.somalia.holdout.binary_f1",
+       "0.7986743993371996",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "report.temporal.all_regions.2024.macro_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "report.temporal.all_regions.2024.macro_f1",
+       "0.5793414094549598",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "scored_rows",
+     "ok": true,
+     "row": {
+      "cells": [
+       "scored_rows",
+       "70972",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1",
+       "-0.011448425903416437",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "origin.holdout_2026_01_10.original.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "origin.holdout_2026_01_10.original.binary_f1",
+       "0.8167436651266975",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "origin.holdout_2026_01_10.augmented_total.n_rows",
+     "ok": true,
+     "row": {
+      "cells": [
+       "origin.holdout_2026_01_10.augmented_total.n_rows",
+       "15317",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    }
+   ]
+  },
+  "h06-run": {
+   "ok": true,
+   "rows": [
+    {
+     "key": "historical_pooled.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "historical_pooled.binary_f1",
+       "0.7834375",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "holdout_2026_01_10.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "holdout_2026_01_10.binary_f1",
+       "0.7702391904323828",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "report.region.east_africa.holdout.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "report.region.east_africa.holdout.binary_f1",
+       "0.8279754106620981",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "report.temporal.somalia.holdout.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "report.temporal.somalia.holdout.binary_f1",
+       "0.7877385772122614",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "report.temporal.all_regions.2024.macro_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "report.temporal.all_regions.2024.macro_f1",
+       "0.5320230224891804",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "scored_rows",
+     "ok": true,
+     "row": {
+      "cells": [
+       "scored_rows",
+       "61042",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1",
+       "0.003607418682212371",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "origin.holdout_2026_01_10.original.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "origin.holdout_2026_01_10.original.binary_f1",
+       "0.8089490727112157",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "origin.holdout_2026_01_10.augmented_total.n_rows",
+     "ok": true,
+     "row": {
+      "cells": [
+       "origin.holdout_2026_01_10.augmented_total.n_rows",
+       "15317",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/eb33b087fe314237ad1c6432bcfe140f/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    }
+   ]
+  },
+  "h12-run": {
+   "ok": true,
+   "rows": [
+    {
+     "key": "historical_pooled.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "historical_pooled.binary_f1",
+       "0.7519104084321475",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "holdout_2026_01_10.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "holdout_2026_01_10.binary_f1",
+       "0.7635624576580332",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "report.region.east_africa.holdout.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "report.region.east_africa.holdout.binary_f1",
+       "0.8188946261235418",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "report.temporal.somalia.holdout.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "report.temporal.somalia.holdout.binary_f1",
+       "0.7686350435624395",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "report.temporal.all_regions.2024.macro_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "report.temporal.all_regions.2024.macro_f1",
+       "0.4528552253705152",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "scored_rows",
+     "ok": true,
+     "row": {
+      "cells": [
+       "scored_rows",
+       "52027",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1",
+       "-0.00968410266526143",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "origin.holdout_2026_01_10.original.binary_f1",
+     "ok": true,
+     "row": {
+      "cells": [
+       "origin.holdout_2026_01_10.original.binary_f1",
+       "0.7913088732760863",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    },
+    {
+     "key": "origin.holdout_2026_01_10.augmented_total.n_rows",
+     "ok": true,
+     "row": {
+      "cells": [
+       "origin.holdout_2026_01_10.augmented_total.n_rows",
+       "15317",
+       "-"
+      ],
+      "hrefs": [
+       "#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/model-metrics?workspace=default"
+      ]
+     },
+     "problems": []
+    }
+   ]
+  }
+ },
+ "run_metric_rows_ok": true,
+ "ui_pass": true
+}

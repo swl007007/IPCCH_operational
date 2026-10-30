@@ -1,0 +1,26 @@
+2,3c2,3
+< # CH build packet step 2 for task 10-28 (PAID; run once, only after supervisor release): one Cloud Build of the reviewed
+< # three-module CH-validity overlay context. Verifies all 9 context files against context.context-record.json (sha256 pinned below) and that no
+---
+> # Origin-ablation build packet step 2 for task 10-30 (PAID; run once, only after supervisor release): one Cloud Build of the reviewed
+> # three-module origin-ablation overlay context. Verifies all 9 context files against context.context-record.json (sha256 pinned below) and that no
+7c7
+< # no rebuild, no tag move. Receipts under .trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp3/build/.
+---
+> # no rebuild, no tag move. Receipts under the task 10-30 research/cp2/build/ (operational task directory).
+10,12c10,12
+< CTX=$W/staging/ipcch-ch-validity-20261028/image-overlay-ch
+< REC=$W/staging/ipcch-ch-validity-20261028/image-overlay-ch.context-record.json
+< E=$W/.trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp3/build
+---
+> CTX=$W/staging/ipcch-origin-ablation-20261030/image-overlay-origin
+> REC=$W/staging/ipcch-origin-ablation-20261030/image-overlay-origin.context-record.json
+> E="/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-30-ipcch-validity-origin-ablation/research/cp2/build"
+15c15
+< TAG=gosifv3-chvalidity-20261028
+---
+> TAG=gosifv3-chvalidity-originfit-20261030
+18c18
+< echo "2b391f4e460b026737738b86af1bf3193ed47ed4269bc99c4536044df2cca1f4  $REC" | sha256sum -c
+---
+> echo "c98e85577ce655e3f5243306d9ee6c85a400dec3513044fe219140b0f18f0266  $REC" | sha256sum -c

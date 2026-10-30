@@ -1,0 +1,61 @@
+{
+ "kind": "bounded job-log verification",
+ "reads": 3,
+ "horizons": {
+  "00": {
+   "horizon": "00",
+   "job_id": "2842603222726606848",
+   "run_id": "bd24976069ee4530bb97343c1ec6e730",
+   "entries": 26,
+   "worker_entries": 17,
+   "last_service_message": "Job completed successfully.",
+   "checks": {
+    "filtered_to_job": true,
+    "not_truncated": true,
+    "no_nonzero_exit": true,
+    "no_job_failed": true,
+    "no_traceback": true,
+    "no_worker_error_json": true,
+    "run_line": true
+   },
+   "ok": true
+  },
+  "06": {
+   "horizon": "06",
+   "job_id": "2596031143128072192",
+   "run_id": "eb33b087fe314237ad1c6432bcfe140f",
+   "entries": 26,
+   "worker_entries": 17,
+   "last_service_message": "Job completed successfully.",
+   "checks": {
+    "filtered_to_job": true,
+    "not_truncated": true,
+    "no_nonzero_exit": true,
+    "no_job_failed": true,
+    "no_traceback": true,
+    "no_worker_error_json": true,
+    "run_line": true
+   },
+   "ok": true
+  },
+  "12": {
+   "horizon": "12",
+   "job_id": "3377405678476853248",
+   "run_id": "8237e829dc4b42169ccb3136c19aafb2",
+   "entries": 24,
+   "worker_entries": 15,
+   "last_service_message": "Job completed successfully.",
+   "checks": {
+    "filtered_to_job": true,
+    "not_truncated": true,
+    "no_nonzero_exit": true,
+    "no_job_failed": true,
+    "no_traceback": true,
+    "no_worker_error_json": true,
+    "run_line": true
+   },
+   "ok": true
+  }
+ },
+ "ok": true
+}

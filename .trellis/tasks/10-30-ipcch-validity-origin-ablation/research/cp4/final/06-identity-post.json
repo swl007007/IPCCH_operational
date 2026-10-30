@@ -1,0 +1,28 @@
+{
+ "stage": "post",
+ "chain": {
+  "00": {
+   "job": "projects/76571749286/locations/us-central1/customJobs/2842603222726606848",
+   "run_id": "bd24976069ee4530bb97343c1ec6e730",
+   "model_id": "m-055654f09a78436593ce720f4c52be10",
+   "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+   "model_version": "1"
+  },
+  "06": {
+   "job": "projects/76571749286/locations/us-central1/customJobs/2596031143128072192",
+   "run_id": "eb33b087fe314237ad1c6432bcfe140f",
+   "model_id": "m-daad991238a5430eb504eaacd4046d36",
+   "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+   "model_version": "1"
+  },
+  "12": {
+   "job": "projects/76571749286/locations/us-central1/customJobs/3377405678476853248",
+   "run_id": "8237e829dc4b42169ccb3136c19aafb2",
+   "model_id": "m-9f73aac99f444c91b8022ec9f6e41df3",
+   "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+   "model_version": "1"
+  }
+ },
+ "problems": [],
+ "ok": true
+}

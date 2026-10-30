@@ -1,0 +1,6 @@
+ERROR: (gcloud.artifacts.docker.images.describe) Image not found.
+
+A valid container image can be referenced by tag or digest, has the format of
+  LOCATION-docker.pkg.dev/PROJECT-ID/REPOSITORY-ID/IMAGE:tag
+  LOCATION-docker.pkg.dev/PROJECT-ID/REPOSITORY-ID/IMAGE@sha256:digest
+

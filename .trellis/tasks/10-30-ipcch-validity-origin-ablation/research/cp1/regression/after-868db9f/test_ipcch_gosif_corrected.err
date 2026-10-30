@@ -1,0 +1,131 @@
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/freeze-h00.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/freeze-h06.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/freeze-h12.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/regions.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/freeze-h06.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/interim.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/raw_panel.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp7fk8eoz1/report-regions.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/freeze-h00.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/freeze-h06.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/freeze-h12.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/regions.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/freeze-h00.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/interim.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/raw_panel.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/report-regions.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_gosif_corrected.py:127: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpeuiex5u7/corrected/equivalence.json' mode='r' encoding='UTF-8'>
+  eq = json.load(open(os.path.join(root, "equivalence.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_gosif_corrected.py:135: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpeuiex5u7/corrected/metrics.json' mode='r' encoding='UTF-8'>
+  metrics = json.load(open(os.path.join(root, "metrics.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_gosif_corrected.py:140: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpeuiex5u7/corrected/package/package.json' mode='r' encoding='UTF-8'>
+  pkg = json.load(open(os.path.join(root, "package", "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_gosif_corrected.py:143: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpeuiex5u7/corrected/report_tables.json' mode='r' encoding='UTF-8'>
+  rep = json.load(open(os.path.join(root, "report_tables.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/corrected/report_region_mapping.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpeuiex5u7/corrected/region_mapping.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/freeze-h00.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/freeze-h06.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/freeze-h12.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/regions.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/freeze-h12.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/interim.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/raw_panel.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfgyekgh_/report-regions.csv'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+...
+----------------------------------------------------------------------
+Ran 5 tests in 585.128s
+
+OK

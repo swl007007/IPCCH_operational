@@ -1,0 +1,66 @@
+{
+ "kind": "dry run on a temporary COPY of ledger/spend.sqlite (real ledger not written)",
+ "plan_sha256": "05fa53ffb3356d8ce76618ffbac277160b933c1a6bd024590721623c39165af8",
+ "before": {
+  "platform": {
+   "cap_usd": 100.0,
+   "committed_usd": 98.89999999999999,
+   "headroom_usd": 1.1000000000000085,
+   "by_status": {
+    "reserved": {
+     "operations": 58,
+     "reserved_usd": 98.89999999999999,
+     "actual_usd": 0
+    }
+   }
+  },
+  "training": {
+   "cap_usd": 200.0,
+   "committed_usd": 146.57918520245434,
+   "headroom_usd": 53.42081479754566,
+   "by_status": {
+    "reserved": {
+     "operations": 60,
+     "reserved_usd": 146.57918520245434,
+     "actual_usd": 0
+    }
+   }
+  }
+ },
+ "after": {
+  "platform": {
+   "cap_usd": 100.0,
+   "committed_usd": 99.09,
+   "headroom_usd": 0.9099999999999966,
+   "by_status": {
+    "reserved": {
+     "operations": 59,
+     "reserved_usd": 99.09,
+     "actual_usd": 0
+    }
+   }
+  },
+  "training": {
+   "cap_usd": 200.0,
+   "committed_usd": 146.57918520245434,
+   "headroom_usd": 53.42081479754566,
+   "by_status": {
+    "reserved": {
+     "operations": 60,
+     "reserved_usd": 146.57918520245434,
+     "actual_usd": 0
+    }
+   }
+  }
+ },
+ "reserved": {
+  "operation_id": "ipcch-origin-ablation-r1-build",
+  "pool": "platform",
+  "month": "2026-10",
+  "reserved_usd": 0.19,
+  "status": "reserved"
+ },
+ "second_run": "refused (operation exists)",
+ "real_ledger_sha256_before": "bd506297b5c3df830c9f17de01d2a5e5b5eb7c850dfe9c8ea71953a0f00c5f72",
+ "real_ledger_sha256_after": "bd506297b5c3df830c9f17de01d2a5e5b5eb7c850dfe9c8ea71953a0f00c5f72"
+}

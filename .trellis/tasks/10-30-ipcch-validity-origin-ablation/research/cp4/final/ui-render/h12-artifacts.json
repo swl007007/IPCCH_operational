@@ -1,0 +1,62 @@
+{
+ "label": "h12-artifacts",
+ "url": "https://mlflow.weilunshi.com/#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/artifacts",
+ "expect": [
+  "predictions.csv.gz",
+  "metrics.json",
+  "model-card.md",
+  "equivalence.json",
+  "trial.json",
+  "report_tables.csv",
+  "report_region_mapping.csv",
+  "region_mapping.csv",
+  "origin_comparison.csv",
+  "origin_comparison.json",
+  "origin_tui.csv"
+ ],
+ "wait": {
+  "predictions.csv.gz": 853,
+  "metrics.json": 2,
+  "model-card.md": 2,
+  "equivalence.json": 2,
+  "trial.json": 2,
+  "report_tables.csv": 2,
+  "report_region_mapping.csv": 3,
+  "region_mapping.csv": 2,
+  "origin_comparison.csv": 3,
+  "origin_comparison.json": 2,
+  "origin_tui.csv": 2
+ },
+ "navigation": "in-app hash",
+ "clicks": {},
+ "title": "Run 8237e829dc4b42169ccb3136c19aafb2 - MLflow",
+ "screenshot": "h12-artifacts.png",
+ "final_url": "https://mlflow.weilunshi.com/#/experiments/2/runs/8237e829dc4b42169ccb3136c19aafb2/artifacts?workspace=default",
+ "rows": 0,
+ "found": {
+  "predictions.csv.gz": true,
+  "metrics.json": true,
+  "model-card.md": true,
+  "equivalence.json": true,
+  "trial.json": true,
+  "report_tables.csv": true,
+  "report_region_mapping.csv": true,
+  "region_mapping.csv": true,
+  "origin_comparison.csv": true,
+  "origin_comparison.json": true,
+  "origin_tui.csv": true
+ },
+ "segments": [],
+ "text_chars": 838,
+ "text_head": "3.17.0\ndefault\nGenAI\nModel training\nIPCCH dashboard\nOverview\nTraining runs\nObservability\nTraces\nSessions\nEvaluation\nJudges\nReview\nDatasets\nEvaluation runs\nPrompts & versions\nPlayground\nPrompts\nAgent versions\nAI Gateway\nNew\nDocs\nSettings\nI\nipcch-reader\nIPCCH dashboard\nRuns\nOriginal-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month\nOverview\nModel metrics\nSystem metrics\nTraces\nArtifacts\ncontexts\ndataset\nmetadata\nequivalence.json\nmetrics.json\nmodel-card.md\norigin_comparison.csv\norigin_comparison.json\norigin_tui.csv\npredictions.csv.gz\npublication.json\nregion_mapping.csv\nreport_region_mapping.csv\nreport_tables.csv\nreport_tables.json\ntrial.json\nSelect a file to preview\nSupported formats: image, text, markdown, html, pdf, audio, video, geojson files\nMLflow Assistant",
+ "api_statuses": [
+  200
+ ],
+ "api_errors": 0,
+ "route_ok": true,
+ "navigation_ok": true,
+ "clicks_ok": true,
+ "rendered": true,
+ "api_ok": true,
+ "passed": true
+}

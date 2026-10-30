@@ -1,0 +1,917 @@
+[
+  {
+    "insertId": "18yw802dad9u",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "QUEUED"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F2842603222726606848",
+    "receiveTimestamp": "2026-10-30T18:17:05.609275103Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Waiting for job to be provisioned.",
+    "timestamp": "2026-10-30T18:17:04.209362986Z"
+  },
+  {
+    "insertId": "18yw802dad9v",
+    "labels": {
+      "ml.googleapis.com/endpoint": ""
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F2842603222726606848",
+    "receiveTimestamp": "2026-10-30T18:17:05.609275103Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Vertex AI is provisioning job running framework. First time usage might take couple of minutes, and subsequent runs can be much faster.",
+    "timestamp": "2026-10-30T18:17:04.225666572Z"
+  },
+  {
+    "insertId": "18yw802dad9w",
+    "labels": {
+      "ml.googleapis.com/endpoint": ""
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F2842603222726606848",
+    "receiveTimestamp": "2026-10-30T18:17:05.609275103Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Vertex AI is setting up this job.",
+    "timestamp": "2026-10-30T18:17:04.271912194Z"
+  },
+  {
+    "insertId": "18yw802dad9x",
+    "labels": {
+      "ml.googleapis.com/endpoint": ""
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F2842603222726606848",
+    "receiveTimestamp": "2026-10-30T18:17:05.609275103Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Waiting for training program to start.",
+    "timestamp": "2026-10-30T18:17:04.325840741Z"
+  },
+  {
+    "insertId": "18yw802dada1",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "PREPARING"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F2842603222726606848",
+    "receiveTimestamp": "2026-10-30T18:17:07.607693926Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job is preparing.",
+    "timestamp": "2026-10-30T18:17:05.824431652Z"
+  },
+  {
+    "insertId": "18yw802dadmm",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "RUNNING"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F2842603222726606848",
+    "receiveTimestamp": "2026-10-30T18:20:32.870425440Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job is running.",
+    "timestamp": "2026-10-30T18:20:31.330362142Z"
+  },
+  {
+    "insertId": "l4imu9echlp7",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:26:56.795510628Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "[    83s] labels 44596 originals + 44462 copies",
+    "timestamp": "2026-10-30T18:26:56.533471674Z"
+  },
+  {
+    "insertId": "l4imu9echlp8",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:26:56.795510628Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "[   115s] CH: 58210 added copies, 150 reclassified upstream copies, 452 aliases",
+    "timestamp": "2026-10-30T18:26:56.533480453Z"
+  },
+  {
+    "insertId": "l4imu9echlp9",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:26:56.795510628Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "[   206s] feature sources loaded",
+    "timestamp": "2026-10-30T18:26:56.533482725Z"
+  },
+  {
+    "insertId": "l4imu9echlpa",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:26:56.795510628Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "[   294s] H0: (147268, 527)",
+    "timestamp": "2026-10-30T18:26:56.533484264Z"
+  },
+  {
+    "insertId": "l4imu9echlpb",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:26:56.795510628Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "formal gates passed (70972 scored rows; 13 digests; D7 families [7364340, 31481589])",
+    "timestamp": "2026-10-30T18:26:56.533487119Z"
+  },
+  {
+    "insertId": "9rrmwlfedyndt",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:31.812759500Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "2026/10/30 18:34:28 INFO mlflow.store.model_registry.abstract_store: Waiting up to 300 seconds for model version to finish creation. Model name: IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month, version 1",
+    "timestamp": "2026-10-30T18:34:28.333950193Z"
+  },
+  {
+    "insertId": "t6jbozecwnye",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "assert h00_main_2023: cutoff 2022-12 fitting targets 2014-01..2022-10 (19169 rows, expanding, halving24, identity) scored 18945 keys 84659db1bcf1fc3e checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels",
+    "timestamp": "2026-10-30T18:34:40.133595577Z"
+  },
+  {
+    "insertId": "t6jbozecwnyf",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "assert h00_main_2024: cutoff 2023-12 fitting targets 2014-01..2023-11 (24197 rows, expanding, halving24, identity) scored 17033 keys f3dc6712af1fd577 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels",
+    "timestamp": "2026-10-30T18:34:40.133628770Z"
+  },
+  {
+    "insertId": "t6jbozecwnyg",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "assert h00_main_2025: cutoff 2024-12 fitting targets 2014-01..2024-11 (28551 rows, expanding, halving24, identity) scored 19677 keys de7fe7e36192d06c checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels",
+    "timestamp": "2026-10-30T18:34:40.133630656Z"
+  },
+  {
+    "insertId": "t6jbozecwnyh",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "assert h00_supp_2026: cutoff 2025-12 fitting targets 2014-01..2025-10 (37759 rows, expanding, halving24, identity) scored 15317 keys d2afa095a7be3d05 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels",
+    "timestamp": "2026-10-30T18:34:40.133632830Z"
+  },
+  {
+    "insertId": "t6jbozecwnyi",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "[     87s] h00_main_2023: backbone train 19169 scored 18945 calibration identity_no_support (0 rows)",
+    "timestamp": "2026-10-30T18:34:40.133634339Z"
+  },
+  {
+    "insertId": "t6jbozecwnyj",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "[    184s] h00_main_2024: backbone train 24197 scored 17033 calibration identity_no_support (0 rows)",
+    "timestamp": "2026-10-30T18:34:40.133635812Z"
+  },
+  {
+    "insertId": "t6jbozecwnyk",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "[    276s] h00_main_2025: backbone train 28551 scored 19677 calibration identity_no_support (0 rows)",
+    "timestamp": "2026-10-30T18:34:40.133637435Z"
+  },
+  {
+    "insertId": "t6jbozecwnyl",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "[    376s] h00_supp_2026: backbone train 37759 scored 15317 calibration identity_no_support (0 rows)",
+    "timestamp": "2026-10-30T18:34:40.133638746Z"
+  },
+  {
+    "insertId": "t6jbozecwnym",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "🏃 View run Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month at: https://mlflow.weilunshi.com/#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730",
+    "timestamp": "2026-10-30T18:34:40.133640095Z"
+  },
+  {
+    "insertId": "t6jbozecwnyn",
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:40.257787554Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "textPayload": "🧪 View experiment at: https://mlflow.weilunshi.com/#/experiments/2",
+    "timestamp": "2026-10-30T18:34:40.133641646Z"
+  },
+  {
+    "insertId": "14sn5k1f57sevw",
+    "jsonPayload": {
+      "error": null,
+      "metrics": {
+        "fit_rows": 109676,
+        "historical_2023.binary_f1": 0.8285753126699293,
+        "historical_2023.binary_f2": 0.8602196065148051,
+        "historical_2023.binary_precision": 0.7807096195721788,
+        "historical_2023.binary_recall": 0.8826937002172339,
+        "historical_2023.macro_f1": 0.5099203926655869,
+        "historical_2023.n_rows": 18945,
+        "historical_2023.phase3plus_r2": 0.6252318987192823,
+        "historical_2024.binary_f1": 0.8105278052922033,
+        "historical_2024.binary_f2": 0.8365218915208692,
+        "historical_2024.binary_precision": 0.7706175164805597,
+        "historical_2024.binary_recall": 0.8547977913744217,
+        "historical_2024.macro_f1": 0.5793414094549598,
+        "historical_2024.n_rows": 17033,
+        "historical_2024.phase3plus_r2": 0.5522477552751119,
+        "historical_2025.binary_f1": 0.7578129668359725,
+        "historical_2025.binary_f2": 0.7814310009119365,
+        "historical_2025.binary_precision": 0.7214700193423598,
+        "historical_2025.binary_recall": 0.7980115781525295,
+        "historical_2025.macro_f1": 0.5196619651197516,
+        "historical_2025.n_rows": 19677,
+        "historical_2025.phase3plus_r2": 0.440504087892612,
+        "historical_pooled.binary_f1": 0.7969987494789496,
+        "historical_pooled.binary_f2": 0.8238613169806871,
+        "historical_pooled.binary_precision": 0.7559199300844812,
+        "historical_pooled.binary_recall": 0.8427988121752041,
+        "historical_pooled.macro_f1": 0.5301939373793019,
+        "historical_pooled.n_rows": 55655,
+        "historical_pooled.phase3plus_r2": 0.5470641124178572,
+        "holdout_2026_01_10.binary_f1": 0.7687947991331888,
+        "holdout_2026_01_10.binary_f2": 0.7843003877287259,
+        "holdout_2026_01_10.binary_precision": 0.7442711135018827,
+        "holdout_2026_01_10.binary_recall": 0.7949896575499885,
+        "holdout_2026_01_10.macro_f1": 0.4098011539141869,
+        "holdout_2026_01_10.n_rows": 15317,
+        "holdout_2026_01_10.phase3plus_r2": 0.36129477512772257,
+        "origin.historical_2023.augmented_total.binary_f1": 0.8167815160113499,
+        "origin.historical_2023.augmented_total.binary_f2": 0.8510009291325281,
+        "origin.historical_2023.augmented_total.binary_precision": 0.7654805622388249,
+        "origin.historical_2023.augmented_total.binary_recall": 0.8754525706010138,
+        "origin.historical_2023.augmented_total.macro_f1": 0.5578043807951752,
+        "origin.historical_2023.augmented_total.n_rows": 18945,
+        "origin.historical_2023.augmented_total.phase3plus_r2": 0.6184361012324097,
+        "origin.historical_2023.delta_matched_augmented_minus_original.binary_f1": -0.013767740157578978,
+        "origin.historical_2023.delta_matched_augmented_minus_original.binary_f2": -0.018329055590220134,
+        "origin.historical_2023.delta_matched_augmented_minus_original.binary_precision": -0.007712178432242589,
+        "origin.historical_2023.delta_matched_augmented_minus_original.binary_recall": -0.021855269548324396,
+        "origin.historical_2023.delta_matched_augmented_minus_original.macro_f1": -0.00800258525352554,
+        "origin.historical_2023.delta_matched_augmented_minus_original.phase3plus_r2": -0.007826613779497671,
+        "origin.historical_2023.matched_augmented.binary_f1": 0.807191011235955,
+        "origin.historical_2023.matched_augmented.binary_f2": 0.845017408487814,
+        "origin.historical_2023.matched_augmented.binary_precision": 0.7511501463822668,
+        "origin.historical_2023.matched_augmented.binary_recall": 0.8722680913064594,
+        "origin.historical_2023.matched_augmented.macro_f1": 0.4985431806337057,
+        "origin.historical_2023.matched_augmented.n_rows": 4925,
+        "origin.historical_2023.matched_augmented.phase3plus_r2": 0.5356089202930789,
+        "origin.historical_2023.original.binary_f1": 0.820958751393534,
+        "origin.historical_2023.original.binary_f2": 0.8633464640780342,
+        "origin.historical_2023.original.binary_precision": 0.7588623248145094,
+        "origin.historical_2023.original.binary_recall": 0.8941233608547838,
+        "origin.historical_2023.original.macro_f1": 0.5065457658872312,
+        "origin.historical_2023.original.n_rows": 4925,
+        "origin.historical_2023.original.phase3plus_r2": 0.5434355340725766,
+        "origin.historical_2024.augmented_total.binary_f1": 0.8086460877933229,
+        "origin.historical_2024.augmented_total.binary_f2": 0.8125074378198263,
+        "origin.historical_2024.augmented_total.binary_precision": 0.8022914218566393,
+        "origin.historical_2024.augmented_total.binary_recall": 0.8151022235487241,
+        "origin.historical_2024.augmented_total.macro_f1": 0.5558958832640061,
+        "origin.historical_2024.augmented_total.n_rows": 17033,
+        "origin.historical_2024.augmented_total.phase3plus_r2": 0.5400900421213743,
+        "origin.historical_2024.delta_matched_augmented_minus_original.binary_f1": 0.000426763586129808,
+        "origin.historical_2024.delta_matched_augmented_minus_original.binary_f2": -0.02580357421747681,
+        "origin.historical_2024.delta_matched_augmented_minus_original.binary_precision": 0.03824712904537908,
+        "origin.historical_2024.delta_matched_augmented_minus_original.binary_recall": -0.04500548847420416,
+        "origin.historical_2024.delta_matched_augmented_minus_original.macro_f1": -0.009460958132801678,
+        "origin.historical_2024.delta_matched_augmented_minus_original.phase3plus_r2": -0.015379300348216773,
+        "origin.historical_2024.matched_augmented.binary_f1": 0.8161290322580645,
+        "origin.historical_2024.matched_augmented.binary_f2": 0.8262573481384716,
+        "origin.historical_2024.matched_augmented.binary_precision": 0.7997892518440464,
+        "origin.historical_2024.matched_augmented.binary_recall": 0.8331503841931943,
+        "origin.historical_2024.matched_augmented.macro_f1": 0.570852225822241,
+        "origin.historical_2024.matched_augmented.n_rows": 4295,
+        "origin.historical_2024.matched_augmented.phase3plus_r2": 0.5264417156843326,
+        "origin.historical_2024.original.binary_f1": 0.8157022686719347,
+        "origin.historical_2024.original.binary_f2": 0.8520609223559484,
+        "origin.historical_2024.original.binary_precision": 0.7615421227986673,
+        "origin.historical_2024.original.binary_recall": 0.8781558726673985,
+        "origin.historical_2024.original.macro_f1": 0.5803131839550427,
+        "origin.historical_2024.original.n_rows": 4295,
+        "origin.historical_2024.original.phase3plus_r2": 0.5418210160325494,
+        "origin.historical_2025.augmented_total.binary_f1": 0.7378063576801747,
+        "origin.historical_2025.augmented_total.binary_f2": 0.7540548583899608,
+        "origin.historical_2025.augmented_total.binary_precision": 0.7122276879831342,
+        "origin.historical_2025.augmented_total.binary_recall": 0.7652907123080795,
+        "origin.historical_2025.augmented_total.macro_f1": 0.5159071032774005,
+        "origin.historical_2025.augmented_total.n_rows": 19677,
+        "origin.historical_2025.augmented_total.phase3plus_r2": 0.36020308336801343,
+        "origin.historical_2025.delta_matched_augmented_minus_original.binary_f1": -0.014673670480299772,
+        "origin.historical_2025.delta_matched_augmented_minus_original.binary_f2": -0.027556102233783797,
+        "origin.historical_2025.delta_matched_augmented_minus_original.binary_precision": 0.0021818930077207588,
+        "origin.historical_2025.delta_matched_augmented_minus_original.binary_recall": -0.03760474146740245,
+        "origin.historical_2025.delta_matched_augmented_minus_original.macro_f1": -0.02290704823302675,
+        "origin.historical_2025.delta_matched_augmented_minus_original.phase3plus_r2": -0.07227364068910658,
+        "origin.historical_2025.matched_augmented.binary_f1": 0.7665618148889525,
+        "origin.historical_2025.matched_augmented.binary_f2": 0.7987683750496622,
+        "origin.historical_2025.matched_augmented.binary_precision": 0.718292247231154,
+        "origin.historical_2025.matched_augmented.binary_recall": 0.8217862252197016,
+        "origin.historical_2025.matched_augmented.macro_f1": 0.47358440200460433,
+        "origin.historical_2025.matched_augmented.n_rows": 9792,
+        "origin.historical_2025.matched_augmented.phase3plus_r2": 0.2915134646008283,
+        "origin.historical_2025.original.binary_f1": 0.7812354853692522,
+        "origin.historical_2025.original.binary_f2": 0.826324477283446,
+        "origin.historical_2025.original.binary_precision": 0.7161103542234333,
+        "origin.historical_2025.original.binary_recall": 0.859390966687104,
+        "origin.historical_2025.original.macro_f1": 0.4964914502376311,
+        "origin.historical_2025.original.n_rows": 9792,
+        "origin.historical_2025.original.phase3plus_r2": 0.36378710528993485,
+        "origin.historical_pooled.augmented_total.binary_f1": 0.7852662127469584,
+        "origin.historical_pooled.augmented_total.binary_f2": 0.8034645640514934,
+        "origin.historical_pooled.augmented_total.binary_precision": 0.7567009422191627,
+        "origin.historical_pooled.augmented_total.binary_recall": 0.8160727542687454,
+        "origin.historical_pooled.augmented_total.macro_f1": 0.5455675216735995,
+        "origin.historical_pooled.augmented_total.n_rows": 55655,
+        "origin.historical_pooled.augmented_total.phase3plus_r2": 0.5159950058981448,
+        "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1": -0.011448425903416437,
+        "origin.historical_pooled.delta_matched_augmented_minus_original.binary_f2": -0.025004116964805534,
+        "origin.historical_pooled.delta_matched_augmented_minus_original.binary_precision": 0.006620275017885757,
+        "origin.historical_pooled.delta_matched_augmented_minus_original.binary_recall": -0.03544563483018004,
+        "origin.historical_pooled.delta_matched_augmented_minus_original.macro_f1": -0.007688284313065563,
+        "origin.historical_pooled.delta_matched_augmented_minus_original.phase3plus_r2": -0.04044434987947054,
+        "origin.historical_pooled.matched_augmented.binary_f1": 0.7861315042066341,
+        "origin.historical_pooled.matched_augmented.binary_f2": 0.8153080052464264,
+        "origin.historical_pooled.matched_augmented.binary_precision": 0.7418832810761606,
+        "origin.historical_pooled.matched_augmented.binary_recall": 0.8359927057214498,
+        "origin.historical_pooled.matched_augmented.macro_f1": 0.5045655008345801,
+        "origin.historical_pooled.matched_augmented.n_rows": 19012,
+        "origin.historical_pooled.matched_augmented.phase3plus_r2": 0.4179624329836572,
+        "origin.historical_pooled.original.binary_f1": 0.7975799301100506,
+        "origin.historical_pooled.original.binary_f2": 0.840312122211232,
+        "origin.historical_pooled.original.binary_precision": 0.7352630060582749,
+        "origin.historical_pooled.original.binary_recall": 0.8714383405516298,
+        "origin.historical_pooled.original.macro_f1": 0.5122537851476456,
+        "origin.historical_pooled.original.n_rows": 19012,
+        "origin.historical_pooled.original.phase3plus_r2": 0.45840678286312775,
+        "origin.holdout_2026_01_10.augmented_total.binary_f1": 0.7572316996633766,
+        "origin.holdout_2026_01_10.augmented_total.binary_f2": 0.7604336167579584,
+        "origin.holdout_2026_01_10.augmented_total.binary_precision": 0.7519546742209632,
+        "origin.holdout_2026_01_10.augmented_total.binary_recall": 0.7625833141806482,
+        "origin.holdout_2026_01_10.augmented_total.macro_f1": 0.4604689620159068,
+        "origin.holdout_2026_01_10.augmented_total.n_rows": 15317,
+        "origin.holdout_2026_01_10.augmented_total.phase3plus_r2": 0.29734567172095294,
+        "origin.holdout_2026_01_10.delta_matched_augmented_minus_original.binary_f1": -0.03292098234028418,
+        "origin.holdout_2026_01_10.delta_matched_augmented_minus_original.binary_f2": -0.04722087627160698,
+        "origin.holdout_2026_01_10.delta_matched_augmented_minus_original.binary_precision": -0.012108470908135716,
+        "origin.holdout_2026_01_10.delta_matched_augmented_minus_original.binary_recall": -0.057618057618057605,
+        "origin.holdout_2026_01_10.delta_matched_augmented_minus_original.macro_f1": -0.0022146803198325182,
+        "origin.holdout_2026_01_10.delta_matched_augmented_minus_original.phase3plus_r2": -0.06792380070409587,
+        "origin.holdout_2026_01_10.matched_augmented.binary_f1": 0.7838226827864133,
+        "origin.holdout_2026_01_10.matched_augmented.binary_f2": 0.7985805619097894,
+        "origin.holdout_2026_01_10.matched_augmented.binary_precision": 0.7604021223122033,
+        "origin.holdout_2026_01_10.matched_augmented.binary_recall": 0.8087318087318087,
+        "origin.holdout_2026_01_10.matched_augmented.macro_f1": 0.4070805706495756,
+        "origin.holdout_2026_01_10.matched_augmented.n_rows": 5842,
+        "origin.holdout_2026_01_10.matched_augmented.phase3plus_r2": 0.32453397145332474,
+        "origin.holdout_2026_01_10.original.binary_f1": 0.8167436651266975,
+        "origin.holdout_2026_01_10.original.binary_f2": 0.8458014381813964,
+        "origin.holdout_2026_01_10.original.binary_precision": 0.772510593220339,
+        "origin.holdout_2026_01_10.original.binary_recall": 0.8663498663498663,
+        "origin.holdout_2026_01_10.original.macro_f1": 0.4092952509694081,
+        "origin.holdout_2026_01_10.original.n_rows": 5842,
+        "origin.holdout_2026_01_10.original.phase3plus_r2": 0.3924577721574206,
+        "report.region.asia.holdout.binary_f1": 0.9355742296918768,
+        "report.region.asia.holdout.binary_f2": 0.9689585146504207,
+        "report.region.asia.holdout.binary_precision": 0.8847682119205298,
+        "report.region.asia.holdout.binary_recall": 0.9925705794947994,
+        "report.region.asia.holdout.n_rows": 835,
+        "report.region.asia.holdout.phase3plus_r2": 0.1679882188096138,
+        "report.region.asia.primary.binary_f1": 0.9375783404361996,
+        "report.region.asia.primary.binary_f2": 0.9722366642404077,
+        "report.region.asia.primary.binary_precision": 0.8849976336961666,
+        "report.region.asia.primary.binary_recall": 0.9968017057569296,
+        "report.region.asia.primary.n_rows": 4267,
+        "report.region.asia.primary.phase3plus_r2": 0.18242353566027314,
+        "report.region.central_africa.holdout.binary_f1": 0.8614938361131255,
+        "report.region.central_africa.holdout.binary_f2": 0.8929645219482862,
+        "report.region.central_africa.holdout.binary_precision": 0.8136986301369863,
+        "report.region.central_africa.holdout.binary_recall": 0.9152542372881356,
+        "report.region.central_africa.holdout.macro_f1": 0.3462798236420338,
+        "report.region.central_africa.holdout.n_rows": 1823,
+        "report.region.central_africa.holdout.phase3plus_r2": 0.27063394636885807,
+        "report.region.central_africa.primary.binary_f1": 0.8680333119795003,
+        "report.region.central_africa.primary.binary_f2": 0.9001228950078055,
+        "report.region.central_africa.primary.binary_precision": 0.8193499622071051,
+        "report.region.central_africa.primary.binary_recall": 0.9228673591009705,
+        "report.region.central_africa.primary.macro_f1": 0.5419643353524789,
+        "report.region.central_africa.primary.n_rows": 10855,
+        "report.region.central_africa.primary.phase3plus_r2": 0.6016317537825724,
+        "report.region.east_africa.holdout.binary_f1": 0.8310955438801323,
+        "report.region.east_africa.holdout.binary_f2": 0.8584579514391382,
+        "report.region.east_africa.holdout.binary_precision": 0.7891722099039172,
+        "report.region.east_africa.holdout.binary_recall": 0.8777229757501027,
+        "report.region.east_africa.holdout.macro_f1": 0.36634571750804423,
+        "report.region.east_africa.holdout.n_rows": 7455,
+        "report.region.east_africa.holdout.phase3plus_r2": 0.32817792608505003,
+        "report.region.east_africa.primary.binary_f1": 0.7808197499604368,
+        "report.region.east_africa.primary.binary_f2": 0.8682950865831339,
+        "report.region.east_africa.primary.binary_precision": 0.6685636856368564,
+        "report.region.east_africa.primary.binary_recall": 0.9383796120197794,
+        "report.region.east_africa.primary.macro_f1": 0.39432709293220003,
+        "report.region.east_africa.primary.n_rows": 9298,
+        "report.region.east_africa.primary.phase3plus_r2": 0.29006705835376667,
+        "report.region.latin_america.holdout.binary_f1": 0.8428571428571429,
+        "report.region.latin_america.holdout.binary_f2": 0.7702349869451697,
+        "report.region.latin_america.holdout.binary_precision": 1,
+        "report.region.latin_america.holdout.binary_recall": 0.7283950617283951,
+        "report.region.latin_america.holdout.n_rows": 257,
+        "report.region.latin_america.holdout.phase3plus_r2": 0.3768777605677668,
+        "report.region.latin_america.primary.binary_f1": 0.7358318098720292,
+        "report.region.latin_america.primary.binary_f2": 0.8129670773581095,
+        "report.region.latin_america.primary.binary_precision": 0.6353591160220995,
+        "report.region.latin_america.primary.binary_recall": 0.8740499457111836,
+        "report.region.latin_america.primary.macro_f1": 0.32497466946522285,
+        "report.region.latin_america.primary.n_rows": 1712,
+        "report.region.latin_america.primary.phase3plus_r2": 0.43027794191357016,
+        "report.region.southern_africa.holdout.binary_f1": 0.3665204184947688,
+        "report.region.southern_africa.holdout.binary_f2": 0.3569081109504404,
+        "report.region.southern_africa.holdout.binary_precision": 0.38374558303886924,
+        "report.region.southern_africa.holdout.binary_recall": 0.3507751937984496,
+        "report.region.southern_africa.holdout.macro_f1": 0.2575030724815315,
+        "report.region.southern_africa.holdout.n_rows": 4532,
+        "report.region.southern_africa.holdout.phase3plus_r2": -0.08727769126666995,
+        "report.region.southern_africa.primary.binary_f1": 0.7140465682544513,
+        "report.region.southern_africa.primary.binary_f2": 0.712679992709156,
+        "report.region.southern_africa.primary.binary_precision": 0.7163358778625954,
+        "report.region.southern_africa.primary.binary_recall": 0.7117718446601942,
+        "report.region.southern_africa.primary.macro_f1": 0.31615057170165317,
+        "report.region.southern_africa.primary.n_rows": 5429,
+        "report.region.southern_africa.primary.phase3plus_r2": 0.18012590184936927,
+        "report.region.west_africa.holdout.binary_f1": 0.896551724137931,
+        "report.region.west_africa.holdout.binary_f2": 0.8609271523178808,
+        "report.region.west_africa.holdout.binary_precision": 0.9629629629629629,
+        "report.region.west_africa.holdout.binary_recall": 0.8387096774193549,
+        "report.region.west_africa.holdout.macro_f1": 0.527587339275429,
+        "report.region.west_africa.holdout.n_rows": 415,
+        "report.region.west_africa.holdout.phase3plus_r2": 0.6722216115706183,
+        "report.region.west_africa.primary.binary_f1": 0.4943518020441097,
+        "report.region.west_africa.primary.binary_f2": 0.4149358858587683,
+        "report.region.west_africa.primary.binary_precision": 0.7259083728278041,
+        "report.region.west_africa.primary.binary_recall": 0.37479608482871124,
+        "report.region.west_africa.primary.macro_f1": 0.41735128575466823,
+        "report.region.west_africa.primary.n_rows": 24094,
+        "report.region.west_africa.primary.phase3plus_r2": 0.37552067940047007,
+        "report.temporal.all_regions.2023.binary_f1": 0.8285753126699293,
+        "report.temporal.all_regions.2023.binary_f2": 0.8602196065148051,
+        "report.temporal.all_regions.2023.binary_precision": 0.7807096195721788,
+        "report.temporal.all_regions.2023.binary_recall": 0.8826937002172339,
+        "report.temporal.all_regions.2023.macro_f1": 0.5099203926655869,
+        "report.temporal.all_regions.2023.n_rows": 18945,
+        "report.temporal.all_regions.2023.phase3plus_r2": 0.6252318987192823,
+        "report.temporal.all_regions.2024.binary_f1": 0.8105278052922033,
+        "report.temporal.all_regions.2024.binary_f2": 0.8365218915208692,
+        "report.temporal.all_regions.2024.binary_precision": 0.7706175164805597,
+        "report.temporal.all_regions.2024.binary_recall": 0.8547977913744217,
+        "report.temporal.all_regions.2024.macro_f1": 0.5793414094549598,
+        "report.temporal.all_regions.2024.n_rows": 17033,
+        "report.temporal.all_regions.2024.phase3plus_r2": 0.5522477552751119,
+        "report.temporal.all_regions.2025.binary_f1": 0.7578129668359725,
+        "report.temporal.all_regions.2025.binary_f2": 0.7814310009119365,
+        "report.temporal.all_regions.2025.binary_precision": 0.7214700193423598,
+        "report.temporal.all_regions.2025.binary_recall": 0.7980115781525295,
+        "report.temporal.all_regions.2025.macro_f1": 0.5196619651197516,
+        "report.temporal.all_regions.2025.n_rows": 19677,
+        "report.temporal.all_regions.2025.phase3plus_r2": 0.440504087892612,
+        "report.temporal.all_regions.holdout.binary_f1": 0.7687947991331888,
+        "report.temporal.all_regions.holdout.binary_f2": 0.7843003877287259,
+        "report.temporal.all_regions.holdout.binary_precision": 0.7442711135018827,
+        "report.temporal.all_regions.holdout.binary_recall": 0.7949896575499885,
+        "report.temporal.all_regions.holdout.macro_f1": 0.4098011539141869,
+        "report.temporal.all_regions.holdout.n_rows": 15317,
+        "report.temporal.all_regions.holdout.phase3plus_r2": 0.36129477512772257,
+        "report.temporal.somalia.2023.binary_f1": 0.7902469521725539,
+        "report.temporal.somalia.2023.binary_f2": 0.9036316843008293,
+        "report.temporal.somalia.2023.binary_precision": 0.6535677352637022,
+        "report.temporal.somalia.2023.binary_recall": 0.9992094861660079,
+        "report.temporal.somalia.2023.macro_f1": 0.26320909587138164,
+        "report.temporal.somalia.2023.n_rows": 2013,
+        "report.temporal.somalia.2023.phase3plus_r2": 0.09322604587739891,
+        "report.temporal.somalia.2024.binary_f1": 0.6928104575163399,
+        "report.temporal.somalia.2024.binary_f2": 0.8314876338132152,
+        "report.temporal.somalia.2024.binary_precision": 0.5421179302045728,
+        "report.temporal.somalia.2024.binary_recall": 0.9595314164004259,
+        "report.temporal.somalia.2024.macro_f1": 0.3640971137518002,
+        "report.temporal.somalia.2024.n_rows": 2130,
+        "report.temporal.somalia.2024.phase3plus_r2": 0.09855514198166704,
+        "report.temporal.somalia.2025.binary_f1": 0.773591943304737,
+        "report.temporal.somalia.2025.binary_f2": 0.8515355559205124,
+        "report.temporal.somalia.2025.binary_precision": 0.6711974110032363,
+        "report.temporal.somalia.2025.binary_recall": 0.9128521126760564,
+        "report.temporal.somalia.2025.macro_f1": 0.3531262842676919,
+        "report.temporal.somalia.2025.n_rows": 2000,
+        "report.temporal.somalia.2025.phase3plus_r2": -0.10492831392813606,
+        "report.temporal.somalia.holdout.binary_f1": 0.7986743993371996,
+        "report.temporal.somalia.holdout.binary_f2": 0.8462078651685393,
+        "report.temporal.somalia.holdout.binary_precision": 0.7303030303030303,
+        "report.temporal.somalia.holdout.binary_recall": 0.8811700182815356,
+        "report.temporal.somalia.holdout.macro_f1": 0.3272222237130437,
+        "report.temporal.somalia.holdout.n_rows": 5286,
+        "report.temporal.somalia.holdout.phase3plus_r2": 0.23966882981299065,
+        "scalar_fits": 16,
+        "scored_rows": 70972
+      },
+      "status": "succeeded"
+    },
+    "labels": {
+      "compute.googleapis.com/resource_id": "9201721676676030892",
+      "compute.googleapis.com/resource_name": "gk3-cml-1030-054603-3231-nap-1pnnbfe1-04dfa19b-lqdt",
+      "compute.googleapis.com/zone": "",
+      "instrumentation_source": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver",
+      "instrumentation_version": "0.163.0",
+      "log.file.name": "0.log",
+      "ml.googleapis.com/job_id": "2842603222726606848",
+      "ml.googleapis.com/task_name": "workerpool0-0"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/workerpool0-0",
+    "receiveTimestamp": "2026-10-30T18:34:45.258525608Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "76571749286",
+        "task_name": "workerpool0-0"
+      },
+      "type": "ml_job"
+    },
+    "timestamp": "2026-10-30T18:34:40.333713643Z"
+  },
+  {
+    "insertId": "18yw802daetk",
+    "labels": {
+      "ml.googleapis.com/endpoint": ""
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F2842603222726606848",
+    "receiveTimestamp": "2026-10-30T18:35:08.076090165Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Tearing down training program.",
+    "timestamp": "2026-10-30T18:35:07.326224397Z"
+  },
+  {
+    "insertId": "18yw802daewu",
+    "labels": {
+      "ml.googleapis.com/endpoint": ""
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F2842603222726606848",
+    "receiveTimestamp": "2026-10-30T18:35:55.187229496Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Finished tearing down training program.",
+    "timestamp": "2026-10-30T18:35:54.727610832Z"
+  },
+  {
+    "insertId": "18yw802daeww",
+    "labels": {
+      "ml.googleapis.com/endpoint": "",
+      "ml.googleapis.com/job_state": "SUCCEEDED"
+    },
+    "logName": "projects/food-crisis-modeling-enso/logs/ml.googleapis.com%2F2842603222726606848",
+    "receiveTimestamp": "2026-10-30T18:35:56.184034986Z",
+    "resource": {
+      "labels": {
+        "job_id": "2842603222726606848",
+        "project_id": "food-crisis-modeling-enso",
+        "task_name": "service"
+      },
+      "type": "ml_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Job completed successfully.",
+    "timestamp": "2026-10-30T18:35:55.249921719Z"
+  }
+]

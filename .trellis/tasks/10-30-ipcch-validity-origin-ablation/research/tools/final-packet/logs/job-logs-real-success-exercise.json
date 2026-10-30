@@ -1,0 +1,28 @@
+{
+ "kind": "job_logs.check on the REAL successful CH-final job logs (task 10-28 receipts)",
+ "00": {
+  "ok": true,
+  "failed": [],
+  "entries": 26,
+  "ch_r3_original_failed": [
+   "no_worker_error_json"
+  ]
+ },
+ "06": {
+  "ok": true,
+  "failed": [],
+  "entries": 26,
+  "ch_r3_original_failed": [
+   "no_worker_error_json"
+  ]
+ },
+ "12": {
+  "ok": true,
+  "failed": [],
+  "entries": 24,
+  "ch_r3_original_failed": [
+   "no_worker_error_json"
+  ]
+ },
+ "synthetic_failed_worker_json_caught": true
+}

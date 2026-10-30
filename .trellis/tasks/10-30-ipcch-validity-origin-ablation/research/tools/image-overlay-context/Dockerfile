@@ -1,0 +1,7 @@
+# Task 10-30 origin-ablation overlay: the original immutable numerical image plus THREE reviewed modules (no dependency install).
+FROM us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939
+COPY dataset_input.py /app/research_cloud/training/dataset_input.py
+COPY ipcch_validity_features.py /app/research_cloud/training/ipcch_validity_features.py
+COPY ipcch_validity_pooled.py /app/research_cloud/training/ipcch_validity_pooled.py
+COPY overlay /app/overlay
+ENV IPCCH_SOURCE_COMMIT=439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f

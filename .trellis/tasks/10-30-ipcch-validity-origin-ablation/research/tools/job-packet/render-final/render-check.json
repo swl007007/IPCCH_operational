@@ -1,0 +1,184 @@
+{
+ "stage": "final",
+ "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197",
+ "horizons": {
+  "0": {
+   "checks": {
+    "registered_name": true,
+    "run_and_model_names_new": true,
+    "code_overlay_tag_from_build": true,
+    "no_ch_final_image_or_changed_modules": true,
+    "baseline_tags_ch_final_run": true,
+    "family_and_versions": true,
+    "dataset_name": true,
+    "dataset_digest_is_the_inherited_panel": true,
+    "dataset_fit_subset_tags": true,
+    "no_forbidden_text": true
+   },
+   "ok": true,
+   "names": {
+    "run": "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+    "logged_model": "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month | seed 42",
+    "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month"
+   },
+   "dataset": {
+    "name": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index",
+    "digest": "dba329f9b115d4de10e294133bf91d41"
+   },
+   "label_kind_counts": {
+    "copy": 102822,
+    "original": 44446
+   },
+   "forbidden_found": [],
+   "sameness_sentences_for_review": [
+    "\"role\": \"Original-label fit ablation of the CH-final tuned aggregated-ACLED refit: validity copies removed from the fitting labels only, full inherited cohort scored (research comparison)\",",
+    "Comparisons pair (context, admin_code, target_ord) one to one with identical truth: original-only fitted model vs the CH-final model on the CH-final original rows;",
+    "IPC and CH validity copies are removed from fitting labels only.",
+    "Linked comparison baseline: the CH-final run (not refitted), paired on identical keys and truths.",
+    "Original-label fit ablation of the CH-final tuned aggregated-ACLED refit: validity copies removed from the fitting labels only, full inherited cohort scored (research comparison)",
+    "Paired original-label view against the CH-final run's retained predictions on exactly paired (context, admin_code, target_ord) keys with identical truths: for historical_2023/2024/2025 (declared windows respected;",
+    "Parameters were selected on the same historical years that are reported, so historical results after tuning are descriptive and optimistic, not an independent test;",
+    "Same inputs, CH-corrected labels and label kinds, cohort, scored rows, report families and aliases, histories, features, frozen quartet parameters, seed, per-row weights, contexts, cutoffs and identity calibration (the unfiltered no-fit build equals the CH-final self-consistency digests);",
+    "The original-only fits use fewer rows, so the comparison reflects both the absence of copy supervision and the smaller fitting sample.",
+    "Versus the linked CH-final run (MLflow 298c4718b4d64e6f8a5c315e8c22d25d): only the backbone fitting-label membership differs (validity copies removed;",
+    "cross-country, CAF, ambiguous and unresolved labels are preserved without expansion, and cross-country labels and events also carry their source-report family for exclusions.",
+    "evaluation rows include IPC validity copies (inherited: an existing IPC label copied to blank months of its analysis validity period) and Cadre Harmonise validity copies (new in this refit: an eligible current CH label copied to blank area-months of its reference window, source and destination in the same country), each counted once;",
+    "fitting labels exclude every validity copy (final label_kind == original only), scoring keeps all rows",
+    "fitting labels exclude every validity copy (final label_kind == original only), scoring keeps all rows\",",
+    "gosif-v3-input-20261027+ch-validity-20261028), whose only change is the backbone fitting-label membership: each annual context keeps only the final CH-corrected label_kind == original rows of its CH-final fitting pool (h00_main_2023 19,169, h00_main_2024 24,197, h00_main_2025 28,551, h00_supp_2026 37,759);",
+    "labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified before  ...",
+    "labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified before fitting).",
+    "linked rows of the same source and destination country fill blank existing area-months of that window with copies (all new rows are copies;",
+    "occupied and QC-invalid rows keep their values);",
+    "only each backbone's fitting labels are restricted to the final label_kind == original rows, so memberships, fitting keys, fitting-row histories, schedule and fit ledger differ.",
+    "publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path);",
+    "retained rows keep their weights, which halve every 24 months",
+    "retained rows keep their weights, which halve every 24 months\",",
+    "task 10-30 original-label fit ablation (fit membership only)",
+    "task 10-30 original-label fit ablation (fit membership only)\",",
+    "the retained original rows keep their CH-final weights, which are not renormalized, so the total fitting weight is smaller);",
+    "unresolved and cross-country CH originals stay as in the CH-final run and CH copy-only source events are not promoted to original labels.",
+    "values equal the production run except the 13 GPP_mean-derived columns (GOSIF-v3 input) and the five reported-phase history columns, which are rebuilt from the CH-corrected report events and families."
+   ]
+  },
+  "6": {
+   "checks": {
+    "registered_name": true,
+    "run_and_model_names_new": true,
+    "code_overlay_tag_from_build": true,
+    "no_ch_final_image_or_changed_modules": true,
+    "baseline_tags_ch_final_run": true,
+    "family_and_versions": true,
+    "dataset_name": true,
+    "dataset_digest_is_the_inherited_panel": true,
+    "dataset_fit_subset_tags": true,
+    "no_forbidden_text": true
+   },
+   "ok": true,
+   "names": {
+    "run": "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+    "logged_model": "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42",
+    "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month"
+   },
+   "dataset": {
+    "name": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index",
+    "digest": "dba329f9b115d4de10e294133bf91d41"
+   },
+   "label_kind_counts": {
+    "copy": 102822,
+    "original": 44446
+   },
+   "forbidden_found": [],
+   "sameness_sentences_for_review": [
+    "\"role\": \"Original-label fit ablation of the CH-final tuned aggregated-ACLED refit: validity copies removed from the fitting labels only, full inherited cohort scored (research comparison)\",",
+    "Comparisons pair (context, admin_code, target_ord) one to one with identical truth: original-only fitted model vs the CH-final model on the CH-final original rows;",
+    "IPC and CH validity copies are removed from fitting labels only.",
+    "Linked comparison baseline: the CH-final run (not refitted), paired on identical keys and truths.",
+    "Original-label fit ablation of the CH-final tuned aggregated-ACLED refit: validity copies removed from the fitting labels only, full inherited cohort scored (research comparison)",
+    "Paired original-label view against the CH-final run's retained predictions on exactly paired (context, admin_code, target_ord) keys with identical truths: for historical_2023/2024/2025 (declared windows respected;",
+    "Parameters were selected on the same historical years that are reported, so historical results after tuning are descriptive and optimistic, not an independent test;",
+    "Same inputs, CH-corrected labels and label kinds, cohort, scored rows, report families and aliases, histories, features, frozen quartet parameters, seed, per-row weights, contexts, cutoffs and identity calibration (the unfiltered no-fit build equals the CH-final self-consistency digests);",
+    "The original-only fits use fewer rows, so the comparison reflects both the absence of copy supervision and the smaller fitting sample.",
+    "Versus the linked CH-final run (MLflow 00d4e94c824343bf86a0c2b79d5b9ed0): only the backbone fitting-label membership differs (validity copies removed;",
+    "cross-country, CAF, ambiguous and unresolved labels are preserved without expansion, and cross-country labels and events also carry their source-report family for exclusions.",
+    "evaluation rows include IPC validity copies (inherited: an existing IPC label copied to blank months of its analysis validity period) and Cadre Harmonise validity copies (new in this refit: an eligible current CH label copied to blank area-months of its reference window, source and destination in the same country), each counted once;",
+    "fitting labels exclude every validity copy (final label_kind == original only), scoring keeps all rows",
+    "fitting labels exclude every validity copy (final label_kind == original only), scoring keeps all rows\",",
+    "gosif-v3-input-20261027+ch-validity-20261028), whose only change is the backbone fitting-label membership: each annual context keeps only the final CH-corrected label_kind == original rows of its CH-final fitting pool (h06_main_2023 21,282, h06_main_2024 22,478, h06_main_2025 27,134, h06_supp_2026 34,004);",
+    "labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified before  ...",
+    "labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified before fitting).",
+    "linked rows of the same source and destination country fill blank existing area-months of that window with copies (all new rows are copies;",
+    "occupied and QC-invalid rows keep their values);",
+    "only each backbone's fitting labels are restricted to the final label_kind == original rows, so memberships, fitting keys, fitting-row histories, schedule and fit ledger differ.",
+    "publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path);",
+    "retained rows keep their weights, which halve every 24 months",
+    "retained rows keep their weights, which halve every 24 months\",",
+    "task 10-30 original-label fit ablation (fit membership only)",
+    "task 10-30 original-label fit ablation (fit membership only)\",",
+    "the retained original rows keep their CH-final weights, which are not renormalized, so the total fitting weight is smaller);",
+    "unresolved and cross-country CH originals stay as in the CH-final run and CH copy-only source events are not promoted to original labels.",
+    "values equal the production run except the 13 GPP_mean-derived columns (GOSIF-v3 input) and the five reported-phase history columns, which are rebuilt from the CH-corrected report events and families."
+   ]
+  },
+  "12": {
+   "checks": {
+    "registered_name": true,
+    "run_and_model_names_new": true,
+    "code_overlay_tag_from_build": true,
+    "no_ch_final_image_or_changed_modules": true,
+    "baseline_tags_ch_final_run": true,
+    "family_and_versions": true,
+    "dataset_name": true,
+    "dataset_digest_is_the_inherited_panel": true,
+    "dataset_fit_subset_tags": true,
+    "no_forbidden_text": true
+   },
+   "ok": true,
+   "names": {
+    "run": "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+    "logged_model": "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month | seed 42",
+    "registered_model": "IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month"
+   },
+   "dataset": {
+    "name": "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index",
+    "digest": "dba329f9b115d4de10e294133bf91d41"
+   },
+   "label_kind_counts": {
+    "copy": 102822,
+    "original": 44446
+   },
+   "forbidden_found": [],
+   "sameness_sentences_for_review": [
+    "\"role\": \"Original-label fit ablation of the CH-final tuned aggregated-ACLED refit: validity copies removed from the fitting labels only, full inherited cohort scored (research comparison)\",",
+    "Comparisons pair (context, admin_code, target_ord) one to one with identical truth: original-only fitted model vs the CH-final model on the CH-final original rows;",
+    "IPC and CH validity copies are removed from fitting labels only.",
+    "Linked comparison baseline: the CH-final run (not refitted), paired on identical keys and truths.",
+    "Original-label fit ablation of the CH-final tuned aggregated-ACLED refit: validity copies removed from the fitting labels only, full inherited cohort scored (research comparison)",
+    "Paired original-label view against the CH-final run's retained predictions on exactly paired (context, admin_code, target_ord) keys with identical truths: for historical_2023/2024/2025 (declared windows respected;",
+    "Parameters were selected on the same historical years that are reported, so historical results after tuning are descriptive and optimistic, not an independent test;",
+    "Same inputs, CH-corrected labels and label kinds, cohort, scored rows, report families and aliases, histories, features, frozen quartet parameters, seed, per-row weights, contexts, cutoffs and identity calibration (the unfiltered no-fit build equals the CH-final self-consistency digests);",
+    "The original-only fits use fewer rows, so the comparison reflects both the absence of copy supervision and the smaller fitting sample.",
+    "Versus the linked CH-final run (MLflow f436da15c71c469199784db065f3b63b): only the backbone fitting-label membership differs (validity copies removed;",
+    "cross-country, CAF, ambiguous and unresolved labels are preserved without expansion, and cross-country labels and events also carry their source-report family for exclusions.",
+    "evaluation rows include IPC validity copies (inherited: an existing IPC label copied to blank months of its analysis validity period) and Cadre Harmonise validity copies (new in this refit: an eligible current CH label copied to blank area-months of its reference window, source and destination in the same country), each counted once;",
+    "fitting labels exclude every validity copy (final label_kind == original only), scoring keeps all rows",
+    "fitting labels exclude every validity copy (final label_kind == original only), scoring keeps all rows\",",
+    "gosif-v3-input-20261027+ch-validity-20261028), whose only change is the backbone fitting-label membership: each annual context keeps only the final CH-corrected label_kind == original rows of its CH-final fitting pool (h12_main_2024 21,282, h12_main_2025 25,960, h12_supp_2026 30,784);",
+    "labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified before  ...",
+    "labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified before fitting).",
+    "linked rows of the same source and destination country fill blank existing area-months of that window with copies (all new rows are copies;",
+    "occupied and QC-invalid rows keep their values);",
+    "only each backbone's fitting labels are restricted to the final label_kind == original rows, so memberships, fitting keys, fitting-row histories, schedule and fit ledger differ.",
+    "publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path);",
+    "retained rows keep their weights, which halve every 24 months",
+    "retained rows keep their weights, which halve every 24 months\",",
+    "task 10-30 original-label fit ablation (fit membership only)",
+    "task 10-30 original-label fit ablation (fit membership only)\",",
+    "the retained original rows keep their CH-final weights, which are not renormalized, so the total fitting weight is smaller);",
+    "unresolved and cross-country CH originals stay as in the CH-final run and CH copy-only source events are not promoted to original labels.",
+    "values equal the production run except the 13 GPP_mean-derived columns (GOSIF-v3 input) and the five reported-phase history columns, which are rebuilt from the CH-corrected report events and families."
+   ]
+  }
+ },
+ "ok": true
+}

@@ -1,0 +1,44 @@
+{
+ "label": "h00-dataset",
+ "url": "https://mlflow.weilunshi.com/#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730",
+ "expect": [
+  "Data details for",
+  "dba329f9b115d4de10e294133bf91d41",
+  "num rows: 147268",
+  "row\nlong\nadmin_code\nlong\ntarget_ord\nlong\nlabel_kind\nstring\nsource_family\nlong\nsource_available_ord\nlong"
+ ],
+ "wait": {
+  "Data details for": 9,
+  "dba329f9b115d4de10e294133bf91d41": 11,
+  "num rows: 147268": 9,
+  "row\nlong\nadmin_code\nlong\ntarget_ord\nlong\nlabel_kind\nstring\nsource_family\nlong\nsource_available_ord\nlong": "timeout"
+ },
+ "navigation": "in-app hash",
+ "clicks": {
+  "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index": "clicked"
+ },
+ "title": "Run bd24976069ee4530bb97343c1ec6e730 - MLflow",
+ "screenshot": "h00-dataset.png",
+ "final_url": "https://mlflow.weilunshi.com/#/experiments/2/runs/bd24976069ee4530bb97343c1ec6e730?workspace=default",
+ "rows": 350,
+ "found": {
+  "Data details for": true,
+  "dba329f9b115d4de10e294133bf91d41": true,
+  "num rows: 147268": true,
+  "row\nlong\nadmin_code\nlong\ntarget_ord\nlong\nlabel_kind\nstring\nsource_family\nlong\nsource_available_ord\nlong": true
+ },
+ "segments": [],
+ "text_chars": 42547,
+ "text_head": "3.17.0\ndefault\nGenAI\nModel training\nIPCCH dashboard\nOverview\nTraining runs\nObservability\nTraces\nSessions\nEvaluation\nJudges\nReview\nDatasets\nEvaluation runs\nPrompts & versions\nPlayground\nPrompts\nAgent versions\nAI Gateway\nNew\nDocs\nSettings\nI\nipcch-reader\nIPCCH dashboard\nRuns\nOriginal-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month\nOverview\nModel metrics\nSystem metrics\nTraces\nArtifacts\nDescription\ncard\n\nmodel-card-v1; new research training; optional unrecorded facts are marked unavailable.\n\nidentity\n\n{\"family\": \"ipcch_validity_pooled\", \"kind\": \"new Linux research run\", \"mode\": \"formal\", \"arm\": \"validity_augmented_idp_202610_acledagg_lag1_uncal_hpt\", \"horizon\": 0, \"contexts\": [\"h00_main_2023\", \"h00_main_2024\", \"h00_main_2025\", \"h00_supp_2026\"], \"scalar_fits\": 16, \"params\": {\"q3_n_estimators\": 357, \"q3_learning_rate\": 0.05697472381385549, \"q3_max_depth\": 4, \"q3_min_child_weight\": 0.0, \"q3_subsample\": 0.7526468149269783, \"q3_colsample_bytree\": 0.4, \"other_n_estimators\": 428, \"other_learning_rate\": 0.06530548333101606, \" … [see full card]\n\nsummary\n\nFixed-parameter refit of the CH-final run of validity_augmented_idp_202610_acledagg_lag1_uncal_hpt, lead 0 months (MLflow 298c4718b4d64e6f8a5c315e8c22d25d; gosif-v3-input-20261027+ch-validity-20261028), whose only change is the backbone fitting-label membership: each annual context keeps only the final CH-corrected label_kind == original rows of its CH-final fitting pool (h00_main_2023 19,169, h00_main_2024 24,197, h00_main_2025 28,551, h00_supp_2026 37,759); IPC and CH validity copies are removed from fitting labels onl … [see full card]\n\nbaseline\n\n{\"run_id\": \"298c4718b4d64e6f8a5c315e8c22d25d\", \"model_id\": \"m-698519b8daeb456ea5e9126b6fc18e8f\", \"registered_model\": \"IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month\", \"model_version\": \"1\", \"package_json_sha256\": \"a111ab7ef80c303be0f2d576c1f57deff124bf6006b410788292b62db33afbec\", \"arm\": \"validity_augmented_idp_202610_acledagg_lag1_uncal_hpt\", \"relation\": \"Linked comparison baseline: the CH-final run of this horizon (MLflow 298c4718b4d64e6 … [see full card]\n\nstatus\n\nResearch tracking only; execution success does not establish scientific acceptance. Versus the linked CH-final run (MLflow 298c4718b4d64e6f8a5c315e8c22d25d): only the backbone fitting-label membership differs (validity copies removed; the retained original rows keep their CH-final weights, which are not renormalized, so the total fitting weight is smaller); labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified befor … [see full card]\n\ndata\n\n{\"sha256\": \"453e25caa64f1b685a33c2d851dd30e2a4661c1d9529bf751755964047321c2d\", \"content\": {\"derived_from\": {\"ch_final_formal_manifest\": {\"gcs_generation\": 1793219071854845, \"name\": \"ipcch-ch-validity-refits-r1-formal-h00\", \"sha256\": \"f1509cc1f6eb58e04802fe48a28c463070ed860c342f6a37c40a279c8534cca6\", \"uri\": \"gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h00.json\"}, \"replaced_roles\": {\"baseline_predictions\": {\"gcs_generation\": 1793219070652120, \"sha256\": \"00 … [see full card]\n\nfeatures\n\n{\"n_features\": 527, \"uri\": \"features=runs:/bd24976069ee4530bb97343c1ec6e730/metadata/feature_order.csv#name\"}\n\nfeature_engineering\n\nOriginal-label fit ablation (task 10-30): label preparation, CH validity correction, features and reported-phase histories are exactly those of the CH-final run; validity copies are scored but excluded from the backbone fitting labels. Inherited description: CH validity correction (task 10-28, ch_links.csv.gz sha256 ac4ad6aaa8dc…): Eligible Cadre Harmonise raw labels are linked through their documented source route (legacy gdf_ch features with may25 current records; the dec25 2025 centroid join; the mars26 refresh li",
+ "api_statuses": [
+  200,
+  200
+ ],
+ "api_errors": 0,
+ "route_ok": true,
+ "navigation_ok": true,
+ "clicks_ok": true,
+ "rendered": true,
+ "api_ok": true,
+ "passed": true
+}

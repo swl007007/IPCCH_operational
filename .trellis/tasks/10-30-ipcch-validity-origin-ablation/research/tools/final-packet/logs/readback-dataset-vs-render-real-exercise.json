@@ -1,0 +1,15 @@
+{
+ "kind": "readback_origin dataset-vs-render comparison replayed on the REAL CH-final harvested trials vs the CH render (dataset_input from 7023d10)",
+ "h00": {
+  "differing_with_new_exclusions": [],
+  "idp_ledger_sha256_differs_raw": true
+ },
+ "h06": {
+  "differing_with_new_exclusions": [],
+  "idp_ledger_sha256_differs_raw": true
+ },
+ "h12": {
+  "differing_with_new_exclusions": [],
+  "idp_ledger_sha256_differs_raw": true
+ }
+}

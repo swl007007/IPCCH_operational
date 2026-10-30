@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/overlay-sim-selfcheck/app/research_cloud/images/selfcheck.py", line 157, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/overlay-sim-selfcheck/app/research_cloud/images/selfcheck.py", line 151, in main
+    else training(args.image))
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/overlay-sim-selfcheck/app/research_cloud/images/selfcheck.py", line 101, in training
+    raise RuntimeError(f"installed distributions differ from the lock: {wrong}")
+RuntimeError: installed distributions differ from the lock: {'certifi': ('2026.7.22', '2026.10.19')}

@@ -1,0 +1,1303 @@
+3.17.0
+default
+GenAI
+Model training
+IPCCH dashboard
+Overview
+Training runs
+Observability
+Traces
+Sessions
+Evaluation
+Judges
+Review
+Datasets
+Evaluation runs
+Prompts & versions
+Playground
+Prompts
+Agent versions
+AI Gateway
+New
+Docs
+Settings
+I
+ipcch-reader
+IPCCH dashboard
+Runs
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+Overview
+Model metrics
+System metrics
+Traces
+Artifacts
+Description
+card
+
+model-card-v1; new research training; optional unrecorded facts are marked unavailable.
+
+identity
+
+{"family": "ipcch_validity_pooled", "kind": "new Linux research run", "mode": "formal", "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt", "horizon": 6, "contexts": ["h06_main_2023", "h06_main_2024", "h06_main_2025", "h06_supp_2026"], "scalar_fits": 16, "params": {"q3_n_estimators": 346, "q3_learning_rate": 0.08536359461483287, "q3_max_depth": 4, "q3_min_child_weight": 18.162407873411354, "q3_subsample": 0.8118788081985475, "q3_colsample_bytree": 0.4327978267528363, "other_n_estimators": 398, "other_learning … [see full card]
+
+summary
+
+Fixed-parameter refit of the CH-final run of validity_augmented_idp_202610_acledagg_lag1_uncal_hpt, lead 6 months (MLflow 00d4e94c824343bf86a0c2b79d5b9ed0; gosif-v3-input-20261027+ch-validity-20261028), whose only change is the backbone fitting-label membership: each annual context keeps only the final CH-corrected label_kind == original rows of its CH-final fitting pool (h06_main_2023 21,282, h06_main_2024 22,478, h06_main_2025 27,134, h06_supp_2026 34,004); IPC and CH validity copies are removed from fitting labels onl … [see full card]
+
+baseline
+
+{"run_id": "00d4e94c824343bf86a0c2b79d5b9ed0", "model_id": "m-46beb4c7d5674c1abd874b3bd90c1f87", "registered_model": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month", "model_version": "1", "package_json_sha256": "813b343c335d27065a572d0129554c53be7f1d29854d073daae6aeede1b3ab8f", "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt", "relation": "Linked comparison baseline: the CH-final run of this horizon (MLflow 00d4e94c824343b … [see full card]
+
+status
+
+Research tracking only; execution success does not establish scientific acceptance. Versus the linked CH-final run (MLflow 00d4e94c824343bf86a0c2b79d5b9ed0): only the backbone fitting-label membership differs (validity copies removed; the retained original rows keep their CH-final weights, which are not renormalized, so the total fitting weight is smaller); labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified befor … [see full card]
+
+data
+
+{"sha256": "2770f820deda2a8a1b1657d15edd8683feacfd679bcb22f59036511eb715eec8", "content": {"derived_from": {"ch_final_formal_manifest": {"gcs_generation": 1793219072084269, "name": "ipcch-ch-validity-refits-r1-formal-h06", "sha256": "1407b2db46ed969121d01c7de6bcd76a65b8be419ad497c914a23d9bb8fb0567", "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h06.json"}, "replaced_roles": {"baseline_predictions": {"gcs_generation": 1793219071144730, "sha256": "e3 … [see full card]
+
+features
+
+{"n_features": 539, "uri": "features=runs:/eb33b087fe314237ad1c6432bcfe140f/metadata/feature_order.csv#name"}
+
+feature_engineering
+
+Original-label fit ablation (task 10-30): label preparation, CH validity correction, features and reported-phase histories are exactly those of the CH-final run; validity copies are scored but excluded from the backbone fitting labels. Inherited description: CH validity correction (task 10-28, ch_links.csv.gz sha256 ac4ad6aaa8dc…): Eligible Cadre Harmonise raw labels are linked through their documented source route (legacy gdf_ch features with may25 current records; the dec25 2025 centroid join; the mars26 refresh line … [see full card]
+
+architecture
+
+Four independent XGBRegressor (reg:squarederror, CPU hist, seed 42, 16 threads, no early stopping); q3 and the shared q2/q4/q5 group each take n_estimators, learning_rate, max_depth, min_child_weight, subsample and colsample_bytree from the frozen winner of this horizon (values in the settings section as q3_* and other_*; search space n_estimators 100-600, learning_rate 0.02-0.20 log, max_depth 4-12, min_child_weight 0-32, subsample 0.5-1, colsample_bytree 0.4-1); reg_alpha 0, reg_lambda 1, gamma 0.1 (q3) / 0 (q2/q4/q5); … [see full card]
+
+settings
+
+{"b2_ridge_penalty": 0.01, "calibration": "none (identity): no B2 or provider fits by design; the backbone quartet is projected (bounded, decreasing) and decoded with inclusive q_k >= 0.20", "early_stopping": "none", "half_life_months": 24, "n_threads": 16, "other_colsample_bytree": 0.7269756250210765, "other_learning_rate": 0.027538515460387113, "other_max_depth": 5, "other_min_child_weight": 23.072391682325758, "other_n_estimators": 398, "other_subsample": 0.6716682260833845, "parameter_groups": "{\"other\": [\"q2\", \ … [see full card]
+
+environment
+
+{"python": "3.12.3", "platform": "Linux-6.12.110+-x86_64-with-glibc2.36", "machine": "x86_64", "gcp_project": "food-crisis-modeling-enso", "packages": {"numpy": "2.4.4", "pandas": "3.0.3", "xgboost": "3.2.0", "scikit-learn": "1.8.0", "mlflow-skinny": "3.17.0", "cloudml-hypertune": "0.1.0.dev6"}, "image_digest": "sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197", "source_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d … [see full card]
+
+evaluation
+
+{"explanation": "Selection is inherited (the tuned parameters were frozen by the original search; no new search). This refit: the CH-final run's annual expanding contexts and calendar; the whole inherited scored cohort (historical and 2026-01..10, originals and copies, unweighted) gives the standard six metrics (binary F1/F2/precision/recall, phase3plus R2, macro F1) for the pooled historical window, each historical year and 2026-01..10 (MLflow ., .n_rows) and the inherited report tables (six report … [see full card]
+
+observed
+
+{"metrics": {"historical_pooled.n_rows": 45725.0, "historical_pooled.binary_f1": 0.7834375, "historical_pooled.phase3plus_r2": 0.46411977848432584, "historical_pooled.macro_f1": 0.5204551110475188, "historical_pooled.binary_f2": 0.8110381417618323, "historical_pooled.binary_precision": 0.7413869584503918, "historical_pooled.binary_recall": 0.830544972668544, "historical_2023.n_rows": 9015.0, "historical_2023.binary_f1": 0.8168053471559132, "historical_2023.phase3plus_r2": 0.6113422543924494, "historical_2023.macro_f1": 0 … [see full card]
+
+sources
+
+{"harness": {"control_plane_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f", "research_cloud_dirty": null, "files": {"research_cloud/training/common.py": "cd … [see full card]
+Full card: runs:/eb33b087fe314237ad1c6432bcfe140f/model-card.md
+
+Show more
+Metrics (311)
+Metric
+Value
+Models
+historical_pooled.n_rows
+45725
+-
+historical_pooled.binary_f1
+0.7834375
+-
+historical_pooled.phase3plus_r2
+0.46411977848432584
+-
+historical_pooled.macro_f1
+0.5204551110475188
+-
+historical_pooled.binary_f2
+0.8110381417618323
+-
+historical_pooled.binary_precision
+0.7413869584503918
+-
+historical_pooled.binary_recall
+0.830544972668544
+-
+historical_2023.n_rows
+9015
+-
+historical_2023.binary_f1
+0.8168053471559132
+-
+historical_2023.phase3plus_r2
+0.6113422543924494
+-
+historical_2023.macro_f1
+0.5311735879679591
+-
+historical_2023.binary_f2
+0.8446651244146025
+-
+historical_2023.binary_precision
+0.7742435996896819
+-
+historical_2023.binary_recall
+0.8643187066974596
+-
+historical_2024.n_rows
+17033
+-
+historical_2024.binary_f1
+0.7937025742855117
+-
+historical_2024.phase3plus_r2
+0.4748898920326481
+-
+historical_2024.macro_f1
+0.5320230224891804
+-
+historical_2024.binary_f2
+0.8180329785989943
+-
+historical_2024.binary_precision
+0.7562162162162163
+-
+historical_2024.binary_recall
+0.8350992389195643
+-
+historical_2025.n_rows
+19677
+-
+historical_2025.binary_f1
+0.7604903347477605
+-
+historical_2025.phase3plus_r2
+0.3740823351892868
+-
+historical_2025.macro_f1
+0.512353429304121
+-
+historical_2025.binary_f2
+0.7905700142135961
+-
+historical_2025.binary_precision
+0.7151407670139659
+-
+historical_2025.binary_recall
+0.8119808708784294
+-
+holdout_2026_01_10.n_rows
+15317
+-
+holdout_2026_01_10.binary_f1
+0.7702391904323828
+-
+holdout_2026_01_10.phase3plus_r2
+0.3777847495326123
+-
+holdout_2026_01_10.macro_f1
+0.40837294122731393
+-
+holdout_2026_01_10.binary_f2
+0.7699204561129247
+-
+holdout_2026_01_10.binary_precision
+0.770771001150748
+-
+holdout_2026_01_10.binary_recall
+0.7697081130774535
+-
+origin.historical_2023.original.n_rows
+2326
+-
+origin.historical_2023.original.binary_f1
+0.7902388369678089
+-
+origin.historical_2023.original.phase3plus_r2
+0.5275023001180217
+-
+origin.historical_2023.original.macro_f1
+0.49008557111145357
+-
+origin.historical_2023.original.binary_f2
+0.8311489733508082
+-
+origin.historical_2023.original.binary_precision
+0.7303262955854126
+-
+origin.historical_2023.original.binary_recall
+0.8608597285067874
+-
+origin.historical_2023.matched_augmented.n_rows
+2326
+-
+origin.historical_2023.matched_augmented.binary_f1
+0.798941798941799
+-
+origin.historical_2023.matched_augmented.phase3plus_r2
+0.48586219181393686
+-
+origin.historical_2023.matched_augmented.macro_f1
+0.5026711397607863
+-
+origin.historical_2023.matched_augmented.binary_f2
+0.8311316600616468
+-
+origin.historical_2023.matched_augmented.binary_precision
+0.7504970178926441
+-
+origin.historical_2023.matched_augmented.binary_recall
+0.8540723981900452
+-
+origin.historical_2023.augmented_total.n_rows
+9015
+-
+origin.historical_2023.augmented_total.binary_f1
+0.8222722159730034
+-
+origin.historical_2023.augmented_total.phase3plus_r2
+0.6010792514627051
+-
+origin.historical_2023.augmented_total.macro_f1
+0.5278737320731222
+-
+origin.historical_2023.augmented_total.binary_f2
+0.8352376599634369
+-
+origin.historical_2023.augmented_total.binary_precision
+0.8015350877192983
+-
+origin.historical_2023.augmented_total.binary_recall
+0.8441108545034642
+-
+origin.historical_2023.delta_matched_augmented_minus_original.binary_f1
+0.008702961973990009
+-
+origin.historical_2023.delta_matched_augmented_minus_original.phase3plus_r2
+-0.04164010830408482
+-
+origin.historical_2023.delta_matched_augmented_minus_original.macro_f1
+0.01258556864933269
+-
+origin.historical_2023.delta_matched_augmented_minus_original.binary_f2
+-0.000017313289161324796
+-
+origin.historical_2023.delta_matched_augmented_minus_original.binary_precision
+0.020170722307231492
+-
+origin.historical_2023.delta_matched_augmented_minus_original.binary_recall
+-0.006787330316742168
+-
+origin.historical_2024.original.n_rows
+4295
+-
+origin.historical_2024.original.binary_f1
+0.7978422810172103
+-
+origin.historical_2024.original.phase3plus_r2
+0.43949787461711276
+-
+origin.historical_2024.original.macro_f1
+0.5105661701389237
+-
+origin.historical_2024.original.binary_f2
+0.8296826584036756
+-
+origin.historical_2024.original.binary_precision
+0.7498792853693867
+-
+origin.historical_2024.original.binary_recall
+0.8523600439077936
+-
+origin.historical_2024.matched_augmented.n_rows
+4295
+-
+origin.historical_2024.matched_augmented.binary_f1
+0.7995910020449898
+-
+origin.historical_2024.matched_augmented.phase3plus_r2
+0.4031859864799381
+-
+origin.historical_2024.matched_augmented.macro_f1
+0.5490495350642107
+-
+origin.historical_2024.matched_augmented.binary_f2
+0.8338664960545958
+-
+origin.historical_2024.matched_augmented.binary_precision
+0.7483253588516746
+-
+origin.historical_2024.matched_augmented.binary_recall
+0.858397365532382
+-
+origin.historical_2024.augmented_total.n_rows
+17033
+-
+origin.historical_2024.augmented_total.binary_f1
+0.7982918149466193
+-
+origin.historical_2024.augmented_total.phase3plus_r2
+0.4772049868371998
+-
+origin.historical_2024.augmented_total.macro_f1
+0.5758057576308073
+-
+origin.historical_2024.augmented_total.binary_f2
+0.821011331361813
+-
+origin.historical_2024.augmented_total.binary_precision
+0.7630970200027215
+-
+origin.historical_2024.augmented_total.binary_recall
+0.8368900164154603
+-
+origin.historical_2024.delta_matched_augmented_minus_original.binary_f1
+0.001748721027779454
+-
+origin.historical_2024.delta_matched_augmented_minus_original.phase3plus_r2
+-0.036311888137174675
+-
+origin.historical_2024.delta_matched_augmented_minus_original.macro_f1
+0.038483364925287034
+-
+origin.historical_2024.delta_matched_augmented_minus_original.binary_f2
+0.00418383765092023
+-
+origin.historical_2024.delta_matched_augmented_minus_original.binary_precision
+-0.0015539265177121342
+-
+origin.historical_2024.delta_matched_augmented_minus_original.binary_recall
+0.006037321624588365
+-
+origin.historical_2025.original.n_rows
+9792
+-
+origin.historical_2025.original.binary_f1
+0.7794506798065517
+-
+origin.historical_2025.original.phase3plus_r2
+0.30764289303413705
+-
+origin.historical_2025.original.macro_f1
+0.487351766596602
+-
+origin.historical_2025.original.binary_f2
+0.8329432873079023
+-
+origin.historical_2025.original.binary_precision
+0.704088361358391
+-
+origin.historical_2025.original.binary_recall
+0.8728796239525853
+-
+origin.historical_2025.matched_augmented.n_rows
+9792
+-
+origin.historical_2025.matched_augmented.binary_f1
+0.7828157918842172
+-
+origin.historical_2025.matched_augmented.phase3plus_r2
+0.3230943700487029
+-
+origin.historical_2025.matched_augmented.macro_f1
+0.4892238946900556
+-
+origin.historical_2025.matched_augmented.binary_f2
+0.834700734489764
+-
+origin.historical_2025.matched_augmented.binary_precision
+0.7093293492695883
+-
+origin.historical_2025.matched_augmented.binary_recall
+0.8732883711424484
+-
+origin.historical_2025.augmented_total.n_rows
+19677
+-
+origin.historical_2025.augmented_total.binary_f1
+0.7639019792648445
+-
+origin.historical_2025.augmented_total.phase3plus_r2
+0.37551125883344694
+-
+origin.historical_2025.augmented_total.macro_f1
+0.5108125504998727
+-
+origin.historical_2025.augmented_total.binary_f2
+0.7943352771107953
+-
+origin.historical_2025.augmented_total.binary_precision
+0.7180509413067553
+-
+origin.historical_2025.augmented_total.binary_recall
+0.8160080543669771
+-
+origin.historical_2025.delta_matched_augmented_minus_original.binary_f1
+0.003365112077665544
+-
+origin.historical_2025.delta_matched_augmented_minus_original.phase3plus_r2
+0.01545147701456584
+-
+origin.historical_2025.delta_matched_augmented_minus_original.macro_f1
+0.0018721280934536066
+-
+origin.historical_2025.delta_matched_augmented_minus_original.binary_f2
+0.00175744718186166
+-
+origin.historical_2025.delta_matched_augmented_minus_original.binary_precision
+0.0052409879111973146
+-
+origin.historical_2025.delta_matched_augmented_minus_original.binary_recall
+0.0004087471898630568
+-
+origin.historical_pooled.original.n_rows
+16413
+-
+origin.historical_pooled.original.binary_f1
+0.784956490642508
+-
+origin.historical_pooled.original.phase3plus_r2
+0.3799182492370463
+-
+origin.historical_pooled.original.macro_f1
+0.48521688673083957
+-
+origin.historical_pooled.original.binary_f2
+0.831964624131396
+-
+origin.historical_pooled.original.binary_precision
+0.7173984094127901
+-
+origin.historical_pooled.original.binary_recall
+0.8665613896565337
+-
+origin.historical_pooled.matched_augmented.n_rows
+16413
+-
+origin.historical_pooled.matched_augmented.binary_f1
+0.7885639093247204
+-
+origin.historical_pooled.matched_augmented.phase3plus_r2
+0.37369613509050936
+-
+origin.historical_pooled.matched_augmented.macro_f1
+0.4980455353479748
+-
+origin.historical_pooled.matched_augmented.binary_f2
+0.8340925194857779
+-
+origin.historical_pooled.matched_augmented.binary_precision
+0.7228070175438597
+-
+origin.historical_pooled.matched_augmented.binary_recall
+0.8674825634951967
+-
+origin.historical_pooled.augmented_total.n_rows
+45725
+-
+origin.historical_pooled.augmented_total.binary_f1
+0.787456080549583
+-
+origin.historical_pooled.augmented_total.phase3plus_r2
+0.46336772817305194
+-
+origin.historical_pooled.augmented_total.macro_f1
+0.5351234821901081
+-
+origin.historical_pooled.augmented_total.binary_f2
+0.8119302267737993
+-
+origin.historical_pooled.augmented_total.binary_precision
+0.7497877864882408
+-
+origin.historical_pooled.augmented_total.binary_recall
+0.8291093810391474
+-
+origin.historical_pooled.delta_matched_augmented_minus_original.binary_f1
+0.003607418682212371
+-
+origin.historical_pooled.delta_matched_augmented_minus_original.phase3plus_r2
+-0.00622211414653695
+-
+origin.historical_pooled.delta_matched_augmented_minus_original.macro_f1
+0.01282864861713523
+-
+origin.historical_pooled.delta_matched_augmented_minus_original.binary_f2
+0.002127895354381848
+-
+origin.historical_pooled.delta_matched_augmented_minus_original.binary_precision
+0.005408608131069581
+-
+origin.historical_pooled.delta_matched_augmented_minus_original.binary_recall
+0.0009211738386629698
+-
+origin.holdout_2026_01_10.original.n_rows
+5842
+-
+origin.holdout_2026_01_10.original.binary_f1
+0.8089490727112157
+-
+origin.holdout_2026_01_10.original.phase3plus_r2
+0.38018928673383956
+-
+origin.holdout_2026_01_10.original.macro_f1
+0.40602360396074866
+-
+origin.holdout_2026_01_10.original.binary_f2
+0.8132583604616751
+-
+origin.holdout_2026_01_10.original.binary_precision
+0.8018675226145316
+-
+origin.holdout_2026_01_10.original.binary_recall
+0.8161568161568161
+-
+origin.holdout_2026_01_10.matched_augmented.n_rows
+5842
+-
+origin.holdout_2026_01_10.matched_augmented.binary_f1
+0.783675799086758
+-
+origin.holdout_2026_01_10.matched_augmented.phase3plus_r2
+0.3036302626632722
+-
+origin.holdout_2026_01_10.matched_augmented.macro_f1
+0.3859759733351636
+-
+origin.holdout_2026_01_10.matched_augmented.binary_f2
+0.8025016073411655
+-
+origin.holdout_2026_01_10.matched_augmented.binary_precision
+0.7541884097775337
+-
+origin.holdout_2026_01_10.matched_augmented.binary_recall
+0.8155628155628155
+-
+origin.holdout_2026_01_10.augmented_total.n_rows
+15317
+-
+origin.holdout_2026_01_10.augmented_total.binary_f1
+0.7632400522222853
+-
+origin.holdout_2026_01_10.augmented_total.phase3plus_r2
+0.3145407977914879
+-
+origin.holdout_2026_01_10.augmented_total.macro_f1
+0.4320799084626244
+-
+origin.holdout_2026_01_10.augmented_total.binary_f2
+0.7688173272648263
+-
+origin.holdout_2026_01_10.augmented_total.binary_precision
+0.754122265844083
+-
+origin.holdout_2026_01_10.augmented_total.binary_recall
+0.7725810158584233
+-
+origin.holdout_2026_01_10.delta_matched_augmented_minus_original.binary_f1
+-0.02527327362445775
+-
+origin.holdout_2026_01_10.delta_matched_augmented_minus_original.phase3plus_r2
+-0.07655902407056736
+-
+origin.holdout_2026_01_10.delta_matched_augmented_minus_original.macro_f1
+-0.020047630625585067
+-
+origin.holdout_2026_01_10.delta_matched_augmented_minus_original.binary_f2
+-0.01075675312050961
+-
+origin.holdout_2026_01_10.delta_matched_augmented_minus_original.binary_precision
+-0.047679112836997994
+-
+origin.holdout_2026_01_10.delta_matched_augmented_minus_original.binary_recall
+-0.0005940005940006099
+-
+report.region.asia.primary.n_rows
+3311
+-
+report.region.asia.primary.binary_f1
+0.9255546425636811
+-
+report.region.asia.primary.phase3plus_r2
+0.23929893833137994
+-
+report.region.asia.primary.binary_f2
+0.9624718025839086
+-
+report.region.asia.primary.binary_precision
+0.8699413036762434
+-
+report.region.asia.primary.binary_recall
+0.9887640449438202
+-
+report.region.east_africa.primary.n_rows
+7610
+-
+report.region.east_africa.primary.binary_f1
+0.7633187772925765
+-
+report.region.east_africa.primary.phase3plus_r2
+0.16027705931687852
+-
+report.region.east_africa.primary.macro_f1
+0.3741192154931083
+-
+report.region.east_africa.primary.binary_f2
+0.8619329388560157
+-
+report.region.east_africa.primary.binary_precision
+0.6410757946210269
+-
+report.region.east_africa.primary.binary_recall
+0.9431654676258993
+-
+report.region.west_africa.primary.n_rows
+19212
+-
+report.region.west_africa.primary.binary_f1
+0.4903786468032278
+-
+report.region.west_africa.primary.phase3plus_r2
+0.3339326259235941
+-
+report.region.west_africa.primary.macro_f1
+0.42716605035735833
+-
+report.region.west_africa.primary.binary_f2
+0.4140461215932914
+-
+report.region.west_africa.primary.binary_precision
+0.7078853046594982
+-
+report.region.west_africa.primary.binary_recall
+0.37511870845204176
+-
+report.region.southern_africa.primary.n_rows
+4797
+-
+report.region.southern_africa.primary.binary_f1
+0.6991704757067886
+-
+report.region.southern_africa.primary.phase3plus_r2
+0.049939390830831765
+-
+report.region.southern_africa.primary.macro_f1
+0.30162671377889305
+-
+report.region.southern_africa.primary.binary_f2
+0.6824641417145879
+-
+report.region.southern_africa.primary.binary_precision
+0.7289092834451112
+-
+report.region.southern_africa.primary.binary_recall
+0.6717631750162655
+-
+report.region.central_africa.primary.n_rows
+9313
+-
+report.region.central_africa.primary.binary_f1
+0.860185690879301
+-
+report.region.central_africa.primary.phase3plus_r2
+0.4427585155141509
+-
+report.region.central_africa.primary.macro_f1
+0.5133589933372023
+-
+report.region.central_africa.primary.binary_f2
+0.8966184674940225
+-
+report.region.central_africa.primary.binary_precision
+0.8056265984654731
+-
+report.region.central_africa.primary.binary_recall
+0.9226713532513181
+-
+report.region.latin_america.primary.n_rows
+1482
+-
+report.region.latin_america.primary.binary_f1
+0.7525065963060686
+-
+report.region.latin_america.primary.phase3plus_r2
+0.5023935500311256
+-
+report.region.latin_america.primary.macro_f1
+0.2964539980187147
+-
+report.region.latin_america.primary.binary_f2
+0.8346991336923437
+-
+report.region.latin_america.primary.binary_precision
+0.6464188576609248
+-
+report.region.latin_america.primary.binary_recall
+0.9002525252525253
+-
+report.region.asia.holdout.n_rows
+835
+-
+report.region.asia.holdout.binary_f1
+0.9321912919343326
+-
+report.region.asia.holdout.phase3plus_r2
+0.34025976501292576
+-
+report.region.asia.holdout.binary_f2
+0.9546783625730995
+-
+report.region.asia.holdout.binary_precision
+0.896978021978022
+-
+report.region.asia.holdout.binary_recall
+0.9702823179791976
+-
+report.region.east_africa.holdout.n_rows
+7455
+-
+report.region.east_africa.holdout.binary_f1
+0.8279754106620981
+-
+report.region.east_africa.holdout.phase3plus_r2
+0.35598505779731526
+-
+report.region.east_africa.holdout.macro_f1
+0.36237682351942535
+-
+report.region.east_africa.holdout.binary_f2
+0.8376493617715428
+-
+report.region.east_africa.holdout.binary_precision
+0.8123393316195373
+-
+report.region.east_africa.holdout.binary_recall
+0.8442252363337444
+-
+report.region.west_africa.holdout.n_rows
+415
+-
+report.region.west_africa.holdout.binary_f1
+0.918918918918919
+-
+report.region.west_africa.holdout.phase3plus_r2
+0.6694667933568045
+-
+report.region.west_africa.holdout.macro_f1
+0.47961950491254257
+-
+report.region.west_africa.holdout.binary_f2
+0.8935611038107752
+-
+report.region.west_africa.holdout.binary_precision
+0.9645390070921985
+-
+report.region.west_africa.holdout.binary_recall
+0.8774193548387097
+-
+report.region.southern_africa.holdout.n_rows
+4532
+-
+report.region.southern_africa.holdout.binary_f1
+0.39733239733239734
+-
+report.region.southern_africa.holdout.phase3plus_r2
+-0.01861075511031607
+-
+report.region.southern_africa.holdout.macro_f1
+0.27037379344718443
+-
+report.region.southern_africa.holdout.binary_f2
+0.37768584011744294
+-
+report.region.southern_africa.holdout.binary_precision
+0.4350499615680246
+-
+report.region.southern_africa.holdout.binary_recall
+0.36563307493540054
+-
+report.region.central_africa.holdout.n_rows
+1823
+-
+report.region.central_africa.holdout.binary_f1
+0.856390977443609
+-
+report.region.central_africa.holdout.phase3plus_r2
+0.19402361583884042
+-
+report.region.central_africa.holdout.macro_f1
+0.35306578038501196
+-
+report.region.central_africa.holdout.binary_f2
+0.8689350015257857
+-
+report.region.central_africa.holdout.binary_precision
+0.8362701908957415
+-
+report.region.central_africa.holdout.binary_recall
+0.8775038520801233
+-
+report.region.latin_america.holdout.n_rows
+257
+-
+report.region.latin_america.holdout.binary_f1
+0.7300380228136882
+-
+report.region.latin_america.holdout.phase3plus_r2
+0.12631745595493582
+-
+report.region.latin_america.holdout.binary_f2
+0.6408544726301736
+-
+report.region.latin_america.holdout.binary_precision
+0.9504950495049505
+-
+report.region.latin_america.holdout.binary_recall
+0.5925925925925926
+-
+report.temporal.all_regions.2023.n_rows
+9015
+-
+report.temporal.all_regions.2023.binary_f1
+0.8168053471559132
+-
+report.temporal.all_regions.2023.phase3plus_r2
+0.6113422543924494
+-
+report.temporal.all_regions.2023.macro_f1
+0.5311735879679591
+-
+report.temporal.all_regions.2023.binary_f2
+0.8446651244146025
+-
+report.temporal.all_regions.2023.binary_precision
+0.7742435996896819
+-
+report.temporal.all_regions.2023.binary_recall
+0.8643187066974596
+-
+report.temporal.all_regions.2024.n_rows
+17033
+-
+report.temporal.all_regions.2024.binary_f1
+0.7937025742855117
+-
+report.temporal.all_regions.2024.phase3plus_r2
+0.4748898920326481
+-
+report.temporal.all_regions.2024.macro_f1
+0.5320230224891804
+-
+report.temporal.all_regions.2024.binary_f2
+0.8180329785989943
+-
+report.temporal.all_regions.2024.binary_precision
+0.7562162162162163
+-
+report.temporal.all_regions.2024.binary_recall
+0.8350992389195643
+-
+report.temporal.all_regions.2025.n_rows
+19677
+-
+report.temporal.all_regions.2025.binary_f1
+0.7604903347477605
+-
+report.temporal.all_regions.2025.phase3plus_r2
+0.3740823351892868
+-
+report.temporal.all_regions.2025.macro_f1
+0.512353429304121
+-
+report.temporal.all_regions.2025.binary_f2
+0.7905700142135961
+-
+report.temporal.all_regions.2025.binary_precision
+0.7151407670139659
+-
+report.temporal.all_regions.2025.binary_recall
+0.8119808708784294
+-
+report.temporal.all_regions.holdout.n_rows
+15317
+-
+report.temporal.all_regions.holdout.binary_f1
+0.7702391904323828
+-
+report.temporal.all_regions.holdout.phase3plus_r2
+0.3777847495326123
+-
+report.temporal.all_regions.holdout.macro_f1
+0.40837294122731393
+-
+report.temporal.all_regions.holdout.binary_f2
+0.7699204561129247
+-
+report.temporal.all_regions.holdout.binary_precision
+0.770771001150748
+-
+report.temporal.all_regions.holdout.binary_recall
+0.7697081130774535
+-
+report.temporal.somalia.2023.n_rows
+696
+-
+report.temporal.somalia.2023.binary_f1
+0.7410138248847926
+-
+report.temporal.somalia.2023.phase3plus_r2
+-0.5575537315203609
+-
+report.temporal.somalia.2023.macro_f1
+0.1929348255943456
+-
+report.temporal.somalia.2023.binary_f2
+0.8682505399568035
+-
+report.temporal.somalia.2023.binary_precision
+0.5955555555555555
+-
+report.temporal.somalia.2023.binary_recall
+0.9804878048780488
+-
+report.temporal.somalia.2024.n_rows
+2130
+-
+report.temporal.somalia.2024.binary_f1
+0.6538324420677362
+-
+report.temporal.somalia.2024.phase3plus_r2
+-0.38275300133149415
+-
+report.temporal.somalia.2024.macro_f1
+0.29248511006700595
+-
+report.temporal.somalia.2024.binary_f2
+0.8155460690145856
+-
+report.temporal.somalia.2024.binary_precision
+0.49142550911039656
+-
+report.temporal.somalia.2024.binary_recall
+0.9765708200212992
+-
+report.temporal.somalia.2025.n_rows
+2000
+-
+report.temporal.somalia.2025.binary_f1
+0.782991202346041
+-
+report.temporal.somalia.2025.phase3plus_r2
+-0.1140026572542514
+-
+report.temporal.somalia.2025.macro_f1
+0.3335760380009107
+-
+report.temporal.somalia.2025.binary_f2
+0.8702737940026075
+-
+report.temporal.somalia.2025.binary_precision
+0.6708542713567839
+-
+report.temporal.somalia.2025.binary_recall
+0.9401408450704225
+-
+report.temporal.somalia.holdout.n_rows
+5286
+-
+report.temporal.somalia.holdout.binary_f1
+0.7877385772122614
+-
+report.temporal.somalia.holdout.phase3plus_r2
+0.23739893840809367
+-
+report.temporal.somalia.holdout.macro_f1
+0.30602727675048613
+-
+report.temporal.somalia.holdout.binary_f2
+0.8125522014079466
+-
+report.temporal.somalia.holdout.binary_precision
+0.7495872317006054
+-
+report.temporal.somalia.holdout.binary_recall
+0.829981718464351
+-
+scored_rows
+61042
+-
+scalar_fits
+16
+-
+fit_rows
+104898
+-
+dataset.modeling_panel_index.rows
+147268
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42
+Parameters (21)
+Parameter
+Value
+b2_ridge_penalty
+0.01
+calibration
+none (identity): no B2 or provider fits by design; the backbone quartet is projected (bounded, decreasing) and decoded with inclusive q_k >= 0.20
+early_stopping
+none
+half_life_months
+24
+n_threads
+16
+other_colsample_bytree
+0.7269756250210765
+other_learning_rate
+0.027538515460387113
+other_max_depth
+5
+other_min_child_weight
+23.072391682325758
+other_n_estimators
+398
+other_subsample
+0.6716682260833845
+parameter_groups
+{"other": ["q2", "q4", "q5"], "q3": ["q3"]}
+q3_colsample_bytree
+0.4327978267528363
+q3_learning_rate
+0.08536359461483287
+q3_max_depth
+4
+q3_min_child_weight
+18.162407873411354
+q3_n_estimators
+346
+q3_subsample
+0.8118788081985475
+seed
+42
+untuned
+{"other": {"gamma": 0.0, "reg_alpha": 0.0, "reg_lambda": 1.0}, "q3": {"gamma": 0.1, "reg_alpha": 0.0, "reg_lambda": 1.0}}
+xgb_fixed
+{"booster": "gbtree", "device": "cpu", "n_jobs": 16, "objective": "reg:squarederror", "random_state": 42, "scale_pos_weight": 1.0, "tree_method": "hist"}
+Logged models (1)
+Model attributes
+Dataset:
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+Parameters
+Type
+Step
+Model name
+Status
+Created
+Registered models
+Dataset
+dataset.modeling_panel_index.rows
+n_threads
+b2_ridge_penalty
+calibration
+early_stopping
+half_life_months
+other_colsample_bytree
+other_learning_rate
+other_max_depth
+other_min_child_weight
+other_n_estimators
+Output
+0
+#8a63bf
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month | seed 42
+Ready
+23 minutes ago
+IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+147268
+16
+0.01
+none (identity): no B2 or provider fits by design; the backbone quartet is projected (bounded, decreasing) and decoded with inclusive q_k >= 0.20
+none
+24
+0.7269756250210765
+0.027538515460387113
+5
+23.072391682325758
+398
+About this run
+Created at
+10/30/2026, 02:29:51 PM
+Created by
+—
+Experiment ID
+2
+Status
+Finished
+Run ID
+eb33b087fe314237ad1c6432bcfe140f
+Duration
+51.8s
+Source
+—
+Registered prompts
+—
+Datasets
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+Tags
+publication.identity
+: 83edb08ade67b414daa4c4fe1e380e3564449429fea64b1177a9da3e182a0a4b
+package.json_sha256
+: 4da75633842dd9daa3ce9ea7142301eaaf02fa5efe35f2ee626ab4de58e793a6
+recipe.sha256
+: a1b9dd3f91597021d0d0e9e138b63ffbf1a2180f506c19aaa2ffd3dc8a068703
+trial_status
+: succeeded
+fit_status
+: succeeded
+vertex.CLOUD_ML_JOB_ID
+: 2596031143128072192
+source_commit
+: 439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f
+image_digest
+: sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197
+project
+: IPCCH
+family
+: ipcch_validity_pooled
+family_title
+: Original-label fit ablation (GOSIF v3 + CH validity 20261028)
+arm
+: validity_augmented_idp_202610_acledagg_lag1_uncal_hpt
+arm_role
+: candidate
+model_type
+: XGBoost regressor quartet (no calibration), horizon-specific tuned parameters
+feature_set
+: compact282+ae128+oracle12+acledagg114_lag1+idp_local3
+target
+: cumulative phase shares q2-q5, q_k = sum(P_k..P5) / sum(P1..P5) from raw phase shares; QC: P1-P4 observed, a truly missing P5 = 0, every share finite in [0,1], exact total in [0.90,1.10], estimated_population ignored; phase = greatest k with q_k >= 0.20 (else 1); crisis = phase >= 3; evaluation rows include IPC validity copies (inherited: an existing IPC label copied to blank months of its analysis validity period) and Cadre Harmonise validity copies (new in this refit: an eligible current CH label copied to blank area-months of its reference window, source and destination in the same country), each counted once; fitting labels exclude every validity copy (final label_kind == original only), scoring keeps all rows
+role
+: Original-label fit ablation of the CH-final tuned aggregated-ACLED refit: validity copies removed from the fitting labels only, full inherited cohort scored (research comparison)
+scope
+: global pooled (all 53 original IPCCH countries), annual refits
+n_features
+: 539
+lead_months
+: 06
+status
+: research_not_accepted
+card.version
+: model-card-v1
+gcp.project
+: food-crisis-modeling-enso
+card.feature_list.cloud
+: features=runs:/eb33b087fe314237ad1c6432bcfe140f/metadata/feature_order.csv#name
+card.full
+: runs:/eb33b087fe314237ad1c6432bcfe140f/model-card.md
+baseline.run_id
+: 00d4e94c824343bf86a0c2b79d5b9ed0
+baseline.model_id
+: m-46beb4c7d5674c1abd874b3bd90c1f87
+baseline.registered_model
+: IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+baseline.model_version
+: 1
+baseline.package_json_sha256
+: 813b343c335d27065a572d0129554c53be7f1d29854d073daae6aeede1b3ab8f
+baseline.arm
+: validity_augmented_idp_202610_acledagg_lag1_uncal_hpt
+provenance.acled_agg_features
+: 114 = 18 x {value,ma3,ma6,ma12,sd12} + 6 event series x {share12,months_since,longest_run12,any12}, all at A = T - H - 1
+provenance.acled_agg_monthly
+: acled_agg_monthly.csv sha256 539746f5f6bc53299cc61c769078bde6d344aea6fcef2413fd69de39915e1f20 (2010-01..2026-09; export 2026-10-20)
+provenance.acled_removed_features
+: event_count_violence__value_at_origin, event_count_violence__ma3_at_origin, event_count_violence__ma6_at_origin, event_count_violence__ma12_at_origin, event_count_violence__sd12_at_origin, sum_fatalities_violence__value_at_origin, sum_fatalities_violence__ma3_at_origin, sum_fatalities_violence__ma6_at_origin, sum_fatalities_violence__ma12_at_origin, sum_fatalities_violence__sd12_at_origin, event_count_violence__nonzero_stress__share12_at_origin, event_count_violence__nonzero_stress__months_since_at_origin, event_count_violence__nonzero_stress__longest_run12_at_origin, event_count_violence__nonzero_stress__any12_at_origin
+provenance.ch_final_run
+: 00d4e94c824343bf86a0c2b79d5b9ed0 (recipe sha256 29c4418d78aa4ade13f2b4832eab1f84d0ec2b26ec9f9c52eed3f6ef32e228e2; package.json sha256 813b343c335d27065a572d0129554c53be7f1d29854d073daae6aeede1b3ab8f)
+provenance.ch_links
+: ch_links.csv.gz sha256 ac4ad6aaa8dc9e0efad6a7ba95456c536355d66ad0f3fa4225b811307aeb5153
+provenance.ch_routes
+: legacy gdf_ch.geojson + may25 current records (2014-2024); dec25 2025 nearest-centroid join (2025-01..2026-04); mars26 refresh lineage (2026-05)
+provenance.ch_time_convention
+: CH copies: nominal source and availability = reference-window start month end; retrospective convention, not publication dates
+provenance.code_overlay
+: overlay manifest sha256 e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834; modules research_cloud/training/dataset_input.py sha256 2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4 (origin DatasetInput name, fit-subset tags and saved-membership check; publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path); image us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197 (build 22176002-a56f-47df-ab67-ede2ba8c68da; source task/ipcch-validity-origin-ablation 868db9f51ffd6c45a7673cbaf10111b5dd46adde) = base training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939 (control-plane 439a488) + these three modules
+provenance.data_version
+: gosif-v3-input-20261027+ch-validity-20261028
+provenance.data_vintage
+: 2026-10-19
+provenance.fit_labels
+: original_only: backbone fitting labels = final label_kind == original rows of each CH-final fitting pool; copies scored, never fitted
+provenance.gpp_extraction_sha256
+: 11aa7f744c68d53de3dd1ceac85db9bf7e9e78a3327c6209389385d11241ca81
+provenance.gpp_formal_run
+: ac709d280d8a435bad7fb80266c051c7
+provenance.gpp_source
+: GOSIF-GPP v3 monthly Mean/SD (UNH Global Ecology), 2010-01..2025-12, fills 65534/65535 masked, scale 0.01, g C m-2 month-1, ArcGIS 10.8 independent cell-centre zonal means on the source grid
+provenance.hpt_freeze_index_sha256
+: d85582b3ca1d6364e9021957ea4695d75905aafcb435ac9c7819eccdc7ef424f
+provenance.hpt_freeze_sha256
+: fe6be936989d045d2d020870700d24fa2ceca4e33d68d5ec96acd0fd3f57137c
+provenance.hpt_search
+: Vertex HyperparameterTuningJob per horizon, ALGORITHM_UNSPECIFIED, objective selection.binary_f1, at most 40 trials, 2 parallel, maxFailedTrialCount 3; winner by binary F1 > phase3plus R2 > macro F1 > binary F2 (unrounded); fixed quartet eligible
+provenance.hpt_selection_exclusions
+: CF original 2025-09 (family 7364340) and MZ original 2025-10 (31481589) removed from selection scoring, fitting labels and histories; restored in the final refit
+provenance.hpt_winner
+: search trial 18
+provenance.idp_features
+: idp_ipcch_ffill6_current, idp_ipcch_ffill6_ma3, idp_ipcch_ffill6_ma6
+provenance.idp_source_file
+: idp_ipcch_monthly.parquet
+provenance.idp_source_sha256
+: 8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703
+provenance.idp_time_convention
+: retrospective reporting-month experiment: local IDP assumed available at report-month end (contemporaneous at H0); x(O), strict mean x(O-2..O), strict mean x(O-5..O); never after O; historical release dates/revisions not verified
+provenance.input_manifest
+: task-scoped cloud manifest of task 10-30 (roles, sha256 and object generations in the run's trial record and DatasetInput): every role and generation equals the CH-final run's uploaded manifest (task 10-28) except baseline_predictions = the CH-final run 00d4e94c824343bf86a0c2b79d5b9ed0's retained predictions (copied to the task store)
+provenance.interim_panel
+: IPCCH_202610_interim_acledagg_gosifv3_20261027.csv sha256 b2d5d2ce6bd6a78da7caac2c070fcc2ced55aa4c4e7bd5725df0ce514e902b62 (the original interim 52b0a48a6af5... with GPP_mean/GPP_std replaced; every other byte identical)
+provenance.ipc_snapshot
+: areas_combined_2026-10-19.geojson sha256 200f5dcaad88e18babbc9a4882a2ca920231702f6d5bcb11969af82742fa5ee6; analyses_combined_2026-10-19.json sha256 1c7dfb786a8f82476542437445931fc5ab1ffdb5329aadc570616357f449b4b6
+provenance.labels_2026_05_10
+: raw panel: 1,768 IPC originals + 150 CH copies written; IPC validity copies regenerated in the job from the 2026-10-19 snapshot
+provenance.origin_ablation
+: gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030; task 10-30 original-label fit ablation (fit membership only)
+provenance.original_formal_run
+: 4347bbeb875e4832bc83a397ef6eb52e (recipe sha256 5d0cb83c39393bfcab9545cbd05f1d3e7a5aa0f69eddd4201098da70b4e86376)
+provenance.raw_panel
+: IPCCH_202610_completed.csv sha256 09002869ecc25667d78d972185c8ea24340eabc4d6e1f8a6d560ebda214e1373
+provenance.region_mapping
+: area_id_country_region_mapping.csv sha256 18ab5099ce2d1154fb5686183ee399124e18427cc1594923f7abe2769da1611d
+provenance.report_region_mapping
+: area_id_report_region_mapping_20261027.csv sha256 5d1fd7f8b0dbf5e43e9644280bab7e521da6b9897531cba4fc1479f8deef5676 (report only)
+provenance.selected_acled_baseline
+: validity_augmented_idp_202610_acledagg_lag1_uncal H06: MLflow run 5d6f32fdaaa344d389286324d0d0f778
+provenance.wfp_price_semantics
+: WFP_Price redefined 2026-10-19 (100 + local-currency yoy % of HDX staples, whole history); WFP_Price__price_shock_stress keeps its yoy > 10% rule on that yoy index
+seed
+: 42
+training_window
+: annual refit at each context cutoff; every eligible ORIGINAL label (final label_kind == original) up to the cutoff, validity copies not fitted; retained rows keep their weights, which halve every 24 months
+record_kind
+: dashboard_row
+aggregation
+: single_run
+catalog
+: trained_research
+inference
+: downloadable package: load(package).predict(keys[admin_code,target_ord,context], X)
+features
+: compact282+ae128+oracle12+acledagg114_lag1+idp_local3
+period.holdout
+: 2026-01..2026-10
+period.primary
+: 2023-07..2025-12
+period.selection
+: 2023-07..2025-12 without the CF 2025-09 / MZ 2025-10 report families
+package.uri
+: models:/m-daad991238a5430eb504eaacd4046d36
+model_id
+: m-daad991238a5430eb504eaacd4046d36
+registered_model
+: IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+model_version
+: 1
+publication.status
+: complete
+Registered models
+IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+v1
++1
+MLflow Assistant

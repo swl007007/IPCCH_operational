@@ -1,0 +1,97 @@
+assert h00_main_2023: cutoff 2022-12 fitting targets 2021-01..2022-09 (24 rows, expanding, halving24, identity) scored 48 keys ebad383e1cd64401 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2024: cutoff 2023-12 fitting targets 2021-01..2023-09 (36 rows, expanding, halving24, identity) scored 48 keys 24b042d4b2cd69cd checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2025: cutoff 2024-12 fitting targets 2021-01..2024-09 (48 rows, expanding, halving24, identity) scored 48 keys 98720057664eb8c9 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_supp_2026: cutoff 2025-12 fitting targets 2021-01..2025-09 (60 rows, expanding, halving24, identity) scored 40 keys d62e73dc885612f5 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+[      0s] h00_main_2023: backbone train 24 scored 48 calibration identity_no_support (0 rows)
+[      0s] h00_main_2024: backbone train 36 scored 48 calibration identity_no_support (0 rows)
+[      0s] h00_main_2025: backbone train 48 scored 48 calibration identity_no_support (0 rows)
+[      0s] h00_supp_2026: backbone train 60 scored 40 calibration identity_no_support (0 rows)
+assert h00_main_2023: cutoff 2022-12 fitting targets 2021-01..2022-09 (24 rows, expanding, halving24, identity) scored 48 keys ebad383e1cd64401 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2024: cutoff 2023-12 fitting targets 2021-01..2023-09 (36 rows, expanding, halving24, identity) scored 48 keys 24b042d4b2cd69cd checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2025: cutoff 2024-12 fitting targets 2021-01..2024-09 (48 rows, expanding, halving24, identity) scored 48 keys 98720057664eb8c9 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_supp_2026: cutoff 2025-12 fitting targets 2021-01..2025-09 (60 rows, expanding, halving24, identity) scored 40 keys d62e73dc885612f5 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+[      0s] h00_main_2023: backbone train 24 scored 48 calibration identity_no_support (0 rows)
+[      0s] h00_main_2024: backbone train 36 scored 48 calibration identity_no_support (0 rows)
+[      0s] h00_main_2025: backbone train 48 scored 48 calibration identity_no_support (0 rows)
+[      0s] h00_supp_2026: backbone train 60 scored 40 calibration identity_no_support (0 rows)
+assert h00_main_2023: cutoff 2022-12 fitting targets 2021-01..2022-09 (24 rows, expanding, halving24, identity) scored 48 keys ebad383e1cd64401 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2024: cutoff 2023-12 fitting targets 2021-01..2023-09 (36 rows, expanding, halving24, identity) scored 48 keys 24b042d4b2cd69cd checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2025: cutoff 2024-12 fitting targets 2021-01..2024-09 (48 rows, expanding, halving24, identity) scored 48 keys 98720057664eb8c9 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_supp_2026: cutoff 2025-12 fitting targets 2021-01..2025-09 (60 rows, expanding, halving24, identity) scored 40 keys d62e73dc885612f5 checks passed: fitting_labels_original_only, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+[      0s] h00_main_2023: backbone train 24 scored 48 calibration identity_no_support (0 rows)
+[      0s] h00_main_2024: backbone train 36 scored 48 calibration identity_no_support (0 rows)
+[      0s] h00_main_2025: backbone train 48 scored 48 calibration identity_no_support (0 rows)
+[      0s] h00_supp_2026: backbone train 60 scored 40 calibration identity_no_support (0 rows)
+         context       fit      fit_block fit_cutoff  train_rows  excluded_eligible_rows  predicted_rows  scalar_fits
+0  h00_main_2023  backbone  h00_main_2023    2022-12          24                       0              48            4
+1  h00_main_2024  backbone  h00_main_2024    2023-12          36                       0              48            4
+2  h00_main_2025  backbone  h00_main_2025    2024-12          48                       0              48            4
+3  h00_supp_2026  backbone  h00_supp_2026    2025-12          60                       0              40            4
+{
+ "digests": {
+  "rows": 280,
+  "arm_rows_csv_sha256": "fdac1c6da8cbe039fe454c37a3add23f36d482b0a98cf14f7d805f0f3aac86a5",
+  "targets_sha256": "128f6039875cf3d0651d2186ae9d72a3d1105d0b549ee3bc934e1f4d6d3f35f6",
+  "phase_sha256": "46127976335c0c42d0498c7519027d4d25a75a1e48eac611bcb0be34f02c8f21",
+  "observations_sha256": "f8a2f6e2c2d3c2ffa30de61450eae5f43b6d6bd8f8e9e0ac7fe10a38a4a37d53",
+  "memberships_sha256": "78ff281480c6ac1b8c7d931400a2559c4ef6dc5e104a04bc46a560f7cf26de3c",
+  "history_overlays_sha256": "099c219633bfef145447385b3eb6f479a001b23bfcdcb2d4b1b884faec13abc8",
+  "calibration_keys_sha256": "ab7f32ad2cee99abd60ccae5c6eb5f5fa99b3303694274be73ffef9f9d902485",
+  "schedule_sha256": "42d67fae12da415c56b2225e58929ba1d1250f34706bbdd1ebc59f4eb4d367e4",
+  "fit_keys_sha256": "2305c0dc4691dcde9b1d815498a3fb50ee150b6db91a0fdddb61c709dbbe4a61",
+  "feature_prefix_order_sha256": "bea3aa4bf34c91b8d89ea920dad0e9f95a429e7bf6d1d36e8de3ef0b26bad34d",
+  "feature_prefix_X_sha256": "4fbc6b6e17194d87fdef7735a9d80a9c2cc80ce710458582ef9bf4cf1b023335",
+  "feature_prefix_nan_mask_sha256": "f9985b419f70bc277bf21fe7ace104256b4581942ba9a5cdd492c77bb238d2ba"
+ },
+ "differing": []
+}
+         context       fit      fit_block fit_cutoff  train_rows  excluded_eligible_rows  predicted_rows  scalar_fits
+0  h00_main_2023  backbone  h00_main_2023    2022-12          24                       0              48            4
+1  h00_main_2024  backbone  h00_main_2024    2023-12          36                       0              48            4
+2  h00_main_2025  backbone  h00_main_2025    2024-12          48                       0              48            4
+3  h00_supp_2026  backbone  h00_supp_2026    2025-12          60                       0              40            4
+{
+ "digests": {
+  "rows": 280,
+  "arm_rows_csv_sha256": "fdac1c6da8cbe039fe454c37a3add23f36d482b0a98cf14f7d805f0f3aac86a5",
+  "targets_sha256": "128f6039875cf3d0651d2186ae9d72a3d1105d0b549ee3bc934e1f4d6d3f35f6",
+  "phase_sha256": "46127976335c0c42d0498c7519027d4d25a75a1e48eac611bcb0be34f02c8f21",
+  "observations_sha256": "f8a2f6e2c2d3c2ffa30de61450eae5f43b6d6bd8f8e9e0ac7fe10a38a4a37d53",
+  "memberships_sha256": "78ff281480c6ac1b8c7d931400a2559c4ef6dc5e104a04bc46a560f7cf26de3c",
+  "history_overlays_sha256": "099c219633bfef145447385b3eb6f479a001b23bfcdcb2d4b1b884faec13abc8",
+  "calibration_keys_sha256": "ab7f32ad2cee99abd60ccae5c6eb5f5fa99b3303694274be73ffef9f9d902485",
+  "schedule_sha256": "42d67fae12da415c56b2225e58929ba1d1250f34706bbdd1ebc59f4eb4d367e4",
+  "fit_keys_sha256": "2305c0dc4691dcde9b1d815498a3fb50ee150b6db91a0fdddb61c709dbbe4a61",
+  "feature_prefix_order_sha256": "bea3aa4bf34c91b8d89ea920dad0e9f95a429e7bf6d1d36e8de3ef0b26bad34d",
+  "feature_prefix_X_sha256": "4fbc6b6e17194d87fdef7735a9d80a9c2cc80ce710458582ef9bf4cf1b023335",
+  "feature_prefix_nan_mask_sha256": "f9985b419f70bc277bf21fe7ace104256b4581942ba9a5cdd492c77bb238d2ba"
+ },
+ "differing": [
+  "origin:fit_keys_sha256"
+ ]
+}
+         context       fit      fit_block fit_cutoff  train_rows  excluded_eligible_rows  predicted_rows  scalar_fits
+0  h00_main_2023  backbone  h00_main_2023    2022-12          24                       0              48            4
+1  h00_main_2024  backbone  h00_main_2024    2023-12          36                       0              48            4
+2  h00_main_2025  backbone  h00_main_2025    2024-12          48                       0              48            4
+3  h00_supp_2026  backbone  h00_supp_2026    2025-12          60                       0              40            4
+{
+ "digests": {
+  "rows": 280,
+  "arm_rows_csv_sha256": "fdac1c6da8cbe039fe454c37a3add23f36d482b0a98cf14f7d805f0f3aac86a5",
+  "targets_sha256": "128f6039875cf3d0651d2186ae9d72a3d1105d0b549ee3bc934e1f4d6d3f35f6",
+  "phase_sha256": "46127976335c0c42d0498c7519027d4d25a75a1e48eac611bcb0be34f02c8f21",
+  "observations_sha256": "f8a2f6e2c2d3c2ffa30de61450eae5f43b6d6bd8f8e9e0ac7fe10a38a4a37d53",
+  "memberships_sha256": "78ff281480c6ac1b8c7d931400a2559c4ef6dc5e104a04bc46a560f7cf26de3c",
+  "history_overlays_sha256": "099c219633bfef145447385b3eb6f479a001b23bfcdcb2d4b1b884faec13abc8",
+  "calibration_keys_sha256": "ab7f32ad2cee99abd60ccae5c6eb5f5fa99b3303694274be73ffef9f9d902485",
+  "schedule_sha256": "42d67fae12da415c56b2225e58929ba1d1250f34706bbdd1ebc59f4eb4d367e4",
+  "fit_keys_sha256": "2305c0dc4691dcde9b1d815498a3fb50ee150b6db91a0fdddb61c709dbbe4a61",
+  "feature_prefix_order_sha256": "bea3aa4bf34c91b8d89ea920dad0e9f95a429e7bf6d1d36e8de3ef0b26bad34d",
+  "feature_prefix_X_sha256": "4fbc6b6e17194d87fdef7735a9d80a9c2cc80ce710458582ef9bf4cf1b023335",
+  "feature_prefix_nan_mask_sha256": "f9985b419f70bc277bf21fe7ace104256b4581942ba9a5cdd492c77bb238d2ba"
+ },
+ "differing": [
+  "baseline:fit_keys_sha256"
+ ]
+}

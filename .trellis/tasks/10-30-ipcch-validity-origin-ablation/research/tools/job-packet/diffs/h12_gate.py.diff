@@ -1,0 +1,59 @@
+1c1
+< """H12 gate of the CH job packet (task 10-28; the task 10-27 gate with only paths/operations changed and bytecode off).
+---
+> """H12 gate of the origin-ablation job packet (task 10-30; the task 10-28 r2 gate with only paths/operations/labels changed).
+13c13
+<   cd $W/control-plane && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B h12_gate.py [--selftest]
+---
+>   cd $W/control-plane-origin-ablation && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B h12_gate.py [--selftest]
+18,19c18,20
+< D = f"{W}/.trellis/tasks/10-28-ipcch-ch-validity-refits/research/cp4"
+< P = f"{W}/staging/ipcch-ch-validity-20261028/job-packet-ch"
+---
+> D = "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-30-ipcch-validity-origin-ablation/research/cp3/jobs"
+> P = f"{W}/staging/ipcch-origin-ablation-20261030/job-packet"
+> CP = f"{W}/control-plane-origin-ablation"
+22c23
+< OP12 = "ipcch-ch-validity-r1-formal-h12"
+---
+> OP12 = "ipcch-origin-ablation-r1-formal-h12"
+25c26
+< TASK_LABEL = "ipcch-ch-validity-refits"
+---
+> TASK_LABEL = "ipcch-validity-origin-ablation"
+42c43
+<     out = f"{W}/ledger/vertex/ipcch-ch-validity-r1-formal-h{h}"
+---
+>     out = f"{W}/ledger/vertex/ipcch-origin-ablation-r1-formal-h{h}"
+45c46
+<     status, resource, _, _ = vs.current(L.connect(vs.LEDGER), f"ipcch-ch-validity-r1-formal-h{h}")
+---
+>     status, resource, _, _ = vs.current(L.connect(vs.LEDGER), f"ipcch-origin-ablation-r1-formal-h{h}")
+73c74
+<                     or labels.get("horizon") != f"h{h}" or job.get("displayName") != f"ipcch-ch-validity-formal-h{h}":
+---
+>                     or labels.get("horizon") != f"h{h}" or job.get("displayName") != f"ipcch-origin-ablation-formal-h{h}":
+96c97
+<         j = {"name": f"projects/1/locations/us-central1/customJobs/{h}", "displayName": f"ipcch-ch-validity-formal-h{h}",
+---
+>         j = {"name": f"projects/1/locations/us-central1/customJobs/{h}", "displayName": f"ipcch-origin-ablation-formal-h{h}",
+126c127
+<         f = f"{W}/ledger/vertex/ipcch-ch-validity-r1-formal-h{h}/final.json"
+---
+>         f = f"{W}/ledger/vertex/ipcch-origin-ablation-r1-formal-h{h}/final.json"
+156c157
+<     env = {**os.environ, "PYTHONPATH": f"{W}/control-plane", "PYTHONDONTWRITEBYTECODE": "1"}
+---
+>     env = {**os.environ, "PYTHONPATH": CP, "PYTHONDONTWRITEBYTECODE": "1"}
+158c159
+<                        cwd=f"{W}/control-plane", env=env, capture_output=True, text=True)
+---
+>                        cwd=CP, env=env, capture_output=True, text=True)
+171c172
+<                            cwd=f"{W}/control-plane", env=env, stdout=f, stderr=subprocess.STDOUT)
+---
+>                            cwd=CP, env=env, stdout=f, stderr=subprocess.STDOUT)
+178c179
+<                             "--out", f"{W}/ledger/vertex/{OP12}", "--every", "120"], cwd=f"{W}/control-plane", env=env, stdout=f, stderr=subprocess.STDOUT)
+---
+>                             "--out", f"{W}/ledger/vertex/{OP12}", "--every", "120"], cwd=CP, env=env, stdout=f, stderr=subprocess.STDOUT)

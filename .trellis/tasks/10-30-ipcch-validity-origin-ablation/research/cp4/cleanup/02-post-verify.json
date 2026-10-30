@@ -1,0 +1,61 @@
+{
+ "kind": "post-cleanup verification (local + read-only GCS listing)",
+ "horizons": {
+  "00": {
+   "removed": 12,
+   "gcs_kept_objects_unchanged": 78,
+   "gcs_ok": true,
+   "gcs_new_objects": [],
+   "local_missing_or_resized": [],
+   "local_removed_still_present": [],
+   "holdout_package_verify_problems": [],
+   "annual_evidence_kept": true,
+   "annual_weights_dir_remaining": [
+    "weights/h00_main_2023/calibration.json",
+    "weights/h00_main_2023/record.json",
+    "weights/h00_main_2024/calibration.json",
+    "weights/h00_main_2024/record.json",
+    "weights/h00_main_2025/calibration.json",
+    "weights/h00_main_2025/record.json"
+   ],
+   "ok": true
+  },
+  "06": {
+   "removed": 12,
+   "gcs_kept_objects_unchanged": 78,
+   "gcs_ok": true,
+   "gcs_new_objects": [],
+   "local_missing_or_resized": [],
+   "local_removed_still_present": [],
+   "holdout_package_verify_problems": [],
+   "annual_evidence_kept": true,
+   "annual_weights_dir_remaining": [
+    "weights/h06_main_2023/calibration.json",
+    "weights/h06_main_2023/record.json",
+    "weights/h06_main_2024/calibration.json",
+    "weights/h06_main_2024/record.json",
+    "weights/h06_main_2025/calibration.json",
+    "weights/h06_main_2025/record.json"
+   ],
+   "ok": true
+  },
+  "12": {
+   "removed": 8,
+   "gcs_kept_objects_unchanged": 74,
+   "gcs_ok": true,
+   "gcs_new_objects": [],
+   "local_missing_or_resized": [],
+   "local_removed_still_present": [],
+   "holdout_package_verify_problems": [],
+   "annual_evidence_kept": true,
+   "annual_weights_dir_remaining": [
+    "weights/h12_main_2024/calibration.json",
+    "weights/h12_main_2024/record.json",
+    "weights/h12_main_2025/calibration.json",
+    "weights/h12_main_2025/record.json"
+   ],
+   "ok": true
+  }
+ },
+ "ok": true
+}

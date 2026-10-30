@@ -1,0 +1,88 @@
+{
+ "files": {
+  "analyses": {
+   "sha256": "1c7dfb786a8f82476542437445931fc5ab1ffdb5329aadc570616357f449b4b6",
+   "size": 110194,
+   "uri": "/home/swl007007/projects/food-crisis-research/staging/ipcch-update-202610/sources/ipcch_labels/raw/ipc_api_2026-10-19/analyses_combined_2026-10-19.json"
+  },
+  "areas": {
+   "sha256": "200f5dcaad88e18babbc9a4882a2ca920231702f6d5bcb11969af82742fa5ee6",
+   "size": 288951862,
+   "uri": "/home/swl007007/projects/food-crisis-research/staging/ipcch-update-202610/sources/ipcch_labels/raw/ipc_api_2026-10-19/areas_combined_2026-10-19.geojson"
+  },
+  "baseline_predictions": {
+   "sha256": "8c1c2c64e8144011555ec6a3dd4348bffd9d2b41069b568687065e6dd5cc3f54",
+   "uri": "/home/swl007007/projects/food-crisis-research/scratch/ch-validity-20261028/harvest/formal-h12/trial-0/predictions.csv.gz"
+  },
+  "ch_links": {
+   "sha256": "ac4ad6aaa8dc9e0efad6a7ba95456c536355d66ad0f3fa4225b811307aeb5153",
+   "uri": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/work/linkage-v2/ch_links.csv.gz"
+  },
+  "climate_monthly": {
+   "sha256": "8082b72ea5fa5c30a7b975b89c1fbbb4530f27a9ce6c5ba4d0e1a4f923320c89",
+   "size": 1084506970,
+   "uri": "/home/swl007007/ipcch-alphaearth-runs/p1-formal-d30-20261014/sources/climate_monthly__climate_monthly_2015_2026_MODELING_READY.csv"
+  },
+  "climate_seasonal": {
+   "sha256": "f024a66c8979fb4a8c66fba1f04e7e69355fa75b499793d29001a146d8c2958e",
+   "size": 186792349,
+   "uri": "/home/swl007007/ipcch-alphaearth-runs/p1-formal-d30-20261014/sources/climate_seasonal__climate_2015_2026_MODELING_READY.csv"
+  },
+  "compact_manifest": {
+   "sha256": "456360536a3929e1571d96ba9f16e2f0de54bc1b20019f797bbe62c0c89732ca",
+   "size": 138760,
+   "uri": "/home/swl007007/ipcch-alphaearth-runs/p1-formal-d30-20261014/sources/compact_manifest__compact_climate_weather_oracle_v1_manifest.json"
+  },
+  "country_lookup": {
+   "sha256": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90",
+   "size": 214996,
+   "uri": "/home/swl007007/ipcch-alphaearth-runs/p1-formal-d30-20261014/sources/country_lookup__country_area_id_lookup.csv"
+  },
+  "descriptors": {
+   "sha256": "362c58b0f3396fd8ecc3bd42fe0257f979dd371780f70af6edd3a59f633e26d4",
+   "size": 6527715,
+   "uri": "/home/swl007007/ipcch-alphaearth-runs/p1-formal-d30-20261014/descriptors/descriptor_table.csv.gz"
+  },
+  "freeze": {
+   "sha256": "b094e05934931eb1cc0bf2f403b7b2898c1b76c0c33401ecf093ed49b6c5fb90",
+   "uri": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-27-ipcch-gosif2025-retrain/research/cp3/frozen-objects/freeze-h12.json"
+  },
+  "freeze_index": {
+   "sha256": "d85582b3ca1d6364e9021957ea4695d75905aafcb435ac9c7819eccdc7ef424f",
+   "uri": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-27-ipcch-gosif2025-retrain/research/cp3/frozen-objects/index.json"
+  },
+  "idp_admin0_monthly": {
+   "sha256": "a1ebb82a8e14fc0fb8103d6086217b93da351fc4a8f7fcfbe9eaa44a9df602e1",
+   "size": 193702,
+   "uri": "/home/swl007007/ipcch-alphaearth-runs/p1-formal-d30-20261014/sources/idp_admin0_monthly__idp_admin0_monthly.csv"
+  },
+  "idp_ipcch_monthly": {
+   "sha256": "8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703",
+   "size": 3173840,
+   "uri": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/Processed_Dataset/IDP_DTM/output/idp_ipcch_monthly.parquet"
+  },
+  "interim": {
+   "sha256": "b2d5d2ce6bd6a78da7caac2c070fcc2ced55aa4c4e7bd5725df0ce514e902b62",
+   "uri": "/home/swl007007/projects/food-crisis-research/staging/ipcch-gosif-v3-20261027/candidate/IPCCH_202610_interim_acledagg_gosifv3_20261027.csv"
+  },
+  "raw_panel": {
+   "sha256": "09002869ecc25667d78d972185c8ea24340eabc4d6e1f8a6d560ebda214e1373",
+   "size": 1803935695,
+   "uri": "/home/swl007007/projects/food-crisis-research/staging/ipcch-update-202610/merged/IPCCH_202610_completed.csv"
+  },
+  "region_mapping": {
+   "sha256": "18ab5099ce2d1154fb5686183ee399124e18427cc1594923f7abe2769da1611d",
+   "uri": "/home/swl007007/projects/food-crisis-research/sources/IPCCH/data/reference/area_id_country_region_mapping.csv"
+  },
+  "report_region_mapping": {
+   "sha256": "5d1fd7f8b0dbf5e43e9644280bab7e521da6b9897531cba4fc1479f8deef5676",
+   "uri": "/home/swl007007/projects/food-crisis-research/staging/ipcch-gosif-v3-20261027/report/area_id_report_region_mapping_20261027.csv"
+  },
+  "static29": {
+   "sha256": "229d593ef8fc96b3747cfffd82ffd6a294217ae3f0442888872abe3c0ed668d4",
+   "size": 211977,
+   "uri": "/home/swl007007/projects/food-crisis-research/scratch/validity/cp3/stage/static29_by_admin.csv.gz"
+  }
+ },
+ "name": "origin-ablation-local-formal-h12"
+}

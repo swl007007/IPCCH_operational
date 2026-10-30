@@ -1,0 +1,166 @@
+{
+  "artifacts": {
+    "images": [
+      "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030"
+    ]
+  },
+  "createTime": "2026-10-30T17:50:06.264760605Z",
+  "finishTime": "2026-10-30T17:50:56.597120Z",
+  "id": "22176002-a56f-47df-ab67-ede2ba8c68da",
+  "images": [
+    "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030"
+  ],
+  "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/22176002-a56f-47df-ab67-ede2ba8c68da?project=76571749286",
+  "name": "projects/76571749286/locations/us-central1/builds/22176002-a56f-47df-ab67-ede2ba8c68da",
+  "options": {
+    "logging": "CLOUD_LOGGING_ONLY",
+    "pool": {},
+    "workerRelease": "legacy"
+  },
+  "projectId": "food-crisis-modeling-enso",
+  "queueTtl": "3600s",
+  "results": {
+    "buildStepImages": [
+      "sha256:f772ab459889c67835bd959c2b9e9351f2c0752c4f989710ecda20c229f0733e",
+      "sha256:f772ab459889c67835bd959c2b9e9351f2c0752c4f989710ecda20c229f0733e",
+      "sha256:f772ab459889c67835bd959c2b9e9351f2c0752c4f989710ecda20c229f0733e"
+    ],
+    "buildStepOutputs": [
+      "",
+      "",
+      ""
+    ],
+    "images": [
+      {
+        "artifactRegistryPackage": "projects/food-crisis-modeling-enso/locations/us-central1/repositories/research/packages/training-ipcch-validity/versions/sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197",
+        "digest": "sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197",
+        "name": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030",
+        "pushTiming": {
+          "endTime": "2026-10-30T17:50:55.665236933Z",
+          "startTime": "2026-10-30T17:50:53.620209482Z"
+        }
+      }
+    ]
+  },
+  "serviceAccount": "projects/food-crisis-modeling-enso/serviceAccounts/research-build@food-crisis-modeling-enso.iam.gserviceaccount.com",
+  "source": {
+    "storageSource": {
+      "bucket": "food-crisis-modeling-enso-research-build",
+      "generation": "1793382605843328",
+      "object": "source/1793382606.762819-d758f0c0f52b49d0aa5e103303d13d72.tgz"
+    }
+  },
+  "sourceProvenance": {
+    "fileHashes": {
+      "gs://food-crisis-modeling-enso-research-build/source/1793382606.762819-d758f0c0f52b49d0aa5e103303d13d72.tgz#1793382605843328": {
+        "fileHash": [
+          {
+            "type": "MD5",
+            "value": "xpZIWjNvfVdWYbDW5bXrPg=="
+          },
+          {
+            "type": "SHA256",
+            "value": "XTuZt1Chqpvwuw38UyDIbVqHsE7qbbGE14thZZ6JGX0="
+          }
+        ]
+      }
+    },
+    "resolvedStorageSource": {
+      "bucket": "food-crisis-modeling-enso-research-build",
+      "generation": "1793382605843328",
+      "object": "source/1793382606.762819-d758f0c0f52b49d0aa5e103303d13d72.tgz"
+    }
+  },
+  "startTime": "2026-10-30T17:50:06.845936864Z",
+  "status": "SUCCESS",
+  "steps": [
+    {
+      "args": [
+        "build",
+        "-t",
+        "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030",
+        "."
+      ],
+      "name": "gcr.io/cloud-builders/docker",
+      "pullTiming": {
+        "endTime": "2026-10-30T17:50:09.710066842Z",
+        "startTime": "2026-10-30T17:50:09.703750774Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-30T17:50:46.995493428Z",
+        "startTime": "2026-10-30T17:50:09.703750774Z"
+      }
+    },
+    {
+      "args": [
+        "run",
+        "--rm",
+        "--user",
+        "65534:65534",
+        "--network",
+        "none",
+        "--entrypoint",
+        "python",
+        "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030",
+        "-m",
+        "research_cloud.images.selfcheck",
+        "--image",
+        "training-ipcch-validity"
+      ],
+      "name": "gcr.io/cloud-builders/docker",
+      "pullTiming": {
+        "endTime": "2026-10-30T17:50:46.997666885Z",
+        "startTime": "2026-10-30T17:50:46.995675021Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-30T17:50:51.397535104Z",
+        "startTime": "2026-10-30T17:50:46.995675021Z"
+      }
+    },
+    {
+      "args": [
+        "run",
+        "--rm",
+        "--user",
+        "65534:65534",
+        "--network",
+        "none",
+        "--entrypoint",
+        "python",
+        "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030",
+        "/app/overlay/overlay_check.py"
+      ],
+      "name": "gcr.io/cloud-builders/docker",
+      "pullTiming": {
+        "endTime": "2026-10-30T17:50:51.399316669Z",
+        "startTime": "2026-10-30T17:50:51.397755257Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-30T17:50:53.587372411Z",
+        "startTime": "2026-10-30T17:50:51.397755257Z"
+      }
+    }
+  ],
+  "timeout": "1800s",
+  "timing": {
+    "BUILD": {
+      "endTime": "2026-10-30T17:50:53.619120373Z",
+      "startTime": "2026-10-30T17:50:09.103870131Z"
+    },
+    "FETCHSOURCE": {
+      "endTime": "2026-10-30T17:50:09.103647232Z",
+      "startTime": "2026-10-30T17:50:06.346490108Z"
+    },
+    "PUSH": {
+      "endTime": "2026-10-30T17:50:55.665322389Z",
+      "startTime": "2026-10-30T17:50:53.619261340Z"
+    },
+    "STORAGE_SOURCE": {
+      "endTime": "2026-10-30T17:50:09.103647232Z",
+      "startTime": "2026-10-30T17:50:06.346490108Z"
+    }
+  }
+}

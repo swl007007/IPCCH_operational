@@ -1,0 +1,8 @@
+........................................................................ [100%]
+=============================== warnings summary ===============================
+research_cloud/tests/test_ipcch_origin_dataset_identity.py::test_origin_ablation_names_its_own_dataset_and_tags_the_fitting_subset
+  /home/swl007007/projects/food-crisis-research/envs/mlflow-svc/lib/python3.12/site-packages/mlflow/store/tracking/sqlalchemy_store.py:327: SADeprecationWarning: The ``noload`` loader strategy is deprecated and will be removed in a future release.  This option produces incorrect results by returning ``None`` for related items. (deprecated since: 2.1)
+    sqlalchemy.orm.configure_mappers()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+72 passed, 1 warning in 136.89s (0:02:16)

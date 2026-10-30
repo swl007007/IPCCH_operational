@@ -1,0 +1,174 @@
+3.17.0
+default
+GenAI
+Model training
+IPCCH dashboard
+Overview
+Training runs
+Observability
+Traces
+Sessions
+Evaluation
+Judges
+Review
+Datasets
+Evaluation runs
+Prompts & versions
+Playground
+Prompts
+Agent versions
+AI Gateway
+New
+Docs
+Settings
+I
+ipcch-reader
+IPCCH dashboard
+Models
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month | seed 42
+Register model
+Overview
+Traces
+Artifacts
+Description
+card
+
+model-card-v1; new research training; optional unrecorded facts are marked unavailable.
+
+identity
+
+{"family": "ipcch_validity_pooled", "kind": "new Linux research run", "mode": "formal", "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt", "horizon": 12, "contexts": ["h12_main_2024", "h12_main_2025", "h12_supp_2026"], "scalar_fits": 12, "params": {"q3_n_estimators": 313, "q3_learning_rate": 0.0493494477600518, "q3_max_depth": 7, "q3_min_child_weight": 26.42570144490502, "q3_subsample": 0.7932250149956435, "q3_colsample_bytree": 0.6556143377414937, "other_n_estimators": 158, "other_learning_rate": 0.08104665 … [see full card]
+
+summary
+
+Fixed-parameter refit of the CH-final run of validity_augmented_idp_202610_acledagg_lag1_uncal_hpt, lead 12 months (MLflow f436da15c71c469199784db065f3b63b; gosif-v3-input-20261027+ch-validity-20261028), whose only change is the backbone fitting-label membership: each annual context keeps only the final CH-corrected label_kind == original rows of its CH-final fitting pool (h12_main_2024 21,282, h12_main_2025 25,960, h12_supp_2026 30,784); IPC and CH validity copies are removed from fitting labels only. The quartet parame … [see full card]
+
+baseline
+
+{"run_id": "f436da15c71c469199784db065f3b63b", "model_id": "m-9da8be7f46c946e69a8e759d9064a77a", "registered_model": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month", "model_version": "1", "package_json_sha256": "e88ac65bdd5e670883bcf80409ba82a69f16a097c418cdecf36f87ee9e80cf83", "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt", "relation": "Linked comparison baseline: the CH-final run of this horizon (MLflow f436da15c71c46 … [see full card]
+
+status
+
+Research tracking only; execution success does not establish scientific acceptance. Versus the linked CH-final run (MLflow f436da15c71c469199784db065f3b63b): only the backbone fitting-label membership differs (validity copies removed; the retained original rows keep their CH-final weights, which are not renormalized, so the total fitting weight is smaller); labels, cohort, scored rows, report families, aliases, histories, features, parameters, seed, contexts, cutoffs and identity calibration are identical (verified befor … [see full card]
+
+data
+
+{"sha256": "c808cd6201cd3e9dee1e0cd2d39d3550b9ec10f8323f701243bde2a428090469", "content": {"derived_from": {"ch_final_formal_manifest": {"gcs_generation": 1793219072287545, "name": "ipcch-ch-validity-refits-r1-formal-h12", "sha256": "e3e20b2e9876e2106f7e94e122c3eaf87997862e47f71c65a8d98b886af7be4a", "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h12.json"}, "replaced_roles": {"baseline_predictions": {"gcs_generation": 1793219071644622, "sha256": "92 … [see full card]
+
+features
+
+{"n_features": 539, "uri": "features=runs:/8237e829dc4b42169ccb3136c19aafb2/metadata/feature_order.csv#name"}
+
+feature_engineering
+
+Original-label fit ablation (task 10-30): label preparation, CH validity correction, features and reported-phase histories are exactly those of the CH-final run; validity copies are scored but excluded from the backbone fitting labels. Inherited description: CH validity correction (task 10-28, ch_links.csv.gz sha256 ac4ad6aaa8dc…): Eligible Cadre Harmonise raw labels are linked through their documented source route (legacy gdf_ch features with may25 current records; the dec25 2025 centroid join; the mars26 refresh line … [see full card]
+
+architecture
+
+Four independent XGBRegressor (reg:squarederror, CPU hist, seed 42, 16 threads, no early stopping); q3 and the shared q2/q4/q5 group each take n_estimators, learning_rate, max_depth, min_child_weight, subsample and colsample_bytree from the frozen winner of this horizon (values in the settings section as q3_* and other_*; search space n_estimators 100-600, learning_rate 0.02-0.20 log, max_depth 4-12, min_child_weight 0-32, subsample 0.5-1, colsample_bytree 0.4-1); reg_alpha 0, reg_lambda 1, gamma 0.1 (q3) / 0 (q2/q4/q5); … [see full card]
+
+settings
+
+{"b2_ridge_penalty": 0.01, "calibration": "none (identity): no B2 or provider fits by design; the backbone quartet is projected (bounded, decreasing) and decoded with inclusive q_k >= 0.20", "early_stopping": "none", "half_life_months": 24, "n_threads": 16, "other_colsample_bytree": 0.6405545857296321, "other_learning_rate": 0.08104665643788728, "other_max_depth": 7, "other_min_child_weight": 24.92787946513128, "other_n_estimators": 158, "other_subsample": 0.5456882086669544, "parameter_groups": "{\"other\": [\"q2\", \"q … [see full card]
+
+environment
+
+{"python": "3.12.3", "platform": "Linux-6.12.110+-x86_64-with-glibc2.36", "machine": "x86_64", "gcp_project": "food-crisis-modeling-enso", "packages": {"numpy": "2.4.4", "pandas": "3.0.3", "xgboost": "3.2.0", "scikit-learn": "1.8.0", "mlflow-skinny": "3.17.0", "cloudml-hypertune": "0.1.0.dev6"}, "image_digest": "sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197", "source_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d … [see full card]
+
+evaluation
+
+{"explanation": "Selection is inherited (the tuned parameters were frozen by the original search; no new search). This refit: the CH-final run's annual expanding contexts and calendar; the whole inherited scored cohort (historical and 2026-01..10, originals and copies, unweighted) gives the standard six metrics (binary F1/F2/precision/recall, phase3plus R2, macro F1) for the pooled historical window, each historical year and 2026-01..10 (MLflow ., .n_rows) and the inherited report tables (six report … [see full card]
+
+observed
+
+{"metrics": {"historical_pooled.n_rows": 36710.0, "historical_pooled.binary_f1": 0.7519104084321475, "historical_pooled.phase3plus_r2": 0.36729158115814775, "historical_pooled.macro_f1": 0.4737180474275185, "historical_pooled.binary_f2": 0.7680919503102246, "historical_pooled.binary_precision": 0.7264048876726278, "historical_pooled.binary_recall": 0.7792722059124736, "historical_2024.n_rows": 17033.0, "historical_2024.binary_f1": 0.7517462165308498, "historical_2024.phase3plus_r2": 0.3515749749569349, "historical_2024.m … [see full card]
+
+sources
+
+{"harness": {"control_plane_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f", "research_cloud_dirty": null, "files": {"research_cloud/training/common.py": "cd … [see full card]
+Full card: runs:/8237e829dc4b42169ccb3136c19aafb2/model-card.md
+
+Metrics (1)
+Metric
+Dataset
+Source run
+Value
+dataset.modeling_panel_index.rows
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+147268
+Parameters (21)
+Parameter
+Value
+b2_ridge_penalty
+0.01
+calibration
+none (identity): no B2 or provider fits by design; the backbone quartet is projected (bounded, decreasing) and decoded with inclusive q_k >= 0.20
+early_stopping
+none
+half_life_months
+24
+n_threads
+16
+other_colsample_bytree
+0.6405545857296321
+other_learning_rate
+0.08104665643788728
+other_max_depth
+7
+other_min_child_weight
+24.92787946513128
+other_n_estimators
+158
+other_subsample
+0.5456882086669544
+parameter_groups
+{"other": ["q2", "q4", "q5"], "q3": ["q3"]}
+q3_colsample_bytree
+0.6556143377414937
+q3_learning_rate
+0.0493494477600518
+q3_max_depth
+7
+q3_min_child_weight
+26.42570144490502
+q3_n_estimators
+313
+q3_subsample
+0.7932250149956435
+seed
+42
+untuned
+{"other": {"gamma": 0.0, "reg_alpha": 0.0, "reg_lambda": 1.0}, "q3": {"gamma": 0.1, "reg_alpha": 0.0, "reg_lambda": 1.0}}
+xgb_fixed
+{"booster": "gbtree", "device": "cpu", "n_jobs": 16, "objective": "reg:squarederror", "random_state": 42, "scale_pos_weight": 1.0, "tree_method": "hist"}
+Runs
+Run
+Input
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+Prompts
+Prompt Name
+Version
+No prompts
+About this logged model
+Created at
+9 minutes ago
+Created by
+-
+Status
+Ready
+Model ID
+m-9f73aac99f444c91b8022ec9f6e41df3
+Source run
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+Source run ID
+8237e829dc4b42169ccb3136c19aafb2
+Logged from
+—
+Datasets used
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)
+Model versions
+IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+v1
+MLflow Assistant

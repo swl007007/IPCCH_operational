@@ -1,0 +1,82 @@
+{"passed": true, "rows": 128, "seconds": -1.44}
+{"passed": true, "rows": 120, "seconds": 1.13}
+{"passed": true, "rows": 96, "seconds": 0.87}
+self-consistency digests passed (13 keys)
+paired baseline gate passed (24 checks against run aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)
+assert h00_main_2023: cutoff 2022-12 fitting targets 2014-11..2022-10 (768 rows, expanding, halving24, identity) scored 96 keys 2f387149643d9792 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2024: cutoff 2023-12 fitting targets 2014-11..2023-10 (864 rows, expanding, halving24, identity) scored 96 keys 7ca56e95f18ed4f8 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2025: cutoff 2024-12 fitting targets 2014-11..2024-10 (960 rows, expanding, halving24, identity) scored 96 keys e27deaab7c1f29ff checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_supp_2026: cutoff 2025-12 fitting targets 2014-11..2025-10 (1056 rows, expanding, halving24, identity) scored 80 keys ba2fbfae5da9d923 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+[      1s] h00_main_2023: backbone train 768 scored 96 calibration identity_no_support (0 rows)
+[      3s] h00_main_2024: backbone train 864 scored 96 calibration identity_no_support (0 rows)
+[      5s] h00_main_2025: backbone train 960 scored 96 calibration identity_no_support (0 rows)
+[      4s] h00_supp_2026: backbone train 1056 scored 80 calibration identity_no_support (0 rows)
+{"passed": true, "rows": 128, "seconds": 0.22}
+self-consistency digests passed (13 keys)
+paired baseline gate passed (24 checks against run cccccccccccccccccccccccccccccccc)
+assert h12_main_2024: cutoff 2023-01 fitting targets 2014-11..2023-01 (792 rows, expanding, halving24, identity) scored 96 keys 7ca56e95f18ed4f8 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h12_main_2025: cutoff 2024-01 fitting targets 2014-11..2024-01 (888 rows, expanding, halving24, identity) scored 96 keys e27deaab7c1f29ff checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h12_supp_2026: cutoff 2025-01 fitting targets 2014-11..2025-01 (984 rows, expanding, halving24, identity) scored 80 keys ba2fbfae5da9d923 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+[      2s] h12_main_2024: backbone train 792 scored 96 calibration identity_no_support (0 rows)
+[      5s] h12_main_2025: backbone train 888 scored 96 calibration identity_no_support (0 rows)
+[      7s] h12_supp_2026: backbone train 984 scored 80 calibration identity_no_support (0 rows)
+{"passed": true, "rows": 96, "seconds": 0.88}
+self-consistency digests passed (13 keys)
+paired baseline gate passed (24 checks against run bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb)
+self-consistency digests passed (13 keys)
+{"passed": true, "rows": 96, "seconds": 0.9}
+{"passed": true, "rows": 120, "seconds": 0.15}
+{"passed": true, "rows": 120, "seconds": 2.09}
+{"passed": true, "rows": 120, "seconds": 2.01}
+{"passed": true, "rows": 120, "seconds": -1.02}
+{"passed": true, "rows": 88, "seconds": 1.48}
+{"passed": true, "rows": 128, "seconds": 1.92}
+self-consistency digests passed (13 keys)
+self-consistency digests passed (13 keys)
+assert h06_hind_2016: cutoff 2025-12 fitting targets 2023-01..2025-12 (288 rows, fixed_window, flat, identity) scored 96 keys 82519179b86fe070 checks passed: fitting_targets_in_window, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_fitting_label_in_scored_years, no_scored_row_in_fitting_labels
+assert h06_hind_2017: cutoff 2025-12 fitting targets 2023-01..2025-12 (288 rows, fixed_window, flat, identity) scored 96 keys ba07ceefbae75aeb checks passed: fitting_targets_in_window, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_fitting_label_in_scored_years, no_scored_row_in_fitting_labels
+[      4s] h06_hind_2016: backbone train 288 scored 96 calibration identity_no_support (0 rows)
+[      4s] h06_hind_2017: backbone train 288 scored 96 calibration identity_no_support (0 rows)
+{"passed": true, "rows": 64, "seconds": 0.84}
+self-consistency digests passed (13 keys)
+assert h00_main_2023: cutoff 2022-12 fitting targets 2014-11..2022-10 (768 rows, expanding, halving24, b2) scored 96 keys 2f387149643d9792 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2024: cutoff 2023-12 fitting targets 2014-11..2023-10 (864 rows, expanding, halving24, b2) scored 96 keys 7ca56e95f18ed4f8 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_main_2025: cutoff 2024-12 fitting targets 2014-11..2024-10 (960 rows, expanding, halving24, b2) scored 96 keys e27deaab7c1f29ff checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h00_supp_2026: cutoff 2025-12 fitting targets 2014-11..2025-10 (1056 rows, expanding, halving24, b2) scored 80 keys ba2fbfae5da9d923 checks passed: fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+[      0s] h00_main_2023 provider h00_prov_2018-02: train 312 pred 88
+[      4s] h00_main_2023 provider h00_prov_2019-01: train 384 pred 96
+[      6s] h00_main_2023 provider h00_prov_2020-01: train 480 pred 96
+[      9s] h00_main_2023 provider h00_prov_2021-01: train 576 pred 96
+[     14s] h00_main_2023 provider h00_prov_2022-01: train 672 pred 80
+[     17s] h00_main_2023: backbone train 768 scored 96 calibration calibrated_b2 (456 rows)
+[     19s] h00_main_2024 provider h00_prov_2018-02: train 312 pred 88
+[     22s] h00_main_2024 provider h00_prov_2019-01: train 384 pred 96
+[     26s] h00_main_2024 provider h00_prov_2020-01: train 480 pred 96
+[     29s] h00_main_2024 provider h00_prov_2021-01: train 576 pred 96
+[     30s] h00_main_2024 provider h00_prov_2022-01: train 672 pred 96
+[     33s] h00_main_2024 provider h00_prov_2023-01: train 768 pred 80
+[     36s] h00_main_2024: backbone train 864 scored 96 calibration calibrated_b2 (552 rows)
+[     39s] h00_main_2025 provider h00_prov_2018-02: train 312 pred 88
+[     42s] h00_main_2025 provider h00_prov_2019-01: train 384 pred 96
+[     46s] h00_main_2025 provider h00_prov_2020-01: train 480 pred 96
+[     50s] h00_main_2025 provider h00_prov_2021-01: train 576 pred 96
+[     55s] h00_main_2025 provider h00_prov_2022-01: train 672 pred 96
+[     58s] h00_main_2025 provider h00_prov_2023-01: train 768 pred 96
+[     59s] h00_main_2025 provider h00_prov_2024-01: train 864 pred 80
+[     63s] h00_main_2025: backbone train 960 scored 96 calibration calibrated_b2 (648 rows)
+[     65s] h00_supp_2026 provider h00_prov_2018-02: train 312 pred 88
+[     68s] h00_supp_2026 provider h00_prov_2019-01: train 384 pred 96
+[     70s] h00_supp_2026 provider h00_prov_2020-01: train 480 pred 96
+[     74s] h00_supp_2026 provider h00_prov_2021-01: train 576 pred 96
+[     77s] h00_supp_2026 provider h00_prov_2022-01: train 672 pred 96
+[     81s] h00_supp_2026 provider h00_prov_2023-01: train 768 pred 96
+[     84s] h00_supp_2026 provider h00_prov_2024-01: train 864 pred 96
+[     89s] h00_supp_2026 provider h00_prov_2025-01: train 960 pred 80
+[     92s] h00_supp_2026: backbone train 1056 scored 80 calibration calibrated_b2 (744 rows)
+{"passed": true, "rows": 128, "seconds": 2.67}
+self-consistency digests passed (13 keys)
+assert h12_main_2024: cutoff 2023-01 fitting targets 2020-02..2023-01 (288 rows, rolling_months, flat, identity) scored 96 keys 7ca56e95f18ed4f8 checks passed: fitting_targets_in_rolling_36m, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+assert h12_main_2025: cutoff 2024-01 fitting targets 2021-02..2024-01 (288 rows, rolling_months, flat, identity) scored 96 keys e27deaab7c1f29ff checks passed: fitting_targets_in_rolling_36m, fitting_targets_le_cutoff, no_excluded_family_in_fitting_labels, no_scored_row_in_fitting_labels
+[      3s] h12_main_2024: backbone train 288 scored 96 calibration identity_no_support (0 rows)
+[      8s] h12_main_2025: backbone train 288 scored 96 calibration identity_no_support (0 rows)
+{"passed": true, "rows": 64, "seconds": 1.2}

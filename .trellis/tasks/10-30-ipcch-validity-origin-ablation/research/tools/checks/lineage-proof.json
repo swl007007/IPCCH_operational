@@ -1,0 +1,62 @@
+{
+ "kind": "image_lineage_proof",
+ "ch_final_image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:2b18cf721cb09af0d1633a20087874155e8af49aa822979c0554507bcb68ccc3",
+ "base_image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939",
+ "ch_final_build": "3a577f07-7153-43df-9c13-cc0d844bb0d7",
+ "checks": {
+  "ch_record_sha_pinned": true,
+  "ch_context_files_equal_record": true,
+  "new_context_files_equal_record": true,
+  "ch_build_success_and_in_image_checks": true,
+  "same_base_by_digest": true,
+  "only_from_copy_env_instructions": true,
+  "same_overlaid_paths": true,
+  "features_module_identical": true,
+  "changed_modules_exactly_pooled_and_dataset_input": true,
+  "same_base_context_manifest": true,
+  "same_expected_runtime": true,
+  "same_declared_base_hashes_of_overlaid_files": true,
+  "env_only_source_commit": true,
+  "no_dependency_install": true,
+  "same_build_steps": true
+ },
+ "passed": true,
+ "differences_new_vs_ch_final": {
+  "modules": {
+   "research_cloud/training/dataset_input.py": {
+    "ch_final": "a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c",
+    "new": "2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4"
+   },
+   "research_cloud/training/ipcch_validity_pooled.py": {
+    "ch_final": "d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28",
+    "new": "d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f"
+   }
+  },
+  "overlay_metadata": "/app/overlay/{overlay-manifest.json, overlay-diff.patch, overlay_check.py}",
+  "env": [
+   [
+    "ENV IPCCH_SOURCE_COMMIT=439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28"
+   ],
+   [
+    "ENV IPCCH_SOURCE_COMMIT=439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f"
+   ]
+  ]
+ },
+ "identical": {
+  "base_image_layers_and_installed_dependencies": "inherited FROM the same digest, no RUN in either",
+  "research_cloud/training/ipcch_validity_features.py": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6",
+  "every_other_/app_file": "the base image's (the CH in-image overlay_check asserted derived-vs-BASE == its three modules; the new in-image overlay_check asserts the same for its three)"
+ },
+ "expected_runtime": {
+  "packages": {
+   "cloudml-hypertune": "0.1.0.dev6",
+   "mlflow-skinny": "3.17.0",
+   "numpy": "2.4.4",
+   "pandas": "3.0.3",
+   "scikit-learn": "1.8.0",
+   "xgboost": "3.2.0"
+  },
+  "python": "3.12.3"
+ },
+ "why_not_FROM_ch_final": "FROM 2b18cf72 would inherit the CH /app/overlay and leave the overlay_check base (fd921dd7) inconsistent; building both from fd921dd7 keeps one auditable BASE and gives the same tree except the two changed modules"
+}

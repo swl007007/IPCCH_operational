@@ -1,0 +1,50 @@
+{
+ "kind": "manifests dry run on a packet COPY with placeholder generations 111/222/333",
+ "result": {
+  "00": {
+   "roles": 18,
+   "baseline_predictions": {
+    "gcs_generation": 111,
+    "sha256": "e00ee843a5ec35f1b6a0d3fe12442069d686386e85da12a7a8cabdd8b09dc81d",
+    "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h00.csv.gz"
+   },
+   "ch_links_generation": 1793219070023026,
+   "derived_from": {
+    "gcs_generation": 1793219071854845,
+    "name": "ipcch-ch-validity-refits-r1-formal-h00",
+    "sha256": "f1509cc1f6eb58e04802fe48a28c463070ed860c342f6a37c40a279c8534cca6",
+    "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h00.json"
+   }
+  },
+  "06": {
+   "roles": 18,
+   "baseline_predictions": {
+    "gcs_generation": 222,
+    "sha256": "bc90625a05b5f38654c382b615a74a2d9a3e59488e8146a0658fe17a7dc28c29",
+    "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h06.csv.gz"
+   },
+   "ch_links_generation": 1793219070023026,
+   "derived_from": {
+    "gcs_generation": 1793219072084269,
+    "name": "ipcch-ch-validity-refits-r1-formal-h06",
+    "sha256": "1407b2db46ed969121d01c7de6bcd76a65b8be419ad497c914a23d9bb8fb0567",
+    "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h06.json"
+   }
+  },
+  "12": {
+   "roles": 18,
+   "baseline_predictions": {
+    "gcs_generation": 333,
+    "sha256": "8c1c2c64e8144011555ec6a3dd4348bffd9d2b41069b568687065e6dd5cc3f54",
+    "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h12.csv.gz"
+   },
+   "ch_links_generation": 1793219070023026,
+   "derived_from": {
+    "gcs_generation": 1793219072287545,
+    "name": "ipcch-ch-validity-refits-r1-formal-h12",
+    "sha256": "e3e20b2e9876e2106f7e94e122c3eaf87997862e47f71c65a8d98b886af7be4a",
+    "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h12.json"
+   }
+  }
+ }
+}

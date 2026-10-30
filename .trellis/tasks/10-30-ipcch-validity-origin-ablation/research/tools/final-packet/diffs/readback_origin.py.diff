@@ -1,0 +1,104 @@
+1,3c1,3
+< """Read-only MLflow readback for task 10-28 (run only under a released final packet; tooling venv). Adapted from the
+< accepted task 10-27 ``cp5/readback.py`` (base copy in ``base-10-27/``): same reader identity handling, pinned tracking/
+< registry URIs and per-run checks, with the CH pins; no recovery or card-correction rules (CH publication is in-job).
+---
+> """Read-only MLflow readback for task 10-30 (run only under a released final packet; tooling venv). Adapted from the
+> accepted task 10-28 ``readback_ch.py`` (base copy in ``base-10-28/``): same reader identity handling, pinned tracking/
+> registry URIs and per-run checks, with the origin-ablation pins; no recovery or card-correction rules.
+5,6c5,6
+<   formal   --item formal:hHH:TRIAL_DIR      the CH run in 'IPCCH dashboard' (harvested trial): run/LoggedModel/version links,
+<            READY, names, tags (arm/role/GOSIF-v3 baseline link/freeze/CH data version/ch_links/overlay image and composite
+---
+>   formal   --item formal:hHH:TRIAL_DIR      the origin-ablation run in 'IPCCH dashboard' (harvested trial): run/LoggedModel/version links,
+>            READY, names, tags (arm/role/CH-final baseline link/freeze/data versions/fit_labels/overlay image and composite
+9c9
+<            exact, downloaded package == local, report.* and common.* metrics, exactly ONE DatasetInput == the harvested
+---
+>            exact, downloaded package == local, report.* and origin.* metrics, retained package routes only the 2026 holdout context, exactly ONE DatasetInput == the harvested
+11,12c11,12
+<   baseline --item baseline:hHH:RECEIPT      a GOSIF-v3 run (read only) unchanged since its task 10-27 accepted readback
+<            receipt: run status/name/tags/metric count/model outputs/DatasetInputs, LoggedModel id/name/status/source run and
+---
+>   baseline --item baseline:hHH:RECEIPT      a CH-final run (read only) unchanged since its task 10-28 accepted (supplemental)
+>            readback receipt: run status/name/tags/metric count/model outputs/DatasetInputs, LoggedModel id/name/status/source run and
+14c14
+<            GOSIF-v3 trial metrics and run + LoggedModel params == its resolved params (no extra call: get_run /
+---
+>            CH-final trial metrics and run + LoggedModel params == its resolved params (no extra call: get_run /
+18,19c18,19
+<   W=/home/swl007007/projects/food-crisis-research; cd $W/control-plane
+<   PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B readback_ch.py --out-dir DIR --item formal:h00:DIR ... --item baseline:h00:RECEIPT
+---
+>   W=/home/swl007007/projects/food-crisis-research; cd $W/control-plane-origin-ablation
+>   PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B readback_origin.py --out-dir DIR --item formal:h00:DIR ... --item baseline:h00:RECEIPT
+32c32
+< sys.path.insert(0, f"{W}/control-plane")
+---
+> sys.path.insert(0, f"{W}/control-plane-origin-ablation")
+38c38
+< TITLE = "Validity-augmented pooled (GOSIF v3 + CH validity 20261028)"
+---
+> TITLE = "Original-label fit ablation (GOSIF v3 + CH validity 20261028)"
+41c41
+< RENDER = f"{W}/staging/ipcch-ch-validity-20261028/job-packet-ch/render-final"
+---
+> RENDER = f"{W}/staging/ipcch-origin-ablation-20261030/job-packet/render-final"
+44,45c44,48
+< # DatasetInput tags that depend on the job's output prefix/generations (the render used placeholders)
+< GENERATION_TAGS = ("gcs.generation", "memberships.uri", "memberships.gcs.generation", "idp_ledger.uri", "idp_ledger.gcs.generation")
+---
+> # DatasetInput tags that depend on the job's output prefix/generations (the render used placeholders) or on the job's own
+> # gzip output bytes (idp_ledger.sha256: gzip header mtime; task 10-28 verifier lesson). The payload equality itself is
+> # checked against the harvested trial (dataset_input_equals_payload).
+> GENERATION_TAGS = ("gcs.generation", "memberships.uri", "memberships.gcs.generation", "idp_ledger.uri", "idp_ledger.gcs.generation",
+>                    "idp_ledger.sha256")
+88c91
+< GOSIF_TRIALS = f"{W}/scratch/gosif-v3-20261027/harvest/formal-{{g}}/trial-0/publication.json"
+---
+> CH_TRIALS = f"{W}/scratch/ch-validity-20261028/harvest/formal-{{g}}/trial-0/publication.json"
+92,93c95,96
+<     """Read-only check that a GOSIF-v3 run is unchanged since the task 10-27 accepted readback receipt, with its metric
+<     values and params equal to the retained GOSIF-v3 trial record."""
+---
+>     """Read-only check that a CH-final run is unchanged since the task 10-28 accepted (supplemental) readback receipt, with
+>     its metric values and params equal to the retained CH-final trial record."""
+98c101
+<         raise SystemExit(f"baseline {group}: {receipt} is not a passed task 10-27 formal readback of {group}")
+---
+>         raise SystemExit(f"baseline {group}: {receipt} is not a passed task 10-28 formal readback of {group}")
+112c115
+<     gt = json.load(open(GOSIF_TRIALS.format(g=group)))["trial"]
+---
+>     gt = json.load(open(CH_TRIALS.format(g=group)))["trial"]
+154c157
+<         raise SystemExit(f"{g}: the recipe display title is not the CH title")
+---
+>         raise SystemExit(f"{g}: the recipe display title is not the origin-ablation title")
+176c179,180
+<         out["downloaded_package"] = {"sha256": sha(os.path.join(pkg, "package.json")), "problems": verify_package(pkg)}
+---
+>         out["downloaded_package"] = {"sha256": sha(os.path.join(pkg, "package.json")), "problems": verify_package(pkg),
+>                                      "contexts": json.load(open(os.path.join(pkg, "package.json")))["routing"]["contexts"]}
+203c207
+<         "baseline_link_tags": all(x.get("baseline.run_id") == cfg["baseline"]["run_id"] == cfg["ch_correction"]["gpp_baseline"]["run_id"]
+---
+>         "baseline_link_tags": all(x.get("baseline.run_id") == cfg["baseline"]["run_id"] == cfg["origin_ablation"]["ch_baseline"]["run_id"]
+207c211,213
+<                                     and x.get("provenance.ch_links") == cfg["provenance_tags"]["provenance.ch_links"] for x in ents),
+---
+>                                     and x.get("provenance.ch_links") == cfg["provenance_tags"]["provenance.ch_links"]
+>                                     and x.get("provenance.fit_labels") == cfg["provenance_tags"]["provenance.fit_labels"]
+>                                     and x.get("provenance.origin_ablation") == cfg["provenance_tags"]["provenance.origin_ablation"] for x in ents),
+211,212c217,220
+<         "report_and_common_metrics_present": any(k.startswith("report.region.") for k in run.data.metrics)
+<                                              and any(k.startswith("common.historical_pooled.") for k in run.data.metrics),
+---
+>         "report_and_origin_metrics_present": any(k.startswith("report.region.") for k in run.data.metrics)
+>                                              and any(k.startswith("origin.historical_pooled.") for k in run.data.metrics)
+>                                              and not any(k.startswith("common.") for k in run.data.metrics),
+>         "published_package_holdout_only": out["downloaded_package"]["contexts"] == [c for c in out["downloaded_package"]["contexts"] if "_supp_" in c] != [],
+229c237
+<         "gcs_only_not_in_mlflow": "gcs-only" not in out["artifacts_root"],
+---
+>         "gcs_only_not_in_mlflow": "gcs-only" not in out["artifacts_root"] and "annual-package" not in out["artifacts_root"],

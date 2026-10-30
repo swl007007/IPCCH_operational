@@ -1,0 +1,32 @@
+{
+ "0": {
+  "spec": "spec-formal-h00.json",
+  "sha256": "b66e8c9f388111e8c400c60412b688ca8b8be3886fc5e32400d22c2bdbc402b9",
+  "operation": "ipcch-origin-ablation-r1-formal-h00",
+  "within_reservation_problems": [],
+  "tracking_config": "ok",
+  "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197",
+  "env_image_digest": true,
+  "env_model_card_equal": true
+ },
+ "6": {
+  "spec": "spec-formal-h06.json",
+  "sha256": "f49ca7c5020a0cf963a910ad573e5262aaf82c480d1ead35546c92a0d1e76e70",
+  "operation": "ipcch-origin-ablation-r1-formal-h06",
+  "within_reservation_problems": [],
+  "tracking_config": "ok",
+  "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197",
+  "env_image_digest": true,
+  "env_model_card_equal": true
+ },
+ "12": {
+  "spec": "spec-formal-h12.json",
+  "sha256": "10355968e109010072c0191e5f59fbc49954e2677f3a7f11a389cabb516fbad5",
+  "operation": "ipcch-origin-ablation-r1-formal-h12",
+  "within_reservation_problems": [],
+  "tracking_config": "ok",
+  "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197",
+  "env_image_digest": true,
+  "env_model_card_equal": true
+ }
+}

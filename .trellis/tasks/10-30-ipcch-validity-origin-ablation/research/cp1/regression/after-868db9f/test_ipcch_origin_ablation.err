@@ -1,0 +1,28 @@
+......../home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_origin_ablation.py:409: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp864n0e7p/trial/package/package.json' mode='r' encoding='UTF-8'>
+  pkg = json.load(open(out.path("package/package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_origin_ablation.py:410: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp864n0e7p/trial/gcs-only/annual-package/package.json' mode='r' encoding='UTF-8'>
+  ann = json.load(open(out.path("gcs-only/annual-package/package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_origin_ablation.py:415: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp864n0e7p/trial/metrics.json' mode='r' encoding='UTF-8'>
+  self.assertEqual(json.load(open(out.path("metrics.json")))["origin_ablation"]["fit_labels"], "original_only")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.../home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/training/ipcch_validity_pooled.py:3592: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp7hkx7o3q/recipe.json' mode='r' encoding='UTF-8'>
+  config = json.load(open(a.config)) if a.config else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_origin_ablation.py:490: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpee1wd53b/digests_validity_augmented_idp_202610_acledagg_lag1_uncal_hpt_h00.json' mode='r' encoding='UTF-8'>
+  return json.load(open(os.path.join(out, f"digests_{vp.HPT_ARM}_h00.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/training/ipcch_validity_pooled.py:3592: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp7hkx7o3q/recipe.json' mode='r' encoding='UTF-8'>
+  config = json.load(open(a.config)) if a.config else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+pinned digests differ or are absent: ['origin:fit_keys_sha256']
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/training/ipcch_validity_pooled.py:3592: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp7hkx7o3q/recipe.json' mode='r' encoding='UTF-8'>
+  config = json.load(open(a.config)) if a.config else None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+pinned digests differ or are absent: ['baseline:fit_keys_sha256']
+......
+----------------------------------------------------------------------
+Ran 17 tests in 1.740s
+
+OK

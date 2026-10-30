@@ -1,0 +1,112 @@
+{
+ "ch_final_manifests": {
+  "0": {
+   "gcs_generation": 1793219071854845,
+   "name": "ipcch-ch-validity-refits-r1-formal-h00",
+   "sha256": "f1509cc1f6eb58e04802fe48a28c463070ed860c342f6a37c40a279c8534cca6",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h00.json"
+  },
+  "6": {
+   "gcs_generation": 1793219072084269,
+   "name": "ipcch-ch-validity-refits-r1-formal-h06",
+   "sha256": "1407b2db46ed969121d01c7de6bcd76a65b8be419ad497c914a23d9bb8fb0567",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h06.json"
+  },
+  "12": {
+   "gcs_generation": 1793219072287545,
+   "name": "ipcch-ch-validity-refits-r1-formal-h12",
+   "sha256": "e3e20b2e9876e2106f7e94e122c3eaf87997862e47f71c65a8d98b886af7be4a",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h12.json"
+  }
+ },
+ "code_overlay_tag": "overlay manifest sha256 e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834; modules research_cloud/training/dataset_input.py sha256 2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4 (origin DatasetInput name, fit-subset tags and saved-membership check; publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path); image us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197 (build 22176002-a56f-47df-ab67-ede2ba8c68da; source task/ipcch-validity-origin-ablation 868db9f51ffd6c45a7673cbaf10111b5dd46adde) = base training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939 (control-plane 439a488) + these three modules",
+ "configs": {
+  "0": {
+   "code_overlay_tag": "overlay manifest sha256 e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834; modules research_cloud/training/dataset_input.py sha256 2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4 (origin DatasetInput name, fit-subset tags and saved-membership check; publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path); image us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197 (build 22176002-a56f-47df-ab67-ede2ba8c68da; source task/ipcch-validity-origin-ablation 868db9f51ffd6c45a7673cbaf10111b5dd46adde) = base training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939 (control-plane 439a488) + these three modules",
+   "difference_from_final_r2_recipe": [
+    "provenance_tags.provenance.code_overlay"
+   ],
+   "final_r2_recipe_sha256": "5a868ffc770814948b6ab8df876ae224d191ddde561ec97a33253397184552c4",
+   "rel": "config-formal-h00.json",
+   "sha256": "169d504b44fe707e0aed6b7803b0559f4f834971a6c0b31ceca17e014d5ef060",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/config-formal-h00.json"
+  },
+  "6": {
+   "code_overlay_tag": "overlay manifest sha256 e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834; modules research_cloud/training/dataset_input.py sha256 2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4 (origin DatasetInput name, fit-subset tags and saved-membership check; publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path); image us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197 (build 22176002-a56f-47df-ab67-ede2ba8c68da; source task/ipcch-validity-origin-ablation 868db9f51ffd6c45a7673cbaf10111b5dd46adde) = base training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939 (control-plane 439a488) + these three modules",
+   "difference_from_final_r2_recipe": [
+    "provenance_tags.provenance.code_overlay"
+   ],
+   "final_r2_recipe_sha256": "6040a7426898787c8037ac36d6996dbb8d58ca9990ca104a1244d23cb4859615",
+   "rel": "config-formal-h06.json",
+   "sha256": "5356d1b6086fb90bd8408c9d49a45fece3ab1ac8fe0751ac27e752e0616458bd",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/config-formal-h06.json"
+  },
+  "12": {
+   "code_overlay_tag": "overlay manifest sha256 e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834; modules research_cloud/training/dataset_input.py sha256 2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4 (origin DatasetInput name, fit-subset tags and saved-membership check; publication only), research_cloud/training/ipcch_validity_features.py sha256 eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6 (the CH-final module, unchanged) and research_cloud/training/ipcch_validity_pooled.py sha256 d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f (fit-label policy, origin contract, gates, paired comparison and formal path); image us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197 (build 22176002-a56f-47df-ab67-ede2ba8c68da; source task/ipcch-validity-origin-ablation 868db9f51ffd6c45a7673cbaf10111b5dd46adde) = base training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939 (control-plane 439a488) + these three modules",
+   "difference_from_final_r2_recipe": [
+    "provenance_tags.provenance.code_overlay"
+   ],
+   "final_r2_recipe_sha256": "6b33b50ae41ea288177f11f301e3bc971191d96a60ad98f5b0214c8595386a64",
+   "rel": "config-formal-h12.json",
+   "sha256": "805274c8ba41474ffe75319bd37665ad76403786792e1e3b9cce2858b66e9414",
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/config-formal-h12.json"
+  }
+ },
+ "data": {
+  "baseline_predictions_h00": {
+   "bytes": 4668775,
+   "content_type": "application/gzip",
+   "crc32c": "B/HFzw==",
+   "local": "/home/swl007007/projects/food-crisis-research/scratch/ch-validity-20261028/harvest/formal-h00/trial-0/predictions.csv.gz",
+   "md5": "Iij0wvsK+4d4Zo79EpfFkQ==",
+   "object": "training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h00.csv.gz",
+   "sha256": "e00ee843a5ec35f1b6a0d3fe12442069d686386e85da12a7a8cabdd8b09dc81d",
+   "source": {
+    "bytes": 4668775,
+    "crc32c": "B/HFzw==",
+    "generation": 1793220741490055,
+    "job": "6867303963549499392",
+    "md5": "Iij0wvsK+4d4Zo79EpfFkQ==",
+    "uri": "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_validity_pooled/6867303963549499392/trial-0/predictions.csv.gz"
+   },
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h00.csv.gz"
+  },
+  "baseline_predictions_h06": {
+   "bytes": 3774651,
+   "content_type": "application/gzip",
+   "crc32c": "jsYDZA==",
+   "local": "/home/swl007007/projects/food-crisis-research/scratch/ch-validity-20261028/harvest/formal-h06/trial-0/predictions.csv.gz",
+   "md5": "ARv12uagMlnbz6y5gBFhxg==",
+   "object": "training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h06.csv.gz",
+   "sha256": "bc90625a05b5f38654c382b615a74a2d9a3e59488e8146a0658fe17a7dc28c29",
+   "source": {
+    "bytes": 3774651,
+    "crc32c": "jsYDZA==",
+    "generation": 1793220033278325,
+    "job": "3518877640599535616",
+    "md5": "ARv12uagMlnbz6y5gBFhxg==",
+    "uri": "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_validity_pooled/3518877640599535616/trial-0/predictions.csv.gz"
+   },
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h06.csv.gz"
+  },
+  "baseline_predictions_h12": {
+   "bytes": 3221416,
+   "content_type": "application/gzip",
+   "crc32c": "uvhS6A==",
+   "local": "/home/swl007007/projects/food-crisis-research/scratch/ch-validity-20261028/harvest/formal-h12/trial-0/predictions.csv.gz",
+   "md5": "8bdaJfF4+L5iqYcR8Jb1fw==",
+   "object": "training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h12.csv.gz",
+   "sha256": "8c1c2c64e8144011555ec6a3dd4348bffd9d2b41069b568687065e6dd5cc3f54",
+   "source": {
+    "bytes": 3221416,
+    "crc32c": "uvhS6A==",
+    "generation": 1793221084575375,
+    "job": "8594997370599505920",
+    "md5": "8bdaJfF4+L5iqYcR8Jb1fw==",
+    "uri": "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_validity_pooled/8594997370599505920/trial-0/predictions.csv.gz"
+   },
+   "uri": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-validity-origin-ablation/r1/inputs/baseline-predictions-chfinal-h12.csv.gz"
+  }
+ },
+ "image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:b208b1320033473af374dc1e08fbdac36a0fbbda993f7831bb1f579f94a9d197"
+}

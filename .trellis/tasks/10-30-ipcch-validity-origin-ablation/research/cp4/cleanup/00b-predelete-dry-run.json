@@ -1,0 +1,469 @@
+{
+ "kind": "task-owned annual-weight cleanup (task 10-30)",
+ "mode": "dry-run",
+ "plans": {
+  "h00": {
+   "horizon": 0,
+   "trial": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0",
+   "job": "projects/76571749286/locations/us-central1/customJobs/2842603222726606848",
+   "source": "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_validity_pooled/2842603222726606848/trial-0",
+   "contexts": [
+    "h00_main_2023",
+    "h00_main_2024",
+    "h00_main_2025"
+   ],
+   "targets": [
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2023/q2.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2023/q2.ubj",
+     "package_sha256": "fc9a3de1d9576f90fbcf880a695e6003b35526d77127f6aec9f086422c52cea1",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2023/q2.ubj",
+      "generation": 1793385215136168,
+      "size": 2302501,
+      "crc32c": "YuE4NQ==",
+      "md5": "GyaUejwgr4kIuI02/edOIA==",
+      "local_bytes": 2302501
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2023/q3.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2023/q3.ubj",
+     "package_sha256": "516f40a5c77861e7cbd8845975e73766f9938f601597a6b8542dbde78a7558a7",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2023/q3.ubj",
+      "generation": 1793385214855943,
+      "size": 356530,
+      "crc32c": "NsTb2w==",
+      "md5": "rs0V2Le0KT8uC3N+Z6er/A==",
+      "local_bytes": 356530
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2023/q4.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2023/q4.ubj",
+     "package_sha256": "76dc48189b619b20359c5615c13675945eac08429a6e4224d1f17c20ce1ccea8",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2023/q4.ubj",
+      "generation": 1793385214970569,
+      "size": 1649685,
+      "crc32c": "8RXhTg==",
+      "md5": "XE1WECHtTcw6kedkdjH4vA==",
+      "local_bytes": 1649685
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2023/q5.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2023/q5.ubj",
+     "package_sha256": "e0ca012e5315149c6fd1048574d28f31152cc28d71807297ae37add01502c6e6",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2023/q5.ubj",
+      "generation": 1793385215313330,
+      "size": 1022103,
+      "crc32c": "f3PxeA==",
+      "md5": "1HTsCuYB8y0VLhOCXRnP8g==",
+      "local_bytes": 1022103
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2024/q2.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2024/q2.ubj",
+     "package_sha256": "99490bc334976b468d9100b3378585fc7ad888d3830241edfe5edb3ee494e2d1",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2024/q2.ubj",
+      "generation": 1793385215704924,
+      "size": 2574207,
+      "crc32c": "FUe10Q==",
+      "md5": "EKydWzx9TYsVwaoTuNCNIg==",
+      "local_bytes": 2574207
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2024/q3.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2024/q3.ubj",
+     "package_sha256": "fa4f025da1b8e7b999d61066ad7dcd693bd60d104ceec89d283972b2d1aaf7d1",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2024/q3.ubj",
+      "generation": 1793385215472684,
+      "size": 367629,
+      "crc32c": "q+MzuA==",
+      "md5": "N5jaSDORJtoagAbxmCmdEg==",
+      "local_bytes": 367629
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2024/q4.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2024/q4.ubj",
+     "package_sha256": "f4ebe3795c5e3e38db0c725ff8a437f27ff8b7959ebf5814cdb16780d0e1754a",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2024/q4.ubj",
+      "generation": 1793385215564737,
+      "size": 1663483,
+      "crc32c": "yrqRXg==",
+      "md5": "uzoTWN4k0ADcDuN9mmYlEA==",
+      "local_bytes": 1663483
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2024/q5.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2024/q5.ubj",
+     "package_sha256": "67248903111ea34d2f6b593be97097c9fe9990d7154c59d459f82877ffe25acc",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2024/q5.ubj",
+      "generation": 1793385215993304,
+      "size": 1114993,
+      "crc32c": "MzsPRA==",
+      "md5": "xRYfyJXPvCYVTHuSNlFXvg==",
+      "local_bytes": 1114993
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2025/q2.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2025/q2.ubj",
+     "package_sha256": "f2a0be112c476b66a764f201c5411cd17e3c1b8bc08876e2622acd49940849d5",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2025/q2.ubj",
+      "generation": 1793385214497297,
+      "size": 2671027,
+      "crc32c": "JKDmAA==",
+      "md5": "BMWyJTPymGpTNHc1rOyFUg==",
+      "local_bytes": 2671027
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2025/q3.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2025/q3.ubj",
+     "package_sha256": "0ff5ea618073c5c5562ee339b135791b67b01148fa038ec582a9258b1b2749d2",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2025/q3.ubj",
+      "generation": 1793385214258639,
+      "size": 360001,
+      "crc32c": "U8v7LA==",
+      "md5": "13y5roL4ZxiLs1r6NmMIXA==",
+      "local_bytes": 360001
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2025/q4.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2025/q4.ubj",
+     "package_sha256": "2767887e6de183ccce752dbf8c4a5d8a3dadaca2ab5d04cfda173a08553b3fd6",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2025/q4.ubj",
+      "generation": 1793385214351579,
+      "size": 1601222,
+      "crc32c": "y0Jv8g==",
+      "md5": "kYi/tuQWBrgmnys26zfKAg==",
+      "local_bytes": 1601222
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h00_main_2025/q5.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h00/trial-0/gcs-only/annual-package/weights/h00_main_2025/q5.ubj",
+     "package_sha256": "1c08cb7694316dfab63d9715544171af1d90bd25fc337dcb1225e28472755aa6",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2842603222726606848/trial-0/gcs-only/annual-package/weights/h00_main_2025/q5.ubj",
+      "generation": 1793385214670005,
+      "size": 914119,
+      "crc32c": "FF3E1w==",
+      "md5": "A9SJiRnZt15nEnCyxgCZ0Q==",
+      "local_bytes": 914119
+     }
+    }
+   ],
+   "problems": [],
+   "replay_receipt_sha256": "3be3f29d86ed1f8085eb611025e6824fd6a520446966fe7f8ada79e1d27a80e3"
+  },
+  "h06": {
+   "horizon": 6,
+   "trial": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0",
+   "job": "projects/76571749286/locations/us-central1/customJobs/2596031143128072192",
+   "source": "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_validity_pooled/2596031143128072192/trial-0",
+   "contexts": [
+    "h06_main_2023",
+    "h06_main_2024",
+    "h06_main_2025"
+   ],
+   "targets": [
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2023/q2.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2023/q2.ubj",
+     "package_sha256": "feca5cc2f93a9d823c584ecf5787e2214ff1037dffd3b626592d2753a83f9fda",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2023/q2.ubj",
+      "generation": 1793384976610939,
+      "size": 834109,
+      "crc32c": "veNGFw==",
+      "md5": "UkvqwlTYShJEhlA+o3alEw==",
+      "local_bytes": 834109
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2023/q3.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2023/q3.ubj",
+     "package_sha256": "5e9a4e011e4e788657047dfa4f6b416ccfc371790e5d2f0f44eaec0ebdce05a5",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2023/q3.ubj",
+      "generation": 1793384976337498,
+      "size": 330647,
+      "crc32c": "i4Oqkw==",
+      "md5": "Y8wrl++cxMCVytuLTK+WXg==",
+      "local_bytes": 330647
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2023/q4.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2023/q4.ubj",
+     "package_sha256": "c6d51c7945f99d13ca873055c11a4960b3a61df8dccdb359e1523ac8ba799177",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2023/q4.ubj",
+      "generation": 1793384976447290,
+      "size": 690969,
+      "crc32c": "MhzSzw==",
+      "md5": "KXh2Zk1pu3ErYlMbWA4h6Q==",
+      "local_bytes": 690969
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2023/q5.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2023/q5.ubj",
+     "package_sha256": "19b0f4a87154925729307ce206610bd4e9f5e3de0a4c115d98a8159d24b6a483",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2023/q5.ubj",
+      "generation": 1793384976805860,
+      "size": 532324,
+      "crc32c": "VOV3Mw==",
+      "md5": "VLkUjm0kJoiPAfmjvc3tsA==",
+      "local_bytes": 532324
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2024/q2.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2024/q2.ubj",
+     "package_sha256": "c26a788b39a82ec8567c52282fc35b204ad845cfca6d13e8a3fb183dae55f508",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2024/q2.ubj",
+      "generation": 1793384977805363,
+      "size": 833632,
+      "crc32c": "DwAVRw==",
+      "md5": "2mu5cmLd/DUPIp7IyKNggQ==",
+      "local_bytes": 833632
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2024/q3.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2024/q3.ubj",
+     "package_sha256": "e3483f781e7bf12fd76469e5c58746dec9a13dda1938394acd569462649ac5fb",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2024/q3.ubj",
+      "generation": 1793384977611159,
+      "size": 331061,
+      "crc32c": "/MHSMg==",
+      "md5": "27JKhtHNBzxwYZ938YwRyg==",
+      "local_bytes": 331061
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2024/q4.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2024/q4.ubj",
+     "package_sha256": "753ed4bb8bbbbcb5d62ac52360c340247384b436c1eaa0e0eec6eeb25aad0443",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2024/q4.ubj",
+      "generation": 1793384977716059,
+      "size": 704773,
+      "crc32c": "ljO8rQ==",
+      "md5": "u51r9DmaeIzMdl5yNQiQhg==",
+      "local_bytes": 704773
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2024/q5.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2024/q5.ubj",
+     "package_sha256": "140d5662fc8a784a1171e4343ada3600b2849fb43d89486bfda03b6295a0c80c",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2024/q5.ubj",
+      "generation": 1793384977992701,
+      "size": 542253,
+      "crc32c": "RuISRQ==",
+      "md5": "IlpIpMfqWp4MtrOqLDBWKA==",
+      "local_bytes": 542253
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2025/q2.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2025/q2.ubj",
+     "package_sha256": "b7b4f9b4f858340f27cc7eb3d5805fcf168276ffa148b962a2c3fc43375830ca",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2025/q2.ubj",
+      "generation": 1793384977270106,
+      "size": 862465,
+      "crc32c": "869FiA==",
+      "md5": "ACeKJfWzr8eVxknFpckkXg==",
+      "local_bytes": 862465
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2025/q3.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2025/q3.ubj",
+     "package_sha256": "64eb2f27e8abd1ebd0f4de4b7e2bef04a2fd19862dd862a7bc4c941e5319e56c",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2025/q3.ubj",
+      "generation": 1793384976982246,
+      "size": 328672,
+      "crc32c": "cA76sw==",
+      "md5": "cKogDaxjM0RgRyKurlTirQ==",
+      "local_bytes": 328672
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2025/q4.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2025/q4.ubj",
+     "package_sha256": "4fa987b686e590644f442cc12b05ec4288fb77df16e58f494665d550938c68a2",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2025/q4.ubj",
+      "generation": 1793384977105776,
+      "size": 706405,
+      "crc32c": "UO07TQ==",
+      "md5": "VWfvCVKABWDDuRgCH6N2Jw==",
+      "local_bytes": 706405
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h06_main_2025/q5.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h06/trial-0/gcs-only/annual-package/weights/h06_main_2025/q5.ubj",
+     "package_sha256": "bce42a486d501e812f0072317937fd01c0d66717aa6774b5ea4b92da9e8c5b82",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/2596031143128072192/trial-0/gcs-only/annual-package/weights/h06_main_2025/q5.ubj",
+      "generation": 1793384977427669,
+      "size": 481325,
+      "crc32c": "g9Hnyg==",
+      "md5": "2Hvihb9l2IvOI79sPN/Yhw==",
+      "local_bytes": 481325
+     }
+    }
+   ],
+   "problems": [],
+   "replay_receipt_sha256": "a1853ae4d9621c4ac8c74244f7b563e0907eb0bd1dd4b99511344907acb5d417"
+  },
+  "h12": {
+   "horizon": 12,
+   "trial": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0",
+   "job": "projects/76571749286/locations/us-central1/customJobs/3377405678476853248",
+   "source": "gs://food-crisis-modeling-enso-research-artifacts/trials/ipcch_validity_pooled/3377405678476853248/trial-0",
+   "contexts": [
+    "h12_main_2024",
+    "h12_main_2025"
+   ],
+   "targets": [
+    {
+     "rel": "gcs-only/annual-package/weights/h12_main_2024/q2.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0/gcs-only/annual-package/weights/h12_main_2024/q2.ubj",
+     "package_sha256": "c7c6def3fdae9e5f258d527edbba6c0b4a5b954b7e1d56b6be790ec15fa00d47",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/q2.ubj",
+      "generation": 1793385884486506,
+      "size": 503129,
+      "crc32c": "KiQbPw==",
+      "md5": "Y6F1Mn4MxD+KDcnavUODQQ==",
+      "local_bytes": 503129
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h12_main_2024/q3.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0/gcs-only/annual-package/weights/h12_main_2024/q3.ubj",
+     "package_sha256": "220a551d2bad470e2321100a6c3edda40adc9ba63cbdd4e3b4ccfe363c3bf10c",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/q3.ubj",
+      "generation": 1793385884276317,
+      "size": 429267,
+      "crc32c": "btwTJg==",
+      "md5": "wgOQ7ukBBiiLccCa6N5b1A==",
+      "local_bytes": 429267
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h12_main_2024/q4.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0/gcs-only/annual-package/weights/h12_main_2024/q4.ubj",
+     "package_sha256": "3ba40870e685281f03548f7ad0841c677b33a43eb866d96a61967cb0d9ed8471",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/q4.ubj",
+      "generation": 1793385884393999,
+      "size": 375459,
+      "crc32c": "RtpzTA==",
+      "md5": "Zh90E61HigA3KJ2Mc4+x+Q==",
+      "local_bytes": 375459
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h12_main_2024/q5.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0/gcs-only/annual-package/weights/h12_main_2024/q5.ubj",
+     "package_sha256": "ddb8f5d87b3d027458de93dd249be886f4368c16b7940f55591acd8a6f8229ad",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2024/q5.ubj",
+      "generation": 1793385884724108,
+      "size": 253256,
+      "crc32c": "Z4uhYg==",
+      "md5": "Iyu4aCgXxbiUjx2AHe8hjg==",
+      "local_bytes": 253256
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h12_main_2025/q2.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0/gcs-only/annual-package/weights/h12_main_2025/q2.ubj",
+     "package_sha256": "3dbcc965ae983a57c2872ea902e6c88f598acb6b79760a5c0f3c47b17f18226d",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/q2.ubj",
+      "generation": 1793385883872256,
+      "size": 558694,
+      "crc32c": "+3AIVA==",
+      "md5": "R5fdrIBPCWBfrWl3SiytNw==",
+      "local_bytes": 558694
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h12_main_2025/q3.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0/gcs-only/annual-package/weights/h12_main_2025/q3.ubj",
+     "package_sha256": "b0b9ae1fb713eb66b4c2e14df3ac5d592e50d44a2e42aa3dd7c40c3d0c2b5fed",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/q3.ubj",
+      "generation": 1793385883544814,
+      "size": 434373,
+      "crc32c": "kRDz1g==",
+      "md5": "1NuTJRuAQGARkFtrcXOn0A==",
+      "local_bytes": 434373
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h12_main_2025/q4.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0/gcs-only/annual-package/weights/h12_main_2025/q4.ubj",
+     "package_sha256": "3affd2c58ff02d12c5e371e58e17fc2510ebadb6e5c637d5cebf959a74901f6a",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/q4.ubj",
+      "generation": 1793385883756128,
+      "size": 407012,
+      "crc32c": "wi62mA==",
+      "md5": "bAnvxLrMRu3kcHwHVqRKwg==",
+      "local_bytes": 407012
+     }
+    },
+    {
+     "rel": "gcs-only/annual-package/weights/h12_main_2025/q5.ubj",
+     "local": "/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/harvest/formal-h12/trial-0/gcs-only/annual-package/weights/h12_main_2025/q5.ubj",
+     "package_sha256": "3cac9811d20d19feacd66b4f17a26d47754933ce6dccea902a20c0648e6809bf",
+     "gcs": {
+      "name": "trials/ipcch_validity_pooled/3377405678476853248/trial-0/gcs-only/annual-package/weights/h12_main_2025/q5.ubj",
+      "generation": 1793385884065368,
+      "size": 270257,
+      "crc32c": "VU1IMA==",
+      "md5": "lW0O2Ra97nUJcYNa5/gx7Q==",
+      "local_bytes": 270257
+     }
+    }
+   ],
+   "problems": [],
+   "replay_receipt_sha256": "ba1a3bcbee478a95586c0678642284b39002fc332c642ff89e4f03707e63bb9e"
+  }
+ },
+ "retained": "holdout package/ (LoggedModel), annual package.json/records/routing/reference/loader, every prediction, membership, config and receipt; nothing in MLflow touched",
+ "precheck_problems": [],
+ "deleted": []
+}

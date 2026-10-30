@@ -1,0 +1,23 @@
+{
+ "context": "/home/swl007007/projects/food-crisis-research/staging/ipcch-origin-ablation-20261030/image-overlay-origin",
+ "files": {
+  "Dockerfile": "b6912b3a397a0167288a5490e1c85f03c3bea37e0fc1eff91f4a771d7a9ae06a",
+  "cloudbuild.yaml": "8c320ff69380447db4a9343cf853bb48a606561bda4772e6e1d8e931c1db42c6",
+  "dataset_input.py": "2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4",
+  "ipcch_validity_features.py": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6",
+  "ipcch_validity_pooled.py": "d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f",
+  "overlay/base-context-manifest.json": "c25bd7b8c8de14ecf2701742ea03149dce66cf36903950ccfc387ed38b5a8e83",
+  "overlay/overlay-diff.patch": "e698446657dff012290e2e8c7890cdc273844c5e5462d744bda5d488d25eded7",
+  "overlay/overlay-manifest.json": "e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834",
+  "overlay/overlay_check.py": "02ece4a579b6cc361d3caeacbf6676faa72054704c1d296338750ac64f70662d"
+ },
+ "composite_source_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f",
+ "overlay_manifest_sha256": "e5a2aaeba90c17476df396a163c24cf3f82afd7054d27ef88a7b3936d6995834",
+ "module_sha256": {
+  "research_cloud/training/dataset_input.py": "2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4",
+  "research_cloud/training/ipcch_validity_features.py": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6",
+  "research_cloud/training/ipcch_validity_pooled.py": "d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f"
+ },
+ "image_tag": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030",
+ "source_commit": "868db9f51ffd6c45a7673cbaf10111b5dd46adde"
+}

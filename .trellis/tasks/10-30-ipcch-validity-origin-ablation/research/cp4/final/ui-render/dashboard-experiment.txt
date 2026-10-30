@@ -1,0 +1,1854 @@
+3.17.0
+default
+GenAI
+Model training
+IPCCH dashboard
+Runs
+Models
+Traces
+Model registry
+Docs
+Settings
+I
+ipcch-reader
+Experiments
+IPCCH dashboard
+Runs
+Views
+
+IPCCH dashboard - one row per model family x arm x lead time (x seed), copied from 'IPCCH detailed runs' without rescoring. 156 rows; MLP rows per seed plus a 'mean of 3 seeds' row.
+
+Vocabulary. family = experiment design (tag family / family_title). arm = predictor within a family: persistence: No model: predicts the phase observed most recently at or before the forecast origin in the same area. Defined only on persistence_available rows.; pooled: One model for all areas.; partitioned_gated: Regional model where the historical gate accepted it for that region, pooled model elsewhere.; regional_ungated: The regional model's own prediction wherever a regional model was fitted, whatever the gate decided. Diagnostic: scored on regional_model_fitted rows only.; global_base: The global MLP alone, without a residual model.. arm_role: baseline = not trained in this run (persistence, or a model reused for comparison); candidate = trained in this run; part of the main comparison; diagnostic = trained in this run for diagnosis only (not a deployable arm). lead_months = forecast lead (origin = target month minus lead). AlphaEarth supervised partition arms: pooled: Pooled XGB quartet on compact296 (no AlphaEarth descriptors).; pooled_plus_alphaearth: Pooled XGB quartet on compact296 plus 128 AlphaEarth 2017 admin descriptors.; shared_calibration: pooled_plus_alphaearth raw outputs with one shared ridge calibration refitted each year.; regional_calibration: pooled_plus_alphaearth with shared plus regional calibration on a supervised partition map. No map was selected at any lead, so this arm equals shared_calibration exactly.. Its evaluation datasets are family-qualified (saved truth text differs in the last digits from the other families' datasets with the same keys and phases).
+
+Metric keys read ... period_role: primary = main evaluation period of the family; holdout = later months reported separately (2026-01..2026-04, 4 target months, point estimates); combined = primary and holdout together (GeoXGB maps to 2024 only); selected_months = selected target months only (GeoXGB window probe), not a full period (actual spans in tags period.). Cohorts: all_scored: Every scored row: one area x one target month in the period with a valid IPCCH truth value. persistence_available: Rows whose area has at least one valid IPCCH observation at or before the forecast origin (target month minus lead). Only these rows have a persistence forecast, so every comparison with persistence uses this cohort. regional_model_fitted: Rows whose region got a regional model at that refit (training data with at least 500 rows, 50 areas and 6 target months), whatever the gate later decided. regional_model_fitted_and_persistence_available: regional_model_fitted rows that also have a persistence forecast; used to compare the regional model with persistence on exactly the same rows. in_partition_map: Rows whose area is covered by the frozen partition map. regional_model_fitted_both_windows: Rows in regions that can fit a regional model under both the 36-month window and full history; the only rows where the two regional arms are both real regional fits. regional_model_fitted_full_history_only: Rows in regions with too little data for a regional model in the 36-month window but enough with full history (from 2014-01); shows what a longer window adds. Metrics: binary. = crisis (phase 3+) vs not; four_class.* = phase 1|2|3|4-5; share_phase3plus_r2 = R2 of the population share in phase 3+; n_rows = rows scored. *.binary.f1.minus_persistence / minus_pooled = crisis-F1 difference to persistence / pooled on the same rows (ci_low/ci_high where a bootstrap was saved).
+
+Comparability. Compare values only on the same evaluation dataset (Inputs; the dataset name states lead, period span and cohort). GeoXGB maps to 2024 has a different primary period (2025 only), so its primary values are not comparable with the other families' primary values. The window probe covers selected months only. No global best-model ranking is implied.
+
+Start here. Filter tags.lead_months = '03' AND tags.aggregation != 'single_seed' (one row per family x arm; the MLP as its mean of 3 seeds), or tags.family = 'geoxgb_reference'. Then chart primary.persistence_available.binary.f1 grouped by tag arm, or primary.persistence_available.binary.f1.minus_persistence with its ci_low / ci_high.
+
+Models tab: external catalog descriptors only (not loadable). Details, gate-decision subsets, coverage and per-period diagnostics stay in 'IPCCH detailed runs' (tag zz_prov.original_run_id). Model bundle URI/SHA tags (zz_prov.model_bundle_uri, zz_prov.model_bundle_sha256) on the older families are historical references only: their local model weights (models.tar) were intentionally removed (research retention policy, 2026-10-14) and cannot be downloaded. AlphaEarth descriptors carry an empty bundle URI; the family run's manifests/models.tar.members.json lists its model files with SHA256.
+
+Validity-augmented pooled (trained research rows, 2026-10-17). Family ipcch_validity_pooled (family_title
+"Validity-augmented pooled"), leads 0/6/12, seed 42: six rows and downloadable models trained on Vertex AI and published
+directly in this experiment (record_kind=dashboard_row, aggregation=single_run, catalog=trained_research); they are not
+projections of 'IPCCH detailed runs' and carry no zz_prov plan keys or plan fingerprint. Arms: original = share-QC-valid
+original IPC/CH labels; validity_augmented = originals plus monthly copies within each uniquely linked current IPC analysis's
+validity window (round-level linkage assumption). Both arms: pooled XGBoost quartet on compact296 + 128 AlphaEarth 2017
+descriptors (+ realized O+1..O+6 weather oracle at leads 6/12) with annual shared ridge calibration. Metric keys
+primary.all_scored.* (main window) and holdout.all_scored.* (2026-01..2026-04). Samples differ between arms; metrics are generally not directly comparable (descriptive augmentation comparison, not an isolated effect). Cards: ipcch-model get <model_id> (m-…); packages: models:/.
+
+All time
+State:
+Active
+Datasets
+Sort: Created
+Columns
+Expand rows
+Group by
+New run
+Run Name
+Created
+Dataset
+Duration
+Source
+Models
+Pin run
+#277c43
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+9 minutes ago
+Pin run
+#8a63bf
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+21 minutes ago
+Pin run
+#434a93
+Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+25 minutes ago
+Pin run
+#de7921
+Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 14-month
+12 hours ago
+Pin run
+#b45091
+Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 2-month
+12 hours ago
+Pin run
+#93320b
+Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month
+12 hours ago
+Pin run
+#8acaff
+Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+1 day ago
+Pin run
+#8ddda8
+Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+1 day ago
+Pin run
+#115026
+Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+1 day ago
+Pin run
+#e65b77
+Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+2 days ago
+Pin run
+#434a93
+Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+2 days ago
+Pin run
+#0e538b
+Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+2 days ago
+Pin run
+#8396a5
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | 6-month
+3 days ago
+Pin run
+#308613
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | 6-month
+3 days ago
+Pin run
+#be501e
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | 0-month
+3 days ago
+Pin run
+#de7921
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | 0-month
+3 days ago
+Pin run
+#a6630c
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month
+8 days ago
+Pin run
+#1f272d
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month
+8 days ago
+Pin run
+#b45091
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month
+8 days ago
+Pin run
+#facb66
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 12-month
+9 days ago
+Pin run
+#facb66
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 6-month
+9 days ago
+Pin run
+#8396a5
+Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 0-month
+9 days ago
+Pin run
+#277c43
+Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 12-month
+10 days ago
+Pin run
+#c82d4c
+Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 6-month
+10 days ago
+Pin run
+#04867d
+Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 0-month
+10 days ago
+Pin run
+#0e538b
+Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 12-month
+10 days ago
+Pin run
+#115026
+Validity-augmented pooled | validity_augmented_idp_202610 | 12-month
+10 days ago
+Pin run
+#be501e
+Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 6-month
+10 days ago
+Pin run
+#1f272d
+Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 0-month
+10 days ago
+Pin run
+#0e538b
+Validity-augmented pooled | validity_augmented_idp_202610 | 6-month
+10 days ago
+Pin run
+#8ddda8
+Validity-augmented pooled | validity_augmented_idp_202610 | 0-month
+10 days ago
+Pin run
+#277c43
+Direct four-class XGBoost | validity_augmented_idp | 12-month
+11 days ago
+Pin run
+#5f7281
+Direct four-class XGBoost | validity_augmented_idp | 6-month
+11 days ago
+Pin run
+#2272b4
+Direct four-class XGBoost | validity_augmented_idp | 0-month
+11 days ago
+Pin run
+#be501e
+SA Local | validity_augmented_idp | 12-month
+12 days ago
+Pin run
+#4299e0
+SA Local | validity_augmented_idp_hstack | 0-month
+12 days ago
+Pin run
+#9e102c
+SA Local | validity_augmented_idp_hstack | 6-month
+12 days ago
+Pin run
+#de7921
+Validity-augmented pooled | validity_augmented_idp_hstack | 0-month
+12 days ago
+Pin run
+#de7921
+Validity-augmented pooled | validity_augmented_idp_hstack | 6-month
+12 days ago
+Pin run
+#1f272d
+Validity-augmented pooled | validity_augmented_idp | 6-month
+12 days ago
+Pin run
+#308613
+Validity-augmented pooled | validity_augmented_idp | 0-month
+12 days ago
+Pin run
+#445461
+Validity-augmented pooled | validity_augmented_idp | 12-month
+13 days ago
+Pin run
+#5f7281
+Validity-augmented pooled | validity_augmented | 12-month
+13 days ago
+Pin run
+#8ddda8
+Validity-augmented pooled | validity_augmented | 6-month
+13 days ago
+Pin run
+#8acaff
+Validity-augmented pooled | validity_augmented | 0-month
+13 days ago
+Pin run
+#f2be88
+Validity-augmented pooled | original | 6-month
+13 days ago
+Pin run
+#0e538b
+Validity-augmented pooled | original | 0-month
+13 days ago
+Pin run
+#308613
+Validity-augmented pooled | original | 12-month
+13 days ago
+Pin run
+#2272b4
+AlphaEarth supervised partition | persistence | 6-month
+15 days ago
+Pin run
+#93320b
+AlphaEarth supervised partition | regional_calibration | 6-month
+15 days ago
+Pin run
+#308613
+AlphaEarth supervised partition | shared_calibration | 6-month
+15 days ago
+Pin run
+#137dae
+AlphaEarth supervised partition | pooled_plus_alphaearth | 6-month
+15 days ago
+Pin run
+#8ddda8
+AlphaEarth supervised partition | pooled | 6-month
+15 days ago
+Pin run
+#de7921
+AlphaEarth supervised partition | persistence | 3-month
+15 days ago
+Pin run
+#0e538b
+AlphaEarth supervised partition | regional_calibration | 3-month
+15 days ago
+Pin run
+#3ba65e
+AlphaEarth supervised partition | shared_calibration | 3-month
+15 days ago
+Pin run
+#2272b4
+AlphaEarth supervised partition | pooled_plus_alphaearth | 3-month
+15 days ago
+Pin run
+#434a93
+AlphaEarth supervised partition | pooled | 3-month
+15 days ago
+Pin run
+#434a93
+AlphaEarth supervised partition | persistence | 12-month
+15 days ago
+Pin run
+#4299e0
+AlphaEarth supervised partition | regional_calibration | 12-month
+15 days ago
+Pin run
+#5f7281
+AlphaEarth supervised partition | shared_calibration | 12-month
+15 days ago
+Pin run
+#e65b77
+AlphaEarth supervised partition | pooled_plus_alphaearth | 12-month
+15 days ago
+Pin run
+#445461
+AlphaEarth supervised partition | pooled | 12-month
+15 days ago
+Pin run
+#5f7281
+AlphaEarth supervised partition | persistence | 1-month
+15 days ago
+Pin run
+#93320b
+AlphaEarth supervised partition | regional_calibration | 1-month
+15 days ago
+Pin run
+#434a93
+AlphaEarth supervised partition | shared_calibration | 1-month
+15 days ago
+Pin run
+#a6630c
+AlphaEarth supervised partition | pooled_plus_alphaearth | 1-month
+15 days ago
+Pin run
+#be501e
+AlphaEarth supervised partition | pooled | 1-month
+15 days ago
+Pin run
+#c83243
+MLP residual on fixed maps | pooled | 6-month | mean of 3 seeds
+20 days ago
+Pin run
+#f792a6
+MLP residual on fixed maps | pooled | 3-month | mean of 3 seeds
+20 days ago
+Pin run
+#115026
+MLP residual on fixed maps | pooled | 12-month | mean of 3 seeds
+20 days ago
+Pin run
+#04867d
+MLP residual on fixed maps | pooled | 1-month | mean of 3 seeds
+20 days ago
+Pin run
+#c83243
+MLP residual on fixed maps | regional_ungated | 6-month | mean of 3 seeds
+20 days ago
+Pin run
+#93320b
+MLP residual on fixed maps | regional_ungated | 3-month | mean of 3 seeds
+20 days ago
+Pin run
+#be501e
+MLP residual on fixed maps | regional_ungated | 12-month | mean of 3 seeds
+20 days ago
+Pin run
+#137dae
+MLP residual on fixed maps | regional_ungated | 1-month | mean of 3 seeds
+20 days ago
+Pin run
+#a6630c
+MLP residual on fixed maps | partitioned_gated | 6-month | mean of 3 seeds
+20 days ago
+Pin run
+#c83243
+MLP residual on fixed maps | partitioned_gated | 3-month | mean of 3 seeds
+20 days ago
+Pin run
+#137dae
+MLP residual on fixed maps | partitioned_gated | 12-month | mean of 3 seeds
+20 days ago
+Pin run
+#137dae
+MLP residual on fixed maps | partitioned_gated | 1-month | mean of 3 seeds
+20 days ago
+Pin run
+#445461
+MLP residual on fixed maps | global_base | 6-month | mean of 3 seeds
+20 days ago
+Pin run
+#e65b77
+MLP residual on fixed maps | global_base | 3-month | mean of 3 seeds
+20 days ago
+Pin run
+#434a93
+MLP residual on fixed maps | global_base | 12-month | mean of 3 seeds
+20 days ago
+Pin run
+#a6630c
+MLP residual on fixed maps | global_base | 1-month | mean of 3 seeds
+20 days ago
+Pin run
+#04867d
+GeoXGB yearly refit | pooled | 6-month
+20 days ago
+Pin run
+#a6630c
+GeoXGB yearly refit | persistence | 6-month
+20 days ago
+Pin run
+#445461
+GeoXGB yearly refit | regional_ungated | 6-month
+20 days ago
+Pin run
+#1f272d
+GeoXGB yearly refit | partitioned_gated | 6-month
+20 days ago
+Pin run
+#93320b
+GeoXGB yearly refit | pooled | 3-month
+20 days ago
+Pin run
+#2272b4
+GeoXGB yearly refit | persistence | 3-month
+20 days ago
+Pin run
+#de7921
+GeoXGB yearly refit | regional_ungated | 3-month
+20 days ago
+Pin run
+#277c43
+GeoXGB yearly refit | partitioned_gated | 3-month
+20 days ago
+Pin run
+#a6630c
+GeoXGB yearly refit | pooled | 12-month
+20 days ago
+Pin run
+#5f7281
+GeoXGB yearly refit | persistence | 12-month
+20 days ago
+Pin run
+#be501e
+GeoXGB yearly refit | regional_ungated | 12-month
+20 days ago
+Pin run
+#f792a6
+GeoXGB yearly refit | partitioned_gated | 12-month
+20 days ago
+Pin run
+#f792a6
+GeoXGB yearly refit | pooled | 1-month
+20 days ago
+Pin run
+#445461
+GeoXGB yearly refit | persistence | 1-month
+20 days ago
+Pin run
+#115026
+GeoXGB yearly refit | regional_ungated | 1-month
+20 days ago
+Pin run
+#04867d
+GeoXGB yearly refit | partitioned_gated | 1-month
+20 days ago
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+…
+45.0s
+-
+IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month 
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+…
+46.4s
+-
+IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month 
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+…
+51.8s
+-
+IPCCH Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | H14 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+…
+27.2s
+-
+IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 14-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | H02 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+…
+30.7s
+-
+IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 2-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | H08 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+…
+33.4s
+-
+IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month 
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+…
+45.8s
+-
+IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month 
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+…
+49.7s
+-
+IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month 
+v1
+IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (dba329f9b115d4de10e294133bf91d41)
+Modeling_panel_index
+…
+1.5min
+-
+IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month 
+v1
+IPCCH validity (gosif-v3-input-20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+54.5s
+-
+IPCCH Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+,
+IPCCH validity (gosif-v3-input-20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
++1
+32.4min
+-
+IPCCH Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month 
+v1
+IPCCH validity (gosif-v3-input-20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+,
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
++1
+33.8min
+-
+IPCCH Validity-augmented pooled (GOSIF v3 20261027) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | H06 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+51.6s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | H06 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+44.5s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | H00 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+45.0s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hstack_grid | 0-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | H00 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+1.2min
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_multilayer_grid | 0-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+40.1s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+46.6s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+1.8min
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal | H12 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+50.3s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 12-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal | H06 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+1.3min
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal | H00 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+1.3min
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_acledagg_lag1_uncal | 0-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_hindcast2325 | H12 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+49.2s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 12-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_hindcast2325 | H06 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+55.9s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_hindcast2325 | H00 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+47.4s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_hindcast2325 | 0-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_rolling36 | H12 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+50.7s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 12-month 
+v1
+IPCCH validity | validity_augmented_idp_202610 | H12 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+1.1min
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610 | 12-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_rolling36 | H06 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+53.4s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_202610_rolling36 | H00 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+53.8s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610_rolling36 | 0-month 
+v1
+IPCCH validity | validity_augmented_idp_202610 | H06 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+1.2min
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610 | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_202610 | H00 | modeling panel index (708d46066d1bca7d91cde001f0a8e5b2)
+Modeling_panel_index
+…
+1.4min
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_202610 | 0-month 
+v1
+IPCCH direct four-class | validity_augmented_idp | H12 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+35.6s
+-
+IPCCH Direct four-class XGBoost | validity_augmented_idp | 12-month 
+v1
+IPCCH direct four-class | validity_augmented_idp | H06 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+49.5s
+-
+IPCCH Direct four-class XGBoost | validity_augmented_idp | 6-month 
+v1
+IPCCH validity | validity_augmented_idp | H00 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+,
+IPCCH direct four-class | validity_augmented_idp | H00 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
++1
+41.1min
+-
+IPCCH Direct four-class XGBoost | validity_augmented_idp | 0-month 
+v1
+IPCCH validity | SA | validity_augmented_idp | H12 | modeling panel index (f496e7d06f848830562ea046b2030fcf)
+Modeling_panel_index
+…
+42.6s
+-
+IPCCH SA Local | validity_augmented_idp | 12-month 
+v1
+IPCCH validity | SA | validity_augmented_idp_hstack | H00 | modeling panel index (f496e7d06f848830562ea046b2030fcf)
+Modeling_panel_index
+…
+46.5s
+-
+IPCCH SA Local | validity_augmented_idp_hstack | 0-month 
+v1
+IPCCH validity | SA | validity_augmented_idp_hstack | H06 | modeling panel index (f496e7d06f848830562ea046b2030fcf)
+Modeling_panel_index
+…
+48.5s
+-
+IPCCH SA Local | validity_augmented_idp_hstack | 6-month 
+v1
+IPCCH validity | validity_augmented_idp_hstack | H00 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+11.4min
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_hstack | 0-month 
+v1
+IPCCH validity | validity_augmented_idp_hstack | H06 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+21.6min
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp_hstack | 6-month 
+v1
+IPCCH validity | validity_augmented_idp | H06 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+41.2s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp | 6-month 
+v1
+IPCCH validity | validity_augmented_idp | H00 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+43.1s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp | 0-month 
+v1
+IPCCH validity | validity_augmented_idp | H12 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+41.7s
+-
+IPCCH Validity-augmented pooled | validity_augmented_idp | 12-month 
+v1
+IPCCH validity | validity_augmented | H12 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+34.3s
+-
+IPCCH Validity-augmented pooled | validity_augmented | 12-month 
+v1
+IPCCH validity | validity_augmented | H06 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+40.7s
+-
+IPCCH Validity-augmented pooled | validity_augmented | 6-month 
+v1
+IPCCH validity | validity_augmented | H00 | modeling panel index (91b0456e03ea11db48124ea30f2444da)
+Modeling_panel_index
+…
+36.3s
+-
+IPCCH Validity-augmented pooled | validity_augmented | 0-month 
+v1
+IPCCH validity | original | H06 | modeling panel index (10cc1546598abc7ac94ef28697095b0e)
+Modeling_panel_index
+…
+36.4s
+-
+IPCCH Validity-augmented pooled | original | 6-month 
+v1
+IPCCH validity | original | H00 | modeling panel index (10cc1546598abc7ac94ef28697095b0e)
+Modeling_panel_index
+…
+33.1s
+-
+IPCCH Validity-augmented pooled | original | 0-month 
+v1
+IPCCH validity | original | H12 | modeling panel index (10cc1546598abc7ac94ef28697095b0e)
+Modeling_panel_index
+…
+45.5s
+-
+IPCCH Validity-augmented pooled | original | 12-month 
+v1
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (AlphaEarth supervised partition) (fd20048877e829b48b9574c2c77cf792)
+Evaluation
+,
+IPCCH training pool | compact296 | 6-month (75469770ea3b6eaca588e97bd045479e)
+Training
+…
++1
+347ms
+-
+-
+IPCCH eval | 6-month | 2023-07..2025-10 | all_scored (AlphaEarth supervised partition) (dcd709cd4c14f95a063dd409bcf7bacc)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (91d2162f13963acab22aa1cdb3a71008)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 6-month (e22856cb10cdc6c9da74a1bac3c11855)
+Training
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (AlphaEarth supervised partition) (fd20048877e829b48b9574c2c77cf792)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 6-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (91d2162f13963acab22aa1cdb3a71008)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | all_scored (AlphaEarth supervised partition) (dcd709cd4c14f95a063dd409bcf7bacc)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 6-month (e22856cb10cdc6c9da74a1bac3c11855)
+Training
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (AlphaEarth supervised partition) (fd20048877e829b48b9574c2c77cf792)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (AlphaEarth supervised partition) (fd20048877e829b48b9574c2c77cf792)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | all_scored (AlphaEarth supervised partition) (dcd709cd4c14f95a063dd409bcf7bacc)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 6-month (e22856cb10cdc6c9da74a1bac3c11855)
+Training
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (91d2162f13963acab22aa1cdb3a71008)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH training pool | compact296 | 6-month (75469770ea3b6eaca588e97bd045479e)
+Training
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (91d2162f13963acab22aa1cdb3a71008)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | all_scored (AlphaEarth supervised partition) (dcd709cd4c14f95a063dd409bcf7bacc)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (AlphaEarth supervised partition) (fd20048877e829b48b9574c2c77cf792)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (AlphaEarth supervised partition) (d63959bd991fcc6c2ddefb7c89732221)
+Evaluation
+,
+IPCCH training pool | compact296 | 3-month (cba4f18726b903068a4383cd9231529a)
+Training
+…
++1
+340ms
+-
+-
+IPCCH eval | 3-month | 2023-04..2025-10 | all_scored (AlphaEarth supervised partition) (9867bdfe4035ab0d239ecbdc44341600)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (AlphaEarth supervised partition) (d63959bd991fcc6c2ddefb7c89732221)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (8ea94dfd743b4dfc3646aa998758e18a)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 3-month (c743ba3527e64e57b87d6440456d9552)
+Training
+…
++3
+0.6s
+-
+-
+IPCCH eval | 3-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (8ea94dfd743b4dfc3646aa998758e18a)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 3-month (c743ba3527e64e57b87d6440456d9552)
+Training
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | all_scored (AlphaEarth supervised partition) (9867bdfe4035ab0d239ecbdc44341600)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (AlphaEarth supervised partition) (d63959bd991fcc6c2ddefb7c89732221)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 3-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (8ea94dfd743b4dfc3646aa998758e18a)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 3-month (c743ba3527e64e57b87d6440456d9552)
+Training
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (AlphaEarth supervised partition) (d63959bd991fcc6c2ddefb7c89732221)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | all_scored (AlphaEarth supervised partition) (9867bdfe4035ab0d239ecbdc44341600)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 3-month | 2023-04..2025-10 | all_scored (AlphaEarth supervised partition) (9867bdfe4035ab0d239ecbdc44341600)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (AlphaEarth supervised partition) (d63959bd991fcc6c2ddefb7c89732221)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (8ea94dfd743b4dfc3646aa998758e18a)
+Evaluation
+,
+IPCCH training pool | compact296 | 3-month (cba4f18726b903068a4383cd9231529a)
+Training
+…
++3
+0.6s
+-
+-
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (AlphaEarth supervised partition) (485078fd3ae09b64c18c2d7c59805444)
+Evaluation
+,
+IPCCH training pool | compact296 | 12-month (e128bbb09d4b56577bf695c3862453e6)
+Training
+…
++1
+338ms
+-
+-
+IPCCH eval | 12-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (c82dea4b6d7248fbb2c45e2b98541dee)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | all_scored (AlphaEarth supervised partition) (42ce408f2bcae0b87363fdad47c3b987)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (AlphaEarth supervised partition) (485078fd3ae09b64c18c2d7c59805444)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 12-month (91c2ad38465a4bf58d7bb5ef02393e54)
+Training
+…
++3
+0.6s
+-
+-
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (AlphaEarth supervised partition) (485078fd3ae09b64c18c2d7c59805444)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 12-month (91c2ad38465a4bf58d7bb5ef02393e54)
+Training
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (c82dea4b6d7248fbb2c45e2b98541dee)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | all_scored (AlphaEarth supervised partition) (42ce408f2bcae0b87363fdad47c3b987)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 12-month | 2024-01..2025-10 | all_scored (AlphaEarth supervised partition) (42ce408f2bcae0b87363fdad47c3b987)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (AlphaEarth supervised partition) (485078fd3ae09b64c18c2d7c59805444)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (c82dea4b6d7248fbb2c45e2b98541dee)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 12-month (91c2ad38465a4bf58d7bb5ef02393e54)
+Training
+…
++3
+0.6s
+-
+-
+IPCCH eval | 12-month | 2024-01..2025-10 | all_scored (AlphaEarth supervised partition) (42ce408f2bcae0b87363fdad47c3b987)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (AlphaEarth supervised partition) (485078fd3ae09b64c18c2d7c59805444)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (c82dea4b6d7248fbb2c45e2b98541dee)
+Evaluation
+,
+IPCCH training pool | compact296 | 12-month (e128bbb09d4b56577bf695c3862453e6)
+Training
+…
++3
+0.6s
+-
+-
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (AlphaEarth supervised partition) (3736c330fc340b7fa91933e2dbcbc7e3)
+Evaluation
+,
+IPCCH training pool | compact296 | 1-month (008e493ad70f7ce5fc240cb0c0388e26)
+Training
+…
++1
+344ms
+-
+-
+IPCCH eval | 1-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (ec4e0006d930683a1c43e83e2f81ff9b)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | all_scored (AlphaEarth supervised partition) (cfbfabdfeb39eba538d88c325f61019c)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 1-month (37a204b71d31cb6d309a0b366208c34f)
+Training
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (AlphaEarth supervised partition) (3736c330fc340b7fa91933e2dbcbc7e3)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (AlphaEarth supervised partition) (3736c330fc340b7fa91933e2dbcbc7e3)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (ec4e0006d930683a1c43e83e2f81ff9b)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 1-month (37a204b71d31cb6d309a0b366208c34f)
+Training
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | all_scored (AlphaEarth supervised partition) (cfbfabdfeb39eba538d88c325f61019c)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (AlphaEarth supervised partition) (3736c330fc340b7fa91933e2dbcbc7e3)
+Evaluation
+,
+IPCCH training pool | compact296+alphaearth128 (composite) | 1-month (37a204b71d31cb6d309a0b366208c34f)
+Training
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (ec4e0006d930683a1c43e83e2f81ff9b)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | all_scored (AlphaEarth supervised partition) (cfbfabdfeb39eba538d88c325f61019c)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 1-month | 2026-01..2026-04 | all_scored (AlphaEarth supervised partition) (ec4e0006d930683a1c43e83e2f81ff9b)
+Evaluation
+,
+IPCCH training pool | compact296 | 1-month (008e493ad70f7ce5fc240cb0c0388e26)
+Training
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | all_scored (AlphaEarth supervised partition) (cfbfabdfeb39eba538d88c325f61019c)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (AlphaEarth supervised partition) (3736c330fc340b7fa91933e2dbcbc7e3)
+Evaluation
+…
++3
+0.6s
+-
+-
+IPCCH eval | 6-month | 2023-07..2025-10 | all_scored (643cc9b6bf2dded6ad9e97c8347596e8)
+Evaluation
+,
+IPCCH training pool | rich561 | 6-month (2625ed3b7f98787f872c21e02530b542)
+Training
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (0e5b5bd9ad201938c20c0e9cc77c8070)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | persistence_available (d98d1ae1f47b88d264bdf4b604e86f1b)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | all_scored (80835f59c1de9a89cd46b34a8b31ca22)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted (MLP residual on fixed maps) (3313b8458b9ecd125f95fdf27f5f5e7d)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (a6f6249d658c28da5484eac1c484f432)
+Evaluation
+…
++6
+0.7s
+-
+-
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted (MLP residual on fixed maps) (aacfba64fa291fff91af7c9cfa13ab0d)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | all_scored (6e372efa09601584a39668a7dee5df8d)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (74eab872ef18a7d497e5e6551b6df3df)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | all_scored (9af1256a49e97ecbb77c00f55fa92ca0)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | persistence_available (84f482302f8683f960faf426530d3e6b)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (b7471227a7f8fab2b0e4e0bba5860cc6)
+Evaluation
+,
+IPCCH training pool | rich561 | 3-month (75a1cf158b7bab75c261ceadab3ae7e0)
+Training
+…
++6
+0.7s
+-
+-
+IPCCH eval | 12-month | 2026-01..2026-04 | persistence_available (2428acd762bb882f255a7da5af918187)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | all_scored (61d0b206fcc70b5ba82d893acc8a0e91)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | all_scored (6d7b876c762244b1e09e948262ecf71f)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (1d4160f72f441100980896bb54f0409c)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted (MLP residual on fixed maps) (f85f1bdeed2c59442be3b65124def276)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (92137effb5ce8642fe801ac0dbc2d73f)
+Evaluation
+,
+IPCCH training pool | rich561 | 12-month (7ef5ab8d0ed3a4dcdde331383233be8b)
+Training
+…
++6
+0.9s
+-
+-
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (10312a01bac24f960273f04c3d791e00)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | all_scored (c14e995384d82e4bf1bbe1e2b85c3b7e)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | persistence_available (bc6bda405e6486a571ed8ba12caf11b1)
+Evaluation
+,
+IPCCH training pool | rich561 | 1-month (3afc968d40df9511d930d5e3db3dfe18)
+Training
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | all_scored (67eb6819a2227f54bf037ae40ff2b517)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted (MLP residual on fixed maps) (d4de45652f182511727417805c6709e7)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (db6bd120deec94e783e60738474436af)
+Evaluation
+…
++6
+0.9s
+-
+-
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (0e5b5bd9ad201938c20c0e9cc77c8070)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted (MLP residual on fixed maps) (3313b8458b9ecd125f95fdf27f5f5e7d)
+Evaluation
+,
+IPCCH training pool | rich561 | 6-month (2625ed3b7f98787f872c21e02530b542)
+Training
+…
++2
+447ms
+-
+-
+IPCCH training pool | rich561 | 3-month (75a1cf158b7bab75c261ceadab3ae7e0)
+Training
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (b7471227a7f8fab2b0e4e0bba5860cc6)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted (MLP residual on fixed maps) (aacfba64fa291fff91af7c9cfa13ab0d)
+Evaluation
+…
++2
+491ms
+-
+-
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (92137effb5ce8642fe801ac0dbc2d73f)
+Evaluation
+,
+IPCCH training pool | rich561 | 12-month (7ef5ab8d0ed3a4dcdde331383233be8b)
+Training
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted (MLP residual on fixed maps) (f85f1bdeed2c59442be3b65124def276)
+Evaluation
+…
++2
+404ms
+-
+-
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted (MLP residual on fixed maps) (d4de45652f182511727417805c6709e7)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (10312a01bac24f960273f04c3d791e00)
+Evaluation
+,
+IPCCH training pool | rich561 | 1-month (3afc968d40df9511d930d5e3db3dfe18)
+Training
+…
++2
+346ms
+-
+-
+IPCCH eval | 6-month | 2026-01..2026-04 | all_scored (80835f59c1de9a89cd46b34a8b31ca22)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (a6f6249d658c28da5484eac1c484f432)
+Evaluation
+,
+IPCCH training pool | rich561 | 6-month (2625ed3b7f98787f872c21e02530b542)
+Training
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (0e5b5bd9ad201938c20c0e9cc77c8070)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | persistence_available (d98d1ae1f47b88d264bdf4b604e86f1b)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | all_scored (643cc9b6bf2dded6ad9e97c8347596e8)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted (MLP residual on fixed maps) (3313b8458b9ecd125f95fdf27f5f5e7d)
+Evaluation
+…
++6
+0.7s
+-
+-
+IPCCH eval | 3-month | 2026-01..2026-04 | persistence_available (84f482302f8683f960faf426530d3e6b)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (b7471227a7f8fab2b0e4e0bba5860cc6)
+Evaluation
+,
+IPCCH training pool | rich561 | 3-month (75a1cf158b7bab75c261ceadab3ae7e0)
+Training
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | all_scored (9af1256a49e97ecbb77c00f55fa92ca0)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted (MLP residual on fixed maps) (aacfba64fa291fff91af7c9cfa13ab0d)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (74eab872ef18a7d497e5e6551b6df3df)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | all_scored (6e372efa09601584a39668a7dee5df8d)
+Evaluation
+…
++6
+0.7s
+-
+-
+IPCCH eval | 12-month | 2026-01..2026-04 | persistence_available (2428acd762bb882f255a7da5af918187)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (92137effb5ce8642fe801ac0dbc2d73f)
+Evaluation
+,
+IPCCH training pool | rich561 | 12-month (7ef5ab8d0ed3a4dcdde331383233be8b)
+Training
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | all_scored (6d7b876c762244b1e09e948262ecf71f)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (1d4160f72f441100980896bb54f0409c)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted (MLP residual on fixed maps) (f85f1bdeed2c59442be3b65124def276)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | all_scored (61d0b206fcc70b5ba82d893acc8a0e91)
+Evaluation
+…
++6
+0.7s
+-
+-
+IPCCH eval | 1-month | 2026-01..2026-04 | persistence_available (bc6bda405e6486a571ed8ba12caf11b1)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (db6bd120deec94e783e60738474436af)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted (MLP residual on fixed maps) (d4de45652f182511727417805c6709e7)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | all_scored (c14e995384d82e4bf1bbe1e2b85c3b7e)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (10312a01bac24f960273f04c3d791e00)
+Evaluation
+,
+IPCCH training pool | rich561 | 1-month (3afc968d40df9511d930d5e3db3dfe18)
+Training
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | all_scored (67eb6819a2227f54bf037ae40ff2b517)
+Evaluation
+…
++6
+0.7s
+-
+-
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (a6f6249d658c28da5484eac1c484f432)
+Evaluation
+,
+IPCCH training pool | rich561 | 6-month (2625ed3b7f98787f872c21e02530b542)
+Training
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (0e5b5bd9ad201938c20c0e9cc77c8070)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | persistence_available (d98d1ae1f47b88d264bdf4b604e86f1b)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | all_scored (80835f59c1de9a89cd46b34a8b31ca22)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted (MLP residual on fixed maps) (3313b8458b9ecd125f95fdf27f5f5e7d)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | all_scored (643cc9b6bf2dded6ad9e97c8347596e8)
+Evaluation
+…
++6
+0.7s
+-
+-
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (74eab872ef18a7d497e5e6551b6df3df)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | all_scored (9af1256a49e97ecbb77c00f55fa92ca0)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | persistence_available (84f482302f8683f960faf426530d3e6b)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (b7471227a7f8fab2b0e4e0bba5860cc6)
+Evaluation
+,
+IPCCH training pool | rich561 | 3-month (75a1cf158b7bab75c261ceadab3ae7e0)
+Training
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | all_scored (6e372efa09601584a39668a7dee5df8d)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted (MLP residual on fixed maps) (aacfba64fa291fff91af7c9cfa13ab0d)
+Evaluation
+…
++6
+0.7s
+-
+-
+IPCCH training pool | rich561 | 12-month (7ef5ab8d0ed3a4dcdde331383233be8b)
+Training
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (1d4160f72f441100980896bb54f0409c)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | all_scored (6d7b876c762244b1e09e948262ecf71f)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (92137effb5ce8642fe801ac0dbc2d73f)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | persistence_available (2428acd762bb882f255a7da5af918187)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | all_scored (61d0b206fcc70b5ba82d893acc8a0e91)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted (MLP residual on fixed maps) (f85f1bdeed2c59442be3b65124def276)
+Evaluation
+…
++6
+0.6s
+-
+-
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted (MLP residual on fixed maps) (10312a01bac24f960273f04c3d791e00)
+Evaluation
+,
+IPCCH training pool | rich561 | 1-month (3afc968d40df9511d930d5e3db3dfe18)
+Training
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | persistence_available (bc6bda405e6486a571ed8ba12caf11b1)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | all_scored (67eb6819a2227f54bf037ae40ff2b517)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted (MLP residual on fixed maps) (d4de45652f182511727417805c6709e7)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (db6bd120deec94e783e60738474436af)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | all_scored (c14e995384d82e4bf1bbe1e2b85c3b7e)
+Evaluation
+…
++6
+0.6s
+-
+-
+IPCCH eval | 6-month | 2023-07..2025-10 | all_scored (643cc9b6bf2dded6ad9e97c8347596e8)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted (GeoXGB yearly refit) (62720c319b9470f4e4e95160f354006c)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (81810e5c88173b2fc8b95cb018a66501)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | all_scored (80835f59c1de9a89cd46b34a8b31ca22)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | persistence_available (d98d1ae1f47b88d264bdf4b604e86f1b)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (81f5123981c0cb0310099e013866a72c)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (3c3acc8d09b21dc6a8888be55db9abce)
+Evaluation
+,
+IPCCH training pool | rich561 | 6-month (2625ed3b7f98787f872c21e02530b542)
+Training
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (a6f6249d658c28da5484eac1c484f432)
+Evaluation
+…
++8
+0.8s
+-
+-
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (a6f6249d658c28da5484eac1c484f432)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | persistence_available (d98d1ae1f47b88d264bdf4b604e86f1b)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (3c3acc8d09b21dc6a8888be55db9abce)
+Evaluation
+,
+IPCCH training pool | rich561 | 6-month (2625ed3b7f98787f872c21e02530b542)
+Training
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (81810e5c88173b2fc8b95cb018a66501)
+Evaluation
+…
++4
+499ms
+-
+-
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (81f5123981c0cb0310099e013866a72c)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (81810e5c88173b2fc8b95cb018a66501)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted (GeoXGB yearly refit) (62720c319b9470f4e4e95160f354006c)
+Evaluation
+,
+IPCCH training pool | rich561 | 6-month (2625ed3b7f98787f872c21e02530b542)
+Training
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (3c3acc8d09b21dc6a8888be55db9abce)
+Evaluation
+…
++4
+0.5s
+-
+-
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (81810e5c88173b2fc8b95cb018a66501)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | all_scored (643cc9b6bf2dded6ad9e97c8347596e8)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | persistence_available (a6f6249d658c28da5484eac1c484f432)
+Evaluation
+,
+IPCCH eval | 6-month | 2023-07..2025-10 | regional_model_fitted (GeoXGB yearly refit) (62720c319b9470f4e4e95160f354006c)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | all_scored (80835f59c1de9a89cd46b34a8b31ca22)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | persistence_available (d98d1ae1f47b88d264bdf4b604e86f1b)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (81f5123981c0cb0310099e013866a72c)
+Evaluation
+,
+IPCCH eval | 6-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (3c3acc8d09b21dc6a8888be55db9abce)
+Evaluation
+,
+IPCCH training pool | rich561 | 6-month (2625ed3b7f98787f872c21e02530b542)
+Training
+…
++8
+0.9s
+-
+-
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (43b8758289457df0214d6c23021668b2)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted (GeoXGB yearly refit) (6b82e2ce001a225fcda42bac626968f1)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | all_scored (6e372efa09601584a39668a7dee5df8d)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (74eab872ef18a7d497e5e6551b6df3df)
+Evaluation
+,
+IPCCH training pool | rich561 | 3-month (75a1cf158b7bab75c261ceadab3ae7e0)
+Training
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (827d9577c8b0e5becfe92fc76d5f90b2)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (49e70f5ea3131ffb5ee24b4f8975bf1d)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | persistence_available (84f482302f8683f960faf426530d3e6b)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | all_scored (9af1256a49e97ecbb77c00f55fa92ca0)
+Evaluation
+…
++8
+0.8s
+-
+-
+IPCCH eval | 3-month | 2026-01..2026-04 | persistence_available (84f482302f8683f960faf426530d3e6b)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (43b8758289457df0214d6c23021668b2)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (74eab872ef18a7d497e5e6551b6df3df)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (827d9577c8b0e5becfe92fc76d5f90b2)
+Evaluation
+,
+IPCCH training pool | rich561 | 3-month (75a1cf158b7bab75c261ceadab3ae7e0)
+Training
+…
++4
+477ms
+-
+-
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (49e70f5ea3131ffb5ee24b4f8975bf1d)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted (GeoXGB yearly refit) (6b82e2ce001a225fcda42bac626968f1)
+Evaluation
+,
+IPCCH training pool | rich561 | 3-month (75a1cf158b7bab75c261ceadab3ae7e0)
+Training
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (827d9577c8b0e5becfe92fc76d5f90b2)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (43b8758289457df0214d6c23021668b2)
+Evaluation
+…
++4
+0.5s
+-
+-
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted (GeoXGB yearly refit) (6b82e2ce001a225fcda42bac626968f1)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (827d9577c8b0e5becfe92fc76d5f90b2)
+Evaluation
+,
+IPCCH training pool | rich561 | 3-month (75a1cf158b7bab75c261ceadab3ae7e0)
+Training
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (43b8758289457df0214d6c23021668b2)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | all_scored (9af1256a49e97ecbb77c00f55fa92ca0)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | persistence_available (84f482302f8683f960faf426530d3e6b)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | all_scored (6e372efa09601584a39668a7dee5df8d)
+Evaluation
+,
+IPCCH eval | 3-month | 2023-04..2025-10 | persistence_available (74eab872ef18a7d497e5e6551b6df3df)
+Evaluation
+,
+IPCCH eval | 3-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (49e70f5ea3131ffb5ee24b4f8975bf1d)
+Evaluation
+…
++8
+0.9s
+-
+-
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (e6e12d3f51050574f41f79902667a89b)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (c28f460c287850fcf9f6179d1734cc21)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (328da17c551f6e9421024484f76cafd7)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted (GeoXGB yearly refit) (61fc2e6648f77c3e6b11aa16db63fd5e)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | all_scored (61d0b206fcc70b5ba82d893acc8a0e91)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | persistence_available (2428acd762bb882f255a7da5af918187)
+Evaluation
+,
+IPCCH training pool | rich561 | 12-month (7ef5ab8d0ed3a4dcdde331383233be8b)
+Training
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | all_scored (6d7b876c762244b1e09e948262ecf71f)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (1d4160f72f441100980896bb54f0409c)
+Evaluation
+…
++8
+0.9s
+-
+-
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (e6e12d3f51050574f41f79902667a89b)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (1d4160f72f441100980896bb54f0409c)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (c28f460c287850fcf9f6179d1734cc21)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | persistence_available (2428acd762bb882f255a7da5af918187)
+Evaluation
+,
+IPCCH training pool | rich561 | 12-month (7ef5ab8d0ed3a4dcdde331383233be8b)
+Training
+…
++4
+482ms
+-
+-
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (328da17c551f6e9421024484f76cafd7)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (e6e12d3f51050574f41f79902667a89b)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted (GeoXGB yearly refit) (61fc2e6648f77c3e6b11aa16db63fd5e)
+Evaluation
+,
+IPCCH training pool | rich561 | 12-month (7ef5ab8d0ed3a4dcdde331383233be8b)
+Training
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (c28f460c287850fcf9f6179d1734cc21)
+Evaluation
+…
++4
+0.6s
+-
+-
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted (GeoXGB yearly refit) (61fc2e6648f77c3e6b11aa16db63fd5e)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (328da17c551f6e9421024484f76cafd7)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | persistence_available (2428acd762bb882f255a7da5af918187)
+Evaluation
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | all_scored (61d0b206fcc70b5ba82d893acc8a0e91)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (c28f460c287850fcf9f6179d1734cc21)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | persistence_available (1d4160f72f441100980896bb54f0409c)
+Evaluation
+,
+IPCCH eval | 12-month | 2024-01..2025-10 | all_scored (6d7b876c762244b1e09e948262ecf71f)
+Evaluation
+,
+IPCCH training pool | rich561 | 12-month (7ef5ab8d0ed3a4dcdde331383233be8b)
+Training
+,
+IPCCH eval | 12-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (e6e12d3f51050574f41f79902667a89b)
+Evaluation
+…
++8
+0.9s
+-
+-
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (3f38ab5a2055905f63bf18c05aad2d0f)
+Evaluation
+,
+IPCCH training pool | rich561 | 1-month (3afc968d40df9511d930d5e3db3dfe18)
+Training
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | all_scored (67eb6819a2227f54bf037ae40ff2b517)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | persistence_available (bc6bda405e6486a571ed8ba12caf11b1)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (0170988463db84393011d03b12e3d082)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (db6bd120deec94e783e60738474436af)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted (GeoXGB yearly refit) (495833a341e37f5d006cc897155098ee)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | all_scored (c14e995384d82e4bf1bbe1e2b85c3b7e)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (5f6125ef7ecfc9e4b364af69fb3ab8a8)
+Evaluation
+…
++8
+0.9s
+-
+-
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (db6bd120deec94e783e60738474436af)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (5f6125ef7ecfc9e4b364af69fb3ab8a8)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | persistence_available (bc6bda405e6486a571ed8ba12caf11b1)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (3f38ab5a2055905f63bf18c05aad2d0f)
+Evaluation
+,
+IPCCH training pool | rich561 | 1-month (3afc968d40df9511d930d5e3db3dfe18)
+Training
+…
++4
+0.5s
+-
+-
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted (GeoXGB yearly refit) (495833a341e37f5d006cc897155098ee)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (5f6125ef7ecfc9e4b364af69fb3ab8a8)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (0170988463db84393011d03b12e3d082)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (3f38ab5a2055905f63bf18c05aad2d0f)
+Evaluation
+,
+IPCCH training pool | rich561 | 1-month (3afc968d40df9511d930d5e3db3dfe18)
+Training
+…
++4
+0.5s
+-
+-
+IPCCH eval | 1-month | 2026-01..2026-04 | persistence_available (bc6bda405e6486a571ed8ba12caf11b1)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted (GeoXGB yearly refit) (0170988463db84393011d03b12e3d082)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (3f38ab5a2055905f63bf18c05aad2d0f)
+Evaluation
+,
+IPCCH training pool | rich561 | 1-month (3afc968d40df9511d930d5e3db3dfe18)
+Training
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | persistence_available (db6bd120deec94e783e60738474436af)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | all_scored (c14e995384d82e4bf1bbe1e2b85c3b7e)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted_and_persistence_available (GeoXGB yearly refit) (5f6125ef7ecfc9e4b364af69fb3ab8a8)
+Evaluation
+,
+IPCCH eval | 1-month | 2023-02..2025-10 | regional_model_fitted (GeoXGB yearly refit) (495833a341e37f5d006cc897155098ee)
+Evaluation
+,
+IPCCH eval | 1-month | 2026-01..2026-04 | all_scored (67eb6819a2227f54bf037ae40ff2b517)
+Evaluation
+…
++8
+1.0s
+-
+-
+Load more
+Show more columns (5372 total)
+100 matching runs
+MLflow Assistant

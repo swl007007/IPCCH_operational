@@ -1,0 +1,60 @@
+{
+ "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+ "base_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4",
+ "base_context_manifest_role": "BASE: inherited /app/context-manifest.json of the base image (unchanged)",
+ "base_context_manifest_sha256": "c25bd7b8c8de14ecf2701742ea03149dce66cf36903950ccfc387ed38b5a8e83",
+ "base_image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:fd921dd7add8933024c4765e1c93c382f4f8b4f0ffb2dddc24778daac83ca939",
+ "current_head": "868db9f51ffd6c45a7673cbaf10111b5dd46adde",
+ "expected_runtime": {
+  "packages": {
+   "cloudml-hypertune": "0.1.0.dev6",
+   "mlflow-skinny": "3.17.0",
+   "numpy": "2.4.4",
+   "pandas": "3.0.3",
+   "scikit-learn": "1.8.0",
+   "xgboost": "3.2.0"
+  },
+  "python": "3.12.3"
+ },
+ "head_vs_base_note": "HEAD changes outside the three overlaid modules (HPT control/verification tooling, tests, RUNBOOK) are NOT in the image; the image keeps the BASE tree except the overlaid modules",
+ "head_vs_base_research_cloud_changed_files": [
+  "research_cloud/RUNBOOK.md",
+  "research_cloud/tests/test_ipcch_ch_dataset_identity.py",
+  "research_cloud/tests/test_ipcch_ch_validity.py",
+  "research_cloud/tests/test_ipcch_gosif_corrected.py",
+  "research_cloud/tests/test_ipcch_gosif_dataset_identity.py",
+  "research_cloud/tests/test_ipcch_hpt_control.py",
+  "research_cloud/tests/test_ipcch_origin_ablation.py",
+  "research_cloud/tests/test_ipcch_origin_dataset_identity.py",
+  "research_cloud/training/dataset_input.py",
+  "research_cloud/training/ipcch_hpt_control.py",
+  "research_cloud/training/ipcch_validity_features.py",
+  "research_cloud/training/ipcch_validity_pooled.py"
+ ],
+ "image_tag": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity:gosifv3-chvalidity-originfit-20261030",
+ "kind": "task_code_overlay",
+ "not_in_image": [
+  "research_cloud/tests/* (tests only)"
+ ],
+ "overlaid_files": {
+  "research_cloud/training/dataset_input.py": {
+   "base_sha256": "0f06641b051776b5f1cc4c8534fe2ee516fa7fe35968d6fd455a218c692b0127",
+   "overlay_sha256": "2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4"
+  },
+  "research_cloud/training/ipcch_validity_features.py": {
+   "base_sha256": "c171b0974fbd75bd80e66983f7e094cd84cb9f8f73cf4bb0e0d9ad0c0961c71e",
+   "overlay_sha256": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6"
+  },
+  "research_cloud/training/ipcch_validity_pooled.py": {
+   "base_sha256": "75ccbb9d4c2d5c48013fafea05e3d62073522ff1a762ffad67c68cab8d8ea6ce",
+   "overlay_sha256": "d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f"
+  }
+ },
+ "overlay_diff_vs_base_sha256": "e698446657dff012290e2e8c7890cdc273844c5e5462d744bda5d488d25eded7",
+ "previous_task_image": "us-central1-docker.pkg.dev/food-crisis-modeling-enso/research/training-ipcch-validity@sha256:2b18cf721cb09af0d1633a20087874155e8af49aa822979c0554507bcb68ccc3",
+ "revision": "origin-ablation r1: features (CH-final), pooled and dataset_input (commit 7023d10; HEAD 868db9f adds tests only) on the original numerical image",
+ "source_commit": "868db9f51ffd6c45a7673cbaf10111b5dd46adde",
+ "source_commit_env": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:2b74098aacffd7d28406d3d1a20115d6e7b420a9d07783e8cc5b1cc8af990cc4,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d2c07d7d0d5527a8da788edf98ad0ca1b05c182e0bef920f1683c1c301c4de0f",
+ "task": "10-30-ipcch-validity-origin-ablation",
+ "worktree_status_at_build": []
+}

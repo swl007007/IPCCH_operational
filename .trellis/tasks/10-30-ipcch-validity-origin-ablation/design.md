@@ -1,4 +1,4 @@
-# Design — converged scope, awaiting execution approval
+# Design — approved scope (implemented; see research/final/)
 
 ## Data flow
 Pin CH-final retained trial data/config/predictions -> rebuild same modeling panel/context plans -> filter only fitting memberships to final original labels -> no-fit invariance checks -> fixed-parameter annual/holdout context fits -> standard keyed full-cohort scoring -> paired TUI tables + standard research MLflow publication.

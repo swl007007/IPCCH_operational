@@ -1,0 +1,8 @@
+test_ipcch_origin_ablation rc=0
+test_ipcch_validity_features rc=0
+test_ipcch_ch_validity rc=0
+test_ipcch_gosif_corrected rc=0
+test_ipcch_acledagg_hpt rc=0
+test_ipcch_validity_pooled rc=0
+test_ipcch_direct_fourclass rc=0
+tooling(dataset identity+integration+publication) rc=0

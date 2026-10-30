@@ -1,0 +1,150 @@
+{
+ "render": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-30-ipcch-validity-origin-ablation/research/cp4/final/ui-render",
+ "targets": [
+  "h00-run",
+  "h00-artifacts",
+  "h00-dataset",
+  "h00-logged-model",
+  "h06-run",
+  "h06-artifacts",
+  "h06-dataset",
+  "h06-logged-model",
+  "h12-run",
+  "h12-artifacts",
+  "h12-dataset",
+  "h12-logged-model",
+  "dashboard-experiment",
+  "models-table"
+ ],
+ "page_results": {
+  "h00-run": true,
+  "h00-artifacts": true,
+  "h00-dataset": true,
+  "h00-logged-model": true,
+  "h06-run": true,
+  "h06-artifacts": true,
+  "h06-dataset": true,
+  "h06-logged-model": true,
+  "h12-run": true,
+  "h12-artifacts": true,
+  "h12-dataset": true,
+  "h12-logged-model": true,
+  "dashboard-experiment": true,
+  "models-table": true
+ },
+ "page_all_pass": true,
+ "rows_required": true,
+ "rows": {
+  "targets": {
+   "h00-logged-model": {
+    "metric_rows": [
+     {
+      "ok": true,
+      "row": {
+       "cells": [
+        "dataset.modeling_panel_index.rows",
+        "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H00 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)",
+        "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+        "147268"
+       ],
+       "hrefs": [
+        "#/runs/bd24976069ee4530bb97343c1ec6e730?workspace=default"
+       ]
+      },
+      "problems": []
+     }
+    ],
+    "ok": true
+   },
+   "h06-logged-model": {
+    "metric_rows": [
+     {
+      "ok": true,
+      "row": {
+       "cells": [
+        "dataset.modeling_panel_index.rows",
+        "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H06 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)",
+        "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+        "147268"
+       ],
+       "hrefs": [
+        "#/runs/eb33b087fe314237ad1c6432bcfe140f?workspace=default"
+       ]
+      },
+      "problems": []
+     }
+    ],
+    "ok": true
+   },
+   "h12-logged-model": {
+    "metric_rows": [
+     {
+      "ok": true,
+      "row": {
+       "cells": [
+        "dataset.modeling_panel_index.rows",
+        "IPCCH validity (gosif-v3-input-20261027+ch-validity-20261028+original-label-fit-20261030) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | H12 | modeling panel index (#dba329f9b115d4de10e294133bf91d41)",
+        "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+        "147268"
+       ],
+       "hrefs": [
+        "#/runs/8237e829dc4b42169ccb3136c19aafb2?workspace=default"
+       ]
+      },
+      "problems": []
+     }
+    ],
+    "ok": true
+   },
+   "models-table": {
+    "metric_rows": [],
+    "models_rows": {
+     "name_rows": 33,
+     "attribute_rows": 33,
+     "models": {
+      "m-055654f09a78436593ce720f4c52be10": {
+       "ok": true,
+       "run_href": true,
+       "version_href": true,
+       "dataset_cell": true
+      },
+      "m-daad991238a5430eb504eaacd4046d36": {
+       "ok": true,
+       "run_href": true,
+       "version_href": true,
+       "dataset_cell": true
+      },
+      "m-9f73aac99f444c91b8022ec9f6e41df3": {
+       "ok": true,
+       "run_href": true,
+       "version_href": true,
+       "dataset_cell": true
+      },
+      "m-698519b8daeb456ea5e9126b6fc18e8f": {
+       "ok": true,
+       "run_href": true,
+       "version_href": true,
+       "dataset_cell": true
+      },
+      "m-46beb4c7d5674c1abd874b3bd90c1f87": {
+       "ok": true,
+       "run_href": true,
+       "version_href": true,
+       "dataset_cell": true
+      },
+      "m-9da8be7f46c946e69a8e759d9064a77a": {
+       "ok": true,
+       "run_href": true,
+       "version_href": true,
+       "dataset_cell": true
+      }
+     },
+     "ok": true
+    },
+    "ok": true
+   }
+  },
+  "all_ok": true
+ },
+ "all_pass": true
+}

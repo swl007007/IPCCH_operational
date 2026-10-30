@@ -1,0 +1,55 @@
+{
+ "label": "dashboard-experiment",
+ "url": "https://mlflow.weilunshi.com/#/experiments/2",
+ "expect": [
+  "IPCCH dashboard",
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+  "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+  "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+  "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month"
+ ],
+ "wait": {
+  "IPCCH dashboard": 4,
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month": 5546,
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month": 28,
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month": 27,
+  "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month": 26,
+  "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month": 28,
+  "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month": 25
+ },
+ "navigation": "in-app hash",
+ "clicks": {
+  "Model training": "clicked"
+ },
+ "title": "Runs - Experiment 2 - MLflow",
+ "screenshot": "dashboard-experiment.png",
+ "final_url": "https://mlflow.weilunshi.com/#/experiments/2/runs?workflowType=machine_learning&workspace=default&searchFilter=&orderByKey=attributes.start_time&orderByAsc=false&startTime=ALL&lifecycleFilter=Active&modelVersionFilter=All+Runs&datasetsFilter=W10%3D",
+ "rows": 304,
+ "found": {
+  "IPCCH dashboard": true,
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month": true,
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month": true,
+  "Original-label fit ablation (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month": true,
+  "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month": true,
+  "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month": true,
+  "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month": true
+ },
+ "segments": [],
+ "text_chars": 64402,
+ "text_head": "3.17.0\ndefault\nGenAI\nModel training\nIPCCH dashboard\nRuns\nModels\nTraces\nModel registry\nDocs\nSettings\nI\nipcch-reader\nExperiments\nIPCCH dashboard\nRuns\nViews\n\nIPCCH dashboard - one row per model family x arm x lead time (x seed), copied from 'IPCCH detailed runs' without rescoring. 156 rows; MLP rows per seed plus a 'mean of 3 seeds' row.\n\nVocabulary. family = experiment design (tag family / family_title). arm = predictor within a family: persistence: No model: predicts the phase observed most recently at or before the forecast origin in the same area. Defined only on persistence_available rows.; pooled: One model for all areas.; partitioned_gated: Regional model where the historical gate accepted it for that region, pooled model elsewhere.; regional_ungated: The regional model's own prediction wherever a regional model was fitted, whatever the gate decided. Diagnostic: scored on regional_model_fitted rows only.; global_base: The global MLP alone, without a residual model.. arm_role: baseline = not trained in this run (persistence, or a model reused for comparison); candidate = trained in this run; part of the main comparison; diagnostic = trained in this run for diagnosis only (not a deployable arm). lead_months = forecast lead (origin = target month minus lead). AlphaEarth supervised partition arms: pooled: Pooled XGB quartet on compact296 (no AlphaEarth descriptors).; pooled_plus_alphaearth: Pooled XGB quartet on compact296 plus 128 AlphaEarth 2017 admin descriptors.; shared_calibration: pooled_plus_alphaearth raw outputs with one shared ridge calibration refitted each year.; regional_calibration: pooled_plus_alphaearth with shared plus regional calibration on a supervised partition map. No map was selected at any lead, so this arm equals shared_calibration exactly.. Its evaluation datasets are family-qualified (saved truth text differs in the last digits from the other families' datasets with the same keys and phases).\n\nMetric keys read ... period_role: primary = main evaluation period of the family; holdout = later months reported separately (2026-01..2026-04, 4 target months, point estimates); combined = primary and holdout together (GeoXGB maps to 2024 only); selected_months = selected target months only (GeoXGB window probe), not a full period (actual spans in tags period.). Cohorts: all_scored: Every scored row: one area x one target month in the period with a valid IPCCH truth value. persistence_available: Rows whose area has at least one valid IPCCH observation at or before the forecast origin (target month minus lead). Only these rows have a persistence forecast, so every comparison with persistence uses this cohort. regional_model_fitted: Rows whose region got a regional model at that refit (training data with at least 500 rows, 50 areas and 6 target months), whatever the gate later decided. regional_model_fitted_and_persistence_available: regional_model_fitted rows that also have a persistence forecast; used to compare the regional model with persistence on exactly the same rows. in_partition_map: Rows whose area is covered by the frozen partition map. regional_model_fitted_both_windows: Rows in regions that can fit a regional model under both the 36-month window and full history; the only rows where the two regional arms are both real regional fits. regional_model_fitted_full_history_only: Rows in regions with too little data for a regional model in the 36-month window but enough with full history (from 2014-01); shows what a longer window adds. Metrics: binary. = crisis (phase 3+) vs not; four_class.* = phase 1|2|3|4-5; share_phase3plus_r2 = R2 of the population share in phase 3+; n_rows = rows scored. *.binary.f1.minus_persistence / minus_pooled = crisis-F1 difference to persistence / pooled on the same rows (ci_low/ci_high where a bootstrap was saved).\n\nComparability. Compare values only on the same evaluation dataset (Inputs; the dataset name states lead, period span and cohort). GeoXGB maps to 2024 has a differ",
+ "api_statuses": [
+  200,
+  200,
+  200,
+  200
+ ],
+ "api_errors": 0,
+ "route_ok": true,
+ "navigation_ok": true,
+ "clicks_ok": true,
+ "rendered": true,
+ "api_ok": true,
+ "passed": true
+}

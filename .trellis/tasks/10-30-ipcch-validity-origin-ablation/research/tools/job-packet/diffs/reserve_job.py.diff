@@ -1,0 +1,33 @@
+1,2c1,2
+< """CH job packet step (ledger write; run only after release): reserve the job-phase platform line and the three FORMAL
+< CustomJobs of task 10-28 in the shared ledger, month 2026-10, exactly as ``reservations.json`` "platform" + "training"
+---
+> """Origin-ablation job packet step (ledger write; run only after release): reserve the job-phase platform line and the three FORMAL
+> CustomJobs of task 10-30 in the shared ledger, month 2026-10, exactly as ``reservations.json`` "platform" + "training"
+4,5c4,6
+< committed + new must stay within its cap, and build + platform + training stay within the task cap. Adapted from task
+< 10-27 ``reserve_training.py`` (only these task constants and the platform line differ).
+---
+> committed + new must stay within its cap, and build + platform + training stay within the task cap. Adapted from the task
+> 10-28 ``reserve_job.py`` (only these task constants differ). No earlier task line is required, reused or counted except
+> this task's own build line.
+7c8
+<   cd $W/control-plane && IPCCH_CH_JOB_RESERVE_CONFIRM=r1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B reserve_job.py --plan-sha256 SHA --out RECEIPT.json
+---
+>   cd $W/control-plane-origin-ablation && IPCCH_ORIGIN_JOB_RESERVE_CONFIRM=r1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. $W/envs/mlflow-svc/bin/python -B reserve_job.py --plan-sha256 SHA --out RECEIPT.json
+13,14c14,15
+< TASK_TRAINING_MAX, TASK_PLATFORM_MAX, TASK_CAP = 5.73, 1.60, 8.00
+< BUILD_OP, PLATFORM_OP = "ipcch-ch-validity-r1-build", "ipcch-ch-validity-r1-platform"
+---
+> TASK_TRAINING_MAX, TASK_PLATFORM_MAX, TASK_CAP = 5.73, 0.90, 7.00
+> BUILD_OP, PLATFORM_OP = "ipcch-origin-ablation-r1-build", "ipcch-origin-ablation-r1-platform"
+24,25c25,26
+<     if os.environ.get("IPCCH_CH_JOB_RESERVE_CONFIRM") != "r1" or os.path.exists(a.out):
+<         raise SystemExit("needs IPCCH_CH_JOB_RESERVE_CONFIRM=r1 and a new receipt path")
+---
+>     if os.environ.get("IPCCH_ORIGIN_JOB_RESERVE_CONFIRM") != "r1" or os.path.exists(a.out):
+>         raise SystemExit("needs IPCCH_ORIGIN_JOB_RESERVE_CONFIRM=r1 and a new receipt path")
+31c32
+<     if len(training) != 3 or any(not e["operation"].startswith("ipcch-ch-validity-r1-formal-h") for e in training) \
+---
+>     if len(training) != 3 or any(not e["operation"].startswith("ipcch-origin-ablation-r1-formal-h") for e in training) \

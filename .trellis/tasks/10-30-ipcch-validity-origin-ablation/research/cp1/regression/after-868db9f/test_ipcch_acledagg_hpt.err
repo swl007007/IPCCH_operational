@@ -1,0 +1,269 @@
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpg4or708v/freeze-h00.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpg4or708v/freeze-h06.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpg4or708v/freeze-h12.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpg4or708v/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpg4or708v/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:530: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpg4or708v/freeze-index.json' mode='r' encoding='UTF-8'>
+  idx = json.load(open(inputs["freeze_index"]))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:532: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpg4or708v/index-two.json' mode='w' encoding='UTF-8'>
+  json.dump(idx, open(two, "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:534: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpg4or708v/freeze-h12.json' mode='r' encoding='UTF-8'>
+  json.dump({**json.load(open(inputs["freeze"])), "winner": {**winner, "params": {**SMALL, "q3_max_depth": 6}}}, open(other, "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:534: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpg4or708v/freeze-other.json' mode='w' encoding='UTF-8'>
+  json.dump({**json.load(open(inputs["freeze"])), "winner": {**winner, "params": {**SMALL, "q3_max_depth": 6}}}, open(other, "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpg4or708v/index-two.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpg4or708v/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpg4or708v/freeze-other.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpg4or708v/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/freeze-h00.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/freeze-h06.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/freeze-h12.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:462: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/lean_comparison.json' mode='r' encoding='UTF-8'>
+  comp = json.load(open(os.path.join(root, "lean_comparison.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:481: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/package/package.json' mode='r' encoding='UTF-8'>
+  meta = json.load(open(os.path.join(root, "package", "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:484: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/contexts/h00_main_2025.json' mode='r' encoding='UTF-8'>
+  ctx = json.load(open(os.path.join(root, "contexts", f"h{h:02d}_main_2025.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/packages/common.py:118: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/package/package.json' mode='r' encoding='UTF-8'>
+  meta = json.load(open(os.path.join(root, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/packages/replay.py:155: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/package/package.json' mode='r' encoding='UTF-8'>
+  meta = json.load(open(os.path.join(args.package, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/package/package.json' mode='r' encoding='UTF-8'>
+  self.meta = json.load(open(os.path.join(package_dir, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2023/q2.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2023/q3.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2023/q4.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2023/q5.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:39: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2023/calibration.json' mode='r' encoding='UTF-8'>
+  cal = json.load(open(os.path.join(base, "calibration.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2024/q2.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2024/q3.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2024/q4.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2024/q5.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:39: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2024/calibration.json' mode='r' encoding='UTF-8'>
+  cal = json.load(open(os.path.join(base, "calibration.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2025/q2.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2025/q3.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2025/q4.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2025/q5.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:39: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_main_2025/calibration.json' mode='r' encoding='UTF-8'>
+  cal = json.load(open(os.path.join(base, "calibration.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_supp_2026/q2.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_supp_2026/q3.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_supp_2026/q4.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_supp_2026/q5.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal0/package/loader/entry.py:39: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal0/package/weights/h00_supp_2026/calibration.json' mode='r' encoding='UTF-8'>
+  cal = json.load(open(os.path.join(base, "calibration.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/freeze-h00.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/freeze-h06.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/freeze-h12.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:462: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/lean_comparison.json' mode='r' encoding='UTF-8'>
+  comp = json.load(open(os.path.join(root, "lean_comparison.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:481: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/package/package.json' mode='r' encoding='UTF-8'>
+  meta = json.load(open(os.path.join(root, "package", "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:484: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/contexts/h06_main_2025.json' mode='r' encoding='UTF-8'>
+  ctx = json.load(open(os.path.join(root, "contexts", f"h{h:02d}_main_2025.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/packages/common.py:118: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/package/package.json' mode='r' encoding='UTF-8'>
+  meta = json.load(open(os.path.join(root, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/packages/replay.py:155: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/package/package.json' mode='r' encoding='UTF-8'>
+  meta = json.load(open(os.path.join(args.package, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/package/package.json' mode='r' encoding='UTF-8'>
+  self.meta = json.load(open(os.path.join(package_dir, "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2023/q2.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2023/q3.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2023/q4.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2023/q5.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:39: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2023/calibration.json' mode='r' encoding='UTF-8'>
+  cal = json.load(open(os.path.join(base, "calibration.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2024/q2.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2024/q3.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2024/q4.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2024/q5.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:39: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2024/calibration.json' mode='r' encoding='UTF-8'>
+  cal = json.load(open(os.path.join(base, "calibration.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2025/q2.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2025/q3.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2025/q4.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2025/q5.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:39: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_main_2025/calibration.json' mode='r' encoding='UTF-8'>
+  cal = json.load(open(os.path.join(base, "calibration.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_supp_2026/q2.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_supp_2026/q3.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_supp_2026/q4.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:37: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_supp_2026/q5.ubj'>
+  b.load_model(bytearray(open(os.path.join(base, q + ".ubj"), "rb").read()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tmpz0xc5on7/formal6/package/loader/entry.py:39: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpz0xc5on7/formal6/package/weights/h06_supp_2026/calibration.json' mode='r' encoding='UTF-8'>
+  cal = json.load(open(os.path.join(base, "calibration.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpcvp6_586/freeze-h00.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpcvp6_586/freeze-h06.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpcvp6_586/freeze-h12.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpcvp6_586/freeze-index.json'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:36: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpcvp6_586/acled-run/predictions.csv.gz'>
+  return hashlib.sha256(open(path, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:502: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpcvp6_586/formal-small/package/package.json' mode='r' encoding='UTF-8'>
+  meta = json.load(open(os.path.join(root, "package", "package.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:505: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpcvp6_586/formal-small/contexts/h12_main_2024.json' mode='r' encoding='UTF-8'>
+  rec = json.load(open(os.path.join(root, "contexts", f"{ctx}.json")))["backbone"]["targets"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:506: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpcvp6_586/formal-small/package/weights/h12_main_2024/record.json' mode='r' encoding='UTF-8'>
+  prec = json.load(open(os.path.join(root, "package", "weights", ctx, "record.json")))["targets"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:505: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpcvp6_586/formal-small/contexts/h12_main_2025.json' mode='r' encoding='UTF-8'>
+  rec = json.load(open(os.path.join(root, "contexts", f"{ctx}.json")))["backbone"]["targets"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:506: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpcvp6_586/formal-small/package/weights/h12_main_2025/record.json' mode='r' encoding='UTF-8'>
+  prec = json.load(open(os.path.join(root, "package", "weights", ctx, "record.json")))["targets"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:505: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpcvp6_586/formal-small/contexts/h12_supp_2026.json' mode='r' encoding='UTF-8'>
+  rec = json.load(open(os.path.join(root, "contexts", f"{ctx}.json")))["backbone"]["targets"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:506: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpcvp6_586/formal-small/package/weights/h12_supp_2026/record.json' mode='r' encoding='UTF-8'>
+  prec = json.load(open(os.path.join(root, "package", "weights", ctx, "record.json")))["targets"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/swl007007/projects/food-crisis-research/scratch/origin-ablation-20261030/snapshot-868db9f/research_cloud/tests/test_ipcch_acledagg_hpt.py:511: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpcvp6_586/formal-small/lean_comparison.json' mode='r' encoding='UTF-8'>
+  comp = json.load(open(os.path.join(root, "lean_comparison.json")))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+............
+----------------------------------------------------------------------
+Ran 14 tests in 647.961s
+
+OK
