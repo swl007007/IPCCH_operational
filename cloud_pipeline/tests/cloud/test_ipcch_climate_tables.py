@@ -105,3 +105,42 @@ def test_drought_provider_equals_retained_numerics_and_availability():
     assert late_et0.fetch("spei03", "persiann", "2026-08").status == "unavailable"     # ET0 not yet published
     with pytest.raises(cl.ClimateProcessingFailure, match="unreadable S2C3"):
         ct.DroughtProvider(Tables(tables, missing=[ct.TableRefs().asset("S2C3_ET0_PATCH32_Y2020_2026_V2")]), admins).fetch("spi03", "chirps", "2026-08")
+
+
+def test_seasonal_vegetation_full_support_and_availability():
+    windows = pd.DataFrame({"admin_code": ["1", "2"], "season_year": [2026, 2026], "season": ["s1", "s1"],
+                            "gs_start_date": ["2026-01-05", "2026-01-05"], "gs_end_date_exclusive": ["2026-03-01", "2026-03-01"]})
+    tables = vi_tables()
+    p = ct.SeasonalVegetationProvider(Tables(tables))
+    o = p.fetch_season("terra", 2026, "s1", windows)
+    assert o.status == "published" and o.values["value"].round(12).tolist() == [0.1, 0.1]
+    late = windows.assign(gs_end_date_exclusive="2026-05-01")              # April composites not published yet
+    assert p.fetch_season("terra", 2026, "s1", late).status == "unavailable"
+    gap = vi_tables(drop_tag="evi_20260202_mean")                          # absent composite inside the season -> unavailable
+    assert ct.SeasonalVegetationProvider(Tables(gap)).fetch_season("terra", 2026, "s1", windows).status == "unavailable"
+    t = pd.DataFrame([{"admin_code": "1", "evi_20260101_mean": 0.3, "evi_base_s01_mean": 0.2}])
+    out = ct.season_vi(t, "terra", "evi", windows.iloc[:1], 2026)          # other composites null -> partial -> MISSING
+    assert np.isnan(out["value"].iloc[0]) and out["status"].iloc[0] == "MISSING_DATA"
+
+
+def test_seasonal_drought_uses_the_seasonal_fit():
+    from cloud.ipcch import spi_spei_seasonal as sss
+    admins = ["1", "2", "3"]
+    tables = drought_tables(admins)
+    windows = pd.DataFrame({"admin_code": admins, "season_year": [2026] * 3, "season": ["s1"] * 3,
+                            "gs_start_date": ["2026-03-01", "2026-02-15", "2026-04-01"],
+                            "gs_end_date_exclusive": ["2026-07-01", "2026-06-15", "2026-08-01"]})
+    p = ct.SeasonalDroughtProvider(Tables(tables), admins)
+    o = p.fetch_season("spei03", "chirps", 2026, "s1", windows)
+    all_m, idx_m = spi_spei.month_axis("1990-01", "2026-07"), spi_spei.month_axis("2026-02", "2026-07")
+    prcp = ct._wide_month_matrix([t for k, t in tables.items() if "PRCP_CHIRPS" in k], "prcp", all_m, admins)
+    et0 = ct._wide_month_matrix([t for k, t in tables.items() if "ET0_FAO56" in k], "et0", all_m, admins)
+    m = sss.monthly_indices(prcp, et0, all_m, idx_m, "chirps")
+    plan = sss.season_plan(windows.assign(gs_calendar_valid=1)[["admin_code", "season_year", "season", "gs_calendar_valid",
+                                                                "gs_start_date", "gs_end_date_exclusive"]], idx_m, admins)
+    want = sss.aggregate(m["spei"], m["spei_reason"], plan, "v")["v"].to_numpy()
+    np.testing.assert_array_equal(o.values["value"].to_numpy(), want)
+    mon = spi_spei.compute_spei03_monthly(prcp, et0, all_m)[:, -5:]          # monthly fit over the same months differs
+    assert not np.allclose(np.nan_to_num(mon), np.nan_to_num(m["spei"][:, -5:]))
+    short = ct.SeasonalDroughtProvider(Tables(drought_tables(admins, last="2026-06")), admins)
+    assert short.fetch_season("spi03", "persiann", 2026, "s1", windows).status == "unavailable"

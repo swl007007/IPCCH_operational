@@ -21,5 +21,7 @@ def offline_ee():
                 ee.Join, ee.Algorithms):
         if hasattr(cls, "initialize"):
             cls.initialize()
+    ee._InitializeGeneratedClasses()      # the rest of what ee.Initialize does after fetching the signatures
+    ee._InitializeUnboundMethods()        # ee.Algorithms.If / IsEqual
     offline_ee._ready = True
     return ee
