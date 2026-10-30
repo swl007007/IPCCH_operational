@@ -244,3 +244,27 @@ Executable v2 route, legacy v1 cutover/inheritance guards, FEWS NET v2 adapter w
 ### Next Steps
 
 - Live items deferred (D-live-1..8): live EE/cloud, full-area cloud generation, real GCS init, production publication/cutover, deployed image, production rollback
+
+
+## Session 8: IPCCH validity origin ablation (H0/H6/H12) — executed and accepted
+<!-- trellis-session: v=2 fp=cd6b5f6738144aac -->
+
+**Date**: 2026-10-30
+**Task**: IPCCH validity origin ablation (H0/H6/H12) — executed and accepted
+**Branch**: `feat/ipcch-validity-feature-inference`
+
+### Summary
+
+Executor (Claude b9db2dbb, w19:pE) under the Supervisor-Executor protocol: original-label fit ablation of the CH-final runs. Research worktree control-plane-origin-ablation commits 99f3ebd (CH-final source pin), 7023d10 (fit-only policy, origin contract/gates, A2 pairing, paired comparison, holdout-only package), 868db9f (smoke test). No-fit gates + independent verifier; full regressions (159 numerical + 72 tooling). Build 22176002 (image b208b132). Vertex jobs 2842603222726606848/2596031143128072192/3377405678476853248 SUCCEEDED once each (44 scalar fits); MLflow runs bd249760/eb33b087/8237e829 in IPCCH dashboard; final read-only packet final_pass (recompute, logs, readback 6/6, Dashboard UI). Annual weights cleanup (32 boosters) after verification. Reserved USD 6.81 of 7.00; compute-only ~USD 0.51. Supervisor final acceptance recorded; task archived (730f751).
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ad34381` | task 10-30: IPCCH validity origin ablation — execution evidence, final report and tool sources |
+| `61667a3` | task 10-30: final preservation check receipt |
+| `fc64185` | task 10-30: record Supervisor final acceptance; drop acceptance-pending status text |
+
+### Status
+
+[OK] **Completed**
