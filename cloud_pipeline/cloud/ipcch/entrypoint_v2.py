@@ -19,7 +19,8 @@
 Config (JSON, validated): ``roots`` {smoke, real} (deliveries/pointer/locks/runs), ``store_roots`` {smoke, real}
 (retained stores, each ending in its mode), ``namespaces`` {production, smoke}, ``trusted_prefixes`` {smoke, real},
 ``installed`` {mode: {envelope, package_root, bundle_dir[, fixture_root]}}, ``providers`` {mode: "module:function"},
-``earth_engine_project``, ``export_root``, ``work_dir``.
+``earth_engine_project``, ``export_root``, ``work_dir``; optional ``fewsnet`` {image_uri} for the real FEWS NET route
+(R60, ``cloud.ipcch.fews_adapter``; FEWS NET outputs and prepared snapshots live under the real root).
 """
 
 from __future__ import annotations
@@ -89,8 +90,41 @@ def real_providers(*, cfg: Mapping[str, Any], store, client, run_id: str, roster
             "gpp_acquirer": acquirer, "nightlight_acquirer": acquirer}
 
 
+def real_fewsnet_runner(cfg: Mapping[str, Any], *, store, reader, client):
+    """The real v2 FEWS NET route (R60): the existing preparation (FEWS NET scope) and delivery scoring in its
+    per-system subprocess, published as a v2 member; EE/acquisition is built only when generation runs."""
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    from cloud.ipcch import fews_adapter
+    from cloud.orchestrator.delivery_job import PinnedDownloader
+
+    fews = cfg.get("fewsnet") or {}
+    if "image_uri" not in fews:
+        raise EntrypointError("FEWS NET operations need deployment fewsnet.image_uri (the delivery job image)")
+
+    def score(spec_path, system, out):
+        subprocess.run([sys.executable, "-m", "cloud.orchestrator.delivery_job", "system", "--spec", str(spec_path),
+                        "--system", system, "--out", str(out)], check=True)
+
+    def acquirer():
+        import ee
+        import requests
+
+        from cloud.orchestrator.prepare import CloudSourceAcquirer
+
+        ee.Initialize(project=cfg["earth_engine_project"])
+        return CloudSourceAcquirer(ee=ee, client=client, http=requests.Session(), store=store,
+                                   output_root=cfg["roots"]["real"])
+    return fews_adapter.runner(store=store, reader=reader, output_root=cfg["roots"]["real"],
+                               work_root=Path(cfg["work_dir"]), image_uri=fews["image_uri"],
+                               downloader_factory=lambda root: PinnedDownloader(client, root), score=score,
+                               acquirer_factory=acquirer)
+
+
 def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, store, reader, client=None,
-        now: datetime | None = None) -> dict[str, Any]:
+        now: datetime | None = None, fewsnet_runner=None) -> dict[str, Any]:
     """Execute one v2 request (see module docstring); ``reader.read_bytes(uri, generation)`` reads exact generations."""
     now = now or datetime.now(timezone.utc)
     data = reader.read_bytes(request_uri, request_generation)
@@ -115,7 +149,7 @@ def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, st
 
     admit_kwargs = dict(request_uri=request_uri, request_generation=request_generation, now_utc=now,
                         production_namespace=cfg["namespaces"]["production"], smoke_namespace=cfg["namespaces"]["smoke"],
-                        current_ipcch_execution_month=current_month, resolve=resolve,
+                        current_ipcch_execution_month=current_month, resolve=resolve, read=reader.read_bytes,
                         trusted_prefixes=cfg["trusted_prefixes"],
                         batch_roots={m: cfg["store_roots"][m] for m in ("smoke", "real")})
 
@@ -144,7 +178,11 @@ def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, st
                                    envelope_path=inst["envelope"], **providers)
 
     deployment = run_v2.Deployment(store=store, roots=cfg["roots"])
-    outcome = run_v2.run_request(body, admit_kwargs=admit_kwargs, ipcch_context=context, deployment=deployment)
+    fews_selected = pre["operations"]["fewsnet_generation"] or pre["operations"]["fewsnet_inference"]
+    if fews_selected and fewsnet_runner is None:        # built only when FEWS NET is selected (real only, R38)
+        fewsnet_runner = real_fewsnet_runner(cfg, store=store, reader=reader, client=client)
+    outcome = run_v2.run_request(body, admit_kwargs=admit_kwargs, ipcch_context=context, deployment=deployment,
+                                 fewsnet_runner=fewsnet_runner)
     status = {k: v for k, v in outcome.items() if k != "systems"}
     status["systems"] = {s: _durable(o) for s, o in outcome["systems"].items()}
     uri = f"{cfg['roots'][outcome['mode']].rstrip('/')}/runs/{outcome['run_id']}/v2_run_status.json"

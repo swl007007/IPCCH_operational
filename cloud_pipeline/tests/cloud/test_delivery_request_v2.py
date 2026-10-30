@@ -87,7 +87,8 @@ def test_smoke_selects_ipcch_only_and_its_own_namespace():
                    fewsnet={"acled": {"action": "keep", "retained_snapshot": ref(9), "converter_contract":
                                       {"version": "september-h5-raw-converter-v1", "sha256": "b" * 64}},
                             "wfp": {"action": "keep", "retained_snapshot": ref(10), "converter_contract":
-                                    {"version": "september-h5-raw-converter-v1", "sha256": "b" * 64}}})
+                                    {"version": "september-h5-raw-converter-v1", "sha256": "b" * 64}},
+                            "prepare_request": ref(11)})
     refused(fews, "IPCCH operations only")
 
 
@@ -195,14 +196,14 @@ def test_fewsnet_operation_mapping():
     del no_snapshot["fewsnet"]["prepared_snapshot"]
     refused(no_snapshot, "fields mismatch")
     both = request(operations=ops(fewsnet_generation=True, fewsnet_inference=True), ipcch=None,
-                   fewsnet={"acled": choice, "wfp": choice, "delivery": fews_delivery()})
+                   fewsnet={"acled": choice, "wfp": choice, "prepare_request": ref(11), "delivery": fews_delivery()})
     assert "prepared_snapshot" not in check(both)["fewsnet"]
     with_snapshot = copy.deepcopy(both)
     with_snapshot["fewsnet"]["prepared_snapshot"] = inf_only["fewsnet"]["prepared_snapshot"]
     refused(with_snapshot, "fields mismatch")                                        # this run's prepare only
     all_four = request(operations=ops(ipcch_generation=True, ipcch_inference=True, fewsnet_generation=True,
                                       fewsnet_inference=True),
-                       fewsnet={"acled": choice, "wfp": choice, "delivery": fews_delivery()})
+                       fewsnet={"acled": choice, "wfp": choice, "prepare_request": ref(11), "delivery": fews_delivery()})
     assert check(all_four)                                                           # R38: real composes all four
 
 
@@ -317,7 +318,7 @@ def test_r39_month_rules_apply_to_ipcch_operations_only():
     choice = {"action": "keep", "retained_snapshot": ref(9), "converter_contract":
               {"version": "september-h5-raw-converter-v1", "sha256": "b" * 64}}
     fews_only = request(operations=ops(fewsnet_generation=True, fewsnet_inference=True), ipcch=None,
-                        fewsnet={"acled": choice, "wfp": choice, "delivery": fews_delivery()}, execution_month="2026-12")
+                        fewsnet={"acled": choice, "wfp": choice, "prepare_request": ref(11), "delivery": fews_delivery()}, execution_month="2026-12")
     out = check(fews_only)                                                          # M later than the UTC month: allowed
     assert "feature_origin" not in out["derived"] and out["derived"]["fewsnet_origin_month"] == "2026-12"
     inf_only = request(operations=ops(fewsnet_inference=True), ipcch=None,
@@ -338,3 +339,68 @@ def test_country_reference_is_an_inference_input_only():
     bad = request()
     bad["ipcch"]["country_reference"] = {"uri": "gs://ops-bucket/objects/", "generation": "1", "sha256": "a" * 64}
     refused(bad, "ipcch.country_reference")
+
+
+def fews_generation_world(origin="2026-10", outside=False):
+    """A real FEWS NET generation + inference request whose prepare_request is the existing both-system schema."""
+    import hashlib
+    import json
+
+    from cloud.batch.remote_sources import EXTRACTION_CONTRACT_VERSION, SYSTEM_FAMILIES
+    from cloud.orchestrator import prepare
+    n = iter(range(200, 400))
+    body = {"schema_version": prepare.PREPARE_SCHEMA_VERSION, "prepare_id": "prep-2026-10-v2", "origin_month": origin,
+            "cutoff_utc": "2026-10-05T12:00:00Z", "extraction_contract_version": EXTRACTION_CONTRACT_VERSION,
+            "systems": {s: {"geometry": ref(next(n)), "roster": ref(next(n)),
+                            "history": {f: ref(next(n)) for f in SYSTEM_FAMILIES[s]}} for s in ("fewsnet", "ipcch")},
+            "operator": "ops@example.org"}
+    if outside:                                           # one nested (unused IPCCH) ref outside the trusted namespace
+        body["systems"]["ipcch"]["roster"] = {**body["systems"]["ipcch"]["roster"], "uri": "gs://elsewhere/roster.csv"}
+    data = json.dumps(body).encode()
+    pref = {"uri": "gs://ops-bucket/prepare_requests/prep-2026-10-v2/prepare_request.json", "generation": "7",
+            "sha256": hashlib.sha256(data).hexdigest()}
+    choice = {"action": "keep", "retained_snapshot": ref(9), "converter_contract":
+              {"version": "september-h5-raw-converter-v1", "sha256": "b" * 64}}
+    req = request(operations=ops(fewsnet_generation=True, fewsnet_inference=True), ipcch=None, execution_month=origin,
+                  fewsnet={"acled": choice, "wfp": choice, "prepare_request": pref, "delivery": fews_delivery()})
+    return req, body, {(pref["uri"], pref["generation"]): data}
+
+
+def test_fews_generation_admission_validates_the_prepare_request_and_every_nested_ref():
+    """D1: the pinned prepare_request body is read, validated with the existing validator (origin = FEWS origin) and
+    ALL its nested references - including unused IPCCH declarations - are admitted and verified before anything runs."""
+    from cloud.orchestrator.delivery_manifest import ReferenceIdentityError
+    req, body, blobs = fews_generation_world()
+    kw = dict(request_uri=URI, request_generation="5", now_utc=NOW, production_namespace="prod",
+              smoke_namespace="smoke", current_ipcch_execution_month=None,
+              trusted_prefixes={"real": ["gs://ops-bucket/"]}, batch_roots={"real": "gs://ops-bucket/ipcch-v2/real"},
+              read=lambda u, g: blobs.get((u, g)))
+    import hashlib
+    sha = {(u, g): hashlib.sha256(d).hexdigest() for (u, g), d in blobs.items()}
+    out = check(req)
+    good = {(r["uri"], r["generation"]): r["sha256"] for _, r in v2.iter_object_refs(out)}
+    good.update(sha)
+    for s in body["systems"].values():
+        for r in (s["geometry"], s["roster"], *s["history"].values()):
+            good[(r["uri"], r["generation"])] = r["sha256"]
+    admitted = v2.admit(req, resolve=lambda u, g: good.get((u, g)), **kw)
+    fields = {r["field"] for r in admitted["verified_references"]}
+    assert "fewsnet.prepare_request" in fields and "fewsnet.prepare_request.systems.ipcch.history.gosif_sd" in fields
+    assert admitted["fewsnet_prepare"]["prepare_id"] == "prep-2026-10-v2"
+    nested = body["systems"]["ipcch"]["roster"]
+    with pytest.raises(ReferenceIdentityError, match="systems.ipcch.roster"):           # unused IPCCH ref still verified
+        v2.admit(req, resolve=lambda u, g: None if (u, g) == (nested["uri"], nested["generation"]) else good.get((u, g)), **kw)
+    other, _, other_blobs = fews_generation_world(origin="2026-09")
+    other["execution_month"] = "2026-10"                                                 # prepare origin != FEWS origin
+    with pytest.raises(v2.DeliveryRequestV2Error, match="origin 2026-09 is not the FEWS NET origin 2026-10"):
+        v2.admit(other, resolve=lambda u, g: "0" * 64, **{**kw, "read": lambda u, g: other_blobs.get((u, g))})
+    with pytest.raises(ReferenceIdentityError, match="not the pinned bytes"):
+        v2.admit(req, resolve=lambda u, g: good.get((u, g)), **{**kw, "read": lambda u, g: b"{}"})
+    far, _, far_blobs = fews_generation_world(outside=True)
+    seen = []
+    with pytest.raises(v2.DeliveryRequestV2Error, match="systems.ipcch.roster .* outside the trusted real namespace"):
+        v2.admit(far, resolve=lambda u, g: seen.append(u), **{**kw, "read": lambda u, g: far_blobs.get((u, g))})
+    assert seen == []                                     # lexical refusal before any resolve
+    missing = copy.deepcopy(req)
+    del missing["fewsnet"]["prepare_request"]
+    refused(missing, "fields mismatch")

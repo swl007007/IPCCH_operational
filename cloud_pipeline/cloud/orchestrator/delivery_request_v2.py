@@ -216,7 +216,7 @@ def _ipcch(value: Any, ops: Mapping[str, bool]) -> dict[str, Any]:
 
 def _fewsnet(value: Any, ops: Mapping[str, bool]) -> dict[str, Any]:
     gen, inf = ops["fewsnet_generation"], ops["fewsnet_inference"]
-    fields = (("acled", "wfp") if gen else ()) + (("prepared_snapshot",) if inf and not gen else ()) + (
+    fields = (("acled", "wfp", "prepare_request") if gen else ()) + (("prepared_snapshot",) if inf and not gen else ()) + (
         ("delivery",) if inf else ())
     _exact_keys(value, fields, "fewsnet")
     out: dict[str, Any] = {}
@@ -224,6 +224,9 @@ def _fewsnet(value: Any, ops: Mapping[str, bool]) -> dict[str, Any]:
         for source in ("acled", "wfp"):
             _source_choice(value[source], f"fewsnet.{source}")
             out[source] = dict(value[source])
+        # the existing preparation request (schema unchanged); its pinned body and nested references are validated at
+        # admission and FEWS NET generation runs it with the FEWS NET-only execution scope (D1)
+        out["prepare_request"] = _ref(value["prepare_request"], "fewsnet.prepare_request")
     if inf and not gen:
         prepared = value["prepared_snapshot"]
         _exact_keys(prepared, ("prepare_id", "origin_month", "manifest"), "fewsnet.prepared_snapshot")
@@ -354,6 +357,10 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
             refs.append(("ipcch.wfp.file", ipcch["wfp"]["file"]))
     fews = request.get("fewsnet")
     if fews:
+        if "prepare_request" in fews:
+            refs.append(("fewsnet.prepare_request", fews["prepare_request"]))
+            for field, ref in prepare_request_refs(request.get("fewsnet_prepare")):
+                refs.append((field, ref))
         if "prepared_snapshot" in fews:
             refs.append(("fewsnet.prepared_snapshot.manifest", fews["prepared_snapshot"]["manifest"]))
         for source in ("acled", "wfp"):
@@ -408,10 +415,48 @@ def admit_namespaces(request: Mapping[str, Any], trusted_prefixes: Mapping[str, 
             raise DeliveryRequestV2Error(f"{field} {uri} is outside the trusted {mode} namespace; not resolved (R48)")
 
 
+def prepare_request_refs(prepare: Mapping[str, Any] | None) -> list[tuple[str, Mapping[str, str]]]:
+    """Every nested reference of an admitted FEWS NET preparation request (BOTH declared systems: unused IPCCH
+    declarations kept for schema compatibility are still verified, never executed)."""
+    refs: list[tuple[str, Mapping[str, str]]] = []
+    for system, assets in sorted((prepare or {}).get("systems", {}).items()):
+        refs.append((f"fewsnet.prepare_request.systems.{system}.geometry", assets["geometry"]))
+        refs.append((f"fewsnet.prepare_request.systems.{system}.roster", assets["roster"]))
+        for family, ref in sorted(assets["history"].items()):
+            refs.append((f"fewsnet.prepare_request.systems.{system}.history.{family}", ref))
+    return refs
+
+
+def read_prepare_request(request: dict[str, Any], read: Callable[[str, str], bytes | None] | None) -> None:
+    """Read the pinned FEWS NET preparation request (exact generation + sha256), validate it with the existing
+    validator and require the run's FEWS NET origin; the validated body is kept on the request (``fewsnet_prepare``)
+    so its nested references are admitted and verified with the rest (D1)."""
+    import hashlib
+    import json
+
+    from cloud.orchestrator.prepare import validate_prepare_request
+
+    ref = request["fewsnet"]["prepare_request"]
+    if read is None:
+        raise DeliveryRequestV2Error("FEWS NET generation needs a pinned reader for fewsnet.prepare_request")
+    data = read(ref["uri"], ref["generation"])
+    if data is None or hashlib.sha256(data).hexdigest() != ref["sha256"]:
+        raise ReferenceIdentityError(f"fewsnet.prepare_request {ref['uri']}#{ref['generation']} missing or not the pinned bytes")
+    try:
+        prepare = validate_prepare_request(json.loads(data), request_uri=ref["uri"], request_generation=ref["generation"],
+                                           request_sha256=ref["sha256"])
+    except ValueError as exc:
+        raise DeliveryRequestV2Error(f"fewsnet.prepare_request: {exc}") from None
+    if prepare["origin_month"] != request["derived"]["fewsnet_origin_month"]:
+        raise DeliveryRequestV2Error(f"fewsnet.prepare_request origin {prepare['origin_month']} is not the FEWS NET "
+                                     f"origin {request['derived']['fewsnet_origin_month']}")
+    request["fewsnet_prepare"] = prepare
+
+
 def admit(data: Mapping[str, Any], *, request_uri: str, request_generation: str, now_utc: datetime,
           production_namespace: str, smoke_namespace: str, current_ipcch_execution_month: str | None,
           resolve: Callable[[str, str], str | None], trusted_prefixes: Mapping[str, Any],
-          batch_roots: Mapping[str, str]) -> dict[str, Any]:
+          batch_roots: Mapping[str, str], read: Callable[[str, str], bytes | None] | None = None) -> dict[str, Any]:
     """Integrated preflight: the whole request (incl. the complete FEWS NET delivery) is validated, every reference is
     admitted to the request mode's trusted namespace LEXICALLY (R48), and only then is EVERY pinned reference (IPCCH,
     FEWS NET, nested delivery models/assets/diagnostics, runtime) verified at its generation and sha256 - all before
@@ -420,6 +465,9 @@ def admit(data: Mapping[str, Any], *, request_uri: str, request_generation: str,
                                   production_namespace=production_namespace, smoke_namespace=smoke_namespace,
                                   current_ipcch_execution_month=current_ipcch_execution_month)
     admit_namespaces(request, trusted_prefixes, batch_roots)
+    if request.get("fewsnet") and "prepare_request" in request["fewsnet"]:
+        read_prepare_request(request, read)                     # the admitted ref only; its nested refs are then
+        admit_namespaces(request, trusted_prefixes, batch_roots)  # admitted lexically and verified below
     request["verified_references"] = verify_reference_identities(request, resolve)
     request["validation_level"] = "admitted"
     return request

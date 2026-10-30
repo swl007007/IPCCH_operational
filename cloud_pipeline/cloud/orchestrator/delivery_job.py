@@ -661,33 +661,42 @@ def _locked(store, output_root: str, systems, run_id: str, run: Callable[[], dic
 
 def _compute_member(request, request_ref, request_bytes, bound, *, output_root, store, downloader, work,
                     image_uri, score) -> dict:
-    """A v1 request scoring one system against a v2 release: the existing scoring of that system (only its packages
-    are installed; unused submitted packages of the other system are never materialised), published as a legacy-format
-    v2 member inheriting the bound snapshot's other member byte-for-byte and the activation."""
+    """A v1 request scoring one system against a v2 release (see ``publish_scored_member``)."""
+    publication = (request.get("execution") or {}).get("publication", "current")
+    published = publish_scored_member(
+        request, request_ref, request_bytes, bound["system"], output_root=output_root, store=store,
+        downloader=downloader, work=work, image_uri=image_uri, score=score, publication=publication,
+        expected_pointer_generation=str(request["release"]["expected_pointer_generation"]),
+        source={"request_schema": "fewsnet-ipcch-delivery-request-v1",
+                "prepare_id": request["prepared_snapshot"]["prepare_id"]})
+    if published["status"] == "publication_failed":
+        raise AcceptanceError(f"publication failed: {published.get('reason', published.get('stage'))}")
+    return {"outputs": f"{output_root.rstrip('/')}/deliveries/{published['publication_id']}/", "release": published}
+
+
+def publish_scored_member(request, request_ref, request_bytes, system, *, output_root, store, downloader, work,
+                          image_uri, score, publication, expected_pointer_generation, source, namespace=None) -> dict:
+    """Score ONE system from a v1-shaped request with the existing scoring (``prepare_inputs`` on that system's models
+    only - unused submitted packages of the other system are never materialised - then ``score`` = ``run_system`` /
+    ``deliver``), and publish it as a legacy-format v2 member inheriting the bound snapshot's other member and the
+    activation. Shared by the legacy single-system route and the v2 FEWS NET adapter (R60), so both write the same
+    member bytes from the same inputs."""
     from cloud.ipcch import fews_v2
     from cloud.ipcch import release_v2
 
-    system = bound["system"]
     scoped = {**request, "models": [m for m in request["models"] if m["system"] == system]}
     spec = prepare_inputs(scoped, downloader, work, image_uri=image_uri)
     request_path = work / "request.json"
     request_path.write_bytes(request_bytes)
     spec_path = work / "spec.json"
     spec_path.write_text(json.dumps({**spec, "request_path": str(request_path)}, default=str))
-    publication = (request.get("execution") or {}).get("publication", "current")
-    published = release_v2.publish_member_run(
-        store, output_root, system=system, namespace=request["release"]["namespace"], run_id=request["run_id"],
-        mode="real", publication=publication,
-        expected_pointer_generation=str(request["release"]["expected_pointer_generation"]),
-        request_ref=request_ref, workdir=str(work),
+    return release_v2.publish_member_run(
+        store, output_root, system=system, namespace=namespace or request["release"]["namespace"],
+        run_id=request["run_id"], mode="real", publication=publication,
+        expected_pointer_generation=str(expected_pointer_generation), request_ref=request_ref, workdir=str(work),
         write_member=lambda out: fews_v2.write_member(
             out, system=system, score=score, spec_path=spec_path, origin=request["origin_month"],
-            packages=spec["packages"][system], mode="real",
-            source={"request_schema": "fewsnet-ipcch-delivery-request-v1",
-                    "prepare_id": request["prepared_snapshot"]["prepare_id"]}))
-    if published["status"] == "publication_failed":
-        raise AcceptanceError(f"publication failed: {published.get('reason', published.get('stage'))}")
-    return {"outputs": f"{output_root.rstrip('/')}/deliveries/{published['publication_id']}/", "release": published}
+            packages=spec["packages"][system], mode="real", source=source))
 
 
 DISPATCH_SCHEMA = "delivery-dispatch-record-v1"

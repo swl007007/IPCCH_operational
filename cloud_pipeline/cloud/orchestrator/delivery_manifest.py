@@ -241,7 +241,7 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
         label = f"models[{model['system']}/{model['horizon_months']}m]"
         refs.append((f"{label}.package_manifest", model["package_manifest"]))
         refs.append((f"{label}.acceptance_report", model["acceptance_report"]))
-    for system in SYSTEMS:
+    for system in (s for s in SYSTEMS if s in request["assets"]):     # v1: both (validated); FEWS-only v2 spec: fewsnet
         for kind in ASSET_KINDS[system]:
             refs.append((f"assets.{system}.{kind}", request["assets"][system][kind]))
     for entry in request["diagnostics"]:

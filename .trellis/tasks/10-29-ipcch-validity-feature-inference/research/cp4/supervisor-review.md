@@ -75,3 +75,14 @@ Independent focused tests: 16 passed, repeated against pinned module bytes. Exis
 Independent read-only verification from isolated git archive a5a107e: test_fews_member 19 passed in 10.06s with locked interpreter. Existing package validators enforce seven regular files and exactly six content checksums, SHA256 syntax and bytes; member validator additionally binds package manifest and recorded inventory. Empty/partial/self-listing maps rejected at writer and actual publication with self-consistent external inventory; current unchanged. The checksum residual and original finding 5 are closed. Findings 1-4/R60 remain pending; no full-suite/cloud rerun implied.
 
 Finding 2 clarification: rejecting all postactivation legacy remote-update requests is not accepted. FEWS-only legacy entrypoints remain usable; restrict their preparation to FEWS through the selected-systems seam while preserving request shape/science. Reject IPCCH-including v1 after activation. Locks cover systems actually collected/scored and carry through preparation/resolution/delivery/publication with owned cleanup. Unused IPCCH declarations in an old preparation schema do not imply authorization to collect IPCCH.
+
+## Findings 1-4 follow-up 78a2aeb
+
+Isolated pinned reviews: operator/legacy 57 passed; workflow/prepare/legacy 78 passed. Old-pointer consistency (finding 4), activated IPCCH rejection, FEWS-only scoped prepare, default preparation, and intended preactivation IPCCH path verified. Remaining:
+
+- bind_current:639 uses outer v2_record to select archive semantics. Legacy both-system -> FEWS-v2 preserving legacy IPCCH -> exact-current FEWS-v1 rejects actual legacy archive. Member format must govern, not container.
+- locks.acquire:79-82 reads holder then fresh generation separately. Deterministic replacement A->B between reads lets A adopt B generation and delete B on release. Bind ownership and generation consistently; changed read must refuse adoption.
+- workflow.yaml prepare/resolution submission failures (e.g. definitive HTTP403) do not invoke release. Preserve locks for ambiguous submissions/timeouts; clean definitive terminal rejection.
+- dispatch_step resolution RuntimeError escapes its narrow catch; execute bind_current rejection happens before cleanup; dispatch-record write failure precedes cleanup. Reproduced remaining admission locks. Cover terminal errors with owned cleanup and actual execution-path tests.
+
+No code edits by reviewers. Finding 4 closes within reviewed scope; findings 1/3 retain the mixed-member residual, finding 2 remains open. Executor notified; CP4 not accepted.
