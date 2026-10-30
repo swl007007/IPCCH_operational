@@ -299,7 +299,7 @@ def _source_choice(value: Any, source: str) -> None:
         )
 
 
-def _models(value: Any) -> dict[tuple[str, int], str]:
+def _models(value: Any, systems: tuple[str, ...] = SYSTEMS) -> dict[tuple[str, int], str]:
     if not isinstance(value, list):
         raise DeliveryManifestError("models must be a list")
     fields = ("system", "horizon_months", "package_id", "package_manifest", "acceptance_report", "feature_schema_sha256")
@@ -308,7 +308,7 @@ def _models(value: Any) -> dict[tuple[str, int], str]:
         label = f"models[{index}]"
         _object(model, fields, label)
         key = (model["system"], model["horizon_months"])
-        if model["system"] not in SYSTEMS or model["horizon_months"] not in HORIZONS_MONTHS:
+        if model["system"] not in systems or model["horizon_months"] not in HORIZONS_MONTHS:
             raise DeliveryManifestError(f"{label} has unsupported system/horizon {key}")
         if type(model["horizon_months"]) is not int:
             raise DeliveryManifestError(f"{label}.horizon_months must be an integer")
@@ -318,25 +318,25 @@ def _models(value: Any) -> dict[tuple[str, int], str]:
         _ref(model["package_manifest"], f"{label}.package_manifest")
         _ref(model["acceptance_report"], f"{label}.acceptance_report")
         _sha256(model["feature_schema_sha256"], f"{label}.feature_schema_sha256")
-    expected = {(system, horizon) for system in SYSTEMS for horizon in HORIZONS_MONTHS}
+    expected = {(system, horizon) for system in systems for horizon in HORIZONS_MONTHS}
     if set(by_key) != expected:
         raise DeliveryManifestError(f"models must cover exactly {sorted(expected)}")
-    for system in SYSTEMS:
+    for system in systems:
         package_ids = [by_key[(system, horizon)] for horizon in HORIZONS_MONTHS]
         if len(set(package_ids)) != len(package_ids):
             raise DeliveryManifestError(f"{system} horizons must reference distinct packages; no relabeled models")
     return by_key
 
 
-def _assets(value: Any) -> None:
-    _exact_keys(value, SYSTEMS, "assets")
-    for system in SYSTEMS:
+def _assets(value: Any, systems: tuple[str, ...] = SYSTEMS) -> None:
+    _exact_keys(value, systems, "assets")
+    for system in systems:
         _exact_keys(value[system], ASSET_KINDS[system], f"assets.{system}")
         for kind in ASSET_KINDS[system]:
             _ref(value[system][kind], f"assets.{system}.{kind}")
 
 
-def _diagnostics(value: Any, models: Mapping[tuple[str, int], str]) -> None:
+def _diagnostics(value: Any, models: Mapping[tuple[str, int], str], systems: tuple[str, ...] = SYSTEMS) -> None:
     if not isinstance(value, list):
         raise DeliveryManifestError("diagnostics must be a list")
     seen = set()
@@ -361,7 +361,7 @@ def _diagnostics(value: Any, models: Mapping[tuple[str, int], str]) -> None:
             raise DeliveryManifestError(f"{label}.status must be available, unavailable or frozen_output")
         _exact_keys(entry, fields, label)
         system, horizon, family = entry["system"], entry["horizon_months"], entry["family"]
-        if system not in SYSTEMS or horizon not in HORIZONS_MONTHS or type(horizon) is not int:
+        if system not in systems or horizon not in HORIZONS_MONTHS or type(horizon) is not int:
             raise DeliveryManifestError(f"{label} has unsupported system/horizon")
         if family not in DIAGNOSTIC_FAMILIES[system]:
             raise DeliveryManifestError(f"{label}.family {family!r} is not a {system} diagnostic")
@@ -397,7 +397,7 @@ def _diagnostics(value: Any, models: Mapping[tuple[str, int], str]) -> None:
                 raise DeliveryManifestError(f"{label}.reason must be one of {UNAVAILABLE_REASONS}")
     expected = {
         (system, horizon, family)
-        for system in SYSTEMS
+        for system in systems
         for horizon in HORIZONS_MONTHS
         for family in DIAGNOSTIC_FAMILIES[system]
     }

@@ -166,7 +166,20 @@ def test_research_inputs_and_snapshot_shapes():
 
 
 def fews_delivery():
-    return {"models": [], "assets": {}, "diagnostics": [], "contracts": {}}
+    """A complete FEWS NET delivery block (the v1 models/assets/diagnostics/contracts rules, FEWS NET only)."""
+    from cloud.orchestrator import delivery_manifest as dm
+    models = [{"system": "fewsnet", "horizon_months": h, "package_id": f"fewsnet-202610-{h}m",
+               "package_manifest": ref(40 + h), "acceptance_report": ref(60 + h), "feature_schema_sha256": "b" * 64}
+              for h in dm.HORIZONS_MONTHS]
+    diagnostics = [{"system": "fewsnet", "horizon_months": h, "family": f, "status": "unavailable", "evidence": None,
+                    "reason": "missing_evidence"} for h in dm.HORIZONS_MONTHS for f in dm.DIAGNOSTIC_FAMILIES["fewsnet"]]
+    diagnostics[0] = {"system": "fewsnet", "horizon_months": 0, "family": "polygon_confidence", "status": "available",
+                      "evidence": ref(80), "evidence_model_package_id": "fewsnet-202610-0m", "evidence_horizon_months": 0}
+    contract = lambda v: {"version": v, "sha256": "d" * 64}
+    return {"models": models, "assets": {"fewsnet": {k: ref(90 + i) for i, k in enumerate(dm.ASSET_KINDS["fewsnet"])}},
+            "diagnostics": diagnostics,
+            "contracts": {"feature": contract("feature-v1"), "fill": contract(dm.FILL_POLICY_VERSION),
+                          "output": contract("september-v3-output-v1"), "diagnostic": contract("diag-v1")}}
 
 
 def test_fewsnet_operation_mapping():
@@ -230,3 +243,57 @@ def test_ipcch_wfp_refresh_is_a_research_prepared_interval_file():
         data = request()
         data["ipcch"]["wfp"] = bad
         refused(data, match)
+
+
+def mixed_request():
+    choice = {"action": "keep", "retained_snapshot": ref(9), "converter_contract":
+              {"version": "september-h5-raw-converter-v1", "sha256": "b" * 64}}
+    return request(operations=ops(ipcch_generation=True, ipcch_inference=True, fewsnet_inference=True),
+                   fewsnet={"prepared_snapshot": {"prepare_id": "prep-2026-10", "origin_month": "2026-08",
+                                                  "manifest": ref(8)}, "delivery": fews_delivery()})
+
+
+@pytest.mark.parametrize("mutate,match", [
+    (lambda d: d["models"].pop(), "models must cover exactly"),
+    (lambda d: d["models"][1].update(package_id="fewsnet-202610-0m"), "distinct packages"),
+    (lambda d: d["assets"]["fewsnet"].pop("geometry"), "assets.fewsnet"),
+    (lambda d: d["diagnostics"].pop(), "diagnostics must declare every"),
+    (lambda d: d["diagnostics"][0].update(evidence_model_package_id="other"), "evidence must belong"),
+    (lambda d: d["contracts"]["fill"].update(version="old-fill"), "contracts.fill.version"),
+    (lambda d: d["models"].append({**d["models"][0], "system": "ipcch"}), "unsupported system/horizon"),
+])
+def test_fews_delivery_block_is_fully_validated(mutate, match):
+    data = mixed_request()
+    mutate(data["fewsnet"]["delivery"])
+    refused(data, match)
+
+
+def test_iter_refs_include_every_nested_fews_delivery_reference():
+    out = check(mixed_request())
+    fields = [f for f, _ in v2.iter_object_refs(out)]
+    assert "fewsnet.delivery.models[6m].package_manifest" in fields and "fewsnet.delivery.assets.history_panel" in fields
+    assert "fewsnet.delivery.diagnostics[0m/polygon_confidence].evidence" in fields
+    assert sum(f.startswith("fewsnet.delivery.") for f in fields) == 3 * 2 + 5 + 1
+
+
+def test_integrated_preflight_executes_nothing_when_a_nested_fews_ref_is_invalid():
+    """Mixed IPCCH generation + FEWS NET inference: one wrong nested FEWS delivery hash rejects the whole request before
+    any IPCCH lock, collection, store write or provider call (R17)."""
+    data = mixed_request()
+    good = {(r["uri"], r["generation"]): r["sha256"] for _, r in v2.iter_object_refs(check(data))}
+    calls = []
+    kw = dict(request_uri=URI, request_generation="5", now_utc=NOW, production_namespace="prod",
+              smoke_namespace="smoke", current_ipcch_execution_month="2026-09")
+    admitted = v2.admit(data, resolve=lambda u, g: good.get((u, g)), **kw)
+    assert admitted["validation_level"] == "admitted" and len(admitted["verified_references"]) == len(good)
+    bad = copy.deepcopy(data)
+    bad["fewsnet"]["delivery"]["diagnostics"][0]["evidence"] = ref(81)            # a different object
+    resolve = lambda u, g: (calls.append((u, g)), good.get((u, g), "f" * 64))[1]
+    with pytest.raises(ReferenceIdentityError, match="fewsnet.delivery.diagnostics"):
+        v2.admit(bad, resolve=resolve, **kw)
+    malformed = copy.deepcopy(data)
+    malformed["fewsnet"]["delivery"]["assets"]["fewsnet"]["roster"]["sha256"] = "not-a-hash"
+    calls.clear()
+    with pytest.raises(v2.DeliveryRequestV2Error):
+        v2.admit(malformed, resolve=resolve, **kw)
+    assert calls == []                                       # structural refusal: not even a reference lookup

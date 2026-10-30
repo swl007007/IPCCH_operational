@@ -217,12 +217,24 @@ def _fewsnet(value: Any, ops: Mapping[str, bool]) -> dict[str, Any]:
         _ref(prepared["manifest"], "fewsnet.prepared_snapshot.manifest")
         out["prepared_snapshot"] = dict(prepared)
     if inf:
-        # The existing FEWS NET delivery inputs (models/assets/diagnostics/contracts of the v1 contract restricted to
-        # FEWS NET) are validated by the FEWS adapter that maps this block onto the unchanged v1 runtime path.
-        if not isinstance(value["delivery"], Mapping):
-            raise DeliveryRequestV2Error("fewsnet.delivery must be an object")
-        out["delivery"] = dict(value["delivery"])
+        # The existing FEWS NET delivery inputs - the v1 models/assets/diagnostics/contracts rules restricted to FEWS NET
+        # (shared validators, systems=("fewsnet",)) - are validated here, in full, before anything executes (R17).
+        out["delivery"] = _fews_delivery(value["delivery"])
     return out
+
+
+FEWS_DELIVERY_FIELDS = ("models", "assets", "diagnostics", "contracts")
+
+
+def _fews_delivery(value: Any) -> dict[str, Any]:
+    from cloud.orchestrator import delivery_manifest as dm
+
+    _exact_keys(value, FEWS_DELIVERY_FIELDS, "fewsnet.delivery")
+    models = dm._models(value["models"], systems=("fewsnet",))
+    dm._assets(value["assets"], systems=("fewsnet",))
+    dm._diagnostics(value["diagnostics"], models, systems=("fewsnet",))
+    dm._contracts(value["contracts"])
+    return dict(value)
 
 
 def _acled(value: Any) -> dict[str, Any]:
@@ -331,7 +343,36 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
             if source in fews:
                 field = "retained_snapshot" if fews[source]["action"] == "keep" else "raw_upload"
                 refs.append((f"fewsnet.{source}.{field}", fews[source][field]))
+        delivery = fews.get("delivery")
+        if delivery:                                    # every nested FEWS delivery reference (R17)
+            for model in delivery["models"]:
+                label = f"fewsnet.delivery.models[{model['horizon_months']}m]"
+                refs.append((f"{label}.package_manifest", model["package_manifest"]))
+                refs.append((f"{label}.acceptance_report", model["acceptance_report"]))
+            for kind, ref in delivery["assets"]["fewsnet"].items():
+                refs.append((f"fewsnet.delivery.assets.{kind}", ref))
+            for entry in delivery["diagnostics"]:
+                label = f"fewsnet.delivery.diagnostics[{entry['horizon_months']}m/{entry['family']}]"
+                if entry["status"] in ("available", "frozen_output"):
+                    refs.append((f"{label}.evidence", entry["evidence"]))
+                if entry["status"] == "frozen_output":
+                    for part in ("source_availability", "source_evidence", "source_declarations"):
+                        refs.append((f"{label}.{part}", entry[part]))
     return refs
+
+
+def admit(data: Mapping[str, Any], *, request_uri: str, request_generation: str, now_utc: datetime,
+          production_namespace: str, smoke_namespace: str, current_ipcch_execution_month: str | None,
+          resolve: Callable[[str, str], str | None]) -> dict[str, Any]:
+    """Integrated preflight: the whole request (incl. the complete FEWS NET delivery) is validated and EVERY pinned
+    reference (IPCCH, FEWS NET, nested delivery models/assets/diagnostics, runtime) is verified at its generation and
+    sha256 before any lock, collection, retained-store mutation or inference. An invalid request executes nothing (R17)."""
+    request = validate_request_v2(data, request_uri=request_uri, request_generation=request_generation, now_utc=now_utc,
+                                  production_namespace=production_namespace, smoke_namespace=smoke_namespace,
+                                  current_ipcch_execution_month=current_ipcch_execution_month)
+    request["verified_references"] = verify_reference_identities(request, resolve)
+    request["validation_level"] = "admitted"
+    return request
 
 
 def verify_reference_identities(request: Mapping[str, Any], resolve: Callable[[str, str], str | None]) -> list[dict[str, str]]:
