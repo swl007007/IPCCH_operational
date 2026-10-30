@@ -1,0 +1,226 @@
+{
+ "batch_id": "ipcch-2026-10-local-real-integration-1-16f7c8ab4018",
+ "manifest_ref": {
+  "uri": "gs://local-integration-store/ipcch-v2/real/feature_batches/ipcch-2026-10-local-real-integration-1-16f7c8ab4018/manifest.json",
+  "generation": "1",
+  "sha256": "e1aa46b11a740afdb8f3298b17063aa60ab8635fb166d3bf56e9a3f25d153106"
+ },
+ "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+ "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+ "execution_month": "2026-10",
+ "feature_origin": "2026-08",
+ "mode": "real",
+ "designation": "real",
+ "disclosure": "local locked Python (fewsnet-test-lock-20261022) only; the request's runtime image digest and environment manifest are placeholders - not container/deployment validation",
+ "store_reopen": "read-only reopen of the local fake store (generation 1 per existing object; content verified by sha256)",
+ "horizons": {
+  "2": {
+   "file": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/cp3-real-integration/run2/predictions/ipcch_predictions_h02.csv",
+   "sha256": "42c01672ed52ebd096a683526b5df241ba65aff66dc169079b04a8d00d65074c",
+   "bytes": 2441970,
+   "columns": [
+    "area_id",
+    "admin_code",
+    "population_estimate",
+    "population_reference_period",
+    "population_imputation_method",
+    "phase2_worse_score",
+    "phase2_worse_pred",
+    "phase3_worse_score",
+    "phase3_worse_pred",
+    "phase4_worse_score",
+    "phase4_worse_pred",
+    "phase5_worse_score",
+    "phase5_worse_pred",
+    "prediction_uncertainty",
+    "decision_margin",
+    "uncertainty_critical_boundary",
+    "uncertainty_method",
+    "overall_phase_pred",
+    "feature_period",
+    "target_period",
+    "scope_months",
+    "model_package_id",
+    "source_input",
+    "mode",
+    "batch_id",
+    "model_horizon_months",
+    "public_lead_months"
+   ],
+   "checks": {
+    "rows": 6226,
+    "unique_areas": true,
+    "exact_roster": true,
+    "finite_q2_q5": true,
+    "feature_period": [
+     "2026-08"
+    ],
+    "target_period": [
+     "2026-10"
+    ],
+    "mode": [
+     "real"
+    ],
+    "batch_id": true,
+    "model_package_id": [
+     "ipcch-validity-h2h8h14-final-20261030"
+    ],
+    "ok": true
+   },
+   "phase_counts": {
+    "1": 201,
+    "2": 2372,
+    "3": 3537,
+    "4": 111,
+    "5": 5
+   },
+   "raw_scores_outside_0_1": 4777,
+   "thresholds": {
+    "phase2_worse": 0.2,
+    "phase3_worse": 0.2,
+    "phase4_worse": 0.2,
+    "phase5_worse": 0.2
+   },
+   "monotonicity": "cummax"
+  },
+  "8": {
+   "file": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/cp3-real-integration/run2/predictions/ipcch_predictions_h08.csv",
+   "sha256": "c694155b0d4d3ec0b242d9f9d4304b8a5242a34ce13b0ae73faaa6a26668ef8a",
+   "bytes": 2441730,
+   "columns": [
+    "area_id",
+    "admin_code",
+    "population_estimate",
+    "population_reference_period",
+    "population_imputation_method",
+    "phase2_worse_score",
+    "phase2_worse_pred",
+    "phase3_worse_score",
+    "phase3_worse_pred",
+    "phase4_worse_score",
+    "phase4_worse_pred",
+    "phase5_worse_score",
+    "phase5_worse_pred",
+    "prediction_uncertainty",
+    "decision_margin",
+    "uncertainty_critical_boundary",
+    "uncertainty_method",
+    "overall_phase_pred",
+    "feature_period",
+    "target_period",
+    "scope_months",
+    "model_package_id",
+    "source_input",
+    "mode",
+    "batch_id",
+    "model_horizon_months",
+    "public_lead_months"
+   ],
+   "checks": {
+    "rows": 6226,
+    "unique_areas": true,
+    "exact_roster": true,
+    "finite_q2_q5": true,
+    "feature_period": [
+     "2026-08"
+    ],
+    "target_period": [
+     "2027-04"
+    ],
+    "mode": [
+     "real"
+    ],
+    "batch_id": true,
+    "model_package_id": [
+     "ipcch-validity-h2h8h14-final-20261030"
+    ],
+    "ok": true
+   },
+   "phase_counts": {
+    "1": 92,
+    "2": 2356,
+    "3": 3704,
+    "4": 69,
+    "5": 5
+   },
+   "raw_scores_outside_0_1": 3869,
+   "thresholds": {
+    "phase2_worse": 0.2,
+    "phase3_worse": 0.2,
+    "phase4_worse": 0.2,
+    "phase5_worse": 0.2
+   },
+   "monotonicity": "cummax"
+  },
+  "14": {
+   "file": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/cp3-real-integration/run2/predictions/ipcch_predictions_h14.csv",
+   "sha256": "41772efafc42f88f6e3b2fd422a84290bfa60095a8681703df96d6515d494570",
+   "bytes": 2459616,
+   "columns": [
+    "area_id",
+    "admin_code",
+    "population_estimate",
+    "population_reference_period",
+    "population_imputation_method",
+    "phase2_worse_score",
+    "phase2_worse_pred",
+    "phase3_worse_score",
+    "phase3_worse_pred",
+    "phase4_worse_score",
+    "phase4_worse_pred",
+    "phase5_worse_score",
+    "phase5_worse_pred",
+    "prediction_uncertainty",
+    "decision_margin",
+    "uncertainty_critical_boundary",
+    "uncertainty_method",
+    "overall_phase_pred",
+    "feature_period",
+    "target_period",
+    "scope_months",
+    "model_package_id",
+    "source_input",
+    "mode",
+    "batch_id",
+    "model_horizon_months",
+    "public_lead_months"
+   ],
+   "checks": {
+    "rows": 6226,
+    "unique_areas": true,
+    "exact_roster": true,
+    "finite_q2_q5": true,
+    "feature_period": [
+     "2026-08"
+    ],
+    "target_period": [
+     "2027-10"
+    ],
+    "mode": [
+     "real"
+    ],
+    "batch_id": true,
+    "model_package_id": [
+     "ipcch-validity-h2h8h14-final-20261030"
+    ],
+    "ok": true
+   },
+   "phase_counts": {
+    "1": 115,
+    "2": 1833,
+    "3": 4130,
+    "4": 147,
+    "5": 1
+   },
+   "raw_scores_outside_0_1": 3937,
+   "thresholds": {
+    "phase2_worse": 0.2,
+    "phase3_worse": 0.2,
+    "phase4_worse": 0.2,
+    "phase5_worse": 0.2
+   },
+   "monotonicity": "cummax"
+  }
+ },
+ "ok": true
+}

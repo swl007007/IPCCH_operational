@@ -1,0 +1,212 @@
+{
+ "label": "CP3 real-mode LOCAL integration (no cloud writes, no EE)",
+ "acled_refresh": {
+  "bytes": 38765520,
+  "sha256": "7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6",
+  "start": "2016-12-31",
+  "end": "2026-10-16",
+  "regions": [
+   "Caribbean",
+   "Caucasus and Central Asia",
+   "Central America",
+   "East Asia",
+   "Eastern Africa",
+   "Europe",
+   "Middle Africa",
+   "Middle East",
+   "Northern Africa",
+   "South America",
+   "South Asia",
+   "Southeast Asia",
+   "Southern Africa",
+   "Western Africa"
+  ]
+ },
+ "initialise": {
+  "initialised": 52,
+  "seconds": 71.7
+ },
+ "status": "succeeded",
+ "ipcch_status": "succeeded",
+ "climate_provider_calls": [],
+ "gpp_probes": [
+  {
+   "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M01_Mean.tif.gz",
+   "status": 404,
+   "at": "2026-10-30T09:05:39.389820+00:00"
+  },
+  {
+   "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M02_Mean.tif.gz",
+   "status": 404,
+   "at": "2026-10-30T09:05:39.682711+00:00"
+  },
+  {
+   "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M03_Mean.tif.gz",
+   "status": 404,
+   "at": "2026-10-30T09:05:40.010234+00:00"
+  },
+  {
+   "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M04_Mean.tif.gz",
+   "status": 404,
+   "at": "2026-10-30T09:05:40.248988+00:00"
+  },
+  {
+   "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M05_Mean.tif.gz",
+   "status": 404,
+   "at": "2026-10-30T09:05:40.417934+00:00"
+  },
+  {
+   "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M06_Mean.tif.gz",
+   "status": 404,
+   "at": "2026-10-30T09:05:40.572404+00:00"
+  },
+  {
+   "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M07_Mean.tif.gz",
+   "status": 404,
+   "at": "2026-10-30T09:05:40.738936+00:00"
+  },
+  {
+   "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M08_Mean.tif.gz",
+   "status": 404,
+   "at": "2026-10-30T09:05:41.004563+00:00"
+  }
+ ],
+ "batch": {
+  "batch_id": "ipcch-2026-10-local-real-integration-1-16f7c8ab4018",
+  "manifest_ref": {
+   "uri": "gs://local-integration-store/ipcch-v2/real/feature_batches/ipcch-2026-10-local-real-integration-1-16f7c8ab4018/manifest.json",
+   "generation": "1",
+   "sha256": "e1aa46b11a740afdb8f3298b17063aa60ab8635fb166d3bf56e9a3f25d153106"
+  }
+ },
+ "inference": {
+  "2": {
+   "rows": 6226,
+   "target_period": "2026-10",
+   "feature_period": "2026-08",
+   "phase_counts": {
+    "1": 201,
+    "2": 2372,
+    "3": 3537,
+    "4": 111,
+    "5": 5
+   },
+   "raw_scores_outside_0_1": 4777,
+   "contract_report": "passed",
+   "mode": [
+    "real"
+   ]
+  },
+  "8": {
+   "rows": 6226,
+   "target_period": "2027-04",
+   "feature_period": "2026-08",
+   "phase_counts": {
+    "1": 92,
+    "2": 2356,
+    "3": 3704,
+    "4": 69,
+    "5": 5
+   },
+   "raw_scores_outside_0_1": 3869,
+   "contract_report": "passed",
+   "mode": [
+    "real"
+   ]
+  },
+  "14": {
+   "rows": 6226,
+   "target_period": "2027-10",
+   "feature_period": "2026-08",
+   "phase_counts": {
+    "1": 115,
+    "2": 1833,
+    "3": 4130,
+    "4": 147,
+    "5": 1
+   },
+   "raw_scores_outside_0_1": 3937,
+   "contract_report": "passed",
+   "mode": [
+    "real"
+   ]
+  }
+ },
+ "manifest_generation": {
+  "coverage_end": {
+   "GPP_mean": "2025-12",
+   "WFP_Price": "2026-09",
+   "acled": "2026-08",
+   "bbg_global_food": "2026-09",
+   "bbg_oilgas": "2026-09",
+   "bbg_soybean_oil": "2026-07",
+   "bbg_staple_food": "2026-09",
+   "food_price_index_WB": "2026-10",
+   "history_snapshot": "2026-10",
+   "idp_local": "2026-09",
+   "idp_national": "2026-09",
+   "nightlight_mean": "2026-08",
+   "nino34_anom": "2026-09"
+  },
+  "gaps": {
+   "GPP_unpublished": [
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+   ],
+   "climate_monthly": {},
+   "climate_seasonal": {},
+   "nightlight": []
+  },
+  "warnings": [
+   "GPP_mean coverage ends 2025-12, before O 2026-08 (optional-missing: features at O are NaN, R65)",
+   "bbg_soybean_oil coverage ends 2026-07, before O 2026-08 (optional-missing: features at O are NaN, R65)"
+  ]
+ },
+ "manifest_identity": {
+  "batch_id": "ipcch-2026-10-local-real-integration-1-16f7c8ab4018",
+  "mode": "real",
+  "designation": "real",
+  "execution_month": "2026-10",
+  "feature_origin": "2026-08"
+ },
+ "manifest_combination": {
+  "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+  "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+  "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+  "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+  "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+  "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+  "scopes": {
+   "0": {
+    "feature_schema_sha256": "178223fda9d4079ccff4e9e13b8f55011fe759c5098ec1e31ceff47c5b851484",
+    "model_horizon_months": 2,
+    "public_lead_months": 0,
+    "training_cutoff": "2025-11"
+   },
+   "12": {
+    "feature_schema_sha256": "68eef197c702359a705ef2dc81c25a7b9ef343fe6073f5252516029a6a8641bb",
+    "model_horizon_months": 14,
+    "public_lead_months": 12,
+    "training_cutoff": "2024-11"
+   },
+   "6": {
+    "feature_schema_sha256": "8ed5e50ab11525afeae304199e068fb503d07c634087164ae01d1d8b0ad82552",
+    "model_horizon_months": 8,
+    "public_lead_months": 6,
+    "training_cutoff": "2025-05"
+   }
+  },
+  "status": "accepted"
+ },
+ "acceptance": {
+  "delivered": 57,
+  "runtime": 9
+ },
+ "seconds": 299.4
+}
