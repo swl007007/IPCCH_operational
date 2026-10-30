@@ -16,41 +16,51 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 
 FEWS_CONTRACT = "fewsnet-legacy-scoring"
+IPCCH_LEGACY_CONTRACT = "ipcch-legacy-scoring"     # = publication.LEGACY_IPCCH_MEMBER (pre-activation v1 IPCCH)
+CONTRACTS = {"fewsnet": FEWS_CONTRACT, "ipcch": IPCCH_LEGACY_CONTRACT}
 LEADS = (0, 6, 12)
 
 
 class FewsMemberError(RuntimeError):
-    """The FEWS NET member is incomplete or not its own origin's targets; nothing is published."""
+    """The legacy-format member is incomplete or does not verify; nothing is published."""
 
 
-def check_member(out: Path, origin: str, package_inventory: Mapping[str, str]) -> dict[str, Any]:
-    """The existing FEWS NET-scoped delivery checks (delivery_bundle.validate_member): frozen headers, native keys,
-    roster, predictions, country tables, diagnostics/availability, frozen scoring inputs and the exact 0/6/12 package
+def check_member(out: Path, origin: str, package_inventory: Mapping[str, str], system: str = "fewsnet") -> dict[str, Any]:
+    """The existing system-scoped delivery checks (delivery_bundle.validate_member): frozen headers, native keys,
+    roster, predictions, country tables, diagnostics/availability, frozen scoring inputs and the exact package
     identities."""
     from cloud.orchestrator.delivery_bundle import validate_member
 
     try:
-        return validate_member(Path(out), "fewsnet", origin=origin, package_inventory=package_inventory)
+        return validate_member(Path(out), system, origin=origin, package_inventory=package_inventory)
     except ValueError as exc:
         raise FewsMemberError(str(exc)) from None
 
 
 def write_member(out: Path, *, score: Callable[[Path, str, Path], None], spec_path: Path, origin: str,
-                 packages: Mapping[Any, str], mode: str, source: Mapping[str, Any] | None = None) -> dict[str, Any]:
-    """Score FEWS NET into ``out`` with the existing deliver path, install its exact packages, check, and return the
-    member record (own origin, mode and package identity)."""
+                 packages: Any, mode: str, source: Mapping[str, Any] | None = None,
+                 system: str = "fewsnet") -> dict[str, Any]:
+    """Score ``system`` into ``out`` with the existing deliver path, install its exact packages (FEWS NET: the 0/6/12
+    package directories ``{h: dir}``; legacy IPCCH: the one package directory), check, and return the member record
+    (own origin, mode and package identity)."""
     from cloud.orchestrator.delivery_bundle import _directory_inventory
 
     out = Path(out)
-    if sorted(int(h) for h in packages) != list(LEADS):
-        raise FewsMemberError(f"FEWS NET member needs exactly the {list(LEADS)} packages, got {sorted(packages)}")
-    score(Path(spec_path), "fewsnet", out)
     ignore = shutil.ignore_patterns("__pycache__", "*.pyc")
+    if system == "fewsnet":
+        if not isinstance(packages, Mapping) or sorted(int(h) for h in packages) != list(LEADS):
+            raise FewsMemberError(f"FEWS NET member needs exactly the {list(LEADS)} packages, got {sorted(packages or {})}")
+    elif system != "ipcch" or not packages:
+        raise FewsMemberError(f"{system} member needs its package directory")
+    score(Path(spec_path), system, out)
     package = {}
-    for h in sorted(packages, key=int):
-        target = out / f"fewsnet/model_package/{int(h)}m"
-        shutil.copytree(packages[h], target, ignore=ignore)
-        package.update({f"{int(h)}m/{p}": d for p, d in _directory_inventory(Path(packages[h])).items()})
-    check_member(out, origin, package)
-    return {"contract": FEWS_CONTRACT, "origin_month": origin, "mode": mode, "model_horizons": list(LEADS),
+    if system == "fewsnet":
+        for h in sorted(packages, key=int):
+            shutil.copytree(packages[h], out / f"fewsnet/model_package/{int(h)}m", ignore=ignore)
+            package.update({f"{int(h)}m/{p}": d for p, d in _directory_inventory(Path(packages[h])).items()})
+    else:
+        shutil.copytree(packages, out / "ipcch/model_package", ignore=ignore)
+        package = _directory_inventory(Path(packages))
+    check_member(out, origin, package, system)
+    return {"contract": CONTRACTS[system], "origin_month": origin, "mode": mode, "model_horizons": list(LEADS),
             "model_package": package, **({"source": dict(source)} if source else {})}

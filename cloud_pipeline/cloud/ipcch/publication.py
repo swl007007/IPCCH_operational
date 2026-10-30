@@ -30,6 +30,7 @@ from cloud.orchestrator import delivery_run
 RELEASE_SCHEMA = "fewsnet-ipcch-release-v2"
 IPCCH_CONTRACT = "ipcch-validity-h2h8h14-v2"
 LEGACY_CONTRACT = "legacy-v1"
+LEGACY_IPCCH_MEMBER = "ipcch-legacy-scoring"          # legacy-format IPCCH member in a v2 record; never activates
 SYSTEMS = ("ipcch", "fewsnet")
 
 
@@ -41,8 +42,15 @@ def pointer_uri(root_uri: str, namespace: str) -> str:
     return f"{root_uri.rstrip('/')}/{namespace}/current.json"
 
 
-def read_current(store: ObjectStore, root_uri: str, namespace: str) -> dict[str, Any]:
-    """{"generation": str ("0" = none), "pointer": dict|None, "record": dict|None} from one stable read."""
+def read_current(store: ObjectStore, root_uri: str, namespace: str, *,
+                 allow_missing_legacy_record: bool = False) -> dict[str, Any]:
+    """{"generation": str ("0" = none), "pointer": dict|None, "record": dict|None} from one stable read.
+
+    A pre-generation legacy pointer (no ``release_record_generation``) is read consistently: its record is read stably
+    at the generation it has now (records are create-only) and must be a legacy record - a v2 or activated record is
+    only trusted when the pointer pins its generation, so activation is never inferred from an unpinned record. A
+    missing legacy record is refused, except for callers that only gate on it (``allow_missing_legacy_record``: the
+    legacy v1 guards), which then see no record, hence no members to inherit and no activation."""
     uri = pointer_uri(root_uri, namespace)
     before = store.get_metadata(uri)
     if before is None:
@@ -51,6 +59,8 @@ def read_current(store: ObjectStore, root_uri: str, namespace: str) -> dict[str,
     after = store.get_metadata(uri)
     if after is None or after.generation != before.generation:
         raise GenerationConflict(f"{uri} moved while it was read")
+    if "release_record_generation" not in pointer:
+        return _legacy_snapshot(store, str(before.generation), pointer, allow_missing_legacy_record)
     rec_uri, want = pointer["release_record"], str(pointer["release_record_generation"])
     rec_before = store.get_metadata(rec_uri)
     if rec_before is None or str(rec_before.generation) != want:
@@ -60,6 +70,25 @@ def read_current(store: ObjectStore, root_uri: str, namespace: str) -> dict[str,
     if rec_after is None or str(rec_after.generation) != want:
         raise PublicationRefused(f"release record {rec_uri} changed while it was read; nothing was used")
     return {"generation": str(before.generation), "pointer": pointer, "record": json.loads(text)}
+
+
+def _legacy_snapshot(store: ObjectStore, generation: str, pointer: Mapping[str, Any], allow_missing: bool) -> dict[str, Any]:
+    rec_uri = pointer.get("release_record")
+    meta = store.get_metadata(rec_uri) if rec_uri else None
+    if meta is None:
+        if allow_missing:
+            return {"generation": generation, "pointer": dict(pointer), "record": None, "legacy_pointer": True,
+                    "record_missing": True}
+        raise PublicationRefused(f"legacy pointer names release record {rec_uri} which does not exist")
+    text = store.read_text(rec_uri)
+    again = store.get_metadata(rec_uri)
+    if again is None or str(again.generation) != str(meta.generation):
+        raise PublicationRefused(f"release record {rec_uri} changed while it was read; nothing was used")
+    record = json.loads(text)
+    if record.get("schema") == RELEASE_SCHEMA or record.get("activation"):
+        raise PublicationRefused(f"{rec_uri} is a v2/activated release record named without its generation; refused")
+    return {"generation": generation, "pointer": dict(pointer), "record": record, "legacy_pointer": True,
+            "record_generation": str(meta.generation)}
 
 
 def members(record: Mapping[str, Any] | None) -> dict[str, dict[str, Any]]:
@@ -128,7 +157,10 @@ def publish(store: ObjectStore, root_uri: str, *, run_id: str, namespace: str, p
     wrong = sorted(s for s, m in new_members.items() if m.get("mode") != mode)
     if wrong:
         raise PublicationRefused(f"new members {wrong} carry a mode other than the run's {mode!r} (R36)")
-    if "ipcch" in new_members and sorted(new_members["ipcch"].get("model_horizons", [])) != [2, 8, 14]:
+    if "ipcch" in new_members and new_members["ipcch"].get("contract") not in (IPCCH_CONTRACT, LEGACY_IPCCH_MEMBER):
+        raise PublicationRefused("a new IPCCH member is the new contract or a legacy-format (pre-activation) member")
+    if (new_members.get("ipcch", {}).get("contract") == IPCCH_CONTRACT
+            and sorted(new_members["ipcch"].get("model_horizons", [])) != [2, 8, 14]):
         raise PublicationRefused("an IPCCH member publishes all three horizons H2/H8/H14 together or nothing (R18)")
     snapshot = read_current(store, root_uri, namespace)
     if publication == "candidate":

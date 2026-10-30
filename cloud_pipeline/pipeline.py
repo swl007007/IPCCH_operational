@@ -811,12 +811,20 @@ def submit_intent(args, cfg, cloud, init, choices, body, uri, state, state_path,
         "publication": selection["publication"],
     }
     request_uri = f"gs://{cfg['request_bucket']}/requests/{run_id}/run_manifest.json"
-    validate_delivery_request(
+    validated = validate_delivery_request(
         request,
         request_uri=request_uri,
         request_generation="1",
         expected_release_namespace=cfg["namespace"],
+        new_contract_inherit=("ipcch",),            # a new-contract IPCCH member is checked against current below
     )
+    # the same current-bound binding as the cloud admission/delivery (R37 + FCC): rejected before anything is published
+    from cloud.orchestrator.delivery_job import AcceptanceError, bind_current
+
+    try:
+        bind_current(cloud.store, f"gs://{cfg['bucket']}", validated)
+    except AcceptanceError as exc:
+        raise ValueError(str(exc)) from None
     if "request_body" not in state:
         state["request_body"] = request
         save(state_path, state)
@@ -833,7 +841,23 @@ def inherited_source(cloud, work, system, source, month):
     source manifest's recorded run (the archive's own run ID is checked again in the receipt)."""
     manifest, archive = cloud.pin(source["manifest"]), cloud.pin(source["archive"])
     cloud.fetch(manifest, Path(work) / f"inherited_{system}_manifest.json")
-    recorded = read(Path(work) / f"inherited_{system}_manifest.json").get("provenance", {}).get("run_id")
+    body = read(Path(work) / f"inherited_{system}_manifest.json")
+    if body.get("schema") == "fewsnet-ipcch-delivery-v2":
+        # a member of a v2 delivery: its own publication id and recorded months (R63); v2 deliveries have no archive,
+        # so the operator passes the member's delivery manifest as --inherit-archive too (exact identity, never a
+        # substitute); delivery binds it to the current release's member (delivery_job.bind_current)
+        member = (body.get("members") or {}).get(system)
+        if member is None:
+            raise ValueError(f"{source['manifest']} holds no {system} member")
+        if body.get("run_id") != source["source_delivery_id"]:
+            raise ValueError(f"inherited {system} source is run {body.get('run_id')}, not {source['source_delivery_id']}")
+        if archive != manifest:
+            raise ValueError(f"a v2 {system} member has no archive: pass its delivery manifest as --inherit-archive")
+        origin = (member.get("feature_origin") if member.get("contract") == "ipcch-validity-h2h8h14-v2"
+                  else member.get("origin_month"))
+        return {"source_delivery_id": source["source_delivery_id"], "origin_month": origin,
+                "manifest": manifest, "archive": manifest}
+    recorded = body.get("provenance", {}).get("run_id")
     if recorded != source["source_delivery_id"]:
         raise ValueError(f"inherited {system} source is run {recorded}, not {source['source_delivery_id']}")
     return {"source_delivery_id": source["source_delivery_id"], "origin_month": month,
@@ -937,12 +961,7 @@ def bind_promotion(cfg, cloud, run_state, record):
     from cloud.ipcch import publication as pub
     from cloud.orchestrator.delivery_job import MIGRATION, _ref_identity
 
-    root = f"gs://{cfg['bucket']}"
-    pointer = cloud.latest(pub.pointer_uri(root, cfg["namespace"]))
-    if pointer and "release_record_generation" not in pointer[0]:
-        snapshot = {"record": None}            # a pre-generation legacy pointer is never an activated (v2) release
-    else:
-        snapshot = pub.read_current(cloud.store, root, cfg["namespace"])
+    snapshot = pub.read_current(cloud.store, f"gs://{cfg['bucket']}", cfg["namespace"], allow_missing_legacy_record=True)
     scored = (record.get("execution") or {}).get("scored_systems", list(pub.SYSTEMS))
     if "ipcch" in scored and pub.activation(snapshot["record"]):
         raise ValueError(MIGRATION)

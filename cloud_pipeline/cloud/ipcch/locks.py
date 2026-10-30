@@ -61,9 +61,14 @@ def _holder(store: ObjectStore, uri: str) -> Any:
 
 
 def acquire(store: ObjectStore, mode_root: str, systems: Iterable[str], run_id: str,
-            now: datetime | None = None) -> list[Lock]:
-    """All selected systems' locks or none (only this submission's own acquisitions are released on failure)."""
+            now: datetime | None = None, adopt_own: bool = False) -> list[Lock]:
+    """All selected systems' locks or none (only this submission's own acquisitions are released on failure).
+
+    ``adopt_own``: a lock already held by THIS run (a legacy remote-update run holds its locks from admission through
+    preparation, resolution and delivery) is adopted at its current generation instead of acquired twice; adopted
+    locks are returned like acquired ones (released by their owner at the end) but never released on a failure here."""
     held: list[Lock] = []
+    fresh: list[Lock] = []
     stamp = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%dT%H:%M:%SZ")
     for system in sorted(set(systems)):
         uri = lock_uri(mode_root, system)
@@ -72,11 +77,33 @@ def acquire(store: ObjectStore, mode_root: str, systems: Iterable[str], run_id: 
             meta = store.write_text(uri, body, if_generation_match=0)
         except GenerationConflict as exc:
             holder = _holder(store, uri)
-            raise LockConflict(system, holder, release(store, held)) from exc
+            current = store.get_metadata(uri)
+            if adopt_own and holder == run_id and current is not None:
+                held.append(Lock(system, uri, str(current.generation), run_id))
+                continue
+            raise LockConflict(system, holder, release(store, fresh)) from exc
         except Exception as exc:                              # any other failure: release own locks, keep the cause
-            raise LockAcquisitionError(system, exc, release(store, held)) from exc
-        held.append(Lock(system, uri, str(meta.generation), run_id))
+            raise LockAcquisitionError(system, exc, release(store, fresh)) from exc
+        lock = Lock(system, uri, str(meta.generation), run_id)
+        held.append(lock)
+        fresh.append(lock)
     return held
+
+
+def owned(store: ObjectStore, mode_root: str, run_id: str) -> list[Lock]:
+    """The locks this run holds now (at their current generations)."""
+    out = []
+    for system in SYSTEMS:
+        uri = lock_uri(mode_root, system)
+        meta = store.get_metadata(uri)
+        if meta is not None and _holder(store, uri) == run_id:
+            out.append(Lock(system, uri, str(meta.generation), run_id))
+    return out
+
+
+def release_owned(store: ObjectStore, mode_root: str, run_id: str) -> list[str]:
+    """Failure cleanup by the owner: release exactly the locks this run still holds (never another run's)."""
+    return release(store, owned(store, mode_root, run_id))
 
 
 def release(store: ObjectStore, locks: Iterable[Lock]) -> list[str]:

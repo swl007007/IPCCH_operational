@@ -19,12 +19,33 @@ def digest(body):
     return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
 
 
+class _ObjectsView:
+    """Read-only ObjectStore view of the fake's objects (production ``Cloud.store`` is a GCSObjectStore)."""
+
+    def __init__(self, objects):
+        self.objects = objects
+
+    def get_metadata(self, uri):
+        from cloud.common.object_store import ObjectMetadata
+        return ObjectMetadata(uri, "1") if uri in self.objects else None
+
+    def read_text(self, uri):
+        return self.objects[uri].decode("utf-8")
+
+    def read_bytes(self, uri):
+        return self.objects[uri]
+
+
 class Fake:
     def __init__(self):
         self.objects = {}
         self.launches = 0
         self.fail_launch = False
         self.fail_request = False
+
+    @property
+    def store(self):
+        return _ObjectsView(self.objects)
 
     def put(self, uri, path):
         raw = Path(path).read_bytes()

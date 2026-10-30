@@ -190,15 +190,24 @@ def validate_prepare_request(data: Mapping[str, Any], *, request_uri: str, reque
     return validated
 
 
-def run_prepare(request, *, store, reader, acquirer, output_root: str, workdir: Path) -> dict:
+def run_prepare(request, *, store, reader, acquirer, output_root: str, workdir: Path,
+                systems: tuple[str, ...] = SYSTEMS) -> dict:
     """Local in-process composition of plan + extract (the deployed path splits them)."""
-    plan = plan_prepare(request, store=store, reader=reader, acquirer=acquirer, output_root=output_root)
+    plan = plan_prepare(request, store=store, reader=reader, acquirer=acquirer, output_root=output_root,
+                        systems=systems)
     return execute_prepare_plan(plan["plan_ref"], store=store, reader=reader, acquirer=acquirer, workdir=workdir)
 
 
 def plan_prepare(request, *, store: ObjectStore, reader: PinnedReader, acquirer: SourceAcquirer,
-                 output_root: str) -> dict:
-    """Cloud Run phase: sentinel, pinned inputs, completed-month discovery, create-only plan."""
+                 output_root: str, systems: tuple[str, ...] = SYSTEMS) -> dict:
+    """Cloud Run phase: sentinel, pinned inputs, completed-month discovery, create-only plan.
+
+    ``systems`` (default both, the existing behaviour) is the explicit execution scope: only those systems' rosters
+    and histories are read and only families they consume are discovered/acquired/written (a v2 FEWS NET-only
+    preparation never collects IPCCH features although the request schema declares both systems)."""
+    selected = tuple(system for system in SYSTEMS if system in systems)
+    if not selected or set(systems) - set(SYSTEMS):
+        raise ValueError(f"prepare systems must be a non-empty subset of {SYSTEMS}")
     prepare_root = f"{output_root.rstrip('/')}/prepared/{request['prepare_id']}/"
     _acquire_sentinel(store, f"{prepare_root}_PREPARE_ACQUIRED", request["prepare_id"])
     try:
@@ -206,10 +215,12 @@ def plan_prepare(request, *, store: ObjectStore, reader: PinnedReader, acquirer:
         cutoff = datetime.fromisoformat(request["cutoff_utc"].replace("Z", "+00:00"))
         # History cannot claim a month that had not ended by the cutoff, nor one after O.
         limit = last_eligible_month(origin, cutoff)
-        rosters = {system: _load_system(reader, request["systems"][system])[0] for system in SYSTEMS}
+        rosters = {system: _load_system(reader, request["systems"][system])[0] for system in selected}
         families = {}
         for family in FAMILIES:
-            systems = [system for system in SYSTEMS if family in SYSTEM_FAMILIES[system]]
+            systems = [system for system in selected if family in SYSTEM_FAMILIES[system]]
+            if not systems:
+                continue
             histories = {
                 system: _history(reader, request["systems"][system]["history"][family], family,
                                  rosters[system], limit)
@@ -280,6 +291,7 @@ def plan_prepare(request, *, store: ObjectStore, reader: PinnedReader, acquirer:
             "systems": request["systems"],
             "families": families,
             "prepare_root": prepare_root,
+            **({"selected_systems": list(selected)} if selected != SYSTEMS else {}),
         }
         plan_ref = _write_create_only(store, f"{prepare_root}prepare_plan.json", _json(plan))
     except Exception as exc:
@@ -309,7 +321,7 @@ def execute_prepare_plan(plan_ref, *, store: ObjectStore, reader: PinnedReader, 
 def _extract(plan, plan_ref, *, store, reader, acquirer, prepare_root, workdir) -> dict:
     origin = plan["origin_month"]
     limit = last_eligible_month(origin, datetime.fromisoformat(plan["cutoff_utc"].replace("Z", "+00:00")))
-    loaded = {system: _load_system(reader, plan["systems"][system]) for system in SYSTEMS}
+    loaded = {system: _load_system(reader, plan["systems"][system]) for system in plan.get("selected_systems", SYSTEMS)}
     coverage_rows, latest_rows, families = [], [], {}
     if hasattr(acquirer, "start_exports"):
         # Submit every family's planned provider exports before waiting on any of them.
@@ -398,6 +410,7 @@ def _extract(plan, plan_ref, *, store, reader, acquirer, prepare_root, workdir) 
         "source_coverage": coverage_ref,
         "area_latest_observation": latest_ref,
         "status": "succeeded",
+        **({"selected_systems": plan["selected_systems"]} if "selected_systems" in plan else {}),
     }
     _write_create_only(store, f"{prepare_root}prepared_manifest.json", _json(manifest))
     return manifest
@@ -500,7 +513,7 @@ def _json(payload) -> str:
 def plan_and_submit(request, *, store: ObjectStore, reader: PinnedReader, acquirer: SourceAcquirer,
                     output_root: str, submit, image_uri: str, service_account: str,
                     earth_engine_project: str, deadline_utc: datetime | None = None,
-                    clock=lambda: datetime.now(timezone.utc)) -> dict:
+                    clock=lambda: datetime.now(timezone.utc), systems: tuple[str, ...] = SYSTEMS) -> dict:
     """Cloud Run entry: plan, then submit the Batch extract job.
 
     A submission failure after the plan was written leaves the sentinel and plan as
@@ -511,7 +524,8 @@ def plan_and_submit(request, *, store: ObjectStore, reader: PinnedReader, acquir
         max_run = int((deadline_utc - clock()).total_seconds())
         if max_run <= 0:
             raise ValueError("authorization deadline has passed; not planning provider work")
-    planned = plan_prepare(request, store=store, reader=reader, acquirer=acquirer, output_root=output_root)
+    planned = plan_prepare(request, store=store, reader=reader, acquirer=acquirer, output_root=output_root,
+                           systems=systems)
     config = prepare_batch_job_config(planned["plan_ref"], prepare_id=request["prepare_id"],
                                       origin_month=request["origin_month"], image_uri=image_uri,
                                       service_account=service_account, earth_engine_project=earth_engine_project,
@@ -758,6 +772,8 @@ def main(argv: list[str] | None = None) -> int:
     plan.add_argument("--batch-image-uri", required=True)
     plan.add_argument("--batch-service-account", required=True)
     plan.add_argument("--deadline-utc", help="absolute authorization deadline, RFC3339 UTC")
+    plan.add_argument("--systems", default=",".join(SYSTEMS),
+                      help="execution scope (default both; the admission record's prepare_systems)")
     extract = commands.add_parser("extract", help="Cloud Batch: acquire planned sources and extract")
     extract.add_argument("--plan-uri", required=True)
     extract.add_argument("--plan-generation", required=True)
@@ -794,7 +810,8 @@ def main(argv: list[str] | None = None) -> int:
         plan_and_submit(request, store=store, reader=reader, acquirer=acquirer, output_root=args.output_root,
                         submit=lambda config: submit_batch_job(config, client=batch, parent=args.batch_parent),
                         image_uri=args.batch_image_uri, service_account=args.batch_service_account,
-                        earth_engine_project=args.earth_engine_project, deadline_utc=deadline)
+                        earth_engine_project=args.earth_engine_project, deadline_utc=deadline,
+                        systems=tuple(s for s in args.systems.split(",") if s))
         return 0
     plan_ref = {"uri": args.plan_uri, "generation": args.plan_generation, "sha256": args.plan_sha256}
     output_root = args.plan_uri.split("/prepared/")[0]

@@ -15,6 +15,8 @@ yaml = pytest.importorskip("yaml")
 
 from cloud.batch import remote_sources as rs  # noqa: E402
 from cloud.common.object_store import GenerationConflict, LocalObjectStore  # noqa: E402
+from cloud.ipcch import locks  # noqa: E402
+from cloud.ipcch import publication as pub  # noqa: E402
 from cloud.orchestrator import delivery_job as dj  # noqa: E402
 from cloud.orchestrator import delivery_manifest as dm  # noqa: E402
 from cloud.orchestrator import delivery_run  # noqa: E402
@@ -28,6 +30,7 @@ ENV = {"GOOGLE_CLOUD_PROJECT_ID": "dest", "DELIVERY_LOCATION": "us-central1", "D
        "BATCH_PARENT": "projects/dest/locations/us-central1", "BATCH_SERVICE_ACCOUNT": "batch@dest",
        "PREPARE_POLL_SECONDS": "60", "PREPARE_MAX_POLLS": "3"}
 REQUEST_BUCKET, NAME = "ipcch-requests", "requests/oct2026-r1/run_manifest.json"
+RUN = "oct2026-r1"
 PREPARE_URI = "gs://data/prepare_requests/prep-a/prepare_request.json"
 
 
@@ -183,6 +186,7 @@ class Cloud:
     def __init__(self, store, preparation):
         self.store, self.preparation = store, preparation
         self.jobs, self.sleeps, self.executed = [], 0, []
+        self.prepare_flags, self.locks_during_preparation, self.released = [], [], []
         self.connectors = {"googleapis.storage.v1.objects.get": self.get,
                            "googleapis.storage.v1.objects.insert": self.insert,
                            "googleapis.run.v2.projects.locations.jobs.run": self.run_job,
@@ -211,8 +215,14 @@ class Cloud:
         flags = dict(zip(args[3::2], args[4::2]))
         self.jobs.append((name.rsplit("/", 1)[-1], args[2]))
         if args[1] == "cloud.orchestrator.prepare":
+            self.prepare_flags.append(flags)
+            self.locks_during_preparation.append(sorted(l.system for l in locks.owned(self.store, "gs://data", RUN)))
             self.preparation(self.store, flags)
             return {"name": "operations/prepare"}
+        if args[2] == "release":
+            self.released.append(dj.release_run(self.store, request_uri=flags["--request-uri"],
+                                                output_root=flags["--output-root"]))
+            return {"name": "operations/release"}
         data = StoreReader(self.store).read_bytes(flags["--request-uri"], flags["--request-generation"])
         ref = {"uri": flags["--request-uri"], "generation": flags["--request-generation"],
                "sha256": hashlib.sha256(data).hexdigest()}
@@ -226,7 +236,8 @@ class Cloud:
             if args[2] == "resolve" and record["inference_systems"]:
                 resolved_ref, resolved_bytes = resolved
                 request = dm.validate_delivery_request(json.loads(resolved_bytes), request_uri=resolved_ref["uri"],
-                                                       request_generation=resolved_ref["generation"])
+                                                       request_generation=resolved_ref["generation"],
+                                                       new_contract_inherit=("ipcch",))   # as delivery_job.execute
                 dj.verify_resolution(request, data)
                 self.executed.append(resolved_ref)
         else:
@@ -481,3 +492,118 @@ def test_job_argv_parses_with_every_configured_flag():
     with pytest.raises(SystemExit) as missing:
         dj.main(["resolve", "--request-uri", "gs://b/requests/r1/run_manifest.json"])
     assert missing.value.code == 2
+
+
+# --- R37 / R50 through the real workflow and admission seams (Supervisor findings 2 on 6d8ea08) ----------------------
+
+
+def _owned(store):
+    return sorted(lock.system for lock in locks.owned(store, "gs://data", RUN))
+
+
+def test_remote_run_holds_both_locks_from_admission_and_resolution_hands_them_to_delivery(tmp_path):
+    """Before activation the legacy preparation collects both systems: both locks are taken at admission, held
+    through preparation and resolution (adopted, never acquired twice) and left for the delivery to adopt/release."""
+    store, cloud, generation = _world(tmp_path)
+    _run(cloud, generation)
+    assert cloud.locks_during_preparation == [["fewsnet", "ipcch"]]
+    assert cloud.prepare_flags[0]["--systems"] == "fewsnet,ipcch"                     # unchanged default scope
+    assert _record(store, "admission")["locks"].keys() == {"fewsnet", "ipcch"}
+    assert "prepare_systems" not in _record(store, "admission")
+    assert _owned(store) == ["fewsnet", "ipcch"]                                       # delivery adopts and releases
+    held = locks.acquire(store, "gs://data", ["fewsnet", "ipcch"], RUN, adopt_own=True)
+    assert [l.generation for l in held] == [l.generation for l in locks.owned(store, "gs://data", RUN)]
+
+
+@pytest.mark.parametrize("case", ["failed_preparation", "prepare_only", "resolution_rejected"])
+def test_remote_run_locks_are_released_on_every_failure_and_after_prepare_only(tmp_path, case):
+    if case == "failed_preparation":
+        store, cloud, generation = _world(tmp_path, preparation=_preparation(status="failed"))
+        with pytest.raises(WorkflowRaised, match="preparation prep-a failed"):
+            _run(cloud, generation)
+        assert ("oct-delivery", "release") in cloud.jobs and cloud.released[0]["released"]
+    elif case == "prepare_only":
+        store, cloud, generation = _world(tmp_path, lambda ref: _intent(ref, inference=()))
+        _run(cloud, generation)
+    else:
+        store, cloud, generation = _world(tmp_path, preparation=_preparation(
+            manifest=lambda ref: _snapshot(ref, origin_month="2026-09")))
+        with pytest.raises(WorkflowRaised, match="has no compatible succeeded snapshot"):
+            _run(cloud, generation)
+    assert cloud.locks_during_preparation and _owned(store) == []
+
+
+def test_a_busy_system_rejects_admission_before_preparation(tmp_path):
+    store, cloud, generation = _world(tmp_path)
+    other = locks.acquire(store, "gs://data", ["fewsnet"], "v2-run")
+    with pytest.raises(WorkflowRaised, match="was not admitted: .*fewsnet run in progress"):
+        _run(cloud, generation)
+    assert cloud.jobs == [("oct-delivery", "admit")] and _owned(store) == []
+    assert locks.release(store, other) == []
+
+
+def _activate(store):
+    """An activated current release (namespace of the intents) holding a new-contract IPCCH member."""
+    manifest = tm._ref("deliveries/ipcch-new/manifest.json")
+    record = {"schema": pub.RELEASE_SCHEMA, "run_id": "ipcch-new-ipcch", "mode": "real",
+              "activation": {"contract": pub.IPCCH_CONTRACT, "activated_by_run": "ipcch-new-ipcch"},
+              "systems": {"ipcch": {"contract": pub.IPCCH_CONTRACT, "execution_month": "2026-10",
+                                    "feature_origin": "2026-08", "mode": "real", "delivery": {"manifest": manifest}}}}
+    meta = store.write_text("gs://data/dual-system/releases/ipcch-new-ipcch/release.json", json.dumps(record))
+    store.write_text("gs://data/dual-system/current.json", json.dumps({
+        "run_id": "ipcch-new-ipcch", "release_record": "gs://data/dual-system/releases/ipcch-new-ipcch/release.json",
+        "release_record_generation": meta.generation}))
+    return manifest
+
+
+def test_after_activation_a_legacy_fews_only_remote_run_prepares_fews_only(tmp_path):
+    """Finding 2 (Supervisor ruling): the legacy FEWS NET-only remote request stays usable after activation - its
+    preparation is scoped to FEWS NET (no IPCCH collection), only the FEWS lock is taken, and resolution requires the
+    snapshot of exactly the admitted scope."""
+    def intent(ref):
+        body = _intent(ref)
+        body["execution"]["inherit"] = {"ipcch": {"source_delivery_id": "ipcch-new-ipcch", "origin_month": "2026-08",
+                                                  "manifest": member, "archive": member}}
+        return body
+
+    def fews_snapshot(ref):
+        snap = _snapshot(ref, selected_systems=["fewsnet"])
+        snap["families"] = {f: {"outputs": {"fewsnet": v["outputs"]["fewsnet"]}} for f, v in snap["families"].items()
+                            if "fewsnet" in v["outputs"]}
+        return snap
+    store = LocalObjectStore(tmp_path / "gcs")
+    member = _activate(store)
+    prepare_ref = _prepare_request(store)
+    generation = store.write_text(f"gs://{REQUEST_BUCKET}/{NAME}", json.dumps(intent(prepare_ref))).generation
+    cloud = Cloud(store, _preparation(manifest=fews_snapshot))
+    result = _run(cloud, generation)
+    admission = _record(store, "admission")
+    assert admission["prepare_systems"] == ["fewsnet"] and set(admission["locks"]) == {"fewsnet"}
+    assert cloud.prepare_flags[0]["--systems"] == "fewsnet" and cloud.locks_during_preparation == [["fewsnet"]]
+    assert result["resolved_request"] and _owned(store) == ["fewsnet"]
+    # a both-system snapshot is not the admitted scope
+    store2 = LocalObjectStore(tmp_path / "gcs2")
+    member = _activate(store2)
+    prepare_ref = _prepare_request(store2)
+    generation = store2.write_text(f"gs://{REQUEST_BUCKET}/{NAME}", json.dumps(intent(prepare_ref))).generation
+    cloud2 = Cloud(store2, _preparation())
+    with pytest.raises(WorkflowRaised, match="has no compatible succeeded snapshot"):
+        _run(cloud2, generation)
+    assert "admitted preparation scope" in _record(store2, "resolution")["reason"] and _owned(store2) == []
+
+
+@pytest.mark.parametrize("inference", [("ipcch",), ("fewsnet", "ipcch")])
+def test_after_activation_legacy_ipcch_remote_intents_are_rejected_before_any_collection(tmp_path, inference):
+    store = LocalObjectStore(tmp_path / "gcs")
+    _activate(store)
+    prepare_ref = _prepare_request(store)
+    body = _intent(prepare_ref, inference=inference)
+    if inference == ("ipcch",):
+        body["execution"]["inherit"] = {"fewsnet": {"source_delivery_id": "src", "origin_month": "2026-10",
+                                                    "manifest": tm._ref("deliveries/src/manifest.json"),
+                                                    "archive": tm._ref("deliveries/src/bundle.tar.gz")}}
+    generation = store.write_text(f"gs://{REQUEST_BUCKET}/{NAME}", json.dumps(body)).generation
+    cloud = Cloud(store, _preparation())
+    with pytest.raises(WorkflowRaised, match="was not admitted: .*v2 manifest"):
+        _run(cloud, generation)
+    assert cloud.jobs == [("oct-delivery", "admit")] and cloud.prepare_flags == [] and _owned(store) == []

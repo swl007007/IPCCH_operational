@@ -47,6 +47,7 @@ except ImportError:  # pragma: no cover - local environments without the GCS cli
         pass
 
     UPLOAD_RETRY = None
+SYSTEMS = ("fewsnet", "ipcch")  # delivery_manifest.SYSTEMS order (FEWS NET first)
 PACKAGE_MANIFEST_SCHEMA = "delivery-package-manifest-v1"
 ACCEPTANCE_REPORT_SCHEMA = "delivery-model-acceptance-v1"
 
@@ -188,12 +189,22 @@ def check_prepared_snapshot(request: Mapping[str, Any], prepared: Mapping[str, A
             prepare_id, request["origin_month"], "succeeded"):
         raise AcceptanceError("prepared manifest is not a succeeded snapshot for the requested prepare_id/origin")
     require_supported_extraction_contract(prepared)
+    from cloud.orchestrator.delivery_manifest import selected_systems
+
+    # a scoped preparation (``selected_systems``, e.g. FEWS NET-only after activation) serves only its systems: every
+    # scored system must be in scope; an unscoped snapshot is the existing both-system preparation (unchanged)
+    scope = prepared.get("selected_systems", list(SYSTEMS))
+    outside = [system for system in selected_systems(request) if system not in scope]
+    if outside:
+        raise AcceptanceError(f"prepared snapshot scope {scope} does not serve scored systems {outside}")
     for system, kinds in request["assets"].items():  # a bounded smoke preparation never serves a full roster
         for kind in ("roster", "geometry"):
             prepared_ref = prepared.get("systems", {}).get(system, {}).get(kind, {}).get("sha256")
             if prepared_ref != kinds[kind]["sha256"]:
                 raise AcceptanceError(f"{system}: prepared snapshot {kind} {prepared_ref} is not the delivery {kind} "
                                       f"{kinds[kind]['sha256']}")
+        if system not in scope:
+            continue
         for family in SYSTEM_FAMILIES[system]:
             if system not in prepared.get("families", {}).get(family, {}).get("outputs", {}):
                 raise AcceptanceError(f"prepared snapshot lacks {family} outputs for {system}")
@@ -268,12 +279,13 @@ def prepare_inputs(request: Mapping[str, Any], downloader: PinnedDownloader, wor
 
 def retained_family_rows(history: Mapping[str, str], family: str, *, chunksize: int = 200_000):
     """CSV text blocks of the retained family projection of each history panel (deterministic, streamed):
-    ``system, admin_code, month`` + the family columns as recorded, in source row order."""
+    ``system, admin_code, month`` + the family columns as recorded, in source row order. The systems are those whose
+    panel is given (v1: both; a FEWS NET-only v2 delivery: the FEWS rows of the same canonical stream)."""
     from tools.refresh_h5_inputs import CONFLICT_COLUMNS, WFP_COLUMNS
 
     columns = list(WFP_COLUMNS if family == "wfp" else CONFLICT_COLUMNS)
     header = True
-    for system in ("fewsnet", "ipcch"):
+    for system in (s for s in ("fewsnet", "ipcch") if s in history):
         identity = ["FEWSNET_admin_code", "date"] if system == "fewsnet" else ["admin_code", "year", "month"]
         for chunk in pd_read_chunks(history[system], [*identity, *columns], chunksize):
             if system == "fewsnet":
@@ -321,13 +333,16 @@ def run_system(spec_path: Path, system: str, out: Path) -> None:
     manifest = json.loads(Path(spec["prepared_manifest"]).read_text())
     wfp, acled = _source_frames(spec)
     assets = spec["assets"]
+    present = [s for s in ("fewsnet", "ipcch") if s in assets]   # v1: both; a FEWS NET-only v2 delivery: fewsnet
+    ipcch = assets.get("ipcch")
     deliver(origin=spec["origin"], out=out, prepared_families=manifest["families"],
             prepared_features=load_prepared_features(manifest, reader),
-            ipcch_panel=Path(assets["ipcch"]["history_panel"]), ipcch_template=Path(assets["ipcch"]["fixed_features"]),
+            ipcch_panel=Path(ipcch["history_panel"]) if ipcch else None,
+            ipcch_template=Path(ipcch["fixed_features"]) if ipcch else None,
             ipcch_package_root=Path(spec["packages"]["ipcch"]) if spec["packages"]["ipcch"] else None, fewsnet_raw=Path(assets["fewsnet"]["history_panel"]),
             fewsnet_packages={int(h): Path(p) for h, p in spec["packages"]["fewsnet"].items()},
-            census={s: Path(assets[s]["country_reference"]) for s in ("fewsnet", "ipcch")},
-            geometry={s: Path(assets[s]["geometry"]) for s in ("fewsnet", "ipcch")}, wfp=wfp, acled=acled,
+            census={s: Path(assets[s]["country_reference"]) for s in present},
+            geometry={s: Path(assets[s]["geometry"]) for s in present}, wfp=wfp, acled=acled,
             system=system, diagnostics=request_diagnostics({**request, "validation_level": "structural"}, system, reader))
 
 
@@ -477,6 +492,7 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
             score: Callable[[Path, str, Path], None], package: Callable[..., dict],
             upload: Callable[[Path, str], dict]) -> dict:
     """The whole request lifecycle with injectable side effects (tests drive this directly)."""
+    from cloud.ipcch import locks
     from cloud.orchestrator.delivery_manifest import validate_delivery_request
     from cloud.orchestrator.delivery_run import publish, run_once
 
@@ -493,11 +509,14 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
         raise AcceptanceError("a prepare-only intent never runs delivery")
     bound = bind_current(store, output_root, request)            # R37 cutover + FCC inheritance, before any work
     selected = selected_systems(request)
+    # a resolved remote-update run already holds both systems' locks since admission: adopt them (never acquire twice)
+    lock_systems = (sorted({lock.system for lock in locks.owned(store, output_root, request["run_id"])} | set(selected))
+                    if execution.get("intent") else selected)
     if bound["v2_route"]:
-        compute = lambda: _compute_fews_member(request, request_ref, request_bytes, bound, output_root=output_root,
+        compute = lambda: _compute_member(request, request_ref, request_bytes, bound, output_root=output_root,
                                                store=store, downloader=downloader, work=work, image_uri=image_uri,
                                                score=score)
-        return _locked(store, output_root, selected, request["run_id"],
+        return _locked(store, output_root, lock_systems, request["run_id"],
                        lambda: run_once(store, output_root, run_id=request["run_id"], request_ref=request_ref,
                                         compute=compute))
 
@@ -546,8 +565,14 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
                           release_record=record, validate=validate)
         return {"outputs": outputs, "release": release}
 
-    return _locked(store, output_root, selected, request["run_id"],
+    return _locked(store, output_root, lock_systems, request["run_id"],
                    lambda: run_once(store, output_root, run_id=request["run_id"], request_ref=request_ref, compute=compute))
+
+
+def _activated(bound: Mapping[str, Any]) -> bool:
+    from cloud.ipcch import publication as pub
+
+    return pub.activation(bound["snapshot"]["record"]) is not None
 
 
 MIGRATION = ("the new IPCCH pipeline is active (first real new-contract IPCCH publication to current): legacy v1 "
@@ -564,25 +589,30 @@ def require_not_activated(store, output_root: str, request: Mapping[str, Any]) -
     from cloud.orchestrator.delivery_manifest import selected_systems
 
     if "ipcch" in selected_systems(request):
-        snapshot = pub.read_current(store, output_root, request["release"]["namespace"])
+        snapshot = pub.read_current(store, output_root, request["release"]["namespace"], allow_missing_legacy_record=True)
         if pub.activation(snapshot["record"]):
             raise AcceptanceError(MIGRATION)
 
 
 def bind_current(store, output_root: str, request: Mapping[str, Any]) -> dict[str, Any]:
-    """Bind a v1 request to the current release before any work (R37, FCC):
+    """Bind a v1 request (delivery or remote-update intent) to the current release before any work (R37, FCC):
 
-    * after formal activation a request that includes IPCCH (alone or mixed) is rejected with the migration message;
-    * every ``execution.inherit`` source (current publication; a legacy-record candidate binds at promotion) names exactly that system's member of the current release (its delivery
-      manifest); a legacy member keeps the v1 same-origin rule, a new-contract IPCCH member is named with its own
-      feature origin (and its manifest also as the archive: v2 deliveries have no archive);
-    * a FEWS NET-only request against a v2 release record takes the v2 member route (FEWS member written by the
-      existing deliver, IPCCH member inherited from the bound snapshot, activation carried); an IPCCH-scoring request
-      cannot inherit from a v2 record (the v2 manifest is required)."""
+    * after formal activation (an activated current record) a request that scores IPCCH, alone or mixed, is rejected
+      with the migration message; before activation legacy IPCCH stays available whatever the record format;
+    * every ``execution.inherit`` source (current publication; a legacy-record candidate binds at promotion) names
+      exactly that system's member of the current release by its delivery manifest identity:
+      - a v1-record member: the v1 same-origin rule and the record's archive;
+      - a legacy-format member stored in a v2 record: the same-origin rule against its own origin, and - v2 deliveries
+        have no archive - ``archive`` repeats the member's delivery manifest ref (documented operator construction);
+      - a new-contract IPCCH member: its own feature origin (R63) and the same manifest-as-archive convention;
+    * a request scoring ONE system against a v2 record publishes it as a legacy-format v2 member (existing deliver,
+      exact packages, system-scoped checks), inheriting the other member and the activation from the bound snapshot;
+      a request scoring both systems replaces both members (the existing v1 route; only possible before activation).
+    The current release is read with the consistent legacy-pointer rule (``publication.read_current``)."""
     from cloud.ipcch import publication as pub
     from cloud.orchestrator.delivery_manifest import selected_systems
 
-    snapshot = pub.read_current(store, output_root, request["release"]["namespace"])
+    snapshot = pub.read_current(store, output_root, request["release"]["namespace"], allow_missing_legacy_record=True)
     record = snapshot["record"]
     selected = selected_systems(request)
     if "ipcch" in selected and pub.activation(record):
@@ -599,28 +629,27 @@ def bind_current(store, output_root: str, request: Mapping[str, Any]) -> dict[st
             raise AcceptanceError(f"execution.inherit.{system} must name exactly the {system} member of the current "
                                   f"release (pointer generation {snapshot['generation']}); any other source is rejected")
         if member.get("contract") == pub.IPCCH_CONTRACT:
-            if source["origin_month"] != member.get("feature_origin"):
-                raise AcceptanceError(f"execution.inherit.{system}.origin_month must be the member's feature origin "
-                                      f"{member.get('feature_origin')}")
-            if _ref_identity(source["archive"]) != _ref_identity(member["delivery"]["manifest"]):
-                raise AcceptanceError(f"execution.inherit.{system}.archive must repeat the member's delivery manifest "
-                                      "(a v2 delivery has no archive)")
+            own = member.get("feature_origin")
         else:
+            own = member.get("origin_month")
             if source["origin_month"] != request["origin_month"]:
                 raise AcceptanceError(f"execution.inherit.{system} must have the same origin month {request['origin_month']}")
-            if _ref_identity(source["archive"]) != _ref_identity(member.get("archive")):
-                raise AcceptanceError(f"execution.inherit.{system}.archive is not the current release's archive")
-    if v2_record and "ipcch" in selected and execution.get("inherit"):
-        raise AcceptanceError("the current release holds v2 members; a request scoring IPCCH that inherits FEWS NET "
-                              "must use the v2 manifest")
-    return {"snapshot": snapshot, "v2_route": v2_record and tuple(selected) == ("fewsnet",)}
+        if source["origin_month"] != own:
+            raise AcceptanceError(f"execution.inherit.{system}.origin_month must be the member's own origin {own}")
+        archive = member["delivery"]["manifest"] if v2_record else member.get("archive")
+        if _ref_identity(source["archive"]) != _ref_identity(archive):
+            raise AcceptanceError(f"execution.inherit.{system}.archive is not the current member's "
+                                  + ("delivery manifest (a v2 delivery has no archive; repeat the manifest ref)"
+                                     if v2_record else "archive"))
+    return {"snapshot": snapshot, "v2_route": bool(v2_record and len(selected) == 1),
+            "system": selected[0] if len(selected) == 1 else None}
 
 
 def _locked(store, output_root: str, systems, run_id: str, run: Callable[[], dict]) -> dict:
     """v1 and v2 share the per-system locks of the systems this run EXECUTES, held through publication (R50)."""
     from cloud.ipcch import locks
 
-    held = locks.acquire(store, output_root, list(systems), run_id)
+    held = locks.acquire(store, output_root, list(systems), run_id, adopt_own=True)
     try:
         result = run()
     finally:
@@ -630,30 +659,32 @@ def _locked(store, output_root: str, systems, run_id: str, run: Callable[[], dic
     return result
 
 
-def _compute_fews_member(request, request_ref, request_bytes, bound, *, output_root, store, downloader, work,
-                         image_uri, score) -> dict:
-    """Legacy v1 FEWS NET-only against a v2 release: the existing FEWS scoring (only the FEWS packages are installed;
-    the unused submitted legacy IPCCH package is never materialised), published as a v2 FEWS member inheriting the
-    bound snapshot's IPCCH member byte-for-byte with its own provenance and the activation carried forward."""
+def _compute_member(request, request_ref, request_bytes, bound, *, output_root, store, downloader, work,
+                    image_uri, score) -> dict:
+    """A v1 request scoring one system against a v2 release: the existing scoring of that system (only its packages
+    are installed; unused submitted packages of the other system are never materialised), published as a legacy-format
+    v2 member inheriting the bound snapshot's other member byte-for-byte and the activation."""
     from cloud.ipcch import fews_v2
     from cloud.ipcch import release_v2
 
-    fews_only = {**request, "models": [m for m in request["models"] if m["system"] == "fewsnet"]}
-    spec = prepare_inputs(fews_only, downloader, work, image_uri=image_uri)
+    system = bound["system"]
+    scoped = {**request, "models": [m for m in request["models"] if m["system"] == system]}
+    spec = prepare_inputs(scoped, downloader, work, image_uri=image_uri)
     request_path = work / "request.json"
     request_path.write_bytes(request_bytes)
     spec_path = work / "spec.json"
     spec_path.write_text(json.dumps({**spec, "request_path": str(request_path)}, default=str))
     publication = (request.get("execution") or {}).get("publication", "current")
     published = release_v2.publish_member_run(
-        store, output_root, system="fewsnet", namespace=request["release"]["namespace"], run_id=request["run_id"],
+        store, output_root, system=system, namespace=request["release"]["namespace"], run_id=request["run_id"],
         mode="real", publication=publication,
         expected_pointer_generation=str(request["release"]["expected_pointer_generation"]),
         request_ref=request_ref, workdir=str(work),
         write_member=lambda out: fews_v2.write_member(
-            out, score=score, spec_path=spec_path, origin=request["origin_month"], packages=spec["packages"]["fewsnet"],
-            mode="real", source={"request_schema": "fewsnet-ipcch-delivery-request-v1",
-                                 "prepare_id": request["prepared_snapshot"]["prepare_id"]}))
+            out, system=system, score=score, spec_path=spec_path, origin=request["origin_month"],
+            packages=spec["packages"][system], mode="real",
+            source={"request_schema": "fewsnet-ipcch-delivery-request-v1",
+                    "prepare_id": request["prepared_snapshot"]["prepare_id"]}))
     if published["status"] == "publication_failed":
         raise AcceptanceError(f"publication failed: {published.get('reason', published.get('stage'))}")
     return {"outputs": f"{output_root.rstrip('/')}/deliveries/{published['publication_id']}/", "release": published}
@@ -667,7 +698,8 @@ def _remote_intent(intent_ref: Mapping[str, str], intent_bytes: bytes) -> dict:
 
     try:
         intent = validate_delivery_request(json.loads(intent_bytes), request_uri=intent_ref["uri"],
-                                           request_generation=intent_ref["generation"])
+                                           request_generation=intent_ref["generation"],
+                                           new_contract_inherit=("ipcch",))      # bound to the current member below
     except ValueError as exc:
         raise AcceptanceError(f"invalid intent: {exc}") from None
     if not (intent.get("execution") or {}).get("remote_update") or intent["prepared_snapshot"] is not None:
@@ -675,12 +707,21 @@ def _remote_intent(intent_ref: Mapping[str, str], intent_bytes: bytes) -> dict:
     return intent
 
 
-def admit_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, reader) -> dict:
+def admit_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, reader, store=None, output_root=None,
+                 stage: str = "admission") -> dict:
     """Before any cloud step: the complete intent and its exact prepare-request binding (pinned bytes,
-    path prepare_id, same origin, the intent's rosters and geometries)."""
+    path prepare_id, same origin, the intent's rosters and geometries), then the R37/FCC binding to the current
+    release (``bind_current``): an activated release rejects an intent that scores IPCCH (R37), and its preparation
+    scope is FEWS NET only (``prepare_systems``) - the legacy FEWS NET request shape stays usable while no legacy IPCCH
+    feature is collected; before activation the existing both-system preparation is unchanged."""
     from cloud.orchestrator.prepare import read_pinned, validate_prepare_request
 
     intent = _remote_intent(intent_ref, intent_bytes)
+    prepare_systems = list(SYSTEMS)
+    if store is not None:
+        bound = bind_current(store, output_root, intent)        # activated + IPCCH scored -> rejected (R37)
+        if _activated(bound):
+            prepare_systems = ["fewsnet"]
     ref = intent["execution"]["prepare_request"]
     try:
         prepare = validate_prepare_request(json.loads(read_pinned(reader, ref)), request_uri=ref["uri"],
@@ -697,7 +738,10 @@ def admit_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, reader) 
             "intent": {key: str(intent_ref[key]) for key in ("uri", "generation", "sha256")},
             "prepare_request": {key: str(ref[key]) for key in ("uri", "generation", "sha256")},
             "prepare_id": prepare["prepare_id"], "origin_month": intent["origin_month"],
-            "inference_systems": list(intent["execution"]["inference_systems"])}
+            "inference_systems": list(intent["execution"]["inference_systems"]),
+            # the preparation's execution scope (the workflow passes it to the prepare job; default both)
+            **({"prepare_systems": prepare_systems, "prepare_scope": ",".join(prepare_systems)}
+               if prepare_systems != list(SYSTEMS) else {})}
 
 
 def resolve_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, output_root: str, store,
@@ -713,7 +757,8 @@ def resolve_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, output
     """
     from cloud.common.object_store import GenerationConflict
 
-    admission = admit_intent(intent_ref=intent_ref, intent_bytes=intent_bytes, reader=reader)
+    admission = admit_intent(intent_ref=intent_ref, intent_bytes=intent_bytes, reader=reader, store=store,
+                             output_root=output_root, stage="resolution")
     intent = json.loads(intent_bytes)
     prepare_id = admission["prepare_id"]
     root = f"{output_root.rstrip('/')}/prepared/{prepare_id}"
@@ -730,6 +775,12 @@ def resolve_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, output
     if {key: str(value) for key, value in manifest.get("request", {}).items()} != admission["prepare_request"]:
         raise AcceptanceError("prepared snapshot is not the succeeded preparation of this intent's request")
     check_prepared_snapshot(intent, manifest, prepare_id)
+    recorded = store.get_metadata(dispatch_record_uri(output_root, admission["run_id"], "admission"))
+    decided = (json.loads(store.read_text(dispatch_record_uri(output_root, admission["run_id"], "admission")))
+               if recorded else admission).get("prepare_systems", list(SYSTEMS))
+    if manifest.get("selected_systems", list(SYSTEMS)) != decided:      # the scope admission decided, nothing else
+        raise AcceptanceError(f"prepared snapshot scope {manifest.get('selected_systems', list(SYSTEMS))} is not the "
+                              f"admitted preparation scope {decided}")
     snapshot = {"prepare_id": prepare_id, "origin_month": intent["origin_month"],
                 "manifest": {"uri": manifest_uri, "generation": str(meta.generation),
                              "sha256": hashlib.sha256(data).hexdigest()}}
@@ -748,6 +799,15 @@ def resolve_intent(*, intent_ref: Mapping[str, str], intent_bytes: bytes, output
              "sha256": hashlib.sha256(resolved_bytes).hexdigest()}, resolved_bytes, snapshot)
 
 
+def release_run(store, *, request_uri: str, output_root: str) -> dict:
+    """Failure cleanup by the owner (``delivery_job release``): the per-system locks this run still holds."""
+    from cloud.ipcch import locks
+
+    run_id = request_uri.split("/requests/")[-1].split("/")[0]
+    problems = locks.release_owned(store, output_root, run_id)
+    return {"run_id": run_id, "released": not problems, "problems": problems}
+
+
 def dispatch_record_uri(output_root: str, run_id: str, stage: str) -> str:
     return f"{output_root.rstrip('/')}/dispatch/{run_id}/{stage}.json"
 
@@ -762,10 +822,24 @@ def dispatch_step(stage: str, *, intent_ref: Mapping[str, str], intent_bytes: by
     run_id = intent_ref["uri"].split("/requests/")[-1].split("/")[0]
     identity = {key: str(intent_ref[key]) for key in ("uri", "generation", "sha256")}
     resolved = None
+    from cloud.ipcch import locks
+
     try:
         if stage == "admission":
-            record = admit_intent(intent_ref=intent_ref, intent_bytes=intent_bytes, reader=reader)
+            record = admit_intent(intent_ref=intent_ref, intent_bytes=intent_bytes, reader=reader, store=store,
+                                  output_root=output_root)
+            # R50: a legacy remote-update run executes generation for both systems from here on; it holds both locks
+            # from admission through preparation, resolution and delivery (adopted, never acquired twice)
+            executed = set(record.get("prepare_systems", SYSTEMS)) | set(record["inference_systems"])
+            try:
+                held = locks.acquire(store, output_root, sorted(executed), run_id, adopt_own=True)
+            except (locks.LockConflict, locks.LockAcquisitionError) as exc:
+                raise AcceptanceError(str(exc)) from None
+            record["locks"] = {lock.system: lock.generation for lock in held}
         else:
+            admission = json.loads(store.read_text(dispatch_record_uri(output_root, run_id, "admission")))
+            if {lock.system for lock in locks.owned(store, output_root, run_id)} != set(admission.get("locks", {})):
+                raise AcceptanceError(f"run {run_id} no longer holds its admission locks; nothing is resolved")
             resolved_ref, resolved_bytes, snapshot = resolve_intent(
                 intent_ref=intent_ref, intent_bytes=intent_bytes, output_root=output_root, store=store, reader=reader)
             resolved = (resolved_ref, resolved_bytes)
@@ -783,6 +857,8 @@ def dispatch_step(stage: str, *, intent_ref: Mapping[str, str], intent_bytes: by
     except GenerationConflict:
         if json.loads(store.read_text(uri)) != record:
             raise AcceptanceError(f"{uri} already records a different {stage}") from None
+    if stage == "resolution" and (record["status"] == "rejected" or not record.get("inference_systems")):
+        locks.release_owned(store, output_root, run_id)  # rejected or prepare-only: the run ends here
     if record["status"] == "rejected":
         raise AcceptanceError(f"{stage} rejected: {record['reason']}")
     return record, resolved
@@ -806,6 +882,9 @@ def main(argv=None) -> int:
     for flag in ("--request-uri", "--request-generation", "--output-root", "--release-namespace", "--image-uri"):
         resolve.add_argument(flag, required=True)
     resolve.add_argument("--work-dir", default="/tmp/delivery-work")
+    release = commands.add_parser("release", help="failure cleanup: release the per-system locks this run still holds")
+    for flag in ("--request-uri", "--output-root"):
+        release.add_argument(flag, required=True)
     system = commands.add_parser("system")
     system.add_argument("--spec", required=True)
     system.add_argument("--system", choices=["fewsnet", "ipcch"], required=True)
@@ -821,6 +900,10 @@ def main(argv=None) -> int:
     from cloud.orchestrator.prepare import GcsPinnedReader
 
     client = storage.Client()
+    if args.command == "release":                   # the workflow's cleanup after a failed preparation (R50)
+        outcome = release_run(GCSObjectStore(client), request_uri=args.request_uri, output_root=args.output_root)
+        print(json.dumps(outcome, indent=2))
+        return 0 if outcome["released"] else 1
     data = GcsPinnedReader(client).read_bytes(args.request_uri, args.request_generation)
     if data is None:
         raise AcceptanceError(f"request {args.request_uri}#{args.request_generation} not found")

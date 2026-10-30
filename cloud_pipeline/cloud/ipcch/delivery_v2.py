@@ -135,8 +135,6 @@ def _validate_new_member(out: Path, system: str, member: Mapping[str, Any]) -> N
     its exact recorded 0/6/12 package identities (never only file names and months)."""
     from cloud.orchestrator.delivery_bundle import validate_member
 
-    if system != "fewsnet":
-        raise DeliveryError(f"a new legacy-format {system} member is not publishable")
     try:
         validate_member(out, system, origin=member["origin_month"], package_inventory=member.get("model_package") or {})
     except ValueError as exc:

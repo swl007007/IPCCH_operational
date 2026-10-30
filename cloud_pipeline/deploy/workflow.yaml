@@ -20,6 +20,11 @@
 #   applies one snapshot gate to prepare-only and inference intents alike (this intent's request,
 #   origin, compatible snapshot) and records dispatch/<run_id>/resolution.json; prepare-only returns
 #   the immutable snapshot ref, otherwise the same job runs the create-only resolved request.
+#   Admission also binds the intent to the current release (R37: an activated release rejects legacy IPCCH and scopes
+#   the preparation to FEWS NET, ``prepare_scope``) and takes the per-system locks of the systems the run collects
+#   and scores (R50); resolution and delivery adopt them, delivery/prepare-only/rejection release them, and a failed
+#   preparation runs ``delivery_job release`` before stopping. A timed-out wait leaves them for the explicit
+#   operations clear (the job may still be running).
 # Jobs are configured with --max-retries 0: a failed run is never resumed; retry = new run ID.
 main:
   params: [event]
@@ -180,6 +185,8 @@ main:
                     - ${image_uri}
                     - "--batch-service-account"
                     - ${batch_service_account}
+                    - "--systems"
+                    - ${default(map.get(admission, "prepare_scope"), "fewsnet,ipcch")}
           connector_params:
             skip_polling: true
         result: prepare_execution
@@ -194,7 +201,7 @@ main:
     - preparation_outcome:
         switch:
           - condition: ${prepare_status.status != "succeeded"}
-            raise: ${"preparation " + admission.prepare_id + " " + prepare_status.status + "; no inference is started"}
+            next: release_after_failed_preparation
     - run_resolve_job:
         call: googleapis.run.v2.projects.locations.jobs.run
         args:
@@ -270,6 +277,26 @@ main:
         result: execution_result
     - done:
         return: ${execution_result}
+    # Reached only from a failed preparation: the run's admission locks are released by their owner, then it stops.
+    - release_after_failed_preparation:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+          body:
+            overrides:
+              containerOverrides:
+                - args:
+                    - "-m"
+                    - "cloud.orchestrator.delivery_job"
+                    - "release"
+                    - "--request-uri"
+                    - ${request_uri}
+                    - "--output-root"
+                    - ${output_root}
+          connector_params:
+            skip_polling: true
+    - failed_preparation:
+        raise: ${"preparation " + admission.prepare_id + " " + prepare_status.status + "; no inference is started"}
     # Reached only from a create-only claim conflict.
     - read_claim:
         call: googleapis.storage.v1.objects.get

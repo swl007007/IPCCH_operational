@@ -227,20 +227,21 @@ def _identity_checks(root: Path, systems: tuple[str, ...] = SYSTEMS) -> dict[str
     from fewsnet_partitioned_rf_pipeline.local.outputs import _IDENTITY_POPULATION_COLUMNS
 
     checks = {}
-    identity = _text(root / "inputs/fewsnet_identity_population.csv")
+    identity = _text(root / "inputs/fewsnet_identity_population.csv") if "fewsnet" in systems else pd.DataFrame()
     columns = [c for c in _IDENTITY_POPULATION_COLUMNS if c in identity]
-    reference = identity[columns].set_index("admin_code").sort_index()
+    reference = identity[columns].set_index("admin_code").sort_index() if "fewsnet" in systems else None
     if "ipcch" in systems:
         origin_rows = _text(root / "inputs/ipcch_origin_rows.csv")
         pairs = origin_rows[["area_id", "admin_code"]].set_index("area_id").sort_index()
     for horizon in HORIZONS:
         scope = root / f"scopes/{horizon}m"
-        predictions = _text(scope / "fewsnet/polygon_predictions.csv")
-        mapping = _text(scope / "fewsnet/polygon_model_mapping.csv")
-        checks[f"fewsnet_{horizon}m_row_identity"] = (
-            len(columns) == len(_IDENTITY_POPULATION_COLUMNS)
-            and predictions[columns].set_index("admin_code").sort_index().equals(reference)
-            and mapping["polygon_id"].equals(mapping["admin_code"]) and set(mapping["admin_code"]) == set(reference.index))
+        if "fewsnet" in systems:
+            predictions = _text(scope / "fewsnet/polygon_predictions.csv")
+            mapping = _text(scope / "fewsnet/polygon_model_mapping.csv")
+            checks[f"fewsnet_{horizon}m_row_identity"] = (
+                len(columns) == len(_IDENTITY_POPULATION_COLUMNS)
+                and predictions[columns].set_index("admin_code").sort_index().equals(reference)
+                and mapping["polygon_id"].equals(mapping["admin_code"]) and set(mapping["admin_code"]) == set(reference.index))
         if "ipcch" not in systems:
             continue
         predictions = _text(scope / "ipcch/polygon_predictions.csv")
@@ -359,16 +360,17 @@ def _portable_member_checks(root: Path) -> dict[str, bool]:
 
 
 def validate_member(root: Path, system: str, *, origin: str, package_inventory: Mapping[str, str]) -> dict:
-    """One system's v2 delivery member (task 10-29 R60/D3): the existing FEWS NET-scoped structural checks of
+    """One system's legacy-format v2 delivery member (task 10-29 R60/D3, FCC): the existing system-scoped checks of
     ``validate_delivery`` - exact scope tables with frozen headers, consistent row counts, own references, per-system
     reports and frozen scoring inputs, native keys/roster/predictions (existing validators), row identity, country
     consistency, availability coverage and diagnostics regeneration (from ``reports/{system}_*``) - plus the exact
-    0/6/12 package identities: the delivered package files equal the recorded member inventory and each package's own
-    manifest/checksums. Raises ``ValueError`` listing every failed check."""
+    package identities: FEWS NET 0/6/12 packages equal the recorded member inventory and each package's own
+    manifest/checksums; the legacy IPCCH package directory equals its recorded inventory with every scope file.
+    Raises ``ValueError`` listing every failed check."""
     from cloud.orchestrator import delivery_outputs as do
 
-    if system != "fewsnet":
-        raise ValueError("validate_member covers legacy-format FEWS NET members (IPCCH members have their own verifier)")
+    if system not in SYSTEMS:
+        raise ValueError(f"unknown system {system!r}")
     root = Path(root)
     checks, failures = {}, []
     names = SCOPE_TABLES[system]
@@ -392,13 +394,18 @@ def validate_member(root: Path, system: str, *, origin: str, package_inventory: 
     availability = f"reports/{system}_diagnostic_availability.csv"
     checks["reports"] = all((root / r).is_file() for r in (availability, f"reports/{system}_feature_fill_audit.csv",
                                                            f"reports/{system}_diagnostic_declarations.json"))
-    checks["frozen_scoring_inputs"] = all((root / r).is_file() for r in (
-        "inputs/fewsnet_identity_population.csv", *[f"inputs/fewsnet_scope_{h}m_inference.csv" for h in HORIZONS]))
+    frozen = (("inputs/fewsnet_identity_population.csv", *[f"inputs/fewsnet_scope_{h}m_inference.csv" for h in HORIZONS])
+              if system == "fewsnet" else ("inputs/ipcch_origin_rows.csv",))
+    checks["frozen_scoring_inputs"] = all((root / r).is_file() for r in frozen)
+    if system == "ipcch":                        # one shared legacy IPCCH package directory (all three scopes)
+        actual = _directory_inventory(root / "ipcch/model_package") if (root / "ipcch/model_package").is_dir() else {}
+        required = {"model_package_manifest.json", *[f"scope_{h}m/{n}" for h in HORIZONS for n in IPCCH_SCOPE_FILES]}
+        checks["ipcch_package_exact"] = bool(package_inventory) and required <= set(actual) and actual == dict(package_inventory)
     recorded = {str(h): {} for h in HORIZONS}
-    for key, digest in dict(package_inventory).items():
+    for key, digest in (dict(package_inventory).items() if system == "fewsnet" else ()):
         horizon, _, rel = key.partition("m/")
         recorded.setdefault(horizon, {})[rel] = digest
-    for horizon in HORIZONS:
+    for horizon in (HORIZONS if system == "fewsnet" else ()):
         directory = root / f"{system}/model_package/{horizon}m"
         try:
             # the EXISTING local package format (fewsnet_partitioned_rf_pipeline.local.package): exactly its files,

@@ -552,3 +552,56 @@ def test_rollback_after_release_rehold_restore_release(release):
     assert (r.active / "manifest.json").read_bytes() == b'{"old": true}'
     assert {job["image"] for job in r.shared.jobs.values()} == {OLD}
     assert _maintain(r, "release")["status"] == "released_restored"
+
+
+# --- operator submission bound to the current release (Supervisor finding 1 on 6d8ea08) ---------------------------
+
+V2_MANIFEST = "gs://destination-bucket/deliveries/ipcch-new-ipcch/manifest.json"
+
+
+def _activated(setup):
+    """The operator world with an activated current release whose IPCCH member is new-contract (v2 delivery)."""
+    from cloud.ipcch import publication as pub
+    cfg, cloud = _world(setup)
+    cloud.objects[V2_MANIFEST] = json.dumps({
+        "schema": "fewsnet-ipcch-delivery-v2", "run_id": "ipcch-new-ipcch", "files": [],
+        "members": {"ipcch": {"contract": pub.IPCCH_CONTRACT, "execution_month": "2026-10",
+                              "feature_origin": "2026-08", "mode": "real"}}}).encode()
+    member_ref = cloud.pin(V2_MANIFEST + "#1")
+    record = "gs://destination-bucket/dual-system/releases/ipcch-new-ipcch/release.json"
+    cloud.objects[record] = json.dumps({
+        "schema": pub.RELEASE_SCHEMA, "run_id": "ipcch-new-ipcch", "mode": "real",
+        "activation": {"contract": pub.IPCCH_CONTRACT, "activated_by_run": "ipcch-new-ipcch"},
+        "systems": {"ipcch": {"contract": pub.IPCCH_CONTRACT, "execution_month": "2026-10", "feature_origin": "2026-08",
+                              "mode": "real", "delivery": {"manifest": member_ref}}}}).encode()
+    cloud.objects["gs://destination-bucket/dual-system/current.json"] = json.dumps({
+        "run_id": "ipcch-new-ipcch", "release_record": record, "release_record_generation": "1"}).encode()
+    return cfg, cloud
+
+
+def _v2_inherit(**override):
+    return _candidate_args(**{"publication": "current", "inherit": "ipcch=ipcch-new-ipcch",
+                              "inherit_manifest": V2_MANIFEST + "#1", "inherit_archive": V2_MANIFEST + "#1", **override})
+
+
+def test_post_activation_fews_only_operator_submission_inherits_the_v2_member_by_identity(setup):
+    cfg, cloud = _activated(setup)
+    assert p.run(_v2_inherit(), cfg, cloud)["status"] == "submitted"
+    uri = "gs://requests-bucket/requests/operator-test/run_manifest.json"
+    inherit = cloud.latest(uri)[0]["execution"]["inherit"]["ipcch"]
+    assert inherit["origin_month"] == "2026-08"                                       # the member's own origin (R63)
+    assert inherit["archive"] == inherit["manifest"] == cloud.pin(V2_MANIFEST + "#1")
+
+
+@pytest.mark.parametrize("override,message", [
+    ({"inherit_archive": "gs://src/bundle.tar.gz#1"}, "has no archive"),
+    ({"inherit": "ipcch=other-run"}, "is run ipcch-new-ipcch, not other-run"),
+    ({"inherit": "ipcch=oct-confidence-20261009b", "inherit_manifest": "gs://src/manifest.json#1",
+      "inherit_archive": "gs://src/bundle.tar.gz#1"}, "must name exactly the ipcch member"),
+    ({"infer": "fewsnet,ipcch", "inherit": None}, "submit IPCCH through the v2 manifest"),
+])
+def test_post_activation_operator_submissions_are_bound_before_any_request_upload(setup, override, message):
+    cfg, cloud = _activated(setup)
+    with pytest.raises(ValueError, match=message):
+        p.run(_v2_inherit(**override), cfg, cloud)
+    assert not any(uri.endswith("/run_manifest.json") for uri in cloud.objects)

@@ -818,3 +818,52 @@ def test_prepare_batch_spec_requests_highmem_machine_explicitly():
     legacy = build_batch_job_spec(BatchJobConfig(job_name_prefix="x", image_uri="i@sha256:" + "c" * 64,
                                                  service_account="s", run_id="r", feature_month="2026-10", worker_args=[]))
     assert "instances" not in legacy["allocation_policy"] and "compute_resource" not in legacy["task_groups"][0]["task_spec"]
+
+
+class SpyReader:
+    def __init__(self, gcs):
+        self.gcs, self.reads = gcs, []
+
+    def read_bytes(self, uri, generation):
+        self.reads.append(uri)
+        return self.gcs.read_bytes(uri, generation)
+
+
+def test_selected_systems_default_is_the_existing_both_system_preparation(tmp_path):
+    """Task 10-29 R60/D1: the default execution scope is unchanged (no plan/manifest field, identical bytes)."""
+    plans = []
+    for name, kw in (("default", {}), ("explicit", {"systems": prepare.SYSTEMS})):
+        gcs = FakeGcs()
+        (tmp_path / name).mkdir()
+        manifest = prepare.run_prepare(_request(gcs), store=gcs, reader=gcs, acquirer=FakeAcquirer(tmp_path),
+                                       output_root=ROOT, workdir=tmp_path / name, **kw)
+        assert "selected_systems" not in manifest
+        plans.append(gcs.read_text(f"{ROOT}/prepared/prep-202610-a/prepare_plan.json"))
+    assert plans[0] == plans[1] and "selected_systems" not in json.loads(plans[0])
+
+
+def test_fews_only_preparation_never_reads_acquires_or_writes_ipcch(tmp_path):
+    """A FEWS NET-only scope reads only FEWS rosters/histories, acquires only FEWS families and writes only FEWS
+    features - byte-identical to the FEWS part of the both-system preparation (algorithms unchanged)."""
+    both_gcs = FakeGcs()
+    (tmp_path / "both").mkdir()
+    prepare.run_prepare(_request(both_gcs), store=both_gcs, reader=both_gcs, acquirer=FakeAcquirer(tmp_path),
+                        output_root=ROOT, workdir=tmp_path / "both")
+    gcs, acquirer = FakeGcs(), FakeAcquirer(tmp_path)
+    reader = SpyReader(gcs)
+    (tmp_path / "fews").mkdir()
+    manifest = prepare.run_prepare(_request(gcs), store=gcs, reader=reader, acquirer=acquirer, output_root=ROOT,
+                                   workdir=tmp_path / "fews", systems=("fewsnet",))
+    assert manifest["selected_systems"] == ["fewsnet"]
+    assert reader.reads and not [u for u in reader.reads if "/ipcch/" in u]
+    assert "gosif_sd" not in {f for f, _, _ in acquirer.acquired} and "gosif_sd" not in manifest["families"]
+    base = f"{ROOT}/prepared/prep-202610-a/"
+    assert not [u for u in gcs.versions if u.startswith(base + "features/ipcch/")]
+    fews = sorted(u for u in gcs.versions if u.startswith(base + "features/fewsnet/"))
+    assert fews == sorted(u for u in both_gcs.versions if u.startswith(base + "features/fewsnet/"))
+    for uri in fews:
+        assert gcs.versions[uri] == both_gcs.versions[uri]
+    assert set(_read_csv(gcs, base + "source_coverage.csv")["system"]) == {"fewsnet"}
+    with pytest.raises(ValueError, match="non-empty subset"):
+        prepare.plan_prepare(_request(FakeGcs()), store=FakeGcs(), reader=gcs, acquirer=acquirer, output_root=ROOT,
+                             systems=("other",))
