@@ -1,0 +1,185 @@
+{
+ "secret_read": {
+  "secret": "projects/food-crisis-modeling-enso/secrets/mlflow-reader/versions/latest",
+  "exit": 0,
+  "stderr_head": ""
+ },
+ "identity_username": "ipcch-reader",
+ "users_current": {
+  "status": 200,
+  "user": "ipcch-reader"
+ },
+ "runs": {
+  "298c4718b4d64e6f8a5c315e8c22d25d": {
+   "status": 200,
+   "run_name": "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+   "lifecycle": "active",
+   "run_status": "FINISHED",
+   "experiment_id": "2",
+   "experiment_name": "IPCCH dashboard",
+   "artifact_uri": "mlflow-artifacts:/2/298c4718b4d64e6f8a5c315e8c22d25d/artifacts",
+   "start_time": 1793220756977,
+   "end_time": 1793220806716,
+   "n_params": 21,
+   "n_tags": 79,
+   "n_metrics": 637,
+   "selected_tags": {
+    "package.json_sha256": "a111ab7ef80c303be0f2d576c1f57deff124bf6006b410788292b62db33afbec",
+    "trial_status": "succeeded",
+    "source_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28",
+    "image_digest": "sha256:2b18cf721cb09af0d1633a20087874155e8af49aa822979c0554507bcb68ccc3",
+    "mlflow.runName": "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+    "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+    "arm_role": "candidate",
+    "baseline.package_json_sha256": "62112cc2efbe74b49fc691e95942d7c02a5278ff1015a1f5fc624bcbbe0285d8",
+    "baseline.arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+    "provenance.gpp_source": "GOSIF-GPP v3 monthly Mean/SD (UNH Global Ecology), 2010-01..2025-12, fills 65534/65535 masked, scale 0.01, g C m-2 month-1, ArcGIS 10.8 independent cell-centre zonal means on the source grid",
+    "provenance.idp_source_file": "idp_ipcch_monthly.parquet",
+    "provenance.idp_source_sha256": "8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703",
+    "package.uri": "models:/m-698519b8daeb456ea5e9126b6fc18e8f"
+   },
+   "selected_params": {
+    "other_colsample_bytree": "0.9885187931643816",
+    "other_learning_rate": "0.06530548333101606",
+    "other_max_depth": "11",
+    "other_min_child_weight": "32.0",
+    "other_n_estimators": "428",
+    "other_subsample": "1.0",
+    "q3_colsample_bytree": "0.4",
+    "q3_learning_rate": "0.05697472381385549",
+    "q3_max_depth": "4",
+    "q3_min_child_weight": "0.0",
+    "q3_n_estimators": "357",
+    "q3_subsample": "0.7526468149269783"
+   },
+   "model_versions_search": {
+    "status": 200,
+    "versions": [
+     {
+      "name": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 0-month",
+      "version": "1",
+      "current_stage": "None",
+      "status": "READY",
+      "source": "models:/m-698519b8daeb456ea5e9126b6fc18e8f",
+      "run_id": "298c4718b4d64e6f8a5c315e8c22d25d",
+      "creation_timestamp": 1793220796434
+     }
+    ]
+   }
+  },
+  "00d4e94c824343bf86a0c2b79d5b9ed0": {
+   "status": 200,
+   "run_name": "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+   "lifecycle": "active",
+   "run_status": "FINISHED",
+   "experiment_id": "2",
+   "experiment_name": "IPCCH dashboard",
+   "artifact_uri": "mlflow-artifacts:/2/00d4e94c824343bf86a0c2b79d5b9ed0/artifacts",
+   "start_time": 1793220141183,
+   "end_time": 1793220233784,
+   "n_params": 21,
+   "n_tags": 79,
+   "n_metrics": 635,
+   "selected_tags": {
+    "package.json_sha256": "813b343c335d27065a572d0129554c53be7f1d29854d073daae6aeede1b3ab8f",
+    "trial_status": "succeeded",
+    "source_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28",
+    "image_digest": "sha256:2b18cf721cb09af0d1633a20087874155e8af49aa822979c0554507bcb68ccc3",
+    "mlflow.runName": "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+    "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+    "arm_role": "candidate",
+    "baseline.package_json_sha256": "3733d27145a4a312c1d7496405e7edcaa84b627a78be0f85f925af62352843bf",
+    "baseline.arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+    "provenance.gpp_source": "GOSIF-GPP v3 monthly Mean/SD (UNH Global Ecology), 2010-01..2025-12, fills 65534/65535 masked, scale 0.01, g C m-2 month-1, ArcGIS 10.8 independent cell-centre zonal means on the source grid",
+    "provenance.idp_source_file": "idp_ipcch_monthly.parquet",
+    "provenance.idp_source_sha256": "8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703",
+    "package.uri": "models:/m-46beb4c7d5674c1abd874b3bd90c1f87"
+   },
+   "selected_params": {
+    "other_colsample_bytree": "0.7269756250210765",
+    "other_learning_rate": "0.027538515460387113",
+    "other_max_depth": "5",
+    "other_min_child_weight": "23.072391682325758",
+    "other_n_estimators": "398",
+    "other_subsample": "0.6716682260833845",
+    "q3_colsample_bytree": "0.4327978267528363",
+    "q3_learning_rate": "0.08536359461483287",
+    "q3_max_depth": "4",
+    "q3_min_child_weight": "18.162407873411354",
+    "q3_n_estimators": "346",
+    "q3_subsample": "0.8118788081985475"
+   },
+   "model_versions_search": {
+    "status": 200,
+    "versions": [
+     {
+      "name": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 6-month",
+      "version": "1",
+      "current_stage": "None",
+      "status": "READY",
+      "source": "models:/m-46beb4c7d5674c1abd874b3bd90c1f87",
+      "run_id": "00d4e94c824343bf86a0c2b79d5b9ed0",
+      "creation_timestamp": 1793220222783
+     }
+    ]
+   }
+  },
+  "f436da15c71c469199784db065f3b63b": {
+   "status": 200,
+   "run_name": "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+   "lifecycle": "active",
+   "run_status": "FINISHED",
+   "experiment_id": "2",
+   "experiment_name": "IPCCH dashboard",
+   "artifact_uri": "mlflow-artifacts:/2/f436da15c71c469199784db065f3b63b/artifacts",
+   "start_time": 1793221099600,
+   "end_time": 1793221145362,
+   "n_params": 21,
+   "n_tags": 79,
+   "n_metrics": 567,
+   "selected_tags": {
+    "package.json_sha256": "e88ac65bdd5e670883bcf80409ba82a69f16a097c418cdecf36f87ee9e80cf83",
+    "trial_status": "succeeded",
+    "source_commit": "439a488ffa8a8dcafb03352d807379bbf99a2bf4+overlay:research_cloud/training/dataset_input.py@sha256:a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c,research_cloud/training/ipcch_validity_features.py@sha256:eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6,research_cloud/training/ipcch_validity_pooled.py@sha256:d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28",
+    "image_digest": "sha256:2b18cf721cb09af0d1633a20087874155e8af49aa822979c0554507bcb68ccc3",
+    "mlflow.runName": "Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+    "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+    "arm_role": "candidate",
+    "baseline.package_json_sha256": "5d5029295b2a98f279b6cf05443331f37beaa70f0dcf4b402449daa6f1580f20",
+    "baseline.arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_hpt",
+    "provenance.gpp_source": "GOSIF-GPP v3 monthly Mean/SD (UNH Global Ecology), 2010-01..2025-12, fills 65534/65535 masked, scale 0.01, g C m-2 month-1, ArcGIS 10.8 independent cell-centre zonal means on the source grid",
+    "provenance.idp_source_file": "idp_ipcch_monthly.parquet",
+    "provenance.idp_source_sha256": "8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703",
+    "package.uri": "models:/m-9da8be7f46c946e69a8e759d9064a77a"
+   },
+   "selected_params": {
+    "other_colsample_bytree": "0.6405545857296321",
+    "other_learning_rate": "0.08104665643788728",
+    "other_max_depth": "7",
+    "other_min_child_weight": "24.92787946513128",
+    "other_n_estimators": "158",
+    "other_subsample": "0.5456882086669544",
+    "q3_colsample_bytree": "0.6556143377414937",
+    "q3_learning_rate": "0.0493494477600518",
+    "q3_max_depth": "7",
+    "q3_min_child_weight": "26.42570144490502",
+    "q3_n_estimators": "313",
+    "q3_subsample": "0.7932250149956435"
+   },
+   "model_versions_search": {
+    "status": 200,
+    "versions": [
+     {
+      "name": "IPCCH Validity-augmented pooled (GOSIF v3 + CH validity 20261028) | validity_augmented_idp_202610_acledagg_lag1_uncal_hpt | 12-month",
+      "version": "1",
+      "current_stage": "None",
+      "status": "READY",
+      "source": "models:/m-9da8be7f46c946e69a8e759d9064a77a",
+      "run_id": "f436da15c71c469199784db065f3b63b",
+      "creation_timestamp": 1793221135175
+     }
+    ]
+   }
+  }
+ }
+}

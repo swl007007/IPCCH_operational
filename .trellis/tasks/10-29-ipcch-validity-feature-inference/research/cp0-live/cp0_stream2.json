@@ -1,0 +1,28 @@
+[
+ {
+  "command": "gcloud storage cat gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.compact.manifest/compact_climate_weather_oracle_v1_manifest.json#1792154075204519 --project=food-crisis-modeling-enso",
+  "exit": 0,
+  "stderr_head": "",
+  "bytes": 138760,
+  "sha256": "456360536a3929e1571d96ba9f16e2f0de54bc1b20019f797bbe62c0c89732ca",
+  "expected_sha256": "456360536a3929e1571d96ba9f16e2f0de54bc1b20019f797bbe62c0c89732ca",
+  "sha256_match": true,
+  "md5": "HWKhmiv16s2pM5tHA2PLOg==",
+  "gcs_md5": "HWKhmiv16s2pM5tHA2PLOg==",
+  "md5_match": true,
+  "gcs_size": 138760
+ },
+ {
+  "command": "gcloud storage cat gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.idp_admin0_monthly/idp_admin0_monthly.csv#1792154074942115 --project=food-crisis-modeling-enso",
+  "exit": 0,
+  "stderr_head": "",
+  "bytes": 193702,
+  "sha256": "a1ebb82a8e14fc0fb8103d6086217b93da351fc4a8f7fcfbe9eaa44a9df602e1",
+  "expected_sha256": "a1ebb82a8e14fc0fb8103d6086217b93da351fc4a8f7fcfbe9eaa44a9df602e1",
+  "sha256_match": true,
+  "md5": "kkRop+T9yWSYIyShC04oJw==",
+  "gcs_md5": "kkRop+T9yWSYIyShC04oJw==",
+  "md5_match": true,
+  "gcs_size": 193702
+ }
+]

@@ -1,0 +1,332 @@
+[
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.alphaearth.descriptors.descriptor_table.csv.gz/descriptor_table.csv.gz#1792154225849272",
+  "gcs_md5": "blG8vOVI9KgpkPs0l6aeSQ==",
+  "manifest_sha256": "362c58b0f3396fd8ecc3bd42fe0257f979dd371780f70af6edd3a59f633e26d4",
+  "meta_sha256": "362c58b0f3396fd8ecc3bd42fe0257f979dd371780f70af6edd3a59f633e26d4",
+  "local": "/home/swl007007/projects/food-crisis-research/scratch/uri/artifacts-copy/1/9939ac69809949e9923821fa692a7b2a/artifacts/source/descriptors/descriptor_table.csv.gz",
+  "local_sha256": "362c58b0f3396fd8ecc3bd42fe0257f979dd371780f70af6edd3a59f633e26d4",
+  "local_md5": "blG8vOVI9KgpkPs0l6aeSQ==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.ch-validity-links-20261028/ch_links.csv.gz#1793219070023026",
+  "gcs_md5": "QQvcCu2f/Y9nZqW+ZpxqrQ==",
+  "manifest_sha256": "ac4ad6aaa8dc9e0efad6a7ba95456c536355d66ad0f3fa4225b811307aeb5153",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/work/linkage-v2/ch_links.csv.gz",
+  "local_sha256": "ac4ad6aaa8dc9e0efad6a7ba95456c536355d66ad0f3fa4225b811307aeb5153",
+  "local_md5": "QQvcCu2f/Y9nZqW+ZpxqrQ==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.climate_monthly/climate_monthly_2015_2026_MODELING_READY.csv#1792155988779628",
+  "gcs_md5": "zIuiRbUNSt8vqF9qBkUNFg==",
+  "manifest_sha256": "8082b72ea5fa5c30a7b975b89c1fbbb4530f27a9ce6c5ba4d0e1a4f923320c89",
+  "meta_sha256": "8082b72ea5fa5c30a7b975b89c1fbbb4530f27a9ce6c5ba4d0e1a4f923320c89",
+  "local": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/IPCCH_shared_folder/climate_monthly_2015_2026_MODELING_READY.csv",
+  "local_sha256": "8082b72ea5fa5c30a7b975b89c1fbbb4530f27a9ce6c5ba4d0e1a4f923320c89",
+  "local_md5": "zIuiRbUNSt8vqF9qBkUNFg==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.climate_seasonal/climate_2015_2026_MODELING_READY.csv#1792155829679604",
+  "gcs_md5": "W86bOxVdTI8mS3pvRwJUmA==",
+  "manifest_sha256": "f024a66c8979fb4a8c66fba1f04e7e69355fa75b499793d29001a146d8c2958e",
+  "meta_sha256": "f024a66c8979fb4a8c66fba1f04e7e69355fa75b499793d29001a146d8c2958e",
+  "local": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/IPCCH_shared_folder/climate_2015_2026_MODELING_READY.csv",
+  "local_sha256": "f024a66c8979fb4a8c66fba1f04e7e69355fa75b499793d29001a146d8c2958e",
+  "local_md5": "W86bOxVdTI8mS3pvRwJUmA==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.compact.manifest/compact_climate_weather_oracle_v1_manifest.json#1792154075204519",
+  "gcs_md5": "HWKhmiv16s2pM5tHA2PLOg==",
+  "manifest_sha256": "456360536a3929e1571d96ba9f16e2f0de54bc1b20019f797bbe62c0c89732ca",
+  "meta_sha256": "456360536a3929e1571d96ba9f16e2f0de54bc1b20019f797bbe62c0c89732ca",
+  "local": null,
+  "status": "METADATA-ONLY"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.country_lookup/country_area_id_lookup.csv#1792153966578810",
+  "gcs_md5": "jz4+7i3r0F7pjN+53RADWg==",
+  "manifest_sha256": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90",
+  "meta_sha256": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90",
+  "local": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/IPCCH_shared_folder/ipcch_unified/country_area_id_lookup.csv",
+  "local_sha256": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90",
+  "local_md5": "jz4+7i3r0F7pjN+53RADWg==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.idp-20261017/idp_ipcch_monthly.parquet#1792258101675874",
+  "gcs_md5": "gKcbh3KrPJuUzw4szgVY2A==",
+  "manifest_sha256": "8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703",
+  "meta_sha256": "8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703",
+  "local": "/home/swl007007/projects/food-crisis-research/scratch/idp/cp3/stage/idp_ipcch_monthly.parquet",
+  "local_sha256": "8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703",
+  "local_md5": "gKcbh3KrPJuUzw4szgVY2A==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.idp_admin0_monthly/idp_admin0_monthly.csv#1792154074942115",
+  "gcs_md5": "kkRop+T9yWSYIyShC04oJw==",
+  "manifest_sha256": "a1ebb82a8e14fc0fb8103d6086217b93da351fc4a8f7fcfbe9eaa44a9df602e1",
+  "meta_sha256": "a1ebb82a8e14fc0fb8103d6086217b93da351fc4a8f7fcfbe9eaa44a9df602e1",
+  "local": null,
+  "status": "METADATA-ONLY"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.panel-20261019/IPCCH_202610_completed.csv#1792463222777994",
+  "gcs_md5": "uZH2paZOtKyRGGaDzXu2yw==",
+  "manifest_sha256": "09002869ecc25667d78d972185c8ea24340eabc4d6e1f8a6d560ebda214e1373",
+  "meta_sha256": "09002869ecc25667d78d972185c8ea24340eabc4d6e1f8a6d560ebda214e1373",
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-update-202610/merged/IPCCH_202610_completed.csv",
+  "local_sha256": "09002869ecc25667d78d972185c8ea24340eabc4d6e1f8a6d560ebda214e1373",
+  "local_md5": "uZH2paZOtKyRGGaDzXu2yw==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.panel-acledagg-gosifv3-20261027/IPCCH_202610_interim_acledagg_gosifv3_20261027.csv#1793144581875896",
+  "gcs_md5": "8Q1HFAyumIRLAMay1C6N4w==",
+  "manifest_sha256": "b2d5d2ce6bd6a78da7caac2c070fcc2ced55aa4c4e7bd5725df0ce514e902b62",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-gosif-v3-20261027/candidate/IPCCH_202610_interim_acledagg_gosifv3_20261027.csv",
+  "local_sha256": "b2d5d2ce6bd6a78da7caac2c070fcc2ced55aa4c4e7bd5725df0ce514e902b62",
+  "local_md5": "8Q1HFAyumIRLAMay1C6N4w==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.region_mapping/area_id_country_region_mapping.csv#1792154473935553",
+  "gcs_md5": "3xUEkvoDRQM5wpt3rZB1uQ==",
+  "manifest_sha256": "18ab5099ce2d1154fb5686183ee399124e18427cc1594923f7abe2769da1611d",
+  "meta_sha256": "18ab5099ce2d1154fb5686183ee399124e18427cc1594923f7abe2769da1611d",
+  "local": "/home/swl007007/projects/food-crisis-research/scratch/acledagg-cp3/comparison/area_id_country_region_mapping.csv",
+  "local_sha256": "18ab5099ce2d1154fb5686183ee399124e18427cc1594923f7abe2769da1611d",
+  "local_md5": "3xUEkvoDRQM5wpt3rZB1uQ==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.report-region-map-20261027/area_id_report_region_mapping_20261027.csv#1793144440149174",
+  "gcs_md5": "gUDHnlREbggAKoXlMhxY+Q==",
+  "manifest_sha256": "5d1fd7f8b0dbf5e43e9644280bab7e521da6b9897531cba4fc1479f8deef5676",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-gosif-v3-20261027/report/area_id_report_region_mapping_20261027.csv",
+  "local_sha256": "5d1fd7f8b0dbf5e43e9644280bab7e521da6b9897531cba4fc1479f8deef5676",
+  "local_md5": "gUDHnlREbggAKoXlMhxY+Q==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.validity-20261017/static29_by_admin.csv.gz#1792213590853844",
+  "gcs_md5": "YXPyzZ2C0mScEwxrRVuOoA==",
+  "manifest_sha256": "229d593ef8fc96b3747cfffd82ffd6a294217ae3f0442888872abe3c0ed668d4",
+  "meta_sha256": "229d593ef8fc96b3747cfffd82ffd6a294217ae3f0442888872abe3c0ed668d4",
+  "local": "/home/swl007007/projects/food-crisis-research/scratch/validity/cp3/stage/static29_by_admin.csv.gz",
+  "local_sha256": "229d593ef8fc96b3747cfffd82ffd6a294217ae3f0442888872abe3c0ed668d4",
+  "local_md5": "YXPyzZ2C0mScEwxrRVuOoA==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.validity-20261019/analyses_combined_2026-10-19.json#1792462894893588",
+  "gcs_md5": "DpCz8q8t3WPBQm7fIQARhQ==",
+  "manifest_sha256": "1c7dfb786a8f82476542437445931fc5ab1ffdb5329aadc570616357f449b4b6",
+  "meta_sha256": "1c7dfb786a8f82476542437445931fc5ab1ffdb5329aadc570616357f449b4b6",
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-update-202610/sources/ipcch_labels/raw/ipc_api_2026-10-19/analyses_combined_2026-10-19.json",
+  "local_sha256": "1c7dfb786a8f82476542437445931fc5ab1ffdb5329aadc570616357f449b4b6",
+  "local_md5": "DpCz8q8t3WPBQm7fIQARhQ==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/inputs/ipcch.validity-20261019/areas_combined_2026-10-19.geojson#1792462922478447",
+  "gcs_md5": "IFOIQxJIm8oy2N8RTq9Aig==",
+  "manifest_sha256": "200f5dcaad88e18babbc9a4882a2ca920231702f6d5bcb11969af82742fa5ee6",
+  "meta_sha256": "200f5dcaad88e18babbc9a4882a2ca920231702f6d5bcb11969af82742fa5ee6",
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-update-202610/sources/ipcch_labels/raw/ipc_api_2026-10-19/areas_combined_2026-10-19.geojson",
+  "local_sha256": "200f5dcaad88e18babbc9a4882a2ca920231702f6d5bcb11969af82742fa5ee6",
+  "local_md5": "IFOIQxJIm8oy2N8RTq9Aig==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-acledagg-hpt/r1/freeze/freeze-h00.json#1792690601404885",
+  "gcs_md5": "vUcl03FZNMOpbh7/DFAcSA==",
+  "manifest_sha256": "dc152d4ea6e719a32093a9e4ae35f9bdf2d24e1f52ebc30b3660b9a97791b622",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-27-ipcch-gosif2025-retrain/research/cp3/frozen-objects/freeze-h00.json",
+  "local_sha256": "dc152d4ea6e719a32093a9e4ae35f9bdf2d24e1f52ebc30b3660b9a97791b622",
+  "local_md5": "vUcl03FZNMOpbh7/DFAcSA==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-acledagg-hpt/r1/freeze/freeze-h06.json#1792690601509870",
+  "gcs_md5": "Mamv5VUR6lkM9SO9CSiqJw==",
+  "manifest_sha256": "fe6be936989d045d2d020870700d24fa2ceca4e33d68d5ec96acd0fd3f57137c",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-27-ipcch-gosif2025-retrain/research/cp3/frozen-objects/freeze-h06.json",
+  "local_sha256": "fe6be936989d045d2d020870700d24fa2ceca4e33d68d5ec96acd0fd3f57137c",
+  "local_md5": "Mamv5VUR6lkM9SO9CSiqJw==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-acledagg-hpt/r1/freeze/freeze-h12.json#1792690601611221",
+  "gcs_md5": "/lTBHdbOMwqDK+3EXL+Tkg==",
+  "manifest_sha256": "b094e05934931eb1cc0bf2f403b7b2898c1b76c0c33401ecf093ed49b6c5fb90",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-27-ipcch-gosif2025-retrain/research/cp3/frozen-objects/freeze-h12.json",
+  "local_sha256": "b094e05934931eb1cc0bf2f403b7b2898c1b76c0c33401ecf093ed49b6c5fb90",
+  "local_md5": "/lTBHdbOMwqDK+3EXL+Tkg==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-acledagg-hpt/r1/freeze/index.json#1792690601692816",
+  "gcs_md5": "akVniW+zMhL1uD0tUL3kyQ==",
+  "manifest_sha256": "d85582b3ca1d6364e9021957ea4695d75905aafcb435ac9c7819eccdc7ef424f",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-27-ipcch-gosif2025-retrain/research/cp3/frozen-objects/index.json",
+  "local_sha256": "d85582b3ca1d6364e9021957ea4695d75905aafcb435ac9c7819eccdc7ef424f",
+  "local_md5": "akVniW+zMhL1uD0tUL3kyQ==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-acledagg-hpt/r1/inputs/baseline-predictions-h00.csv.gz#1792634024285433",
+  "gcs_md5": "uEZSQSmqjWnNA8yXxqu8kw==",
+  "manifest_sha256": "4a18b51d451d739d27ae81ad6d682a25d20a7b3be95606cbad59d3395432b926",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-21-ipcch-acledagg-hpt/research/cp4/publish-dryrun/objects/inputs/baseline-predictions-h00.csv.gz",
+  "local_sha256": "4a18b51d451d739d27ae81ad6d682a25d20a7b3be95606cbad59d3395432b926",
+  "local_md5": "uEZSQSmqjWnNA8yXxqu8kw==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-acledagg-hpt/r1/inputs/baseline-predictions-h06.csv.gz#1792634025112538",
+  "gcs_md5": "WvYThrKWXeCVbht6UTGkrA==",
+  "manifest_sha256": "f788cb92c6abdc68fc78612a0147a2eec8b8efad912fcecb01ec5cfa259a3cc7",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-21-ipcch-acledagg-hpt/research/cp4/publish-dryrun/objects/inputs/baseline-predictions-h06.csv.gz",
+  "local_sha256": "f788cb92c6abdc68fc78612a0147a2eec8b8efad912fcecb01ec5cfa259a3cc7",
+  "local_md5": "WvYThrKWXeCVbht6UTGkrA==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-acledagg-hpt/r1/inputs/baseline-predictions-h12.csv.gz#1792634025911056",
+  "gcs_md5": "1rozOeVod5gQ3I6Xz3MQ0A==",
+  "manifest_sha256": "4dfea5adbffceb6148cdeae624b60ae13d80ed07ede0882c9ae178f030d552fa",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-21-ipcch-acledagg-hpt/research/cp4/publish-dryrun/objects/inputs/baseline-predictions-h12.csv.gz",
+  "local_sha256": "4dfea5adbffceb6148cdeae624b60ae13d80ed07ede0882c9ae178f030d552fa",
+  "local_md5": "1rozOeVod5gQ3I6Xz3MQ0A==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/baseline-predictions-gosifv3-h00.csv.gz#1793219070652120",
+  "gcs_md5": "OeD8ys5GJL+jm1raV8rXZw==",
+  "manifest_sha256": "009caf296724b760263681abe099ecab2cafe684f52dd89de3bd7148b93efd2f",
+  "meta_sha256": null,
+  "local": null,
+  "status": "METADATA-ONLY"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/baseline-predictions-gosifv3-h06.csv.gz#1793219071144730",
+  "gcs_md5": "YN1TMd+r+UtzKgX1thgqwA==",
+  "manifest_sha256": "e3801e0c4f5679853c78a8b56f2a9000d185eb2a2f0afd3643ce1ce3c94ede16",
+  "meta_sha256": null,
+  "local": null,
+  "status": "METADATA-ONLY"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/baseline-predictions-gosifv3-h12.csv.gz#1793219071644622",
+  "gcs_md5": "fH4IkhgtBSq3bk04OZ3XzQ==",
+  "manifest_sha256": "92360132170096ec00703aade3da2e2da9bfefde350013e0f2d118ebe1c68bbb",
+  "meta_sha256": null,
+  "local": null,
+  "status": "METADATA-ONLY"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-gosif2025-retrain/r1/inputs/manifest-formal-h00.json#1793144582204676",
+  "gcs_md5": "UGiLH7/6V9PBsEEOsytBtQ==",
+  "manifest_sha256": "99b1e964005137cfb619f6be346e4fcc59b5b375609c06f11915d9278b085f52",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-27-ipcch-gosif2025-retrain/research/cp3/packet/objects/manifest-formal-h00.json",
+  "local_sha256": "99b1e964005137cfb619f6be346e4fcc59b5b375609c06f11915d9278b085f52",
+  "local_md5": "UGiLH7/6V9PBsEEOsytBtQ==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-gosif2025-retrain/r1/inputs/manifest-formal-h06.json#1793144582454578",
+  "gcs_md5": "FziBXUoj+l1mCP+LnTVZ0Q==",
+  "manifest_sha256": "aa73377c901cfb66e85bbf41f361cd81209f3b3df49b4eadf596f5e22da603d6",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-27-ipcch-gosif2025-retrain/research/cp3/packet/objects/manifest-formal-h06.json",
+  "local_sha256": "aa73377c901cfb66e85bbf41f361cd81209f3b3df49b4eadf596f5e22da603d6",
+  "local_md5": "FziBXUoj+l1mCP+LnTVZ0Q==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-gosif2025-retrain/r1/inputs/manifest-formal-h12.json#1793144582716895",
+  "gcs_md5": "n7fQNEo3uuh0deKlVA/T5A==",
+  "manifest_sha256": "daabe12d6fa303130d9c831f1a59d5388d0d014e150c2f28f744a01f0219eaed",
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/.trellis/tasks/10-27-ipcch-gosif2025-retrain/research/cp3/packet/objects/manifest-formal-h12.json",
+  "local_sha256": "daabe12d6fa303130d9c831f1a59d5388d0d014e150c2f28f744a01f0219eaed",
+  "local_md5": "n7fQNEo3uuh0deKlVA/T5A==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h00.json",
+  "gcs_md5": "WP+UHYq19HnzM6DAuXOrEw==",
+  "manifest_sha256": null,
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/manifest-formal-h00.json",
+  "local_sha256": "f1509cc1f6eb58e04802fe48a28c463070ed860c342f6a37c40a279c8534cca6",
+  "local_md5": "WP+UHYq19HnzM6DAuXOrEw==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/config-formal-h00.json",
+  "gcs_md5": "H4+vZZapv/PtkZ53ZoSJ6A==",
+  "manifest_sha256": null,
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/config-formal-h00.json",
+  "local_sha256": "fca3f2db9c62483c61fbb2089799f0fe86b676c5d74f9023d92a41642ba571df",
+  "local_md5": "H4+vZZapv/PtkZ53ZoSJ6A==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h06.json",
+  "gcs_md5": "c4ImmhqxKZTOMwslEyaaqA==",
+  "manifest_sha256": null,
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/manifest-formal-h06.json",
+  "local_sha256": "1407b2db46ed969121d01c7de6bcd76a65b8be419ad497c914a23d9bb8fb0567",
+  "local_md5": "c4ImmhqxKZTOMwslEyaaqA==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/config-formal-h06.json",
+  "gcs_md5": "2bF1Oj1wqiTFjjIv4pqBVw==",
+  "manifest_sha256": null,
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/config-formal-h06.json",
+  "local_sha256": "29c4418d78aa4ade13f2b4832eab1f84d0ec2b26ec9f9c52eed3f6ef32e228e2",
+  "local_md5": "2bF1Oj1wqiTFjjIv4pqBVw==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/manifest-formal-h12.json",
+  "gcs_md5": "QNfgZEYGGcV4QU9tbrjheQ==",
+  "manifest_sha256": null,
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/manifest-formal-h12.json",
+  "local_sha256": "e3e20b2e9876e2106f7e94e122c3eaf87997862e47f71c65a8d98b886af7be4a",
+  "local_md5": "QNfgZEYGGcV4QU9tbrjheQ==",
+  "status": "BYTE-VERIFIED"
+ },
+ {
+  "target": "gs://food-crisis-modeling-enso-research-inputs/training-jobs/ipcch-ch-validity-refits/r1/inputs/config-formal-h12.json",
+  "gcs_md5": "ZjOtbhF2aOXHvSB63yWi1A==",
+  "manifest_sha256": null,
+  "meta_sha256": null,
+  "local": "/home/swl007007/projects/food-crisis-research/staging/ipcch-ch-validity-20261028/job-packet-ch/objects/config-formal-h12.json",
+  "local_sha256": "8673b0946ac9b80eac7efdb629c62046eb94b1d77889251d568854f4d7b5d84e",
+  "local_md5": "ZjOtbhF2aOXHvSB63yWi1A==",
+  "status": "BYTE-VERIFIED"
+ }
+]
