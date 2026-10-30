@@ -1,3 +1,23 @@
+# Active: IPCCH automatic E2E integration (2026-10-30)
+
+Task: `.trellis/tasks/10-30-ipcch-real-e2e-integration/`.
+Authority: the user's subsequent `/goal` Supervisor–Executor protocol, preserved in
+the task's `execution-protocol.md` and `research/user-execution-protocol.md`.
+This section is an operational ledger, not an approval source; older sections below
+describe other tasks and do not govern this execution.
+
+- Supervisor: Codex `w1A:p8`, session `01a18e48-f335-7161-bc57-4c6913b92aa5`.
+- Executor: existing Claude Opus 5.5 1M `w1A:p2`, session
+  `6a490ae1-ee00-43f9-bdfc-c887c9816c09`; same checkout identity verified.
+- Branch: `feat/ipcch-real-e2e-integration`; base
+  `feat/ipcch-validity-feature-inference` at `69aa74a372f40581d6759a5703e7ec331ba4af63`.
+- D1-D5 approved. Native Trellis lifecycle; user explicitly forbids Trellis Audit.
+- CP0 pending. No product edits, cloud calls or deployment in this task yet.
+- AC1-AC9 required; DA1-DA2 real new-month incremental acceptance expressly deferred.
+- Preserve the pre-existing `AGENTS.md` modification. No training/push/merge.
+
+---
+
 # Completed: delivery closure layout
 
 Task: `.trellis/tasks/archive/2026-10/10-08-delivery-closure-layout/`.

@@ -1,0 +1,7 @@
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/prd.md","reason":"Current AC1-AC9: complete automation plus full-roster real current publication; DA1-DA2 live increment user-deferred, not task-close gates."}
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/research/grill-second-pass.md","reason":"Second-pass gaps and targeted tests: whole-run deadline, v2 dedup, correct current inheritance, all-null publication and duplicate columns."}
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/design.md","reason":"Check runtime/source identity, producer-consumer data flow, publication and human-operation boundaries."}
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/research/automation-evidence.md","reason":"Known sparse-patch/trigger/export gaps and evidence required to distinguish cached replay from incremental E2E."}
+{"file":".trellis/spec/backend/monthly-delivery-contracts.md","reason":"Preserve existing validation and publication contracts plus v2 WFP/combination overrides."}
+{"file":".trellis/tasks/archive/2026-10/10-29-ipcch-validity-feature-inference/prd.md","reason":"Preserve approved v2 semantics and source failure/retention rules; this task's own planning gates govern execution."}
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/execution-protocol.md","reason":"Supervisor checkpoint/final verification required; no Trellis Audit or independent automatic Audit stage."}

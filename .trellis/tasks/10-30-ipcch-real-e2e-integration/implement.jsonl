@@ -1,0 +1,8 @@
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/execution-protocol.md","reason":"User-authorized Herdr Supervisor–Executor execution, no Trellis Audit, checkpoint/cloud/ownership boundaries."}
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/prd.md","reason":"Approved D1-D5 including submission-time UTC month; current AC1-AC9 require full automation, live incremental DA1-DA2 deferred."}
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/research/grill-second-pass.md","reason":"Source-grounded corrections for deadline/replay wiring, production pointer continuity and producer publication completeness."}
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/design.md","reason":"Automatic producer, asset lifecycle, keep/refresh boundary, model/current wiring and retained acceptance constraints."}
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/implement.md","reason":"Ordered execution and verification plan; lifecycle and execution gates remain pending."}
+{"file":".trellis/tasks/10-30-ipcch-real-e2e-integration/research/automation-evidence.md","reason":"Current source evidence for producer/transport reuse, request trigger gaps and October cached-history limitation."}
+{"file":".trellis/spec/backend/monthly-delivery-contracts.md","reason":"Existing publication, immutable refs, WFP manual-input and accepted combination contracts; apply the v2 overrides."}
+{"file":".trellis/tasks/archive/2026-10/10-29-ipcch-validity-feature-inference/prd.md","reason":"Existing v2 scientific and retained contracts, especially R8/R17/R37/R39/R43/R45/R48/R59/R64/R66; not this task's lifecycle authority."}
