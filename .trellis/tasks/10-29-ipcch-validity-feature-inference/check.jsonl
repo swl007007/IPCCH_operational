@@ -1,0 +1,16 @@
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/execution-protocol.md", "reason": "Binding Supervisor\u2013Executor protocol: authority, CP0-CP6 gates, cloud preauthorization bounds, no Trellis Audit."}
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/prd.md", "reason": "Accepted requirements R1-R66, defaults, AC1-AC40 and final convergence corrections (prd.md:256-265)."}
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/design.md", "reason": "Runtime/research mapping: package layout, request v2, run modes, flow, stores, ACLED, GPP, locks, publication."}
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/implement.md", "reason": "Ordered steps A-E, candidate validation suites and execution prerequisites."}
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/rollback-baseline.md", "reason": "Pinned pre-refactor source baseline 422f921 and non-destructive recovery; not production rollback."}
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp0-requirement-evidence-map.md", "reason": "R1-R66 / AC1-AC40 / FCC1-FCC10 planned evidence; planned vs executed kept distinct."}
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp0-runtime-seams.md", "reason": "cloud_pipeline seams with path:line anchors, hard-coded (0,6,12) sites, test suites and commands."}
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp0-climate-acled-sources.md", "reason": "Shared monthly/seasonal scripts, ACLED converter conventions and research feature formulas to port."}
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp0-research-training-inventory.md", "reason": "Research training entrypoint, hyperparameter sources, schema/oracle columns, evidence generation, environments."}
+{"file": ".trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp1-plan.md", "reason": "Concrete CP1 data-preparation and training-packet plan, research isolation worktree and capture manifest."}
+{"file": ".trellis/spec/backend/monthly-delivery-contracts.md", "reason": "Existing delivery request/object-ref/fill contracts that v2 must extend without breaking v1/FEWS."}
+{"file": ".trellis/spec/backend/local-migration-package.md", "reason": "Standalone payload rules for packaging runtime assets."}
+{"file": ".trellis/spec/guides/cloud-handover-layout.md", "reason": "Public runtime paths, closure and model identity; research checkout is never a runtime dependency."}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Request -> store -> batch -> inference -> publication crosses many layers."}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "Reuse existing inference, publication, inheritance and converter code rather than duplicating pipelines."}
+{"file": "cloud_pipeline/requirements.lock.txt", "reason": "Fixed numerical environment; tests run in ~/.venvs/fewsnet-test-lock-20261022 (57/57 pins match)."}

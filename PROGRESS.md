@@ -2987,3 +2987,17 @@ Supersedes the in-progress bullets above, which are kept as written.
 - Supervisor accepted activation (69 checks); `maintenance release` re-checked pointer, config, fallback and shared runtime (`released_activated`); live hold absent from 08:34Z, so monthly admission is open again.
 - Operator docs corrected: runs publish a workflow intent and return (no local prepare/poll), selection flags, setup grants, frozen-output exception, bootstrap vs activated runtime, maintenance/candidate/promotion usage and the tested rollback (re-hold, restore, release).
 - No model evaluation was performed; FEWS confidence remains the October proxy evidence of the previous packages, copied unchanged. Completion/rollback record: `.trellis/tasks/10-21-fewsnet-fixed-map-retrain/research/completion.md` (archived under `.trellis/tasks/archive/2026-10/` after native finish). Native finish waits for the final supervisor checkpoint.
+
+---
+
+# Active: IPCCH validity features and inference migration (Trellis `10-29-ipcch-validity-feature-inference`)
+
+Operational ledger only; it does not grant authority. Authority: `.trellis/tasks/10-29-ipcch-validity-feature-inference/{execution-protocol,prd,design,implement}.md`. No Trellis Audit (explicit user override).
+
+### 2026-10-30 — CP0 prepared (executor), awaiting supervisor review
+
+- Executor: Claude Opus 5.5 1M, Herdr `w1A:p2`, session `6a490ae1-ee00-43f9-bdfc-c887c9816c09`. Supervisor: Codex `w1A:p1`.
+- Branch `feat/ipcch-validity-feature-inference` @ ace3e12 (synced with origin). Source backups verified: tag → 422f921, bundle checksum + `git bundle verify` OK.
+- Context manifests populated; evidence map covers AC1-AC40, R1-R66, FCC1-FCC10 (all planned, none executed); CP1 plan with research isolation (new worktree/branch from control-plane 5e94e12; capture manifest re-verified at capture; mlruns and research-root changes excluded).
+- Verified: control-plane training modules are byte-identical to the 10-28 image overlay; static29 roster 6,226; operational test env `~/.venvs/fewsnet-test-lock-20261022` matches 57/57 lock pins.
+- Open: ACLED override precedence ruling (S1); FEWS partition CRLF collection error (pre-existing, planned attribute fix). No product edits, training, cloud operations or commits yet. Checkpoint: `.trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp0-checkpoint.md`.
