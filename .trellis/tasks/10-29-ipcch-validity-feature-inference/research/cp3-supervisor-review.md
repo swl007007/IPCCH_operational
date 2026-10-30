@@ -64,3 +64,19 @@ Two residuals remain and were dispatched: VI joins retain baseline admins missin
 
 
 Residual repair direct Supervisor check: exact-lock `python -B -m pytest -q -p no:cacheprovider tests/cloud/test_ipcch_initial.py tests/cloud/test_ipcch_climate_tables.py` from cloud_pipeline: 18 passed in 9.28s, exit 0. Reviewed current-table validation before joins and initial identifier/month/date field preflight plus zero-write tests. Both residual findings resolved for snapshot {'cloud_pipeline/cloud/ipcch/climate_tables.py': '34ccdc4652be88f955768c31952b07cae5fe70335bd53f9aa0534afd0910bdaa', 'cloud_pipeline/cloud/ipcch/initial.py': '93aba7d16d1c3013df89e07da23e5e1cabaa0a858aa69b12f82eeb75c6c0ef72'}. Complete checkpoint remains open pending handoff, parity and runtime integration.
+
+
+### Historical assembled-input compatibility result
+
+Supervisor inspected `assembly-parity/stage3_effective.py`, `R/scratch/h2h8h14-final/assembly-parity/r2_exact_effective.json` and run-r2.log. All H2/H8/H14 have18,317 probes: effective float32 input differences0; raw q2/q3/q4/q5 score differences0 through the operational runtime; feature-contract reports both passed; verdict EFFECTIVE_IDENTICAL,exit0. Original float64 differences and zero NaN-mask mismatches remain recorded, not rounded away. Research-parser comparison continues to isolate the CSV-parser cause; coordinate differences affect historical fit probes only. This establishes historical numerical compatibility, not CP5 current-month/date/publication behavior; scorer probe metadata is fixed illustrative dates.
+
+Current integration gap confirmed by targeted source inspection: real EEBackend/TableBackend transport implementations and production provider construction still need CP3 generation wiring. Reuse existing acquisition/task-polling/GCS read patterns; auth/permission/ambiguous-not-found must remain processing failures. Protocols/mocks alone do not satisfy executable collection. Executor notified; no new live EE work required.
+
+
+### Transport and GPP integration review (8d031db /72f8cd8 /f1af645)
+
+Concrete EE/GCS transport is implemented, with installed EE1.7.36 API/pagination checks and41 focused tests. Main initial findings (submit-before-record and unbounded wait/no cancel) repaired in72f8cd8; independent13-test check confirms reserve-before-submit, no duplicate submission afterfailed/completed record, bounded sleeps and normal timeout/persistence-failure cancellation. Remaining faults dispatched: immediately recheck budget before submission after reservation; ambiguous task.start failure must retain known task ID and best-effort cancel; combined ID-persistence/cancel failure must expose task ID in durable recovery/error evidence, without automatic resubmission. Existing FEWS wait helper unchanged.
+
+GPP f1af645: independent50 tests; synthetic uint16 formula agrees with research (mask65534/65535 before float64 sum/count,scale0.01,truezero preserved,allfillNaN), legacy shared extraction unchanged. One reproduced persistence flaw remains: successful history commit with legitimate pixel NaN followed by published-ledger commit failure leaves stale unpublished status; retry filters only nonmissing savedvalues and overwrites legitimateNaN. Preserve saved published rows includingNaN across this interruption; add fault-injected retry regression. Runtime entrypoint wiring remains pending.
+
+Parityr2 final run exit0: stage2 exact DIFFERS/rc2, stage3 EFFECTIVE_IDENTICAL/rc0; research-parser stage2 differs onlylat/lon (525/527 exact), stage3 EFFECTIVE_IDENTICAL/rc0. All horizons18,317 probes; effective inputs and q2..q5 numerical outputs identical. Float64 discrepancies remain explicitly characterized, not redefined as bit-exact equality. This closes the historical numerical compatibility check only.
