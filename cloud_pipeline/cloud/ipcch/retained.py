@@ -55,8 +55,8 @@ def _roster(frame: pd.DataFrame, roster: set[str], label: str) -> None:
 
 
 def read_series(table: VersionedTable) -> tuple[pd.DataFrame, str]:
-    frame, _ = table.read({"admin_code": str, "month": str, "method_id": str})
-    _, generation = table.head()
+    """(series, HEAD generation) of one consistent snapshot; commits CAS from exactly this generation."""
+    frame, _, generation = table.read({"admin_code": str, "month": str, "method_id": str})
     if frame is None:
         frame = pd.DataFrame({c: pd.Series(dtype="float64" if c == "value" else "object") for c in SERIES_COLUMNS})
     return frame, generation
@@ -106,16 +106,19 @@ def classify_gpp_probe(*, http_status: int | None = None, listed: bool | None = 
     """``published`` | ``unpublished``; anything that is not a definitive outcome raises (R49)."""
     if error is not None:
         raise GppProcessingFailure(f"GPP retrieval failed ({error}); a processing failure, not unpublished")
-    if listed is False or http_status == 404:
+    if http_status is not None and http_status not in (200, 404):
+        raise GppProcessingFailure(f"GPP retrieval returned HTTP {http_status}: a processing failure whatever the listing")
+    if (http_status == 404 and listed is True) or (http_status == 200 and listed is False):
+        raise GppProcessingFailure(f"contradictory GPP probe: HTTP {http_status} with listed={listed}")
+    if http_status == 404 or (http_status is None and listed is False):
         return "unpublished"
-    if listed is True or http_status == 200:
+    if http_status == 200 or (http_status is None and listed is True):
         return "published"
     raise GppProcessingFailure(f"GPP probe outcome http={http_status} listed={listed} is not definitive")
 
 
 def record_gpp_checks(table: VersionedTable, checks: list[Mapping[str, Any]]) -> dict[str, Any]:
-    frame, _ = table.read({"month": str, "status": str})
-    _, generation = table.head()
+    frame, _, generation = table.read({"month": str, "status": str})
     new = pd.DataFrame(checks, columns=list(GPP_LEDGER_COLUMNS))
     _months(new["month"], table.table)
     if not new["status"].isin(["published", "unpublished"]).all():
@@ -125,7 +128,7 @@ def record_gpp_checks(table: VersionedTable, checks: list[Mapping[str, Any]]) ->
 
 
 def latest_gpp_status(table: VersionedTable) -> dict[str, str]:
-    frame, _ = table.read({"month": str, "status": str})
+    frame, _, _ = table.read({"month": str, "status": str})
     if frame is None:
         return {}
     return frame.drop_duplicates("month", keep="last").set_index("month")["status"].to_dict()

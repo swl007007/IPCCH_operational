@@ -77,9 +77,14 @@ def test_gpp_probe_classification_and_ledger(env):
     assert rt.classify_gpp_probe(http_status=404) == "unpublished"
     assert rt.classify_gpp_probe(listed=False) == "unpublished"
     assert rt.classify_gpp_probe(http_status=200) == "published"
-    for kw in ({"http_status": 503}, {"error": "timeout"}, {"error": "checksum mismatch"}, {"http_status": None}):
+    for kw in ({"http_status": 503}, {"error": "timeout"}, {"error": "checksum mismatch"}, {"http_status": None},
+               {"http_status": 500, "listed": True}, {"http_status": 503, "listed": False},     # explicit failure blocks
+               {"http_status": 404, "listed": True}, {"http_status": 200, "listed": False},     # contradictory
+               {"http_status": 404, "error": "read error"}):
         with pytest.raises(rt.GppProcessingFailure):
             rt.classify_gpp_probe(**kw)
+    assert rt.classify_gpp_probe(http_status=404, listed=False) == "unpublished"
+    assert rt.classify_gpp_probe(http_status=200, listed=True) == "published"
     store, real, _ = env
     ledger = VersionedTable(store, real, "gpp_availability_ledger")
     rt.record_gpp_checks(ledger, [{"month": "2026-06", "status": "unpublished", "checked_at": "2026-08-31", "evidence": "404"}])
@@ -110,7 +115,7 @@ def test_snapshot_atomic_replacement_and_warning(env):
     rt.replace_snapshot(t, snap, source_ref={"sha256": "b" * 64})
     smaller = pd.DataFrame([["101", "2026-03", 3, "2026-04", "2026-09"]], columns=list(rt.SNAPSHOT_COLUMNS))
     head = rt.replace_snapshot(t, smaller, source_ref={"sha256": "c" * 64})
-    frame, _ = t.read({"area_id": str})
+    frame, _, _ = t.read({"area_id": str})
     assert list(frame["area_id"]) == ["101"]                                  # absent record removed (FCC8)
     assert rt.snapshot_warning(head, "2026-08") is None
     assert "before O" in rt.snapshot_warning(head, "2026-10")
@@ -131,5 +136,81 @@ def test_acceptance_manifest(env):
         acc.require("gpp_history.csv", "b" * 64)
     with pytest.raises(StoreError, match="no acceptance record"):
         AcceptanceManifest(store, smoke).require("gpp_history.csv", "a" * 64)   # smoke uses only its own records
-    with pytest.raises(StoreError):
-        acc.append([{"name": "x", "sha256": "a" * 64, "source": "s", "acceptor": "a", "accepted_at": "d", "kind": "other"}])
+    ok = {"name": "x", "sha256": "a" * 64, "source": "s", "acceptor": "a", "accepted_at": "2026-10-30", "kind": "runtime"}
+    for bad in ({"kind": "other"}, {"name": " "}, {"source": ""}, {"acceptor": None}, {"accepted_at": "30/10/2026"},
+                {"sha256": "A" * 64}, {"sha256": "a" * 63}):
+        with pytest.raises(StoreError):
+            acc.append([{**ok, **bad}])
+    assert len(acc.records()) == 1                                         # refused appends wrote nothing
+
+
+class FlakyHeadStore(LocalObjectStore):
+    """Fails the next HEAD write after its content write succeeded (network error or lost CAS)."""
+
+    fail_head = False
+
+    def write_text(self, uri, content, *, if_generation_match=None):
+        if self.fail_head and uri.endswith("/HEAD.json"):
+            self.fail_head = False
+            raise ConnectionError("simulated HEAD write failure")
+        return super().write_text(uri, content, if_generation_match=if_generation_match)
+
+
+def test_failed_head_move_leaves_an_orphan_that_never_blocks_the_next_commit(tmp_path):
+    store = FlakyHeadStore(tmp_path)
+    t = VersionedTable(store, StoreRoot("real", "gs://b/ipcch-v2/real"), "wfp_price")
+    rt.append_months(t, rows(("101", "2026-07", 1.0)), method_id="m", roster=ROSTER)
+    store.fail_head = True
+    with pytest.raises(ConnectionError):
+        rt.append_months(t, rows(("101", "2026-08", 2.0)), method_id="m", roster=ROSTER)
+    head, _ = t.head()
+    assert head["version"] == 1                                           # previous version still current
+    orphans = [u for u in store.list("gs://b/ipcch-v2/real/wfp_price/versions/") if u != head["content"]]
+    assert len(orphans) == 1                                              # orphan preserved as evidence
+    out = rt.append_months(t, rows(("101", "2026-08", 2.0)), method_id="m", roster=ROSTER)
+    assert out["version"] == 2 and out["content"] != orphans[0]
+
+
+def test_writers_cas_from_their_own_snapshot(env):
+    store, real, _ = env
+    t = VersionedTable(store, real, "gpp_mean")
+    rt.append_months(t, rows(("101", "2026-07", 1.0)), method_id="m", roster=ROSTER)
+    stale_frame, stale_generation = rt.read_series(t)                     # writer A reads
+    rt.append_months(t, rows(("102", "2026-07", 5.0)), method_id="m", roster=ROSTER)   # writer B commits
+    with pytest.raises(GenerationConflict):                               # A cannot overwrite B with stale data
+        t.commit(stale_frame, {}, expected_generation=stale_generation)
+    frame, _ = rt.read_series(t)
+    assert sorted(frame["admin_code"]) == ["101", "102"]
+
+
+class MovingHeadStore(LocalObjectStore):
+    """Moves HEAD between the two metadata reads of one snapshot."""
+
+    move = None
+
+    def read_text(self, uri):
+        text = super().read_text(uri)
+        if self.move and uri.endswith("/HEAD.json"):
+            move, self.move = self.move, None
+            move()
+        return text
+
+
+def test_head_changing_during_read_refuses(tmp_path):
+    store = MovingHeadStore(tmp_path)
+    t = VersionedTable(store, StoreRoot("real", "gs://b/ipcch-v2/real"), "gpp_mean")
+    rt.append_months(t, rows(("101", "2026-07", 1.0)), method_id="m", roster=ROSTER)
+    store.move = lambda: rt.append_months(t, rows(("102", "2026-07", 2.0)), method_id="m", roster=ROSTER)
+    with pytest.raises(StoreError, match="changed while it was read"):
+        t.read()
+
+
+def test_head_content_outside_its_own_root_is_refused(env):
+    store, real, smoke = env
+    rt.append_months(VersionedTable(store, real, "gpp_mean"), rows(("101", "2026-07", 1.0)), method_id="m", roster=ROSTER)
+    real_head, _ = VersionedTable(store, real, "gpp_mean").head()
+    import json
+    forged = {**real_head, "content": real_head["content"]}
+    store.write_text("gs://b/ipcch-v2/smoke/gpp_mean/HEAD.json", json.dumps(forged))   # smoke HEAD pointing at real data
+    with pytest.raises(StoreError, match="outside"):
+        VersionedTable(store, smoke, "gpp_mean").read()

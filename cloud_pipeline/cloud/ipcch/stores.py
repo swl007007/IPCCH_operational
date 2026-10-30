@@ -3,11 +3,14 @@
 Every retained table lives under one namespace root and is a HEAD pointer plus immutable versions::
 
     <root>/<table>/HEAD.json                 {"version": n, "content": uri, "sha256": ..., "rows": ..., "record": {...}}
-    <root>/<table>/versions/<n>.csv          create-only (if_generation_match=0)
+    <root>/<table>/versions/<n>-<uuid>.csv   create-only (if_generation_match=0), unique per write attempt
 
-``commit`` writes the next version create-only and then moves HEAD with a compare-and-swap on the HEAD generation read
-before the change. A conflict raises ``GenerationConflict`` and is never retried here; a failure before the HEAD move
-leaves the previous version current (a refused refresh never changes retained data). Old versions are never deleted.
+``read``/``head`` return content and HEAD generation from one consistent snapshot (the HEAD generation is read before
+and after; a change in between refuses). ``commit`` writes a new uniquely named version create-only and then moves HEAD
+with a compare-and-swap on the generation of the snapshot the caller read. A conflict raises ``GenerationConflict`` and
+is never retried here; a failure before or during the HEAD move leaves the previous version current, and an orphaned
+version object is preserved as evidence without blocking the next commit. Versions are never deleted. HEAD content
+must lie under this root's own ``<table>/versions/`` (mode isolation, R48).
 
 Namespaces are isolated by mode (R48): a real store root and a smoke store root are distinct, and a store opened for
 one mode refuses a root of the other. The acceptance manifest (R45) is itself a versioned table of records
@@ -19,6 +22,8 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import re
+import uuid
 from dataclasses import dataclass
 from typing import Any, Mapping
 
@@ -30,6 +35,8 @@ MODES = ("smoke", "real")
 ACCEPTANCE_TABLE = "acceptance_manifest"
 ACCEPTANCE_COLUMNS = ("name", "sha256", "source", "acceptor", "accepted_at", "kind")
 ACCEPTANCE_KINDS = ("delivered", "runtime")
+_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 class StoreError(RuntimeError):
@@ -73,20 +80,31 @@ class VersionedTable:
         self.head_uri = f"{root.uri}/{table}/HEAD.json"
 
     def head(self) -> tuple[dict[str, Any] | None, str]:
-        """(HEAD record or None, HEAD generation as a string; "0" when absent)."""
-        meta = self.store.get_metadata(self.head_uri)
-        if meta is None:
+        """(HEAD record or None, HEAD generation; "0" when absent) from one stable snapshot: the generation is read
+        before and after the HEAD text and must not change in between."""
+        before = self.store.get_metadata(self.head_uri)
+        if before is None:
             return None, "0"
-        return json.loads(self.store.read_text(self.head_uri)), meta.generation
+        text = self.store.read_text(self.head_uri)
+        after = self.store.get_metadata(self.head_uri)
+        if after is None or after.generation != before.generation:
+            raise StoreError(f"{self.table} HEAD changed while it was read; nothing was used")
+        head = json.loads(text)
+        prefix = f"{self.root.uri}/{self.table}/versions/"
+        content = head.get("content")
+        if not isinstance(content, str) or not content.startswith(prefix) or "/" in content[len(prefix):]:
+            raise StoreError(f"{self.table} HEAD content {content!r} is outside {prefix} (R48)")
+        return head, before.generation
 
-    def read(self, dtypes: Mapping[str, Any] | None = None) -> tuple[pd.DataFrame | None, dict[str, Any] | None]:
-        head, _ = self.head()
+    def read(self, dtypes: Mapping[str, Any] | None = None) -> tuple[pd.DataFrame | None, dict[str, Any] | None, str]:
+        """(frame, HEAD record, HEAD generation) of one consistent snapshot; content verified by its HEAD sha256."""
+        head, generation = self.head()
         if head is None:
-            return None, None
+            return None, None, generation
         text = self.store.read_text(head["content"])
         if sha256_text(text) != head["sha256"]:
             raise StoreError(f"{self.table} version {head['version']} content differs from its HEAD sha256")
-        return csv_to_frame(text, dtypes), head
+        return csv_to_frame(text, dtypes), head, generation
 
     def commit(self, frame: pd.DataFrame, record: Mapping[str, Any], *, expected_generation: str) -> dict[str, Any]:
         """Write the next immutable version and CAS the HEAD from ``expected_generation`` (no retry)."""
@@ -95,7 +113,7 @@ class VersionedTable:
             raise GenerationConflict(f"{self.table} HEAD moved ({generation} != {expected_generation}); not retried")
         version = 1 if head is None else int(head["version"]) + 1
         text = frame_to_csv(frame)
-        content = f"{self.root.uri}/{self.table}/versions/{version:06d}.csv"
+        content = f"{self.root.uri}/{self.table}/versions/{version:06d}-{uuid.uuid4().hex}.csv"
         self.store.write_text(content, text, if_generation_match=0)
         new = {"version": version, "content": content, "sha256": sha256_text(text), "rows": int(len(frame)),
                "previous_version": None if head is None else head["version"], "record": dict(record)}
@@ -109,9 +127,12 @@ class AcceptanceManifest:
     def __init__(self, store: ObjectStore, root: StoreRoot):
         self.table = VersionedTable(store, root, ACCEPTANCE_TABLE)
 
+    def snapshot(self) -> tuple[pd.DataFrame, str]:
+        frame, _, generation = self.table.read({c: str for c in ACCEPTANCE_COLUMNS})
+        return (frame if frame is not None else pd.DataFrame(columns=list(ACCEPTANCE_COLUMNS))), generation
+
     def records(self) -> pd.DataFrame:
-        frame, _ = self.table.read({"name": str, "sha256": str})
-        return frame if frame is not None else pd.DataFrame(columns=list(ACCEPTANCE_COLUMNS))
+        return self.snapshot()[0]
 
     def require(self, name: str, sha256: str) -> dict[str, Any]:
         """The record accepting ``name`` at ``sha256``; refuses a missing record or a checksum mismatch."""
@@ -125,9 +146,14 @@ class AcceptanceManifest:
 
     def append(self, entries: list[Mapping[str, Any]]) -> dict[str, Any]:
         for e in entries:
-            if set(e) != set(ACCEPTANCE_COLUMNS) or e["kind"] not in ACCEPTANCE_KINDS or len(str(e["sha256"])) != 64:
+            if set(e) != set(ACCEPTANCE_COLUMNS) or e["kind"] not in ACCEPTANCE_KINDS:
                 raise StoreError(f"acceptance entries need exactly {ACCEPTANCE_COLUMNS} and a known kind: {e}")
-        _, generation = self.table.head()
-        current = self.records()
+            if any(not isinstance(e[k], str) or not e[k].strip() for k in ("name", "source", "acceptor")):
+                raise StoreError(f"acceptance entries need non-empty name, source and acceptor: {e}")
+            if not isinstance(e["sha256"], str) or _SHA256.fullmatch(e["sha256"]) is None:
+                raise StoreError(f"acceptance sha256 must be a lowercase hex digest: {e}")
+            if not isinstance(e["accepted_at"], str) or _DATE.fullmatch(e["accepted_at"]) is None:
+                raise StoreError(f"acceptance date must be YYYY-MM-DD: {e}")
+        current, generation = self.snapshot()
         frame = pd.concat([current, pd.DataFrame(entries, columns=list(ACCEPTANCE_COLUMNS))], ignore_index=True)
         return self.table.commit(frame, {"appended": len(entries)}, expected_generation=generation)
