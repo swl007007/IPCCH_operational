@@ -1,0 +1,264 @@
+FFF.FFFF                                                                 [100%]
+=================================== FAILURES ===================================
+_____ test_sparse_patch_monthly_spi_and_spei_fill_only_missing_primary_et0 _____
+
+    def test_sparse_patch_monthly_spi_and_spei_fill_only_missing_primary_et0():
+        tables = sparse_patch_world()
+        p = ct.DroughtProvider(Tables(tables), ADMINS)
+        admin2 = []
+        for target in ("2026-06", "2026-07", "2026-08"):
+            months = spi_spei.month_axis("1990-01", target)
+            prcp, et0, patched = matrices(tables, "chirps", months, ADMINS)
+>           spi = p.fetch("spi03", "chirps", target)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/cloud/test_ipcch_produced_tables.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:251: in fetch
+    self.results[key] = self._compute(source, month)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:241: in _compute
+    et0, filled = spi_spei.apply_et0_patch(et0, _wide_month_matrix(patch_frames, "et0", months, self.admins))
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:193: in _wide_month_matrix
+    require_admins(f, admins, f"{prefix} table")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+table =   admin_code  et0_199001_mean  ...  et0_199511_mean  et0_199512_mean
+0          2        72.857020  ...       109.9409... 73.412908        77.123425
+2          9       120.149836  ...       111.201538        61.146889
+
+[3 rows x 73 columns]
+admins = ['1', '2', '3'], label = 'et0 table'
+
+    def require_admins(table: pd.DataFrame, admins, label: str) -> None:
+        absent = sorted(set(map(str, admins)) - set(table["admin_code"].astype(str)))
+        if absent:
+>           raise ClimateProcessingFailure(f"{label}: table lacks {len(absent)} required admins {absent[:5]}")
+E           cloud.ipcch.climate.ClimateProcessingFailure: et0 table: table lacks 1 required admins ['3']
+
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:75: ClimateProcessingFailure
+______ test_sparse_patch_seasonal_spi_and_spei_on_subset_rosters[codes0] _______
+
+codes = ['1', '2', '3']
+
+    @pytest.mark.parametrize("codes", [ADMINS, ["1", "3"], ["2"]])
+    def test_sparse_patch_seasonal_spi_and_spei_on_subset_rosters(codes):
+        tables = sparse_patch_world()
+        windows = pd.DataFrame({"admin_code": codes, "season_year": 2026, "season": "s1",
+                                "gs_start_date": "2026-03-01", "gs_end_date_exclusive": "2026-08-01"})
+        p = ct.SeasonalDroughtProvider(Tables(tables), ADMINS)
+        all_m, idx_m = spi_spei.month_axis("1990-01", "2026-07"), spi_spei.month_axis("2026-03", "2026-07")
+        prcp, _, patched = matrices(tables, "era5land", all_m, sorted(codes))
+        m = sss.monthly_indices(prcp, patched, all_m, idx_m, "era5land")
+        plan = sss.season_plan(windows.assign(gs_calendar_valid=1)[["admin_code", "season_year", "season", "gs_calendar_valid",
+                                                                    "gs_start_date", "gs_end_date_exclusive"]], idx_m, sorted(codes))
+        for base, key in (("spi03", "spi"), ("spei03", "spei")):
+>           o = p.fetch_season(base, "era5land", 2026, "s1", windows)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/cloud/test_ipcch_produced_tables.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:367: in fetch_season
+    et0, _ = spi_spei.apply_et0_patch(et0, _wide_month_matrix(patch_frames, "et0", all_months, codes))
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:193: in _wide_month_matrix
+    require_admins(f, admins, f"{prefix} table")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+table =   admin_code  et0_199001_mean  ...  et0_199511_mean  et0_199512_mean
+0          2        72.857020  ...       109.9409... 73.412908        77.123425
+2          9       120.149836  ...       111.201538        61.146889
+
+[3 rows x 73 columns]
+admins = ['1', '2', '3'], label = 'et0 table'
+
+    def require_admins(table: pd.DataFrame, admins, label: str) -> None:
+        absent = sorted(set(map(str, admins)) - set(table["admin_code"].astype(str)))
+        if absent:
+>           raise ClimateProcessingFailure(f"{label}: table lacks {len(absent)} required admins {absent[:5]}")
+E           cloud.ipcch.climate.ClimateProcessingFailure: et0 table: table lacks 1 required admins ['3']
+
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:75: ClimateProcessingFailure
+______ test_sparse_patch_seasonal_spi_and_spei_on_subset_rosters[codes1] _______
+
+codes = ['1', '3']
+
+    @pytest.mark.parametrize("codes", [ADMINS, ["1", "3"], ["2"]])
+    def test_sparse_patch_seasonal_spi_and_spei_on_subset_rosters(codes):
+        tables = sparse_patch_world()
+        windows = pd.DataFrame({"admin_code": codes, "season_year": 2026, "season": "s1",
+                                "gs_start_date": "2026-03-01", "gs_end_date_exclusive": "2026-08-01"})
+        p = ct.SeasonalDroughtProvider(Tables(tables), ADMINS)
+        all_m, idx_m = spi_spei.month_axis("1990-01", "2026-07"), spi_spei.month_axis("2026-03", "2026-07")
+        prcp, _, patched = matrices(tables, "era5land", all_m, sorted(codes))
+        m = sss.monthly_indices(prcp, patched, all_m, idx_m, "era5land")
+        plan = sss.season_plan(windows.assign(gs_calendar_valid=1)[["admin_code", "season_year", "season", "gs_calendar_valid",
+                                                                    "gs_start_date", "gs_end_date_exclusive"]], idx_m, sorted(codes))
+        for base, key in (("spi03", "spi"), ("spei03", "spei")):
+>           o = p.fetch_season(base, "era5land", 2026, "s1", windows)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/cloud/test_ipcch_produced_tables.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:367: in fetch_season
+    et0, _ = spi_spei.apply_et0_patch(et0, _wide_month_matrix(patch_frames, "et0", all_months, codes))
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:193: in _wide_month_matrix
+    require_admins(f, admins, f"{prefix} table")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+table =   admin_code  et0_199001_mean  ...  et0_199511_mean  et0_199512_mean
+0          2        72.857020  ...       109.9409... 73.412908        77.123425
+2          9       120.149836  ...       111.201538        61.146889
+
+[3 rows x 73 columns]
+admins = ['1', '3'], label = 'et0 table'
+
+    def require_admins(table: pd.DataFrame, admins, label: str) -> None:
+        absent = sorted(set(map(str, admins)) - set(table["admin_code"].astype(str)))
+        if absent:
+>           raise ClimateProcessingFailure(f"{label}: table lacks {len(absent)} required admins {absent[:5]}")
+E           cloud.ipcch.climate.ClimateProcessingFailure: et0 table: table lacks 1 required admins ['3']
+
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:75: ClimateProcessingFailure
+_ test_sparse_patch_keeps_primary_coverage_duplicate_and_numeric_strictness[monthly] _
+
+route = 'monthly'
+
+    @pytest.mark.parametrize("route", ["monthly", "seasonal"])
+    def test_sparse_patch_keeps_primary_coverage_duplicate_and_numeric_strictness(route):
+        tables = sparse_patch_world()
+        et0_key = next(k for k in keys(tables, "ET0_FAO56") if "Y2020" in k)
+        short = dict(tables); short[et0_key] = tables[et0_key][tables[et0_key]["admin_code"] != "2"]
+        with pytest.raises(cl.ClimateProcessingFailure, match="lacks 1 required admins"):     # patch never substitutes a row
+            consume(route, short, "spei03")
+        patch_key = next(k for k in keys(tables, "PATCH32") if "Y2020" in k)
+        dup = dict(tables); dup[patch_key] = pd.concat([tables[patch_key], tables[patch_key].iloc[:1]])
+>       with pytest.raises(cl.ClimateProcessingFailure, match="duplicate admin_code"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'duplicate admin_code'
+E         Actual message: "et0 table: table lacks 1 required admins ['3']"
+
+tests/cloud/test_ipcch_produced_tables.py:115: AssertionError
+_ test_sparse_patch_keeps_primary_coverage_duplicate_and_numeric_strictness[seasonal] _
+
+route = 'seasonal'
+
+    @pytest.mark.parametrize("route", ["monthly", "seasonal"])
+    def test_sparse_patch_keeps_primary_coverage_duplicate_and_numeric_strictness(route):
+        tables = sparse_patch_world()
+        et0_key = next(k for k in keys(tables, "ET0_FAO56") if "Y2020" in k)
+        short = dict(tables); short[et0_key] = tables[et0_key][tables[et0_key]["admin_code"] != "2"]
+        with pytest.raises(cl.ClimateProcessingFailure, match="lacks 1 required admins"):     # patch never substitutes a row
+            consume(route, short, "spei03")
+        patch_key = next(k for k in keys(tables, "PATCH32") if "Y2020" in k)
+        dup = dict(tables); dup[patch_key] = pd.concat([tables[patch_key], tables[patch_key].iloc[:1]])
+>       with pytest.raises(cl.ClimateProcessingFailure, match="duplicate admin_code"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'duplicate admin_code'
+E         Actual message: "et0 table: table lacks 1 required admins ['3']"
+
+tests/cloud/test_ipcch_produced_tables.py:115: AssertionError
+____ test_missing_primary_et0_without_a_patch_value_stays_missing[monthly] _____
+
+route = 'monthly'
+
+    @pytest.mark.parametrize("route", ["monthly", "seasonal"])
+    def test_missing_primary_et0_without_a_patch_value_stays_missing(route):
+        """Admin 3 has no patch row and admin 2 a NaN patch value in August, while both lack primary August ET0: both stay
+        missing (no fill, no failure); admin 1 keeps its primary values."""
+        tables = sparse_patch_world()
+        et0_key = next(k for k in keys(tables, "ET0_FAO56") if "Y2020" in k)
+        patch_key = next(k for k in keys(tables, "PATCH32") if "Y2020" in k)
+        tables[et0_key] = tables[et0_key].copy(); tables[et0_key].loc[tables[et0_key]["admin_code"] == "3", "et0_202608_mean"] = np.nan
+        tables[patch_key] = tables[patch_key].copy(); tables[patch_key].loc[tables[patch_key]["admin_code"] == "2", "et0_202608_mean"] = np.nan
+        months = spi_spei.month_axis("1990-01", "2026-08")
+        prcp, _, patched = matrices(tables, "chirps", months, ADMINS)
+        assert np.isnan(patched[1:, -1]).all() and np.isfinite(patched[0, -1])
+>       o = consume(route, tables, "spei03")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/cloud/test_ipcch_produced_tables.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/cloud/test_ipcch_produced_tables.py:102: in consume
+    return ct.DroughtProvider(Tables(tables), ADMINS).fetch(base, "chirps", "2026-08")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:251: in fetch
+    self.results[key] = self._compute(source, month)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:241: in _compute
+    et0, filled = spi_spei.apply_et0_patch(et0, _wide_month_matrix(patch_frames, "et0", months, self.admins))
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:193: in _wide_month_matrix
+    require_admins(f, admins, f"{prefix} table")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+table =   admin_code  et0_199001_mean  ...  et0_199511_mean  et0_199512_mean
+0          2        72.857020  ...       109.9409... 73.412908        77.123425
+2          9       120.149836  ...       111.201538        61.146889
+
+[3 rows x 73 columns]
+admins = ['1', '2', '3'], label = 'et0 table'
+
+    def require_admins(table: pd.DataFrame, admins, label: str) -> None:
+        absent = sorted(set(map(str, admins)) - set(table["admin_code"].astype(str)))
+        if absent:
+>           raise ClimateProcessingFailure(f"{label}: table lacks {len(absent)} required admins {absent[:5]}")
+E           cloud.ipcch.climate.ClimateProcessingFailure: et0 table: table lacks 1 required admins ['3']
+
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:75: ClimateProcessingFailure
+____ test_missing_primary_et0_without_a_patch_value_stays_missing[seasonal] ____
+
+route = 'seasonal'
+
+    @pytest.mark.parametrize("route", ["monthly", "seasonal"])
+    def test_missing_primary_et0_without_a_patch_value_stays_missing(route):
+        """Admin 3 has no patch row and admin 2 a NaN patch value in August, while both lack primary August ET0: both stay
+        missing (no fill, no failure); admin 1 keeps its primary values."""
+        tables = sparse_patch_world()
+        et0_key = next(k for k in keys(tables, "ET0_FAO56") if "Y2020" in k)
+        patch_key = next(k for k in keys(tables, "PATCH32") if "Y2020" in k)
+        tables[et0_key] = tables[et0_key].copy(); tables[et0_key].loc[tables[et0_key]["admin_code"] == "3", "et0_202608_mean"] = np.nan
+        tables[patch_key] = tables[patch_key].copy(); tables[patch_key].loc[tables[patch_key]["admin_code"] == "2", "et0_202608_mean"] = np.nan
+        months = spi_spei.month_axis("1990-01", "2026-08")
+        prcp, _, patched = matrices(tables, "chirps", months, ADMINS)
+        assert np.isnan(patched[1:, -1]).all() and np.isfinite(patched[0, -1])
+>       o = consume(route, tables, "spei03")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/cloud/test_ipcch_produced_tables.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/cloud/test_ipcch_produced_tables.py:103: in consume
+    return ct.SeasonalDroughtProvider(Tables(tables), ADMINS).fetch_season(base, "chirps", 2026, "s1", WINDOWS)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:367: in fetch_season
+    et0, _ = spi_spei.apply_et0_patch(et0, _wide_month_matrix(patch_frames, "et0", all_months, codes))
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:193: in _wide_month_matrix
+    require_admins(f, admins, f"{prefix} table")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+table =   admin_code  et0_199001_mean  ...  et0_199511_mean  et0_199512_mean
+0          2        72.857020  ...       109.9409... 73.412908        77.123425
+2          9       120.149836  ...       111.201538        61.146889
+
+[3 rows x 73 columns]
+admins = ['1', '2', '3'], label = 'et0 table'
+
+    def require_admins(table: pd.DataFrame, admins, label: str) -> None:
+        absent = sorted(set(map(str, admins)) - set(table["admin_code"].astype(str)))
+        if absent:
+>           raise ClimateProcessingFailure(f"{label}: table lacks {len(absent)} required admins {absent[:5]}")
+E           cloud.ipcch.climate.ClimateProcessingFailure: et0 table: table lacks 1 required admins ['3']
+
+../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp1/climate_tables_HEAD.py:75: ClimateProcessingFailure
+=========================== short test summary info ============================
+FAILED tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_monthly_spi_and_spei_fill_only_missing_primary_et0
+FAILED tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_seasonal_spi_and_spei_on_subset_rosters[codes0]
+FAILED tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_seasonal_spi_and_spei_on_subset_rosters[codes1]
+FAILED tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_keeps_primary_coverage_duplicate_and_numeric_strictness[monthly]
+FAILED tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_keeps_primary_coverage_duplicate_and_numeric_strictness[seasonal]
+FAILED tests/cloud/test_ipcch_produced_tables.py::test_missing_primary_et0_without_a_patch_value_stays_missing[monthly]
+FAILED tests/cloud/test_ipcch_produced_tables.py::test_missing_primary_et0_without_a_patch_value_stays_missing[seasonal]
+7 failed, 1 passed, 20 deselected in 7.91s

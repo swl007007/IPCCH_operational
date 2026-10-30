@@ -92,10 +92,11 @@ cached or fixture-only replay must never be reported as proof of real acquisitio
 
 ## Current-round acceptance criteria (not execution results)
 
-- [ ] **AC1:** Focused regressions cover sparse patch rows, missing patch values,
+- [x] **AC1:** Focused regressions cover sparse patch rows, missing patch values,
   preserved nonmissing primary ET0, duplicate/nonnumeric failures, and incomplete
   primary tables in both monthly and seasonal routes. Existing numerical fixtures
-  still agree; no fitting or feature-formula change is introduced.
+  still agree; no fitting or feature-formula change is introduced. CP1 Supervisor
+  accepted: 86 focused tests pass; seven sparse regressions fail on the old reader.
 - [ ] **AC2:** Source-equivalence and data-contract tests verify output root/version
   mapping, preserved old dependencies, the intended 32 PATCH32 IDs, VI scaling,
   schema/numeric validation, and both omitted and all-null incomplete-month fields.

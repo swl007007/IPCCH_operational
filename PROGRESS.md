@@ -12,7 +12,17 @@ describe other tasks and do not govern this execution.
 - Branch: `feat/ipcch-real-e2e-integration`; base
   `feat/ipcch-validity-feature-inference` at `69aa74a372f40581d6759a5703e7ec331ba4af63`.
 - D1-D5 approved. Native Trellis lifecycle; user explicitly forbids Trellis Audit.
-- CP0 pending. No product edits, cloud calls or deployment in this task yet.
+- Approved spec/protocol commit: `1faa6ae`; native task state is `in_progress`.
+- CP0 scope/environment/identity accepted; independent manifest rehashes agree.
+  See `research/cp0/supervisor-checkpoint.md`. Model is `claude-opus-5-5[1m]`.
+- CP1 accepted: sparse PATCH32 and consumer table mapping/completeness are
+  component-complete. 86 focused tests pass; old reader fails seven sparse cases.
+  First baseline inconclusive; full-log rerun passes 957 tests with exit 0 but
+  overlaps edits and is not a frozen-source baseline.
+- CP2 next: automatic producers, export lifecycle, deadlines, replay protection
+  and receipt-to-retained integration. No cloud calls or deployment yet.
+- Recovered a stale zero-byte `.git/index.lock` after verifying no Linux/Windows
+  Git process and its age over two hours; original user changes were preserved.
 - AC1-AC9 required; DA1-DA2 real new-month incremental acceptance expressly deferred.
 - Preserve the pre-existing `AGENTS.md` modification. No training/push/merge.
 

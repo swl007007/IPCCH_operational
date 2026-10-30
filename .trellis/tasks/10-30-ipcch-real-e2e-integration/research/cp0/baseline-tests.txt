@@ -1,0 +1,15 @@
+tests/cloud/test_remote_sources.py::test_mosaic_keeps_valid_zero_and_masks_only_invalid_pixel
+  /home/swl007007/.venvs/fewsnet-test-lock-20261022/lib/python3.12/site-packages/rasterio/merge.py:341: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    output_transform = Affine.translation(dst_w, dst_n) * Affine.scale(
+
+tests/cloud/test_prepare.py: 2 warnings
+tests/cloud/test_remote_sources.py: 8 warnings
+  /home/swl007007/.venvs/fewsnet-test-lock-20261022/lib/python3.12/site-packages/rasterio/windows.py:387: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    left, bottom = transform * (col_min, row_max)
+
+tests/cloud/test_prepare.py: 2 warnings
+tests/cloud/test_remote_sources.py: 8 warnings
+  /home/swl007007/.venvs/fewsnet-test-lock-20261022/lib/python3.12/site-packages/rasterio/windows.py:388: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    right, top = transform * (col_max, row_min)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html

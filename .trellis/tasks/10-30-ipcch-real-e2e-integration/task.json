@@ -3,7 +3,7 @@
   "name": "ipcch-real-e2e-integration",
   "title": "IPCCH real E2E integration and cloud configuration",
   "description": "Implement automatic monthly EE production, PATCH32 compatibility, feisty-flames assets and H2/H8/H14; submit keep/refresh at UTC month to publish current. User authorized Herdr execution with no Trellis Audit; live incremental acceptance deferred.",
-  "status": "planning",
+  "status": "in_progress",
   "dev_type": null,
   "scope": null,
   "package": null,

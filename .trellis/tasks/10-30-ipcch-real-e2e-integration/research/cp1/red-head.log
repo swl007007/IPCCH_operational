@@ -1,0 +1,9 @@
+
+==================================== ERRORS ====================================
+__________ ERROR collecting tests/cloud/test_ipcch_produced_tables.py __________
+tests/cloud/test_ipcch_produced_tables.py:199: in <module>
+    ({"S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P01_V3": ct.ProducedTable(NEW + "a", {"20260101": True})}, "not a producible"),
+                                                       ^^^^^^^^^^^^^^^^
+E   AttributeError: module 'cloud.ipcch.climate_tables' has no attribute 'ProducedTable'
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.92s

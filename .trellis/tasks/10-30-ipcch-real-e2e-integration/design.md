@@ -82,6 +82,14 @@ Do not retrofit invented metadata to old static/historical tables. The existing
 accepted source/period/receipt evidence reaches the retained/batch record. Test
 incomplete-then-published recovery without first saving an all-null placeholder.
 
+CP1 clarification: for newly produced drought chunks, completeness covers the
+consuming source's actual input window (T-2..T monthly; season start minus two
+months through its end). An explicitly incomplete input makes that source's
+dependent result unavailable. A persistent source-calendar gap remains unavailable
+under the same rule; no override is added. Other months, including fit-baseline
+months, retain upstream masked/NaN fit behavior. Another source's gap does not gate
+this source. Static/history tables retain their original availability contract.
+
 The accepted D2 requires unattended production and exports. Implementation:
 port the two scripts' EE calculation graphs into the existing Python runtime, using
 its pinned `earthengine-api` and extending `EETransport` with a narrow table-to-Asset

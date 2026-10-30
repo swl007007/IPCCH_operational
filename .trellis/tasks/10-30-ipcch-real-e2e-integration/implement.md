@@ -1,7 +1,8 @@
 # IPCCH real E2E integration — execution plan
 
-Status: D1-D5 approved by the subsequent user `/goal` protocol. Implementation and cloud
-execution have not started at this checkpoint. This single task keeps the shared runtime/dispatch and
+Status: D1-D5 approved by the subsequent user `/goal` protocol. Native task is
+in progress; CP0 and CP1 accepted, CP2 next in the bound Herdr Executor. Cloud
+execution has not started. This single task keeps the shared runtime/dispatch and
 current-publication changes together; deferred incremental evidence is not a child
 implementation task or a reason to leave this task unfinished after its agreed checks.
 
@@ -24,17 +25,17 @@ implementation task or a reason to leave this task unfinished after its agreed c
   Second review findings are in `research/grill-second-pass.md`.
 - [x] Present the consolidated final summary and receive the subsequent explicit
   Supervisor–Executor execution instruction; preserved in `execution-protocol.md`.
-- [ ] Preserve unrelated `AGENTS.md` changes. Commit the approved specification
-  on the intended task branch after checking expected changes.
-- [ ] Verify/bind the actual Claude Executor through Herdr and start the native
+- [x] Preserve unrelated `AGENTS.md` changes. Commit approved specification/protocol
+  as `1faa6ae` on `feat/ipcch-real-e2e-integration`; GitNexus impact low, no processes.
+- [x] Verify/bind the actual Claude Executor through Herdr and start the native
   Trellis task. Follow the latest no-Audit instruction in `execution-protocol.md`;
   do not call any audit lifecycle command.
 
 ## 2. Repair local integration
 
-- [ ] Load project development contracts and inspect exact code before edits.
+- [x] Load project development contracts and inspect exact code before edits.
   Run GitNexus impact for each edited symbol; report callers/processes/risk.
-- [ ] Add the sparse PATCH32 regression to existing fixtures, implement the shared
+- [x] Add the sparse PATCH32 regression to existing fixtures, implement the shared
   alignment fix, and verify monthly and seasonal primary/patch behavior.
 - [ ] Port the two upstream producer graphs into the pinned Python EE runtime,
   preserving formulas/QA/scaling, and add the narrow table-to-Asset transport path.
@@ -149,8 +150,9 @@ only until this future live acceptance is performed.
 
 ## Current limitations
 
-The task has not started. No product/configuration edits, deployment, exports,
-retained initialization, or real E2E run have occurred in this planning step.
+CP1 sparse PATCH32 and consumer mapping/completeness are component-complete. CP2
+producer/lifecycle and CP3 submission/deployment work remain. No deployment,
+exports, retained initialization, or real E2E run have occurred at this checkpoint.
 The `specs/001-cloud-base-input/plan.md` pointer in AGENTS was not found in this
 checkout; use the existing v2 archive/contracts and report this stale pointer
 without inventing a replacement foundational plan.

@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-10-30T23:16:07.040220+00:00",
+  "source_head": "69aa74a372f40581d6759a5703e7ec331ba4af63",
+  "approved_spec_commit": "1faa6ae",
+  "preserve": {
+    "AGENTS.md": {
+      "sha256": "7cfc8db6327d29c828075d7bc949ac5d80b81a80def93116a495274f4102649a",
+      "bytes": 17530,
+      "preexisting_diff_numstat": "94\t2\tAGENTS.md"
+    }
+  },
+  "task_status": "in_progress",
+  "audit_workflow": "prohibited_by_latest_user_protocol"
+}
