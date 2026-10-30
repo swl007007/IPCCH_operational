@@ -21,7 +21,7 @@
   "children": [],
   "parent": null,
   "relatedFiles": [],
-  "notes": "CP0-CP5 accepted; CP6 gates accepted by the Supervisor - final report research/cp6/cp6-final-report.md; final acceptance, native finish and archive pending the Supervisor (explicitly unmerged handoff branch).",
+  "notes": "Supervisor final acceptance CP0-CP6 (2026-10-30, 91625df): research/cp6/supervisor-final-acceptance.md. Final report research/cp6/cp6-final-report.md; evidence matrix research/cp6/cp6-evidence-matrix.md. Archived at .trellis/tasks/archive/2026-10/10-29-ipcch-validity-feature-inference; handoff branch feat/ipcch-validity-feature-inference intentionally unmerged (no PR/merge/deploy); live items deferred D-live-1..8.",
   "meta": {
     "final_report": "research/cp6/cp6-final-report.md",
     "evidence_matrix": "research/cp6/cp6-evidence-matrix.md",
