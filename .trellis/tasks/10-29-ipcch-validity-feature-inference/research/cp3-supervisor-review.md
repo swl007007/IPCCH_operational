@@ -80,3 +80,18 @@ Concrete EE/GCS transport is implemented, with installed EE1.7.36 API/pagination
 GPP f1af645: independent50 tests; synthetic uint16 formula agrees with research (mask65534/65535 before float64 sum/count,scale0.01,truezero preserved,allfillNaN), legacy shared extraction unchanged. One reproduced persistence flaw remains: successful history commit with legitimate pixel NaN followed by published-ledger commit failure leaves stale unpublished status; retry filters only nonmissing savedvalues and overwrites legitimateNaN. Preserve saved published rows includingNaN across this interruption; add fault-injected retry regression. Runtime entrypoint wiring remains pending.
 
 Parityr2 final run exit0: stage2 exact DIFFERS/rc2, stage3 EFFECTIVE_IDENTICAL/rc0; research-parser stage2 differs onlylat/lon (525/527 exact), stage3 EFFECTIVE_IDENTICAL/rc0. All horizons18,317 probes; effective inputs and q2..q5 numerical outputs identical. Float64 discrepancies remain explicitly characterized, not redefined as bit-exact equality. This closes the historical numerical compatibility check only.
+
+
+## 2026-10-30 focused batch/WFP review (ced8e52 / 8e00c8a)
+
+CP3 remains pending. Read-only scouts reproduced the following; Supervisor spot-checked the implicated source and sent the repair packet to verified executor session 6a490ae1 in w1A:p2.
+
+- batch_inference.py:104-107,132-137: smoke reads real-namespace manifest before rejection and permits real horizon refs. Require pre-read namespace admission and zero-touch spies.
+- batch_inference.py:149-154: package_root only checked for order/cutoff, not bound package identity/member hashes. Require existing package verification against Binding; wrong-package regression.
+- batch.py:98-124 / batch_inference.py:128-137: caller roster is not bound to accepted real roster; three-row real batch accepted despite handoff size6226. Preserve deliberate smoke subsets only.
+- batch_inference.py:132-137,167-171: horizon metadata not validated; target1999-01 accepted for M2026-10. Derive/validate all dates and leads.
+- batch.py:71-77 / batch_inference.py:89-99: area_id consistency/uniqueness omitted relative to existing runtime adapter.
+- wfp.py:35-37: ragged CSV row9999,1,2026-08,123.5 under three-column header silently loses first field via pandas implicit index. Reject malformed widths before writes; inspect batch parser for same mechanism.
+- wfp.py:59-61: empty initialized history misclassified as absent; successful empty replacement prevents subsequent keep/refresh. Use persisted initialization state and test clear/keep/repopulate.
+
+Existing targeted tests alone do not cover these reproductions. Generation coverage warnings and retained keep provenance remain integration checks. WFP centred ±6-month filtering may embed later observations in historical inputs; compatibility evidence is not a no-leakage/as-of proof. No algorithm change or retraining is authorized by this finding.

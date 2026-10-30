@@ -82,3 +82,44 @@ Storage finalized events are filtered to the exact request path. Workflows submi
 The entry verifies prepared status, origin, current extraction contract, roster and geometry, and consumes the operator's keep/refresh choices. Keep binds the actual retained history-family projection. Package member conflicts fail before scoring. Artifacts upload create-only; transient GCS failures have a bounded retry budget, with existing-object recovery limited to matching size and CRC32C transport checks. Immutable release record and pointer generation CAS are written last. The October deployment uses `oct-staging`; production consumer cutover is separate.
 
 Operational commands and the actual staging resource names are documented in `deploy/october_delivery/README.md`. Fixed assets are reused; do not introduce historical provenance investigations. Source lag, filled features and unavailable diagnostics are disclosed in delivery reports. Checkpoint evidence distinguishes smoke from full-roster preparation and records actual event/job results. Use Windows Git for repository operations when WSL Git encounters the observed DrvFS I/O failure.
+
+## 10. New IPCCH v2 WFP contract (2026-10-30 correction)
+
+### 1. Scope / trigger
+
+This overrides the legacy WFP rule above only for new IPCCH operations. The selected model's WFP_Price was rebuilt on 2026-10-19 from HDX local-currency staple-price YoY and nearest eligible market within 100 km. Legacy DataViz Trend has not been shown to represent that feature. Supervisor resolved the verified provenance mismatch under the active task's execution-protocol.md:43; see task research/cp3/wfp-price-provenance.md and PRD R64. FEWS and legacy requests keep their existing converter. This correction does not reopen upstream climate QA or add a training/performance gate.
+
+### 2. Signatures
+
+- New request `ipcch.wfp`: `{"action":"keep"}` or `{"action":"refresh","file":ObjectRef,"start":"YYYY-MM","end":"YYYY-MM"}`.
+- `ObjectRef` uses the existing immutable URI/generation/sha256 contract.
+- Reuse `cloud.ipcch.retained.refresh_interval` for replacement; `cloud.ipcch.wfp` validates the processed input and routes keep/refresh. Do not call `wfp_aggregates` for new IPCCH refreshes.
+
+### 3. Contracts
+
+Refresh CSV contains `admin_code,month,value`, where value is the existing research `build_wfp_hdx.py` output WFP_Price. Research retains responsibility for HDX acquisition, filters, exact-calendar YoY and market matching. One IPCCH input channel remains: `ipcch.wfp`; do not add a duplicate WFP key under research_inputs. The inclusive declared interval is replaced in full, including removal of superseded rows absent from the refresh. Outside-interval history stays unchanged. Keep uses the latest saved history; no forward fill or fallback from failed refresh. Save method identity, immutable source reference and actual coverage end. A later research rebuild may revise an older month only through an explicitly declared refresh interval. Accepted initial history is not rewritten automatically. The research centred ±6-month filter can use observations later than a historical feature month or execution month; matching that history proves numerical compatibility, not causal/as-of availability. This migration preserves the supplied algorithm and does not retrain or establish absence of temporal leakage.
+
+### 4. Validation and error matrix
+
+| Condition | Behavior |
+|---|---|
+| New IPCCH raw_upload/Trend request shape, reversed interval or inference-only plus refresh | Reject whole manifest before operations |
+| Reference hash/generation mismatch | Reject during reference preflight |
+| Bad month, duplicate area-month, unknown modeled ID, out-of-interval row, nonnumeric/infinite value | Fail WFP refresh before replacing its retained history |
+| Legitimate missing value or missing monthly coverage | Retain NaN; coverage warning, no source-availability block |
+| Successful refresh followed by later generation/inference failure | Saved WFP remains next keep baseline; prior predictions preserved |
+| Smoke refresh | Fixture-only input/store; no real history reads or writes |
+
+### 5. Good / base / bad cases
+
+- Good: refresh 2026-08..2026-09 with research-prepared area-month values; July remains unchanged.
+- Base: keep ends in August while origin is September; September remains missing and the summary reports August coverage.
+- Bad: pass a DataViz Trend raw export as new IPCCH WFP input, average it by country, then label it the HDX-trained WFP_Price.
+
+### 6. Required checks
+
+Request/reference tests cover the processed-file shape, raw_upload rejection, refresh conflict, immutable references and unchanged FEWS handling. WFP store tests cover exact values, interval replacement/removal, outside preservation, invalid-input no-WFP-write, missingness, keep-after-save and later failure. Generation tests record method/coverage/source metadata and never call the legacy converter or a new HDX downloader for this input. Preserve existing FEWS regression tests.
+
+### 7. Wrong vs correct
+
+Wrong: append country-level `100 + mean(Trend)` under the trained WFP_Price name because a generic method-difference exception exists. Correct: preserve accepted training history and consume the existing research workflow's area-month output through the validated interval-refresh channel. Do not claim that the precise units of Trend were verified; the decision is based on the verified training definition and source mismatch.
