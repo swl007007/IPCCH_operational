@@ -3059,3 +3059,10 @@ Operational ledger only; it does not grant authority. Authority: `.trellis/tasks
 - CP6 found and closed prediction-metadata warning loss (R53/R62) and the FEWS prepared-snapshot example allowlist mismatch. Operator initialization/runbook/examples and source recovery are documented. No known blocking finding remains.
 - Final authority/evidence: task research/cp6/supervisor-final-acceptance.md, cp6-evidence-matrix.md, final-tests-summary.md and operator-handoff.md. Native finish/archive released after acceptance commit and checklist reconciliation; no Audit, merge or deployment.
 - Live EE/cloud/full-area acquisition, production current/activation, container validation and production-state rollback remain deferred, not passed. All large artifacts remain at their recorded local paths.
+
+
+### 2026-10-30 — IPCCH original-label ablation execution started
+
+- New approved task: .trellis/tasks/10-30-ipcch-validity-origin-ablation; spec commit fa66d48, native start in_progress. User accepted final spec and supplied no-Audit Supervisor–Executor goal.
+- User clarified provider chain: existing Vertex CustomJob training -> Cloud Run MLflow, with actual Dashboard Experiments visibility as completion gate. Three H0/H6/H12 original-only training workflows, no retuning; three-group TUI and final-weight-only long-term retention.
+- Research Executor w19:pE, current verified Claude Opus 5.5 session b9db2dbb-7cea-4332-9733-e49ab8204e28. CP0/CP1 local work released; paid/cloud mutation packet pending Supervisor review. Existing dirty research sources must be preserved in isolation.
