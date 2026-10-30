@@ -111,3 +111,24 @@ records; `initialise` 52 tables + 5 geometry files verified, pairing recorded; r
 child lstat or open. Regression `test_smoke_refuses_a_symlinked_fixture_root`: fixture_root -> real bundle symlink,
 through `verify_fixture_bundle` and `initialise`: refused, zero `open` calls and zero spy touches of the real bundle.
 Targeted: test_ipcch_binding.py + test_ipcch_initial.py 21 passed.
+
+## CP2 ACCEPTANCE EXECUTED (Supervisor explicit acceptance act, 2026-10-30)
+Command (as specified; outputs did not pre-exist): `tools/ipcch_finalize_acceptance.py` acceptor "Codex Supervisor",
+accepted_at 2026-10-30, envelope version 2 -> receipt `acceptance-finalize-receipt.json` (rc 0):
+- envelope R/scratch/h2h8h14-final/envelope/ipcch-combination-envelope-v2-accepted.json sha256
+  03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596 (id ipcch-validity-h2h8h14-final-20261030/envelope-v2,
+  status accepted);
+- package_manifest 18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22; feature order
+  0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69 (527);
+- accepted bundle R/scratch/h2h8h14-final/handoff-build/out-r5-accepted-v1: handoff_manifest
+  e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4 (unchanged), roster 9ff2c420... (6226), finalized
+  acceptance_entries.json cb14a956f67df03d5f3479d129a432d606017a533d0c80a9930d549d9aa95ed6 (57 entries, acceptor Codex Supervisor, 2026-10-30).
+Readback `acceptance_readback.py` -> `acceptance-readback.json` (rc 0, ok true, 101.5 s): real verify_combination +
+verify_handoff OK; payload rehash 58 files / 2,271,631,220 bytes, 0 mismatches; LOCAL temporary real-mode store
+(tempdir, gs://local-temp-readback/..., deleted after): install_acceptance 57, initialise 52 tables + 5 geometry files,
+re-initialise 52 unchanged; read_assembly_inputs roster 6226, order 527 == package, 13+13 climate bases, 9 interim
+families, snapshot 44,969 rows, national IDP 1,104, season windows 149,424; population 2026-08 6226 rows (LOCF <= 2026-04);
+original r5 (draft entries) refused for the accepted binding. Originals unchanged: package_manifest 18b91d45 (its own
+status field remains "candidate" - acceptance lives in the versioned envelope), r5 manifest e6e3ebc6, r5 draft entries
+3621c350. No production retained store, no current change, no cloud action. This is research handoff acceptance, not
+live-data readiness or deployment.

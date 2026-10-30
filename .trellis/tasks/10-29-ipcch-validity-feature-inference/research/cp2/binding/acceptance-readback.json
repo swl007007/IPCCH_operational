@@ -1,0 +1,114 @@
+{
+ "verify_combination": {
+  "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+  "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+  "status": "accepted",
+  "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+  "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+  "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+  "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+  "acceptor": "Codex Supervisor",
+  "accepted_at": "2026-10-30",
+  "scopes": {
+   "0": {
+    "model_horizon_months": 2,
+    "public_lead_months": 0,
+    "training_cutoff": "2025-11",
+    "feature_schema_sha256": "178223fda9d4079ccff4e9e13b8f55011fe759c5098ec1e31ceff47c5b851484"
+   },
+   "6": {
+    "model_horizon_months": 8,
+    "public_lead_months": 6,
+    "training_cutoff": "2025-05",
+    "feature_schema_sha256": "8ed5e50ab11525afeae304199e068fb503d07c634087164ae01d1d8b0ad82552"
+   },
+   "12": {
+    "model_horizon_months": 14,
+    "public_lead_months": 12,
+    "training_cutoff": "2024-11",
+    "feature_schema_sha256": "68eef197c702359a705ef2dc81c25a7b9ef343fe6073f5252516029a6a8641bb"
+   }
+  }
+ },
+ "verify_handoff": {
+  "manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+  "roster_size": 6226,
+  "roster_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+  "acceptance_entries_sha256": "cb14a956f67df03d5f3479d129a432d606017a533d0c80a9930d549d9aa95ed6"
+ },
+ "payload_rehash": {
+  "files": 58,
+  "mismatches": [],
+  "bytes": 2271631220
+ },
+ "entries": {
+  "count": 57,
+  "acceptors": [
+   "Codex Supervisor"
+  ],
+  "dates": [
+   "2026-10-30"
+  ]
+ },
+ "install_acceptance": {
+  "appended": 57,
+  "acceptance_entries_sha256": "cb14a956f67df03d5f3479d129a432d606017a533d0c80a9930d549d9aa95ed6"
+ },
+ "initialise": {
+  "initialised": 52,
+  "unchanged": 0,
+  "verified_files": 5,
+  "pairing": {
+   "mode": "real",
+   "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+   "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+   "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+   "bundle_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+   "roster_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+   "roster_size": 6226
+  }
+ },
+ "reinitialise_unchanged": 52,
+ "readback": {
+  "roster": 6226,
+  "feature_order": 527,
+  "order_is_package": true,
+  "climate_monthly_bases": 13,
+  "climate_seasonal_bases": 13,
+  "interim_families": [
+   "GPP_mean",
+   "WFP_Price",
+   "bbg_global_food__composite_mean",
+   "bbg_oilgas__composite_mean",
+   "bbg_soybean_oil__composite_mean",
+   "bbg_staple_food__composite_mean",
+   "food_price_index_WB",
+   "nightlight_mean",
+   "nino34_anom"
+  ],
+  "snapshot_rows": 44969,
+  "idp_national_rows": 1104,
+  "season_windows": 149424
+ },
+ "population_2026_08": {
+  "observed_feature_month_rows": 0,
+  "last_observation_carried_forward_rows": 6226,
+  "missing_area_count": 0,
+  "method_counts": {
+   "observed_feature_month": 0,
+   "last_observation_carried_forward": 6226
+  },
+  "future_reference_rows_ignored": 0,
+  "latest_reference_period": "2026-04",
+  "rows": 6226
+ },
+ "original_r5_refused": "acceptance_entries.json: fixed/acled/acled_admin1_to_poly.csv is not finalized (acceptor/accepted_at); drafts cannot be bound",
+ "originals_unchanged": {
+  "package_manifest": true,
+  "r5_handoff_manifest": true,
+  "r5_draft_entries": true,
+  "package_status_field": "candidate"
+ },
+ "ok": true,
+ "seconds": 101.5
+}

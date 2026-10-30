@@ -1,0 +1,17 @@
+{
+ "out_bundle": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/handoff-build/out-r5-accepted-v1",
+ "envelope": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/envelope/ipcch-combination-envelope-v2-accepted.json",
+ "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+ "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+ "status": "accepted",
+ "acceptor": "Codex Supervisor",
+ "accepted_at": "2026-10-30",
+ "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+ "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+ "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+ "roster_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+ "roster_size": 6226,
+ "acceptance_entries_sha256": "cb14a956f67df03d5f3479d129a432d606017a533d0c80a9930d549d9aa95ed6",
+ "source_draft_entries_sha256": "3621c350d3a8c22f45562368ce30b2041019b74acaa8f17deeb80f9fc887c372",
+ "entries": 57
+}
