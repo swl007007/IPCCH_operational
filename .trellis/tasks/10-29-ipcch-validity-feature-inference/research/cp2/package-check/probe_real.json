@@ -1,0 +1,47 @@
+{
+ "2": {
+  "context": "h02_supp_2026",
+  "fit_rows": 128090,
+  "probe_fit_rows": 2000,
+  "probe_score_rows": 2000,
+  "plan_keys": [
+   "S_E",
+   "block",
+   "excluded_eligible",
+   "providers",
+   "score",
+   "train"
+  ],
+  "seconds": 128.5
+ },
+ "8": {
+  "context": "h08_supp_2026",
+  "fit_rows": 121096,
+  "probe_fit_rows": 2000,
+  "probe_score_rows": 2000,
+  "plan_keys": [
+   "S_E",
+   "block",
+   "excluded_eligible",
+   "providers",
+   "score",
+   "train"
+  ],
+  "seconds": 144.4
+ },
+ "14": {
+  "context": "h14_supp_2026",
+  "fit_rows": 110762,
+  "probe_fit_rows": 2000,
+  "probe_score_rows": 2000,
+  "plan_keys": [
+   "S_E",
+   "block",
+   "excluded_eligible",
+   "providers",
+   "score",
+   "train"
+  ],
+  "seconds": 139.8
+ }
+}

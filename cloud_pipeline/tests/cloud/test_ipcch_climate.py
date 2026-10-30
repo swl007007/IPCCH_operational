@@ -123,6 +123,9 @@ def test_seasons_only_when_complete_and_never_rewritten(tmp_path):
     frame, _ = cl.read_seasonal(t)
     assert sorted(frame["admin_code"]) == ROSTER and frame["n_sources"].eq(3).all()
     assert cl.update_seasonal(t, "prcp_z", origin="2026-09", roster=ROSTER, windows=windows, fetch=fetch)["saved"] == []
+    for bad in ("2026-02-31", "2026-13-01"):
+        with pytest.raises(StoreError, match="real YYYY-MM-DD"):
+            cl.completed_windows(windows.assign(gs_end_date_exclusive=bad), "2026-09")
     with pytest.raises(StoreError, match="unknown modeled areas"):
         cl.update_seasonal(t, "prcp_z", origin="2026-09", roster=["1"], windows=windows, fetch=fetch)
 

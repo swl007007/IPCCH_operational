@@ -1,0 +1,93 @@
+{
+ "package_root": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/package-build/check-r1/relocated-package",
+ "model_package_id": null,
+ "H2": {
+  "scope": 0,
+  "rows": 4000,
+  "features": 527,
+  "report_status": "passed",
+  "filled_features": 0,
+  "nan_cells_input": 108355,
+  "nan_cells_matrix": 108355,
+  "raw_scores_equal_booster": {
+   "phase2": true,
+   "phase3": true,
+   "phase4": true,
+   "phase5": true
+  },
+  "thresholds": {
+   "phase2_worse": 0.2,
+   "phase3_worse": 0.2,
+   "phase4_worse": 0.2,
+   "phase5_worse": 0.2
+  },
+  "monotonicity": "cummax",
+  "phase_counts": {
+   "1": 531,
+   "2": 1590,
+   "3": 1802,
+   "4": 77
+  },
+  "ok": true
+ },
+ "H8": {
+  "scope": 6,
+  "rows": 4000,
+  "features": 527,
+  "report_status": "passed",
+  "filled_features": 0,
+  "nan_cells_input": 111072,
+  "nan_cells_matrix": 111072,
+  "raw_scores_equal_booster": {
+   "phase2": true,
+   "phase3": true,
+   "phase4": true,
+   "phase5": true
+  },
+  "thresholds": {
+   "phase2_worse": 0.2,
+   "phase3_worse": 0.2,
+   "phase4_worse": 0.2,
+   "phase5_worse": 0.2
+  },
+  "monotonicity": "cummax",
+  "phase_counts": {
+   "1": 343,
+   "2": 1700,
+   "3": 1893,
+   "4": 64
+  },
+  "ok": true
+ },
+ "H14": {
+  "scope": 12,
+  "rows": 4000,
+  "features": 527,
+  "report_status": "passed",
+  "filled_features": 0,
+  "nan_cells_input": 118888,
+  "nan_cells_matrix": 118888,
+  "raw_scores_equal_booster": {
+   "phase2": true,
+   "phase3": true,
+   "phase4": true,
+   "phase5": true
+  },
+  "thresholds": {
+   "phase2_worse": 0.2,
+   "phase3_worse": 0.2,
+   "phase4_worse": 0.2,
+   "phase5_worse": 0.2
+  },
+  "monotonicity": "cummax",
+  "phase_counts": {
+   "1": 435,
+   "2": 1371,
+   "3": 2107,
+   "4": 86,
+   "5": 1
+  },
+  "ok": true
+ },
+ "ok": true
+}

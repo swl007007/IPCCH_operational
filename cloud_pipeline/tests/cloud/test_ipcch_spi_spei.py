@@ -48,6 +48,8 @@ def test_strict_baseline_and_axis():
     with pytest.raises(ValueError, match="contiguous"):
         ss.compute_spi03_monthly(np.ones((1, 2)), pd.DatetimeIndex(["2000-01-01", "2000-03-01"]))
     assert ss.month_axis("1990-11", "2026-08").equals(MONTHS)
+    with pytest.raises(ValueError, match="identical"):            # (2, n) P with (1, n) ET0 must not broadcast
+        ss.compute_spei03_monthly(np.ones((2, len(MONTHS))), np.ones((1, len(MONTHS))), MONTHS)
 
 
 def test_et0_patch_fills_missing_only():

@@ -1,0 +1,20 @@
+{
+ "2": {
+  "run_id": "f55ddf45198f427eade6d68c2a3a04f2",
+  "model_id": "m-4c46295486bc4d28af8cfca561cdf4ce",
+  "registered_model": "IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 2-month",
+  "model_version": "1"
+ },
+ "8": {
+  "run_id": "0f7e584fccc549a28cf6fe9519b94da2",
+  "model_id": "m-e7976e74421a4d75b8462291101c8918",
+  "registered_model": "IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month",
+  "model_version": "1"
+ },
+ "14": {
+  "run_id": "a4bf0a5d2bef4418b31503d679ac3194",
+  "model_id": "m-c8efb3bd8157451295f15960fb3654ff",
+  "registered_model": "IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 14-month",
+  "model_version": "1"
+ }
+}

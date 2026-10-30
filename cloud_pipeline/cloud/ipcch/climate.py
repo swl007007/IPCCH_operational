@@ -289,6 +289,16 @@ def read_seasonal(table: VersionedTable) -> tuple[pd.DataFrame, str]:
     return frame, generation
 
 
+def _real_day(value: Any) -> bool:
+    if not isinstance(value, str) or _DAY.fullmatch(value) is None:
+        return False
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
 def completed_windows(windows: pd.DataFrame, origin: str) -> pd.DataFrame:
     """Season windows (admin_code, season_year, season, gs_start_date, gs_end_date_exclusive) complete by the end of O."""
     need = ["admin_code", "season_year", "season", "gs_start_date", "gs_end_date_exclusive"]
@@ -296,9 +306,9 @@ def completed_windows(windows: pd.DataFrame, origin: str) -> pd.DataFrame:
         raise StoreError(f"season windows need exactly {need}")
     w = windows.assign(admin_code=windows["admin_code"].astype(str), season_year=windows["season_year"].astype("int64"))
     for c in ("gs_start_date", "gs_end_date_exclusive"):
-        bad = [v for v in w[c] if not isinstance(v, str) or _DAY.fullmatch(v) is None]
+        bad = [v for v in w[c] if not _real_day(v)]
         if bad:
-            raise StoreError(f"season windows: {c} must be YYYY-MM-DD, got {bad[:3]}")
+            raise StoreError(f"season windows: {c} must be real YYYY-MM-DD dates, got {bad[:3]}")
     if (w["gs_end_date_exclusive"] <= w["gs_start_date"]).any():
         raise StoreError("season windows must end after they start")
     if w.duplicated(list(GS_KEY)).any():

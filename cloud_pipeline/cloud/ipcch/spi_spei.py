@@ -2,7 +2,9 @@
 task 10-29 R1/R34/R40). The arithmetic is kept operation for operation; only the module globals ``ALL_MONTHS`` and
 ``BASELINE_START_YEAR``/``BASELINE_END_YEAR`` become explicit arguments, and the Colab download/IO cells are replaced
 by the operational provider. Inputs are admin x month matrices over a contiguous monthly axis that must contain the
-complete 1991-2020 baseline (strict 30-year rule, no 29-year fallback).
+complete 1991-2020 baseline (strict 30-year rule, no 29-year fallback); P and ET0 must have identical shapes with the same
+area row order (the caller aligns areas). This is the MONTHLY script's fit only: the seasonal script fits SPEI differently
+(see ``spi_spei_seasonal``).
 
 * rolling_three_month_sum: all three months finite, else NaN.
 * SPI: zero-corrected gamma per ending calendar month; parameters valid only with a complete baseline, >= 10 positive
@@ -37,6 +39,8 @@ def _check(months: pd.DatetimeIndex, *matrices: np.ndarray) -> None:
     for m in matrices:
         if m.ndim != 2 or m.shape[1] != len(months):
             raise ValueError(f"matrix shape {m.shape} does not match {len(months)} months")
+    if len({m.shape for m in matrices}) != 1:      # same areas in the same row order; never broadcast across areas
+        raise ValueError(f"matrices must have identical (areas, months) shapes, got {[m.shape for m in matrices]}")
 
 
 def rolling_three_month_sum(values):
