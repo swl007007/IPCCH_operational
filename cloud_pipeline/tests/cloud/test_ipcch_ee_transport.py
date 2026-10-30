@@ -67,6 +67,9 @@ class ProxyEE:
                 if start_error is not None:
                     raise start_error
 
+            def cancel(self):
+                self.cancelled = True
+
             def status(self):
                 state = states[min(self.polls, len(states) - 1)]
                 self.polls += 1
@@ -167,11 +170,13 @@ def test_export_is_create_only_pinned_by_generation_and_read_exactly():
     assert frame["admin_code"].tolist() == ["1", "2", "3", "6227"] and t.receipts[-1]["kind"] == "read"
     gcs._write(uri, b"admin_code,x_sum\n1,9\n", None)                  # a later overwrite never changes the pinned read
     assert t.read_table(ref)["x_sum"].tolist() == [2.0] * 4
-    with pytest.raises(EETransportError, match="never reused"):
+    with pytest.raises(EETransportError, match="already reserved"):
         t.export_table(fc, ["admin_code", "x_sum"], "ipcch_test_202608")
+    assert len(ee.tasks) == 1                                                  # no second submission
+    assert gcs.json(f"{ROOT}/ipcch_exports/run-2026-10-a/tasks/ipcch_test_202608.json")["state"] == "completed"
 
 
-@pytest.mark.parametrize("kw,match", [({"states": ("RUNNING", "FAILED")}, "failed"),
+@pytest.mark.parametrize("kw,match", [({"states": ("RUNNING", "FAILED")}, "FAILED"),
                                       ({"objects": 2}, "expected exactly one CSV"),
                                       ({"start_error": RuntimeError("quota")}, "could not start")])
 def test_export_failures_block(kw, match):
@@ -225,3 +230,61 @@ def test_monthly_provider_through_the_transport_saves_exact_roster(tmp_path):
     assert sorted(cl.read_monthly(table)[0].query("month == '2026-08'")["admin_code"]) == ["1", "2", "3"]
     assert [r["kind"] for r in t.receipts] == ["image_times", "missing_assets", "export", "read"]
     assert "Image.reduceRegions" in ee.serializer.toJSON(ee.tasks[0].kw["collection"])        # the real ported graph
+
+
+def test_failed_export_is_never_resubmitted_under_the_same_run_and_description():
+    gcs = FakeGcs()
+    ee = ProxyEE(gcs, states=("RUNNING", "FAILED"))
+    t = transport(gcs, ee)
+    fc = ee.FeatureCollection("projects/p/assets/A")
+    with pytest.raises(EETransportError, match="FAILED"):
+        t.export_table(fc, ["admin_code"], "d")
+    rec = gcs.json(f"{ROOT}/ipcch_exports/run-2026-10-a/tasks/d.json")
+    assert rec["state"] == "FAILED" and rec["task_id"] == "T0"
+    with pytest.raises(EETransportError, match="already reserved"):
+        t.export_table(fc, ["admin_code"], "d")
+    assert len(ee.tasks) == 1
+
+
+def test_timeout_bounds_every_sleep_cancels_and_records():
+    gcs = FakeGcs()
+    ee = ProxyEE(gcs, states=("RUNNING",))
+    now, sleeps = [0.0], []
+
+    def sleep(seconds):
+        sleeps.append(seconds)
+        now[0] += seconds
+    t = EETransport(ee=ee, client=gcs, store=gcs, output_root=ROOT, run_id="r", timeout_seconds=100, poll_seconds=60,
+                    sleep=sleep, monotonic=lambda: now[0])
+    with pytest.raises(EETransportError, match="timed out.*cancelled"):
+        t.export_table(ee.FeatureCollection("projects/p/assets/A"), ["admin_code"], "d")
+    assert sleeps == [60, 40] and getattr(ee.tasks[0], "cancelled", False)    # never sleeps past the budget
+    rec = gcs.json(f"{ROOT}/ipcch_exports/r/tasks/d.json")
+    assert rec["state"] == "timeout" and rec["cancel"] == "cancelled" and rec["task_id"] == "T0"
+    # the authorization deadline (minus the cleanup reserve) bounds the wait too
+    gcs2, ee2 = FakeGcs(), ProxyEE(FakeGcs(), states=("RUNNING",))
+    start = datetime(2026, 10, 31, tzinfo=timezone.utc)
+    now2, sleeps2 = [0.0], []
+    t2 = EETransport(ee=ee2, client=gcs2, store=gcs2, output_root=ROOT, run_id="r", poll_seconds=60,
+                     deadline_utc=start + timedelta(seconds=930), clock=lambda: start,
+                     sleep=lambda x: (sleeps2.append(x), now2.__setitem__(0, now2[0] + x)), monotonic=lambda: now2[0])
+    with pytest.raises(EETransportError, match="timed out"):
+        t2.export_table(ee2.FeatureCollection("projects/p/assets/A"), ["admin_code"], "d")
+    assert sleeps2 == [30]
+
+
+def test_started_task_is_cancelled_when_its_id_cannot_be_persisted():
+    gcs = FakeGcs()
+    ee = ProxyEE(gcs, states=("RUNNING",))
+    writes = []
+    real = gcs.write_text
+
+    def flaky(uri, content, *, if_generation_match=None):
+        writes.append(uri)
+        if len(writes) == 2:
+            raise RuntimeError("503 backend error")
+        return real(uri, content, if_generation_match=if_generation_match)
+    gcs.write_text = flaky
+    with pytest.raises(EETransportError, match="could not be persisted.*cancelled"):
+        transport(gcs, ee).export_table(ee.FeatureCollection("projects/p/assets/A"), ["admin_code"], "d")
+    assert getattr(ee.tasks[0], "cancelled", False)

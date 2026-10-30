@@ -22,3 +22,16 @@ export pinned by generation, later overwrite does not change the pinned read; ex
 tables; MonthlyEEProvider -> transport -> update_monthly saves the exact roster (declared 6227 dropped), receipts order
 image_times/missing_assets/export/read, exported collection is the ported reduceRegions graph.
 Regression: `transport-tests-run1.log` test_ipcch_*.py + test_prepare.py 150 passed rc 0.
+
+## Supervisor review fixes (8d031db)
+- Reserve before submit: the `<run>/tasks/<description>.json` record is written create-only (state `reserved`) BEFORE
+  `Export.table.toCloudStorage`/`start`; a second call for the same run/description (e.g. after FAILED or no output) is
+  refused with no second submission. After start the task id is persisted (state `submitted`); if that write fails the
+  started task is cancelled and the error raised. Submit failures and terminal states are recorded
+  (`submit_failed`, `FAILED`/`CANCELLED`, `timeout` + cancel outcome, `completed` + uri/generation).
+- IPCCH wait loop (`EETransport._wait`; the shared FEWS `evi_service._wait_for_ee_task` is untouched): budget =
+  min(timeout, authorization deadline - cleanup reserve); every sleep = min(poll, remaining); on budget exhaustion
+  `task.cancel()` and the cancellation recorded; all outcomes are `EETransportError` (processing failure).
+- Tests (13 in test_ipcch_ee_transport.py): no second submit after completion or FAILED; fake-clock timeout with
+  timeout 100/poll 60 -> sleeps [60, 40], task cancelled, record `timeout`/`cancelled`; deadline 930 s - reserve 900 s ->
+  sleeps [30]; task id persistence failure -> started task cancelled. `transport-fix-tests-run1.log`.
