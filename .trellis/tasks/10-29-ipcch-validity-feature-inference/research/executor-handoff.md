@@ -66,7 +66,39 @@ OPEN CP3 (next):
 (research/cp3/real-integration). Commits since 4878036: d0d7567 runner R48 admission + R45 per-version receipts,
 4db4fd5 provider windows factory, b257908 utf-8-sig, 016d90d receipt-failure reporting (CLOSED by Supervisor).
 Open for CP3 acceptance: real provider/FEWS runtime adapter wiring evidence (FEWS adapter R60 lands with CP4 phase C/D).
-## CP4 (LOCAL implementation released by Supervisor; acceptance needs independent review)
-Plan + binding rulings: research/cp4/cp4-plan.md; seams map research/cp4/cp4-publication-seams.md. Done: 08c7a2b locks.
-## CP5 local small-area smoke with the ACTUAL accepted H2/H8/H14 package (not synthetic fits), fixture-only inputs;
+## CP4 (LOCAL implementation released; acceptance needs independent review) - STATE AT COMPACTION (~94% ctx)
+Plan/rulings research/cp4/cp4-plan.md; ledger + Supervisor closures research/cp4/cp4-progress.md; seams cp4-publication-seams.md.
+Committed: 08c7a2b+34362d8 locks (CLOSED); 47d7c4c+b684e90 publication core (cloud/ipcch/publication.py; CLOSED: stable
+record read, member mode, required verify_delivery seam); d7c3636 ipcch.country_reference (reviewed); 417c6d2 Phase B
+member writer/verifier (cloud/ipcch/delivery_member.py) + provenance sidecar (cloud/ipcch/provenance.py, batch
+feature_provenance.csv) - Supervisor found 5 member gaps + 2 provenance gaps (supervisor-review 8972e10).
+UNCOMMITTED WORK IN PROGRESS (on disk, finish + test + commit first):
+- delivery_member.py: is_member_file() shared by writer+verifier; REQUIRED_FILES; verify_member enforces exact
+  H2/8/14 leads 0/6/12 O=M-2 T=M+lead independent of inventory, envelope copy digest/identity (+accepted in real),
+  package identity vs expected.package, geometry exact unique roster valid EPSG:4326 polygons (_verify_geometry).
+- provenance.py: per-base seasonal sections gs_<base> (latest completed season WITH a value, table
+  history__climate_gs_<base>) + growing_season_calendar (calendar selection, table fixed__season_windows);
+  generation.py retained refs now include fixed__season_windows/fixed__season_calendar.
+- publication.py: legacy members() carry "delivery": {"manifest": record.manifest}; build_record replaces (not stacks)
+  inherited_from_pointer_generation.
+- NEW cloud/ipcch/delivery_v2.py (inherit byte-for-byte from source tree vs source inventory; legacy member own-origin
+  check; merge_shared_reports with member_system/member_execution_month/member_feature_month; write_manifest; upload;
+  verify_delivery = actual publication verifier) and cloud/ipcch/release_v2.py (publish_ipcch_run: snapshot bound to
+  expected generation -> write_member -> inherit FEWS from that snapshot -> merge -> manifest -> upload -> publish with
+  verify_delivery). Tests tests/cloud/test_ipcch_release_v2.py (4) passed BEFORE the verifier tightening.
+- CURRENT FAILURES (3, test-side): (a) test_ipcch_delivery_member tamper "missing" case now raises "lacks required
+  files" -> widen regex; (b,c) test_ipcch_release_v2.real_inputs zips manifest["horizons"] items (keys order "14","2","8")
+  with targets -> assign by horizon: {"2":"2026-10","8":"2027-04","14":"2027-10"}. Then ADD regressions the Supervisor
+  asked: mixed assembly (FEWS files present) verifies; horizons=[]/missing scope artifacts with self-consistent
+  inventory refused; envelope {} refused; empty FeatureCollection refused; expected.package mismatch refused; all-13
+  seasonal NaN -> gs_<base> latest_observation empty while calendar section still reports the selection.
+REMAINING CP4: legacy v1 wiring (delivery_job.execute: post-activation reject IPCCH-including v1 at request + publish
+time; v1 FEWS-only after activation inherits IPCCH v2 member from current via delivery_v2.inherit and writes a v2 record
+carrying activation; v1 runs take locks for executed systems); promote/resume reject new-contract candidates
+(pipeline.promote/verify_candidate); run_v2 runner: acquire locks (mode root) through publication, call
+release_v2.publish_ipcch_run, smoke separate root for runs/deliveries/candidates/conflicts/locks/pointer; FEWS v2 adapter
+(R60 prepare/deliver mapping) still pending; actual real provider entrypoint (EETransport.from_environment +
+real_provider_factory) wiring into a deploy/CLI route still pending (callbacks alone are seams, not routes).
+## CP5 local small-area smoke with the ACTUAL accepted H2/H8/H14 package (envelope v2 / package 18b91d45; not synthetic
+## fits), fixture-only inputs (fixture bundle subset across >=2 countries, never real retained stores);
 ## CP6 acceptance. Assembly parity = historical compatibility evidence only.
