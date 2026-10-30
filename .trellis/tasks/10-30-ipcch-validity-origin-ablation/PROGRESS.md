@@ -38,4 +38,5 @@
 - Cleanup packet r1 executed once (fresh plan == reviewed dry run a0b255c8…): 32 annual booster objects deleted with
   generation match, absent on readback, local copies removed; post-verify ok (research/cp4/cleanup/). R9/A6 met.
 - Final report / requirements map finalized (research/final/); stale status headings of design/implement updated (contracts
-  unchanged); reproducible tool sources copied to research/tools/ (MANIFEST.tsv). Awaiting Supervisor final acceptance.
+  unchanged); reproducible tool sources copied to research/tools/ (MANIFEST.tsv).
+- Supervisor final acceptance recorded (research/final/supervisor-final-acceptance.md): R1-R11/A1-A6 met. Native finish/archive follows.

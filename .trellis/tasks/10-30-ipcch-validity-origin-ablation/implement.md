@@ -1,4 +1,4 @@
-# Implementation plan — executed (pending Supervisor final acceptance)
+# Implementation plan — executed and accepted
 
 1. Scientific grill decisions are recorded. Obtain explicit approval of the final summary before task start; commit the approved spec and pin execution workspace baseline.
 2. Pin CH-final H0/H6/H12 runs, predictions/config/selected parameters/source inputs and numerical environment; inspect research workspace instructions and Git state. Populate no-fit expected memberships/calendar/counts.
@@ -8,4 +8,4 @@
 6. Preserve keyed predictions and reconstruct three-group five-row TUI tables; standard reports, package replay and MLflow readbacks; cross-check counts/metrics against retained baseline.
 7. Verify annual weights before task-owned cleanup; retain three final weight sets plus all yearly predictions and receipts. Final report, relevant tests, actual resource costs, known limitations and clean commits; no model-gain acceptance criterion.
 
-Execution record: steps 1-7 were carried out under released bounded packets (build, formal jobs, final read-only packet, annual-weight cleanup); implementation commits 99f3ebd/7023d10/868db9f in the isolated research worktree; checkpoint evidence under research/cp0-cp4 and the final report and requirements map under research/final/. Task finish/archive waits for Supervisor final acceptance.
+Execution record: steps 1-7 were carried out under released bounded packets (build, formal jobs, final read-only packet, annual-weight cleanup); implementation commits 99f3ebd/7023d10/868db9f in the isolated research worktree; checkpoint evidence under research/cp0-cp4 and the final report and requirements map under research/final/. Supervisor final acceptance: research/final/supervisor-final-acceptance.md.

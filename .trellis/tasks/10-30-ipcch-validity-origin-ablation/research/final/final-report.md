@@ -92,5 +92,6 @@ object unchanged at its harvest generation (78/78/74), every retained local file
 final holdout weight sets, all keyed annual/holdout predictions, configs/params/pins, memberships/histories, metric/report
 files and receipts. Nothing in MLflow and no baseline object was touched.
 
-## Open at writing
-Supervisor final acceptance; native task finish/archive only after it.
+## Acceptance
+Supervisor final acceptance recorded in research/final/supervisor-final-acceptance.md (against ad34381 / research 868db9f):
+R1-R11 and A1-A6 met.
