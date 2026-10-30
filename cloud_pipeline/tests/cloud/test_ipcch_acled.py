@@ -133,3 +133,42 @@ def test_month_completeness_needs_every_overlapping_week():
     rec.append({"start": "2026-04-25", "end": "2026-05-01", "regions": ["R1"]})
     rec.append({"start": "2026-05-30", "end": "2026-06-05", "regions": ["R1"]})
     assert ac.month_complete(rec, "R1", "2026-05") and not ac.month_complete(rec, "R2", "2026-05")
+
+
+def test_nonpadded_week_is_canonicalized_and_replaced_not_double_counted(table):
+    """Scout repro: 7 events exported as week 2026-5-2, then a replacement of 5 as 2026-05-02 -> 5, never 12."""
+    tb = tables()
+    first, _ = ac.parse_export(export([{"week": "2026-5-2", "events": "7"}]), start=START, end=END, regions=REG, tables=tb)
+    assert first["week"].tolist() == ["2026-05-02"]                                  # persisted canonical
+    ac.refresh(table, first, start=START, end=END, regions=REG, source_ref={}, feature_origin="2026-08", tables=tb)
+    second, _ = ac.parse_export(export([{"week": "2026-05-02", "events": "5"}]), start="2026-04-25", end="2026-05-29",
+                                regions=REG, tables=tb)
+    ac.refresh(table, second, start="2026-04-25", end="2026-05-29", regions=REG, source_ref={}, feature_origin="2026-08", tables=tb)
+    weekly, _, _ = ac.saved_weekly(table)
+    assert sorted(zip(weekly["week"], weekly["events"])) == [("2026-05-02", 5)]
+    assert series(table, ["2026-05"]).loc[("1", "2026-05"), "acled_agg_events_battles"] == 5.0
+
+
+def test_mixed_format_duplicate_and_noncanonical_declarations_rejected(table):
+    tb = tables()
+    with pytest.raises(ac.AcledRefreshError, match="duplicate"):
+        ac.parse_export(export([{"week": "2026-5-2"}, {"week": "2026-05-02"}]), start=START, end=END, regions=REG, tables=tb)
+    ok = export([{"week": "2026-05-02"}])
+    for start, end in (("20250726", END), (START, "2026-9-4"), (START, "2026-09-31")):
+        with pytest.raises(ac.AcledRefreshError, match="declared"):
+            ac.parse_export(ok, start=start, end=end, regions=REG, tables=tb)
+    rows, _ = ac.parse_export(ok, start=START, end=END, regions=REG, tables=tb)
+    with pytest.raises(ac.AcledRefreshError, match="declared start"):
+        ac.refresh(table, rows, start="20250726", end=END, regions=REG, source_ref={}, feature_origin="2026-08", tables=tb)
+    with pytest.raises(ac.AcledRefreshError, match="canonical YYYY-MM-DD weeks"):
+        ac.refresh(table, rows.assign(week="2026-5-2"), start=START, end=END, regions=REG, source_ref={},
+                   feature_origin="2026-08", tables=tb)
+    with pytest.raises(ac.AcledRefreshError, match="feature_origin"):
+        ac.refresh(table, rows, start=START, end=END, regions=REG, source_ref={}, feature_origin="2026-8", tables=tb)
+    assert table.head()[0] is None                                                   # nothing committed
+    ac.refresh(table, rows, start=START, end=END, regions=REG, source_ref={}, feature_origin="2026-08", tables=tb)
+    _, records, _ = ac.saved_weekly(table)
+    with pytest.raises(ac.AcledRefreshError, match="through"):
+        ac.coverage_end(records, tb, "2026-8")
+    with pytest.raises(ac.AcledRefreshError, match="months"):
+        series(table, ["2026-5"])

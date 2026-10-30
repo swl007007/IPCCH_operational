@@ -29,6 +29,7 @@ before O and are warned (R53)."""
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from datetime import date, timedelta
 from typing import Any, Mapping
@@ -90,6 +91,26 @@ class AcledTables:
 # --------------------------------------------------------------------------- calendar helpers
 
 
+_DAY = re.compile(r"\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])")
+_MONTH = re.compile(r"\d{4}-(0[1-9]|1[0-2])")
+
+
+def _day(value: Any, what: str) -> date:
+    """A declared date: canonical zero-padded YYYY-MM-DD only, because saved weeks/intervals compare as strings."""
+    if not isinstance(value, str) or _DAY.fullmatch(value) is None:
+        raise AcledRefreshError(f"{what} must be a canonical YYYY-MM-DD date, got {value!r}")
+    try:
+        return date.fromisoformat(value)
+    except ValueError as exc:
+        raise AcledRefreshError(f"{what} is not a valid date: {value!r}") from exc
+
+
+def _months(values: Any, what: str) -> None:
+    bad = sorted({repr(v) for v in values if not isinstance(v, str) or _MONTH.fullmatch(v) is None})
+    if bad:
+        raise AcledRefreshError(f"{what} must be canonical YYYY-MM months: {bad[:5]}")
+
+
 def _ord(month: str) -> int:
     y, m = (int(x) for x in month.split("-"))
     return y * 12 + m - 1
@@ -130,7 +151,7 @@ def parse_export(frame: pd.DataFrame, *, start: str, end: str, regions: list[str
     """Validated weekly rows (WEEKLY_COLUMNS) of one manually exported regional-aggregate CSV (R24, R26, R55, R56)."""
     if list(frame.columns) != list(EXPORT_COLUMNS):
         raise AcledRefreshError(f"ACLED export header must be exactly {list(EXPORT_COLUMNS)}")
-    s, e = date.fromisoformat(start), date.fromisoformat(end)
+    s, e = _day(start, "declared start"), _day(end, "declared end")
     if s.weekday() != 5 or e.weekday() != 4 or e < s:
         raise AcledRefreshError("declared interval must run from a Saturday start to a later Friday end")
     missing = sorted(tables.required_regions() - set(regions))
@@ -141,6 +162,7 @@ def parse_export(frame: pd.DataFrame, *, start: str, end: str, regions: list[str
         wk = pd.to_datetime(a["week"], format="%Y-%m-%d")
     except ValueError as exc:
         raise AcledRefreshError(f"unparseable week: {exc}") from exc
+    a["week"] = wk.dt.strftime("%Y-%m-%d")    # canonical before duplicate checks and persistence (string-compared later)
     if (wk.dt.dayofweek != 5).any():
         raise AcledRefreshError("export weeks must be Saturday starts")
     if ((wk < pd.Timestamp(s)) | (wk + pd.Timedelta(days=6) > pd.Timestamp(e))).any():
@@ -183,6 +205,12 @@ def saved_weekly(table: VersionedTable) -> tuple[pd.DataFrame, list[dict], str]:
 def refresh(table: VersionedTable, rows: pd.DataFrame, *, start: str, end: str, regions: list[str],
             source_ref: Mapping[str, str], feature_origin: str, tables: AcledTables) -> dict[str, Any]:
     """Replace the declared interval x regions and save its coverage record in one commit (R25/R29)."""
+    for value, what in ((start, "declared start"), (end, "declared end")):
+        _day(value, what)
+    _months([feature_origin], "feature_origin")
+    weeks = rows["week"]
+    if (~weeks.map(lambda w: isinstance(w, str) and _DAY.fullmatch(w) is not None)).any():
+        raise AcledRefreshError("refresh rows need canonical YYYY-MM-DD weeks (use parse_export)")
     old, records, generation = saved_weekly(table)
     record = {"start": start, "end": end, "regions": sorted(regions), "source": dict(source_ref)}
     new_records = records + [record]
@@ -202,6 +230,7 @@ def refresh(table: VersionedTable, rows: pd.DataFrame, *, start: str, end: str, 
 
 def coverage_end(records: list[Mapping[str, Any]], tables: AcledTables, through: str) -> str | None:
     """Last month <= ``through`` complete for every mapped region (R53/R56); None when none is."""
+    _months([through], "through")
     regions = sorted(tables.required_regions())
     for o in range(_ord(through), _ord(through) - 600, -1):
         m = _label(o)
@@ -216,6 +245,7 @@ def coverage_end(records: list[Mapping[str, Any]], tables: AcledTables, through:
 def monthly_series(weekly: pd.DataFrame, records: list[Mapping[str, Any]], tables: AcledTables, months: list[str],
                    units: list[str]) -> pd.DataFrame:
     """(admin_code, month) x 18 columns for ``units`` and ``months`` from the saved weekly rows (module docstring)."""
+    _months(months, "months")
     poly = tables.polygons
     P, NM = len(poly), len(months)
     pidx = pd.Series(np.arange(P), index=poly["poly_id"])

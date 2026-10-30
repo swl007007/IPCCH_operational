@@ -1,0 +1,159 @@
+{
+ "ref_rows": 1250808,
+ "matched": 1250808,
+ "parse_report": {
+  "rows": 336669,
+  "rows_kept": 285469,
+  "rows_countries_outside_table": 45944,
+  "countries_outside_table": [
+   "Antigua and Barbuda",
+   "Argentina",
+   "Armenia",
+   "Aruba",
+   "Azerbaijan",
+   "Bahamas",
+   "Bahrain",
+   "Barbados",
+   "Bolivia",
+   "British Indian Ocean Territory",
+   "Cambodia",
+   "Chile",
+   "Comoros",
+   "Costa Rica",
+   "Cuba",
+   "Dominica",
+   "French Guiana",
+   "Georgia",
+   "Guadeloupe",
+   "Guyana",
+   "Iraq",
+   "Jamaica",
+   "Kazakhstan",
+   "Kuwait",
+   "Laos",
+   "Malaysia",
+   "Maldives",
+   "Martinique",
+   "Mauritius",
+   "Mayotte",
+   "Panama",
+   "Paraguay",
+   "Philippines",
+   "Puerto Rico",
+   "Qatar",
+   "Reunion",
+   "Saint Kitts and Nevis",
+   "Saint Lucia",
+   "Saint Vincent and the Grenadines",
+   "Saint-Martin",
+   "Sao Tome and Principe",
+   "Sint Maarten",
+   "Sri Lanka",
+   "Suriname",
+   "Thailand",
+   "Trinidad and Tobago",
+   "Tunisia",
+   "Turkey",
+   "United Arab Emirates",
+   "Uruguay",
+   "Venezuela",
+   "Vietnam"
+  ]
+ },
+ "weekly_rows": 285469,
+ "coverage_end_2026_09": "2026-09",
+ "columns": {
+  "acled_agg_events_battles": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 8.526512829121202e-14,
+   "nonnull": 1156752
+  },
+  "acled_agg_events_erv": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 2.2737367544323206e-13,
+   "nonnull": 1156752
+  },
+  "acled_agg_events_vac": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 5.684341886080802e-14,
+   "nonnull": 1156752
+  },
+  "acled_agg_fatalities_battles": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 5.684341886080801e-13,
+   "nonnull": 1156752
+  },
+  "acled_agg_fatalities_erv": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 1.8189894035458565e-12,
+   "nonnull": 1156752
+  },
+  "acled_agg_fatalities_vac": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 4.547473508864641e-13,
+   "nonnull": 1156752
+  },
+  "acled_agg_exposure_battles": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 4.656612873077393e-10,
+   "nonnull": 857292
+  },
+  "acled_agg_exposure_erv": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 6.984919309616089e-10,
+   "nonnull": 857292
+  },
+  "acled_agg_exposure_vac": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 9.313225746154785e-10,
+   "nonnull": 857292
+  },
+  "acled_agg_exposure_share_battles": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 3.3306690738754696e-16,
+   "nonnull": 857292
+  },
+  "acled_agg_exposure_share_erv": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 2.7755575615628914e-16,
+   "nonnull": 857292
+  },
+  "acled_agg_exposure_share_vac": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 3.3306690738754696e-16,
+   "nonnull": 857292
+  },
+  "acled_agg_spill_events_battles": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 1.7053025658242404e-13,
+   "nonnull": 1154820
+  },
+  "acled_agg_spill_events_erv": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 2.2737367544323206e-13,
+   "nonnull": 1154820
+  },
+  "acled_agg_spill_events_vac": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 8.526512829121202e-14,
+   "nonnull": 1154820
+  },
+  "acled_agg_spill_fatalities_battles": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 9.094947017729282e-13,
+   "nonnull": 1154820
+  },
+  "acled_agg_spill_fatalities_erv": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 6.252776074688882e-13,
+   "nonnull": 1154820
+  },
+  "acled_agg_spill_fatalities_vac": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 4.547473508864641e-13,
+   "nonnull": 1154820
+  }
+ },
+ "ok": true,
+ "seconds": 8.8
+}

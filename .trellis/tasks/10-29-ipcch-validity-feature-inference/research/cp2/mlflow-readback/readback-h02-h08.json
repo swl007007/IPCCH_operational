@@ -1,0 +1,97 @@
+{
+ "secret_read": {
+  "exit": 0,
+  "stderr_head": ""
+ },
+ "method": "GET only",
+ "identity_username": "ipcch-reader",
+ "horizons": {
+  "2": {
+   "receipt": "/home/swl007007/projects/food-crisis-research/staging/ipcch-h2h8h14-20261030/receipts/09-harvest-h02.json",
+   "run_id": "f55ddf45198f427eade6d68c2a3a04f2",
+   "model_id": "m-4c46295486bc4d28af8cfca561cdf4ce",
+   "registered_model": "IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 2-month",
+   "run_status_http": 200,
+   "run_status": "FINISHED",
+   "lifecycle": "active",
+   "run_name": "Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 2-month",
+   "experiment": "IPCCH dashboard",
+   "n_metrics": 24,
+   "dataset_inputs": [
+    {
+     "name": "IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | H02 | modeling panel index",
+     "digest": "dba329f9b115d4de10e294133bf91d41"
+    }
+   ],
+   "model_version_http": 200,
+   "model_version": {
+    "name": "IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 2-month",
+    "version": "1",
+    "status": "READY",
+    "run_id": "f55ddf45198f427eade6d68c2a3a04f2",
+    "source": "models:/m-4c46295486bc4d28af8cfca561cdf4ce",
+    "model_id": null
+   },
+   "logged_model_http": 200,
+   "logged_model": {
+    "model_id": "m-4c46295486bc4d28af8cfca561cdf4ce",
+    "name": "Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 2-month | seed 42",
+    "status": "LOGGED_MODEL_READY",
+    "source_run_id": "f55ddf45198f427eade6d68c2a3a04f2",
+    "experiment_id": "2"
+   },
+   "checks": {
+    "run_finished_active": true,
+    "experiment": true,
+    "version1_ready_bound": true,
+    "logged_model_bound": true,
+    "dataset_logged": true
+   },
+   "ok": true
+  },
+  "8": {
+   "receipt": "/home/swl007007/projects/food-crisis-research/staging/ipcch-h2h8h14-20261030/receipts/09-harvest-h08.json",
+   "run_id": "0f7e584fccc549a28cf6fe9519b94da2",
+   "model_id": "m-e7976e74421a4d75b8462291101c8918",
+   "registered_model": "IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month",
+   "run_status_http": 200,
+   "run_status": "FINISHED",
+   "lifecycle": "active",
+   "run_name": "Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month",
+   "experiment": "IPCCH dashboard",
+   "n_metrics": 24,
+   "dataset_inputs": [
+    {
+     "name": "IPCCH validity | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | H08 | modeling panel index",
+     "digest": "dba329f9b115d4de10e294133bf91d41"
+    }
+   ],
+   "model_version_http": 200,
+   "model_version": {
+    "name": "IPCCH Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month",
+    "version": "1",
+    "status": "READY",
+    "run_id": "0f7e584fccc549a28cf6fe9519b94da2",
+    "source": "models:/m-e7976e74421a4d75b8462291101c8918",
+    "model_id": null
+   },
+   "logged_model_http": 200,
+   "logged_model": {
+    "model_id": "m-e7976e74421a4d75b8462291101c8918",
+    "name": "Validity-augmented pooled final stage (GOSIF v3 + CH validity, oracle-free) | validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final | 8-month | seed 42",
+    "status": "LOGGED_MODEL_READY",
+    "source_run_id": "0f7e584fccc549a28cf6fe9519b94da2",
+    "experiment_id": "2"
+   },
+   "checks": {
+    "run_finished_active": true,
+    "experiment": true,
+    "version1_ready_bound": true,
+    "logged_model_bound": true,
+    "dataset_logged": true
+   },
+   "ok": true
+  }
+ },
+ "ok": true
+}
