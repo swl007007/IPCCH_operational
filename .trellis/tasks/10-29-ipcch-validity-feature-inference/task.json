@@ -21,6 +21,12 @@
   "children": [],
   "parent": null,
   "relatedFiles": [],
-  "notes": "",
-  "meta": {}
+  "notes": "CP0-CP5 accepted; CP6 gates accepted by the Supervisor - final report research/cp6/cp6-final-report.md; final acceptance, native finish and archive pending the Supervisor (explicitly unmerged handoff branch).",
+  "meta": {
+    "final_report": "research/cp6/cp6-final-report.md",
+    "evidence_matrix": "research/cp6/cp6-evidence-matrix.md",
+    "final_regression": "research/cp6/final-tests-summary.md (957 passed at bbf21a4)",
+    "operator_handoff": "research/cp6/operator-handoff.md",
+    "deferred": "D-live-1..8 (cp6-evidence-matrix.md)"
+  }
 }

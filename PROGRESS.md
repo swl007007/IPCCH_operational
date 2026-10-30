@@ -3044,3 +3044,10 @@ Operational ledger only; it does not grant authority. Authority: `.trellis/tasks
 - Local real-mode integration 50d7ace used the accepted three-model package and handoff in a disposable local store: 6,226 predictions per horizon, targets 2026-10/2027-04/2027-10, finite raw scores, exact roster. This is neither fixture-only CP5 nor container/live EE validation.
 - CP4 primitives and member writer reviewed. Six Phase B findings closed at 6e57972. The inherited-source inventory defect is closed at b98f100: independently rerun 4 mutation regressions passed; recorded focused suite 25 passed and full suite 855 passed. Details: research/cp4/supervisor-review.md.
 - CP4 remains in progress: entrypoint dispatch, locks spanning execution/publication, legacy v1 cutover/inheritance, promote/resume guards, FEWS v2 adapter and real provider executable route. CP5 fixture-only E2E and CP6 complete requirement/evidence mapping remain pending. No Trellis Audit, deployment or live current mutation.
+
+### 2026-10-30 — CP3/CP4 accepted (local scope), CP5 accepted, CP6 gates accepted; final report (executor)
+
+- Supervisor accepted CP3 and CP4 within the execution-protocol local scope, CP5 (b3b5dd2 + da1ebd0: actual package, fixture-only two-country smoke through `entrypoint_v2.run`, 12/12 checks) and the CP6 implementation/evidence/operator gates.
+- CP6 artifacts (d57a3fb): `research/cp6/cp6-evidence-matrix.md` (116 rows AC1-40 / R1-R66 / FCC1-10, machine-checked), `operator-handoff.md`, validated `examples/`, the `entrypoint_v2 initialise` route, and the R53/R62 warning carry-through into prediction metadata.
+- Final regression (0d484d8 receipt): whole `cloud_pipeline/tests` `957 passed, 1015 warnings` at bbf21a4 (code == d57a3fb), exit 0; py_compile clean.
+- Final report: `research/cp6/cp6-final-report.md`. Live/cloud/full-area/production items remain DEFERRED (D-live-1..8), not blocking. Final acceptance, native finish and archive pending the Supervisor; no Audit, PR, merge or deploy.
