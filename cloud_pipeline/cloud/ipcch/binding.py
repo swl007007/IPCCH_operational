@@ -335,14 +335,21 @@ def admit_fixture_dir(binding: Binding, bundle_dir: str) -> str:
 
 
 def fixture_file(binding: Binding, bundle_dir: str, rel: str) -> str:
-    """Path of one fixture-bundle file after admission; every component from the fixture root down is lstat-checked
-    (only paths inside the fixture root are touched) and symlinks are refused, so no read can leave the fixture root."""
+    """Path of one fixture-bundle file after admission; the fixture root itself and then every component below it are
+    lstat-checked (only the root and paths inside it are touched) and symlinks are refused, so no read can leave the
+    fixture root."""
     import stat
     bundle = admit_fixture_dir(binding, bundle_dir)
     path = _lexical(os.path.join(bundle, rel))
     if not _inside(bundle, path) or path == bundle:
         raise BindingError(f"{rel} escapes the fixture bundle")
     current = binding.fixture_root
+    try:                                                   # the root itself first: a symlinked root leaves the namespace
+        root_mode = os.lstat(current).st_mode
+    except FileNotFoundError as exc:
+        raise BindingError(f"fixture root {current} is missing") from exc
+    if stat.S_ISLNK(root_mode) or not stat.S_ISDIR(root_mode):
+        raise BindingError(f"fixture root {current} is a symlink or not a directory; refused (R48)")
     for part in os.path.relpath(path, current).split(os.sep):
         current = os.path.join(current, part)
         try:

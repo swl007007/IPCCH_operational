@@ -252,6 +252,23 @@ def test_smoke_never_reads_the_real_handoff_bundle(tmp_path, monkeypatch):
     assert spy.touched == []
 
 
+def test_smoke_refuses_a_symlinked_fixture_root(tmp_path, monkeypatch):
+    real_bundle, _, pkg, env_path, _ = real_setup(tmp_path)
+    root_link = tmp_path / "fixture-root"
+    root_link.symlink_to(real_bundle, target_is_directory=True)                  # the declared root IS a link
+    b = bd.verify_combination(str(env_path), str(pkg), mode="smoke", fixture_root=str(root_link))
+    spy = ReadSpy(monkeypatch, real_bundle)
+    opened = []
+    real_open = builtins.open
+    monkeypatch.setattr(builtins, "open", lambda f, *a, **k: (opened.append(os.fspath(f)), real_open(f, *a, **k))[1])
+    with pytest.raises(bd.BindingError, match="fixture root .* is a symlink"):
+        bd.verify_fixture_bundle(b, str(root_link))
+    with pytest.raises(StoreError, match="fixture root .* is a symlink"):
+        initial.initialise(LocalObjectStore(tmp_path / "s"), StoreRoot("smoke", SMOKE), str(root_link), binding=b)
+    monkeypatch.undo()
+    assert opened == [] and spy.touched == []
+
+
 def test_smoke_refuses_symlinks_out_of_the_fixture_root(tmp_path, monkeypatch):
     real_bundle, _, pkg, env_path, _ = real_setup(tmp_path)
     fx_dir = tmp_path / "fixture"

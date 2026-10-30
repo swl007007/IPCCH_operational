@@ -105,3 +105,9 @@ envelope v2 sha eede3061... binds package 18b91d45..., feature order 0ef1ffec...
 records; `initialise` 52 tables + 5 geometry files verified, pairing recorded; re-initialise 52 unchanged;
 `read_assembly_inputs` roster 6226, order 527 == package; `read_population(2026-08)` 6226 rows, all carried forward
 <= 2026-04. The ORIGINAL r5 (draft entries) is refused for that binding; its draft digest 3621c350... is unchanged.
+
+## R48 residual (Supervisor review of 89b0e02): symlinked fixture root
+`fixture_file` now lstat-checks the declared fixture root ITSELF (must be a real directory, not a symlink) before any
+child lstat or open. Regression `test_smoke_refuses_a_symlinked_fixture_root`: fixture_root -> real bundle symlink,
+through `verify_fixture_bundle` and `initialise`: refused, zero `open` calls and zero spy touches of the real bundle.
+Targeted: test_ipcch_binding.py + test_ipcch_initial.py 21 passed.
