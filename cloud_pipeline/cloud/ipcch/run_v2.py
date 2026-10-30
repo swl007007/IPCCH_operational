@@ -10,7 +10,7 @@
    ``mode`` and ``batch_id`` (R36). Generation-only produces the batch and its summary and never predictions;
 3. FEWS NET (when selected): the injected runner maps the operations onto the existing prepare/deliver mechanisms (R60);
 4. a runtime failure of one selected system never stops the other (R17): each system's outcome is ``succeeded`` or
-   ``failed`` with its reason, and the run is ``partial`` when exactly one failed.
+   ``failed`` with its reason, and the run is ``partial_success`` when exactly one failed.
 
 Publication (pointer, inheritance, locks, current replacement) is applied by the caller on the returned outcomes (CP4).
 """
@@ -35,8 +35,8 @@ class IpcchContext:
     package_root: str                               # the installed, bound package directory
     bundle_dir: str                                 # real: the accepted bundle; smoke: the fixture bundle
     read_ref: Callable[[Mapping[str, str]], bytes]
-    climate_providers: Callable[[Any, str], Any]      # (derived season windows, origin) -> ClimateProviders
-    gpp_acquirer: Any
+    climate_providers: Callable[[Any, str], Any] | None   # (derived windows, origin) -> ClimateProviders; generation only
+    gpp_acquirer: Any                                     # None for inference-only (acquisition never needed)
     nightlight_acquirer: Any
     workdir: str
     roster: list                                    # the store's bound roster (fixed/roster.csv order)
@@ -196,7 +196,7 @@ def run_request(data: Mapping[str, Any], *, admit_kwargs: Mapping[str, Any],
     finally:
         problems = locks.release(deployment.store, held) if held else []
     failed = [s for s, o in outcomes.items() if o["status"] == "failed"]
-    status = "succeeded" if not failed else ("failed" if len(failed) == len(outcomes) else "partial")
+    status = "succeeded" if not failed else ("failed" if len(failed) == len(outcomes) else "partial_success")
     return {"run_id": request["run_id"], "mode": request["mode"], "status": status, "systems": outcomes,
             "lock_release_problems": problems,
             "derived": request.get("derived"), "verified_references": request["verified_references"]}

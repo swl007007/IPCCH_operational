@@ -3,16 +3,18 @@
 ``python -m cloud.ipcch.entrypoint_v2 run --config deployment.json --request-uri gs://.../requests/<run>/run_manifest.json
 --request-generation N`` (also reached from ``delivery_job run --v2-config`` when the request body is v2):
 
-1. the request is read at its exact generation; the current IPCCH execution month for R39 is read from the
-   production pointer of the deployment (``publication.ipcch_execution_month``);
+1. the request is read at its exact generation and structurally validated (mode/namespace rules) BEFORE any state
+   read; only a REAL IPCCH inference published to current then reads the production pointer for the R39 month
+   (``publication.ipcch_execution_month``) - smoke never reads real state (R48);
 2. ``run_v2.run_request``: admission (structure, trusted namespaces, every reference verified by exact generation +
    sha256) BEFORE anything else; per-system locks; IPCCH generation/inference; publication;
 3. the IPCCH context of the request's mode is built from the deployment config: the INSTALLED envelope/package verified
    against the request's pinned envelope (``verify_combination`` with the pinned sha; smoke with its fixture root), the
-   mode's retained store root, the bound bundle, and the mode's providers - real: ``EETransport.from_environment`` +
+   mode's retained store root, the bound bundle, and - only when generation is selected - the mode's providers - real: ``EETransport.from_environment`` +
    ``climate_run.real_provider_factory`` and ``CloudSourceAcquirer`` (GPP/VIIRS); smoke: a configured fixture provider
    factory (never the real transport, R48);
-4. a create-only run status is written under ``{mode root}/runs/{run_id}/v2_run_status.json``.
+4. a create-only run status is written under ``{mode root}/runs/{run_id}/v2_run_status.json`` carrying each system's
+   structured report (saved updates/warnings survive a later failure, R29/R41); the same status is returned.
 
 Config (JSON, validated): ``roots`` {smoke, real} (deliveries/pointer/locks/runs), ``store_roots`` {smoke, real}
 (retained stores, each ending in its mode), ``namespaces`` {production, smoke}, ``trusted_prefixes`` {smoke, real},
@@ -97,7 +99,15 @@ def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, st
     body = json.loads(data)
     if not v2.is_v2(body):
         raise EntrypointError("not a v2 request; the v1 route handles it")
-    current = pub.read_current(store, cfg["roots"]["real"], cfg["namespaces"]["production"])
+    # structure + mode/namespace rules FIRST, without any current read; only a real IPCCH inference published to current
+    # then reads the production pointer for R39 (smoke never reads real state, R48; publication rechecks R39 anyway)
+    pre = v2.validate_request_v2(body, request_uri=request_uri, request_generation=request_generation, now_utc=now,
+                                 production_namespace=cfg["namespaces"]["production"],
+                                 smoke_namespace=cfg["namespaces"]["smoke"], current_ipcch_execution_month=None)
+    current_month = None
+    if pre["mode"] == "real" and pre["operations"]["ipcch_inference"] and pre["publication"] == "current":
+        current = pub.read_current(store, cfg["roots"]["real"], cfg["namespaces"]["production"])
+        current_month = pub.ipcch_execution_month(current["record"])
 
     def resolve(uri, generation):
         blob = reader.read_bytes(uri, generation)
@@ -105,7 +115,7 @@ def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, st
 
     admit_kwargs = dict(request_uri=request_uri, request_generation=request_generation, now_utc=now,
                         production_namespace=cfg["namespaces"]["production"], smoke_namespace=cfg["namespaces"]["smoke"],
-                        current_ipcch_execution_month=pub.ipcch_execution_month(current["record"]), resolve=resolve,
+                        current_ipcch_execution_month=current_month, resolve=resolve,
                         trusted_prefixes=cfg["trusted_prefixes"],
                         batch_roots={m: cfg["store_roots"][m] for m in ("smoke", "real")})
 
@@ -123,8 +133,10 @@ def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, st
                                         fixture_root=inst.get("fixture_root") if mode == "smoke" else None)
         root = StoreRoot(mode, cfg["store_roots"][mode])
         roster = [str(a) for a in initial._read(store, root, "fixed/roster.csv")["admin_code"]]
-        providers = resolve_factory(cfg["providers"][mode])(cfg=cfg, store=store, client=client,
-                                                            run_id=request["run_id"], roster=roster)
+        providers = {"climate_providers": None, "gpp_acquirer": None, "nightlight_acquirer": None}
+        if request["operations"]["ipcch_generation"]:   # acquisition only when generating (inference never needs EE)
+            providers = resolve_factory(cfg["providers"][mode])(cfg=cfg, store=store, client=client,
+                                                                run_id=request["run_id"], roster=roster)
         work = os.path.join(cfg["work_dir"], request["run_id"])
         os.makedirs(work, exist_ok=False)                          # one work dir per run
         return run_v2.IpcchContext(store=store, root=root, binding=binding, package_root=inst["package_root"],
@@ -134,13 +146,28 @@ def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, st
     deployment = run_v2.Deployment(store=store, roots=cfg["roots"])
     outcome = run_v2.run_request(body, admit_kwargs=admit_kwargs, ipcch_context=context, deployment=deployment)
     status = {k: v for k, v in outcome.items() if k != "systems"}
-    status["systems"] = {s: {k: v for k, v in o.items() if k in ("status", "reason", "step", "failed_operation")}
-                         | ({"publication": (o.get("result") or {}).get("publication"),
-                             "batch": (o.get("result") or {}).get("batch")} if isinstance(o.get("result"), dict) else {})
-                         for s, o in outcome["systems"].items()}
+    status["systems"] = {s: _durable(o) for s, o in outcome["systems"].items()}
     uri = f"{cfg['roots'][outcome['mode']].rstrip('/')}/runs/{outcome['run_id']}/v2_run_status.json"
     store.write_text(uri, json.dumps(status, indent=2, sort_keys=True, default=str) + "\n", if_generation_match=0)
     return {**status, "status_uri": uri}
+
+
+def _durable(outcome: Mapping[str, Any]) -> dict[str, Any]:
+    """A system outcome for the run status: status, reason, failing step/operation, the structured generation report
+    (saved updates, warnings, gaps - R29/R41) and the result without prediction frames (summaries kept)."""
+    out = {k: outcome.get(k) for k in ("status", "reason", "step", "failed_operation", "report")}
+    result = outcome.get("result")
+    if isinstance(result, Mapping):
+        slim = {k: v for k, v in result.items() if k != "inference"}
+        inf = result.get("inference")
+        if isinstance(inf, Mapping):
+            slim["inference"] = {"batch_id": inf.get("batch_id"), "manifest_ref": inf.get("manifest_ref"),
+                                 "horizons": {str(h): {"rows": int(len(v["predictions"])), "summary": v.get("summary")}
+                                              for h, v in inf.get("horizons", {}).items()}}
+        out["result"] = slim
+    else:
+        out["result"] = result
+    return out
 
 
 def main(argv=None) -> int:

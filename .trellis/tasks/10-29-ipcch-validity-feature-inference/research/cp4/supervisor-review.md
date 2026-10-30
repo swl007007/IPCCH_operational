@@ -35,3 +35,17 @@ Phase C at 6e57972 had a reproduced publication blocker: a self-consistently reg
 b98f100 closes that finding. Supervisor inspected the patch; independent read-only verification confirmed source manifest generation/hash binding, exact inherited file set and hashes, and verification before current/candidate writes. Four mutation regressions independently reran: 4 passed, 4 deselected. Executor records that all four fail against 6e57972. Recorded focused receipt: 25 passed; full suite: 855 passed (525 warnings). No additional full-suite run was required for this bounded verification.
 
 CP4 remains unaccepted: executable entrypoint/locking, legacy compatibility, promote/resume guards, FEWS adapter and real provider route remain pending, followed by fixture-only CP5 E2E. No live cloud publication or production-current mutation was performed or accepted by this review.
+
+## Runner integration review e3bb779
+
+Independent read-only runner review found no confirmed defect in the scoped diff. Locked runner suite: 12 passed; additional in-memory check verified generation chaining 7 -> 8, locks held through both system callbacks, and release-error reporting. Reviewed files matched the pinned commit.
+
+FEWS adapter integration must prove two-system publication end-to-end: the unchanged request run_id is passed after IPCCH publication, while delivery_run creates releases/{run_id}/release.json create-only. Updating expected generation alone does not prevent immutable path collisions. Executor notified to resolve this in adapter wiring and provide a fake-store test with both updates, partial failure, final member identities and no rebase. This is an outstanding integration evidence requirement; unfinished adapters and live cloud execution were outside this scoped check. CP4 remains unaccepted.
+
+## Executable entrypoint e48ca51 — three pending findings
+
+Independent entrypoint/delivery-job suite 32 passed, but targeted probes confirmed: entrypoint_v2.py:100 reads production current before admission even for smoke; :126 constructs EE acquisition providers even for inference-only; :137 drops outcome.report from durable/returned status, losing saved-update evidence after later generation failure. Supervisor spot-checked source and dispatched namespace-first/no-real-touch, generation-only provider construction, and durable report regressions. No entrypoint acceptance yet.
+
+## Dual publication ec7a31b — scoped verification
+
+No new defect found in e48ca51..ec7a31b. Per-system publication IDs separate delivery/release/candidate/conflict paths and preserve request identity. Focused publication/release/runner suite independently passed 31 tests. Both members reaching current and FEWS failure retaining IPCCH were verified. Candidate behavior inspected; dedicated dual-candidate integration evidence remains absent. Review also found pre-existing run_v2 overall status `partial` inconsistent with PRD `partial_success`; executor instructed to align literal and tests. Actual FEWS adapter remains pending.

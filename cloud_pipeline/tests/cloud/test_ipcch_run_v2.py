@@ -126,7 +126,7 @@ def test_partial_success_when_one_system_fails(tmp_path):
     def broken_ipcch(request):
         raise RuntimeError("IPCCH store unavailable")
     out = run_v2.run_request(data, admit_kwargs=kw, ipcch_context=broken_ipcch, fewsnet_runner=lambda r, g: {"delivered": True})
-    assert out["status"] == "partial"
+    assert out["status"] == "partial_success"
     assert out["systems"]["ipcch"]["status"] == "failed" and "IPCCH store unavailable" in out["systems"]["ipcch"]["reason"]
     assert out["systems"]["fewsnet"] == {"status": "succeeded", "result": {"delivered": True}}
 
