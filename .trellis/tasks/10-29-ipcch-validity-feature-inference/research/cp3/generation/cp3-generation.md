@@ -67,3 +67,13 @@ assembly share one windows frame. Test: Generation passes `g.windows` (identity)
 factory; a real provider built from it publishes 2027-s1 rainfall through a fake backend, while one built from the
 delivered windows alone raises "no calendar windows for season year 2027" (the reproduced failure).
 `provider-windows-tests-run1.log`: test_ipcch_*.py + request_v2 = 208 passed, rc 0.
+
+## Receipt-failure reporting (Supervisor residual on d0d7567)
+`Generation._step` writes the successful step summary BEFORE receipt persistence; `_receipts(step)` wraps a failed
+runtime-acceptance append as `GenerationFailure("<step>:runtime_acceptance", ...)` carrying the report (saved progress
+kept; the next run's reconcile receipts the saved versions). The initial reconcile uses the same path
+(`reconcile:runtime_acceptance`). Processing-error branch unchanged. Tests: injected append failure after the climate
+saves -> GenerationFailure with step `climate:runtime_acceptance`, report shows cdd 2027-01 saved and the ACLED refresh;
+a failing reconcile -> GenerationFailure with step `reconcile:runtime_acceptance` and the run report. Also b257908:
+refresh files decoded utf-8-sig (the ACLED Data Export Tool writes a BOM; sha over raw bytes; fixture ACLED file now
+carries a BOM). test_ipcch_generation.py 11 passed.

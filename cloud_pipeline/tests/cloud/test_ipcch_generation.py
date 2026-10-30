@@ -223,8 +223,11 @@ def test_lost_acceptance_write_is_repaired_once_on_retry_without_resaving(tmp_pa
             raise RuntimeError("injected acceptance write failure")
         return real(self, entries)
     monkeypatch.setattr(AcceptanceManifest, "append", flaky)
-    with pytest.raises(RuntimeError, match="injected acceptance write failure"):
+    with pytest.raises(gen.GenerationFailure, match="injected acceptance write failure") as info:
         generation(store, root, b, bundle, refs, req, tmp_path).run()
+    assert info.value.step == "climate:runtime_acceptance"
+    assert info.value.report["steps"]["climate"]["monthly"]["cdd"]["saved"] == ["2027-01"]     # saved progress reported
+    assert info.value.report["steps"]["acled"]["action"] == "refresh"
     climate_heads = {t: VersionedTable(store, root, t).head()[0]["version"] for t in
                      (cl.table_name(base, cl.MONTHLY) for base in cl.BASES)}
     assert recorded(runtime_records(store, root), "history__climate_month_cdd").empty   # saved, receipt lost
@@ -269,3 +272,15 @@ def test_real_factory_builds_seasonal_providers_from_the_derived_windows(tmp_pat
     stale = climate_run.real_provider_factory(Backend(cover_to="2027-08-01"), roster=["11", "12", "13"])(delivered, "2027-07")
     with pytest.raises(cl.ClimateProcessingFailure, match="no calendar windows for season year 2027"):
         stale.seasonal("prcp_z")("chirps", 2027, "s1", win)
+
+
+
+def test_reconcile_receipt_failure_is_a_reported_generation_failure(tmp_path, package, monkeypatch):
+    store, root, b, bundle = setup(tmp_path, package)
+    refs = fx.Refs()
+    with pytest.raises(gen.GenerationFailure):                     # leaves saved ACLED without a receipt
+        monkeypatch.setattr(AcceptanceManifest, "append", lambda self, e: (_ for _ in ()).throw(RuntimeError("down")))
+        generation(store, root, b, bundle, refs, fx.smoke_request(refs, tmp_path / "env.json"), tmp_path).run()
+    with pytest.raises(gen.GenerationFailure) as info:
+        generation(store, root, b, bundle, refs, fx.smoke_request(refs, tmp_path / "env.json"), tmp_path).run()
+    assert info.value.step == "reconcile:runtime_acceptance" and info.value.report["run_id"] == "smoke-run-1"

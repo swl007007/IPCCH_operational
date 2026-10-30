@@ -145,9 +145,18 @@ class Generation:
             except Exception as rexc:                         # reported, never masks the original failure
                 self.report["runtime_acceptance_error"] = f"{type(rexc).__name__}: {rexc}"
             raise GenerationFailure(name, exc, self.report) from exc
-        self._record_runtime(name)
-        self.report["steps"][name] = summary(out) if summary else out
+        self.report["steps"][name] = summary(out) if summary else out      # the saved progress, reported first
+        self._receipts(name)
         return out
+
+    def _receipts(self, step: str) -> None:
+        """R45 receipt persistence; a failure is reported as a GenerationFailure carrying the saved progress (the saved
+        versions stay saved and are receipted by the next run's reconcile)."""
+        try:
+            self._record_runtime(step)
+        except Exception as exc:
+            self.report["failed"] = {"step": f"{step}:runtime_acceptance", "error": f"{type(exc).__name__}: {exc}"}
+            raise GenerationFailure(f"{step}:runtime_acceptance", exc, self.report) from exc
 
     # ------------------------------------------------------------------ run
 
@@ -166,7 +175,7 @@ class Generation:
         self.report = {"run_id": req["run_id"], "mode": mode, "execution_month": M, "feature_origin": O, "steps": {},
                        "warnings": []}
         pairing = bd.require_store_pairing(self.store, self.root, self.binding)
-        self._record_runtime("reconcile")                 # repairs receipts lost by an earlier interrupted run (R45)
+        self._receipts("reconcile")                       # repairs receipts lost by an earlier interrupted run (R45)
         ident = bd.verify_handoff(self.binding, self.bundle_dir) if mode == "real" \
             else bd.verify_fixture_bundle(self.binding, self.bundle_dir)
         if ident["manifest_sha256"] != pairing["bundle_manifest_sha256"]:
