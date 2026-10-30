@@ -41,3 +41,7 @@ CP6: final acceptance and handoff: requirement-to-evidence matrix covers every P
 ## Completion gate
 
 Goal is complete only when CP0–CP6 pass, all in-scope acceptance items have actual evidence, no unresolved blocking findings remain, and Supervisor has independently checked critical diffs and outputs. Executor claiming done, task status, MLflow job success or a queued process is insufficient. Do not demand predictive-score improvement, upstream QA/merge or unavailable real baselines as new acceptance gates. Explicitly report deferred real-cloud/full-area verification and placeholders; do not mark them as passed. If genuine evidence contradicts the approved schema or algorithm contract, present the concrete discrepancy to Supervisor for bounded resolution instead of inventing compliance.
+
+## Implementation phase authorization — 2026-10-30
+
+After reviewing the committed plan and CP0/preflight evidence (40c3aad, 84e12e1), the user explicitly confirmed: “确认进入实现”. Supervisor ran native task.py start successfully (planning -> in_progress) and released CP1 to the existing verified Executor. This supersedes the earlier planning hold in cp0-supervisor-review.md. Cloud preauthorization remains in force; Supervisor checkpoint review before paid fits remains an execution control, not a renewed human-permission gate. No Trellis Audit.
