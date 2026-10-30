@@ -3029,3 +3029,11 @@ Operational ledger only; it does not grant authority. Authority: `.trellis/tasks
   - f1af645/35ee322: IPCCH GPP v3 adapter (research units: fill mask ×0.01) with ledger and retry repair.
   - Strict climate roster output filter.
 - Open CP3 work: nightlight and WFP appends (WFP provenance scout running), generation orchestration, R52 batch writer, R19 inference validation, integrated FEWS preflight. Then CP4–CP6. Durable state: `.trellis/tasks/10-29-ipcch-validity-feature-inference/research/executor-handoff.md`.
+
+
+### 2026-10-30 — CP3 supervisor reconciliation (after2036827)
+
+- CP2 remains accepted; CP3 remains in progress. Prior open-work list is superseded by committed generation f90e97b, batches ced8e52, WFP correction8e00c8a, preflight3e7c470 and provider factoryb52387c. These commits do not imply checkpoint acceptance.
+- Supervisor closed seven batch/WFP boundary findings with2d978d4 source/test review and locked29passed. Existing transport/GPP/batch/WFP run43passed. Independent FEWS/preflight regressions254passed plus15 nested-reference tamper cases; actual runner admission-before-write still needs integration evidence. Climate factory57passed and26 bindings checked offline.
+- WFP contract now consumes existing research-prepared HDX area-month files; centered-window historical availability caveat recorded. Model selection uses immutable envelope as canonical acceptance authority (2036827), with no duplicate request package-manifest reference.
+- Open CP3 repairs: enforce request selection before mutation; extend calendar-derived windows beyond2026 for climate and assembly; append R45 runtime acceptance records; preserve earlier research-family successes in failure report; optional WFP/family coverage warnings; scope R39 to IPCCH. Executor implementing runner admission and isolated tests. CP4 publication is not released yet. No Audit, live EE or production-current changes.

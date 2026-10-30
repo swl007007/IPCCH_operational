@@ -106,3 +106,8 @@ Preflight shared validators and nested references passed 15 explicit tampered-re
 Approved bounded selection clarification: request uses combination_id plus immutable envelope ref, not redundant package_manifest ref. Canonical acceptance remains CP2 envelope; verify selected identity and package before mutation. No training or scientific algorithm change.
 
 Repair verification 2d978d4: Supervisor inspected source diff plus targeted regression assertions for all seven batch/WFP findings. Locked Python -B pytest -q -p no:cacheprovider tests/cloud/test_ipcch_batch.py tests/cloud/test_ipcch_wfp.py tests/cloud/test_ipcch_generation.py: 29 passed in38.82s. Closes the seven specific reproductions; does not accept CP3 or prove pending runner/generation integration.
+
+
+## 2026-10-30 concrete climate factory check (b52387c)
+
+Independent read-only check plus Supervisor spot-check climate_run.py:81-101: six provider classes receive compatible constructor args and one concrete EETransport; all26 deferred monthly/seasonal bindings select correct base/class/asset roots. Locked transport/factory/monthly-raster/seasonal-raster/table suites57passed. No blocking factory defect found. New factory test directly invokes three monthly failure paths and checks seasonal callability; successful seasonal factory-to-transport flow remains a generation integration assertion. No live EE, asset permission or full-area claim.
