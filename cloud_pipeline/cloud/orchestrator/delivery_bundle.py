@@ -401,12 +401,19 @@ def validate_member(root: Path, system: str, *, origin: str, package_inventory: 
     for horizon in HORIZONS:
         directory = root / f"{system}/model_package/{horizon}m"
         try:
+            # the EXISTING local package format (fewsnet_partitioned_rf_pipeline.local.package): exactly its files,
+            # and checksums.json covering exactly every content file with matching sha256 (no empty/partial map)
+            from fewsnet_partitioned_rf_pipeline.local.package import (
+                LOCAL_PACKAGE_FILES,
+                _require_package_files,
+                _verify_checksums,
+            )
+            _require_package_files(directory)
+            _verify_checksums(directory)
             manifest = json.loads((directory / "local_model_manifest.json").read_text())
-            checksums = json.loads((directory / "checksums.json").read_text())
             actual = _directory_inventory(directory)
             checks[f"{system}_{horizon}m_package_exact"] = bool(recorded[str(horizon)]) and (
-                set(actual) == set(manifest["files"]) == set(recorded[str(horizon)])
-                and all(actual.get(name) == digest for name, digest in checksums.items())
+                set(manifest["files"]) == set(LOCAL_PACKAGE_FILES) == set(actual)
                 and actual == recorded[str(horizon)])
         except Exception as exc:
             checks[f"{system}_{horizon}m_package_exact"] = False

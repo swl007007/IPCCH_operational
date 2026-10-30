@@ -56,7 +56,6 @@ def fews_ready(tmp_path, client, request):
     """Rebind a v1 request to the content-valid FEWS member fixture (origin 2026-04): its prepared snapshot origin and
     FEWS packages in the local-package shape (model, training report, local_model_manifest, checksums); returns the
     deliver(fewsnet)-equivalent ``score``."""
-    import hashlib
     from tests.cloud import fews_member_fixture as fmf
     fixture = fmf.build(tmp_path / "fews-fixture")
     fake, request = client[0], request
@@ -71,11 +70,7 @@ def fews_ready(tmp_path, client, request):
         if model["system"] != "fewsnet":
             continue
         h, pid = model["horizon_months"], model["package_id"]
-        members = {"model.bin": pid.encode(),
-                   "training_report.json": json.dumps({"feature_schema_sha256": model["feature_schema_sha256"]}).encode()}
-        members["local_model_manifest.json"] = json.dumps(
-            {"files": sorted([*members, "local_model_manifest.json", "checksums.json"])}).encode()
-        members["checksums.json"] = json.dumps({n: hashlib.sha256(d).hexdigest() for n, d in members.items()}).encode()
+        members = fmf.local_package_members(pid, feature_schema_sha256=model["feature_schema_sha256"])
         files = [{"path": path, **fake.put(f"gs://ipcch-delivery/models/fewsnet/{h}m/v/{path}", "4", data)}
                  for path, data in members.items()]
         model["package_manifest"].update(fake.put(model["package_manifest"]["uri"], "5", json.dumps({

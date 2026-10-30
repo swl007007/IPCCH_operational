@@ -30,7 +30,12 @@ def build(tmp: Path) -> dict:
     availability[availability["model_system"] == "fewsnet"].to_csv(
         member / "reports/fewsnet_diagnostic_availability.csv", index=False, lineterminator="\n")
     (member / "reports/fewsnet_feature_fill_audit.csv").write_text("system,polygon_id,fill_method\nfewsnet,0,observed\n")
-    packages = {h: Path(f"{full}_sources") / f"fews_{h}m" for h in (0, 6, 12)}
+    packages = {}
+    for h in (0, 6, 12):                                  # the existing local package format (all seven files)
+        packages[h] = Path(tmp) / f"fews-package-{h}m"
+        packages[h].mkdir()
+        for name, data in local_package_members(f"fews-{h}m").items():
+            (packages[h] / name).write_bytes(data)
     inventory = {f"{h}m/{p.relative_to(d).as_posix()}": hashlib.sha256(p.read_bytes()).hexdigest()
                  for h, d in packages.items() for p in sorted(d.rglob("*")) if p.is_file()}
     return {"files": member, "packages": packages, "inventory": inventory}
@@ -54,3 +59,18 @@ def package_members(fixture: dict) -> dict:
 
 def manifest_json(path: Path) -> dict:
     return json.loads(Path(path).read_text())
+
+
+def local_package_members(seed: str, *, feature_schema_sha256: str = "a" * 64, checksums=None) -> dict:
+    """{file: bytes} of a package in the EXISTING local package format (fewsnet_partitioned_rf_pipeline.local.package:
+    LOCAL_PACKAGE_FILES, checksums.json over exactly the content files); ``checksums`` overrides that map."""
+    from fewsnet_partitioned_rf_pipeline.local.package import LOCAL_PACKAGE_FILES
+    members = {"model.joblib": f"model {seed}".encode() + bytes(range(256)),
+               "feature_contract.json": json.dumps({"seed": seed}).encode(),
+               "partition_map.csv": b"partition,admin_code\n1,0\n",
+               "threshold_report.json": json.dumps({"seed": seed}).encode(),
+               "training_report.json": json.dumps({"feature_schema_sha256": feature_schema_sha256}).encode(),
+               "local_model_manifest.json": json.dumps({"files": list(LOCAL_PACKAGE_FILES), "seed": seed}).encode()}
+    sums = {n: hashlib.sha256(d).hexdigest() for n, d in sorted(members.items())} if checksums is None else checksums
+    members["checksums.json"] = json.dumps(sums).encode()
+    return members

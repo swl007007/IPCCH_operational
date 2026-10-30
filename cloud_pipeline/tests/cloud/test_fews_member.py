@@ -114,3 +114,37 @@ def test_actual_verifier_binds_exact_package_identities(fixture, tmp_path, tampe
     with pytest.raises(dv.DeliveryError, match="package_exact"):
         publish(store, fixture, tmp_path, "fews-pkg", tamper_record=change)
     assert pub.read_current(store, ROOT, "prod")["generation"] == "0"
+
+
+@pytest.mark.parametrize("checksums", ["empty", "partial", "extra_self"])
+def test_package_checksum_map_must_cover_every_content_file(fixture, tmp_path, checksums):
+    """Supervisor residual on 4fd6146: checksums.json = {} (or a partial map, or one listing itself) with a
+    self-consistent external inventory is refused by the writer AND the actual publication verifier."""
+    import hashlib
+    import shutil
+    packages = {}
+    for h, d in fixture["packages"].items():
+        target = tmp_path / f"pkg-{h}m"
+        shutil.copytree(d, target)
+        good = json.loads((target / "checksums.json").read_text())
+        bad = {"empty": {}, "partial": dict(list(good.items())[:2]),
+               "extra_self": {**good, "checksums.json": "0" * 64}}[checksums]
+        (target / "checksums.json").write_text(json.dumps(bad))
+        packages[h] = target
+    with pytest.raises(fews_v2.FewsMemberError, match="package_exact"):
+        write(fixture, tmp_path / "out", packages=packages)
+
+    def bypass(out):                                   # the writer's own check bypassed: the verifier still refuses
+        fmf.score_from(fixture)(None, "fewsnet", out)
+        inv = {}
+        for h, d in packages.items():
+            shutil.copytree(d, out / f"fewsnet/model_package/{h}m")
+            inv.update({f"{h}m/{p.name}": hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(d.iterdir())})
+        return {"contract": fews_v2.FEWS_CONTRACT, "origin_month": fmf.ORIGIN, "mode": "real",
+                "model_horizons": [0, 6, 12], "model_package": inv}
+    store = LocalObjectStore(tmp_path / "gcs")
+    with pytest.raises(dv.DeliveryError, match="package_exact"):
+        rv.publish_member_run(store, ROOT, system="fewsnet", namespace="prod", run_id="fews-sums", mode="real",
+                              publication="current", expected_pointer_generation="0", request_ref=REQ,
+                              write_member=bypass, workdir=str(tmp_path), now=NOW)
+    assert pub.read_current(store, ROOT, "prod")["generation"] == "0"
