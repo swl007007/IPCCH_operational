@@ -46,8 +46,29 @@ V2_PREDICTION_HEADER = (*do.SEPTEMBER_HEADERS["ipcch"]["polygon_predictions"], "
 SCORES = tuple(f"{t}_score" for t in do.PHASE_TARGETS)
 
 
+REQUIRED_SCOPE_TABLES = ("polygon_predictions", "country_predictions", "polygon_model_mapping", "polygon_training_errors",
+                         "country_confidence")
+REQUIRED_FILES = ("ipcch/polygons.geojson", "ipcch/country_population_reference.csv", "ipcch/combination_envelope.json",
+                  "ipcch/model_package/package_manifest.json", "reports/ipcch_diagnostic_availability.csv",
+                  "reports/ipcch_diagnostic_declarations.json", "reports/ipcch_feature_fill_audit.csv",
+                  *[f"scopes/{lead}m/ipcch/{t}.csv" for lead in (0, 6, 12) for t in REQUIRED_SCOPE_TABLES])
+
+
 class MemberError(RuntimeError):
     """The IPCCH member is incomplete or does not verify; it must not be published."""
+
+
+def is_member_file(rel: str) -> bool:
+    """THE IPCCH member file predicate (writer inventory and verifier use the same one)."""
+    parts = rel.split("/")
+    return (rel.startswith("ipcch/") or rel.startswith("reports/ipcch_")
+            or (len(parts) >= 4 and parts[0] == "scopes" and parts[2] == "ipcch"))
+
+
+def _add_months(month: str, k: int) -> str:
+    y, m = (int(x) for x in month.split("-"))
+    o = y * 12 + m - 1 + k
+    return f"{o // 12:04d}-{o % 12 + 1:02d}"
 
 
 def _sha(path: Path) -> str:
@@ -165,8 +186,8 @@ def write_member(out: Path, *, manifest: Mapping[str, Any], scored: Mapping[int,
     if not feature_provenance:
         raise MemberError("the batch's feature provenance sidecar is required (actual no-fill/missingness provenance)")
     (reports / "ipcch_feature_fill_audit.csv").write_bytes(feature_provenance)     # existing file name, v2 schema
-    files = sorted(str(p.relative_to(out)).replace(os.sep, "/") for p in out.rglob("*")
-                   if p.is_file() and (str(p.relative_to(out)).startswith(("scopes/", "ipcch/", "reports/ipcch_"))))
+    files = sorted(rel for rel in (str(p.relative_to(out)).replace(os.sep, "/") for p in out.rglob("*") if p.is_file())
+                   if is_member_file(rel))
     provenance = {"schema": PROVENANCE_SCHEMA, "system": "ipcch", "contract": CONTRACT, "mode": manifest["mode"],
                   "execution_month": M, "feature_origin": O, "horizons": horizons,
                   "package": {"combination_id": binding.combination_id, "envelope_id": binding.envelope_id,
@@ -181,11 +202,36 @@ def write_member(out: Path, *, manifest: Mapping[str, Any], scored: Mapping[int,
     return {**provenance, "provenance_sha256": _sha(member / "system_provenance.json")}
 
 
+def _verify_geometry(path: Path, roster_sha: str, size: int) -> None:
+    from shapely.geometry import shape
+
+    try:
+        geo = json.loads(path.read_text())
+    except ValueError as exc:
+        raise MemberError(f"polygons.geojson is not JSON: {exc}") from exc
+    if (geo.get("type") != "FeatureCollection"
+            or geo.get("crs", {}).get("properties", {}).get("name") != "EPSG:4326"):
+        raise MemberError("polygons.geojson must be an EPSG:4326 FeatureCollection")
+    ids = [str((f.get("properties") or {}).get("polygon_id")) for f in geo.get("features", [])]
+    if len(ids) != size or len(set(ids)) != size or bt.roster_sha256(ids) != roster_sha:
+        raise MemberError("polygons.geojson is not exactly the unique roster")
+    for f in geo["features"]:
+        try:
+            g = shape(f["geometry"])
+        except Exception as exc:
+            raise MemberError(f"polygon {f['properties']['polygon_id']}: unreadable geometry ({exc})") from exc
+        if g.is_empty or not g.is_valid or g.geom_type not in ("Polygon", "MultiPolygon"):
+            raise MemberError(f"polygon {f['properties']['polygon_id']}: empty, invalid or non-polygon geometry")
+
+
 def verify_member(out: Path, *, expected: Mapping[str, Any] | None = None) -> dict[str, Any]:
-    """Re-verify an IPCCH member in a delivery tree (new or inherited): every listed file re-hashed and nothing
-    unlisted under the member paths; per horizon roster-exact unique polygons, finite q2..q5, feature period O, the
-    recorded target, mode and package identity; the package files against its own manifest. ``expected`` (e.g. the
-    release member record) must match the provenance's identity fields."""
+    """Re-verify an IPCCH member in a delivery tree (new or inherited), independent of its own inventory: exactly
+    H2/H8/H14 with leads 0/6/12, O = M - 2 and T = M + lead; every required file present and listed; every listed file
+    re-hashed and nothing unlisted (the same member predicate as the writer); the copied envelope equal to the recorded
+    digest and identity (accepted in real mode); the model package re-verified against the recorded manifest digest;
+    polygons.geojson exactly the unique roster with valid EPSG:4326 polygons; per horizon roster-exact unique polygons,
+    finite q2..q5, O, target, mode and package id. ``expected`` (the release member record) must match the provenance
+    identity (months, mode, package and, when given, the provenance digest)."""
     out = Path(out)
     path = out / "ipcch" / "system_provenance.json"
     if not path.is_file():
@@ -193,31 +239,56 @@ def verify_member(out: Path, *, expected: Mapping[str, Any] | None = None) -> di
     prov = json.loads(path.read_text())
     if prov.get("schema") != PROVENANCE_SCHEMA or prov.get("contract") != CONTRACT:
         raise MemberError("member provenance schema/contract not recognised")
+    M, O = prov.get("execution_month"), prov.get("feature_origin")
+    if not (isinstance(M, str) and isinstance(O, str)) or _add_months(M, -2) != O:
+        raise MemberError("member feature origin is not M - 2")
+    hz = sorted((h.get("model_horizon_months"), h.get("public_lead_months"), h.get("target_month"))
+                for h in prov.get("horizons", []))
+    want = sorted((h, lead, _add_months(M, lead)) for h, lead in LEADS.items())
+    if hz != want:
+        raise MemberError(f"member horizons {hz} are not exactly H2/H8/H14 with leads 0/6/12 and targets M+lead (R18)")
     if expected is not None:
         for key in ("execution_month", "feature_origin", "mode"):
             if prov.get(key) != expected.get(key):
                 raise MemberError(f"member {key} {prov.get(key)} != expected {expected.get(key)}")
+        if expected.get("package") is not None and prov.get("package") != expected["package"]:
+            raise MemberError("member package identity differs from the expected (release) identity")
         if expected.get("provenance_sha256") and _sha(path) != expected["provenance_sha256"]:
             raise MemberError("member system_provenance.json differs from the release record")
     listed = prov["files"]
-    present = {str(p.relative_to(out)).replace(os.sep, "/") for p in out.rglob("*") if p.is_file()
-               and str(p.relative_to(out)).replace(os.sep, "/").startswith(("scopes/", "ipcch/", "reports/ipcch_"))
-               and "/fewsnet" not in str(p.relative_to(out)).replace(os.sep, "/")} - {"ipcch/system_provenance.json"}
+    present = {rel for rel in (str(p.relative_to(out)).replace(os.sep, "/") for p in out.rglob("*") if p.is_file())
+               if is_member_file(rel)} - {"ipcch/system_provenance.json"}
+    lacking = [r for r in REQUIRED_FILES if r not in listed or r not in present]
+    if lacking:
+        raise MemberError(f"member lacks required files {lacking[:3]}")
     if set(listed) != present:
         raise MemberError(f"member files differ from provenance: missing {sorted(set(listed) - present)[:3]}, "
                           f"unlisted {sorted(present - set(listed))[:3]}")
     bad = [rel for rel, sha in listed.items() if _sha(out / rel) != sha]
     if bad:
         raise MemberError(f"member files changed: {bad[:3]}")
-    pkg = out / "ipcch" / "model_package"
+    package = prov["package"]
+    env_path = out / "ipcch" / "combination_envelope.json"
+    if _sha(env_path) != package.get("envelope_sha256"):
+        raise MemberError("copied combination envelope is not the recorded envelope")
+    env = json.loads(env_path.read_text())
+    if (env.get("schema") != bd.ENVELOPE_SCHEMA or env.get("envelope_id") != package.get("envelope_id")
+            or env.get("package", {}).get("combination_id") != package.get("combination_id")
+            or env.get("package", {}).get("package_manifest_sha256") != package.get("package_manifest_sha256")
+            or env.get("package", {}).get("feature_order_sha256") != package.get("feature_order_sha256")):
+        raise MemberError("copied combination envelope identity differs from the provenance")
+    if prov.get("mode") == "real" and env.get("status") != "accepted":
+        raise MemberError("a real member must carry an accepted combination envelope (R51)")
     try:
-        ident = bd.package_identity(str(pkg))
+        ident = bd.package_identity(str(out / "ipcch" / "model_package"))
     except bd.BindingError as exc:
         raise MemberError(f"member model package: {exc}") from exc
-    if ident["package_manifest_sha256"] != prov["package"]["package_manifest_sha256"]:
+    if (ident["package_manifest_sha256"], ident["combination_id"]) != (package["package_manifest_sha256"],
+                                                                      package["combination_id"]):
         raise MemberError("member model package is not the recorded combination")
-    for hz in prov["horizons"]:
-        lead = hz["public_lead_months"]
+    _verify_geometry(out / "ipcch" / "polygons.geojson", prov["roster"]["sha256"], prov["roster"]["size"])
+    for h in prov["horizons"]:
+        lead = h["public_lead_months"]
         p = pd.read_csv(out / f"scopes/{lead}m/ipcch/polygon_predictions.csv", dtype={"polygon_id": str, "admin_code": str,
                                                                                     "area_id": str})
         if tuple(p.columns) != V2_PREDICTION_HEADER:
@@ -225,8 +296,8 @@ def verify_member(out: Path, *, expected: Mapping[str, Any] | None = None) -> di
         ok = (len(p) == prov["roster"]["size"] and p["polygon_id"].is_unique
               and bt.roster_sha256(p["polygon_id"]) == prov["roster"]["sha256"]
               and np.isfinite(p[list(SCORES)].to_numpy(float)).all()
-              and set(p["feature_period"]) == {prov["feature_origin"]} and set(p["target_period"]) == {hz["target_month"]}
-              and set(p["mode"]) == {prov["mode"]} and set(p["model_package_id"]) == {hz["model_package_id"]})
+              and set(p["feature_period"]) == {O} and set(p["target_period"]) == {h["target_month"]}
+              and set(p["mode"]) == {prov["mode"]} and set(p["model_package_id"]) == {h["model_package_id"]})
         if not ok:
             raise MemberError(f"lead {lead}: predictions do not verify (roster/finite/periods/mode/package)")
     return prov

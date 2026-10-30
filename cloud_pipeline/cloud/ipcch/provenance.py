@@ -45,8 +45,11 @@ def section_of(feature: str, static: set[str]) -> tuple[str, str]:
         return "alphaearth_2017", "static"
     if feature in ("lat", "lon") or re.fullmatch(r"(month|year)_\d+", feature):
         return "identifiers", "target_identifiers"
-    if feature.startswith(("gs_last1", "gs_last2")):
-        return "growing_seasons", "completed_season"
+    m = re.fullmatch(r"gs_last[12]__(.+)_gs_ensmean__at_origin", feature)
+    if m:                                                       # one section per seasonal base (actual observations)
+        return f"gs_{m.group(1)}", "completed_season"
+    if feature.startswith(("gs_last1", "gs_last2")):            # season timing/major flag: calendar selection only
+        return "growing_season_calendar", "calendar_selection"
     if feature.startswith("overall_phase_history"):
         return "reported_phase_history", "report_month"
     if feature.startswith("idp_admin0"):
@@ -102,12 +105,21 @@ def section_provenance(inputs, frames: Mapping[int, pd.DataFrame], ledger: pd.Da
             g = f.groupby("admin_code")["month"]
             start, latest = g.min().reindex(areas), g.max().reindex(areas)
             end = pd.Series(_label(end_ord), index=areas)
-        elif kind == "completed_season":
-            table = "history__climate_gs_* (13 bases)"
+        elif kind in ("completed_season", "calendar_selection"):
             cutoff = led["season_cutoff_date"].astype(str)
             end = cutoff
-            w = inputs.season_windows.assign(admin_code=inputs.season_windows["admin_code"].astype(str))
+            w = inputs.season_windows.assign(admin_code=inputs.season_windows["admin_code"].astype(str),
+                                             season_year=inputs.season_windows["season_year"].astype("int64"))
             w = w[w["gs_end_date_exclusive"].astype(str) <= w["admin_code"].map(cutoff).astype(str)]
+            if kind == "completed_season":                      # latest completed season WITH an actual value
+                base = s[len("gs_"):]
+                table = cl.table_name(base, cl.SEASONAL)
+                v = inputs.climate_seasonal[base]
+                v = v.assign(admin_code=v["admin_code"].astype(str), season_year=v["season_year"].astype("int64"))
+                w = w.merge(v[v["value"].notna()][["admin_code", "season_year", "season"]],
+                            on=["admin_code", "season_year", "season"], how="inner")
+            else:                                               # the calendar's selection (no observation implied)
+                table = "fixed__season_windows"
             last = w.sort_values(["gs_end_date_exclusive", "season_year", "season"]).groupby("admin_code").tail(1)
             latest = (last.set_index("admin_code")["season_year"].astype(str) + "-"
                       + last.set_index("admin_code")["season"]).reindex(areas)

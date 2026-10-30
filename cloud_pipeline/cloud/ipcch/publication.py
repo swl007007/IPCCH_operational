@@ -71,7 +71,7 @@ def members(record: Mapping[str, Any] | None) -> dict[str, dict[str, Any]]:
     scored = record.get("execution", {}).get("scored_systems", list(SYSTEMS))
     inherited = record.get("execution", {}).get("inherited_systems", [])
     return {s: {"contract": LEGACY_CONTRACT, "origin_month": record.get("origin_month"), "source_run_id": record.get("run_id"),
-                "manifest": record.get("manifest"), "archive": record.get("archive"),
+                "delivery": {"manifest": record.get("manifest")}, "archive": record.get("archive"),
                 "inherited_in_legacy_record": s in inherited}
             for s in (*scored, *inherited) if s in SYSTEMS}
 
@@ -97,8 +97,9 @@ def build_record(*, run_id: str, request_ref: Mapping[str, str], mode: str, snap
     for s in SYSTEMS:
         if s in new_members:
             systems[s] = {**new_members[s], "published_by_run": run_id}
-        elif s in current:
-            systems[s] = {**current[s], "inherited_from_pointer_generation": snapshot["generation"]}
+        elif s in current:                                 # unchanged member; the marker records THIS inheritance
+            systems[s] = {**{k: v for k, v in current[s].items() if k != "inherited_from_pointer_generation"},
+                          "inherited_from_pointer_generation": snapshot["generation"]}
     act = activation(snapshot["record"])
     new_ipcch = new_members.get("ipcch", {})
     if act is None and mode == "real" and new_ipcch.get("contract") == IPCCH_CONTRACT:

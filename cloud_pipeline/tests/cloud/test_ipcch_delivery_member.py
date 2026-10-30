@@ -59,7 +59,7 @@ def test_member_tables_provenance_and_verification(tmp_path, package):
 @pytest.mark.parametrize("tamper,match", [
     (lambda out: (out / "scopes/6m/ipcch/polygon_predictions.csv").write_text("x\n"), "member files changed"),
     (lambda out: (out / "scopes/6m/ipcch/extra.csv").write_text("x\n"), "unlisted"),
-    (lambda out: (out / "ipcch/polygons.geojson").unlink(), "missing"),
+    (lambda out: (out / "ipcch/polygons.geojson").unlink(), "missing|lacks required files"),
 ])
 def test_tampered_or_incomplete_members_do_not_verify(tmp_path, package, tamper, match):
     kw = scored_batch(tmp_path, package)
@@ -100,3 +100,74 @@ def test_feature_fill_sidecar_is_actual_no_fill_row_section_provenance(tmp_path,
     assert int(a["feature_count"].astype(int).groupby(a["polygon_id"]).sum().iloc[0]) == 527
     with pytest.raises(dm.MemberError, match="feature provenance"):
         dm.write_member(tmp_path / "x", **{**kw, "feature_provenance": b""})
+
+
+def rewrite(out, rel, data, drop=False):
+    """Edit a member file AND its provenance inventory self-consistently (the verifier must not rely on the inventory)."""
+    import hashlib
+    path = out / "ipcch/system_provenance.json"
+    prov = json.loads(path.read_text())
+    if drop:
+        (out / rel).unlink()
+        prov["files"].pop(rel)
+    else:
+        (out / rel).write_bytes(data)
+        prov["files"][rel] = hashlib.sha256(data).hexdigest()
+    path.write_text(json.dumps(prov))
+    return prov
+
+
+def test_review_regressions_member_verifier(tmp_path, package):
+    kw = scored_batch(tmp_path, package)
+
+    def fresh(name):
+        out = tmp_path / name
+        dm.write_member(out, **kw)
+        return out
+    mixed = fresh("mixed")                                     # FEWS files beside the member do not break it
+    for rel in ("scopes/0m/fewsnet/polygon_predictions.csv", "reports/fewsnet_feature_fill_audit.csv", "fewsnet/x.csv"):
+        (mixed / rel).parent.mkdir(parents=True, exist_ok=True)
+        (mixed / rel).write_text("x\n")
+    assert dm.verify_member(mixed)["system"] == "ipcch"
+    out = fresh("nohorizons")
+    path = out / "ipcch/system_provenance.json"
+    prov = json.loads(path.read_text())
+    prov["horizons"] = []
+    path.write_text(json.dumps(prov))
+    with pytest.raises(dm.MemberError, match="not exactly H2/H8/H14"):
+        dm.verify_member(out)
+    out = fresh("noscope")
+    rewrite(out, "scopes/12m/ipcch/country_confidence.csv", None, drop=True)
+    with pytest.raises(dm.MemberError, match="lacks required files"):
+        dm.verify_member(out)
+    out = fresh("envelope")
+    rewrite(out, "ipcch/combination_envelope.json", b"{}")
+    with pytest.raises(dm.MemberError, match="not the recorded envelope"):
+        dm.verify_member(out)
+    out = fresh("geometry")
+    rewrite(out, "ipcch/polygons.geojson", b'{"type":"FeatureCollection","crs":{"type":"name","properties":'
+                                           b'{"name":"EPSG:4326"}},"features":[]}')
+    with pytest.raises(dm.MemberError, match="not exactly the unique roster"):
+        dm.verify_member(out)
+    out = fresh("package")
+    prov = json.loads((out / "ipcch/system_provenance.json").read_text())
+    with pytest.raises(dm.MemberError, match="package identity"):
+        dm.verify_member(out, expected={**prov, "package": {**prov["package"], "combination_id": "other"}})
+
+
+def test_seasonal_provenance_reports_actual_observations_not_calendar_selection(tmp_path, package):
+    from cloud.ipcch import provenance as pv
+    from tests.cloud.test_ipcch_assembly import inputs
+    inp = inputs()
+    inp.climate_seasonal = {b: f.assign(value=float("nan")) for b, f in inp.climate_seasonal.items()}   # all 13 NaN
+    roster = [str(a) for a in ROSTER]
+    frame = pd.DataFrame({"admin_code": roster, **{c: [1.0] * 3 for c in ORDER}})
+    ledger = pd.DataFrame({"admin_code": [11, 12, 13], "season_cutoff_date": ["2026-12-01"] * 3,
+                           "history_1_source_ord": [-1] * 3, "idp_report_ord": [-1] * 3})
+    out = pv.section_provenance(inp, {2: frame, 8: frame, 14: frame}, ledger, order=ORDER, origin="2026-11", roster=roster,
+                                retained_refs={"history__climate_gs_cdd": {"version": 4, "sha256": "e" * 64}})
+    cdd = out[out["section"] == "gs_cdd"].set_index("polygon_id")
+    assert cdd["latest_observation"].isna().all() and set(cdd["source_table"]) == {"history__climate_gs_cdd"}
+    assert set(cdd["source_version"]) == {4}
+    cal = out[out["section"] == "growing_season_calendar"].set_index("polygon_id")
+    assert set(cal["latest_observation"]) == {"2026-s2"} and set(cal["observation_kind"]) == {"calendar_selection"}

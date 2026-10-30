@@ -29,3 +29,27 @@
   now carries real-format evidence. Full suite `phase-b-full-suite-run1.log`: 845 passed, rc 0.
 Next: Phase C/D (delivery assembly incl. inherited FEWS member + shared report merge, publication verifier wiring to
 verify_member/inherited hashes, v1 legacy guards, smoke root), then CP5 with the ACTUAL package.
+
+## Phase B review fixes (supervisor-review 8972e10) + Phase C core (this commit)
+- Member: one `is_member_file` predicate for writer and verifier (mixed assemblies verify); `verify_member` enforces,
+  independent of the inventory, exact H2/H8/H14 with leads 0/6/12, O = M - 2, T = M + lead and REQUIRED_FILES; copied
+  envelope sha == provenance digest + identity (accepted in real mode); package identity vs expected.package; geometry
+  = exact unique roster, valid non-empty EPSG:4326 polygons.
+- Provenance: per-base seasonal sections `gs_<base>` report the latest completed season WITH a value (concrete
+  `history__climate_gs_<base>` refs); `growing_season_calendar` reports the calendar selection separately
+  (fixed__season_windows ref); generation refs include season windows/calendar.
+- Phase C core: cloud/ipcch/delivery_v2.py (byte-for-byte inheritance from the source tree vs its inventory, legacy
+  member own-origin checks, explicit shared-report merge with member months, manifest, upload, verify_delivery = the
+  actual publication verifier) and cloud/ipcch/release_v2.py (publish_ipcch_run bound to the expected snapshot);
+  publication: legacy members carry their delivery ref; inheritance marker replaced not stacked.
+- Tests: review regressions (mixed assembly, horizons [], missing scope artifact, envelope {}, empty geometry,
+  expected.package mismatch, all-13 seasonal NaN vs calendar selection); test_ipcch_release_v2.py (4): first real IPCCH
+  publication inherits a legacy FEWS member byte-for-byte under its own 2026-09 months and activates; inherit-of-inherit;
+  tampered source member refuses; moved pointer -> publication_failed; candidate never moves pointer; smoke root only.
+  Full suite `phase-bc-full-suite-run1.log`: 851 passed.
+EXPLICITLY UNFINISHED (callbacks/seams are not complete routes): CP4 entrypoint dispatch (v2 request route in the
+deployed job/workflow + run_v2 locks through publication + smoke separate root), legacy v1 wiring (post-activation IPCCH
+rejection at request+publish time, v1 FEWS-only inheritance of the v2 IPCCH member with activation carried, v1 locks),
+promote/resume rejection of new-contract candidates, the FEWS v2 adapter (R60), and the real provider route
+(EETransport.from_environment + real_provider_factory wired into an operator/deploy entrypoint). Then CP5 with the
+actual accepted package and CP6.

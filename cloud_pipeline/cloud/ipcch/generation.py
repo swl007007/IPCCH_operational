@@ -383,6 +383,7 @@ class Generation:
         refs = {}
         names = [*SERIES_FAMILIES.values(), NATIONAL_TABLE, SNAPSHOT_TABLE, ACLED_TABLE, gpp.HISTORY_TABLE,
                  gpp.LEDGER_TABLE, nightlight.HISTORY_TABLE, wfp.HISTORY_TABLE, bd.BINDING_TABLE,
+                 "fixed__season_windows", "fixed__season_calendar",
                  *[cl.table_name(b, t) for b in cl.BASES for t in (cl.MONTHLY, cl.SEASONAL)]]
         for name in sorted(set(names)):
             head, generation = self._table(name).head()
