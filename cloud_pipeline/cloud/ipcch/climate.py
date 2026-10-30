@@ -113,8 +113,10 @@ def method_id(base: str, temporal: str) -> str:
 
 
 def table_name(base: str, temporal: str) -> str:
+    """The retained table of one base: the same name the initialiser gives the accepted bundle file
+    ``history/climate_{temporal}_{base}.csv`` (``initial.table_name``), so updates append to the accepted history."""
     script_for(base, temporal)
-    return f"climate_{temporal}_{base}"
+    return f"history__climate_{temporal}_{base}"
 
 
 # --------------------------------------------------------------------------- provider outcomes and the ensemble

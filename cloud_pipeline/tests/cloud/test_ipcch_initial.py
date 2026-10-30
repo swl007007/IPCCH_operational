@@ -147,3 +147,11 @@ def test_invalid_fields_refused_before_any_write(tmp_path, rel, col, bad):
         initial.initialise(store, root, str(bundle), binding=B)
     written = [p for p in (tmp_path / "store").rglob("*") if p.is_file() and "acceptance_manifest" not in str(p)]
     assert written == []                                                              # zero table writes
+
+
+def test_climate_updates_address_the_initialised_tables():
+    """The climate updaters must append to exactly the tables initialised from the accepted bundle."""
+    from cloud.ipcch import climate as cl
+    for b in cp.CLIMATE_BASES:
+        assert cl.table_name(b, cl.MONTHLY) == initial.table_name(f"history/climate_month_{b}.csv")
+        assert cl.table_name(b, cl.SEASONAL) == initial.table_name(f"history/climate_gs_{b}.csv")
