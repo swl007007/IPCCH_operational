@@ -49,7 +49,7 @@ def smoke_world(tmp_path, package):
         return run_v2.IpcchContext(store=store, root=root, binding=b, package_root=str(package), bundle_dir=str(bundle),
                                    read_ref=refs.read, climate_providers=lambda w, o: fx.climate_providers(), gpp_acquirer=fx.NoGpp(),
                                    nightlight_acquirer=fx.NoNightlight(), workdir=str(tmp_path),
-                                   roster=[str(a) for a in ROSTER])
+                                   roster=[str(a) for a in ROSTER], envelope_path=str(tmp_path / "env.json"))
 
     def resolve(uri, generation):
         if (uri, generation) in refs.objects:
@@ -112,7 +112,7 @@ def test_invalid_mixed_request_executes_nothing(tmp_path):
               resolve=lambda u, g: good.get((u, g), "0" * 64), **NAMESPACES)
     with pytest.raises(ReferenceIdentityError, match="fewsnet.delivery.models"):
         run_v2.run_request(data, admit_kwargs=kw, ipcch_context=lambda r: calls.append("ipcch"),
-                           fewsnet_runner=lambda r: calls.append("fews"))
+                           fewsnet_runner=lambda r, g: calls.append("fews"))
     assert calls == [] and not store_dir.exists()
 
 
@@ -125,7 +125,7 @@ def test_partial_success_when_one_system_fails(tmp_path):
 
     def broken_ipcch(request):
         raise RuntimeError("IPCCH store unavailable")
-    out = run_v2.run_request(data, admit_kwargs=kw, ipcch_context=broken_ipcch, fewsnet_runner=lambda r: {"delivered": True})
+    out = run_v2.run_request(data, admit_kwargs=kw, ipcch_context=broken_ipcch, fewsnet_runner=lambda r, g: {"delivered": True})
     assert out["status"] == "partial"
     assert out["systems"]["ipcch"]["status"] == "failed" and "IPCCH store unavailable" in out["systems"]["ipcch"]["reason"]
     assert out["systems"]["fewsnet"] == {"status": "succeeded", "result": {"delivered": True}}
@@ -185,3 +185,78 @@ def test_smoke_country_reference_must_be_a_fixture_object(tmp_path, package):
         run_v2.run_request(req, admit_kwargs={**SMOKE_ADMIT, "resolve": lambda u, g: touched.append(u)},
                            ipcch_context=context)
     assert touched == []
+
+
+
+DELIVERY_ROOTS = {"smoke": "gs://ops-delivery-smoke/v2", "real": "gs://ops-delivery/v2"}
+
+
+def test_deployment_publishes_smoke_under_its_own_root_and_releases_locks(tmp_path, package):
+    from cloud.ipcch import locks
+    from cloud.ipcch import publication as pub
+    store, refs, context, resolve = smoke_world(tmp_path, package)
+    rel = LocalObjectStore(tmp_path / "deliveries")
+    dep = run_v2.Deployment(store=rel, roots=DELIVERY_ROOTS)
+    req = raw(fx.smoke_request(refs, tmp_path / "env.json", inference=True))
+    req["publication"] = "current"                                   # smoke current = the smoke namespace pointer
+    out = run_v2.run_request(req, admit_kwargs={**SMOKE_ADMIT, "resolve": resolve}, ipcch_context=context, deployment=dep)
+    pubout = out["systems"]["ipcch"]["result"]["publication"]
+    assert out["status"] == "succeeded" and pubout["status"] == "published" and pubout["activation"] is None
+    snap = pub.read_current(rel, DELIVERY_ROOTS["smoke"], "smoke")
+    assert snap["record"]["systems"]["ipcch"]["mode"] == "smoke"
+    assert pub.read_current(rel, DELIVERY_ROOTS["real"], "prod")["generation"] == "0"
+    assert not [p for p in (tmp_path / "deliveries").rglob("*") if "ops-delivery/" in str(p).replace("\\", "/")]
+    assert rel.get_metadata(locks.lock_uri(DELIVERY_ROOTS["smoke"], "ipcch")) is None and out["lock_release_problems"] == []
+
+
+def test_busy_lock_rejects_the_whole_request_before_any_work(tmp_path, package):
+    from cloud.ipcch import locks
+    store, refs, context, resolve = smoke_world(tmp_path, package)
+    rel = LocalObjectStore(tmp_path / "deliveries")
+    dep = run_v2.Deployment(store=rel, roots=DELIVERY_ROOTS)
+    locks.acquire(rel, DELIVERY_ROOTS["smoke"], ["ipcch"], "other-run")
+    built = []
+    req = raw(fx.smoke_request(refs, tmp_path / "env.json", inference=True))
+    with pytest.raises(locks.LockConflict, match="other-run"):
+        run_v2.run_request(req, admit_kwargs={**SMOKE_ADMIT, "resolve": resolve},
+                           ipcch_context=lambda r: built.append(r), deployment=dep)
+    assert built == [] and not list((tmp_path / "store").rglob("manifest.json"))
+
+
+def test_stale_expected_generation_fails_publication_keeps_results_and_releases_locks(tmp_path, package):
+    from cloud.ipcch import locks
+    store, refs, context, resolve = smoke_world(tmp_path, package)
+    rel = LocalObjectStore(tmp_path / "deliveries")
+    dep = run_v2.Deployment(store=rel, roots=DELIVERY_ROOTS)
+    req = raw(fx.smoke_request(refs, tmp_path / "env.json", inference=True))
+    req["release"]["expected_pointer_generation"] = "7"
+    req["publication"] = "current"
+    out = run_v2.run_request(req, admit_kwargs={**SMOKE_ADMIT, "resolve": resolve}, ipcch_context=context, deployment=dep)
+    ip = out["systems"]["ipcch"]
+    assert ip["status"] == "failed" and ip["failed_operation"] == "publication"
+    assert ip["result"]["batch"]["batch_id"] and sorted(ip["result"]["inference"]["horizons"]) == [2, 8, 14]
+    assert rel.get_metadata(locks.lock_uri(DELIVERY_ROOTS["smoke"], "ipcch")) is None
+
+
+def test_generation_only_never_publishes(tmp_path, package):
+    from cloud.ipcch import publication as pub
+    store, refs, context, resolve = smoke_world(tmp_path, package)
+    rel = LocalObjectStore(tmp_path / "deliveries")
+    out = run_v2.run_request(raw(fx.smoke_request(refs, tmp_path / "env.json")),
+                             admit_kwargs={**SMOKE_ADMIT, "resolve": resolve}, ipcch_context=context,
+                             deployment=run_v2.Deployment(store=rel, roots=DELIVERY_ROOTS))
+    assert out["status"] == "succeeded" and "publication" not in out["systems"]["ipcch"]["result"]
+    assert pub.read_current(rel, DELIVERY_ROOTS["smoke"], "smoke")["generation"] == "0"
+    with pytest.raises(ValueError, match="not nested"):
+        run_v2.Deployment(store=rel, roots={"smoke": "gs://b/v2/real/smoke", "real": "gs://b/v2/real"})
+
+
+def test_candidate_publication_writes_a_record_without_moving_the_pointer(tmp_path, package):
+    from cloud.ipcch import publication as pub
+    store, refs, context, resolve = smoke_world(tmp_path, package)
+    rel = LocalObjectStore(tmp_path / "deliveries")
+    out = run_v2.run_request(raw(fx.smoke_request(refs, tmp_path / "env.json", inference=True)),   # candidate
+                             admit_kwargs={**SMOKE_ADMIT, "resolve": resolve}, ipcch_context=context,
+                             deployment=run_v2.Deployment(store=rel, roots=DELIVERY_ROOTS))
+    p = out["systems"]["ipcch"]["result"]["publication"]
+    assert p["status"] == "candidate_written" and pub.read_current(rel, DELIVERY_ROOTS["smoke"], "smoke")["generation"] == "0"

@@ -71,3 +71,20 @@ a self-consistently regenerated destination inventory -> `DeliveryError` before 
 generation and record unchanged, no candidate record). Mutation check: the 4 new cases FAIL against the 6e57972
 `delivery_v2.py` and pass with the fix. Receipts: `inherited-verifier-focused-run1.log` (release/member/publication
 25 passed), `inherited-verifier-full-suite-run1.log` (855 passed). CP4 remains unaccepted.
+
+## Runner: deployment roots, locks through publication, IPCCH publication (this commit)
+`run_v2.Deployment(store, roots={smoke, real})` (distinct, never nested, R48); `run_request(..., deployment=)` acquires
+the executed systems' locks at the mode root right after admission (all or none; busy -> whole request rejected before
+any work) and releases them in `finally` after publication (release problems reported); IPCCH inference publishes via
+`release_v2.publish_ipcch_run` (candidate or current, request namespace, expected generation); a run executing both
+systems chains its own produced pointer generation; publication failure -> `IpcchRunFailure("publication")` keeping
+batch + predictions; generation-only never publishes. `member_inputs` builds the member sources (pinned country
+reference via read_ref, bound store area identity, bound bundle roster geometry via verify_handoff /
+verify_fixture_bundle, batch feature provenance, envelope path). Tests test_ipcch_run_v2.py 12 passed: smoke current
+published under the smoke root only + locks released; busy lock rejects before any context/batch; stale expected
+generation -> failed publication keeping batch/inference + locks released; generation-only no publication; nested roots
+refused; candidate leaves the pointer. Includes the Supervisor's closures appended to research/cp4/supervisor-review.md
+(Phase B six + b98f100 inherited-source blocker) and the PROGRESS.md reconciliation through b98f100.
+STILL UNFINISHED: entrypoint dispatch (deployed job/CLI route building Deployment + IpcchContext + real provider route),
+legacy v1 guards (post-activation IPCCH rejection at request+publish time, v1 FEWS-only inheriting the v2 IPCCH member
+with activation, v1 locks), promote/resume rejection, FEWS v2 adapter (R60).

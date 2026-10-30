@@ -25,3 +25,13 @@ Two read-only checks ran locked member suite6passed and targeted probes; Supervi
 - provenance.py105-127: calendar-selected season reported as actual observation even with every seasonal valueNaN; wildcard table loses actual version/hash references. Distinguish calendar selection/observation and retain concrete seasonal input refs.
 
 Full Executor suite845passed is regression evidence only; these reproduced boundaries remain open. PhaseC/D may proceed independently, but no PhaseB/CP4 acceptance yet.
+
+## Phase B closure and Phase C inheritance repair — 2026-10-30
+
+The six Phase B findings above are closed at 6e57972: independent scoped member suite 8 passed, and source inspection verified mandatory horizons/files, envelope/package identity, exact geometry, shared inventory selection, and seasonal observation provenance. This supersedes the pending status above for those six findings only.
+
+Phase C at 6e57972 had a reproduced publication blocker: a self-consistently regenerated destination inventory allowed altered inherited FEWS predictions and missing supporting artifacts to publish. The verifier checked member metadata but did not independently bind copied files to the snapshot-bound source inventory.
+
+b98f100 closes that finding. Supervisor inspected the patch; independent read-only verification confirmed source manifest generation/hash binding, exact inherited file set and hashes, and verification before current/candidate writes. Four mutation regressions independently reran: 4 passed, 4 deselected. Executor records that all four fail against 6e57972. Recorded focused receipt: 25 passed; full suite: 855 passed (525 warnings). No additional full-suite run was required for this bounded verification.
+
+CP4 remains unaccepted: executable entrypoint/locking, legacy compatibility, promote/resume guards, FEWS adapter and real provider route remain pending, followed by fixture-only CP5 E2E. No live cloud publication or production-current mutation was performed or accepted by this review.
