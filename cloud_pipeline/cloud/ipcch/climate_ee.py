@@ -390,17 +390,26 @@ def finalize(family: str, raw: pd.DataFrame, month: str, source: str) -> dict[st
 # --------------------------------------------------------------------------- provider
 
 
+def expected_slots(start: str, end: str, per_day: int) -> pd.DatetimeIndex:
+    """Every UTC observation slot of [start, end): one per day, or every 24/per_day hours from 00:00 (GLDAS 3-hourly)."""
+    return pd.date_range(pd.Timestamp(start, tz="UTC"), pd.Timestamp(end, tz="UTC"), freq=f"{24 // per_day}h", inclusive="left")
+
+
+def slots_present(times, start: str, end: str, per_day: int) -> tuple[int, int]:
+    """(expected slots that have an image, expected slots): daily sources match by UTC day, sub-daily sources by the
+    exact slot timestamp, so off-slot or duplicate stamps never count."""
+    expected = expected_slots(start, end, per_day)
+    stamps = pd.to_datetime(pd.Series(list(times), dtype="int64"), unit="ms", utc=True)
+    have = set(stamps.dt.floor("D")) if per_day == 1 else set(stamps)
+    return int(sum(slot in have for slot in expected)), len(expected)
+
+
 def publication(backend: EEBackend, family: str, source: str, month: str) -> tuple[bool, str]:
-    """(published, detail): every day (GLDAS: every 3-hourly sample) of the month present in the collection."""
+    """(published, detail): every expected slot of the month (each day; GLDAS each 3-hourly UTC slot) has an image."""
     cfg = FAMILIES[family][2][source]
-    start, end, days = month_window(month)
+    start, end, _ = month_window(month)
     band = cfg.get("band") or cfg["proj_band"]
-    times = backend.image_times(cfg["collection"], band, start, end)
-    per_day = cfg.get("per_day", 1)
-    stamps = pd.to_datetime(pd.Series(times, dtype="int64"), unit="ms", utc=True)
-    in_month = stamps[(stamps >= pd.Timestamp(start, tz="UTC")) & (stamps < pd.Timestamp(end, tz="UTC"))]
-    need = days * per_day
-    have = int(in_month.dt.floor("h" if per_day > 1 else "D").nunique())
+    have, need = slots_present(backend.image_times(cfg["collection"], band, start, end), start, end, cfg.get("per_day", 1))
     if have == 0:
         return False, f"{cfg['collection']}: no images for {month}"
     if have < need:

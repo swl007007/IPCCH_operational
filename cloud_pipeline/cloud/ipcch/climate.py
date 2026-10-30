@@ -262,6 +262,17 @@ def update_monthly(table: VersionedTable, base: str, *, origin: str, roster: Ite
     frame, _ = read_monthly(table)
     report: dict[str, Any] = {"base": base, "origin": origin, "method": method_ids(base, MONTHLY), "saved": [], "gaps": {},
                               "months": {}}
+    try:
+        _monthly_loop(table, base, frame, origin, roster, fetch, report)
+    except (ClimateProcessingFailure, ClimateSourceMissing) as exc:
+        exc.climate_report = report           # months already saved in THIS base stay saved and are reported (R41)
+        raise
+    frame, _ = read_monthly(table)
+    report["coverage_end"] = max(frame["month"]) if len(frame) else None
+    return report
+
+
+def _monthly_loop(table, base, frame, origin, roster, fetch, report):
     for month in months_to_update(set(frame["month"]), origin):
         outcomes = [fetch(src, month) for src in SOURCES[base]]
         published, info = _collect(base, MONTHLY, month, outcomes, roster)
@@ -279,9 +290,6 @@ def update_monthly(table: VersionedTable, base: str, *, origin: str, roster: Ite
         report["saved"].append(month)
         report["months"][month] = {**info, "areas_missing": int(ens["value"].isna().sum()),
                                    "n_sources_counts": {int(k): int(v) for k, v in ens["n_sources"].value_counts().items()}}
-    frame, _ = read_monthly(table)
-    report["coverage_end"] = max(frame["month"]) if len(frame) else None
-    return report
 
 
 # --------------------------------------------------------------------------- growing seasons (R33)
@@ -340,6 +348,15 @@ def update_seasonal(table: VersionedTable, base: str, *, origin: str, roster: It
     saved = set(map(tuple, frame[list(GS_KEY)].astype({"season_year": "int64"}).itertuples(index=False)))
     todo = done[[(a, int(y), s) not in saved for a, y, s in done[list(GS_KEY)].itertuples(index=False)]]
     report: dict[str, Any] = {"base": base, "origin": origin, "method": method_ids(base, SEASONAL), "saved": [], "gaps": {}}
+    try:
+        _seasonal_loop(table, base, todo, fetch, report)
+    except ClimateProcessingFailure as exc:
+        exc.climate_report = report
+        raise
+    return report
+
+
+def _seasonal_loop(table, base, todo, fetch, report):
     for (year, season), win in todo.groupby(["season_year", "season"], sort=True):
         areas = sorted(win["admin_code"])
         win = win.sort_values("admin_code").reset_index(drop=True)
@@ -355,4 +372,3 @@ def update_seasonal(table: VersionedTable, base: str, *, origin: str, roster: It
                 {"action": "append", "base": base, "season_year": int(year), "season": season,
                  "method_id": method_id(base, SEASONAL), **info})
         report["saved"].append(f"{year}-{season}")
-    return report

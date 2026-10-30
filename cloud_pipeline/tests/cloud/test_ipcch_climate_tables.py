@@ -144,3 +144,37 @@ def test_seasonal_drought_uses_the_seasonal_fit():
     assert not np.allclose(np.nan_to_num(mon), np.nan_to_num(m["spei"][:, -5:]))
     short = ct.SeasonalDroughtProvider(Tables(drought_tables(admins, last="2026-06")), admins)
     assert short.fetch_season("spi03", "persiann", 2026, "s1", windows).status == "unavailable"
+
+
+def test_historical_target_keeps_the_full_baseline_and_patch_counts():
+    admins = ["1", "2", "3"]
+    tables = drought_tables(admins)
+    p = ct.DroughtProvider(Tables(tables), admins)
+    o = p.fetch("spi03", "chirps", "2016-05")                        # target before the baseline end (2020-12)
+    months = spi_spei.month_axis("1990-01", "2020-12")
+    prcp = ct._wide_month_matrix([t for k, t in tables.items() if "PRCP_CHIRPS" in k], "prcp", months, admins)
+    want = spi_spei.compute_spi03_monthly(prcp, months)[:, months.get_loc(pd.Timestamp("2016-05-01"))]
+    np.testing.assert_array_equal(o.values["value"].to_numpy(), want)
+    patched = drought_tables(admins, et0_last="2026-07", patch={"et0_202608_mean": [100.0, 110.0, 120.0]})
+    q = ct.DroughtProvider(Tables(patched), admins)
+    assert q.fetch("spei03", "chirps", "2026-08").status == "published"          # PATCH32 supplies the target ET0
+    sp = ct.SeasonalDroughtProvider(Tables(tables), admins)
+    w = pd.DataFrame({"admin_code": admins, "season_year": [2016] * 3, "season": ["s1"] * 3,
+                      "gs_start_date": ["2016-03-01"] * 3, "gs_end_date_exclusive": ["2016-07-01"] * 3})
+    assert sp.fetch_season("spei03", "era5land", 2016, "s1", w).status == "published"
+
+
+def test_malformed_values_and_absent_admins_fail():
+    admins = ["1", "2", "3"]
+    tables = drought_tables(admins)
+    key = next(k for k in tables if "PRCP_CHIRPS_Y2020" in k)
+    bad = dict(tables); bad[key] = tables[key].astype(object); bad[key].loc[0, "prcp_202608_mean"] = "n/a"
+    with pytest.raises(cl.ClimateProcessingFailure, match="non-numeric"):
+        ct.DroughtProvider(Tables(bad), admins).fetch("spi03", "chirps", "2026-08")
+    short = dict(tables); short[key] = tables[key].iloc[1:]
+    with pytest.raises(cl.ClimateProcessingFailure, match="lacks 1 required admins"):
+        ct.DroughtProvider(Tables(short), admins).fetch("spi03", "chirps", "2026-08")
+    blank = dict(tables); blank[key] = tables[key].astype(object); blank[key].loc[0, "prcp_202608_mean"] = ""
+    assert ct.DroughtProvider(Tables(blank), admins).fetch("spi03", "chirps", "2026-08").status == "published"  # blank = missing
+    with pytest.raises(cl.ClimateProcessingFailure, match="required admins"):
+        ct.VegetationProvider(Tables(vi_tables()), admins=["1", "2", "9"]).fetch("terra", "2026-03")

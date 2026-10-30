@@ -17,8 +17,12 @@ The three raster scripts use different EE structures and are ported as such (spe
 
 The scripts' hard run windows (season years 2015-2021, data end 2022-01-01) are run parameters: ``data_end`` is the first
 day after the feature origin, and only completed seasons are requested (R33). Per-feature/per-season arithmetic after the
-reduction runs locally (``finalize_*``). Availability: a source publishes a season only when its collection covers every
-day (GLDAS: every sample) of the requested windows; otherwise ``unavailable``.
+reduction runs locally (``finalize_*``). Availability: a source publishes a season once its collection has published
+through the last day of the requested windows (GLDAS: through that day's 21:00 UTC slot); gaps inside a season follow
+each script's own available-observation semantics (temperature/soil: any valid observation; rainfall: full pixel
+coverage), and dates outside the season never matter. Rainfall date bounds come from the FULL season calendar (all
+admins, both seasons of the season year, as the script paints them) and data reads are clamped at the run's data end
+(first day after the feature origin).
 """
 
 from __future__ import annotations
@@ -434,8 +438,9 @@ class SeasonalEEProvider:
     """``climate.update_seasonal`` fetch for the raster seasonal families; one export per (family, source, season_year,
     season, requested areas)."""
     backend: EEBackend
+    data_end: str                                    # first day after the run's feature origin: no data read beyond it
+    calendar_windows: pd.DataFrame                   # every admin's s1/s2 windows (rainfall paints all of them)
     refs: AssetRefs = field(default_factory=AssetRefs)
-    calendar_windows: pd.DataFrame | None = None     # all admins' windows of the season year (rainfall date bounds)
     cache: dict = field(default_factory=dict)
 
     def fetch(self, base: str, source: str, season_year: int, season: str, windows: pd.DataFrame) -> SourceOutcome:
@@ -458,30 +463,34 @@ class SeasonalEEProvider:
 
     def _compute(self, family, source, year, season, windows, codes):
         cfg = GS_FAMILIES[family][2][source]
-        start, end = window_bounds(windows)
+        start = pd.to_datetime(windows["gs_start_date"]).min().strftime("%Y-%m-%d")
+        last_day = pd.to_datetime(windows["gs_end_date_exclusive"]).max() - pd.Timedelta(days=1)
+        if last_day >= pd.Timestamp(self.data_end):
+            raise ClimateProcessingFailure(f"{family} {year}-{season}: requested window ends after the run data end {self.data_end}")
         band = cfg.get("band") or cfg["proj_band"]
         try:
-            times = self.backend.image_times(cfg["collection"], band, start, end)
+            times = self.backend.image_times(cfg["collection"], band, start, self.data_end)
         except Exception as exc:
             raise ClimateProcessingFailure(f"{family} {source} {year}-{season}: publication check failed: {exc}") from exc
         per_day = cfg.get("per_day", 1)
-        stamps = pd.to_datetime(pd.Series(times, dtype="int64"), unit="ms", utc=True)
-        lo, hi = pd.Timestamp(start, tz="UTC"), pd.Timestamp(end, tz="UTC")
-        need = int((hi - lo).days) * per_day
-        have = int(stamps[(stamps >= lo) & (stamps < hi)].dt.floor("h" if per_day > 1 else "D").nunique())
-        if have < need:
-            return f"{cfg['collection']}: {have}/{need} of the season window published"
+        need = pd.Timestamp(last_day, tz="UTC") + pd.Timedelta(hours=24 - 24 // per_day if per_day > 1 else 0)
+        latest = pd.to_datetime(max(times), unit="ms", utc=True) if len(times) else None
+        if latest is None or latest < need:
+            return f"{cfg['collection']}: published through {latest}, season needs {need}"
         fam_key = {"gs_rain_anomz": "rain_anomz", "gs_rain_cdd": "rain_cdd", "gs_temperature": "temperature", "gs_soil": "soil"}[family]
         missing = self.backend.missing_assets(self.refs.required(fam_key, source))
         if missing:
             raise ClimateProcessingFailure(f"{family} {source}: unreadable private inputs (configure AssetRefs): {missing[:5]} ({len(missing)} total)")
         ee = self.backend.ee
-        data_end = end
+        data_end = self.data_end
         try:
             if family in ("gs_rain_anomz", "gs_rain_cdd"):
-                bounds_windows = self.calendar_windows if self.calendar_windows is not None else windows
-                yw = bounds_windows[bounds_windows["season_year"].astype(int) == year] if "season_year" in bounds_windows else bounds_windows
-                table, cols, roots = rain_seasonal_table(ee, family, source, year, window_bounds(yw), self.refs, codes)
+                cal = self.calendar_windows
+                yw = cal[cal["season_year"].astype(int) == year].dropna(subset=["gs_start_date", "gs_end_date_exclusive"])
+                if yw.empty:
+                    raise ClimateProcessingFailure(f"no calendar windows for season year {year}")
+                lo, hi = window_bounds(yw)                           # full both-season calendar bounds (script)
+                table, cols, roots = rain_seasonal_table(ee, family, source, year, (lo, min(hi, data_end)), self.refs, codes)
             elif family == "gs_temperature":
                 table, cols = temperature_seasonal_table(ee, source, season, year, data_end, self.refs, codes)
             else:

@@ -78,3 +78,20 @@ def test_default_routing():
     assert r.monthly("prcp_z") == ("ee", "prcp_z") and r.monthly("spei03") == ("drought", "spei03")
     assert r.monthly("evi_anom") == "vegetation-monthly" and r.seasonal("evi_anom") == ("veg-gs", None)
     assert r.seasonal("spi03") == ("drought-gs", "spi03") and r.seasonal("sm_z") == ("ee-gs", "sm_z")
+
+
+def test_failure_report_keeps_progress_inside_the_failing_base(tmp_path):
+    get = tables(tmp_path)
+    def fail_late(base):
+        def fetch(source, month):
+            if base == "prcp_anom" and month == "2026-09":
+                raise cl.ClimateProcessingFailure("export failed")
+            return cl.SourceOutcome(source, "published", pd.DataFrame({"admin_code": ROSTER, "value": [1.0, 2.0]}))
+        return fetch
+    with pytest.raises(cl.ClimateProcessingFailure) as info:
+        cr.update_all(get, origin="2026-09", roster=ROSTER, windows=WINDOWS,
+                      providers=cr.ClimateProviders(fail_late, providers().seasonal))
+    rep = info.value.climate_run_report
+    assert rep["stopped"]["base"] == "prcp_anom" and rep["stopped"]["saved_in_base"] == ["2026-08"]
+    assert rep["monthly"]["prcp_anom"]["saved"] == ["2026-08"]
+    assert "2026-08" in set(cl.read_monthly(get("prcp_anom", cl.MONTHLY))[0]["month"])

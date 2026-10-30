@@ -54,15 +54,23 @@ def update_all(tables: Callable[[str, str], VersionedTable], *, origin: str, ros
             report["monthly"][base] = cl.update_monthly(tables(base, cl.MONTHLY), base, origin=origin, roster=roster,
                                                         fetch=providers.monthly(base))
         except (cl.ClimateSourceMissing, cl.ClimateProcessingFailure) as exc:
-            report["stopped"] = {"base": base, "temporal": cl.MONTHLY, "error": f"{type(exc).__name__}: {exc}"}
-            raise type(exc)(f"{exc} [climate run report: {report}]") from exc
+            report["stopped"] = {"base": base, "temporal": cl.MONTHLY, "error": f"{type(exc).__name__}: {exc}",
+                                 "saved_in_base": getattr(exc, "climate_report", {}).get("saved", [])}
+            report["monthly"][base] = getattr(exc, "climate_report", None)
+            err = type(exc)(f"{exc} [climate run report: {report}]")
+            err.climate_run_report = report
+            raise err from exc
     for base in bases:
         try:
             report["seasonal"][base] = cl.update_seasonal(tables(base, cl.SEASONAL), base, origin=origin, roster=roster,
                                                           windows=windows, fetch=providers.seasonal(base))
         except cl.ClimateProcessingFailure as exc:
-            report["stopped"] = {"base": base, "temporal": cl.SEASONAL, "error": f"{type(exc).__name__}: {exc}"}
-            raise type(exc)(f"{exc} [climate run report: {report}]") from exc
+            report["stopped"] = {"base": base, "temporal": cl.SEASONAL, "error": f"{type(exc).__name__}: {exc}",
+                                 "saved_in_base": getattr(exc, "climate_report", {}).get("saved", [])}
+            report["seasonal"][base] = getattr(exc, "climate_report", None)
+            err = type(exc)(f"{exc} [climate run report: {report}]")
+            err.climate_run_report = report
+            raise err from exc
     report["gaps"] = {b: r["gaps"] for b, r in report["monthly"].items() if r["gaps"]}
     report["season_gaps"] = {b: r["gaps"] for b, r in report["seasonal"].items() if r["gaps"]}
     return report

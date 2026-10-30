@@ -56,6 +56,25 @@ class TableRefs:
         return name if name.startswith("projects/") else self.root + name
 
 
+BASELINE_END = "2020-12"          # every fit axis spans the complete 1991-2020 baseline, whatever the target month
+
+
+def strict_numeric(values, label: str) -> np.ndarray:
+    """Numeric table values; blank/null -> NaN (legitimate missingness); any other non-numeric text is a failure."""
+    s = pd.Series(values)
+    num = pd.to_numeric(s, errors="coerce")
+    bad = num.isna() & s.notna() & (s.astype(str).str.strip() != "")
+    if bad.any():
+        raise ClimateProcessingFailure(f"{label}: non-numeric values {sorted(set(s[bad].astype(str)))[:3]}")
+    return num.to_numpy(float)
+
+
+def require_admins(table: pd.DataFrame, admins, label: str) -> None:
+    absent = sorted(set(map(str, admins)) - set(table["admin_code"].astype(str)))
+    if absent:
+        raise ClimateProcessingFailure(f"{label}: table lacks {len(absent)} required admins {absent[:5]}")
+
+
 # --------------------------------------------------------------------------- monthly/ndvi_evi.js
 
 
@@ -93,7 +112,7 @@ def monthly_vi(table: pd.DataFrame, sensor: str, index: str, year: int, month: i
     composites = np.zeros(len(table))
     for p in parts:
         def prop(name):
-            v = pd.to_numeric(table[name], errors="coerce").to_numpy(float) if name in table.columns else np.full(len(table), np.nan)
+            v = strict_numeric(table[name], name) if name in table.columns else np.full(len(table), np.nan)
             ok = np.isfinite(v)
             return np.where(ok, v, 0.0), ok.astype(float)
         cur, cur_ok = prop(f"{index}_{p['tag']}_mean")
@@ -117,6 +136,7 @@ class VegetationProvider:
     refs: TableRefs = field(default_factory=TableRefs)
     index: str = "evi"
     tables: dict = field(default_factory=dict)
+    admins: list | None = None                     # roster: every one must be present in the joined tables
 
     def _read(self, asset):
         if asset not in self.tables:
@@ -153,6 +173,8 @@ class VegetationProvider:
         lacking = [c for c in need if c not in joined.columns]
         if lacking:
             return SourceOutcome(sensor, "unavailable", detail=f"composites not yet in the current tables: {lacking}")
+        if self.admins is not None:
+            require_admins(joined.reset_index(), self.admins, f"S2E3 {label}")
         out = monthly_vi(joined.reset_index(), sensor, self.index, y, m)
         return SourceOutcome(sensor, "published", out[["admin_code", "value"]],
                              extra={"incomplete_areas": int(out["value"].isna().sum())})
@@ -166,13 +188,14 @@ def _wide_month_matrix(frames: list[pd.DataFrame], prefix: str, months: pd.Datet
     month properties are NaN (normalize_monthly_table)."""
     wide = None
     for f in frames:
+        require_admins(f, admins, f"{prefix} table")
         f = f.assign(admin_code=f["admin_code"].astype(str)).set_index("admin_code")
         if f.index.duplicated().any():
             raise ClimateProcessingFailure(f"{prefix} table has duplicate admin_code")
         wide = f if wide is None else wide.join(f[[c for c in f.columns if c not in wide.columns]], how="outer")
     cols = [f"{prefix}_{d.year}{d.month:02d}_mean" for d in months]
     aligned = wide.reindex(admins)
-    return np.column_stack([pd.to_numeric(aligned[c], errors="coerce").to_numpy(float) if c in aligned.columns
+    return np.column_stack([strict_numeric(aligned[c], c) if c in aligned.columns
                             else np.full(len(admins), np.nan) for c in cols])
 
 
@@ -203,18 +226,19 @@ class DroughtProvider:
         return out
 
     def _compute(self, source, month):
-        months = spi_spei.month_axis("1990-01", month)
+        months = spi_spei.month_axis("1990-01", max(month, BASELINE_END))     # complete baseline even for old targets
+        pos = months.get_loc(pd.Timestamp(f"{month}-01"))
         target = f"{month.replace('-', '')}"
         prcp_frames = self._read_all(self._chunks(self.refs.prcp, label=SPI_SOURCES[source]))
         et0_frames = self._read_all(self._chunks(self.refs.et0))
         patch_frames = self._read_all(self._chunks(self.refs.et0_patch))
         prcp_has = any(f"prcp_{target}_mean" in f.columns for f in prcp_frames)
-        et0_has = any(f"et0_{target}_mean" in f.columns for f in et0_frames)
+        et0_has = any(f"et0_{target}_mean" in f.columns for f in et0_frames + patch_frames)   # PATCH32 can supply it
         prcp = _wide_month_matrix(prcp_frames, "prcp", months, self.admins)
         et0 = _wide_month_matrix(et0_frames, "et0", months, self.admins)
         et0, filled = spi_spei.apply_et0_patch(et0, _wide_month_matrix(patch_frames, "et0", months, self.admins))
-        spi = spi_spei.compute_spi03_monthly(prcp, months)[:, -1] if prcp_has else None
-        spei = spi_spei.compute_spei03_monthly(prcp, et0, months)[:, -1] if prcp_has and et0_has else None
+        spi = spi_spei.compute_spi03_monthly(prcp, months)[:, pos] if prcp_has else None
+        spei = spi_spei.compute_spei03_monthly(prcp, et0, months)[:, pos] if prcp_has and et0_has else None
         return {"spi03": spi, "spei03": spei, "prcp_has": prcp_has, "et0_has": et0_has, "et0_patch_filled": filled}
 
     def fetch(self, base: str, source: str, month: str) -> SourceOutcome:
@@ -253,7 +277,7 @@ def season_vi(table: pd.DataFrame, sensor: str, index: str, windows: pd.DataFram
             overlap = np.maximum(0.0, (np.minimum(end, e) - np.maximum(start, s)).dt.total_seconds().to_numpy() / 86400)
 
             def prop(name):
-                v = pd.to_numeric(t[name], errors="coerce").to_numpy(float) if name in t.columns else np.full(len(t), np.nan)
+                v = strict_numeric(t[name], name) if name in t.columns else np.full(len(t), np.nan)
                 ok = np.isfinite(v)
                 return np.where(ok, v, 0.0), ok.astype(float)
             cur, cur_ok = prop(f"{index}_{tag}_mean")
@@ -297,6 +321,7 @@ class SeasonalVegetationProvider(VegetationProvider):
         if lacking:
             return SourceOutcome(sensor, "unavailable", detail=f"composites not yet in the current tables: {lacking[:3]}")
         rows = joined.reset_index()
+        require_admins(rows, windows["admin_code"], f"S2E3 {label}")
         rows = rows[rows["admin_code"].astype(str).isin(set(windows["admin_code"].astype(str)))]
         out = season_vi(rows, sensor, self.index, windows, season_year)
         return SourceOutcome(sensor, "published", out[["admin_code", "value"]].reset_index(drop=True),
@@ -320,7 +345,7 @@ class SeasonalDroughtProvider(DroughtProvider):
             raise ClimateProcessingFailure(f"no seasonal drought provider for {base}/{source}")
         end = (pd.to_datetime(windows["gs_end_date_exclusive"]).max() - pd.Timedelta(days=1)).strftime("%Y-%m")
         first = pd.to_datetime(windows["gs_start_date"]).min().strftime("%Y-%m")
-        all_months = spi_spei.month_axis("1990-01", end)
+        all_months = spi_spei.month_axis("1990-01", max(end, BASELINE_END))
         index_months = spi_spei.month_axis(first, end)
         prcp_frames = self._read_all(self._chunks(self.refs.prcp, label=SPI_SOURCES[source]))
         et0_frames = self._read_all(self._chunks(self.refs.et0))
@@ -328,7 +353,7 @@ class SeasonalDroughtProvider(DroughtProvider):
         last = end.replace("-", "")
         if not any(f"prcp_{last}_mean" in f.columns for f in prcp_frames):
             return SourceOutcome(source, "unavailable", detail=f"S2C3 precipitation has no {end} column")
-        if base == "spei03" and not any(f"et0_{last}_mean" in f.columns for f in et0_frames):
+        if base == "spei03" and not any(f"et0_{last}_mean" in f.columns for f in et0_frames + patch_frames):
             return SourceOutcome(source, "unavailable", detail=f"S2C3 ET0 has no {end} column")
         codes = sorted(windows["admin_code"].astype(str))
         prcp = _wide_month_matrix(prcp_frames, "prcp", all_months, codes)

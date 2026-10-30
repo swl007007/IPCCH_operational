@@ -70,8 +70,9 @@ def test_finalize_rules():
 
 
 class Backend:
-    def __init__(self, cover_to="2026-09-01", missing=()):
+    def __init__(self, cover_to="2026-09-01", missing=(), gaps=()):
         self.ee, self.cover_to, self.missing, self.exports = offline_ee(), pd.Timestamp(cover_to, tz="UTC"), missing, []
+        self.gaps = {pd.Timestamp(g, tz="UTC") for g in gaps}
 
     def missing_assets(self, ids):
         return [i for i in ids if any(m in i for m in self.missing)]
@@ -79,7 +80,7 @@ class Backend:
     def image_times(self, collection, band, start, end):
         freq = "3h" if "GLDAS" in collection else "D"               # GLDAS publishes 8 samples a day
         days = pd.date_range(pd.Timestamp(start, tz="UTC"), min(self.cover_to, pd.Timestamp(end, tz="UTC")), freq=freq, inclusive="left")
-        return [int(d.value // 10**6) for d in days]
+        return [int(d.value // 10**6) for d in days if d.floor("D") not in self.gaps]
 
     def export_table(self, collection, selectors, description):
         self.exports.append(description)
@@ -95,17 +96,50 @@ class Backend:
         return frame
 
 
-def test_provider_and_seasonal_saves(tmp_path):
-    windows = pd.DataFrame({"admin_code": CODES, "season_year": [2026, 2026], "season": ["s1", "s1"],
-                            "gs_start_date": ["2026-03-01", "2026-03-10"], "gs_end_date_exclusive": ["2026-07-01", "2026-08-01"]})
-    late = cs.SeasonalEEProvider(Backend(cover_to="2026-07-20"))
-    assert late.fetch("gdd", "cpc", 2026, "s1", windows).status == "unavailable"
+WINDOWS = pd.DataFrame({"admin_code": CODES, "season_year": [2026, 2026], "season": ["s1", "s1"],
+                        "gs_start_date": ["2026-03-01", "2026-03-10"], "gs_end_date_exclusive": ["2026-07-01", "2026-08-01"]})
+CALENDAR = pd.concat([WINDOWS, pd.DataFrame({"admin_code": CODES + ["3"], "season_year": [2026] * 3, "season": ["s2"] * 3,
+                                             "gs_start_date": ["2025-11-15", "2026-08-01", "2026-09-01"],
+                                             "gs_end_date_exclusive": ["2026-02-01", "2026-12-01", "2027-01-01"]})])
+
+
+def provider(backend, data_end="2026-09-01"):
+    return cs.SeasonalEEProvider(backend, data_end=data_end, calendar_windows=CALENDAR)
+
+
+def test_seasonal_availability_is_published_through_the_season_end():
+    late = provider(Backend(cover_to="2026-07-20"))
+    o = late.fetch("gdd", "cpc", 2026, "s1", WINDOWS)
+    assert o.status == "unavailable" and "season needs" in o.detail
+    gaps = provider(Backend(gaps=["2026-02-10", "2026-04-02"]))       # a gap outside AND one inside the season
+    assert gaps.fetch("gdd", "cpc", 2026, "s1", WINDOWS).status == "published"     # available-observation semantics
+    gl = provider(Backend(cover_to="2026-07-31T21:00"))               # GLDAS last slot of 2026-07-31 missing
+    assert gl.fetch("sm_z", "gldas21", 2026, "s1", WINDOWS).status == "unavailable"
+    assert provider(Backend()).fetch("sm_z", "gldas21", 2026, "s1", WINDOWS).status == "published"
     with pytest.raises(cl.ClimateProcessingFailure, match="unreadable private inputs"):
-        cs.SeasonalEEProvider(Backend(missing=["STAGE2D"])).fetch("sm_z", "gldas21", 2026, "s1", windows)
-    provider = cs.SeasonalEEProvider(Backend())
+        provider(Backend(missing=["STAGE2D"])).fetch("sm_z", "gldas21", 2026, "s1", WINDOWS)
+    with pytest.raises(cl.ClimateProcessingFailure, match="after the run data end"):
+        provider(Backend(), data_end="2026-07-01").fetch("gdd", "cpc", 2026, "s1", WINDOWS)
+
+
+def test_rainfall_bounds_use_the_full_calendar_and_stop_at_the_data_end(monkeypatch):
+    seen = {}
+    real = cs.rain_seasonal_table
+
+    def spy(ee, family, source, year, bounds, refs, codes):
+        seen["bounds"], seen["codes"] = bounds, codes
+        return real(ee, family, source, year, bounds, refs, codes)
+    monkeypatch.setattr(cs, "rain_seasonal_table", spy)
+    provider(Backend()).fetch("prcp_z", "chirps", 2026, "s1", WINDOWS)
+    # full both-season calendar of 2026: earliest start 2025-11-15 -> 2025-11-01; latest end 2027-01-01 clamped at 2026-09-01
+    assert seen["bounds"] == ("2025-11-01", "2026-09-01") and seen["codes"] == ["1", "2"]
+
+
+def test_provider_and_seasonal_saves(tmp_path):
+    p = provider(Backend())
     table = VersionedTable(LocalObjectStore(tmp_path), StoreRoot("real", "gs://b/ipcch-v2/real"), cl.table_name("prcp_z", cl.SEASONAL))
-    rep = cl.update_seasonal(table, "prcp_z", origin="2026-07", roster=CODES, windows=windows, fetch=provider.bound("prcp_z"))
+    rep = cl.update_seasonal(table, "prcp_z", origin="2026-08", roster=CODES, windows=WINDOWS, fetch=p.bound("prcp_z"))
     assert rep["saved"] == ["2026-s1"]
     frame, _ = cl.read_seasonal(table)
     assert frame["admin_code"].tolist() == ["1", "2"] and frame["n_sources"].tolist() == [3, 3]
-    assert len(provider.backend.exports) == 3                       # one export per source; prcp_anom would reuse them
+    assert len(p.backend.exports) == 3                              # one export per source; prcp_anom would reuse them

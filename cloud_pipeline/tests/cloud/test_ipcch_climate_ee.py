@@ -105,6 +105,10 @@ def test_provider_outcomes_and_failures():
         ce.MonthlyEEProvider(FakeBackend(missing=["STAGE2B"])).fetch("gdd", "cpc", "2026-08")
     with pytest.raises(cl.ClimateProcessingFailure, match="export failed"):
         ce.MonthlyEEProvider(FakeBackend(fail_export=True)).fetch("sm_z", "era5land", "2026-08")
+    hourly = FakeBackend(days=31, per_day=8)                   # 248 consecutive HOURLY stamps (< 11 days): not 3-hourly
+    hourly.image_times = lambda c, b, s, e: [int((pd.Timestamp(s, tz="UTC") + pd.Timedelta(hours=k)).value // 10**6) for k in range(248)]
+    assert ce.MonthlyEEProvider(hourly).fetch("sm_z", "gldas21", "2026-08").status == "unavailable"
+    assert ce.slots_present([], "2026-08-01", "2026-09-01", 8) == (0, 248)
     gl = ce.MonthlyEEProvider(FakeBackend(days=31, per_day=8))
     assert gl.fetch("sm_z", "gldas21", "2026-08").status == "published"
     with pytest.raises(cl.ClimateProcessingFailure, match="no EE provider"):
