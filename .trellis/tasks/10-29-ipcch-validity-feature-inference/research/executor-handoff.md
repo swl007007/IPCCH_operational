@@ -1,46 +1,69 @@
 # Executor durable handoff — READ FIRST after compaction (SAME session 6a490ae1; do not restart)
 
-Identity: Claude Opus 5.5 1M, session 6a490ae1-ee00-43f9-bdfc-c887c9816c09, Herdr w1A:p2; Supervisor Codex w1A:p1. No Trellis Audit, no implementation subagents, no production/live-current change, no extra cloud writes. Releases: research/cp1/supervisor-review.md (CP2 steps 0–10 + harvest_final.py pinned eb329e17…), research/cp3-release.md (CP3 local B–E).
-Paths: OP=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational (branch feat/ipcch-validity-feature-inference); R=/home/swl007007/projects/food-crisis-research; T=OP/.trellis/tasks/10-29-ipcch-validity-feature-inference; D=R/staging/ipcch-h2h8h14-20261030.
+Identity: Claude Opus 5.5 1M, session 6a490ae1-ee00-43f9-bdfc-c887c9816c09, Herdr w1A:p2; Supervisor Codex w1A:p1 (report via
+`herdr agent prompt w1A:p1 "..."`). Single executor owner; ignore observer peer sessions (no cross-session messaging).
+CONSTRAINTS: NO Trellis Audit; NO production deployment / live-current change; NO additional cloud writes or EE compute/export
+(read-only metadata only; any EE compute needs a Supervisor packet); NO retraining/new fits; frozen training worktree
+R/control-plane-h2h8h14 stays clean at 9aa9e54; preserve Supervisor-owned files (research/cp1|cp2/supervisor-review.md,
+research/cp3-supervisor-review.md, research/cp3-release.md, cp2/c6c7-implementation.md edits) — never stage/commit them;
+do not commit AGENTS.md/CLAUDE.md GitNexus stat lines; GitNexus impact before editing existing symbols, detect_changes before
+commits (warn on HIGH/CRITICAL). Commit trailer: Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>.
+Paths: OP=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational (branch feat/ipcch-validity-feature-inference);
+R=/home/swl007007/projects/food-crisis-research; T=OP/.trellis/tasks/10-29-ipcch-validity-feature-inference; PKGWT=R/control-plane-h2h8h14-pkg
+(branch task/ipcch-h2h8h14-package). Tests: `cd OP/cloud_pipeline && PYTHONDONTWRITEBYTECODE=1 ~/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest <files> -q -p no:cacheprovider`.
 
-## CP2 live state (06:2xZ 2026-10-30)
-- Image training-ipcch-validity@sha256:9797161afb01f44c4b169e61c7c9f3fa237bf6911e72c4da89f13b430941c689 (build 108c9303 SUCCESS).
-- H2 customJobs/1262877692496183296 SUCCEEDED; H8 customJobs/6328301373381148672 SUCCEEDED (06:08:41Z, pollers rc=0; final.json in R/ledger/vertex/ipcch-h2h8h14-final-r1-h0{2,8}/).
-- H14 customJobs/7189333327139045376 submitted by wave2 script (fresh occupancy 16/42); background task bzj3ynkbp polls it; status D/receipts/08-wave2.status, logs D/receipts/08-submit-h14.log, 08-poll-h14.log. NEVER resubmit; reconcile read-only only.
-- Training worktree R/control-plane-h2h8h14 frozen clean 9aa9e54 until H14 submitted (now submitted; keep it unchanged anyway).
-- DONE 06:3xZ: H2/H8 harvested ok (11/11 checks; receipts D/receipts/09-harvest-h0{2,8}.json; trials R/scratch/h2h8h14-final/harvest/final-h0{2,8}/trial-0; runs f55ddf45…/0f7e584f…, models m-4c4629…/m-e7976e…) + MLflow GET readback ok (T/research/cp2/cp2-harvest-h02-h08.md, mlflow-readback/cp2_mlflow_read.py RECEIPT…). H14 RUNNING since 06:13:33Z.
-- H14 SUCCEEDED 06:21:23Z (wave2 exit 0); harvested ok 11/11 (09-harvest-h14.json; run a4bf0a5d2bef4418b31503d679ac3194, model m-c8efb3bd8157451295f15960fb3654ff); readback-h14.json ok. ALL PAID FITS DONE; no further fits authorized.
-- Package build r1 DONE exit 0: manifest 18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22, 28 files (Supervisor hashed all 28; CANDIDATE — preserve until explicit research acceptance). Real check running: T/research/cp2/package-check/run_check.sh (verify_combination built+relocated, probes, operational runtime raw-score parity) -> run_check-r1.log, check-r1/runtime_check_real.json.
-- CP2 ACCEPTANCE ALSO NEEDS (Supervisor): fixed assets + initial histories + acceptance records: exactly 6,226 roster (R32), ACLED fixed tables (R55), research-family histories (R59), history snapshot (R62), climate/GPP/nightlight/WFP initial histories, acceptance manifest entries (R45) — complete handoff, not just the 28 model/evidence files.
-- (was) Package build r1 LAUNCHED (PID 3010886): R/scratch/h2h8h14-final/package-build/{build.sh,RUNS.json,build-r1.log,out-r1}, package-id ipcch-validity-h2h8h14-final-20261030 (configs byte-equal to uploaded objects; pkg-worktree training modules = trained shas). After exit=0: verify_combination, relocated copy, runtime load check per scope, write T/research/cp2/cp2-package.md. Package command form:
-  `cd R/control-plane-h2h8h14 && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. R/envs/mlflow-svc/bin/python -B D/job-packet/harvest_final.py 2 --out D/receipts/09-harvest-h02.json` (then 8, 14). New dest R/scratch/h2h8h14-final/harvest/final-hHH; partial failure → new destination after reading receipts; never retrain for harvest.
-  Then live MLflow readback (GET only; mlflow-reader secret in memory; pattern T/research/cp0-live/cp0_mlflow_read.py) of the 3 run/model ids → T/research/cp2/.
-  Then package (pkg worktree R/control-plane-h2h8h14-pkg @ ca3f14a, `research_cloud/packages/operational_ipcch.py`): `PYTHONPATH=. IPCCH_AE_SRC=R/sources/Food_Crisis_Cluster/IPCCHAlphaEarthExperiment ~/.venvs/ipcch-validity-idp/bin/python -m research_cloud.packages.operational_ipcch --trials H2=<trial> H8=<trial> H14=<trial> --recipes T/research/cp1/recipes --manifests T/research/cp1/recipes --runs RUNS.json --package-id <id> --out <new>` (runs bound to publication.json); verify_combination; relocated copy check; operational runtime load check (exact-lock env, pattern T/research/cp2/fixture-dryrun/runtime_load_check.py) per scope.
+## RUNNING (do NOT start again; inspect durable outputs on resume)
+- Assembly parity r2 effective check: `bash T/research/cp3/assembly-parity/run_r2_effective.sh` (bash PID 3490312, started ~07:25Z;
+  log T/research/cp3/assembly-parity/run-r2.log, ends with `SUMMARY ...` and `exit=N`). Steps: stage2 exact -> stage3 exact ->
+  stage2 research-parse -> stage3 research-parse (each ~25 min). Outputs (new files, never overwritten) in
+  R/scratch/h2h8h14-final/assembly-parity/: r2_exact.json (+ r2_exact_assembled_hHH.npy), r2_exact_effective.json,
+  r2_research_parse.json (+ arrays), r2_research_parse_effective.json. Stage2 exit 0 EXACT / 2 DIFFERS; stage3 verdict
+  EFFECTIVE_IDENTICAL rc0 / EFFECTIVE_DIFFERS rc2 (float32 effective inputs + raw q2..q5 through the operational runtime).
+  On resume: `ps -o pid,etime,cmd -C python,bash | grep -E "run_r2|stage2_op|stage3_eff"`; when finished, record verdicts+rc in
+  T/research/cp3/cp3d-assembly-initial.md and report to Supervisor (Supervisor wants per-family causes, ORIGINAL diffs and
+  the machine verdicts; r1 JSON has no verdict key and is NOT a pass).
 
-## CP3 committed (operational branch; tests in ~/.venvs/fewsnet-test-lock-20261022, `cd OP/cloud_pipeline && python -m pytest <t> -q -p no:cacheprovider`)
-- b9e333e CP3a FEWS partition eol=crlf (53 FEWS tests; T/research/cp3/cp3a-fews-crlf.md).
-- 6ebfb63 CP3b cloud/orchestrator/delivery_request_v2.py + tests/cloud/test_delivery_request_v2.py (12).
-- 9270192 + 557515f CP3c-1 cloud/ipcch/{stores,retained}.py + tests/cloud/test_ipcch_stores.py (12). 557515f = Supervisor review fixes (pending Supervisor review). API: VersionedTable.read() -> (frame, head, generation).
-- c65e43d CP3c-2 cloud/ipcch/acled.py + tests/cloud/test_ipcch_acled.py (6); full-history parity vs research 18 cols/1,250,808 rows exact ≤1e-9 (T/research/cp3/cp3c2-acled.md, acled-parity/).
-- b3035ad ACLED canonical week/interval strings fix (scout finding on c65e43d; 8 acled tests; repro fails on c65e43d; parity rerun unchanged).
-- dab5bc9 climate core (cloud/ipcch/climate.py, spi_spei.py; 7+4 tests; ensemble parity monthly exact 13 bases, seasonal known upstream exclusions documented T/research/cp3/cp3c3-climate-core.md; read-only EE: han-sandbox private assets all denied for this identity, public collections OK).
-- Climate (c) adapters: spec extraction subagent -> T/research/cp3/climate-script-specs.md; then Python-ee ports exporting reduceRegions sums to GCS CSV (EVI pattern), pandas post-processing, configurable asset refs + clear errors, offline graph tests with cached algorithm signatures.
-- GitNexus index: incremental analyze failed (FTS inconsistency); forced full analyze running.
-- 27a50be shape/date fixes + CP2 package evidence (cp2/cp2-package.md; relocated runtime parity bit-equal); receipt repaired by cp2/package-check/runtime_check_real_r2.json (combination_id, targets M+scope) — historical feature probes only, not E2E.
-- 1123bcf seasonal SPI/SPEI (vendor/seasonal_spi_spei_v3.py verbatim + spi_spei_seasonal.py; golden + live differential; distinct SPEI_FIT_MONTHLY/SEASONAL ids). Climate tests: 15 pass (climate+monthly+seasonal).
-- HANDOFF BUNDLE (CP2 completeness): builder R/control-plane-h2h8h14-pkg/research_cloud/packages/ipcch_handoff_inputs.py (UNCOMMITTED on pkg branch); outputs R/scratch/h2h8h14-final/handoff-build/out-rN (r1 FAILED latlon noise; r2 ok 50 files; r3 ok +audit/coordinate_spread.csv; r4 running +fixed/season_calendar.csv derived, reproduces all 149,424 delivered windows). Roster sha 9ff2c420…, 6,226; area 1315 dropped/counted. Next: evidence md T/research/cp2/cp2-handoff-inputs.md + copy manifest/acceptance entries; commit builder on pkg branch; report.
-- 4ebb7d0 EE monthly raster providers; fe362c3 table providers (NDVI/EVI S2E3, SPI/SPEI S2C3); b8ea796 seasonal providers (rain paint calendar, temp/soil per-feature, seasonal NDVI/SPI/SPEI) + climate_run.update_all. Climate tests 48 pass. Evidence T/research/cp3/cp3c3-climate-core.md parts 1-5. CLIMATE PORT COMPLETE OFFLINE (no live EE; han-sandbox assets unreadable; producers of baselines/S2E3/S2C3 not delivered).
-- pkg branch e314fb3 handoff builder; CP2 handoff r4 evidence T/research/cp2/cp2-handoff-inputs.md.
-- c090c4e climate review fixes (GLDAS exact 3h slots; drought axes keep 1991-2020 baseline + PATCH32 availability; strict tables/admins; failing-base progress in run report; seasonal rain full-calendar bounds clamped at data_end; seasonal availability = published through season end). 56 tests receipt cp3/cp3c3-review-fixes-tests-run1.log.
-- UNCOMMITTED (operational): cloud/ipcch/assembly.py, initial.py, vendor/ipcch_months.py, ipcch_compact.py, ipcch_validity_feature_blocks.py, tools/vendor_ipcch_feature_formulas.py, tests test_ipcch_assembly.py/test_ipcch_initial.py, tests/fixtures/ipcch_climate/feature_order_527.json, test_ipcch_acled.py roster test (+StoreError import). Supervisor batch (2026-10-30) to fix BEFORE commit: grid() empty optional source crash (must yield NaN features); national IDP duplicate (iso3,report_month) reject; integral admin/target/horizon validation; initialise preflight parse/schema + head conflicts for whole bundle before writes; history_snapshot init HEAD must carry preparation_cutoff (snapshot_warning) + integrated test; CI fix must not re-export national history (verify idp_national bytes r4==r5).
-- PKG branch UNCOMMITTED: ipcch_handoff_inputs.py r5 changes (iso3_reference from pycountry 26.2.16 table at handoff-build/iso3166_alpha2_alpha3_pycountry_26.2.16.csv, training iso3 kept; population_reference.csv; fixed/geometry byte copy; roster_policy + fixed_source_exceptions; imported_metadata_exceptions for seasonal SD=0 103 rows; dbf_column reader). Build r5 -> handoff-build/out-r5 (exit 0) not yet reviewed/evidenced.
-- ASSEMBLY PARITY r1 (historical compatibility evidence, NOT CP5): stage1 rc0 (18,317 rows/H incl 15,317 scored); stage2 H2: 435/527 columns exact; differing lat/lon + ACLED-agg columns (+?). UNRESOLVED: quantify per family keyed NaN-mask mismatches, max abs, root cause (source/parser/dtype vs temporal semantics); no tolerance relaxation; preserve r1 evidence (run_r1.sh/stage2_operational_r1.py copies; run-r1.log). New harness run_v2.sh (set -euo pipefail, explicit stage rc, stage2 exit 2 on DIFFERS) for future runs into NEW dirs.
-- CP2 acceptance withheld (Supervisor): geometry/population refs, CI ISO3 (no CIV in national IDP -> no feature effect), 1315 fixed-source exception, SD=0 imported exception, wording -> addressed in r5 pending evidence.
-- Uncommitted otherwise: none (Supervisor-owned research/cp1/supervisor-review.md and cp3-release.md left untouched).
+## CP2 (training/package/handoff) — open, not accepted
+- Fits done: H2 run f55ddf45198f427eade6d68c2a3a04f2 / m-4c46295486bc4d28af8cfca561cdf4ce; H8 0f7e584fccc549a28cf6fe9519b94da2 /
+  m-e7976e74421a4d75b8462291101c8918; H14 a4bf0a5d2bef4418b31503d679ac3194 / m-c8efb3bd8157451295f15960fb3654ff. Harvest receipts
+  R/staging/ipcch-h2h8h14-20261030/receipts/09-harvest-h0{2,8}|h14.json; MLflow readback T/research/cp2/mlflow-readback.
+- Package CANDIDATE R/scratch/h2h8h14-final/package-build/out-r1/package, manifest 18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22,
+  combination_id ipcch-validity-h2h8h14-final-20261030 (keep unchanged until explicit research acceptance). Relocated runtime raw-score
+  parity: T/research/cp2/package-check/runtime_check_real_r2.json (historical probes only). Evidence T/research/cp2/cp2-package.md.
+- Handoff bundle r5 (PKGWT dac4a0a builder research_cloud/packages/ipcch_handoff_inputs.py): R/scratch/h2h8h14-final/handoff-build/out-r5,
+  58 files, manifest e6e3ebc6…, acceptance_entries 3621c350… (57 entries, acceptor/accepted_at EMPTY — needs explicit acceptance act).
+  r5 adds iso3_reference (pycountry 26.2.16 table; training iso3 lineage kept, 31 CI blank -> CIV reference only, no IDP effect),
+  population_reference.csv, fixed/geometry byte copy, roster_policy, 1315 fixed-source exception, 103 imported SD=0 seasonal rows.
+  Evidence T/research/cp2/cp2-handoff-inputs.md (+ handoff-inputs-r5/). r4 (out-r4) still used by parity harness.
+- Remaining for CP2 acceptance: Supervisor review of r5; explicit acceptance (package + bundle entries) is a research-side act.
 
-## CP3 remaining (design.md/prd.md)
-1. Shared climate ensemble port — DONE offline (see above). (was: (c) EE adapters (spec T/research/cp3/climate-script-specs.md; offline graph tests via cached ee algorithm signatures — /tmp/cp3clim/ee_algorithms.json.gz proven, copy into tests/fixtures; han-sandbox private assets all unreadable -> configurable refs + clear errors). SUPERVISOR SCOPE RULING: (a) pure core + (b) SPI/SPEI math port with differential test + (c) REAL executable provider adapters through the actual shared-folder algorithms (may retain/transpile JS or reuse EE execution; offline fixture/mocked-boundary tests; download/results -> retained saves). No live EE compute/export without a concrete packet to Supervisor; read-only asset metadata/access checks (incl. han-sandbox-505315) preauthorized; no IAM/project changes; if inaccessible: configurable asset refs + clear runtime errors + report limitation; no silent scope reduction (R1, R34 incl. population SD ddof0, SD missing <2 sources, no-provider block vs processing failure; R40 method ids; R33 completed seasons; R43 lookback gaps). Sources: cp0-climate-acled-sources.md; shared folder S=/mnt/c/users/swl00/ifpri dropbox/weilun shi/IPCCH_shared_folder; delivered tables climate_monthly/seasonal MODELING_READY headers.
-2. Feature assembly + immutable batches (R13, R32 full 6,226 roster/dups, R52, R58 2027+ all-zero year dummies, R65 alignment; reuse research compact formulas incl. GPP R57 not at runtime — runtime GPP = retained published months), WFP/nightlight (R64), research families (R59), outcome-history from snapshot (R62, report-month ≤ O).
-3. Inference validation: R19 (missing/dup/unparseable/inf, reorder, extras), R18 nonfinite with area/horizon/field, C6b per-scope cutoffs (package_manifest training_cutoffs), R51 accepted vs candidate, NaN passthrough (runtime path proven by fixture dry run), diagnostics integration.
-4. CP4 publication/compat: v2 routing; per-system lock locks/{system} (R50/FCC2); single pointer cross-system inheritance (R63/FCC4); candidate (R66); CAS no retry (FCC3); activation from current release; legacy v1 cutover/inherit exact current (R37/FCC9); promote/resume reject new candidates (FCC5); smoke isolation (R36/R48). Supervisor 6ebfb63 spot-check: the integrated preflight (adapter stage OK) must validate the ENTIRE FEWS delivery block and ALL nested model/asset/diagnostic refs (iter_object_refs currently omits refs inside delivery) before any IPCCH collection/mutation; R17 invalid either side -> execute nothing; test a mixed request with invalid FEWS delivery/hash asserting zero writes/calls.
-5. CP5 local small-area E2E with real 3 models; CP6 acceptance.
+## CP3 (operational v2 runtime, local) — open
+Committed (operational branch): b9e333e FEWS crlf; 6ebfb63 request v2; 9270192+557515f stores/retained; c65e43d+b3035ad ACLED;
+dab5bc9 climate core+SPI/SPEI; 27a50be; 1123bcf seasonal SPI/SPEI; 4ebb7d0 EE monthly; fe362c3 table providers; b8ea796 seasonal
+providers + climate_run; c090c4e climate review fixes; ad931c2 assembly + initial (+vendored research formulas); bd06bdf residual
+fixes (Supervisor verified hashes). Latest regression receipt T/research/cp3/cp3d-residual-fixes-tests-run1.log: 99 passed.
+Evidence: T/research/cp3/{cp3c2-acled.md, cp3c3-climate-core.md (parts 1-6), cp3d-assembly-initial.md}.
+Accepted review findings already fixed: all CP3 adapter findings (GLDAS slots, drought baseline axes, strict tables, progress
+reports, seasonal bounds/availability), assembly/initial batch (empty optional sources NaN, IDP dup, integral ids, whole-bundle
+preflight, snapshot metadata), residuals (S2E3 coverage before join, strict field validators).
+Known limitations (stated): no live EE run; han-sandbox private assets unreadable; baselines/S2E3/S2C3 producers not delivered;
+rainfall exact-collision patch not delivered.
+OPEN CP3 work (next, in order):
+1. Feature batch writer (R52): immutable unique batch per generation bound to run id, records M, O, mode, combination ref,
+   generation time, method ids (R40), per-family coverage ends + source-level gaps, missingness counts, acceptance records,
+   retained-input refs; summary file for generation-only. Real batch = full 6,226 roster, duplicate keys fail (R32).
+2. Inference validation (R19/R18/R51/R61): batch reference + combination exact match, cutoff/schema/real-dummy checks,
+   missing required column -> fail, duplicate names -> fail, reorder by model names, extras ignored, unparseable/inf in required
+   -> fail with area/column; nonfinite outputs fail with area/horizon/field; real requires package status accepted + checksums,
+   smoke accepts candidate; per-scope training cutoffs from package manifest; post-processing unchanged (cummax, thresholds).
+3. Generation orchestration: climate_run.update_all, GPP v3 append + ledger (R9/R49/R54), nightlight VIIRS append (R64), WFP
+   keep/refresh (R64), research families/history_snapshot refresh (R59/R62), ACLED refresh/keep -> monthly_series, initial
+   store from accepted bundle, assembly per horizon (T = O + H), population from population_reference via no-future builder.
+4. Integrated preflight (Supervisor 6ebfb63 note): validate the ENTIRE FEWS delivery + all nested refs before any IPCCH
+   mutation; mixed invalid-FEWS request -> zero writes/calls test.
+## CP4 publication/compat (after CP3): v2 routing; per-system lock locks/{system} (R50/FCC2); single pointer with cross-system
+inheritance (R63/FCC4); candidate publication (R66); CAS no retry (FCC3); activation from current release; legacy v1
+cutover/inherit exact current (R37/FCC9); promote/resume reject new candidates (FCC5); smoke isolation (R36/R48); all three
+horizons or none (R18).
+## CP5 local small-area smoke E2E with the real 3 models (M 2026-10, O 2026-08; distinct from historical parity evidence);
+## CP6 acceptance. Assembly parity = historical compatibility evidence only.

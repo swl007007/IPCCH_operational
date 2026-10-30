@@ -9,13 +9,20 @@ sys.path.insert(0, "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_op
 from cloud.ipcch import assembly as asm
 from cloud.ipcch.vendor import ipcch_compact as cp
 STAGE1, BUNDLE, ACLED, PKG = sys.argv[1:5]
+OUT_JSON = sys.argv[5] if len(sys.argv) > 5 else os.path.join(STAGE1, "stage2_parity.json")
+ACLED_PARSE = sys.argv[6] if len(sys.argv) > 6 else "exact"      # "research": the training loader's default float parse
 rd = lambda p, **k: pd.read_csv(os.path.join(BUNDLE, p), float_precision="round_trip", **k)
 t0 = time.time()
 roster = tuple(int(a) for a in rd("fixed/roster.csv")["admin_code"])
 monthly = {b: rd(f"history/climate_month_{b}.csv", usecols=["admin_code", "month", "value"]) for b in cp.CLIMATE_BASES}
 seasonal = {b: rd(f"history/climate_gs_{b}.csv", usecols=["admin_code", "season_year", "season", "value"]) for b in cp.CLIMATE_BASES}
 interim = {f: rd(f"history/{f}.csv", usecols=["admin_code", "month", "value"]) for f in asm.INTERIM_FAMILIES}
-acled = pd.read_csv(ACLED, float_precision="round_trip")
+if ACLED_PARSE == "research":     # diagnostic: same TEXT parse as research load_sources (pandas default parser) of the interim
+    _cols = [f"acled_agg_{g}_{t}" for g in ("events", "fatalities", "exposure", "exposure_share", "spill_events", "spill_fatalities")
+             for t in ("battles", "erv", "vac")]
+    acled = pd.read_csv(ACLED, usecols=["admin_code", "year", "month", *_cols]).rename(columns={"admin_code": "area_id"})
+else:
+    acled = pd.read_csv(ACLED, float_precision="round_trip")
 acled = acled.assign(admin_code=acled["area_id"].astype(np.int64), month=acled["year"].astype(str) + "-" + acled["month"].astype(int).map("{:02d}".format))
 acled = acled[acled["admin_code"].isin(roster)]
 order = tuple(json.load(open(os.path.join(PKG, "scope_0m", "feature_columns.json"))))
@@ -37,6 +44,7 @@ for h in (2, 8, 14):
         inter = dict(interim, GPP_mean=gpp[gpp_ord <= thr])
         X, _ = asm.assemble(asm.AssemblyInputs(interim=inter, **base), h, r["admin"][sel], r["target"][sel])
         got[sel] = X.to_numpy(float)
+    np.save(OUT_JSON[:-5] + f"_assembled_h{h:02d}.npy", got)          # for the effective-input / score comparison
     same = (got == Xr) | (np.isnan(got) & np.isnan(Xr))
     bad_cols = np.flatnonzero(~same.all(axis=0))
     per_col = {order[j]: {"rows": int((~same[:, j]).sum()), "nan_mismatch": int((np.isnan(got[:, j]) != np.isnan(Xr[:, j])).sum()),
@@ -48,6 +56,9 @@ for h in (2, 8, 14):
 result["seconds"] = round(time.time() - t0, 1)
 result["verdict"] = ("EXACT" if result["order_equals_package"] and all(not v["columns_differing"] for v in result["horizons"].values())
                      else "DIFFERS")
-json.dump(result, open(os.path.join(STAGE1, "stage2_parity.json"), "w"), indent=1)
+result["acled_parse"] = ACLED_PARSE
+if os.path.exists(OUT_JSON):
+    raise SystemExit(f"{OUT_JSON} exists; never overwrite earlier evidence")
+json.dump(result, open(OUT_JSON, "w"), indent=1)
 print(json.dumps({"verdict": result["verdict"]}))
 sys.exit(0 if result["verdict"] == "EXACT" else 2)     # 2 = ran, but parity differs (characterised in the JSON)

@@ -1,0 +1,1686 @@
+{
+ "order_equals_package": true,
+ "horizons": {
+  "2": {
+   "rows": 18317,
+   "cells": 9653059,
+   "cells_equal": 9334598,
+   "columns_exact": 435,
+   "columns_differing": {
+    "lat": {
+     "rows": 2468,
+     "nan_mismatch": 0,
+     "max_abs": 5.000089231543825e-11,
+     "scored_rows": 0
+    },
+    "lon": {
+     "rows": 2465,
+     "nan_mismatch": 0,
+     "max_abs": 5.000089231543825e-11,
+     "scored_rows": 0
+    },
+    "acled_agg_events_battles__value_at_origin_lag1": {
+     "rows": 2351,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 1863
+    },
+    "acled_agg_events_battles__ma3_at_origin_lag1": {
+     "rows": 2741,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2149
+    },
+    "acled_agg_events_battles__ma6_at_origin_lag1": {
+     "rows": 2779,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2104
+    },
+    "acled_agg_events_battles__ma12_at_origin_lag1": {
+     "rows": 3027,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2343
+    },
+    "acled_agg_events_battles__sd12_at_origin_lag1": {
+     "rows": 3194,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 2545
+    },
+    "acled_agg_events_erv__value_at_origin_lag1": {
+     "rows": 1454,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1183
+    },
+    "acled_agg_events_erv__ma3_at_origin_lag1": {
+     "rows": 1594,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1250
+    },
+    "acled_agg_events_erv__ma6_at_origin_lag1": {
+     "rows": 1816,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 1426
+    },
+    "acled_agg_events_erv__ma12_at_origin_lag1": {
+     "rows": 2461,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1982
+    },
+    "acled_agg_events_erv__sd12_at_origin_lag1": {
+     "rows": 2369,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 1913
+    },
+    "acled_agg_events_vac__value_at_origin_lag1": {
+     "rows": 2640,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2107
+    },
+    "acled_agg_events_vac__ma3_at_origin_lag1": {
+     "rows": 2959,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2352
+    },
+    "acled_agg_events_vac__ma6_at_origin_lag1": {
+     "rows": 3464,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2791
+    },
+    "acled_agg_events_vac__ma12_at_origin_lag1": {
+     "rows": 3346,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2605
+    },
+    "acled_agg_events_vac__sd12_at_origin_lag1": {
+     "rows": 3453,
+     "nan_mismatch": 0,
+     "max_abs": 1.0658141036401503e-14,
+     "scored_rows": 2715
+    },
+    "acled_agg_fatalities_battles__value_at_origin_lag1": {
+     "rows": 2188,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1766
+    },
+    "acled_agg_fatalities_battles__ma3_at_origin_lag1": {
+     "rows": 2378,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1885
+    },
+    "acled_agg_fatalities_battles__ma6_at_origin_lag1": {
+     "rows": 2245,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1721
+    },
+    "acled_agg_fatalities_battles__ma12_at_origin_lag1": {
+     "rows": 2245,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1720
+    },
+    "acled_agg_fatalities_battles__sd12_at_origin_lag1": {
+     "rows": 2233,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1687
+    },
+    "acled_agg_fatalities_erv__value_at_origin_lag1": {
+     "rows": 1317,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1138
+    },
+    "acled_agg_fatalities_erv__ma3_at_origin_lag1": {
+     "rows": 1528,
+     "nan_mismatch": 0,
+     "max_abs": 2.2737367544323206e-13,
+     "scored_rows": 1267
+    },
+    "acled_agg_fatalities_erv__ma6_at_origin_lag1": {
+     "rows": 1660,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1365
+    },
+    "acled_agg_fatalities_erv__ma12_at_origin_lag1": {
+     "rows": 1908,
+     "nan_mismatch": 0,
+     "max_abs": 2.2737367544323206e-13,
+     "scored_rows": 1599
+    },
+    "acled_agg_fatalities_erv__sd12_at_origin_lag1": {
+     "rows": 1897,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1594
+    },
+    "acled_agg_fatalities_vac__value_at_origin_lag1": {
+     "rows": 2396,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1944
+    },
+    "acled_agg_fatalities_vac__ma3_at_origin_lag1": {
+     "rows": 2747,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2184
+    },
+    "acled_agg_fatalities_vac__ma6_at_origin_lag1": {
+     "rows": 2818,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2230
+    },
+    "acled_agg_fatalities_vac__ma12_at_origin_lag1": {
+     "rows": 2990,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2372
+    },
+    "acled_agg_fatalities_vac__sd12_at_origin_lag1": {
+     "rows": 2918,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2344
+    },
+    "acled_agg_exposure_battles__value_at_origin_lag1": {
+     "rows": 829,
+     "nan_mismatch": 0,
+     "max_abs": 4.656612873077393e-10,
+     "scored_rows": 660
+    },
+    "acled_agg_exposure_battles__ma3_at_origin_lag1": {
+     "rows": 780,
+     "nan_mismatch": 0,
+     "max_abs": 4.656612873077393e-10,
+     "scored_rows": 608
+    },
+    "acled_agg_exposure_battles__ma6_at_origin_lag1": {
+     "rows": 766,
+     "nan_mismatch": 0,
+     "max_abs": 4.656612873077393e-10,
+     "scored_rows": 583
+    },
+    "acled_agg_exposure_battles__ma12_at_origin_lag1": {
+     "rows": 746,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 572
+    },
+    "acled_agg_exposure_battles__sd12_at_origin_lag1": {
+     "rows": 1093,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 847
+    },
+    "acled_agg_exposure_erv__value_at_origin_lag1": {
+     "rows": 515,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 433
+    },
+    "acled_agg_exposure_erv__ma3_at_origin_lag1": {
+     "rows": 490,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 398
+    },
+    "acled_agg_exposure_erv__ma6_at_origin_lag1": {
+     "rows": 548,
+     "nan_mismatch": 0,
+     "max_abs": 3.4924596548080444e-10,
+     "scored_rows": 464
+    },
+    "acled_agg_exposure_erv__ma12_at_origin_lag1": {
+     "rows": 676,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 565
+    },
+    "acled_agg_exposure_erv__sd12_at_origin_lag1": {
+     "rows": 1001,
+     "nan_mismatch": 0,
+     "max_abs": 1.1641532182693481e-10,
+     "scored_rows": 878
+    },
+    "acled_agg_exposure_vac__value_at_origin_lag1": {
+     "rows": 1082,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 878
+    },
+    "acled_agg_exposure_vac__ma3_at_origin_lag1": {
+     "rows": 1021,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 819
+    },
+    "acled_agg_exposure_vac__ma6_at_origin_lag1": {
+     "rows": 1009,
+     "nan_mismatch": 0,
+     "max_abs": 4.656612873077393e-10,
+     "scored_rows": 811
+    },
+    "acled_agg_exposure_vac__ma12_at_origin_lag1": {
+     "rows": 994,
+     "nan_mismatch": 0,
+     "max_abs": 4.656612873077393e-10,
+     "scored_rows": 792
+    },
+    "acled_agg_exposure_vac__sd12_at_origin_lag1": {
+     "rows": 1293,
+     "nan_mismatch": 0,
+     "max_abs": 1.7462298274040222e-10,
+     "scored_rows": 1042
+    },
+    "acled_agg_exposure_share_battles__value_at_origin_lag1": {
+     "rows": 8174,
+     "nan_mismatch": 0,
+     "max_abs": 9.993633524885137e-17,
+     "scored_rows": 6798
+    },
+    "acled_agg_exposure_share_battles__ma3_at_origin_lag1": {
+     "rows": 10285,
+     "nan_mismatch": 0,
+     "max_abs": 1.6653345369377348e-16,
+     "scored_rows": 8501
+    },
+    "acled_agg_exposure_share_battles__ma6_at_origin_lag1": {
+     "rows": 11147,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 9132
+    },
+    "acled_agg_exposure_share_battles__ma12_at_origin_lag1": {
+     "rows": 12552,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 10320
+    },
+    "acled_agg_exposure_share_battles__sd12_at_origin_lag1": {
+     "rows": 10622,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 8662
+    },
+    "acled_agg_exposure_share_erv__value_at_origin_lag1": {
+     "rows": 5272,
+     "nan_mismatch": 0,
+     "max_abs": 9.974659986866641e-17,
+     "scored_rows": 4684
+    },
+    "acled_agg_exposure_share_erv__ma3_at_origin_lag1": {
+     "rows": 6487,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 5650
+    },
+    "acled_agg_exposure_share_erv__ma6_at_origin_lag1": {
+     "rows": 7225,
+     "nan_mismatch": 0,
+     "max_abs": 1.6653345369377348e-16,
+     "scored_rows": 6247
+    },
+    "acled_agg_exposure_share_erv__ma12_at_origin_lag1": {
+     "rows": 8768,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 7575
+    },
+    "acled_agg_exposure_share_erv__sd12_at_origin_lag1": {
+     "rows": 8108,
+     "nan_mismatch": 0,
+     "max_abs": 5.551115123125783e-17,
+     "scored_rows": 7018
+    },
+    "acled_agg_exposure_share_vac__value_at_origin_lag1": {
+     "rows": 10048,
+     "nan_mismatch": 0,
+     "max_abs": 9.990923019453923e-17,
+     "scored_rows": 8505
+    },
+    "acled_agg_exposure_share_vac__ma3_at_origin_lag1": {
+     "rows": 12421,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 10463
+    },
+    "acled_agg_exposure_share_vac__ma6_at_origin_lag1": {
+     "rows": 13953,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 11758
+    },
+    "acled_agg_exposure_share_vac__ma12_at_origin_lag1": {
+     "rows": 15672,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 13250
+    },
+    "acled_agg_exposure_share_vac__sd12_at_origin_lag1": {
+     "rows": 12489,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 10377
+    },
+    "acled_agg_spill_events_battles__value_at_origin_lag1": {
+     "rows": 2290,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1806
+    },
+    "acled_agg_spill_events_battles__ma3_at_origin_lag1": {
+     "rows": 2405,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1948
+    },
+    "acled_agg_spill_events_battles__ma6_at_origin_lag1": {
+     "rows": 2270,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1788
+    },
+    "acled_agg_spill_events_battles__ma12_at_origin_lag1": {
+     "rows": 2358,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1874
+    },
+    "acled_agg_spill_events_battles__sd12_at_origin_lag1": {
+     "rows": 3819,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 3114
+    },
+    "acled_agg_spill_events_erv__value_at_origin_lag1": {
+     "rows": 2274,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1886
+    },
+    "acled_agg_spill_events_erv__ma3_at_origin_lag1": {
+     "rows": 2581,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2130
+    },
+    "acled_agg_spill_events_erv__ma6_at_origin_lag1": {
+     "rows": 2374,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1905
+    },
+    "acled_agg_spill_events_erv__ma12_at_origin_lag1": {
+     "rows": 2338,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1870
+    },
+    "acled_agg_spill_events_erv__sd12_at_origin_lag1": {
+     "rows": 2849,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2314
+    },
+    "acled_agg_spill_events_vac__value_at_origin_lag1": {
+     "rows": 2509,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2011
+    },
+    "acled_agg_spill_events_vac__ma3_at_origin_lag1": {
+     "rows": 2828,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2310
+    },
+    "acled_agg_spill_events_vac__ma6_at_origin_lag1": {
+     "rows": 2588,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2116
+    },
+    "acled_agg_spill_events_vac__ma12_at_origin_lag1": {
+     "rows": 2272,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1800
+    },
+    "acled_agg_spill_events_vac__sd12_at_origin_lag1": {
+     "rows": 3911,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 3210
+    },
+    "acled_agg_spill_fatalities_battles__value_at_origin_lag1": {
+     "rows": 2156,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1722
+    },
+    "acled_agg_spill_fatalities_battles__ma3_at_origin_lag1": {
+     "rows": 2006,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1609
+    },
+    "acled_agg_spill_fatalities_battles__ma6_at_origin_lag1": {
+     "rows": 2097,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1662
+    },
+    "acled_agg_spill_fatalities_battles__ma12_at_origin_lag1": {
+     "rows": 2334,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1903
+    },
+    "acled_agg_spill_fatalities_battles__sd12_at_origin_lag1": {
+     "rows": 3081,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2526
+    },
+    "acled_agg_spill_fatalities_erv__value_at_origin_lag1": {
+     "rows": 1659,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1365
+    },
+    "acled_agg_spill_fatalities_erv__ma3_at_origin_lag1": {
+     "rows": 1809,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1467
+    },
+    "acled_agg_spill_fatalities_erv__ma6_at_origin_lag1": {
+     "rows": 2188,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1810
+    },
+    "acled_agg_spill_fatalities_erv__ma12_at_origin_lag1": {
+     "rows": 1974,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1611
+    },
+    "acled_agg_spill_fatalities_erv__sd12_at_origin_lag1": {
+     "rows": 2464,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2059
+    },
+    "acled_agg_spill_fatalities_vac__value_at_origin_lag1": {
+     "rows": 2450,
+     "nan_mismatch": 0,
+     "max_abs": 2.2737367544323206e-13,
+     "scored_rows": 1963
+    },
+    "acled_agg_spill_fatalities_vac__ma3_at_origin_lag1": {
+     "rows": 2385,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1913
+    },
+    "acled_agg_spill_fatalities_vac__ma6_at_origin_lag1": {
+     "rows": 2503,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 2033
+    },
+    "acled_agg_spill_fatalities_vac__ma12_at_origin_lag1": {
+     "rows": 2337,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1859
+    },
+    "acled_agg_spill_fatalities_vac__sd12_at_origin_lag1": {
+     "rows": 3237,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 2662
+    }
+   }
+  },
+  "8": {
+   "rows": 18317,
+   "cells": 9653059,
+   "cells_equal": 9330647,
+   "columns_exact": 435,
+   "columns_differing": {
+    "lat": {
+     "rows": 2637,
+     "nan_mismatch": 0,
+     "max_abs": 5.000089231543825e-11,
+     "scored_rows": 0
+    },
+    "lon": {
+     "rows": 2634,
+     "nan_mismatch": 0,
+     "max_abs": 5.000089231543825e-11,
+     "scored_rows": 0
+    },
+    "acled_agg_events_battles__value_at_origin_lag1": {
+     "rows": 2436,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 1946
+    },
+    "acled_agg_events_battles__ma3_at_origin_lag1": {
+     "rows": 2804,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2170
+    },
+    "acled_agg_events_battles__ma6_at_origin_lag1": {
+     "rows": 2863,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2183
+    },
+    "acled_agg_events_battles__ma12_at_origin_lag1": {
+     "rows": 3210,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2517
+    },
+    "acled_agg_events_battles__sd12_at_origin_lag1": {
+     "rows": 3086,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 2405
+    },
+    "acled_agg_events_erv__value_at_origin_lag1": {
+     "rows": 1522,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 1267
+    },
+    "acled_agg_events_erv__ma3_at_origin_lag1": {
+     "rows": 2126,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1758
+    },
+    "acled_agg_events_erv__ma6_at_origin_lag1": {
+     "rows": 2368,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 1934
+    },
+    "acled_agg_events_erv__ma12_at_origin_lag1": {
+     "rows": 2564,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 2076
+    },
+    "acled_agg_events_erv__sd12_at_origin_lag1": {
+     "rows": 2527,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2082
+    },
+    "acled_agg_events_vac__value_at_origin_lag1": {
+     "rows": 2670,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2082
+    },
+    "acled_agg_events_vac__ma3_at_origin_lag1": {
+     "rows": 2989,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2330
+    },
+    "acled_agg_events_vac__ma6_at_origin_lag1": {
+     "rows": 3367,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2667
+    },
+    "acled_agg_events_vac__ma12_at_origin_lag1": {
+     "rows": 3252,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2523
+    },
+    "acled_agg_events_vac__sd12_at_origin_lag1": {
+     "rows": 3082,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 2395
+    },
+    "acled_agg_fatalities_battles__value_at_origin_lag1": {
+     "rows": 2269,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1839
+    },
+    "acled_agg_fatalities_battles__ma3_at_origin_lag1": {
+     "rows": 2529,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2002
+    },
+    "acled_agg_fatalities_battles__ma6_at_origin_lag1": {
+     "rows": 2616,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2056
+    },
+    "acled_agg_fatalities_battles__ma12_at_origin_lag1": {
+     "rows": 2593,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2036
+    },
+    "acled_agg_fatalities_battles__sd12_at_origin_lag1": {
+     "rows": 2613,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2065
+    },
+    "acled_agg_fatalities_erv__value_at_origin_lag1": {
+     "rows": 1132,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 936
+    },
+    "acled_agg_fatalities_erv__ma3_at_origin_lag1": {
+     "rows": 1543,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1279
+    },
+    "acled_agg_fatalities_erv__ma6_at_origin_lag1": {
+     "rows": 1725,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1454
+    },
+    "acled_agg_fatalities_erv__ma12_at_origin_lag1": {
+     "rows": 1689,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1363
+    },
+    "acled_agg_fatalities_erv__sd12_at_origin_lag1": {
+     "rows": 1657,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1355
+    },
+    "acled_agg_fatalities_vac__value_at_origin_lag1": {
+     "rows": 2553,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2079
+    },
+    "acled_agg_fatalities_vac__ma3_at_origin_lag1": {
+     "rows": 3064,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2507
+    },
+    "acled_agg_fatalities_vac__ma6_at_origin_lag1": {
+     "rows": 3239,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2614
+    },
+    "acled_agg_fatalities_vac__ma12_at_origin_lag1": {
+     "rows": 2983,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2342
+    },
+    "acled_agg_fatalities_vac__sd12_at_origin_lag1": {
+     "rows": 2866,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2265
+    },
+    "acled_agg_exposure_battles__value_at_origin_lag1": {
+     "rows": 814,
+     "nan_mismatch": 0,
+     "max_abs": 4.656612873077393e-10,
+     "scored_rows": 629
+    },
+    "acled_agg_exposure_battles__ma3_at_origin_lag1": {
+     "rows": 735,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 551
+    },
+    "acled_agg_exposure_battles__ma6_at_origin_lag1": {
+     "rows": 738,
+     "nan_mismatch": 0,
+     "max_abs": 4.656612873077393e-10,
+     "scored_rows": 561
+    },
+    "acled_agg_exposure_battles__ma12_at_origin_lag1": {
+     "rows": 855,
+     "nan_mismatch": 0,
+     "max_abs": 4.656612873077393e-10,
+     "scored_rows": 672
+    },
+    "acled_agg_exposure_battles__sd12_at_origin_lag1": {
+     "rows": 1129,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 856
+    },
+    "acled_agg_exposure_erv__value_at_origin_lag1": {
+     "rows": 550,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 458
+    },
+    "acled_agg_exposure_erv__ma3_at_origin_lag1": {
+     "rows": 569,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 489
+    },
+    "acled_agg_exposure_erv__ma6_at_origin_lag1": {
+     "rows": 653,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 560
+    },
+    "acled_agg_exposure_erv__ma12_at_origin_lag1": {
+     "rows": 606,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 507
+    },
+    "acled_agg_exposure_erv__sd12_at_origin_lag1": {
+     "rows": 865,
+     "nan_mismatch": 0,
+     "max_abs": 1.1641532182693481e-10,
+     "scored_rows": 750
+    },
+    "acled_agg_exposure_vac__value_at_origin_lag1": {
+     "rows": 1035,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 821
+    },
+    "acled_agg_exposure_vac__ma3_at_origin_lag1": {
+     "rows": 963,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 784
+    },
+    "acled_agg_exposure_vac__ma6_at_origin_lag1": {
+     "rows": 951,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 771
+    },
+    "acled_agg_exposure_vac__ma12_at_origin_lag1": {
+     "rows": 960,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 776
+    },
+    "acled_agg_exposure_vac__sd12_at_origin_lag1": {
+     "rows": 1238,
+     "nan_mismatch": 0,
+     "max_abs": 1.1641532182693481e-10,
+     "scored_rows": 986
+    },
+    "acled_agg_exposure_share_battles__value_at_origin_lag1": {
+     "rows": 8121,
+     "nan_mismatch": 0,
+     "max_abs": 9.990923019453923e-17,
+     "scored_rows": 6800
+    },
+    "acled_agg_exposure_share_battles__ma3_at_origin_lag1": {
+     "rows": 10401,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 8660
+    },
+    "acled_agg_exposure_share_battles__ma6_at_origin_lag1": {
+     "rows": 11502,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 9528
+    },
+    "acled_agg_exposure_share_battles__ma12_at_origin_lag1": {
+     "rows": 12883,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 10714
+    },
+    "acled_agg_exposure_share_battles__sd12_at_origin_lag1": {
+     "rows": 10881,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 8948
+    },
+    "acled_agg_exposure_share_erv__value_at_origin_lag1": {
+     "rows": 5342,
+     "nan_mismatch": 0,
+     "max_abs": 9.996344030316351e-17,
+     "scored_rows": 4735
+    },
+    "acled_agg_exposure_share_erv__ma3_at_origin_lag1": {
+     "rows": 7144,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 6267
+    },
+    "acled_agg_exposure_share_erv__ma6_at_origin_lag1": {
+     "rows": 8225,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 7193
+    },
+    "acled_agg_exposure_share_erv__ma12_at_origin_lag1": {
+     "rows": 9060,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 7875
+    },
+    "acled_agg_exposure_share_erv__sd12_at_origin_lag1": {
+     "rows": 8433,
+     "nan_mismatch": 0,
+     "max_abs": 8.326672684688674e-17,
+     "scored_rows": 7354
+    },
+    "acled_agg_exposure_share_vac__value_at_origin_lag1": {
+     "rows": 10069,
+     "nan_mismatch": 0,
+     "max_abs": 9.985502008591496e-17,
+     "scored_rows": 8553
+    },
+    "acled_agg_exposure_share_vac__ma3_at_origin_lag1": {
+     "rows": 12703,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 10734
+    },
+    "acled_agg_exposure_share_vac__ma6_at_origin_lag1": {
+     "rows": 14623,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 12436
+    },
+    "acled_agg_exposure_share_vac__ma12_at_origin_lag1": {
+     "rows": 15487,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 13148
+    },
+    "acled_agg_exposure_share_vac__sd12_at_origin_lag1": {
+     "rows": 12201,
+     "nan_mismatch": 0,
+     "max_abs": 5.551115123125783e-17,
+     "scored_rows": 10143
+    },
+    "acled_agg_spill_events_battles__value_at_origin_lag1": {
+     "rows": 2531,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2059
+    },
+    "acled_agg_spill_events_battles__ma3_at_origin_lag1": {
+     "rows": 2496,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1992
+    },
+    "acled_agg_spill_events_battles__ma6_at_origin_lag1": {
+     "rows": 2585,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2087
+    },
+    "acled_agg_spill_events_battles__ma12_at_origin_lag1": {
+     "rows": 2295,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1818
+    },
+    "acled_agg_spill_events_battles__sd12_at_origin_lag1": {
+     "rows": 3483,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2819
+    },
+    "acled_agg_spill_events_erv__value_at_origin_lag1": {
+     "rows": 2082,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 1687
+    },
+    "acled_agg_spill_events_erv__ma3_at_origin_lag1": {
+     "rows": 2171,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 1723
+    },
+    "acled_agg_spill_events_erv__ma6_at_origin_lag1": {
+     "rows": 2122,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1628
+    },
+    "acled_agg_spill_events_erv__ma12_at_origin_lag1": {
+     "rows": 2433,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1929
+    },
+    "acled_agg_spill_events_erv__sd12_at_origin_lag1": {
+     "rows": 2762,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2213
+    },
+    "acled_agg_spill_events_vac__value_at_origin_lag1": {
+     "rows": 2365,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 1902
+    },
+    "acled_agg_spill_events_vac__ma3_at_origin_lag1": {
+     "rows": 2330,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1851
+    },
+    "acled_agg_spill_events_vac__ma6_at_origin_lag1": {
+     "rows": 2297,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1804
+    },
+    "acled_agg_spill_events_vac__ma12_at_origin_lag1": {
+     "rows": 1990,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1516
+    },
+    "acled_agg_spill_events_vac__sd12_at_origin_lag1": {
+     "rows": 3453,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2776
+    },
+    "acled_agg_spill_fatalities_battles__value_at_origin_lag1": {
+     "rows": 2421,
+     "nan_mismatch": 0,
+     "max_abs": 2.2737367544323206e-13,
+     "scored_rows": 1994
+    },
+    "acled_agg_spill_fatalities_battles__ma3_at_origin_lag1": {
+     "rows": 2306,
+     "nan_mismatch": 0,
+     "max_abs": 2.2737367544323206e-13,
+     "scored_rows": 1871
+    },
+    "acled_agg_spill_fatalities_battles__ma6_at_origin_lag1": {
+     "rows": 2489,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 2040
+    },
+    "acled_agg_spill_fatalities_battles__ma12_at_origin_lag1": {
+     "rows": 2585,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 2145
+    },
+    "acled_agg_spill_fatalities_battles__sd12_at_origin_lag1": {
+     "rows": 2932,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 2373
+    },
+    "acled_agg_spill_fatalities_erv__value_at_origin_lag1": {
+     "rows": 1600,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1287
+    },
+    "acled_agg_spill_fatalities_erv__ma3_at_origin_lag1": {
+     "rows": 1721,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1360
+    },
+    "acled_agg_spill_fatalities_erv__ma6_at_origin_lag1": {
+     "rows": 1819,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1442
+    },
+    "acled_agg_spill_fatalities_erv__ma12_at_origin_lag1": {
+     "rows": 2032,
+     "nan_mismatch": 0,
+     "max_abs": 8.526512829121202e-14,
+     "scored_rows": 1623
+    },
+    "acled_agg_spill_fatalities_erv__sd12_at_origin_lag1": {
+     "rows": 2253,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1796
+    },
+    "acled_agg_spill_fatalities_vac__value_at_origin_lag1": {
+     "rows": 2281,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1804
+    },
+    "acled_agg_spill_fatalities_vac__ma3_at_origin_lag1": {
+     "rows": 2309,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1868
+    },
+    "acled_agg_spill_fatalities_vac__ma6_at_origin_lag1": {
+     "rows": 2272,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1794
+    },
+    "acled_agg_spill_fatalities_vac__ma12_at_origin_lag1": {
+     "rows": 2336,
+     "nan_mismatch": 0,
+     "max_abs": 8.526512829121202e-14,
+     "scored_rows": 1860
+    },
+    "acled_agg_spill_fatalities_vac__sd12_at_origin_lag1": {
+     "rows": 2717,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2158
+    }
+   }
+  },
+  "14": {
+   "rows": 18317,
+   "cells": 9653059,
+   "cells_equal": 9335668,
+   "columns_exact": 435,
+   "columns_differing": {
+    "lat": {
+     "rows": 2859,
+     "nan_mismatch": 0,
+     "max_abs": 5.000000413701855e-11,
+     "scored_rows": 0
+    },
+    "lon": {
+     "rows": 2848,
+     "nan_mismatch": 0,
+     "max_abs": 5.000089231543825e-11,
+     "scored_rows": 0
+    },
+    "acled_agg_events_battles__value_at_origin_lag1": {
+     "rows": 2378,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 1869
+    },
+    "acled_agg_events_battles__ma3_at_origin_lag1": {
+     "rows": 2870,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2226
+    },
+    "acled_agg_events_battles__ma6_at_origin_lag1": {
+     "rows": 3017,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2318
+    },
+    "acled_agg_events_battles__ma12_at_origin_lag1": {
+     "rows": 2931,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2203
+    },
+    "acled_agg_events_battles__sd12_at_origin_lag1": {
+     "rows": 2938,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 2248
+    },
+    "acled_agg_events_erv__value_at_origin_lag1": {
+     "rows": 1631,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1376
+    },
+    "acled_agg_events_erv__ma3_at_origin_lag1": {
+     "rows": 1931,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 1615
+    },
+    "acled_agg_events_erv__ma6_at_origin_lag1": {
+     "rows": 2032,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1641
+    },
+    "acled_agg_events_erv__ma12_at_origin_lag1": {
+     "rows": 2364,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1890
+    },
+    "acled_agg_events_erv__sd12_at_origin_lag1": {
+     "rows": 2373,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 1917
+    },
+    "acled_agg_events_vac__value_at_origin_lag1": {
+     "rows": 3027,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2461
+    },
+    "acled_agg_events_vac__ma3_at_origin_lag1": {
+     "rows": 3232,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2577
+    },
+    "acled_agg_events_vac__ma6_at_origin_lag1": {
+     "rows": 3427,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2711
+    },
+    "acled_agg_events_vac__ma12_at_origin_lag1": {
+     "rows": 3272,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 2519
+    },
+    "acled_agg_events_vac__sd12_at_origin_lag1": {
+     "rows": 3291,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 2575
+    },
+    "acled_agg_fatalities_battles__value_at_origin_lag1": {
+     "rows": 2209,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1775
+    },
+    "acled_agg_fatalities_battles__ma3_at_origin_lag1": {
+     "rows": 2420,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1918
+    },
+    "acled_agg_fatalities_battles__ma6_at_origin_lag1": {
+     "rows": 2494,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1952
+    },
+    "acled_agg_fatalities_battles__ma12_at_origin_lag1": {
+     "rows": 2503,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1918
+    },
+    "acled_agg_fatalities_battles__sd12_at_origin_lag1": {
+     "rows": 2580,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2025
+    },
+    "acled_agg_fatalities_erv__value_at_origin_lag1": {
+     "rows": 1204,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1044
+    },
+    "acled_agg_fatalities_erv__ma3_at_origin_lag1": {
+     "rows": 1490,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1251
+    },
+    "acled_agg_fatalities_erv__ma6_at_origin_lag1": {
+     "rows": 1562,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1284
+    },
+    "acled_agg_fatalities_erv__ma12_at_origin_lag1": {
+     "rows": 1808,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1494
+    },
+    "acled_agg_fatalities_erv__sd12_at_origin_lag1": {
+     "rows": 1700,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1389
+    },
+    "acled_agg_fatalities_vac__value_at_origin_lag1": {
+     "rows": 2467,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2022
+    },
+    "acled_agg_fatalities_vac__ma3_at_origin_lag1": {
+     "rows": 2905,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2361
+    },
+    "acled_agg_fatalities_vac__ma6_at_origin_lag1": {
+     "rows": 3012,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2407
+    },
+    "acled_agg_fatalities_vac__ma12_at_origin_lag1": {
+     "rows": 2890,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2257
+    },
+    "acled_agg_fatalities_vac__sd12_at_origin_lag1": {
+     "rows": 2706,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 2107
+    },
+    "acled_agg_exposure_battles__value_at_origin_lag1": {
+     "rows": 842,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 677
+    },
+    "acled_agg_exposure_battles__ma3_at_origin_lag1": {
+     "rows": 782,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 617
+    },
+    "acled_agg_exposure_battles__ma6_at_origin_lag1": {
+     "rows": 867,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 683
+    },
+    "acled_agg_exposure_battles__ma12_at_origin_lag1": {
+     "rows": 843,
+     "nan_mismatch": 0,
+     "max_abs": 4.656612873077393e-10,
+     "scored_rows": 670
+    },
+    "acled_agg_exposure_battles__sd12_at_origin_lag1": {
+     "rows": 1155,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 938
+    },
+    "acled_agg_exposure_erv__value_at_origin_lag1": {
+     "rows": 477,
+     "nan_mismatch": 0,
+     "max_abs": 1.1641532182693481e-10,
+     "scored_rows": 404
+    },
+    "acled_agg_exposure_erv__ma3_at_origin_lag1": {
+     "rows": 453,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 380
+    },
+    "acled_agg_exposure_erv__ma6_at_origin_lag1": {
+     "rows": 423,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 344
+    },
+    "acled_agg_exposure_erv__ma12_at_origin_lag1": {
+     "rows": 489,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 392
+    },
+    "acled_agg_exposure_erv__sd12_at_origin_lag1": {
+     "rows": 664,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 562
+    },
+    "acled_agg_exposure_vac__value_at_origin_lag1": {
+     "rows": 996,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 808
+    },
+    "acled_agg_exposure_vac__ma3_at_origin_lag1": {
+     "rows": 849,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 679
+    },
+    "acled_agg_exposure_vac__ma6_at_origin_lag1": {
+     "rows": 888,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 704
+    },
+    "acled_agg_exposure_vac__ma12_at_origin_lag1": {
+     "rows": 997,
+     "nan_mismatch": 0,
+     "max_abs": 2.3283064365386963e-10,
+     "scored_rows": 805
+    },
+    "acled_agg_exposure_vac__sd12_at_origin_lag1": {
+     "rows": 1263,
+     "nan_mismatch": 0,
+     "max_abs": 1.1641532182693481e-10,
+     "scored_rows": 1021
+    },
+    "acled_agg_exposure_share_battles__value_at_origin_lag1": {
+     "rows": 8108,
+     "nan_mismatch": 0,
+     "max_abs": 9.985502008591496e-17,
+     "scored_rows": 6843
+    },
+    "acled_agg_exposure_share_battles__ma3_at_origin_lag1": {
+     "rows": 10231,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 8579
+    },
+    "acled_agg_exposure_share_battles__ma6_at_origin_lag1": {
+     "rows": 11293,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 9404
+    },
+    "acled_agg_exposure_share_battles__ma12_at_origin_lag1": {
+     "rows": 12227,
+     "nan_mismatch": 0,
+     "max_abs": 1.3877787807814457e-16,
+     "scored_rows": 10105
+    },
+    "acled_agg_exposure_share_battles__sd12_at_origin_lag1": {
+     "rows": 10150,
+     "nan_mismatch": 0,
+     "max_abs": 5.551115123125783e-17,
+     "scored_rows": 8268
+    },
+    "acled_agg_exposure_share_erv__value_at_origin_lag1": {
+     "rows": 5388,
+     "nan_mismatch": 0,
+     "max_abs": 9.974659986866641e-17,
+     "scored_rows": 4859
+    },
+    "acled_agg_exposure_share_erv__ma3_at_origin_lag1": {
+     "rows": 6997,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 6246
+    },
+    "acled_agg_exposure_share_erv__ma6_at_origin_lag1": {
+     "rows": 7596,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 6684
+    },
+    "acled_agg_exposure_share_erv__ma12_at_origin_lag1": {
+     "rows": 8194,
+     "nan_mismatch": 0,
+     "max_abs": 9.71445146547012e-17,
+     "scored_rows": 7093
+    },
+    "acled_agg_exposure_share_erv__sd12_at_origin_lag1": {
+     "rows": 7484,
+     "nan_mismatch": 0,
+     "max_abs": 5.551115123125783e-17,
+     "scored_rows": 6486
+    },
+    "acled_agg_exposure_share_vac__value_at_origin_lag1": {
+     "rows": 9488,
+     "nan_mismatch": 0,
+     "max_abs": 9.990923019453923e-17,
+     "scored_rows": 8110
+    },
+    "acled_agg_exposure_share_vac__ma3_at_origin_lag1": {
+     "rows": 12464,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 10621
+    },
+    "acled_agg_exposure_share_vac__ma6_at_origin_lag1": {
+     "rows": 13933,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 11851
+    },
+    "acled_agg_exposure_share_vac__ma12_at_origin_lag1": {
+     "rows": 15277,
+     "nan_mismatch": 0,
+     "max_abs": 1.1102230246251565e-16,
+     "scored_rows": 12984
+    },
+    "acled_agg_exposure_share_vac__sd12_at_origin_lag1": {
+     "rows": 12857,
+     "nan_mismatch": 0,
+     "max_abs": 8.326672684688674e-17,
+     "scored_rows": 10807
+    },
+    "acled_agg_spill_events_battles__value_at_origin_lag1": {
+     "rows": 2070,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1584
+    },
+    "acled_agg_spill_events_battles__ma3_at_origin_lag1": {
+     "rows": 2111,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1594
+    },
+    "acled_agg_spill_events_battles__ma6_at_origin_lag1": {
+     "rows": 2072,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1541
+    },
+    "acled_agg_spill_events_battles__ma12_at_origin_lag1": {
+     "rows": 2363,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1827
+    },
+    "acled_agg_spill_events_battles__sd12_at_origin_lag1": {
+     "rows": 3163,
+     "nan_mismatch": 0,
+     "max_abs": 1.7763568394002505e-14,
+     "scored_rows": 2465
+    },
+    "acled_agg_spill_events_erv__value_at_origin_lag1": {
+     "rows": 2119,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1734
+    },
+    "acled_agg_spill_events_erv__ma3_at_origin_lag1": {
+     "rows": 2440,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 2002
+    },
+    "acled_agg_spill_events_erv__ma6_at_origin_lag1": {
+     "rows": 2621,
+     "nan_mismatch": 0,
+     "max_abs": 2.2737367544323206e-13,
+     "scored_rows": 2130
+    },
+    "acled_agg_spill_events_erv__ma12_at_origin_lag1": {
+     "rows": 2767,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2231
+    },
+    "acled_agg_spill_events_erv__sd12_at_origin_lag1": {
+     "rows": 3115,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 2565
+    },
+    "acled_agg_spill_events_vac__value_at_origin_lag1": {
+     "rows": 2510,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 1988
+    },
+    "acled_agg_spill_events_vac__ma3_at_origin_lag1": {
+     "rows": 2514,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 1978
+    },
+    "acled_agg_spill_events_vac__ma6_at_origin_lag1": {
+     "rows": 2424,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 1906
+    },
+    "acled_agg_spill_events_vac__ma12_at_origin_lag1": {
+     "rows": 2136,
+     "nan_mismatch": 0,
+     "max_abs": 1.4210854715202004e-14,
+     "scored_rows": 1626
+    },
+    "acled_agg_spill_events_vac__sd12_at_origin_lag1": {
+     "rows": 3437,
+     "nan_mismatch": 0,
+     "max_abs": 7.105427357601002e-15,
+     "scored_rows": 2762
+    },
+    "acled_agg_spill_fatalities_battles__value_at_origin_lag1": {
+     "rows": 2621,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 2174
+    },
+    "acled_agg_spill_fatalities_battles__ma3_at_origin_lag1": {
+     "rows": 2441,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1985
+    },
+    "acled_agg_spill_fatalities_battles__ma6_at_origin_lag1": {
+     "rows": 2246,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1787
+    },
+    "acled_agg_spill_fatalities_battles__ma12_at_origin_lag1": {
+     "rows": 2234,
+     "nan_mismatch": 0,
+     "max_abs": 1.1368683772161603e-13,
+     "scored_rows": 1796
+    },
+    "acled_agg_spill_fatalities_battles__sd12_at_origin_lag1": {
+     "rows": 2816,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 2294
+    },
+    "acled_agg_spill_fatalities_erv__value_at_origin_lag1": {
+     "rows": 1715,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1425
+    },
+    "acled_agg_spill_fatalities_erv__ma3_at_origin_lag1": {
+     "rows": 1980,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1646
+    },
+    "acled_agg_spill_fatalities_erv__ma6_at_origin_lag1": {
+     "rows": 2195,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1833
+    },
+    "acled_agg_spill_fatalities_erv__ma12_at_origin_lag1": {
+     "rows": 2390,
+     "nan_mismatch": 0,
+     "max_abs": 8.526512829121202e-14,
+     "scored_rows": 1998
+    },
+    "acled_agg_spill_fatalities_erv__sd12_at_origin_lag1": {
+     "rows": 2685,
+     "nan_mismatch": 0,
+     "max_abs": 2.842170943040401e-14,
+     "scored_rows": 2267
+    },
+    "acled_agg_spill_fatalities_vac__value_at_origin_lag1": {
+     "rows": 2411,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1924
+    },
+    "acled_agg_spill_fatalities_vac__ma3_at_origin_lag1": {
+     "rows": 2394,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1859
+    },
+    "acled_agg_spill_fatalities_vac__ma6_at_origin_lag1": {
+     "rows": 2350,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1810
+    },
+    "acled_agg_spill_fatalities_vac__ma12_at_origin_lag1": {
+     "rows": 2363,
+     "nan_mismatch": 0,
+     "max_abs": 5.684341886080802e-14,
+     "scored_rows": 1869
+    },
+    "acled_agg_spill_fatalities_vac__sd12_at_origin_lag1": {
+     "rows": 2642,
+     "nan_mismatch": 0,
+     "max_abs": 2.2737367544323206e-13,
+     "scored_rows": 2049
+    }
+   }
+  }
+ },
+ "seconds": 1106.3
+}
