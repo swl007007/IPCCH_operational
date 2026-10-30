@@ -1,6 +1,7 @@
 {
   "checks": {
     "combined_replaced_current": true,
+    "combined_used_its_own_batch": true,
     "failure_preserved": true,
     "generation_failure_preserved": true,
     "generation_only_not_published": true,
@@ -31,7 +32,10 @@
             "smoke"
           ],
           "rows": 3,
-          "sha256": "2f10395e9055f9a9c8d4927b63e394c26d36447beb90439d7b95cff068f8b0ee",
+          "sha256": "4f89225a700e7649aacf81b021355f08435a7372868cb4fc4d540d31f1da267e",
+          "source_input": [
+            "ipcch-2027-03-cp5-comb-ab2c614268f9"
+          ],
           "target_period": [
             "2027-03"
           ]
@@ -50,7 +54,10 @@
             "smoke"
           ],
           "rows": 3,
-          "sha256": "797d5a329bda35ec4c9ddeb2db4f1f4dab3756791c684f2d1ee04e0adee2120d",
+          "sha256": "40f6f718ffb30b4c8783debca1de5ad823d5715e8a67a35625c4d00043e3aaa5",
+          "source_input": [
+            "ipcch-2027-03-cp5-comb-ab2c614268f9"
+          ],
           "target_period": [
             "2028-03"
           ]
@@ -69,7 +76,10 @@
             "smoke"
           ],
           "rows": 3,
-          "sha256": "c4264ebe02bff37bd325dbb894bfd6722f8e9adced2be14ba80e6cd6a68576c4",
+          "sha256": "7e6a6bf2c043544d58afef0c2b4ca3bcbcded30079ad67492209f9d0430886f4",
+          "source_input": [
+            "ipcch-2027-03-cp5-comb-ab2c614268f9"
+          ],
           "target_period": [
             "2027-09"
           ]
@@ -100,7 +110,10 @@
             "smoke"
           ],
           "rows": 3,
-          "sha256": "f8a8ab75f54f1059232a86b0ce9590bdfa72113c65c9c3e008a9edb889ef1f47",
+          "sha256": "58e3ea4a12152aaa4bc9bed03d135f07709ea6f4266ec8e300d65d72fbed758e",
+          "source_input": [
+            "ipcch-2027-03-cp5-gen-71a70538c122"
+          ],
           "target_period": [
             "2027-03"
           ]
@@ -119,7 +132,10 @@
             "smoke"
           ],
           "rows": 3,
-          "sha256": "26d91ce45732a37300d42e5c5b91415f6d683062ee8c3ff28195538aff327a9c",
+          "sha256": "c109775bc7f523d251cfad71660935fbf0a9542f1153887e187f0eb51e43e8a6",
+          "source_input": [
+            "ipcch-2027-03-cp5-gen-71a70538c122"
+          ],
           "target_period": [
             "2028-03"
           ]
@@ -138,7 +154,10 @@
             "smoke"
           ],
           "rows": 3,
-          "sha256": "6d0836b303accc05becbfeb07f8b5b95116f326fd9197528521d153b92ad1394",
+          "sha256": "064d87b7068cdf92f6e4537662045870f0c09f525e95695dab5f93ad1e46c935",
+          "source_input": [
+            "ipcch-2027-03-cp5-gen-71a70538c122"
+          ],
           "target_period": [
             "2027-09"
           ]
@@ -148,7 +167,7 @@
     }
   },
   "failures": {
-    "corrupted_h14": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-aace93b1f028/h14.csv",
+    "corrupted_h14": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-1d1c2edefa27/h14.csv",
     "generation_failure_report_steps": {
       "acled": {
         "action": "refresh",
@@ -472,7 +491,7 @@
         "method": "research HDX food prices: 100 + YoY % change of local-currency staple prices (maize, sorghum, rice, wheat, vegetable oil), nearest market with data < 100 km, no fill (build_wfp_hdx.py)"
       }
     },
-    "inference_failure_reason": "IpcchRunFailure: IPCCH inference failed: BatchValidationError: gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-aace93b1f028/h14.csv#1 sha256 differs from its reference"
+    "inference_failure_reason": "IpcchRunFailure: IPCCH inference failed: BatchValidationError: gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-1d1c2edefa27/h14.csv#1 sha256 differs from its reference"
   },
   "fixture": {
     "bundle_manifest_sha256": "d4e1351c4e6ed94791499a058ebcea5a747a0a9af11c5950cb87c2f86924c77e",
@@ -488,10 +507,27 @@
     ]
   },
   "isolation": {
-    "forbidden_paths_opened": [],
-    "paths_opened": 254,
+    "forbidden_paths_touched": [],
+    "forbidden_roots": [
+      "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/handoff-build/out-r5-accepted-v1",
+      "/home/swl007007/projects/food-crisis-research/staging",
+      "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/cp3-real-integration",
+      "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/handoff-build"
+    ],
+    "not_intercepted": "file access inside native libraries bypassing these entry points",
     "real_pointer_exists": false,
     "real_store_or_root_uris_touched": [],
+    "spy_calibrated": true,
+    "spy_entry_points": [
+      "builtins.open",
+      "io.open",
+      "os.open",
+      "os.stat",
+      "os.lstat",
+      "os.listdir",
+      "os.scandir"
+    ],
+    "spy_path_calls": 9712,
     "store_uris_touched": 263
   },
   "model": {
@@ -503,11 +539,11 @@
   "runs": {
     "combined": {
       "batch": {
-        "batch_id": "ipcch-2027-03-cp5-comb-23702aa4b4b0",
+        "batch_id": "ipcch-2027-03-cp5-comb-ab2c614268f9",
         "manifest_ref": {
           "generation": "1",
-          "sha256": "fbea50456343559328f7f6d9102b8747affccc952b83d7601a9ca065bbab3b5d",
-          "uri": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-comb-23702aa4b4b0/manifest.json"
+          "sha256": "f441b4a12782a3d06cbb30f2cedb5e33057f5469dcfdbe90e18083ea5dacafaa",
+          "uri": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-comb-ab2c614268f9/manifest.json"
         }
       },
       "ipcch_status": "succeeded",
@@ -516,7 +552,7 @@
         "delivery": {
           "manifest": {
             "generation": "1",
-            "sha256": "38485b99abe12d0915c0d6a93bd7c3791f862727d0a76de6b6782616c5630b13",
+            "sha256": "d522de52b32bc3ff203db385da3677d6fe700f4529715aa9a2eb8c4beda9eb8a",
             "uri": "gs://ops-delivery-smoke/v2/deliveries/cp5-comb-ipcch/manifest.json"
           }
         },
@@ -543,11 +579,11 @@
     },
     "generation_only": {
       "batch": {
-        "batch_id": "ipcch-2027-03-cp5-gen-af9074a32b71",
+        "batch_id": "ipcch-2027-03-cp5-gen-71a70538c122",
         "manifest_ref": {
           "generation": "1",
-          "sha256": "4ff88f49c9661f3a7046a60ff414c5528034a8c26c5d98933318e0c0f7626fab",
-          "uri": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-gen-af9074a32b71/manifest.json"
+          "sha256": "0b63cfea9cba503792d645c8934fedbb22bf54dc271ab088f9da3df173fb443e",
+          "uri": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-gen-71a70538c122/manifest.json"
         }
       },
       "ipcch_status": "succeeded",
@@ -560,7 +596,7 @@
       "batch": null,
       "ipcch_status": "failed",
       "publication": null,
-      "reason": "IpcchRunFailure: IPCCH inference failed: BatchValidationError: gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-aace93b1f028/h14.csv#1 sha256 differs from its reference",
+      "reason": "IpcchRunFailure: IPCCH inference failed: BatchValidationError: gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-1d1c2edefa27/h14.csv#1 sha256 differs from its reference",
       "status": "failed",
       "status_uri": "gs://ops-delivery-smoke/v2/runs/cp5-inffail/v2_run_status.json"
     },
@@ -572,7 +608,7 @@
         "delivery": {
           "manifest": {
             "generation": "1",
-            "sha256": "eaae41edb4b98188385bd881c85bfb87a9f5c2298e4d00367be28d9d03e755ef",
+            "sha256": "1d961c6e7e52c98a4234feb2192b043e13cad5b64df3b70e3e2d8d685efce7e6",
             "uri": "gs://ops-delivery-smoke/v2/deliveries/cp5-inf-ipcch/manifest.json"
           }
         },
@@ -591,11 +627,11 @@
     },
     "stale_publication": {
       "batch": {
-        "batch_id": "ipcch-2027-03-cp5-stale-aace93b1f028",
+        "batch_id": "ipcch-2027-03-cp5-stale-1d1c2edefa27",
         "manifest_ref": {
           "generation": "1",
-          "sha256": "61c01bf43d974c836132a14dd4f6e36fe884ec8df4f4803dc90a0942bd730162",
-          "uri": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-aace93b1f028/manifest.json"
+          "sha256": "7036f5c2347a122bd29f479fd0577627c7cdb5719b7e5ecd6b582d7ac730794f",
+          "uri": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-1d1c2edefa27/manifest.json"
         }
       },
       "ipcch_status": "failed",

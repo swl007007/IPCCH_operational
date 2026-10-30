@@ -6,8 +6,10 @@
 * inputs: fixture-only - the existing smoke fixture bundle (manifest ``fixture: true``; 3 areas in 2 fixture
   countries AAA/BBB; synthetic histories for every family, delivered calendar, fixture ACLED tables, geometry,
   population and country references) inside the fixture root; fixture ACLED export, fixture climate providers.
-  Nothing of the real handoff bundle, retained stores or real roots is read: a store spy records every URI and a
-  filesystem spy every opened path; both are checked.
+  Nothing of the real handoff bundle, retained stores or real roots is read: a store spy records every URI (also the
+  route's pinned reader goes through it) and ``ReadSpy`` every Python-level open/stat/list under the forbidden roots
+  (native-library file access is not intercepted - stated, not claimed); both are checked and any failed check exits
+  non-zero.
 * executable route: ``cloud.ipcch.entrypoint_v2.run`` (validated deployment config, exact-generation request read,
   admission, locks, generation, batch, inference, delivery member, publication, run status) for
     1. generation-only (no publication),
@@ -52,7 +54,8 @@ REAL_BUNDLE = R / "scratch/h2h8h14-final/handoff-build/out-r5-accepted-v1"
 COMBINATION = "ipcch-validity-h2h8h14-final-20261030"
 ROOTS = {"smoke": "gs://ops-delivery-smoke/v2", "real": "gs://ops-delivery/v2"}
 STORES = {"smoke": "gs://ipcch-store/ipcch-v2/smoke", "real": "gs://ipcch-store/ipcch-v2/real"}
-FORBIDDEN_PATHS = (str(REAL_BUNDLE), str(R / "staging"), "/ipcch-v2/real")
+FORBIDDEN_ROOTS = (str(REAL_BUNDLE), str(R / "staging"), str(R / "scratch/h2h8h14-final/cp3-real-integration"),
+                   str(R / "scratch/h2h8h14-final/handoff-build"))
 
 
 class SpyStore:
@@ -70,6 +73,46 @@ class SpyStore:
             self.touched += [x for x in list(a) + list(k.values()) if isinstance(x, str) and x.startswith("gs://")]
             return attr(*a, **k)
         return call
+
+
+class ReadSpy:
+    """The binding tests' read spy, for several forbidden roots: records every Python-level open/stat/lstat/listdir/
+    scandir (builtins.open, io.open, os.open, os.stat, os.lstat, os.listdir, os.scandir) whose LEXICAL path lies under
+    a forbidden root (the spy never touches the filesystem itself). Coverage, stated precisely: file access performed
+    inside native libraries that bypass these Python entry points (e.g. GDAL/pyogrio, xgboost's native model loader)
+    is NOT intercepted; those libraries are only handed fixture or model paths by the route."""
+
+    NAMES = (("builtins", "open"), ("io", "open"), ("os", "open"), ("os", "stat"), ("os", "lstat"),
+             ("os", "listdir"), ("os", "scandir"))
+
+    def __init__(self, forbidden):
+        import io
+        import os
+        self.mods = {"builtins": builtins, "io": io, "os": os}
+        self.forbidden = [os.path.normpath(os.path.abspath(f)) for f in forbidden]
+        self.touched, self.calls, self.saved = [], 0, {}
+
+    def guard(self, fn):
+        import os
+
+        def wrapped(path=".", *a, **k):
+            if isinstance(path, (str, bytes, os.PathLike)):
+                self.calls += 1
+                p = os.path.normpath(os.path.abspath(os.fsdecode(path)))
+                if any(p == f or p.startswith(f + os.sep) for f in self.forbidden):
+                    self.touched.append(p)
+            return fn(path, *a, **k)
+        return wrapped
+
+    def __enter__(self):
+        for mod, name in self.NAMES:
+            self.saved[(mod, name)] = getattr(self.mods[mod], name)
+            setattr(self.mods[mod], name, self.guard(self.saved[(mod, name)]))
+        return self
+
+    def __exit__(self, *exc):
+        for (mod, name), fn in self.saved.items():
+            setattr(self.mods[mod], name, fn)
 
 
 class Reader:
@@ -108,6 +151,7 @@ def predictions(store, delivery_ref) -> dict:
         out[str(lead)] = {"rows": len(f), "areas": sorted(f["admin_code"].astype(str)), "finite": bool(np.isfinite(scores).all()),
                           "mode": sorted(set(f["mode"])), "feature_period": sorted(set(f["feature_period"].astype(str))),
                           "target_period": sorted(set(f["target_period"].astype(str))),
+                          "source_input": sorted(set(f["source_input"].astype(str))),
                           "sha256": hashlib.sha256(store.read_bytes(uri)).hexdigest()}
     return out
 
@@ -169,12 +213,6 @@ def main(run_dir: Path) -> dict:
         "earth_engine_project": "unused-in-smoke", "export_root": "gs://ops-smoke/exports",
         "work_dir": str(run_dir / "work")}, indent=2))
     cfg = ep.load_config(str(cfg_path))
-    opened = []
-    real_open = builtins.open
-
-    def spy_open(file, *a, **k):
-        opened.append(str(file))
-        return real_open(file, *a, **k)
     results = {"model": {"envelope_sha256": hashlib.sha256(ENV.read_bytes()).hexdigest(),
                          "package_manifest_sha256": binding.package_manifest_sha256,
                          "feature_order_sha256": binding.feature_order_sha256, "combination_id": COMBINATION},
@@ -182,12 +220,17 @@ def main(run_dir: Path) -> dict:
                            "roster": [str(a) for a in fx.ROSTER], "countries": ["AAA", "BBB"],
                            "neighbours": "fixture geometries are adjacent unit boxes (11|12 in AAA, 13 in BBB): "
                                          "a contiguous neighbour subset across two fixture countries"}, "runs": {}}
-    builtins.open = spy_open
+    spy = ReadSpy(FORBIDDEN_ROOTS)
+    spy.__enter__()
+    import os
+    os.path.exists(str(REAL_BUNDLE / "handoff_manifest.json"))   # calibration: the spy must see a forbidden stat
+    calibrated = bool(spy.touched)
+    spy.touched.clear()
     try:
         # 1. generation-only
         gen = raw(fx.smoke_request(refs, ENV, run_id="cp5-gen", combination_id=COMBINATION))
         out1 = ep.run(cfg, request_uri=put_request(refs, gen), request_generation="1", store=store,
-                      reader=Reader(refs, inner))
+                      reader=Reader(refs, store))
         batch = out1["systems"]["ipcch"]["result"]["batch"]
         # 2. inference-only from that batch, published to the smoke current
         inf = raw(fx.smoke_request(refs, ENV, run_id="cp5-inf", combination_id=COMBINATION, inference=True))
@@ -198,14 +241,14 @@ def main(run_dir: Path) -> dict:
         inf["publication"] = "current"
         inf["release"]["expected_pointer_generation"] = pub.read_current(inner, ROOTS["smoke"], "smoke")["generation"]
         out2 = ep.run(cfg, request_uri=put_request(refs, inf), request_generation="1", store=store,
-                      reader=Reader(refs, inner))
+                      reader=Reader(refs, store))
         after2 = pub.read_current(inner, ROOTS["smoke"], "smoke")
         # 3. generation + inference, replacing run 2's current release
         comb = raw(fx.smoke_request(refs, ENV, run_id="cp5-comb", combination_id=COMBINATION, inference=True))
         comb["publication"] = "current"
         comb["release"]["expected_pointer_generation"] = after2["generation"]
         out3 = ep.run(cfg, request_uri=put_request(refs, comb), request_generation="1", store=store,
-                      reader=Reader(refs, inner))
+                      reader=Reader(refs, store))
         after3 = pub.read_current(inner, ROOTS["smoke"], "smoke")
         # 4. failure preservation: generation + inference against a STALE expected pointer generation -> publication
         #    fails without retry/rebase, the smoke current stays run 3's, the generated batch stays reported/reusable
@@ -213,7 +256,7 @@ def main(run_dir: Path) -> dict:
         stale["publication"] = "current"
         stale["release"]["expected_pointer_generation"] = after2["generation"]
         out4 = ep.run(cfg, request_uri=put_request(refs, stale), request_generation="1", store=store,
-                      reader=Reader(refs, inner))
+                      reader=Reader(refs, store))
         after4 = pub.read_current(inner, ROOTS["smoke"], "smoke")
         # 5. generation failure: the fixture climate provider reports the origin month unavailable (R13) -> the
         #    generation stops after the saved ACLED refresh (kept + reported, R29/R41), no batch, current unchanged
@@ -226,7 +269,7 @@ def main(run_dir: Path) -> dict:
         genfail["release"]["expected_pointer_generation"] = after4["generation"]
         batches_before = _batches(inner)
         out5 = ep.run(cfg_fail, request_uri=put_request(refs, genfail), request_generation="1", store=store,
-                      reader=Reader(refs, inner))
+                      reader=Reader(refs, store))
         after5 = pub.read_current(inner, ROOTS["smoke"], "smoke")
         new_batches_5 = sorted(set(_batches(inner)) - set(batches_before))
         # 6. inference/horizon failure: run 4's (unpublished) batch with its H14 file corrupted on disk -> inference
@@ -242,10 +285,10 @@ def main(run_dir: Path) -> dict:
         inf6["release"]["expected_pointer_generation"] = after5["generation"]
         batches_before6 = _batches(inner)
         out6 = ep.run(cfg, request_uri=put_request(refs, inf6), request_generation="1", store=store,
-                      reader=Reader(refs, inner))
+                      reader=Reader(refs, store))
         after6 = pub.read_current(inner, ROOTS["smoke"], "smoke")
     finally:
-        builtins.open = real_open
+        spy.__exit__()
     for name, out in (("generation_only", out1), ("inference_only", out2), ("combined", out3),
                       ("stale_publication", out4), ("generation_failure", out5), ("inference_horizon_failure", out6)):
         ip = out["systems"]["ipcch"]
@@ -265,10 +308,14 @@ def main(run_dir: Path) -> dict:
                            "previous": rec3["previous"], "activation": rec3["activation"],
                            "predictions": predictions(inner, rec3["systems"]["ipcch"]["delivery"]["manifest"])}}
     real_uris = [u for u in store.touched if u.startswith((ROOTS["real"], STORES["real"]))]
-    forbidden = sorted({p for p in opened if any(f in p for f in FORBIDDEN_PATHS)})
-    results["isolation"] = {"real_store_or_root_uris_touched": real_uris, "forbidden_paths_opened": forbidden,
+    forbidden = sorted(set(spy.touched))
+    results["isolation"] = {"real_store_or_root_uris_touched": real_uris, "forbidden_paths_touched": forbidden,
+                            "forbidden_roots": list(FORBIDDEN_ROOTS),
+                            "spy_entry_points": [f"{m}.{n}" for m, n in ReadSpy.NAMES],
+                            "spy_path_calls": spy.calls, "spy_calibrated": calibrated,
+                            "not_intercepted": "file access inside native libraries bypassing these entry points",
                             "real_pointer_exists": inner.get_metadata(pub.pointer_uri(ROOTS["real"], "prod")) is not None,
-                            "store_uris_touched": len(set(store.touched)), "paths_opened": len(set(opened))}
+                            "store_uris_touched": len(set(store.touched))}
     results["checks"] = {
         "generation_failure_preserved": (out5["systems"]["ipcch"]["status"] == "failed"
                                          and out5["systems"]["ipcch"].get("failed_operation") == "generation"
@@ -286,7 +333,12 @@ def main(run_dir: Path) -> dict:
                               and after4["generation"] == after3["generation"]
                               and bool(results["runs"]["stale_publication"]["batch"])),
         "generation_only_not_published": results["runs"]["generation_only"]["publication"] is None,
-        "inference_only_used_named_batch": results["runs"]["inference_only"]["batch"] is None,
+        "inference_only_used_named_batch": results["runs"]["inference_only"]["batch"] is None and all(
+            h["source_input"] == [batch["batch_id"]]
+            for h in results["current"]["after_inference_only"]["predictions"].values()),
+        "combined_used_its_own_batch": all(
+            h["source_input"] == [results["runs"]["combined"]["batch"]["batch_id"]]
+            for h in results["current"]["after_combined"]["predictions"].values()),
         "combined_replaced_current": rec3["previous"]["pointer_generation"] == after2["generation"]
                                      and rec3["run_id"] == "cp5-comb-ipcch" and rec2["run_id"] == "cp5-inf-ipcch",
         "smoke_never_activates": rec2["activation"] is None and rec3["activation"] is None,
@@ -294,7 +346,8 @@ def main(run_dir: Path) -> dict:
             h["rows"] == len(fx.ROSTER) and h["finite"] and h["mode"] == ["smoke"]
             for snap in (results["current"]["after_inference_only"], results["current"]["after_combined"])
             for h in snap["predictions"].values()),
-        "zero_real_touch": not real_uris and not forbidden and not results["isolation"]["real_pointer_exists"],
+        "zero_real_touch": calibrated and not real_uris and not forbidden
+                           and not results["isolation"]["real_pointer_exists"],
         "split_equals_combined_except_source_input": _split_equals_combined(
             inner, rec2["systems"]["ipcch"]["delivery"]["manifest"], rec3["systems"]["ipcch"]["delivery"]["manifest"])}
     return results
@@ -307,3 +360,7 @@ if __name__ == "__main__":
     (run / "cp5-results.json").write_text(text)
     Path(__file__).with_name("cp5-results.json").write_text(text)
     print(json.dumps(res["checks"], indent=2))
+    failed = [k for k, v in res["checks"].items() if v is not True]
+    if failed:
+        print("CP5 CHECKS FAILED:", failed)
+        sys.exit(1)

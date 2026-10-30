@@ -32,13 +32,18 @@ installed = the actual envelope/package + fixture bundle/root; smoke providers =
 | 5 `cp5-genfail` | gen + inf, M 2027-04, climate provider unavailable for the new origin | generation failed at climate AFTER the saved ACLED refresh (report steps kept: acled refresh, coverage 2027-02); no new batch; current unchanged |
 | 6 `cp5-inffail` | inference-only from run 4's batch with its H14 file corrupted | inference refused (H14 sha256 differs from its reference); no fallback batch; current unchanged |
 
-Checks (`cp5-results.json`, all true): runs 1-3 succeeded; generation-only not published; inference-only used the
-named batch; combined replaced current (chained generation); smoke never activates; predictions complete (3 rows per
+Checks (`cp5-results.json`, all 12 true; the script exits non-zero if any is false): runs 1-3 succeeded; generation-only not published; inference-only used the
+named batch (no new batch; every horizon's `source_input` is exactly run 1's batch id); combined used its own new
+batch; combined replaced current (chained generation); smoke never activates; predictions complete (3 rows per
 horizon = roster), finite, `mode=smoke`, feature period 2027-01, targets 2027-03 / 2027-09 / 2028-03;
 failure_preserved (stale publication), generation_failure_preserved, inference_failure_preserved; zero_real_touch
-(store spy: no URI under the real delivery root or real store; filesystem spy: the real handoff bundle
-`out-r5-accepted-v1`, `R/staging` and real stores never opened; the real pointer never exists) - only the model
-(package/envelope) and fixture files are read; split_equals_combined_except_source_input (gen-only -> inf-only and
+(store spy - also wrapping the route's pinned reader: no URI under the real delivery root or real store; `ReadSpy`,
+the binding tests' spy for several roots: no Python-level open/stat/lstat/listdir/scandir (builtins.open, io.open,
+os.open, os.stat, os.lstat, os.listdir, os.scandir; 9,712 path calls observed) under `handoff-build/` incl.
+`out-r5-accepted-v1`, `R/staging` or `cp3-real-integration`; calibrated in-run - a deliberate forbidden stat is
+recorded, then discarded; the real pointer never exists). NOT intercepted, stated precisely: file access performed
+inside native libraries that bypass these Python entry points (e.g. GDAL/pyogrio, xgboost's native model loader) -
+the route hands those only fixture and model paths; split_equals_combined_except_source_input (gen-only -> inf-only and
 gen+inf predictions are identical in every column except `source_input`, the batch reference).
 
 ## Defect found and fixed by the actual package (classification: breaks required behaviour)
@@ -50,6 +55,11 @@ package manifest, the rows are restricted to the declared fixture roster and dec
 `envelope:<id>/<file>#smoke-roster-subset-of-sha256:<verified source digest>`); real mode is unchanged and still
 refuses evidence outside its roster. Regression `test_smoke_restricts_full_roster_package_evidence_to_the_fixture_roster`
 (fails on HEAD~ with EvidenceIntegrityError).
+Supervisor repair on b3b5dd2: the FULL verified evidence file's own identity is validated (`_evidence_identity` with
+the real origin/training cutoff) BEFORE the restriction, so a wrong identity is never hidden; when no fixture area has
+evidence the family is declared `unavailable` with reason `no_eligible_area_history` (R31), never an empty
+"available" file. Regressions `test_smoke_evidence_without_any_roster_area_is_unavailable_with_reason` and
+`test_smoke_validates_the_full_evidence_identity_before_restricting_it` (both fail on b3b5dd2).
 
 ## Readback
 
@@ -61,5 +71,6 @@ PYTHONDONTWRITEBYTECODE=1 ~/.venvs/fewsnet-test-lock-20261022/bin/python cp5_smo
 ```
 
 Run history: run1 exposed the evidence/roster defect; run2 showed run 5 needed a month whose climate was not yet
-saved (the provider was correctly never called); run3 all checks; run4 = run3 + the split/combined equality check
-(the committed `cp5-results.json`). Logs `cp5-run*.log` on disk (gitignored).
+saved (the provider was correctly never called); run3 all checks; run4 = run3 + the split/combined equality check;
+run5/run6 = the Supervisor's repairs (ReadSpy + spied reader, explicit batch identity, failing exit; run6 adds the
+spy calibration) - run6 is the committed `cp5-results.json`. Logs `cp5-run*.log` on disk (gitignored).

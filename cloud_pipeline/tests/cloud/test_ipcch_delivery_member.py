@@ -192,3 +192,41 @@ def test_smoke_restricts_full_roster_package_evidence_to_the_fixture_roster(tmp_
     real = dict(kw, binding=dataclasses.replace(kw["binding"], mode="real"))
     with pytest.raises(EvidenceIntegrityError, match="must be roster IDs"):
         dm.write_member(tmp / "out-real", **real)
+
+
+def test_smoke_evidence_without_any_roster_area_is_unavailable_with_reason(tmp_path_factory):
+    """Supervisor on b3b5dd2: valid source evidence for areas 990/991 only and the fixture roster 11/12/13 -> the
+    families are declared unavailable (no_eligible_area_history, R31) and the member still writes; never an empty
+    'available' file."""
+    from tests.cloud.ipcch_binding_fixtures import make_scoring_package
+    other = make_scoring_package(tmp_path_factory.mktemp("other") / "package", ORDER, evidence_areas=("990", "991"))
+    tmp = tmp_path_factory.mktemp("smoke-empty")
+    kw = scored_batch(tmp, other)
+    dm.write_member(tmp / "out", **kw)
+    declared = json.loads((tmp / "out/reports/ipcch_diagnostic_declarations.json").read_text())
+    for lead in ("0m", "6m", "12m"):
+        for family in ("polygon_training_errors", "country_confidence", "maximum_phase"):
+            assert (declared[lead][family]["status"], declared[lead][family]["reason"]) == (
+                "unavailable", "no_eligible_area_history")
+    availability = pd.read_csv(tmp / "out/reports/ipcch_diagnostic_availability.csv", dtype=str)
+    assert set(availability["status"]) == {"unavailable"}
+
+
+def test_smoke_validates_the_full_evidence_identity_before_restricting_it(tmp_path_factory):
+    """A source file with a wrong identity is refused in smoke even when the roster subset would be empty."""
+    import hashlib
+
+    from cloud.orchestrator.delivery_outputs import EvidenceIntegrityError
+    from tests.cloud.ipcch_binding_fixtures import make_scoring_package
+    root = make_scoring_package(tmp_path_factory.mktemp("bad") / "package", ORDER, evidence_areas=("990", "991"))
+    tmp = tmp_path_factory.mktemp("smoke-bad")
+    kw = scored_batch(tmp, root)                                  # binding of the intact package
+    manifest = json.loads((root / bd.PACKAGE_MANIFEST).read_text())
+    ev = manifest["scopes"]["0"]["evidence"]["area"]
+    path = root / ev["file"]
+    text = path.read_text().replace(",0,training_resubstitution,", ",6,training_resubstitution,")   # wrong horizon
+    path.write_text(text)
+    ev["sha256"] = manifest["files"][ev["file"]]["sha256"] = hashlib.sha256(text.encode()).hexdigest()
+    (root / bd.PACKAGE_MANIFEST).write_text(json.dumps(manifest))
+    with pytest.raises(EvidenceIntegrityError):
+        dm._declarations(kw["binding"], str(root), "0", 0, ["11", "12", "13"], "2027-01", "2025-11")
