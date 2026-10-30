@@ -1,0 +1,613 @@
+{
+  "checks": {
+    "combined_replaced_current": true,
+    "failure_preserved": true,
+    "generation_failure_preserved": true,
+    "generation_only_not_published": true,
+    "inference_failure_preserved": true,
+    "inference_only_used_named_batch": true,
+    "predictions_complete_finite_smoke": true,
+    "runs_1_3_succeeded": true,
+    "smoke_never_activates": true,
+    "split_equals_combined_except_source_input": true,
+    "zero_real_touch": true
+  },
+  "current": {
+    "after_combined": {
+      "activation": null,
+      "generation": "2",
+      "predictions": {
+        "0": {
+          "areas": [
+            "11",
+            "12",
+            "13"
+          ],
+          "feature_period": [
+            "2027-01"
+          ],
+          "finite": true,
+          "mode": [
+            "smoke"
+          ],
+          "rows": 3,
+          "sha256": "2f10395e9055f9a9c8d4927b63e394c26d36447beb90439d7b95cff068f8b0ee",
+          "target_period": [
+            "2027-03"
+          ]
+        },
+        "12": {
+          "areas": [
+            "11",
+            "12",
+            "13"
+          ],
+          "feature_period": [
+            "2027-01"
+          ],
+          "finite": true,
+          "mode": [
+            "smoke"
+          ],
+          "rows": 3,
+          "sha256": "797d5a329bda35ec4c9ddeb2db4f1f4dab3756791c684f2d1ee04e0adee2120d",
+          "target_period": [
+            "2028-03"
+          ]
+        },
+        "6": {
+          "areas": [
+            "11",
+            "12",
+            "13"
+          ],
+          "feature_period": [
+            "2027-01"
+          ],
+          "finite": true,
+          "mode": [
+            "smoke"
+          ],
+          "rows": 3,
+          "sha256": "c4264ebe02bff37bd325dbb894bfd6722f8e9adced2be14ba80e6cd6a68576c4",
+          "target_period": [
+            "2027-09"
+          ]
+        }
+      },
+      "previous": {
+        "pointer_generation": "1",
+        "release_record": "gs://ops-delivery-smoke/v2/smoke/releases/cp5-inf-ipcch/release.json"
+      },
+      "run_id": "cp5-comb-ipcch"
+    },
+    "after_inference_only": {
+      "activation": null,
+      "generation": "1",
+      "ipcch_mode": "smoke",
+      "predictions": {
+        "0": {
+          "areas": [
+            "11",
+            "12",
+            "13"
+          ],
+          "feature_period": [
+            "2027-01"
+          ],
+          "finite": true,
+          "mode": [
+            "smoke"
+          ],
+          "rows": 3,
+          "sha256": "f8a8ab75f54f1059232a86b0ce9590bdfa72113c65c9c3e008a9edb889ef1f47",
+          "target_period": [
+            "2027-03"
+          ]
+        },
+        "12": {
+          "areas": [
+            "11",
+            "12",
+            "13"
+          ],
+          "feature_period": [
+            "2027-01"
+          ],
+          "finite": true,
+          "mode": [
+            "smoke"
+          ],
+          "rows": 3,
+          "sha256": "26d91ce45732a37300d42e5c5b91415f6d683062ee8c3ff28195538aff327a9c",
+          "target_period": [
+            "2028-03"
+          ]
+        },
+        "6": {
+          "areas": [
+            "11",
+            "12",
+            "13"
+          ],
+          "feature_period": [
+            "2027-01"
+          ],
+          "finite": true,
+          "mode": [
+            "smoke"
+          ],
+          "rows": 3,
+          "sha256": "6d0836b303accc05becbfeb07f8b5b95116f326fd9197528521d153b92ad1394",
+          "target_period": [
+            "2027-09"
+          ]
+        }
+      },
+      "run_id": "cp5-inf-ipcch"
+    }
+  },
+  "failures": {
+    "corrupted_h14": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-aace93b1f028/h14.csv",
+    "generation_failure_report_steps": {
+      "acled": {
+        "action": "refresh",
+        "coverage_end": "2027-02",
+        "interval": [
+          "2026-01-31",
+          "2027-03-05"
+        ],
+        "method": "regional-aggregate converter (research build_acled_agg.py conventions; delivered fixed tables)",
+        "regions": [
+          "R1",
+          "R2"
+        ],
+        "source": {
+          "generation": "119",
+          "sha256": "ad39f953069e6bcd2b1214875e92e47c8300b9bbed8987254dcd39ea648ffc20",
+          "uri": "gs://ops-smoke/inputs/acled.csv"
+        }
+      },
+      "acled_tables": {
+        "mapped_admin1": 3,
+        "polygons": 3
+      },
+      "climate": {
+        "methods": {
+          "cdd": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/rainfall.js",
+              "script_sha256": "73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/rainfall.js",
+              "script_sha256": "08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "edd": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/temperature.js",
+              "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/temperature.js",
+              "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "evi_anom": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/ndvi.js",
+              "script_sha256": "4fd5ee58dd5b86b37fc1e85fc194019f684cac29bd25cac46b24cfbd27d494c7",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/ndvi_evi.js",
+              "script_sha256": "d586ac495e3d1779b59362d3af800bf027b7fac492432d87145994a214dd5463",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "gdd": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/temperature.js",
+              "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/temperature.js",
+              "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "hot_days_p95": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/temperature.js",
+              "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/temperature.js",
+              "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "prcp_anom": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/rainfall.js",
+              "script_sha256": "73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/rainfall.js",
+              "script_sha256": "08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "prcp_z": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/rainfall.js",
+              "script_sha256": "73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/rainfall.js",
+              "script_sha256": "08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "rainy_days": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/rainfall.js",
+              "script_sha256": "73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/rainfall.js",
+              "script_sha256": "08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "sm_z": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/soil_moisture.js",
+              "script_sha256": "f701cf2b184299cf53eaa20684bf75d99acef375cf0bd4b776604e651b2ba69b",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/soil_moisture.js",
+              "script_sha256": "58cfd1ca9311115657ea3b3eabf518bcbd58b61e0d5b8b6395e64f4b1de7e819",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "spei03": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/spi&spei.py",
+              "script_sha256": "fbc559792896f5dc251aceb1ad83926c0cbdf2107c713aeb14701359dea690a7",
+              "season_aggregation": "MONTHLY_INDEX_EXACT_OVERLAP_DAY_WEIGHTED_MEAN|FULL_COVERAGE_0.999999|USE_FEB28",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN",
+              "spei_fit": "SPEI_UBPWM_GLO_STRICT_SUPPORT_V3@seasonal/spi&spei.py:fit_glo_ubpwm+glo_probability_strict"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/spi_monthly.py",
+              "script_sha256": "0e29ed359915840825d5d35a0ecf962639d2218c27744af012e367a8b7d854c5",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN",
+              "spei_fit": "SPEI_UBPWM_GLO_STRICT_SUPPORT_V3@monthly/spi_monthly.py:compute_spei03_monthly"
+            }
+          },
+          "spi03": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/spi&spei.py",
+              "script_sha256": "fbc559792896f5dc251aceb1ad83926c0cbdf2107c713aeb14701359dea690a7",
+              "season_aggregation": "MONTHLY_INDEX_EXACT_OVERLAP_DAY_WEIGHTED_MEAN|FULL_COVERAGE_0.999999|USE_FEB28",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/spi_monthly.py",
+              "script_sha256": "0e29ed359915840825d5d35a0ecf962639d2218c27744af012e367a8b7d854c5",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "tmax_anom": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/temperature.js",
+              "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/temperature.js",
+              "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          },
+          "tmean_anom": {
+            "gs": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "seasonal/temperature.js",
+              "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "month": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/temperature.js",
+              "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            }
+          }
+        },
+        "monthly": {
+          "prcp_anom": {
+            "base": "prcp_anom",
+            "gaps": {},
+            "method": {
+              "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+              "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+              "script": "monthly/rainfall.js",
+              "script_sha256": "08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162",
+              "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+            },
+            "months": {},
+            "origin": "2027-02",
+            "saved": []
+          }
+        },
+        "origin": "2027-02",
+        "seasonal": {},
+        "stopped": {
+          "base": "prcp_anom",
+          "error": "ClimateSourceMissing: prcp_anom: no source publishes the feature origin 2027-02 ({'chirps': 'lag', 'persiann': 'lag', 'era5land': 'lag'}); real generation stops (R13)",
+          "saved_in_base": [],
+          "temporal": "month"
+        }
+      },
+      "history_snapshot": {
+        "action": "keep",
+        "preparation_cutoff": "2026-12"
+      },
+      "research_inputs": {
+        "bbg_global_food": {
+          "action": "keep",
+          "coverage_end": "2026-12",
+          "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+        },
+        "bbg_oilgas": {
+          "action": "keep",
+          "coverage_end": "2026-12",
+          "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+        },
+        "bbg_soybean_oil": {
+          "action": "keep",
+          "coverage_end": "2026-12",
+          "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+        },
+        "bbg_staple_food": {
+          "action": "keep",
+          "coverage_end": "2026-12",
+          "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+        },
+        "food_price_index_WB": {
+          "action": "keep",
+          "coverage_end": "2026-12",
+          "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+        },
+        "idp_local": {
+          "action": "keep",
+          "coverage_end": "2026-12",
+          "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+        },
+        "idp_national": {
+          "action": "keep",
+          "coverage_end": "2026-09"
+        },
+        "nino34_anom": {
+          "action": "keep",
+          "coverage_end": "2026-12",
+          "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+        }
+      },
+      "season_windows": {
+        "delivered_through": 2026,
+        "derived_rows": 6,
+        "derived_years": [
+          2027
+        ],
+        "rows": 78,
+        "through_season_year": 2027
+      },
+      "wfp": {
+        "action": "keep",
+        "coverage_end": "2026-12",
+        "method": "research HDX food prices: 100 + YoY % change of local-currency staple prices (maize, sorghum, rice, wheat, vegetable oil), nearest market with data < 100 km, no fill (build_wfp_hdx.py)"
+      }
+    },
+    "inference_failure_reason": "IpcchRunFailure: IPCCH inference failed: BatchValidationError: gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-aace93b1f028/h14.csv#1 sha256 differs from its reference"
+  },
+  "fixture": {
+    "bundle_manifest_sha256": "d4e1351c4e6ed94791499a058ebcea5a747a0a9af11c5950cb87c2f86924c77e",
+    "countries": [
+      "AAA",
+      "BBB"
+    ],
+    "neighbours": "fixture geometries are adjacent unit boxes (11|12 in AAA, 13 in BBB): a contiguous neighbour subset across two fixture countries",
+    "roster": [
+      "11",
+      "12",
+      "13"
+    ]
+  },
+  "isolation": {
+    "forbidden_paths_opened": [],
+    "paths_opened": 254,
+    "real_pointer_exists": false,
+    "real_store_or_root_uris_touched": [],
+    "store_uris_touched": 263
+  },
+  "model": {
+    "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+    "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+    "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+    "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22"
+  },
+  "runs": {
+    "combined": {
+      "batch": {
+        "batch_id": "ipcch-2027-03-cp5-comb-23702aa4b4b0",
+        "manifest_ref": {
+          "generation": "1",
+          "sha256": "fbea50456343559328f7f6d9102b8747affccc952b83d7601a9ca065bbab3b5d",
+          "uri": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-comb-23702aa4b4b0/manifest.json"
+        }
+      },
+      "ipcch_status": "succeeded",
+      "publication": {
+        "activation": null,
+        "delivery": {
+          "manifest": {
+            "generation": "1",
+            "sha256": "38485b99abe12d0915c0d6a93bd7c3791f862727d0a76de6b6782616c5630b13",
+            "uri": "gs://ops-delivery-smoke/v2/deliveries/cp5-comb-ipcch/manifest.json"
+          }
+        },
+        "members": [
+          "ipcch"
+        ],
+        "pointer_generation": "2",
+        "pointer_uri": "gs://ops-delivery-smoke/v2/smoke/current.json",
+        "publication_id": "cp5-comb-ipcch",
+        "release_record": "gs://ops-delivery-smoke/v2/smoke/releases/cp5-comb-ipcch/release.json",
+        "status": "published"
+      },
+      "reason": null,
+      "status": "succeeded",
+      "status_uri": "gs://ops-delivery-smoke/v2/runs/cp5-comb/v2_run_status.json"
+    },
+    "generation_failure": {
+      "batch": null,
+      "ipcch_status": "failed",
+      "publication": null,
+      "reason": "IpcchRunFailure: IPCCH generation failed: GenerationFailure: IPCCH generation stopped at climate: ClimateSourceMissing: prcp_anom: no source publishes the feature origin 2027-02 ({'chirps': 'lag', 'persiann': 'lag', 'era5land': 'lag'}); real generation stops (R13) [climate run report: {'origin': '2027-02', 'monthly': {'prcp_anom': {'base': 'prcp_anom', 'origin': '2027-02', 'method': {'script': 'monthly/rainfall.js', 'script_sha256': '08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'saved': [], 'gaps': {}, 'months': {}}}, 'seasonal': {}, 'methods': {'prcp_anom': {'month': {'script': 'monthly/rainfall.js', 'script_sha256': '08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/rainfall.js', 'script_sha256': '73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'prcp_z': {'month': {'script': 'monthly/rainfall.js', 'script_sha256': '08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/rainfall.js', 'script_sha256': '73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'rainy_days': {'month': {'script': 'monthly/rainfall.js', 'script_sha256': '08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/rainfall.js', 'script_sha256': '73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'cdd': {'month': {'script': 'monthly/rainfall.js', 'script_sha256': '08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/rainfall.js', 'script_sha256': '73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'tmean_anom': {'month': {'script': 'monthly/temperature.js', 'script_sha256': 'ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/temperature.js', 'script_sha256': '3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'tmax_anom': {'month': {'script': 'monthly/temperature.js', 'script_sha256': 'ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/temperature.js', 'script_sha256': '3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'hot_days_p95': {'month': {'script': 'monthly/temperature.js', 'script_sha256': 'ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/temperature.js', 'script_sha256': '3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'gdd': {'month': {'script': 'monthly/temperature.js', 'script_sha256': 'ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/temperature.js', 'script_sha256': '3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'edd': {'month': {'script': 'monthly/temperature.js', 'script_sha256': 'ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/temperature.js', 'script_sha256': '3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'sm_z': {'month': {'script': 'monthly/soil_moisture.js', 'script_sha256': '58cfd1ca9311115657ea3b3eabf518bcbd58b61e0d5b8b6395e64f4b1de7e819', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/soil_moisture.js', 'script_sha256': 'f701cf2b184299cf53eaa20684bf75d99acef375cf0bd4b776604e651b2ba69b', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}, 'spi03': {'month': {'script': 'monthly/spi_monthly.py', 'script_sha256': '0e29ed359915840825d5d35a0ecf962639d2218c27744af012e367a8b7d854c5', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/spi&spei.py', 'script_sha256': 'fbc559792896f5dc251aceb1ad83926c0cbdf2107c713aeb14701359dea690a7', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1', 'season_aggregation': 'MONTHLY_INDEX_EXACT_OVERLAP_DAY_WEIGHTED_MEAN|FULL_COVERAGE_0.999999|USE_FEB28'}}, 'spei03': {'month': {'script': 'monthly/spi_monthly.py', 'script_sha256': '0e29ed359915840825d5d35a0ecf962639d2218c27744af012e367a8b7d854c5', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1', 'spei_fit': 'SPEI_UBPWM_GLO_STRICT_SUPPORT_V3@monthly/spi_monthly.py:compute_spei03_monthly'}, 'gs': {'script': 'seasonal/spi&spei.py', 'script_sha256': 'fbc559792896f5dc251aceb1ad83926c0cbdf2107c713aeb14701359dea690a7', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1', 'spei_fit': 'SPEI_UBPWM_GLO_STRICT_SUPPORT_V3@seasonal/spi&spei.py:fit_glo_ubpwm+glo_probability_strict', 'season_aggregation': 'MONTHLY_INDEX_EXACT_OVERLAP_DAY_WEIGHTED_MEAN|FULL_COVERAGE_0.999999|USE_FEB28'}}, 'evi_anom': {'month': {'script': 'monthly/ndvi_evi.js', 'script_sha256': 'd586ac495e3d1779b59362d3af800bf027b7fac492432d87145994a214dd5463', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}, 'gs': {'script': 'seasonal/ndvi.js', 'script_sha256': '4fd5ee58dd5b86b37fc1e85fc194019f684cac29bd25cac46b24cfbd27d494c7', 'spatial_weighting': 'PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN', 'outlier': 'ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT', 'ensemble': 'EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1'}}}, 'stopped': {'base': 'prcp_anom', 'temporal': 'month', 'error': \"ClimateSourceMissing: prcp_anom: no source publishes the feature origin 2027-02 ({'chirps': 'lag', 'persiann': 'lag', 'era5land': 'lag'}); real generation stops (R13)\", 'saved_in_base': []}}]",
+      "status": "failed",
+      "status_uri": "gs://ops-delivery-smoke/v2/runs/cp5-genfail/v2_run_status.json"
+    },
+    "generation_only": {
+      "batch": {
+        "batch_id": "ipcch-2027-03-cp5-gen-af9074a32b71",
+        "manifest_ref": {
+          "generation": "1",
+          "sha256": "4ff88f49c9661f3a7046a60ff414c5528034a8c26c5d98933318e0c0f7626fab",
+          "uri": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-gen-af9074a32b71/manifest.json"
+        }
+      },
+      "ipcch_status": "succeeded",
+      "publication": null,
+      "reason": null,
+      "status": "succeeded",
+      "status_uri": "gs://ops-delivery-smoke/v2/runs/cp5-gen/v2_run_status.json"
+    },
+    "inference_horizon_failure": {
+      "batch": null,
+      "ipcch_status": "failed",
+      "publication": null,
+      "reason": "IpcchRunFailure: IPCCH inference failed: BatchValidationError: gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-aace93b1f028/h14.csv#1 sha256 differs from its reference",
+      "status": "failed",
+      "status_uri": "gs://ops-delivery-smoke/v2/runs/cp5-inffail/v2_run_status.json"
+    },
+    "inference_only": {
+      "batch": null,
+      "ipcch_status": "succeeded",
+      "publication": {
+        "activation": null,
+        "delivery": {
+          "manifest": {
+            "generation": "1",
+            "sha256": "eaae41edb4b98188385bd881c85bfb87a9f5c2298e4d00367be28d9d03e755ef",
+            "uri": "gs://ops-delivery-smoke/v2/deliveries/cp5-inf-ipcch/manifest.json"
+          }
+        },
+        "members": [
+          "ipcch"
+        ],
+        "pointer_generation": "1",
+        "pointer_uri": "gs://ops-delivery-smoke/v2/smoke/current.json",
+        "publication_id": "cp5-inf-ipcch",
+        "release_record": "gs://ops-delivery-smoke/v2/smoke/releases/cp5-inf-ipcch/release.json",
+        "status": "published"
+      },
+      "reason": null,
+      "status": "succeeded",
+      "status_uri": "gs://ops-delivery-smoke/v2/runs/cp5-inf/v2_run_status.json"
+    },
+    "stale_publication": {
+      "batch": {
+        "batch_id": "ipcch-2027-03-cp5-stale-aace93b1f028",
+        "manifest_ref": {
+          "generation": "1",
+          "sha256": "61c01bf43d974c836132a14dd4f6e36fe884ec8df4f4803dc90a0942bd730162",
+          "uri": "gs://ipcch-store/ipcch-v2/smoke/feature_batches/ipcch-2027-03-cp5-stale-aace93b1f028/manifest.json"
+        }
+      },
+      "ipcch_status": "failed",
+      "publication": {
+        "publication_id": "cp5-stale-ipcch",
+        "reason": "pointer generation 2 != expected 1",
+        "stage": "precheck",
+        "status": "publication_failed"
+      },
+      "reason": "IpcchRunFailure: IPCCH publication failed: RuntimeError: pointer generation 2 != expected 1",
+      "status": "failed",
+      "status_uri": "gs://ops-delivery-smoke/v2/runs/cp5-stale/v2_run_status.json"
+    }
+  }
+}

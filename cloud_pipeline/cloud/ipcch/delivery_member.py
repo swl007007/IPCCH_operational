@@ -104,7 +104,12 @@ def _lookup(area_identity: pd.DataFrame, census: pd.DataFrame, roster: list[str]
     return lookup, pd.Series(iso.to_numpy(), index=pd.Index(roster, name="area_id"))
 
 
-def _declarations(binding: bd.Binding, package_root: str, scope: str, lead: int) -> tuple[dict, dict]:
+def _declarations(binding: bd.Binding, package_root: str, scope: str, lead: int,
+                  roster: list[str] | None = None) -> tuple[dict, dict]:
+    """The package's own evidence per diagnostic family, verified against the bound package manifest. SMOKE only: the
+    accepted package's evidence covers the full training roster, so after that verification its rows are restricted
+    to the declared fixture roster (the subset bytes are declared with their own sha256 and a URI naming the subset
+    and the verified source file digest); real mode uses the package file unchanged."""
     manifest = json.load(open(os.path.join(package_root, bd.PACKAGE_MANIFEST)))
     ev = manifest["scopes"][scope]["evidence"]
     data = {}
@@ -114,9 +119,15 @@ def _declarations(binding: bd.Binding, package_root: str, scope: str, lead: int)
         blob = open(path, "rb").read()
         if hashlib.sha256(blob).hexdigest() != ev[part]["sha256"]:
             raise MemberError(f"package evidence {ev[part]['file']} differs from the bound package manifest")
+        uri = f"envelope:{binding.envelope_id}/{ev[part]['file']}"
+        if binding.mode == "smoke" and roster is not None:
+            frame = pd.read_csv(io.BytesIO(blob), dtype=str, keep_default_na=False)
+            blob = frame[frame["polygon_id"].isin(set(map(str, roster)))].to_csv(index=False,
+                                                                                lineterminator="\n").encode()
+            uri = f"{uri}#smoke-roster-subset-of-sha256:{ev[part]['sha256']}"
         out[family] = {"status": "available",
-                       "ref": {"uri": f"envelope:{binding.envelope_id}/{ev[part]['file']}",
-                               "generation": binding.package_manifest_sha256, "sha256": ev[part]["sha256"]},
+                       "ref": {"uri": uri, "generation": binding.package_manifest_sha256,
+                               "sha256": hashlib.sha256(blob).hexdigest()},
                        "evidence_model_package_id": ev["model_package_id"], "evidence_horizon_months": lead}
         data[family] = blob
     return do.normalise_declarations("ipcch", lead, out), data
@@ -149,7 +160,7 @@ def write_member(out: Path, *, manifest: Mapping[str, Any], scored: Mapping[int,
             raise MemberError(f"H{h}: predictions are not exactly the roster")
         if not np.isfinite(p[list(SCORES)].to_numpy(float)).all():
             raise MemberError(f"H{h}: nonfinite raw scores (R18)")
-        declarations, evidence = _declarations(binding, package_root, scope, lead)
+        declarations, evidence = _declarations(binding, package_root, scope, lead, roster)
         diag = do.scope_diagnostics("ipcch", lead, p, declarations=declarations, evidence_bytes=lambda f, e=evidence: e[f],
                                     package_id=package_id, polygons=p["polygon_id"], census=census, area_lookup=lookup,
                                     iso_by_polygon=iso_by_polygon, origin=O,

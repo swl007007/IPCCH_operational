@@ -171,3 +171,24 @@ def test_seasonal_provenance_reports_actual_observations_not_calendar_selection(
     assert set(cdd["source_version"]) == {4}
     cal = out[out["section"] == "growing_season_calendar"].set_index("polygon_id")
     assert set(cal["latest_observation"]) == {"2026-s2"} and set(cal["observation_kind"]) == {"calendar_selection"}
+
+
+def test_smoke_restricts_full_roster_package_evidence_to_the_fixture_roster(tmp_path_factory):
+    """CP5 (actual package): the package's evidence covers its full training roster. SMOKE: after verification
+    against the bound package manifest its rows are restricted to the fixture roster and declared as a subset (own
+    sha256, URI naming the verified source digest); REAL: the unchanged rule refuses evidence outside the roster."""
+    import dataclasses
+
+    from cloud.orchestrator.delivery_outputs import EvidenceIntegrityError
+    from tests.cloud.ipcch_binding_fixtures import make_scoring_package
+    wide = make_scoring_package(tmp_path_factory.mktemp("wide") / "package", ORDER,
+                                evidence_areas=("11", "12", "13", "990", "991"))
+    tmp = tmp_path_factory.mktemp("smoke")
+    kw = scored_batch(tmp, wide)
+    prov = dm.write_member(tmp / "out", **kw)
+    declared = json.loads((tmp / "out/reports/ipcch_diagnostic_declarations.json").read_text())
+    ref = declared["0m"]["polygon_training_errors"]["ref"]
+    assert prov["mode"] == "smoke" and "#smoke-roster-subset-of-sha256:" in ref["uri"]
+    real = dict(kw, binding=dataclasses.replace(kw["binding"], mode="real"))
+    with pytest.raises(EvidenceIntegrityError, match="must be roster IDs"):
+        dm.write_member(tmp / "out-real", **real)
