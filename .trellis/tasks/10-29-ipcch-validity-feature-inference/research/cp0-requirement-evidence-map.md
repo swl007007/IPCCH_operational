@@ -129,3 +129,20 @@ Final convergence corrections (prd.md:256-265) → AC: FCC1 :256 inference-only 
 - Real retained-store initialization from delivered baseline climate assets (placeholders until delivered).
 - Actual production publication / activation and live legacy-cutover behaviour (tested only on fake stores).
 - Production rollback (source recovery and fake-store tests are not production rollback validation).
+
+
+## Execution index — Supervisor update 2026-10-30
+
+The tables above preserve the original CP0 planned checks; they are not a claim that execution has not started. Final per-row evidence mapping remains a CP6 deliverable. Current checkpoint evidence is deliberately separate:
+
+| Checkpoint | State | Executed evidence | Remaining acceptance boundary |
+|---|---|---|---|
+| CP0 | accepted | cp0-supervisor-review.md; execution-protocol.md | none for CP0 |
+| CP1 | accepted | cp1/supervisor-review.md; pinned recipes and research commit9aa9e54 | none for CP1 |
+| CP2 | in progress | cp2/supervisor-review.md; cp2/cp2-package.md; cp2/package-check/runtime_check_real_r2.json; cp2/cp2-handoff-inputs.md and r5 delta | final immutable asset binding and explicit acceptance; runtime fixed-asset integration |
+| CP3 | in progress | cp3-supervisor-review.md; cp3/cp3c2-acled.md; cp3/cp3c3-climate-core.md; cp3/cp3d-assembly-initial.md;99-test receipt plus independent targeted repair checks | complete parity verdict, batch/inference/generation entrypoints and integrated FEWS preflight |
+| CP4 | pending | none accepted | publication, locks/CAS, compatibility/cutover/candidate tests |
+| CP5 | pending | none accepted | local two-country smoke with actual three-model combination |
+| CP6 | pending | none accepted | complete R/AC/FCC executed evidence map, regressions, operator handoff, clean commits |
+
+CP2 raw-score probes and CP3 historical feature compatibility checks do not substitute for CP5. Offline Earth Engine graph tests do not establish live private-asset access or raster numerical replay. Deferred checks listed above remain deferred.
