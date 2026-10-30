@@ -1,0 +1,51 @@
+{
+  "schema_version": "fewsnet-ipcch-delivery-request-v2",
+  "run_id": "ipcch-2026-10-inf",
+  "mode": "real",
+  "execution_month": "2026-10",
+  "operations": {
+    "ipcch_generation": false,
+    "ipcch_inference": true,
+    "fewsnet_generation": false,
+    "fewsnet_inference": false
+  },
+  "ipcch": {
+    "model_combination": {
+      "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+      "envelope": {
+        "uri": "gs://ops-real/inputs/ipcch-combination-envelope-v2-accepted.json",
+        "generation": "1730000000000001",
+        "sha256": "e7f6d5342b4cfaec54bd1ff0c7c49fae7714d6f34a1f2284633e1a57ad54a782"
+      }
+    },
+    "country_reference": {
+      "uri": "gs://ops-real/inputs/ipcch-country-reference.csv",
+      "generation": "1730000000000001",
+      "sha256": "dd977d2f01d77bb4ba0f2b8109a88746ca18b5ea1bd13afcf847bfa855d03d26"
+    },
+    "feature_batch": {
+      "batch_id": "ipcch-2026-10-ipcch-2026-10-gen-0a1b2c3d4e5f",
+      "manifest": {
+        "uri": "gs://example-ipcch-store/ipcch-v2/real/feature_batches/ipcch-2026-10-ipcch-2026-10-gen-0a1b2c3d4e5f/manifest.json",
+        "generation": "1730000000000001",
+        "sha256": "affcf875e13aa4afb28bd7ca3d15f7d67cb8251ae3507feddaae489efcf39275"
+      }
+    }
+  },
+  "fewsnet": null,
+  "publication": "current",
+  "runtime": {
+    "image_uri": "us-central1-docker.pkg.dev/<project>/<repository>/delivery@sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "environment_manifest": {
+      "uri": "gs://ops-real/inputs/env-manifest.json",
+      "generation": "1730000000000001",
+      "sha256": "3d9b607f0aaf8dbf762489580af3d3ee158e5a5890dfc8212fc93fd1e0fc9619"
+    }
+  },
+  "release": {
+    "namespace": "prod",
+    "expected_pointer_generation": "<current gen>"
+  },
+  "operator": "operator@example.org",
+  "prepared_at": "2026-11-02T09:00:00Z"
+}

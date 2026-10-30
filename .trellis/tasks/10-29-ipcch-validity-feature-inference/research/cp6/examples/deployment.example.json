@@ -1,0 +1,47 @@
+{
+  "roots": {
+    "real": "gs://example-delivery/v2",
+    "smoke": "gs://example-delivery-smoke/v2"
+  },
+  "store_roots": {
+    "real": "gs://example-ipcch-store/ipcch-v2/real",
+    "smoke": "gs://example-ipcch-store/ipcch-v2/smoke"
+  },
+  "namespaces": {
+    "production": "prod",
+    "smoke": "smoke"
+  },
+  "trusted_prefixes": {
+    "real": [
+      "gs://ops-real/inputs/",
+      "gs://ops-real/prepare_requests/",
+      "gs://example-delivery/v2/prepared/"
+    ],
+    "smoke": [
+      "gs://ops-smoke/inputs/"
+    ]
+  },
+  "installed": {
+    "real": {
+      "envelope": "/opt/ipcch/envelope/ipcch-combination-envelope-v2-accepted.json",
+      "package_root": "/opt/ipcch/package",
+      "bundle_dir": "/opt/ipcch/handoff-bundle"
+    },
+    "smoke": {
+      "envelope": "/opt/ipcch/envelope/ipcch-combination-envelope-v2-accepted.json",
+      "package_root": "/opt/ipcch/package",
+      "bundle_dir": "/opt/ipcch/fixture-root/bundle",
+      "fixture_root": "/opt/ipcch/fixture-root"
+    }
+  },
+  "providers": {
+    "real": "cloud.ipcch.entrypoint_v2:real_providers",
+    "smoke": "<fixture module>:entrypoint_providers"
+  },
+  "earth_engine_project": "<ee-project>",
+  "export_root": "gs://example-exports/v2",
+  "work_dir": "/tmp/ipcch-v2-work",
+  "fewsnet": {
+    "image_uri": "us-central1-docker.pkg.dev/<project>/<repository>/delivery@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

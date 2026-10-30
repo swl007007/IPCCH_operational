@@ -1,7 +1,9 @@
 """Executable v2 request route (task 10-29; R5, R17, R36, R37, R39, R48, R50 and the CP4 rulings).
 
 ``python -m cloud.ipcch.entrypoint_v2 run --config deployment.json --request-uri gs://.../requests/<run>/run_manifest.json
---request-generation N`` (also reached from ``delivery_job run --v2-config`` when the request body is v2):
+--request-generation N`` (also reached from ``delivery_job run --v2-config`` when the request body is v2); the one-time
+store initialisation of a mode is ``python -m cloud.ipcch.entrypoint_v2 initialise --config deployment.json --mode real``
+(``initialise_store``):
 
 1. the request is read at its exact generation and structurally validated (mode/namespace rules) BEFORE any state
    read; only a REAL IPCCH inference published to current then reads the production pointer for the R39 month
@@ -208,12 +210,51 @@ def _durable(outcome: Mapping[str, Any]) -> dict[str, Any]:
     return out
 
 
+def initialise_store(cfg: Mapping[str, Any], mode: str, *, store, acceptor: str | None = None,
+                     now: datetime | None = None) -> dict[str, Any]:
+    """One-time initialisation of a mode's retained store from the INSTALLED binding (operator step before the first
+    run of that mode): verify the installed envelope/package (real: accepted; smoke: with its fixture root), then
+    real - append the envelope-bound finalized acceptance entries of the handoff bundle (R45); smoke - admit the fixture
+    bundle only (R48) and append fixture acceptance records for its manifest files (FCC10: smoke validates fixture
+    records only); then the two-phase ``initial.initialise`` (whole-bundle validation before any commit, pairing last)."""
+    from cloud.ipcch.stores import AcceptanceManifest
+
+    if mode not in ("smoke", "real"):
+        raise EntrypointError(f"mode must be smoke or real, got {mode!r}")
+    inst = cfg["installed"][mode]
+    binding = bd.verify_combination(inst["envelope"], inst["package_root"], mode=mode,
+                                    fixture_root=inst.get("fixture_root") if mode == "smoke" else None)
+    root = StoreRoot(mode, cfg["store_roots"][mode])
+    if mode == "real":
+        acceptance = initial.install_acceptance(store, root, inst["bundle_dir"], binding=binding)
+    else:
+        if not acceptor:
+            raise EntrypointError("smoke initialisation needs --acceptor for its fixture acceptance records")
+        manifest = bd.verify_fixture_bundle(binding, inst["bundle_dir"])["_manifest"]
+        have = AcceptanceManifest(store, root).records()
+        present = set(zip(have["name"], have["sha256"])) if len(have) else set()
+        stamp = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d")
+        new = [{"name": rel, "sha256": v["sha256"], "source": "fixture bundle", "acceptor": acceptor,
+                "accepted_at": stamp, "kind": "delivered"}
+               for rel, v in sorted(manifest["files"].items()) if (rel, v["sha256"]) not in present]
+        if new:
+            AcceptanceManifest(store, root).append(new)
+        acceptance = {"appended": len(new), "fixture": True}
+    report = initial.initialise(store, root, inst["bundle_dir"], binding=binding)
+    return {"mode": mode, "store_root": root.uri, "combination_id": binding.combination_id,
+            "acceptance": acceptance, "initialise": report}
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="v2 IPCCH/FEWS NET request route")
     sub = parser.add_subparsers(dest="command", required=True)
     r = sub.add_parser("run")
     for flag in ("--config", "--request-uri", "--request-generation"):
         r.add_argument(flag, required=True)
+    i = sub.add_parser("initialise", help="one-time retained-store initialisation of a mode from the installed binding")
+    i.add_argument("--config", required=True)
+    i.add_argument("--mode", required=True, choices=["real", "smoke"])
+    i.add_argument("--acceptor", help="smoke only: who accepts the fixture records")
     args = parser.parse_args(argv)
     from google.cloud import storage
 
@@ -221,6 +262,10 @@ def main(argv=None) -> int:
     from cloud.orchestrator.prepare import GcsPinnedReader
 
     client = storage.Client()
+    if args.command == "initialise":
+        report = initialise_store(load_config(args.config), args.mode, store=GCSObjectStore(client), acceptor=args.acceptor)
+        print(json.dumps(report, indent=2, sort_keys=True, default=str))
+        return 0
     status = run(load_config(args.config), request_uri=args.request_uri, request_generation=args.request_generation,
                  store=GCSObjectStore(client), reader=GcsPinnedReader(client), client=client)
     print(json.dumps(status, indent=2, sort_keys=True, default=str))

@@ -260,3 +260,58 @@ def test_candidate_publication_writes_a_record_without_moving_the_pointer(tmp_pa
                              deployment=run_v2.Deployment(store=rel, roots=DELIVERY_ROOTS))
     p = out["systems"]["ipcch"]["result"]["publication"]
     assert p["status"] == "candidate_written" and pub.read_current(rel, DELIVERY_ROOTS["smoke"], "smoke")["generation"] == "0"
+
+
+def test_published_prediction_metadata_carries_the_named_batch_coverage_and_warnings(tmp_path, package):
+    """R53/R62 (Supervisor CP6 check on da1ebd0): the batch's ACLED short-coverage warning and stale-snapshot warning
+    and its coverage ends (incl. the snapshot preparation cutoff) reach the hash-bound prediction metadata
+    (system_provenance.json and the release member record) verbatim - here for an inference-only run on the named
+    batch, published through the actual delivery verifier; a tampered copy does not verify."""
+    import json as _json
+
+    from cloud.ipcch import delivery_member as dm
+    from cloud.ipcch import publication as pub
+    store, refs, context, resolve = smoke_world(tmp_path, package)
+    env = tmp_path / "env.json"
+
+    def admit(run_id):
+        return {**SMOKE_ADMIT, "resolve": resolve,
+                "request_uri": f"gs://ops-smoke/requests/{run_id}/run_manifest.json"}
+    gen1 = raw(fx.smoke_request(refs, env, run_id="warn-gen1"))                       # first ACLED refresh
+    assert run_v2.run_request(gen1, admit_kwargs=admit("warn-gen1"), ipcch_context=context)["status"] == "succeeded"
+    gen2 = raw(fx.smoke_request(refs, env, execution_month="2027-04", run_id="warn-gen2"))
+    gen2["ipcch"]["acled"] = {"action": "keep"}                                       # coverage 2027-01 < O 2027-02
+    out2 = run_v2.run_request(gen2, admit_kwargs=admit("warn-gen2"), ipcch_context=context)
+    batch = out2["systems"]["ipcch"]["result"]["batch"]
+    manifest = _json.loads(store.read_text(batch["manifest_ref"]["uri"]))
+    warnings, coverage = manifest["generation"]["warnings"], manifest["generation"]["coverage_end"]
+    assert any(w.startswith("ACLED coverage ends") for w in warnings)
+    assert any(w.startswith("reported-phase snapshot prepared through") for w in warnings)
+    inf = raw(fx.smoke_request(refs, env, execution_month="2027-04", run_id="warn-inf", inference=True))
+    inf["operations"].update(ipcch_generation=False)
+    inf["ipcch"] = {"model_combination": inf["ipcch"]["model_combination"],
+                    "country_reference": inf["ipcch"]["country_reference"],
+                    "feature_batch": {"batch_id": batch["batch_id"], "manifest": batch["manifest_ref"]}}
+    inf["publication"] = "current"
+    rel = LocalObjectStore(tmp_path / "deliveries")
+    out3 = run_v2.run_request(inf, admit_kwargs=admit("warn-inf"), ipcch_context=context,
+                              deployment=run_v2.Deployment(store=rel, roots=DELIVERY_ROOTS))
+    assert out3["status"] == "succeeded"
+    member = pub.read_current(rel, DELIVERY_ROOTS["smoke"], "smoke")["record"]["systems"]["ipcch"]
+    assert member["batch"]["batch_id"] == batch["batch_id"]
+    assert member["batch"]["warnings"] == warnings and member["batch"]["coverage_end"] == coverage
+    assert member["batch"]["coverage_end"]["history_snapshot"] == coverage["history_snapshot"]
+    base = member["delivery"]["manifest"]["uri"].rsplit("/", 1)[0]
+    prov = _json.loads(rel.read_text(f"{base}/ipcch/system_provenance.json"))
+    assert prov["batch"]["warnings"] == warnings and prov["batch"]["coverage_end"] == coverage
+    copy_dir = tmp_path / "downloaded"
+    for uri in rel.list(base + "/"):
+        dst = copy_dir / uri[len(base) + 1:]
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        dst.write_bytes(rel.read_bytes(uri))
+    dm.verify_member(copy_dir, expected=member)                                        # verifies as published
+    tampered = _json.loads((copy_dir / "ipcch/system_provenance.json").read_text())
+    tampered["batch"]["warnings"] = []
+    (copy_dir / "ipcch/system_provenance.json").write_text(_json.dumps(tampered))
+    with pytest.raises(dm.MemberError):
+        dm.verify_member(copy_dir, expected=member)

@@ -1,0 +1,83 @@
+{
+  "schema_version": "fewsnet-ipcch-prepare-request-v1",
+  "prepare_id": "fews-2026-10-a",
+  "origin_month": "2026-10",
+  "cutoff_utc": "2026-11-01T00:00:00Z",
+  "extraction_contract_version": "current-repo-remote-scripts-v2",
+  "systems": {
+    "fewsnet": {
+      "geometry": {
+        "uri": "gs://ops-real/inputs/fewsnet/geometry.geojson",
+        "generation": "1730000000000001",
+        "sha256": "9f3dd22ebe7eb8f07f5c4769c83e644a98917dced42a552c0c01c7a1b31bfe8f"
+      },
+      "roster": {
+        "uri": "gs://ops-real/inputs/fewsnet/roster.csv",
+        "generation": "1730000000000001",
+        "sha256": "2458f0cfa91004e10bb7a0bf2b02914cc7bef6cf0207ba0e7ad790ceb784f193"
+      },
+      "history": {
+        "evi": {
+          "uri": "gs://ops-real/inputs/fewsnet/history/evi.csv",
+          "generation": "1730000000000001",
+          "sha256": "069369f918df296350b197c4305fe3f9589cdfd6e607a63534670ee64ec1567f"
+        },
+        "fldas": {
+          "uri": "gs://ops-real/inputs/fewsnet/history/fldas.csv",
+          "generation": "1730000000000001",
+          "sha256": "bf7c01be81c605973da47199a487e304625e5e0ba7473c058564ae6d27a3febe"
+        },
+        "gosif_mean": {
+          "uri": "gs://ops-real/inputs/fewsnet/history/gosif_mean.csv",
+          "generation": "1730000000000001",
+          "sha256": "8b15eec4f945504de6fef24f9744ff699e2702c59f921711efbe9677da48dc8e"
+        },
+        "viirs": {
+          "uri": "gs://ops-real/inputs/fewsnet/history/viirs.csv",
+          "generation": "1730000000000001",
+          "sha256": "44d5e948b73fcded62f88eae8a515a601f3e6e93b99fe3ea8c73eecb8b699a16"
+        }
+      }
+    },
+    "ipcch": {
+      "geometry": {
+        "uri": "gs://ops-real/inputs/ipcch/geometry.geojson",
+        "generation": "1730000000000001",
+        "sha256": "6cb769bf6432b57e7550a739b74eae8552e7be9dd447c1a19a9fb5a54dd2de32"
+      },
+      "roster": {
+        "uri": "gs://ops-real/inputs/ipcch/roster.csv",
+        "generation": "1730000000000001",
+        "sha256": "6544ab316297ff1b7ad5910186171e461002bdac74a9e27bfb2878b13a42eba2"
+      },
+      "history": {
+        "evi": {
+          "uri": "gs://ops-real/inputs/ipcch/history/evi.csv",
+          "generation": "1730000000000001",
+          "sha256": "c4a5237beed6b7b93291f38ccc049fdc65cff3dc55555fcd625b66702622ee14"
+        },
+        "fldas": {
+          "uri": "gs://ops-real/inputs/ipcch/history/fldas.csv",
+          "generation": "1730000000000001",
+          "sha256": "ce02ec0bfdc8be1dd08781f705657b7be0b4f15a38127a12a27a21f457b5df95"
+        },
+        "gosif_mean": {
+          "uri": "gs://ops-real/inputs/ipcch/history/gosif_mean.csv",
+          "generation": "1730000000000001",
+          "sha256": "a60f75690513a20ca9d0cb5777000de4e8a9ce13307eec40891218ce0be24041"
+        },
+        "gosif_sd": {
+          "uri": "gs://ops-real/inputs/ipcch/history/gosif_sd.csv",
+          "generation": "1730000000000001",
+          "sha256": "d7285395fc0f013e161c13a7c8b47604d086cacbde6847198761807e8c29ce86"
+        },
+        "viirs": {
+          "uri": "gs://ops-real/inputs/ipcch/history/viirs.csv",
+          "generation": "1730000000000001",
+          "sha256": "5dd74188f6ac2e52920187e2dfafa60d94f86d5453204435a82d699b07d83cd0"
+        }
+      }
+    }
+  },
+  "operator": "operator@example.org"
+}

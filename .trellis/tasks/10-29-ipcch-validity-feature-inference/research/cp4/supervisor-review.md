@@ -122,3 +122,22 @@ Independent artifact readback verifies accepted envelope/package including12 mod
 Remaining script evidence issues: filesystem spy only patches builtins.open and Reader uses inner unspied store; broaden with existing ReadSpy and spied Reader, account explicitly for native reader boundaries. Checks print booleans without a failing exit; require all checks true and assert consumed batch identity. No actual forbidden read observed.
 
 Smoke diagnostic patch preserves original digest and real bytes; independent9tests passed and all3 subset hashes reproduced from copied package. Empty evidence subset nevertheless stays available and aborts on blank package identity. Validate original identity then mark genuinely empty subset unavailable with reason per R31; add regression. No blanket CP5 acceptance until these repairs. No cloud or production operations.
+
+## R60 split follow-up 6598a1d and CP5 repair closure da1ebd0
+
+R60 actual-model split refresh accepted: independent18 scratch inputs+36bootstrap digests match;54published files/refresh route rehashed; all15scope tables split/combined byte-identical. Actual run_system/deliver and raw converters used, exact source-binding preserved, inference-only performs no acquisition. Input manifest correction verified. Existing local synthetic-raster/subset limitations remain.
+
+CP5 repair accepted after independent11member tests and run6 artifact readback. Full evidence identity verified before filtering; empty subset unavailable/no_eligible_area_history; real branch unchanged. Expanded calibrated ReadSpy and spied Reader exercised, native-library access limitation explicitly disclosed. Run6 results equal committed results, all12checks true, six prediction hashes and two publication-manifest hashes verified, per-horizon batch ids/dates/mode/3rows correct. Injected false final check exits1. Combined with prior real-package and six-route output verification, CP5 local smoke criterion is satisfied; no full-area/live/container claim. Final CP3/CP4/CP6 requirement matrix and handoff still pending; do not mark goal complete.
+
+
+## CP6 matrix/operator review — da1ebd0 (2026-10-30, pending repairs)
+
+Read-only independent probes checked R1–R35 and R36–R66/FCC1–10 against the CP6 draft matrix; 116 row identities and named test references resolve. Locked-environment ACLED/climate/assembly/request suites: 46 passed. No new defect in the reviewed model, CAS, locks, inheritance or cutover paths. The final regression summary is still pending, not accepted merely because referenced by the draft matrix.
+
+Confirmed required-behaviour gap: PRD R53/R62 require ACLED coverage and stale snapshot warnings in prediction metadata. `generation.py` records them in the batch; `delivery_member.py:214-224` drops them when building system provenance. A scored-batch reproduction with both warnings passes member verification but emits no ACLED warning. Executor instructed to preserve actual batch warnings/coverage in hash-bound delivery metadata, with inference-only/publication regression evidence; no numerical changes.
+
+Operator example gap: the deployment real trusted prefixes omit the actual `<roots.real>/prepared/` location, so a generated FEWS snapshot cannot be submitted to inference-only using the shown configuration. The inputs-prefix example cannot be fixed by moving the manifest because its generation source binding pins the full reference. Executor instructed to align the narrow prefix/example and validate generated-to-inference admission.
+
+Documentation precision: initialisation installs acceptance records before whole-bundle table validation; corrupt fixture data can leave acceptance records while tables/pairing remain uninitialised. Replace the handoff claim that nothing commits with the exact boundary; do not add an unnecessary transaction. Add the actual repeat call if the new real initialisation test claims rerun coverage. Two initialisation tests passed independently.
+
+CP5 acceptance remains intact. CP6/final goal acceptance remains pending these repairs, final suites, operator caveats (GPP release sparsity, future year dummies, WFP HDX/research refresh, private EE dependencies), committed evidence and clean workspace. No Audit, deployment or real current mutation.

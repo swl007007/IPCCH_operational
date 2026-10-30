@@ -217,7 +217,11 @@ def write_member(out: Path, *, manifest: Mapping[str, Any], scored: Mapping[int,
                               "envelope_sha256": binding.envelope_sha256,
                               "package_manifest_sha256": binding.package_manifest_sha256,
                               "feature_order_sha256": binding.feature_order_sha256},
-                  "batch": {"batch_id": manifest["batch_id"], "designation": manifest["designation"]},
+                  # R53/R62: the batch's own coverage ends (incl. the history snapshot's preparation cutoff) and its
+                  # warnings, verbatim - prediction metadata, hash-bound with this file (no new calculation)
+                  "batch": {"batch_id": manifest["batch_id"], "designation": manifest["designation"],
+                            "coverage_end": dict((manifest.get("generation") or {}).get("coverage_end") or {}),
+                            "warnings": list((manifest.get("generation") or {}).get("warnings") or [])},
                   "roster": {"size": len(roster), "sha256": bt.roster_sha256(roster)},
                   "files": {rel: _sha(out / rel) for rel in files}}
     with open(member / "system_provenance.json", "x") as f:

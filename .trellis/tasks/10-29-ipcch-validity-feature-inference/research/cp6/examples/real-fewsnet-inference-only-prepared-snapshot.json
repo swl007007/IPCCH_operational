@@ -1,0 +1,188 @@
+{
+  "schema_version": "fewsnet-ipcch-delivery-request-v2",
+  "run_id": "fews-2026-10-inf",
+  "mode": "real",
+  "execution_month": "2026-10",
+  "operations": {
+    "ipcch_generation": false,
+    "ipcch_inference": false,
+    "fewsnet_generation": false,
+    "fewsnet_inference": true
+  },
+  "ipcch": null,
+  "fewsnet": {
+    "prepared_snapshot": {
+      "prepare_id": "fews-2026-10-a",
+      "origin_month": "2026-10",
+      "manifest": {
+        "uri": "gs://example-delivery/v2/prepared/fews-2026-10-a/prepared_manifest.json",
+        "generation": "1730000000000001",
+        "sha256": "196c5c3e9741caac6f9df6f3e6ff22d1532b9c79e86e80904555d622b8fc74af"
+      }
+    },
+    "delivery": {
+      "models": [
+        {
+          "system": "fewsnet",
+          "horizon_months": 0,
+          "package_id": "<fews package id>/0m",
+          "package_manifest": {
+            "uri": "gs://ops-real/inputs/fewsnet/0m/package_manifest.json",
+            "generation": "1730000000000001",
+            "sha256": "211a4e06296881e95fb67cdf62524f8268715efef49670f79a661e60f1dae715"
+          },
+          "acceptance_report": {
+            "uri": "gs://ops-real/inputs/fewsnet/0m/acceptance.json",
+            "generation": "1730000000000001",
+            "sha256": "2f598eb0430a4a13a22a0bf7c953042004b1b93cadd24c00db223d68a2c9a374"
+          },
+          "feature_schema_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        },
+        {
+          "system": "fewsnet",
+          "horizon_months": 6,
+          "package_id": "<fews package id>/6m",
+          "package_manifest": {
+            "uri": "gs://ops-real/inputs/fewsnet/6m/package_manifest.json",
+            "generation": "1730000000000001",
+            "sha256": "adb78cdd2e88c2ff5033c94a53231eed2bba0976739236b91481ca584c2bb699"
+          },
+          "acceptance_report": {
+            "uri": "gs://ops-real/inputs/fewsnet/6m/acceptance.json",
+            "generation": "1730000000000001",
+            "sha256": "f736b0e073d42ed26ca39d64abbbb959ddb0daf9137d64e929e41a98e59278fe"
+          },
+          "feature_schema_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        },
+        {
+          "system": "fewsnet",
+          "horizon_months": 12,
+          "package_id": "<fews package id>/12m",
+          "package_manifest": {
+            "uri": "gs://ops-real/inputs/fewsnet/12m/package_manifest.json",
+            "generation": "1730000000000001",
+            "sha256": "1b66005e687e135c5d08f5aecf3effdc1dd4d3a2cc649c6387d8e2d9ea494586"
+          },
+          "acceptance_report": {
+            "uri": "gs://ops-real/inputs/fewsnet/12m/acceptance.json",
+            "generation": "1730000000000001",
+            "sha256": "6d0f7b4d7f2c6940436863c09adac98b8c32685811a51f6bf21ff49b2b992576"
+          },
+          "feature_schema_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        }
+      ],
+      "assets": {
+        "fewsnet": {
+          "geometry": {
+            "uri": "gs://ops-real/inputs/fewsnet/geometry",
+            "generation": "1730000000000001",
+            "sha256": "1ffce3d5d03162855eb42810709d1a31f1426ad7b1982c4a44007763937a9df9"
+          },
+          "roster": {
+            "uri": "gs://ops-real/inputs/fewsnet/roster",
+            "generation": "1730000000000001",
+            "sha256": "044d20e84188ed6f96d619259c240b2da7603a7271c62c4d1360b1d0e8e7e563"
+          },
+          "population": {
+            "uri": "gs://ops-real/inputs/fewsnet/population",
+            "generation": "1730000000000001",
+            "sha256": "dac6303a3f814f0a071a383c6f23cb3baa6dc8b32efeeb8e45d940deca46bcbd"
+          },
+          "country_reference": {
+            "uri": "gs://ops-real/inputs/fewsnet/country_reference",
+            "generation": "1730000000000001",
+            "sha256": "84b58ad6fa0e16e7715a09ffcdd8d6f9d5c090b6bc66dfcfad7ecc2edbdab89f"
+          },
+          "history_panel": {
+            "uri": "gs://ops-real/inputs/fewsnet/history_panel",
+            "generation": "1730000000000001",
+            "sha256": "bd5bc38e0ed735eff14868ae910e3dab131793a27e1c635cef081df4e3a00067"
+          }
+        }
+      },
+      "diagnostics": [
+        {
+          "system": "fewsnet",
+          "horizon_months": 0,
+          "family": "polygon_confidence",
+          "status": "unavailable",
+          "evidence": null,
+          "reason": "missing_evidence"
+        },
+        {
+          "system": "fewsnet",
+          "horizon_months": 0,
+          "family": "country_confidence",
+          "status": "unavailable",
+          "evidence": null,
+          "reason": "missing_evidence"
+        },
+        {
+          "system": "fewsnet",
+          "horizon_months": 6,
+          "family": "polygon_confidence",
+          "status": "unavailable",
+          "evidence": null,
+          "reason": "missing_evidence"
+        },
+        {
+          "system": "fewsnet",
+          "horizon_months": 6,
+          "family": "country_confidence",
+          "status": "unavailable",
+          "evidence": null,
+          "reason": "missing_evidence"
+        },
+        {
+          "system": "fewsnet",
+          "horizon_months": 12,
+          "family": "polygon_confidence",
+          "status": "unavailable",
+          "evidence": null,
+          "reason": "missing_evidence"
+        },
+        {
+          "system": "fewsnet",
+          "horizon_months": 12,
+          "family": "country_confidence",
+          "status": "unavailable",
+          "evidence": null,
+          "reason": "missing_evidence"
+        }
+      ],
+      "contracts": {
+        "feature": {
+          "version": "feature-v1",
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        "fill": {
+          "version": "area-past-only-carry-forward-v1",
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        "output": {
+          "version": "september-v3-output-v1",
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        "diagnostic": {
+          "version": "diag-v1",
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        }
+      }
+    }
+  },
+  "publication": "current",
+  "runtime": {
+    "image_uri": "us-central1-docker.pkg.dev/<project>/<repository>/delivery@sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "environment_manifest": {
+      "uri": "gs://ops-real/inputs/env-manifest.json",
+      "generation": "1730000000000001",
+      "sha256": "3d9b607f0aaf8dbf762489580af3d3ee158e5a5890dfc8212fc93fd1e0fc9619"
+    }
+  },
+  "release": {
+    "namespace": "prod",
+    "expected_pointer_generation": "<current gen>"
+  },
+  "operator": "operator@example.org",
+  "prepared_at": "2026-11-02T09:00:00Z"
+}

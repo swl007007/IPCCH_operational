@@ -215,3 +215,53 @@ def test_real_inference_only_never_builds_acquisition_providers(tmp_path, packag
     ip = out["systems"]["ipcch"]
     assert ip["failed_operation"] in (None, "publication"), ip                 # never blocked before inference
     assert sorted(ip["result"]["inference"]["horizons"]) == ["14", "2", "8"]
+
+
+def test_smoke_store_initialisation_route_then_a_request_runs(tmp_path, package):
+    """The executable initialisation route (entrypoint_v2 initialise / initialise_store): a fresh smoke store is
+    initialised from the installed binding + fixture bundle with fixture acceptance records only, then a smoke
+    request runs end to end on it; real initialisation refuses an unaccepted (smoke/candidate) envelope."""
+    from cloud.common.object_store import LocalObjectStore
+    from tests.cloud.ipcch_binding_fixtures import smoke_envelope
+    root_dir = tmp_path / "fixture-root"
+    root_dir.mkdir()
+    fx.build_bundle(root_dir)
+    smoke_envelope(tmp_path / "env.json", package)
+    cfg = config(tmp_path, package)
+    store = LocalObjectStore(tmp_path / "fresh-store")
+    with pytest.raises(ep.EntrypointError, match="--acceptor"):
+        ep.initialise_store(cfg, "smoke", store=store)
+    report = ep.initialise_store(cfg, "smoke", store=store, acceptor="ops@example.org")
+    assert report["acceptance"]["fixture"] and report["acceptance"]["appended"] > 0
+    refs = fx.Refs()
+    req = raw(fx.smoke_request(refs, tmp_path / "env.json", inference=True))
+    out = ep.run(cfg, request_uri=put_request(refs, req), request_generation="1", store=store,
+                 reader=Reader(refs, store))
+    assert out["status"] == "succeeded"
+    real_cfg = dict(cfg, installed={**cfg["installed"], "real": {"envelope": str(tmp_path / "env.json"),
+                                                                  "package_root": str(package),
+                                                                  "bundle_dir": str(root_dir / "bundle")}})
+    from cloud.ipcch import binding as bd
+    with pytest.raises(bd.BindingError):
+        ep.initialise_store(real_cfg, "real", store=LocalObjectStore(tmp_path / "real-store"))
+
+
+def test_real_store_initialisation_route_installs_the_bound_acceptance_entries(tmp_path, package):
+    """Real: the installed ACCEPTED envelope/package/bundle; the finalized entries are installed (R45) and the store is
+    paired with the combination; a rerun is idempotent (no acceptance entry appended, every table unchanged)."""
+    from cloud.common.object_store import LocalObjectStore
+    from cloud.ipcch import binding as bd
+    from cloud.ipcch.stores import StoreRoot
+    from tests.cloud.test_ipcch_binding import real_setup
+    bundle, _, pkg, env_path, _ = real_setup(tmp_path)
+    cfg = config(tmp_path, package, installed={
+        "smoke": {"envelope": "/x/env.json", "package_root": "/x", "bundle_dir": "/x/b", "fixture_root": "/x"},
+        "real": {"envelope": str(env_path), "package_root": str(pkg), "bundle_dir": str(bundle)}})
+    store = LocalObjectStore(tmp_path / "real-store")
+    report = ep.initialise_store(cfg, "real", store=store)
+    assert report["acceptance"]["appended"] > 0 and report["combination_id"]
+    pairing, _ = bd.store_pairing(store, StoreRoot("real", STORES["real"]))
+    assert pairing["mode"] == "real" and pairing["roster_size"] > 0
+    again = ep.initialise_store(cfg, "real", store=store)                              # idempotent rerun
+    assert again["acceptance"]["appended"] == 0 and again["initialise"]["initialised"] == []
+    assert sorted(again["initialise"]["unchanged"]) == sorted(report["initialise"]["initialised"])

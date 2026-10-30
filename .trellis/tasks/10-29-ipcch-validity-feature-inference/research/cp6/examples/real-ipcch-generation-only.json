@@ -1,0 +1,84 @@
+{
+  "schema_version": "fewsnet-ipcch-delivery-request-v2",
+  "run_id": "ipcch-2026-10-gen",
+  "mode": "real",
+  "execution_month": "2026-10",
+  "operations": {
+    "ipcch_generation": true,
+    "ipcch_inference": false,
+    "fewsnet_generation": false,
+    "fewsnet_inference": false
+  },
+  "ipcch": {
+    "model_combination": {
+      "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+      "envelope": {
+        "uri": "gs://ops-real/inputs/ipcch-combination-envelope-v2-accepted.json",
+        "generation": "1730000000000001",
+        "sha256": "e7f6d5342b4cfaec54bd1ff0c7c49fae7714d6f34a1f2284633e1a57ad54a782"
+      }
+    },
+    "acled": {
+      "action": "refresh",
+      "file": {
+        "uri": "gs://ops-real/inputs/acled-regional-aggregate.csv",
+        "generation": "1730000000000001",
+        "sha256": "a6350d13c4a78223584aa19d0a91617392522526e39793a26077e5c979d87713"
+      },
+      "start": "2025-07-26",
+      "end": "2026-09-04",
+      "regions": [
+        "Eastern Africa",
+        "Middle Africa"
+      ]
+    },
+    "research_inputs": {
+      "nino34_anom": {
+        "action": "keep"
+      },
+      "bbg_staple_food": {
+        "action": "keep"
+      },
+      "bbg_oilgas": {
+        "action": "keep"
+      },
+      "bbg_soybean_oil": {
+        "action": "keep"
+      },
+      "bbg_global_food": {
+        "action": "keep"
+      },
+      "food_price_index_WB": {
+        "action": "keep"
+      },
+      "idp_national": {
+        "action": "keep"
+      },
+      "idp_local": {
+        "action": "keep"
+      }
+    },
+    "history_snapshot": {
+      "action": "keep"
+    },
+    "wfp": {
+      "action": "keep"
+    }
+  },
+  "fewsnet": null,
+  "publication": "current",
+  "runtime": {
+    "image_uri": "us-central1-docker.pkg.dev/<project>/<repository>/delivery@sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "environment_manifest": {
+      "uri": "gs://ops-real/inputs/env-manifest.json",
+      "generation": "1730000000000001",
+      "sha256": "3d9b607f0aaf8dbf762489580af3d3ee158e5a5890dfc8212fc93fd1e0fc9619"
+    }
+  },
+  "release": {
+    "namespace": "prod",
+    "expected_pointer_generation": "<current gen>"
+  },
+  "operator": "operator@example.org",
+  "prepared_at": "2026-11-02T09:00:00Z"
+}

@@ -1,0 +1,3625 @@
+{
+ "tests/cloud/test_causal_fill.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 49,
+    "name": "test_fill_uses_only_same_area_past_observations"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 72,
+    "name": "test_no_history_stays_missing_without_zero_or_base_imputation"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 106,
+    "name": "test_final_feature_imputation_is_bound_to_the_package_feature_rule"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 135,
+    "name": "test_missing_final_feature_without_package_rule_blocks_release"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 145,
+    "name": "test_dependency_coverage_is_checked_per_polygon"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 160,
+    "name": "test_lag_arguments_must_be_unique_non_negative_integers"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 185,
+    "name": "test_invalid_identity_calendar_and_values_are_rejected"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 198,
+    "name": "test_feature_without_any_observation_is_no_history_then_package_rule_or_block"
+   }
+  ]
+ },
+ "tests/cloud/test_cloud_batch_evi_worker.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 68,
+    "name": "test_batch_worker_writes_gee_evi_outputs_and_reports"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 102,
+    "name": "test_batch_worker_cli_returns_zero_and_writes_outputs"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 125,
+    "name": "test_batch_worker_cli_returns_nonzero_on_hard_gate"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 147,
+    "name": "test_batch_worker_cli_uses_manifest_backed_production_evi_service"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 211,
+    "name": "test_batch_worker_cli_accepts_execution_contract_root_args"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 247,
+    "name": "test_batch_worker_cli_uses_reference_sample_uri_for_evi_comparison"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 281,
+    "name": "test_batch_worker_cli_builds_default_manifest_backed_evi_service"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 313,
+    "name": "test_batch_submitter_builds_digest_pinned_job_spec_with_runtime_defaults"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 345,
+    "name": "test_batch_submitter_job_payload_contains_only_job_fields"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 366,
+    "name": "test_batch_submitter_sanitizes_job_id_without_changing_run_label"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 388,
+    "name": "test_batch_submitter_bounds_job_id_with_overlong_prefix"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 407,
+    "name": "test_batch_submitter_job_spec_uses_python_client_field_names"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 428,
+    "name": "test_batch_submitter_rejects_tag_only_image"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 442,
+    "name": "test_batch_submitter_calls_cloud_batch_client_with_job_request"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 471,
+    "name": "test_default_evi_service_is_in_repo_production_service"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 477,
+    "name": "test_in_repo_evi_service_uses_ee_and_rasterio_adapters"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 538,
+    "name": "test_ee_export_adapter_uses_manifest_evi_config_and_export_region"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 616,
+    "name": "test_rasterio_adapter_drives_rows_from_scaffold_and_rejects_duplicate_geometry_ids"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 662,
+    "name": "test_gee_export_manifest_builder_records_selected_month_and_raster_reference"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 680,
+    "name": "test_gee_export_manifest_rejects_selected_month_mismatch"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 694,
+    "name": "test_evi_outputs_writer_returns_selected_month_mean_and_std_long_tables"
+   }
+  ]
+ },
+ "tests/cloud/test_deliver.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 12,
+    "name": "test_finalize_streams_per_system_sidecars_preserving_blanks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 24,
+    "name": "test_finalize_rejects_mismatched_headers"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 55,
+    "name": "test_checkpoint_resume_copies_hash_bound_files_into_a_new_directory"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 64,
+    "name": "test_checkpoint_resume_rejects_inconsistent_or_in_place_use"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 107,
+    "name": "test_request_diagnostics_reads_pinned_family_evidence_and_keeps_reasons"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 122,
+    "name": "test_manifest_evidence_replays_identically_from_the_frozen_bundle"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 165,
+    "name": "test_streamed_audit_equals_one_concatenated_write"
+   }
+  ]
+ },
+ "tests/cloud/test_delivery_bundle.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 134,
+    "name": "test_inventory_and_archive_exclude_external_histories"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 162,
+    "name": "test_archive_refuses_a_changed_or_extended_sealed_inventory"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 178,
+    "name": "test_failed_pre_package_validation_is_recorded_and_blocks_the_archive"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 191,
+    "name": "test_compare_scopes_flags_value_and_shape_differences"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 215,
+    "name": "test_continuous_cells_must_be_finite_numbers_with_equal_blank_masks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 219,
+    "name": "test_ids_and_provenance_compare_exactly"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 224,
+    "name": "test_empty_rescore_output_never_passes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 233,
+    "name": "test_delivered_side_must_also_hold_the_exact_30_tables"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 250,
+    "name": "test_pre_package_validation_rejects_content_and_member_damage"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 348,
+    "name": "test_rescored_availability_must_reproduce_every_entity_family_status_and_reason"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 355,
+    "name": "test_availability_comparison_is_order_independent_and_empty_never_passes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 377,
+    "name": "test_each_content_gate_fails_on_its_own_check"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 394,
+    "name": "test_availability_rows_cannot_contradict_the_frozen_declarations"
+   }
+  ]
+ },
+ "tests/cloud/test_delivery_inputs.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 39,
+    "name": "test_remote_overlay_clears_history_after_vintage_and_applies_prepared_months"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 54,
+    "name": "test_prepared_rows_outside_the_panel_calendar_are_returned_as_observations"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 63,
+    "name": "test_ipcch_origin_rows_fill_each_area_from_its_own_past"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 93,
+    "name": "test_fewsnet_window_fill_leaves_labels_and_observed_values_untouched"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 125,
+    "name": "test_fewsnet_interior_dependency_months_enter_the_scoring_panel"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 142,
+    "name": "test_older_provider_vintage_is_a_carry_forward_source_not_a_panel_row"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 157,
+    "name": "test_ipcch_older_provider_vintage_joins_the_observation_series"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 169,
+    "name": "test_planned_refresh_months_replace_history_even_where_new_cells_are_missing"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 185,
+    "name": "test_rows_after_origin_never_reach_whole_panel_statistics"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 194,
+    "name": "test_area_starting_inside_the_window_gets_missing_dependency_rows_not_an_error"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 208,
+    "name": "test_origin_rows_rederive_population_method_for_the_origin"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 229,
+    "name": "test_population_same_month_reference_stays_observed"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 242,
+    "name": "test_population_reference_after_origin_fails"
+   }
+  ]
+ },
+ "tests/cloud/test_delivery_job.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 174,
+    "name": "test_request_scores_each_system_from_verified_local_inputs_then_publishes_last"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 194,
+    "name": "test_acceptance_failures_stop_before_any_scoring_and_leave_no_release"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 293,
+    "name": "test_all_four_source_choices_use_exactly_the_named_family"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 317,
+    "name": "test_configured_namespace_mismatch_is_rejected_before_acquiring_the_run"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 325,
+    "name": "test_failed_validation_never_moves_the_pointer"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 336,
+    "name": "test_local_reader_serves_only_verified_copies"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 344,
+    "name": "test_upload_tree_is_create_only_and_accepts_a_landed_retry_only_on_size_and_crc"
+   }
+  ]
+ },
+ "tests/cloud/test_delivery_manifest.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 86,
+    "name": "test_valid_request_is_structural_only_and_binds_request_identity"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 97,
+    "name": "test_all_four_source_choices_validate"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 172,
+    "name": "test_invalid_requests_are_rejected"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 180,
+    "name": "test_models_must_cover_six_distinct_packages_without_relabeling"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 196,
+    "name": "test_diagnostics_must_be_declared_and_bound_to_matching_evidence"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 216,
+    "name": "test_reference_identities_are_checked_against_actual_objects"
+   }
+  ]
+ },
+ "tests/cloud/test_delivery_outputs.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 18,
+    "name": "test_mapping_reproduces_september_when_given_its_parameters"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 30,
+    "name": "test_country_tables_keep_current_outcomes_and_blank_unsupported_diagnostics"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 56,
+    "name": "test_availability_sidecar_and_frozen_schema_writes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 74,
+    "name": "test_ipcch_phase_integrity_is_a_failure_not_a_blank"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 81,
+    "name": "test_valid_ipcch_phases_including_zero_population_areas_pass"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 86,
+    "name": "test_polygon_training_errors_unavailable_keeps_iso_and_blank_counts"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 133,
+    "name": "test_corrupt_or_foreign_evidence_is_an_integrity_failure"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 139,
+    "name": "test_ipcch_area_evidence_accepts_training_resubstitution_only"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 158,
+    "name": "test_ipcch_training_resubstitution_is_accepted_at_every_horizon"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 183,
+    "name": "test_fewsnet_allowlisted_stage3_proxy_is_accepted_at_its_own_horizon"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 218,
+    "name": "test_fewsnet_proxy_outside_the_allowlist_is_rejected"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 224,
+    "name": "test_ipcch_training_cutoff_comes_from_the_package_manifest"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 229,
+    "name": "test_fewsnet_validation_period_comes_from_the_package_report"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 235,
+    "name": "test_supported_evidence_reproduces_v3_arithmetic_with_its_own_basis"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 273,
+    "name": "test_maximum_phase_residual_transfer_reproduces_v3_exactly"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 313,
+    "name": "test_maximum_phase_uses_complete_months_only_and_restarts_the_seed"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 342,
+    "name": "test_corrupt_residual_evidence_is_an_integrity_failure"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 356,
+    "name": "test_declarations_default_to_missing_evidence_and_keep_reasons"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 373,
+    "name": "test_invalid_family_declarations_fail"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 378,
+    "name": "test_evidence_bytes_must_match_the_ref_hash"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 395,
+    "name": "test_ipcch_maximum_phase_family_alone_reports_available_limited_and_frozen_bytes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 450,
+    "name": "test_country_family_is_selected_and_frozen_independently_of_the_polygon_family"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 464,
+    "name": "test_polygon_and_country_families_may_use_different_accepted_refs"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 476,
+    "name": "test_polygon_family_alone_leaves_country_errors_blank_with_their_reason"
+   }
+  ]
+ },
+ "tests/cloud/test_delivery_request_v2.py": {
+  "module_ids": [
+   "FCC1",
+   "FCC6",
+   "FCC8",
+   "R5",
+   "R17",
+   "R19",
+   "R23",
+   "R36",
+   "R39",
+   "R60",
+   "R66"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 57,
+    "name": "test_valid_combined_ipcch_request_and_derived_months"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 65,
+    "name": "test_mode_is_required_and_closed"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 73,
+    "name": "test_no_operation_and_block_presence"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 81,
+    "name": "test_smoke_selects_ipcch_only_and_its_own_namespace"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 95,
+    "name": "test_inference_only_needs_exactly_one_batch_and_no_refresh"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 118,
+    "name": "test_generation_plus_inference_never_names_a_batch_and_declares_every_input"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 127,
+    "name": "test_month_rules_real_and_smoke"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 141,
+    "name": "test_acled_refresh_declaration"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 159,
+    "name": "test_research_inputs_and_snapshot_shapes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 188,
+    "name": "test_fewsnet_operation_mapping"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 210,
+    "name": "test_request_identity_and_reference_verification"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 226,
+    "name": "test_is_v2_routes_only_the_new_version"
+   },
+   {
+    "doc": "Supervisor contract correction 2026-10-30: IPCCH WFP refresh = {action, file, start, end} (research HDX",
+    "ids": [
+     "R59"
+    ],
+    "line": 231,
+    "name": "test_ipcch_wfp_refresh_is_a_research_prepared_interval_file"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 268,
+    "name": "test_fews_delivery_block_is_fully_validated"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 274,
+    "name": "test_iter_refs_include_every_nested_fews_delivery_reference"
+   },
+   {
+    "doc": "Mixed IPCCH generation + FEWS NET inference: one wrong nested FEWS delivery hash rejects the whole request before",
+    "ids": [
+     "R17"
+    ],
+    "line": 282,
+    "name": "test_integrated_preflight_executes_nothing_when_a_nested_fews_ref_is_invalid"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 306,
+    "name": "test_model_combination_references_the_envelope_only"
+   },
+   {
+    "doc": "A real FEWS NET-only request keeps FEWS month handling: no IPCCH future-M rule, no IPCCH M-2 derivation.",
+    "ids": [],
+    "line": 316,
+    "name": "test_r39_month_rules_apply_to_ipcch_operations_only"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 332,
+    "name": "test_country_reference_is_an_inference_input_only"
+   },
+   {
+    "doc": "D1: the pinned prepare_request body is read, validated with the existing validator (origin = FEWS origin) and",
+    "ids": [
+     "D1"
+    ],
+    "line": 369,
+    "name": "test_fews_generation_admission_validates_the_prepare_request_and_every_nested_ref"
+   }
+  ]
+ },
+ "tests/cloud/test_delivery_run.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 12,
+    "name": "test_only_exact_request_paths_with_a_generation_trigger_work"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 23,
+    "name": "test_identical_duplicate_returns_the_original_status_without_recomputing"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 39,
+    "name": "test_different_request_under_the_same_run_id_conflicts"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 47,
+    "name": "test_failed_or_abandoned_runs_are_not_resumed_and_retry_needs_a_new_id"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 73,
+    "name": "test_release_pointer_moves_by_generation_cas_and_conflicts_preserve_it"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 90,
+    "name": "test_failed_validation_or_legacy_root_never_touches_the_pointer"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 106,
+    "name": "test_concurrent_pointer_write_conflict_is_recorded_after_the_record_write"
+   }
+  ]
+ },
+ "tests/cloud/test_delivery_scoring.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 26,
+    "name": "test_window_is_thirteen_calendar_months"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 30,
+    "name": "test_population_older_than_the_window_comes_from_full_history"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 41,
+    "name": "test_area_present_only_before_the_window_is_rejected_not_dropped"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 47,
+    "name": "test_rows_outside_the_window_are_rejected"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 53,
+    "name": "test_chunked_loader_returns_thin_full_history_and_exact_window"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 65,
+    "name": "test_identity_and_calendar_features_are_not_audited_as_filled_sources"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 74,
+    "name": "test_carried_forward_population_never_becomes_the_reference_month"
+   }
+  ]
+ },
+ "tests/cloud/test_delivery_workflow.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 24,
+    "name": "test_override_argv_keeps_every_configured_flag_and_parses"
+   }
+  ]
+ },
+ "tests/cloud/test_evi_reference_comparison.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 7,
+    "name": "test_absent_reference_sample_is_not_provided"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 11,
+    "name": "test_malformed_optional_reference_is_advisory_warning"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 23,
+    "name": "test_zero_matched_observations_is_advisory_warning"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 37,
+    "name": "test_insufficient_correlation_pairs_is_advisory_warning"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 51,
+    "name": "test_numeric_differences_are_advisory_not_hard_failures"
+   }
+  ]
+ },
+ "tests/cloud/test_evi_validation_report.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 7,
+    "name": "test_evi_validation_report_accepts_required_wide_long_outputs_and_area_identity"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 45,
+    "name": "test_evi_validation_report_records_advisory_warning_without_failing_contract"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 65,
+    "name": "test_evi_validation_report_rejects_row_count_mismatch"
+   }
+  ]
+ },
+ "tests/cloud/test_execution_selection.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 30,
+    "name": "test_fews_only_execution_with_inherited_ipcch_validates_and_legacy_keeps_both"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 48,
+    "name": "test_invalid_execution_selections_are_rejected"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 53,
+    "name": "test_inherited_source_must_have_the_same_origin"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 60,
+    "name": "test_prepared_snapshot_may_be_null_only_for_a_remote_update_intent"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 82,
+    "name": "test_only_selected_systems_score_and_a_candidate_never_moves_the_pointer"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 103,
+    "name": "test_prepare_only_or_unresolved_intents_never_run_delivery"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 188,
+    "name": "test_inherited_members_are_byte_identical_and_scoped_to_the_system"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 206,
+    "name": "test_inheritance_rejects_other_origins_targets_or_packages"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 212,
+    "name": "test_inheritance_rejects_members_that_differ_from_the_source_inventory"
+   }
+  ]
+ },
+ "tests/cloud/test_fews_adapter.py": {
+  "module_ids": [
+   "D1",
+   "D3",
+   "R60"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 209,
+    "name": "test_combined_generation_and_inference_publishes_a_fews_member_from_its_own_snapshot"
+   },
+   {
+    "doc": "D2: the refresh/keep choices made at generation reach the later inference-only scoring unchanged - the same",
+    "ids": [
+     "D2"
+    ],
+    "line": 227,
+    "name": "test_generation_only_then_inference_only_equals_combined"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 244,
+    "name": "test_inference_only_refuses_a_snapshot_without_its_generation_binding"
+   },
+   {
+    "doc": "D2: keep verifies the actual pinned retained bytes against the pinned FEWS history (no IPCCH panel needed).",
+    "ids": [
+     "D2"
+    ],
+    "line": 256,
+    "name": "test_keep_checks_the_fews_row_projection_against_the_pinned_history"
+   },
+   {
+    "doc": "D3: the v2 adapter and the legacy single-system route share publish_scored_member: on identical inputs the",
+    "ids": [
+     "D3"
+    ],
+    "line": 268,
+    "name": "test_v2_member_equals_the_legacy_single_system_route_on_the_same_inputs"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 306,
+    "name": "test_fews_current_inherits_the_new_contract_ipcch_member_and_carries_activation"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 317,
+    "name": "test_fews_candidate_never_moves_the_pointer"
+   },
+   {
+    "doc": "IPCCH fails at its runtime while FEWS NET succeeds in the same run: partial_success, the FEWS member is",
+    "ids": [
+     "R17"
+    ],
+    "line": 328,
+    "name": "test_two_system_partial_failure_keeps_the_successful_fews_member"
+   },
+   {
+    "doc": "43c6d12 P1: keep verifies the whole pinned retained ref, then compares ITS canonical FEWS rows (same columns and",
+    "ids": [],
+    "line": 370,
+    "name": "test_keep_accepts_the_shared_retained_file_by_its_fews_rows"
+   }
+  ]
+ },
+ "tests/cloud/test_fews_member.py": {
+  "module_ids": [
+   "D3",
+   "R60"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 56,
+    "name": "test_valid_member_writes_and_records_exact_packages"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 62,
+    "name": "test_writer_refuses_damaged_members"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 67,
+    "name": "test_writer_refuses_missing_packages"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 85,
+    "name": "test_actual_verifier_publishes_a_valid_member"
+   },
+   {
+    "doc": "Damage after the writer's own check (or a writer bypass) is refused by verify_delivery; pointer unchanged.",
+    "ids": [],
+    "line": 94,
+    "name": "test_actual_verifier_refuses_damage_after_the_writer"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 103,
+    "name": "test_actual_verifier_binds_exact_package_identities"
+   },
+   {
+    "doc": "Supervisor residual on 4fd6146: checksums.json = {} (or a partial map, or one listing itself) with a",
+    "ids": [],
+    "line": 120,
+    "name": "test_package_checksum_map_must_cover_every_content_file"
+   }
+  ]
+ },
+ "tests/cloud/test_frozen_confidence.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 82,
+    "name": "test_frozen_tables_are_copied_and_current_outcomes_recomputed"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 122,
+    "name": "test_frozen_outputs_reject_tampering_and_wrong_lineage"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 164,
+    "name": "test_manifest_accepts_frozen_fews_outputs_distinct_from_the_scored_package"
+   }
+  ]
+ },
+ "tests/cloud/test_gee_export_manifest.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 6,
+    "name": "test_gee_export_manifest_contains_audit_fields"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 34,
+    "name": "test_gee_export_manifest_rejects_checksum_without_sha256_prefix"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 48,
+    "name": "test_gee_export_manifest_rejects_short_prefixed_sha256_checksum"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 62,
+    "name": "test_gee_export_manifest_selected_month_mismatch_fails"
+   }
+  ]
+ },
+ "tests/cloud/test_inherited_bundle_checks.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 38,
+    "name": "test_inherited_system_is_checked_by_identity_with_truthful_names"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 63,
+    "name": "test_a_changed_inherited_member_fails_its_identity_check"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 74,
+    "name": "test_inherited_availability_rows_must_equal_the_inherited_member"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_acled.py": {
+  "module_ids": [
+   "R24",
+   "R29",
+   "R44",
+   "R53",
+   "R55",
+   "R56"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 40,
+    "name": "test_export_validation"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 68,
+    "name": "test_first_refresh_must_cover_the_lookback"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 84,
+    "name": "test_event_free_covered_weeks_are_zero_and_uncovered_months_nan"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 96,
+    "name": "test_interval_replacement_without_double_counting"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 112,
+    "name": "test_week_split_coverage_start_share_and_spillover"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 130,
+    "name": "test_month_completeness_needs_every_overlapping_week"
+   },
+   {
+    "doc": "Scout repro: 7 events exported as week 2026-5-2, then a replacement of 5 as 2026-05-02 -> 5, never 12.",
+    "ids": [],
+    "line": 138,
+    "name": "test_nonpadded_week_is_canonicalized_and_replaced_not_double_counted"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 152,
+    "name": "test_mixed_format_duplicate_and_noncanonical_declarations_rejected"
+   },
+   {
+    "doc": "The byte-preserved ACLED unit tables include admin 1315 (outside the 6,226 roster): computed series must still",
+    "ids": [],
+    "line": 177,
+    "name": "test_outputs_cover_exactly_the_roster_although_fixed_tables_carry_an_extra_admin"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_assembly.py": {
+  "module_ids": [
+   "R32",
+   "R58",
+   "R62"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 57,
+    "name": "test_order_dummies_history_and_alignment"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 74,
+    "name": "test_contract_failures"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 87,
+    "name": "test_empty_optional_sources_give_missing_features_and_strict_identifiers"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_batch.py": {
+  "module_ids": [
+   "R18",
+   "R19",
+   "R32",
+   "R36",
+   "R52",
+   "R61"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 70,
+    "name": "test_batch_round_trip_and_scoring_through_the_runtime"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 87,
+    "name": "test_batches_are_immutable_and_unique"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 103,
+    "name": "test_write_refuses_invalid_batches"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 110,
+    "name": "test_load_refuses_other_combination_mode_month_and_tampering"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 132,
+    "name": "test_parse_reorders_ignores_extras_and_rejects_bad_columns_and_values"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 151,
+    "name": "test_nonfinite_model_output_fails_with_area_horizon_field"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 167,
+    "name": "test_real_request_rejects_a_dummy_batch"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 215,
+    "name": "test_namespace_admission_before_any_read"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 234,
+    "name": "test_horizon_metadata_must_follow_from_m"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 247,
+    "name": "test_score_batch_verifies_the_package_itself"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 263,
+    "name": "test_roster_binds_to_the_store_pairing"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 282,
+    "name": "test_area_id_identity_and_ragged_rows"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_binding.py": {
+  "module_ids": [
+   "R32",
+   "R45",
+   "R48",
+   "R51",
+   "R55"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 68,
+    "name": "test_package_identity_rehashes_every_file_and_refuses_unlisted"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 81,
+    "name": "test_real_requires_accepted_envelope_and_rejects_another_package_with_the_same_schema"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 104,
+    "name": "test_accepted_envelope_binds_finalized_entries_not_a_draft_digest"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 132,
+    "name": "test_real_store_initialises_only_the_bound_bundle_and_reads_require_the_same_pairing"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 174,
+    "name": "test_real_refuses_fixture_bundles_unaccepted_records_and_smoke_refuses_real_bundles"
+   },
+   {
+    "doc": "R48 spy: smoke envelope/package verification, fixture initialisation, assembly-input and population reads, and a",
+    "ids": [
+     "R48"
+    ],
+    "line": 222,
+    "name": "test_smoke_never_reads_the_real_handoff_bundle"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 255,
+    "name": "test_smoke_refuses_a_symlinked_fixture_root"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 272,
+    "name": "test_smoke_refuses_symlinks_out_of_the_fixture_root"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 294,
+    "name": "test_population_snapshot_uses_the_existing_no_future_builder"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 310,
+    "name": "test_real_population_read_from_the_bound_store"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 327,
+    "name": "test_roster_geometries_filter_declared_extras_and_feed_the_zonal_path"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 342,
+    "name": "test_restrict_to_roster_for_provider_outputs"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_chunked.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 127,
+    "name": "test_chunked_october_assembly_is_byte_identical_for_all_source_choices"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 137,
+    "name": "test_no_calendar_addition_keeps_the_original_row_order"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 144,
+    "name": "test_object_column_text_survives_mixed_chunks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 154,
+    "name": "test_duplicate_area_months_fail_the_same_way"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 168,
+    "name": "test_history_area_missing_from_the_template_roster_still_fails"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 181,
+    "name": "test_mixed_signed_and_unsigned_integers_keep_the_whole_column_inference"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 202,
+    "name": "test_quoted_newlines_survive_the_ordinal_merge"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_climate.py": {
+  "module_ids": [
+   "R8",
+   "R13",
+   "R32",
+   "R33",
+   "R34",
+   "R40",
+   "R41",
+   "R43"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 28,
+    "name": "test_ensemble_rule"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 39,
+    "name": "test_monthly_lookback_gaps_persistence_and_origin_block"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 73,
+    "name": "test_failures_are_never_unavailability"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 90,
+    "name": "test_out_of_roster_areas_dropped_and_counted"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 103,
+    "name": "test_empty_history_and_noncanonical_months_refused"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 112,
+    "name": "test_seasons_only_when_complete_and_never_rewritten"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 137,
+    "name": "test_method_ids_bind_scripts"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 148,
+    "name": "test_seasonal_outputs_over_all_admins_keep_only_window_areas_and_refuse_unknown_ids"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_climate_ee.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 25,
+    "name": "test_graphs_build_offline_with_the_ported_operations"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 37,
+    "name": "test_family_specific_operations"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 50,
+    "name": "test_finalize_matches_the_scripts_arithmetic"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 98,
+    "name": "test_provider_outcomes_and_failures"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 118,
+    "name": "test_provider_drives_retained_saves"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_climate_ee_seasonal.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 27,
+    "name": "test_rainfall_graph"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 40,
+    "name": "test_temperature_and_soil_graphs"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 51,
+    "name": "test_finalize_rules"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 110,
+    "name": "test_seasonal_availability_is_published_through_the_season_end"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 125,
+    "name": "test_rainfall_bounds_use_the_full_calendar_and_stop_at_the_data_end"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 138,
+    "name": "test_provider_and_seasonal_saves"
+   },
+   {
+    "doc": "Roster nuance: the painted calendar context is the WHOLE admin asset (the script's paint order over overlapping",
+    "ids": [
+     "R32"
+    ],
+    "line": 148,
+    "name": "test_rain_paints_the_full_calendar_but_emits_only_requested_roster_areas"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_climate_run.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 45,
+    "name": "test_full_run_saves_every_base"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 55,
+    "name": "test_origin_without_source_blocks_after_earlier_bases_saved"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 65,
+    "name": "test_default_routing"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 83,
+    "name": "test_failure_report_keeps_progress_inside_the_failing_base"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_climate_tables.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 13,
+    "name": "test_intervals_and_month_tiling"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 22,
+    "name": "test_monthly_vi_full_coverage_rule"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 64,
+    "name": "test_vegetation_provider_outcomes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 92,
+    "name": "test_drought_provider_equals_retained_numerics_and_availability"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 110,
+    "name": "test_seasonal_vegetation_full_support_and_availability"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 126,
+    "name": "test_seasonal_drought_uses_the_seasonal_fit"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 149,
+    "name": "test_historical_target_keeps_the_full_baseline_and_patch_counts"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 167,
+    "name": "test_malformed_values_and_absent_admins_fail"
+   },
+   {
+    "doc": "Baseline has admin 2 but the 2026 current table lacks it: never a published NaN (review finding A).",
+    "ids": [],
+    "line": 184,
+    "name": "test_current_table_missing_an_admin_fails_before_the_join"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_delivery_member.py": {
+  "module_ids": [
+   "R18",
+   "R31",
+   "R32",
+   "R36",
+   "R47",
+   "R61"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 36,
+    "name": "test_member_tables_provenance_and_verification"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 64,
+    "name": "test_tampered_or_incomplete_members_do_not_verify"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 73,
+    "name": "test_member_requires_all_three_horizons_and_census_coverage"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 87,
+    "name": "test_feature_fill_sidecar_is_actual_no_fill_row_section_provenance"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 120,
+    "name": "test_review_regressions_member_verifier"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 158,
+    "name": "test_seasonal_provenance_reports_actual_observations_not_calendar_selection"
+   },
+   {
+    "doc": "CP5 (actual package): the package's evidence covers its full training roster. SMOKE: after verification",
+    "ids": [],
+    "line": 176,
+    "name": "test_smoke_restricts_full_roster_package_evidence_to_the_fixture_roster"
+   },
+   {
+    "doc": "Supervisor on b3b5dd2: valid source evidence for areas 990/991 only and the fixture roster 11/12/13 -> the",
+    "ids": [
+     "R31"
+    ],
+    "line": 197,
+    "name": "test_smoke_evidence_without_any_roster_area_is_unavailable_with_reason"
+   },
+   {
+    "doc": "A source file with a wrong identity is refused in smoke even when the roster subset would be empty.",
+    "ids": [],
+    "line": 215,
+    "name": "test_smoke_validates_the_full_evidence_identity_before_restricting_it"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_ee_transport.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 113,
+    "name": "test_image_times_reuse_the_acquirer_listing_and_accept_daily_multiplicity"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 123,
+    "name": "test_missing_assets_reports_only_definitive_absence"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 143,
+    "name": "test_inaccessible_current_table_is_a_failure_not_unavailability"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 159,
+    "name": "test_export_is_create_only_pinned_by_generation_and_read_exactly"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 182,
+    "name": "test_export_failures_block"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 189,
+    "name": "test_no_export_inside_the_deadline_cleanup_reserve"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 199,
+    "name": "test_asset_tables_read_without_geometry_and_canonical_admin_codes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 212,
+    "name": "test_monthly_provider_through_the_transport_saves_exact_roster"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 235,
+    "name": "test_failed_export_is_never_resubmitted_under_the_same_run_and_description"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 249,
+    "name": "test_timeout_bounds_every_sleep_cancels_and_records"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 276,
+    "name": "test_started_task_is_cancelled_when_its_id_cannot_be_persisted"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 293,
+    "name": "test_deadline_reached_during_reservation_submits_nothing"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 305,
+    "name": "test_start_with_lost_response_keeps_the_known_task_id_and_cancels"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 320,
+    "name": "test_persist_and_cancel_failure_still_reports_the_task_id"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 350,
+    "name": "test_real_providers_route_every_base_through_the_one_transport"
+   },
+   {
+    "doc": "Successful integration: real_providers -> SeasonalEEProvider -> EETransport (listing, private-asset metadata,",
+    "ids": [],
+    "line": 369,
+    "name": "test_seasonal_factory_through_the_transport_saves_a_completed_season"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_entrypoint_v2.py": {
+  "module_ids": [
+   "R5",
+   "R17",
+   "R36",
+   "R48"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 54,
+    "name": "test_smoke_request_runs_end_to_end_through_the_route"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 67,
+    "name": "test_request_envelope_other_than_the_installed_one_executes_nothing_ipcch"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 82,
+    "name": "test_config_refuses_real_providers_for_smoke_and_nested_roots"
+   },
+   {
+    "doc": "No production current read (R39 is real-only) and no real delivery/store path, through the executable route.",
+    "ids": [
+     "R39"
+    ],
+    "line": 107,
+    "name": "test_smoke_route_never_touches_real_state"
+   },
+   {
+    "doc": "R29/R41: an ACLED refresh saved before a later climate block is reported in the returned AND durable status.",
+    "ids": [
+     "R29",
+     "R41"
+    ],
+    "line": 124,
+    "name": "test_saved_update_then_later_failure_keeps_the_structured_report"
+   },
+   {
+    "doc": "An EE outage (ee.Initialize / the provider factory failing) must not block real inference from an existing",
+    "ids": [],
+    "line": 147,
+    "name": "test_real_inference_only_never_builds_acquisition_providers"
+   },
+   {
+    "doc": "The executable initialisation route (entrypoint_v2 initialise / initialise_store): a fresh smoke store is",
+    "ids": [],
+    "line": 220,
+    "name": "test_smoke_store_initialisation_route_then_a_request_runs"
+   },
+   {
+    "doc": "Real: the installed ACCEPTED envelope/package/bundle; the finalized entries are installed (R45) and the store is",
+    "ids": [
+     "R45"
+    ],
+    "line": 249,
+    "name": "test_real_store_initialisation_route_installs_the_bound_acceptance_entries"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_generation.py": {
+  "module_ids": [
+   "R5",
+   "R13",
+   "R19",
+   "R32",
+   "R33",
+   "R36",
+   "R41",
+   "R43",
+   "R44",
+   "R45",
+   "R48",
+   "R52",
+   "R53",
+   "R59",
+   "R61",
+   "R62",
+   "R65"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 60,
+    "name": "test_generation_writes_a_complete_batch_and_inference_scores_it"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 95,
+    "name": "test_request_selection_must_match_the_binding_before_any_write"
+   },
+   {
+    "doc": "The delivered windows end with 2026 (as the accepted handoff); O = 2027-07 completes 2027-s1: its window is derived",
+    "ids": [
+     "R33"
+    ],
+    "line": 107,
+    "name": "test_future_completed_seasons_come_from_the_delivered_calendar"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 126,
+    "name": "test_calendar_that_does_not_reproduce_delivered_windows_is_refused"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 137,
+    "name": "test_origin_without_climate_source_blocks_after_saved_inputs_with_runtime_records"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 159,
+    "name": "test_research_family_failure_report_keeps_earlier_committed_refreshes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 176,
+    "name": "test_real_keep_without_acled_history_is_refused"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 199,
+    "name": "test_every_saved_version_gets_its_own_runtime_record_even_when_a_later_base_fails"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 213,
+    "name": "test_lost_acceptance_write_is_repaired_once_on_retry_without_resaving"
+   },
+   {
+    "doc": "Supervisor residual on 3e97139: the seasonal EE provider must hold the SAME calendar-extended windows as the",
+    "ids": [],
+    "line": 247,
+    "name": "test_real_factory_builds_seasonal_providers_from_the_derived_windows"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 278,
+    "name": "test_reconcile_receipt_failure_is_a_reported_generation_failure"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_gpp.py": {
+  "module_ids": [
+   "R9",
+   "R49",
+   "R54"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 55,
+    "name": "test_research_equivalent_mean_and_no_fill_contamination"
+   },
+   {
+    "doc": "The FEWS NET / legacy contract keeps its raw unscaled statistics (fill codes count as data there).",
+    "ids": [],
+    "line": 68,
+    "name": "test_shared_legacy_zonal_statistics_unchanged"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 77,
+    "name": "test_grid_and_encoding_are_enforced"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 108,
+    "name": "test_update_ledger_published_unpublished_and_fill_only_unpublished"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 133,
+    "name": "test_non_definitive_outcomes_block_after_saved_months"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 144,
+    "name": "test_geometries_must_be_the_roster"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 152,
+    "name": "test_interrupted_ledger_write_never_refetches_or_fills_saved_nan"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_initial.py": {
+  "module_ids": [
+   "R45"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 62,
+    "name": "test_initialise_requires_acceptance_and_round_trips"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 90,
+    "name": "test_preflight_rejects_a_malformed_later_file_before_any_write"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 106,
+    "name": "test_existing_head_conflict_detected_before_writes_and_snapshot_warning"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 134,
+    "name": "test_invalid_fields_refused_before_any_write"
+   },
+   {
+    "doc": "The climate updaters must append to exactly the tables initialised from the accepted bundle.",
+    "ids": [],
+    "line": 152,
+    "name": "test_climate_updates_address_the_initialised_tables"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_legacy_guards.py": {
+  "module_ids": [
+   "R37",
+   "R46",
+   "R50",
+   "R63",
+   "R66"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 92,
+    "name": "test_after_activation_v1_requests_including_ipcch_are_rejected_before_work"
+   },
+   {
+    "doc": "A both-system v1 run admitted before activation; activation lands while it scores -> the publication-time",
+    "ids": [
+     "R37"
+    ],
+    "line": 104,
+    "name": "test_cutover_during_a_legacy_run_is_refused_at_publication"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 125,
+    "name": "test_post_activation_fews_only_publishes_a_v2_member_inheriting_the_new_ipcch_member"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 153,
+    "name": "test_post_activation_inheritance_must_name_the_current_member"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 167,
+    "name": "test_pre_activation_legacy_inheritance_still_binds_to_the_current_release"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 178,
+    "name": "test_v1_runs_share_the_per_system_locks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 197,
+    "name": "test_promote_and_verify_reject_new_contract_candidates_and_bind_legacy_candidates"
+   },
+   {
+    "doc": "Finding 3: before activation a v1 IPCCH-only run stays available against a v2 record: it inherits the",
+    "ids": [],
+    "line": 264,
+    "name": "test_preactivation_legacy_ipcch_run_inherits_the_v2_stored_fews_member"
+   },
+   {
+    "doc": "Finding 4: a pointer without release_record_generation never crashes the guards; its legacy record is read",
+    "ids": [],
+    "line": 299,
+    "name": "test_legacy_pointer_is_read_consistently_with_integrity_binding"
+   },
+   {
+    "doc": "Finding 4 through execute: no crash; a both-system v1 run publishes as before; an inheriting run is rejected",
+    "ids": [],
+    "line": 319,
+    "name": "test_v1_runs_against_a_legacy_pointer_without_generation"
+   },
+   {
+    "doc": "The resolved legacy FEWS NET-only run after activation: its FEWS-scoped snapshot serves FEWS NET (no IPCCH",
+    "ids": [],
+    "line": 338,
+    "name": "test_post_activation_fews_only_delivery_from_a_fews_scoped_snapshot_adopts_its_admission_lock"
+   },
+   {
+    "doc": "Supervisor residual A on 78a2aeb: legacy both-system release -> FEWS v2 publication (v2 record, legacy IPCCH",
+    "ids": [],
+    "line": 391,
+    "name": "test_mixed_format_inheritance_follows_the_members_own_delivery_format"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_locks.py": {
+  "module_ids": [
+   "R50"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 13,
+    "name": "test_all_or_nothing_acquisition_releases_only_own_locks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 27,
+    "name": "test_namespaces_are_isolated_and_stale_locks_need_an_explicit_operations_action"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 42,
+    "name": "test_release_never_deletes_a_lock_that_moved"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 67,
+    "name": "test_partial_acquisition_is_rolled_back_when_a_later_lock_is_held"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 75,
+    "name": "test_transport_failure_releases_own_locks_and_keeps_the_cause"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 83,
+    "name": "test_cleanup_attempts_every_lock_and_reports_failures"
+   },
+   {
+    "doc": "Supervisor residual B on 78a2aeb: owner and generation come from one stable read; a lock replaced by run B",
+    "ids": [],
+    "line": 123,
+    "name": "test_a_lock_replaced_between_reads_is_never_adopted_or_deleted"
+   },
+   {
+    "doc": "Residual 3 on 32d4eef: acquiring [fewsnet, ipcch] - fewsnet fresh, the ipcch holder lookup fails - releases the",
+    "ids": [],
+    "line": 153,
+    "name": "test_a_failed_holder_lookup_rolls_back_fresh_locks_and_keeps_adopted_ones"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_nightlight.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 57,
+    "name": "test_appends_viirs_sum_on_roster_and_records_gaps"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 72,
+    "name": "test_retrieval_failure_blocks_after_saved_months_and_cancels"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 82,
+    "name": "test_geometries_must_be_the_roster"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_publication.py": {
+  "module_ids": [
+   "R17",
+   "R18",
+   "R36",
+   "R37",
+   "R39",
+   "R46",
+   "R63",
+   "R66"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 46,
+    "name": "test_first_real_ipcch_current_activates_and_fews_publication_inherits_and_preserves_it"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 60,
+    "name": "test_candidate_never_moves_the_pointer_or_activates"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 70,
+    "name": "test_cas_conflict_fails_without_retry_and_keeps_the_winner"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 83,
+    "name": "test_r39_recheck_and_r18_all_horizons"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 97,
+    "name": "test_smoke_root_is_isolated_and_never_activates"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 105,
+    "name": "test_legacy_release_records_are_read_as_one_origin_members"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 113,
+    "name": "test_pointer_moving_after_the_snapshot_read_is_a_conflict_not_a_rebase"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 132,
+    "name": "test_mode_mismatch_and_missing_or_failing_verifier_write_nothing"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 147,
+    "name": "test_release_record_replaced_during_the_read_is_refused"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_release_v2.py": {
+  "module_ids": [
+   "R17",
+   "R18",
+   "R36",
+   "R37",
+   "R47",
+   "R63",
+   "R66"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 88,
+    "name": "test_first_real_ipcch_publication_inherits_legacy_fews_byte_for_byte_and_activates"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 116,
+    "name": "test_tampered_inherited_member_refuses_publication"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 127,
+    "name": "test_moved_pointer_fails_without_rebase_and_candidate_never_moves_it"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 139,
+    "name": "test_smoke_publishes_under_its_own_root_only"
+   },
+   {
+    "doc": "Supervisor repro (6e57972): an inherited FEWS member edited (.4 -> .99) or stripped of package/geometry/sidecars",
+    "ids": [],
+    "line": 150,
+    "name": "test_edited_or_incomplete_inherited_member_with_regenerated_inventory_is_refused_by_publication"
+   },
+   {
+    "doc": "Supervisor integration gap (e3bb779): IPCCH then FEWS NET published by ONE run (same run_id) - unique immutable",
+    "ids": [],
+    "line": 203,
+    "name": "test_one_run_publishing_both_systems_uses_unique_artifacts_and_chains_its_own_generation"
+   },
+   {
+    "doc": "Pickled FEWS NET model packages are not text: the v2 delivery moves exact bytes (no UTF-8 decoding).",
+    "ids": [],
+    "line": 237,
+    "name": "test_binary_legacy_fews_package_files_are_inherited_byte_for_byte"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_run_v2.py": {
+  "module_ids": [
+   "R5",
+   "R17",
+   "R19",
+   "R36",
+   "R52"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 70,
+    "name": "test_smoke_generation_then_inference_only_from_the_named_batch"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 94,
+    "name": "test_generation_only_writes_a_batch_and_no_predictions"
+   },
+   {
+    "doc": "Real mixed IPCCH generation+inference + FEWS NET inference with one wrong nested FEWS hash: rejected by admit;",
+    "ids": [
+     "R17"
+    ],
+    "line": 102,
+    "name": "test_invalid_mixed_request_executes_nothing"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 119,
+    "name": "test_partial_success_when_one_system_fails"
+   },
+   {
+    "doc": "R48: a smoke request naming a real batch manifest or a real-namespace refresh file is refused LEXICALLY by admit;",
+    "ids": [
+     "R48"
+    ],
+    "line": 135,
+    "name": "test_misrouted_batch_and_refresh_refs_are_refused_before_any_resolve"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 161,
+    "name": "test_failed_inference_keeps_the_generated_batch_in_the_outcome"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 178,
+    "name": "test_smoke_country_reference_must_be_a_fixture_object"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 194,
+    "name": "test_deployment_publishes_smoke_under_its_own_root_and_releases_locks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 212,
+    "name": "test_busy_lock_rejects_the_whole_request_before_any_work"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 226,
+    "name": "test_stale_expected_generation_fails_publication_keeps_results_and_releases_locks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 241,
+    "name": "test_generation_only_never_publishes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 254,
+    "name": "test_candidate_publication_writes_a_record_without_moving_the_pointer"
+   },
+   {
+    "doc": "R53/R62 (Supervisor CP6 check on da1ebd0): the batch's ACLED short-coverage warning and stale-snapshot warning",
+    "ids": [
+     "R53",
+     "R62"
+    ],
+    "line": 265,
+    "name": "test_published_prediction_metadata_carries_the_named_batch_coverage_and_warnings"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_spi_spei.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 25,
+    "name": "test_port_equals_golden_from_original_functions"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 36,
+    "name": "test_port_equals_original_live_differential"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 45,
+    "name": "test_strict_baseline_and_axis"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 55,
+    "name": "test_et0_patch_fills_missing_only"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_spi_spei_seasonal.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 38,
+    "name": "test_port_equals_golden_from_original"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 61,
+    "name": "test_vendored_text_and_live_differential"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 81,
+    "name": "test_seasonal_spei_is_not_the_monthly_spei"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 91,
+    "name": "test_boundaries"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_stores.py": {
+  "module_ids": [
+   "FCC8",
+   "R8",
+   "R9",
+   "R41",
+   "R45",
+   "R49",
+   "R59",
+   "R62"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 26,
+    "name": "test_store_roots_are_mode_isolated"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 33,
+    "name": "test_versions_are_immutable_and_head_cas_is_not_retried"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 45,
+    "name": "test_append_never_rewrites_and_gpp_fills_only_unpublished_missing"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 62,
+    "name": "test_append_validation"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 76,
+    "name": "test_gpp_probe_classification_and_ledger"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 95,
+    "name": "test_research_family_interval_refresh"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 110,
+    "name": "test_snapshot_atomic_replacement_and_warning"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 127,
+    "name": "test_acceptance_manifest"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 159,
+    "name": "test_failed_head_move_leaves_an_orphan_that_never_blocks_the_next_commit"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 174,
+    "name": "test_writers_cas_from_their_own_snapshot"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 199,
+    "name": "test_head_changing_during_read_refuses"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 208,
+    "name": "test_head_content_outside_its_own_root_is_refused"
+   }
+  ]
+ },
+ "tests/cloud/test_ipcch_wfp.py": {
+  "module_ids": [
+   "R27",
+   "R29",
+   "R59"
+  ],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 26,
+    "name": "test_keep_leaves_history_and_reports_coverage"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 33,
+    "name": "test_refresh_replaces_exactly_the_declared_interval"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 56,
+    "name": "test_invalid_refresh_leaves_history_intact"
+   },
+   {
+    "doc": "A valid replacement can leave the table empty; initialisation is HEAD existence, so keep and refresh recover.",
+    "ids": [],
+    "line": 65,
+    "name": "test_emptied_history_stays_initialised_keep_then_refresh"
+   }
+  ]
+ },
+ "tests/cloud/test_manifest_contract.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 29,
+    "name": "test_valid_manifest_fixture_loads_and_matches_execution_parameters"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 41,
+    "name": "test_required_artifact_missing_immutable_reference_fails"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 50,
+    "name": "test_required_v1_artifact_type_must_be_present_exactly_once"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 75,
+    "name": "test_local_workstation_uri_fails"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 83,
+    "name": "test_unsupported_artifact_uri_scheme_fails"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 91,
+    "name": "test_relative_artifact_uri_fails"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 99,
+    "name": "test_non_gcp_provider_fails"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 107,
+    "name": "test_tag_only_runtime_image_fails"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 117,
+    "name": "test_runtime_images_must_use_same_single_image_digest"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 128,
+    "name": "test_shared_service_accounts_fail_split_least_privilege_gate"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 138,
+    "name": "test_feature_month_and_run_id_must_match_execution_parameters"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 148,
+    "name": "test_deployment_model_package_must_match_model_package_artifact"
+   }
+  ]
+ },
+ "tests/cloud/test_object_refs.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 6,
+    "name": "test_sha256_file_returns_hex_digest"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 16,
+    "name": "test_required_artifact_accepts_generation_or_checksum"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 27,
+    "name": "test_required_artifact_without_reference_fails"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 38,
+    "name": "test_image_digest_must_be_digest_pinned"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 43,
+    "name": "test_normalize_gcs_ref_records_generation_and_checksum"
+   }
+  ]
+ },
+ "tests/cloud/test_object_store.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 73,
+    "name": "test_local_object_store_write_read_list_and_copy"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 88,
+    "name": "test_generation_precondition_blocks_overwrite"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 100,
+    "name": "test_generation_precondition_allows_expected_generation"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 111,
+    "name": "test_gcs_object_store_uses_storage_client_generation_and_prefix_semantics"
+   },
+   {
+    "doc": "Binary members (pickled packages) are stored and read as exact bytes, create-only when asked.",
+    "ids": [],
+    "line": 131,
+    "name": "test_exact_bytes_round_trip_with_generation_preconditions"
+   }
+  ]
+ },
+ "tests/cloud/test_prepare.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 216,
+    "name": "test_prepare_extracts_latest_completed_months_for_both_rosters"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 265,
+    "name": "test_history_beyond_provider_vintage_is_not_an_observation"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 291,
+    "name": "test_same_prepare_id_cannot_run_twice"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 304,
+    "name": "test_provider_failure_fails_preparation_and_is_not_lag"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 317,
+    "name": "test_download_failure_during_extract_retains_failed_status"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 330,
+    "name": "test_pinned_reads_use_exact_generation_and_hash"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 361,
+    "name": "test_history_snapshot_is_validated_before_it_sets_the_baseline"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 371,
+    "name": "test_prepare_request_validation"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 396,
+    "name": "test_extract_runs_as_batch_job_without_automatic_retries"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 442,
+    "name": "test_cloud_acquirer_gosif_retains_exact_downloaded_bytes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 554,
+    "name": "test_cloud_acquirer_gee_uses_discovered_image_and_named_fldas_bands"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 584,
+    "name": "test_cloud_acquirer_gee_export_failure_is_retrieval_failure"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 595,
+    "name": "test_history_after_last_ended_month_at_early_cutoff_is_rejected"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 610,
+    "name": "test_batch_submit_failure_records_status_and_keeps_plan"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 630,
+    "name": "test_plan_and_submit_passes_pinned_plan_to_batch"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 653,
+    "name": "test_provider_latest_before_baseline_start_is_found_and_fetched"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 673,
+    "name": "test_empty_history_rows_after_vintage_are_not_reported_as_excluded_observations"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 686,
+    "name": "test_production_http_discovery_walks_back_to_product_inception"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 698,
+    "name": "test_refresh_from_reextracts_and_replaces_the_window"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 722,
+    "name": "test_cloud_acquirer_starts_all_exports_before_waiting"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 742,
+    "name": "test_mid_submit_failure_cancels_already_started_exports"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 754,
+    "name": "test_acquire_failure_cancels_running_siblings_and_records_them"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 772,
+    "name": "test_extract_failure_status_lists_cancelled_provider_tasks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 783,
+    "name": "test_deadline_reserve_blocks_new_exports_and_caps_waits"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 809,
+    "name": "test_prepare_batch_spec_requests_highmem_machine_explicitly"
+   },
+   {
+    "doc": "Task 10-29 R60/D1: the default execution scope is unchanged (no plan/manifest field, identical bytes).",
+    "ids": [
+     "D1",
+     "R60"
+    ],
+    "line": 832,
+    "name": "test_selected_systems_default_is_the_existing_both_system_preparation"
+   },
+   {
+    "doc": "A FEWS NET-only scope reads only FEWS rosters/histories, acquires only FEWS families and writes only FEWS",
+    "ids": [],
+    "line": 845,
+    "name": "test_fews_only_preparation_never_reads_acquires_or_writes_ipcch"
+   }
+  ]
+ },
+ "tests/cloud/test_rasterio_evi_extraction.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 11,
+    "name": "test_compute_zone_stats_preserves_empty_zones_and_center_rule"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 27,
+    "name": "test_compute_zone_stats_rejects_region_area_mismatch"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 40,
+    "name": "test_long_outputs_contain_selected_month_and_scaffold_row_count"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 62,
+    "name": "test_rasterio_adapter_preserves_non_overlapping_zone_as_empty_row"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 132,
+    "name": "test_gee_export_adapter_requires_immutable_raster_reference"
+   }
+  ]
+ },
+ "tests/cloud/test_remote_sources.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 53,
+    "name": "test_evi_mean_and_population_std_ignore_nodata_and_keep_string_keys"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 68,
+    "name": "test_cell_centre_rule_excludes_partially_covered_cells"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 78,
+    "name": "test_viirs_emits_sum_std_and_mean"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 92,
+    "name": "test_fldas_bands_are_identified_by_name_not_position"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 104,
+    "name": "test_multiband_without_names_or_wrong_names_is_rejected"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 115,
+    "name": "test_stamp_band_names_binds_explicit_selection_order"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 129,
+    "name": "test_raster_without_crs_is_rejected"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 136,
+    "name": "test_mosaic_preserves_values_and_band_names"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 164,
+    "name": "test_native_geometries_require_explicit_string_admin_code"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 169,
+    "name": "test_latest_completed_month_excludes_unfinished_and_future_months"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 186,
+    "name": "test_gee_discovery_binds_exact_image_ids_and_fails_loudly"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 208,
+    "name": "test_http_discovery_distinguishes_lag_from_failure"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 230,
+    "name": "test_gee_export_spec_follows_current_scripts"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 257,
+    "name": "test_mosaic_preserves_invalid_cells_from_shard_masks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 275,
+    "name": "test_mosaic_keeps_valid_zero_and_masks_only_invalid_pixel"
+   }
+  ]
+ },
+ "tests/cloud/test_report_contracts.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 4,
+    "name": "test_run_summary_report_has_required_fields"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 40,
+    "name": "test_validation_report_rejects_terminal_run_status"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 54,
+    "name": "test_inference_validation_report_has_enriched_summary_fields"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 80,
+    "name": "test_evi_extraction_manifest_has_cloud_batch_fields"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 112,
+    "name": "test_release_manifest_status_is_current"
+   }
+  ]
+ },
+ "tests/cloud/test_retrain_source_contracts.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 13,
+    "name": "test_fews_nightlight_maps_to_viirs_sum_and_sd_to_std"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 19,
+    "name": "test_gosif_mean_is_v3_from_2025_only_and_sd_stays_v2"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 26,
+    "name": "test_refresh_before_the_v3_boundary_is_rejected"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 40,
+    "name": "test_plan_never_extracts_gosif_mean_before_the_v3_boundary"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 58,
+    "name": "test_delivery_reads_legacy_v1_and_current_prepared_snapshots"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 62,
+    "name": "test_delivery_rejects_unknown_extraction_contract"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 67,
+    "name": "test_v3_http_discovery_stops_at_the_contract_start"
+   }
+  ]
+ },
+ "tests/cloud/test_runtime_defaults.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 4,
+    "name": "test_default_timeouts_and_retry_policy"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 16,
+    "name": "test_manifest_deployment_can_override_defaults"
+   }
+  ]
+ },
+ "tests/cloud/test_runtime_image_contract.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 7,
+    "name": "test_dockerfile_documents_single_image_entrypoints_and_digest_metadata"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 17,
+    "name": "test_cloud_runtime_dependencies_include_launch_model_loader_requirements"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 23,
+    "name": "test_required_cloud_entrypoint_modules_import"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 32,
+    "name": "test_documented_module_entrypoints_expose_cli_help"
+   }
+  ]
+ },
+ "tests/cloud/test_wind_down_rest.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 30,
+    "name": "test_rest_backend_maps_v2_execution_state_and_targets_exact_resources"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 44,
+    "name": "test_rest_backend_terminal_unknown_and_failed_actions_are_explicit"
+   }
+  ]
+ },
+ "tests/cloud/test_workflow_dispatch.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 341,
+    "name": "test_own_writes_are_ignored_and_never_claimed"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 349,
+    "name": "test_inference_intent_is_admitted_prepared_resolved_and_run_once"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 361,
+    "name": "test_prepare_only_returns_the_immutable_snapshot_after_the_same_gate"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 380,
+    "name": "test_both_branches_stop_on_a_wrong_or_missing_snapshot"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 390,
+    "name": "test_an_inadmissible_intent_never_starts_preparation"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 397,
+    "name": "test_failed_or_unfinished_preparation_stops_before_resolution"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 408,
+    "name": "test_duplicate_events_dispatch_nothing_and_a_new_generation_conflicts"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 420,
+    "name": "test_legacy_and_remote_off_requests_run_the_delivery_job_directly"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 426,
+    "name": "test_a_maintenance_hold_admits_only_its_bound_runs"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 452,
+    "name": "test_resolution_pins_the_exact_initial_intent_and_equal_content_does_not_collapse"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 469,
+    "name": "test_a_resolved_request_must_equal_its_initial_intent"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 480,
+    "name": "test_resolved_paths_require_the_initial_intent_identity_and_initial_paths_forbid_it"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 497,
+    "name": "test_job_argv_parses_with_every_configured_flag"
+   },
+   {
+    "doc": "Before activation the legacy preparation collects both systems: both locks are taken at admission, held",
+    "ids": [],
+    "line": 513,
+    "name": "test_remote_run_holds_both_locks_from_admission_and_resolution_hands_them_to_delivery"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 528,
+    "name": "test_remote_run_locks_are_released_on_every_failure_and_after_prepare_only"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 545,
+    "name": "test_a_busy_system_rejects_admission_before_preparation"
+   },
+   {
+    "doc": "Finding 2 (Supervisor ruling): the legacy FEWS NET-only remote request stays usable after activation - its",
+    "ids": [],
+    "line": 568,
+    "name": "test_after_activation_a_legacy_fews_only_remote_run_prepares_fews_only"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 605,
+    "name": "test_after_activation_legacy_ipcch_remote_intents_are_rejected_before_any_collection"
+   },
+   {
+    "doc": "C: a definitive rejection (4xx) of the prepare or resolve job submission means nothing runs - the owner",
+    "ids": [],
+    "line": 646,
+    "name": "test_a_definitively_rejected_job_submission_releases_the_admission_locks"
+   },
+   {
+    "doc": "D: a non-acceptance error during resolution (here: the prepared manifest read) releases and is re-raised.",
+    "ids": [],
+    "line": 657,
+    "name": "test_resolution_read_failure_releases_the_admission_locks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 671,
+    "name": "test_dispatch_record_write_failure_releases_what_the_step_owns"
+   },
+   {
+    "doc": "The cleanup at admission releases only what that call freshly acquired: a replayed admission whose record",
+    "ids": [],
+    "line": 683,
+    "name": "test_admission_replay_failure_never_releases_locks_adopted_from_the_first_admission"
+   },
+   {
+    "doc": "D: after resolution the current release changes (now a v2 record without the inherited member): the delivery's",
+    "ids": [],
+    "line": 698,
+    "name": "test_delivery_rejected_by_a_changed_current_release_releases_the_admission_locks"
+   },
+   {
+    "doc": "Residual 2 on 32d4eef: `delivery_job resolve` releases the run's admission locks on a failure of its very first",
+    "ids": [],
+    "line": 718,
+    "name": "test_cli_resolve_releases_the_admission_locks_when_the_request_read_fails"
+   }
+  ]
+ },
+ "tests/test_operator_cli.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 247,
+    "name": "test_init_run_resume_download"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 311,
+    "name": "test_run_binding_and_destination_checks"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 331,
+    "name": "test_rejects_unbound_baseline"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 352,
+    "name": "test_preview_no_cloud_and_select_rollback"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 396,
+    "name": "test_model_diagnostics_and_shared_members_rejected_before_mutation"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 430,
+    "name": "test_init_missing_assets_stops_before_upload"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 439,
+    "name": "test_deadline_expires_before_the_intent_is_submitted"
+   }
+  ]
+ },
+ "tests/test_operator_release.py": {
+  "module_ids": [],
+  "tests": [
+   {
+    "doc": "",
+    "ids": [],
+    "line": 44,
+    "name": "test_candidate_intent_reuses_the_snapshot_and_pins_the_inherited_source"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 62,
+    "name": "test_an_inherited_source_must_be_the_named_delivery_run"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 74,
+    "name": "test_inconsistent_selections_are_rejected_before_any_upload"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 82,
+    "name": "test_operator_runs_respect_the_maintenance_hold"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 94,
+    "name": "test_candidate_download_uses_the_candidate_record_never_a_release"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 259,
+    "name": "test_the_hold_aware_gate_is_installed_and_verified_before_any_job_change"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 285,
+    "name": "test_promotion_is_receipt_bound_and_reconciled"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 324,
+    "name": "test_an_interrupted_promotion_resumes_from_the_actual_state"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 357,
+    "name": "test_restore_from_an_interrupted_fallback_switch"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 384,
+    "name": "test_concurrent_config_change_or_pointer_drift_stops_before_local_changes"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 400,
+    "name": "test_a_competing_pointer_is_never_overwritten"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 410,
+    "name": "test_a_present_predecessor_pointer_is_restored_by_cas"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 424,
+    "name": "test_prepare_only_status_ends_at_the_resolved_snapshot"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 439,
+    "name": "test_candidate_receipt_requires_a_bundled_runtime_replay"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 487,
+    "name": "test_a_foreign_pointer_after_restore_inspection_is_never_deleted"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 508,
+    "name": "test_a_config_edit_during_cloud_publication_is_never_overwritten"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 525,
+    "name": "test_a_config_edit_during_restore_is_never_overwritten"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 541,
+    "name": "test_rollback_after_release_rehold_restore_release"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 587,
+    "name": "test_post_activation_fews_only_operator_submission_inherits_the_v2_member_by_identity"
+   },
+   {
+    "doc": "",
+    "ids": [],
+    "line": 603,
+    "name": "test_post_activation_operator_submissions_are_bound_before_any_request_upload"
+   }
+  ]
+ }
+}
