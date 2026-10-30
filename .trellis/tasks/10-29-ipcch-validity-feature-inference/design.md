@@ -31,8 +31,8 @@ Status: planning draft, not execution approval. Requirements and accepted decisi
 
 - New `schema_version` value; legacy v1 requests keep the existing validator and runtime path (R37).
 - Fields: `run_id`; `mode` (smoke|real, required, no default); `execution_month` M; `operations` with the four booleans (at least one); `ipcch` block: `model_combination`, `feature_batch` (inference-only), `acled` keep|refresh{file ref, start, end, regions}, `research_inputs` per family keep|refresh{file ref, start, end} (R59), `history_snapshot` keep|refresh{file ref} (R62), `wfp` keep|refresh (R64); `fewsnet` block: `prepared_snapshot` (inference-only, R60), existing `acled`/`wfp` choices; `publication` candidate|current (R66); `operator`, `prepared_at`, existing cutoff/deadline fields.
-- Validation order, all before any collection, store mutation or inference (R17): structural; mode rules (R38: smoke selects no FEWS NET operation; smoke never `publication: current` to production); operation conflicts (R19: generation plus inference with a batch reference, inference-only without a batch, inference-only with ACLED refresh); derived dates (R23) and M rules (R39: M later than the UTC calendar month; real IPCCH inference with `publication: current` and M earlier than the IPCCH execution month in the current release); immutable reference identity for every referenced file/batch/package; per-system lock (R50); admission.
-- After formal activation, v1 requests that include IPCCH (including mixed) are rejected with a migration message; FEWS NET-only v1 requests remain valid.
+- Validation order, all before any collection, store mutation or inference (R17): structural; mode rules (R38: smoke selects no FEWS NET operation; smoke never `publication: current` to production); operation conflicts (R19: generation plus inference with a batch reference, inference-only without a batch, inference-only with any IPCCH input refresh: ACLED, research_inputs, history_snapshot or WFP); derived dates (R23) and M rules (R39: M later than the UTC calendar month; real IPCCH inference with `publication: current` and M earlier than the IPCCH execution month in the current release); immutable reference identity for every referenced file/batch/package; per-system lock (R50); admission.
+- After formal activation, v1 requests that include IPCCH (including mixed) are rejected with a migration message; FEWS NET-only v1 requests remain valid; their required `inherit.ipcch` must name the current release's IPCCH member, and a new-contract member is checked under R63 instead of the v1 same-month, (0, 6, 12) target-period and installed-package checks (prd.md, Final convergence corrections).
 
 ## Run mode
 
@@ -57,7 +57,7 @@ Status: planning draft, not execution approval. Requirements and accepted decisi
 
 ## ACLED
 
-- Reject IPCCH inference-only plus IPCCH ACLED refresh before mutating source data; refresh belongs to IPCCH generation.
+- Reject IPCCH inference-only plus any IPCCH input refresh (ACLED, research_inputs, history_snapshot, WFP) before mutating source data; refresh belongs to IPCCH generation.
 - Converter ported from `build_acled_agg.py` with its fixed tables delivered in the package (R55). Validation: Saturday week labels, all weeks within the declared interval, declared regions covering the mapping table's regions, rows outside interval/regions rejected, unmapped or >25 km admin1 rejected (R26, R56). Replacement of the declared interval at week level, outside history preserved (R25). Month completeness requires declared interval/region coverage of every overlapping week, not event-row presence (R56); first refresh must cover the R44 lookback through O; subsequent short coverage is recorded and warned under R53. Failed refresh leaves history intact; successful refresh becomes the keep baseline even if downstream fails (R27-R29). FEWS NET retains its event-level ingestion and retention semantics.
 
 ## GPP
