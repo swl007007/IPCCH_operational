@@ -33,3 +33,7 @@ The bundle includes local branches and preserved refs, so keep it private. No re
 Git backup covers tracked source and Git history, not ignored datasets, credentials, local runtime state, model binaries omitted from Git, or live cloud objects. Existing local artifacts are left untouched. Before any real production mutation, pin the actual deployed image digest, current release/model/input references and mutable-state recovery procedure in a separately reviewed execution packet. A source checkout alone does not roll back cloud services or retained-store changes.
 
 No production resources were changed to establish this baseline. The existing application's no-rollback-interface decision remains unchanged; emergency operational recovery is separate from ordinary manifest functionality.
+
+## Windows Git working-tree verification
+
+Windows Git reported 354 modified archived research JSON files while WSL Git was clean. Every file was verified byte-identical to HEAD and parsed as JSON. Windows Git could not index their deep paths (`Filename too long`). Enabling repository-local `core.longpaths=true` removed all 354 false modifications. This setting is local Git configuration, not a tracked attribute; on another Windows checkout run `git config --local core.longpaths true`. No evidence JSON was rewritten or renormalized. Both Windows and WSL status were checked.
