@@ -171,6 +171,11 @@ def initialise(store: ObjectStore, root: StoreRoot, bundle_dir: str, *, binding:
     plan, report = [], {"initialised": [], "unchanged": [], "verified_files": [], "root": root.uri,
                         "binding": binding.reference(), "pairing": wanted}
     for rel in runtime:
+        if root.mode == "smoke":
+            try:
+                bd.fixture_file(binding, bundle_dir, rel)      # inside the fixture root, no symlink (R48)
+            except bd.BindingError as exc:
+                raise StoreError(str(exc)) from exc
         sha = _sha(os.path.join(bundle_dir, rel))
         if sha != manifest["files"][rel]["sha256"]:
             raise StoreError(f"{rel}: bytes differ from handoff_manifest.json")

@@ -18,8 +18,10 @@ Verification is split by mode (R48):
   envelope; real requires ``accepted`` with acceptor, date and a bound finalized-entries digest.
 * ``verify_handoff`` (real only) resolves the real handoff bundle and requires its manifest, roster and finalized
   acceptance entries to match the envelope exactly; any other bundle is refused even when its 527-column schema matches.
-* ``verify_fixture_bundle`` (smoke only) validates the smoke fixture bundle by its own manifest and declared roster
-  subset; smoke never resolves or reads the real handoff assets.
+* ``verify_fixture_bundle`` (smoke only) admits a bundle only inside the smoke binding's declared fixture root, decided
+  lexically before any filesystem access (components lstat-checked inside the root, symlinks refused), reads the
+  fixture marker before any payload, then the declared roster subset; smoke never resolves or reads the real handoff
+  assets, even when one is passed by mistake.
 
 A store initialised for a combination records the pairing (``combination_binding`` table); later reads require the
 same pairing, so a store initialised from another bundle or for another package is refused.
@@ -251,6 +253,7 @@ class Binding:
     feature_order_sha256: str
     scopes: Mapping[str, Any]
     handoff: Mapping[str, Any] | None = field(default=None)   # real only (digests of the bound real bundle)
+    fixture_root: str | None = None                           # smoke only: the declared trusted fixture namespace
 
     def reference(self) -> dict[str, Any]:
         """The combination reference recorded in batches, summaries and store records."""
@@ -261,10 +264,13 @@ class Binding:
 
 
 def verify_combination(envelope_path: str, package_root: str, *, mode: str,
-                       expected_envelope_sha256: str | None = None) -> Binding:
-    """Envelope + package only (no handoff asset is read in either mode). Real requires an accepted envelope."""
+                       expected_envelope_sha256: str | None = None, fixture_root: str | None = None) -> Binding:
+    """Envelope + package only (no handoff asset is read in either mode). Real requires an accepted envelope; smoke
+    requires the declared fixture root (its only admissible bundle namespace, R48)."""
     if mode not in ("smoke", "real"):
         raise BindingError(f"mode must be smoke or real, got {mode!r}")
+    if (mode == "smoke") != (fixture_root is not None):
+        raise BindingError("smoke requires a declared fixture_root; real takes none")
     env, env_sha = _json(envelope_path)
     if expected_envelope_sha256 is not None and env_sha != expected_envelope_sha256:
         raise BindingError(f"envelope sha256 {env_sha} != referenced {expected_envelope_sha256}")
@@ -289,7 +295,8 @@ def verify_combination(envelope_path: str, package_root: str, *, mode: str,
                    acceptor=env.get("acceptor"), accepted_at=env.get("accepted_at"),
                    combination_id=pkg["combination_id"], package_manifest_sha256=pkg["package_manifest_sha256"],
                    feature_order=pkg["_order"], feature_order_sha256=pkg["feature_order_sha256"], scopes=pkg["scopes"],
-                   handoff=dict(env["handoff"]) if mode == "real" else None)
+                   handoff=dict(env["handoff"]) if mode == "real" else None,
+                   fixture_root=None if fixture_root is None else _lexical(fixture_root))
 
 
 def verify_handoff(binding: Binding, bundle_dir: str) -> dict[str, Any]:
@@ -306,15 +313,62 @@ def verify_handoff(binding: Binding, bundle_dir: str) -> dict[str, Any]:
     return ident
 
 
+def _lexical(path: str) -> str:
+    """Absolute normalised path computed WITHOUT touching the filesystem."""
+    return os.path.normpath(os.path.abspath(os.fspath(path)))
+
+
+def _inside(root: str, path: str) -> bool:
+    return path == root or path.startswith(root.rstrip(os.sep) + os.sep)
+
+
+def admit_fixture_dir(binding: Binding, bundle_dir: str) -> str:
+    """SMOKE admission, decided lexically before ANY filesystem access: the bundle must lie inside the binding's
+    declared fixture root; anything else (e.g. a misrouted real handoff bundle) is refused unread (R48)."""
+    if binding.mode != "smoke" or binding.fixture_root is None:
+        raise BindingError("fixture bundles are admitted only for a smoke binding with a declared fixture_root")
+    path = _lexical(bundle_dir)
+    if not _inside(binding.fixture_root, path):
+        raise BindingError(f"smoke bundle {path} is outside the declared fixture root {binding.fixture_root}; "
+                           "refused before any read (R48)")
+    return path
+
+
+def fixture_file(binding: Binding, bundle_dir: str, rel: str) -> str:
+    """Path of one fixture-bundle file after admission; every component from the fixture root down is lstat-checked
+    (only paths inside the fixture root are touched) and symlinks are refused, so no read can leave the fixture root."""
+    import stat
+    bundle = admit_fixture_dir(binding, bundle_dir)
+    path = _lexical(os.path.join(bundle, rel))
+    if not _inside(bundle, path) or path == bundle:
+        raise BindingError(f"{rel} escapes the fixture bundle")
+    current = binding.fixture_root
+    for part in os.path.relpath(path, current).split(os.sep):
+        current = os.path.join(current, part)
+        try:
+            mode = os.lstat(current).st_mode
+        except FileNotFoundError as exc:
+            raise BindingError(f"fixture file {rel} is missing") from exc
+        if stat.S_ISLNK(mode):
+            raise BindingError(f"fixture path {current} is a symlink; refused (R48)")
+    return path
+
+
 def verify_fixture_bundle(binding: Binding, bundle_dir: str) -> dict[str, Any]:
-    """SMOKE only: the fixture bundle's own manifest, declared roster subset and nothing of the real bundle."""
-    if binding.mode != "smoke":
-        raise BindingError("verify_fixture_bundle is for smoke; real binds the accepted handoff bundle")
-    ident = handoff_identity(bundle_dir, finalized=False)
-    if not ident["fixture"]:
+    """SMOKE only: admission inside the fixture root (no filesystem access before it), then the manifest's fixture
+    marker BEFORE any payload is read, then the declared roster subset. Nothing of the real bundle is touched."""
+    bundle = admit_fixture_dir(binding, bundle_dir)
+    manifest, manifest_sha = _json(fixture_file(binding, bundle, HANDOFF_MANIFEST))
+    if not manifest.get("fixture"):
         raise BindingError("smoke initialisation requires a fixture bundle (manifest fixture: true), never the real "
                            "handoff bundle (R48)")
-    return ident
+    if manifest.get("schema") != HANDOFF_SCHEMA:
+        raise BindingError(f"{HANDOFF_MANIFEST}: schema {manifest.get('schema')!r} != {HANDOFF_SCHEMA}")
+    fixture_file(binding, bundle, ROSTER_FILE)
+    roster_sha, size = _roster(bundle, manifest)
+    return {"manifest_sha256": manifest_sha, "schema": HANDOFF_SCHEMA, "fixture": True, "roster_size": size,
+            "roster_sha256": roster_sha, "acceptance_entries_sha256": None, "draft_acceptance_entries_sha256": None,
+            "_manifest": manifest}
 
 
 # --------------------------------------------------------------------------- store pairing

@@ -70,3 +70,16 @@ requested codes and emitted ids == requested roster areas.
 ## Remaining for CP2 acceptance (research-side act, awaiting Supervisor checkpoint)
 Finalize acceptance_entries.json (acceptor/date) as a new versioned file, build accepted envelope v2 binding its digest,
 then real `install_acceptance` + `initialise` dry run on a local store.
+
+## R48 fix (Supervisor finding on e3a438b: verify_fixture_bundle read the bundle before the fixture check)
+- Smoke bindings now carry a declared `fixture_root` (`verify_combination(..., mode="smoke", fixture_root=...)`; real
+  takes none). `admit_fixture_dir` decides admission LEXICALLY (abspath/normpath, no filesystem call) before any access:
+  a bundle outside the fixture root - e.g. a misrouted real handoff bundle, including `..` paths - is refused unread.
+- `fixture_file` then lstat-checks each path component from the fixture root down (only paths inside the root) and
+  refuses symlinks, so no read can leave the root; `verify_fixture_bundle` reads the manifest, checks the fixture marker
+  and schema BEFORE any payload, then the roster; `initialise` (smoke) admits every runtime file the same way first.
+- Tests: misrouted real bundle through `verify_fixture_bundle` and `initialise` (plus a `..` path) with the
+  open/io.open/os.open/stat/lstat/listdir/scandir spy -> zero touches; a non-fixture bundle inside the root -> refused
+  by marker; symlinked bundle dir / symlinked manifest -> refused, never opened. Mutation check: restoring the pre-fix
+  order (handoff_identity first) makes the spy test fail (1 failed). Regression `binding-r48-fix-tests-run1.log`:
+  test_ipcch_*.py + request_v2 + population_output 138 passed rc 0.

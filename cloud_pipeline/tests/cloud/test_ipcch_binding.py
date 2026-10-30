@@ -94,7 +94,9 @@ def test_real_requires_accepted_envelope_and_rejects_another_package_with_the_sa
     assert cand["status"] == "candidate" and cand["handoff"]["acceptance_entries_sha256"] is None
     with pytest.raises(bd.BindingError, match="requires an accepted combination envelope"):
         bd.verify_combination(str(cand_path), str(pkg), mode="real")
-    assert bd.verify_combination(str(cand_path), str(pkg), mode="smoke").handoff is None      # smoke: candidate ok
+    assert bd.verify_combination(str(cand_path), str(pkg), mode="smoke", fixture_root=str(tmp_path / "fx")).handoff is None
+    with pytest.raises(bd.BindingError, match="declared fixture_root"):
+        bd.verify_combination(str(cand_path), str(pkg), mode="smoke")                       # smoke needs its namespace
     with pytest.raises(FileExistsError):
         bd.write_envelope(cand, str(cand_path))                                              # versions never overwritten
 
@@ -165,7 +167,8 @@ def test_real_store_initialises_only_the_bound_bundle_and_reads_require_the_same
     with pytest.raises(StoreError, match="bound to another combination"):
         initial.initialise(store, root, str(bundle), binding=b2)
     with pytest.raises(StoreError, match="cannot read the real store"):
-        initial.read_assembly_inputs(store, root, bd.verify_combination(str(tmp_path / "env2.json"), str(pkg2), mode="smoke"))
+        initial.read_assembly_inputs(store, root, bd.verify_combination(str(tmp_path / "env2.json"), str(pkg2), mode="smoke",
+                                                                        fixture_root=str(tmp_path / "fx")))
 
 
 def test_real_refuses_fixture_bundles_unaccepted_records_and_smoke_refuses_real_bundles(tmp_path):
@@ -185,16 +188,41 @@ def test_real_refuses_fixture_bundles_unaccepted_records_and_smoke_refuses_real_
     fx, _ = write_bundle(fixture_dir, inputs(), fixture=True)
     with pytest.raises(StoreError, match="fixture"):
         initial.initialise(LocalObjectStore(tmp_path / "s2"), StoreRoot("real", REAL), str(fx), binding=b)
-    smoke = bd.verify_combination(str(tmp_path / "a" / "envelope-v1.json"), str(pkg), mode="smoke")
-    with pytest.raises(StoreError, match="requires a fixture bundle"):
+    smoke = bd.verify_combination(str(tmp_path / "a" / "envelope-v1.json"), str(pkg), mode="smoke", fixture_root=str(fixture_dir))
+    with pytest.raises(StoreError, match="outside the declared fixture root"):
         initial.initialise(LocalObjectStore(tmp_path / "s3"), StoreRoot("smoke", SMOKE), str(bundle), binding=smoke)
+    inside = fixture_dir / "copied-real"
+    shutil.copytree(bundle, inside)                                         # a non-fixture bundle inside the root
+    with pytest.raises(StoreError, match="requires a fixture bundle"):
+        initial.initialise(LocalObjectStore(tmp_path / "s5"), StoreRoot("smoke", SMOKE), str(inside), binding=smoke)
     with pytest.raises(StoreError, match="smoke binding cannot initialise the real store"):
         initial.initialise(LocalObjectStore(tmp_path / "s4"), StoreRoot("real", REAL), str(bundle), binding=smoke)
 
 
+class ReadSpy:
+    """Records every open/stat/lstat/listdir/scandir whose LEXICAL path lies under ``forbidden`` (the spy itself never
+    touches the filesystem, so it can also watch os.lstat)."""
+
+    def __init__(self, monkeypatch, forbidden):
+        self.forbidden, self.touched = os.path.normpath(os.path.abspath(forbidden)), []
+        for mod, name in ((builtins, "open"), (io, "open"), (os, "open"), (os, "stat"), (os, "lstat"),
+                          (os, "listdir"), (os, "scandir")):
+            monkeypatch.setattr(mod, name, self.guard(getattr(mod, name)))
+
+    def guard(self, fn):
+        def wrapped(path=".", *a, **k):
+            if isinstance(path, (str, bytes, os.PathLike)):
+                p = os.path.normpath(os.path.abspath(os.fsdecode(path)))
+                if p == self.forbidden or p.startswith(self.forbidden + os.sep):
+                    self.touched.append(p)
+            return fn(path, *a, **k)
+        return wrapped
+
+
 def test_smoke_never_reads_the_real_handoff_bundle(tmp_path, monkeypatch):
-    """R48 spy: smoke envelope/package verification, fixture initialisation, assembly-input and population reads never
-    open, stat or list anything under the real handoff bundle the envelope binds."""
+    """R48 spy: smoke envelope/package verification, fixture initialisation, assembly-input and population reads, and a
+    MISROUTED real bundle passed to smoke initialise/verify_fixture_bundle never open, stat, list or scan anything under
+    the real handoff bundle."""
     real_bundle, _, pkg, env_path, _ = real_setup(tmp_path)
     fx_dir = tmp_path / "fixture"
     fx_dir.mkdir()
@@ -203,20 +231,8 @@ def test_smoke_never_reads_the_real_handoff_bundle(tmp_path, monkeypatch):
     store, root = LocalObjectStore(tmp_path / "smoke-store"), StoreRoot("smoke", SMOKE)
     from tests.cloud.test_ipcch_initial import accept
     accept(store, root, fx_man)
-    forbidden = os.path.realpath(real_bundle)
-    touched = []
-
-    def guard(fn):
-        def wrapped(path, *a, **k):
-            p = path if isinstance(path, (str, bytes, os.PathLike)) else None
-            if p is not None and os.path.realpath(os.fsdecode(p)).startswith(forbidden):
-                touched.append(os.fsdecode(p))
-            return fn(path, *a, **k)
-        return wrapped
-
-    for mod, name in ((builtins, "open"), (io, "open"), (os, "open"), (os, "stat"), (os, "listdir"), (os, "scandir")):
-        monkeypatch.setattr(mod, name, guard(getattr(mod, name)))
-    b = bd.verify_combination(str(env_path), str(pkg), mode="smoke")       # the ACCEPTED real envelope, used in smoke
+    spy = ReadSpy(monkeypatch, real_bundle)
+    b = bd.verify_combination(str(env_path), str(pkg), mode="smoke", fixture_root=str(fx_dir))   # ACCEPTED real envelope
     assert b.handoff is None
     rep = initial.initialise(store, root, str(fx), binding=b)
     assert rep["pairing"]["mode"] == "smoke" and rep["pairing"]["roster_size"] == len(ROSTER)
@@ -224,8 +240,35 @@ def test_smoke_never_reads_the_real_handoff_bundle(tmp_path, monkeypatch):
     initial.read_population(store, root, b, "2026-08")
     with pytest.raises(bd.BindingError, match="smoke never resolves the real handoff bundle"):
         bd.verify_handoff(b, str(real_bundle))
+    # misrouted: the real bundle handed to smoke admission is refused before any filesystem access
+    with pytest.raises(bd.BindingError, match="outside the declared fixture root"):
+        bd.verify_fixture_bundle(b, str(real_bundle))
+    fresh = LocalObjectStore(tmp_path / "smoke-fresh")
+    with pytest.raises(StoreError, match="outside the declared fixture root"):
+        initial.initialise(fresh, root, str(real_bundle), binding=b)
+    with pytest.raises(StoreError, match="outside the declared fixture root"):
+        initial.initialise(fresh, root, str(fx_dir / ".." / real_bundle.relative_to(tmp_path)), binding=b)  # dot-dot
     monkeypatch.undo()
-    assert touched == []
+    assert spy.touched == []
+
+
+def test_smoke_refuses_symlinks_out_of_the_fixture_root(tmp_path, monkeypatch):
+    real_bundle, _, pkg, env_path, _ = real_setup(tmp_path)
+    fx_dir = tmp_path / "fixture"
+    fx_dir.mkdir()
+    (fx_dir / "linked").symlink_to(real_bundle, target_is_directory=True)        # whole bundle linked
+    part = fx_dir / "partial"
+    part.mkdir()
+    (part / "handoff_manifest.json").symlink_to(real_bundle / "handoff_manifest.json")
+    b = bd.verify_combination(str(env_path), str(pkg), mode="smoke", fixture_root=str(fx_dir))
+    opened = []
+    real_open = builtins.open
+    monkeypatch.setattr(builtins, "open", lambda f, *a, **k: (opened.append(os.fspath(f)), real_open(f, *a, **k))[1])
+    for d in ("linked", "partial"):
+        with pytest.raises(bd.BindingError, match="symlink"):
+            bd.verify_fixture_bundle(b, str(fx_dir / d))
+    monkeypatch.undo()
+    assert not [p for p in opened if "linked" in p or "partial" in p]
 
 
 # --------------------------------------------------------------------------- population and geometry

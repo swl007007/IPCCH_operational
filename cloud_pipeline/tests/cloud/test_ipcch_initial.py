@@ -25,7 +25,7 @@ SMOKE = "gs://b/ipcch-v2/smoke"
 def smoke_binding(tmp_path):
     pkg = make_package(tmp_path / "package", ORDER)
     smoke_envelope(tmp_path / "envelope.json", pkg)
-    return bd.verify_combination(str(tmp_path / "envelope.json"), str(pkg), mode="smoke")
+    return bd.verify_combination(str(tmp_path / "envelope.json"), str(pkg), mode="smoke", fixture_root=str(tmp_path / "bundle"))
 
 
 def write_bundle(tmp_path, inp, fixture=True):
