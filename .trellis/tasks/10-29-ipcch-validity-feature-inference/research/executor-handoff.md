@@ -62,9 +62,11 @@ OPEN CP3 (next):
    versioned envelope -> propose {combination_id, envelope: ref} (real must be accepted; smoke may use candidate).
 2. Real-asset local integration: accepted envelope v2 + out-r5-accepted-v1 real-mode initialise/generation dry run with
    fake providers? (CP5 is smoke with small-area fixture; real-mode runtime tests use envelope v2 + accepted bundle.)
-## CP4 publication/compat (after CP3): v2 routing; per-system lock locks/{system} (R50/FCC2); single pointer with cross-system
-inheritance (R63/FCC4); candidate publication (R66); CAS no retry (FCC3); activation from current release; legacy v1
-cutover/inherit exact current (R37/FCC9); promote/resume reject new candidates (FCC5); smoke isolation (R36/R48); all three
-horizons or none (R18).
-## CP5 local small-area smoke E2E with the real 3 models (M 2026-10, O 2026-08; distinct from historical parity evidence);
+## CP3 status: implementation complete pending Supervisor acceptance; real-mode local integration 50d7ace
+(research/cp3/real-integration). Commits since 4878036: d0d7567 runner R48 admission + R45 per-version receipts,
+4db4fd5 provider windows factory, b257908 utf-8-sig, 016d90d receipt-failure reporting (CLOSED by Supervisor).
+Open for CP3 acceptance: real provider/FEWS runtime adapter wiring evidence (FEWS adapter R60 lands with CP4 phase C/D).
+## CP4 (LOCAL implementation released by Supervisor; acceptance needs independent review)
+Plan + binding rulings: research/cp4/cp4-plan.md; seams map research/cp4/cp4-publication-seams.md. Done: 08c7a2b locks.
+## CP5 local small-area smoke with the ACTUAL accepted H2/H8/H14 package (not synthetic fits), fixture-only inputs;
 ## CP6 acceptance. Assembly parity = historical compatibility evidence only.
