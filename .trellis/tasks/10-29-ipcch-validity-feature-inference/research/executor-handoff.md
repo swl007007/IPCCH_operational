@@ -72,10 +72,13 @@ Committed: 08c7a2b+34362d8 locks (CLOSED); 47d7c4c+b684e90 publication core (clo
 record read, member mode, required verify_delivery seam); d7c3636 ipcch.country_reference (reviewed); 417c6d2 Phase B
 member writer/verifier (cloud/ipcch/delivery_member.py) + provenance sidecar (cloud/ipcch/provenance.py, batch
 feature_provenance.csv) - Supervisor found 5 member gaps + 2 provenance gaps (supervisor-review 8972e10).
-COMMITTED 6e57972: Phase B review fixes (strict verify_member, shared is_member_file, seasonal per-base provenance) +
-Phase C core cloud/ipcch/delivery_v2.py + cloud/ipcch/release_v2.py; tests test_ipcch_delivery_member.py (8),
-test_ipcch_release_v2.py (4); full suite 851 passed (research/cp4/phase-bc-full-suite-run1.log). No WIP on disk.
-REMAINING CP4: legacy v1 wiring (delivery_job.execute: post-activation reject IPCCH-including v1 at request + publish
+COMMITTED 6e57972 (Phase B six findings CLOSED by Supervisor), b98f100 (inherited-source inventory blocker CLOSED:
+verify_delivery checks inherited members against their PINNED source inventory, exact set + bytes), e3bb779 runner:
+run_v2.Deployment(store, roots smoke/real distinct), run_request(deployment=) locks executed systems after admit through
+publication, IPCCH inference publishes via release_v2.publish_ipcch_run (candidate/current), chained own generation for
+two-system runs, failed publication keeps batch/predictions; member_inputs() builds member sources. Tests
+test_ipcch_run_v2.py 12, release 8, member 8, publication 9. No WIP on disk. Ledger research/cp4/cp4-progress.md.
+REMAINING CP4 (next, in order): (1) entrypoint dispatch: deployed v2 route (delivery_job.execute/workflow v2 branch or CLI) constructing Deployment + IpcchContext (real: EETransport.from_environment + climate_run.real_provider_factory, CloudSourceAcquirer for GPP/VIIRS); (2) legacy v1 wiring (delivery_job.execute: post-activation reject IPCCH-including v1 at request + publish
 time; v1 FEWS-only after activation inherits IPCCH v2 member from current via delivery_v2.inherit and writes a v2 record
 carrying activation; v1 runs take locks for executed systems); promote/resume reject new-contract candidates
 (pipeline.promote/verify_candidate); run_v2 runner: acquire locks (mode root) through publication, call
