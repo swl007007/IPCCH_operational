@@ -269,9 +269,19 @@ def _history_snapshot(value: Any) -> dict[str, Any]:
 
 
 def _ipcch_wfp(value: Any) -> dict[str, Any]:
+    # Supervisor contract correction (2026-10-30, research/cp3/wfp-price-provenance.md): the trained WFP_Price is the
+    # research HDX local-currency staple YoY nearest-market (<100 km) series, not the WFP Trend country mean. A refresh
+    # is therefore a research-prepared processed file (admin_code, month, value from build_wfp_hdx) over a declared
+    # month interval (R59 semantics); the old raw_upload/converter shape is rejected for IPCCH (FEWS NET unchanged).
     if _choice(value, "ipcch.wfp") == "keep":
         return {"action": "keep"}
-    _source_choice(value, "ipcch.wfp")       # refresh: raw_upload + the existing converter contract
+    if "raw_upload" in value or "converter_contract" in value:
+        raise DeliveryRequestV2Error("ipcch.wfp refresh takes a research-prepared processed file "
+                                     "{action, file, start, end}; the raw_upload/converter shape is FEWS NET only")
+    _exact_keys(value, ("action", "file", "start", "end"), "ipcch.wfp")
+    _ref(value["file"], "ipcch.wfp.file")
+    if _month(value["start"], "ipcch.wfp.start") > _month(value["end"], "ipcch.wfp.end"):
+        raise DeliveryRequestV2Error("ipcch.wfp declared interval is reversed")
     return dict(value)
 
 
@@ -312,7 +322,7 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
             if entry["action"] == "refresh":
                 refs.append((f"ipcch.research_inputs.{family}.file", entry["file"]))
         if ipcch.get("wfp", {}).get("action") == "refresh":
-            refs.append(("ipcch.wfp.raw_upload", ipcch["wfp"]["raw_upload"]))
+            refs.append(("ipcch.wfp.file", ipcch["wfp"]["file"]))
     fews = request.get("fewsnet")
     if fews:
         if "prepared_snapshot" in fews:

@@ -133,6 +133,21 @@ Choose either or both independently:
 python pipeline.py run --config /private/project.json   --month 2026-11 --cutoff 2026-11-08T00:00:00Z   --deadline 2026-11-09T00:00:00Z --run-id nov-2026-refresh-a   --acled refresh --acled-raw /private/acled.csv   --wfp refresh --wfp-raw /private/wfp.csv --execute
 ```
 
+### v2 requests: IPCCH `WFP_Price` (task 10-29 contract correction, 2026-10-30)
+
+The IPCCH H2/H8/H14 models were trained on the research HDX `WFP_Price` series: 100 + the year-on-year % change of
+local-currency staple prices from the nearest market with data within 100 km of each area (research
+`staging/ipcch-update-202610/tools/build_wfp_hdx.py`). The raw WFP export and the `Trend` converter above produce a
+different variable and are used for FEWS NET (and the legacy v1 path) only. In a v2 request:
+
+- `"ipcch": {"wfp": {"action": "keep"}}` uses the saved IPCCH history unchanged.
+- `"ipcch": {"wfp": {"action": "refresh", "file": {"uri", "generation", "sha256"}, "start": "YYYY-MM", "end": "YYYY-MM"}}`
+  supplies the research build's processed CSV with exactly `admin_code,month,value`. It replaces exactly the declared
+  months; every row must lie inside them and inside the fixed roster; blanks stay missing (no carry-forward). Declare
+  recent months again only when you intend to take the research build's revised values for them (its outlier filter is
+  centred, so the latest months can change between builds). A malformed file is refused before anything is written;
+  `raw_upload`/`converter_contract` is rejected for IPCCH.
+
 ## Replace compatible models
 
 Register a complete **already-trained** package, then explicitly select it for one of FEWSNET/IPCCH x 0/6/12. Weights alone are insufficient: feature schema, thresholds, routing, imputation metadata and acceptance must match. This interface does not train models or create scientific acceptance.

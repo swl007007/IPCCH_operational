@@ -105,8 +105,7 @@ def test_inference_only_needs_exactly_one_batch_and_no_refresh():
         "research_inputs": {**{f: KEEP for f in v2.RESEARCH_FAMILIES},
                             "nino34_anom": {"action": "refresh", "file": ref(5), "start": "2026-01", "end": "2026-08"}},
         "history_snapshot": {"action": "refresh", "file": ref(6)},
-        "wfp": {"action": "refresh", "raw_upload": ref(7), "converter_contract": {"version": "september-h5-raw-converter-v1",
-                                                                                  "sha256": "c" * 64}}}
+        "wfp": {"action": "refresh", "file": ref(7), "start": "2026-01", "end": "2026-08"}}
     for key, choice in refreshes.items():
         bad = copy.deepcopy(inf)
         bad["ipcch"][key] = choice
@@ -211,3 +210,23 @@ def test_request_identity_and_reference_verification():
 def test_is_v2_routes_only_the_new_version():
     assert v2.is_v2(request())
     assert not v2.is_v2({"schema_version": "fewsnet-ipcch-delivery-request-v1"})
+
+
+def test_ipcch_wfp_refresh_is_a_research_prepared_interval_file():
+    """Supervisor contract correction 2026-10-30: IPCCH WFP refresh = {action, file, start, end} (research HDX
+    processed series, R59 semantics); the old raw_upload/converter shape is FEWS NET only."""
+    data = request()
+    data["ipcch"]["wfp"] = {"action": "refresh", "file": ref(7), "start": "2026-01", "end": "2026-08"}
+    out = check(data)
+    assert out["ipcch"]["wfp"]["end"] == "2026-08"
+    assert ("ipcch.wfp.file", ref(7)) in v2.iter_object_refs(out)
+    old = request()
+    old["ipcch"]["wfp"] = {"action": "refresh", "raw_upload": ref(7),
+                           "converter_contract": {"version": "september-h5-raw-converter-v1", "sha256": "c" * 64}}
+    refused(old, "raw_upload/converter shape is FEWS NET only")
+    for bad, match in (({"action": "refresh", "file": ref(7), "start": "2026-09", "end": "2026-08"}, "reversed"),
+                       ({"action": "refresh", "file": ref(7), "start": "2026-01"}, "ipcch.wfp"),
+                       ({"action": "refresh", "file": ref(7), "start": "2026-1", "end": "2026-08"}, "ipcch.wfp.start")):
+        data = request()
+        data["ipcch"]["wfp"] = bad
+        refused(data, match)
