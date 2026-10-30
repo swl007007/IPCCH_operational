@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from cloud.common.object_store import GenerationConflict, ObjectStore
 from cloud.orchestrator import delivery_run
@@ -51,11 +51,15 @@ def read_current(store: ObjectStore, root_uri: str, namespace: str) -> dict[str,
     after = store.get_metadata(uri)
     if after is None or after.generation != before.generation:
         raise GenerationConflict(f"{uri} moved while it was read")
-    rec_meta = store.get_metadata(pointer["release_record"])
-    if rec_meta is None or str(rec_meta.generation) != str(pointer["release_record_generation"]):
-        raise PublicationRefused(f"release record {pointer['release_record']} is not the generation the pointer names")
-    return {"generation": str(before.generation), "pointer": pointer,
-            "record": json.loads(store.read_text(pointer["release_record"]))}
+    rec_uri, want = pointer["release_record"], str(pointer["release_record_generation"])
+    rec_before = store.get_metadata(rec_uri)
+    if rec_before is None or str(rec_before.generation) != want:
+        raise PublicationRefused(f"release record {rec_uri} is not the generation the pointer names")
+    text = store.read_text(rec_uri)
+    rec_after = store.get_metadata(rec_uri)                    # stable read: the bytes are those of the named generation
+    if rec_after is None or str(rec_after.generation) != want:
+        raise PublicationRefused(f"release record {rec_uri} changed while it was read; nothing was used")
+    return {"generation": str(before.generation), "pointer": pointer, "record": json.loads(text)}
 
 
 def members(record: Mapping[str, Any] | None) -> dict[str, dict[str, Any]]:
@@ -108,11 +112,21 @@ def build_record(*, run_id: str, request_ref: Mapping[str, str], mode: str, snap
 
 def publish(store: ObjectStore, root_uri: str, *, run_id: str, namespace: str, publication: str, mode: str,
             expected_pointer_generation: str, request_ref: Mapping[str, str], new_members: Mapping[str, Mapping[str, Any]],
-            delivery: Mapping[str, Any], now: datetime | None = None) -> dict[str, Any]:
-    """Candidate or current publication of the executed systems' members (see module docstring)."""
+            delivery: Mapping[str, Any], verify_delivery: Callable[[Mapping[str, Any], Mapping[str, Any]], None],
+            now: datetime | None = None) -> dict[str, Any]:
+    """Candidate or current publication of the executed systems' members (see module docstring).
+
+    ``verify_delivery(snapshot, record)`` is REQUIRED (no no-op default): it verifies the actual delivery - every
+    member's artifacts, the three IPCCH horizons, inherited members' hashes and package identities against the bound
+    snapshot - and raises before any record or pointer write."""
     now = now or datetime.now(timezone.utc)
     if publication not in ("candidate", "current"):
         raise PublicationRefused(f"publication must be candidate or current, got {publication!r}")
+    if not callable(verify_delivery):
+        raise PublicationRefused("a delivery verifier is required before any publication write")
+    wrong = sorted(s for s, m in new_members.items() if m.get("mode") != mode)
+    if wrong:
+        raise PublicationRefused(f"new members {wrong} carry a mode other than the run's {mode!r} (R36)")
     if "ipcch" in new_members and sorted(new_members["ipcch"].get("model_horizons", [])) != [2, 8, 14]:
         raise PublicationRefused("an IPCCH member publishes all three horizons H2/H8/H14 together or nothing (R18)")
     snapshot = read_current(store, root_uri, namespace)
@@ -121,6 +135,7 @@ def publish(store: ObjectStore, root_uri: str, *, run_id: str, namespace: str, p
                               new_members=new_members, delivery=delivery, now=now)
         record["activation"] = activation(snapshot["record"])             # a candidate never activates (R66)
         record["publication"] = "candidate"
+        verify_delivery(snapshot, record)
         uri = f"{root_uri.rstrip('/')}/{namespace}/candidates/{run_id}/candidate.json"
         meta = store.write_text(uri, json.dumps(record, indent=2, sort_keys=True) + "\n", if_generation_match=0)
         return {"status": "candidate_written", "candidate_record": uri, "generation": meta.generation,
@@ -137,7 +152,7 @@ def publish(store: ObjectStore, root_uri: str, *, run_id: str, namespace: str, p
     try:
         out = delivery_run.publish(store, root_uri, run_id=run_id, namespace=namespace,
                                    expected_pointer_generation=str(expected_pointer_generation), release_record=record,
-                                   validate=lambda: None)
+                                   validate=lambda: verify_delivery(snapshot, record))
     except delivery_run.ReleaseConflict as exc:                           # no retry, no rescoring, no rebase
         return {"status": "publication_failed", "reason": str(exc), "stage": "pointer_write"}
     return {"status": "published", **out, "activation": record["activation"]}

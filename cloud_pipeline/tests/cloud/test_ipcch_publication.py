@@ -19,8 +19,8 @@ def ipcch_member(m="2026-10", mode="real"):
             "model_horizons": [2, 8, 14], "public_leads": [0, 6, 12], "package": {"combination_id": "c", "envelope_sha256": "e" * 64}}
 
 
-def fews_member(origin="2026-10"):
-    return {"contract": "fewsnet-legacy-scoring", "origin_month": origin, "package": {"suite": "fews-2026-10"}}
+def fews_member(origin="2026-10", mode="real"):
+    return {"contract": "fewsnet-legacy-scoring", "origin_month": origin, "mode": mode, "package": {"suite": "fews-2026-10"}}
 
 
 def current(store, root=PROD):
@@ -28,10 +28,19 @@ def current(store, root=PROD):
     return snap
 
 
-def publish(store, run_id, new, expected, publication="current", mode="real", root=PROD, ns="prod"):
+VERIFIED = []
+
+
+def verifier(snapshot, record):
+    """Stand-in for the Phase B delivery verifier (records what it was asked to verify)."""
+    VERIFIED.append((snapshot["generation"], record["run_id"]))
+
+
+def publish(store, run_id, new, expected, publication="current", mode="real", root=PROD, ns="prod", verify=verifier):
     return pub.publish(store, root, run_id=run_id, namespace=ns, publication=publication, mode=mode,
                        expected_pointer_generation=expected, request_ref=REQ, new_members=new,
-                       delivery={"manifest": {"uri": f"{root}/deliveries/{run_id}/manifest.json"}}, now=NOW)
+                       delivery={"manifest": {"uri": f"{root}/deliveries/{run_id}/manifest.json"}},
+                       verify_delivery=verify, now=NOW)
 
 
 def test_first_real_ipcch_current_activates_and_fews_publication_inherits_and_preserves_it(tmp_path):
@@ -117,3 +126,36 @@ def test_pointer_moving_after_the_snapshot_read_is_a_conflict_not_a_rebase(tmp_p
     assert out["status"] == "publication_failed" and out["stage"] == "pointer_write"
     rec = current(store)["record"]
     assert rec["run_id"] == "racer" and "ipcch" not in rec["systems"]                # winner kept; nothing rebased
+
+
+
+def test_mode_mismatch_and_missing_or_failing_verifier_write_nothing(tmp_path):
+    store = LocalObjectStore(tmp_path)
+    with pytest.raises(pub.PublicationRefused, match="mode other than the run's 'real'"):
+        publish(store, "mixed", {"ipcch": ipcch_member(mode="smoke")}, "0")                # smoke member, real run
+    with pytest.raises(pub.PublicationRefused, match="verifier is required"):
+        publish(store, "noverify", {"ipcch": ipcch_member()}, "0", verify=None)
+
+    def reject(snapshot, record):
+        raise pub.PublicationRefused("delivery artifacts do not verify")
+    for publication in ("current", "candidate"):
+        with pytest.raises(pub.PublicationRefused, match="do not verify"):
+            publish(store, f"bad-{publication}", {"ipcch": ipcch_member()}, "0", publication=publication, verify=reject)
+    assert not [p for p in tmp_path.rglob("*") if p.is_file() and "conflict" not in str(p)]   # no record, no pointer
+
+
+def test_release_record_replaced_during_the_read_is_refused(tmp_path):
+    store = LocalObjectStore(tmp_path)
+    publish(store, "base", {"fewsnet": fews_member()}, "0")
+    rec_uri = json.loads(store.read_text(pub.pointer_uri(PROD, "prod")))["release_record"]
+    real_read = store.read_text
+
+    def racing_read(uri):
+        text = real_read(uri)
+        if uri == rec_uri:                                                   # a replacement lands mid-read
+            store.write_text(uri, text.replace('"base"', '"forged"'))
+            return real_read(uri)
+        return text
+    store.read_text = racing_read
+    with pytest.raises(pub.PublicationRefused, match="changed while it was read"):
+        pub.read_current(store, PROD, "prod")
