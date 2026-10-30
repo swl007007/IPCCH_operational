@@ -1,0 +1,466 @@
+{
+ "acled_initial_history": "none (R44: the first real refresh initialises the weekly store)",
+ "files": {
+  "audit/coordinate_spread.csv": {
+   "bytes": 310335,
+   "rows": 6226,
+   "sha256": "4f933cba02612016bf2c7efd2550005f78429efab186f0925e8a8b23914c71f2"
+  },
+  "fixed/acled/acled_admin1_to_poly.csv": {
+   "bytes": 209027,
+   "rows": 1302,
+   "sha256": "f42c2c2c58659775f1a20f781e83513b6a18728ad3e0ecb4e37e0b54809c093a"
+  },
+  "fixed/acled/admin1_neighbours.csv": {
+   "bytes": 529706,
+   "rows": 7488,
+   "sha256": "34d1934a161c2925126add66222c1b5caf6efe71617a5ed4c234245001a4dea3"
+  },
+  "fixed/acled/admin1_overrides.csv": {
+   "bytes": 5857,
+   "rows": 13,
+   "sha256": "916e59997b11d4abab4f2bad83136ca96a61cedb1de5bc5212dfb4aa5a267083"
+  },
+  "fixed/acled/admin1_population.csv": {
+   "bytes": 220043,
+   "rows": 1465,
+   "sha256": "5f8d6f96929cc91526ecddecb33e8e6516b996cdb93aa438a0131f756ab94e86"
+  },
+  "fixed/acled/coverage_start.csv": {
+   "bytes": 19199,
+   "rows": 89,
+   "sha256": "a84ec2497b7e8da6badddb8254fd650927e324cdd8cfe9f9592a52e5edce6a3b"
+  },
+  "fixed/acled/unit_admin1_weights.csv": {
+   "bytes": 1503402,
+   "rows": 12280,
+   "sha256": "127f2fb87b23c12c01edd7b7068edcd0bd94c63e1025242a8c9fd1618a6fac38"
+  },
+  "fixed/acled/unit_iso3.csv": {
+   "bytes": 127064,
+   "rows": 6227,
+   "sha256": "29bcf36c015cac89bf7085a5c594202232c20653b8121c3c3be6d8b29eb93658"
+  },
+  "fixed/ae_descriptors.csv": {
+   "bytes": 16283953,
+   "rows": 6226,
+   "sha256": "61bb895b6e5cddcde95c5a7b5a8da332ad1dc1f95f9a8975228ab876fab5a897"
+  },
+  "fixed/area_identity.csv": {
+   "bytes": 245574,
+   "rows": 6226,
+   "sha256": "fc7d6db00c52091985637001955607fecd5a56cd09f5412e2f3a674da52785ad"
+  },
+  "fixed/roster.csv": {
+   "bytes": 32652,
+   "rows": 6226,
+   "sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3"
+  },
+  "fixed/season_calendar.csv": {
+   "bytes": 206845,
+   "rows": 6226,
+   "sha256": "25e89bed6baa237a8079bfd2c8b17c0a5ca5ac39878ce962af4455e9261207da"
+  },
+  "fixed/season_windows.csv": {
+   "bytes": 5266170,
+   "rows": 149424,
+   "sha256": "5ef68c9592e69e20e1285752b18e0021053c490ee1b82a22e2255cc1e029ac4f"
+  },
+  "fixed/static29.csv": {
+   "bytes": 1066417,
+   "rows": 6226,
+   "sha256": "718aaf8dadc99ef5d178feaa1a178bf397daaf015c52a5adfc82199d9771138b"
+  },
+  "history/GPP_mean.csv": {
+   "bytes": 71385842,
+   "rows": 1168776,
+   "sha256": "470373ce2057c6206542a659142b6977384db1c69c7020df7067083f0775e67c"
+  },
+  "history/WFP_Price.csv": {
+   "bytes": 43756328,
+   "rows": 740256,
+   "sha256": "662b46af6b954326beef3712d02037f18bf3da35f64f0ff48df47e6796d9f1e0"
+  },
+  "history/bbg_global_food__composite_mean.csv": {
+   "bytes": 71523071,
+   "rows": 1250607,
+   "sha256": "1a3248e1be8364882df338463ce0f861c589266293d89496b42795ca0a94692f"
+  },
+  "history/bbg_oilgas__composite_mean.csv": {
+   "bytes": 78139944,
+   "rows": 1250607,
+   "sha256": "7a4ccbaa65b4e2efe1e306526bb85e8a015677b93654c78bc17249e30bc3c9d5"
+  },
+  "history/bbg_soybean_oil__composite_mean.csv": {
+   "bytes": 76947171,
+   "rows": 1238233,
+   "sha256": "89e80e427682879962fbba1d5c06141a115bcf3e4f946fc9896d496c6e4d3762"
+  },
+  "history/bbg_staple_food__composite_mean.csv": {
+   "bytes": 76559164,
+   "rows": 1250607,
+   "sha256": "b7786585b80850289f014a72a1a38859f33282657c14571f38865c8606b9abec"
+  },
+  "history/climate_gs_cdd.csv": {
+   "bytes": 19389027,
+   "rows": 149424,
+   "sha256": "7ce4cd58725b7ea843844aa85447e5e73a9610529aef14df0abbf09f533c16a6"
+  },
+  "history/climate_gs_edd.csv": {
+   "bytes": 19253257,
+   "rows": 149424,
+   "sha256": "4e30d9d448ae5aead4f70eb15d9d71cd4425aa3bfbe5096a41f75b1915444078"
+  },
+  "history/climate_gs_evi_anom.csv": {
+   "bytes": 19332366,
+   "rows": 149424,
+   "sha256": "c3ae627e674394c8085c173f8205a7ea6995d7e777911e5604669935577ab463"
+  },
+  "history/climate_gs_gdd.csv": {
+   "bytes": 19300862,
+   "rows": 149424,
+   "sha256": "4e4df9f20e437dece97fe4146c3e8d8dbc3122b8380e4d145220b98360a5b494"
+  },
+  "history/climate_gs_hot_days_p95.csv": {
+   "bytes": 19233108,
+   "rows": 149424,
+   "sha256": "fe7dcabdd0d87d1ec2c93c8d2614ee23e2465e24022c788d3774819f7abc3beb"
+  },
+  "history/climate_gs_prcp_anom.csv": {
+   "bytes": 19480020,
+   "rows": 149424,
+   "sha256": "ba28ca67b4c4a779ffd3988b48e420c8126db3448c65120d6c6a7d619454c1cd"
+  },
+  "history/climate_gs_prcp_z.csv": {
+   "bytes": 19656326,
+   "rows": 149424,
+   "sha256": "246f5d0a30e19e6bee18916d1779a96d3942e08ea7f668718529fff23f77c193"
+  },
+  "history/climate_gs_rainy_days.csv": {
+   "bytes": 19324638,
+   "rows": 149424,
+   "sha256": "7e5e11ed3b2a4247714c34e69b106d397a8c3baf05d347b5e60fdfb15d1e397a"
+  },
+  "history/climate_gs_sm_z.csv": {
+   "bytes": 19612765,
+   "rows": 149424,
+   "sha256": "3dc62de6f3dd1299785be8d31c304cec541c4fbc07a6a35477ca9c2c612aea88"
+  },
+  "history/climate_gs_spei03.csv": {
+   "bytes": 19619284,
+   "rows": 149424,
+   "sha256": "afe6c43c9ca5fafb9d015b04252713be758fcc500520f5ebbfdc00ed50e6eaa8"
+  },
+  "history/climate_gs_spi03.csv": {
+   "bytes": 19638313,
+   "rows": 149424,
+   "sha256": "bb4a9fac6c2107f38b5f7bcad0f99de4840013c785d9b8fa1eb786760f5b00d0"
+  },
+  "history/climate_gs_tmax_anom.csv": {
+   "bytes": 19479662,
+   "rows": 149424,
+   "sha256": "9c966d665664edd6624ce3ec21c677bb9d8c07b748b1caf9ad437b04de155ede"
+  },
+  "history/climate_gs_tmean_anom.csv": {
+   "bytes": 19482473,
+   "rows": 149424,
+   "sha256": "f68434739eebd78bc31f4a5740292f5d068ba9ad76a74cbd0922ae8d3928ed60"
+  },
+  "history/climate_month_cdd.csv": {
+   "bytes": 100548493,
+   "rows": 871640,
+   "sha256": "a1047bb8b89b5207330c4494c6d44acaac936cf6adf718ffc3d33262960216a6"
+  },
+  "history/climate_month_edd.csv": {
+   "bytes": 98982719,
+   "rows": 871640,
+   "sha256": "7c9c2cc0979497ae58964f1d506c0eb4d4324b6af158abfaeb03f6511fc4126c"
+  },
+  "history/climate_month_evi_anom.csv": {
+   "bytes": 101820353,
+   "rows": 871640,
+   "sha256": "3d58c2938f4ed01808bec394ed553d85475ce846e6682657ac90ccac7bf70746"
+  },
+  "history/climate_month_gdd.csv": {
+   "bytes": 100361448,
+   "rows": 871640,
+   "sha256": "19a8812332cb30f995ed900ea7ad9d76fde482089f38226e09b5d83c3c6020e1"
+  },
+  "history/climate_month_hot_days_p95.csv": {
+   "bytes": 98046988,
+   "rows": 871640,
+   "sha256": "ec6066a118c9ccff99384e8cce3441cb96e06f993be7756ea57b39ea762d54f2"
+  },
+  "history/climate_month_prcp_anom.csv": {
+   "bytes": 101619697,
+   "rows": 871640,
+   "sha256": "6950e477f5d5d72062808212bdf143d9fbbe7b40c7ed7f7ad349232ad0cec6e3"
+  },
+  "history/climate_month_prcp_z.csv": {
+   "bytes": 102452676,
+   "rows": 871640,
+   "sha256": "7d1fde3ffd6b3e2f9a66422751db5c95baa68b7fbd2648bf0f21b8f7bf14756d"
+  },
+  "history/climate_month_rainy_days.csv": {
+   "bytes": 99407782,
+   "rows": 871640,
+   "sha256": "a4962cb592493373eb27d03fd1312c7f3d541900196e94c01a79d661a2e76d38"
+  },
+  "history/climate_month_sm_z.csv": {
+   "bytes": 102097861,
+   "rows": 871640,
+   "sha256": "2de974c6e142c9e903a04bb661c08506d1ab852cf6ba872150f02312fc79247e"
+  },
+  "history/climate_month_spei03.csv": {
+   "bytes": 98847772,
+   "rows": 871640,
+   "sha256": "7372566c6cb535317e7c1e54cd9acd7319bb5434bad6a619bdde1f614ef68996"
+  },
+  "history/climate_month_spi03.csv": {
+   "bytes": 102138551,
+   "rows": 871640,
+   "sha256": "063a6c5d61a164952dda2949f200f74a3a38fc21416fa8ede50fc16136530d72"
+  },
+  "history/climate_month_tmax_anom.csv": {
+   "bytes": 101607604,
+   "rows": 871640,
+   "sha256": "f6e1151a36664392a9dd1b8d4c153f30895b07215da178349a6b17860dffdb0a"
+  },
+  "history/climate_month_tmean_anom.csv": {
+   "bytes": 101658659,
+   "rows": 871640,
+   "sha256": "e8a3eb7df664c68b8f055857c07e7e03a70cb1bd845e438c42cfd5d2c7ed7e68"
+  },
+  "history/food_price_index_WB.csv": {
+   "bytes": 47113131,
+   "rows": 928131,
+   "sha256": "3a0e0f8b653096d1f5df48b9585e5475ba349fb14a817d881392faa42c0c8daa"
+  },
+  "history/history_snapshot.csv": {
+   "bytes": 1426652,
+   "rows": 44969,
+   "sha256": "0380367b15bd78f5f6bb7a4901079b046b4b0075661eb7b59f9309e2cab1e2d8"
+  },
+  "history/idp_local.csv": {
+   "bytes": 10863439,
+   "rows": 413157,
+   "sha256": "dab66e28fb9d20f469dc1c079e32b12622f077d68988d43453da721bbe900836"
+  },
+  "history/idp_national.csv": {
+   "bytes": 23314,
+   "rows": 1104,
+   "sha256": "dc4bff601f6e20b9f15cef84b46da71698206e744e134c0bc31cb9883705224f"
+  },
+  "history/nightlight_mean.csv": {
+   "bytes": 74143715,
+   "rows": 1244388,
+   "sha256": "cc4d3fb0593d03a23ca93e86290d2e78687a4b54c8a305552b3f81e1f937a654"
+  },
+  "history/nino34_anom.csv": {
+   "bytes": 62143584,
+   "rows": 1250607,
+   "sha256": "755cb66a8d25a950b8d9c3b66ef6225a47599bdfc86c56bad27109e9501d22a7"
+  }
+ },
+ "inputs": {
+  "acled_work": {
+   "acled_admin1_to_poly.csv": "f42c2c2c58659775f1a20f781e83513b6a18728ad3e0ecb4e37e0b54809c093a",
+   "admin1_neighbours.csv": "34d1934a161c2925126add66222c1b5caf6efe71617a5ed4c234245001a4dea3",
+   "admin1_overrides.csv": "916e59997b11d4abab4f2bad83136ca96a61cedb1de5bc5212dfb4aa5a267083",
+   "admin1_population.csv": "5f8d6f96929cc91526ecddecb33e8e6516b996cdb93aa438a0131f756ab94e86",
+   "coverage_start.csv": "a84ec2497b7e8da6badddb8254fd650927e324cdd8cfe9f9592a52e5edce6a3b",
+   "unit_admin1_weights.csv": "127f2fb87b23c12c01edd7b7068edcd0bd94c63e1025242a8c9fd1618a6fac38",
+   "unit_iso3.csv": "29bcf36c015cac89bf7085a5c594202232c20653b8121c3c3be6d8b29eb93658"
+  },
+  "analyses": {
+   "sha256": "1c7dfb786a8f82476542437445931fc5ab1ffdb5329aadc570616357f449b4b6"
+  },
+  "areas": {
+   "sha256": "200f5dcaad88e18babbc9a4882a2ca920231702f6d5bcb11969af82742fa5ee6"
+  },
+  "ch_links": {
+   "sha256": "ac4ad6aaa8dc9e0efad6a7ba95456c536355d66ad0f3fa4225b811307aeb5153"
+  },
+  "climate_monthly": {
+   "sha256": "8082b72ea5fa5c30a7b975b89c1fbbb4530f27a9ce6c5ba4d0e1a4f923320c89"
+  },
+  "climate_seasonal": {
+   "sha256": "f024a66c8979fb4a8c66fba1f04e7e69355fa75b499793d29001a146d8c2958e"
+  },
+  "compact_manifest": {
+   "sha256": "456360536a3929e1571d96ba9f16e2f0de54bc1b20019f797bbe62c0c89732ca"
+  },
+  "country_lookup": {
+   "sha256": "e2baf6ae9481b42b127db5ce81f3c53ad784bb08ae56dfa56cea74e416b44c90"
+  },
+  "descriptors": {
+   "sha256": "362c58b0f3396fd8ecc3bd42fe0257f979dd371780f70af6edd3a59f633e26d4"
+  },
+  "freeze": {
+   "sha256": "dc152d4ea6e719a32093a9e4ae35f9bdf2d24e1f52ebc30b3660b9a97791b622"
+  },
+  "freeze_index": {
+   "sha256": "d85582b3ca1d6364e9021957ea4695d75905aafcb435ac9c7819eccdc7ef424f"
+  },
+  "history_observations": {
+   "note": "final-arm dataset/history_observations.csv.gz",
+   "sha256": "54ecc7fb367efa4a73e3df1c0a3b201f2999bda7c738d353485f35ab934da252"
+  },
+  "idp_admin0_monthly": {
+   "sha256": "a1ebb82a8e14fc0fb8103d6086217b93da351fc4a8f7fcfbe9eaa44a9df602e1"
+  },
+  "idp_ipcch_monthly": {
+   "sha256": "8b2ba29988178a78dc42087134ef307d10a2b10778f83d0fa3a96018e911d703"
+  },
+  "interim": {
+   "sha256": "b2d5d2ce6bd6a78da7caac2c070fcc2ced55aa4c4e7bd5725df0ce514e902b62"
+  },
+  "raw_panel": {
+   "sha256": "09002869ecc25667d78d972185c8ea24340eabc4d6e1f8a6d560ebda214e1373"
+  },
+  "static29": {
+   "sha256": "229d593ef8fc96b3747cfffd82ffd6a294217ae3f0442888872abe3c0ed668d4"
+  }
+ },
+ "roster_report": {
+  "GPP_mean": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 136,
+   "rows_dropped_out_of_roster": 192
+  },
+  "WFP_Price": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 1212,
+   "rows_dropped_out_of_roster": 51
+  },
+  "ae_descriptors": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 1
+  },
+  "area_identity": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 1
+  },
+  "bbg_global_food__composite_mean": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 201
+  },
+  "bbg_oilgas__composite_mean": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 201
+  },
+  "bbg_soybean_oil__composite_mean": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 199
+  },
+  "bbg_staple_food__composite_mean": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 201
+  },
+  "climate_gs": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 24
+  },
+  "climate_month": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 140
+  },
+  "coordinate_max_spread": 5.000089231543825e-11,
+  "coordinate_spread_bound": 1e-09,
+  "food_price_index_WB": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 1597,
+   "rows_dropped_out_of_roster": 202
+  },
+  "history_snapshot": {
+   "areas_dropped_out_of_roster": [],
+   "roster_areas_absent": 2,
+   "rows_dropped_out_of_roster": 0
+  },
+  "idp_local": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 1451,
+   "rows_dropped_out_of_roster": 36
+  },
+  "nightlight_mean": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 200
+  },
+  "nino34_anom": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 201
+  },
+  "season_calendar": {
+   "admin_seasons": 12452,
+   "derivation": "constant per admin-season over the delivered windows; reproduces every delivered window with the seasonal script's exact_date rule",
+   "season_years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "windows_reproduced": 149424
+  },
+  "season_windows": {
+   "areas_dropped_out_of_roster": [
+    1315
+   ],
+   "roster_areas_absent": 0,
+   "rows_dropped_out_of_roster": 24
+  }
+ },
+ "roster_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+ "roster_size": 6226,
+ "schema": "ipcch-handoff-inputs-v1",
+ "snapshot_fields": {
+  "availability_month": "raw-panel storage month of the report",
+  "preparation_cutoff": "last raw-panel month",
+  "report_month": "nominal report month (training selection key, <= O)"
+ }
+}

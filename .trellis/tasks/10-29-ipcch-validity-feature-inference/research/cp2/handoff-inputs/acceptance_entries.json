@@ -1,0 +1,410 @@
+[
+ {
+  "name": "fixed/acled/acled_admin1_to_poly.csv",
+  "sha256": "f42c2c2c58659775f1a20f781e83513b6a18728ad3e0ecb4e37e0b54809c093a",
+  "source": "research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/acled/admin1_neighbours.csv",
+  "sha256": "34d1934a161c2925126add66222c1b5caf6efe71617a5ed4c234245001a4dea3",
+  "source": "research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/acled/admin1_overrides.csv",
+  "sha256": "916e59997b11d4abab4f2bad83136ca96a61cedb1de5bc5212dfb4aa5a267083",
+  "source": "research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/acled/admin1_population.csv",
+  "sha256": "5f8d6f96929cc91526ecddecb33e8e6516b996cdb93aa438a0131f756ab94e86",
+  "source": "research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/acled/coverage_start.csv",
+  "sha256": "a84ec2497b7e8da6badddb8254fd650927e324cdd8cfe9f9592a52e5edce6a3b",
+  "source": "research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/acled/unit_admin1_weights.csv",
+  "sha256": "127f2fb87b23c12c01edd7b7068edcd0bd94c63e1025242a8c9fd1618a6fac38",
+  "source": "research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/acled/unit_iso3.csv",
+  "sha256": "29bcf36c015cac89bf7085a5c594202232c20653b8121c3c3be6d8b29eb93658",
+  "source": "research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/ae_descriptors.csv",
+  "sha256": "61bb895b6e5cddcde95c5a7b5a8da332ad1dc1f95f9a8975228ab876fab5a897",
+  "source": "training static/identity assets; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/area_identity.csv",
+  "sha256": "fc7d6db00c52091985637001955607fecd5a56cd09f5412e2f3a674da52785ad",
+  "source": "training static/identity assets; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/roster.csv",
+  "sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+  "source": "training static/identity assets; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/season_calendar.csv",
+  "sha256": "25e89bed6baa237a8079bfd2c8b17c0a5ca5ac39878ce962af4455e9261207da",
+  "source": "training static/identity assets; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/season_windows.csv",
+  "sha256": "5ef68c9592e69e20e1285752b18e0021053c490ee1b82a22e2255cc1e029ac4f",
+  "source": "training static/identity assets; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "fixed/static29.csv",
+  "sha256": "718aaf8dadc99ef5d178feaa1a178bf397daaf015c52a5adfc82199d9771138b",
+  "source": "training static/identity assets; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/GPP_mean.csv",
+  "sha256": "470373ce2057c6206542a659142b6977384db1c69c7020df7067083f0775e67c",
+  "source": "training interim panel series; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/WFP_Price.csv",
+  "sha256": "662b46af6b954326beef3712d02037f18bf3da35f64f0ff48df47e6796d9f1e0",
+  "source": "training interim panel series; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/bbg_global_food__composite_mean.csv",
+  "sha256": "1a3248e1be8364882df338463ce0f861c589266293d89496b42795ca0a94692f",
+  "source": "training interim panel series; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/bbg_oilgas__composite_mean.csv",
+  "sha256": "7a4ccbaa65b4e2efe1e306526bb85e8a015677b93654c78bc17249e30bc3c9d5",
+  "source": "training interim panel series; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/bbg_soybean_oil__composite_mean.csv",
+  "sha256": "89e80e427682879962fbba1d5c06141a115bcf3e4f946fc9896d496c6e4d3762",
+  "source": "training interim panel series; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/bbg_staple_food__composite_mean.csv",
+  "sha256": "b7786585b80850289f014a72a1a38859f33282657c14571f38865c8606b9abec",
+  "source": "training interim panel series; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_cdd.csv",
+  "sha256": "7ce4cd58725b7ea843844aa85447e5e73a9610529aef14df0abbf09f533c16a6",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_edd.csv",
+  "sha256": "4e30d9d448ae5aead4f70eb15d9d71cd4425aa3bfbe5096a41f75b1915444078",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_evi_anom.csv",
+  "sha256": "c3ae627e674394c8085c173f8205a7ea6995d7e777911e5604669935577ab463",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_gdd.csv",
+  "sha256": "4e4df9f20e437dece97fe4146c3e8d8dbc3122b8380e4d145220b98360a5b494",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_hot_days_p95.csv",
+  "sha256": "fe7dcabdd0d87d1ec2c93c8d2614ee23e2465e24022c788d3774819f7abc3beb",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_prcp_anom.csv",
+  "sha256": "ba28ca67b4c4a779ffd3988b48e420c8126db3448c65120d6c6a7d619454c1cd",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_prcp_z.csv",
+  "sha256": "246f5d0a30e19e6bee18916d1779a96d3942e08ea7f668718529fff23f77c193",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_rainy_days.csv",
+  "sha256": "7e5e11ed3b2a4247714c34e69b106d397a8c3baf05d347b5e60fdfb15d1e397a",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_sm_z.csv",
+  "sha256": "3dc62de6f3dd1299785be8d31c304cec541c4fbc07a6a35477ca9c2c612aea88",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_spei03.csv",
+  "sha256": "afe6c43c9ca5fafb9d015b04252713be758fcc500520f5ebbfdc00ed50e6eaa8",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_spi03.csv",
+  "sha256": "bb4a9fac6c2107f38b5f7bcad0f99de4840013c785d9b8fa1eb786760f5b00d0",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_tmax_anom.csv",
+  "sha256": "9c966d665664edd6624ce3ec21c677bb9d8c07b748b1caf9ad437b04de155ede",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_gs_tmean_anom.csv",
+  "sha256": "f68434739eebd78bc31f4a5740292f5d068ba9ad76a74cbd0922ae8d3928ed60",
+  "source": "delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_cdd.csv",
+  "sha256": "a1047bb8b89b5207330c4494c6d44acaac936cf6adf718ffc3d33262960216a6",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_edd.csv",
+  "sha256": "7c9c2cc0979497ae58964f1d506c0eb4d4324b6af158abfaeb03f6511fc4126c",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_evi_anom.csv",
+  "sha256": "3d58c2938f4ed01808bec394ed553d85475ce846e6682657ac90ccac7bf70746",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_gdd.csv",
+  "sha256": "19a8812332cb30f995ed900ea7ad9d76fde482089f38226e09b5d83c3c6020e1",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_hot_days_p95.csv",
+  "sha256": "ec6066a118c9ccff99384e8cce3441cb96e06f993be7756ea57b39ea762d54f2",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_prcp_anom.csv",
+  "sha256": "6950e477f5d5d72062808212bdf143d9fbbe7b40c7ed7f7ad349232ad0cec6e3",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_prcp_z.csv",
+  "sha256": "7d1fde3ffd6b3e2f9a66422751db5c95baa68b7fbd2648bf0f21b8f7bf14756d",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_rainy_days.csv",
+  "sha256": "a4962cb592493373eb27d03fd1312c7f3d541900196e94c01a79d661a2e76d38",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_sm_z.csv",
+  "sha256": "2de974c6e142c9e903a04bb661c08506d1ab852cf6ba872150f02312fc79247e",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_spei03.csv",
+  "sha256": "7372566c6cb535317e7c1e54cd9acd7319bb5434bad6a619bdde1f614ef68996",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_spi03.csv",
+  "sha256": "063a6c5d61a164952dda2949f200f74a3a38fc21416fa8ede50fc16136530d72",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_tmax_anom.csv",
+  "sha256": "f6e1151a36664392a9dd1b8d4c153f30895b07215da178349a6b17860dffdb0a",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/climate_month_tmean_anom.csv",
+  "sha256": "e8a3eb7df664c68b8f055857c07e7e03a70cb1bd845e438c42cfd5d2c7ed7e68",
+  "source": "delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/food_price_index_WB.csv",
+  "sha256": "3a0e0f8b653096d1f5df48b9585e5475ba349fb14a817d881392faa42c0c8daa",
+  "source": "training interim panel series; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/history_snapshot.csv",
+  "sha256": "0380367b15bd78f5f6bb7a4901079b046b4b0075661eb7b59f9309e2cab1e2d8",
+  "source": "final-arm original reported-phase observations (existing label scripts); task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/idp_local.csv",
+  "sha256": "dab66e28fb9d20f469dc1c079e32b12622f077d68988d43453da721bbe900836",
+  "source": "training-panel IDP inputs; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/idp_national.csv",
+  "sha256": "dc4bff601f6e20b9f15cef84b46da71698206e744e134c0bc31cb9883705224f",
+  "source": "training-panel IDP inputs; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/nightlight_mean.csv",
+  "sha256": "cc4d3fb0593d03a23ca93e86290d2e78687a4b54c8a305552b3f81e1f937a654",
+  "source": "training interim panel series; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ },
+ {
+  "name": "history/nino34_anom.csv",
+  "sha256": "755cb66a8d25a950b8d9c3b66ef6225a47599bdfc86c56bad27109e9501d22a7",
+  "source": "training interim panel series; task 10-29 handoff",
+  "kind": "delivered",
+  "acceptor": null,
+  "accepted_at": null
+ }
+]
