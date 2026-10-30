@@ -12,3 +12,8 @@
 cloud_pipeline/deploy/*.sh text eol=lf
 # The accepted runtime binds the exact dependency lock bytes.
 cloud_pipeline/requirements.lock.txt -text
+
+# FEWS NET partition map: the approved scientific bytes are the CRLF form (sha256 4723cae5..., pinned in
+# fewsnet_partitioned_rf_pipeline/config.py and assets/partitions/partition_manifest.json). The blob stays LF-normalized;
+# eol=crlf materializes the approved bytes on every checkout (WSL and Windows). Content is unchanged.
+cloud_pipeline/fewsnet_partitioned_rf_pipeline/assets/partitions/cluster_mapping_k40_nc17_general_refined_contig3.csv text eol=crlf

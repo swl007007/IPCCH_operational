@@ -1,0 +1,27 @@
+{
+ "report_status": "passed",
+ "filled_features": 0,
+ "nan_cells_input": 50059,
+ "nan_cells_matrix": 50059,
+ "raw_scores_equal_booster": {
+  "phase2": true,
+  "phase3": true,
+  "phase4": true,
+  "phase5": true
+ },
+ "score_min": -0.02487814612686634,
+ "score_max": 0.9595916271209717,
+ "phase_counts": {
+  "1": 50,
+  "2": 704,
+  "3": 1188,
+  "4": 58
+ },
+ "thresholds": {
+  "phase2_worse": 0.2,
+  "phase3_worse": 0.2,
+  "phase4_worse": 0.2,
+  "phase5_worse": 0.2
+ },
+ "monotonicity": "cummax"
+}
