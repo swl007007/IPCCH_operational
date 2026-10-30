@@ -111,3 +111,12 @@ Repair verification 2d978d4: Supervisor inspected source diff plus targeted regr
 ## 2026-10-30 concrete climate factory check (b52387c)
 
 Independent read-only check plus Supervisor spot-check climate_run.py:81-101: six provider classes receive compatible constructor args and one concrete EETransport; all26 deferred monthly/seasonal bindings select correct base/class/asset roots. Locked transport/factory/monthly-raster/seasonal-raster/table suites57passed. No blocking factory defect found. New factory test directly invokes three monthly failure paths and checks seasonal callability; successful seasonal factory-to-transport flow remains a generation integration assertion. No live EE, asset permission or full-area claim.
+
+
+## 2026-10-30 d0d7567 / 4db4fd5 follow-up
+
+Pinned runner review30passed: namespace admission precedes resolution/context; trusted configuration is outside request; failed inference retains generated batch. Receipt review12store tests plus pinned regressions: intermediate committed versions recorded, failed-CAS orphan excluded, retry repairs missing receipts without resave. Remaining medium finding: successful operation followed by receipt append failure escapes without GenerationFailure report; initial reconcile likewise. Executor assigned reporting fix.
+
+4db4fd5 source/test diff inspected: provider factory called with exact extended windows frame; regression exercises2027 real rainfall provider and demonstrates old frame failure. Supervisor locked generation+transport run28passed17.86s (working tree was concurrently receiving reporting edits; exact seasonal fix pinned in reviewed diff, do not call whole tree frozen). Prior full executor log independently inspected820passed122.02s.
+
+Supervisor releases LOCAL CP4 implementation/tests after reporting fix, while CP3 acceptance remains pending complete runtime/FEWS adapters and evidence. This is parallel work authorization, not checkpoint acceptance. No production deployment/current mutation or Audit. CP5 must use actual accepted model combination.
