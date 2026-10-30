@@ -115,8 +115,18 @@ class VersionedTable:
         text = frame_to_csv(frame)
         content = f"{self.root.uri}/{self.table}/versions/{version:06d}-{uuid.uuid4().hex}.csv"
         self.store.write_text(content, text, if_generation_match=0)
-        new = {"version": version, "content": content, "sha256": sha256_text(text), "rows": int(len(frame)),
-               "previous_version": None if head is None else head["version"], "record": dict(record)}
+        sha = sha256_text(text)
+        # lineage: every version that became HEAD (content path, sha256, action) - enumerates saved versions from HEAD
+        # alone (R45 per-version receipts) without listing or reading version files; orphans never appear in it
+        if head is None:
+            lineage = []
+        else:
+            lineage = list(head.get("lineage") or [{"version": head["version"], "content": head["content"],
+                                                    "sha256": head["sha256"], "action": head["record"].get("action")}])
+        lineage.append({"version": version, "content": content, "sha256": sha, "action": dict(record).get("action")})
+        new = {"version": version, "content": content, "sha256": sha, "rows": int(len(frame)),
+               "previous_version": None if head is None else head["version"], "record": dict(record),
+               "lineage": lineage}
         self.store.write_text(self.head_uri, json.dumps(new, sort_keys=True, default=str), if_generation_match=generation)
         return new
 

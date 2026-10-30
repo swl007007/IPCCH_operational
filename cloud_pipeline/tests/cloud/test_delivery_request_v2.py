@@ -283,7 +283,8 @@ def test_integrated_preflight_executes_nothing_when_a_nested_fews_ref_is_invalid
     good = {(r["uri"], r["generation"]): r["sha256"] for _, r in v2.iter_object_refs(check(data))}
     calls = []
     kw = dict(request_uri=URI, request_generation="5", now_utc=NOW, production_namespace="prod",
-              smoke_namespace="smoke", current_ipcch_execution_month="2026-09")
+              smoke_namespace="smoke", current_ipcch_execution_month="2026-09",
+              trusted_prefixes={"real": ["gs://ops-bucket/objects/"]}, batch_roots={"real": "gs://ops-bucket/ipcch-v2/real"})
     admitted = v2.admit(data, resolve=lambda u, g: good.get((u, g)), **kw)
     assert admitted["validation_level"] == "admitted" and len(admitted["verified_references"]) == len(good)
     bad = copy.deepcopy(data)

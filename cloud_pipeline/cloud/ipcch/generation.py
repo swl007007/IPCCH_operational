@@ -100,26 +100,35 @@ class Generation:
                        gpp.LEDGER_TABLE, nightlight.HISTORY_TABLE, wfp.HISTORY_TABLE,
                        *[cl.table_name(b, t) for b in cl.BASES for t in (cl.MONTHLY, cl.SEASONAL)]})
 
-    def _heads(self) -> dict[str, Any]:
-        return {n: self._table(n).head()[0] for n in self._tracked()}
-
-    def _record_runtime(self, step: str, before: Mapping[str, Any]) -> None:
-        """R45: append a ``runtime`` acceptance record for every table this step saved (also after a failure, so saved
-        progress is recorded; a rerun that saves nothing appends nothing)."""
-        after, entries = self._heads(), []
-        for name, head in after.items():
-            old = before.get(name)
-            if head is not None and (old is None or head["version"] != old["version"]):
-                entries.append({"name": name, "sha256": head["sha256"], "kind": "runtime",
-                                "source": f"runtime {self.request['run_id']} {step} version {head['version']}",
+    def _record_runtime(self, step: str) -> None:
+        """R45: one ``runtime`` acceptance record per saved VERSION of every tracked table (name = the immutable version
+        content path, sha256 = its content), enumerated from the HEAD lineage (no listing, no content read). Idempotent
+        by version identity: versions already recorded are skipped, so a record lost to a failed acceptance write is
+        repaired by the next reconcile without recomputing or rewriting anything. Initialisation versions carry their
+        delivered records (R45 bundle acceptance) and are not re-recorded."""
+        acceptance = AcceptanceManifest(self.store, self.root)
+        have = acceptance.records()
+        known = set(zip(have["name"], have["sha256"]))
+        entries = []
+        for name in self._tracked():
+            head, _ = self._table(name).head()
+            if head is None:
+                continue
+            lineage = head.get("lineage") or [{"version": head["version"], "content": head["content"],
+                                               "sha256": head["sha256"], "action": head["record"].get("action")}]
+            for v in lineage:
+                if v.get("action") == "initialise" or (v["content"], v["sha256"]) in known:
+                    continue
+                entries.append({"name": v["content"], "sha256": v["sha256"], "kind": "runtime",
+                                "source": f"runtime {self.request['run_id']} {step} {name} version {v['version']}",
                                 "acceptor": f"ipcch-runtime:{self.request['run_id']}",
                                 "accepted_at": self.now().strftime("%Y-%m-%d")})
+                known.add((v["content"], v["sha256"]))
         if entries:
-            AcceptanceManifest(self.store, self.root).append(entries)
+            acceptance.append(entries)
             self.report.setdefault("runtime_acceptance", []).extend(e["name"] for e in entries)
 
     def _step(self, name: str, fn, summary=None):
-        before = self._heads()
         try:
             out = fn()
         except GenerationFailure:
@@ -130,11 +139,11 @@ class Generation:
                 if hasattr(exc, attr):
                     self.report["steps"][name] = getattr(exc, attr)
             try:
-                self._record_runtime(name, before)
+                self._record_runtime(name)
             except Exception as rexc:                         # reported, never masks the original failure
                 self.report["runtime_acceptance_error"] = f"{type(rexc).__name__}: {rexc}"
             raise GenerationFailure(name, exc, self.report) from exc
-        self._record_runtime(name, before)
+        self._record_runtime(name)
         self.report["steps"][name] = summary(out) if summary else out
         return out
 
@@ -155,6 +164,7 @@ class Generation:
         self.report = {"run_id": req["run_id"], "mode": mode, "execution_month": M, "feature_origin": O, "steps": {},
                        "warnings": []}
         pairing = bd.require_store_pairing(self.store, self.root, self.binding)
+        self._record_runtime("reconcile")                 # repairs receipts lost by an earlier interrupted run (R45)
         ident = bd.verify_handoff(self.binding, self.bundle_dir) if mode == "real" \
             else bd.verify_fixture_bundle(self.binding, self.bundle_dir)
         if ident["manifest_sha256"] != pairing["bundle_manifest_sha256"]:

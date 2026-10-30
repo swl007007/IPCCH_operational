@@ -368,15 +368,48 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
     return refs
 
 
+# References a smoke and a real request may share (the explicit allowlist): the model-combination envelope (the only
+# shared input, R48) and the runtime environment manifest. Everything else must lie in the request mode's namespace.
+SHARED_REF_FIELDS = ("ipcch.model_combination.envelope", "runtime.environment_manifest")
+
+
+def admit_namespaces(request: Mapping[str, Any], trusted_prefixes: Mapping[str, Any],
+                     batch_roots: Mapping[str, str]) -> None:
+    """R48: decided lexically on the URIs, BEFORE any reference is resolved or read. Every non-shared reference must lie
+    under one of the request mode's trusted prefixes; a named feature batch manifest must lie under that mode's batch
+    root ``<root>/feature_batches/``. A misrouted (e.g. real) reference in a smoke request is never touched."""
+    mode = request["mode"]
+    prefixes = tuple(p if p.endswith("/") else p + "/" for p in trusted_prefixes.get(mode, ()))
+    if not prefixes or mode not in batch_roots:
+        raise DeliveryRequestV2Error(f"no trusted {mode} namespace configured; nothing is resolved (R48)")
+    batches = batch_roots[mode].rstrip("/") + "/feature_batches/"
+    for field, ref in iter_object_refs(request):
+        uri = ref["uri"]
+        if "/../" in uri or uri.endswith("/.."):
+            raise DeliveryRequestV2Error(f"{field} {uri} is not a canonical object URI (R48)")
+        if field == "ipcch.feature_batch.manifest":
+            if not uri.startswith(batches):
+                raise DeliveryRequestV2Error(f"{field} {uri} is outside the {mode} batch namespace {batches}; "
+                                             "not resolved (R48)")
+            continue
+        if field in SHARED_REF_FIELDS:
+            continue
+        if not uri.startswith(prefixes):
+            raise DeliveryRequestV2Error(f"{field} {uri} is outside the trusted {mode} namespace; not resolved (R48)")
+
+
 def admit(data: Mapping[str, Any], *, request_uri: str, request_generation: str, now_utc: datetime,
           production_namespace: str, smoke_namespace: str, current_ipcch_execution_month: str | None,
-          resolve: Callable[[str, str], str | None]) -> dict[str, Any]:
-    """Integrated preflight: the whole request (incl. the complete FEWS NET delivery) is validated and EVERY pinned
-    reference (IPCCH, FEWS NET, nested delivery models/assets/diagnostics, runtime) is verified at its generation and
-    sha256 before any lock, collection, retained-store mutation or inference. An invalid request executes nothing (R17)."""
+          resolve: Callable[[str, str], str | None], trusted_prefixes: Mapping[str, Any],
+          batch_roots: Mapping[str, str]) -> dict[str, Any]:
+    """Integrated preflight: the whole request (incl. the complete FEWS NET delivery) is validated, every reference is
+    admitted to the request mode's trusted namespace LEXICALLY (R48), and only then is EVERY pinned reference (IPCCH,
+    FEWS NET, nested delivery models/assets/diagnostics, runtime) verified at its generation and sha256 - all before
+    any lock, collection, retained-store mutation or inference. An invalid request executes nothing (R17)."""
     request = validate_request_v2(data, request_uri=request_uri, request_generation=request_generation, now_utc=now_utc,
                                   production_namespace=production_namespace, smoke_namespace=smoke_namespace,
                                   current_ipcch_execution_month=current_ipcch_execution_month)
+    admit_namespaces(request, trusted_prefixes, batch_roots)
     request["verified_references"] = verify_reference_identities(request, resolve)
     request["validation_level"] = "admitted"
     return request

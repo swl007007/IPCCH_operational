@@ -52,6 +52,11 @@ def runtime_records(store, root):
     return rec[rec["kind"] == "runtime"]
 
 
+def recorded(rt, table):
+    """Runtime records of one table's saved versions (name = the immutable version content path)."""
+    return rt[rt["name"].str.contains(f"/{table}/versions/", regex=False)]
+
+
 def test_generation_writes_a_complete_batch_and_inference_scores_it(tmp_path, package):
     store, root, b, bundle = setup(tmp_path, package)
     refs = fx.Refs()
@@ -80,9 +85,10 @@ def test_generation_writes_a_complete_batch_and_inference_scores_it(tmp_path, pa
     assert set(res[14]["predictions"]["mode"]) == {"smoke"} and res[14]["predictions"]["target_period"].iloc[0] == "2028-03"
     # R45: every saved update has a runtime acceptance record bound to its HEAD content
     rt = runtime_records(store, root)
-    assert {"acled_agg_weekly", "history__climate_month_cdd", "gpp_availability_ledger"} <= set(rt["name"])
+    for table in ("acled_agg_weekly", "history__climate_month_cdd", "gpp_availability_ledger"):
+        assert not recorded(rt, table).empty
     head = VersionedTable(store, root, "history__climate_month_cdd").head()[0]
-    assert head["sha256"] in set(rt.loc[rt["name"] == "history__climate_month_cdd", "sha256"])
+    assert (head["content"], head["sha256"]) in set(zip(rt["name"], rt["sha256"]))     # the saved version file itself
     assert set(rt["acceptor"]) == {"ipcch-runtime:smoke-run-1"}
 
 
@@ -139,7 +145,7 @@ def test_origin_without_climate_source_blocks_after_saved_inputs_with_runtime_re
     assert info.value.step == "climate" and "R13" in str(info.value)
     assert info.value.report["steps"]["acled"]["action"] == "refresh"              # saved inputs stay saved (R29/R41)
     assert len(ac.saved_weekly(VersionedTable(store, root, gen.ACLED_TABLE))[1]) == 1
-    assert "acled_agg_weekly" in set(runtime_records(store, root)["name"])            # saved progress recorded (R45)
+    assert len(recorded(runtime_records(store, root), "acled_agg_weekly")) == 1      # saved progress recorded (R45)
     assert not list((tmp_path / "store").rglob("manifest.json"))
     # rerun: nothing new saved before the same block -> no duplicate runtime records
     n = len(runtime_records(store, root))
@@ -164,7 +170,7 @@ def test_research_family_failure_report_keeps_earlier_committed_refreshes(tmp_pa
         generation(store, root, b, bundle, refs, req, tmp_path).run()
     assert info.value.step == "research_inputs"
     assert info.value.report["steps"]["research_inputs"]["nino34_anom"]["action"] == "refresh"
-    assert "history__nino34_anom" in set(runtime_records(store, root)["name"])
+    assert len(recorded(runtime_records(store, root), "history__nino34_anom")) == 1
 
 
 def test_real_keep_without_acled_history_is_refused(tmp_path, package):
@@ -174,3 +180,61 @@ def test_real_keep_without_acled_history_is_refused(tmp_path, package):
     req["ipcch"]["acled"] = {"action": "keep"}
     with pytest.raises(gen.GenerationFailure, match="needs saved regional-aggregate history"):
         generation(store, root, b, bundle, refs, req, tmp_path).run()
+
+
+
+def failing_last_base():
+    good = fx.climate_providers()
+    last = cl.BASES[-1]
+
+    def monthly(base):
+        if base == last:
+            def fail(source, month):
+                raise cl.ClimateProcessingFailure(f"{base} {source} {month}: injected processing failure")
+            return fail
+        return good.monthly(base)
+    return climate_run.ClimateProviders(monthly, good.seasonal)
+
+
+def test_every_saved_version_gets_its_own_runtime_record_even_when_a_later_base_fails(tmp_path, package):
+    store, root, b, bundle = setup(tmp_path, package)
+    refs = fx.Refs()
+    req = fx.smoke_request(refs, tmp_path / "env.json", execution_month="2027-04")       # O = 2027-02: two new months
+    with pytest.raises(gen.GenerationFailure, match="injected processing failure"):
+        generation(store, root, b, bundle, refs, req, tmp_path, providers=failing_last_base()).run()
+    first = cl.table_name(cl.BASES[0], cl.MONTHLY)
+    head = VersionedTable(store, root, first).head()[0]
+    saved = [v for v in head["lineage"] if v["action"] != "initialise"]
+    assert [v["version"] for v in saved] == [2, 3]                                       # 2027-01 and 2027-02
+    rt = recorded(runtime_records(store, root), first)
+    assert sorted(zip(rt["name"], rt["sha256"])) == sorted((v["content"], v["sha256"]) for v in saved)
+
+
+def test_lost_acceptance_write_is_repaired_once_on_retry_without_resaving(tmp_path, package, monkeypatch):
+    store, root, b, bundle = setup(tmp_path, package)
+    refs = fx.Refs()
+    req = fx.smoke_request(refs, tmp_path / "env.json")
+    real = AcceptanceManifest.append
+    state = {"failed": False}
+
+    def flaky(self, entries):
+        if not state["failed"] and any("/history__climate_month_" in e["name"] for e in entries):
+            state["failed"] = True
+            raise RuntimeError("injected acceptance write failure")
+        return real(self, entries)
+    monkeypatch.setattr(AcceptanceManifest, "append", flaky)
+    with pytest.raises(RuntimeError, match="injected acceptance write failure"):
+        generation(store, root, b, bundle, refs, req, tmp_path).run()
+    climate_heads = {t: VersionedTable(store, root, t).head()[0]["version"] for t in
+                     (cl.table_name(base, cl.MONTHLY) for base in cl.BASES)}
+    assert recorded(runtime_records(store, root), "history__climate_month_cdd").empty   # saved, receipt lost
+    req2 = fx.smoke_request(fx.Refs(), tmp_path / "env.json", run_id="smoke-run-2")
+    req2["ipcch"]["acled"] = {"action": "keep"}
+    out = generation(store, root, b, bundle, fx.Refs(), req2, tmp_path).run()
+    assert out["batch_id"]
+    assert {t: VersionedTable(store, root, t).head()[0]["version"] for t in climate_heads} == climate_heads  # not re-saved
+    rt = runtime_records(store, root)
+    for t in climate_heads:
+        r = recorded(rt, t)
+        assert len(r) == 1 and r["source"].iloc[0].startswith("runtime smoke-run-2 reconcile")    # repaired exactly once
+    assert not rt.duplicated(["name", "sha256"]).any()
