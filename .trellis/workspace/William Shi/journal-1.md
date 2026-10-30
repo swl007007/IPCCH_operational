@@ -192,3 +192,55 @@ Refreshed FEWS labels (HDX CS, strict crosswalk), refit 0/6/12m on all eligible 
 ### Next Steps
 
 - Next monthly run uses the activated normal config; rollback via the recorded operation (OPERATIONS.md)
+
+
+## Session 7: IPCCH H2/H8/H14 migration: CP4-CP6 completion, final acceptance and archive
+<!-- trellis-session: v=2 fp=617e70c05a5e771d -->
+
+**Date**: 2026-10-30
+**Task**: IPCCH H2/H8/H14 migration: CP4-CP6 completion, final acceptance and archive
+**Branch**: `feat/ipcch-validity-feature-inference`
+
+### Summary
+
+Executable v2 route, legacy v1 cutover/inheritance guards, FEWS NET v2 adapter with real deliver parity, CP5 actual-package smoke, CP6 evidence matrix/operator handoff; Supervisor final acceptance CP0-CP6 (91625df); task archived.
+
+### Main Changes
+
+- v2 route (entrypoint_v2 run/initialise), per-system locks, v2 publication with activation and candidates
+- legacy v1 guards: R37 cutover at request/admission/publication, current-bound inheritance, FEWS-scoped remote preparation, promote/verify guards
+- FEWS NET v2 adapter (D1-D3) with real deliver(fewsnet) parity incl. split refresh; exact-bytes deliveries; FEWS member validation
+- CP5 smoke with the actual accepted package and fixture-only inputs; CP6 evidence matrix, operator runbook, validated examples
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e48ca51` | feat: executable v2 route (entrypoint_v2 run + delivery_job --v2-config dispatch) with installed binding, providers per mode |
+| `6d8ea08` | feat: legacy v1 guards after the new IPCCH contract; FEWS member writer; exact-bytes v2 deliveries |
+| `78a2aeb` | fix: legacy routes bound to the current release on every path; scoped remote preparation; consistent legacy read |
+| `43c6d12` | feat: v2 FEWS NET adapter (R60, Supervisor D1-D3): scoped preparation, generation source binding, shared scorer |
+| `32d4eef` | fix: residuals A-D on 78a2aeb and the 43c6d12 keep-projection P1 |
+| `77cc319` | fix: residual C/D boundaries on 32d4eef (workflow error scope, CLI resolve read, lock lookup rollback) |
+| `0d26d7f` | docs: R60 real deliver(fewsnet) parity on real bootstrap inputs (v2 route == existing deliver) |
+| `b3b5dd2` | feat: CP5 local smoke with the actual accepted H2/H8/H14 package and fixture-only inputs; smoke evidence subset fix |
+| `da1ebd0` | fix: CP5 repairs - smoke evidence identity before subset, unavailable on empty subset; stronger smoke evidence |
+| `d57a3fb` | feat: CP6 evidence matrix, operator runbook/examples, store initialisation route; R53/R62 warnings in prediction metadata |
+| `0d484d8` | docs: CP6 final regression receipt (957 passed at bbf21a4) and GitNexus index-count housekeeping |
+| `7ed26ab` | docs: CP6 final report, PROGRESS entry and task metadata; exact final-suite warning wording |
+| `53352b3` | docs: reconcile prd/implement status and executor handoff to the CP0-CP6 final acceptance |
+| `b332141` | chore(task): archive 10-29-ipcch-validity-feature-inference |
+| `1d2cc47` | chore(task): record final acceptance and archive location in the archived task notes |
+
+### Testing
+
+- [OK] whole cloud_pipeline/tests: 957 passed at bbf21a4 (research/cp6/final-tests-summary.md)
+- [OK] CP5 run6 12/12 checks; FEWS parity keep/refresh/refresh-split 28/31 byte-identical + 3 modulo output root
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Live items deferred (D-live-1..8): live EE/cloud, full-area cloud generation, real GCS init, production publication/cutover, deployed image, production rollback
