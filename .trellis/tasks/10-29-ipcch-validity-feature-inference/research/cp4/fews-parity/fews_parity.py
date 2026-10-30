@@ -21,6 +21,7 @@ Run: ~/.venvs/fewsnet-test-lock-20261022/bin/python fews_parity.py [scratch dir]
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import io
 import json
@@ -324,8 +325,27 @@ def _points(geometry):
 
 
 def run_v2_route(w) -> dict:
+    """Combined gen+inf (keep, refresh) or - refresh-split - gen-only, then inf-only on the bound snapshot."""
+    if w["mode"] != "refresh-split":
+        return _run_v2(w, w["request"])
+    gen = copy.deepcopy(w["request"])
+    gen["run_id"] = f"{gen['run_id']}-gen"
+    gen["operations"]["fewsnet_inference"] = False
+    gen["fewsnet"] = {k: v for k, v in gen["fewsnet"].items() if k != "delivery"}
+    first = _run_v2(w, gen)
+    snapshot = first["outcome"]["systems"]["fewsnet"]["result"]["generation"]["prepared_snapshot"]
+    inf = copy.deepcopy(w["request"])
+    inf["operations"]["fewsnet_generation"] = False
+    inf["fewsnet"] = {"prepared_snapshot": snapshot, "delivery": inf["fewsnet"]["delivery"]}
+    second = _run_v2(w, inf)
+    second["outcome"]["systems"]["fewsnet"]["result"]["generation"] = {"prepared_snapshot": snapshot}
+    second["acquired_by_inference_only"] = second["acquired"]
+    second["acquired"] = first["acquired"]
+    return second
+
+
+def _run_v2(w, data) -> dict:
     store, reader = w["store"], Reader(w["store"])
-    data = w["request"]
     admit = dict(request_uri=f"gs://parity-ops/requests/{data['run_id']}/run_manifest.json", request_generation="1",
                  now_utc=NOW, production_namespace="prod", smoke_namespace="smoke", current_ipcch_execution_month=None,
                  resolve=lambda u, g: (lambda b: None if b is None else sha(b))(reader.read_bytes(u, g)),
@@ -349,7 +369,7 @@ def run_reference(w, snapshot) -> Path:
     out = w["root"] / "reference"
     sub = w["root"].parent / "subset"
     wfp = acled = None
-    if w["mode"] == "refresh":
+    if w["mode"] in ("refresh", "refresh-split"):
         wfp, _ = wfp_aggregates(w["raw"]["wfp"], cutoff=ORIGIN)
         acled, _ = conflict_aggregates(w["raw"]["acled"], cutoff=ORIGIN)
     deliver(origin=ORIGIN, out=out, prepared_families=manifest["families"],
@@ -406,17 +426,42 @@ def compare(w, reference: Path, publication_id: str) -> dict:
             "prediction_sha256": {r: published.get(r) for r in files if r.endswith("polygon_predictions.csv")}}
 
 
+def _scope_digests(w, fews) -> dict:
+    if fews["status"] != "succeeded":
+        return {}
+    pid = fews["result"]["publication"]["publication_id"]
+    manifest = json.loads(w["store"].read_text(f"gs://parity-root/deliveries/{pid}/manifest.json"))
+    return {e["path"]: e["sha256"] for e in manifest["files"] if e["path"].startswith("scopes/")}
+
+
+def input_manifest(scratch: Path) -> dict:
+    """sha256 + size of every subset/raw input file and of the bootstrap sources they were cut from."""
+    files = sorted([*(scratch / "subset").rglob("*"), *(scratch / "raw").glob("*")])
+    out = {str(p.relative_to(scratch)): {"sha256": sha(p.read_bytes()), "size_bytes": p.stat().st_size}
+           for p in files if p.is_file() and p.name != "done.json"}
+    baseline = json.loads((B / "baseline.json").read_text())["files"]
+    sources = ["assets/fewsnet/history_panel.csv", "assets/fewsnet/geometry.geojson", "assets/fewsnet/population.csv",
+               "assets/ipcch/history_panel.csv", "assets/ipcch/geometry.geojson", "assets/ipcch/roster.csv",
+               *[f"assets/fewsnet/history/{f}.csv" for f in rs.SYSTEM_FAMILIES["fewsnet"]],
+               *[f"assets/ipcch/history/{f}.csv" for f in rs.SYSTEM_FAMILIES["ipcch"]],
+               *[f"models/fewsnet/{h}m/{n}" for h in dm.HORIZONS_MONTHS
+                 for n in sorted(p.name for p in (B / f"models/fewsnet/{h}m").iterdir())]]
+    return {"scratch_files": out, "bootstrap_sources": {s: baseline.get(s) for s in sources}}
+
+
 def main(scratch: Path) -> dict:
     scratch.mkdir(parents=True, exist_ok=True)
     areas = subset(scratch)
     results = {"origin": ORIGIN, "areas": areas, "packages": {h: sha((B / f"models/fewsnet/{h}m/model.joblib").read_bytes())
                                                                for h in dm.HORIZONS_MONTHS}, "modes": {}}
-    for mode in ("keep", "refresh"):
+    for mode in ("keep", "refresh", "refresh-split"):
         w = world(scratch, mode, areas)
         v2out = run_v2_route(w)
         fews = v2out["outcome"]["systems"]["fewsnet"]
         entry = {"v2_status": v2out["outcome"]["status"], "v2_reason": fews.get("reason"),
                  "acquired": sorted({f for f, _ in v2out["acquired"]})}
+        if mode == "refresh-split":
+            entry["acquired_by_inference_only"] = v2out["acquired_by_inference_only"]
         if fews["status"] == "succeeded":
             snapshot = fews["result"]["generation"]["prepared_snapshot"]
             reference = run_reference(w, snapshot)
@@ -424,13 +469,19 @@ def main(scratch: Path) -> dict:
             entry["pointer"] = pub.read_current(w["store"], "gs://parity-root", "prod")["record"]["systems"]["fewsnet"][
                 "published_by_run"]
         results["modes"][mode] = entry
+        results.setdefault("scope_sha256", {})[mode] = _scope_digests(w, fews)
         print(mode, json.dumps({k: v for k, v in entry.items() if k != "prediction_sha256"}, default=str)[:1500])
+    digests = results.get("scope_sha256", {})
+    results["refresh_split_equals_combined_scope_tables"] = bool(digests.get("refresh")) and \
+        digests.get("refresh") == digests.get("refresh-split")
     return results
 
 
 if __name__ == "__main__":
     scratch = Path(sys.argv[1] if len(sys.argv) > 1 else Path.home() / "scratch/ipcch-fews-parity")
     res = main(scratch)
+    Path(__file__).with_name("parity-inputs-manifest.json").write_text(
+        json.dumps(input_manifest(scratch), indent=2, sort_keys=True) + "\n")
     target = Path(__file__).with_name("parity-results.json")
     target.write_text(json.dumps(res, indent=2, sort_keys=True, default=str) + "\n")
     print("wrote", target)

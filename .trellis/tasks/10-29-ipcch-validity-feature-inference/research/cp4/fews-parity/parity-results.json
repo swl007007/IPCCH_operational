@@ -82,6 +82,38 @@
       "scope_tables_identical": true,
       "v2_reason": null,
       "v2_status": "succeeded"
+    },
+    "refresh-split": {
+      "acquired": [
+        "evi",
+        "fldas",
+        "gosif_mean",
+        "viirs"
+      ],
+      "acquired_by_inference_only": [],
+      "all_identical_modulo_output_root": true,
+      "differ": [
+        "inputs/fewsnet_fill_sources.json",
+        "reports/fewsnet_feature_fill_audit.csv",
+        "reports/fewsnet_normalization_audit.json"
+      ],
+      "differ_identical_after_output_root_normalization": {
+        "inputs/fewsnet_fill_sources.json": true,
+        "reports/fewsnet_feature_fill_audit.csv": true,
+        "reports/fewsnet_normalization_audit.json": true
+      },
+      "identical": 28,
+      "missing_in_v2": [],
+      "pointer": "parity-refresh-split-fewsnet",
+      "prediction_sha256": {
+        "scopes/0m/fewsnet/polygon_predictions.csv": "3d29a49a2de9679175b897fe802411ce78ba3fb843ceef4f327bd7bfb686f3d2",
+        "scopes/12m/fewsnet/polygon_predictions.csv": "a4cf3447d874fbf23c55e34f4fac9022bacaf72f113ac2b1ad292fda6fce45ae",
+        "scopes/6m/fewsnet/polygon_predictions.csv": "d622cece1b060bc1b098b0b042e2346ca22b046281711ce4c7e00bcef9d1d8b4"
+      },
+      "reference_files": 31,
+      "scope_tables_identical": true,
+      "v2_reason": null,
+      "v2_status": "succeeded"
     }
   },
   "origin": "2026-07",
@@ -89,5 +121,59 @@
     "0": "63703184c3dab50330aa90487d075c898a396841c4c99b3fef88d624e73ed08f",
     "6": "aa5f80be040efbba62282e3698b8902f73ee0cdb95b2e87fd656eb51e1d2fbc8",
     "12": "47cba49db6f071675368243b620869eb7af71fd493291157a2a1b37573771e0e"
+  },
+  "refresh_split_equals_combined_scope_tables": true,
+  "scope_sha256": {
+    "keep": {
+      "scopes/0m/fewsnet/country_confidence.csv": "63a1f43fe61639d03684b801d7cfa4c07cfe09cac333440300710a1dccafd8ca",
+      "scopes/0m/fewsnet/country_predictions.csv": "9e8e3484d7e0ef743e52f936a7b87f8585115d32328a8daa1e0fcde4adfc6dca",
+      "scopes/0m/fewsnet/polygon_confidence.csv": "aee14c31c5daaea1981d05b7febd8bd612d23e6692bef8e2edd105829bf7b1a5",
+      "scopes/0m/fewsnet/polygon_model_mapping.csv": "c7acddb3a267a015f3aff53d0ad5a79039869aa43048332d1024f35d4314900c",
+      "scopes/0m/fewsnet/polygon_predictions.csv": "c114afadac494cd0a475623c3136c934b19efb74f0a4a3fdc552c957c899ea6f",
+      "scopes/12m/fewsnet/country_confidence.csv": "63a1f43fe61639d03684b801d7cfa4c07cfe09cac333440300710a1dccafd8ca",
+      "scopes/12m/fewsnet/country_predictions.csv": "007d7544dd104c1c0a54faaa16a0a8a0a408a8ae40b6be30053e88883bb51d54",
+      "scopes/12m/fewsnet/polygon_confidence.csv": "aee14c31c5daaea1981d05b7febd8bd612d23e6692bef8e2edd105829bf7b1a5",
+      "scopes/12m/fewsnet/polygon_model_mapping.csv": "a6cb428fda5f44a31e6adf861504f875285b68d06d50fc0448b07674971a0767",
+      "scopes/12m/fewsnet/polygon_predictions.csv": "a8eb824382998c49e8f601833d94e0ea0c709fc6c531ff16f772bf4613af8a3f",
+      "scopes/6m/fewsnet/country_confidence.csv": "63a1f43fe61639d03684b801d7cfa4c07cfe09cac333440300710a1dccafd8ca",
+      "scopes/6m/fewsnet/country_predictions.csv": "08e489329d6484a85d083e63dd8eec05960102f1488d30f4a871e79c0122ed9b",
+      "scopes/6m/fewsnet/polygon_confidence.csv": "aee14c31c5daaea1981d05b7febd8bd612d23e6692bef8e2edd105829bf7b1a5",
+      "scopes/6m/fewsnet/polygon_model_mapping.csv": "2dc0c652a8b359c829f8bf6695ec49a73a7161ba766373e061a3c7e86bd9655b",
+      "scopes/6m/fewsnet/polygon_predictions.csv": "d803cf8c36ee7e97b58c250bb5388a97bd5e21e3fec68c98535f02531e35f027"
+    },
+    "refresh": {
+      "scopes/0m/fewsnet/country_confidence.csv": "63a1f43fe61639d03684b801d7cfa4c07cfe09cac333440300710a1dccafd8ca",
+      "scopes/0m/fewsnet/country_predictions.csv": "0428d4c09ec7f8f899a006d6466c357933afbd1a0652e81bc7cd107037bf1d97",
+      "scopes/0m/fewsnet/polygon_confidence.csv": "aee14c31c5daaea1981d05b7febd8bd612d23e6692bef8e2edd105829bf7b1a5",
+      "scopes/0m/fewsnet/polygon_model_mapping.csv": "c7acddb3a267a015f3aff53d0ad5a79039869aa43048332d1024f35d4314900c",
+      "scopes/0m/fewsnet/polygon_predictions.csv": "3d29a49a2de9679175b897fe802411ce78ba3fb843ceef4f327bd7bfb686f3d2",
+      "scopes/12m/fewsnet/country_confidence.csv": "63a1f43fe61639d03684b801d7cfa4c07cfe09cac333440300710a1dccafd8ca",
+      "scopes/12m/fewsnet/country_predictions.csv": "73a0c99cb5f9d72beb070b8131109f87bbd5b63824cd554d7afffd65fe466c1e",
+      "scopes/12m/fewsnet/polygon_confidence.csv": "aee14c31c5daaea1981d05b7febd8bd612d23e6692bef8e2edd105829bf7b1a5",
+      "scopes/12m/fewsnet/polygon_model_mapping.csv": "a6cb428fda5f44a31e6adf861504f875285b68d06d50fc0448b07674971a0767",
+      "scopes/12m/fewsnet/polygon_predictions.csv": "a4cf3447d874fbf23c55e34f4fac9022bacaf72f113ac2b1ad292fda6fce45ae",
+      "scopes/6m/fewsnet/country_confidence.csv": "63a1f43fe61639d03684b801d7cfa4c07cfe09cac333440300710a1dccafd8ca",
+      "scopes/6m/fewsnet/country_predictions.csv": "6c1210c7f22f6e61aacdf9d4baf40efe0729337de3861c9cb006b044057b717e",
+      "scopes/6m/fewsnet/polygon_confidence.csv": "aee14c31c5daaea1981d05b7febd8bd612d23e6692bef8e2edd105829bf7b1a5",
+      "scopes/6m/fewsnet/polygon_model_mapping.csv": "2dc0c652a8b359c829f8bf6695ec49a73a7161ba766373e061a3c7e86bd9655b",
+      "scopes/6m/fewsnet/polygon_predictions.csv": "d622cece1b060bc1b098b0b042e2346ca22b046281711ce4c7e00bcef9d1d8b4"
+    },
+    "refresh-split": {
+      "scopes/0m/fewsnet/country_confidence.csv": "63a1f43fe61639d03684b801d7cfa4c07cfe09cac333440300710a1dccafd8ca",
+      "scopes/0m/fewsnet/country_predictions.csv": "0428d4c09ec7f8f899a006d6466c357933afbd1a0652e81bc7cd107037bf1d97",
+      "scopes/0m/fewsnet/polygon_confidence.csv": "aee14c31c5daaea1981d05b7febd8bd612d23e6692bef8e2edd105829bf7b1a5",
+      "scopes/0m/fewsnet/polygon_model_mapping.csv": "c7acddb3a267a015f3aff53d0ad5a79039869aa43048332d1024f35d4314900c",
+      "scopes/0m/fewsnet/polygon_predictions.csv": "3d29a49a2de9679175b897fe802411ce78ba3fb843ceef4f327bd7bfb686f3d2",
+      "scopes/12m/fewsnet/country_confidence.csv": "63a1f43fe61639d03684b801d7cfa4c07cfe09cac333440300710a1dccafd8ca",
+      "scopes/12m/fewsnet/country_predictions.csv": "73a0c99cb5f9d72beb070b8131109f87bbd5b63824cd554d7afffd65fe466c1e",
+      "scopes/12m/fewsnet/polygon_confidence.csv": "aee14c31c5daaea1981d05b7febd8bd612d23e6692bef8e2edd105829bf7b1a5",
+      "scopes/12m/fewsnet/polygon_model_mapping.csv": "a6cb428fda5f44a31e6adf861504f875285b68d06d50fc0448b07674971a0767",
+      "scopes/12m/fewsnet/polygon_predictions.csv": "a4cf3447d874fbf23c55e34f4fac9022bacaf72f113ac2b1ad292fda6fce45ae",
+      "scopes/6m/fewsnet/country_confidence.csv": "63a1f43fe61639d03684b801d7cfa4c07cfe09cac333440300710a1dccafd8ca",
+      "scopes/6m/fewsnet/country_predictions.csv": "6c1210c7f22f6e61aacdf9d4baf40efe0729337de3861c9cb006b044057b717e",
+      "scopes/6m/fewsnet/polygon_confidence.csv": "aee14c31c5daaea1981d05b7febd8bd612d23e6692bef8e2edd105829bf7b1a5",
+      "scopes/6m/fewsnet/polygon_model_mapping.csv": "2dc0c652a8b359c829f8bf6695ec49a73a7161ba766373e061a3c7e86bd9655b",
+      "scopes/6m/fewsnet/polygon_predictions.csv": "d622cece1b060bc1b098b0b042e2346ca22b046281711ce4c7e00bcef9d1d8b4"
+    }
   }
 }

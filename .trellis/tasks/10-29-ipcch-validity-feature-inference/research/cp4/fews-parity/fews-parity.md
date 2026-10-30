@@ -18,6 +18,12 @@ Of the 31 files the existing `deliver` writes, **28 are byte-identical**, includ
 - `reports/fewsnet_feature_fill_audit.csv` cites `fewsnet_fill_sources.json` by path and sha256; after the path
   normalization that cited digest is mapped to the reference digest (only for a file proven identical modulo the root).
 
+Split equivalence with the actual scorer (`refresh-split`, Supervisor follow-up on 0d26d7f): v2 generation-only, then
+v2 inference-only on the bound snapshot (its bound refresh choices; the inference-only run acquired nothing) - the
+member equals the existing `deliver` the same way (28/31 byte-identical, the 3 path files identical modulo the
+output root) and its 15 scope tables are byte-identical to the combined refresh run's
+(`refresh_split_equals_combined_scope_tables: true`).
+
 Refresh changed the scores relative to keep (polygon_predictions sha differ for 0/6/12m; max |Δ probability_crisis|
 0.09 at 0m), so the converter outputs reached `deliver` in both routes.
 
@@ -30,8 +36,10 @@ Refresh changed the scores relative to keep (polygon_predictions sha differ for 
 - subset files (scratch, sha256): fews_panel.csv c4ea0a8c..., fews_geometry.geojson 0321e148..., fews_roster.csv
   95bacff6..., fews_census.csv 316ea45e... (census restricted to KEN/UGA: country tables cover exactly the census
   countries), ipcch_panel.csv bc5d315e..., ipcch_geometry.geojson 5f6cf0f6..., ipcch_roster.csv b2da4a77...;
-  raw exports acled_export.csv 9faf0c53..., wfp_export.csv 5d1c627b... (full digests: `parity-results.json` and
-  `sha256sum` below).
+  raw exports acled_export.csv 9faf0c53..., wfp_export.csv 5d1c627b.... Full digests and sizes of every scratch input,
+  plus the baseline digests of the 36 bootstrap source files (assets and package members) they were cut from:
+  `parity-inputs-manifest.json` (written by the script; `parity-results.json` holds the model hashes and the
+  per-mode scope-table digests).
 - origin 2026-07 (panel and family histories end 2026-04; preparation extracts 2026-05..07).
 
 ## Method
@@ -57,12 +65,13 @@ Refresh changed the scores relative to keep (polygon_predictions sha differ for 
 ```
 cd "<OP>/.trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp4/fews-parity"
 PYTHONDONTWRITEBYTECODE=1 ~/.venvs/fewsnet-test-lock-20261022/bin/python fews_parity.py ~/scratch/ipcch-fews-parity
-#  -> parity-results.json (committed), parity-run5.log (on disk; *.log is gitignored)
+#  -> parity-results.json + parity-inputs-manifest.json (committed), parity-run7.log (on disk; *.log is gitignored)
 sha256sum ~/scratch/ipcch-fews-parity/subset/* ~/scratch/ipcch-fews-parity/raw/*
 #  outputs: ~/scratch/ipcch-fews-parity/world-{keep,refresh}/reference/            (existing deliver)
 #           ~/scratch/ipcch-fews-parity/world-{keep,refresh}/gcs/parity-root/deliveries/parity-<mode>-fewsnet/  (v2)
 ```
 
-Script: `fews_parity.py` (this directory). Results: `parity-results.json`. Runs 1-4 were the fixture census fix
-(full census vs 2 scored countries -> the existing country-key check refused the member, correctly) and the
-comparison-normalization fixes; run 5 is the result above.
+Script: `fews_parity.py` (this directory). Results: `parity-results.json`, inputs: `parity-inputs-manifest.json`.
+Runs 1-4 were the fixture census fix (full census vs 2 scored countries -> the existing country-key check refused the
+member, correctly) and the comparison-normalization fixes; run 5 the keep/refresh result; runs 6-7 added the
+refresh-split mode and the input manifest (run 7 = the committed results).
