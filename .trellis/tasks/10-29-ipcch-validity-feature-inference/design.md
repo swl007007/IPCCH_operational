@@ -96,3 +96,14 @@ Status: planning draft, not execution approval. Requirements and accepted decisi
 ## Convergence verification
 
 Apply the final convergence corrections in prd.md to request validation, snapshot replacement, lock acquisition, all current publication paths and candidate promotion. Tests must cover each corrected boundary, including concurrent CAS failure without automatic retry, preservation of activation through legacy FEWS publication, fixture acceptance validation, and event-free covered ACLED weeks.
+
+
+## CP4 implementation clarifications — Supervisor 2026-10-30
+
+- Add versioned, manifest-hash-covered `system_provenance.json` per system: execution month, feature origin, own targets/horizons/leads, mode, contract and model/package identity. Validate each member against its own provenance, including inherited-of-inherited members; never substitute the outer delivery origin or skip inherited integrity checks. Legacy members retain explicit legacy validation fallback.
+- Preserve FEWS exact headers. New IPCCH exported predictions retain `mode` as R36 requires; use contract-aware exact IPCCH headers for the new fields instead of stripping them to satisfy September headers. Other provenance may use metadata. Preserve downstream file names and existing system directories.
+- Inherited per-system diagnostic/fill sidecars remain byte-identical. Build shared reports by explicit schema normalization and merge with each system's own temporal provenance from verified metadata; do not require old/new sidecars to have identical headers or relabel inherited months.
+- Legacy v1 FEWS-only keeps its request shape. After activation, the inherited IPCCH package is copied and verified from the exact current member, not replaced by unused submitted legacy IPCCH package fields. Its own identity and member hashes govern verification. Preserve new-contract provenance through subsequent legacy FEWS publication.
+- Isolate every smoke output under a separate trusted output root: runs, deliveries, candidates, conflicts, locks, releases and pointer. Existing production paths remain unchanged.
+- v1/v2 share per-system locks for systems actually executed (generation/inference), not merely inherited. Hold through publication. Acquire selected locks in deterministic order; if one is busy, reject the whole request and conditionally release only this attempt's acquired locks. Release by owner/generation; never evict stale locks automatically. Other-system inheritance binds to expected current generation; pointer CAS conflict fails without rebase.
+- New-contract candidate promote/resume is rejected; activation follows successful real current publication and survives FEWS-only updates. All CP4 work is local/fake-store verification, no actual production publication.

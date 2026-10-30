@@ -120,3 +120,10 @@ Pinned runner review30passed: namespace admission precedes resolution/context; t
 4db4fd5 source/test diff inspected: provider factory called with exact extended windows frame; regression exercises2027 real rainfall provider and demonstrates old frame failure. Supervisor locked generation+transport run28passed17.86s (working tree was concurrently receiving reporting edits; exact seasonal fix pinned in reviewed diff, do not call whole tree frozen). Prior full executor log independently inspected820passed122.02s.
 
 Supervisor releases LOCAL CP4 implementation/tests after reporting fix, while CP3 acceptance remains pending complete runtime/FEWS adapters and evidence. This is parallel work authorization, not checkpoint acceptance. No production deployment/current mutation or Audit. CP5 must use actual accepted model combination.
+
+
+## Actual-weight local integration artifact verification — 2026-10-30
+
+Supervisor read run2 result/receipt/scripts and independently rehashed all three prediction CSVs under R/scratch/h2h8h14-final/cp3-real-integration/run2/predictions. Each has6226 unique exact accepted roster IDs, area_id equality, finite q2..q5, expected .2 threshold plus reverse cumulative-max binary predictions, valid phases1..5, O2026-08, targets2026-10/2027-04/2027-10, correct H/lead, real mode, bound batch/combination, population reference<=O. All passed. Initial verifier used wrong cummax direction; corrected against existing inference.py before concluding, no product defect.
+
+Result reports57delivered+9runtime receipts,8public HEAD404, no climate provider calls. Accepted envelope03b93842/package18b91d45/handoffe6e3ebc6 match CP2. This is local real-mode integration only: placeholder runtime image/environment metadata, read-only fake-store reopen, no live EE/container/publication or CP5 smoke claim. Receipt reporting fix016d90d independently11passed12.64s; finding closed.
