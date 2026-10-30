@@ -49,3 +49,7 @@ Independent entrypoint/delivery-job suite 32 passed, but targeted probes confirm
 ## Dual publication ec7a31b — scoped verification
 
 No new defect found in e48ca51..ec7a31b. Per-system publication IDs separate delivery/release/candidate/conflict paths and preserve request identity. Focused publication/release/runner suite independently passed 31 tests. Both members reaching current and FEWS failure retaining IPCCH were verified. Candidate behavior inspected; dedicated dual-candidate integration evidence remains absent. Review also found pre-existing run_v2 overall status `partial` inconsistent with PRD `partial_success`; executor instructed to align literal and tests. Actual FEWS adapter remains pending.
+
+## Entrypoint repair closure 6f07b2f
+
+Three e48ca51 findings and the partial_success contract mismatch are closed. Independent read-only source/dataflow inspection and locked entrypoint/runner suite: 18 passed in 33.03s, including smoke zero-real-read, accepted real inference-only with forbidden acquisition initialization, and persisted saved-ACLED report after climate failure. Scoped source/test bytes matched the commit. Real current lookup follows structural validation and remains before full reference admission; no smoke production lookup remains. No consumer requiring former flattened status fields was found. Mutation replay/full-suite/live checks were not repeated. FEWS adapter and legacy integration remain pending; CP4 is not accepted.

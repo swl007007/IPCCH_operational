@@ -24,7 +24,7 @@ NOW = datetime(2026, 10, 31, 12, tzinfo=timezone.utc)
 REQ = {"uri": "gs://ops/requests/r/run_manifest.json", "generation": "1", "sha256": "a" * 64}
 
 
-def seed_legacy_fews(store, origin="2026-09"):
+def seed_legacy_fews(store, origin="2026-09", binary=None):
     """A legacy v1 release whose delivery holds a FEWS NET member (own origin, targets origin + 0/6/12)."""
     files = {"fewsnet/polygons.geojson": '{"type":"FeatureCollection","features":[]}\n',
              "fewsnet/country_population_reference.csv": "ISO3,country\nAAA,Aland\n",
@@ -41,7 +41,11 @@ def seed_legacy_fews(store, origin="2026-09"):
     base = f"{PROD}/deliveries/legacy-fews"
     for rel, text in files.items():
         store.write_text(f"{base}/{rel}", text, if_generation_match=0)
-    inv = json.dumps({"files": [{"path": r, "sha256": hashlib.sha256(t.encode()).hexdigest()} for r, t in sorted(files.items())]})
+    for rel, data in (binary or {}).items():                    # e.g. pickled FEWS NET model packages
+        store.write_bytes(f"{base}/{rel}", data, if_generation_match=0)
+    shas = {**{r: hashlib.sha256(t.encode()).hexdigest() for r, t in files.items()},
+            **{r: hashlib.sha256(d).hexdigest() for r, d in (binary or {}).items()}}
+    inv = json.dumps({"files": [{"path": r, "sha256": shas[r]} for r in sorted(shas)]})
     meta = store.write_text(f"{base}/manifest.json", inv, if_generation_match=0)
     manifest_ref = {"uri": f"{base}/manifest.json", "generation": meta.generation, "sha256": hashlib.sha256(inv.encode()).hexdigest()}
     record = {"run_id": "legacy-fews", "origin_month": origin, "manifest": manifest_ref, "archive": {"uri": "x"},
@@ -228,3 +232,15 @@ def test_one_run_publishing_both_systems_uses_unique_artifacts_and_chains_its_ow
         rec = pub.read_current(store, PROD, "prod")["record"]
         assert rec["run_id"] == "two-sys-ipcch" and rec["systems"]["fewsnet"]["origin_month"] == "2026-09"   # IPCCH kept
         assert store.get_metadata(f"{PROD}/prod/releases/two-sys-fewsnet/release.json") is None
+
+
+def test_binary_legacy_fews_package_files_are_inherited_byte_for_byte(tmp_path, package):
+    """Pickled FEWS NET model packages are not text: the v2 delivery moves exact bytes (no UTF-8 decoding)."""
+    import pickle
+    blob = pickle.dumps({"model": [0.1, 0.2]}, protocol=4) + bytes(range(256))
+    kw = real_inputs(scored_batch(tmp_path, package))
+    store = LocalObjectStore(tmp_path / "releases")
+    seed_legacy_fews(store, binary={"fewsnet/model_package/0m/predictor.pkl": blob})
+    out = publish(store, kw, "ipcch-bin", pub.read_current(store, PROD, "prod")["generation"], tmp=tmp_path)
+    assert out["status"] == "published"
+    assert store.read_bytes(f"{PROD}/deliveries/ipcch-bin-ipcch/fewsnet/model_package/0m/predictor.pkl") == blob

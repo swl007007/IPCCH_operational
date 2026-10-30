@@ -101,11 +101,14 @@ def validate_delivery_request(
     request_uri: str,
     request_generation: str,
     expected_release_namespace: str | None = None,
+    new_contract_inherit: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     """Structurally validate one request read from ``request_uri`` at ``request_generation``.
 
     The request object's own identity comes from the event (URI + generation); the
-    request never carries a checksum of itself.
+    request never carries a checksum of itself. ``new_contract_inherit`` (default none): systems whose
+    ``execution.inherit`` source is bound later to a new-contract member of the current release and checked
+    under its own recorded months (FCC/R63) instead of the same-origin rule.
     """
     if not isinstance(data, Mapping):
         raise DeliveryManifestError("request must be a JSON object")
@@ -134,7 +137,8 @@ def validate_delivery_request(
         raise DeliveryManifestError("a resolved request is a remote-update intent bound to its prepared snapshot")
     # A resolved request names its exact initial intent: the same run's request at one generation.
     intent_uri = request_uri.replace("/resolved_requests/", "/requests/") if resolved_match else None
-    execution = _execution(data["execution"], origin, intent_uri=intent_uri) if "execution" in data else None
+    execution = (_execution(data["execution"], origin, intent_uri=intent_uri, new_contract_inherit=new_contract_inherit)
+                 if "execution" in data else None)
     if data["prepared_snapshot"] is None and not (execution and execution["remote_update"]):
         raise DeliveryManifestError("prepared_snapshot may be null only in a remote-update intent")
     if resolved_match and (data["prepared_snapshot"] is None or not execution["remote_update"]):
@@ -170,7 +174,8 @@ INHERIT_FIELDS = ("source_delivery_id", "origin_month", "manifest", "archive")
 PUBLICATIONS = ("candidate", "current")
 
 
-def _execution(value: Any, origin: str, *, intent_uri: str | None = None) -> Mapping[str, Any]:
+def _execution(value: Any, origin: str, *, intent_uri: str | None = None,
+               new_contract_inherit: tuple[str, ...] = ()) -> Mapping[str, Any]:
     """Selected steps: remote update on/off, the systems scored now, and the accepted same-origin
     delivery each unselected system is inherited from. Nothing is ever enabled implicitly.
     ``intent_uri`` (resolved requests only): ``execution.intent`` must pin that initial request."""
@@ -196,7 +201,8 @@ def _execution(value: Any, origin: str, *, intent_uri: str | None = None) -> Map
     for system, source in inherit.items():
         source = _object(source, INHERIT_FIELDS, f"execution.inherit.{system}")
         _text(source["source_delivery_id"], f"execution.inherit.{system}.source_delivery_id")
-        if _month(source["origin_month"], f"execution.inherit.{system}.origin_month") != origin:
+        month = _month(source["origin_month"], f"execution.inherit.{system}.origin_month")
+        if month != origin and system not in new_contract_inherit:
             raise DeliveryManifestError(f"execution.inherit.{system} must have the same origin month {origin}")
         _ref(source["manifest"], f"execution.inherit.{system}.manifest")
         _ref(source["archive"], f"execution.inherit.{system}.archive")

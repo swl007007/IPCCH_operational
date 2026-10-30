@@ -916,6 +916,42 @@ def download(args, cfg, cloud):
 
 
 RECEIPT_SCHEMA = "operator-candidate-receipt-v1"
+
+
+def reject_new_contract_candidate(cfg, cloud, run_id, record=None):
+    """Existing promote/resume never take a new-contract (v2) candidate: it is not promotable; publishing needs a new
+    inference-only current submission (R66, FCC)."""
+    from cloud.ipcch import publication as pub
+
+    root, namespace = f"gs://{cfg['bucket']}", cfg["namespace"]
+    v2 = [f"{root}/{namespace}/candidates/{name}/candidate.json"
+          for name in (run_id, *(f"{run_id}-{s}" for s in pub.SYSTEMS))]
+    if (record or {}).get("schema") == pub.RELEASE_SCHEMA or any(cloud.latest(uri) for uri in v2):
+        raise ValueError(f"run {run_id} has a new-contract (v2) candidate; it is not promotable - submit a new "
+                         "inference-only request with publication=current")
+
+
+def bind_promotion(cfg, cloud, run_state, record):
+    """A legacy candidate binds at promotion to the pointer it replaces: after activation it cannot carry IPCCH (R37),
+    and every inherited source must be that release's member (FCC)."""
+    from cloud.ipcch import publication as pub
+    from cloud.orchestrator.delivery_job import MIGRATION, _ref_identity
+
+    root = f"gs://{cfg['bucket']}"
+    pointer = cloud.latest(pub.pointer_uri(root, cfg["namespace"]))
+    if pointer and "release_record_generation" not in pointer[0]:
+        snapshot = {"record": None}            # a pre-generation legacy pointer is never an activated (v2) release
+    else:
+        snapshot = pub.read_current(cloud.store, root, cfg["namespace"])
+    scored = (record.get("execution") or {}).get("scored_systems", list(pub.SYSTEMS))
+    if "ipcch" in scored and pub.activation(snapshot["record"]):
+        raise ValueError(MIGRATION)
+    current = pub.members(snapshot["record"])
+    inherit = ((run_state.get("request_body") or {}).get("execution") or {}).get("inherit") or {}
+    for system, source in inherit.items():
+        member = current.get(system)
+        if member is None or _ref_identity(source["manifest"]) != _ref_identity(member["delivery"]["manifest"]):
+            raise ValueError(f"candidate inherits {system} from a source that is not the current release's member")
 HOLD_SCHEMA = "maintenance-hold-v1"
 SHARED_WORKFLOW = "oct-delivery-trigger"
 
@@ -935,6 +971,7 @@ def verify_candidate(args, cfg, cloud):
     out = Path(args.download).resolve()
     downloaded = read(out.parent / f"{out.name}.download.json")
     found = status(cfg, args.run_id, cloud)["candidate"]
+    reject_new_contract_candidate(cfg, cloud, args.run_id, found and found["record"])
     if downloaded["kind"] != "candidate" or not found or found["ref"] != downloaded["record"]:
         raise ValueError("download is not this run's current candidate record")
     record = found["record"]
@@ -1429,6 +1466,7 @@ def promote(args, cfg, cloud=None, runner=gcloud_json):
         raise ValueError("this operation does not hold admission")
     receipt = read(args.receipt)
     found = status(cfg, args.run_id, cloud)["candidate"]
+    reject_new_contract_candidate(cfg, cloud, args.run_id, found and found["record"])
     if (receipt.get("schema_version") != RECEIPT_SCHEMA or receipt["status"] != "passed"
             or receipt["run_id"] != args.run_id or not found or receipt["candidate"] != found["ref"]
             or receipt["manifest"] != found["record"]["manifest"] or receipt["archive"] != found["record"]["archive"]):
@@ -1445,6 +1483,7 @@ def promote(args, cfg, cloud=None, runner=gcloud_json):
         current = cloud.latest(pointer_uri)
         if (current[1]["generation"] if current else "0") != expected:
             raise ValueError(f"current pointer is not the expected predecessor generation {expected}")
+        bind_promotion(cfg, cloud, run_state, found["record"])
         if _manifest_sha(staged) != receipt["manifest"]["sha256"]:
             raise ValueError("staged fallback is not the verified candidate")
         backup = directory / "predecessor-normal-config.json"

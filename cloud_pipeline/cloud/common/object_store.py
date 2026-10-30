@@ -22,6 +22,12 @@ class ObjectStore(Protocol):
 
     def read_text(self, uri: str) -> str: ...
 
+    def write_bytes(
+        self, uri: str, data: bytes, *, if_generation_match: str | int | None = None
+    ) -> ObjectMetadata: ...
+
+    def read_bytes(self, uri: str) -> bytes: ...
+
     def get_metadata(self, uri: str) -> ObjectMetadata | None: ...
 
     def list(self, prefix_uri: str) -> list[str]: ...
@@ -61,6 +67,23 @@ class LocalObjectStore:
 
     def read_text(self, uri: str) -> str:
         return self._path_for_uri(uri).read_text(encoding="utf-8")
+
+    def write_bytes(
+        self, uri: str, data: bytes, *, if_generation_match: str | int | None = None
+    ) -> ObjectMetadata:
+        """Exact bytes (binary members such as pickled model packages; no text decoding)."""
+        self._check_generation(uri, if_generation_match)
+        path = self._path_for_uri(uri)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+        next_generation = self._generations.get(uri, self._retired.get(uri, 0)) + 1
+        self._generations[uri] = next_generation
+        if uri not in self._write_order:
+            self._write_order.append(uri)
+        return ObjectMetadata(uri=uri, generation=str(next_generation))
+
+    def read_bytes(self, uri: str) -> bytes:
+        return self._path_for_uri(uri).read_bytes()
 
     def get_metadata(self, uri: str) -> ObjectMetadata | None:
         generation = self._generations.get(uri)
@@ -145,6 +168,30 @@ class GCSObjectStore:
     def read_text(self, uri: str) -> str:
         bucket_name, blob_name = _parse_gcs_uri(uri)
         return self.client.bucket(bucket_name).blob(blob_name).download_as_text()
+
+    def write_bytes(
+        self, uri: str, data: bytes, *, if_generation_match: str | int | None = None
+    ) -> ObjectMetadata:
+        """Exact bytes (binary members such as pickled model packages; no text decoding)."""
+        bucket_name, blob_name = _parse_gcs_uri(uri)
+        blob = self.client.bucket(bucket_name).blob(blob_name)
+        try:
+            blob.upload_from_string(
+                data,
+                content_type="application/octet-stream",
+                if_generation_match=_coerce_generation(if_generation_match),
+                timeout=600,
+                retry=_write_retry(),
+            )
+        except Exception as exc:
+            if _is_generation_precondition_error(exc):
+                raise GenerationConflict(str(exc)) from exc
+            raise
+        return ObjectMetadata(uri=uri, generation=str(blob.generation))
+
+    def read_bytes(self, uri: str) -> bytes:
+        bucket_name, blob_name = _parse_gcs_uri(uri)
+        return self.client.bucket(bucket_name).blob(blob_name).download_as_bytes()
 
     def delete(self, uri: str, *, if_generation_match: str | int) -> None:
         """Delete exactly the given generation; a moved or absent object raises ``GenerationConflict``.

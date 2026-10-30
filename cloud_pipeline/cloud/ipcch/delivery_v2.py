@@ -97,7 +97,7 @@ def inherit(out: Path, store: ObjectStore, root_uri: str, system: str, member: M
     for rel in paths:
         if rel not in files:
             raise DeliveryError(f"inherited {system} file {rel} is not in the source inventory")
-        data = store.read_text(f"{base}/{rel}").encode("utf-8")
+        data = store.read_bytes(f"{base}/{rel}")
         if _sha_bytes(data) != files[rel]:
             raise DeliveryError(f"inherited {system} file {rel} differs from the source inventory")
         dst = Path(out) / rel
@@ -171,7 +171,7 @@ def upload(store: ObjectStore, root_uri: str, run_id: str, out: Path) -> dict[st
     files = sorted(p for p in Path(out).rglob("*") if p.is_file() and p.name != "manifest.json")
     for p in [*files, Path(out) / "manifest.json"]:
         rel = str(p.relative_to(out)).replace(os.sep, "/")
-        meta = store.write_text(f"{base}/{rel}", p.read_bytes().decode("utf-8"), if_generation_match=0)
+        meta = store.write_bytes(f"{base}/{rel}", p.read_bytes(), if_generation_match=0)
     data = (Path(out) / "manifest.json").read_bytes()
     return {"uri": f"{base}/manifest.json", "generation": meta.generation, "sha256": _sha_bytes(data)}
 
@@ -180,7 +180,7 @@ def _read_pinned(store: ObjectStore, ref: Mapping[str, str]) -> bytes:
     meta = store.get_metadata(ref["uri"])
     if meta is None or str(meta.generation) != str(ref["generation"]):
         raise DeliveryError(f"{ref['uri']}#{ref['generation']} is not the stored object")
-    data = store.read_text(ref["uri"]).encode("utf-8")
+    data = store.read_bytes(ref["uri"])
     if _sha_bytes(data) != ref["sha256"]:
         raise DeliveryError(f"{ref['uri']} sha256 differs from its reference")
     return data
@@ -195,7 +195,7 @@ def verify_delivery(store: ObjectStore, *, delivery_ref: Mapping[str, str], snap
     base = delivery_ref["uri"].rsplit("/", 1)[0]
     with tempfile.TemporaryDirectory(prefix="v2-verify-") as tmp:
         for entry in manifest["files"]:
-            data = store.read_text(f"{base}/{entry['path']}").encode("utf-8")
+            data = store.read_bytes(f"{base}/{entry['path']}")
             if _sha_bytes(data) != entry["sha256"]:
                 raise DeliveryError(f"stored {entry['path']} differs from the delivery manifest")
             dst = Path(tmp) / entry["path"]

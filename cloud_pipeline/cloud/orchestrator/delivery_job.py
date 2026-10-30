@@ -324,7 +324,7 @@ def run_system(spec_path: Path, system: str, out: Path) -> None:
     deliver(origin=spec["origin"], out=out, prepared_families=manifest["families"],
             prepared_features=load_prepared_features(manifest, reader),
             ipcch_panel=Path(assets["ipcch"]["history_panel"]), ipcch_template=Path(assets["ipcch"]["fixed_features"]),
-            ipcch_package_root=Path(spec["packages"]["ipcch"]), fewsnet_raw=Path(assets["fewsnet"]["history_panel"]),
+            ipcch_package_root=Path(spec["packages"]["ipcch"]) if spec["packages"]["ipcch"] else None, fewsnet_raw=Path(assets["fewsnet"]["history_panel"]),
             fewsnet_packages={int(h): Path(p) for h, p in spec["packages"]["fewsnet"].items()},
             census={s: Path(assets[s]["country_reference"]) for s in ("fewsnet", "ipcch")},
             geometry={s: Path(assets[s]["geometry"]) for s in ("fewsnet", "ipcch")}, wfp=wfp, acled=acled,
@@ -480,15 +480,26 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
     from cloud.orchestrator.delivery_manifest import validate_delivery_request
     from cloud.orchestrator.delivery_run import publish, run_once
 
+    # structural validation with the IPCCH inherit origin deferred to the binding below (R63 for a new-contract
+    # member; the unchanged v1 same-origin rule for a legacy member)
     request = validate_delivery_request(json.loads(request_bytes), request_uri=request_ref["uri"],
                                         request_generation=request_ref["generation"],
-                                        expected_release_namespace=release_namespace)
+                                        expected_release_namespace=release_namespace, new_contract_inherit=("ipcch",))
 
     from cloud.orchestrator.delivery_manifest import selected_systems
 
     execution = request.get("execution") or {}
     if execution and not execution["inference_systems"]:
         raise AcceptanceError("a prepare-only intent never runs delivery")
+    bound = bind_current(store, output_root, request)            # R37 cutover + FCC inheritance, before any work
+    selected = selected_systems(request)
+    if bound["v2_route"]:
+        compute = lambda: _compute_fews_member(request, request_ref, request_bytes, bound, output_root=output_root,
+                                               store=store, downloader=downloader, work=work, image_uri=image_uri,
+                                               score=score)
+        return _locked(store, output_root, selected, request["run_id"],
+                       lambda: run_once(store, output_root, run_id=request["run_id"], request_ref=request_ref,
+                                        compute=compute))
 
     def compute():
         spec = prepare_inputs(request, downloader, work, image_uri=image_uri)
@@ -519,6 +530,7 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
         def validate():
             if packaged["validation"] != "passed":
                 raise AcceptanceError("delivery validation did not pass; the release pointer is unchanged")
+            require_not_activated(store, output_root, request)     # publication-time R37 recheck (cutover mid-run)
 
         outputs = f"{output_root.rstrip('/')}/deliveries/{request['run_id']}/"
         if execution.get("publication") == "candidate":
@@ -534,7 +546,117 @@ def execute(*, request_ref: Mapping[str, str], request_bytes: bytes, output_root
                           release_record=record, validate=validate)
         return {"outputs": outputs, "release": release}
 
-    return run_once(store, output_root, run_id=request["run_id"], request_ref=request_ref, compute=compute)
+    return _locked(store, output_root, selected, request["run_id"],
+                   lambda: run_once(store, output_root, run_id=request["run_id"], request_ref=request_ref, compute=compute))
+
+
+MIGRATION = ("the new IPCCH pipeline is active (first real new-contract IPCCH publication to current): legacy v1 "
+             "requests that include IPCCH are rejected; submit IPCCH through the v2 manifest "
+             "(schema ipcch-fewsnet-request-v2). Legacy FEWS NET-only requests remain supported (R37)")
+
+
+def _ref_identity(ref: Mapping[str, Any] | None) -> tuple:
+    return tuple(str((ref or {}).get(k)) for k in ("uri", "generation", "sha256"))
+
+
+def require_not_activated(store, output_root: str, request: Mapping[str, Any]) -> None:
+    from cloud.ipcch import publication as pub
+    from cloud.orchestrator.delivery_manifest import selected_systems
+
+    if "ipcch" in selected_systems(request):
+        snapshot = pub.read_current(store, output_root, request["release"]["namespace"])
+        if pub.activation(snapshot["record"]):
+            raise AcceptanceError(MIGRATION)
+
+
+def bind_current(store, output_root: str, request: Mapping[str, Any]) -> dict[str, Any]:
+    """Bind a v1 request to the current release before any work (R37, FCC):
+
+    * after formal activation a request that includes IPCCH (alone or mixed) is rejected with the migration message;
+    * every ``execution.inherit`` source (current publication; a legacy-record candidate binds at promotion) names exactly that system's member of the current release (its delivery
+      manifest); a legacy member keeps the v1 same-origin rule, a new-contract IPCCH member is named with its own
+      feature origin (and its manifest also as the archive: v2 deliveries have no archive);
+    * a FEWS NET-only request against a v2 release record takes the v2 member route (FEWS member written by the
+      existing deliver, IPCCH member inherited from the bound snapshot, activation carried); an IPCCH-scoring request
+      cannot inherit from a v2 record (the v2 manifest is required)."""
+    from cloud.ipcch import publication as pub
+    from cloud.orchestrator.delivery_manifest import selected_systems
+
+    snapshot = pub.read_current(store, output_root, request["release"]["namespace"])
+    record = snapshot["record"]
+    selected = selected_systems(request)
+    if "ipcch" in selected and pub.activation(record):
+        raise AcceptanceError(MIGRATION)
+    execution = request.get("execution") or {}
+    current = pub.members(record)
+    v2_record = record is not None and record.get("schema") == pub.RELEASE_SCHEMA
+    # a legacy-record candidate binds its inheritance when it is promoted (pipeline.promote, against the pointer it
+    # replaces); every current publication and every v2-record route binds now
+    deferred = execution.get("publication") == "candidate" and not v2_record
+    for system, source in ({} if deferred else execution.get("inherit") or {}).items():
+        member = current.get(system)
+        if member is None or _ref_identity(source["manifest"]) != _ref_identity(member["delivery"]["manifest"]):
+            raise AcceptanceError(f"execution.inherit.{system} must name exactly the {system} member of the current "
+                                  f"release (pointer generation {snapshot['generation']}); any other source is rejected")
+        if member.get("contract") == pub.IPCCH_CONTRACT:
+            if source["origin_month"] != member.get("feature_origin"):
+                raise AcceptanceError(f"execution.inherit.{system}.origin_month must be the member's feature origin "
+                                      f"{member.get('feature_origin')}")
+            if _ref_identity(source["archive"]) != _ref_identity(member["delivery"]["manifest"]):
+                raise AcceptanceError(f"execution.inherit.{system}.archive must repeat the member's delivery manifest "
+                                      "(a v2 delivery has no archive)")
+        else:
+            if source["origin_month"] != request["origin_month"]:
+                raise AcceptanceError(f"execution.inherit.{system} must have the same origin month {request['origin_month']}")
+            if _ref_identity(source["archive"]) != _ref_identity(member.get("archive")):
+                raise AcceptanceError(f"execution.inherit.{system}.archive is not the current release's archive")
+    if v2_record and "ipcch" in selected and execution.get("inherit"):
+        raise AcceptanceError("the current release holds v2 members; a request scoring IPCCH that inherits FEWS NET "
+                              "must use the v2 manifest")
+    return {"snapshot": snapshot, "v2_route": v2_record and tuple(selected) == ("fewsnet",)}
+
+
+def _locked(store, output_root: str, systems, run_id: str, run: Callable[[], dict]) -> dict:
+    """v1 and v2 share the per-system locks of the systems this run EXECUTES, held through publication (R50)."""
+    from cloud.ipcch import locks
+
+    held = locks.acquire(store, output_root, list(systems), run_id)
+    try:
+        result = run()
+    finally:
+        problems = locks.release(store, held)
+    if problems:
+        result = {**result, "lock_release_problems": problems}
+    return result
+
+
+def _compute_fews_member(request, request_ref, request_bytes, bound, *, output_root, store, downloader, work,
+                         image_uri, score) -> dict:
+    """Legacy v1 FEWS NET-only against a v2 release: the existing FEWS scoring (only the FEWS packages are installed;
+    the unused submitted legacy IPCCH package is never materialised), published as a v2 FEWS member inheriting the
+    bound snapshot's IPCCH member byte-for-byte with its own provenance and the activation carried forward."""
+    from cloud.ipcch import fews_v2
+    from cloud.ipcch import release_v2
+
+    fews_only = {**request, "models": [m for m in request["models"] if m["system"] == "fewsnet"]}
+    spec = prepare_inputs(fews_only, downloader, work, image_uri=image_uri)
+    request_path = work / "request.json"
+    request_path.write_bytes(request_bytes)
+    spec_path = work / "spec.json"
+    spec_path.write_text(json.dumps({**spec, "request_path": str(request_path)}, default=str))
+    publication = (request.get("execution") or {}).get("publication", "current")
+    published = release_v2.publish_member_run(
+        store, output_root, system="fewsnet", namespace=request["release"]["namespace"], run_id=request["run_id"],
+        mode="real", publication=publication,
+        expected_pointer_generation=str(request["release"]["expected_pointer_generation"]),
+        request_ref=request_ref, workdir=str(work),
+        write_member=lambda out: fews_v2.write_member(
+            out, score=score, spec_path=spec_path, origin=request["origin_month"], packages=spec["packages"]["fewsnet"],
+            mode="real", source={"request_schema": "fewsnet-ipcch-delivery-request-v1",
+                                 "prepare_id": request["prepared_snapshot"]["prepare_id"]}))
+    if published["status"] == "publication_failed":
+        raise AcceptanceError(f"publication failed: {published.get('reason', published.get('stage'))}")
+    return {"outputs": f"{output_root.rstrip('/')}/deliveries/{published['publication_id']}/", "release": published}
 
 
 DISPATCH_SCHEMA = "delivery-dispatch-record-v1"

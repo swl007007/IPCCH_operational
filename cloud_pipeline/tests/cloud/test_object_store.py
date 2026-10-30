@@ -31,6 +31,9 @@ class FakeBlob:
     def download_as_text(self):
         return self.client.objects[(self.bucket_name, self.name)]
 
+    def download_as_bytes(self):
+        return self.client.objects[(self.bucket_name, self.name)]
+
     def rewrite(self, source_blob, if_generation_match=None):
         self.upload_from_string(
             source_blob.download_as_text(), if_generation_match=if_generation_match
@@ -122,3 +125,14 @@ def test_gcs_object_store_uses_storage_client_generation_and_prefix_semantics():
     )
     assert copied.generation == "1"
     assert store.read_text("gs://bucket/released/202604/a.txt") == "alpha"
+
+
+@pytest.mark.parametrize("make", ["local", "gcs"])
+def test_exact_bytes_round_trip_with_generation_preconditions(tmp_path, make):
+    """Binary members (pickled packages) are stored and read as exact bytes, create-only when asked."""
+    store = LocalObjectStore(tmp_path) if make == "local" else GCSObjectStore(FakeStorageClient())
+    blob = bytes(range(256))
+    meta = store.write_bytes("gs://bucket/d/model.pkl", blob, if_generation_match=0)
+    assert meta.generation == "1" and store.read_bytes("gs://bucket/d/model.pkl") == blob
+    with pytest.raises(GenerationConflict):
+        store.write_bytes("gs://bucket/d/model.pkl", b"other", if_generation_match=0)
