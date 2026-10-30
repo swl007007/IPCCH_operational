@@ -368,8 +368,11 @@ class Generation:
         pop, prep = initial.read_population(self.store, self.root, self.binding, O)
         self.report["population"] = prep
         frames = {}
+        self.inputs = inputs
         for h in bt.HORIZONS:
             X, ledger = asm.assemble(inputs, h, admin, np.full(len(admin), origin_ord + h, dtype=np.int64))
+            if h == 2:
+                self.ledger = ledger                       # origin-side provenance (horizon-independent)
             ident = pd.DataFrame({"admin_code": roster, "area_id": roster})
             ident = ident.merge(pop, on="admin_code", how="left", validate="one_to_one")
             frames[h] = pd.concat([ident[list(bt.IDENTITY)].reset_index(drop=True), X.reset_index(drop=True)], axis=1)
@@ -402,10 +405,15 @@ class Generation:
             "geometry": self.report.get("geometry"), "inputs": {k: steps[k] for k in ("acled", "research_inputs",
                                                                                     "history_snapshot", "wfp")},
         }
+        from cloud.ipcch import provenance
+        feature_provenance = provenance.section_provenance(self.inputs, horizons, self.ledger,
+                                                           order=self.binding.feature_order, origin=bt.add_months(M, -2),
+                                                           roster=roster, retained_refs=refs)
         batch_id = bt.new_batch_id(req["run_id"], M)
         ref, manifest = bt.write_batch(
             self.store, self.batch_root, batch_id=batch_id, run_id=req["run_id"], mode=req["mode"], execution_month=M,
             binding=self.binding, horizons=horizons, roster=roster, generation=generation,
             acceptance=acceptance[["name", "sha256", "acceptor", "accepted_at", "kind"]].to_dict("records"),
-            retained_refs=refs, generated_at=self.now().strftime("%Y-%m-%dT%H:%M:%SZ"))
+            retained_refs=refs, generated_at=self.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            feature_provenance=feature_provenance)
         return {"batch_id": batch_id, "manifest_ref": ref}

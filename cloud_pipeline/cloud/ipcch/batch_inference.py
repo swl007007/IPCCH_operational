@@ -169,6 +169,16 @@ def load_batch(store: ObjectStore, ref: Mapping[str, str], *, batch_root: str, b
     return manifest, frames
 
 
+def read_feature_provenance(store: ObjectStore, manifest: Mapping[str, Any], *, batch_root: str) -> bytes:
+    """The batch's feature provenance sidecar at its canonical path, pinned generation and sha256."""
+    entry = manifest.get("feature_provenance")
+    if entry is None:
+        raise BatchValidationError("batch has no feature provenance sidecar")
+    if entry["file"] != bt.batch_paths(batch_root, manifest["batch_id"])["provenance"]:
+        raise BatchValidationError(f"feature provenance {entry['file']} is not this batch's canonical path (R48)")
+    return read_pinned(store, {"uri": entry["file"], "generation": entry["generation"], "sha256": entry["sha256"]}).encode()
+
+
 def score_batch(manifest: Mapping[str, Any], frames: Mapping[int, pd.DataFrame], package_root: str,
                 binding: bd.Binding) -> dict[int, dict[str, Any]]:
     from model_pipeline.ipcch_launch_runtime.feature_contract import apply_feature_contract

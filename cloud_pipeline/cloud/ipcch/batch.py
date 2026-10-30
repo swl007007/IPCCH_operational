@@ -83,6 +83,7 @@ def bound_roster(store: ObjectStore, root: StoreRoot, binding: bd.Binding, roste
 def batch_paths(batch_root: str, batch_id: str) -> dict[str, str]:
     base = f"{batch_root}/feature_batches/{batch_id}"
     return {"base": base, "manifest": f"{base}/manifest.json", "summary": f"{base}/summary.json",
+            "provenance": f"{base}/feature_provenance.csv",
             **{str(h): f"{base}/h{h:02d}.csv" for h in HORIZONS}}
 
 
@@ -112,7 +113,7 @@ def _check_frame(frame: pd.DataFrame, h: int, order: tuple[str, ...], roster: li
 def write_batch(store: ObjectStore, batch_root: str, *, batch_id: str, run_id: str, mode: str, execution_month: str,
                 binding: bd.Binding, horizons: Mapping[int, pd.DataFrame], roster: Iterable[Any],
                 generation: Mapping[str, Any], acceptance: list[Mapping[str, Any]], retained_refs: Mapping[str, Any],
-                generated_at: str) -> tuple[dict[str, str], dict[str, Any]]:
+                generated_at: str, feature_provenance: pd.DataFrame | None = None) -> tuple[dict[str, str], dict[str, Any]]:
     """Write one immutable batch; returns (manifest reference {uri, generation, sha256}, manifest)."""
     if mode != binding.mode:
         raise BatchError(f"a {mode} batch cannot be written with a {binding.mode} combination binding (R36)")
@@ -156,6 +157,12 @@ def write_batch(store: ObjectStore, batch_root: str, *, batch_id: str, run_id: s
         "horizons": files, "generation": dict(generation), "acceptance_consumed": list(acceptance),
         "retained_inputs": dict(retained_refs),
     }
+    if feature_provenance is not None:                 # row/section temporal provenance (no fill), hash-covered
+        ptext = feature_provenance.to_csv(index=False, lineterminator="\n")
+        meta = store.write_text(paths["provenance"], ptext, if_generation_match=0)
+        manifest["feature_provenance"] = {"file": paths["provenance"], "generation": meta.generation,
+                                          "sha256": hashlib.sha256(ptext.encode()).hexdigest(),
+                                          "rows": int(len(feature_provenance))}
     text = json.dumps(manifest, indent=1, sort_keys=True, default=str) + "\n"
     summary = {k: manifest[k] for k in ("batch_id", "run_id", "mode", "designation", "execution_month", "feature_origin",
                                         "generated_at", "combination")}

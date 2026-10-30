@@ -51,7 +51,7 @@ def finalize_entries(bundle_dir, acceptor="research lead", accepted_at="2026-10-
     return entries
 
 
-def make_scoring_package(root, order, combination_id="ipcch-test-scoring", seed=0):
+def make_scoring_package(root, order, combination_id="ipcch-test-scoring", seed=0, evidence_areas=("11", "12", "13")):
     """A loadable model-combination package (tiny XGBoost q2..q5 per scope on the 527-name order, the real contract and
     metadata formats) for runtime scoring tests."""
     import numpy as np
@@ -82,8 +82,28 @@ def make_scoring_package(root, order, combination_id="ipcch-test-scoring", seed=
             model.save_model(str(d / f"{target}_model.json"))
         for p in d.iterdir():
             files[f"scope_{scope}m/{p.name}"] = {"sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+        # model-matched evidence in the real package formats (training resubstitution, identity-bound per scope)
+        ev = root / "evidence"
+        ev.mkdir(exist_ok=True)
+        pid, period = f"{combination_id}/scope_{scope}m", f"2014-01..{cutoffs[scope]}"
+        ident = f"{pid},{scope},training_resubstitution,{period}"
+        area = "polygon_id,sample_count,error_count,model_package_id,horizon_months,basis,period\n" + "".join(
+            f"{a},{6 + k},{k % 3},{ident}\n" for k, a in enumerate(evidence_areas))
+        months = [f"2020-{m:02d}" for m in range(1, 7)]
+        residual = ("polygon_id,target_month,phase2_worse_residual,phase3_worse_residual,phase4_worse_residual,"
+                    "phase5_worse_residual,model_package_id,horizon_months,basis,period\n") + "".join(
+            f"{a},{m},{0.01 * (i - 2)},{0.02 * (j - 3)},0.0,-0.001,{ident}\n"
+            for i, a in enumerate(evidence_areas) for j, m in enumerate(months))
+        evidence = {}
+        for part, text in (("area", area), ("residual", residual)):
+            name = f"evidence/ipcch_{scope}m_resubstitution_{part}.csv"
+            (root / name).write_text(text)
+            files[name] = {"sha256": hashlib.sha256(text.encode()).hexdigest()}
+            evidence[part] = {"file": name, "sha256": files[name]["sha256"]}
         scopes[scope] = {"model_horizon_months": h, "public_lead_months": lead, "training_cutoff": cutoffs[scope],
-                         "feature_schema_sha256": files[f"scope_{scope}m/feature_contract.csv"]["sha256"]}
+                         "feature_schema_sha256": files[f"scope_{scope}m/feature_contract.csv"]["sha256"],
+                         "evidence": {**evidence, "basis": "training_resubstitution", "period": period,
+                                      "model_package_id": pid, "horizon_months": int(scope)}}
     (root / bd.PACKAGE_MANIFEST).write_text(json.dumps({"kind": "ipcch_model_combination", "combination_id": combination_id,
                                                         "contract_version": "test-v1", "status": "candidate",
                                                         "files": files, "scopes": scopes}))

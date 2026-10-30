@@ -1,0 +1,102 @@
+"""Task 10-29: new-contract IPCCH delivery member from a scored smoke batch (R18, R31, R32, R36, R47, R61) and its
+verifier (re-hash, roster/finite/periods/mode/package identity)."""
+
+import json
+
+import pandas as pd
+import pytest
+
+from cloud.ipcch import batch_inference as bi
+from cloud.ipcch import binding as bd
+from cloud.ipcch import delivery_member as dm
+from cloud.ipcch import geography, initial
+from tests.cloud import ipcch_smoke_fixture as fx
+from tests.cloud.test_ipcch_assembly import ORDER, ROSTER
+from tests.cloud.test_ipcch_generation import SMOKE, generation, package, setup  # noqa: F401 (fixture)
+
+
+def scored_batch(tmp_path, package):
+    store, root, b, bundle = setup(tmp_path, package)
+    refs = fx.Refs()
+    out = generation(store, root, b, bundle, refs, fx.smoke_request(refs, tmp_path / "env.json", inference=True),
+                     tmp_path).run()
+    roster = [str(a) for a in ROSTER]
+    manifest, frames = bi.load_batch(store, out["manifest_ref"], batch_root=SMOKE, batch_id=out["batch_id"], mode="smoke",
+                                     execution_month="2027-03", binding=b, roster=roster)
+    scored = bi.score_batch(manifest, frames, str(package), b)
+    man = json.load(open(bundle / "handoff_manifest.json"))
+    fc, _ = geography.roster_geometries(str(bundle), man, roster)
+    ident = initial._read(store, root, "fixed/area_identity.csv")
+    return dict(manifest=manifest, scored=scored, binding=b, package_root=str(package),
+                feature_provenance=bi.read_feature_provenance(store, manifest, batch_root=SMOKE),
+                envelope_path=str(tmp_path / "env.json"), census_bytes=fx.COUNTRY_REFERENCE.encode(),
+                area_identity=ident, geometry=dm.geometry_geojson(fc), roster=roster)
+
+
+def test_member_tables_provenance_and_verification(tmp_path, package):
+    kw = scored_batch(tmp_path, package)
+    out = tmp_path / "delivery"
+    prov = dm.write_member(out, **kw)
+    assert prov["contract"] == dm.CONTRACT and prov["mode"] == "smoke" and prov["feature_origin"] == "2027-01"
+    assert [(h["model_horizon_months"], h["public_lead_months"], h["target_month"]) for h in prov["horizons"]] == \
+        [(2, 0, "2027-03"), (8, 6, "2027-09"), (14, 12, "2028-03")]
+    p0 = pd.read_csv(out / "scopes/0m/ipcch/polygon_predictions.csv", dtype=str)
+    assert tuple(p0.columns) == dm.V2_PREDICTION_HEADER and set(p0["mode"]) == {"smoke"}
+    assert set(p0["model_package_id"]) == {"ipcch-test-scoring/scope_0m"} and set(p0["target_period"]) == {"2027-03"}
+    c12 = pd.read_csv(out / "scopes/12m/ipcch/country_predictions.csv", dtype=str)
+    assert sorted(c12["ISO3"]) == ["AAA", "BBB"] and set(c12["target_period"]) == {"2028-03"}
+    conf = pd.read_csv(out / "scopes/6m/ipcch/country_confidence.csv", dtype=str)
+    assert conf["country_error_rate"].notna().all()                                   # from the package's own evidence
+    avail = pd.read_csv(out / "reports/ipcch_diagnostic_availability.csv", dtype=str)
+    assert set(avail["diagnostic_family"]) == {"polygon_training_errors", "country_confidence", "maximum_phase"}
+    assert avail["evidence_ref"].str.startswith("envelope:ipcch-test-scoring/envelope-v1/evidence/").all()
+    geo = json.loads((out / "ipcch/polygons.geojson").read_text())
+    assert [f["properties"]["polygon_id"] for f in geo["features"]] == ["11", "12", "13"]       # exact roster, no 1315
+    assert dm.verify_member(out, expected={"execution_month": "2027-03", "feature_origin": "2027-01", "mode": "smoke",
+                                           "provenance_sha256": prov["provenance_sha256"]})["system"] == "ipcch"
+
+
+@pytest.mark.parametrize("tamper,match", [
+    (lambda out: (out / "scopes/6m/ipcch/polygon_predictions.csv").write_text("x\n"), "member files changed"),
+    (lambda out: (out / "scopes/6m/ipcch/extra.csv").write_text("x\n"), "unlisted"),
+    (lambda out: (out / "ipcch/polygons.geojson").unlink(), "missing"),
+])
+def test_tampered_or_incomplete_members_do_not_verify(tmp_path, package, tamper, match):
+    kw = scored_batch(tmp_path, package)
+    out = tmp_path / "delivery"
+    dm.write_member(out, **kw)
+    tamper(out)
+    with pytest.raises(dm.MemberError, match=match):
+        dm.verify_member(out)
+
+
+def test_member_requires_all_three_horizons_and_census_coverage(tmp_path, package):
+    kw = scored_batch(tmp_path, package)
+    with pytest.raises(dm.MemberError, match="R18"):
+        dm.write_member(tmp_path / "a", **{**kw, "scored": {h: v for h, v in kw["scored"].items() if h != 14}})
+    thin = fx.COUNTRY_REFERENCE.rsplit("BBB", 1)[0].rsplit("\n", 1)[0] + "\n"
+    with pytest.raises(dm.MemberError, match="lacks ISO3"):
+        dm.write_member(tmp_path / "b", **{**kw, "census_bytes": thin.encode()})
+    with pytest.raises(dm.MemberError, match="mode"):
+        out = tmp_path / "c"
+        prov = dm.write_member(out, **kw)
+        dm.verify_member(out, expected={**prov, "mode": "real"})
+
+
+
+def test_feature_fill_sidecar_is_actual_no_fill_row_section_provenance(tmp_path, package):
+    kw = scored_batch(tmp_path, package)
+    out = tmp_path / "delivery"
+    dm.write_member(out, **kw)
+    a = pd.read_csv(out / "reports/ipcch_feature_fill_audit.csv", dtype=str, keep_default_na=False)
+    assert len(a) == len(a[["polygon_id", "section"]].drop_duplicates()) and set(a["polygon_id"]) == {"11", "12", "13"}
+    assert set(a["fill_method"]) == {"none"} and set(a["imputation_rule"]) == {"none"}
+    gpp = a[a["section"] == "GPP_mean"].set_index("polygon_id")
+    assert set(gpp["dependency_end"]) == {"2027-01"} and set(gpp["latest_observation"]) == {"2026-12"}   # O unpublished
+    assert (gpp["missing_h02"].astype(int) > 0).all()                        # value at O missing, not filled
+    acled = a[a["section"] == "acled_agg_events_battles"]
+    assert set(acled["dependency_end"]) == {"2026-12"} and set(acled["observation_kind"]) == {"month_lag1"}  # A = O-1
+    assert set(a[a["section"] == "static29"]["observation_kind"]) == {"static"}
+    assert int(a["feature_count"].astype(int).groupby(a["polygon_id"]).sum().iloc[0]) == 527
+    with pytest.raises(dm.MemberError, match="feature provenance"):
+        dm.write_member(tmp_path / "x", **{**kw, "feature_provenance": b""})

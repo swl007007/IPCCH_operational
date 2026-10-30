@@ -50,6 +50,11 @@ def build_bundle(base):
         f = pd.read_csv(p, dtype=str, keep_default_na=False)
         f[f["season_year"].astype(int) <= DELIVERED_THROUGH].to_csv(p, index=False, lineterminator="\n")
         man["files"][rel] = {"sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+    ident = bundle / "fixed/area_identity.csv"                # delivery join key: fixture iso3_reference (R32)
+    f = pd.read_csv(ident, dtype=str, keep_default_na=False)
+    f["iso3_reference"] = f["admin_code"].map({"11": "AAA", "12": "AAA", "13": "BBB"})
+    f.to_csv(ident, index=False, lineterminator="\n")
+    man["files"]["fixed/area_identity.csv"] = {"sha256": hashlib.sha256(ident.read_bytes()).hexdigest()}
     man["files"].pop("fixed/geometry/g.shp")
     (bundle / "fixed" / "geometry" / "g.shp").unlink()
     for rel, text in {**ACLED_TABLES, "fixed/population_reference.csv": POPULATION,
