@@ -133,3 +133,37 @@ def test_a_lock_replaced_between_reads_is_never_adopted_or_deleted(tmp_path, whe
         else:
             locks.release_owned(racing, REAL, "run-A")
     assert json.loads(store.read_text(uri))["run_id"] == "run-B"                    # B's lock intact
+
+
+class FailingMetadata:
+    """Store wrapper whose metadata lookup of one lock fails (transport error during the holder lookup)."""
+
+    def __init__(self, inner, uri):
+        self.inner, self.uri = inner, uri
+
+    def __getattr__(self, name):
+        return getattr(self.inner, name)
+
+    def get_metadata(self, uri):
+        if uri == self.uri:
+            raise OSError("metadata lookup failed")
+        return self.inner.get_metadata(uri)
+
+
+def test_a_failed_holder_lookup_rolls_back_fresh_locks_and_keeps_adopted_ones(tmp_path):
+    """Residual 3 on 32d4eef: acquiring [fewsnet, ipcch] - fewsnet fresh, the ipcch holder lookup fails - releases the
+    fresh fewsnet lock, keeps the cause, and never touches an adopted lock or another run's lock."""
+    store = LocalObjectStore(tmp_path / "gcs")
+    other = locks.acquire(store, REAL, ["ipcch"], "run-B")
+    failing = FailingMetadata(store, locks.lock_uri(REAL, "ipcch"))
+    with pytest.raises(locks.LockAcquisitionError, match="metadata lookup failed"):
+        locks.acquire(failing, REAL, ["fewsnet", "ipcch"], "run-A", adopt_own=True)
+    assert store.get_metadata(locks.lock_uri(REAL, "fewsnet")) is None                 # fresh lock rolled back
+    assert json.loads(store.read_text(locks.lock_uri(REAL, "ipcch")))["run_id"] == "run-B"
+    mine = locks.acquire(store, SMOKE, ["fewsnet"], "run-A")        # held by run-A since an earlier step
+    store.write_text(locks.lock_uri(SMOKE, "ipcch"), '{"run_id": "run-B"}\n', if_generation_match=0)
+    with pytest.raises(locks.LockAcquisitionError):                  # fewsnet adopted, ipcch lookup fails
+        locks.acquire(FailingMetadata(store, locks.lock_uri(SMOKE, "ipcch")), SMOKE, ["fewsnet", "ipcch"], "run-A",
+                      adopt_own=True)
+    assert [l.generation for l in locks.owned(store, SMOKE, "run-A")] == [l.generation for l in mine]   # kept
+    assert locks.release(store, other) == []

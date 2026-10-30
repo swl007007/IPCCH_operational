@@ -1003,6 +1003,27 @@ def main(argv=None) -> int:
         outcome = release_run(GCSObjectStore(client), request_uri=args.request_uri, output_root=args.output_root)
         print(json.dumps(outcome, indent=2))
         return 0 if outcome["released"] else 1
+    # the resolve job runs a remote run that holds its admission locks: ANY terminal error from the very first
+    # request read on releases them (run identity from the exact request URI, before anything is read)
+    owner = request_run_id(args.request_uri) if args.command == "resolve" else None
+    try:
+        return _main(args, client, GCSObjectStore, GcsPinnedReader, storage)
+    except BaseException as exc:
+        if owner:
+            _cleanup_locks(exc, GCSObjectStore(client), args.output_root, owner)
+        raise
+
+
+_REQUEST_URI = re.compile(r"^gs://[^/]+/requests/([a-z0-9][a-z0-9._-]{2,62})/run_manifest\.json$")
+
+
+def request_run_id(request_uri: str) -> str | None:
+    """The run id of an exact ``gs://<bucket>/requests/<run_id>/run_manifest.json`` URI (None otherwise)."""
+    match = _REQUEST_URI.fullmatch(request_uri or "")
+    return match.group(1) if match else None
+
+
+def _main(args, client, GCSObjectStore, GcsPinnedReader, storage) -> int:
     data = GcsPinnedReader(client).read_bytes(args.request_uri, args.request_generation)
     if data is None:
         raise AcceptanceError(f"request {args.request_uri}#{args.request_generation} not found")
@@ -1034,12 +1055,7 @@ def main(argv=None) -> int:
             return 0
         request_ref, data = resolved
     work = Path(args.work_dir)
-    try:
-        work.mkdir(parents=True, exist_ok=False)
-    except BaseException as exc:                    # resolved remote run: its admission locks are released
-        if args.command == "resolve":
-            _cleanup_locks(exc, GCSObjectStore(client), args.output_root, json.loads(data)["run_id"])
-        raise
+    work.mkdir(parents=True, exist_ok=False)
 
     def score(spec_path, name, out):
         subprocess.run([sys.executable, "-m", "cloud.orchestrator.delivery_job", "system", "--spec", str(spec_path),

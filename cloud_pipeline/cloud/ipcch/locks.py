@@ -95,6 +95,8 @@ def acquire(store: ObjectStore, mode_root: str, systems: Iterable[str], run_id: 
                 holder, generation = _stable_holder(store, uri)
             except LockConflict as changed:
                 raise LockConflict(system, changed.holder, release(store, fresh)) from exc
+            except Exception as lookup:                   # the holder lookup failed: roll back THIS call's fresh locks
+                raise LockAcquisitionError(system, lookup, release(store, fresh)) from exc
             if adopt_own and holder == run_id and generation is not None:
                 held.append(Lock(system, uri, generation, run_id))   # owner and generation of the same object
                 continue

@@ -43,6 +43,7 @@ main:
           - earth_engine_project: ${sys.get_env("EARTH_ENGINE_PROJECT")}
           - batch_parent: ${sys.get_env("BATCH_PARENT")}
           - batch_service_account: ${sys.get_env("BATCH_SERVICE_ACCOUNT")}
+          - submission_error: null   # set by the submission handlers (their ``e`` is local to each except block)
           - poll_seconds: ${int(sys.get_env("PREPARE_POLL_SECONDS"))}
           - max_polls: ${int(sys.get_env("PREPARE_MAX_POLLS"))}
           - bucket: ${event.data.bucket}
@@ -194,6 +195,9 @@ main:
         except:
           as: e
           steps:
+            - keep_prepare_error:
+                assign:
+                  - submission_error: ${e}
             - prepare_submission_outcome:
                 switch:
                   # a definitive rejection of the submission: nothing runs, so the owner releases its locks
@@ -240,6 +244,9 @@ main:
         except:
           as: e
           steps:
+            - keep_resolve_error:
+                assign:
+                  - submission_error: ${e}
             - resolve_submission_outcome:
                 switch:
                   - condition: ${default(map.get(e, "code"), 0) in [400, 401, 403, 404]}
@@ -337,7 +344,7 @@ main:
           connector_params:
             skip_polling: true
     - rejected_submission:
-        raise: ${e}
+        raise: ${submission_error}
     # Reached only from a create-only claim conflict.
     - read_claim:
         call: googleapis.storage.v1.objects.get

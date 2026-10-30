@@ -157,8 +157,14 @@ class Interpreter:
             try:
                 self._step(body["try"], scope)
             except (HttpError, WorkflowRaised) as error:
-                scope[body["except"]["as"]] = _wrap(error.value)
-                self._block(body["except"]["steps"], scope)
+                # Workflows semantics: the ``as`` variable (and anything first created in the handler) is local to the
+                # except block; assignments to variables of the enclosing scope persist
+                local = dict(scope)
+                local[body["except"]["as"]] = _wrap(error.value)
+                try:
+                    self._block(body["except"]["steps"], local)
+                finally:
+                    scope.update({k: v for k, v in local.items() if k in scope and k != body["except"]["as"]})
             return body.get("next")
         if "call" in body:
             args = self._eval(body.get("args", {}), scope)
@@ -707,3 +713,37 @@ def test_delivery_rejected_by_a_changed_current_release_releases_the_admission_l
                    image_uri="unused", store=store, downloader=None, work=tmp_path / "w",
                    score=lambda *a: pytest.fail("scored"), package=None, upload=None)
     assert _owned(store) == []
+
+
+def test_cli_resolve_releases_the_admission_locks_when_the_request_read_fails(tmp_path, monkeypatch):
+    """Residual 2 on 32d4eef: `delivery_job resolve` releases the run's admission locks on a failure of its very first
+    request read (run identity from the exact request URI); the error is preserved; another owner is untouched."""
+    import google.cloud.storage as gcs_storage
+
+    import cloud.common.object_store as object_store
+    import cloud.orchestrator.prepare as prepare_module
+    store, cloud, generation = _world(tmp_path)
+    data = store.read_text(f"gs://{REQUEST_BUCKET}/{NAME}").encode()
+    ref = {"uri": f"gs://{REQUEST_BUCKET}/{NAME}", "generation": generation, "sha256": hashlib.sha256(data).hexdigest()}
+    dj.dispatch_step("admission", intent_ref=ref, intent_bytes=data, output_root="gs://data", store=store,
+                     reader=StoreReader(store))
+    other = locks.acquire(store, "gs://other-root", ["fewsnet"], "other-run")
+    assert _owned(store) == ["fewsnet", "ipcch"]
+
+    class BrokenReader:
+        def __init__(self, client):
+            pass
+
+        def read_bytes(self, uri, generation):
+            raise RuntimeError("request read failed")
+    monkeypatch.setattr(gcs_storage, "Client", lambda *a, **k: object())
+    monkeypatch.setattr(object_store, "GCSObjectStore", lambda client: store)
+    monkeypatch.setattr(prepare_module, "GcsPinnedReader", BrokenReader)
+    with pytest.raises(RuntimeError, match="request read failed"):
+        dj.main(["resolve", "--request-uri", ref["uri"], "--request-generation", generation, "--output-root",
+                 "gs://data", "--release-namespace", "dual-system", "--image-uri", "img", "--work-dir",
+                 str(tmp_path / "w")])
+    assert _owned(store) == []
+    assert [l.generation for l in locks.owned(store, "gs://other-root", "other-run")] == [other[0].generation]
+    assert dj.request_run_id("gs://b/requests/r-1/run_manifest.json") == "r-1"
+    assert dj.request_run_id("gs://b/resolved_requests/r-1/run_manifest.json") is None

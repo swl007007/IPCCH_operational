@@ -94,3 +94,13 @@ Independent scoped suite 35 passed. Exact prepared-manifest source binding, FEWS
 Current split/combined and legacy/v2 equality tests copy fixture scorer output and use invalid placeholder refresh bytes; they do not prove converter/scorer equivalence. Executor agreed to actual deliver fixture with valid raw refresh inputs, local shipped assets and no retraining. No R60 acceptance until that evidence exists.
 
 Executor briefly over-applied /home/swl007007/.claude/CLAUDE.md close-audit repeat-repair rule to this Supervisor review. It confirmed no newer human override; existing execution-protocol governs, work resumed. No Trellis Audit or change to completion gates.
+
+## Residual verification 32d4eef
+
+A archive convention and R60 keep projection P1 close: isolated locked 89 tests plus 10 boundary checks passed; actual bootstrap ACLED/WFP shared retained files pass FEWS projection and unchanged both-system hashes. B deterministic lock-owner/generation race closes: before/after body replacement tests preserve the other owner's lock. Lock/workflow suite 52 passed; specified runtime errors now covered in dispatch but remaining C/D gaps:
+
+- workflow.yaml:340 raises e outside its except scope (:195/241); Workflows exception variables are block-local. Test interpreter leaks e into shared scope, masking deployment failure. Use predeclared outer error and correct test scoping.
+- delivery_job CLI resolve:1006 request read occurs before cleanup; injected RuntimeError leaves admitted locks. Cover CLI boundary using safely derived run identity.
+- locks.acquire:95 catches only LockConflict during holder lookup; metadata OSError leaves earlier fresh locks. Roll back fresh acquisitions on arbitrary lookup failure; preserve adopted/other-owner locks and error.
+
+Independent pinned reproductions confirmed; Executor notified. C/D and actual FEWS scorer parity remain pending. No live cloud deployment or full-suite repetition by reviewers.
