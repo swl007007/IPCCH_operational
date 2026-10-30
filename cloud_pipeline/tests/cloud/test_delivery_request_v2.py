@@ -21,7 +21,7 @@ KEEP = {"action": "keep"}
 
 
 def ipcch_gen():
-    return {"model_combination": {"combination_id": "ipcch-final-h2h8h14-c1", "envelope": ref(1)},
+    return {"model_combination": {"combination_id": "ipcch-final-h2h8h14-c1", "envelope": ref(1)}, "country_reference": ref(21),
             "acled": KEEP, "research_inputs": {f: KEEP for f in v2.RESEARCH_FAMILIES}, "history_snapshot": KEEP,
             "wfp": KEEP}
 
@@ -35,6 +35,8 @@ def request(**over):
             "release": {"namespace": "prod", "expected_pointer_generation": "17"},
             "operator": "ops@example.org", "prepared_at": "2026-10-30T05:00:00Z"}
     base.update(over)
+    if base.get("ipcch") and not base["operations"]["ipcch_inference"]:
+        base["ipcch"] = {k: v for k, v in base["ipcch"].items() if k != "country_reference"}   # inference input only
     return base
 
 
@@ -91,7 +93,7 @@ def test_smoke_selects_ipcch_only_and_its_own_namespace():
 
 def test_inference_only_needs_exactly_one_batch_and_no_refresh():
     inf = request(operations=ops(ipcch_inference=True),
-                  ipcch={"model_combination": ipcch_gen()["model_combination"],
+                  ipcch={"model_combination": ipcch_gen()["model_combination"], "country_reference": ref(21),
                          "feature_batch": {"batch_id": "batch-2026-10a", "manifest": ref(3)}})
     assert check(inf)["ipcch"]["feature_batch"]["batch_id"] == "batch-2026-10a"
     missing = copy.deepcopy(inf)
@@ -211,9 +213,9 @@ def test_request_identity_and_reference_verification():
                                smoke_namespace="smoke", current_ipcch_execution_month=None)
     out = check(request())
     refs = dict(v2.iter_object_refs(out))
-    assert set(refs) == {"runtime.environment_manifest", "ipcch.model_combination.envelope"}
+    assert set(refs) == {"runtime.environment_manifest", "ipcch.model_combination.envelope", "ipcch.country_reference"}
     table = {(r["uri"], r["generation"]): r["sha256"] for r in refs.values()}
-    assert len(v2.verify_reference_identities(out, lambda u, g: table.get((u, g)))) == 2
+    assert len(v2.verify_reference_identities(out, lambda u, g: table.get((u, g)))) == 3
     with pytest.raises(ReferenceIdentityError, match="sha256 mismatch"):
         v2.verify_reference_identities(out, lambda u, g: "f" * 64)
     with pytest.raises(ReferenceIdentityError, match="not found"):
@@ -324,3 +326,15 @@ def test_r39_month_rules_apply_to_ipcch_operations_only():
     assert check(inf_only)["derived"]["fewsnet_origin_month"] == "2026-10"         # the prepared snapshot's own origin
     ipcch_future = request(execution_month="2026-12")
     refused(ipcch_future, "later than the current UTC month")
+
+
+def test_country_reference_is_an_inference_input_only():
+    data = request()
+    del data["ipcch"]["country_reference"]
+    refused(data, "needs ipcch.country_reference")
+    gen = request(operations=ops(ipcch_generation=True))
+    gen["ipcch"]["country_reference"] = ref(21)
+    refused(gen, "generation-only omits it")
+    bad = request()
+    bad["ipcch"]["country_reference"] = {"uri": "gs://ops-bucket/objects/", "generation": "1", "sha256": "a" * 64}
+    refused(bad, "ipcch.country_reference")

@@ -80,6 +80,7 @@ def test_smoke_generation_then_inference_only_from_the_named_batch(tmp_path, pac
     inf = raw(fx.smoke_request(refs, tmp_path / "env.json", run_id="smoke-run-2"))
     inf["operations"] = {**inf["operations"], "ipcch_generation": False, "ipcch_inference": True}
     inf["ipcch"] = {"model_combination": inf["ipcch"]["model_combination"],
+                    "country_reference": refs.put("country_reference.csv", fx.COUNTRY_REFERENCE),
                     "feature_batch": {"batch_id": batch_id, "manifest": mref}}
     out2 = run_v2.run_request(inf, admit_kwargs={**SMOKE_ADMIT, "request_uri": "gs://ops-smoke/requests/smoke-run-2/run_manifest.json",
                                                 "resolve": resolve}, ipcch_context=context)
@@ -145,6 +146,7 @@ def test_misrouted_batch_and_refresh_refs_are_refused_before_any_resolve(tmp_pat
     inf = raw(fx.smoke_request(refs, tmp_path / "env.json", run_id="smoke-run-3"))
     inf["operations"] = {**inf["operations"], "ipcch_generation": False, "ipcch_inference": True}
     inf["ipcch"] = {"model_combination": inf["ipcch"]["model_combination"],
+                    "country_reference": refs.put("country_reference.csv", fx.COUNTRY_REFERENCE),
                     "feature_batch": {"batch_id": "ipcch-2027-03-smoke-run-1-abc", "manifest": real_manifest}}
     kw = {**SMOKE_ADMIT, "request_uri": "gs://ops-smoke/requests/smoke-run-3/run_manifest.json", "resolve": spy}
     with pytest.raises(v2.DeliveryRequestV2Error, match="outside the smoke batch namespace"):
@@ -171,3 +173,15 @@ def test_failed_inference_keeps_the_generated_batch_in_the_outcome(tmp_path, pac
     batch = ipcch["result"]["batch"]
     assert batch["batch_id"].startswith("ipcch-2027-03-smoke-run-1-") and batch["manifest_ref"]["uri"].endswith("manifest.json")
     assert "nonfinite" in ipcch["reason"]
+
+
+def test_smoke_country_reference_must_be_a_fixture_object(tmp_path, package):
+    store, refs, context, resolve = smoke_world(tmp_path, package)
+    touched = []
+    req = raw(fx.smoke_request(refs, tmp_path / "env.json", inference=True))
+    req["ipcch"]["country_reference"] = {"uri": "gs://ops-bucket/objects/ipcch_population.csv", "generation": "4",
+                                         "sha256": "c" * 64}                   # the real operational census
+    with pytest.raises(v2.DeliveryRequestV2Error, match="ipcch.country_reference .* outside the trusted smoke namespace"):
+        run_v2.run_request(req, admit_kwargs={**SMOKE_ADMIT, "resolve": lambda u, g: touched.append(u)},
+                           ipcch_context=context)
+    assert touched == []

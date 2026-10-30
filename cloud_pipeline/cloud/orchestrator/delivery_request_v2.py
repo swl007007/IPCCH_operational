@@ -177,7 +177,7 @@ def derived_months(execution_month: str) -> dict[str, Any]:
 
 def _ipcch(value: Any, ops: Mapping[str, bool]) -> dict[str, Any]:
     gen, inf = ops["ipcch_generation"], ops["ipcch_inference"]
-    allowed = ("model_combination", "feature_batch", *IPCCH_REFRESH_INPUTS)
+    allowed = ("model_combination", "feature_batch", "country_reference", *IPCCH_REFRESH_INPUTS)
     if not isinstance(value, Mapping) or set(value) - set(allowed) or "model_combination" not in value:
         raise DeliveryRequestV2Error(f"ipcch must hold model_combination and only {list(allowed)}")
     # The versioned combination envelope is authoritative (it binds the package, feature order, handoff bundle and
@@ -195,6 +195,14 @@ def _ipcch(value: Any, ops: Mapping[str, bool]) -> dict[str, Any]:
     elif "feature_batch" in value:
         raise DeliveryRequestV2Error("feature_batch is only for IPCCH inference-only; generation + inference consumes "
                                      "this run's batch and never an implicit or named older one (R5/R19)")
+    # The IPCCH country reference (existing delivery country-reference/report fields only) is an inference input:
+    # required whenever IPCCH inference is selected, absent for generation-only (Supervisor ruling 2026-10-30).
+    if inf:
+        if "country_reference" not in value:
+            raise DeliveryRequestV2Error("IPCCH inference needs ipcch.country_reference (pinned country reference)")
+        out["country_reference"] = _ref(value["country_reference"], "ipcch.country_reference")
+    elif "country_reference" in value:
+        raise DeliveryRequestV2Error("ipcch.country_reference is an inference input; generation-only omits it")
     if gen:
         missing = [k for k in IPCCH_REFRESH_INPUTS if k not in value]
         if missing:
@@ -334,6 +342,8 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
         refs.append(("ipcch.model_combination.envelope", ipcch["model_combination"]["envelope"]))
         if "feature_batch" in ipcch:
             refs.append(("ipcch.feature_batch.manifest", ipcch["feature_batch"]["manifest"]))
+        if "country_reference" in ipcch:
+            refs.append(("ipcch.country_reference", ipcch["country_reference"]))
         for key in ("acled", "history_snapshot"):
             if ipcch.get(key, {}).get("action") == "refresh":
                 refs.append((f"ipcch.{key}.file", ipcch[key]["file"]))

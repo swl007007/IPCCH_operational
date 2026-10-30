@@ -31,7 +31,12 @@ POPULATION = "admin_code,reference_period,population_estimate\n11,2026-04,1000.0
 CALENDAR = ("admin_code,s1_calendar_valid,s1_cross_year,s1_sos_month,s1_sos_day,s1_eos_month,s1_eos_day,"
             "s2_calendar_valid,s2_cross_year,s2_sos_month,s2_sos_day,s2_eos_month,s2_eos_day\n"
             + "".join(f"{a},1,0,3,1,6,30,1,0,8,1,10,31\n" for a in (11, 12, 13)))
-DELIVERED_THROUGH = 2026                         # like the accepted handoff: windows/seasons end with 2026
+DELIVERED_THROUGH = 2026
+# fixture country reference (the existing census columns), never the real operational asset (R48)
+COUNTRY_REFERENCE = ("ISO3,country,country_en,referenced_population,population_reference_year,population_reference_date,"
+                     "population_measure,population_source,population_vintage,population_source_url,census_genc_codes\n"
+                     "AAA,Aland,Aland,3000,2026,2026-01-01,total,fixture,fixture-v1,https://example.invalid/aaa,AA\n"
+                     "BBB,Bland,Bland,300,2026,2026-01-01,total,fixture,fixture-v1,https://example.invalid/bbb,BB\n")                         # like the accepted handoff: windows/seasons end with 2026
 
 
 def build_bundle(base):
@@ -116,6 +121,7 @@ def smoke_request(refs, envelope_path, execution_month="2027-03", run_id="smoke-
     keep = {"action": "keep"}
     envelope = refs.put("envelope.json", open(envelope_path, encoding="utf-8").read())
     ipcch = {"model_combination": {"combination_id": combination_id, "envelope": envelope},
+             **({"country_reference": refs.put("country_reference.csv", COUNTRY_REFERENCE)} if inference else {}),
              "acled": acled, "research_inputs": {f: keep for f in v2.RESEARCH_FAMILIES}, "history_snapshot": keep,
              "wfp": keep}
     data = {"schema_version": v2.SCHEMA_VERSION, "run_id": run_id, "mode": "smoke", "execution_month": execution_month,
