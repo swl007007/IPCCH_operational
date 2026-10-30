@@ -21,7 +21,7 @@ KEEP = {"action": "keep"}
 
 
 def ipcch_gen():
-    return {"model_combination": {"combination_id": "ipcch-final-h2h8h14-c1", "package_manifest": ref(1)},
+    return {"model_combination": {"combination_id": "ipcch-final-h2h8h14-c1", "envelope": ref(1)},
             "acled": KEEP, "research_inputs": {f: KEEP for f in v2.RESEARCH_FAMILIES}, "history_snapshot": KEEP,
             "wfp": KEEP}
 
@@ -211,7 +211,7 @@ def test_request_identity_and_reference_verification():
                                smoke_namespace="smoke", current_ipcch_execution_month=None)
     out = check(request())
     refs = dict(v2.iter_object_refs(out))
-    assert set(refs) == {"runtime.environment_manifest", "ipcch.model_combination.package_manifest"}
+    assert set(refs) == {"runtime.environment_manifest", "ipcch.model_combination.envelope"}
     table = {(r["uri"], r["generation"]): r["sha256"] for r in refs.values()}
     assert len(v2.verify_reference_identities(out, lambda u, g: table.get((u, g)))) == 2
     with pytest.raises(ReferenceIdentityError, match="sha256 mismatch"):
@@ -297,3 +297,29 @@ def test_integrated_preflight_executes_nothing_when_a_nested_fews_ref_is_invalid
     with pytest.raises(v2.DeliveryRequestV2Error):
         v2.admit(malformed, resolve=resolve, **kw)
     assert calls == []                                       # structural refusal: not even a reference lookup
+
+
+def test_model_combination_references_the_envelope_only():
+    data = request()
+    data["ipcch"]["model_combination"] = {"combination_id": "c", "package_manifest": ref(1)}
+    refused(data, "ipcch.model_combination")                                       # old shape refused
+    data["ipcch"]["model_combination"] = {"combination_id": "c", "envelope": ref(1), "package_manifest": ref(2)}
+    refused(data, "ipcch.model_combination")
+    out = check(request())
+    assert ("ipcch.model_combination.envelope", ref(1)) in v2.iter_object_refs(out)
+
+
+def test_r39_month_rules_apply_to_ipcch_operations_only():
+    """A real FEWS NET-only request keeps FEWS month handling: no IPCCH future-M rule, no IPCCH M-2 derivation."""
+    choice = {"action": "keep", "retained_snapshot": ref(9), "converter_contract":
+              {"version": "september-h5-raw-converter-v1", "sha256": "b" * 64}}
+    fews_only = request(operations=ops(fewsnet_generation=True, fewsnet_inference=True), ipcch=None,
+                        fewsnet={"acled": choice, "wfp": choice, "delivery": fews_delivery()}, execution_month="2026-12")
+    out = check(fews_only)                                                          # M later than the UTC month: allowed
+    assert "feature_origin" not in out["derived"] and out["derived"]["fewsnet_origin_month"] == "2026-12"
+    inf_only = request(operations=ops(fewsnet_inference=True), ipcch=None,
+                       fewsnet={"prepared_snapshot": {"prepare_id": "prep-2026-10", "origin_month": "2026-10", "manifest": ref(8)},
+                                "delivery": fews_delivery()})
+    assert check(inf_only)["derived"]["fewsnet_origin_month"] == "2026-10"         # the prepared snapshot's own origin
+    ipcch_future = request(execution_month="2026-12")
+    refused(ipcch_future, "later than the current UTC month")

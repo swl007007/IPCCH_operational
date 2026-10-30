@@ -27,6 +27,11 @@ ACLED_TABLES = {
     "fixed/acled/unit_iso3.csv": "admin_code,iso3\n11,AAA\n12,AAA\n13,BBB\n",
 }
 POPULATION = "admin_code,reference_period,population_estimate\n11,2026-04,1000.0\n12,2026-04,2000.0\n13,2025-01,300.0\n"
+# delivered calendar reproducing the fixture windows (s1 03-01..06-30, s2 08-01..10-31, no cross-year)
+CALENDAR = ("admin_code,s1_calendar_valid,s1_cross_year,s1_sos_month,s1_sos_day,s1_eos_month,s1_eos_day,"
+            "s2_calendar_valid,s2_cross_year,s2_sos_month,s2_sos_day,s2_eos_month,s2_eos_day\n"
+            + "".join(f"{a},1,0,3,1,6,30,1,0,8,1,10,31\n" for a in (11, 12, 13)))
+DELIVERED_THROUGH = 2026                         # like the accepted handoff: windows/seasons end with 2026
 
 
 def build_bundle(base):
@@ -35,9 +40,15 @@ def build_bundle(base):
     from shapely.geometry import box
 
     bundle, man = write_bundle(base, inputs(), fixture=True)
+    for rel in [r for r in man["files"] if r == "fixed/season_windows.csv" or r.startswith("history/climate_gs_")]:
+        p = bundle / rel                          # truncate at the delivered horizon: no pre-seeded future seasons
+        f = pd.read_csv(p, dtype=str, keep_default_na=False)
+        f[f["season_year"].astype(int) <= DELIVERED_THROUGH].to_csv(p, index=False, lineterminator="\n")
+        man["files"][rel] = {"sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
     man["files"].pop("fixed/geometry/g.shp")
     (bundle / "fixed" / "geometry" / "g.shp").unlink()
-    for rel, text in {**ACLED_TABLES, "fixed/population_reference.csv": POPULATION}.items():
+    for rel, text in {**ACLED_TABLES, "fixed/population_reference.csv": POPULATION,
+                      "fixed/season_calendar.csv": CALENDAR}.items():
         p = bundle / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text)
@@ -54,9 +65,18 @@ def build_bundle(base):
     return bundle, man
 
 
-def acled_export(origin_months):
-    """Weekly regional-aggregate rows (both regions) for every Saturday week overlapping the given months."""
-    weeks = pd.date_range("2025-12-27", "2027-01-30", freq="7D")
+def acled_interval(origin):
+    """Saturday on/before the first day of O-12 .. Friday on/after the last day of O (the R44 first-refresh lookback)."""
+    o = pd.Period(origin, "M")
+    first, last = (o - 12).start_time, o.end_time.normalize()
+    start = first - pd.Timedelta(days=(first.weekday() - 5) % 7)
+    end = last + pd.Timedelta(days=(4 - last.weekday()) % 7)
+    return start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d")
+
+
+def acled_export(start, end):
+    """Weekly regional-aggregate rows (both regions) for every Saturday week in [start, end]."""
+    weeks = pd.date_range(start, pd.Timestamp(end) - pd.Timedelta(days=6), freq="7D")
     rows = []
     for i, w in enumerate(weeks):
         for region, country, admin1 in (("R1", "Aland", "A1"), ("R1", "Aland", "A2"), ("R2", "Bland", "B1")):
@@ -86,11 +106,15 @@ class Refs:
         return data
 
 
-def smoke_request(refs, execution_month="2027-03", run_id="smoke-run-1", inference=False, batch=None):
-    acled = {"action": "refresh", "file": refs.put("acled.csv", acled_export(None)), "start": "2025-12-27",
-             "end": "2027-02-05", "regions": ["R1", "R2"]}
+def smoke_request(refs, envelope_path, execution_month="2027-03", run_id="smoke-run-1", inference=False,
+                  combination_id="ipcch-test-scoring"):
+    o = str(pd.Period(execution_month, "M") - 2)
+    start, end = acled_interval(o)
+    acled = {"action": "refresh", "file": refs.put("acled.csv", acled_export(start, end)), "start": start, "end": end,
+             "regions": ["R1", "R2"]}
     keep = {"action": "keep"}
-    ipcch = {"model_combination": {"combination_id": "ipcch-test-scoring", "package_manifest": refs.put("pm", "x")},
+    envelope = refs.put("envelope.json", open(envelope_path, encoding="utf-8").read())
+    ipcch = {"model_combination": {"combination_id": combination_id, "envelope": envelope},
              "acled": acled, "research_inputs": {f: keep for f in v2.RESEARCH_FAMILIES}, "history_snapshot": keep,
              "wfp": keep}
     data = {"schema_version": v2.SCHEMA_VERSION, "run_id": run_id, "mode": "smoke", "execution_month": execution_month,
@@ -101,7 +125,7 @@ def smoke_request(refs, execution_month="2027-03", run_id="smoke-run-1", inferen
                         "environment_manifest": refs.put("env", "e")},
             "release": {"namespace": "smoke", "expected_pointer_generation": "0"},
             "operator": "ops@example.org", "prepared_at": "2026-10-30T05:00:00Z"}
-    return v2.validate_request_v2(data, request_uri="gs://ops-smoke/requests/smoke-run-1/run_manifest.json",
+    return v2.validate_request_v2(data, request_uri=f"gs://ops-smoke/requests/{run_id}/run_manifest.json",
                                   request_generation="1", now_utc=datetime(2026, 10, 30, 6, tzinfo=timezone.utc),
                                   production_namespace="prod", smoke_namespace="smoke", current_ipcch_execution_month=None)
 

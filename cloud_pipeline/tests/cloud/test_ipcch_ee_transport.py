@@ -364,3 +364,41 @@ def test_real_providers_route_every_base_through_the_one_transport(tmp_path):
     with pytest.raises(cl.ClimateProcessingFailure, match="S2C3"):
         p.monthly("spi03")("chirps", "2026-08")
     assert [r["kind"] for r in t.receipts].count("missing_assets") >= 2
+
+
+def test_seasonal_factory_through_the_transport_saves_a_completed_season(tmp_path):
+    """Successful integration: real_providers -> SeasonalEEProvider -> EETransport (listing, private-asset metadata,
+    reserved create-only export, pinned read) -> climate.update_seasonal saves the season for the requested areas."""
+    from cloud.ipcch import climate_ee as ce
+    from cloud.ipcch import climate_ee_seasonal as cs
+    from cloud.ipcch import climate_run
+
+    def rows(selectors):
+        f = pd.DataFrame({"admin_code": ["1", "2"]})
+        for c in selectors[1:]:
+            f[c] = 1.0 if c == "calendar_valid" else 122.0 if c == "duration" else 10.0 if c.endswith("_area") \
+                else 5.0 if c.endswith("_num") else 1220.0
+        return f
+    gcs = FakeGcs()
+    refs = ce.AssetRefs(root="projects/p/assets/")
+    cpc = ce.TEMP_SOURCES["cpc"]["collection"]
+    ee = ProxyEE(gcs, listing=daily("2026-03-01", 160, cpc), data=FakeData(present=refs.required("temperature", "cpc")),
+                 rows=rows)
+    t = transport(gcs, ee)
+    windows = pd.DataFrame({"admin_code": ["1", "2"], "season_year": [2026, 2026], "season": ["s1", "s1"],
+                            "gs_start_date": ["2026-03-01", "2026-03-01"], "gs_end_date_exclusive": ["2026-07-01", "2026-07-01"]})
+    p = climate_run.real_providers(t, origin="2026-07", roster=["1", "2"], calendar_windows=windows,
+                                   asset_root="projects/p/assets/")
+    era5 = lambda source, year, season, win: cl.SourceOutcome(source, "unavailable", detail="not in this test")
+    fetch = lambda source, year, season, win: p.seasonal("gdd")(source, year, season, win) if source == "cpc" \
+        else era5(source, year, season, win)
+    table = VersionedTable(LocalObjectStore(tmp_path), StoreRoot("real", "gs://b/ipcch-v2/real"), cl.table_name("gdd", cl.SEASONAL))
+    rep = cl.update_seasonal(table, "gdd", origin="2026-07", roster=["1", "2"], windows=windows, fetch=fetch)
+    assert rep["saved"] == ["2026-s1"]
+    saved = cl.read_seasonal(table)[0]
+    assert saved["admin_code"].tolist() == ["1", "2"] and saved["value"].tolist() == [0.5, 0.5]
+    assert saved["n_sources"].tolist() == [1, 1]
+    kinds = [r["kind"] for r in t.receipts]
+    assert kinds == ["image_times", "missing_assets", "export", "read"]
+    assert "Image.reduceRegion" in ee.serializer.toJSON(ee.tasks[0].kw["collection"])        # per-feature temperature graph
+    assert ee.tasks[0].kw["description"].startswith("run-2026-10-a_ipcch_gs_temperature_cpc_2026_s1")

@@ -94,7 +94,32 @@ class Generation:
     def _table(self, name: str) -> VersionedTable:
         return VersionedTable(self.store, self.root, name)
 
+    def _tracked(self) -> list[str]:
+        """The retained tables generation may change (each saved change gets a runtime acceptance record, R45)."""
+        return sorted({*SERIES_FAMILIES.values(), NATIONAL_TABLE, SNAPSHOT_TABLE, ACLED_TABLE, gpp.HISTORY_TABLE,
+                       gpp.LEDGER_TABLE, nightlight.HISTORY_TABLE, wfp.HISTORY_TABLE,
+                       *[cl.table_name(b, t) for b in cl.BASES for t in (cl.MONTHLY, cl.SEASONAL)]})
+
+    def _heads(self) -> dict[str, Any]:
+        return {n: self._table(n).head()[0] for n in self._tracked()}
+
+    def _record_runtime(self, step: str, before: Mapping[str, Any]) -> None:
+        """R45: append a ``runtime`` acceptance record for every table this step saved (also after a failure, so saved
+        progress is recorded; a rerun that saves nothing appends nothing)."""
+        after, entries = self._heads(), []
+        for name, head in after.items():
+            old = before.get(name)
+            if head is not None and (old is None or head["version"] != old["version"]):
+                entries.append({"name": name, "sha256": head["sha256"], "kind": "runtime",
+                                "source": f"runtime {self.request['run_id']} {step} version {head['version']}",
+                                "acceptor": f"ipcch-runtime:{self.request['run_id']}",
+                                "accepted_at": self.now().strftime("%Y-%m-%d")})
+        if entries:
+            AcceptanceManifest(self.store, self.root).append(entries)
+            self.report.setdefault("runtime_acceptance", []).extend(e["name"] for e in entries)
+
     def _step(self, name: str, fn, summary=None):
+        before = self._heads()
         try:
             out = fn()
         except GenerationFailure:
@@ -104,7 +129,12 @@ class Generation:
             for attr in ("climate_run_report", "gpp_report", "nightlight_report"):
                 if hasattr(exc, attr):
                     self.report["steps"][name] = getattr(exc, attr)
+            try:
+                self._record_runtime(name, before)
+            except Exception as rexc:                         # reported, never masks the original failure
+                self.report["runtime_acceptance_error"] = f"{type(rexc).__name__}: {rexc}"
             raise GenerationFailure(name, exc, self.report) from exc
+        self._record_runtime(name, before)
         self.report["steps"][name] = summary(out) if summary else out
         return out
 
@@ -118,6 +148,10 @@ class Generation:
             raise StoreError(f"request mode {mode}, binding {self.binding.mode} and store {self.root.mode} must agree (R48)")
         if not req["operations"]["ipcch_generation"]:
             raise StoreError("the request does not select IPCCH feature generation")
+        try:                                                  # before any store access or mutation
+            bd.require_selection(self.binding, req["ipcch"]["model_combination"])
+        except bd.BindingError as exc:
+            raise StoreError(str(exc)) from exc
         self.report = {"run_id": req["run_id"], "mode": mode, "execution_month": M, "feature_origin": O, "steps": {},
                        "warnings": []}
         pairing = bd.require_store_pairing(self.store, self.root, self.binding)
@@ -138,8 +172,10 @@ class Generation:
         self._step("history_snapshot", lambda: self._snapshot(ipcch["history_snapshot"], O))
         self._step("wfp", lambda: wfp.apply(self.store, self.root, ipcch["wfp"], roster=roster,
                                             text=self._text(ipcch["wfp"])))
-        windows = initial._read(self.store, self.root, "fixed/season_windows.csv")
-        windows = windows.assign(season_year=windows["season_year"].astype(np.int64))
+        windows = self._step("season_windows", lambda: self._season_windows(roster, O),
+                             summary=lambda w: {"rows": int(len(w)), "through_season_year": int(w["season_year"].max()),
+                                                **self.report.get("season_windows_extension", {})})
+        self.windows = windows
         self._step("climate", lambda: climate_run.update_all(
             lambda b, t: self._table(cl.table_name(b, t)), origin=O, roster=roster, windows=windows,
             providers=self.climate_providers, declared_extra=declared))
@@ -154,6 +190,7 @@ class Generation:
         self._step("nightlight", lambda: nightlight.update_nightlight(self.store, self.root, origin=O, roster=roster,
                                                                       geometries=geoms, acquirer=self.nightlight_acquirer,
                                                                       run_id=req["run_id"], workdir=self.workdir))
+        self._coverage_warnings(O)
         horizons = self._step("assembly", lambda: self._assemble(tables, roster, O),
                               summary=lambda f: {str(h): {"rows": int(len(x)), "columns": int(x.shape[1])} for h, x in f.items()})
         return self._step("batch", lambda: self._write(horizons, roster, M))
@@ -185,7 +222,7 @@ class Generation:
                     "regions": list(choice["regions"])} if choice["action"] == "refresh" else {})}
 
     def _research(self, choices, roster):
-        out = {}
+        out = self.report["steps"].setdefault("research_inputs", {})     # per family, visible in a failure report
         for family, choice in choices.items():
             if family == "idp_national":
                 out[family] = self._national(choice)
@@ -237,6 +274,51 @@ class Generation:
             self.report["warnings"].append(warning)
         return {"action": choice["action"], "preparation_cutoff": None if head is None else head["record"].get("preparation_cutoff")}
 
+    def _season_windows(self, roster, O):
+        """Delivered windows extended through O's season year from the delivered calendar (the seasonal script's own
+        ``windows_from_calendar``); the calendar must reproduce the last delivered year exactly. The same frame feeds
+        the climate update and assembly (R33)."""
+        from cloud.ipcch.spi_spei_seasonal import windows_from_calendar
+
+        cols = ["admin_code", "season_year", "season", "gs_start_date", "gs_end_date_exclusive"]
+        stored = initial._read(self.store, self.root, "fixed/season_windows.csv")
+        stored = stored.assign(admin_code=stored["admin_code"].astype(str), season_year=stored["season_year"].astype(np.int64))
+        last, need = int(stored["season_year"].max()), int(O[:4])
+        if need <= last:
+            return stored[cols]
+        calendar = initial._read(self.store, self.root, "fixed/season_calendar.csv")
+        calendar = calendar.assign(admin_code=calendar["admin_code"].astype(str))
+        calendar = calendar[calendar["admin_code"].isin(set(roster))]
+        if set(calendar["admin_code"]) != set(roster):
+            raise StoreError("season calendar does not cover the roster; future windows cannot be derived (R33)")
+
+        def derive(years):
+            w = windows_from_calendar(calendar, years)
+            return w[w["gs_calendar_valid"] == 1][cols].assign(season_year=lambda f: f["season_year"].astype(np.int64))
+
+        key = ["admin_code", "season_year", "season"]
+        check = derive([last]).sort_values(key).reset_index(drop=True)
+        ref = stored[stored["season_year"] == last][cols].sort_values(key).reset_index(drop=True)
+        if not check.astype(str).equals(ref.astype(str)):
+            raise StoreError(f"the season calendar does not reproduce the delivered {last} windows; refusing to derive "
+                             "later windows from it")
+        new = derive(list(range(last + 1, need + 1)))
+        self.report["season_windows_extension"] = {"delivered_through": last, "derived_years": list(range(last + 1, need + 1)),
+                                                   "derived_rows": int(len(new))}
+        return pd.concat([stored[cols], new], ignore_index=True)
+
+    def _coverage_warnings(self, O):
+        """Optional-missing families (R65) whose saved coverage ends before O: features at O are NaN - recorded, not
+        blocking (ACLED and the snapshot have their own R53/R62 warnings)."""
+        steps = self.report["steps"]
+        ends = {"WFP_Price": steps.get("wfp", {}).get("coverage_end"), "GPP_mean": steps.get("gpp", {}).get("coverage_end"),
+                "nightlight_mean": steps.get("nightlight", {}).get("coverage_end"),
+                **{f: v.get("coverage_end") for f, v in steps.get("research_inputs", {}).items() if f != "idp_national"}}
+        for family, end in sorted(ends.items()):
+            if end is None or end < O:
+                self.report["warnings"].append(f"{family} coverage ends {end}, before O {O} (optional-missing: "
+                                               "features at O are NaN, R65)")
+
     def _smoke_geometries(self, roster):
         for rel in self.manifest["files"]:
             if rel.startswith(geography.GEOMETRY_PREFIX):
@@ -247,6 +329,7 @@ class Generation:
 
     def _assemble(self, tables, roster, O):
         inputs = initial.read_assembly_inputs(self.store, self.root, self.binding)
+        inputs.season_windows = self.windows                            # the same windows the climate update used
         weekly, records, _ = ac.saved_weekly(self._table(ACLED_TABLE))
         first = min(weekly["week"])[:7] if len(weekly) else bt.add_months(O, -24)
         months = []

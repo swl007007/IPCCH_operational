@@ -33,3 +33,28 @@ roster admins); `asset_root` overrides the shared scripts' han-sandbox root. Tes
 base routed; raster base with no listed images -> unavailable (receipt image_times); S2E3 and S2C3 bases with
 definitively absent private assets -> blocking failures through the transport. Live EE remains deferred (private assets
 unreadable; any EE compute needs a Supervisor packet).
+
+## Supervisor decision (envelope selection) + generation findings on f90e97b - repairs
+- Request contract: `ipcch.model_combination = {combination_id, envelope: ObjectRef}` (old package_manifest shape and
+  extra fields refused); `iter_object_refs` yields `ipcch.model_combination.envelope`. `binding.require_selection`
+  compares the request's combination id + pinned envelope sha256 with the verified Binding; Generation calls it before
+  any store access (test: other envelope of the same package, other combination id -> refused, zero store files changed).
+- (1) Season windows: delivered windows end with 2026 (accepted handoff); `Generation._season_windows` derives
+  completed later windows from the delivered calendar with the seasonal script's `windows_from_calendar`, after
+  checking the calendar reproduces the last delivered year exactly; the SAME frame feeds the climate update and
+  assembly. Fixture no longer pre-seeds future windows/seasons. Tests: O = 2027-07 -> derived 2027 (6 valid rows),
+  2027-s1 saved for 11/12/13 (2027-s2 not complete), gs_last1 feature == the derived season's value; a tampered
+  calendar that does not reproduce 2026 is refused.
+- (2) R45 runtime acceptance: every step's saved table changes append `kind=runtime` records (name = table, sha256 =
+  new HEAD content, acceptor `ipcch-runtime:<run_id>`), also after a failure (saved progress); a rerun that saves
+  nothing appends nothing. Tests: success records incl. climate/ACLED/GPP ledger bound to HEAD sha; climate-block
+  failure records the saved ACLED refresh; rerun adds no duplicates.
+- (3) research_inputs report is written per family as it completes (failure report keeps the committed nino34 refresh).
+- (4) Optional-family coverage warnings (WFP_Price, GPP_mean, nightlight_mean, research series families) when coverage
+  ends before O; never blocking.
+- (5) R39 future-M rule and the M-2 derivation apply to IPCCH operations only; FEWS NET origin recorded separately
+  (`derived.fewsnet_origin_month`: the prepared snapshot's own origin for inference-only, the run month for generation
+  as in the legacy CLI). Tests: FEWS-only real M later than the UTC month admitted; IPCCH future M refused.
+- Factory integration (Supervisor request): `real_providers -> SeasonalEEProvider -> EETransport -> update_seasonal`
+  saves 2026-s1 (receipts image_times/missing_assets/export/read; per-feature temperature graph).
+Receipt: `generation-findings-full-suite-run1.log`: `pytest tests` 816 passed, rc 0 (locked interpreter).

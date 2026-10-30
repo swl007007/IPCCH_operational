@@ -434,3 +434,13 @@ def require_store_pairing(store: ObjectStore, root: StoreRoot, binding: Binding)
     if diff:
         raise StoreError(f"store {root.uri} is bound to another combination/bundle {diff}; refusing to mix (R32/R55)")
     return have
+
+
+def require_selection(binding: Binding, model_combination: Mapping[str, Any]) -> None:
+    """The request's selected combination (combination id + pinned envelope sha256) must be exactly this binding's
+    verified envelope; checked before any store access or mutation (R19/R51)."""
+    want = (model_combination.get("combination_id"), (model_combination.get("envelope") or {}).get("sha256"))
+    have = (binding.combination_id, binding.envelope_sha256)
+    if want != have:
+        raise BindingError(f"request selects combination/envelope {want}, but the installed binding is {have}; "
+                           "nothing was executed")

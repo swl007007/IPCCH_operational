@@ -15,6 +15,7 @@ executes nothing. The order is the design.md order:
    model horizons H2/H8/H14; and the month rules (R39, UTC): real requests never name a future M, and a real IPCCH
    inference published to current never names an M earlier than the IPCCH month of the current release (candidate is
    exempt from that comparison, FCC6; generation-only is unconstrained). Smoke performs no wall-clock or current check.
+   These month rules and the M - 2 derivation apply to IPCCH operations only; FEWS NET month handling is unchanged.
 
 Reference identities (``verify_reference_identities``), the per-system lock (R50) and admission are later steps; the
 current-release comparison is repeated at publication time by the publisher (R39). Legacy v1 requests keep the
@@ -142,9 +143,13 @@ def _validate(data, request_uri, request_generation, now_utc, production_namespa
     ipcch = _ipcch(data["ipcch"], ops) if ipcch_selected else None
     fewsnet = _fewsnet(data["fewsnet"], ops) if fews_selected else None
 
-    # --- 4. derived dates and month rules
-    derived = derived_months(month)
-    if mode == "real":
+    # --- 4. derived dates and month rules (R23/R39 apply to the IPCCH operations only; FEWS NET month handling is
+    # unchanged: its origin is the named prepared snapshot's (inference-only) or, as in the legacy CLI, the run month)
+    derived = derived_months(month) if ipcch_selected else {"execution_month": month}
+    if fews_selected:
+        derived["fewsnet_origin_month"] = (fewsnet["prepared_snapshot"]["origin_month"] if "prepared_snapshot" in fewsnet
+                                           else month)
+    if mode == "real" and ipcch_selected:
         now = now_utc.astimezone(timezone.utc) if now_utc.tzinfo else now_utc.replace(tzinfo=timezone.utc)
         if month > f"{now.year:04d}-{now.month:02d}":
             raise DeliveryRequestV2Error(f"execution_month {month} is later than the current UTC month (R39)")
@@ -175,7 +180,9 @@ def _ipcch(value: Any, ops: Mapping[str, bool]) -> dict[str, Any]:
     allowed = ("model_combination", "feature_batch", *IPCCH_REFRESH_INPUTS)
     if not isinstance(value, Mapping) or set(value) - set(allowed) or "model_combination" not in value:
         raise DeliveryRequestV2Error(f"ipcch must hold model_combination and only {list(allowed)}")
-    out = {"model_combination": _object_with_ref(value["model_combination"], "combination_id", "package_manifest",
+    # The versioned combination envelope is authoritative (it binds the package, feature order, handoff bundle and
+    # acceptance status); the runner verifies these pinned bytes against the installed envelope and package.
+    out = {"model_combination": _object_with_ref(value["model_combination"], "combination_id", "envelope",
                                                  "ipcch.model_combination")}
     if inf and not gen:
         if "feature_batch" not in value:
@@ -324,7 +331,7 @@ def iter_object_refs(request: Mapping[str, Any]) -> list[tuple[str, Mapping[str,
     refs: list[tuple[str, Mapping[str, str]]] = [("runtime.environment_manifest", request["runtime"]["environment_manifest"])]
     ipcch = request.get("ipcch")
     if ipcch:
-        refs.append(("ipcch.model_combination.package_manifest", ipcch["model_combination"]["package_manifest"]))
+        refs.append(("ipcch.model_combination.envelope", ipcch["model_combination"]["envelope"]))
         if "feature_batch" in ipcch:
             refs.append(("ipcch.feature_batch.manifest", ipcch["feature_batch"]["manifest"]))
         for key in ("acled", "history_snapshot"):
