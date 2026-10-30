@@ -49,3 +49,42 @@ def finalize_entries(bundle_dir, acceptor="research lead", accepted_at="2026-10-
     with open(os.path.join(bundle_dir, bd.ACCEPTANCE_ENTRIES), "w") as f:
         json.dump(entries, f)
     return entries
+
+
+def make_scoring_package(root, order, combination_id="ipcch-test-scoring", seed=0):
+    """A loadable model-combination package (tiny XGBoost q2..q5 per scope on the 527-name order, the real contract and
+    metadata formats) for runtime scoring tests."""
+    import numpy as np
+    import pandas as pd
+    import xgboost
+
+    root.mkdir(parents=True, exist_ok=True)
+    rng = np.random.default_rng(seed)
+    X = pd.DataFrame(rng.normal(size=(60, len(order))), columns=list(order))
+    files, scopes = {}, {}
+    cutoffs = {"0": "2025-11", "6": "2025-05", "12": "2024-11"}
+    for scope, (h, lead) in bd.SCOPES.items():
+        d = root / f"scope_{scope}m"
+        d.mkdir(exist_ok=True)
+        (d / "feature_columns.json").write_text(json.dumps(list(order)))
+        rows = ["feature_name,scope_months,category,source_column,dtype,required_in_input,missing_tolerance,fill_method,"
+                "fill_value_or_stat_key,lookup_asset,derive_function,as_of_policy,notes"]
+        rows += [f"{c},{scope},required,{c},float,True,1.0,none,,,,feature_origin_O=M-2,test" for c in order]
+        (d / "feature_contract.csv").write_text("\n".join(rows) + "\n")
+        (d / "model_metadata.json").write_text(json.dumps({
+            "model_horizon_months": h, "public_lead_months": lead, "scope_months": int(scope),
+            "thresholds": {"default": 0.2}, "monotonicity_policy": "cummax", "training_cutoff": cutoffs[scope],
+            "feature_policy": "nan_passthrough_no_imputation", "package_id": combination_id}))
+        for k, target in enumerate(("phase2_worse", "phase3_worse", "phase4_worse", "phase5_worse")):
+            y = (X.iloc[:, k] > (k - 1.5) * 0.5).astype(float) * (0.9 - 0.2 * k)
+            model = xgboost.XGBRegressor(n_estimators=3, max_depth=2, random_state=seed)
+            model.fit(X, y)
+            model.save_model(str(d / f"{target}_model.json"))
+        for p in d.iterdir():
+            files[f"scope_{scope}m/{p.name}"] = {"sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+        scopes[scope] = {"model_horizon_months": h, "public_lead_months": lead, "training_cutoff": cutoffs[scope],
+                         "feature_schema_sha256": files[f"scope_{scope}m/feature_contract.csv"]["sha256"]}
+    (root / bd.PACKAGE_MANIFEST).write_text(json.dumps({"kind": "ipcch_model_combination", "combination_id": combination_id,
+                                                        "contract_version": "test-v1", "status": "candidate",
+                                                        "files": files, "scopes": scopes}))
+    return root
