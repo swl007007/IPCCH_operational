@@ -58,3 +58,12 @@ unreadable; any EE compute needs a Supervisor packet).
 - Factory integration (Supervisor request): `real_providers -> SeasonalEEProvider -> EETransport -> update_seasonal`
   saves 2026-s1 (receipts image_times/missing_assets/export/read; per-feature temperature graph).
 Receipt: `generation-findings-full-suite-run1.log`: `pytest tests` 816 passed, rc 0 (locked interpreter).
+
+## Seasonal provider windows (Supervisor residual MAJOR on 3e97139)
+`Generation.climate_providers` is now a factory `(windows, origin) -> ClimateProviders`, called with the derived
+(delivered + calendar-extended) windows inside the climate step; `climate_run.real_provider_factory(transport, roster)`
+builds `real_providers` from exactly that frame, so SeasonalEEProvider's rainfall bounds, the climate scheduling and the
+assembly share one windows frame. Test: Generation passes `g.windows` (identity) with 2027 rows and O = 2027-07 to the
+factory; a real provider built from it publishes 2027-s1 rainfall through a fake backend, while one built from the
+delivered windows alone raises "no calendar windows for season year 2027" (the reproduced failure).
+`provider-windows-tests-run1.log`: test_ipcch_*.py + request_v2 = 208 passed, rc 0.

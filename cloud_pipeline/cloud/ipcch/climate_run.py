@@ -97,3 +97,11 @@ def real_providers(transport, *, origin: str, roster, calendar_windows: pd.DataF
         ct.SeasonalVegetationProvider(transport, refs=trefs, admins=admins),
         ct.DroughtProvider(transport, admins=admins, refs=trefs),
         ct.SeasonalDroughtProvider(transport, admins=admins, refs=trefs))
+
+
+def real_provider_factory(transport, *, roster, asset_root: str | None = None):
+    """The ``Generation.climate_providers`` factory for real runs: providers are built only once the derived season
+    windows (delivered + calendar-extended) and O are known, so the seasonal providers see the same windows as the
+    climate scheduling and assembly."""
+    return lambda windows, origin: real_providers(transport, origin=origin, roster=roster, calendar_windows=windows,
+                                                  asset_root=asset_root)

@@ -39,7 +39,7 @@ def setup(tmp_path, package):
 
 def generation(store, root, b, bundle, refs, request, tmp_path, providers=None):
     return gen.Generation(store=store, root=root, binding=b, bundle_dir=str(bundle), request=request,
-                          read_ref=refs.read, batch_root=SMOKE, climate_providers=providers or fx.climate_providers(),
+                          read_ref=refs.read, batch_root=SMOKE, climate_providers=lambda w, o: providers or fx.climate_providers(),
                           gpp_acquirer=fx.NoGpp(), nightlight_acquirer=fx.NoNightlight(), workdir=str(tmp_path))
 
 
@@ -238,3 +238,34 @@ def test_lost_acceptance_write_is_repaired_once_on_retry_without_resaving(tmp_pa
         r = recorded(rt, t)
         assert len(r) == 1 and r["source"].iloc[0].startswith("runtime smoke-run-2 reconcile")    # repaired exactly once
     assert not rt.duplicated(["name", "sha256"]).any()
+
+
+
+def test_real_factory_builds_seasonal_providers_from_the_derived_windows(tmp_path, package):
+    """Supervisor residual on 3e97139: the seasonal EE provider must hold the SAME calendar-extended windows as the
+    scheduling and assembly. Generation calls the factory with its derived frame; a real provider built from it computes
+    2027 rainfall bounds, while one built from the delivered windows alone cannot."""
+    from tests.cloud.test_ipcch_climate_ee_seasonal import Backend
+    store, root, b, bundle = setup(tmp_path, package)
+    refs = fx.Refs()
+    seen = {}
+
+    def factory(windows, origin):
+        seen["windows"], seen["origin"] = windows, origin
+        return fx.climate_providers()
+    g = gen.Generation(store=store, root=root, binding=b, bundle_dir=str(bundle),
+                       request=fx.smoke_request(refs, tmp_path / "env.json", execution_month="2027-09"),
+                       read_ref=refs.read, batch_root=SMOKE, climate_providers=factory, gpp_acquirer=fx.NoGpp(),
+                       nightlight_acquirer=fx.NoNightlight(), workdir=str(tmp_path))
+    g.run()
+    assert seen["windows"] is g.windows and seen["origin"] == "2027-07" and 2027 in set(seen["windows"]["season_year"])
+    win = seen["windows"].query("season_year == 2027 and season == 's1'")
+    backend = Backend(cover_to="2027-08-01")
+    derived = climate_run.real_provider_factory(backend, roster=["11", "12", "13"])(seen["windows"], "2027-07")
+    out = derived.seasonal("prcp_z")("chirps", 2027, "s1", win)
+    assert out.status == "published" and backend.exports                              # bounds from the derived calendar
+    delivered = initial._read(store, root, "fixed/season_windows.csv").assign(
+        season_year=lambda f: f["season_year"].astype(int))
+    stale = climate_run.real_provider_factory(Backend(cover_to="2027-08-01"), roster=["11", "12", "13"])(delivered, "2027-07")
+    with pytest.raises(cl.ClimateProcessingFailure, match="no calendar windows for season year 2027"):
+        stale.seasonal("prcp_z")("chirps", 2027, "s1", win)

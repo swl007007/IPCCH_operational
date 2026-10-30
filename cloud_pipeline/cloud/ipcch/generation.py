@@ -74,7 +74,9 @@ class Generation:
     request: Mapping[str, Any]                       # validated v2 request (validate_request_v2 output)
     read_ref: Callable[[Mapping[str, str]], bytes]   # exact-generation read + sha256 check (prepare.read_pinned)
     batch_root: str
-    climate_providers: Any                           # climate_run.ClimateProviders (EE transport / table providers)
+    # (windows, origin) -> climate_run.ClimateProviders, called with the derived season windows so the seasonal
+    # providers, the climate scheduling and assembly use the SAME frame (real: climate_run.real_providers over a transport)
+    climate_providers: Callable[[pd.DataFrame, str], Any]
     gpp_acquirer: Any
     nightlight_acquirer: Any
     workdir: str
@@ -188,7 +190,7 @@ class Generation:
         self.windows = windows
         self._step("climate", lambda: climate_run.update_all(
             lambda b, t: self._table(cl.table_name(b, t)), origin=O, roster=roster, windows=windows,
-            providers=self.climate_providers, declared_extra=declared))
+            providers=self.climate_providers(windows, O), declared_extra=declared))
         fc, georep = geography.roster_geometries(self.bundle_dir, self.manifest, roster) if mode == "real" else \
             self._smoke_geometries(roster)
         geoms = rs.native_geometries(fc, roster=roster)

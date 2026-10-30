@@ -47,7 +47,7 @@ def smoke_world(tmp_path, package):
 
     def context(request):
         return run_v2.IpcchContext(store=store, root=root, binding=b, package_root=str(package), bundle_dir=str(bundle),
-                                   read_ref=refs.read, climate_providers=fx.climate_providers(), gpp_acquirer=fx.NoGpp(),
+                                   read_ref=refs.read, climate_providers=lambda w, o: fx.climate_providers(), gpp_acquirer=fx.NoGpp(),
                                    nightlight_acquirer=fx.NoNightlight(), workdir=str(tmp_path),
                                    roster=[str(a) for a in ROSTER])
 

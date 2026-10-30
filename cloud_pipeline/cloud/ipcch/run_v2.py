@@ -35,7 +35,7 @@ class IpcchContext:
     package_root: str                               # the installed, bound package directory
     bundle_dir: str                                 # real: the accepted bundle; smoke: the fixture bundle
     read_ref: Callable[[Mapping[str, str]], bytes]
-    climate_providers: Any
+    climate_providers: Callable[[Any, str], Any]      # (derived season windows, origin) -> ClimateProviders
     gpp_acquirer: Any
     nightlight_acquirer: Any
     workdir: str
