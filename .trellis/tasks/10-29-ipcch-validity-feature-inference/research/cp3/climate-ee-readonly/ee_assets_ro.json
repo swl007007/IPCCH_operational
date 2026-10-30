@@ -1,0 +1,4 @@
+{
+ "init": "food-crisis-modeling-enso",
+ "list_error": "EEException: Permission 'earthengine.assets.list' denied on resource 'projects/han-sandbox-505315' (or it may not exist)."
+}

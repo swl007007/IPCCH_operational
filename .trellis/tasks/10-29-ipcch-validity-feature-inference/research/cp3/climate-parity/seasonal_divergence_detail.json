@@ -1,0 +1,127 @@
+{
+ "prcp_z": {
+  "rows": 26,
+  "by_season_year": {
+   "2021": 26
+  },
+  "delivered_n_vs_finite": {
+   "1/2": 15,
+   "2/3": 11
+  },
+  "omitted_source": {
+   "chirps": 26
+  },
+  "single_source_sd_zero": 15
+ },
+ "rainy_days": {
+  "rows": 48,
+  "by_season_year": {
+   "2015": 17,
+   "2021": 27,
+   "2026": 4
+  },
+  "delivered_n_vs_finite": {
+   "1/1": 44,
+   "2/3": 4
+  },
+  "omitted_source": {
+   "": 44,
+   "persiann": 4
+  },
+  "single_source_sd_zero": 44
+ },
+ "cdd": {
+  "rows": 63,
+  "by_season_year": {
+   "2015": 17,
+   "2021": 27,
+   "2026": 19
+  },
+  "delivered_n_vs_finite": {
+   "1/1": 44,
+   "1/2": 2,
+   "2/3": 17
+  },
+  "omitted_source": {
+   "": 44,
+   "persiann": 17,
+   "chirps": 2
+  },
+  "single_source_sd_zero": 44
+ },
+ "tmean_anom": {
+  "rows": 233,
+  "by_season_year": {
+   "2022": 25,
+   "2023": 179,
+   "2024": 29
+  },
+  "delivered_n_vs_finite": {
+   "1/2": 233
+  },
+  "omitted_source": {
+   "cpc": 233
+  },
+  "single_source_sd_zero": 0
+ },
+ "tmax_anom": {
+  "rows": 71,
+  "by_season_year": {
+   "2022": 15,
+   "2023": 54,
+   "2024": 2
+  },
+  "delivered_n_vs_finite": {
+   "1/2": 71
+  },
+  "omitted_source": {
+   "cpc": 71
+  },
+  "single_source_sd_zero": 0
+ },
+ "hot_days_p95": {
+  "rows": 71,
+  "by_season_year": {
+   "2022": 15,
+   "2023": 54,
+   "2024": 2
+  },
+  "delivered_n_vs_finite": {
+   "1/2": 71
+  },
+  "omitted_source": {
+   "cpc": 71
+  },
+  "single_source_sd_zero": 0
+ },
+ "gdd": {
+  "rows": 233,
+  "by_season_year": {
+   "2022": 25,
+   "2023": 179,
+   "2024": 29
+  },
+  "delivered_n_vs_finite": {
+   "1/2": 233
+  },
+  "omitted_source": {
+   "cpc": 233
+  },
+  "single_source_sd_zero": 0
+ },
+ "edd": {
+  "rows": 71,
+  "by_season_year": {
+   "2022": 15,
+   "2023": 54,
+   "2024": 2
+  },
+  "delivered_n_vs_finite": {
+   "1/2": 71
+  },
+  "omitted_source": {
+   "cpc": 71
+  },
+  "single_source_sd_zero": 0
+ }
+}

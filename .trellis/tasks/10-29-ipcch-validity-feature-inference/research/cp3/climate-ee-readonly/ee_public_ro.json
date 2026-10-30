@@ -1,0 +1,32 @@
+{
+ "UCSB-CHC/CHIRPS/V3/DAILY_RNL": {
+  "ok": true,
+  "type": "IMAGE_COLLECTION",
+  "endTime": null
+ },
+ "NOAA/PERSIANN-CDR": {
+  "ok": true,
+  "type": "IMAGE_COLLECTION",
+  "endTime": null
+ },
+ "ECMWF/ERA5_LAND/DAILY_AGGR": {
+  "ok": true,
+  "type": "IMAGE_COLLECTION",
+  "endTime": null
+ },
+ "NOAA/CPC/Temperature": {
+  "ok": true,
+  "type": "IMAGE_COLLECTION",
+  "endTime": null
+ },
+ "NASA/GLDAS/V021/NOAH/G025/T3H": {
+  "ok": true,
+  "type": "IMAGE_COLLECTION",
+  "endTime": null
+ },
+ "MODIS/061/MOD13A3": {
+  "ok": true,
+  "type": "IMAGE_COLLECTION",
+  "endTime": null
+ }
+}

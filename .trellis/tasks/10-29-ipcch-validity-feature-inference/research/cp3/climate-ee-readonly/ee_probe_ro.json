@@ -1,0 +1,58 @@
+{
+ "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00' does not exist or doesn't allow this operation."
+ },
+ "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G24": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G24' does not exist or doesn't allow this operation."
+ },
+ "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01' does not exist or doesn't allow this operation."
+ },
+ "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M01": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M01' does not exist or doesn't allow this operation."
+ },
+ "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M01": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M01' does not exist or doesn't allow this operation."
+ },
+ "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M01": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/STAGE2B_TEMP_BASELINE_1991_2020_CPC_M01' does not exist or doesn't allow this operation."
+ },
+ "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M01": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M01' does not exist or doesn't allow this operation."
+ },
+ "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M01": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M01' does not exist or doesn't allow this operation."
+ },
+ "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M01": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M01' does not exist or doesn't allow this operation."
+ },
+ "S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P01_V3": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P01_V3' does not exist or doesn't allow this operation."
+ },
+ "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3' does not exist or doesn't allow this operation."
+ },
+ "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3' does not exist or doesn't allow this operation."
+ },
+ "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3' does not exist or doesn't allow this operation."
+ },
+ "S2C3_ET0_PATCH32_Y2020_2026_V2": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/han-sandbox-505315/assets/S2C3_ET0_PATCH32_Y2020_2026_V2' does not exist or doesn't allow this operation."
+ }
+}
