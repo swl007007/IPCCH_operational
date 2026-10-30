@@ -53,3 +53,15 @@ No new defect found in e48ca51..ec7a31b. Per-system publication IDs separate del
 ## Entrypoint repair closure 6f07b2f
 
 Three e48ca51 findings and the partial_success contract mismatch are closed. Independent read-only source/dataflow inspection and locked entrypoint/runner suite: 18 passed in 33.03s, including smoke zero-real-read, accepted real inference-only with forbidden acquisition initialization, and persisted saved-ACLED report after climate failure. Scoped source/test bytes matched the commit. Real current lookup follows structural validation and remains before full reference admission; no smoke production lookup remains. No consumer requiring former flattened status fields was found. Mutation replay/full-suite/live checks were not repeated. FEWS adapter and legacy integration remain pending; CP4 is not accepted.
+
+## Phase D 6d8ea08 — pending repairs
+
+Independent read-only checks ran locked guard/operator tests (100 passed) and byte/member tests (27 passed). Actual shipped FEWS 0/6/12 model.joblib files round-tripped byte-exactly through LocalObjectStore; binary inheritance and fake-GCS preconditions passed. No byte API defect found. Supervisor spot-checked implicated code; CP4 remains unaccepted for these reproduced or traced gaps:
+
+1. pipeline.inherited_source:836 expects legacy provenance.run_id and :839 substitutes requested FEWS month. V2 uses top-level run_id and member feature_origin; submit_intent:814 and delivery_job._remote_intent:669 still apply same-origin admission. Fix actual operator/remote routes, not only execute.
+2. Remote admission/dispatch at delivery_job:678-700 allows preparation (workflow.yaml:158) before activation rejection and shared locks in execute:494-500. Enforce R37 before collection and preserve owned locks through remote preparation, delivery and publication, with failure cleanup.
+3. bind_current:613-615 rejects IPCCH scoring with inherited FEWS on every v2 record, including activation=None. This restriction is not approved: a preactivation FEWS-v2 release must not disable valid legacy IPCCH. Support inherited FEWS under its stored format until actual activation.
+4. bind_current:585 calls read_current, which requires release_record_generation. Older pointers supported elsewhere now raise KeyError before work. Use a consistent compatible read preserving activation/integrity checks.
+5. fews_v2.check_member:36-47 and delivery_v2.verify_delivery:214-218 omit existing FEWS structural/package validation. Local repro: corrupt country predictions, invalid headers, absent frozen inputs and packages={} still pass writer and verifier. Restore scoped existing checks and exact horizon/package identity at publication; malformed success fixtures are insufficient evidence.
+
+Executor notified with regression requirements. The v1 archive field repeating a v2 member manifest ref is allowed as a documented compatibility convention only when exactly bound to the current member; operator source construction must implement it. No blanket preactivation rejection or validation weakening is authorized. No live cloud operations performed.

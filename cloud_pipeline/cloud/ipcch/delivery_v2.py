@@ -130,6 +130,19 @@ def _check_legacy_member(out: Path, system: str, member: Mapping[str, Any]) -> N
             raise DeliveryError(f"inherited legacy {system} lead {lead} is not its own {origin}->{target}")
 
 
+def _validate_new_member(out: Path, system: str, member: Mapping[str, Any]) -> None:
+    """A NEW legacy-format member is re-checked at publication with the existing system-scoped delivery checks and
+    its exact recorded 0/6/12 package identities (never only file names and months)."""
+    from cloud.orchestrator.delivery_bundle import validate_member
+
+    if system != "fewsnet":
+        raise DeliveryError(f"a new legacy-format {system} member is not publishable")
+    try:
+        validate_member(out, system, origin=member["origin_month"], package_inventory=member.get("model_package") or {})
+    except ValueError as exc:
+        raise DeliveryError(f"new {system} member does not verify: {exc}") from None
+
+
 def _months(member: Mapping[str, Any]) -> tuple[str, str]:
     if member.get("contract") == dm.CONTRACT:
         return member["execution_month"], member["feature_origin"]
@@ -216,6 +229,7 @@ def verify_delivery(store: ObjectStore, *, delivery_ref: Mapping[str, str], snap
                     if not own:
                         raise DeliveryError(f"new {system} member has no files")
                     _check_legacy_member(Path(tmp), system, member)
+                    _validate_new_member(Path(tmp), system, member)
             else:                                                             # inherited: bound snapshot's member
                 src = current.get(system)
                 strip = lambda m: {k: v for k, v in (m or {}).items() if k != "inherited_from_pointer_generation"}

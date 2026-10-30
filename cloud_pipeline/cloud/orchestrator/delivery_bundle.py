@@ -19,6 +19,7 @@ import json
 import re
 import shutil
 import tarfile
+from collections.abc import Mapping
 from pathlib import Path
 
 import numpy as np
@@ -168,7 +169,7 @@ def _keys(path: Path, column: str) -> pd.Series:
     return pd.read_csv(path, dtype=str, keep_default_na=False, usecols=[column])[column]
 
 
-def _content_checks(root: Path) -> dict[str, bool]:
+def _content_checks(root: Path, systems: tuple[str, ...] = SYSTEMS, origin: str | None = None) -> dict[str, bool]:
     """Native keys against the frozen identity rosters, country keys against the pinned references and
     required prediction values via the existing validators. Allowed blanks (missing FEWSNET
     population, unsupported diagnostics) are not touched."""
@@ -176,12 +177,12 @@ def _content_checks(root: Path) -> dict[str, bool]:
     from fewsnet_partitioned_rf_pipeline.local.outputs import _read_local_prediction_csv, validate_local_prediction_frame
     from model_pipeline.run_operational_launch_inference import add_calendar_months
 
-    origin = json.loads((root / "reports/delivery.json").read_text())["origin_month"]
-    rosters = {"fewsnet": _keys(root / "inputs/fewsnet_identity_population.csv", "admin_code"),
-               "ipcch": _keys(root / "inputs/ipcch_origin_rows.csv", "area_id")}
+    origin = origin or json.loads((root / "reports/delivery.json").read_text())["origin_month"]
+    roster_files = {"fewsnet": ("inputs/fewsnet_identity_population.csv", "admin_code"),
+                    "ipcch": ("inputs/ipcch_origin_rows.csv", "area_id")}
     checks = {}
-    for system in SYSTEMS:
-        roster = rosters[system]
+    for system in systems:
+        roster = _keys(root / roster_files[system][0], roster_files[system][1])
         census = set(_keys(root / f"{system}/country_population_reference.csv", "ISO3"))
         checks[f"{system}_roster_nonempty_unique"] = len(roster) > 0 and not roster.duplicated().any()
         polygon_name = "polygon_confidence" if system == "fewsnet" else "polygon_training_errors"
@@ -221,7 +222,7 @@ def _text(path: Path) -> pd.DataFrame:
     return pd.read_csv(path, dtype=str, keep_default_na=False)
 
 
-def _identity_checks(root: Path) -> dict[str, bool]:
+def _identity_checks(root: Path, systems: tuple[str, ...] = SYSTEMS) -> dict[str, bool]:
     """Row-level native identity: every output row carries its own roster identity, not just a roster key."""
     from fewsnet_partitioned_rf_pipeline.local.outputs import _IDENTITY_POPULATION_COLUMNS
 
@@ -229,8 +230,9 @@ def _identity_checks(root: Path) -> dict[str, bool]:
     identity = _text(root / "inputs/fewsnet_identity_population.csv")
     columns = [c for c in _IDENTITY_POPULATION_COLUMNS if c in identity]
     reference = identity[columns].set_index("admin_code").sort_index()
-    origin_rows = _text(root / "inputs/ipcch_origin_rows.csv")
-    pairs = origin_rows[["area_id", "admin_code"]].set_index("area_id").sort_index()
+    if "ipcch" in systems:
+        origin_rows = _text(root / "inputs/ipcch_origin_rows.csv")
+        pairs = origin_rows[["area_id", "admin_code"]].set_index("area_id").sort_index()
     for horizon in HORIZONS:
         scope = root / f"scopes/{horizon}m"
         predictions = _text(scope / "fewsnet/polygon_predictions.csv")
@@ -239,6 +241,8 @@ def _identity_checks(root: Path) -> dict[str, bool]:
             len(columns) == len(_IDENTITY_POPULATION_COLUMNS)
             and predictions[columns].set_index("admin_code").sort_index().equals(reference)
             and mapping["polygon_id"].equals(mapping["admin_code"]) and set(mapping["admin_code"]) == set(reference.index))
+        if "ipcch" not in systems:
+            continue
         predictions = _text(scope / "ipcch/polygon_predictions.csv")
         mapping = _text(scope / "ipcch/polygon_model_mapping.csv")
         rows_ok = True
@@ -255,7 +259,7 @@ EVIDENCE_COUNTRY_FIELDS = re.compile(r"^country_(error_.+|confidence_flag|confid
                                      r"probability_.+|maximum_phase_history_month_count|maximum_phase_uncertainty_.+)$")
 
 
-def _country_consistency_checks(root: Path) -> dict[str, bool]:
+def _country_consistency_checks(root: Path, systems: tuple[str, ...] = SYSTEMS) -> dict[str, bool]:
     """Current country predictions/outcomes equal the unchanged aggregation of the delivered polygons
     (missing FEWSNET population handled by the aggregator itself, never filled here)."""
     import io
@@ -264,10 +268,10 @@ def _country_consistency_checks(root: Path) -> dict[str, bool]:
     from fewsnet_partitioned_rf_pipeline.local.outputs import _read_local_prediction_csv
 
     checks = {}
-    lookup = pd.read_csv(root / "inputs/ipcch_origin_rows.csv", dtype={"area_id": str, "admin_code": str},
-                         usecols=["area_id", "country", "country_en"])
+    lookup = (pd.read_csv(root / "inputs/ipcch_origin_rows.csv", dtype={"area_id": str, "admin_code": str},
+                          usecols=["area_id", "country", "country_en"]) if "ipcch" in systems else None)
     inherited = inherited_systems(root)
-    for system in SYSTEMS:
+    for system in systems:
         if system in inherited:  # pinned source members, never re-aggregated
             checks.update(_inherited_identity_checks(root, system, inherited[system], "country",
                                                      ("country_predictions", "country_confidence")))
@@ -298,18 +302,20 @@ def _country_consistency_checks(root: Path) -> dict[str, bool]:
     return checks
 
 
-def _availability_coverage_checks(root: Path) -> dict[str, bool]:
+def _availability_coverage_checks(root: Path, systems: tuple[str, ...] = SYSTEMS,
+                                  table_path: str = AVAILABILITY) -> dict[str, bool]:
     """Exactly one availability row per system/horizon/family/entity, with a valid status and reason."""
     from cloud.orchestrator import delivery_outputs as do
     from cloud.orchestrator.delivery_manifest import UNAVAILABLE_REASONS
 
-    table = _text(root / AVAILABILITY)
+    table = _text(root / table_path)
     keys = ["model_system", "horizon_months", "diagnostic_family", "level", "entity_id"]
     found = list(map(tuple, table[keys].itertuples(index=False)))
-    rosters = {"fewsnet": _keys(root / "inputs/fewsnet_identity_population.csv", "admin_code"),
-               "ipcch": _keys(root / "inputs/ipcch_origin_rows.csv", "area_id")}
+    roster_files = {"fewsnet": ("inputs/fewsnet_identity_population.csv", "admin_code"),
+                    "ipcch": ("inputs/ipcch_origin_rows.csv", "area_id")}
+    rosters = {system: _keys(root / roster_files[system][0], roster_files[system][1]) for system in systems}
     expected = set()
-    for system in SYSTEMS:
+    for system in systems:
         for horizon in HORIZONS:
             countries = _keys(root / f"scopes/{horizon}m/{system}/country_confidence.csv", "ISO3")
             for family, level in do.DIAGNOSTIC_FAMILIES[system].items():
@@ -350,6 +356,88 @@ def _portable_member_checks(root: Path) -> dict[str, bool]:
             targets.update(_keys(root / f"scopes/{horizon}m/{system}/polygon_model_mapping.csv", "model_package"))
     checks["mapping_targets_present"] = bool(targets) and all((root / target).is_dir() for target in targets)
     return checks
+
+
+def validate_member(root: Path, system: str, *, origin: str, package_inventory: Mapping[str, str]) -> dict:
+    """One system's v2 delivery member (task 10-29 R60/D3): the existing FEWS NET-scoped structural checks of
+    ``validate_delivery`` - exact scope tables with frozen headers, consistent row counts, own references, per-system
+    reports and frozen scoring inputs, native keys/roster/predictions (existing validators), row identity, country
+    consistency, availability coverage and diagnostics regeneration (from ``reports/{system}_*``) - plus the exact
+    0/6/12 package identities: the delivered package files equal the recorded member inventory and each package's own
+    manifest/checksums. Raises ``ValueError`` listing every failed check."""
+    from cloud.orchestrator import delivery_outputs as do
+
+    if system != "fewsnet":
+        raise ValueError("validate_member covers legacy-format FEWS NET members (IPCCH members have their own verifier)")
+    root = Path(root)
+    checks, failures = {}, []
+    names = SCOPE_TABLES[system]
+    expected = {f"scopes/{h}m/{system}/{name}.csv" for h in HORIZONS for name in names}
+    found = {p.relative_to(root).as_posix() for p in root.glob(f"scopes/*/{system}/*.csv")}
+    checks["scope_inventory_exact"] = found == expected
+    rows = {}
+    for relative in sorted(expected & found):
+        name = relative.split("/")[-1].removesuffix(".csv")
+        with (root / relative).open(encoding="utf-8", newline="") as handle:
+            header = pd.read_csv(handle, nrows=0).columns.tolist()
+        if header != list(do.SEPTEMBER_HEADERS[system][name]):
+            failures.append(f"header:{relative}")
+        rows[relative] = sum(1 for _ in pd.read_csv(root / relative, dtype=str, usecols=[header[0]]).itertuples())
+    checks["frozen_headers"] = not failures
+    polygon = {rows.get(f"scopes/{h}m/{system}/{n}.csv") for h in HORIZONS for n in names if "country" not in n}
+    country = {rows.get(f"scopes/{h}m/{system}/{n}.csv") for h in HORIZONS for n in names if "country" in n}
+    checks[f"{system}_row_counts_consistent"] = len(polygon) == 1 and len(country) == 1 and None not in polygon | country
+    checks["own_references"] = all((root / f"{system}/{n}").is_file()
+                                   for n in ("polygons.geojson", "country_population_reference.csv"))
+    availability = f"reports/{system}_diagnostic_availability.csv"
+    checks["reports"] = all((root / r).is_file() for r in (availability, f"reports/{system}_feature_fill_audit.csv",
+                                                           f"reports/{system}_diagnostic_declarations.json"))
+    checks["frozen_scoring_inputs"] = all((root / r).is_file() for r in (
+        "inputs/fewsnet_identity_population.csv", *[f"inputs/fewsnet_scope_{h}m_inference.csv" for h in HORIZONS]))
+    recorded = {str(h): {} for h in HORIZONS}
+    for key, digest in dict(package_inventory).items():
+        horizon, _, rel = key.partition("m/")
+        recorded.setdefault(horizon, {})[rel] = digest
+    for horizon in HORIZONS:
+        directory = root / f"{system}/model_package/{horizon}m"
+        try:
+            manifest = json.loads((directory / "local_model_manifest.json").read_text())
+            checksums = json.loads((directory / "checksums.json").read_text())
+            actual = _directory_inventory(directory)
+            checks[f"{system}_{horizon}m_package_exact"] = bool(recorded[str(horizon)]) and (
+                set(actual) == set(manifest["files"]) == set(recorded[str(horizon)])
+                and all(actual.get(name) == digest for name, digest in checksums.items())
+                and actual == recorded[str(horizon)])
+        except Exception as exc:
+            checks[f"{system}_{horizon}m_package_exact"] = False
+            failures.append(f"package:{horizon}m:{type(exc).__name__}: {exc}")
+    extra = sorted(set(recorded) - {str(h) for h in HORIZONS})
+    checks["package_horizons_exact"] = not extra
+    targets = set()
+    groups = (("content", lambda r: _content_checks(r, (system,), origin)),
+              ("row_identity", lambda r: _identity_checks(r, (system,))),
+              ("country_consistency", lambda r: _country_consistency_checks(r, (system,))),
+              ("availability", lambda r: _availability_coverage_checks(r, (system,), availability)),
+              ("diagnostics_regenerated", lambda r: _diagnostics_regeneration_checks(r, (system,), origin, availability)))
+    for name, check in groups:
+        try:
+            result = check(root)
+        except Exception as exc:
+            result = {name: False}
+            failures.append(f"{name}:{type(exc).__name__}: {exc}")
+        for key, value in result.items():
+            checks[key] = bool(value)
+    try:
+        for horizon in HORIZONS:
+            targets.update(_keys(root / f"scopes/{horizon}m/{system}/polygon_model_mapping.csv", "model_package"))
+        checks["mapping_targets_present"] = bool(targets) and all((root / t).is_dir() for t in targets)
+    except Exception as exc:
+        checks["mapping_targets_present"] = False
+        failures.append(f"mapping:{type(exc).__name__}: {exc}")
+    failed = [k for k, v in checks.items() if not v]
+    if failed:
+        raise ValueError(f"{system} member fails {failed[:8]}{' ' + str(failures[:3]) if failures else ''}")
+    return {"status": "passed", "checks": checks, "scope_row_counts": rows}
 
 
 def diagnostics_summary(root: Path) -> list[dict]:
@@ -468,7 +556,8 @@ def regenerate_diagnostics(root: Path, system: str, horizon: int, predictions: p
                                 iso_by_polygon=iso, origin=origin, accepted_period=accepted, training_cutoff=cutoff)
 
 
-def _diagnostics_regeneration_checks(root: Path) -> dict[str, bool]:
+def _diagnostics_regeneration_checks(root: Path, systems: tuple[str, ...] = SYSTEMS, origin: str | None = None,
+                                     table_path: str = AVAILABILITY) -> dict[str, bool]:
     """Delivered diagnostic tables and availability rows equal their regeneration from the frozen
     declarations/evidence and the delivered predictions: no 'available' row without bound evidence,
     no reason that contradicts the (blank or supported) diagnostics."""
@@ -476,20 +565,23 @@ def _diagnostics_regeneration_checks(root: Path) -> dict[str, bool]:
 
     from fewsnet_partitioned_rf_pipeline.local.outputs import _read_local_prediction_csv
 
-    origin = json.loads((root / "reports/delivery.json").read_text())["origin_month"]
-    lookup = pd.read_csv(root / "inputs/ipcch_origin_rows.csv", dtype={"area_id": str, "admin_code": str},
-                         usecols=["area_id", "country", "country_en"])
+    origin = origin or json.loads((root / "reports/delivery.json").read_text())["origin_month"]
     census = {system: pd.read_csv(root / f"{system}/country_population_reference.csv", dtype=str,
-                                  keep_default_na=False).replace({"": pd.NA}) for system in SYSTEMS}
-    iso = lookup.merge(census["ipcch"][["country", "ISO3"]], on="country", how="left").set_index("area_id")["ISO3"]
-    delivered = _text(root / AVAILABILITY)
+                                  keep_default_na=False).replace({"": pd.NA}) for system in systems}
+    if "ipcch" in systems:
+        lookup = pd.read_csv(root / "inputs/ipcch_origin_rows.csv", dtype={"area_id": str, "admin_code": str},
+                             usecols=["area_id", "country", "country_en"])
+        iso = lookup.merge(census["ipcch"][["country", "ISO3"]], on="country", how="left").set_index("area_id")["ISO3"]
+    else:                                   # FEWS NET diagnostics carry their own ISO3 (no IPCCH lookup)
+        lookup, iso = None, pd.Series(dtype=str)
+    delivered = _text(root / table_path)
 
     def as_text(frame):
         return pd.read_csv(io.StringIO(frame.to_csv(index=False)), dtype=str, keep_default_na=False)
 
     checks = {}
     inherited = inherited_systems(root)
-    for system in SYSTEMS:
+    for system in systems:
         if system in inherited:
             checks.update(_inherited_identity_checks(root, system, inherited[system], "diagnostics",
                                                      SCOPE_TABLES[system], availability=delivered))

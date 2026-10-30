@@ -179,23 +179,23 @@ def test_edited_or_incomplete_inherited_member_with_regenerated_inventory_is_ref
 
 
 
-def write_fews_member(origin, bad_target=False):
-    """A new legacy-format FEWS NET member (stand-in for the FEWS adapter output; own origin, targets origin+0/6/12)."""
+def write_fews_member(tmp_path, bad_target=False):
+    """The FEWS adapter's member: the existing deliver(fewsnet) outputs of a content-valid fixture written through
+    fews_v2.write_member (exact packages); ``bad_target`` corrupts its own targets after the writer's check."""
+    from cloud.ipcch import fews_v2
+    from tests.cloud import fews_member_fixture as fmf
+
+    fixture = fmf.build(tmp_path / "fews-fixture")
+
     def write(out):
-        y, m = (int(x) for x in origin.split("-"))
-        files = {"fewsnet/polygons.geojson": '{"type":"FeatureCollection","features":[]}\n',
-                 "fewsnet/model_package/0m/model.json": '{"m": 1}\n',
-                 "reports/fewsnet_diagnostic_availability.csv": "model_system,horizon_months,level,entity_id,"
-                                                                "diagnostic_family,status,reason,evidence_ref\n",
-                 "reports/fewsnet_feature_fill_audit.csv": "system,polygon_id,fill_method\nfewsnet,1,observed\n"}
-        for lead in (0, 6, 12):
-            o = y * 12 + m - 1 + lead + (1 if bad_target else 0)
-            files[f"scopes/{lead}m/fewsnet/polygon_predictions.csv"] = (
-                f"admin_code,probability_crisis,feature_month,target_month\n1,0.5,{origin},{o // 12:04d}-{o % 12 + 1:02d}\n")
-        for rel, text in files.items():
-            (out / rel).parent.mkdir(parents=True, exist_ok=True)
-            (out / rel).write_text(text)
-        return {"contract": "fewsnet-legacy-scoring", "origin_month": origin, "mode": "real"}
+        record = fews_v2.write_member(out, score=fmf.score_from(fixture), spec_path=tmp_path / "spec.json",
+                                      origin=fmf.ORIGIN, packages=fixture["packages"], mode="real")
+        if bad_target:
+            p = out / "scopes/6m/fewsnet/polygon_predictions.csv"
+            f = pd.read_csv(p, dtype=str, keep_default_na=False)
+            f["target_month"] = "2099-01"
+            f.to_csv(p, index=False, lineterminator="\n")
+        return record
     return write
 
 
@@ -214,11 +214,11 @@ def test_one_run_publishing_both_systems_uses_unique_artifacts_and_chains_its_ow
     if fews_ok:
         second = rv.publish_member_run(store, PROD, system="fewsnet", namespace="prod", run_id="two-sys", mode="real",
                                        publication="current", expected_pointer_generation=g1, request_ref=REQ,
-                                       write_member=write_fews_member("2026-11"), workdir=str(tmp_path), now=NOW)
+                                       write_member=write_fews_member(tmp_path), workdir=str(tmp_path), now=NOW)
         assert second["status"] == "published" and second["publication_id"] == "two-sys-fewsnet"
         rec = pub.read_current(store, PROD, "prod")["record"]
         assert rec["run_id"] == "two-sys-fewsnet" and rec["previous"]["pointer_generation"] == g1     # chained, no rebase
-        assert rec["systems"]["fewsnet"]["origin_month"] == "2026-11" and rec["systems"]["ipcch"]["execution_month"] == "2026-10"
+        assert rec["systems"]["fewsnet"]["origin_month"] == "2026-04" and rec["systems"]["ipcch"]["execution_month"] == "2026-10"
         assert rec["systems"]["ipcch"]["published_by_run"] == "two-sys-ipcch"
         for pid in ("two-sys-ipcch", "two-sys-fewsnet"):                          # unique immutable artifacts
             assert store.get_metadata(f"{PROD}/prod/releases/{pid}/release.json") is not None
@@ -228,7 +228,7 @@ def test_one_run_publishing_both_systems_uses_unique_artifacts_and_chains_its_ow
         with pytest.raises(dv.DeliveryError, match="not its own"):
             rv.publish_member_run(store, PROD, system="fewsnet", namespace="prod", run_id="two-sys", mode="real",
                                   publication="current", expected_pointer_generation=g1, request_ref=REQ,
-                                  write_member=write_fews_member("2026-11", bad_target=True), workdir=str(tmp_path), now=NOW)
+                                  write_member=write_fews_member(tmp_path, bad_target=True), workdir=str(tmp_path), now=NOW)
         rec = pub.read_current(store, PROD, "prod")["record"]
         assert rec["run_id"] == "two-sys-ipcch" and rec["systems"]["fewsnet"]["origin_month"] == "2026-09"   # IPCCH kept
         assert store.get_metadata(f"{PROD}/prod/releases/two-sys-fewsnet/release.json") is None

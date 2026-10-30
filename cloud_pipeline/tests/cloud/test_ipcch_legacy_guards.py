@@ -52,29 +52,37 @@ def member_source(client, store, system="ipcch", origin=None, archive=None):
             "manifest": dict(ref), "archive": dict(archive or ref)}
 
 
-def fews_score(origin="2026-10"):
-    """The existing deliver(system="fewsnet") output shape (scope tables, identity, reports) for the member path."""
-    from cloud.orchestrator.delivery_bundle import SCOPE_TABLES
-    calls = []
-
-    def score(spec_path, system, out):
-        calls.append(system)
-        y, m = (int(x) for x in origin.split("-"))
-        for lead in (0, 6, 12):
-            o = y * 12 + m - 1 + lead
-            for t in SCOPE_TABLES["fewsnet"]:
-                p = out / f"scopes/{lead}m/fewsnet/{t}.csv"
-                p.parent.mkdir(parents=True, exist_ok=True)
-                p.write_text(f"admin_code,probability_crisis,feature_month,target_month\n1,0.3,{origin},"
-                             f"{o // 12:04d}-{o % 12 + 1:02d}\n")
-        (out / "fewsnet").mkdir(parents=True, exist_ok=True)
-        (out / "fewsnet/polygons.geojson").write_text('{"type":"FeatureCollection","features":[]}\n')
-        (out / "fewsnet/country_population_reference.csv").write_text("ISO3,country\nAAA,Aland\n")
-        (out / "reports").mkdir(parents=True, exist_ok=True)
-        (out / "reports/fewsnet_diagnostic_availability.csv").write_text(
-            "model_system,horizon_months,level,entity_id,diagnostic_family,status,reason,evidence_ref\n")
-        (out / "reports/fewsnet_feature_fill_audit.csv").write_text("system,polygon_id,fill_method\nfewsnet,1,observed\n")
-    return score, calls
+def fews_ready(tmp_path, client, request):
+    """Rebind a v1 request to the content-valid FEWS member fixture (origin 2026-04): its prepared snapshot origin and
+    FEWS packages in the local-package shape (model, training report, local_model_manifest, checksums); returns the
+    deliver(fewsnet)-equivalent ``score``."""
+    import hashlib
+    from tests.cloud import fews_member_fixture as fmf
+    fixture = fmf.build(tmp_path / "fews-fixture")
+    fake, request = client[0], request
+    request["origin_month"] = fmf.ORIGIN
+    snap = request["prepared_snapshot"]
+    key = tuple(snap["manifest"]["uri"].removeprefix("gs://").split("/", 1)) + (snap["manifest"]["generation"],)
+    body = json.loads(fake.objects[key])
+    body["origin_month"] = fmf.ORIGIN
+    snap["origin_month"] = fmf.ORIGIN
+    snap["manifest"].update(fake.put(snap["manifest"]["uri"], "77", json.dumps(body).encode()))
+    for model in request["models"]:
+        if model["system"] != "fewsnet":
+            continue
+        h, pid = model["horizon_months"], model["package_id"]
+        members = {"model.bin": pid.encode(),
+                   "training_report.json": json.dumps({"feature_schema_sha256": model["feature_schema_sha256"]}).encode()}
+        members["local_model_manifest.json"] = json.dumps(
+            {"files": sorted([*members, "local_model_manifest.json", "checksums.json"])}).encode()
+        members["checksums.json"] = json.dumps({n: hashlib.sha256(d).hexdigest() for n, d in members.items()}).encode()
+        files = [{"path": path, **fake.put(f"gs://ipcch-delivery/models/fewsnet/{h}m/v/{path}", "4", data)}
+                 for path, data in members.items()]
+        model["package_manifest"].update(fake.put(model["package_manifest"]["uri"], "5", json.dumps({
+            "schema_version": dj.PACKAGE_MANIFEST_SCHEMA, "system": "fewsnet", "horizon_months": h,
+            "package_id": pid, "files": files}).encode()))
+        tj._rebind_acceptance(fake, model, tj._acceptance(model, request))
+    return fixture
 
 
 def run(tmp_path, client, request, store, score=None):
@@ -119,9 +127,11 @@ def test_post_activation_fews_only_publishes_a_v2_member_inheriting_the_new_ipcc
     store = activated(tmp_path, package, monkeypatch)
     client = tj._world(tmp_path)
     before = pub.read_current(store, tj.ROOT, NS_)
+    from tests.cloud import fews_member_fixture as fmf
     request = v1(client, store, inherit={"ipcch": member_source(client[0], store)})
-    score, calls = fews_score()
-    status, _, _ = run(tmp_path, client, request, store, score=score)
+    fixture = fews_ready(tmp_path, client, request)
+    calls = []
+    status, _, _ = run(tmp_path, client, request, store, score=fmf.score_from(fixture, calls))
     assert status["status"] == "succeeded" and calls == ["fewsnet"]
     rec = pub.read_current(store, tj.ROOT, NS_)["record"]
     assert rec["schema"] == pub.RELEASE_SCHEMA and rec["run_id"] == "oct2026-r1-fewsnet"
@@ -130,7 +140,7 @@ def test_post_activation_fews_only_publishes_a_v2_member_inheriting_the_new_ipcc
     ip = rec["systems"]["ipcch"]
     assert ip["contract"] == pub.IPCCH_CONTRACT and ip["published_by_run"] == "ipcch-oct-ipcch"   # inherited unchanged
     fw = rec["systems"]["fewsnet"]
-    assert fw["origin_month"] == "2026-10" and fw["published_by_run"] == "oct2026-r1-fewsnet"
+    assert fw["origin_month"] == fmf.ORIGIN and fw["published_by_run"] == "oct2026-r1-fewsnet"
     assert sorted({p.split("/")[0] for p in fw["model_package"]}) == ["0m", "12m", "6m"]   # exact scored packages
     assert not list((tmp_path).glob("work-*/packages/ipcch/*"))                      # unused legacy IPCCH package
     assert not store.list(f"{tj.ROOT}/locks/")
