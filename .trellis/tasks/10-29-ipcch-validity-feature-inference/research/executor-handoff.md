@@ -12,36 +12,22 @@ Paths: OP=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational 
 R=/home/swl007007/projects/food-crisis-research; T=OP/.trellis/tasks/10-29-ipcch-validity-feature-inference; PKGWT=R/control-plane-h2h8h14-pkg
 (branch task/ipcch-h2h8h14-package). Tests: `cd OP/cloud_pipeline && PYTHONDONTWRITEBYTECODE=1 ~/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest <files> -q -p no:cacheprovider`.
 
-## RUNNING (do NOT start again; inspect durable outputs on resume)
-- Assembly parity r2 effective check: `bash T/research/cp3/assembly-parity/run_r2_effective.sh` (bash PID 3490312, started ~07:25Z;
-  log T/research/cp3/assembly-parity/run-r2.log, ends with `SUMMARY ...` and `exit=N`). Steps: stage2 exact -> stage3 exact ->
-  stage2 research-parse -> stage3 research-parse (each ~25 min). Outputs (new files, never overwritten) in
-  R/scratch/h2h8h14-final/assembly-parity/: r2_exact.json (+ r2_exact_assembled_hHH.npy), r2_exact_effective.json,
-  r2_research_parse.json (+ arrays), r2_research_parse_effective.json. Stage2 exit 0 EXACT / 2 DIFFERS; stage3 verdict
-  EFFECTIVE_IDENTICAL rc0 / EFFECTIVE_DIFFERS rc2 (float32 effective inputs + raw q2..q5 through the operational runtime).
-  On resume: `ps -o pid,etime,cmd -C python,bash | grep -E "run_r2|stage2_op|stage3_eff"`; when finished, record verdicts+rc in
-  T/research/cp3/cp3d-assembly-initial.md and report to Supervisor (Supervisor wants per-family causes, ORIGINAL diffs and
-  the machine verdicts; r1 JSON has no verdict key and is NOT a pass).
+## RUNNING: nothing. Parity r2 FINISHED (exit 0; stage2 DIFFERS rc2 x2 float64 lat/lon + ACLED parse ulp; stage3
+EFFECTIVE_IDENTICAL rc0 x2: float32 inputs and raw q2..q5 identical all 3 horizons). Recorded df83cbc in
+research/cp3/cp3d-assembly-initial.md; Supervisor accepted as historical compatibility evidence (not CP5/target-date proof).
 
-## CP2 (training/package/handoff) — open, not accepted
-- Fits done: H2 run f55ddf45198f427eade6d68c2a3a04f2 / m-4c46295486bc4d28af8cfca561cdf4ce; H8 0f7e584fccc549a28cf6fe9519b94da2 /
-  m-e7976e74421a4d75b8462291101c8918; H14 a4bf0a5d2bef4418b31503d679ac3194 / m-c8efb3bd8157451295f15960fb3654ff. Harvest receipts
-  R/staging/ipcch-h2h8h14-20261030/receipts/09-harvest-h0{2,8}|h14.json; MLflow readback T/research/cp2/mlflow-readback.
-- Package CANDIDATE R/scratch/h2h8h14-final/package-build/out-r1/package, manifest 18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22,
-  combination_id ipcch-validity-h2h8h14-final-20261030 (keep unchanged until explicit research acceptance). Relocated runtime raw-score
-  parity: T/research/cp2/package-check/runtime_check_real_r2.json (historical probes only). Evidence T/research/cp2/cp2-package.md.
-- Handoff bundle r5 (PKGWT dac4a0a builder research_cloud/packages/ipcch_handoff_inputs.py): R/scratch/h2h8h14-final/handoff-build/out-r5,
-  58 files, manifest e6e3ebc6…, acceptance_entries 3621c350… (57 entries, acceptor/accepted_at EMPTY — needs explicit acceptance act).
-  r5 adds iso3_reference (pycountry 26.2.16 table; training iso3 lineage kept, 31 CI blank -> CIV reference only, no IDP effect),
-  population_reference.csv, fixed/geometry byte copy, roster_policy, 1315 fixed-source exception, 103 imported SD=0 seasonal rows.
-  Evidence T/research/cp2/cp2-handoff-inputs.md (+ handoff-inputs-r5/). r4 (out-r4) still used by parity harness.
-- Remaining for CP2 acceptance: Supervisor review of r5; explicit acceptance (package + bundle entries) is a research-side act.
-- BINDING REQUIREMENT (Supervisor, design.md:27/R32/R55): fixed geometry/roster/ACLED/static/population must be checksum-bound to
-  the selected combination. Plan: keep candidate 18b91d45 INTACT as evidence; build an explicitly versioned ACCEPTANCE ENVELOPE
-  (new file, e.g. ipcch-combination-envelope-v1.json) binding combination package_manifest sha 18b91d45… + handoff_manifest sha
-  (r5 e6e3ebc6… or successor) + roster sha 9ff2c420… + feature order sha, with acceptor/date fields; runtime (package load,
-  initial.initialise, assembly inputs) must verify the envelope and REJECT any other bundle/package pairing even if the 527
-  schema matches (tests). Include binding verification in the CP2 acceptance packet.
+## CP2 - ACCEPTED/CLOSED (Supervisor explicit acceptance 2026-10-30; c9c080a)
+- Accepted envelope v2 R/scratch/h2h8h14-final/envelope/ipcch-combination-envelope-v2-accepted.json sha256
+  03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596 (Codex Supervisor, 2026-10-30): package 18b91d45...,
+  feature order 0ef1ffec..., handoff manifest e6e3ebc6..., roster 9ff2c420.../6226, finalized entries cb14a956...
+  (57) in R/scratch/h2h8h14-final/handoff-build/out-r5-accepted-v1. Originals (package candidate status field, r5,
+  draft entries 3621c350) unchanged. Readback evidence research/cp2/binding/{cp2-binding.md, acceptance-readback.json}.
+- Runtime binding: cloud/ipcch/binding.py (verify_combination real/smoke(fixture_root), verify_handoff real only,
+  verify_fixture_bundle smoke only lexical admission + lstat/symlink refusal incl. root), store pairing table;
+  initial.initialise(..., binding), install_acceptance, read_assembly_inputs(store, root, binding), read_population.
+  geography.py (roster_geometries, restrict_to_roster, population_snapshot via PopulationSnapshotBuilder).
+  Commits e3a438b, 89b0e02, ec5bd53 (R48), d3130e7 (finalize tool), c9c080a.
+- Smoke uses the candidate/accepted envelope with mode="smoke" + a declared fixture_root; never the real bundle.
 
 ## CP3 (operational v2 runtime, local) — open
 Committed (operational branch): b9e333e FEWS crlf; 6ebfb63 request v2; 9270192+557515f stores/retained; c65e43d+b3035ad ACLED;
@@ -54,6 +40,11 @@ reports, seasonal bounds/availability), assembly/initial batch (empty optional s
 preflight, snapshot metadata), residuals (S2E3 coverage before join, strict field validators).
 Known limitations (stated): no live EE run; han-sandbox private assets unreadable; baselines/S2E3/S2C3 producers not delivered;
 rainfall exact-collision patch not delivered.
+Since compaction (CP3): 8d031db + 72f8cd8 concrete EE/GCS transport cloud/ipcch/ee_transport.py (EEBackend+TableBackend;
+_list_images; definitive absence via parent listing; reserve-before-submit create-only task record; IPCCH bounded wait
+cancel on timeout; exact-generation reads; computeFeatures asset tables; from_environment). f1af645 cloud/ipcch/gpp.py
+(IPCCH-only research-equivalent GPP v3: fills 65534/65535 masked, sum/n_valid*0.01, cell-centre; ledger; fill-only-
+unpublished; FEWS raw zonal unchanged). Climate output filter strict (declared_extra only; rain paint full calendar).
 OPEN CP3 work (next, in order):
 1. Feature batch writer (R52): immutable unique batch per generation bound to run id, records M, O, mode, combination ref,
    generation time, method ids (R40), per-family coverage ends + source-level gaps, missingness counts, acceptance records,
@@ -62,8 +53,9 @@ OPEN CP3 work (next, in order):
    missing required column -> fail, duplicate names -> fail, reorder by model names, extras ignored, unparseable/inf in required
    -> fail with area/column; nonfinite outputs fail with area/horizon/field; real requires package status accepted + checksums,
    smoke accepts candidate; per-scope training cutoffs from package manifest; post-processing unchanged (cummax, thresholds).
-3. Generation orchestration: climate_run.update_all, GPP v3 append + ledger (R9/R49/R54), nightlight VIIRS append (R64), WFP
-   keep/refresh (R64), research families/history_snapshot refresh (R59/R62), ACLED refresh/keep -> monthly_series, initial
+3. Generation orchestration: climate_run.update_all (transport + declared_extra), GPP (gpp.update_gpp DONE), nightlight VIIRS
+   append via existing export/zonal contract on roster_geometries (R64), WFP manual raw_upload -> refresh_h5_inputs.wfp_aggregates
+   ipcch rows only (no new fetcher) (R64), research families/history_snapshot refresh (R59/R62), ACLED refresh/keep -> monthly_series, initial
    store from accepted bundle, assembly per horizon (T = O + H), population from population_reference via no-future builder.
 4. Integrated preflight (Supervisor 6ebfb63 note): validate the ENTIRE FEWS delivery + all nested refs before any IPCCH
    mutation; mixed invalid-FEWS request -> zero writes/calls test.
