@@ -109,3 +109,12 @@ with activation, v1 locks), promote/resume rejection, FEWS v2 adapter (R60).
   targets) -> pointer keeps the IPCCH update (partial success), no FEWS release written.
 Remaining: FEWS v2 adapter (R60: prepare/deliver mapping producing the FEWS member), legacy v1 guards, promote/resume
 rejection.
+
+## 6f07b2f + 6d8ea08 (2026-10-30)
+- 6f07b2f entrypoint fixes (Supervisor CLOSED): zero-real-touch spy, inference-only never builds providers (EE outage),
+  saved update then later failure keeps the structured report in returned + durable status; `partial_success`.
+- 6d8ea08 Phase D: legacy v1 guards (request + publication time R37, FCC current-bound inheritance, v1 locks), post-
+  activation v1 FEWS-only as a v2 member (fews_v2.write_member + publish_member_run), promote/verify reject new-contract
+  candidates and bind legacy promotion, exact-bytes v2 deliveries (pickled FEWS packages defect). tests/cloud +
+  operator 750 passed; test_ipcch_legacy_guards 10.
+- Remaining CP4: FEWS v2 adapter per D1-D3 (see executor-handoff NEXT).
