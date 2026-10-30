@@ -1,0 +1,4 @@
+worktree_head=4cb493fa48cb9f2d28726181e641721bbe2b4b21 diff_sha256=621267e698aa2edcdbacb5f896307312f4aab0fb44f04282df6749f0c7841ab2 untracked=research_cloud/tests/test_ipcch_final_stage.py 
+h02 exit=1 start=2026-10-30T05:15:44Z end=2026-10-30T05:19:07Z
+h08 exit=1 start=2026-10-30T05:19:07Z end=2026-10-30T05:22:28Z
+h14 exit=1 start=2026-10-30T05:22:28Z end=2026-10-30T05:25:43Z

@@ -1,0 +1,5 @@
+commit=4cb493f
+command=cd control-plane-h2h8h14 && IPCCH_AE_SRC=$R/sources/Food_Crisis_Cluster/IPCCHAlphaEarthExperiment PYTHONDONTWRITEBYTECODE=1 ~/.venvs/ipcch-validity-idp/bin/python -m unittest research_cloud.tests.test_ipcch_validity_features research_cloud.tests.test_ipcch_validity_pooled research_cloud.tests.test_ipcch_ch_validity research_cloud.tests.test_ipcch_gosif_corrected research_cloud.tests.test_ipcch_acledagg_hpt
+result=Ran 121 tests in 1119.500s OK
+exit=0 (background task by5y4prl2 completed, exit code 0; PID 1995937 ended)
+log_sha256=94aaa99323516a1434119431fb1277aec76cdac724e77fbe0c31102f3eaf70c4

@@ -1,0 +1,186 @@
+{
+ "passed": true,
+ "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final",
+ "horizon": 14,
+ "kind": "self_consistency",
+ "rows": 147268,
+ "features": 527,
+ "recipe": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp1/recipes/config-final-h14.json",
+ "seconds": 132.7,
+ "assertions": {
+  "h14_supp_2026": {
+   "context": "h14_supp_2026",
+   "role": "supplement",
+   "cutoff": "2024-11",
+   "scheme": "expanding",
+   "sample_weights": "halving24",
+   "calibration": "identity",
+   "providers": 0,
+   "train_rows": 110762,
+   "train_copies": 81950,
+   "fit_target_min": "2014-01",
+   "fit_target_max": "2024-11",
+   "fit_targets_by_year": {
+    "2014": 2010,
+    "2015": 2297,
+    "2016": 2344,
+    "2017": 6048,
+    "2018": 7194,
+    "2019": 11288,
+    "2020": 15267,
+    "2021": 13282,
+    "2022": 16566,
+    "2023": 18945,
+    "2024": 15521
+   },
+   "train_excluded_families": 60,
+   "score_rows": 15317,
+   "score_copies": 9475,
+   "score_keys_sha256": "d2afa095a7be3d05495b88d77da562ec2280bdd22c825772578ea7f5da7d08a0",
+   "train_keys_sha256": "d94ef0919775d77d4aa0803adda252e10b326f788f20b3482f81af5f34425a8b",
+   "shared_fit": null,
+   "checks": {
+    "fitting_targets_le_cutoff": true,
+    "no_excluded_family_in_fitting_labels": true,
+    "no_scored_row_in_fitting_labels": true
+   }
+  }
+ },
+ "key_multiplicity": {
+  "h14_supp_2026": {
+   "train": {
+    "rows": 110762,
+    "copies": 81950,
+    "duplicate_keys": 0,
+    "areas": 6017,
+    "rows_per_area_family": {
+     "median": 4.0,
+     "max": 11
+    }
+   },
+   "score": {
+    "rows": 15317,
+    "copies": 9475,
+    "duplicate_keys": 0,
+    "areas": 3947,
+    "rows_per_area_family": {
+     "median": 3.0,
+     "max": 6
+    }
+   },
+   "train_score_overlap": 0
+  }
+ },
+ "gpp_availability": {
+  "rows_by_cutoff": {
+   "2018-12": 17527,
+   "2020-12": 20422,
+   "2021-12": 17746,
+   "2022-12": 19384,
+   "2023-12": 15267,
+   "2024-12": 12203,
+   "none": 44719
+  },
+  "nonmissing": {
+   "GPP_mean__value_at_origin": 0,
+   "GPP_mean__ma3_at_origin": 2663,
+   "GPP_mean__ma6_at_origin": 16660,
+   "GPP_mean__ma12_at_origin": 27794,
+   "GPP_mean__sd12_at_origin": 27794,
+   "GPP_mean__hist_same_month_z_at_origin": 0,
+   "GPP_mean__hist_same_month_z_ma3_at_origin": 2663,
+   "GPP_mean__hist_same_month_z_ma6_at_origin": 16660,
+   "GPP_mean__hist_same_month_z_ma12_at_origin": 27794,
+   "GPP_mean__vegetation_stress__share12_at_origin": 27794,
+   "GPP_mean__vegetation_stress__months_since_at_origin": 100580,
+   "GPP_mean__vegetation_stress__longest_run12_at_origin": 27794,
+   "GPP_mean__vegetation_stress__any12_at_origin": 27794
+  },
+  "nonmissing_by_kind": {
+   "copy": {
+    "GPP_mean__value_at_origin": 0,
+    "GPP_mean__ma3_at_origin": 2483,
+    "GPP_mean__ma6_at_origin": 12533,
+    "GPP_mean__ma12_at_origin": 18973,
+    "GPP_mean__sd12_at_origin": 18973,
+    "GPP_mean__hist_same_month_z_at_origin": 0,
+    "GPP_mean__hist_same_month_z_ma3_at_origin": 2483,
+    "GPP_mean__hist_same_month_z_ma6_at_origin": 12533,
+    "GPP_mean__hist_same_month_z_ma12_at_origin": 18973,
+    "GPP_mean__vegetation_stress__share12_at_origin": 18973,
+    "GPP_mean__vegetation_stress__months_since_at_origin": 68947,
+    "GPP_mean__vegetation_stress__longest_run12_at_origin": 18973,
+    "GPP_mean__vegetation_stress__any12_at_origin": 18973
+   },
+   "original": {
+    "GPP_mean__value_at_origin": 0,
+    "GPP_mean__ma3_at_origin": 180,
+    "GPP_mean__ma6_at_origin": 4127,
+    "GPP_mean__ma12_at_origin": 8821,
+    "GPP_mean__sd12_at_origin": 8821,
+    "GPP_mean__hist_same_month_z_at_origin": 0,
+    "GPP_mean__hist_same_month_z_ma3_at_origin": 180,
+    "GPP_mean__hist_same_month_z_ma6_at_origin": 4127,
+    "GPP_mean__hist_same_month_z_ma12_at_origin": 8821,
+    "GPP_mean__vegetation_stress__share12_at_origin": 8821,
+    "GPP_mean__vegetation_stress__months_since_at_origin": 31633,
+    "GPP_mean__vegetation_stress__longest_run12_at_origin": 8821,
+    "GPP_mean__vegetation_stress__any12_at_origin": 8821
+   }
+  },
+  "rows_with_any_gpp": 100621,
+  "rule": {
+   "source": "globalecology.unh.edu GOSIF-GPP updates page, verified 2026-10-29",
+   "column": "GPP_mean",
+   "run_date": "last day of O + 2",
+   "releases": [
+    [
+     "2019-12-01",
+     "2018-12",
+     "v2"
+    ],
+    [
+     "2021-03-15",
+     "2020-12",
+     "v2"
+    ],
+    [
+     "2022-04-29",
+     "2021-12",
+     "v2"
+    ],
+    [
+     "2023-04-02",
+     "2022-12",
+     "v2"
+    ],
+    [
+     "2024-05-13",
+     "2023-12",
+     "v2"
+    ],
+    [
+     "2025-03-30",
+     "2024-12",
+     "v2"
+    ],
+    [
+     "2026-08-16",
+     "2025-12",
+     "v3"
+    ]
+   ],
+   "corrections": [
+    [
+     "2023-05-14",
+     "2022 data corrected"
+    ],
+    [
+     "2025-05-31",
+     "2024 data corrected"
+    ]
+   ],
+   "rule": "a source month is available iff the earliest release covering it is dated on or before the simulated run date; none before 2019-12-01; filtered before every derived GPP feature"
+  }
+ }
+}

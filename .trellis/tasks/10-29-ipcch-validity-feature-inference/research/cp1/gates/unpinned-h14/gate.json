@@ -1,0 +1,6 @@
+{
+ "passed": false,
+ "error": "final cohort 15317 differs from the pinned {'final_rows': 1, 'holdout_rows': 1}",
+ "recipe": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp1/recipes/config-final-h14-unpinned.json",
+ "seconds": 190.4
+}

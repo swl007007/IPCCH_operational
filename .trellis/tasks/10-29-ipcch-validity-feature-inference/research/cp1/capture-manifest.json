@@ -1,0 +1,100 @@
+{
+ "captured_at": "2026-10-30T04:47:09.420199+00:00",
+ "source_repo": "/home/swl007007/projects/food-crisis-research/control-plane",
+ "source_head": "5e94e12c4c5597af248859951bba5d0f33365565",
+ "source_branch": "task/ipcch-acledagg-hpt",
+ "tracked_patch": {
+  "file": "capture/control-plane-10-28.patch",
+  "bytes": 117476,
+  "sha256": "3879ba2e438bc6c49e1ad9540b1a71be9548348af7584d54cf373c96f113bee3",
+  "expected_sha256": "3879ba2e438bc6c49e1ad9540b1a71be9548348af7584d54cf373c96f113bee3"
+ },
+ "files": [
+  {
+   "path": "PROGRESS.md",
+   "tracked": true,
+   "bytes": 400253,
+   "sha256_source": "cc4406f4c016e16e1279bb71c0e6e37c3cf63b13ce2a8e0801d7fc973766f6b3",
+   "in_baseline_commit": false,
+   "captured_copy": null,
+   "sha256_copy": null
+  },
+  {
+   "path": "research_cloud/RUNBOOK.md",
+   "tracked": true,
+   "bytes": 35993,
+   "sha256_source": "dda438f8893220df6bc7fc4e803603fd4b04d14513499d3e43d33710af42659f",
+   "in_baseline_commit": false,
+   "captured_copy": null,
+   "sha256_copy": null
+  },
+  {
+   "path": "research_cloud/training/dataset_input.py",
+   "tracked": true,
+   "bytes": 14329,
+   "sha256_source": "a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c",
+   "in_baseline_commit": true,
+   "captured_copy": "capture/files/research_cloud/training/dataset_input.py",
+   "sha256_copy": "a6d05b24759e60f4dd3e26f94c3258352ac8580b13c6f14b16571978159ece9c"
+  },
+  {
+   "path": "research_cloud/training/ipcch_validity_features.py",
+   "tracked": true,
+   "bytes": 92268,
+   "sha256_source": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6",
+   "in_baseline_commit": true,
+   "captured_copy": "capture/files/research_cloud/training/ipcch_validity_features.py",
+   "sha256_copy": "eace18fd6b6bdfd1304cbe9c50d034fc9f5fcc770b2edc14b5a109b000d9c0a6"
+  },
+  {
+   "path": "research_cloud/training/ipcch_validity_pooled.py",
+   "tracked": true,
+   "bytes": 225347,
+   "sha256_source": "d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28",
+   "in_baseline_commit": true,
+   "captured_copy": "capture/files/research_cloud/training/ipcch_validity_pooled.py",
+   "sha256_copy": "d7f78e3a8a10fd832669b67f44da9f5e5658b58147b727038961e35423030c28"
+  },
+  {
+   "path": "research_cloud/tests/test_ipcch_ch_dataset_identity.py",
+   "tracked": false,
+   "bytes": 3551,
+   "sha256_source": "431fe563538af41add53cb4b1e70f509d96f22a1f484df45096b10d9fac9ea6f",
+   "in_baseline_commit": true,
+   "captured_copy": "capture/files/research_cloud/tests/test_ipcch_ch_dataset_identity.py",
+   "sha256_copy": "431fe563538af41add53cb4b1e70f509d96f22a1f484df45096b10d9fac9ea6f"
+  },
+  {
+   "path": "research_cloud/tests/test_ipcch_ch_validity.py",
+   "tracked": false,
+   "bytes": 26626,
+   "sha256_source": "8104fd6b09d8f7c64f58b9a3549731bff4e89536965e10444ca209a6246c97b3",
+   "in_baseline_commit": true,
+   "captured_copy": "capture/files/research_cloud/tests/test_ipcch_ch_validity.py",
+   "sha256_copy": "8104fd6b09d8f7c64f58b9a3549731bff4e89536965e10444ca209a6246c97b3"
+  },
+  {
+   "path": "research_cloud/tests/test_ipcch_gosif_corrected.py",
+   "tracked": false,
+   "bytes": 13570,
+   "sha256_source": "7dd77f1c6105da710e195c697aaf487b75ec0effe5e3fb7572ebb573487a7dc0",
+   "in_baseline_commit": true,
+   "captured_copy": "capture/files/research_cloud/tests/test_ipcch_gosif_corrected.py",
+   "sha256_copy": "7dd77f1c6105da710e195c697aaf487b75ec0effe5e3fb7572ebb573487a7dc0"
+  },
+  {
+   "path": "research_cloud/tests/test_ipcch_gosif_dataset_identity.py",
+   "tracked": false,
+   "bytes": 7495,
+   "sha256_source": "7a8d1a7edec56a014bf4f3b5b53025b7a6b4616ee8f2a5b6cea5bf16d7bd4529",
+   "in_baseline_commit": true,
+   "captured_copy": "capture/files/research_cloud/tests/test_ipcch_gosif_dataset_identity.py",
+   "sha256_copy": "7a8d1a7edec56a014bf4f3b5b53025b7a6b4616ee8f2a5b6cea5bf16d7bd4529"
+  }
+ ],
+ "excluded": [
+  "mlruns/ (untracked MLflow local store)",
+  "all food-crisis-research root changes",
+  "PROGRESS.md and research_cloud/RUNBOOK.md hunks (kept only in the patch, Supervisor CP0 decision)"
+ ]
+}

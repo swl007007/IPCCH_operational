@@ -1,0 +1,482 @@
+{
+ "stage": "ipcch-validity-dataset",
+ "counts": {
+  "raw_rows": 1256996,
+  "share_valid_originals": 44596,
+  "original_countries": 53,
+  "invalid_reasons": {
+   "label_blank": 1211232,
+   "sum_out_of_bounds": 957,
+   "missing_phase_1_to_4": 210,
+   "phase_share_out_of_bounds": 1
+  },
+  "donors": {
+   "no_report": 27104,
+   "linked": 17407,
+   "ambiguous_report": 85
+  },
+  "relationships": 62715,
+  "relationship_dispositions": {
+   "copied": 44462,
+   "existing_label_donor_month": 17407,
+   "existing_label_valid": 740,
+   "no_raw_row": 96,
+   "overlap_not_selected": 9,
+   "existing_label_not_valid": 1
+  },
+  "candidate_relationships": 44471,
+  "candidate_recipients": 44462,
+  "candidate_countries": 34,
+  "overlap_recipients": 9,
+  "recipient_outcomes": {
+   "single_donor": 44453,
+   "latest_donor": 9
+  },
+  "copies": 44462,
+  "copy_countries": 34,
+  "cross_year_copies": 8356,
+  "copies_by_year": {
+   "2017": 1031,
+   "2018": 1331,
+   "2019": 4064,
+   "2020": 4985,
+   "2021": 3786,
+   "2022": 5514,
+   "2023": 6049,
+   "2024": 5685,
+   "2025": 3267,
+   "2026": 8750
+  },
+  "originals_by_year": {
+   "2014": 460,
+   "2015": 518,
+   "2016": 529,
+   "2017": 1726,
+   "2018": 2163,
+   "2019": 2686,
+   "2020": 4111,
+   "2021": 3246,
+   "2022": 4153,
+   "2023": 4925,
+   "2024": 4295,
+   "2025": 9792,
+   "2026": 5992
+  }
+ },
+ "raw_qc": {
+  "rows": 1256996,
+  "raw_rows": 1256996,
+  "valid": 44596,
+  "reasons": {
+   "label_blank": 1211232,
+   "": 44596,
+   "sum_out_of_bounds": 957,
+   "missing_phase_1_to_4": 210,
+   "phase_share_out_of_bounds": 1
+  },
+  "augmentation_role": {
+   "none": 1109727,
+   "copy_recipient": 102672,
+   "original_label": 44446,
+   "upstream_copy_reclassified": 150,
+   "candidate_recipient_not_filled": 1
+  }
+ },
+ "ambiguous_country_starts": {
+  "HN/2018-12": [
+   "13000358",
+   "13117579"
+  ],
+  "MZ/2020-10": [
+   "21509438",
+   "24085470"
+  ],
+  "ET/2021-05": [
+   "24026108",
+   "25133691"
+  ],
+  "SO/2026-01": [
+   "87143405",
+   "93850564"
+  ]
+ },
+ "reports": {
+  "eligible": 323,
+  "regional_code": 9
+ },
+ "horizons": {
+  "14": {
+   "rows": 147268,
+   "features": 527,
+   "feature_order_sha256": "b9f234c9e5533768fd7f00128dd495eac5106cfd530adc94064ab506c30e6658",
+   "nan_fraction": 0.06547138962443047,
+   "history_reference_check": {
+    "rows_checked": 147268,
+    "history_values_present": 264834
+   },
+   "all_nan_columns": [
+    "GPP_mean__value_at_origin",
+    "GPP_mean__hist_same_month_z_at_origin"
+   ],
+   "oracle": false,
+   "gpp_availability": {
+    "rows_by_cutoff": {
+     "2018-12": 17527,
+     "2020-12": 20422,
+     "2021-12": 17746,
+     "2022-12": 19384,
+     "2023-12": 15267,
+     "2024-12": 12203,
+     "none": 44719
+    },
+    "nonmissing": {
+     "GPP_mean__value_at_origin": 0,
+     "GPP_mean__ma3_at_origin": 2663,
+     "GPP_mean__ma6_at_origin": 16660,
+     "GPP_mean__ma12_at_origin": 27794,
+     "GPP_mean__sd12_at_origin": 27794,
+     "GPP_mean__hist_same_month_z_at_origin": 0,
+     "GPP_mean__hist_same_month_z_ma3_at_origin": 2663,
+     "GPP_mean__hist_same_month_z_ma6_at_origin": 16660,
+     "GPP_mean__hist_same_month_z_ma12_at_origin": 27794,
+     "GPP_mean__vegetation_stress__share12_at_origin": 27794,
+     "GPP_mean__vegetation_stress__months_since_at_origin": 100580,
+     "GPP_mean__vegetation_stress__longest_run12_at_origin": 27794,
+     "GPP_mean__vegetation_stress__any12_at_origin": 27794
+    },
+    "nonmissing_by_kind": {
+     "copy": {
+      "GPP_mean__value_at_origin": 0,
+      "GPP_mean__ma3_at_origin": 2483,
+      "GPP_mean__ma6_at_origin": 12533,
+      "GPP_mean__ma12_at_origin": 18973,
+      "GPP_mean__sd12_at_origin": 18973,
+      "GPP_mean__hist_same_month_z_at_origin": 0,
+      "GPP_mean__hist_same_month_z_ma3_at_origin": 2483,
+      "GPP_mean__hist_same_month_z_ma6_at_origin": 12533,
+      "GPP_mean__hist_same_month_z_ma12_at_origin": 18973,
+      "GPP_mean__vegetation_stress__share12_at_origin": 18973,
+      "GPP_mean__vegetation_stress__months_since_at_origin": 68947,
+      "GPP_mean__vegetation_stress__longest_run12_at_origin": 18973,
+      "GPP_mean__vegetation_stress__any12_at_origin": 18973
+     },
+     "original": {
+      "GPP_mean__value_at_origin": 0,
+      "GPP_mean__ma3_at_origin": 180,
+      "GPP_mean__ma6_at_origin": 4127,
+      "GPP_mean__ma12_at_origin": 8821,
+      "GPP_mean__sd12_at_origin": 8821,
+      "GPP_mean__hist_same_month_z_at_origin": 0,
+      "GPP_mean__hist_same_month_z_ma3_at_origin": 180,
+      "GPP_mean__hist_same_month_z_ma6_at_origin": 4127,
+      "GPP_mean__hist_same_month_z_ma12_at_origin": 8821,
+      "GPP_mean__vegetation_stress__share12_at_origin": 8821,
+      "GPP_mean__vegetation_stress__months_since_at_origin": 31633,
+      "GPP_mean__vegetation_stress__longest_run12_at_origin": 8821,
+      "GPP_mean__vegetation_stress__any12_at_origin": 8821
+     }
+    },
+    "rows_with_any_gpp": 100621,
+    "rule": {
+     "source": "globalecology.unh.edu GOSIF-GPP updates page, verified 2026-10-29",
+     "column": "GPP_mean",
+     "run_date": "last day of O + 2",
+     "releases": [
+      [
+       "2019-12-01",
+       "2018-12",
+       "v2"
+      ],
+      [
+       "2021-03-15",
+       "2020-12",
+       "v2"
+      ],
+      [
+       "2022-04-29",
+       "2021-12",
+       "v2"
+      ],
+      [
+       "2023-04-02",
+       "2022-12",
+       "v2"
+      ],
+      [
+       "2024-05-13",
+       "2023-12",
+       "v2"
+      ],
+      [
+       "2025-03-30",
+       "2024-12",
+       "v2"
+      ],
+      [
+       "2026-08-16",
+       "2025-12",
+       "v3"
+      ]
+     ],
+     "corrections": [
+      [
+       "2023-05-14",
+       "2022 data corrected"
+      ],
+      [
+       "2025-05-31",
+       "2024 data corrected"
+      ]
+     ],
+     "rule": "a source month is available iff the earliest release covering it is dated on or before the simulated run date; none before 2019-12-01; filtered before every derived GPP feature"
+    }
+   },
+   "idp_local": {
+    "prefix_features": 524,
+    "feature_prefix_order_sha256": "5975cf0819f73ad7942210c13d3bff8d8baa596ff2d91c9469450a742d4f9277",
+    "suffix": [
+     "idp_ipcch_ffill6_current",
+     "idp_ipcch_ffill6_ma3",
+     "idp_ipcch_ffill6_ma6"
+    ],
+    "nonmissing": {
+     "idp_ipcch_ffill6_current": 51364,
+     "idp_ipcch_ffill6_ma3": 46380,
+     "idp_ipcch_ffill6_ma6": 38942
+    },
+    "all_three_present": 38942,
+    "all_three_missing": 95904
+   },
+   "acled_agg": {
+    "removed": [
+     "event_count_violence__value_at_origin",
+     "event_count_violence__ma3_at_origin",
+     "event_count_violence__ma6_at_origin",
+     "event_count_violence__ma12_at_origin",
+     "event_count_violence__sd12_at_origin",
+     "sum_fatalities_violence__value_at_origin",
+     "sum_fatalities_violence__ma3_at_origin",
+     "sum_fatalities_violence__ma6_at_origin",
+     "sum_fatalities_violence__ma12_at_origin",
+     "sum_fatalities_violence__sd12_at_origin",
+     "event_count_violence__nonzero_stress__share12_at_origin",
+     "event_count_violence__nonzero_stress__months_since_at_origin",
+     "event_count_violence__nonzero_stress__longest_run12_at_origin",
+     "event_count_violence__nonzero_stress__any12_at_origin"
+    ],
+    "first_position": 410,
+    "positions_contiguous": true,
+    "old_columns_present": [],
+    "nonmissing": {
+     "acled_agg_events_battles__value_at_origin_lag1": 146078,
+     "acled_agg_events_battles__ma3_at_origin_lag1": 146078,
+     "acled_agg_events_battles__ma6_at_origin_lag1": 146078,
+     "acled_agg_events_battles__ma12_at_origin_lag1": 146044,
+     "acled_agg_events_battles__sd12_at_origin_lag1": 146044,
+     "acled_agg_events_erv__value_at_origin_lag1": 146078,
+     "acled_agg_events_erv__ma3_at_origin_lag1": 146078,
+     "acled_agg_events_erv__ma6_at_origin_lag1": 146078,
+     "acled_agg_events_erv__ma12_at_origin_lag1": 146044,
+     "acled_agg_events_erv__sd12_at_origin_lag1": 146044,
+     "acled_agg_events_vac__value_at_origin_lag1": 146078,
+     "acled_agg_events_vac__ma3_at_origin_lag1": 146078,
+     "acled_agg_events_vac__ma6_at_origin_lag1": 146078,
+     "acled_agg_events_vac__ma12_at_origin_lag1": 146044,
+     "acled_agg_events_vac__sd12_at_origin_lag1": 146044,
+     "acled_agg_fatalities_battles__value_at_origin_lag1": 146078,
+     "acled_agg_fatalities_battles__ma3_at_origin_lag1": 146078,
+     "acled_agg_fatalities_battles__ma6_at_origin_lag1": 146078,
+     "acled_agg_fatalities_battles__ma12_at_origin_lag1": 146044,
+     "acled_agg_fatalities_battles__sd12_at_origin_lag1": 146044,
+     "acled_agg_fatalities_erv__value_at_origin_lag1": 146078,
+     "acled_agg_fatalities_erv__ma3_at_origin_lag1": 146078,
+     "acled_agg_fatalities_erv__ma6_at_origin_lag1": 146078,
+     "acled_agg_fatalities_erv__ma12_at_origin_lag1": 146044,
+     "acled_agg_fatalities_erv__sd12_at_origin_lag1": 146044,
+     "acled_agg_fatalities_vac__value_at_origin_lag1": 146078,
+     "acled_agg_fatalities_vac__ma3_at_origin_lag1": 146078,
+     "acled_agg_fatalities_vac__ma6_at_origin_lag1": 146078,
+     "acled_agg_fatalities_vac__ma12_at_origin_lag1": 146044,
+     "acled_agg_fatalities_vac__sd12_at_origin_lag1": 146044,
+     "acled_agg_exposure_battles__value_at_origin_lag1": 141002,
+     "acled_agg_exposure_battles__ma3_at_origin_lag1": 140747,
+     "acled_agg_exposure_battles__ma6_at_origin_lag1": 140492,
+     "acled_agg_exposure_battles__ma12_at_origin_lag1": 140458,
+     "acled_agg_exposure_battles__sd12_at_origin_lag1": 140458,
+     "acled_agg_exposure_erv__value_at_origin_lag1": 141002,
+     "acled_agg_exposure_erv__ma3_at_origin_lag1": 140747,
+     "acled_agg_exposure_erv__ma6_at_origin_lag1": 140492,
+     "acled_agg_exposure_erv__ma12_at_origin_lag1": 140458,
+     "acled_agg_exposure_erv__sd12_at_origin_lag1": 140458,
+     "acled_agg_exposure_vac__value_at_origin_lag1": 141002,
+     "acled_agg_exposure_vac__ma3_at_origin_lag1": 140747,
+     "acled_agg_exposure_vac__ma6_at_origin_lag1": 140492,
+     "acled_agg_exposure_vac__ma12_at_origin_lag1": 140458,
+     "acled_agg_exposure_vac__sd12_at_origin_lag1": 140458,
+     "acled_agg_exposure_share_battles__value_at_origin_lag1": 141002,
+     "acled_agg_exposure_share_battles__ma3_at_origin_lag1": 140747,
+     "acled_agg_exposure_share_battles__ma6_at_origin_lag1": 140492,
+     "acled_agg_exposure_share_battles__ma12_at_origin_lag1": 140458,
+     "acled_agg_exposure_share_battles__sd12_at_origin_lag1": 140458,
+     "acled_agg_exposure_share_erv__value_at_origin_lag1": 141002,
+     "acled_agg_exposure_share_erv__ma3_at_origin_lag1": 140747,
+     "acled_agg_exposure_share_erv__ma6_at_origin_lag1": 140492,
+     "acled_agg_exposure_share_erv__ma12_at_origin_lag1": 140458,
+     "acled_agg_exposure_share_erv__sd12_at_origin_lag1": 140458,
+     "acled_agg_exposure_share_vac__value_at_origin_lag1": 141002,
+     "acled_agg_exposure_share_vac__ma3_at_origin_lag1": 140747,
+     "acled_agg_exposure_share_vac__ma6_at_origin_lag1": 140492,
+     "acled_agg_exposure_share_vac__ma12_at_origin_lag1": 140458,
+     "acled_agg_exposure_share_vac__sd12_at_origin_lag1": 140458,
+     "acled_agg_spill_events_battles__value_at_origin_lag1": 145909,
+     "acled_agg_spill_events_battles__ma3_at_origin_lag1": 145909,
+     "acled_agg_spill_events_battles__ma6_at_origin_lag1": 145909,
+     "acled_agg_spill_events_battles__ma12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_battles__sd12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_erv__value_at_origin_lag1": 145909,
+     "acled_agg_spill_events_erv__ma3_at_origin_lag1": 145909,
+     "acled_agg_spill_events_erv__ma6_at_origin_lag1": 145909,
+     "acled_agg_spill_events_erv__ma12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_erv__sd12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_vac__value_at_origin_lag1": 145909,
+     "acled_agg_spill_events_vac__ma3_at_origin_lag1": 145909,
+     "acled_agg_spill_events_vac__ma6_at_origin_lag1": 145909,
+     "acled_agg_spill_events_vac__ma12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_vac__sd12_at_origin_lag1": 145875,
+     "acled_agg_spill_fatalities_battles__value_at_origin_lag1": 145909,
+     "acled_agg_spill_fatalities_battles__ma3_at_origin_lag1": 145909,
+     "acled_agg_spill_fatalities_battles__ma6_at_origin_lag1": 145909,
+     "acled_agg_spill_fatalities_battles__ma12_at_origin_lag1": 145875,
+     "acled_agg_spill_fatalities_battles__sd12_at_origin_lag1": 145875,
+     "acled_agg_spill_fatalities_erv__value_at_origin_lag1": 145909,
+     "acled_agg_spill_fatalities_erv__ma3_at_origin_lag1": 145909,
+     "acled_agg_spill_fatalities_erv__ma6_at_origin_lag1": 145909,
+     "acled_agg_spill_fatalities_erv__ma12_at_origin_lag1": 145875,
+     "acled_agg_spill_fatalities_erv__sd12_at_origin_lag1": 145875,
+     "acled_agg_spill_fatalities_vac__value_at_origin_lag1": 145909,
+     "acled_agg_spill_fatalities_vac__ma3_at_origin_lag1": 145909,
+     "acled_agg_spill_fatalities_vac__ma6_at_origin_lag1": 145909,
+     "acled_agg_spill_fatalities_vac__ma12_at_origin_lag1": 145875,
+     "acled_agg_spill_fatalities_vac__sd12_at_origin_lag1": 145875,
+     "acled_agg_events_battles__nonzero_stress__share12_at_origin_lag1": 146044,
+     "acled_agg_events_battles__nonzero_stress__months_since_at_origin_lag1": 140389,
+     "acled_agg_events_battles__nonzero_stress__longest_run12_at_origin_lag1": 146044,
+     "acled_agg_events_battles__nonzero_stress__any12_at_origin_lag1": 146044,
+     "acled_agg_events_erv__nonzero_stress__share12_at_origin_lag1": 146044,
+     "acled_agg_events_erv__nonzero_stress__months_since_at_origin_lag1": 106647,
+     "acled_agg_events_erv__nonzero_stress__longest_run12_at_origin_lag1": 146044,
+     "acled_agg_events_erv__nonzero_stress__any12_at_origin_lag1": 146044,
+     "acled_agg_events_vac__nonzero_stress__share12_at_origin_lag1": 146044,
+     "acled_agg_events_vac__nonzero_stress__months_since_at_origin_lag1": 142219,
+     "acled_agg_events_vac__nonzero_stress__longest_run12_at_origin_lag1": 146044,
+     "acled_agg_events_vac__nonzero_stress__any12_at_origin_lag1": 146044,
+     "acled_agg_spill_events_battles__nonzero_stress__share12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_battles__nonzero_stress__months_since_at_origin_lag1": 145176,
+     "acled_agg_spill_events_battles__nonzero_stress__longest_run12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_battles__nonzero_stress__any12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_erv__nonzero_stress__share12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_erv__nonzero_stress__months_since_at_origin_lag1": 135908,
+     "acled_agg_spill_events_erv__nonzero_stress__longest_run12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_erv__nonzero_stress__any12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_vac__nonzero_stress__share12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_vac__nonzero_stress__months_since_at_origin_lag1": 145517,
+     "acled_agg_spill_events_vac__nonzero_stress__longest_run12_at_origin_lag1": 145875,
+     "acled_agg_spill_events_vac__nonzero_stress__any12_at_origin_lag1": 145875
+    },
+    "all_nan_columns": [],
+    "cutoff_lag_months": 1
+   }
+  }
+ },
+ "history_source": "raw panel overall_phase 1-5 (original reports only); interim corrected labels are not used",
+ "availability": "original reports available at their observation-month end; copies inherit it",
+ "idp_local_source": {
+  "rows": 1251627,
+  "admins": 6227,
+  "first_month": "2010-01",
+  "last_month": "2026-09",
+  "calendar_complete": true,
+  "nonmissing_value": 283283,
+  "qc_columns": [
+   "pct_area_ffill6",
+   "n_dtm_units_ffill6",
+   "months_since_round_mean",
+   "months_since_round_max"
+  ],
+  "missing_iso3_admins": 31
+ },
+ "idp_local_time_convention": "retrospective: local IDP assumed available at report-month end; x(O), strict mean x(O-2..O) and x(O-5..O); never after O",
+ "acled_agg_time_convention": "aggregated ACLED at A = O - 1 for every fitting and scoring row: x(A), trailing MA3/6/12 (>= 2/3/6 observed) and sample SD12 (>= 6) ending at A; persistence of x > 0 ending at A; never month O or later; retrospective 2026-10-20 export vintage",
+ "ch_correction": {
+  "link_rows": 18634,
+  "link_status": {
+   "linked": 17159,
+   "caf_excluded": 657,
+   "cross_country": 452,
+   "unresolved": 366
+  },
+  "eligible_rows": 17159,
+  "eligible_share_invalid_rows": 329,
+  "relationships": 58253,
+  "relationship_dispositions": {
+   "copied": 58210,
+   "existing_label_valid": 43
+  },
+  "added_copies": 58210,
+  "reclassified_upstream_copies": 150,
+  "added_copies_by_year": {
+   "2014": 1550,
+   "2015": 1779,
+   "2016": 1815,
+   "2017": 3291,
+   "2018": 3700,
+   "2019": 4538,
+   "2020": 6171,
+   "2021": 6250,
+   "2022": 6899,
+   "2023": 7971,
+   "2024": 7053,
+   "2025": 6618,
+   "2026": 575
+  },
+  "added_copies_by_iso2": {
+   "NG": 21597,
+   "TD": 5305,
+   "NE": 4510,
+   "ML": 3743,
+   "SN": 3546,
+   "BF": 3330,
+   "BJ": 2888,
+   "CM": 2425,
+   "GH": 1952,
+   "GN": 1743,
+   "TG": 1681,
+   "MR": 1539,
+   "CI": 1204,
+   "SL": 874,
+   "CV": 729,
+   "GW": 438,
+   "LR": 356,
+   "GM": 350
+  },
+  "cross_country_aliases": 452,
+  "cross_country_alias_labels": 451,
+  "family_renames": {
+   "16801532": 16801528,
+   "34627324": 34627320,
+   "39870204": 39870200,
+   "45113084": 45113080
+  },
+  "labels_before": 89058,
+  "labels_after": 147268,
+  "label_kind_after": {
+   "copy": 102822,
+   "original": 44446
+  },
+  "history_events_moved_to_nominal_month": 150,
+  "history_events": 44969,
+  "history_aliased_events": 452,
+  "time_convention": "CH copies and reclassified upstream copies: nominal source and availability = reference-window start month end (a retrospective modeling convention, not a verified publication date)"
+ },
+ "elapsed_seconds": 183.8
+}

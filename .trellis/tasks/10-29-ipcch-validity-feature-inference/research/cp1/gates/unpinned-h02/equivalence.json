@@ -1,0 +1,157 @@
+{
+ "arm": "validity_augmented_idp_202610_acledagg_lag1_uncal_ch_final",
+ "horizon": 2,
+ "mode": "formal",
+ "kind": "self_consistency",
+ "relation": "self-consistency of the reviewed local no-fit build of these exact inputs and recipe (no baseline run, no comparison)",
+ "width": 527,
+ "treatment": {
+  "rows": 147268,
+  "arm_rows_csv_sha256": "dba329f9b115d4de10e294133bf91d41d5adc05fc835984cdd117f3b1d1b29e1",
+  "targets_sha256": "459ecd5b0957df378aeae65a452bc95bf7a87b1f97dadcfedabfb88a6e28ecac",
+  "phase_sha256": "0eabdec6bc638f34a447bd9663093c4759e3e9907fb98722ba6739b49c4dcf4a",
+  "observations_sha256": "a4d6f0cbfadaf06ebf5c14bb122eee1b3fa53bad52fb37363395c4afa6678c53",
+  "memberships_sha256": "2b0c1fdbeadb8f700b50dfc63672bcdb6eb92b840db2ce2c44c688703441e83c",
+  "history_overlays_sha256": "7a56511c32eb65b01f6d4d5c35ea39b00663d05072a795615cba555fea3f393d",
+  "calibration_keys_sha256": "79c7db008f57c219e68f8938801b7722f1573610c3aaef76467bb73138be6e0d",
+  "schedule_sha256": "29772939f75c86b4ff97a95f8e5651279bb27c8be0362aacd7e9f2a16e6e8816",
+  "fit_keys_sha256": "2b89a96f4119a7c225791612c87bc830fad734f528028b297886e0c274a1ff54",
+  "feature_prefix_order_sha256": "b9f234c9e5533768fd7f00128dd495eac5106cfd530adc94064ab506c30e6658",
+  "feature_prefix_X_sha256": "e4fadc9f687ca68bb40180c4300367bffb043b7d6f8226c7837008fb2597e556",
+  "feature_prefix_nan_mask_sha256": "43607107135c80489eb70ccb65a77a19310f62dd453ebba816f41f743693edf8"
+ },
+ "differing": [
+  "rows",
+  "arm_rows_csv_sha256",
+  "targets_sha256",
+  "phase_sha256",
+  "observations_sha256",
+  "memberships_sha256",
+  "history_overlays_sha256",
+  "calibration_keys_sha256",
+  "schedule_sha256",
+  "fit_keys_sha256",
+  "feature_prefix_order_sha256",
+  "feature_prefix_X_sha256",
+  "feature_prefix_nan_mask_sha256"
+ ],
+ "cohort": {
+  "scored_rows": 15317,
+  "holdout_rows": 15317
+ },
+ "cohort_pinned": {
+  "final_rows": 1,
+  "holdout_rows": 1
+ },
+ "cohort_passed": false,
+ "feature_order_sha256": "b9f234c9e5533768fd7f00128dd495eac5106cfd530adc94064ab506c30e6658",
+ "feature_order_passed": true,
+ "key_multiplicity": {
+  "h02_supp_2026": {
+   "train": {
+    "rows": 128090,
+    "copies": 90331,
+    "duplicate_keys": 0,
+    "areas": 6178,
+    "rows_per_area_family": {
+     "median": 4.0,
+     "max": 11
+    }
+   },
+   "score": {
+    "rows": 15317,
+    "copies": 9475,
+    "duplicate_keys": 0,
+    "areas": 3947,
+    "rows_per_area_family": {
+     "median": 3.0,
+     "max": 6
+    }
+   },
+   "train_score_overlap": 0
+  }
+ },
+ "keys_unique": true,
+ "passed": false,
+ "stage": "pre-fit",
+ "schedule": {
+  "main_first": {
+   "0": "2023-01",
+   "6": "2023-07",
+   "12": "2024-01"
+  },
+  "main_last": "2025-12",
+  "supplement": [
+   "2026-01",
+   "2026-10"
+  ],
+  "supplement_blocks": [
+   [
+    "2026-01",
+    "2026-04"
+   ],
+   [
+    "2026-05",
+    "2026-10"
+   ]
+  ],
+  "scoring_contexts": [],
+  "shared_cutoff": null,
+  "scheme": "expanding",
+  "window": null,
+  "months": null,
+  "sample_weights": "halving24",
+  "calibration": "identity",
+  "providers": false,
+  "declared": true,
+  "main_window": false
+ },
+ "frozen": {
+  "freeze_index_sha256": "d85582b3ca1d6364e9021957ea4695d75905aafcb435ac9c7819eccdc7ef424f",
+  "freeze_sha256": "dc152d4ea6e719a32093a9e4ae35f9bdf2d24e1f52ebc30b3660b9a97791b622",
+  "params_sha256": "76871f5bc511a32aa1d527c211891ea914a0b8b956c74b981aec15d48c4a2ee3",
+  "source_horizon": 0,
+  "winner_role": "search",
+  "winner_trial_id": "37"
+ },
+ "assertions": {
+  "h02_supp_2026": {
+   "context": "h02_supp_2026",
+   "role": "supplement",
+   "cutoff": "2025-11",
+   "scheme": "expanding",
+   "sample_weights": "halving24",
+   "calibration": "identity",
+   "providers": 0,
+   "train_rows": 128090,
+   "train_copies": 90331,
+   "fit_target_min": "2014-01",
+   "fit_target_max": "2025-11",
+   "fit_targets_by_year": {
+    "2014": 2010,
+    "2015": 2297,
+    "2016": 2344,
+    "2017": 6048,
+    "2018": 7194,
+    "2019": 11288,
+    "2020": 15267,
+    "2021": 13282,
+    "2022": 16566,
+    "2023": 18945,
+    "2024": 17033,
+    "2025": 15816
+   },
+   "train_excluded_families": 60,
+   "score_rows": 15317,
+   "score_copies": 9475,
+   "score_keys_sha256": "d2afa095a7be3d05495b88d77da562ec2280bdd22c825772578ea7f5da7d08a0",
+   "train_keys_sha256": "e06dc4f979baea416c5f7562c1f5d918c7d75f3b123eb1aba8bf1c76b1f8d966",
+   "shared_fit": null,
+   "checks": {
+    "fitting_targets_le_cutoff": true,
+    "no_excluded_family_in_fitting_labels": true,
+    "no_scored_row_in_fitting_labels": true
+   }
+  }
+ }
+}

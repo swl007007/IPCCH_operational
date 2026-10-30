@@ -3001,3 +3001,21 @@ Operational ledger only; it does not grant authority. Authority: `.trellis/tasks
 - Context manifests populated; evidence map covers AC1-AC40, R1-R66, FCC1-FCC10 (all planned, none executed); CP1 plan with research isolation (new worktree/branch from control-plane 5e94e12; capture manifest re-verified at capture; mlruns and research-root changes excluded).
 - Verified: control-plane training modules are byte-identical to the 10-28 image overlay; static29 roster 6,226; operational test env `~/.venvs/fewsnet-test-lock-20261022` matches 57/57 lock pins.
 - Open: ACLED override precedence ruling (S1); FEWS partition CRLF collection error (pre-existing, planned attribute fix). No product edits, training, cloud operations or commits yet. Checkpoint: `.trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp0-checkpoint.md`.
+
+### 2026-10-30 05:25Z — CP1 in progress (executor); CP0 accepted, implementation released (e41a11b)
+
+- Supersedes the CP0 "no product edits" status above: CP0 was committed by the supervisor (40c3aad, 84e12e1), and the user approved implementation with native `task.py start` (e41a11b). Still: no paid fits, image builds or cloud writes before supervisor review of the concrete packet; no Audit.
+- Research isolation: control-plane capture re-verified before and after (HEAD 5e94e12, diff 3879ba2e…, 9 file hashes); new worktree `food-crisis-research/control-plane-h2h8h14` on branch `task/ipcch-h2-h8-h14-final`, baseline commit 4cb493f (3 modules + 4 tests). Original dirty tree untouched.
+- Baseline at 4cb493f: 121 research unittest tests OK (exit 0, 1119.5 s) in `~/.venvs/ipcch-validity-idp`.
+- C1–C5 implemented (uncommitted diff 621267e6…): oracle-free final horizons 2/8/14, R57 GPP provider-log filter applied before every derived GPP feature, supplement-only final schedule, final arm contract with mapped frozen winners, no-fit gate with key multiplicity, dataset CLI flags, and DatasetInput CH tags. 0/6/12 defaults unchanged; compact.py not edited.
+- Focused tests `test_ipcch_final_stage`: 18 OK (third run; runs 1–2 failures and fixes recorded). Route tests mock the builder, so they are route/unit tests only. Regression and unmocked real-data no-fit gates (H02/H08/H14, placeholder pins, discovery only) are running.
+- Inputs staged on native disk with an asserted re-hash (17 roles); spend-ledger copy: platform 97.71/100 and training 140.86/200 reserved for 2026-10.
+- Evidence: `.trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp1/` (capture manifest, tests/, recipes/, caller-map.md).
+
+### 2026-10-30 05:45Z — CP1 ready for supervisor review (executor)
+
+- Research code committed in the isolation worktree: 9aa9e54 on `task/ipcch-h2-h8-h14-final` (local, not pushed). The tracked diff equals the bytes the regression ran on (621267e6…).
+- Numeric env `ipcch-validity-idp`: regression 139 tests OK, exit 0; direct four-class 21 OK, exit 0. Supplementary tooling envs (not lock parity): integration 27 passed (`ipcch-mlflow`); HPT control 107 passed in `envs/mlflow-svc`, after an `ipcch-mlflow` run with 40 setup errors (missing google.api_core; log preserved).
+- Real unmocked final pinned gates at 9aa9e54: H2/H8/H14 all exit 0; 13 digests identical to the discovery builds; cohort 15,317; 527-name order == retained H0 package. Fit rows 128,090 / 121,096 / 110,762 at cutoffs 2025-11 / 2025-05 / 2024-11; unique keys.
+- Concrete paid packet prepared, NOT released: `R/staging/ipcch-h2h8h14-20261030/` (SHA256SUMS, verify_packet.sh, overlay context c9575d08…, plan 9e36cb19… USD 6.9119 estimate, max two concurrent jobs). Hold on paid/cloud writes remains.
+- Checkpoint: `.trellis/tasks/10-29-ipcch-validity-feature-inference/research/cp1/cp1-checkpoint.md`; packet: `research/cp1/cp1-packet.md`.

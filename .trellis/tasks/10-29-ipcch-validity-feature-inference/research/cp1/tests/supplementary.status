@@ -1,0 +1,3 @@
+head=9aa9e5427ffb3d21d7ccb5fc833c119b12de3ac9 start=2026-10-30T05:35:38Z
+direct_fourclass (numeric env ipcch-validity-idp, unittest) exit=0 end=2026-10-30T05:36:40Z
+hpt_control (tooling env ipcch-mlflow, pytest; supplementary) exit=1 end=2026-10-30T05:38:23Z
