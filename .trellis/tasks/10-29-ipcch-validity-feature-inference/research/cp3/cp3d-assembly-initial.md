@@ -23,3 +23,32 @@ r1 (exact-parse ACLED input, old harness without a verdict key; its exit 0 is NO
 | ACLED-agg windows/stress | 72 | 15,672 / 15,487 / 15,277 | 4.66e-10 | 13,250 / 13,148 / 12,984 | the same 1-ulp input differences propagated through trailing means/SDs (a research-shaped grid with area 1315 and the blank 2026-10 rows changed nothing: layout is NOT the cause) |
 Proof of the ACLED cause (`diag/h2_research_parse.py`): on 400 H2 rows, feeding the interim series parsed exactly as research parsed it -> 0 of 45,600 ACLED cells differ (vs 2,902 with the exact parse). Operational ACLED comes from the weekly-store port (its own exact parity, cp3c2-acled.md), not from this CSV; the training data are not changed and no tolerance is introduced.
 r2 (running, `run_r2_effective.sh` -> `run-r2.log`): stage 2 without research rerun for the ORIGINAL exact-parse configuration and the research-parse diagnostic, each saving assembled arrays, then stage 3 comparing the float32 inputs XGBoost consumes bitwise and the raw q2..q5 scores of the package through the operational runtime bitwise; machine verdicts EFFECTIVE_IDENTICAL/EFFECTIVE_DIFFERS with rc.
+
+## Assembly parity r2 - FINAL machine verdicts (historical compatibility evidence; not CP5 / target-date proof)
+Run `research/cp3/assembly-parity/run_r2_effective.sh` (set -uo pipefail, each rc judged), log `run-r2.log`:
+`SUMMARY stage2_exact=2 stage3_exact=0 stage2_research_parse=2 stage3_research_parse=0`, `exit=0`.
+Outputs (new files; r1 evidence untouched) in R/scratch/h2h8h14-final/assembly-parity/: r2_exact.json,
+r2_exact_effective.json, r2_research_parse.json, r2_research_parse_effective.json (+ assembled_hHH.npy).
+
+| config | horizon | rows | float64 columns exact / 527 | float64 cells differing | NaN-mask mismatches | float32 effective cells differing | raw q2..q5 differing | contract | verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| exact (ORIGINAL harness) | H2 | 18,317 | 435 | 318,461 | 0 | 0 | 0/0/0/0 | passed x2 | stage2 DIFFERS rc2; stage3 EFFECTIVE_IDENTICAL rc0 |
+| exact | H8 | 18,317 | 435 | 322,412 | 0 | 0 | 0/0/0/0 | passed x2 | same |
+| exact | H14 | 18,317 | 435 | 317,391 | 0 | 0 | 0/0/0/0 | passed x2 | same |
+| research-parse | H2 | 18,317 | 525 | 4,933 | 0 | 0 | 0/0/0/0 | passed x2 | stage2 DIFFERS rc2; stage3 EFFECTIVE_IDENTICAL rc0 |
+| research-parse | H8 | 18,317 | 525 | 5,271 | 0 | 0 | 0/0/0/0 | passed x2 | same |
+| research-parse | H14 | 18,317 | 525 | 5,707 | 0 | 0 | 0/0/0/0 | passed x2 | same |
+
+Per-family causes with ORIGINAL diffs (exact configuration):
+- lat/lon (2 columns; H2 2,468/2,465 rows, H8 2,637/2,634, H14 2,859/2,848; max |diff| 5.0e-11; scored rows 0): the
+  research panel repeats each area's coordinate per month with text-level noise; operational uses the handoff's fixed
+  per-area coordinate (R58, latest month, spread bound 1e-9 recorded per area). Only historical fit rows differ.
+- ACLED aggregated (90 of 114 columns; max |diff| 4.66e-10, ulp-level on large values; NaN mismatches 0): the research
+  build parsed its ACLED CSV with the pandas default float parser, the original harness with exact round-trip parsing.
+  Feeding the research-parsed input (research-parse configuration) removes ALL 90 ACLED differences (525/527 exact);
+  only lat/lon remain.
+- All other 435 columns bit-exact in both configurations.
+Effective model input: after the runtime contract's float32 cast, 0 cells differ and raw q2..q5 scores through the
+operational runtime are identical for all three horizons in both configurations. No tolerance was relaxed.
+Supervisor accepted r2_exact_effective as historical feature/model compatibility evidence (stage3 metadata uses fixed
+probe dates; not CP5 or target-date proof).
