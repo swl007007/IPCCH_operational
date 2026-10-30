@@ -131,7 +131,9 @@ def test_seasons_only_when_complete_and_never_rewritten(tmp_path):
 
 
 def test_method_ids_bind_scripts():
-    assert cl.method_ids("spei03", cl.MONTHLY)["spei_fit"] == cl.SPEI_FIT
+    assert cl.method_ids("spei03", cl.MONTHLY)["spei_fit"] == cl.SPEI_FIT_MONTHLY
+    assert cl.method_ids("spei03", cl.SEASONAL)["spei_fit"] == cl.SPEI_FIT_SEASONAL != cl.SPEI_FIT_MONTHLY
+    assert "season_aggregation" in cl.method_ids("spi03", cl.SEASONAL)
     assert cl.method_ids("evi_anom", cl.MONTHLY)["script"] == "monthly/ndvi_evi.js"
     assert cl.method_ids("evi_anom", cl.SEASONAL)["script"] == "seasonal/ndvi.js"
     assert cl.method_id("prcp_anom", cl.SEASONAL).startswith("seasonal/rainfall.js@73ba8ddbfbd6|")

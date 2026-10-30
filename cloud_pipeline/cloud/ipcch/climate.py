@@ -62,7 +62,11 @@ _FAMILY = {"prcp_anom": "rainfall", "prcp_z": "rainfall", "rainy_days": "rainfal
            "edd": "temperature", "sm_z": "soil_moisture", "evi_anom": "ndvi"}
 WEIGHTING = "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
 OUTLIER = "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT"
-SPEI_FIT = "SPEI_UBPWM_GLO_STRICT_SUPPORT_V3"
+# The two shared scripts print the same SPEI label but fit differently (monthly: plotting-position PWMs; seasonal: unbiased
+# PWMs, k = -tau3, strict GLO probability); identifiers name script and function so they are never conflated (R40).
+SPEI_FIT_MONTHLY = "SPEI_UBPWM_GLO_STRICT_SUPPORT_V3@monthly/spi_monthly.py:compute_spei03_monthly"
+SPEI_FIT_SEASONAL = "SPEI_UBPWM_GLO_STRICT_SUPPORT_V3@seasonal/spi&spei.py:fit_glo_ubpwm+glo_probability_strict"
+SEASONAL_INDEX_AGGREGATION = "MONTHLY_INDEX_EXACT_OVERLAP_DAY_WEIGHTED_MEAN|FULL_COVERAGE_0.999999|USE_FEB28"
 ENSEMBLE = "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1"
 MONTHLY, SEASONAL = "month", "gs"
 
@@ -95,7 +99,9 @@ def method_ids(base: str, temporal: str) -> dict[str, str]:
     ids = {"script": script, "script_sha256": SCRIPTS[script], "spatial_weighting": WEIGHTING, "outlier": OUTLIER,
            "ensemble": ENSEMBLE}
     if base == "spei03":
-        ids["spei_fit"] = SPEI_FIT
+        ids["spei_fit"] = SPEI_FIT_MONTHLY if temporal == MONTHLY else SPEI_FIT_SEASONAL
+    if base in ("spi03", "spei03") and temporal == SEASONAL:
+        ids["season_aggregation"] = SEASONAL_INDEX_AGGREGATION
     return ids
 
 
