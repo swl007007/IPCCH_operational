@@ -75,7 +75,8 @@ def acled_interval(origin):
 
 
 def acled_export(start, end):
-    """Weekly regional-aggregate rows (both regions) for every Saturday week in [start, end]."""
+    """Weekly regional-aggregate rows (both regions) for every Saturday week in [start, end] (the request puts it with a
+    UTF-8 BOM, as the ACLED Data Export Tool writes it)."""
     weeks = pd.date_range(start, pd.Timestamp(end) - pd.Timedelta(days=6), freq="7D")
     rows = []
     for i, w in enumerate(weeks):
@@ -93,8 +94,8 @@ class Refs:
     def __init__(self):
         self.objects = {}
 
-    def put(self, name, text):
-        data = text.encode()
+    def put(self, name, text, bom=False):
+        data = (b"\xef\xbb\xbf" if bom else b"") + text.encode()
         ref = {"uri": f"gs://ops-smoke/inputs/{name}", "generation": str(100 + len(self.objects)),
                "sha256": hashlib.sha256(data).hexdigest()}
         self.objects[(ref["uri"], ref["generation"])] = data
@@ -110,7 +111,7 @@ def smoke_request(refs, envelope_path, execution_month="2027-03", run_id="smoke-
                   combination_id="ipcch-test-scoring"):
     o = str(pd.Period(execution_month, "M") - 2)
     start, end = acled_interval(o)
-    acled = {"action": "refresh", "file": refs.put("acled.csv", acled_export(start, end)), "start": start, "end": end,
+    acled = {"action": "refresh", "file": refs.put("acled.csv", acled_export(start, end), bom=True), "start": start, "end": end,
              "regions": ["R1", "R2"]}
     keep = {"action": "keep"}
     envelope = refs.put("envelope.json", open(envelope_path, encoding="utf-8").read())

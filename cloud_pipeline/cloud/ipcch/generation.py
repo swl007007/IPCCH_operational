@@ -212,7 +212,9 @@ class Generation:
     def _text(self, choice: Mapping[str, Any]) -> str | None:
         if choice.get("action") != "refresh":
             return None
-        return self.read_ref(choice["file"]).decode("utf-8")
+        # sha256 is verified over the raw pinned bytes; a leading UTF-8 BOM (the ACLED Data Export Tool writes one) is
+        # an encoding artefact, not part of the exact header
+        return self.read_ref(choice["file"]).decode("utf-8-sig")
 
     def _acled(self, choice, tables, O, mode):
         table = self._table(ACLED_TABLE)
