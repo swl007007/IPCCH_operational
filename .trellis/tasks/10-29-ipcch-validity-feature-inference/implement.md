@@ -1,6 +1,11 @@
 # Implementation plan
 
-Status: planning draft. Do not start or execute until spec/grilling convergence and explicit implementation approval. Every step below references prd.md requirements; exact file edits require GitNexus impact analysis first.
+Status: EXECUTED and ACCEPTED (Supervisor final acceptance CP0-CP6, 2026-10-30; `research/cp6/supervisor-final-acceptance.md`).
+Checkpoint evidence: CP0 `research/cp0-checkpoint.md`; CP1 `research/cp1/`; CP2 `research/cp2/`; CP3 `research/cp3/`,
+`research/cp3-supervisor-review.md`; CP4 `research/cp4/`; CP5 `research/cp5/cp5-smoke.md`; CP6 `research/cp6/`
+(final report, evidence matrix, operator handoff, final regression receipt). The plan below is kept as written.
+(Original status: planning draft; every step references prd.md requirements; exact file edits required GitNexus impact
+analysis first.)
 
 ## Deliverable groups
 

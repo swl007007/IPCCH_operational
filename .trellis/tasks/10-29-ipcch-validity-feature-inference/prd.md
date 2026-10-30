@@ -6,7 +6,10 @@ Plan shared monthly and seasonal feature integration, reference-period and ACLED
 
 ## Status
 
-Planning only. Task creation approved on 2026-10-29. Brainstorm first, persist the specification, then grill details and corner cases before implementation approval.
+Implemented and ACCEPTED (Supervisor final acceptance CP0-CP6, 2026-10-30) for the in-scope local implementation and
+handoff: `research/cp6/supervisor-final-acceptance.md`, final report `research/cp6/cp6-final-report.md`, executed
+evidence `research/cp6/cp6-evidence-matrix.md`. Live/cloud/full-area/production items remain DEFERRED (D-live-1..8),
+not blocking. (History: planning approved 2026-10-29; implementation approved via native `task.py start`.)
 
 ## Requirements
 
@@ -157,46 +160,49 @@ Recorded on 2026-10-29 so nothing is silently assumed; object to any of them to 
 
 ## Acceptance Criteria
 
-- [ ] Each new horizon has model-matched training-error evidence; country confidence reproduces the existing population-weighted formula, thresholds and missingness behavior, without reusing old-model values. The maximum-phase proxy and bootstrap interval use new model-matched residuals with existing resampling and missing-history rules.
-- [ ] Real inference batches cover the full fixed IPCCH roster; missing area records fail, while permitted within-row missingness follows the model rules. Dummy smoke batches cover their declared roster subset. Duplicate area keys within a batch/horizon fail with offending keys reported; no automatic deduplication or averaging.
-- [ ] Missing/unknown run mode fails clearly. Smoke cannot write production current or retained real-source history; real rejects dummy inputs/batches.
-- [ ] Missing model-required columns fail before scoring; legitimate missing feature values retain explicit columns and generation-side reasons, without inference-time column fabrication.
-- [ ] IPCCH feature definitions, temporal alignment, names, ordering, and missingness agree with the selected model contract.
-- [ ] Dummy smoke outputs leave production current unchanged. The normal publication path successfully replaces an isolated test current and preserves it on failure; real-data activation uses that same path with no dummy inputs remaining.
-- [ ] Formal H2/H8/H14 fitting uses real historical inputs only; dummy fixtures are confined to the smoke path and its marked outputs.
-- [ ] Initial integration milestone: runnable placeholders for undelivered upstream dependencies allow an end-to-end smoke test to emit explicitly identified dummy predictions. Real cloud integration and full-area verification remain deferred until actual inputs are available; final upstream QA/merge and exact final-table reproduction are not required. For real-data operation, reuse the supplied monthly/seasonal algorithms and accepted minimal assembly; routine updates preserve accepted historical values and add completed months/seasons, without adding historical recomputation functionality.
-- [ ] Model identity, weight period, and selection behavior are explicit and verifiable. GPP training/backtest inputs respect the agreed availability simulation, with unpublished raw months missing and no forward copying.
-- [ ] NaN/infinite model prediction outputs fail with area/horizon/field details and no row removal or zero substitution; unavailable diagnostics remain governed separately by R31.
-- [ ] An IPCCH horizon failure leaves the previous complete IPCCH current unchanged; successful publication switches all three horizons from one run together.
-- [ ] Single-system publication succeeds without same-month outputs from the other system, preserves that system's results and dates, and exposes per-system temporal provenance. When both are selected and only one fails, the successful system can publish, the failed system retains its previous results, and the run reports partial success with a failure reason.
-- [ ] Inference-only requests without an explicit feature batch or with incompatible cutoff/schema/real-dummy designation fail clearly; valid requests consume the exact referenced batch. A combined IPCCH generation/inference request stops dependent inference when generation fails and never silently uses an older batch.
-- [ ] Inference consumes only selected H2/H8/H14 weights and corresponding prepared features; no CH reference-period processing or retrospective rerun interface is introduced.
-- [ ] An invalid manifest is rejected before collection, retained-data mutation or inference, with no partial execution; cross-system partial success applies only after valid-request admission.
-- [ ] All four manifest choices have agreed inputs, outputs, prerequisites, and failure behavior. No available source for a required climate indicator at M-2 blocks affected IPCCH generation and dependent inference with a source-specific explanation; GPP and ACLED follow their accepted exceptions.
-- [ ] Invalid or missing explicitly requested ACLED refresh input fails without modifying retained ACLED data or production results and without falling back to keep.
-- [ ] ACLED refresh replaces the declared interval without double counting, removes superseded in-interval records, and preserves out-of-interval history.
-- [ ] After a successful real IPCCH ACLED refresh, the next keep consumes the updated retained history; failed refreshes and dummy smoke inputs cannot replace it. FEWS NET retention behavior is unchanged.
-- [ ] ACLED keep preserves existing regional-aggregate history, leaves unavailable new months missing without raw forward filling, and produces model-consistent derived features; FEWS NET ACLED behavior is unchanged.
-- [ ] A legacy IPCCH job started before activation cannot overwrite new IPCCH current after activation, including when cutover occurs during publication; its independent artifacts may remain.
-- [ ] FEWS NET regression criteria demonstrate unchanged scientific behavior and continued acceptance of existing FEWS NET requests through the legacy entrypoint without new required fields. Deliberate exception: a v1 FEWS NET-only request whose explicit IPCCH inherit source differs from the current release's IPCCH member is rejected; after activation the inherited new-contract IPCCH member passes the R63 checks instead of the v1 same-month, target-period and installed-package checks.
-- [ ] New horizon models use the agreed execution-month/feature-origin/target-month mapping and matching training/inference availability rules, with no unapproved future-realized inputs.
-- [ ] A smoke manifest selecting any FEWS NET operation is rejected; a real manifest may compose all four operations (R38).
-- [ ] Real IPCCH requests with a future M are rejected; same-M reruns replace current; an older-M current publication is rejected (candidate is exempt from this current-month comparison) at validation and again at publication (R39).
-- [ ] Feature batch metadata records method identifiers, model combination, M/O, mode, per-family coverage ends and source-level gaps; batches are immutable and uniquely identified (R40, R52).
-- [ ] Real generation persists validated indicator-months immediately; a later failure in the same run does not discard them; reruns compute only unsaved months (R41, R43).
-- [ ] Real keep for ACLED with no saved real history is rejected; the first real refresh must cover the required lookback through O; refresh validation enforces Saturday weeks, declared interval, declared regions, mapping tables and month completeness (R44, R55, R56).
-- [ ] Real generation rejects historical inputs without an acceptance record or with a checksum mismatch; runtime-saved months append their own records (R45).
-- [ ] Smoke reads only the fixture store and the model package; a candidate package loads in smoke and is rejected in real; real verifies package checksums and status=accepted (R48, R51).
-- [ ] GPP: only definitive not-found is recorded as unpublished; other errors block; IPCCH history is the v3 all-years panel; training applies the provider update-log filter with pre-log months unavailable (R49, R54, R57).
-- [ ] Per-system lock rejects a concurrent same-system submission; different systems run in parallel (R50).
-- [ ] Research-prepared families, the reported-phase snapshot, WFP and nightlight follow their keep/refresh and coverage-warning rules and do not block solely because of missing coverage (R59, R62, R64, R65); processing failures still block. Among source families, only the 13 climate bases require coverage at O.
-- [ ] FEWS NET inference-only references an existing prepared_snapshot; no FEWS NET batch artifact exists (R60).
-- [ ] Prediction post-processing is unchanged from the existing IPCCH path (R61); year dummies for 2027 targets are all-zero and documented (R58).
-- [ ] Single-pointer publication with cross-system inheritance of a different-month delivery passes member identity checks and records per-system months (R63); candidate publication writes a delivery without moving the pointer and does not activate (R66).
-- [ ] IPCCH inference-only combined with any IPCCH input refresh (ACLED, research_inputs, history_snapshot, WFP) is rejected before any source mutation.
-- [ ] A shared-current CAS conflict fails publication without automatic retry, rescoring or rebasing; generated batches and saved retained data remain usable by a later explicit submission.
-- [ ] Legacy FEWS NET-only publication after activation inherits the current release's new IPCCH member unchanged, so activation is preserved; a conflicting explicit IPCCH inherit source is rejected.
-- [ ] Existing promote/resume entrypoints reject new-contract candidate deliveries; legacy FEWS NET maintenance remains supported.
+Checked = accepted at the 2026-10-30 final acceptance within the local execution scope; the per-criterion executed
+evidence and every deferred live limit are in `research/cp6/cp6-evidence-matrix.md` (rows AC1-AC40).
+
+- [x] Each new horizon has model-matched training-error evidence; country confidence reproduces the existing population-weighted formula, thresholds and missingness behavior, without reusing old-model values. The maximum-phase proxy and bootstrap interval use new model-matched residuals with existing resampling and missing-history rules.
+- [x] Real inference batches cover the full fixed IPCCH roster; missing area records fail, while permitted within-row missingness follows the model rules. Dummy smoke batches cover their declared roster subset. Duplicate area keys within a batch/horizon fail with offending keys reported; no automatic deduplication or averaging.
+- [x] Missing/unknown run mode fails clearly. Smoke cannot write production current or retained real-source history; real rejects dummy inputs/batches.
+- [x] Missing model-required columns fail before scoring; legitimate missing feature values retain explicit columns and generation-side reasons, without inference-time column fabrication.
+- [x] IPCCH feature definitions, temporal alignment, names, ordering, and missingness agree with the selected model contract.
+- [x] Dummy smoke outputs leave production current unchanged. The normal publication path successfully replaces an isolated test current and preserves it on failure; real-data activation uses that same path with no dummy inputs remaining.
+- [x] Formal H2/H8/H14 fitting uses real historical inputs only; dummy fixtures are confined to the smoke path and its marked outputs.
+- [x] Initial integration milestone: runnable placeholders for undelivered upstream dependencies allow an end-to-end smoke test to emit explicitly identified dummy predictions. Real cloud integration and full-area verification remain deferred until actual inputs are available; final upstream QA/merge and exact final-table reproduction are not required. For real-data operation, reuse the supplied monthly/seasonal algorithms and accepted minimal assembly; routine updates preserve accepted historical values and add completed months/seasons, without adding historical recomputation functionality.
+- [x] Model identity, weight period, and selection behavior are explicit and verifiable. GPP training/backtest inputs respect the agreed availability simulation, with unpublished raw months missing and no forward copying.
+- [x] NaN/infinite model prediction outputs fail with area/horizon/field details and no row removal or zero substitution; unavailable diagnostics remain governed separately by R31.
+- [x] An IPCCH horizon failure leaves the previous complete IPCCH current unchanged; successful publication switches all three horizons from one run together.
+- [x] Single-system publication succeeds without same-month outputs from the other system, preserves that system's results and dates, and exposes per-system temporal provenance. When both are selected and only one fails, the successful system can publish, the failed system retains its previous results, and the run reports partial success with a failure reason.
+- [x] Inference-only requests without an explicit feature batch or with incompatible cutoff/schema/real-dummy designation fail clearly; valid requests consume the exact referenced batch. A combined IPCCH generation/inference request stops dependent inference when generation fails and never silently uses an older batch.
+- [x] Inference consumes only selected H2/H8/H14 weights and corresponding prepared features; no CH reference-period processing or retrospective rerun interface is introduced.
+- [x] An invalid manifest is rejected before collection, retained-data mutation or inference, with no partial execution; cross-system partial success applies only after valid-request admission.
+- [x] All four manifest choices have agreed inputs, outputs, prerequisites, and failure behavior. No available source for a required climate indicator at M-2 blocks affected IPCCH generation and dependent inference with a source-specific explanation; GPP and ACLED follow their accepted exceptions.
+- [x] Invalid or missing explicitly requested ACLED refresh input fails without modifying retained ACLED data or production results and without falling back to keep.
+- [x] ACLED refresh replaces the declared interval without double counting, removes superseded in-interval records, and preserves out-of-interval history.
+- [x] After a successful real IPCCH ACLED refresh, the next keep consumes the updated retained history; failed refreshes and dummy smoke inputs cannot replace it. FEWS NET retention behavior is unchanged.
+- [x] ACLED keep preserves existing regional-aggregate history, leaves unavailable new months missing without raw forward filling, and produces model-consistent derived features; FEWS NET ACLED behavior is unchanged.
+- [x] A legacy IPCCH job started before activation cannot overwrite new IPCCH current after activation, including when cutover occurs during publication; its independent artifacts may remain.
+- [x] FEWS NET regression criteria demonstrate unchanged scientific behavior and continued acceptance of existing FEWS NET requests through the legacy entrypoint without new required fields. Deliberate exception: a v1 FEWS NET-only request whose explicit IPCCH inherit source differs from the current release's IPCCH member is rejected; after activation the inherited new-contract IPCCH member passes the R63 checks instead of the v1 same-month, target-period and installed-package checks.
+- [x] New horizon models use the agreed execution-month/feature-origin/target-month mapping and matching training/inference availability rules, with no unapproved future-realized inputs.
+- [x] A smoke manifest selecting any FEWS NET operation is rejected; a real manifest may compose all four operations (R38).
+- [x] Real IPCCH requests with a future M are rejected; same-M reruns replace current; an older-M current publication is rejected (candidate is exempt from this current-month comparison) at validation and again at publication (R39).
+- [x] Feature batch metadata records method identifiers, model combination, M/O, mode, per-family coverage ends and source-level gaps; batches are immutable and uniquely identified (R40, R52).
+- [x] Real generation persists validated indicator-months immediately; a later failure in the same run does not discard them; reruns compute only unsaved months (R41, R43).
+- [x] Real keep for ACLED with no saved real history is rejected; the first real refresh must cover the required lookback through O; refresh validation enforces Saturday weeks, declared interval, declared regions, mapping tables and month completeness (R44, R55, R56).
+- [x] Real generation rejects historical inputs without an acceptance record or with a checksum mismatch; runtime-saved months append their own records (R45).
+- [x] Smoke reads only the fixture store and the model package; a candidate package loads in smoke and is rejected in real; real verifies package checksums and status=accepted (R48, R51).
+- [x] GPP: only definitive not-found is recorded as unpublished; other errors block; IPCCH history is the v3 all-years panel; training applies the provider update-log filter with pre-log months unavailable (R49, R54, R57).
+- [x] Per-system lock rejects a concurrent same-system submission; different systems run in parallel (R50).
+- [x] Research-prepared families, the reported-phase snapshot, WFP and nightlight follow their keep/refresh and coverage-warning rules and do not block solely because of missing coverage (R59, R62, R64, R65); processing failures still block. Among source families, only the 13 climate bases require coverage at O.
+- [x] FEWS NET inference-only references an existing prepared_snapshot; no FEWS NET batch artifact exists (R60).
+- [x] Prediction post-processing is unchanged from the existing IPCCH path (R61); year dummies for 2027 targets are all-zero and documented (R58).
+- [x] Single-pointer publication with cross-system inheritance of a different-month delivery passes member identity checks and records per-system months (R63); candidate publication writes a delivery without moving the pointer and does not activate (R66).
+- [x] IPCCH inference-only combined with any IPCCH input refresh (ACLED, research_inputs, history_snapshot, WFP) is rejected before any source mutation.
+- [x] A shared-current CAS conflict fails publication without automatic retry, rescoring or rebasing; generated batches and saved retained data remain usable by a later explicit submission.
+- [x] Legacy FEWS NET-only publication after activation inherits the current release's new IPCCH member unchanged, so activation is preserved; a conflicting explicit IPCCH inherit source is rejected.
+- [x] Existing promote/resume entrypoints reject new-contract candidate deliveries; legacy FEWS NET maintenance remains supported.
 
 ## Out of Scope
 

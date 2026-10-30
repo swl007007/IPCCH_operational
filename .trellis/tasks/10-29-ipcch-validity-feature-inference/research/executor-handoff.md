@@ -90,14 +90,12 @@ deliver(fewsnet) parity (research/cp4/fews-parity: 12 real KE/UG areas, both mod
 scope tables, 3 identical modulo deliver's own output path). Latest full receipt research/cp4/findings1-4/
 residuals-AD-P1-tests-run1.log (818 passed); receipts are on disk (*.log gitignored); CP6 must commit concise
 manifests/results/checksums/commands.
-CP5 ACCEPTED (b3b5dd2 + da1ebd0; research/cp5/cp5-smoke.md, run6 all 12 checks). R60 parity ACCEPTED (0d26d7f,
-6598a1d). CP6 IN PROGRESS: d57a3fb = research/cp6/{cp6-evidence-matrix.md (check_matrix.py), operator-handoff.md,
-examples/ (operator_examples.py validates them), test-index}, entrypoint_v2 `initialise` route, R53/R62 warnings in
-prediction metadata (Supervisor finding closes on commit). REMAINING for CP6: final whole-tree regression
-(`cd cloud_pipeline && PYTHONDONTWRITEBYTECODE=1 ~/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest tests -q
--p no:cacheprovider`) + py_compile -> commit a lean `research/cp6/final-tests-summary.md` (counts, HEAD, command;
-logs stay local, *.log gitignored); keep AGENTS.md/CLAUDE.md GitNexus count lines unstaged; then report to the
-Supervisor. NO Audit/archive/goal-complete before the Supervisor's final acceptance.
+FINAL: Supervisor final acceptance CP0-CP6 granted 2026-10-30 for the in-scope local implementation and handoff
+(`research/cp6/supervisor-final-acceptance.md`, Supervisor-owned). Final report `research/cp6/cp6-final-report.md`;
+evidence matrix `research/cp6/cp6-evidence-matrix.md`; final regression `research/cp6/final-tests-summary.md`
+(957 passed at bbf21a4); operator runbook `research/cp6/operator-handoff.md`. Remaining executor step: native
+finish/archive after the Supervisor's acceptance commit (unmerged handoff branch: use the native skip-branch-validation
+option if required and record the reason; no merge/PR/deploy). Deferred live limits D-live-1..8 stay deferred.
 ## CP5 local small-area smoke with the ACTUAL accepted H2/H8/H14 package (envelope v2 / package 18b91d45; not synthetic
 ## fits), fixture-only inputs (fixture bundle subset across >=2 countries, never real retained stores);
 ## CP6 acceptance. Assembly parity = historical compatibility evidence only.
