@@ -123,3 +123,27 @@ Request/reference tests cover the processed-file shape, raw_upload rejection, re
 ### 7. Wrong vs correct
 
 Wrong: append country-level `100 + mean(Trend)` under the trained WFP_Price name because a generic method-difference exception exists. Correct: preserve accepted training history and consume the existing research workflow's area-month output through the validated interval-refresh channel. Do not claim that the precise units of Trend were verified; the decision is based on the verified training definition and source mismatch.
+
+
+## 11. IPCCH combination envelope selection
+
+### 1. Scope / trigger
+New IPCCH v2 generation and inference select one fixed accepted model combination; CP2 preserves original package bytes.
+
+### 2. Signatures
+`ipcch.model_combination = {"combination_id": "...", "envelope": {"uri": "...", "generation": "...", "sha256": "..."}}`. No parallel request package_manifest field.
+
+### 3. Contracts
+The versioned envelope binds package manifest/member identities and handoff acceptance. Verify pinned envelope bytes and installed package through `binding.verify_combination`; compare request combination_id and envelope digest with the resulting Binding before any IPCCH input mutation or scoring. Real requires envelope status accepted. Smoke may use candidate or accepted; only envelope/model/diagnostics are shared, never real handoff reads. Original inner package candidate metadata is preserved and is not the acceptance authority.
+
+### 4. Validation and error matrix
+Malformed/old selection shape, reference identity mismatch, wrong requested combination, package/member mismatch or real candidate envelope: reject before mutation/scoring. No latest-model fallback. Smoke real-handoff access remains prohibited.
+
+### 5. Good / base / bad cases
+Good: accepted envelope selects its exact installed package. Base: smoke selects the same package with fixture inputs. Bad: accept a different package merely because feature order and cutoffs match.
+
+### 6. Tests required
+Assert envelope reference enumeration/hash validation; reject wrong selection before store/provider writes; reject mismatched package members; real rejects candidate, smoke reads no real handoff; generation-only records the selected binding.
+
+### 7. Wrong vs correct
+Wrong: trust a caller-supplied Binding while ignoring the manifest selection. Correct: verify the requested immutable envelope and require identity equality before executing.

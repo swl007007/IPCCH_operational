@@ -95,3 +95,14 @@ CP3 remains pending. Read-only scouts reproduced the following; Supervisor spot-
 - wfp.py:59-61: empty initialized history misclassified as absent; successful empty replacement prevents subsequent keep/refresh. Use persisted initialization state and test clear/keep/repopulate.
 
 Existing targeted tests alone do not cover these reproductions. Generation coverage warnings and retained keep provenance remain integration checks. WFP centred ±6-month filtering may embed later observations in historical inputs; compatibility evidence is not a no-leakage/as-of proof. No algorithm change or retraining is authorized by this finding.
+
+
+## 2026-10-30 generation/preflight review (f90e97b / 3e7c470)
+
+CP3 remains pending. Pinned-source reproductions and Supervisor source spot-check identify: generation ignores requested model selection; fixed season_windows ends2026 and needs calendar-derived future windows in both climate and assembly; saved runtime versions receive no R45 runtime acceptance entries; a later research-family error omits earlier saved refreshes from failure reports; WFP coverage<O has no warning. Repair packet delivered to verified Executor.
+
+Preflight shared validators and nested references passed 15 explicit tampered-reference cases; locked delivery regressions249+frozen diagnostics5 passed in independent scout. Actual runner admission-before-write spy remains pending integration. Existing future-M validation also incorrectly applies R39 to FEWS-only; preserve FEWS own origin semantics when wiring runner. Climate history table-name correction669d2c1 matches initialization.
+
+Approved bounded selection clarification: request uses combination_id plus immutable envelope ref, not redundant package_manifest ref. Canonical acceptance remains CP2 envelope; verify selected identity and package before mutation. No training or scientific algorithm change.
+
+Repair verification 2d978d4: Supervisor inspected source diff plus targeted regression assertions for all seven batch/WFP findings. Locked Python -B pytest -q -p no:cacheprovider tests/cloud/test_ipcch_batch.py tests/cloud/test_ipcch_wfp.py tests/cloud/test_ipcch_generation.py: 29 passed in38.82s. Closes the seven specific reproductions; does not accept CP3 or prove pending runner/generation integration.
