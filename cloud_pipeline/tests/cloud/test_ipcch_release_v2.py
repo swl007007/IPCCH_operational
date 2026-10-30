@@ -87,10 +87,10 @@ def test_first_real_ipcch_publication_inherits_legacy_fews_byte_for_byte_and_act
     files = seed_legacy_fews(store)
     g = pub.read_current(store, PROD, "prod")["generation"]
     out = publish(store, kw, "ipcch-oct", g, tmp=tmp_path)
-    assert out["status"] == "published" and out["activation"]["activated_by_run"] == "ipcch-oct"
+    assert out["status"] == "published" and out["activation"]["activated_by_run"] == "ipcch-oct-ipcch"
     rec = pub.read_current(store, PROD, "prod")["record"]
     assert rec["systems"]["fewsnet"]["origin_month"] == "2026-09" and rec["systems"]["ipcch"]["execution_month"] == "2026-10"
-    base = f"{PROD}/deliveries/ipcch-oct"
+    base = f"{PROD}/deliveries/ipcch-oct-ipcch"
     for rel, text in files.items():                                          # byte-for-byte inherited member
         assert store.read_text(f"{base}/{rel}") == text
     merged = pd.read_csv(store_path(tmp_path, f"{base}/reports/diagnostic_availability.csv"), dtype=str, keep_default_na=False)
@@ -102,7 +102,7 @@ def test_first_real_ipcch_publication_inherits_legacy_fews_byte_for_byte_and_act
     assert out2["status"] == "published"
     rec2 = pub.read_current(store, PROD, "prod")["record"]
     assert rec2["systems"]["fewsnet"]["delivery"] == rec["systems"]["fewsnet"]["delivery"]
-    assert rec2["activation"]["activated_by_run"] == "ipcch-oct"                 # activation never re-set or cleared
+    assert rec2["activation"]["activated_by_run"] == "ipcch-oct-ipcch"           # activation never re-set or cleared
 
 
 def store_path(tmp_path, uri):
@@ -172,3 +172,59 @@ def test_edited_or_incomplete_inherited_member_with_regenerated_inventory_is_ref
     after = pub.read_current(store, PROD, "prod")
     assert after["generation"] == before["generation"] and after["record"]["run_id"] == "legacy-fews"
     assert not list((tmp_path / "releases").rglob("candidate.json"))
+
+
+
+def write_fews_member(origin, bad_target=False):
+    """A new legacy-format FEWS NET member (stand-in for the FEWS adapter output; own origin, targets origin+0/6/12)."""
+    def write(out):
+        y, m = (int(x) for x in origin.split("-"))
+        files = {"fewsnet/polygons.geojson": '{"type":"FeatureCollection","features":[]}\n',
+                 "fewsnet/model_package/0m/model.json": '{"m": 1}\n',
+                 "reports/fewsnet_diagnostic_availability.csv": "model_system,horizon_months,level,entity_id,"
+                                                                "diagnostic_family,status,reason,evidence_ref\n",
+                 "reports/fewsnet_feature_fill_audit.csv": "system,polygon_id,fill_method\nfewsnet,1,observed\n"}
+        for lead in (0, 6, 12):
+            o = y * 12 + m - 1 + lead + (1 if bad_target else 0)
+            files[f"scopes/{lead}m/fewsnet/polygon_predictions.csv"] = (
+                f"admin_code,probability_crisis,feature_month,target_month\n1,0.5,{origin},{o // 12:04d}-{o % 12 + 1:02d}\n")
+        for rel, text in files.items():
+            (out / rel).parent.mkdir(parents=True, exist_ok=True)
+            (out / rel).write_text(text)
+        return {"contract": "fewsnet-legacy-scoring", "origin_month": origin, "mode": "real"}
+    return write
+
+
+@pytest.mark.parametrize("fews_ok", [True, False])
+def test_one_run_publishing_both_systems_uses_unique_artifacts_and_chains_its_own_generation(tmp_path, package, fews_ok):
+    """Supervisor integration gap (e3bb779): IPCCH then FEWS NET published by ONE run (same run_id) - unique immutable
+    paths per system publication, the second publication chains the generation the first produced (no rebase), the final
+    pointer holds both new members; a FEWS failure leaves the IPCCH update (partial success)."""
+    kw = real_inputs(scored_batch(tmp_path, package))
+    store = LocalObjectStore(tmp_path / "releases")
+    seed_legacy_fews(store)
+    g0 = pub.read_current(store, PROD, "prod")["generation"]
+    first = publish(store, kw, "two-sys", g0, tmp=tmp_path)
+    assert first["status"] == "published" and first["publication_id"] == "two-sys-ipcch"
+    g1 = str(first["pointer_generation"])
+    if fews_ok:
+        second = rv.publish_member_run(store, PROD, system="fewsnet", namespace="prod", run_id="two-sys", mode="real",
+                                       publication="current", expected_pointer_generation=g1, request_ref=REQ,
+                                       write_member=write_fews_member("2026-11"), workdir=str(tmp_path), now=NOW)
+        assert second["status"] == "published" and second["publication_id"] == "two-sys-fewsnet"
+        rec = pub.read_current(store, PROD, "prod")["record"]
+        assert rec["run_id"] == "two-sys-fewsnet" and rec["previous"]["pointer_generation"] == g1     # chained, no rebase
+        assert rec["systems"]["fewsnet"]["origin_month"] == "2026-11" and rec["systems"]["ipcch"]["execution_month"] == "2026-10"
+        assert rec["systems"]["ipcch"]["published_by_run"] == "two-sys-ipcch"
+        for pid in ("two-sys-ipcch", "two-sys-fewsnet"):                          # unique immutable artifacts
+            assert store.get_metadata(f"{PROD}/prod/releases/{pid}/release.json") is not None
+            assert store.get_metadata(f"{PROD}/deliveries/{pid}/manifest.json") is not None
+        assert rec["activation"]["activated_by_run"] == "two-sys-ipcch"
+    else:
+        with pytest.raises(dv.DeliveryError, match="not its own"):
+            rv.publish_member_run(store, PROD, system="fewsnet", namespace="prod", run_id="two-sys", mode="real",
+                                  publication="current", expected_pointer_generation=g1, request_ref=REQ,
+                                  write_member=write_fews_member("2026-11", bad_target=True), workdir=str(tmp_path), now=NOW)
+        rec = pub.read_current(store, PROD, "prod")["record"]
+        assert rec["run_id"] == "two-sys-ipcch" and rec["systems"]["fewsnet"]["origin_month"] == "2026-09"   # IPCCH kept
+        assert store.get_metadata(f"{PROD}/prod/releases/two-sys-fewsnet/release.json") is None

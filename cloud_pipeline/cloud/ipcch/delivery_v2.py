@@ -211,6 +211,11 @@ def verify_delivery(store: ObjectStore, *, delivery_ref: Mapping[str, str], snap
                     dm.verify_member(Path(tmp), expected=member)
                     if sorted(h["model_horizon_months"] for h in member.get("horizons", [])) != [2, 8, 14]:
                         raise DeliveryError("new IPCCH member does not carry H2/H8/H14 (R18)")
+                else:                                                         # new legacy-format member (FEWS NET)
+                    own = {p for p in (e["path"] for e in manifest["files"]) if _belongs(system, member, p)}
+                    if not own:
+                        raise DeliveryError(f"new {system} member has no files")
+                    _check_legacy_member(Path(tmp), system, member)
             else:                                                             # inherited: bound snapshot's member
                 src = current.get(system)
                 strip = lambda m: {k: v for k, v in (m or {}).items() if k != "inherited_from_pointer_generation"}

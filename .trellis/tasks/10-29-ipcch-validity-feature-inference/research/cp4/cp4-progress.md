@@ -88,3 +88,24 @@ refused; candidate leaves the pointer. Includes the Supervisor's closures append
 STILL UNFINISHED: entrypoint dispatch (deployed job/CLI route building Deployment + IpcchContext + real provider route),
 legacy v1 guards (post-activation IPCCH rejection at request+publish time, v1 FEWS-only inheriting the v2 IPCCH member
 with activation, v1 locks), promote/resume rejection, FEWS v2 adapter (R60).
+
+## e48ca51 executable v2 route + two-system publication gap (Supervisor note on e3bb779)
+- e48ca51: `cloud/ipcch/entrypoint_v2.py` (`python -m cloud.ipcch.entrypoint_v2 run --config ... --request-uri ...
+  --request-generation ...`; also `delivery_job run --v2-config` dispatches v2 bodies, v1 unchanged): validated
+  deployment config (per-mode roots/store roots/namespaces/trusted prefixes/installed envelope+package+bundle(+fixture
+  root)/providers; smoke may not use the real providers; roots distinct); exact-generation request read; R39 current
+  month from the production pointer; admission; installed binding verified against the request's pinned envelope sha;
+  per-mode providers (real `real_providers`: EETransport.from_environment + real_provider_factory +
+  CloudSourceAcquirer; smoke: configured fixture factory); run_v2 with Deployment; create-only run status. Tests
+  test_ipcch_entrypoint_v2.py (3): smoke end-to-end through the route (published to the smoke pointer only, status
+  written); request pinning another envelope -> IPCCH fails with nothing generated; config refusals.
+  `entrypoint-tests-run1.log`: entrypoint + runner + delivery_job + request_v2 69 passed.
+- Two-system gap: `release_v2.publish_member_run(system, write_member)` with publication id `<run_id>-<system>` for
+  deliveries/releases/candidates/conflicts (unique immutable artifacts within one request); the record keeps the request
+  run id in `delivery.request_run_id`; the second publication chains the generation the first produced. verify_delivery
+  now also checks a NEW legacy-format FEWS member (own origin/targets, non-empty). `publish_ipcch_run` = wrapper.
+  Test (both outcomes): IPCCH then FEWS by one run -> final pointer has both new members with own months, unique
+  release/delivery paths, `previous.pointer_generation` == the first publication's generation; FEWS refused (wrong own
+  targets) -> pointer keeps the IPCCH update (partial success), no FEWS release written.
+Remaining: FEWS v2 adapter (R60: prepare/deliver mapping producing the FEWS member), legacy v1 guards, promote/resume
+rejection.
