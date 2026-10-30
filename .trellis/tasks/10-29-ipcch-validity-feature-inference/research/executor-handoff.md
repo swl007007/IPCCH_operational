@@ -36,6 +36,12 @@ R=/home/swl007007/projects/food-crisis-research; T=OP/.trellis/tasks/10-29-ipcch
   population_reference.csv, fixed/geometry byte copy, roster_policy, 1315 fixed-source exception, 103 imported SD=0 seasonal rows.
   Evidence T/research/cp2/cp2-handoff-inputs.md (+ handoff-inputs-r5/). r4 (out-r4) still used by parity harness.
 - Remaining for CP2 acceptance: Supervisor review of r5; explicit acceptance (package + bundle entries) is a research-side act.
+- BINDING REQUIREMENT (Supervisor, design.md:27/R32/R55): fixed geometry/roster/ACLED/static/population must be checksum-bound to
+  the selected combination. Plan: keep candidate 18b91d45 INTACT as evidence; build an explicitly versioned ACCEPTANCE ENVELOPE
+  (new file, e.g. ipcch-combination-envelope-v1.json) binding combination package_manifest sha 18b91d45… + handoff_manifest sha
+  (r5 e6e3ebc6… or successor) + roster sha 9ff2c420… + feature order sha, with acceptor/date fields; runtime (package load,
+  initial.initialise, assembly inputs) must verify the envelope and REJECT any other bundle/package pairing even if the 527
+  schema matches (tests). Include binding verification in the CP2 acceptance packet.
 
 ## CP3 (operational v2 runtime, local) — open
 Committed (operational branch): b9e333e FEWS crlf; 6ebfb63 request v2; 9270192+557515f stores/retained; c65e43d+b3035ad ACLED;
