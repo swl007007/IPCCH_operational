@@ -45,20 +45,23 @@ _list_images; definitive absence via parent listing; reserve-before-submit creat
 cancel on timeout; exact-generation reads; computeFeatures asset tables; from_environment). f1af645 cloud/ipcch/gpp.py
 (IPCCH-only research-equivalent GPP v3: fills 65534/65535 masked, sum/n_valid*0.01, cell-centre; ledger; fill-only-
 unpublished; FEWS raw zonal unchanged). Climate output filter strict (declared_extra only; rain paint full calendar).
-OPEN CP3 work (next, in order):
-1. Feature batch writer (R52): immutable unique batch per generation bound to run id, records M, O, mode, combination ref,
-   generation time, method ids (R40), per-family coverage ends + source-level gaps, missingness counts, acceptance records,
-   retained-input refs; summary file for generation-only. Real batch = full 6,226 roster, duplicate keys fail (R32).
-2. Inference validation (R19/R18/R51/R61): batch reference + combination exact match, cutoff/schema/real-dummy checks,
-   missing required column -> fail, duplicate names -> fail, reorder by model names, extras ignored, unparseable/inf in required
-   -> fail with area/column; nonfinite outputs fail with area/horizon/field; real requires package status accepted + checksums,
-   smoke accepts candidate; per-scope training cutoffs from package manifest; post-processing unchanged (cummax, thresholds).
-3. Generation orchestration: climate_run.update_all (transport + declared_extra), GPP (gpp.update_gpp DONE), nightlight VIIRS
-   append via existing export/zonal contract on roster_geometries (R64), WFP manual raw_upload -> refresh_h5_inputs.wfp_aggregates
-   ipcch rows only (no new fetcher) (R64), research families/history_snapshot refresh (R59/R62), ACLED refresh/keep -> monthly_series, initial
-   store from accepted bundle, assembly per horizon (T = O + H), population from population_reference via no-future builder.
-4. Integrated preflight (Supervisor 6ebfb63 note): validate the ENTIRE FEWS delivery + all nested refs before any IPCCH
-   mutation; mixed invalid-FEWS request -> zero writes/calls test.
+CP3 commits after CP2 acceptance: bd00654 nightlight; ced8e52 batches (R52) + batch inference (R19); 8e00c8a WFP
+correction A (v2 ipcch.wfp refresh {action,file,start,end}; wfp.py); 669d2c1 climate table_name history__climate_*;
+f90e97b generation orchestration (cloud/ipcch/generation.py; smoke fixture tests/cloud/ipcch_smoke_fixture.py);
+3e7c470 integrated FEWS preflight (v2 full fewsnet.delivery validation via shared v1 validators systems=(fewsnet,);
+nested refs; delivery_request_v2.admit); 2d978d4 Supervisor review repairs (batch namespace admission, bound roster,
+package re-verify, horizon metadata, strict_csv, HEAD-based init); b52387c climate_run.real_providers.
+Evidence: research/cp3/{batch/,generation/,preflight/,transport/,wfp-*.md,nightlight-contract-check.md,gpp-*.md}.
+Supervisor rulings: WFP = research HDX series via declared-interval refresh (A); nightlight avg_rad__sum kept; GPP IPCCH
+adapter (fill mask x0.01); Supervisor owns prd/design/implement/spec WFP doc edits (do not edit them).
+OPEN CP3 (next):
+1. v2 runner for the four operations without publication (admit -> IPCCH generation via Generation -> IPCCH inference
+   via load_batch/score_batch; FEWS generation/inference mapped onto existing prepare/deliver, R60), zero-write spy test
+   for invalid mixed requests (the admit-before-anything requirement), partial-success across systems (R17).
+   OPEN QUESTION to Supervisor: request ipcch.model_combination references package_manifest, but acceptance lives in the
+   versioned envelope -> propose {combination_id, envelope: ref} (real must be accepted; smoke may use candidate).
+2. Real-asset local integration: accepted envelope v2 + out-r5-accepted-v1 real-mode initialise/generation dry run with
+   fake providers? (CP5 is smoke with small-area fixture; real-mode runtime tests use envelope v2 + accepted bundle.)
 ## CP4 publication/compat (after CP3): v2 routing; per-system lock locks/{system} (R50/FCC2); single pointer with cross-system
 inheritance (R63/FCC4); candidate publication (R66); CAS no retry (FCC3); activation from current release; legacy v1
 cutover/inherit exact current (R37/FCC9); promote/resume reject new candidates (FCC5); smoke isolation (R36/R48); all three
