@@ -1,0 +1,68 @@
+{
+ "label": "DRY RUN - NOT AN ACCEPTANCE",
+ "finalize": {
+  "out_bundle": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/envelope/DRYRUN-NOT-ACCEPTANCE/bundle",
+  "envelope": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/envelope/DRYRUN-NOT-ACCEPTANCE/envelope-dryrun.json",
+  "envelope_sha256": "eede3061baebdc311a68cb4f7f31add83eb7703c40f932420e963f09078a38af",
+  "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+  "status": "accepted",
+  "acceptor": "DRY-RUN (not an acceptance)",
+  "accepted_at": "2026-10-30",
+  "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+  "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+  "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+  "roster_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+  "roster_size": 6226,
+  "acceptance_entries_sha256": "4a1e94b4463d6744b164707f43179ed80ded2373483ed420bc6ce87c47e49abf",
+  "source_draft_entries_sha256": "3621c350d3a8c22f45562368ce30b2041019b74acaa8f17deeb80f9fc887c372",
+  "entries": 57
+ },
+ "install_acceptance": {
+  "appended": 57,
+  "acceptance_entries_sha256": "4a1e94b4463d6744b164707f43179ed80ded2373483ed420bc6ce87c47e49abf"
+ },
+ "initialise": {
+  "initialised": 52,
+  "unchanged": 0,
+  "verified_files": [
+   "fixed/geometry/ipcch_admin_geometry_repaired.cpg",
+   "fixed/geometry/ipcch_admin_geometry_repaired.dbf",
+   "fixed/geometry/ipcch_admin_geometry_repaired.prj",
+   "fixed/geometry/ipcch_admin_geometry_repaired.shp",
+   "fixed/geometry/ipcch_admin_geometry_repaired.shx"
+  ],
+  "pairing": {
+   "mode": "real",
+   "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+   "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+   "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+   "bundle_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+   "roster_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+   "roster_size": 6226
+  }
+ },
+ "reinitialise": {
+  "initialised": 0,
+  "unchanged": 52
+ },
+ "assembly_inputs": {
+  "roster": 6226,
+  "order": 527,
+  "order_is_package": true
+ },
+ "population_2026_08": {
+  "observed_feature_month_rows": 0,
+  "last_observation_carried_forward_rows": 6226,
+  "missing_area_count": 0,
+  "method_counts": {
+   "observed_feature_month": 0,
+   "last_observation_carried_forward": 6226
+  },
+  "future_reference_rows_ignored": 0,
+  "latest_reference_period": "2026-04",
+  "rows": 6226
+ },
+ "original_r5_with_draft_entries": "refused: acceptance_entries.json: fixed/acled/acled_admin1_to_poly.csv is not finalized (acceptor/accepted_at); drafts cannot be bound",
+ "original_draft_untouched": true,
+ "seconds": 127.3
+}

@@ -83,3 +83,25 @@ then real `install_acceptance` + `initialise` dry run on a local store.
   by marker; symlinked bundle dir / symlinked manifest -> refused, never opened. Mutation check: restoring the pre-fix
   order (handoff_identity first) makes the spy test fail (1 failed). Regression `binding-r48-fix-tests-run1.log`:
   test_ipcch_*.py + request_v2 + population_output 138 passed rc 0.
+
+## Acceptance publication packet (prepared; the acceptance itself awaits the Supervisor's explicit act)
+Tool `cloud_pipeline/tools/ipcch_finalize_acceptance.py` (inputs: acceptor, YYYY-MM-DD date, envelope version):
+checks the r5 manifest sha (e6e3ebc6...) and that the draft entries list exactly the runtime files at manifest sha;
+creates a NEW bundle dir (manifest-listed files + unchanged handoff_manifest.json hard-linked byte-for-byte), writes
+finalized entries fresh (draft file untouched), writes the accepted envelope create-only, and verifies it exactly as
+real mode does (verify_combination real + verify_handoff).
+
+Proposed real command (acceptor/date to be supplied at acceptance):
+`python tools/ipcch_finalize_acceptance.py --package R/scratch/h2h8h14-final/package-build/out-r1/package
+ --bundle R/scratch/h2h8h14-final/handoff-build/out-r5 --expect-manifest-sha256 e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4
+ --out-bundle R/scratch/h2h8h14-final/handoff-build/out-r5-accepted-v1
+ --envelope R/scratch/h2h8h14-final/envelope/ipcch-combination-envelope-v2-accepted.json --envelope-version 2
+ --acceptor "<acceptor>" --accepted-at <YYYY-MM-DD>`
+
+DRY RUN on the actual assets (`acceptance_dryrun.py` -> `acceptance-dryrun.json`, rc 0, 127 s; output dir
+R/scratch/h2h8h14-final/envelope/DRYRUN-NOT-ACCEPTANCE, acceptor "DRY-RUN (not an acceptance)"): accepted dry-run
+envelope v2 sha eede3061... binds package 18b91d45..., feature order 0ef1ffec..., handoff manifest e6e3ebc6...
+(unchanged), roster 9ff2c420.../6226, finalized entries 4a1e94b4... (57). Real-mode `install_acceptance` appended 57
+records; `initialise` 52 tables + 5 geometry files verified, pairing recorded; re-initialise 52 unchanged;
+`read_assembly_inputs` roster 6226, order 527 == package; `read_population(2026-08)` 6226 rows, all carried forward
+<= 2026-04. The ORIGINAL r5 (draft entries) is refused for that binding; its draft digest 3621c350... is unchanged.
