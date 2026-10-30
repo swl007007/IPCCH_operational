@@ -66,6 +66,24 @@ def member_paths(system: str, member: Mapping[str, Any], source_files: Mapping[s
     return sorted(p for p in source_files if LEGACY_MEMBER[system].match(p))
 
 
+def _belongs(system: str, member: Mapping[str, Any], rel: str) -> bool:
+    """Whether a delivery path is part of this system's member (the same rules ``member_paths`` selects with)."""
+    if member.get("contract") == dm.CONTRACT:
+        return dm.is_member_file(rel)
+    return bool(LEGACY_MEMBER[system].match(rel))
+
+
+def source_member(store: ObjectStore, system: str, member: Mapping[str, Any]) -> dict[str, str]:
+    """{path: sha256} of the member's files in its PINNED source delivery inventory (exact member set)."""
+    source_manifest = json.loads(_read_pinned(store, member["delivery"]["manifest"]))
+    files = {e["path"]: e["sha256"] for e in source_manifest["files"]}
+    paths = member_paths(system, member, files)
+    missing = [p for p in paths if p not in files]
+    if not paths or missing:
+        raise DeliveryError(f"{system} member files {missing[:3] or '(none)'} are not in its source inventory")
+    return {p: files[p] for p in paths}
+
+
 def inherit(out: Path, store: ObjectStore, root_uri: str, system: str, member: Mapping[str, Any]) -> dict[str, Any]:
     """Copy one system's member byte-for-byte from its source delivery (sha256 against the source inventory) and
     check it under its own provenance; returns the member record for this delivery."""
@@ -200,6 +218,17 @@ def verify_delivery(store: ObjectStore, *, delivery_ref: Mapping[str, str], snap
                     raise DeliveryError(f"inherited {system} member is not the bound current release's member")
                 if listed.get("delivery") != src.get("delivery") or listed.get("provenance_sha256") != src.get("provenance_sha256"):
                     raise DeliveryError(f"inherited {system} delivery identity differs from the current member")
+                # independent of this delivery's own inventory: the member's exact file set and bytes must be those of
+                # the pinned source inventory of the snapshot-bound member (edited, missing or extra files refuse)
+                expected_files = source_member(store, system, src)
+                new_files = {e["path"]: e["sha256"] for e in manifest["files"]}
+                here = {p for p in new_files if _belongs(system, src, p)}
+                if here != set(expected_files):
+                    raise DeliveryError(f"inherited {system} member files differ from its source inventory: missing "
+                                        f"{sorted(set(expected_files) - here)[:3]}, extra {sorted(here - set(expected_files))[:3]}")
+                changed = sorted(p for p, sha in expected_files.items() if new_files[p] != sha)
+                if changed:
+                    raise DeliveryError(f"inherited {system} files differ from the source inventory: {changed[:3]}")
                 if src.get("contract") == dm.CONTRACT:
                     dm.verify_member(Path(tmp), expected=src)
                 else:

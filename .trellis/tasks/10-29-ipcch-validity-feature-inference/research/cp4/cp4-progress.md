@@ -53,3 +53,21 @@ rejection at request+publish time, v1 FEWS-only inheritance of the v2 IPCCH memb
 promote/resume rejection of new-contract candidates, the FEWS v2 adapter (R60), and the real provider route
 (EETransport.from_environment + real_provider_factory wired into an operator/deploy entrypoint). Then CP5 with the
 actual accepted package and CP6.
+
+## Supervisor review of 6e57972: Phase B six findings CLOSED; Phase C MAJOR BLOCKER (inherited artifacts) - fix
+Finding: `verify_delivery` checked inherited files only against the newly assembled delivery manifest, then compared
+member metadata and own-month columns; it did not compare the inherited artifact set/bytes with the snapshot-bound
+source inventory. Scout repro: inherited FEWS probability .4 -> .99 or package/geometry/sidecars removed, destination
+inventory regenerated, `publication.publish` with the actual verifier published and moved current.
+Fix (delivery_v2): `source_member` reads the snapshot-bound member's PINNED source inventory and selects its exact member
+files with the same rules as `inherit` (`member_paths`; v2 IPCCH = provenance files + system_provenance.json, legacy =
+the legacy member pattern incl. model_package/geometry/sidecars); `verify_delivery` requires, independent of the new
+delivery's own inventory, the member file set in this delivery == the source member set (no missing, no extra) and
+each sha256 == the source inventory's (stored bytes == this manifest is checked first, so stored bytes == source).
+Mixed deliveries and inherit-of-inherit unchanged (the member record keeps the original source delivery ref).
+Regression (test_ipcch_release_v2.py, through `release_v2.publish_ipcch_run` -> `publication.publish` with the actual
+verifier, current AND candidate): edited inherited value and missing supporting files (package, geometry, sidecar) with
+a self-consistently regenerated destination inventory -> `DeliveryError` before any current/candidate mutation (pointer
+generation and record unchanged, no candidate record). Mutation check: the 4 new cases FAIL against the 6e57972
+`delivery_v2.py` and pass with the fix. Receipts: `inherited-verifier-focused-run1.log` (release/member/publication
+25 passed), `inherited-verifier-full-suite-run1.log` (855 passed). CP4 remains unaccepted.

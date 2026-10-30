@@ -139,3 +139,36 @@ def test_smoke_publishes_under_its_own_root_only(tmp_path, package):
     assert out["status"] == "published" and out["activation"] is None and out["members"] == ["ipcch"]
     assert pub.read_current(store, PROD, "prod")["generation"] == "0"
     assert not [p for p in (tmp_path / "releases").rglob("*") if p.is_file() and "prod-root" in str(p)]
+
+
+@pytest.mark.parametrize("publication", ["current", "candidate"])
+@pytest.mark.parametrize("tamper", ["edited_value", "missing_supporting_files"])
+def test_edited_or_incomplete_inherited_member_with_regenerated_inventory_is_refused_by_publication(
+        tmp_path, package, monkeypatch, tamper, publication):
+    """Supervisor repro (6e57972): an inherited FEWS member edited (.4 -> .99) or stripped of package/geometry/sidecars
+    AFTER the byte-for-byte copy, with the destination inventory regenerated self-consistently, must be refused by the
+    actual verifier inside publication - before any current or candidate mutation."""
+    kw = real_inputs(scored_batch(tmp_path, package))
+    store = LocalObjectStore(tmp_path / "releases")
+    seed_legacy_fews(store)
+    before = pub.read_current(store, PROD, "prod")
+    real_inherit = dv.inherit
+
+    def tampering_inherit(out, *a, **k):
+        rec = real_inherit(out, *a, **k)
+        if tamper == "edited_value":
+            p = out / "scopes/6m/fewsnet/polygon_predictions.csv"
+            p.write_text(p.read_text().replace(",0.4,", ",0.99,"))
+        else:
+            for rel in ("fewsnet/model_package/0m/model.json", "fewsnet/polygons.geojson",
+                        "reports/fewsnet_diagnostic_availability.csv"):
+                (out / rel).unlink()
+            (out / "reports/fewsnet_diagnostic_availability.csv").write_text(
+                "model_system,horizon_months,level,entity_id,diagnostic_family,status,reason,evidence_ref\n")
+        return rec
+    monkeypatch.setattr(dv, "inherit", tampering_inherit)
+    with pytest.raises(dv.DeliveryError, match="differ from (its|the) source inventory"):
+        publish(store, kw, "tampered", before["generation"], publication=publication, tmp=tmp_path)
+    after = pub.read_current(store, PROD, "prod")
+    assert after["generation"] == before["generation"] and after["record"]["run_id"] == "legacy-fews"
+    assert not list((tmp_path / "releases").rglob("candidate.json"))
