@@ -24,3 +24,12 @@ runtime (manifest coverage/gaps/warnings/methods/retained refs; climate O month 
 NaN not blocking; ACLED A=O-1 present; population LOCF); O without climate source blocks at `climate` with the ACLED
 refresh saved and no batch; ACLED keep without history refused. Regression `generation-tests-run1.log`: 211 passed.
 Not yet: the real-mode provider factory (EE transport + table providers + calendar) and CP4 publication.
+
+## Real provider factory (climate_run.real_providers)
+`real_providers(transport, origin, roster, calendar_windows, asset_root=None)` builds every base's providers over ONE
+concrete `EETransport`: MonthlyEEProvider, SeasonalEEProvider(data_end = first day after O, full calendar windows),
+VegetationProvider/SeasonalVegetationProvider (S2E3, roster admins), DroughtProvider/SeasonalDroughtProvider (S2C3,
+roster admins); `asset_root` overrides the shared scripts' han-sandbox root. Test (test_ipcch_ee_transport.py): every
+base routed; raster base with no listed images -> unavailable (receipt image_times); S2E3 and S2C3 bases with
+definitively absent private assets -> blocking failures through the transport. Live EE remains deferred (private assets
+unreadable; any EE compute needs a Supervisor packet).

@@ -345,3 +345,22 @@ def test_persist_and_cancel_failure_still_reports_the_task_id():
         t.export_table(fc, ["admin_code"], "d")
     untracked = [r for r in t.receipts if r["kind"] == "export_untracked"]
     assert untracked and untracked[0]["task_id"] == "T0" and untracked[0]["cancel"].startswith("cancel_failed")
+
+
+def test_real_providers_route_every_base_through_the_one_transport(tmp_path):
+    from cloud.ipcch import climate_run
+    gcs = FakeGcs()
+    t = transport(gcs, ProxyEE(gcs, data=FakeData()))
+    windows = pd.DataFrame({"admin_code": ["1"], "season_year": [2026], "season": ["s1"], "gs_start_date": ["2026-03-01"],
+                            "gs_end_date_exclusive": ["2026-07-01"]})
+    p = climate_run.real_providers(t, origin="2026-08", roster=[1, 2, 3], calendar_windows=windows, asset_root="projects/x/assets/")
+    assert all(callable(p.monthly(b)) and callable(p.seasonal(b)) for b in cl.BASES)
+    # raster base: the transport's listing has no images -> the provider reports unavailability (not a fake value)
+    out = p.monthly("prcp_anom")("chirps", "2026-08")
+    assert out.status == "unavailable" and t.receipts[-1]["kind"] == "image_times"
+    # S2E3 / S2C3 table bases: private assets definitively absent through the transport -> blocking failures
+    with pytest.raises(cl.ClimateProcessingFailure, match="S2E3 baseline"):
+        p.monthly("evi_anom")("terra", "2026-08")
+    with pytest.raises(cl.ClimateProcessingFailure, match="S2C3"):
+        p.monthly("spi03")("chirps", "2026-08")
+    assert [r["kind"] for r in t.receipts].count("missing_assets") >= 2

@@ -76,3 +76,24 @@ def update_all(tables: Callable[[str, str], VersionedTable], *, origin: str, ros
     report["gaps"] = {b: r["gaps"] for b, r in report["monthly"].items() if r["gaps"]}
     report["season_gaps"] = {b: r["gaps"] for b, r in report["seasonal"].items() if r["gaps"]}
     return report
+
+
+def real_providers(transport, *, origin: str, roster, calendar_windows: pd.DataFrame, asset_root: str | None = None
+                   ) -> ClimateProviders:
+    """Every base's providers over ONE concrete transport (``ee_transport.EETransport``: EEBackend + TableBackend):
+    monthly/seasonal raster providers, S2E3 vegetation and S2C3 drought table providers on the fixed roster; data reads
+    stop at the first day after O. ``asset_root`` overrides the shared scripts' private-asset root (han-sandbox)."""
+    from cloud.ipcch import climate_ee as ce
+    from cloud.ipcch import climate_ee_seasonal as cs
+    from cloud.ipcch import climate_tables as ct
+
+    refs = ce.AssetRefs(root=asset_root) if asset_root else ce.AssetRefs()
+    trefs = ct.TableRefs(root=asset_root) if asset_root else ct.TableRefs()
+    admins = [str(a) for a in roster]
+    return default_providers(
+        ce.MonthlyEEProvider(transport, refs=refs),
+        cs.SeasonalEEProvider(transport, data_end=cl.first_day_after(origin), calendar_windows=calendar_windows, refs=refs),
+        ct.VegetationProvider(transport, refs=trefs, admins=admins),
+        ct.SeasonalVegetationProvider(transport, refs=trefs, admins=admins),
+        ct.DroughtProvider(transport, admins=admins, refs=trefs),
+        ct.SeasonalDroughtProvider(transport, admins=admins, refs=trefs))
