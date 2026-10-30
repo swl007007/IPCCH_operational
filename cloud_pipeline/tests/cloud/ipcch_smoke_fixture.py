@@ -166,3 +166,9 @@ class NoNightlight:
 
     def start_exports(self, family, months, *, prepare_id):
         pass
+
+
+def entrypoint_providers(*, cfg, store, client, run_id, roster):
+    """Smoke provider factory for the v2 entrypoint (fixture values; never the real EE/HTTP transport, R48)."""
+    return {"climate_providers": lambda windows, origin: climate_providers(), "gpp_acquirer": NoGpp(),
+            "nightlight_acquirer": NoNightlight()}

@@ -676,6 +676,7 @@ def main(argv=None) -> int:
     run.add_argument("--release-namespace", required=True)
     run.add_argument("--image-uri", required=True)
     run.add_argument("--work-dir", default="/tmp/delivery-work")
+    run.add_argument("--v2-config", help="deployment config of the v2 route (cloud.ipcch.entrypoint_v2)")
     admit = commands.add_parser("admit", help="validate a remote-update intent before its preparation starts")
     for flag in ("--request-uri", "--request-generation", "--output-root"):
         admit.add_argument(flag, required=True)
@@ -701,6 +702,23 @@ def main(argv=None) -> int:
     data = GcsPinnedReader(client).read_bytes(args.request_uri, args.request_generation)
     if data is None:
         raise AcceptanceError(f"request {args.request_uri}#{args.request_generation} not found")
+    if args.command == "run":                       # v2 bodies take the v2 route; v1 behaviour is unchanged
+        from cloud.orchestrator.delivery_request_v2 import is_v2
+
+        try:
+            body = json.loads(data)
+        except ValueError:
+            body = None
+        if is_v2(body):
+            from cloud.ipcch import entrypoint_v2
+
+            if not args.v2_config:
+                raise AcceptanceError("a v2 request needs the v2 route (--v2-config)")
+            status = entrypoint_v2.run(entrypoint_v2.load_config(args.v2_config), request_uri=args.request_uri,
+                                       request_generation=args.request_generation, store=GCSObjectStore(client),
+                                       reader=GcsPinnedReader(client), client=client)
+            print(json.dumps(status, indent=2, sort_keys=True, default=str))
+            return 0 if status["status"] == "succeeded" else 1
     request_ref = {"uri": args.request_uri, "generation": args.request_generation,
                    "sha256": hashlib.sha256(data).hexdigest()}
     if args.command in ("admit", "resolve"):
