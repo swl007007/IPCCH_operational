@@ -41,6 +41,7 @@ class LocalObjectStore:
     def __init__(self, root: str | Path):
         self.root = Path(root)
         self._generations: dict[str, int] = {}
+        self._retired: dict[str, int] = {}          # last generation of deleted objects: GCS never reuses generations
         self._write_order: list[str] = []
 
     def write_text(
@@ -50,7 +51,7 @@ class LocalObjectStore:
         path = self._path_for_uri(uri)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
-        next_generation = self._generations.get(uri, 0) + 1
+        next_generation = self._generations.get(uri, self._retired.get(uri, 0)) + 1
         self._generations[uri] = next_generation
         if uri not in self._write_order:
             self._write_order.append(uri)
@@ -83,6 +84,15 @@ class LocalObjectStore:
             self.read_text(source_uri),
             if_generation_match=if_generation_match,
         )
+
+    def delete(self, uri: str, *, if_generation_match: str | int) -> None:
+        """Delete exactly the given generation (refused when the object moved or is absent)."""
+        current = self._generations.get(uri)
+        if current is None or int(if_generation_match) != current:
+            raise GenerationConflict(f"delete precondition failed for {uri}: expected {if_generation_match}, current {current}")
+        self._path_for_uri(uri).unlink()
+        self._retired[uri] = self._generations.pop(uri)
+        self._write_order.remove(uri)
 
     def _check_generation(self, uri: str, expected: str | int | None) -> None:
         if expected is None:
@@ -133,6 +143,16 @@ class GCSObjectStore:
     def read_text(self, uri: str) -> str:
         bucket_name, blob_name = _parse_gcs_uri(uri)
         return self.client.bucket(bucket_name).blob(blob_name).download_as_text()
+
+    def delete(self, uri: str, *, if_generation_match: str | int) -> None:
+        """Delete exactly the given generation; a moved or absent object raises ``GenerationConflict`` (no retry)."""
+        bucket_name, blob_name = _parse_gcs_uri(uri)
+        try:
+            self.client.bucket(bucket_name).blob(blob_name).delete(if_generation_match=int(if_generation_match))
+        except Exception as exc:
+            if _is_generation_precondition_error(exc) or _is_not_found_error(exc):
+                raise GenerationConflict(str(exc)) from exc
+            raise
 
     def get_metadata(self, uri: str) -> ObjectMetadata | None:
         bucket_name, blob_name = _parse_gcs_uri(uri)
