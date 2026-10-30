@@ -178,7 +178,7 @@ def test_export_is_create_only_pinned_by_generation_and_read_exactly():
 
 @pytest.mark.parametrize("kw,match", [({"states": ("RUNNING", "FAILED")}, "FAILED"),
                                       ({"objects": 2}, "expected exactly one CSV"),
-                                      ({"start_error": RuntimeError("quota")}, "could not start")])
+                                      ({"start_error": RuntimeError("quota")}, "start failed")])
 def test_export_failures_block(kw, match):
     gcs = FakeGcs()
     ee = ProxyEE(gcs, **kw)
@@ -288,3 +288,60 @@ def test_started_task_is_cancelled_when_its_id_cannot_be_persisted():
     with pytest.raises(EETransportError, match="could not be persisted.*cancelled"):
         transport(gcs, ee).export_table(ee.FeatureCollection("projects/p/assets/A"), ["admin_code"], "d")
     assert getattr(ee.tasks[0], "cancelled", False)
+
+
+def test_deadline_reached_during_reservation_submits_nothing():
+    gcs = FakeGcs()
+    ee = ProxyEE(gcs)
+    start = datetime(2026, 10, 31, tzinfo=timezone.utc)
+    ticks = iter([start, start + timedelta(seconds=200)] + [start + timedelta(seconds=200)] * 10)
+    t = transport(gcs, ee, deadline_utc=start + timedelta(seconds=1000), clock=lambda: next(ticks))
+    with pytest.raises(EETransportError, match="before submission; not submitted"):
+        t.export_table(ee.FeatureCollection("projects/p/assets/A"), ["admin_code"], "d")
+    assert ee.tasks == []
+    assert gcs.json(f"{ROOT}/ipcch_exports/run-2026-10-a/tasks/d.json")["state"] == "deadline_before_submit"
+
+
+def test_start_with_lost_response_keeps_the_known_task_id_and_cancels():
+    gcs = FakeGcs()
+    ee = ProxyEE(gcs, start_error=ConnectionError("response lost"))
+    t = transport(gcs, ee)
+    with pytest.raises(EETransportError, match=r"start failed \(task T0; cancelled\)"):
+        t.export_table(ee.FeatureCollection("projects/p/assets/A"), ["admin_code"], "d")
+    assert getattr(ee.tasks[0], "cancelled", False)
+    rec = gcs.json(f"{ROOT}/ipcch_exports/run-2026-10-a/tasks/d.json")
+    assert rec["state"] == "start_failed" and rec["task_id"] == "T0" and rec["cancel"] == "cancelled"
+    assert t.receipts[-1]["kind"] == "export_start_failed" and t.receipts[-1]["task_id"] == "T0"
+    with pytest.raises(EETransportError, match="already reserved"):                 # never resubmitted automatically
+        t.export_table(ee.FeatureCollection("projects/p/assets/A"), ["admin_code"], "d")
+    assert len(ee.tasks) == 1
+
+
+def test_persist_and_cancel_failure_still_reports_the_task_id():
+    gcs = FakeGcs()
+    ee = ProxyEE(gcs, states=("RUNNING",))
+    real = gcs.write_text
+    writes = []
+
+    def flaky(uri, content, *, if_generation_match=None):
+        writes.append(uri)
+        if len(writes) >= 2:
+            raise RuntimeError("503 backend error")
+        return real(uri, content, if_generation_match=if_generation_match)
+    gcs.write_text = flaky
+    t = transport(gcs, ee)
+
+    def broken_cancel():
+        raise RuntimeError("cancel rejected")
+    fc = ee.FeatureCollection("projects/p/assets/A")
+    real_export = ee.batch.Export.table.toCloudStorage
+
+    def export(**kw):
+        task = real_export(**kw)
+        task.cancel = broken_cancel
+        return task
+    ee.batch.Export.table.toCloudStorage = staticmethod(export)
+    with pytest.raises(EETransportError, match=r"task T0 id could not be persisted.*cancel_failed"):
+        t.export_table(fc, ["admin_code"], "d")
+    untracked = [r for r in t.receipts if r["kind"] == "export_untracked"]
+    assert untracked and untracked[0]["task_id"] == "T0" and untracked[0]["cancel"].startswith("cancel_failed")

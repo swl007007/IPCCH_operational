@@ -35,3 +35,19 @@ Regression: `transport-tests-run1.log` test_ipcch_*.py + test_prepare.py 150 pas
 - Tests (13 in test_ipcch_ee_transport.py): no second submit after completion or FAILED; fake-clock timeout with
   timeout 100/poll 60 -> sleeps [60, 40], task cancelled, record `timeout`/`cancelled`; deadline 930 s - reserve 900 s ->
   sleeps [30]; task id persistence failure -> started task cancelled. `transport-fix-tests-run1.log`.
+
+## Second review residuals (72f8cd8) + GPP retry (f1af645)
+- Deadline re-checked immediately before submission (after reservation/prefix check): exhausted -> record
+  `deadline_before_submit`, nothing submitted.
+- Creation failure (no task object) -> `create_failed`, nothing submitted. `start()` failure is ambiguous (response may
+  be lost): the known task id is kept, a best-effort single `cancel()` is attempted, the record (`start_failed`, task id,
+  cancel outcome) is written once best-effort (no retry) and the receipt + exception carry the id.
+- Task-id persistence failure: cancel attempted; the exception and the `export_untracked` receipt carry the task id and
+  the cancel outcome even when cancel also fails. No automatic resubmission (the reservation refuses a second submit).
+- GPP: the adapter's saved rows (`method_id`) are the authoritative evidence that a month was published and saved; a
+  retry after an interrupted ledger write repairs the ledger to `published` without re-fetching, so saved no-valid-pixel
+  NaN rows are never refilled; adapter-saved months lacking a `published` record are retry candidates.
+- Tests: deadline consumed during reservation -> no task; lost start response -> T0 kept, cancelled, recorded, never
+  resubmitted; persist + cancel failure -> T0 in exception and receipt; GPP injected ledger-write failure (previously
+  unpublished and fresh month) -> retry downloads nothing, ledger repaired, NaN rows identical.
+  `transport-gpp-repair-tests-run1.log`: 79 passed (transport, gpp, prepare, climate_ee, climate_tables).

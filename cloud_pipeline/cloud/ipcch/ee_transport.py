@@ -149,6 +149,21 @@ class EETransport:
         return self.store.write_text(uri, json.dumps(record, sort_keys=True) + "\n",
                                      if_generation_match=generation).generation
 
+    @staticmethod
+    def _cancel(task) -> str:
+        try:
+            task.cancel()
+            return "cancelled"
+        except Exception as exc:
+            return f"cancel_failed: {type(exc).__name__}: {exc}"
+
+    def _best_effort_record(self, uri: str, record: dict, generation) -> None:
+        """One bounded attempt (no retry): the outcome is already in the exception and the receipts."""
+        try:
+            self._record(uri, record, generation)
+        except Exception as exc:
+            self.receipts.append({"kind": "record_failed", "uri": uri, "error": str(exc)})
+
     def _wait(self, task, description: str, record_uri: str, record: dict, generation: str) -> dict:
         """IPCCH wait (the shared FEWS ``_wait_for_ee_task`` is unchanged): every sleep is bounded by the remaining
         budget (task timeout and authorization deadline minus the cleanup reserve); on timeout the task is cancelled
@@ -196,24 +211,35 @@ class EETransport:
         if self.store.list(prefix_uri):
             raise EETransportError(f"export prefix already has objects: {prefix_uri} (exports are never reused)")
         bucket, blob_prefix = _parse_gcs_uri(prefix_uri)
+        if self._remaining_seconds() <= 0:               # re-checked immediately before submission
+            self._record(record_uri, {**record, "state": "deadline_before_submit"}, generation)
+            raise EETransportError("authorization deadline cleanup reserve reached before submission; not submitted")
         try:
             task = self.ee.batch.Export.table.toCloudStorage(
                 collection=collection, description=f"{self.run_id}_{description}"[:100], bucket=bucket,
                 fileNamePrefix=blob_prefix, fileFormat="CSV", selectors=list(selectors))
+        except Exception as exc:                         # no task object: nothing was submitted
+            self._record(record_uri, {**record, "state": "create_failed", "error": f"{type(exc).__name__}: {exc}"}, generation)
+            raise EETransportError(f"export {description} could not be created: {type(exc).__name__}: {exc}") from exc
+        try:
             task.start()
-        except Exception as exc:
-            self._record(record_uri, {**record, "state": "submit_failed", "error": f"{type(exc).__name__}: {exc}"}, generation)
-            raise EETransportError(f"export {description} could not start: {type(exc).__name__}: {exc}") from exc
+        except Exception as exc:                         # ambiguous: the task may have started (response lost)
+            task_id = getattr(task, "id", None)
+            cancel = self._cancel(task) if task_id else "no task id known"
+            failed = {**record, "task_id": task_id, "state": "start_failed", "cancel": cancel,
+                      "error": f"{type(exc).__name__}: {exc}"}
+            self.receipts.append({"kind": "export_start_failed", **failed})
+            self._best_effort_record(record_uri, failed, generation)
+            raise EETransportError(f"export {description} start failed (task {task_id}; {cancel}): "
+                                   f"{type(exc).__name__}: {exc}") from exc
         record = {**record, "task_id": getattr(task, "id", None), "state": "submitted"}
         try:
             generation = self._record(record_uri, record, generation)
         except Exception as exc:                         # an untracked task must not keep running
-            try:
-                task.cancel()
-                cancel = "cancelled"
-            except Exception as cexc:
-                cancel = f"cancel_failed: {cexc}"
-            raise EETransportError(f"export {description}: task id could not be persisted ({exc}); {cancel}") from exc
+            cancel = self._cancel(task)
+            self.receipts.append({"kind": "export_untracked", **record, "cancel": cancel, "error": str(exc)})
+            raise EETransportError(f"export {description}: task {record['task_id']} id could not be persisted ({exc}); "
+                                   f"{cancel}") from exc
         self._wait(task, description, record_uri, record, generation)
         objects = sorted(self.store.list(prefix_uri))
         if len(objects) != 1 or not objects[0].endswith(".csv"):

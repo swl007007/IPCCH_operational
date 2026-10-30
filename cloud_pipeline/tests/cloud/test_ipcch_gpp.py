@@ -146,3 +146,36 @@ def test_geometries_must_be_the_roster(tmp_path):
     with pytest.raises(StoreError, match="exactly the roster"):
         gpp.update_gpp(store, root, origin="2026-01", roster=["1", "2"], geometries={"2": GEOMS["2"], "1": GEOMS["1"]},
                        acquirer=None, run_id="r", workdir=tmp_path, checked_at="2026-03-31", grid=GRID)
+
+
+@pytest.mark.parametrize("previously_unpublished", [True, False])
+def test_interrupted_ledger_write_never_refetches_or_fills_saved_nan(tmp_path, monkeypatch, previously_unpublished):
+    store, root, hist = seeded(tmp_path)
+    roster = ["1", "2", "3", "4"]
+    geoms = {k: GEOMS[k] for k in roster}
+    ledger = VersionedTable(store, root, gpp.LEDGER_TABLE)
+    if previously_unpublished:
+        retained.record_gpp_checks(ledger, [{"month": "2026-01", "status": "unpublished", "checked_at": "2026-02-28",
+                                             "evidence": "{}"}])
+    real = retained.record_gpp_checks
+
+    def fail_published(table, checks):
+        if any(c["status"] == "published" for c in checks):
+            raise RuntimeError("injected ledger write failure")
+        return real(table, checks)
+    monkeypatch.setattr(retained, "record_gpp_checks", fail_published)
+    acq = FakeAcquirer(tmp_path, {"2026-01": 200})
+    with pytest.raises(RuntimeError, match="injected"):
+        gpp.update_gpp(store, root, origin="2026-01", roster=roster, geometries=geoms, acquirer=acq, run_id="r1",
+                       workdir=tmp_path, checked_at="2026-03-31", grid=GRID)
+    saved = retained.read_series(hist)[0].query("month == '2026-01'").set_index("admin_code")
+    assert math.isnan(saved.loc["3", "value"])                                   # published no-valid-pixel NaN saved
+    monkeypatch.setattr(retained, "record_gpp_checks", real)
+    # retry: a (hypothetically different) provider answer must not be fetched or overwrite the saved NaN
+    acq2 = FakeAcquirer(tmp_path, {"2026-01": 200})
+    rep = gpp.update_gpp(store, root, origin="2026-01", roster=roster, geometries=geoms, acquirer=acq2, run_id="r2",
+                         workdir=tmp_path, checked_at="2026-04-30", grid=GRID)
+    assert acq2.downloads == [] and rep["ledger_repaired"] == ["2026-01"] and rep["saved"] == []
+    assert retained.latest_gpp_status(ledger)["2026-01"] == "published"
+    again = retained.read_series(hist)[0].query("month == '2026-01'").set_index("admin_code")
+    assert math.isnan(again.loc["3", "value"]) and again["value"].equals(saved["value"])

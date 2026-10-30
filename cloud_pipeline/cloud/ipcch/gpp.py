@@ -15,6 +15,8 @@ statistics, used by FEWS NET and the legacy entrypoint) is unchanged; acquisitio
 ``update_gpp``: candidates are every month after the last saved history month through O, plus months the ledger last
 recorded as ``unpublished`` (R9 fill-only-unpublished). Per month: HEAD 200 -> download, extract, append the roster's
 values immediately (saved values are never rewritten; NaN rows record pixel missingness) and record ``published``;
+if that ledger write is interrupted, the adapter's saved rows (their ``method_id``) are the authoritative evidence on
+retry: the ledger is repaired to ``published`` without re-fetching, so saved no-valid-pixel NaN rows are never filled;
 404 -> ledger ``unpublished`` (the month stays absent, GPP is optional-missing, R65); anything else -> a
 ``GppProcessingFailure`` that blocks generation (R49) after the months already saved.
 """
@@ -92,7 +94,10 @@ def update_gpp(store, root, *, origin: str, roster: Iterable[str], geometries: M
         raise StoreError(f"{HISTORY_TABLE} is not initialised (R45/R54)")
     status = retained.latest_gpp_status(ledger)
     unpublished = {m for m, s in status.items() if s == "unpublished"}
-    candidates = sorted(set(rs.months_between(max(frame["month"]), origin)) | {m for m in unpublished if m <= origin})
+    adapter_months = set(frame.loc[frame["method_id"] == METHOD_ID, "month"])
+    unledgered = {m for m in adapter_months if status.get(m) != "published"}      # interrupted ledger writes
+    candidates = sorted(set(rs.months_between(max(frame["month"]), origin)) | {m for m in unpublished if m <= origin}
+                        | unledgered)
     first = rs.SOURCE_CONTRACTS[FAMILY].first_month
     if candidates and candidates[0] < first:
         raise GppProcessingFailure(f"GPP months {candidates[0]}.. precede the v3 contract start {first}")
@@ -101,6 +106,16 @@ def update_gpp(store, root, *, origin: str, roster: Iterable[str], geometries: M
                               "unpublished": [], "pixel_missing": {}}
     for month in candidates:
         url = rs.gosif_url(template, month)
+        adapter_rows = frame[(frame["month"] == month) & (frame["method_id"] == METHOD_ID)]
+        if len(adapter_rows):
+            # Authoritative evidence that this month was published and saved (incl. no-valid-pixel NaN rows) by an
+            # earlier run whose ledger write did not complete: repair the ledger, never re-fetch or overwrite (R8/R9).
+            if status.get(month) != "published":
+                retained.record_gpp_checks(ledger, [{"month": month, "status": "published", "checked_at": checked_at,
+                                                     "evidence": json.dumps({"url": url, "repaired_from": "saved adapter rows",
+                                                                             "rows": int(len(adapter_rows))})}])
+                report.setdefault("ledger_repaired", []).append(month)
+            continue
         try:
             outcome = _probe(acquirer, url)
         except GppProcessingFailure as exc:
@@ -121,7 +136,7 @@ def update_gpp(store, root, *, origin: str, roster: Iterable[str], geometries: M
             err = GppProcessingFailure(f"GPP {month}: {type(exc).__name__}: {exc}")
             err.gpp_report = report
             raise err from exc
-        saved = frame[(frame["month"] == month) & frame["value"].notna()]["admin_code"]
+        saved = frame[(frame["month"] == month) & (frame["value"].notna() | (frame["method_id"] == METHOD_ID))]["admin_code"]
         new = values.loc[~values["admin_code"].isin(set(saved)), ["admin_code", "value"]].assign(month=month)
         retained.append_months(history, new, method_id=METHOD_ID, roster=set(roster), gpp_unpublished_months=unpublished)
         retained.record_gpp_checks(ledger, [{"month": month, "status": "published", "checked_at": checked_at,
