@@ -1,0 +1,107 @@
+"""Task 10-29: table-based climate providers - monthly NDVI/EVI 16-day overlap arithmetic (ndvi_evi.js) and monthly
+SPI/SPEI from S2C3 admin tables (spi_monthly.py) through a mocked table boundary."""
+
+import numpy as np
+import pandas as pd
+import pytest
+
+from cloud.ipcch import climate as cl
+from cloud.ipcch import climate_tables as ct
+from cloud.ipcch import spi_spei
+
+
+def test_intervals_and_month_tiling():
+    s, e, tag = ct.observation_interval("aqua", 2025, 23)
+    assert (tag, s.date().isoformat(), e.date().isoformat()) == ("20251227", "2025-12-27", "2026-01-09")   # DOY 9 + 22*16 = 361
+    jan = ct.month_plan("aqua", 2026, 1)                    # Aqua DOY 1-8 belong to the previous year's slot 23
+    assert [(p["calendar_year"], p["slot"], p["days"]) for p in jan] == [(2025, 23, 8.0), (2026, 1, 16.0), (2026, 2, 7.0)]
+    feb = ct.month_plan("terra", 2024, 2)                   # leap February tiles 29 days
+    assert sum(p["days"] for p in feb) == 29 and feb[0]["tag"] == "20240117"      # slot 2 starts DOY 17
+
+
+def test_monthly_vi_full_coverage_rule():
+    parts = ct.month_plan("terra", 2026, 3)
+    row = {"admin_code": "1"}
+    for p in parts:
+        row[f"evi_{p['tag']}_mean"] = 0.30
+        row[f"evi_base_s{p['slot']:02d}_mean"] = 0.25
+    gap = dict(row, admin_code="2")
+    gap[f"evi_{parts[1]['tag']}_mean"] = None              # one composite missing -> incomplete -> MISSING
+    out = ct.monthly_vi(pd.DataFrame([row, gap]), "terra", "evi", 2026, 3).set_index("admin_code")
+    assert out.loc["1", "value"] == pytest.approx(0.05) and out.loc["1", "coverage"] == 1.0
+    assert np.isnan(out.loc["2", "value"]) and out.loc["2", "coverage"] < 1
+
+
+class Tables:
+    def __init__(self, tables, missing=()):
+        self.t, self.missing = tables, set(missing)
+        self.reads = []
+
+    def missing_assets(self, ids):
+        return [i for i in ids if i in self.missing or i not in self.t]
+
+    def read_asset_table(self, asset_id):
+        self.reads.append(asset_id)
+        return self.t[asset_id].copy()
+
+
+def vi_tables(month_months=("2026-03",), drop_tag=None):
+    refs = ct.TableRefs()
+    tables = {}
+    for k in range(1, 5):
+        rows = [{"admin_code": a, **{f"evi_base_s{s:02d}_mean": 0.2 for s in range(1, 24)}} for a in ("1", "2")]
+        tables[refs.asset(refs.vi_baseline.format(label="TERRA", part=k))] = pd.DataFrame(rows if k == 1 else rows[:0])
+    for cy in (2025, 2026):
+        cols = {f"evi_{ct.observation_interval('terra', cy, s)[2]}_mean": 0.3 for s in range(1, 24)}
+        if cy == 2026:                     # current year published through the composite starting 2026-03-22 only
+            cols = {k: v for k, v in cols.items() if k <= "evi_20260322_mean"}
+        if drop_tag:
+            cols.pop(drop_tag, None)
+        tables[refs.asset(refs.vi_current.format(label="TERRA", year=cy))] = pd.DataFrame([{"admin_code": a, **cols} for a in ("1", "2")])
+    return tables
+
+
+def test_vegetation_provider_outcomes():
+    p = ct.VegetationProvider(Tables(vi_tables()))
+    o = p.fetch("terra", "2026-03")
+    assert o.status == "published" and o.values["value"].round(12).tolist() == [0.1, 0.1]
+    assert p.fetch("terra", "2026-04").status == "unavailable"          # April composites not yet in the 2026 table
+    tables = vi_tables()
+    with pytest.raises(cl.ClimateProcessingFailure, match="S2E3 baseline"):
+        ct.VegetationProvider(Tables(tables, missing=[ct.TableRefs().asset("S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P02_V3")])).fetch("terra", "2026-03")
+
+
+def drought_tables(admins, last="2026-08", et0_last="2026-08", patch=None):
+    refs = ct.TableRefs()
+    rng = np.random.default_rng(3)
+    months = spi_spei.month_axis("1990-01", last)
+    tables = {}
+    for a, b in refs.year_chunks:
+        sel = [d for d in months if a <= d.year <= b]
+        for label in ct.SPI_SOURCES.values():
+            tables[refs.asset(refs.prcp.format(label=label, a=a, b=b))] = pd.DataFrame(
+                {"admin_code": admins, **{f"prcp_{d.year}{d.month:02d}_mean": rng.gamma(2.0, 40.0, len(admins)) for d in sel}})
+        esel = [d for d in sel if d <= pd.Timestamp(f"{et0_last}-01")]
+        tables[refs.asset(refs.et0.format(a=a, b=b))] = pd.DataFrame(
+            {"admin_code": admins, **{f"et0_{d.year}{d.month:02d}_mean": rng.uniform(60, 160, len(admins)) for d in esel}})
+        tables[refs.asset(refs.et0_patch.format(a=a, b=b))] = pd.DataFrame({"admin_code": admins, **(patch or {})}) \
+            if a == 2020 else pd.DataFrame({"admin_code": admins})
+    return tables
+
+
+def test_drought_provider_equals_retained_numerics_and_availability():
+    admins = ["1", "2", "3"]
+    tables = drought_tables(admins)
+    p = ct.DroughtProvider(Tables(tables), admins)
+    o = p.fetch("spei03", "chirps", "2026-08")
+    months = spi_spei.month_axis("1990-01", "2026-08")
+    prcp = ct._wide_month_matrix([t for k, t in tables.items() if "PRCP_CHIRPS" in k], "prcp", months, admins)
+    et0 = ct._wide_month_matrix([t for k, t in tables.items() if "ET0_FAO56" in k], "et0", months, admins)
+    want = spi_spei.compute_spei03_monthly(prcp, et0, months)[:, -1]
+    np.testing.assert_array_equal(o.values["value"].to_numpy(), want)
+    assert p.fetch("spi03", "chirps", "2026-09").status == "unavailable"
+    late_et0 = ct.DroughtProvider(Tables(drought_tables(admins, et0_last="2026-07")), admins)
+    assert late_et0.fetch("spi03", "persiann", "2026-08").status == "published"
+    assert late_et0.fetch("spei03", "persiann", "2026-08").status == "unavailable"     # ET0 not yet published
+    with pytest.raises(cl.ClimateProcessingFailure, match="unreadable S2C3"):
+        ct.DroughtProvider(Tables(tables, missing=[ct.TableRefs().asset("S2C3_ET0_PATCH32_Y2020_2026_V2")]), admins).fetch("spi03", "chirps", "2026-08")
