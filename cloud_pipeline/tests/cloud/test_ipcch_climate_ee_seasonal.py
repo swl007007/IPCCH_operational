@@ -143,3 +143,68 @@ def test_provider_and_seasonal_saves(tmp_path):
     frame, _ = cl.read_seasonal(table)
     assert frame["admin_code"].tolist() == ["1", "2"] and frame["n_sources"].tolist() == [3, 3]
     assert len(p.backend.exports) == 3                              # one export per source; prcp_anom would reuse them
+
+
+def test_rain_paints_the_full_calendar_but_emits_only_requested_roster_areas(tmp_path, monkeypatch):
+    """Roster nuance: the painted calendar context is the WHOLE admin asset (the script's paint order over overlapping
+    polygons, including the declared out-of-roster admin); only the reduction collection is filtered to the requested
+    window areas, and the saved/emitted area ids are exactly those roster areas (R32)."""
+    ee = offline_ee()
+    table, _, _ = cs.rain_seasonal_table(ee, "gs_rain_anomz", "chirps", 2026, ("2025-10-01", "2026-09-01"), AssetRefs(), CODES)
+    graph = json.loads(ee.serializer.toJSON(table))
+    nodes = graph["values"]
+
+    def subtree(value, seen=None):
+        """Function names and constants reachable from one serialized argument."""
+        seen = set() if seen is None else seen
+        out = []
+        if isinstance(value, dict):
+            if "valueReference" in value and value["valueReference"] not in seen:
+                seen.add(value["valueReference"])
+                out += subtree(nodes[value["valueReference"]], seen)
+            for k, v in value.items():
+                if k == "functionName":
+                    out.append(v)
+                elif k == "constantValue":
+                    out.append(json.dumps(v))
+                elif k != "valueReference":
+                    out += subtree(v, seen)
+        elif isinstance(value, list):
+            for v in value:
+                out += subtree(v, seen)
+        return out
+
+    def find(name, value=graph):
+        found = []
+        if isinstance(value, dict):
+            if value.get("functionName") == name:
+                found.append(value)
+            for v in value.values():
+                found += find(name, v)
+        elif isinstance(value, list):
+            for v in value:
+                found += find(name, v)
+        return found
+    paints = find("Image.paint")
+    assert paints and all("Filter.listContains" not in subtree(p["arguments"]["featureCollection"]) for p in paints)
+    reduce = find("Image.reduceRegions")
+    assert len(reduce) == 1
+    target = subtree(reduce[0]["arguments"]["collection"])
+    assert "Filter.listContains" in target and json.dumps(CODES) in target                       # requested areas only
+
+    class AllAdmins(Backend):                    # an export that (wrongly or not) also carries other asset admins
+        extra = ["6227"]
+
+        def read_table(self, uri):
+            frame = super().read_table(uri)
+            return pd.concat([frame, frame.head(1).assign(admin_code=self.extra[0])], ignore_index=True)
+
+    root = StoreRoot("real", "gs://b/ipcch-v2/real")
+    table = VersionedTable(LocalObjectStore(tmp_path), root, cl.table_name("prcp_z", cl.SEASONAL))
+    with pytest.raises(cl.ClimateProcessingFailure, match="unknown modeled-area identifiers"):
+        cl.update_seasonal(table, "prcp_z", origin="2026-08", roster=CODES + ["3"], windows=WINDOWS,
+                           fetch=provider(AllAdmins()).bound("prcp_z"))
+    rep = cl.update_seasonal(table, "prcp_z", origin="2026-08", roster=CODES + ["3"], windows=WINDOWS,
+                             fetch=provider(AllAdmins()).bound("prcp_z"), declared_extra=["6227"])
+    assert rep["saved"] == ["2026-s1"]
+    assert cl.read_seasonal(table)[0]["admin_code"].tolist() == CODES      # emitted ids: requested roster areas only

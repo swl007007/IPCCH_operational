@@ -90,8 +90,12 @@ def test_failures_are_never_unavailability(tmp_path):
 def test_out_of_roster_areas_dropped_and_counted(tmp_path):
     t = store(tmp_path, "edd")
     seed(t, ["2026-03"])
-    rep = cl.update_monthly(t, "edd", origin="2026-04", roster=ROSTER,
-                            fetch=lambda s, m: pub(s, [1.0, 2.0, 3.0, 4.0], codes=["1", "2", "3", "6227"]))
+    fetch = lambda s, m: pub(s, [1.0, 2.0, 3.0, 4.0], codes=["1", "2", "3", "6227"])
+    head = t.head()
+    with pytest.raises(cl.ClimateProcessingFailure, match=r"unknown modeled-area identifiers \['6227'\]"):
+        cl.update_monthly(t, "edd", origin="2026-04", roster=ROSTER, fetch=fetch)          # undeclared extra (R32)
+    assert t.head() == head
+    rep = cl.update_monthly(t, "edd", origin="2026-04", roster=ROSTER, fetch=fetch, declared_extra=["6227"])
     assert rep["months"]["2026-04"]["dropped_out_of_roster"] == {"cpc": 1, "era5land": 1}
     assert set(cl.read_monthly(t)[0]["admin_code"]) == set(ROSTER)
 
@@ -139,3 +143,17 @@ def test_method_ids_bind_scripts():
     assert cl.method_id("prcp_anom", cl.SEASONAL).startswith("seasonal/rainfall.js@73ba8ddbfbd6|")
     assert set(cl.BASES) == {"prcp_anom", "prcp_z", "rainy_days", "cdd", "tmean_anom", "tmax_anom", "hot_days_p95", "gdd",
                              "edd", "sm_z", "spi03", "spei03", "evi_anom"}
+
+
+def test_seasonal_outputs_over_all_admins_keep_only_window_areas_and_refuse_unknown_ids(tmp_path):
+    windows = pd.DataFrame({"admin_code": ["1", "2"], "season_year": [2026, 2026], "season": ["s1", "s1"],
+                            "gs_start_date": ["2026-03-01", "2026-03-01"], "gs_end_date_exclusive": ["2026-07-01", "2026-07-01"]})
+    everything = lambda src, year, season, win: pub(src, [1.0, 2.0, 3.0, 4.0], codes=["1", "2", "3", "6227"])
+    t = store(tmp_path, "prcp_z", cl.SEASONAL)
+    with pytest.raises(cl.ClimateProcessingFailure, match=r"unknown modeled-area identifiers \['6227'\]"):
+        cl.update_seasonal(t, "prcp_z", origin="2026-06", roster=ROSTER, windows=windows, fetch=everything)
+    assert t.head()[0] is None
+    rep = cl.update_seasonal(t, "prcp_z", origin="2026-06", roster=ROSTER, windows=windows, fetch=everything,
+                             declared_extra=["6227"])
+    assert rep["saved"] == ["2026-s1"]
+    assert sorted(cl.read_seasonal(t)[0]["admin_code"]) == ["1", "2"]      # roster area 3 (no window) and 6227 dropped

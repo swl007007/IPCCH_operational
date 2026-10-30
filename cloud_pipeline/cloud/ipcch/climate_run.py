@@ -44,15 +44,16 @@ def default_providers(ee_monthly, ee_seasonal, vegetation, seasonal_vegetation, 
 
 
 def update_all(tables: Callable[[str, str], VersionedTable], *, origin: str, roster, windows: pd.DataFrame,
-               providers: ClimateProviders, bases=cl.BASES) -> dict[str, Any]:
-    """Monthly then seasonal update of every base; raises on blocking conditions after recording what was saved."""
+               providers: ClimateProviders, bases=cl.BASES, declared_extra=()) -> dict[str, Any]:
+    """Monthly then seasonal update of every base; raises on blocking conditions after recording what was saved.
+    ``declared_extra``: the fixed geography's declared out-of-roster admins (``geography.declared_extras``)."""
     report: dict[str, Any] = {"origin": origin, "monthly": {}, "seasonal": {}, "methods": {}}
     for base in bases:
         report["methods"][base] = {"month": cl.method_ids(base, cl.MONTHLY), "gs": cl.method_ids(base, cl.SEASONAL)}
     for base in bases:
         try:
             report["monthly"][base] = cl.update_monthly(tables(base, cl.MONTHLY), base, origin=origin, roster=roster,
-                                                        fetch=providers.monthly(base))
+                                                        fetch=providers.monthly(base), declared_extra=declared_extra)
         except (cl.ClimateSourceMissing, cl.ClimateProcessingFailure) as exc:
             report["stopped"] = {"base": base, "temporal": cl.MONTHLY, "error": f"{type(exc).__name__}: {exc}",
                                  "saved_in_base": getattr(exc, "climate_report", {}).get("saved", [])}
@@ -63,7 +64,8 @@ def update_all(tables: Callable[[str, str], VersionedTable], *, origin: str, ros
     for base in bases:
         try:
             report["seasonal"][base] = cl.update_seasonal(tables(base, cl.SEASONAL), base, origin=origin, roster=roster,
-                                                          windows=windows, fetch=providers.seasonal(base))
+                                                          windows=windows, fetch=providers.seasonal(base),
+                                                          declared_extra=declared_extra)
         except cl.ClimateProcessingFailure as exc:
             report["stopped"] = {"base": base, "temporal": cl.SEASONAL, "error": f"{type(exc).__name__}: {exc}",
                                  "saved_in_base": getattr(exc, "climate_report", {}).get("saved", [])}

@@ -1,0 +1,240 @@
+{
+ "package_root": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/package-build/out-r1/package",
+ "bundle_dir": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/handoff-build/out-r5",
+ "envelope_path": "/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/envelope/ipcch-combination-envelope-v1-candidate.json",
+ "envelope_sha256": "e0ad66a217eb94c78a9b0192aaea1ec4831e65cee9757eea9a5c9aacd461e88f",
+ "envelope": {
+  "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v1",
+  "status": "candidate",
+  "acceptor": null,
+  "accepted_at": null,
+  "package": {
+   "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+   "contract_version": "ipcch-final-h2h8h14-v1",
+   "feature_count": 527,
+   "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+   "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+   "scopes": {
+    "0": {
+     "feature_schema_sha256": "178223fda9d4079ccff4e9e13b8f55011fe759c5098ec1e31ceff47c5b851484",
+     "model_horizon_months": 2,
+     "public_lead_months": 0,
+     "training_cutoff": "2025-11"
+    },
+    "12": {
+     "feature_schema_sha256": "68eef197c702359a705ef2dc81c25a7b9ef343fe6073f5252516029a6a8641bb",
+     "model_horizon_months": 14,
+     "public_lead_months": 12,
+     "training_cutoff": "2024-11"
+    },
+    "6": {
+     "feature_schema_sha256": "8ed5e50ab11525afeae304199e068fb503d07c634087164ae01d1d8b0ad82552",
+     "model_horizon_months": 8,
+     "public_lead_months": 6,
+     "training_cutoff": "2025-05"
+    }
+   }
+  },
+  "handoff": {
+   "acceptance_entries_sha256": null,
+   "draft_acceptance_entries_sha256": "3621c350d3a8c22f45562368ce30b2041019b74acaa8f17deeb80f9fc887c372",
+   "manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+   "roster_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+   "roster_size": 6226,
+   "schema": "ipcch-handoff-inputs-v1"
+  }
+ },
+ "smoke_verify": {
+  "ok": true,
+  "handoff_resolved": false,
+  "feature_count": 527,
+  "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69"
+ },
+ "bundle_digests_equal_envelope": {
+  "manifest_sha256": true,
+  "roster_size": true,
+  "roster_sha256": true,
+  "draft_acceptance_entries_sha256": true
+ },
+ "real_with_candidate_envelope": {
+  "refused": true,
+  "error": "real mode requires an accepted combination envelope; ipcch-validity-h2h8h14-final-20261030/envelope-v1 is candidate (R51)"
+ },
+ "finalized_entries_check_on_draft": {
+  "refused": true,
+  "error": "acceptance_entries.json: fixed/acled/acled_admin1_to_poly.csv is not finalized (acceptor/accepted_at); drafts cannot be bound"
+ },
+ "accepted_envelope_on_draft_entries": {
+  "refused": true,
+  "error": "acceptance_entries.json: fixed/acled/acled_admin1_to_poly.csv is not finalized (acceptor/accepted_at); drafts cannot be bound"
+ },
+ "population_reference": {
+  "rows": 43889,
+  "areas": 6226,
+  "periods": [
+   "2014-01",
+   "2026-04"
+  ],
+  "latest_first_period": "2026-02",
+  "areas_by_first_period": {
+   "2014-01": 200,
+   "2014-09": 62,
+   "2015-09": 3,
+   "2016-09": 5,
+   "2017-01": 428,
+   "2017-02": 38,
+   "2017-03": 33,
+   "2017-04": 8,
+   "2017-05": 19,
+   "2017-06": 156,
+   "2017-07": 52,
+   "2017-08": 34,
+   "2017-09": 8,
+   "2017-10": 4,
+   "2017-11": 30,
+   "2018-01": 7,
+   "2018-02": 6,
+   "2018-03": 12,
+   "2018-04": 24,
+   "2018-05": 55,
+   "2018-08": 165,
+   "2018-09": 113,
+   "2018-10": 37,
+   "2018-11": 23,
+   "2018-12": 342,
+   "2019-01": 42,
+   "2019-02": 60,
+   "2019-04": 39,
+   "2019-05": 41,
+   "2019-06": 179,
+   "2019-07": 173,
+   "2019-09": 472,
+   "2019-10": 63,
+   "2019-11": 42,
+   "2020-01": 23,
+   "2020-02": 23,
+   "2020-04": 10,
+   "2020-06": 82,
+   "2020-07": 159,
+   "2020-08": 68,
+   "2020-09": 50,
+   "2020-10": 97,
+   "2020-11": 11,
+   "2020-12": 7,
+   "2021-01": 38,
+   "2021-02": 73,
+   "2021-03": 8,
+   "2021-04": 11,
+   "2021-06": 17,
+   "2021-07": 85,
+   "2021-09": 130,
+   "2021-10": 12,
+   "2021-11": 49,
+   "2021-12": 3,
+   "2022-01": 21,
+   "2022-03": 1,
+   "2022-04": 6,
+   "2022-05": 16,
+   "2022-06": 78,
+   "2022-07": 353,
+   "2022-08": 3,
+   "2022-09": 155,
+   "2022-10": 235,
+   "2022-11": 35,
+   "2022-12": 16,
+   "2023-01": 168,
+   "2023-02": 9,
+   "2023-03": 312,
+   "2023-04": 50,
+   "2023-05": 31,
+   "2023-06": 2,
+   "2023-07": 7,
+   "2023-08": 85,
+   "2023-09": 3,
+   "2023-10": 9,
+   "2023-11": 12,
+   "2023-12": 6,
+   "2024-01": 18,
+   "2024-02": 23,
+   "2024-03": 22,
+   "2024-04": 120,
+   "2024-05": 11,
+   "2024-06": 45,
+   "2024-07": 136,
+   "2024-08": 8,
+   "2024-09": 143,
+   "2024-10": 2,
+   "2024-11": 33,
+   "2025-01": 8,
+   "2025-03": 14,
+   "2025-04": 19,
+   "2025-05": 7,
+   "2025-07": 3,
+   "2025-09": 22,
+   "2025-10": 45,
+   "2026-02": 3
+  }
+ },
+ "population": {
+  "2026-10": {
+   "observed_feature_month_rows": 0,
+   "last_observation_carried_forward_rows": 6226,
+   "missing_area_count": 0,
+   "method_counts": {
+    "observed_feature_month": 0,
+    "last_observation_carried_forward": 6226
+   },
+   "future_reference_rows_ignored": 0,
+   "latest_reference_period": "2026-04",
+   "rows": 6226,
+   "admin_codes_equal_roster": true,
+   "max_reference_period_le_origin": true
+  },
+  "2026-08": {
+   "observed_feature_month_rows": 0,
+   "last_observation_carried_forward_rows": 6226,
+   "missing_area_count": 0,
+   "method_counts": {
+    "observed_feature_month": 0,
+    "last_observation_carried_forward": 6226
+   },
+   "future_reference_rows_ignored": 0,
+   "latest_reference_period": "2026-04",
+   "rows": 6226,
+   "admin_codes_equal_roster": true,
+   "max_reference_period_le_origin": true
+  },
+  "2026-04": {
+   "observed_feature_month_rows": 2774,
+   "last_observation_carried_forward_rows": 3452,
+   "missing_area_count": 0,
+   "method_counts": {
+    "observed_feature_month": 2774,
+    "last_observation_carried_forward": 3452
+   },
+   "future_reference_rows_ignored": 0,
+   "latest_reference_period": "2026-04",
+   "rows": 6226,
+   "admin_codes_equal_roster": true,
+   "max_reference_period_le_origin": true
+  },
+  "2025-06": {
+   "refused": "area_id has no current or prior population: 74, 91, 94, 102, 110"
+  },
+  "2020-01": {
+   "refused": "area_id has no current or prior population: 0, 1, 2, 3, 4"
+  }
+ },
+ "geometry": {
+  "source": "fixed/geometry/ipcch_admin_geometry_repaired.shp",
+  "features": 6226,
+  "dropped_declared_extra": [
+   "1315"
+  ],
+  "declared_extra": [
+   "1315"
+  ],
+  "native_geometries_equal_roster": true
+ },
+ "seconds": 2.5
+}

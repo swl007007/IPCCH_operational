@@ -122,7 +122,8 @@ def test_provider_drives_retained_saves(tmp_path):
     seed = pd.DataFrame([{"admin_code": a, "month": "2026-07", "value": 0.0, "n_sources": 3, "ens_sd": 0.0, "method_id": "accepted"}
                          for a in ROSTER])
     table.commit(seed, {"action": "initialise"}, expected_generation="0")
-    rep = cl.update_monthly(table, "prcp_anom", origin="2026-08", roster=ROSTER, fetch=provider.bound("prcp_anom"))
+    rep = cl.update_monthly(table, "prcp_anom", origin="2026-08", roster=ROSTER, fetch=provider.bound("prcp_anom"),
+                           declared_extra=["6227"])        # the shared assets' admin outside the roster, declared
     assert rep["saved"] == ["2026-08"] and rep["months"]["2026-08"]["dropped_out_of_roster"]["chirps"] == 1
     frame, _ = cl.read_monthly(table)
     aug = frame[frame["month"] == "2026-08"]

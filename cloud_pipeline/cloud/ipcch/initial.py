@@ -2,8 +2,10 @@
 R45, R54, R55, R59, R62, R64).
 
 The bundle (research_cloud/packages/ipcch_handoff_inputs.py) lists every file with its sha256 in
-``handoff_manifest.json``. ``initialise`` verifies each runtime file's bytes against that manifest AND an acceptance
-record (R45: a file without a record, or with a different checksum, is refused before anything is written), then commits
+``handoff_manifest.json``. ``initialise`` first verifies the combination binding (``binding.py``: real -> exactly the
+accepted envelope's handoff bundle and finalized acceptance entries; smoke -> its own fixture bundle, never the real
+one), then each runtime file's bytes against that manifest AND an acceptance record (R45: a file without a record, or
+with a different checksum, is refused before anything is written), then commits
 it once into the mode's store as a versioned table named after its path. Re-initialising with the same content is a
 no-op; different content for an initialised table is refused (accepted history is never silently replaced; refreshes go
 through their own handlers). ``audit/`` files are review evidence and are not loaded.
@@ -20,12 +22,13 @@ import numpy as np
 import pandas as pd
 
 from cloud.common.object_store import ObjectStore
+from cloud.ipcch import binding as bd
 from cloud.ipcch.assembly import INTERIM_FAMILIES, AssemblyInputs
 from cloud.ipcch.stores import AcceptanceManifest, StoreError, StoreRoot, VersionedTable
 from cloud.ipcch.vendor import ipcch_compact as cp
 
 SCHEMA = "ipcch-handoff-inputs-v1"
-ROSTER_SIZE = 6226
+ROSTER_SIZE = 6226          # the accepted real roster (bound through the combination envelope)
 
 
 def table_name(rel: str) -> str:
@@ -145,26 +148,41 @@ def _parse(bundle_dir: str, rel: str) -> pd.DataFrame:
     return frame
 
 
-def initialise(store: ObjectStore, root: StoreRoot, bundle_dir: str, *, expected_size: int = ROSTER_SIZE) -> dict[str, Any]:
-    """Two phases: (1) for the WHOLE bundle - bytes vs manifest, acceptance record, full parse/schema validation and
-    conflicts with existing HEADs; (2) only then the commits. A malformed or conflicting file therefore leaves the store
-    untouched (a crash mid-commit leaves already-committed tables, which a rerun reports as unchanged)."""
+def initialise(store: ObjectStore, root: StoreRoot, bundle_dir: str, *, binding: bd.Binding) -> dict[str, Any]:
+    """Two phases: (1) for the WHOLE bundle - the combination binding (real: exactly the envelope's handoff bundle with
+    its finalized acceptance entries; smoke: the fixture bundle only, R48), bytes vs manifest, acceptance record, full
+    parse/schema validation and conflicts with existing HEADs and with the store's combination pairing; (2) only then
+    the commits, the pairing last. A malformed, unbound or conflicting file therefore leaves the store untouched (a
+    crash mid-commit leaves already-committed tables without a pairing, so nothing reads them until a rerun completes)."""
     from cloud.ipcch import retained
-    manifest = json.load(open(os.path.join(bundle_dir, "handoff_manifest.json")))
-    if manifest.get("schema") != SCHEMA or manifest.get("roster_size") != expected_size:
-        raise StoreError(f"bundle schema/roster {manifest.get('schema')}/{manifest.get('roster_size')} != {SCHEMA}/{expected_size}")
+    if binding.mode != root.mode:
+        raise StoreError(f"{binding.mode} binding cannot initialise the {root.mode} store (R48)")
+    try:
+        ident = bd.verify_handoff(binding, bundle_dir) if root.mode == "real" else bd.verify_fixture_bundle(binding, bundle_dir)
+    except bd.BindingError as exc:
+        raise StoreError(str(exc)) from exc
+    manifest, entries = ident["_manifest"], ident.get("_entries")
+    if manifest.get("schema") != SCHEMA:          # roster size/sha: bound by the envelope (real) or declared (smoke)
+        raise StoreError(f"bundle schema {manifest.get('schema')} != {SCHEMA}")
+    wanted = bd.pairing(binding, ident)
+    bound, pairing_generation = bd.check_store_pairing(store, root, wanted)
     acceptance = AcceptanceManifest(store, root)
     runtime = sorted(rel for rel in manifest["files"] if not rel.startswith("audit/"))
-    plan, report = [], {"initialised": [], "unchanged": [], "verified_files": [], "root": root.uri}
+    plan, report = [], {"initialised": [], "unchanged": [], "verified_files": [], "root": root.uri,
+                        "binding": binding.reference(), "pairing": wanted}
     for rel in runtime:
         sha = _sha(os.path.join(bundle_dir, rel))
         if sha != manifest["files"][rel]["sha256"]:
             raise StoreError(f"{rel}: bytes differ from handoff_manifest.json")
         record = acceptance.require(rel, sha)
+        if entries is not None and any(record[k] != entries[rel][k] for k in ("acceptor", "accepted_at")):
+            raise StoreError(f"{rel}: store acceptance record differs from the envelope-bound finalized entry (R45)")
         if not rel.endswith(".csv"):         # e.g. the geometry: verified and accepted, read from the bundle location
             report["verified_files"].append(rel)
             continue
         frame = _parse(bundle_dir, rel)
+        if rel == "fixed/roster.csv" and len(frame) != ident["roster_size"]:
+            raise StoreError(f"{rel}: {len(frame)} rows != declared roster {ident['roster_size']}")
         table = VersionedTable(store, root, table_name(rel))
         head, generation = table.head()
         if head is not None and head["record"].get("source_sha256") != sha:
@@ -174,7 +192,8 @@ def initialise(store: ObjectStore, root: StoreRoot, bundle_dir: str, *, expected
         if head is not None:
             report["unchanged"].append(rel)
             continue
-        meta = {"source": rel, "source_sha256": sha, "acceptance": {k: record[k] for k in ("acceptor", "accepted_at", "kind")}}
+        meta = {"source": rel, "source_sha256": sha, "acceptance": {k: record[k] for k in ("acceptor", "accepted_at", "kind")},
+                "combination": binding.reference()}
         if rel == "history/history_snapshot.csv":
             snap, cutoff = retained.validate_snapshot(frame, table.table)
             rec = {**retained.snapshot_record("initialise", snap, cutoff, {"bundle": rel, "sha256": sha}), **meta}
@@ -182,7 +201,28 @@ def initialise(store: ObjectStore, root: StoreRoot, bundle_dir: str, *, expected
             rec = {"action": "initialise", **meta}
         table.commit(frame, rec, expected_generation=generation)
         report["initialised"].append(rel)
+    if not bound:
+        bd.commit_store_pairing(store, root, wanted, pairing_generation, binding)
     return report
+
+
+def install_acceptance(store: ObjectStore, root: StoreRoot, bundle_dir: str, *, binding: bd.Binding) -> dict[str, Any]:
+    """REAL: append the envelope-bound FINALIZED acceptance entries to the store's acceptance manifest (R45); entries
+    already present with the same name, sha256, acceptor and date are kept. Smoke stores carry their own fixture
+    records and never read the real entries (R48)."""
+    if root.mode != "real" or binding.mode != "real":
+        raise StoreError("only a real store installs the bound real acceptance entries (R48)")
+    try:
+        ident = bd.verify_handoff(binding, bundle_dir)
+    except bd.BindingError as exc:
+        raise StoreError(str(exc)) from exc
+    have = AcceptanceManifest(store, root).records()
+    present = set(map(tuple, have[["name", "sha256", "acceptor", "accepted_at"]].itertuples(index=False)))
+    new = [{k: e[k] for k in ("name", "sha256", "source", "acceptor", "accepted_at", "kind")}
+           for _, e in sorted(ident["_entries"].items()) if (e["name"], e["sha256"], e["acceptor"], e["accepted_at"]) not in present]
+    if new:
+        AcceptanceManifest(store, root).append(new)
+    return {"appended": len(new), "acceptance_entries_sha256": ident["acceptance_entries_sha256"]}
 
 
 def _read(store, root, rel, **numeric):
@@ -194,9 +234,12 @@ def _read(store, root, rel, **numeric):
     return frame
 
 
-def read_assembly_inputs(store: ObjectStore, root: StoreRoot, order) -> AssemblyInputs:
-    """Assembly inputs from the initialised (and later appended/refreshed) stores; ACLED is supplied by the caller from
-    the weekly store (``acled.monthly_series``)."""
+def read_assembly_inputs(store: ObjectStore, root: StoreRoot, binding: bd.Binding) -> AssemblyInputs:
+    """Assembly inputs from the initialised (and later appended/refreshed) stores of THIS binding's combination (a store
+    paired with another package or bundle is refused); the feature order is the bound package's. ACLED is supplied by
+    the caller from the weekly store (``acled.monthly_series``)."""
+    bd.require_store_pairing(store, root, binding)
+    order = binding.feature_order
     def num(frame, cols):
         # exact text -> float64 (correctly rounded), empty -> NaN; the stored text is the bundle's round-trip repr
         return frame.assign(**{c: frame[c].replace("", np.nan).astype("float64") for c in cols})
@@ -227,3 +270,14 @@ def read_assembly_inputs(store: ObjectStore, root: StoreRoot, order) -> Assembly
         descriptors=num(ae, [c for c in ae.columns if c != "admin_code"]),
         identity=num(ident.assign(iso3=ident["iso3"].replace("", None)), ["lat", "lon"]),
         roster=roster, order=tuple(order))
+
+
+def read_population(store: ObjectStore, root: StoreRoot, binding: bd.Binding, origin: str):
+    """Output population fields at feature month O for every roster area of THIS binding's store, from the initialised
+    population reference through the existing no-future ``PopulationSnapshotBuilder`` (``geography.population_snapshot``)."""
+    from cloud.ipcch import geography
+    bd.require_store_pairing(store, root, binding)
+    roster = _read(store, root, "fixed/roster.csv")["admin_code"]
+    ref = _read(store, root, "fixed/population_reference.csv")
+    return geography.population_snapshot(ref.assign(population_estimate=ref["population_estimate"].replace("", np.nan).astype("float64")),
+                                         origin=origin, roster=roster)

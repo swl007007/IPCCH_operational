@@ -14,8 +14,9 @@
   source-level gap, except O itself: no source for O blocks real generation (R13, ``ClimateSourceMissing``).
 * Seasons (R33): only seasons whose exclusive end is on or before the first day of O+1 are complete and eligible; partial
   seasons are never saved. Saved seasons are never rewritten.
-* Fixed roster (R32): published tables must cover every package-roster area exactly once; areas outside the roster
-  (e.g. the 6,227th admin of the shared GEE assets) are dropped and counted, never required.
+* Fixed roster (R32): published tables must cover every package-roster area exactly once; out-of-roster admins the
+  fixed geography declares (the 6,227th admin of the shared GEE assets, ``declared_extra``) are dropped and counted,
+  never required; any other identifier is unknown and fails.
 * Method identifiers (R40) bind each base to the ported shared script (path + sha256) and the spatial, outlier, SPEI-fit
   and ensemble methods; the compact ``method_id`` is stored on every saved row.
 """
@@ -128,8 +129,10 @@ class SourceOutcome:
     extra: dict[str, Any] = field(default_factory=dict)
 
 
-def roster_values(outcome: SourceOutcome, roster: Iterable[str], label: str) -> tuple[pd.Series, int]:
-    """(values indexed by the full roster, dropped out-of-roster rows) of one published outcome; malformed -> failure."""
+def roster_values(outcome: SourceOutcome, roster: Iterable[str], label: str, known: Iterable[str] = ()) -> tuple[pd.Series, int]:
+    """(values indexed by the full roster, dropped rows) of one published outcome; malformed -> failure. Rows outside
+    ``roster`` are dropped only for ``known`` areas (other roster areas of a season, declared fixed-source extras such as
+    the 6,227th GEE admin); any other identifier is unknown and fails (R32)."""
     roster = list(roster)
     v = outcome.values
     if not isinstance(v, pd.DataFrame) or list(v.columns) != ["admin_code", "value"]:
@@ -144,6 +147,9 @@ def roster_values(outcome: SourceOutcome, roster: Iterable[str], label: str) -> 
     if codes.duplicated().any():
         raise ClimateProcessingFailure(f"{label}: duplicate admin_code {sorted(set(codes[codes.duplicated()]))[:5]}")
     keep = codes.isin(roster)
+    unknown = sorted(set(codes[~keep]) - set(map(str, known)))
+    if unknown:
+        raise ClimateProcessingFailure(f"{label}: unknown modeled-area identifiers {unknown[:5]} (R32)")
     missing = sorted(set(roster) - set(codes))
     if missing:
         raise ClimateProcessingFailure(f"{label}: published table lacks {len(missing)} roster areas {missing[:5]}")
@@ -168,8 +174,8 @@ def ensemble(per_source: Mapping[str, pd.Series]) -> pd.DataFrame:
                          "ens_sd": sd})
 
 
-def _collect(base: str, temporal: str, period: str, outcomes: list[SourceOutcome], roster: list[str]
-             ) -> tuple[dict[str, pd.Series], dict[str, Any]]:
+def _collect(base: str, temporal: str, period: str, outcomes: list[SourceOutcome], roster: list[str],
+             known: Iterable[str] = ()) -> tuple[dict[str, pd.Series], dict[str, Any]]:
     expected = SOURCES[base]
     got = [o.source for o in outcomes]
     if sorted(got) != sorted(expected):
@@ -178,7 +184,7 @@ def _collect(base: str, temporal: str, period: str, outcomes: list[SourceOutcome
     for o in outcomes:
         label = f"{table_name(base, temporal)} {period} {o.source}"
         if o.status == "published":
-            published[o.source], dropped = roster_values(o, roster, label)
+            published[o.source], dropped = roster_values(o, roster, label, known)
             report["published"].append(o.source)
             report["dropped_out_of_roster"][o.source] = dropped
         elif o.status == "unavailable":
@@ -254,16 +260,19 @@ def _append(table: VersionedTable, frame: pd.DataFrame, rows: pd.DataFrame, keys
 Fetch = Callable[[str, str], SourceOutcome]          # (source, period) -> outcome
 
 
-def update_monthly(table: VersionedTable, base: str, *, origin: str, roster: Iterable[str], fetch: Fetch) -> dict[str, Any]:
-    """Attempt every unsaved month through O (oldest first); save each with >= 1 published source immediately."""
+def update_monthly(table: VersionedTable, base: str, *, origin: str, roster: Iterable[str], fetch: Fetch,
+                   declared_extra: Iterable[str] = ()) -> dict[str, Any]:
+    """Attempt every unsaved month through O (oldest first); save each with >= 1 published source immediately.
+    ``declared_extra``: out-of-roster admins the fixed geography declares (dropped and counted; others fail, R32)."""
     roster = sorted({str(a) for a in roster})
+    extra = sorted({str(a) for a in declared_extra})
     if table.table != table_name(base, MONTHLY):
         raise StoreError(f"{table.table} is not the {base} monthly store")
     frame, _ = read_monthly(table)
     report: dict[str, Any] = {"base": base, "origin": origin, "method": method_ids(base, MONTHLY), "saved": [], "gaps": {},
                               "months": {}}
     try:
-        _monthly_loop(table, base, frame, origin, roster, fetch, report)
+        _monthly_loop(table, base, frame, origin, roster, fetch, report, extra)
     except (ClimateProcessingFailure, ClimateSourceMissing) as exc:
         exc.climate_report = report           # months already saved in THIS base stay saved and are reported (R41)
         raise
@@ -272,10 +281,10 @@ def update_monthly(table: VersionedTable, base: str, *, origin: str, roster: Ite
     return report
 
 
-def _monthly_loop(table, base, frame, origin, roster, fetch, report):
+def _monthly_loop(table, base, frame, origin, roster, fetch, report, extra=()):
     for month in months_to_update(set(frame["month"]), origin):
         outcomes = [fetch(src, month) for src in SOURCES[base]]
-        published, info = _collect(base, MONTHLY, month, outcomes, roster)
+        published, info = _collect(base, MONTHLY, month, outcomes, roster, extra)
         if not published:
             if month == origin:
                 raise ClimateSourceMissing(f"{base}: no source publishes the feature origin {origin} "
@@ -335,9 +344,10 @@ GsFetch = Callable[[str, int, str, pd.DataFrame], SourceOutcome]   # (source, se
 
 
 def update_seasonal(table: VersionedTable, base: str, *, origin: str, roster: Iterable[str], windows: pd.DataFrame,
-                    fetch: GsFetch) -> dict[str, Any]:
+                    fetch: GsFetch, declared_extra: Iterable[str] = ()) -> dict[str, Any]:
     """Save every completed, unsaved (season_year, season) once, over the areas whose window completed (R33/R41/R8)."""
     roster = sorted({str(a) for a in roster})
+    known = sorted(set(roster) | {str(a) for a in declared_extra})
     if table.table != table_name(base, SEASONAL):
         raise StoreError(f"{table.table} is not the {base} seasonal store")
     done = completed_windows(windows, origin)
@@ -349,19 +359,19 @@ def update_seasonal(table: VersionedTable, base: str, *, origin: str, roster: It
     todo = done[[(a, int(y), s) not in saved for a, y, s in done[list(GS_KEY)].itertuples(index=False)]]
     report: dict[str, Any] = {"base": base, "origin": origin, "method": method_ids(base, SEASONAL), "saved": [], "gaps": {}}
     try:
-        _seasonal_loop(table, base, todo, fetch, report)
+        _seasonal_loop(table, base, todo, fetch, report, known)
     except ClimateProcessingFailure as exc:
         exc.climate_report = report
         raise
     return report
 
 
-def _seasonal_loop(table, base, todo, fetch, report):
+def _seasonal_loop(table, base, todo, fetch, report, known=()):
     for (year, season), win in todo.groupby(["season_year", "season"], sort=True):
         areas = sorted(win["admin_code"])
         win = win.sort_values("admin_code").reset_index(drop=True)
         outcomes = [fetch(src, int(year), season, win) for src in SOURCES[base]]
-        published, info = _collect(base, SEASONAL, f"{year}-{season}", outcomes, areas)
+        published, info = _collect(base, SEASONAL, f"{year}-{season}", outcomes, areas, known)
         if not published:
             report["gaps"][f"{year}-{season}"] = info["unavailable"]
             continue
