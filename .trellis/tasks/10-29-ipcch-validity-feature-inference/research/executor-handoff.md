@@ -72,26 +72,9 @@ Committed: 08c7a2b+34362d8 locks (CLOSED); 47d7c4c+b684e90 publication core (clo
 record read, member mode, required verify_delivery seam); d7c3636 ipcch.country_reference (reviewed); 417c6d2 Phase B
 member writer/verifier (cloud/ipcch/delivery_member.py) + provenance sidecar (cloud/ipcch/provenance.py, batch
 feature_provenance.csv) - Supervisor found 5 member gaps + 2 provenance gaps (supervisor-review 8972e10).
-UNCOMMITTED WORK IN PROGRESS (on disk, finish + test + commit first):
-- delivery_member.py: is_member_file() shared by writer+verifier; REQUIRED_FILES; verify_member enforces exact
-  H2/8/14 leads 0/6/12 O=M-2 T=M+lead independent of inventory, envelope copy digest/identity (+accepted in real),
-  package identity vs expected.package, geometry exact unique roster valid EPSG:4326 polygons (_verify_geometry).
-- provenance.py: per-base seasonal sections gs_<base> (latest completed season WITH a value, table
-  history__climate_gs_<base>) + growing_season_calendar (calendar selection, table fixed__season_windows);
-  generation.py retained refs now include fixed__season_windows/fixed__season_calendar.
-- publication.py: legacy members() carry "delivery": {"manifest": record.manifest}; build_record replaces (not stacks)
-  inherited_from_pointer_generation.
-- NEW cloud/ipcch/delivery_v2.py (inherit byte-for-byte from source tree vs source inventory; legacy member own-origin
-  check; merge_shared_reports with member_system/member_execution_month/member_feature_month; write_manifest; upload;
-  verify_delivery = actual publication verifier) and cloud/ipcch/release_v2.py (publish_ipcch_run: snapshot bound to
-  expected generation -> write_member -> inherit FEWS from that snapshot -> merge -> manifest -> upload -> publish with
-  verify_delivery). Tests tests/cloud/test_ipcch_release_v2.py (4) passed BEFORE the verifier tightening.
-- CURRENT FAILURES (3, test-side): (a) test_ipcch_delivery_member tamper "missing" case now raises "lacks required
-  files" -> widen regex; (b,c) test_ipcch_release_v2.real_inputs zips manifest["horizons"] items (keys order "14","2","8")
-  with targets -> assign by horizon: {"2":"2026-10","8":"2027-04","14":"2027-10"}. Then ADD regressions the Supervisor
-  asked: mixed assembly (FEWS files present) verifies; horizons=[]/missing scope artifacts with self-consistent
-  inventory refused; envelope {} refused; empty FeatureCollection refused; expected.package mismatch refused; all-13
-  seasonal NaN -> gs_<base> latest_observation empty while calendar section still reports the selection.
+COMMITTED 6e57972: Phase B review fixes (strict verify_member, shared is_member_file, seasonal per-base provenance) +
+Phase C core cloud/ipcch/delivery_v2.py + cloud/ipcch/release_v2.py; tests test_ipcch_delivery_member.py (8),
+test_ipcch_release_v2.py (4); full suite 851 passed (research/cp4/phase-bc-full-suite-run1.log). No WIP on disk.
 REMAINING CP4: legacy v1 wiring (delivery_job.execute: post-activation reject IPCCH-including v1 at request + publish
 time; v1 FEWS-only after activation inherits IPCCH v2 member from current via delivery_v2.inherit and writes a v2 record
 carrying activation; v1 runs take locks for executed systems); promote/resume reject new-contract candidates
