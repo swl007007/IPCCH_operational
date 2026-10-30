@@ -11,3 +11,17 @@ No Audit workflow; manual checkpoint review under execution-protocol.md. CP4 is 
 ## Remaining acceptance
 
 Actual3h artifacts and inherited member hashes/package identity validated before publication; per-system provenance on all current paths; exact current-bound inheritance including inherit-of-inherit; legacy FEWS path with new IPCCH package; old in-flight IPCCH rejected after activation; new-contract candidate promote/resume refused; full root isolation for smoke; R39 publication recheck; no CAS rebase; independent runtime success/failure; real model fixture-only CP5 E2E. No actual production publication is authorized.
+
+
+## Phase B review417c6d2 — pending repairs
+
+Two read-only checks ran locked member suite6passed and targeted probes; Supervisor spot-checked implicated code. Concrete defects sent to Executor:
+
+- delivery_member.py168-169 versus203-205: writer includes FEWS scope paths, verifier excludes them; mixed-system tree cannot verify.
+- verify_member219-231: empty declared horizons plus removed scope inventory passes; require exactH2/8/14 and mandatory artifacts independently.
+- copied envelope164/212-218: {} accepted; verify copied digest and package/mode/status binding.
+- geometry157/225-229: empty FeatureCollection accepted; verify exact unique roster and valid geometry.
+- expected identity196-201: mismatched expected package ignored without provenance digest; bind expected package identity explicitly.
+- provenance.py105-127: calendar-selected season reported as actual observation even with every seasonal valueNaN; wildcard table loses actual version/hash references. Distinguish calendar selection/observation and retain concrete seasonal input refs.
+
+Full Executor suite845passed is regression evidence only; these reproduced boundaries remain open. PhaseC/D may proceed independently, but no PhaseB/CP4 acceptance yet.
