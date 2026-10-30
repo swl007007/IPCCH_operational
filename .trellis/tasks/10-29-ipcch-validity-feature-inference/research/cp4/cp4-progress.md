@@ -118,3 +118,9 @@ rejection.
   candidates and bind legacy promotion, exact-bytes v2 deliveries (pickled FEWS packages defect). tests/cloud +
   operator 750 passed; test_ipcch_legacy_guards 10.
 - Remaining CP4: FEWS v2 adapter per D1-D3 (see executor-handoff NEXT).
+
+## 78a2aeb .. 0d26d7f (2026-10-30)
+- 78a2aeb findings 1-4; 43c6d12 R60 adapter (D1-D3); 32d4eef residuals A-D + keep projection P1; 77cc319 C/D
+  boundaries; 0d26d7f real deliver(fewsnet) parity (fews-parity/fews-parity.md). Supervisor closed: 6f07b2f, 4fd6146,
+  a5a107e, A/B/P1 (32d4eef), C/D (77cc319). R60 parity under review.
+- Remaining before CP4 acceptance: Supervisor review of 43c6d12 parity evidence; then CP5.

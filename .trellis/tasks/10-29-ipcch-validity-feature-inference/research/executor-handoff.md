@@ -78,29 +78,21 @@ run_v2.Deployment(store, roots smoke/real distinct), run_request(deployment=) lo
 publication, IPCCH inference publishes via release_v2.publish_ipcch_run (candidate/current), chained own generation for
 two-system runs, failed publication keeps batch/predictions; member_inputs() builds member sources. Tests
 test_ipcch_run_v2.py 12, release 8, member 8, publication 9. No WIP on disk. Ledger research/cp4/cp4-progress.md.
-CP4 SINCE (all committed, tests green): e48ca51 executable v2 route (cloud/ipcch/entrypoint_v2.py; delivery_job
-`run --v2-config` dispatch); ec7a31b per-system publication ids `<run_id>-<system>` (release_v2.publish_member_run);
-6f07b2f entrypoint fixes CLOSED by Supervisor (validate before any state read, prod pointer read only for real IPCCH
-inference+current; providers built only when ipcch_generation; durable+returned status keep structured report;
-overall literal `partial_success`); 6d8ea08 Phase D legacy guards: delivery_job.bind_current (R37 request-time reject of
-IPCCH-including v1 after activation, FCC inheritance names the current member; new-contract IPCCH inherit = own
-feature_origin + archive repeats manifest ref), publication-time recheck in legacy validate(), v1 locks for executed
-systems (_locked), any-v2-record + v1 FEWS-only -> _compute_fews_member (prepare_inputs on FEWS-only models,
-fews_v2.write_member, publish_member_run(fewsnet) inheriting IPCCH + activation); pipeline.reject_new_contract_candidate
-+ bind_promotion; ObjectStore write_bytes/read_bytes + delivery_v2 exact bytes (pickled FEWS packages; was a real defect).
-Full receipt: tests/cloud + operator release/cli 750 passed.
-NEXT (Supervisor D1-D3 rulings in design.md "R60 FEWS adapter wiring", implement without further permission):
-(a) v2 schema: fewsnet generation requires `prepare_request` ObjectRef; admission reads its pinned bytes, validates with
-validate_prepare_request (origin == derived fewsnet origin) and verifies ALL nested refs (incl. unused IPCCH
-declarations) before any mutation; (b) prepare selected-systems seam (plan_prepare/_extract `systems=`, default both,
-v1 bytes unchanged; FEWS-only = no IPCCH acquirer/store ops; check_prepared_snapshot FEWS-only aware); (c) FEWS keep =
-FEWS-row projection of retained_family_rows (same canonical rows/cols/order) vs pinned FEWS history; refresh via existing
-converters; (d) generation persists a create-only source binding beside the prepared manifest (acled/wfp choices + refs)
-so gen-only -> later inf-only == gen+inf (test byte equality); inference-only refuses a snapshot without the binding;
-(e) fewsnet_runner wired in entrypoint (real only; R38 smoke has no FEWS) using fews_v2.write_member +
-publish_member_run; tests: gen-only / inf-only / combined, byte equality vs v1 FEWS member on same inputs, two-system
-current + candidate + partial failure. Then CP5 (actual accepted package, fixture-only >=2 countries, executable
-gen-only/inf-only/combined + isolated current replacement; synthetic XGB fixtures are NOT CP5), CP6.
+CP4 SINCE (all committed): e48ca51 v2 route; ec7a31b per-system publication ids; 6f07b2f entrypoint fixes (CLOSED);
+6d8ea08 legacy guards; 4fd6146 + a5a107e FEWS member validation (delivery_bundle.validate_member, existing local
+package checksum rules; CLOSED); 78a2aeb findings 1-4 (operator/remote callers bound to current, scoped remote
+preparation prepare --systems, locks admission->delivery, legacy pointer read); 43c6d12 R60 adapter
+(cloud/ipcch/fews_adapter.py: v2 fewsnet.prepare_request admission + nested refs, FEWS-scoped run_prepare, source
+binding prepared/<id>/fewsnet_v2_sources.json, delivery_job.publish_scored_member shared with the legacy single-system
+route, entrypoint real_fewsnet_runner); 32d4eef residuals A-D + keep projection P1 (A, B, P1 CLOSED); 77cc319 C/D
+boundaries (workflow handler-local error, CLI resolve read cleanup, lock lookup rollback; CLOSED); 0d26d7f real
+deliver(fewsnet) parity (research/cp4/fews-parity: 12 real KE/UG areas, both modes 28/31 byte-identical incl. all
+scope tables, 3 identical modulo deliver's own output path). Latest full receipt research/cp4/findings1-4/
+residuals-AD-P1-tests-run1.log (818 passed); receipts are on disk (*.log gitignored); CP6 must commit concise
+manifests/results/checksums/commands.
+NEXT: CP5 local small-area smoke with the ACTUAL accepted H2/H8/H14 package (envelope v2 / package 18b91d45), fixture-only
+inputs across >=2 countries, executable generation-only / inference-only / combined through entrypoint_v2 + isolated
+smoke current replacement; synthetic XGB fixtures are NOT CP5. Then CP6 (no checkpoint acceptance yet).
 ## CP5 local small-area smoke with the ACTUAL accepted H2/H8/H14 package (envelope v2 / package 18b91d45; not synthetic
 ## fits), fixture-only inputs (fixture bundle subset across >=2 countries, never real retained stores);
 ## CP6 acceptance. Assembly parity = historical compatibility evidence only.
