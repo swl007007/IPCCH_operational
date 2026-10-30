@@ -7,12 +7,17 @@
 * the selected model combination EXACTLY matches the batch's recorded combination (combination id, package manifest,
   feature order and, when both carry one, the bound handoff manifest) and per-scope training cutoffs - a match of column
   names alone is not enough (R19);
-* each horizon file at its recorded generation and sha256; header duplicates rejected (never resolved positionally);
+* namespace admission BEFORE any read: the manifest and every horizon file must be the canonical paths of this batch
+  id under the request mode's root (R48); the roster must be the store's bound roster (real: the accepted 6,226);
+  each horizon's H, public lead, O and T = O + H must follow from M (R19/R23);
+* each horizon file at its recorded generation and sha256; header duplicates and ragged rows rejected (never resolved
+  positionally); area_id must equal admin_code;
   every model-required column present (no synthesized all-NaN column); extras ignored; rows exactly the roster with
   unique area keys (R32); required numeric values parse strictly - blank/NaN are missing, unparseable text or
   +/-infinity fail with area and column (R19); columns reordered by the model's saved feature names.
 
-``score_batch`` scores each horizon through the existing runtime path unchanged (``load_scope_package`` ->
+``score_batch`` first re-verifies the package itself (every listed member re-hashed, manifest sha256 and combination
+id equal to the binding), then scores each horizon through the existing runtime path unchanged (``load_scope_package`` ->
 ``apply_feature_contract`` -> ``score_scope``: unclipped raw scores, package thresholds, cummax on the binary
 predictions, overall phase decoding; R61). Nonfinite raw model outputs fail the run with area, horizon and field
 (R18); raw scores outside [0, 1] are counted, not clipped. Prediction tables carry ``mode`` and ``batch_id`` (R36).
@@ -34,6 +39,8 @@ import pandas as pd
 from cloud.common.object_store import ObjectStore
 from cloud.ipcch import batch as bt
 from cloud.ipcch import binding as bd
+from cloud.ipcch import retained
+from cloud.ipcch.stores import StoreError, StoreRoot
 
 TARGETS = ("phase2_worse", "phase3_worse", "phase4_worse", "phase5_worse")
 
@@ -77,16 +84,21 @@ def _strict_numeric(text: pd.Series, column: str, areas: pd.Series) -> np.ndarra
 
 
 def parse_horizon(text: str, h: int, order: tuple[str, ...], roster: list[str]) -> pd.DataFrame:
-    header = next(csv.reader(io.StringIO(text.split("\n", 1)[0])))
+    header = next(csv.reader(io.StringIO(text.split("\n", 1)[0])), [])
     dup = sorted({c for c in header if header.count(c) > 1})
     if dup:
         raise BatchValidationError(f"H{h}: duplicate column names {dup[:5]} (R19)")
-    raw = pd.read_csv(io.StringIO(text), dtype=str, keep_default_na=False)
+    try:
+        raw = retained.strict_csv(text, f"H{h}")         # ragged rows are never re-aligned
+    except StoreError as exc:
+        raise BatchValidationError(str(exc)) from exc
     required = [*bt.IDENTITY, *order]
     missing = [c for c in required if c not in raw.columns]
     if missing:
         raise BatchValidationError(f"H{h}: missing model-required columns {missing[:5]} ({len(missing)}) (R19)")
     areas = raw["admin_code"]
+    if not raw["area_id"].equals(areas):
+        raise BatchValidationError(f"H{h}: area_id must equal admin_code on every row (R32)")
     if areas.duplicated().any():
         raise BatchValidationError(f"H{h}: duplicate area keys {sorted(set(areas[areas.duplicated()]))[:5]} (R32)")
     if set(areas) != set(roster):
@@ -99,10 +111,22 @@ def parse_horizon(text: str, h: int, order: tuple[str, ...], roster: list[str]) 
     return pd.concat([identity, features], axis=1)                    # model order; extras dropped
 
 
-def load_batch(store: ObjectStore, ref: Mapping[str, str], *, batch_id: str, mode: str, execution_month: str,
-               binding: bd.Binding, roster: Iterable[Any]) -> tuple[dict[str, Any], dict[int, pd.DataFrame]]:
+def load_batch(store: ObjectStore, ref: Mapping[str, str], *, batch_root: str, batch_id: str, mode: str,
+               execution_month: str, binding: bd.Binding, roster: Iterable[Any]) -> tuple[dict[str, Any], dict[int, pd.DataFrame]]:
     if binding.mode != mode:
         raise BatchValidationError(f"{mode} request with a {binding.mode} combination binding")
+    try:                                                   # namespace admission BEFORE any read (R48)
+        root = StoreRoot(mode, batch_root)
+    except StoreError as exc:
+        raise BatchValidationError(f"batch root: {exc}") from exc
+    paths = bt.batch_paths(batch_root, batch_id)
+    if ref.get("uri") != paths["manifest"]:
+        raise BatchValidationError(f"batch manifest {ref.get('uri')} is not {paths['manifest']} in the {mode} namespace; "
+                                   "refused before reading (R48)")
+    try:
+        roster = bt.bound_roster(store, root, binding, roster)
+    except StoreError as exc:
+        raise BatchValidationError(str(exc)) from exc
     try:
         manifest = json.loads(read_pinned(store, ref))
     except ValueError as exc:
@@ -125,14 +149,21 @@ def load_batch(store: ObjectStore, ref: Mapping[str, str], *, batch_id: str, mod
     if diff or rec.get("scopes") != dict(binding.scopes):
         raise BatchValidationError(f"selected model combination differs from the batch's {diff or 'scope cutoffs'}; "
                                    "generate a new batch for this combination (R19)")
-    roster = [str(a) for a in roster]
     if manifest.get("roster", {}).get("sha256") != bt.roster_sha256(roster):
         raise BatchValidationError("batch roster differs from this store's roster (R32)")
+    origin = bt.add_months(execution_month, -2)
+    if sorted(manifest.get("horizons", {})) != sorted(str(h) for h in bt.HORIZONS):
+        raise BatchValidationError(f"batch horizons {sorted(manifest.get('horizons', {}))} are not exactly H2/H8/H14 (R18)")
     frames = {}
     for h in bt.HORIZONS:
-        entry = manifest.get("horizons", {}).get(str(h))
-        if entry is None:
-            raise BatchValidationError(f"batch lacks H{h} (R18)")
+        entry = manifest["horizons"][str(h)]
+        expect = {"model_horizon_months": h, "public_lead_months": bt.HORIZONS[h], "feature_origin": origin,
+                  "target_month": bt.add_months(origin, h)}
+        wrong = {k: (entry.get(k), v) for k, v in expect.items() if entry.get(k) != v}
+        if wrong:
+            raise BatchValidationError(f"H{h} horizon metadata differs from M {execution_month}: {wrong} (R19/R23)")
+        if entry.get("file") != paths[str(h)]:
+            raise BatchValidationError(f"H{h} file {entry.get('file')} is not {paths[str(h)]}; refused before reading (R48)")
         text = read_pinned(store, {"uri": entry["file"], "generation": entry["generation"], "sha256": entry["sha256"]})
         frames[h] = parse_horizon(text, h, tuple(binding.feature_order), roster)
     return manifest, frames
@@ -144,6 +175,13 @@ def score_batch(manifest: Mapping[str, Any], frames: Mapping[int, pd.DataFrame],
     from model_pipeline.ipcch_launch_runtime.inference import score_scope
     from model_pipeline.ipcch_launch_runtime.model_package import load_scope_package
 
+    try:                                                   # the package itself, every member re-hashed (R51)
+        pkg_ident = bd.package_identity(package_root)
+    except bd.BindingError as exc:
+        raise BatchValidationError(f"package: {exc}") from exc
+    if (pkg_ident["package_manifest_sha256"], pkg_ident["combination_id"]) != (binding.package_manifest_sha256,
+                                                                                binding.combination_id):
+        raise BatchValidationError("package_root is not the bound combination package (manifest sha256/combination id)")
     origin, results = manifest["feature_origin"], {}
     for h, scope in ((2, 0), (8, 6), (14, 12)):
         pkg = load_scope_package(Path(package_root), scope)

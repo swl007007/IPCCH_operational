@@ -168,7 +168,7 @@ class Generation:
     def _acled(self, choice, tables, O, mode):
         table = self._table(ACLED_TABLE)
         if choice["action"] == "refresh":
-            frame = pd.read_csv(io.StringIO(self._text(choice)), dtype=str, keep_default_na=False)
+            frame = retained.strict_csv(self._text(choice), "ipcch.acled export", ac.EXPORT_COLUMNS)
             rows, parsed = ac.parse_export(frame, start=choice["start"], end=choice["end"], regions=choice["regions"],
                                            tables=tables)
             ac.refresh(table, rows, start=choice["start"], end=choice["end"], regions=choice["regions"],
@@ -191,6 +191,7 @@ class Generation:
                 out[family] = self._national(choice)
                 continue
             table = self._table(SERIES_FAMILIES[family])
+            retained.require_initialised(table)
             if choice["action"] == "refresh":
                 rows = wfp.parse_refresh(self._text(choice), f"ipcch.research_inputs.{family}")
                 retained.refresh_interval(table, rows, start=choice["start"], end=choice["end"],
@@ -198,7 +199,8 @@ class Generation:
             frame, _ = retained.read_series(table)
             out[family] = {"action": choice["action"], "coverage_end": retained.coverage_end(frame),
                            **({"source": dict(choice["file"]), "interval": [choice["start"], choice["end"]]}
-                              if choice["action"] == "refresh" else {})}
+                              if choice["action"] == "refresh" else {}),
+                           "method": "research-prepared retained input (delivered history / declared-interval refresh)"}
         return out
 
     def _national(self, choice):
@@ -207,8 +209,8 @@ class Generation:
         if frame is None:
             raise StoreError(f"{NATIONAL_TABLE} is not initialised (R45)")
         if choice["action"] == "refresh":
-            new = pd.read_csv(io.StringIO(self._text(choice)), dtype={"iso3": str, "report_month": str},
-                              keep_default_na=False)
+            new = retained.strict_csv(self._text(choice), "ipcch.research_inputs.idp_national",
+                                      ("iso3", "report_month", "stock"))
             asm.validate_idp_national(new)
             if not new["iso3"].str.fullmatch(r"[A-Z]{3}").all():
                 raise StoreError("idp_national refresh: iso3 must be three upper-case letters")
@@ -227,7 +229,7 @@ class Generation:
     def _snapshot(self, choice, O):
         table = self._table(SNAPSHOT_TABLE)
         if choice["action"] == "refresh":
-            snap = pd.read_csv(io.StringIO(self._text(choice)), dtype=str, keep_default_na=False)
+            snap = retained.strict_csv(self._text(choice), "ipcch.history_snapshot", retained.SNAPSHOT_COLUMNS)
             retained.replace_snapshot(table, snap, source_ref=choice["file"])
         head, _ = table.head()
         warning = retained.snapshot_warning(head, O)

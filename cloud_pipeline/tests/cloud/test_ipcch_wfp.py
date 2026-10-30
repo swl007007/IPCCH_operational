@@ -50,6 +50,8 @@ def test_refresh_replaces_exactly_the_declared_interval(tmp_path):
     ("admin_code,month,value\n1,2026-08,inf\n", "infinite value for area 1"),
     ("admin_code,month,value\n1,2026-08,1\n1,2026-08,2\n", "duplicate keys"),
     ("ISO3,period,WFP_Price\nSOM,2026-08,101\n", "exactly admin_code, month, value"),
+    ("admin_code,month,value\n9999,1,2026-08,123.5\n", "ragged rows"),           # pandas would make 9999 an index
+    ("admin_code,month,value\n1,2026-08\n", "ragged rows"),
 ])
 def test_invalid_refresh_leaves_history_intact(tmp_path, text, match):
     store, root, t = seeded(tmp_path)
@@ -58,3 +60,18 @@ def test_invalid_refresh_leaves_history_intact(tmp_path, text, match):
         wfp.apply(store, root, {"action": "refresh", "file": REF, "start": "2026-08", "end": "2026-08"}, roster=ROSTER,
                   text=text)
     assert t.head() == head                                                      # R27: failed refresh writes nothing
+
+
+def test_emptied_history_stays_initialised_keep_then_refresh(tmp_path):
+    """A valid replacement can leave the table empty; initialisation is HEAD existence, so keep and refresh recover."""
+    store, root, t = seeded(tmp_path)
+    rep = wfp.apply(store, root, {"action": "refresh", "file": REF, "start": "2026-05", "end": "2026-07"}, roster=ROSTER,
+                    text="admin_code,month,value\n")
+    assert rep["rows"] == 0 and rep["coverage_end"] is None and retained.read_series(t)[0].empty
+    assert wfp.apply(store, root, {"action": "keep"}, roster=ROSTER)["coverage_end"] is None
+    rep = wfp.apply(store, root, {"action": "refresh", "file": REF, "start": "2026-08", "end": "2026-08"}, roster=ROSTER,
+                    text="admin_code,month,value\n1,2026-08,104.0\n")
+    assert rep["coverage_end"] == "2026-08"
+    fresh = LocalObjectStore(tmp_path / "never")
+    with pytest.raises(StoreError, match="not initialised"):
+        wfp.apply(fresh, root, {"action": "keep"}, roster=ROSTER)

@@ -10,14 +10,17 @@ converter is a different source/definition and is NOT used for IPCCH (FEWS NET a
   existing research build, pinned by ``{uri, generation, sha256}`` and read by the caller; it replaces exactly the
   declared [start, end] months via ``retained.refresh_interval`` (rows outside the interval or the roster, duplicates,
   non-canonical months, unparseable text or infinities refuse the whole refresh before any write, so history stays
-  intact, R27); a successful refresh becomes the keep baseline (R28). Months beyond coverage stay missing
+  intact, R27; ragged rows refuse too); a successful refresh becomes the keep baseline (R28). Months beyond coverage stay missing
   (optional-missing, R65); there is no carry-forward and no operational fetcher. An operator covers revisions of recent
   months (the research build's centred outlier filter) only by declaring them inside the interval.
+
+Caveat (recorded, not gated): the research build's centred +/-6-month outlier filter means a delivered or refreshed
+historical value can depend on prices observed after that month. Matching the trained feature definition is
+compatibility with training, not proof that each value was available as of its month (no causal/as-of claim).
 """
 
 from __future__ import annotations
 
-import io
 import math
 from typing import Any, Iterable, Mapping
 
@@ -32,9 +35,7 @@ METHOD = ("research HDX food prices: 100 + YoY % change of local-currency staple
 
 
 def parse_refresh(text: str, label: str = "ipcch.wfp refresh") -> pd.DataFrame:
-    raw = pd.read_csv(io.StringIO(text), dtype=str, keep_default_na=False)
-    if list(raw.columns) != ["admin_code", "month", "value"]:
-        raise StoreError(f"{label}: columns must be exactly admin_code, month, value (got {list(raw.columns)})")
+    raw = retained.strict_csv(text, label, ("admin_code", "month", "value"))
     values = []
     for area, v in zip(raw["admin_code"], raw["value"]):
         s = v.strip()
@@ -56,9 +57,8 @@ def parse_refresh(text: str, label: str = "ipcch.wfp refresh") -> pd.DataFrame:
 def apply(store, root, choice: Mapping[str, Any], *, roster: Iterable[Any], text: str | None = None) -> dict[str, Any]:
     """Keep or refresh the retained WFP_Price history; returns the batch-report entry (method, provenance, coverage)."""
     table = VersionedTable(store, root, HISTORY_TABLE)
+    retained.require_initialised(table)                 # HEAD, not row count: an emptied history stays usable
     frame, _ = retained.read_series(table)
-    if frame.empty:
-        raise StoreError(f"{HISTORY_TABLE} is not initialised (R45)")
     if choice["action"] == "keep":
         return {"action": "keep", "method": METHOD, "coverage_end": retained.coverage_end(frame)}
     if text is None:

@@ -48,7 +48,7 @@ def test_generation_writes_a_complete_batch_and_inference_scores_it(tmp_path, pa
     req = fx.smoke_request(refs, inference=True)
     out = generation(store, root, b, bundle, refs, req, tmp_path).run()
     ref, batch_id = out["manifest_ref"], out["batch_id"]
-    manifest, frames = bi.load_batch(store, ref, batch_id=batch_id, mode="smoke", execution_month="2027-03",
+    manifest, frames = bi.load_batch(store, ref, batch_root=SMOKE, batch_id=batch_id, mode="smoke", execution_month="2027-03",
                                      binding=b, roster=[str(a) for a in ROSTER])
     assert manifest["feature_origin"] == "2027-01" and manifest["designation"] == "dummy"
     g = manifest["generation"]

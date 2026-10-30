@@ -33,6 +33,31 @@ class GppProcessingFailure(RuntimeError):
     """A GPP retrieval outcome that is not a definitive not-found: blocks IPCCH generation (R49)."""
 
 
+def strict_csv(text: str, label: str, columns: tuple[str, ...] | None = None) -> pd.DataFrame:
+    """A refresh/batch CSV as text cells, refusing (before any write) a header other than ``columns`` and any ragged row:
+    pandas would otherwise silently re-align a row with one extra field as an index, or pad a short row."""
+    import csv
+    import io
+    records = list(csv.reader(io.StringIO(text)))
+    if not records:
+        raise StoreError(f"{label}: empty file")
+    header = records[0]
+    if columns is not None and tuple(header) != tuple(columns):
+        raise StoreError(f"{label}: columns must be exactly {', '.join(columns)} (got {header})")
+    if len(set(header)) != len(header):
+        raise StoreError(f"{label}: duplicate column names")
+    bad = [i for i, r in enumerate(records[1:], start=2) if len(r) != len(header)]
+    if bad:
+        raise StoreError(f"{label}: {len(bad)} ragged rows (e.g. line {bad[0]}) do not match the {len(header)}-field header")
+    return pd.DataFrame(records[1:], columns=header, dtype=object)
+
+
+def require_initialised(table: VersionedTable) -> None:
+    """An accepted history exists iff its HEAD exists - an empty but committed table is initialised (R45)."""
+    if table.head()[0] is None:
+        raise StoreError(f"{table.table} is not initialised (R45)")
+
+
 def _months(values: Iterable[Any], label: str) -> None:
     bad = sorted({str(v) for v in values if not isinstance(v, str) or _MONTH.fullmatch(v) is None})
     if bad:

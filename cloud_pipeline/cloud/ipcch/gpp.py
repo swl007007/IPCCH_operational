@@ -89,9 +89,10 @@ def update_gpp(store, root, *, origin: str, roster: Iterable[str], geometries: M
     if list(geometries) != roster:
         raise StoreError("GPP geometries must be exactly the roster in roster order (geography.roster_geometries)")
     history, ledger = VersionedTable(store, root, HISTORY_TABLE), VersionedTable(store, root, LEDGER_TABLE)
+    retained.require_initialised(history)
     frame, _ = retained.read_series(history)
-    if frame.empty:
-        raise StoreError(f"{HISTORY_TABLE} is not initialised (R45/R54)")
+    if frame.empty:                                     # append-only histories are never emptied; nothing to anchor on
+        raise StoreError(f"{HISTORY_TABLE} holds no saved month to append after")
     status = retained.latest_gpp_status(ledger)
     unpublished = {m for m, s in status.items() if s == "unpublished"}
     adapter_months = set(frame.loc[frame["method_id"] == METHOD_ID, "month"])

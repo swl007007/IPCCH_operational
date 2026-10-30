@@ -23,3 +23,29 @@ unique ids; write refusals (dup keys, missing row, inf, order); load refusals (a
 M, batch id, roster, manifest sha, tampered file); parse reorder/extras/dup header/missing column/unparseable/-inf;
 nonfinite model output -> area '12' H2 phase2_worse_score; real request rejects dummy batch. Regression
 `batch-tests-run1.log`: test_ipcch_*.py + population 155 passed. Real accepted package scoring is CP5 integration.
+
+## Supervisor review of ced8e52/8e00c8a - repairs (all behaviour/contract class, fixed across producers + consumers)
+1. Namespace admission before reads: `load_batch(..., batch_root=...)` validates the mode root (StoreRoot) and requires
+   the manifest ref to be `<root>/feature_batches/<batch_id>/manifest.json` before reading; each horizon file must be
+   its canonical path before reading. Spy test: /real/ manifest ref, real root for a smoke request, and a manifest whose
+   horizon file points into /real/ -> refused, zero /real/ touches.
+2. `score_batch` re-verifies the package itself (`binding.package_identity`: every member re-hashed, no unlisted
+   file) and requires manifest sha256 + combination id == binding: an unrelated package with the same id/order/cutoffs
+   and a tampered member are refused.
+3. Roster bound to the store pairing in BOTH write and load (`bound_roster`: size + file-form sha256 == the
+   initialisation pairing; real = the envelope's accepted roster): a 3-area caller roster against a 5-area bound real
+   roster is refused before any batch file; smoke keeps its declared fixture subset.
+4. Horizon metadata: exactly H2/H8/H14; per horizon H, public lead, O = M - 2 and T = O + H must equal the request
+   (target 1999-01, lead 0 for H8, wrong O, wrong H all refused).
+5. area_id must equal admin_code (write and load); duplicate column names refused at write; ragged rows (extra leading
+   field or short row) refused at load via the shared `retained.strict_csv`.
+6. `wfp.parse_refresh` uses `strict_csv` with the exact header: `9999,1,2026-08,123.5` under a 3-field header and a
+   short row are refused before any write. The same strict parser now reads every refresh file in generation (research
+   families via wfp.parse_refresh, idp_national, history_snapshot, ACLED export).
+7. Initialisation = HEAD existence (`retained.require_initialised`) in wfp.apply, the generation research-family path,
+   GPP and nightlight (append-only histories additionally refuse an empty frame explicitly). Test: valid empty
+   replacement -> keep -> refresh recovers; a never-initialised table is refused.
+Provenance: WFP/research-family/ACLED method, source and coverage stay in the generation report -> batch manifest.
+Caveat documented in wfp.py: the research centred +/-6-month outlier filter can embed later prices in a historical
+value; training compatibility is not an as-of/causal claim; no algorithm change or retraining.
+Regression `batch-review-fix-tests-run1.log`: test_ipcch_*.py + request_v2 + population 197 passed (locked interpreter).

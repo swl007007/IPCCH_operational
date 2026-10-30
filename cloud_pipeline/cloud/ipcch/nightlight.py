@@ -40,9 +40,10 @@ def update_nightlight(store, root, *, origin: str, roster: Iterable[str], geomet
     if list(geometries) != roster:
         raise StoreError("nightlight geometries must be exactly the roster in roster order (geography.roster_geometries)")
     history = VersionedTable(store, root, HISTORY_TABLE)
+    retained.require_initialised(history)
     frame, _ = retained.read_series(history)
-    if frame.empty:
-        raise StoreError(f"{HISTORY_TABLE} is not initialised (R45/R64)")
+    if frame.empty:                                     # append-only histories are never emptied; nothing to anchor on
+        raise StoreError(f"{HISTORY_TABLE} holds no saved month to append after")
     candidates = rs.months_between(max(frame["month"]), origin)
     report: dict[str, Any] = {"method_id": METHOD_ID, "origin": origin, "candidates": candidates, "saved": [], "gaps": []}
     if not candidates:
