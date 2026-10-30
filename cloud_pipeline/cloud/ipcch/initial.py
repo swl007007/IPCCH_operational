@@ -75,6 +75,39 @@ def _schema(rel: str) -> tuple[tuple[str, ...] | None, tuple[str, ...], tuple[st
     raise StoreError(f"{rel}: no known schema; refusing to load an unknown bundle table")
 
 
+FIELD_KINDS = {"admin_code": "integral", "area_id": "integral", "season_year": "integral", "n_sources": "integral",
+               "month": "month", "report_month": "month", "availability_month": "month", "preparation_cutoff": "month",
+               "reference_period": "month", "gs_start_date": "date", "gs_end_date_exclusive": "date", "season": "season",
+               "iso2": "iso2", "iso3_reference": "iso3", "phase": "integral"}
+
+
+def _check_fields(frame: pd.DataFrame, rel: str) -> None:
+    """Shared strict validators for every identifier/month/date/key field of a runtime table (no write before this)."""
+    from cloud.ipcch import climate as cl
+    iso3_blank_ok = rel == "fixed/area_identity.csv"         # training-lineage iso3 is blank for 31 CI areas
+    for col in frame.columns:
+        kind = FIELD_KINDS.get(col) or ("iso3_or_blank" if col == "iso3" and iso3_blank_ok else "iso3" if col == "iso3" else None)
+        if kind is None:
+            continue
+        v = frame[col].astype(str)
+        if kind == "integral":
+            ok = v.str.fullmatch(r"-?\d+")
+        elif kind == "month":
+            ok = v.str.fullmatch(r"\d{4}-(0[1-9]|1[0-2])")
+        elif kind == "date":
+            ok = v.map(cl._real_day).astype(bool)
+        elif kind == "season":
+            ok = v.isin(["s1", "s2"])
+        elif kind == "iso2":
+            ok = v.str.fullmatch(r"[A-Z]{2}")
+        elif kind == "iso3":
+            ok = v.str.fullmatch(r"[A-Z]{3}")
+        else:
+            ok = v.str.fullmatch(r"[A-Z]{3}") | (v == "")
+        if not ok.all():
+            raise StoreError(f"{rel}: invalid {col} values {sorted(set(v[~ok]))[:3]}")
+
+
 def _parse(bundle_dir: str, rel: str) -> pd.DataFrame:
     """Parse and validate one bundle table completely (no write): columns, unique keys, strict numerics."""
     from cloud.ipcch import retained
@@ -93,8 +126,14 @@ def _parse(bundle_dir: str, rel: str) -> pd.DataFrame:
             text.replace("", np.nan).astype("float64")
         except ValueError as exc:
             raise StoreError(f"{rel}: column {c} has non-numeric values") from exc
-    if "admin_code" in frame.columns and not frame["admin_code"].str.fullmatch(r"\d+").all():
-        raise StoreError(f"{rel}: admin_code must be integral")
+    if not rel.startswith("fixed/acled/"):                 # byte-preserved ACLED tables are validated by acled.AcledTables
+        _check_fields(frame, rel)
+    if rel == "fixed/season_windows.csv":
+        from cloud.ipcch import climate as cl
+        try:
+            cl.completed_windows(frame, "9998-12")          # shared window validator (no origin cut): real dates, end > start, unique
+        except Exception as exc:
+            raise StoreError(f"{rel}: {exc}") from exc
     if rel == "history/history_snapshot.csv":
         retained.validate_snapshot(frame, rel)
     if rel == "history/idp_national.csv":

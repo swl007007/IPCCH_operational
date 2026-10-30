@@ -178,3 +178,20 @@ def test_malformed_values_and_absent_admins_fail():
     assert ct.DroughtProvider(Tables(blank), admins).fetch("spi03", "chirps", "2026-08").status == "published"  # blank = missing
     with pytest.raises(cl.ClimateProcessingFailure, match="required admins"):
         ct.VegetationProvider(Tables(vi_tables()), admins=["1", "2", "9"]).fetch("terra", "2026-03")
+
+
+
+def test_current_table_missing_an_admin_fails_before_the_join():
+    """Baseline has admin 2 but the 2026 current table lacks it: never a published NaN (review finding A)."""
+    refs = ct.TableRefs()
+    tables = vi_tables()
+    key = refs.asset(refs.vi_current.format(label="TERRA", year=2026))
+    tables[key] = tables[key][tables[key]["admin_code"] != "2"]
+    with pytest.raises(cl.ClimateProcessingFailure, match="current TERRA 2026"):
+        ct.VegetationProvider(Tables(tables), admins=["1", "2"]).fetch("terra", "2026-03")
+    with pytest.raises(cl.ClimateProcessingFailure, match="current TERRA 2026"):
+        ct.VegetationProvider(Tables(tables)).fetch("terra", "2026-03")            # no roster: baseline admins required
+    windows = pd.DataFrame({"admin_code": ["1", "2"], "season_year": [2026, 2026], "season": ["s1", "s1"],
+                            "gs_start_date": ["2026-01-05", "2026-01-05"], "gs_end_date_exclusive": ["2026-03-01", "2026-03-01"]})
+    with pytest.raises(cl.ClimateProcessingFailure, match="current TERRA 2026"):
+        ct.SeasonalVegetationProvider(Tables(tables)).fetch_season("terra", 2026, "s1", windows)

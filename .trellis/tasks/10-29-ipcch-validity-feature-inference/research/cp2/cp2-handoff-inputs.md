@@ -32,3 +32,12 @@ Decisions recorded:
 
 Not yet done: operational loader that verifies these files against acceptance records (R45) and initialises the retained
 stores (CP3 assembly/stores work); explicit acceptance of the entries.
+
+## r5 (Supervisor acceptance-withheld fixes) — pkg branch dac4a0a
+Output `R/scratch/h2h8h14-final/handoff-build/out-r5`: 58 files, 2,271,631,220 bytes; handoff_manifest.json sha256 e6e3ebc6…f5c97b4, acceptance_entries.json 3621c350…c372 (57 entries, acceptor/accepted_at EMPTY). Copies in `handoff-inputs-r5/`.
+- r4 -> r5: 51 files byte-identical (incl. history/idp_national.csv: no national IDP re-export), 1 changed (fixed/area_identity.csv: added iso3_reference), 6 added (fixed/geometry/* byte copies of the training geometry ipcch_admin_geometry_repaired.*, fixed/population_reference.csv).
+- Country identity: `iso3` remains the TRAINING lineage (blank for 31 CI areas, as the model inputs had); `iso3_reference` = ISO 3166-1 alpha-3 of iso2 from a pinned pycountry 26.2.16 table (`iso3166_alpha2_alpha3_pycountry_26.2.16.csv`, sha 40a46573…): CI -> CIV for 31 areas, 0 conflicts with training iso3. Feature effect if CIV were used: none today (national IDP history has no CIV reports); not substituted into model inputs pending explicit review.
+- Population reference (design.md:27): every observed raw-panel estimated_population (admin_code, reference_period, population_estimate), roster-filtered (3 rows of 1315 dropped); runtime selects latest <= O with the existing no-future builder.
+- Roster policy (manifest `roster_policy`): derived tables filtered to the roster; byte-preserved fixed sources NOT filtered — unit_admin1_weights.csv, unit_iso3.csv and the geometry .dbf carry admin 1315 (measured; each covers the full roster); other ACLED/geometry files are not admin-keyed. Computed outputs must cover exactly the roster (test `test_outputs_cover_exactly_the_roster_although_fixed_tables_carry_an_extra_admin`).
+- Imported metadata exception (separate from R34 new-output rules): delivered seasonal single-source rows with ens_sd = 0 kept as delivered — cdd 44, rainy_days 44, prcp_z 15 (103).
+- Wording corrected: not all fixed inputs are roster-filtered.

@@ -165,16 +165,18 @@ class VegetationProvider:
         for asset in base_ids:
             t = self._read(asset)
             joined = t if joined is None else pd.concat([joined, t], ignore_index=True)
+        required = self.admins if self.admins is not None else sorted(set(joined["admin_code"].astype(str)))
+        require_admins(joined, required, f"S2E3 baseline {label}")
         joined = joined.drop_duplicates("admin_code", keep="first").set_index("admin_code")
         for cy in years:                        # left values win on key collision (combine(..., false))
-            cur = self._read(cur_ids[cy]).set_index("admin_code")
+            cur_table = self._read(cur_ids[cy])
+            require_admins(cur_table, required, f"S2E3 current {label} {cy}")      # before the join: never NaN by absence
+            cur = cur_table.set_index("admin_code")
             joined = joined.join(cur[[c for c in cur.columns if c not in joined.columns]], how="left")
         need = [f"{self.index}_{p['tag']}_mean" for p in parts]
         lacking = [c for c in need if c not in joined.columns]
         if lacking:
             return SourceOutcome(sensor, "unavailable", detail=f"composites not yet in the current tables: {lacking}")
-        if self.admins is not None:
-            require_admins(joined.reset_index(), self.admins, f"S2E3 {label}")
         out = monthly_vi(joined.reset_index(), sensor, self.index, y, m)
         return SourceOutcome(sensor, "published", out[["admin_code", "value"]],
                              extra={"incomplete_areas": int(out["value"].isna().sum())})
@@ -308,9 +310,14 @@ class SeasonalVegetationProvider(VegetationProvider):
         absent = self.backend.missing_assets(list(cur_ids.values()))
         if absent:
             return SourceOutcome(sensor, "unavailable", detail=f"current S2E3 tables not available: {absent}")
-        joined = pd.concat([self._read(a) for a in base_ids], ignore_index=True).drop_duplicates("admin_code").set_index("admin_code")
+        base = pd.concat([self._read(a) for a in base_ids], ignore_index=True)
+        required = sorted(set(windows["admin_code"].astype(str)))
+        require_admins(base, required, f"S2E3 baseline {label}")
+        joined = base.drop_duplicates("admin_code").set_index("admin_code")
         for cy in sorted(cur_ids):
-            cur = self._read(cur_ids[cy]).set_index("admin_code")
+            cur_table = self._read(cur_ids[cy])
+            require_admins(cur_table, required, f"S2E3 current {label} {cy}")      # before the join
+            cur = cur_table.set_index("admin_code")
             joined = joined.join(cur[[c for c in cur.columns if c not in joined.columns]], how="left")
         start = pd.to_datetime(windows["gs_start_date"]).min()
         end = pd.to_datetime(windows["gs_end_date_exclusive"]).max()
@@ -321,7 +328,6 @@ class SeasonalVegetationProvider(VegetationProvider):
         if lacking:
             return SourceOutcome(sensor, "unavailable", detail=f"composites not yet in the current tables: {lacking[:3]}")
         rows = joined.reset_index()
-        require_admins(rows, windows["admin_code"], f"S2E3 {label}")
         rows = rows[rows["admin_code"].astype(str).isin(set(windows["admin_code"].astype(str)))]
         out = season_vi(rows, sensor, self.index, windows, season_year)
         return SourceOutcome(sensor, "published", out[["admin_code", "value"]].reset_index(drop=True),

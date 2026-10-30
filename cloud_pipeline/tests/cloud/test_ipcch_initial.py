@@ -109,3 +109,27 @@ def test_existing_head_conflict_detected_before_writes_and_snapshot_warning(tmp_
     assert head["record"]["preparation_cutoff"] == "2026-12" and head["record"]["action"] == "initialise"
     assert retained.snapshot_warning(head, "2026-11") is None
     assert "before O 2027-01" in retained.snapshot_warning(head, "2027-01")
+
+
+
+@pytest.mark.parametrize("rel,col,bad", [("history/history_snapshot.csv", "area_id", "broken"),
+                                         ("fixed/season_windows.csv", "season_year", "broken"),
+                                         ("history/idp_local.csv", "month", "2020-13"),
+                                         ("fixed/season_windows.csv", "gs_end_date_exclusive", "2026-02-31"),
+                                         ("history/climate_month_cdd.csv", "admin_code", "11.0"),
+                                         ("history/idp_national.csv", "iso3", "aa1")])
+def test_invalid_fields_refused_before_any_write(tmp_path, rel, col, bad):
+    inp = inputs()
+    bundle, man = write_bundle(tmp_path, inp)
+    path = bundle / rel
+    frame = pd.read_csv(path, dtype=str, keep_default_na=False)
+    frame.loc[0, col] = bad
+    frame.to_csv(path, index=False, lineterminator="\n")
+    man["files"][rel]["sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()       # checksum + acceptance match
+    (bundle / "handoff_manifest.json").write_text(json.dumps(man))
+    store, root = LocalObjectStore(tmp_path / "store"), StoreRoot("real", "gs://b/ipcch-v2/real")
+    accept(store, root, man)
+    with pytest.raises(StoreError):
+        initial.initialise(store, root, str(bundle), expected_size=len(ROSTER))
+    written = [p for p in (tmp_path / "store").rglob("*") if p.is_file() and "acceptance_manifest" not in str(p)]
+    assert written == []                                                              # zero table writes
