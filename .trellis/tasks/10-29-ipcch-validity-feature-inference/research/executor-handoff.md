@@ -90,9 +90,14 @@ deliver(fewsnet) parity (research/cp4/fews-parity: 12 real KE/UG areas, both mod
 scope tables, 3 identical modulo deliver's own output path). Latest full receipt research/cp4/findings1-4/
 residuals-AD-P1-tests-run1.log (818 passed); receipts are on disk (*.log gitignored); CP6 must commit concise
 manifests/results/checksums/commands.
-NEXT: CP5 local small-area smoke with the ACTUAL accepted H2/H8/H14 package (envelope v2 / package 18b91d45), fixture-only
-inputs across >=2 countries, executable generation-only / inference-only / combined through entrypoint_v2 + isolated
-smoke current replacement; synthetic XGB fixtures are NOT CP5. Then CP6 (no checkpoint acceptance yet).
+CP5 ACCEPTED (b3b5dd2 + da1ebd0; research/cp5/cp5-smoke.md, run6 all 12 checks). R60 parity ACCEPTED (0d26d7f,
+6598a1d). CP6 IN PROGRESS: d57a3fb = research/cp6/{cp6-evidence-matrix.md (check_matrix.py), operator-handoff.md,
+examples/ (operator_examples.py validates them), test-index}, entrypoint_v2 `initialise` route, R53/R62 warnings in
+prediction metadata (Supervisor finding closes on commit). REMAINING for CP6: final whole-tree regression
+(`cd cloud_pipeline && PYTHONDONTWRITEBYTECODE=1 ~/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest tests -q
+-p no:cacheprovider`) + py_compile -> commit a lean `research/cp6/final-tests-summary.md` (counts, HEAD, command;
+logs stay local, *.log gitignored); keep AGENTS.md/CLAUDE.md GitNexus count lines unstaged; then report to the
+Supervisor. NO Audit/archive/goal-complete before the Supervisor's final acceptance.
 ## CP5 local small-area smoke with the ACTUAL accepted H2/H8/H14 package (envelope v2 / package 18b91d45; not synthetic
 ## fits), fixture-only inputs (fixture bundle subset across >=2 countries, never real retained stores);
 ## CP6 acceptance. Assembly parity = historical compatibility evidence only.
