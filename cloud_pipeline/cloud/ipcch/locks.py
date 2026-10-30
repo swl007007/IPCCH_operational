@@ -21,12 +21,22 @@ from cloud.common.object_store import GenerationConflict, ObjectStore
 SYSTEMS = ("ipcch", "fewsnet")
 
 
+class LockAcquisitionError(RuntimeError):
+    """A lock write failed for another reason (transport, permission); this submission's own locks were released."""
+
+    def __init__(self, system: str, cause: BaseException, cleanup_failures: list[str]):
+        super().__init__(f"acquiring the {system} lock failed: {type(cause).__name__}: {cause}"
+                         + (f"; cleanup failures: {cleanup_failures}" if cleanup_failures else ""))
+        self.system, self.cause, self.cleanup_failures = system, cause, cleanup_failures
+
+
 class LockConflict(RuntimeError):
     """A selected system already has a run in progress; nothing was started."""
 
-    def __init__(self, system: str, holder: Any):
-        super().__init__(f"{system} run in progress (lock held by {holder}); the request is rejected (R50)")
-        self.system, self.holder = system, holder
+    def __init__(self, system: str, holder: Any, cleanup_failures: list[str] | None = None):
+        super().__init__(f"{system} run in progress (lock held by {holder}); the request is rejected (R50)"
+                         + (f"; cleanup failures: {cleanup_failures}" if cleanup_failures else ""))
+        self.system, self.holder, self.cleanup_failures = system, holder, list(cleanup_failures or [])
 
 
 @dataclass(frozen=True)
@@ -60,22 +70,24 @@ def acquire(store: ObjectStore, mode_root: str, systems: Iterable[str], run_id: 
         body = json.dumps({"system": system, "run_id": run_id, "acquired_at": stamp}, sort_keys=True) + "\n"
         try:
             meta = store.write_text(uri, body, if_generation_match=0)
-        except GenerationConflict:
+        except GenerationConflict as exc:
             holder = _holder(store, uri)
-            release(store, held)
-            raise LockConflict(system, holder) from None
+            raise LockConflict(system, holder, release(store, held)) from exc
+        except Exception as exc:                              # any other failure: release own locks, keep the cause
+            raise LockAcquisitionError(system, exc, release(store, held)) from exc
         held.append(Lock(system, uri, str(meta.generation), run_id))
     return held
 
 
 def release(store: ObjectStore, locks: Iterable[Lock]) -> list[str]:
-    """Delete this run's locks at their own generations; a lock that moved is left alone and reported."""
+    """Delete this run's locks at their own generations, attempting every one; a lock that moved is left alone and
+    every failure (moved, transport) is reported."""
     problems = []
     for lock in locks:
         try:
             store.delete(lock.uri, if_generation_match=lock.generation)
-        except GenerationConflict as exc:
-            problems.append(f"{lock.uri}: {exc}")
+        except Exception as exc:
+            problems.append(f"{lock.uri}: {type(exc).__name__}: {exc}")
     return problems
 
 

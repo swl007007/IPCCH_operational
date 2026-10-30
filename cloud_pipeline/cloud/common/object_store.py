@@ -34,6 +34,8 @@ class ObjectStore(Protocol):
         if_generation_match: str | int | None = None,
     ) -> ObjectMetadata: ...
 
+    def delete(self, uri: str, *, if_generation_match: str | int) -> None: ...
+
 
 class LocalObjectStore:
     """Filesystem-backed fake object store with GCS-like generation checks."""
@@ -145,10 +147,18 @@ class GCSObjectStore:
         return self.client.bucket(bucket_name).blob(blob_name).download_as_text()
 
     def delete(self, uri: str, *, if_generation_match: str | int) -> None:
-        """Delete exactly the given generation; a moved or absent object raises ``GenerationConflict`` (no retry)."""
+        """Delete exactly the given generation; a moved or absent object raises ``GenerationConflict``.
+
+        Retry policy (explicit): transient errors are retried by the client within a bounded deadline. The generation
+        precondition makes every attempt target only this generation, so a retry can never remove a replacement; a
+        retry after an attempt that already landed reports NotFound -> ``GenerationConflict`` although the object is
+        gone (callers report it; they never assume the delete failed silently)."""
+        from google.cloud.storage.retry import DEFAULT_RETRY
+
         bucket_name, blob_name = _parse_gcs_uri(uri)
         try:
-            self.client.bucket(bucket_name).blob(blob_name).delete(if_generation_match=int(if_generation_match))
+            self.client.bucket(bucket_name).blob(blob_name).delete(if_generation_match=int(if_generation_match),
+                                                                   retry=DEFAULT_RETRY.with_deadline(120))
         except Exception as exc:
             if _is_generation_precondition_error(exc) or _is_not_found_error(exc):
                 raise GenerationConflict(str(exc)) from exc

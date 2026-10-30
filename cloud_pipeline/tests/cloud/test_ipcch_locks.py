@@ -44,3 +44,47 @@ def test_release_never_deletes_a_lock_that_moved(tmp_path):
     theirs = locks.acquire(store, REAL, ["ipcch"], "run-b")
     problems = locks.release(store, mine)                                          # run-a's stale handle
     assert problems and store.get_metadata(locks.lock_uri(REAL, "ipcch")).generation == theirs[0].generation
+
+
+class Flaky(LocalObjectStore):
+    def __init__(self, root, fail_write=None, fail_delete=()):
+        super().__init__(root)
+        self.fail_write, self.fail_delete = fail_write, set(fail_delete)
+
+    def write_text(self, uri, content, *, if_generation_match=None):
+        if self.fail_write and uri.endswith(self.fail_write):
+            raise OSError("transport reset")
+        return super().write_text(uri, content, if_generation_match=if_generation_match)
+
+    def delete(self, uri, *, if_generation_match):
+        if any(uri.endswith(s) for s in self.fail_delete):
+            raise OSError("delete transport reset")
+        return super().delete(uri, if_generation_match=if_generation_match)
+
+
+def test_partial_acquisition_is_rolled_back_when_a_later_lock_is_held(tmp_path):
+    store = LocalObjectStore(tmp_path)
+    locks.acquire(store, REAL, ["ipcch"], "run-a")                                  # ipcch sorts AFTER fewsnet
+    with pytest.raises(locks.LockConflict, match="run-a"):
+        locks.acquire(store, REAL, ["ipcch", "fewsnet"], "run-b")
+    assert store.get_metadata(locks.lock_uri(REAL, "fewsnet")) is None              # run-b's fewsnet lock removed
+
+
+def test_transport_failure_releases_own_locks_and_keeps_the_cause(tmp_path):
+    store = Flaky(tmp_path, fail_write="/locks/ipcch")
+    with pytest.raises(locks.LockAcquisitionError, match="transport reset") as info:
+        locks.acquire(store, REAL, ["ipcch", "fewsnet"], "run-b")
+    assert isinstance(info.value.cause, OSError) and info.value.cleanup_failures == []
+    assert store.get_metadata(locks.lock_uri(REAL, "fewsnet")) is None
+
+
+def test_cleanup_attempts_every_lock_and_reports_failures(tmp_path):
+    store = Flaky(tmp_path, fail_delete=["/locks/fewsnet"])
+    held = locks.acquire(store, REAL, ["ipcch", "fewsnet"], "run-a")
+    problems = locks.release(store, held)                                           # fewsnet delete fails first
+    assert len(problems) == 1 and "fewsnet" in problems[0] and "delete transport reset" in problems[0]
+    assert store.get_metadata(locks.lock_uri(REAL, "ipcch")) is None                # still attempted and released
+    store2 = Flaky(tmp_path / "b", fail_write="/locks/ipcch", fail_delete=["/locks/fewsnet"])
+    with pytest.raises(locks.LockAcquisitionError) as info:
+        locks.acquire(store2, REAL, ["ipcch", "fewsnet"], "run-c")
+    assert info.value.cleanup_failures and "fewsnet" in info.value.cleanup_failures[0]   # reported, not swallowed
