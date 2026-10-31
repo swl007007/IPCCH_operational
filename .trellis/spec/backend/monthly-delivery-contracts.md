@@ -209,6 +209,8 @@ Routine IPCCH choices trigger the full v2 route through the existing request eve
 `pipeline.py submit --config FILE --selections FILE [--execute] [--run-id ID]`;
 `pipeline.py status --config FILE --run-id ID`. Build context requires explicit
 envelope/pin/package/handoff/smoke-fixture/config arguments.
+One-time retained initialization uses `python3 -m cloud.ipcch.entrypoint_v2 initialise
+--config /opt/ipcch/deployment.json --mode real`; smoke uses `--mode smoke --acceptor NAME`.
 
 ### 3. Contracts
 Declare all 11 keep/refresh choices. Structurally validate before uploads; pin input
@@ -221,25 +223,54 @@ verification rehashes package/handoff/smoke files against the accepted envelope.
 Inherited release members remain literal; this publication's inheritance is in
 top-level `inherited`, outside the member payload.
 
+Initialization writes only the selected retained root, with the combination pairing
+last. Verify its final pairing, table source hashes and row counts against the bound
+bundle; a process exit alone is insufficient. Acceptance or partial tables can
+remain after interruption. Preserve them and inspect state before recovery.
+
+For legacy-compatible image cutover, stage fallback on the same filesystem as the
+active fallback: promotion uses Path.rename after pointer CAS, and preview does not
+detect EXDEV. Promotion changes only the normal config's top-level image_uri/work_dir.
+Complete its v2.image_uri separately after maintenance release; do not introduce
+foreign config changes while the cutover operation still owns activation state.
+
 ### 4. Validation and error matrix
 Missing choice, keep extras or untrusted input namespace: reject before upload.
 Missing v2 image: execution refused. Changed selection/bytes under a run ID:
 reject. Failed freeze admission: no triggering request. Artifact mismatch: build
 fails. New image digest requires real legacy compatibility/acceptance evidence;
 changing config or disabling guards cannot substitute for it.
+After a later v2 publication, the older maintenance operation sees current/config
+as foreign and cannot restore them. There is no dedicated v2 pointer rollback
+helper. Restoring a pre-activation pointer hides activation from legacy guards;
+do not present old-pointer CAS or an old writer image as a safe v2 rollback.
 
 ### 5. Good / base / bad cases
 Good: uploads cross midnight UTC and freeze selects the new month. Base: a lost
 final-upload response resumes with identical bytes. Bad: deriving M from upload
 start, local timezone, or delayed job start; changing legacy destination in place.
+After publication-response uncertainty, inspect current, reservation and durable
+status before a new submission. Keep successful retained updates after downstream
+failure. Post-activation containment requires a fresh, reviewed maintenance operation
+and forward recovery; an earlier operation's restore/release is not reusable there.
 
 ### 6. Tests required
 Submit invalid-input no-write, UTC rollover, changed pointer at freeze, lost
 response identity, separate image binding, Workflow argument propagation,
 installation tamper/isolation and literal FEWS inheritance tests. Offline tests
 do not prove built-image compatibility or live bucket publication.
+Live readback checks the frozen request/reservation, exact batch and raw feature
+header order, complete bound roster, target months, delivery hashes, literal FEWS
+member equality and pointer/release generations. Compare retained HEAD/version
+records to distinguish updates from reuse; unchanged coverage alone proves neither
+zero source calls nor source availability. Local readback/replay uses the memory
+guard with explicit PYTHONPATH and GOOGLE_CLOUD_PROJECT when needed by ADC.
 
 ### 7. Wrong vs correct
 Wrong: deploy a new image and treat old accepted image-bound packages as accepted.
 Correct: verify unchanged package execution in the new image, record genuine
 acceptance and initialize its destination through supported operator commands.
+Wrong: interpret `storage ls -a` historical hold versions as a live maintenance
+hold, or use `maintenance status` as evidence that load_initialized passed.
+Correct: inspect the live hold object and explicitly validate load_initialized
+(or use the models selection preview that invokes it).

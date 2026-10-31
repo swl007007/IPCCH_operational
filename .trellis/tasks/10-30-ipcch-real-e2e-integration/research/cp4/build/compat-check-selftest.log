@@ -1,0 +1,49 @@
+# unit=ipcch-cp2-compat-check-selftest-1793454850131929280 start=2026-10-31T09:54:10-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/compat_check.py /home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a /home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a /tmp/compat-selftest.json
+Running as unit: ipcch-cp2-compat-check-selftest-1793454850131929280.service; invocation ID: b6d03ce3cfba4c8993c50855f586a280
+{
+  "status": "passed",
+  "checks": {
+    "scopes_present": true,
+    "scopes_identical": true,
+    "inputs_present": true,
+    "inputs_identical": true,
+    "fewsnet_present": true,
+    "fewsnet_identical": true,
+    "ipcch_present": true,
+    "ipcch_identical": true,
+    "fewsnet_0m_predictions_identical": true,
+    "fewsnet_6m_predictions_identical": true,
+    "fewsnet_12m_predictions_identical": true
+  },
+  "differing_required": []
+}
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/compat_check.py /home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a /home/swl007007/projects/food-crisis-research/staging/fewsnet-fixed-map-retrain-20261022/candidate/download/fews-candidate-20261022a /tmp/compat-selftest.json"
+	User time (seconds): 5.47
+	System time (seconds): 3.71
+	Percent of CPU this job got: 41%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:22.08
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 26108
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 21902
+	Voluntary context switches: 7476
+	Involuntary context switches: 3113
+	Swaps: 0
+	File system inputs: 24708720
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 22.143s
+CPU time consumed: 9.198s
+# end=2026-10-31T09:54:32-04:00 launcher_rc=0 child_exit=0

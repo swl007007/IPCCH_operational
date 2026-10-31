@@ -1,0 +1,94 @@
+{
+  "mode": "preview",
+  "run_id": "ipcch-smoke-824f736b23b8452d",
+  "request": {
+    "schema_version": "fewsnet-ipcch-delivery-request-v2",
+    "run_id": "ipcch-smoke-824f736b23b8452d",
+    "mode": "smoke",
+    "execution_month": "2026-10",
+    "operations": {
+      "ipcch_generation": true,
+      "ipcch_inference": true,
+      "fewsnet_generation": false,
+      "fewsnet_inference": false
+    },
+    "ipcch": {
+      "model_combination": {
+        "combination_id": "provisional",
+        "envelope": {
+          "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json",
+          "generation": "1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "acled": {
+        "action": "refresh",
+        "file": {
+          "uri": "gs://food-crisis-test-ipcch-smoke/inputs/ipcch-smoke-824f736b23b8452d/acled/acled_smoke_fixture_O202608.csv",
+          "generation": "1",
+          "sha256": "5274ff408726aa2da0f92259f36ae8952682681a17cf987a77825b59d29743ea"
+        },
+        "end": "2026-09-04",
+        "regions": [
+          "R1",
+          "R2"
+        ],
+        "start": "2025-07-26"
+      },
+      "wfp": {
+        "action": "keep"
+      },
+      "history_snapshot": {
+        "action": "keep"
+      },
+      "research_inputs": {
+        "nino34_anom": {
+          "action": "keep"
+        },
+        "bbg_staple_food": {
+          "action": "keep"
+        },
+        "bbg_oilgas": {
+          "action": "keep"
+        },
+        "bbg_soybean_oil": {
+          "action": "keep"
+        },
+        "bbg_global_food": {
+          "action": "keep"
+        },
+        "food_price_index_WB": {
+          "action": "keep"
+        },
+        "idp_national": {
+          "action": "keep"
+        },
+        "idp_local": {
+          "action": "keep"
+        }
+      },
+      "country_reference": {
+        "uri": "gs://food-crisis-test-ipcch-smoke/inputs/reference/country_reference.csv",
+        "generation": "1",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "fewsnet": null,
+    "publication": "current",
+    "runtime": {
+      "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+      "environment_manifest": {
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt",
+        "generation": "1",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "release": {
+      "namespace": "monthly-smoke",
+      "expected_pointer_generation": "0"
+    },
+    "operator": "weilun.shi",
+    "prepared_at": "2026-10-31T14:28:18Z"
+  },
+  "note": "provisional references and time; --execute uploads/pins every file, then freezes the request at one UTC submission instant (execution month, prepared_at) and uploads it last"
+}

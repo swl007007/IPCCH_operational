@@ -1,0 +1,74 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Job",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+      "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+      "run.googleapis.com/operation-id": "5e739073-78f1-465f-818b-80ab598fc870"
+    },
+    "creationTimestamp": "2026-10-31T13:50:54.226504Z",
+    "generation": 1,
+    "labels": {
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/lastUpdatedTime": "2026-10-31T13:50:54.226504Z"
+    },
+    "name": "ipcch-v2-runtime-preflight-20261031",
+    "namespace": "968355701450",
+    "resourceVersion": "AAZfIzOc62M",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/jobs/ipcch-v2-runtime-preflight-20261031",
+    "uid": "63e0212e-9f3f-43ee-b752-cab3613a4070"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "562.0.0",
+          "run.googleapis.com/execution-environment": "gen2"
+        }
+      },
+      "spec": {
+        "parallelism": 1,
+        "taskCount": 1,
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "args": [
+                  "-c",
+                  "import json,google.auth,ee\nfrom google.cloud import storage\nresult={\"identity\":\"monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com\",\"checks\":{}}\ndef check(name,fn):\n try: result[\"checks\"][name]={\"ok\":True,\"result\":fn()}\n except Exception as exc: result[\"checks\"][name]={\"ok\":False,\"error\":type(exc).__name__+\": \"+str(exc)}\ndef initialize():\n credentials,_=google.auth.default(scopes=[\"https://www.googleapis.com/auth/cloud-platform\",\"https://www.googleapis.com/auth/earthengine\"])\n ee.Initialize(credentials=credentials,project=\"feisty-flames-511718-d4\")\n ee.data.setDeadline(60000)\n ee.data.setMaxRetries(0)\n return \"initialized\"\ncheck(\"ee_initialize\",initialize)\nif result[\"checks\"][\"ee_initialize\"][\"ok\"]:\n for name in [\"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00\",\"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01\"]:\n  check(name,lambda name=name: {k:v for k,v in ee.data.getAsset(\"projects/han-sandbox-505315/assets/\"+name).items() if k in (\"name\",\"type\",\"sizeBytes\",\"bands\")})\nclient=storage.Client(project=\"feisty-flames-511718-d4\")\npermissions=[\"storage.objects.get\",\"storage.objects.create\",\"storage.objects.delete\",\"storage.objects.list\"]\nfor name in [\"food-crisis-test-ipcch-data\",\"food-crisis-test-ipcch-requests\"]:\n check(name,lambda name=name: client.bucket(name).test_iam_permissions(permissions,timeout=30,retry=None))\ndef current():\n blob=client.bucket(\"food-crisis-test-ipcch-data\").blob(\"monthly-staging/current.json\")\n blob.reload(timeout=30,retry=None)\n return {\"generation\":str(blob.generation),\"size\":blob.size}\ncheck(\"current_metadata\",current)\nprint(\"IPCCH_RUNTIME_PREFLIGHT \"+json.dumps(result,sort_keys=True),flush=True)\nraise SystemExit(0 if all(v[\"ok\"] for v in result[\"checks\"].values()) else 2)\n"
+                ],
+                "command": [
+                  "python3"
+                ],
+                "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+                "resources": {
+                  "limits": {
+                    "cpu": "1",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ],
+            "maxRetries": 0,
+            "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+            "timeoutSeconds": "300"
+          }
+        }
+      }
+    }
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-10-31T13:50:54.666838Z",
+        "status": "True",
+        "type": "Ready"
+      }
+    ],
+    "observedGeneration": 1
+  }
+}

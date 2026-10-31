@@ -1,0 +1,312 @@
+# unit=ipcch-cp2-5g-status-real-1793461647625806689 start=2026-10-31T11:47:27-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/pipeline.py status --config /home/swl007007/ipcch-operator/food-crisis-test/project.json --run-id ipcch-real-522b30030f944868
+Running as unit: ipcch-cp2-5g-status-real-1793461647625806689.service; invocation ID: 68f5512aec9b40e181c4ff69b8fd6730
+{
+  "run_id": "ipcch-real-522b30030f944868",
+  "mode": "real",
+  "execution_month": "2026-10",
+  "prepared_at": "2026-10-31T15:21:13Z",
+  "phase": "submitted",
+  "status": "succeeded",
+  "request": {
+    "generation": "1793460075820847",
+    "sha256": "63057e5f620a1e6ea949a45b2c652f936556b32846aca57e48303ea34a82cbe8",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-522b30030f944868/run_manifest.json"
+  },
+  "claim": {
+    "generation": "1793460075820847",
+    "request_uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-522b30030f944868/run_manifest.json"
+  },
+  "reservation": {
+    "deadline_utc": "2026-10-31T19:22:56Z",
+    "mode": "real",
+    "request": {
+      "generation": "1793460075820847",
+      "sha256": "63057e5f620a1e6ea949a45b2c652f936556b32846aca57e48303ea34a82cbe8",
+      "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-522b30030f944868/run_manifest.json"
+    },
+    "reserved_at": "2026-10-31T15:22:56Z",
+    "run_id": "ipcch-real-522b30030f944868",
+    "run_timeout_seconds": 14400,
+    "schema": "ipcch-v2-run-reservation-v1"
+  },
+  "run_status": {
+    "deadline_utc": "2026-10-31T19:22:56Z",
+    "derived": {
+      "execution_month": "2026-10",
+      "feature_origin": "2026-08",
+      "horizons": [
+        {
+          "model_horizon_months": 2,
+          "public_lead_months": 0,
+          "target_month": "2026-10"
+        },
+        {
+          "model_horizon_months": 8,
+          "public_lead_months": 6,
+          "target_month": "2027-04"
+        },
+        {
+          "model_horizon_months": 14,
+          "public_lead_months": 12,
+          "target_month": "2027-10"
+        }
+      ]
+    },
+    "lock_release_problems": [],
+    "mode": "real",
+    "run_id": "ipcch-real-522b30030f944868",
+    "status": "succeeded",
+    "systems": {
+      "ipcch": {
+        "failed_operation": null,
+        "reason": null,
+        "report": null,
+        "result": {
+          "batch": {
+            "batch_id": "ipcch-2026-10-ipcch-real-522b30030f944868-8b8eb27a61ba",
+            "manifest_ref": {
+              "generation": "1793460902270100",
+              "sha256": "96570af509a19d663312cd42626d8bfe728dc4ec6364de9fe7777cd6e6bf5892",
+              "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/feature_batches/ipcch-2026-10-ipcch-real-522b30030f944868-8b8eb27a61ba/manifest.json"
+            }
+          },
+          "execution_month": "2026-10",
+          "generation": {
+            "batch_id": "ipcch-2026-10-ipcch-real-522b30030f944868-8b8eb27a61ba",
+            "manifest_ref": {
+              "generation": "1793460902270100",
+              "sha256": "96570af509a19d663312cd42626d8bfe728dc4ec6364de9fe7777cd6e6bf5892",
+              "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/feature_batches/ipcch-2026-10-ipcch-real-522b30030f944868-8b8eb27a61ba/manifest.json"
+            },
+            "status": "succeeded"
+          },
+          "inference": {
+            "batch_id": "ipcch-2026-10-ipcch-real-522b30030f944868-8b8eb27a61ba",
+            "horizons": {
+              "14": {
+                "rows": 6226,
+                "summary": {
+                  "contract_report": "passed",
+                  "feature_month": "2026-08",
+                  "monotonicity_policy": "cummax",
+                  "pred_columns": [
+                    "phase2_worse_pred",
+                    "phase3_worse_pred",
+                    "phase4_worse_pred",
+                    "phase5_worse_pred"
+                  ],
+                  "raw_scores_outside_0_1": 3937,
+                  "row_count": 6226,
+                  "scope_months": 12,
+                  "score_columns": [
+                    "phase2_worse_score",
+                    "phase3_worse_score",
+                    "phase4_worse_score",
+                    "phase5_worse_score"
+                  ],
+                  "status": "passed",
+                  "target_month": "2027-10",
+                  "thresholds": {
+                    "phase2_worse": 0.2,
+                    "phase3_worse": 0.2,
+                    "phase4_worse": 0.2,
+                    "phase5_worse": 0.2
+                  },
+                  "uncertainty": {
+                    "decision_margin": {
+                      "max": 0.17119826674461364,
+                      "median": 0.06473858952522277,
+                      "min": 3.808438777924694e-05
+                    },
+                    "label_counts": {
+                      "high": 2269,
+                      "low": 1176,
+                      "medium": 2781
+                    },
+                    "method": "qualitative_threshold_margin_v1"
+                  }
+                }
+              },
+              "2": {
+                "rows": 6226,
+                "summary": {
+                  "contract_report": "passed",
+                  "feature_month": "2026-08",
+                  "monotonicity_policy": "cummax",
+                  "pred_columns": [
+                    "phase2_worse_pred",
+                    "phase3_worse_pred",
+                    "phase4_worse_pred",
+                    "phase5_worse_pred"
+                  ],
+                  "raw_scores_outside_0_1": 4777,
+                  "row_count": 6226,
+                  "scope_months": 0,
+                  "score_columns": [
+                    "phase2_worse_score",
+                    "phase3_worse_score",
+                    "phase4_worse_score",
+                    "phase5_worse_score"
+                  ],
+                  "status": "passed",
+                  "target_month": "2026-10",
+                  "thresholds": {
+                    "phase2_worse": 0.2,
+                    "phase3_worse": 0.2,
+                    "phase4_worse": 0.2,
+                    "phase5_worse": 0.2
+                  },
+                  "uncertainty": {
+                    "decision_margin": {
+                      "max": 0.1668640047311783,
+                      "median": 0.08159608021378517,
+                      "min": 1.1461973190296515e-05
+                    },
+                    "label_counts": {
+                      "high": 1686,
+                      "low": 2002,
+                      "medium": 2538
+                    },
+                    "method": "qualitative_threshold_margin_v1"
+                  }
+                }
+              },
+              "8": {
+                "rows": 6226,
+                "summary": {
+                  "contract_report": "passed",
+                  "feature_month": "2026-08",
+                  "monotonicity_policy": "cummax",
+                  "pred_columns": [
+                    "phase2_worse_pred",
+                    "phase3_worse_pred",
+                    "phase4_worse_pred",
+                    "phase5_worse_pred"
+                  ],
+                  "raw_scores_outside_0_1": 3869,
+                  "row_count": 6226,
+                  "scope_months": 6,
+                  "score_columns": [
+                    "phase2_worse_score",
+                    "phase3_worse_score",
+                    "phase4_worse_score",
+                    "phase5_worse_score"
+                  ],
+                  "status": "passed",
+                  "target_month": "2027-04",
+                  "thresholds": {
+                    "phase2_worse": 0.2,
+                    "phase3_worse": 0.2,
+                    "phase4_worse": 0.2,
+                    "phase5_worse": 0.2
+                  },
+                  "uncertainty": {
+                    "decision_margin": {
+                      "max": 0.17336980141699315,
+                      "median": 0.06787712872028351,
+                      "min": 6.082653999317511e-06
+                    },
+                    "label_counts": {
+                      "high": 2168,
+                      "low": 1477,
+                      "medium": 2581
+                    },
+                    "method": "qualitative_threshold_margin_v1"
+                  }
+                }
+              }
+            },
+            "manifest_ref": {
+              "generation": "1793460902270100",
+              "sha256": "96570af509a19d663312cd42626d8bfe728dc4ec6364de9fe7777cd6e6bf5892",
+              "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/feature_batches/ipcch-2026-10-ipcch-real-522b30030f944868-8b8eb27a61ba/manifest.json"
+            }
+          },
+          "mode": "real",
+          "publication": {
+            "activation": {
+              "activated_by_run": "ipcch-real-522b30030f944868-ipcch",
+              "at": "2026-10-31T15:37:56Z",
+              "contract": "ipcch-validity-h2h8h14-v2",
+              "execution_month": "2026-10"
+            },
+            "delivery": {
+              "manifest": {
+                "generation": "1793461076195052",
+                "sha256": "496fa8e561807bedfaa63ed6c580303300c3dd8a24268770140988a7b5c575e1",
+                "uri": "gs://food-crisis-test-ipcch-data/deliveries/ipcch-real-522b30030f944868-ipcch/manifest.json"
+              }
+            },
+            "members": [
+              "fewsnet",
+              "ipcch"
+            ],
+            "pointer_generation": "1793461128385732",
+            "pointer_uri": "gs://food-crisis-test-ipcch-data/monthly-staging/current.json",
+            "publication_id": "ipcch-real-522b30030f944868-ipcch",
+            "release_record": "gs://food-crisis-test-ipcch-data/monthly-staging/releases/ipcch-real-522b30030f944868-ipcch/release.json",
+            "status": "published"
+          }
+        },
+        "status": "succeeded",
+        "step": null
+      }
+    },
+    "verified_references": [
+      {
+        "field": "runtime.environment_manifest",
+        "generation": "1793457280557418",
+        "sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt"
+      },
+      {
+        "field": "ipcch.model_combination.envelope",
+        "generation": "1793457267476070",
+        "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json"
+      },
+      {
+        "field": "ipcch.country_reference",
+        "generation": "1793457294730935",
+        "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv"
+      },
+      {
+        "field": "ipcch.acled.file",
+        "generation": "1793460073214458",
+        "sha256": "7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6",
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-522b30030f944868/acled/acled_regional_aggregate_f2f3.csv"
+      }
+    ]
+  }
+}
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/pipeline.py status --config /home/swl007007/ipcch-operator/food-crisis-test/project.json --run-id ipcch-real-522b30030f944868"
+	User time (seconds): 0.43
+	System time (seconds): 0.01
+	Percent of CPU this job got: 34%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.25
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 158476
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 23959
+	Voluntary context switches: 2691
+	Involuntary context switches: 6
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 1.302s
+CPU time consumed: 450ms
+# end=2026-10-31T11:47:28-04:00 launcher_rc=0 child_exit=0

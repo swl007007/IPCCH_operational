@@ -1,0 +1,36 @@
+{
+  "argument": "{\"bucket\":\"food-crisis-test-ipcch-requests\",\"data\":{\"bucket\":\"food-crisis-test-ipcch-requests\",\"contentType\":\"application/json\",\"crc32c\":\"HWbA9g==\",\"etag\":\"CKL37/m55JcDEAE=\",\"generation\":\"1793456460266402\",\"id\":\"food-crisis-test-ipcch-requests/requests/hold-probe-v2rt-20261031/run_manifest.json/1793456460266402\",\"kind\":\"storage#object\",\"md5Hash\":\"EY4sLx+10hLM51mFOHiYSA==\",\"mediaLink\":\"https://storage.googleapis.com/download/storage/v1/b/food-crisis-test-ipcch-requests/o/requests%2Fhold-probe-v2rt-20261031%2Frun_manifest.json?generation=1793456460266402\\u0026alt=media\",\"metageneration\":\"1\",\"name\":\"requests/hold-probe-v2rt-20261031/run_manifest.json\",\"selfLink\":\"https://www.googleapis.com/storage/v1/b/food-crisis-test-ipcch-requests/o/requests%2Fhold-probe-v2rt-20261031%2Frun_manifest.json\",\"size\":\"72\",\"storageClass\":\"STANDARD\",\"timeCreated\":\"2026-10-31T14:21:00.283Z\",\"timeStorageClassUpdated\":\"2026-10-31T14:21:00.283Z\",\"updated\":\"2026-10-31T14:21:00.283Z\"},\"datacontenttype\":\"application/json\",\"id\":\"22180283032604346\",\"source\":\"//storage.googleapis.com/projects/_/buckets/food-crisis-test-ipcch-requests\",\"specversion\":\"1.0\",\"subject\":\"objects/requests/hold-probe-v2rt-20261031/run_manifest.json\",\"time\":\"2026-10-31T14:21:00.283423Z\",\"type\":\"google.cloud.storage.object.v1.finalized\"}",
+  "createTime": "2026-10-31T14:21:01.125185676Z",
+  "disableConcurrencyQuotaOverflowBuffering": true,
+  "duration": "0.774995394s",
+  "endTime": "2026-10-31T14:21:01.900181070Z",
+  "error": {
+    "context": "RuntimeError: \"monthly admission is paused by maintenance ipcch-v2-runtime-20261031; run hold-probe-v2rt-20261031 is not admitted\"\nin step \"hold_admission\", routine \"main\", line: 92",
+    "payload": "\"monthly admission is paused by maintenance ipcch-v2-runtime-20261031; run hold-probe-v2rt-20261031 is not admitted\"",
+    "stackTrace": {
+      "elements": [
+        {
+          "position": {
+            "column": "13",
+            "length": "9",
+            "line": "92"
+          },
+          "routine": "main",
+          "step": "hold_admission"
+        }
+      ]
+    }
+  },
+  "name": "projects/968355701450/locations/us-central1/workflows/oct-delivery-trigger/executions/337d8631-1110-4c8c-ae3d-380707007669",
+  "startTime": "2026-10-31T14:21:01.125185676Z",
+  "state": "FAILED",
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "main",
+        "step": "hold_admission"
+      }
+    ]
+  },
+  "workflowRevisionId": "000004-637"
+}

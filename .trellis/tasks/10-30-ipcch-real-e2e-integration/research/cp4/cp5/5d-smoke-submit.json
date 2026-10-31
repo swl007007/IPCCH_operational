@@ -1,0 +1,16 @@
+{
+  "run_id": "ipcch-smoke-2dd1148b8c274496",
+  "mode": "smoke",
+  "execution_month": "2026-10",
+  "prepared_at": "2026-10-31T15:07:16Z",
+  "phase": "submitted",
+  "status": "submitted",
+  "request": {
+    "generation": "1793459237316215",
+    "sha256": "1a333309dece2a6fcdb81c0057dcc92982ebfa982bfd615d60b12e2f4ddf7c0b",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-smoke-2dd1148b8c274496/run_manifest.json"
+  },
+  "claim": null,
+  "reservation": null,
+  "run_status": null
+}

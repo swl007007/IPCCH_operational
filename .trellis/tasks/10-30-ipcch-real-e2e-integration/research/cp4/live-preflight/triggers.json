@@ -1,0 +1,29 @@
+[
+  {
+    "createTime": "2026-10-15T19:34:29.745596602Z",
+    "destination": {
+      "workflow": "projects/feisty-flames-511718-d4/locations/us-central1/workflows/oct-delivery-trigger"
+    },
+    "eventDataContentType": "application/json",
+    "eventFilters": [
+      {
+        "attribute": "type",
+        "value": "google.cloud.storage.object.v1.finalized"
+      },
+      {
+        "attribute": "bucket",
+        "value": "food-crisis-test-ipcch-requests"
+      }
+    ],
+    "name": "projects/feisty-flames-511718-d4/locations/us-central1/triggers/oct-delivery-requests",
+    "serviceAccount": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+    "transport": {
+      "pubsub": {
+        "subscription": "projects/feisty-flames-511718-d4/subscriptions/eventarc-us-central1-oct-delivery-requests-sub-621",
+        "topic": "projects/feisty-flames-511718-d4/topics/eventarc-us-central1-oct-delivery-requests-321"
+      }
+    },
+    "uid": "37743b2c-fbbc-4989-a1d1-c07471b51731",
+    "updateTime": "2026-10-15T19:35:23.915173584Z"
+  }
+]

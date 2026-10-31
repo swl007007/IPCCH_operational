@@ -1,0 +1,34 @@
+# Task 10-30 CP4: v2 runtime image from commit 115798f. Build (the Dockerfile re-verifies the IPCCH install), push,
+# record the digest, then in the PUSHED image: re-verify the installation and run the six-slot evidence (FEWS packages
+# loaded and scored on the frozen October inputs vs the exact-lock reference; IPCCH legacy scopes loaded only).
+steps:
+- id: build
+  name: gcr.io/cloud-builders/docker
+  args: ["build", "--no-cache", "--build-arg", "IPCCH_ENVELOPE_SHA256=${_ENVELOPE_SHA256}", "-t", "${_IMAGE}", "."]
+- id: push
+  name: gcr.io/cloud-builders/docker
+  args: ["push", "${_IMAGE}"]
+- id: digest
+  name: gcr.io/cloud-builders/docker
+  entrypoint: bash
+  args: ["-c", "docker image inspect --format 'IMAGE_IDENTITY {{.Id}} {{json .RepoDigests}}' ${_IMAGE}"]
+- id: install-verify
+  name: "${_IMAGE}"
+  entrypoint: python3
+  args: ["-m", "cloud.ipcch.install", "verify", "--root", "/opt/ipcch", "--envelope-sha256", "${_ENVELOPE_SHA256}",
+         "--against", "/opt/ipcch/INSTALL.json"]
+- id: runtime-imports
+  name: "${_IMAGE}"
+  entrypoint: python3
+  args: ["-c", "import ee, rasterio, google.cloud.storage, google.cloud.batch, importlib.metadata as m; import cloud.ipcch.entrypoint_v2, cloud.ipcch.climate_ee, cloud.ipcch.table_producers, cloud.ipcch.smoke_providers, cloud.orchestrator.delivery_job, cloud.orchestrator.prepare; print('RUNTIME_IMPORTS', m.version('earthengine-api'), m.version('google-cloud-storage'), m.version('rasterio'))"]
+- id: six-slot-evidence
+  name: "${_IMAGE}"
+  entrypoint: python3
+  args: ["/workspace/evidence/six_slot_check.py", "/workspace/evidence"]
+images: ["${_IMAGE}"]
+substitutions:
+  _IMAGE: us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f
+  _ENVELOPE_SHA256: 03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: 3600s

@@ -1,0 +1,33 @@
+# unit=ipcch-cp2-5g-load-initialized-1793461648967574739 start=2026-10-31T11:47:28-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline /home/swl007007/.venvs/ipcch-cloud-operator/bin/python -c import pipeline as p; i=p.load_initialized(p.config('/home/swl007007/ipcch-operator/food-crisis-test/project.json')); print('LOAD_INITIALIZED_OK', i['baseline_id'], i['destination']['image_uri'], i['runtime']['image_uri'])
+Running as unit: ipcch-cp2-5g-load-initialized-1793461648967574739.service; invocation ID: 2bb81454a96446e8a9300319dd5cda80
+LOAD_INITIALIZED_OK f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856 us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6 us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline /home/swl007007/.venvs/ipcch-cloud-operator/bin/python -c import pipeline as p; i=p.load_initialized(p.config('/home/swl007007/ipcch-operator/food-crisis-test/project.json')); print('LOAD_INITIALIZED_OK', i['baseline_id'], i['destination']['image_uri'], i['runtime']['image_uri'])"
+	User time (seconds): 0.01
+	System time (seconds): 0.00
+	Percent of CPU this job got: 48%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.04
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 17564
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 2228
+	Voluntary context switches: 153
+	Involuntary context switches: 2
+	Swaps: 0
+	File system inputs: 160
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 90ms
+CPU time consumed: 31ms
+# end=2026-10-31T11:47:29-04:00 launcher_rc=0 child_exit=0

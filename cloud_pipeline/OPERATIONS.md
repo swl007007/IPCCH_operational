@@ -97,6 +97,8 @@ python pipeline.py status --config /private/project.json --run-id nov-2026-a
 python pipeline.py download --config /private/project.json   --run-id nov-2026-a --output /private/november-delivery --execute
 ```
 
+Since the IPCCH v2 activation of 2026-10-31 (see [IPCCH v2 monthly submission](#ipcch-v2-monthly-submission-2026-10-31)), this legacy `run` route serves FEWS NET only. A request that scores IPCCH, alone or mixed, is rejected before any work (R37). FEWS-only runs (`--infer fewsnet --inherit ipcch=...`) inherit the current v2 IPCCH member. Its `--inherit-archive` repeats that member's delivery manifest ref, because v2 deliveries have no archive.
+
 Choose fresh UTC dates and a unique run ID. Origin O fixes targets O/O+6/O+12. `cutoff` binds discovery eligibility; extraction uses exact selected provider images. Provider delays are filled and marked using the existing contract. `deadline` prevents late intent submission. It is not a cancellation timer for already-submitted preparation or delivery jobs. Delivery has a four-hour task timeout.
 
 `keep` always means the initialized retained ACLED/WFP snapshots. A refresh never silently changes the next run's keep baseline: choose refresh again with the desired complete raw export to reuse it. Fixed variables remain unchanged. Prepared remote outputs are versioned, but this CLI currently starts each run from the initialized remote history; it may re-extract post-baseline periods. It does not upload the entire local baseline monthly.
@@ -200,7 +202,7 @@ To produce a portable data/code handover, run the archive commands in [README.md
 
 ## FEWS retrain release (2026-10-22)
 
-Production (`monthly-staging`) now serves run `fews-candidate-20261022a`: FEWS NET scored with the all-history packages `full-202610-ff389b11af93-02caeb861750/{0,6,12}m` (fixed 17-partition map, 123 features, thresholds .48/.41/.45, trained on the refreshed v2 FEWS panel; no model evaluation was run), IPCCH copied byte-for-byte from the accepted delivery `oct-confidence-20261009b` (not rescored). FEWS confidence columns are the accepted October Stage3 proxy evidence of the previous packages, copied unchanged (`frozen_output`); they are not error estimates of the new packages. Runtime `runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae`; baseline `b77cb29bd648c428cce6503bd10a2834bc976290115dd98b331ff67c1dd66c8b` (operator state `food-crisis-test-fews-retrain-20261022/operator-state`, referenced by the normal `project.json`); `fallback/october_2026/` holds this release. Evidence and the operation record are in the task record `10-21-fewsnet-fixed-map-retrain` under `research/p4/` (`.trellis/tasks/10-21-fewsnet-fixed-map-retrain/`, or `.trellis/tasks/archive/2026-10/10-21-fewsnet-fixed-map-retrain/` once archived).
+Historical record. As of 2026-10-31, production serves the IPCCH v2 release described in the last section. The text below describes the 2026-10-22 state. Production (`monthly-staging`) then served run `fews-candidate-20261022a`: FEWS NET scored with the all-history packages `full-202610-ff389b11af93-02caeb861750/{0,6,12}m` (fixed 17-partition map, 123 features, thresholds .48/.41/.45, trained on the refreshed v2 FEWS panel; no model evaluation was run), IPCCH copied byte-for-byte from the accepted delivery `oct-confidence-20261009b` (not rescored). FEWS confidence columns are the accepted October Stage3 proxy evidence of the previous packages, copied unchanged (`frozen_output`); they are not error estimates of the new packages. Runtime `runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae`; baseline `b77cb29bd648c428cce6503bd10a2834bc976290115dd98b331ff67c1dd66c8b` (operator state `food-crisis-test-fews-retrain-20261022/operator-state`, referenced by the normal `project.json`); `fallback/october_2026/` holds this release. Evidence and the operation record are in the task record `10-21-fewsnet-fixed-map-retrain` under `research/p4/` (`.trellis/tasks/10-21-fewsnet-fixed-map-retrain/`, or `.trellis/tasks/archive/2026-10/10-21-fewsnet-fixed-map-retrain/` once archived).
 
 Changing shared runtime settings uses one bounded maintenance operation with the existing jobs:
 
@@ -216,6 +218,68 @@ python pipeline.py promote --config NEW_CONFIG --operation-id OP --run-id CANDID
 python pipeline.py maintenance --config NEW_CONFIG --operation-id OP --execute release  # after verified activation
 ```
 
+Stage the fallback beside the active one (`fallback/october_2026.staged-<OP>`). `promote` renames directories after the pointer CAS, and a rename cannot cross filesystems.
+
 The hold admits only the bound runs (operator and Workflow). `hold` records the predecessor job/workflow settings and grants; `promote` records the prior and intended pointer, normal config and fallback identities before changing them, and every resume or restore acts on the inspected state (a concurrent pointer or config change is never overwritten). `release` re-checks pointer, config, fallback and shared runtime before deleting the hold.
 
-Rollback of the 2026-10-22 release: the operation record (`operations/fews-retrain-20261022/operation.json` in the candidate operator state, copied under the task record's `research/p4/operation/`) holds the predecessor workflow source/env, job images and grants, the previous normal config (`93293916...`, image `sha256:7e6133f3...`, operator state `food-crisis-test/operator-state`) and the absent previous pointer. The previous confidence-bearing fallback is `fallback/october_2026.predecessor-fews-retrain-20261022/`. To roll back, re-pause admission with the same operation (`maintenance --config CANDIDATE_CONFIG --operation-id fews-retrain-20261022 --execute hold --admit fews-candidate-20261022a`), run `... --execute restore` (pointer CAS back to the recorded predecessor first, then normal config, fallback and shared settings), verify, then `... --execute release`. Restore stops without changes if the pointer or config changed outside the operation.
+Rollback of the 2026-10-22 release: the operation record (`operations/fews-retrain-20261022/operation.json` in the candidate operator state, copied under the task record's `research/p4/operation/`) holds the predecessor workflow source/env, job images and grants, the previous normal config (`93293916...`, image `sha256:7e6133f3...`, operator state `food-crisis-test/operator-state`) and the absent previous pointer. The previous confidence-bearing fallback is `fallback/october_2026.predecessor-fews-retrain-20261022/`. To roll back, re-pause admission with the same operation (`maintenance --config CANDIDATE_CONFIG --operation-id fews-retrain-20261022 --execute hold --admit fews-candidate-20261022a`), run `... --execute restore` (pointer CAS back to the recorded predecessor first, then normal config, fallback and shared settings), verify, then `... --execute release`. Restore stops without changes if the pointer or config changed outside the operation. This rollback applies only to state that operation still owns. After the 2026-10-31 C transition and the v2 activation, do not use it (see the next section).
+
+## IPCCH v2 monthly submission (2026-10-31)
+
+Production (`monthly-staging/current.json`) serves the v2 release `ipcch-real-522b30030f944868-ipcch`, activated 2026-10-31T15:37:56Z:
+- **IPCCH:** the H2/H8/H14 member, model combination `ipcch-validity-h2h8h14-final-20261030`, M 2026-10 / O 2026-08, 6,226 areas, 527 features. Public leads are 0/6/12 months, so targets are 2026-10/2027-04/2027-10.
+- **FEWS NET:** inherited literally from `fews-compat-v2rt-20261031a`. That release re-scored the unchanged packages on the v2 image byte-identically to the previous release.
+- **Runtime:** `runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6`, built from `115798f`. It installs the accepted envelope, package and handoff under `/opt/ipcch`, re-verified at build (`INSTALL.json`).
+- **Legacy destination:** baseline `f0481ca1…` and operator state `food-crisis-test-v2-runtime-20261031/operator-state`.
+- **Evidence:** task record `10-30-ipcch-real-e2e-integration` under `research/cp4` and `research/cp6`.
+
+```bash
+python pipeline.py submit --config /private/project.json --selections SELECTIONS.json            # preview
+python pipeline.py submit --config /private/project.json --selections SELECTIONS.json --execute  # uploads, freezes, publishes the request
+python pipeline.py status --config /private/project.json --run-id ipcch-real-<id>
+```
+
+**Selections.** `SELECTIONS.json` (`ipcch-v2-selections-v1`) declares `mode` (`real`|`smoke`), `operations` (`[ipcch_generation, ipcch_inference]`), `publication` (`current`) and exactly 11 choices. Each choice is `{"action":"keep"}` or a refresh. Keep is never implied.
+- `acled`: refresh needs `file`, `start`, `end` (days) and `regions`.
+- `wfp` and the eight research families (`nino34_anom`, `bbg_staple_food`, `bbg_oilgas`, `bbg_soybean_oil`, `bbg_global_food`, `food_price_index_WB`, `idp_national`, `idp_local`): refresh needs `file`, `start`, `end` (months).
+- `history_snapshot`: refresh needs `file`.
+- A `file` is a local path (uploaded create-only under `v2.inputs_prefix`) or `gs://…#generation`.
+- The envelope, environment manifest (the raw lock) and country reference come from `project.json` `v2`, and `v2.image_uri` must be the deployed digest.
+
+**What `--execute` does:**
+1. It uploads each local refresh file create-only under `v2.inputs_prefix`, or pins a `gs://…#generation`, and the shared objects. These uploads and pins happen BEFORE the freeze; their time never selects M.
+2. It freezes the request at one UTC instant. Execution month M and `prepared_at` come from that instant, and O = M-2.
+3. It uploads `requests/<run>/run_manifest.json` last. Eventarc → Workflow → `oct-delivery` (with `--v2-config /opt/ipcch/deployment.json`) then runs generation, inference and current publication. No further action is needed.
+
+**Retries.** `--run-id` only resumes the same submission. A retry is a new submission with a new ID. M depends on the actual freeze month.
+
+**Failures:**
+- A failure in admission, generation or validation before publication leaves current unchanged. Retained writes saved before the failure stay saved.
+- After a crash or lost response, reconcile `status` with `current.json` and its release record before resubmitting.
+
+**Source work** is reported per run in the batch manifest's generation section: `inputs`, `climate_production` (demand, jobs, skipped), `gaps`, `coverage_end` and `warnings`. It is also visible in the retained `HEAD.json` versions under `ipcch-v2/real`.
+
+For the 2026-10-31 run:
+- ACLED was refreshed and appended.
+- GPP 2026-01..08 got HTTP 404 and was ledgered unpublished.
+- Climate demand was empty, with no producer jobs.
+- The 26 climate tables and nightlight were unchanged.
+- Everything else was kept.
+- Two optional-missing warnings (R65): GPP_mean ends 2025-12 and bbg_soybean_oil ends 2026-07, both before O. Those features at O are NaN.
+
+'No demand and no jobs' is not a measured zero count of Earth Engine calls. `ee.Initialize` runs whenever generation is selected, and there is no RPC telemetry.
+
+**Rollback and containment.**
+- Do not reuse the C operation `ipcch-v2-runtime-20261031`, restore jobs to `487a…`, or hand-CAS `current.json` to a pre-activation pointer. That would drop activation, and `487a` lacks the v2 guards.
+- No dedicated v2 current-rollback helper exists.
+- Containment is a bounded, reviewed procedure:
+  1. a NEW maintenance operation, `maintenance --config CFG --operation-id NEW --execute hold --admit <explicit run IDs>`, which pauses admission and records the guarded runtime and active work;
+  2. forward recovery by a new request, only AFTER the reviewed maintenance hold is released. While a hold remains, a fresh routine ID cannot be admitted, because `submit` generates a new ID that the hold does not list. The bounded procedure is detailed in the task 10-30 operator handoff.
+- Retained history is never deleted.
+
+**Automatic EE outputs.** When a run has unsaved `evi_anom`/`spi03`/`spei03` periods, the table producer exports its tables to the writable root `projects/feisty-flames-511718-d4/assets/` (`producer_asset_root`). Asset IDs are run-specific, `<table name>__<version from run ID and M>`. Existing assets are never reused or overwritten, and consumers map those run-specific IDs. The han-sandbox static inputs and historical chunks are preserved as read-only inputs and are never written. Read sharing to the runtime SA remains a prerequisite.
+
+**Known limits:**
+- Live incremental acquisition (DA1/DA2) is not yet accepted. The first natural case is M=2026-11/O=2026-09.
+- The runtime service account `monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com` is denied read on the han-sandbox producer inputs. Any run with unsaved climate or table periods therefore fails closed before export, until the upstream owner shares read access or an owner-approved copy is configured.
+- Do not deploy personal credentials.

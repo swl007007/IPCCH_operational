@@ -1,0 +1,86 @@
+{
+ "archive": {
+  "generation": "1793458365634163",
+  "sha256": "ffbc0b99c08fd0eeb3a50e8f853c72259b891e95524a93b95850a937463757c1",
+  "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-compat-v2rt-20261031a/webapp_model_bundle.tar.gz"
+ },
+ "candidate": {
+  "generation": "1793458366099072",
+  "sha256": "cdbe6629e12e403ee8bb0a64d2a15103b7800185553aeeb58e97381dcde354a9",
+  "uri": "gs://food-crisis-test-ipcch-data/candidates/fews-compat-v2rt-20261031a/candidate.json"
+ },
+ "checks": {
+  "candidate_record_bound": true,
+  "extra:compat-checks.json": true,
+  "inherited_not_rescored": true,
+  "inherited_source_runs_match": true,
+  "inherited_sources_match_request": true,
+  "inventory_verified": true,
+  "pre_package_validation": true,
+  "relocated_replay_all_equal": true,
+  "replay_used_bundled_runtime": true
+ },
+ "execution": {
+  "inherited_systems": [
+   "ipcch"
+  ],
+  "scored_systems": [
+   "fewsnet"
+  ]
+ },
+ "extra_checks": [
+  {
+   "path": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/step6/compat-checks.json",
+   "sha256": "126720557ab6d3463a211f16bebbf48093a346e560b9edcd3d0ce01e09db8880",
+   "status": "passed"
+  }
+ ],
+ "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+ "local": "/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/operator-state/runs/fews-compat-v2rt-20261031a/candidate_receipt.json",
+ "manifest": {
+  "generation": "1793458301810702",
+  "sha256": "a7a631f5483e4bcba1d99722cad9226c655df8bbf36b7234c40f8c9ca94ce10a",
+  "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-compat-v2rt-20261031a/manifest.json"
+ },
+ "model_inventory_sha256": "affba760648786beb81a2812eba69c4423ab5d05d977a9ccb6a9cda106ae8b53",
+ "receipt": {
+  "generation": "1793458733116472",
+  "sha256": "8026d65db4e4a2869c6a9988266df32b2bd8010060aa4b5ba63ed9341aac2932",
+  "uri": "gs://food-crisis-test-ipcch-data/candidates/fews-compat-v2rt-20261031a/verification_receipt.json"
+ },
+ "replay": {
+  "all_equal": true,
+  "output_sha256": "902a36393ea4aebfc977719f7c53d23e27ba3a61b5e1dff53c36141b568cebdc",
+  "runtime": [
+   "/home/swl007007/projects/food-crisis-research/staging/ipcch-v2-runtime-20261031/candidate/download/fews-compat-v2rt-20261031a-relocated/runtime/cloud/orchestrator/delivery_bundle.py",
+   "/home/swl007007/projects/food-crisis-research/staging/ipcch-v2-runtime-20261031/candidate/download/fews-compat-v2rt-20261031a-relocated/runtime/fewsnet_partitioned_rf_pipeline/__init__.py",
+   [
+    "/home/swl007007/projects/food-crisis-research/staging/ipcch-v2-runtime-20261031/candidate/download/fews-compat-v2rt-20261031a-relocated/runtime/model_pipeline"
+   ]
+  ],
+  "summary": {
+   "0": {
+    "fewsnet": 5718,
+    "ipcch": "inherited"
+   },
+   "12": {
+    "fewsnet": 5718,
+    "ipcch": "inherited"
+   },
+   "6": {
+    "fewsnet": 5718,
+    "ipcch": "inherited"
+   }
+  }
+ },
+ "request": {
+  "generation": "1793456852897022",
+  "sha256": "eb3c4d7fccd65665dfadae0193d8d43eb3f55e52dfad3e029bc5e09ee8accf1a",
+  "uri": "gs://food-crisis-test-ipcch-requests/requests/fews-compat-v2rt-20261031a/run_manifest.json"
+ },
+ "run_id": "fews-compat-v2rt-20261031a",
+ "schema_version": "operator-candidate-receipt-v1",
+ "status": "passed",
+ "validation_failures": [],
+ "verified_utc": "2026-10-31T14:58:52Z"
+}

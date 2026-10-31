@@ -1,0 +1,16 @@
+{
+  "run_id": "ipcch-real-522b30030f944868",
+  "mode": "real",
+  "execution_month": "2026-10",
+  "prepared_at": "2026-10-31T15:21:13Z",
+  "phase": "submitted",
+  "status": "submitted",
+  "request": {
+    "generation": "1793460075820847",
+    "sha256": "63057e5f620a1e6ea949a45b2c652f936556b32846aca57e48303ea34a82cbe8",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-522b30030f944868/run_manifest.json"
+  },
+  "claim": null,
+  "reservation": null,
+  "run_status": null
+}

@@ -1,0 +1,556 @@
+bindings:
+- members:
+  - serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/run.developer
+etag: BwZfI5a0Ras=
+version: 1
+bindings:
+- members:
+  - serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/run.developer
+etag: BwZfI5c8kLg=
+version: 1
+bindings:
+- members:
+  - projectEditor:feisty-flames-511718-d4
+  - projectOwner:feisty-flames-511718-d4
+  role: roles/storage.legacyBucketOwner
+- members:
+  - projectViewer:feisty-flames-511718-d4
+  role: roles/storage.legacyBucketReader
+- members:
+  - projectEditor:feisty-flames-511718-d4
+  - projectOwner:feisty-flames-511718-d4
+  role: roles/storage.legacyObjectOwner
+- members:
+  - projectViewer:feisty-flames-511718-d4
+  role: roles/storage.legacyObjectReader
+- members:
+  - serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/storage.objectAdmin
+- members:
+  - serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/storage.objectViewer
+etag: CAg=
+kind: storage#policy
+resourceId: projects/_/buckets/food-crisis-test-ipcch-requests
+version: 1
+bindings:
+- members:
+  - projectEditor:feisty-flames-511718-d4
+  - projectOwner:feisty-flames-511718-d4
+  role: roles/storage.legacyBucketOwner
+- members:
+  - projectViewer:feisty-flames-511718-d4
+  role: roles/storage.legacyBucketReader
+- members:
+  - projectEditor:feisty-flames-511718-d4
+  - projectOwner:feisty-flames-511718-d4
+  role: roles/storage.legacyObjectOwner
+- members:
+  - projectViewer:feisty-flames-511718-d4
+  role: roles/storage.legacyObjectReader
+- members:
+  - serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/storage.objectAdmin
+- condition:
+    expression: resource.name.startsWith("projects/_/buckets/food-crisis-test-ipcch-data/objects/dispatch/")
+    title: workflow-dispatch-claims
+  members:
+  - serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/storage.objectCreator
+- members:
+  - serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/storage.objectViewer
+etag: CAg=
+kind: storage#policy
+resourceId: projects/_/buckets/food-crisis-test-ipcch-data
+version: 3
+bindings:
+- members:
+  - projectEditor:feisty-flames-511718-d4
+  - projectOwner:feisty-flames-511718-d4
+  role: roles/storage.legacyBucketOwner
+- members:
+  - projectViewer:feisty-flames-511718-d4
+  role: roles/storage.legacyBucketReader
+- members:
+  - projectEditor:feisty-flames-511718-d4
+  - projectOwner:feisty-flames-511718-d4
+  role: roles/storage.legacyObjectOwner
+- members:
+  - projectViewer:feisty-flames-511718-d4
+  role: roles/storage.legacyObjectReader
+- members:
+  - serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/storage.objectAdmin
+- condition:
+    expression: resource.name.startsWith("projects/_/buckets/food-crisis-test-ipcch-data/objects/dispatch/")
+    title: workflow-dispatch-claims
+  members:
+  - serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/storage.objectCreator
+- members:
+  - serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com
+  role: roles/storage.objectViewer
+etag: CAk=
+kind: storage#policy
+resourceId: projects/_/buckets/food-crisis-test-ipcch-data
+version: 3
+createTime: '2026-10-15T19:32:25.876395384Z'
+name: projects/feisty-flames-511718-d4/locations/us-central1/workflows/oct-delivery-trigger
+revisionCreateTime: '2026-10-31T14:19:35.417457952Z'
+revisionId: 000004-637
+serviceAccount: projects/feisty-flames-511718-d4/serviceAccounts/monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com
+sourceContents: |
+  # Monthly delivery trigger: Cloud Storage object.v1.finalized (Eventarc) -> this workflow -> Cloud Run jobs.
+  # Only gs://<bucket>/requests/<run_id>/run_manifest.json starts work; every other object (reports,
+  # sources, outputs, resolved_requests/...) is ignored, so the workflow's own writes never re-trigger it.
+  # The event's exact generation is read here and passed through; nothing reads a "latest" request.
+  #
+  # Before any job is launched, for every request format:
+  # * a maintenance hold (gs://<data>/maintenance/hold.json) admits only the run IDs bound to it;
+  # * the run is claimed create-only (gs://<data>/dispatch/<run_id>/claim.json, request URI + generation).
+  #   A duplicate event of the claimed generation returns without dispatching anything; another
+  #   generation of a claimed run is a conflicting intent (a changed request needs a new run ID).
+  #
+  # The pinned request's optional ``execution`` block selects the cloud steps:
+  # * absent (legacy) or remote_update false: run the delivery job on the request as before; it scores
+  #   only the selected systems and inherits the others from their pinned accepted delivery.
+  # * remote_update true: the delivery job's ``admit`` validates the complete intent and its exact
+  #   prepare-request binding (dispatch/<run_id>/admission.json); only an admitted intent starts the
+  #   preparation job on the admitted prepare request. Readiness is the durable
+  #   prepared/<prepare_id>/prepare_status.json (bounded wait): the prepare job finishing only means its
+  #   Batch extraction was submitted. A failed or timed-out preparation stops here. Then ``resolve``
+  #   applies one snapshot gate to prepare-only and inference intents alike (this intent's request,
+  #   origin, compatible snapshot) and records dispatch/<run_id>/resolution.json; prepare-only returns
+  #   the immutable snapshot ref, otherwise the same job runs the create-only resolved request.
+  #   Admission also binds the intent to the current release (R37: an activated release rejects legacy IPCCH and scopes
+  #   the preparation to FEWS NET, ``prepare_scope``) and takes the per-system locks of the systems the run collects
+  #   and scores (R50); resolution and delivery adopt them, delivery/prepare-only/rejection release them, and a failed
+  #   preparation runs ``delivery_job release`` before stopping. A timed-out wait leaves them for the explicit
+  #   operations clear (the job may still be running).
+  # Jobs are configured with --max-retries 0: a failed run is never resumed; retry = new run ID.
+  # A v2 request (schema_version fewsnet-ipcch-delivery-request-v2, no ``execution`` block) takes the run_job path; the
+  # delivery job dispatches it to cloud.ipcch.entrypoint_v2 with the installed deployment config passed explicitly as
+  # --v2-config (DELIVERY_V2_CONFIG; container overrides replace the job's default args, task 10-30). v1 requests ignore it.
+  main:
+    params: [event]
+    steps:
+      - init:
+          assign:
+            - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+            - location: ${sys.get_env("DELIVERY_LOCATION")}
+            - job: ${sys.get_env("DELIVERY_JOB")}
+            - prepare_job: ${sys.get_env("PREPARE_JOB")}
+            # Container overrides REPLACE the job's args, so the full argv is rebuilt here from the
+            # configured deployment values (never from the event) plus the event's exact request.
+            - output_root: ${sys.get_env("DELIVERY_OUTPUT_ROOT")}
+            - release_namespace: ${sys.get_env("DELIVERY_RELEASE_NAMESPACE")}
+            - image_uri: ${sys.get_env("DELIVERY_IMAGE_URI")}
+            - v2_config: ${sys.get_env("DELIVERY_V2_CONFIG")}
+            - earth_engine_project: ${sys.get_env("EARTH_ENGINE_PROJECT")}
+            - batch_parent: ${sys.get_env("BATCH_PARENT")}
+            - batch_service_account: ${sys.get_env("BATCH_SERVICE_ACCOUNT")}
+            - submission_error: null   # set by the submission handlers (their ``e`` is local to each except block)
+            - poll_seconds: ${int(sys.get_env("PREPARE_POLL_SECONDS"))}
+            - max_polls: ${int(sys.get_env("PREPARE_MAX_POLLS"))}
+            - bucket: ${event.data.bucket}
+            - name: ${event.data.name}
+            - generation: ${string(event.data.generation)}
+      - filter:
+          switch:
+            - condition: ${not(text.match_regex(name, "^requests/[a-z0-9][a-z0-9._-]{2,62}/run_manifest\\.json$"))}
+              return: ${"ignored " + name}
+            - condition: ${not(text.match_regex(generation, "^[1-9][0-9]*$"))}
+              raise: ${"event without an exact generation for " + name}
+      - identify:
+          assign:
+            - run_id: ${text.split(name, "/")[1]}
+            - request_uri: ${"gs://" + bucket + "/" + name}
+            - data_bucket: ${text.split(output_root, "/")[2]}
+            - dispatch_prefix: ${"dispatch/" + run_id + "/"}
+      - read_hold:
+          try:
+            call: googleapis.storage.v1.objects.get
+            args:
+              bucket: ${data_bucket}
+              object: ${text.url_encode("maintenance/hold.json")}
+              alt: media
+            result: raw_hold
+          except:
+            as: e
+            steps:
+              - no_hold:
+                  switch:
+                    - condition: ${e.code == 404}
+                      next: claim
+              - hold_unreadable:
+                  raise: ${e}
+      - check_hold:
+          call: as_map
+          args:
+            raw: ${raw_hold}
+          result: hold
+      - hold_admission:
+          switch:
+            - condition: ${not(run_id in hold.admitted_run_ids)}
+              raise: ${"monthly admission is paused by maintenance " + hold.operation_id + "; run " + run_id + " is not admitted"}
+      - claim:
+          try:
+            call: googleapis.storage.v1.objects.insert
+            args:
+              bucket: ${data_bucket}
+              name: ${dispatch_prefix + "claim.json"}
+              ifGenerationMatch: 0
+              uploadType: media
+              body:
+                request_uri: ${request_uri}
+                generation: ${generation}
+            result: claim_object
+          except:
+            as: e
+            steps:
+              - already_claimed:
+                  switch:
+                    - condition: ${e.code == 412}
+                      next: read_claim
+              - claim_failed:
+                  raise: ${e}
+      - read_intent:
+          call: googleapis.storage.v1.objects.get
+          args:
+            bucket: ${bucket}
+            object: ${text.url_encode(name)}
+            generation: ${generation}
+            alt: media
+          result: raw_intent
+      - parse_intent:
+          call: as_map
+          args:
+            raw: ${raw_intent}
+          result: intent
+      - select_steps:
+          assign:
+            - execution: ${map.get(intent, "execution")}
+      - route:
+          switch:
+            - condition: ${execution == null}
+              next: run_job
+            - condition: ${not(execution.remote_update)}
+              next: run_job
+      - run_admit_job:
+          call: googleapis.run.v2.projects.locations.jobs.run
+          args:
+            name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+            body:
+              overrides:
+                containerOverrides:
+                  - args:
+                      - "-m"
+                      - "cloud.orchestrator.delivery_job"
+                      - "admit"
+                      - "--request-uri"
+                      - ${request_uri}
+                      - "--request-generation"
+                      - ${generation}
+                      - "--output-root"
+                      - ${output_root}
+            connector_params:
+              skip_polling: true
+      - wait_for_admission:
+          call: await_record
+          args:
+            bucket: ${data_bucket}
+            object: ${dispatch_prefix + "admission.json"}
+            poll_seconds: ${poll_seconds}
+            max_polls: ${max_polls}
+          result: admission
+      - admission_outcome:
+          switch:
+            - condition: ${admission.status != "admitted" or admission.intent.uri != request_uri or admission.intent.generation != generation}
+              raise: '${"intent " + run_id + "#" + generation + " was not admitted: " + default(map.get(admission, "reason"), "admission is for another request generation")}'
+      - run_prepare_job:
+          try:
+            call: googleapis.run.v2.projects.locations.jobs.run
+            args:
+              name: ${"projects/" + project + "/locations/" + location + "/jobs/" + prepare_job}
+              body:
+                overrides:
+                  containerOverrides:
+                    - args:
+                        - "-m"
+                        - "cloud.orchestrator.prepare"
+                        - "plan"
+                        - "--request-uri"
+                        - ${admission.prepare_request.uri}
+                        - "--request-generation"
+                        - ${admission.prepare_request.generation}
+                        - "--output-root"
+                        - ${output_root}
+                        - "--earth-engine-project"
+                        - ${earth_engine_project}
+                        - "--batch-parent"
+                        - ${batch_parent}
+                        - "--batch-image-uri"
+                        - ${image_uri}
+                        - "--batch-service-account"
+                        - ${batch_service_account}
+                        - "--systems"
+                        - ${default(map.get(admission, "prepare_scope"), "fewsnet,ipcch")}
+              connector_params:
+                skip_polling: true
+            result: prepare_execution
+          except:
+            as: e
+            steps:
+              - keep_prepare_error:
+                  assign:
+                    - submission_error: ${e}
+              - prepare_submission_outcome:
+                  switch:
+                    # a definitive rejection of the submission: nothing runs, so the owner releases its locks
+                    - condition: ${default(map.get(e, "code"), 0) in [400, 401, 403, 404]}
+                      next: release_after_rejected_submission
+              - prepare_submission_unknown:
+                  raise: ${e}   # timeout / 5xx / unknown: the job may be running; its locks are kept
+      - wait_for_preparation:
+          call: await_record
+          args:
+            bucket: ${data_bucket}
+            object: ${"prepared/" + admission.prepare_id + "/prepare_status.json"}
+            poll_seconds: ${poll_seconds}
+            max_polls: ${max_polls}
+          result: prepare_status
+      - preparation_outcome:
+          switch:
+            - condition: ${prepare_status.status != "succeeded"}
+              next: release_after_failed_preparation
+      - run_resolve_job:
+          try:
+            call: googleapis.run.v2.projects.locations.jobs.run
+            args:
+              name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+              body:
+                overrides:
+                  containerOverrides:
+                    - args:
+                        - "-m"
+                        - "cloud.orchestrator.delivery_job"
+                        - "resolve"
+                        - "--request-uri"
+                        - ${request_uri}
+                        - "--request-generation"
+                        - ${generation}
+                        - "--output-root"
+                        - ${output_root}
+                        - "--release-namespace"
+                        - ${release_namespace}
+                        - "--image-uri"
+                        - ${image_uri}
+              connector_params:
+                skip_polling: true
+          except:
+            as: e
+            steps:
+              - keep_resolve_error:
+                  assign:
+                    - submission_error: ${e}
+              - resolve_submission_outcome:
+                  switch:
+                    - condition: ${default(map.get(e, "code"), 0) in [400, 401, 403, 404]}
+                      next: release_after_rejected_submission
+              - resolve_submission_unknown:
+                  raise: ${e}
+      - wait_for_resolution:
+          call: await_record
+          args:
+            bucket: ${data_bucket}
+            object: ${dispatch_prefix + "resolution.json"}
+            poll_seconds: ${poll_seconds}
+            max_polls: ${max_polls}
+          result: resolution
+      - resolution_outcome:
+          switch:
+            - condition: ${resolution.status != "resolved" or resolution.intent.uri != request_uri or resolution.intent.generation != generation}
+              raise: '${"intent " + run_id + "#" + generation + " has no compatible succeeded snapshot: " + default(map.get(resolution, "reason"), "resolution is for another request generation")}'
+            - condition: ${len(execution.inference_systems) == 0}
+              return:
+                run_id: ${run_id}
+                prepared_snapshot: ${resolution.prepared_snapshot}
+                resolved_request: ${resolution.resolved_request}
+                delivery: "not selected"
+      - resolved_delivery:
+          return:
+            run_id: ${run_id}
+            prepared_snapshot: ${resolution.prepared_snapshot}
+            resolved_request: ${resolution.resolved_request}
+            delivery_status: ${"gs://" + data_bucket + "/runs/" + run_id + "/run_status.json"}
+      - run_job:
+          call: googleapis.run.v2.projects.locations.jobs.run
+          args:
+            name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+            body:
+              overrides:
+                containerOverrides:
+                  - args:
+                      - "-m"
+                      - "cloud.orchestrator.delivery_job"
+                      - "run"
+                      - "--request-uri"
+                      - ${"gs://" + bucket + "/" + name}
+                      - "--request-generation"
+                      - ${generation}
+                      - "--output-root"
+                      - ${output_root}
+                      - "--release-namespace"
+                      - ${release_namespace}
+                      - "--image-uri"
+                      - ${image_uri}
+                      - "--v2-config"
+                      - ${v2_config}
+            connector_params:
+              # Submit only: the run's status object (runs/<run_id>/run_status.json) is the durable outcome.
+              # Polling the long-running operation would need project-level run.operations.get.
+              skip_polling: true
+          result: execution_result
+      - done:
+          return: ${execution_result}
+      # Reached only from a failed preparation: the run's admission locks are released by their owner, then it stops.
+      - release_after_failed_preparation:
+          call: googleapis.run.v2.projects.locations.jobs.run
+          args:
+            name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+            body:
+              overrides:
+                containerOverrides:
+                  - args:
+                      - "-m"
+                      - "cloud.orchestrator.delivery_job"
+                      - "release"
+                      - "--request-uri"
+                      - ${request_uri}
+                      - "--output-root"
+                      - ${output_root}
+            connector_params:
+              skip_polling: true
+      - failed_preparation:
+          raise: ${"preparation " + admission.prepare_id + " " + prepare_status.status + "; no inference is started"}
+      # Reached only from a definitively rejected job submission (prepare or resolve): release, then stop with the error.
+      - release_after_rejected_submission:
+          call: googleapis.run.v2.projects.locations.jobs.run
+          args:
+            name: ${"projects/" + project + "/locations/" + location + "/jobs/" + job}
+            body:
+              overrides:
+                containerOverrides:
+                  - args:
+                      - "-m"
+                      - "cloud.orchestrator.delivery_job"
+                      - "release"
+                      - "--request-uri"
+                      - ${request_uri}
+                      - "--output-root"
+                      - ${output_root}
+            connector_params:
+              skip_polling: true
+      - rejected_submission:
+          raise: ${submission_error}
+      # Reached only from a create-only claim conflict.
+      - read_claim:
+          call: googleapis.storage.v1.objects.get
+          args:
+            bucket: ${data_bucket}
+            object: ${text.url_encode(dispatch_prefix + "claim.json")}
+            alt: media
+          result: raw_claim
+      - parse_claim:
+          call: as_map
+          args:
+            raw: ${raw_claim}
+          result: claim
+      - replay_or_conflict:
+          switch:
+            - condition: ${claim.request_uri == request_uri and claim.generation == generation}
+              return:
+                run_id: ${run_id}
+                duplicate_event: ${generation}
+                dispatched: false
+      - conflicting_intent:
+          raise: ${"run " + run_id + " is already claimed by " + claim.request_uri + "#" + claim.generation + "; a changed intent needs a new run ID"}
+
+  # Bounded wait for one durable JSON object (absent = not written yet); never a job's own completion.
+  await_record:
+    params: [bucket, object, poll_seconds, max_polls]
+    steps:
+      - start:
+          assign:
+            - polls: 0
+      - read:
+          try:
+            call: googleapis.storage.v1.objects.get
+            args:
+              bucket: ${bucket}
+              object: ${text.url_encode(object)}
+              alt: media
+            result: raw
+          except:
+            as: e
+            steps:
+              - not_written:
+                  switch:
+                    - condition: ${e.code == 404 and polls < max_polls}
+                      next: sleep_before_poll
+              - unavailable:
+                  raise: ${"gs://" + bucket + "/" + object + " not written after " + string(polls) + " polls"}
+      - parsed:
+          call: as_map
+          args:
+            raw: ${raw}
+          result: record
+      - found:
+          return: ${record}
+      - sleep_before_poll:
+          call: sys.sleep
+          args:
+            seconds: ${poll_seconds}
+      - count_poll:
+          assign:
+            - polls: ${polls + 1}
+          next: read
+
+  # A JSON object body: the storage connector returns a map for JSON content, otherwise text/bytes.
+  as_map:
+    params: [raw]
+    steps:
+      - already_map:
+          switch:
+            - condition: ${get_type(raw) == "map"}
+              return: ${raw}
+      - decode:
+          return: ${json.decode(raw)}
+state: ACTIVE
+updateTime: '2026-10-31T14:19:35.571964056Z'
+userEnvVars:
+  BATCH_PARENT: projects/feisty-flames-511718-d4/locations/us-central1
+  BATCH_SERVICE_ACCOUNT: monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com
+  DELIVERY_IMAGE_URI: us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae
+  DELIVERY_JOB: oct-delivery
+  DELIVERY_LOCATION: us-central1
+  DELIVERY_OUTPUT_ROOT: gs://food-crisis-test-ipcch-data
+  DELIVERY_RELEASE_NAMESPACE: monthly-staging
+  DELIVERY_V2_CONFIG: /opt/ipcch/deployment.json
+  EARTH_ENGINE_PROJECT: feisty-flames-511718-d4
+  PREPARE_JOB: monthly-prepare
+  PREPARE_MAX_POLLS: '96'
+  PREPARE_POLL_SECONDS: '300'
+{
+  "status": "gated",
+  "workflow_revision": "000004-637",
+  "source_sha256": "4914412c6f52d6b4cb0448e2f77d5b4f416489af3576357bd557416e613bdbe5",
+  "active_after_gate": {
+    "job_executions": [],
+    "workflow_executions": [],
+    "batch_jobs": []
+  }
+}

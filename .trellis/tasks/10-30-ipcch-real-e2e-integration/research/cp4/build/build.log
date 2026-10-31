@@ -1,0 +1,514 @@
+
+To live stream log output for this build, please ensure the grpc module is installed. Run:
+  pip install grpcio
+and set:
+  export CLOUDSDK_PYTHON_SITEPACKAGES=1
+
+----------------------------- REMOTE BUILD OUTPUT ------------------------------
+starting build "ea1cbe1c-d3fd-4e32-8a27-5e90c61e852e" using release legacy
+FETCHSOURCE
+Fetching storage object: gs://feisty-flames-511718-d4_cloudbuild/source/1793454769.89965-d3c2c186a12a419f89079afdf62a2633.tgz#1793454934446422
+Copying gs://feisty-flames-511718-d4_cloudbuild/source/1793454769.89965-d3c2c186a12a419f89079afdf62a2633.tgz#1793454934446422...
+/ [0 files][    0.0 B/663.9 MiB]                                                
+-
+- [0 files][ 41.5 MiB/663.9 MiB]                                                
+\
+|
+| [0 files][110.3 MiB/663.9 MiB]                                                
+/
+/ [0 files][177.1 MiB/663.9 MiB]                                                
+-
+\
+\ [0 files][242.6 MiB/663.9 MiB]                                                
+|
+/
+/ [0 files][309.1 MiB/663.9 MiB]                                                
+-
+- [0 files][378.5 MiB/663.9 MiB]                                                
+\
+|
+| [0 files][448.8 MiB/663.9 MiB]                                                
+/
+-
+- [0 files][518.0 MiB/663.9 MiB]                                                
+\
+\ [0 files][587.8 MiB/663.9 MiB]                                                
+|
+/
+/ [0 files][657.3 MiB/663.9 MiB]                                                
+/ [1 files][663.9 MiB/663.9 MiB]   69.6 MiB/s
+Operation completed over 1 objects/663.9 MiB.
+BUILD
+Starting Step #0 - "build"
+Step #0 - "build": Already have image (with digest): gcr.io/cloud-builders/docker
+Step #0 - "build": Sending build context to Docker daemon  2.699GB
+Step #0 - "build": Step 1/17 : FROM python:3.12.3-slim
+Step #0 - "build": 3.12.3-slim: Pulling from library/python
+Step #0 - "build": 09f376ebb190: Pulling fs layer
+Step #0 - "build": 276709cbedc1: Pulling fs layer
+Step #0 - "build": 2e133733af76: Pulling fs layer
+Step #0 - "build": ded8879d9a79: Pulling fs layer
+Step #0 - "build": 3cf9507408dc: Pulling fs layer
+Step #0 - "build": ded8879d9a79: Verifying Checksum
+Step #0 - "build": ded8879d9a79: Download complete
+Step #0 - "build": 3cf9507408dc: Verifying Checksum
+Step #0 - "build": 3cf9507408dc: Download complete
+Step #0 - "build": 276709cbedc1: Verifying Checksum
+Step #0 - "build": 276709cbedc1: Download complete
+Step #0 - "build": 2e133733af76: Verifying Checksum
+Step #0 - "build": 2e133733af76: Download complete
+Step #0 - "build": 09f376ebb190: Verifying Checksum
+Step #0 - "build": 09f376ebb190: Download complete
+Step #0 - "build": 09f376ebb190: Pull complete
+Step #0 - "build": 276709cbedc1: Pull complete
+Step #0 - "build": 2e133733af76: Pull complete
+Step #0 - "build": ded8879d9a79: Pull complete
+Step #0 - "build": 3cf9507408dc: Pull complete
+Step #0 - "build": Digest: sha256:afc139a0a640942491ec481ad8dda10f2c5b753f5c969393b12480155fe15a63
+Step #0 - "build": Status: Downloaded newer image for python:3.12.3-slim
+Step #0 - "build":  cf001c2f8af7
+Step #0 - "build": Step 2/17 : WORKDIR /app
+Step #0 - "build":  Running in e88bfd772753
+Step #0 - "build": Removing intermediate container e88bfd772753
+Step #0 - "build":  3fbeec705c36
+Step #0 - "build": Step 3/17 : COPY requirements.lock.txt /app/requirements.lock.txt
+Step #0 - "build":  9a5d5c7cd2a5
+Step #0 - "build": Step 4/17 : RUN pip install --no-cache-dir --no-deps -r /app/requirements.lock.txt && pip check
+Step #0 - "build":  Running in 178947e41b19
+Step #0 - "build": Collecting affine==3.0.1 (from -r /app/requirements.lock.txt (line 4))
+Step #0 - "build":   Downloading affine-3.0.1-py3-none-any.whl.metadata (4.5 kB)
+Step #0 - "build": Collecting attrs==26.1.0 (from -r /app/requirements.lock.txt (line 5))
+Step #0 - "build":   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+Step #0 - "build": Collecting certifi==2026.7.22 (from -r /app/requirements.lock.txt (line 6))
+Step #0 - "build":   Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+Step #0 - "build": Collecting cffi==2.1.1 (from -r /app/requirements.lock.txt (line 7))
+Step #0 - "build":   Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+Step #0 - "build": Collecting charset-normalizer==3.5.2 (from -r /app/requirements.lock.txt (line 8))
+Step #0 - "build":   Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+Step #0 - "build":      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.4/46.4 kB 4.0 MB/s eta 0:00:00
+Step #0 - "build": Collecting click==8.5.0 (from -r /app/requirements.lock.txt (line 9))
+Step #0 - "build":   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+Step #0 - "build": Collecting cligj==0.7.2 (from -r /app/requirements.lock.txt (line 10))
+Step #0 - "build":   Downloading cligj-0.7.2-py3-none-any.whl.metadata (5.0 kB)
+Step #0 - "build": Collecting cryptography==50.0.2 (from -r /app/requirements.lock.txt (line 11))
+Step #0 - "build":   Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.4 kB)
+Step #0 - "build": Collecting earthengine-api==1.7.36 (from -r /app/requirements.lock.txt (line 12))
+Step #0 - "build":   Downloading earthengine_api-1.7.36-py3-none-any.whl.metadata (2.2 kB)
+Step #0 - "build": Collecting geopandas==1.1.1 (from -r /app/requirements.lock.txt (line 13))
+Step #0 - "build":   Downloading geopandas-1.1.1-py3-none-any.whl.metadata (2.3 kB)
+Step #0 - "build": Collecting google-api-core==2.41.0 (from -r /app/requirements.lock.txt (line 14))
+Step #0 - "build":   Downloading google_api_core-2.41.0-py3-none-any.whl.metadata (3.2 kB)
+Step #0 - "build": Collecting google-api-python-client==2.201.0 (from -r /app/requirements.lock.txt (line 15))
+Step #0 - "build":   Downloading google_api_python_client-2.201.0-py3-none-any.whl.metadata (6.8 kB)
+Step #0 - "build": Collecting google-auth==2.61.0 (from -r /app/requirements.lock.txt (line 16))
+Step #0 - "build":   Downloading google_auth-2.61.0-py3-none-any.whl.metadata (6.0 kB)
+Step #0 - "build": Collecting google-auth-httplib2==0.4.4 (from -r /app/requirements.lock.txt (line 17))
+Step #0 - "build":   Downloading google_auth_httplib2-0.4.4-py3-none-any.whl.metadata (3.0 kB)
+Step #0 - "build": Collecting google-cloud-batch==0.22.4 (from -r /app/requirements.lock.txt (line 18))
+Step #0 - "build":   Downloading google_cloud_batch-0.22.4-py3-none-any.whl.metadata (9.3 kB)
+Step #0 - "build": Collecting google-cloud-core==2.8.0 (from -r /app/requirements.lock.txt (line 19))
+Step #0 - "build":   Downloading google_cloud_core-2.8.0-py3-none-any.whl.metadata (2.9 kB)
+Step #0 - "build": Collecting google-cloud-storage==3.13.0 (from -r /app/requirements.lock.txt (line 20))
+Step #0 - "build":   Downloading google_cloud_storage-3.13.0-py3-none-any.whl.metadata (15 kB)
+Step #0 - "build": Collecting google-crc32c==1.9.0 (from -r /app/requirements.lock.txt (line 21))
+Step #0 - "build":   Downloading google_crc32c-1.9.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.2 kB)
+Step #0 - "build": Collecting google-resumable-media==2.11.0 (from -r /app/requirements.lock.txt (line 22))
+Step #0 - "build":   Downloading google_resumable_media-2.11.0-py3-none-any.whl.metadata (2.3 kB)
+Step #0 - "build": Collecting googleapis-common-protos==1.75.5 (from -r /app/requirements.lock.txt (line 23))
+Step #0 - "build":   Downloading googleapis_common_protos-1.75.5-py3-none-any.whl.metadata (8.5 kB)
+Step #0 - "build": Collecting grpcio==1.84.0 (from -r /app/requirements.lock.txt (line 24))
+Step #0 - "build":   Downloading grpcio-1.84.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.8 kB)
+Step #0 - "build": Collecting grpcio-status==1.84.0 (from -r /app/requirements.lock.txt (line 25))
+Step #0 - "build":   Downloading grpcio_status-1.84.0-py3-none-any.whl.metadata (1.3 kB)
+Step #0 - "build": Collecting httplib2==0.32.0 (from -r /app/requirements.lock.txt (line 26))
+Step #0 - "build":   Downloading httplib2-0.32.0-py3-none-any.whl.metadata (2.2 kB)
+Step #0 - "build": Collecting idna==3.20 (from -r /app/requirements.lock.txt (line 27))
+Step #0 - "build":   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Step #0 - "build": Collecting imbalanced-learn==0.14.0 (from -r /app/requirements.lock.txt (line 28))
+Step #0 - "build":   Downloading imbalanced_learn-0.14.0-py3-none-any.whl.metadata (8.8 kB)
+Step #0 - "build": Collecting joblib==1.5.3 (from -r /app/requirements.lock.txt (line 29))
+Step #0 - "build":   Downloading joblib-1.5.3-py3-none-any.whl.metadata (5.5 kB)
+Step #0 - "build": Collecting jsonschema==4.26.0 (from -r /app/requirements.lock.txt (line 30))
+Step #0 - "build":   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+Step #0 - "build": Collecting jsonschema-specifications==2025.9.1 (from -r /app/requirements.lock.txt (line 31))
+Step #0 - "build":   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+Step #0 - "build": Collecting numpy==2.4.2 (from -r /app/requirements.lock.txt (line 32))
+Step #0 - "build":   Downloading numpy-2.4.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+Step #0 - "build": Collecting nvidia-nccl-cu12==2.32.3 (from -r /app/requirements.lock.txt (line 33))
+Step #0 - "build":   Downloading nvidia_nccl_cu12-2.32.3-py3-none-manylinux_2_27_x86_64.whl.metadata (2.1 kB)
+Step #0 - "build": Collecting opentelemetry-api==1.45.1 (from -r /app/requirements.lock.txt (line 34))
+Step #0 - "build":   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+Step #0 - "build": Collecting packaging==26.3 (from -r /app/requirements.lock.txt (line 35))
+Step #0 - "build":   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+Step #0 - "build": Collecting pandas==3.0.0 (from -r /app/requirements.lock.txt (line 36))
+Step #0 - "build":   Downloading pandas-3.0.0-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)
+Step #0 - "build":      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.5/79.5 kB 12.3 MB/s eta 0:00:00
+Step #0 - "build": Collecting proto-plus==1.29.0 (from -r /app/requirements.lock.txt (line 37))
+Step #0 - "build":   Downloading proto_plus-1.29.0-py3-none-any.whl.metadata (2.2 kB)
+Step #0 - "build": Collecting protobuf==7.36.2 (from -r /app/requirements.lock.txt (line 38))
+Step #0 - "build":   Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+Step #0 - "build": Collecting pyarrow==20.0.0 (from -r /app/requirements.lock.txt (line 39))
+Step #0 - "build":   Downloading pyarrow-20.0.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (3.3 kB)
+Step #0 - "build": Collecting pyasn1==0.6.4 (from -r /app/requirements.lock.txt (line 40))
+Step #0 - "build":   Downloading pyasn1-0.6.4-py3-none-any.whl.metadata (8.4 kB)
+Step #0 - "build": Collecting pyasn1-modules==0.4.2 (from -r /app/requirements.lock.txt (line 41))
+Step #0 - "build":   Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+Step #0 - "build": Collecting pycountry==26.2.16 (from -r /app/requirements.lock.txt (line 42))
+Step #0 - "build":   Downloading pycountry-26.2.16-py3-none-any.whl.metadata (12 kB)
+Step #0 - "build": Collecting pycparser==3.0 (from -r /app/requirements.lock.txt (line 43))
+Step #0 - "build":   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+Step #0 - "build": Collecting pyogrio==0.13.0 (from -r /app/requirements.lock.txt (line 44))
+Step #0 - "build":   Downloading pyogrio-0.13.0-cp311-abi3-manylinux_2_28_x86_64.whl.metadata (5.8 kB)
+Step #0 - "build": Collecting pyparsing==3.3.3 (from -r /app/requirements.lock.txt (line 45))
+Step #0 - "build":   Downloading pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)
+Step #0 - "build": Collecting pyproj==3.8.0 (from -r /app/requirements.lock.txt (line 46))
+Step #0 - "build":   Downloading pyproj-3.8.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (40 kB)
+Step #0 - "build":      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.6/40.6 kB 35.3 MB/s eta 0:00:00
+Step #0 - "build": Collecting python-dateutil==2.9.0.post0 (from -r /app/requirements.lock.txt (line 47))
+Step #0 - "build":   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Step #0 - "build": Collecting rasterio==1.5.0 (from -r /app/requirements.lock.txt (line 48))
+Step #0 - "build":   Downloading rasterio-1.5.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (8.6 kB)
+Step #0 - "build": Collecting referencing==0.37.0 (from -r /app/requirements.lock.txt (line 49))
+Step #0 - "build":   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+Step #0 - "build": Collecting requests==2.34.2 (from -r /app/requirements.lock.txt (line 50))
+Step #0 - "build":   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Step #0 - "build": Collecting rpds-py==2026.9.1 (from -r /app/requirements.lock.txt (line 51))
+Step #0 - "build":   Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+Step #0 - "build": Collecting scikit-learn==1.8.0 (from -r /app/requirements.lock.txt (line 52))
+Step #0 - "build":   Downloading scikit_learn-1.8.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (11 kB)
+Step #0 - "build": Collecting scipy==1.17.0 (from -r /app/requirements.lock.txt (line 53))
+Step #0 - "build":   Downloading scipy-1.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Step #0 - "build":      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.1/62.1 kB 12.9 MB/s eta 0:00:00
+Step #0 - "build": Collecting shapely==2.1.2 (from -r /app/requirements.lock.txt (line 54))
+Step #0 - "build":   Downloading shapely-2.1.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (6.8 kB)
+Step #0 - "build": Collecting six==1.17.0 (from -r /app/requirements.lock.txt (line 55))
+Step #0 - "build":   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Step #0 - "build": Collecting threadpoolctl==3.7.0 (from -r /app/requirements.lock.txt (line 56))
+Step #0 - "build":   Downloading threadpoolctl-3.7.0-py3-none-any.whl.metadata (24 kB)
+Step #0 - "build": Collecting typing-extensions==4.16.0 (from -r /app/requirements.lock.txt (line 57))
+Step #0 - "build":   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Step #0 - "build": Collecting uritemplate==4.2.0 (from -r /app/requirements.lock.txt (line 58))
+Step #0 - "build":   Downloading uritemplate-4.2.0-py3-none-any.whl.metadata (2.6 kB)
+Step #0 - "build": Collecting urllib3==2.8.0 (from -r /app/requirements.lock.txt (line 59))
+Step #0 - "build":   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+Step #0 - "build": Collecting xgboost==3.2.0 (from -r /app/requirements.lock.txt (line 60))
+Step #0 - "build":   Downloading xgboost-3.2.0-py3-none-manylinux_2_28_x86_64.whl.metadata (2.1 kB)
+Step #0 - "build": Downloading affine-3.0.1-py3-none-any.whl (10 kB)
+Step #0 - "build": Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 16.1 MB/s eta 0:00:00
+Step #0 - "build": Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 137.0/137.0 kB 8.4 MB/s eta 0:00:00
+Step #0 - "build": Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 221.8/221.8 kB 8.8 MB/s eta 0:00:00
+Step #0 - "build": Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 257.6/257.6 kB 10.4 MB/s eta 0:00:00
+Step #0 - "build": Downloading click-8.5.0-py3-none-any.whl (125 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.3/125.3 kB 14.1 MB/s eta 0:00:00
+Step #0 - "build": Downloading cligj-0.7.2-py3-none-any.whl (7.1 kB)
+Step #0 - "build": Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (4.8 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 19.4 MB/s eta 0:00:00
+Step #0 - "build": Downloading earthengine_api-1.7.36-py3-none-any.whl (480 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 480.5/480.5 kB 35.5 MB/s eta 0:00:00
+Step #0 - "build": Downloading geopandas-1.1.1-py3-none-any.whl (338 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 338.4/338.4 kB 69.0 MB/s eta 0:00:00
+Step #0 - "build": Downloading google_api_core-2.41.0-py3-none-any.whl (215 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 105.4 MB/s eta 0:00:00
+Step #0 - "build": Downloading google_api_python_client-2.201.0-py3-none-any.whl (16.8 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.8/16.8 MB 84.4 MB/s eta 0:00:00
+Step #0 - "build": Downloading google_auth-2.61.0-py3-none-any.whl (268 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 268.0/268.0 kB 225.9 MB/s eta 0:00:00
+Step #0 - "build": Downloading google_auth_httplib2-0.4.4-py3-none-any.whl (9.5 kB)
+Step #0 - "build": Downloading google_cloud_batch-0.22.4-py3-none-any.whl (183 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 183.2/183.2 kB 177.4 MB/s eta 0:00:00
+Step #0 - "build": Downloading google_cloud_core-2.8.0-py3-none-any.whl (31 kB)
+Step #0 - "build": Downloading google_cloud_storage-3.13.0-py3-none-any.whl (341 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 341.4/341.4 kB 192.2 MB/s eta 0:00:00
+Step #0 - "build": Downloading google_crc32c-1.9.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (36 kB)
+Step #0 - "build": Downloading google_resumable_media-2.11.0-py3-none-any.whl (81 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 81.5/81.5 kB 187.4 MB/s eta 0:00:00
+Step #0 - "build": Downloading googleapis_common_protos-1.75.5-py3-none-any.whl (307 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 307.7/307.7 kB 239.6 MB/s eta 0:00:00
+Step #0 - "build": Downloading grpcio-1.84.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (7.2 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.2/7.2 MB 91.1 MB/s eta 0:00:00
+Step #0 - "build": Downloading grpcio_status-1.84.0-py3-none-any.whl (14 kB)
+Step #0 - "build": Downloading httplib2-0.32.0-py3-none-any.whl (93 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 93.1/93.1 kB 205.5 MB/s eta 0:00:00
+Step #0 - "build": Downloading idna-3.20-py3-none-any.whl (69 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.6/69.6 kB 201.2 MB/s eta 0:00:00
+Step #0 - "build": Downloading imbalanced_learn-0.14.0-py3-none-any.whl (239 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 240.0/240.0 kB 239.4 MB/s eta 0:00:00
+Step #0 - "build": Downloading joblib-1.5.3-py3-none-any.whl (309 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 309.1/309.1 kB 217.2 MB/s eta 0:00:00
+Step #0 - "build": Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 202.8 MB/s eta 0:00:00
+Step #0 - "build": Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+Step #0 - "build": Downloading numpy-2.4.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 83.9 MB/s eta 0:00:00
+Step #0 - "build": Downloading nvidia_nccl_cu12-2.32.3-py3-none-manylinux_2_27_x86_64.whl (351.5 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 351.5/351.5 MB 22.5 MB/s eta 0:00:00
+Step #0 - "build": Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.3/60.3 kB 193.3 MB/s eta 0:00:00
+Step #0 - "build": Downloading packaging-26.3-py3-none-any.whl (129 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 130.0/130.0 kB 31.5 MB/s eta 0:00:00
+Step #0 - "build": Downloading pandas-3.0.0-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (10.9 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.9/10.9 MB 14.0 MB/s eta 0:00:00
+Step #0 - "build": Downloading proto_plus-1.29.0-py3-none-any.whl (50 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.8/50.8 kB 189.4 MB/s eta 0:00:00
+Step #0 - "build": Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 343.2/343.2 kB 11.5 MB/s eta 0:00:00
+Step #0 - "build": Downloading pyarrow-20.0.0-cp312-cp312-manylinux_2_28_x86_64.whl (42.3 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.3/42.3 MB 21.7 MB/s eta 0:00:00
+Step #0 - "build": Downloading pyasn1-0.6.4-py3-none-any.whl (84 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 84.4/84.4 kB 188.3 MB/s eta 0:00:00
+Step #0 - "build": Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 181.3/181.3 kB 47.3 MB/s eta 0:00:00
+Step #0 - "build": Downloading pycountry-26.2.16-py3-none-any.whl (8.0 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.0/8.0 MB 24.5 MB/s eta 0:00:00
+Step #0 - "build": Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 159.5 MB/s eta 0:00:00
+Step #0 - "build": Downloading pyogrio-0.13.0-cp311-abi3-manylinux_2_28_x86_64.whl (33.3 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 33.3/33.3 MB 31.6 MB/s eta 0:00:00
+Step #0 - "build": Downloading pyparsing-3.3.3-py3-none-any.whl (126 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 126.4/126.4 kB 205.5 MB/s eta 0:00:00
+Step #0 - "build": Downloading pyproj-3.8.0-cp312-cp312-manylinux_2_28_x86_64.whl (10.0 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.0/10.0 MB 33.3 MB/s eta 0:00:00
+Step #0 - "build": Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 83.2 MB/s eta 0:00:00
+Step #0 - "build": Downloading rasterio-1.5.0-cp312-cp312-manylinux_2_28_x86_64.whl (37.6 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 37.6/37.6 MB 28.3 MB/s eta 0:00:00
+Step #0 - "build": Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+Step #0 - "build": Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 kB 160.1 MB/s eta 0:00:00
+Step #0 - "build": Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (371 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 371.3/371.3 kB 32.0 MB/s eta 0:00:00
+Step #0 - "build": Downloading scikit_learn-1.8.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (8.9 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.9/8.9 MB 30.8 MB/s eta 0:00:00
+Step #0 - "build": Downloading scipy-1.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.0 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.0/35.0 MB 37.0 MB/s eta 0:00:00
+Step #0 - "build": Downloading shapely-2.1.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (3.1 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 39.0 MB/s eta 0:00:00
+Step #0 - "build": Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Step #0 - "build": Downloading threadpoolctl-3.7.0-py3-none-any.whl (26 kB)
+Step #0 - "build": Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 170.5 MB/s eta 0:00:00
+Step #0 - "build": Downloading uritemplate-4.2.0-py3-none-any.whl (11 kB)
+Step #0 - "build": Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.7/135.7 kB 217.3 MB/s eta 0:00:00
+Step #0 - "build": Downloading xgboost-3.2.0-py3-none-manylinux_2_28_x86_64.whl (131.7 MB)
+Step #0 - "build":    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.7/131.7 MB 11.0 MB/s eta 0:00:00
+Step #0 - "build": Installing collected packages: xgboost, urllib3, uritemplate, typing-extensions, threadpoolctl, six, shapely, scipy, scikit-learn, rpds-py, requests, referencing, rasterio, python-dateutil, pyproj, pyparsing, pyogrio, pycparser, pycountry, pyasn1-modules, pyasn1, pyarrow, protobuf, proto-plus, pandas, packaging, opentelemetry-api, nvidia-nccl-cu12, numpy, jsonschema-specifications, jsonschema, joblib, imbalanced-learn, idna, httplib2, grpcio-status, grpcio, googleapis-common-protos, google-resumable-media, google-crc32c, google-cloud-storage, google-cloud-core, google-cloud-batch, google-auth-httplib2, google-auth, google-api-python-client, google-api-core, geopandas, earthengine-api, cryptography, cligj, click, charset-normalizer, cffi, certifi, attrs, affine
+Step #0 - "build": Successfully installed affine-3.0.1 attrs-26.1.0 certifi-2026.7.22 cffi-2.1.1 charset-normalizer-3.5.2 click-8.5.0 cligj-0.7.2 cryptography-50.0.2 earthengine-api-1.7.36 geopandas-1.1.1 google-api-core-2.41.0 google-api-python-client-2.201.0 google-auth-2.61.0 google-auth-httplib2-0.4.4 google-cloud-batch-0.22.4 google-cloud-core-2.8.0 google-cloud-storage-3.13.0 google-crc32c-1.9.0 google-resumable-media-2.11.0 googleapis-common-protos-1.75.5 grpcio-1.84.0 grpcio-status-1.84.0 httplib2-0.32.0 idna-3.20 imbalanced-learn-0.14.0 joblib-1.5.3 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 numpy-2.4.2 nvidia-nccl-cu12-2.32.3 opentelemetry-api-1.45.1 packaging-26.3 pandas-3.0.0 proto-plus-1.29.0 protobuf-7.36.2 pyarrow-20.0.0 pyasn1-0.6.4 pyasn1-modules-0.4.2 pycountry-26.2.16 pycparser-3.0 pyogrio-0.13.0 pyparsing-3.3.3 pyproj-3.8.0 python-dateutil-2.9.0.post0 rasterio-1.5.0 referencing-0.37.0 requests-2.34.2 rpds-py-2026.9.1 scikit-learn-1.8.0 scipy-1.17.0 shapely-2.1.2 six-1.17.0 threadpoolctl-3.7.0 typing-extensions-4.16.0 uritemplate-4.2.0 urllib3-2.8.0 xgboost-3.2.0
+Step #0 - "build": [91mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Step #0 - "build": [0m[91m
+Step #0 - "build": [notice] A new release of pip is available: 24.0 -> 26.2.2
+Step #0 - "build": [notice] To update, run: pip install --upgrade pip
+Step #0 - "build": [0mNo broken requirements found.
+Step #0 - "build": Removing intermediate container 178947e41b19
+Step #0 - "build":  32622398dfd3
+Step #0 - "build": Step 5/17 : COPY cloud /app/cloud
+Step #0 - "build":  57bdb7ea6bea
+Step #0 - "build": Step 6/17 : COPY fewsnet_partitioned_rf_pipeline /app/fewsnet_partitioned_rf_pipeline
+Step #0 - "build":  cca7db43f08f
+Step #0 - "build": Step 7/17 : COPY model_pipeline /app/model_pipeline
+Step #0 - "build":  41ead9b53769
+Step #0 - "build": Step 8/17 : COPY tools /app/tools
+Step #0 - "build":  ea164919fa97
+Step #0 - "build": Step 9/17 : ENV PYTHONPATH=/app PYTHONDONTWRITEBYTECODE=1
+Step #0 - "build":  Running in 4791e916d0c1
+Step #0 - "build": Removing intermediate container 4791e916d0c1
+Step #0 - "build":  632d9e1ba1eb
+Step #0 - "build": Step 10/17 : ARG IPCCH_ENVELOPE_SHA256
+Step #0 - "build":  Running in affd88ad213d
+Step #0 - "build": Removing intermediate container affd88ad213d
+Step #0 - "build":  2ecddb1d43a7
+Step #0 - "build": Step 11/17 : COPY ipcch /opt/ipcch
+Step #0 - "build":  b1e0784bc18b
+Step #0 - "build": Step 12/17 : RUN test -n "$IPCCH_ENVELOPE_SHA256"     && python3 -m cloud.ipcch.install verify --root /opt/ipcch --envelope-sha256 "$IPCCH_ENVELOPE_SHA256"        --against /opt/ipcch/INSTALL.json
+Step #0 - "build":  Running in a06c3ce1a50b
+Step #0 - "build": {
+Step #0 - "build":  "config": {
+Step #0 - "build":   "namespaces": {
+Step #0 - "build":    "production": "monthly-staging",
+Step #0 - "build":    "smoke": "monthly-smoke"
+Step #0 - "build":   },
+Step #0 - "build":   "roots": {
+Step #0 - "build":    "real": "gs://food-crisis-test-ipcch-data",
+Step #0 - "build":    "smoke": "gs://food-crisis-test-ipcch-smoke/v2"
+Step #0 - "build":   },
+Step #0 - "build":   "sha256": "c75b1172b9e841d1fe34f3e5cac1b1718e8615d5e752bd9a38c816afce1d49c8"
+Step #0 - "build":  },
+Step #0 - "build":  "envelope": {
+Step #0 - "build":   "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+Step #0 - "build":   "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+Step #0 - "build":   "status": "accepted"
+Step #0 - "build":  },
+Step #0 - "build":  "handoff": {
+Step #0 - "build":   "acceptance_entries_sha256": "cb14a956f67df03d5f3479d129a432d606017a533d0c80a9930d549d9aa95ed6",
+Step #0 - "build":   "bytes": 2271631220,
+Step #0 - "build":   "manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+Step #0 - "build":   "members": 58,
+Step #0 - "build":   "roster_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+Step #0 - "build":   "roster_size": 6226
+Step #0 - "build":  },
+Step #0 - "build":  "package": {
+Step #0 - "build":   "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+Step #0 - "build":   "feature_count": 527,
+Step #0 - "build":   "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+Step #0 - "build":   "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22"
+Step #0 - "build":  },
+Step #0 - "build":  "smoke_fixture": {
+Step #0 - "build":   "bytes": 405457,
+Step #0 - "build":   "manifest_sha256": "044c72f85d6739c54218afb5ec23b16eb9f923fe456dcc676cd792d23349eac3",
+Step #0 - "build":   "members": 56,
+Step #0 - "build":   "roster_sha256": "569e19bf9dd51c1f1293ee95575c0385274689c9a544e71a44a8f3ff07738dc2",
+Step #0 - "build":   "roster_size": 3
+Step #0 - "build":  }
+Step #0 - "build": }
+Step #0 - "build": Removing intermediate container a06c3ce1a50b
+Step #0 - "build":  3c766ae5e781
+Step #0 - "build": Step 13/17 : LABEL ipcch.install.manifest="/opt/ipcch/INSTALL.json"
+Step #0 - "build":  Running in 29fc65eb23a1
+Step #0 - "build": Removing intermediate container 29fc65eb23a1
+Step #0 - "build":  0e52505fd9e9
+Step #0 - "build": Step 14/17 : LABEL ipcch.entrypoint.v2_config="/opt/ipcch/deployment.json"
+Step #0 - "build":  Running in 0e67e5aa9134
+Step #0 - "build": Removing intermediate container 0e67e5aa9134
+Step #0 - "build":  524ce6e8ae87
+Step #0 - "build": Step 15/17 : LABEL ipcch.entrypoint.prepare_plan="python3 -m cloud.orchestrator.prepare plan"
+Step #0 - "build":  Running in 4ec25d429afa
+Step #0 - "build": Removing intermediate container 4ec25d429afa
+Step #0 - "build":  c1de9ab8ca50
+Step #0 - "build": Step 16/17 : LABEL ipcch.entrypoint.prepare_extract="python3 -m cloud.orchestrator.prepare extract"
+Step #0 - "build":  Running in 63b773a71359
+Step #0 - "build": Removing intermediate container 63b773a71359
+Step #0 - "build":  ca40b1582cfd
+Step #0 - "build": Step 17/17 : CMD ["python3", "-m", "cloud.orchestrator.prepare", "--help"]
+Step #0 - "build":  Running in 54d72321e88c
+Step #0 - "build": Removing intermediate container 54d72321e88c
+Step #0 - "build":  49a9349d27d0
+Step #0 - "build": Successfully built 49a9349d27d0
+Step #0 - "build": Successfully tagged us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f
+Finished Step #0 - "build"
+Starting Step #1 - "push"
+Step #1 - "push": Already have image (with digest): gcr.io/cloud-builders/docker
+Step #1 - "push": The push refers to repository [us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime]
+Step #1 - "push": c35d7ea3505b: Preparing
+Step #1 - "push": c9b9a9db533e: Preparing
+Step #1 - "push": b32882e0a79f: Preparing
+Step #1 - "push": 3eadac02ab3c: Preparing
+Step #1 - "push": 93a61e0f3c50: Preparing
+Step #1 - "push": d06972325882: Preparing
+Step #1 - "push": 079b4437cc62: Preparing
+Step #1 - "push": 8e06d0bcfc84: Preparing
+Step #1 - "push": 2eb7c5261c95: Preparing
+Step #1 - "push": a9435642a9e3: Preparing
+Step #1 - "push": b3232f6d8e2e: Preparing
+Step #1 - "push": 146826fa3ca0: Preparing
+Step #1 - "push": 5d4427064ecc: Preparing
+Step #1 - "push": b3232f6d8e2e: Waiting
+Step #1 - "push": 146826fa3ca0: Waiting
+Step #1 - "push": 5d4427064ecc: Waiting
+Step #1 - "push": a9435642a9e3: Layer already exists
+Step #1 - "push": 2eb7c5261c95: Layer already exists
+Step #1 - "push": b3232f6d8e2e: Layer already exists
+Step #1 - "push": 146826fa3ca0: Layer already exists
+Step #1 - "push": 5d4427064ecc: Layer already exists
+Step #1 - "push": 3eadac02ab3c: Pushed
+Step #1 - "push": 079b4437cc62: Pushed
+Step #1 - "push": b32882e0a79f: Pushed
+Step #1 - "push": c9b9a9db533e: Pushed
+Step #1 - "push": 93a61e0f3c50: Pushed
+Step #1 - "push": 8e06d0bcfc84: Pushed
+Step #1 - "push": c35d7ea3505b: Pushed
+Step #1 - "push": d06972325882: Pushed
+Step #1 - "push": ipcch-v2-115798f: digest: sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6 size: 3049
+Finished Step #1 - "push"
+Starting Step #2 - "digest"
+Step #2 - "digest": Already have image (with digest): gcr.io/cloud-builders/docker
+Step #2 - "digest": IMAGE_IDENTITY sha256:49a9349d27d05cdf03957a87e2a1d7c558fa3bca1fa53caed4d5cad6c86fc82e ["us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6"]
+Finished Step #2 - "digest"
+Starting Step #3 - "install-verify"
+Step #3 - "install-verify": Already have image (with digest): us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f
+Step #3 - "install-verify": {
+Step #3 - "install-verify":  "config": {
+Step #3 - "install-verify":   "namespaces": {
+Step #3 - "install-verify":    "production": "monthly-staging",
+Step #3 - "install-verify":    "smoke": "monthly-smoke"
+Step #3 - "install-verify":   },
+Step #3 - "install-verify":   "roots": {
+Step #3 - "install-verify":    "real": "gs://food-crisis-test-ipcch-data",
+Step #3 - "install-verify":    "smoke": "gs://food-crisis-test-ipcch-smoke/v2"
+Step #3 - "install-verify":   },
+Step #3 - "install-verify":   "sha256": "c75b1172b9e841d1fe34f3e5cac1b1718e8615d5e752bd9a38c816afce1d49c8"
+Step #3 - "install-verify":  },
+Step #3 - "install-verify":  "envelope": {
+Step #3 - "install-verify":   "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+Step #3 - "install-verify":   "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+Step #3 - "install-verify":   "status": "accepted"
+Step #3 - "install-verify":  },
+Step #3 - "install-verify":  "handoff": {
+Step #3 - "install-verify":   "acceptance_entries_sha256": "cb14a956f67df03d5f3479d129a432d606017a533d0c80a9930d549d9aa95ed6",
+Step #3 - "install-verify":   "bytes": 2271631220,
+Step #3 - "install-verify":   "manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+Step #3 - "install-verify":   "members": 58,
+Step #3 - "install-verify":   "roster_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+Step #3 - "install-verify":   "roster_size": 6226
+Step #3 - "install-verify":  },
+Step #3 - "install-verify":  "package": {
+Step #3 - "install-verify":   "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+Step #3 - "install-verify":   "feature_count": 527,
+Step #3 - "install-verify":   "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+Step #3 - "install-verify":   "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22"
+Step #3 - "install-verify":  },
+Step #3 - "install-verify":  "smoke_fixture": {
+Step #3 - "install-verify":   "bytes": 405457,
+Step #3 - "install-verify":   "manifest_sha256": "044c72f85d6739c54218afb5ec23b16eb9f923fe456dcc676cd792d23349eac3",
+Step #3 - "install-verify":   "members": 56,
+Step #3 - "install-verify":   "roster_sha256": "569e19bf9dd51c1f1293ee95575c0385274689c9a544e71a44a8f3ff07738dc2",
+Step #3 - "install-verify":   "roster_size": 3
+Step #3 - "install-verify":  }
+Step #3 - "install-verify": }
+Finished Step #3 - "install-verify"
+Starting Step #4 - "runtime-imports"
+Step #4 - "runtime-imports": Already have image (with digest): us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f
+Step #4 - "runtime-imports": RUNTIME_IMPORTS 1.7.36 3.13.0 1.5.0
+Finished Step #4 - "runtime-imports"
+Starting Step #5 - "six-slot-evidence"
+Step #5 - "six-slot-evidence": Already have image (with digest): us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f
+Step #5 - "six-slot-evidence": SIX_SLOT_EVIDENCE {"executable": "/usr/local/bin/python3", "fewsnet": {"0m": {"areas": 5718, "input_sha256": "0c8be9fc20295d32e74c2778045222b64324a875e7da0d9358b0fa7a8b50a5d8", "package_checksums": {"feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b", "local_model_manifest.json": "bef83934b66618d7c61b2bad68ce142a6e4057805f59ae8a47c027a826718edc", "model.joblib": "69b90bf03aea31b1e24d45cb2ad0f66994cf4c014da3cb7dfa20c68d51fdf1bd", "partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b", "threshold_report.json": "18d4a4f1d525921f91021973177b21c71ce6ae284aa1d80e4441dc53b8f10cef", "training_report.json": "244ef199317c456f4d44f55bfc6cb6b0d80e5e7b38f59f41a54a2959f9494058"}, "prediction_sha256": "6a99ec8f792ae15f3919e3756f8d5c6bb10caba2ddc76c224edecc34a88fafc4", "rows": 5718, "threshold": 0.48}, "12m": {"areas": 5718, "input_sha256": "a8af7bda754467979db5b94c20ac6cd44b72f39107cd0e861ddea632db388b76", "package_checksums": {"feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b", "local_model_manifest.json": "37a5c703ecdf777c7fbc06e356b1d7b1f1e6bca350afa37c19215e89b0e67093", "model.joblib": "62520a04c0cb8780cc12a0319056aed2fdb96a681b1bc347c4e7d8bb571b0806", "partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b", "threshold_report.json": "65a4de1084e3548b6fc826edf52cffcf6a831adabd69c9cbd5c5181edc95fced", "training_report.json": "9063b9decae1b5f43447d88600c4ff7c13c9eccb78d8f0b20916957a7d189ab3"}, "prediction_sha256": "aacb139b6da8d66e29827deefd0cf5fff310860102ccac5ac376f4ffae4d5ae7", "rows": 5718, "threshold": 0.45}, "6m": {"areas": 5718, "input_sha256": "6e48f864a9a14b853a4bd3bebca37b5545fad5600480e7aa798cc0da833d08e2", "package_checksums": {"feature_contract.json": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b", "local_model_manifest.json": "ab2a202e550028ac2c89a42e4f55cfc3684769e993f3058275455a2403d94881", "model.joblib": "a0802145992eeed81182eed4c25392e6dda1f544a8f361e5d18ba091858d9744", "partition_map.csv": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b", "threshold_report.json": "1d4f1965e0332254a3a6191fbcfb947959e4e73b6971ccb5011ef688cbf5ad33", "training_report.json": "2357c6682de4c41ce99dfd9dc03df4ec554fb651face98488e36be52538438a9"}, "prediction_sha256": "84e553eb67a708ef254f7db410848c7b86188036166a8936215381d1264d5043", "rows": 5718, "threshold": 0.41}}, "ipcch": {"0m": {"feature_columns": 128, "members": {"feature_columns.json": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6", "feature_contract.csv": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068", "model_metadata.json": "adf2965fcb9d830609a1ca908f151f7958d936d2ab44f310909f18136294da27", "phase2_worse_model.json": "1623ffb2ad5dfc543a16649aa09d3aaa8f72279d864492ad340f495fb7efbc03", "phase3_worse_model.json": "d187f943cfa5a623da6de680857dc1c65ef71ae8be7b02a971d20d5de8160757", "phase4_worse_model.json": "177d201b628c49f90306971bb5d9504913b5c88edcd6ca1dc4133555ceaeeef3", "phase5_worse_model.json": "21d25364c6225868ec1ea45f60c9bfd0e0c3c91023d9b33c4424bbd8e443ede2"}, "targets": ["phase2_worse", "phase3_worse", "phase4_worse", "phase5_worse"]}, "12m": {"feature_columns": 128, "members": {"feature_columns.json": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6", "feature_contract.csv": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06", "model_metadata.json": "df8a81aa62c6f8be2226e8f6ba64dfa53786425d5e29e715f17219176da62582", "phase2_worse_model.json": "39e5bed8ca3063fa3004edabcd02838cb873a9c7a384c7aa5fd9867eff6cb41f", "phase3_worse_model.json": "eb97f722d941fa95ca18cbf971492420af55f7eab44df68fddc7ddacc3bb7cb6", "phase4_worse_model.json": "22c8a847317b5eb800c14d4fe6dfef320500741e1cb46830af7859c3c6eed1bf", "phase5_worse_model.json": "17f76bdd82ccad753138029d62fa7e04cf8c40c50c3b3feaf7e7f64f74b370a8"}, "targets": ["phase2_worse", "phase3_worse", "phase4_worse", "phase5_worse"]}, "6m": {"feature_columns": 128, "members": {"feature_columns.json": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6", "feature_contract.csv": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4", "model_metadata.json": "6dc4600831bf705bb1c6884f4e1925b3e737b2f68bda23d570f3da2ff4598e06", "phase2_worse_model.json": "aafb1f83f6d70b16d782d765b565a55ebcf004d3a5659636f78852da74c5e354", "phase3_worse_model.json": "664c8f57589372c98cef8853f939eaa44ac615a3a85f0c7ed1d6e7311683f753", "phase4_worse_model.json": "7460239dc5c42cbfa008486ab013018d2bb081da4874949ce3365b6f106e2b00", "phase5_worse_model.json": "3959dbb21b7e432430bebb2fc54bc79c63a246cdaa3869b1f22b67857e1e248d"}, "targets": ["phase2_worse", "phase3_worse", "phase4_worse", "phase5_worse"]}}, "ipcch_shared_members": {"model_package_manifest.json": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070", "training_export_summary.json": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a"}, "matches_reference": {"fewsnet_packages": true, "fewsnet_predictions": true, "ipcch_packages": true, "reference_sha256": "a9d7be1eee7f43370c479c5b5095de01cc89a03e063d3ea9ad84af74ab44bc5a", "versions": true}, "module_roots": {"fewsnet_partitioned_rf_pipeline": "/app/fewsnet_partitioned_rf_pipeline", "model_pipeline": ["/app/model_pipeline"]}, "python": "3.12.3", "requirements_lock_sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d", "versions": {"imbalanced-learn": "0.14.0", "joblib": "1.5.3", "numpy": "2.4.2", "pandas": "3.0.0", "scikit-learn": "1.8.0", "scipy": "1.17.0", "xgboost": "3.2.0"}}
+Finished Step #5 - "six-slot-evidence"
+PUSH
+Pushing us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f
+The push refers to repository [us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime]
+c35d7ea3505b: Preparing
+c9b9a9db533e: Preparing
+b32882e0a79f: Preparing
+3eadac02ab3c: Preparing
+93a61e0f3c50: Preparing
+d06972325882: Preparing
+079b4437cc62: Preparing
+8e06d0bcfc84: Preparing
+2eb7c5261c95: Preparing
+a9435642a9e3: Preparing
+b3232f6d8e2e: Preparing
+146826fa3ca0: Preparing
+5d4427064ecc: Preparing
+b3232f6d8e2e: Waiting
+146826fa3ca0: Waiting
+5d4427064ecc: Waiting
+d06972325882: Layer already exists
+a9435642a9e3: Layer already exists
+c9b9a9db533e: Layer already exists
+3eadac02ab3c: Layer already exists
+2eb7c5261c95: Layer already exists
+079b4437cc62: Layer already exists
+b32882e0a79f: Layer already exists
+93a61e0f3c50: Layer already exists
+146826fa3ca0: Layer already exists
+b3232f6d8e2e: Layer already exists
+5d4427064ecc: Layer already exists
+c35d7ea3505b: Layer already exists
+8e06d0bcfc84: Layer already exists
+ipcch-v2-115798f: digest: sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6 size: 3049
+DONE
+--------------------------------------------------------------------------------

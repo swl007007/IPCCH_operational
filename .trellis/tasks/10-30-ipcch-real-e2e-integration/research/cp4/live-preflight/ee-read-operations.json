@@ -1,0 +1,24 @@
+{
+  "identity": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+  "token_command": [
+    "gcloud",
+    "auth",
+    "print-access-token",
+    "--impersonate-service-account=monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+    "--project=feisty-flames-511718-d4",
+    "--quiet"
+  ],
+  "reads": [
+    {
+      "method": "GET",
+      "url": "https://earthengine.googleapis.com/v1/projects/han-sandbox-505315/assets/IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00",
+      "timeout_seconds": 60
+    },
+    {
+      "method": "GET",
+      "url": "https://earthengine.googleapis.com/v1/projects/han-sandbox-505315/assets/STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01",
+      "timeout_seconds": 60
+    }
+  ],
+  "effect": "read-only asset metadata; no export, ACL change or asset creation"
+}

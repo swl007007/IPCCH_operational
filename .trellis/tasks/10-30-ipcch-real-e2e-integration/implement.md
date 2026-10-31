@@ -1,8 +1,9 @@
 # IPCCH real E2E integration — execution plan
 
 Status: D1-D5 approved by the subsequent user `/goal` protocol. Native task is
-in progress; CP0-CP3 local components accepted; CP4 image/compatibility next. Cloud
-execution has not started. This single task keeps the shared runtime/dispatch and
+in progress until native archive; CP0-CP6 accepted, including the supported legacy
+compatibility cutover, smoke dispatch, full 6,226-area real publication/readback,
+normal-config finish and operator handoff. This single task keeps the shared runtime/dispatch and
 current-publication changes together; deferred incremental evidence is not a child
 implementation task or a reason to leave this task unfinished after its agreed checks.
 
@@ -66,10 +67,10 @@ implementation task or a reason to leave this task unfinished after its agreed c
 - [x] Persist and thread the configured whole-run deadline to producer/transport/
   acquirer calls, including cancellation reserve; test deadline expiry and no reset
   on redelivery. Existing deadline code is not currently wired through v2 context.
-- [ ] Install the accepted model/envelope/handoff and deployment config through
+- [x] Install the accepted model/envelope/handoff and deployment config through
   the supported build/deployment path. Wire Workflow's overridden arguments to
   `--v2-config`; update the operator v2 submission surface only as necessary.
-- [ ] Verify real/smoke configuration separation and existing legacy compatibility.
+- [x] Verify real/smoke configuration separation and existing legacy compatibility.
 
 Expected affected files and existing tests:
 
@@ -104,43 +105,49 @@ Passing offline tests is not real E2E acceptance.
 
 ## 3. Prepare and execute bounded cloud operations
 
-- [ ] Present concrete deployment/run commands, identities, resources, read/write
+- [x] Present concrete deployment/run commands, identities, resources, read/write
   scope, expected effects, retry/time/cost limits, and existing state to retain.
   Retain the existing 4-hour job cap and zero automatic task retries, bounded by
   the run deadline and 15-minute EE cleanup reserve. This round does not authorize
   a forced incremental export workload. No manual interstage gate is added to the
   runtime; future approved incremental runs include their declared EE child jobs.
-- [ ] Refresh job/Workflow/Eventarc/config and IAM/EE/GCS access evidence as needed.
-- [ ] Verify references/access needed by this round's real run; do not substitute
+- [x] Refresh job/Workflow/Eventarc/config and IAM/EE/GCS access evidence as needed.
+  CP4 records actual runtime han denial separately from this retained-only run.
+- [x] Verify references/access needed by this round's real run; do not substitute
   user-identity access for runtime-identity evidence. Live new-asset production and
   incremental readback are deferred, not required prerequisite jobs this round.
-- [ ] Upload/install pinned artifacts and configure the immutable runtime image.
-- [ ] Initialize only the approved retained roots; validate ACLED origin coverage.
-- [ ] Deploy the reviewed job/Workflow config, then read it back against the plan.
-- [ ] Verify v2 and legacy resolve the exact same production current URI; preserve
+- [x] Upload/install pinned artifacts and configure the immutable runtime image.
+- [x] Initialize only the approved retained roots; validate ACLED origin coverage.
+  CP5 real/smoke initializer executions and full table/pairing checks accepted;
+  cloud execution evidence and Supervisor checks are under research/cp4/cp5/.
+- [x] Deploy the reviewed job/Workflow config, then read it back against the plan.
+- [x] Verify v2 and legacy resolve the exact same production current URI; preserve
   its FEWS member and activation guards. Treat corrupt existing members as failures.
   Check real/smoke roots are nonnested; do not place smoke beneath a real bucket root.
-- [ ] Run the full 6,226-area real route using the original accepted history/binding,
+- [x] Run the full 6,226-area real route using the original accepted history/binding,
   from choice submission through generation, inference and current. Use October's
   execution month if live publication admission still permits it. Record exact
   retained versions, any actual source work, and expected climate skips. Do not
   falsify dates, alter history or add an acquisition bypass to force a pass.
-- [ ] Publish through the existing checked production current flow, then read back
+- [x] Publish through the existing checked production current flow, then read back
   its pointer and referenced delivery/prediction objects from GCS. Verify exact
   generations, run/model identity, target months, and content checks. Candidate-only
   or mere object-listing evidence does not satisfy the accepted D1 endpoint.
 
 ## 4. Verify, report, and close
 
-- [ ] Collect only necessary evidence: pinned code/image/config/model/asset IDs,
+- [x] Collect only necessary evidence: pinned code/image/config/model/asset IDs,
   actual request and execution records, source/retained receipts, feature schema,
   coverage/output checks, and publication readback. Avoid redundant data archives.
-- [ ] Evaluate AC1-AC9 explicitly; distinguish pass, fail, and incomplete. Record
+- [x] Evaluate AC1-AC9 explicitly; distinguish pass, fail, and incomplete. Record
   DA1-DA2 as user-deferred, never passed. Preserve error/warning evidence and any
   partially successful retained updates. Do not wait for November or run incremental
   acceptance as a task-close requirement.
-- [ ] Record reproducible operator instructions and scoped rollback commands.
-- [ ] Run relevant final checks and GitNexus `detect_changes()` before committing.
+- [x] Record reproducible operator instructions and scoped rollback commands.
+- [x] Run relevant final checks and GitNexus `detect_changes()` before committing.
+  Final guarded evidence reconciliation passed; frozen code is unchanged. Staged
+  GitNexus risk LOW, no affected processes. Git scope also includes raw log evidence
+  omitted from indexed counts; AGENTS.md, pycache and fallback are excluded.
 - [ ] Supervisor commits relevant implementation/evidence without unrelated changes,
   performs final acceptance against AC1-AC9, then closes through native Trellis.
   Do not invoke Trellis Audit or an independent automatic audit stage.
@@ -156,11 +163,16 @@ only until this future live acceptance is performed.
 ## Current limitations
 
 CP1 sparse PATCH32, CP2 producer/lifecycle and CP3 submission/installation wiring
-are component-complete with offline evidence. Real image verification and the FEWS
-compatibility transition remain CP4 gates; fail-closed legacy requests alone are
-not preserved consumer operation. Goal-scoped cloud work is user-preauthorized
-(2026-10-31); record the bounded packet without requesting separate permission. No deployment,
-exports, retained initialization, or real E2E run have occurred at this checkpoint.
+are component-complete. CP4 image acc3e467 is verified from source 115798f; supported
+legacy runtime initialization and shared-service deployment are complete. The FEWS
+compatibility candidate was verified, promoted and released. IPCCH v2 real/smoke
+initialization and both live routes are accepted. Real publication/readback passed
+27 checks over all 6,226 areas per horizon. Normal configuration and CP6 handoff
+are accepted; only the final commit/native archive remain. See research/cp4/supervisor-gates.md.
+Goal-scoped cloud work is user-preauthorized
+(2026-10-31); record the bounded packet without requesting separate permission.
+Runtime han reads are denied; this round confirms retained-only skips, while
+future incremental operation requires upstream-owner sharing. No EE exports have run.
 The `specs/001-cloud-base-input/plan.md` pointer in AGENTS was not found in this
 checkout; use the existing v2 archive/contracts and report this stale pointer
 without inventing a replacement foundational plan.

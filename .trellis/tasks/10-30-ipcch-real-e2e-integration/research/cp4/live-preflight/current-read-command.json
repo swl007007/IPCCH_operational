@@ -1,0 +1,1 @@
+["gcloud", "storage", "cat", "gs://food-crisis-test-ipcch-data/monthly-staging/current.json#1792657760445077", "--project=feisty-flames-511718-d4", "--quiet"]

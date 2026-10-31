@@ -1,0 +1,23 @@
+{
+  "credential_source": "existing earthengine persistent user credentials",
+  "compute_project": "feisty-flames-511718-d4",
+  "reads": {
+    "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00": {
+      "metadata": {
+        "type": "TABLE",
+        "name": "projects/han-sandbox-505315/assets/IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00",
+        "sizeBytes": "573052"
+      },
+      "acl_error": "EEException: Asset 'projects/han-sandbox-505315/assets/IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00' does not exist or doesn't allow this operation."
+    },
+    "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01": {
+      "metadata": {
+        "type": "IMAGE",
+        "name": "projects/han-sandbox-505315/assets/STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01",
+        "sizeBytes": "116067582"
+      },
+      "acl_error": "EEException: Asset 'projects/han-sandbox-505315/assets/STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01' does not exist or doesn't allow this operation."
+    }
+  },
+  "initialize": "ok"
+}

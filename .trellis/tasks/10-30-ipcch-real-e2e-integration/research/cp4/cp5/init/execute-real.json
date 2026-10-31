@@ -1,0 +1,106 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Execution",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+      "run.googleapis.com/execution-environment": "gen2",
+      "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+      "run.googleapis.com/operation-id": "886bce6f-2a1e-4b1a-b4ef-f364617e9f26"
+    },
+    "creationTimestamp": "2026-10-31T14:37:33.009105Z",
+    "generation": 1,
+    "labels": {
+      "client.knative.dev/nonce": "miy_wul_kih",
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/job": "ipcch-v2-init-20261031",
+      "run.googleapis.com/jobGeneration": "1",
+      "run.googleapis.com/jobResourceVersion": "1793457424316907",
+      "run.googleapis.com/jobUid": "cf008f6b-969a-452c-8783-c43be78a5640"
+    },
+    "name": "ipcch-v2-init-20261031-7t4lg",
+    "namespace": "968355701450",
+    "ownerReferences": [
+      {
+        "apiVersion": "serving.knative.dev/v1",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "Job",
+        "name": "ipcch-v2-init-20261031",
+        "uid": "cf008f6b-969a-452c-8783-c43be78a5640"
+      }
+    ],
+    "resourceVersion": "AAZfI+najwM",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/executions/ipcch-v2-init-20261031-7t4lg",
+    "uid": "c91cb13d-c186-4636-9e7b-dbcbe34d64fe"
+  },
+  "spec": {
+    "parallelism": 1,
+    "taskCount": 1,
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "args": [
+              "-m",
+              "cloud.ipcch.entrypoint_v2",
+              "initialise",
+              "--config",
+              "/opt/ipcch/deployment.json",
+              "--mode",
+              "real"
+            ],
+            "command": [
+              "python3"
+            ],
+            "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+            "resources": {
+              "limits": {
+                "cpu": "4",
+                "memory": "16Gi"
+              }
+            }
+          }
+        ],
+        "maxRetries": 0,
+        "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "timeoutSeconds": "3600"
+      }
+    }
+  },
+  "status": {
+    "completionTime": "2026-10-31T14:41:50.399425Z",
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-10-31T14:41:50.399425Z",
+        "message": "Execution completed successfully in 4m10.52s.",
+        "status": "True",
+        "type": "Completed"
+      },
+      {
+        "lastTransitionTime": "2026-10-31T14:37:34.002783Z",
+        "message": "Provisioned imported containers.",
+        "status": "True",
+        "type": "ResourcesAvailable"
+      },
+      {
+        "lastTransitionTime": "2026-10-31T14:37:53.882086Z",
+        "message": "Started deployed execution in 19.87s.",
+        "status": "True",
+        "type": "Started"
+      },
+      {
+        "lastTransitionTime": "2026-10-31T14:37:33.869859Z",
+        "message": "Imported container image.",
+        "status": "True",
+        "type": "ContainerReady"
+      }
+    ],
+    "logUri": "https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22ipcch-v2-init-20261031%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22ipcch-v2-init-20261031-7t4lg%22",
+    "observedGeneration": 1,
+    "startTime": "2026-10-31T14:37:39.877951Z",
+    "succeededCount": 1
+  }
+}

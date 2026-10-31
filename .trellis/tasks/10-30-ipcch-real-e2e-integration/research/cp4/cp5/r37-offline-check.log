@@ -1,0 +1,44 @@
+# unit=ipcch-cp2-r37-offline-check-1793461465326193015 start=2026-10-31T11:44:25-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/cp5/r37_offline_check.py
+Running as unit: ipcch-cp2-r37-offline-check-1793461465326193015.service; invocation ID: 623d3309113747dd87437cee28ffdd19
+{
+ "current_generation": "1793461128385732",
+ "activation": {
+  "activated_by_run": "ipcch-real-522b30030f944868-ipcch",
+  "at": "2026-10-31T15:37:56Z",
+  "contract": "ipcch-validity-h2h8h14-v2",
+  "execution_month": "2026-10"
+ },
+ "legacy_both_systems_scoring_ipcch": "REJECTED: the new IPCCH pipeline is active (first real new-contract IPCCH publication to current): legacy v1 requests that include IPCCH are rejected; submit IPCCH through the v2 manifest (schema ipcch-fewsnet-request-v2). Legacy FEWS NET-only requests remain supported (R37)",
+ "legacy_ipcch_only": "REJECTED: the new IPCCH pipeline is active (first real new-contract IPCCH publication to current): legacy v1 requests that include IPCCH are rejected; submit IPCCH through the v2 manifest (schema ipcch-fewsnet-request-v2). Legacy FEWS NET-only requests remain supported (R37)",
+ "legacy_fewsnet_only": "admitted (not rejected by R37)"
+}
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/cp5/r37_offline_check.py"
+	User time (seconds): 0.33
+	System time (seconds): 0.05
+	Percent of CPU this job got: 20%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.91
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 146328
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 23563
+	Voluntary context switches: 1162
+	Involuntary context switches: 9
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 2.033s
+CPU time consumed: 486ms
+# end=2026-10-31T11:44:27-04:00 launcher_rc=0 child_exit=0

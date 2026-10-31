@@ -2,6 +2,9 @@
 
 Status: approved for execution under `execution-protocol.md`, 2026-10-30.
 `prd.md` is authoritative for accepted D1-D5, AC1-AC9 and deferred DA1-DA2.
+Implemented and accepted 2026-10-31: real full-roster publication/readback and the
+normal-config finish are complete. Evidence is in `research/cp6/`; the earlier
+design's prospective statements describe the agreed implementation requirements.
 
 ## Existing route to complete
 
@@ -238,6 +241,26 @@ error, not an empty initial publication. Legacy activation protection and inheri
 must observe this same root/namespace. Real/smoke roots must not be nested; when
 real is the bucket root, smoke needs another existing permitted nonnested location,
 not a child prefix. Resolve that concrete location during deployment preflight.
+
+The CP3 compatibility investigation found that the current legacy operator state,
+environment and acceptance records bind image 487a2315. Replacing the shared job
+image requires genuine compatibility evidence for the unchanged FEWS packages,
+then a new accepted baseline and initialized operator destination through supported
+commands. Preserve the old state. Use the existing maintenance/candidate/verify/
+promote/release sequence, compare the candidate to the pinned current delivery, and
+only then use the new destination. Temporary failure of old image-bound requests
+under a maintenance hold is not final consumer compatibility. Keep the new image's
+legacy IPCCH activation guards. The ordinary pre-activation legacy window remains
+unchanged; no new pre-chosen v2 run-ID feature is required for this cutover.
+
+2026-10-31 runtime probes confirm EE initialization and GCS access but deny reads
+of the two known han assets; personal EE credentials can read metadata, not ACLs.
+No personal credentials are deployed. This round's exact October/August retained
+history produced empty demand/jobs and an explicit already-retained skip in the
+actual batch manifest. Future incremental operation requires upstream-owner sharing to the
+runtime account. It is a known permission gap, distinct from deferred numerical
+incremental validation. Actual Cloud Run GPP probes recorded HTTP 404 for January
+through August 2026; the ledger marks those months unpublished.
 
 ## Real acceptance and rollback
 

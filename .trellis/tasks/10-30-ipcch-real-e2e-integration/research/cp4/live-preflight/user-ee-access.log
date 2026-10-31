@@ -1,0 +1,42 @@
+# unit=ipcch-cp2-user-ee-access-1793455006363354851 start=2026-10-31T09:56:46-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/live-preflight/user-ee-access.py
+Running as unit: ipcch-cp2-user-ee-access-1793455006363354851.service; invocation ID: 23d13f55f1314ee782c03cdc2dd293ef
+Traceback (most recent call last):
+  File "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/live-preflight/user-ee-access.py", line 4, in <module>
+    ee.data.setDeadline(60000)
+  File "/home/swl007007/.venvs/fewsnet-test-lock-20261022/lib/python3.12/site-packages/ee/data.py", line 424, in setDeadline
+    _install_cloud_api_resource()
+  File "/home/swl007007/.venvs/fewsnet-test-lock-20261022/lib/python3.12/site-packages/ee/data.py", line 262, in _install_cloud_api_resource
+    assert state.requests_session is not None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+Command exited with non-zero status 1
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/live-preflight/user-ee-access.py"
+	User time (seconds): 0.13
+	System time (seconds): 0.04
+	Percent of CPU this job got: 61%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.29
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 50876
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 73
+	Minor (reclaiming a frame) page faults: 10539
+	Voluntary context switches: 560
+	Involuntary context switches: 2
+	Swaps: 0
+	File system inputs: 23848
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+# CHILD-EXIT=1
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 337ms
+CPU time consumed: 193ms
+# end=2026-10-31T09:56:46-04:00 launcher_rc=0 child_exit=1

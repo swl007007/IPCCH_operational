@@ -1,0 +1,37 @@
+# unit=ipcch-cp2-local-initialise-measure-1793455972100101478 start=2026-10-31T10:12:52-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/cp5/local_initialise_measure.py /home/swl007007/ipcch-operator/food-crisis-test/v2-build/cp4-115798f-20261031T135044Z/tmp.oV5ZoayeBG/ipcch /home/swl007007/ipcch-operator/food-crisis-test/v2-build/cp5-init-measure
+Running as unit: ipcch-cp2-local-initialise-measure-1793455972100101478.service; invocation ID: 82efaa381e3c44f391fc6bd8a4863f2f
+Traceback (most recent call last):
+  File "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/cp5/local_initialise_measure.py", line 10, in <module>
+    from cloud.common.object_store import LocalObjectStore
+ModuleNotFoundError: No module named 'cloud'
+Command exited with non-zero status 1
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/cp5/local_initialise_measure.py /home/swl007007/ipcch-operator/food-crisis-test/v2-build/cp4-115798f-20261031T135044Z/tmp.oV5ZoayeBG/ipcch /home/swl007007/ipcch-operator/food-crisis-test/v2-build/cp5-init-measure"
+	User time (seconds): 0.01
+	System time (seconds): 0.00
+	Percent of CPU this job got: 52%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.01
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 10456
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1170
+	Voluntary context switches: 82
+	Involuntary context switches: 0
+	Swaps: 0
+	File system inputs: 24
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+# CHILD-EXIT=1
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 163ms
+CPU time consumed: 114ms
+# end=2026-10-31T10:12:52-04:00 launcher_rc=0 child_exit=1

@@ -1,0 +1,18 @@
+Deploying container to Cloud Run job [[1mmonthly-prepare[m] in project [[1mfeisty-flames-511718-d4[m] region [[1mus-central1[m]
+Updating job...
+Done.
+Job [[1mmonthly-prepare[m] has successfully been deployed.
+
+To execute this job, use:
+gcloud run jobs execute monthly-prepare
+Deploying container to Cloud Run job [[1moct-delivery[m] in project [[1mfeisty-flames-511718-d4[m] region [[1mus-central1[m]
+Updating job...
+Done.
+Job [[1moct-delivery[m] has successfully been deployed.
+
+To execute this job, use:
+gcloud run jobs execute oct-delivery
+Updated IAM policy for job [oct-delivery].
+Updated IAM policy for job [monthly-prepare].
+Waiting for operation [operation-1793456750109-65f23b082a3b0-f0495390-c9590e41] to complete...
+.done.

@@ -1,0 +1,2 @@
+load_initialized OK /home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/project.json f0481ca13610 74ce7e14ccf6
+load_initialized OK /home/swl007007/ipcch-operator/food-crisis-test/project.json b77cb29bd648 cc3074c97fae

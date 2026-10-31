@@ -1,0 +1,1546 @@
+{
+  "delivery_request": {
+    "generation": "1793456852897022",
+    "sha256": "eb3c4d7fccd65665dfadae0193d8d43eb3f55e52dfad3e029bc5e09ee8accf1a",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/fews-compat-v2rt-20261031a/run_manifest.json"
+  },
+  "intent": {
+    "baseline_id": "f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856",
+    "choices": {
+      "acled": {
+        "action": "keep"
+      },
+      "wfp": {
+        "action": "keep"
+      }
+    },
+    "config": {
+      "bucket": "food-crisis-test-ipcch-data",
+      "earth_engine_project": "feisty-flames-511718-d4",
+      "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+      "namespace": "monthly-staging",
+      "operator": "weilun.shi",
+      "prepare_job": "monthly-prepare",
+      "project": "feisty-flames-511718-d4",
+      "region": "us-central1",
+      "request_bucket": "food-crisis-test-ipcch-requests",
+      "service_account": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "v2": {
+        "country_reference": {
+          "real": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv",
+          "smoke": "gs://food-crisis-test-ipcch-smoke/inputs/reference/country_reference.csv"
+        },
+        "deployment_config": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/deploy/ipcch_v2_deployment.food-crisis-test.json",
+        "envelope": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json",
+        "environment_manifest": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt",
+        "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+        "inputs_prefix": {
+          "real": "gs://food-crisis-test-ipcch-data/inputs/v2",
+          "smoke": "gs://food-crisis-test-ipcch-smoke/inputs"
+        },
+        "pending_live_verification": [
+          "the shared envelope / environment manifest / country reference objects are uploaded create-only in the CP4 packet; until then submit --execute stops at pinning",
+          "the smoke bucket gs://food-crisis-test-ipcch-smoke is a proposal (see deployment config verification)",
+          "v2.image_uri (absent until the CP4 build) carries the v2 runtime digest; the top-level image_uri stays the legacy runtime bound by the legacy operator state and acceptance reports; submit --execute refuses until v2.image_uri is set"
+        ]
+      },
+      "work_dir": "/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/operator-state",
+      "workflow_service_account": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com"
+    },
+    "cutoff": "2026-10-21T23:59:59Z",
+    "deadline": "2026-10-31T18:26:48Z",
+    "delivery": {
+      "contracts": {
+        "diagnostic": {
+          "sha256": "be3f1b44776624b9c37b661e9711ac1d8f51628b80c33e3b60b6a56fea088c9b",
+          "version": "diag-v1"
+        },
+        "feature": {
+          "sha256": "d190c5735d387696e675626236364b8f6eef7ac7eeda3a401933bf32ca03b12c",
+          "version": "feature-v1"
+        },
+        "fill": {
+          "sha256": "dcd32479a72e55b29a03a586d8a483a05be0ce87cc5c25c7bad23079fc0356b3",
+          "version": "area-past-only-carry-forward-v1"
+        },
+        "output": {
+          "sha256": "13fb4caaedd24fbe2295ff05c4e05416ec88163fbaa05c69821d74f47868523a",
+          "version": "september-v3-output-v1"
+        }
+      },
+      "diagnostics": [
+        {
+          "evidence": {
+            "generation": "1793455986133340",
+            "sha256": "be50a58bceea9b10931ba14bec484beb447718d35b877a25c95721571e175d17",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/0m/fewsnet/polygon_confidence.csv"
+          },
+          "evidence_basis": "h0_validation_error_proxy_stage3_fs1_lag4_2021_2024",
+          "evidence_horizon_months": 0,
+          "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+          "evidence_period": "2021-02..2024-10",
+          "family": "polygon_confidence",
+          "horizon_months": 0,
+          "source_availability": {
+            "generation": "1793455985540126",
+            "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+          },
+          "source_declarations": {
+            "generation": "1793455985713127",
+            "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+          },
+          "source_delivery_id": "oct-confidence-20261009b",
+          "source_evidence": {
+            "generation": "1793455984193408",
+            "sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_0m_stage3_fs1_area.csv"
+          },
+          "status": "frozen_output",
+          "system": "fewsnet"
+        },
+        {
+          "evidence": {
+            "generation": "1793455985860329",
+            "sha256": "978e694f1abc17b4f674916a72fbbb2e9b1eb42a6b86d0f21dc20bd20ba00684",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/0m/fewsnet/country_confidence.csv"
+          },
+          "evidence_basis": "h0_validation_error_proxy_stage3_fs1_lag4_2021_2024",
+          "evidence_horizon_months": 0,
+          "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+          "evidence_period": "2021-02..2024-10",
+          "family": "country_confidence",
+          "horizon_months": 0,
+          "source_availability": {
+            "generation": "1793455985540126",
+            "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+          },
+          "source_declarations": {
+            "generation": "1793455985713127",
+            "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+          },
+          "source_delivery_id": "oct-confidence-20261009b",
+          "source_evidence": {
+            "generation": "1793455984193408",
+            "sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_0m_stage3_fs1_area.csv"
+          },
+          "status": "frozen_output",
+          "system": "fewsnet"
+        },
+        {
+          "evidence": {
+            "generation": "1793455986966737",
+            "sha256": "3ba4d9d2dfcf166d115fa54db9531f06e949b1c3f7980cdea790b1dad9870a72",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/6m/fewsnet/polygon_confidence.csv"
+          },
+          "evidence_basis": "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024",
+          "evidence_horizon_months": 6,
+          "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+          "evidence_period": "2021-02..2024-10",
+          "family": "polygon_confidence",
+          "horizon_months": 6,
+          "source_availability": {
+            "generation": "1793455985540126",
+            "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+          },
+          "source_declarations": {
+            "generation": "1793455985713127",
+            "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+          },
+          "source_delivery_id": "oct-confidence-20261009b",
+          "source_evidence": {
+            "generation": "1793455984660212",
+            "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_6m_stage3_fs2_area.csv"
+          },
+          "status": "frozen_output",
+          "system": "fewsnet"
+        },
+        {
+          "evidence": {
+            "generation": "1793455986720549",
+            "sha256": "158eb31d318398a30406d8ab7ed039afa3e43243e292162cedfd73a6088e839f",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/6m/fewsnet/country_confidence.csv"
+          },
+          "evidence_basis": "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024",
+          "evidence_horizon_months": 6,
+          "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+          "evidence_period": "2021-02..2024-10",
+          "family": "country_confidence",
+          "horizon_months": 6,
+          "source_availability": {
+            "generation": "1793455985540126",
+            "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+          },
+          "source_declarations": {
+            "generation": "1793455985713127",
+            "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+          },
+          "source_delivery_id": "oct-confidence-20261009b",
+          "source_evidence": {
+            "generation": "1793455984660212",
+            "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_6m_stage3_fs2_area.csv"
+          },
+          "status": "frozen_output",
+          "system": "fewsnet"
+        },
+        {
+          "evidence": {
+            "generation": "1793455986577481",
+            "sha256": "65bbdc35d44a70ea5c2d051d594c8b0cf7a0d036b27b8c40f5268d031d54c07c",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/12m/fewsnet/polygon_confidence.csv"
+          },
+          "evidence_basis": "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024",
+          "evidence_horizon_months": 12,
+          "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+          "evidence_period": "2021-02..2024-10",
+          "family": "polygon_confidence",
+          "horizon_months": 12,
+          "source_availability": {
+            "generation": "1793455985540126",
+            "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+          },
+          "source_declarations": {
+            "generation": "1793455985713127",
+            "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+          },
+          "source_delivery_id": "oct-confidence-20261009b",
+          "source_evidence": {
+            "generation": "1793455984424462",
+            "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_12m_stage3_fs3_area.csv"
+          },
+          "status": "frozen_output",
+          "system": "fewsnet"
+        },
+        {
+          "evidence": {
+            "generation": "1793455986308645",
+            "sha256": "651e0d33f89f27b5f164efca36dc0d67dc7fb311224a11ccc726a1b95131df98",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/12m/fewsnet/country_confidence.csv"
+          },
+          "evidence_basis": "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024",
+          "evidence_horizon_months": 12,
+          "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+          "evidence_period": "2021-02..2024-10",
+          "family": "country_confidence",
+          "horizon_months": 12,
+          "source_availability": {
+            "generation": "1793455985540126",
+            "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+          },
+          "source_declarations": {
+            "generation": "1793455985713127",
+            "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+          },
+          "source_delivery_id": "oct-confidence-20261009b",
+          "source_evidence": {
+            "generation": "1793455984424462",
+            "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_12m_stage3_fs3_area.csv"
+          },
+          "status": "frozen_output",
+          "system": "fewsnet"
+        },
+        {
+          "evidence": {
+            "generation": "1793455987175707",
+            "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_0m_resubstitution_area.csv"
+          },
+          "evidence_horizon_months": 0,
+          "evidence_model_package_id": "launch_2026_04_production_safe/scope_0m",
+          "family": "polygon_training_errors",
+          "horizon_months": 0,
+          "status": "available",
+          "system": "ipcch"
+        },
+        {
+          "evidence": {
+            "generation": "1793455987175707",
+            "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_0m_resubstitution_area.csv"
+          },
+          "evidence_horizon_months": 0,
+          "evidence_model_package_id": "launch_2026_04_production_safe/scope_0m",
+          "family": "country_confidence",
+          "horizon_months": 0,
+          "status": "available",
+          "system": "ipcch"
+        },
+        {
+          "evidence": {
+            "generation": "1793455988132524",
+            "sha256": "38a0e027f5f551cf1311ffd97a9fa008ef2b87c1f99543a8c0d30b91905279e4",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_0m_resubstitution_residual.csv"
+          },
+          "evidence_horizon_months": 0,
+          "evidence_model_package_id": "launch_2026_04_production_safe/scope_0m",
+          "family": "maximum_phase",
+          "horizon_months": 0,
+          "status": "available",
+          "system": "ipcch"
+        },
+        {
+          "evidence": {
+            "generation": "1793455989756117",
+            "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_6m_resubstitution_area.csv"
+          },
+          "evidence_horizon_months": 6,
+          "evidence_model_package_id": "launch_2026_04_production_safe/scope_6m",
+          "family": "polygon_training_errors",
+          "horizon_months": 6,
+          "status": "available",
+          "system": "ipcch"
+        },
+        {
+          "evidence": {
+            "generation": "1793455989756117",
+            "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_6m_resubstitution_area.csv"
+          },
+          "evidence_horizon_months": 6,
+          "evidence_model_package_id": "launch_2026_04_production_safe/scope_6m",
+          "family": "country_confidence",
+          "horizon_months": 6,
+          "status": "available",
+          "system": "ipcch"
+        },
+        {
+          "evidence": {
+            "generation": "1793455990741619",
+            "sha256": "97e7791f7a1b29cf47bbe640bb2c46d6303e47a3974af3647f032787dd1a2670",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_6m_resubstitution_residual.csv"
+          },
+          "evidence_horizon_months": 6,
+          "evidence_model_package_id": "launch_2026_04_production_safe/scope_6m",
+          "family": "maximum_phase",
+          "horizon_months": 6,
+          "status": "available",
+          "system": "ipcch"
+        },
+        {
+          "evidence": {
+            "generation": "1793455988372605",
+            "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_12m_resubstitution_area.csv"
+          },
+          "evidence_horizon_months": 12,
+          "evidence_model_package_id": "launch_2026_04_production_safe/scope_12m",
+          "family": "polygon_training_errors",
+          "horizon_months": 12,
+          "status": "available",
+          "system": "ipcch"
+        },
+        {
+          "evidence": {
+            "generation": "1793455988372605",
+            "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_12m_resubstitution_area.csv"
+          },
+          "evidence_horizon_months": 12,
+          "evidence_model_package_id": "launch_2026_04_production_safe/scope_12m",
+          "family": "country_confidence",
+          "horizon_months": 12,
+          "status": "available",
+          "system": "ipcch"
+        },
+        {
+          "evidence": {
+            "generation": "1793455989491086",
+            "sha256": "f1fc9dd98eef2149bad6220775b16f83bdf0fe21121b4f1ce8c4945a6aeab780",
+            "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_12m_resubstitution_residual.csv"
+          },
+          "evidence_horizon_months": 12,
+          "evidence_model_package_id": "launch_2026_04_production_safe/scope_12m",
+          "family": "maximum_phase",
+          "horizon_months": 12,
+          "status": "available",
+          "system": "ipcch"
+        }
+      ],
+      "horizons_months": [
+        0,
+        6,
+        12
+      ],
+      "schema_version": "fewsnet-ipcch-delivery-request-v1",
+      "systems": [
+        "fewsnet",
+        "ipcch"
+      ]
+    },
+    "execution": {
+      "inference_systems": [
+        "fewsnet"
+      ],
+      "inherit": {
+        "ipcch": {
+          "archive": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/webapp_model_bundle.tar.gz#1792656963111614",
+          "manifest": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/manifest.json#1792656899775363",
+          "source_delivery_id": "fews-candidate-20261022a"
+        }
+      },
+      "prepared_manifest": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/prepared_manifest.json#1792650679865065",
+      "publication": "candidate",
+      "remote_update": false
+    },
+    "models": [
+      {
+        "acceptance_report": {
+          "generation": "1793456036002514",
+          "sha256": "88bb42963d79046af3beb7b7ff030e0de9a6b2e44af3bb160f5ccfa9f72cec2e",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/0m/full-202610-ff389b11af93-02caeb861750/0m/acceptance.json"
+        },
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 0,
+        "package_id": "full-202610-ff389b11af93-02caeb861750/0m",
+        "package_manifest": {
+          "generation": "1793456035889210",
+          "sha256": "38ee91f3cce4e4d67c76b01e84daade7902882f6f6cb1648d1e0bb73a70b30e2",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/0m/full-202610-ff389b11af93-02caeb861750/0m/package.json"
+        },
+        "system": "fewsnet"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456047897046",
+          "sha256": "e7247325c2a71ed9bfa5820783c1d50e675c1e52f3e776e4d51fbd0e977a306a",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/6m/full-202610-ff389b11af93-02caeb861750/6m/acceptance.json"
+        },
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 6,
+        "package_id": "full-202610-ff389b11af93-02caeb861750/6m",
+        "package_manifest": {
+          "generation": "1793456047775721",
+          "sha256": "ddfa197e2e926f36fded85b7f826a66160910e32473d705c051834d5c75a7e92",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/6m/full-202610-ff389b11af93-02caeb861750/6m/package.json"
+        },
+        "system": "fewsnet"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456057585959",
+          "sha256": "5ffdf7a593699ae36325ed421d85db5f9c711e3d2b4e457247cc81b5698a0cb8",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/12m/full-202610-ff389b11af93-02caeb861750/12m/acceptance.json"
+        },
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 12,
+        "package_id": "full-202610-ff389b11af93-02caeb861750/12m",
+        "package_manifest": {
+          "generation": "1793456057454027",
+          "sha256": "4473dfd363065650a5785010fd7a2adb1d1614e4718946755ba9b0c8da560ced",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/12m/full-202610-ff389b11af93-02caeb861750/12m/package.json"
+        },
+        "system": "fewsnet"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456059650304",
+          "sha256": "3e71a854691537d349fb5f609083e4dabe2193fae6981aa23da76b1ec2619270",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/0m/launch_2026_04_production_safe/scope_0m/acceptance.json"
+        },
+        "feature_schema_sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+        "horizon_months": 0,
+        "package_id": "launch_2026_04_production_safe/scope_0m",
+        "package_manifest": {
+          "generation": "1793456059523497",
+          "sha256": "59d500b9f36e1ebe62900869ca77af4360e162d2509f0c54553ea30077b7fdf6",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/0m/launch_2026_04_production_safe/scope_0m/package.json"
+        },
+        "system": "ipcch"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456061690781",
+          "sha256": "252ce0d0f93b0895965130c00bd7d5eef66f78bcd3bd6aa3d0de16f69dbb029f",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/6m/launch_2026_04_production_safe/scope_6m/acceptance.json"
+        },
+        "feature_schema_sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+        "horizon_months": 6,
+        "package_id": "launch_2026_04_production_safe/scope_6m",
+        "package_manifest": {
+          "generation": "1793456061572054",
+          "sha256": "cc016563545d1e5b29b4b6a0f6752a754a44cdeba0b363bb35bc77a5a8ea85a0",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/6m/launch_2026_04_production_safe/scope_6m/package.json"
+        },
+        "system": "ipcch"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456063796965",
+          "sha256": "50a646ed72e0fe50929974378644e3ec9e465bfc2d5fafabb963c1a2a6a2ab8e",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/12m/launch_2026_04_production_safe/scope_12m/acceptance.json"
+        },
+        "feature_schema_sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+        "horizon_months": 12,
+        "package_id": "launch_2026_04_production_safe/scope_12m",
+        "package_manifest": {
+          "generation": "1793456063678909",
+          "sha256": "240c7c977682ab40d995c8a831896490230024d047d14bc2d8f1f43508a983a9",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/12m/launch_2026_04_production_safe/scope_12m/package.json"
+        },
+        "system": "ipcch"
+      }
+    ],
+    "month": "2026-10",
+    "refs": {
+      "assets/fewsnet/geometry.geojson": {
+        "generation": "1793455656890796",
+        "sha256": "4a491eae5f88f99226f57b93542dcb9f527609787fb81059043a9c8721999386",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/geometry.geojson"
+      },
+      "assets/fewsnet/history/evi.csv": {
+        "generation": "1793455658035687",
+        "sha256": "6d2f2f993333670f5914cde872159219ef77fef0f0c40f2cd3bc7a1dd7aa9a40",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/history/evi.csv"
+      },
+      "assets/fewsnet/history/fldas.csv": {
+        "generation": "1793455664096770",
+        "sha256": "b461547689d074535ce4d290934f42dc7c93dd4e3560e81daf950687a820dcb2",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/history/fldas.csv"
+      },
+      "assets/fewsnet/history/gosif_mean.csv": {
+        "generation": "1793455664546677",
+        "sha256": "d0e4765f28ea30261a72c0943596504ba7e7ffab5f6219abbde1a423abc2f7f1",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/history/gosif_mean.csv"
+      },
+      "assets/fewsnet/history/viirs.csv": {
+        "generation": "1793455665919322",
+        "sha256": "27523619a6bba3ad9ddc1e47df6d3377653adad329958508df6f080b9e31a9c2",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/history/viirs.csv"
+      },
+      "assets/fewsnet/history_panel.csv": {
+        "generation": "1793455745368340",
+        "sha256": "a83f5f4b5eb33022960e43606f32afaec0cb15c10110ad1b56564790d637b722",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/history_panel.csv"
+      },
+      "assets/fewsnet/population.csv": {
+        "generation": "1793455745920898",
+        "sha256": "2970798181d21e95caa5a9ee4b04eb2304dc8bd8d0e35df98e683eb878844a90",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/population.csv"
+      },
+      "assets/fewsnet/roster.csv": {
+        "generation": "1793455746057744",
+        "sha256": "57c3ffaec68103321bb8da485e86026e1ef0e861db3f6274709fab84bcdfb2ef",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/roster.csv"
+      },
+      "assets/ipcch/fixed_features.csv": {
+        "generation": "1793455746759322",
+        "sha256": "8596ddb16aae439201b38148660e82981b7d498be1cbb1d2d77ae6dcf282e375",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/fixed_features.csv"
+      },
+      "assets/ipcch/geometry.geojson": {
+        "generation": "1793455759518509",
+        "sha256": "6d0460bbc45292986fdb6da33215e34501e9ad4d8f7b20ff23117c43f1e66268",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/geometry.geojson"
+      },
+      "assets/ipcch/history/evi.csv": {
+        "generation": "1793455760816867",
+        "sha256": "85275c6393714098669ff40e16d338c6077e494a6eea1f102de409e851be099d",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/history/evi.csv"
+      },
+      "assets/ipcch/history/fldas.csv": {
+        "generation": "1793455777106624",
+        "sha256": "fb7fbf20bff7878e2b599b9e629a903bc810276a1d0fc54f3ca9f89ad55316ba",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/history/fldas.csv"
+      },
+      "assets/ipcch/history/gosif_mean.csv": {
+        "generation": "1793455777537024",
+        "sha256": "2cfdb8c94c55bed7ce2db948cd99f480cd5d97c13c098a0337f0fc0a7584cd48",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/history/gosif_mean.csv"
+      },
+      "assets/ipcch/history/gosif_sd.csv": {
+        "generation": "1793455777843198",
+        "sha256": "f70d12b2760dac5fc5c01dd3d83b5eb27174f061f5fbb45239958676a217fb18",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/history/gosif_sd.csv"
+      },
+      "assets/ipcch/history/viirs.csv": {
+        "generation": "1793455779163179",
+        "sha256": "ea8322d27c5559f9f8721e710e5d67de52795d15d23d28ece3ffb4ddad4f8445",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/history/viirs.csv"
+      },
+      "assets/ipcch/history_panel.csv": {
+        "generation": "1793455950066137",
+        "sha256": "6ab4e44726666449b9c4c814cd52c89ef73fa83f7e05a480a066853d1e7e8ea3",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/history_panel.csv"
+      },
+      "assets/ipcch/population.csv": {
+        "generation": "1793455951450005",
+        "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/population.csv"
+      },
+      "assets/ipcch/roster.csv": {
+        "generation": "1793455951609634",
+        "sha256": "248acd133782d814d55ca24fd0d3040b92356c903b79c8ed7f736981991b15ee",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/roster.csv"
+      },
+      "assets/retained_acled.csv": {
+        "generation": "1793455975242443",
+        "sha256": "164be1e5f4744a720335e7f417e9436a4c9ce2df25226f7d2ef8092711e2e1e0",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/retained_acled.csv"
+      },
+      "assets/retained_wfp.csv": {
+        "generation": "1793455983870246",
+        "sha256": "6c9405960ca7c9641a83562f3ff6682dfc5021a24e7e139aa711fe2eb15f47b6",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/retained_wfp.csv"
+      },
+      "evidence/fewsnet_0m_stage3_fs1_area.csv": {
+        "generation": "1793455984193408",
+        "sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_0m_stage3_fs1_area.csv"
+      },
+      "evidence/fewsnet_12m_stage3_fs3_area.csv": {
+        "generation": "1793455984424462",
+        "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_12m_stage3_fs3_area.csv"
+      },
+      "evidence/fewsnet_6m_stage3_fs2_area.csv": {
+        "generation": "1793455984660212",
+        "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_6m_stage3_fs2_area.csv"
+      },
+      "evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv": {
+        "generation": "1793455985540126",
+        "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+      },
+      "evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json": {
+        "generation": "1793455985713127",
+        "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+      },
+      "evidence/frozen/oct-confidence-20261009b/scopes/0m/fewsnet/country_confidence.csv": {
+        "generation": "1793455985860329",
+        "sha256": "978e694f1abc17b4f674916a72fbbb2e9b1eb42a6b86d0f21dc20bd20ba00684",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/0m/fewsnet/country_confidence.csv"
+      },
+      "evidence/frozen/oct-confidence-20261009b/scopes/0m/fewsnet/polygon_confidence.csv": {
+        "generation": "1793455986133340",
+        "sha256": "be50a58bceea9b10931ba14bec484beb447718d35b877a25c95721571e175d17",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/0m/fewsnet/polygon_confidence.csv"
+      },
+      "evidence/frozen/oct-confidence-20261009b/scopes/12m/fewsnet/country_confidence.csv": {
+        "generation": "1793455986308645",
+        "sha256": "651e0d33f89f27b5f164efca36dc0d67dc7fb311224a11ccc726a1b95131df98",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/12m/fewsnet/country_confidence.csv"
+      },
+      "evidence/frozen/oct-confidence-20261009b/scopes/12m/fewsnet/polygon_confidence.csv": {
+        "generation": "1793455986577481",
+        "sha256": "65bbdc35d44a70ea5c2d051d594c8b0cf7a0d036b27b8c40f5268d031d54c07c",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/12m/fewsnet/polygon_confidence.csv"
+      },
+      "evidence/frozen/oct-confidence-20261009b/scopes/6m/fewsnet/country_confidence.csv": {
+        "generation": "1793455986720549",
+        "sha256": "158eb31d318398a30406d8ab7ed039afa3e43243e292162cedfd73a6088e839f",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/6m/fewsnet/country_confidence.csv"
+      },
+      "evidence/frozen/oct-confidence-20261009b/scopes/6m/fewsnet/polygon_confidence.csv": {
+        "generation": "1793455986966737",
+        "sha256": "3ba4d9d2dfcf166d115fa54db9531f06e949b1c3f7980cdea790b1dad9870a72",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/6m/fewsnet/polygon_confidence.csv"
+      },
+      "evidence/ipcch_0m_resubstitution_area.csv": {
+        "generation": "1793455987175707",
+        "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_0m_resubstitution_area.csv"
+      },
+      "evidence/ipcch_0m_resubstitution_residual.csv": {
+        "generation": "1793455988132524",
+        "sha256": "38a0e027f5f551cf1311ffd97a9fa008ef2b87c1f99543a8c0d30b91905279e4",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_0m_resubstitution_residual.csv"
+      },
+      "evidence/ipcch_12m_resubstitution_area.csv": {
+        "generation": "1793455988372605",
+        "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_12m_resubstitution_area.csv"
+      },
+      "evidence/ipcch_12m_resubstitution_residual.csv": {
+        "generation": "1793455989491086",
+        "sha256": "f1fc9dd98eef2149bad6220775b16f83bdf0fe21121b4f1ce8c4945a6aeab780",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_12m_resubstitution_residual.csv"
+      },
+      "evidence/ipcch_6m_resubstitution_area.csv": {
+        "generation": "1793455989756117",
+        "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_6m_resubstitution_area.csv"
+      },
+      "evidence/ipcch_6m_resubstitution_residual.csv": {
+        "generation": "1793455990741619",
+        "sha256": "97e7791f7a1b29cf47bbe640bb2c46d6303e47a3974af3647f032787dd1a2670",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_6m_resubstitution_residual.csv"
+      },
+      "evidence/provenance.json": {
+        "generation": "1793455990863361",
+        "sha256": "949a71ff9e679b53ab64cb05b910453693b9fa30e6626e804abc904d26a93178",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/provenance.json"
+      },
+      "models/fewsnet/0m/checksums.json": {
+        "generation": "1793455990982678",
+        "sha256": "b4ed2d1f4935c9c6855675c665d4b38fcc747514023ab127c9368d24dfa2b41d",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/0m/checksums.json"
+      },
+      "models/fewsnet/0m/feature_contract.json": {
+        "generation": "1793455991095090",
+        "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/0m/feature_contract.json"
+      },
+      "models/fewsnet/0m/local_model_manifest.json": {
+        "generation": "1793455991224588",
+        "sha256": "bef83934b66618d7c61b2bad68ce142a6e4057805f59ae8a47c027a826718edc",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/0m/local_model_manifest.json"
+      },
+      "models/fewsnet/0m/model.joblib": {
+        "generation": "1793456001180038",
+        "sha256": "69b90bf03aea31b1e24d45cb2ad0f66994cf4c014da3cb7dfa20c68d51fdf1bd",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/0m/model.joblib"
+      },
+      "models/fewsnet/0m/partition_map.csv": {
+        "generation": "1793456001450467",
+        "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/0m/partition_map.csv"
+      },
+      "models/fewsnet/0m/threshold_report.json": {
+        "generation": "1793456001579392",
+        "sha256": "18d4a4f1d525921f91021973177b21c71ce6ae284aa1d80e4441dc53b8f10cef",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/0m/threshold_report.json"
+      },
+      "models/fewsnet/0m/training_report.json": {
+        "generation": "1793456001710406",
+        "sha256": "244ef199317c456f4d44f55bfc6cb6b0d80e5e7b38f59f41a54a2959f9494058",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/0m/training_report.json"
+      },
+      "models/fewsnet/12m/checksums.json": {
+        "generation": "1793456001837754",
+        "sha256": "c6c65a9a01442bdee6a92342b24759c7626e5aa1df36997b78cdf7c8249a7960",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/12m/checksums.json"
+      },
+      "models/fewsnet/12m/feature_contract.json": {
+        "generation": "1793456001990588",
+        "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/12m/feature_contract.json"
+      },
+      "models/fewsnet/12m/local_model_manifest.json": {
+        "generation": "1793456002117995",
+        "sha256": "37a5c703ecdf777c7fbc06e356b1d7b1f1e6bca350afa37c19215e89b0e67093",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/12m/local_model_manifest.json"
+      },
+      "models/fewsnet/12m/model.joblib": {
+        "generation": "1793456010421877",
+        "sha256": "62520a04c0cb8780cc12a0319056aed2fdb96a681b1bc347c4e7d8bb571b0806",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/12m/model.joblib"
+      },
+      "models/fewsnet/12m/partition_map.csv": {
+        "generation": "1793456010806879",
+        "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/12m/partition_map.csv"
+      },
+      "models/fewsnet/12m/threshold_report.json": {
+        "generation": "1793456010938222",
+        "sha256": "65a4de1084e3548b6fc826edf52cffcf6a831adabd69c9cbd5c5181edc95fced",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/12m/threshold_report.json"
+      },
+      "models/fewsnet/12m/training_report.json": {
+        "generation": "1793456011060646",
+        "sha256": "9063b9decae1b5f43447d88600c4ff7c13c9eccb78d8f0b20916957a7d189ab3",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/12m/training_report.json"
+      },
+      "models/fewsnet/6m/checksums.json": {
+        "generation": "1793456011188186",
+        "sha256": "d4903ecbb8c343d71de0439bfcca2e4a805aaff6d4e815168c0421a231728383",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/6m/checksums.json"
+      },
+      "models/fewsnet/6m/feature_contract.json": {
+        "generation": "1793456011309039",
+        "sha256": "3779c6bcde70560c0e1514c563ced6e7bd559c6d352689398c3cecb93d44a67b",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/6m/feature_contract.json"
+      },
+      "models/fewsnet/6m/local_model_manifest.json": {
+        "generation": "1793456011438006",
+        "sha256": "ab2a202e550028ac2c89a42e4f55cfc3684769e993f3058275455a2403d94881",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/6m/local_model_manifest.json"
+      },
+      "models/fewsnet/6m/model.joblib": {
+        "generation": "1793456019752493",
+        "sha256": "a0802145992eeed81182eed4c25392e6dda1f544a8f361e5d18ba091858d9744",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/6m/model.joblib"
+      },
+      "models/fewsnet/6m/partition_map.csv": {
+        "generation": "1793456020004161",
+        "sha256": "4723cae57c07229973559f1fe62fb13bae818c2b2de71e171ce3b2eaf5c2152b",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/6m/partition_map.csv"
+      },
+      "models/fewsnet/6m/threshold_report.json": {
+        "generation": "1793456020122896",
+        "sha256": "1d4f1965e0332254a3a6191fbcfb947959e4e73b6971ccb5011ef688cbf5ad33",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/6m/threshold_report.json"
+      },
+      "models/fewsnet/6m/training_report.json": {
+        "generation": "1793456020248110",
+        "sha256": "2357c6682de4c41ce99dfd9dc03df4ec554fb651face98488e36be52538438a9",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/fewsnet/6m/training_report.json"
+      },
+      "models/ipcch/model_package_manifest.json": {
+        "generation": "1793456020386799",
+        "sha256": "24609f1234bce32e6a2e249aa5e1ec9aeb5b3f62aca986cd609a1c1bf79ab070",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/model_package_manifest.json"
+      },
+      "models/ipcch/scope_0m/feature_columns.json": {
+        "generation": "1793456020516985",
+        "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_0m/feature_columns.json"
+      },
+      "models/ipcch/scope_0m/feature_contract.csv": {
+        "generation": "1793456020692205",
+        "sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_0m/feature_contract.csv"
+      },
+      "models/ipcch/scope_0m/model_metadata.json": {
+        "generation": "1793456020809317",
+        "sha256": "adf2965fcb9d830609a1ca908f151f7958d936d2ab44f310909f18136294da27",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_0m/model_metadata.json"
+      },
+      "models/ipcch/scope_0m/phase2_worse_model.json": {
+        "generation": "1793456021105690",
+        "sha256": "1623ffb2ad5dfc543a16649aa09d3aaa8f72279d864492ad340f495fb7efbc03",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_0m/phase2_worse_model.json"
+      },
+      "models/ipcch/scope_0m/phase3_worse_model.json": {
+        "generation": "1793456021411232",
+        "sha256": "d187f943cfa5a623da6de680857dc1c65ef71ae8be7b02a971d20d5de8160757",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_0m/phase3_worse_model.json"
+      },
+      "models/ipcch/scope_0m/phase4_worse_model.json": {
+        "generation": "1793456021829240",
+        "sha256": "177d201b628c49f90306971bb5d9504913b5c88edcd6ca1dc4133555ceaeeef3",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_0m/phase4_worse_model.json"
+      },
+      "models/ipcch/scope_0m/phase5_worse_model.json": {
+        "generation": "1793456022116628",
+        "sha256": "21d25364c6225868ec1ea45f60c9bfd0e0c3c91023d9b33c4424bbd8e443ede2",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_0m/phase5_worse_model.json"
+      },
+      "models/ipcch/scope_12m/feature_columns.json": {
+        "generation": "1793456022247566",
+        "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_12m/feature_columns.json"
+      },
+      "models/ipcch/scope_12m/feature_contract.csv": {
+        "generation": "1793456022382963",
+        "sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_12m/feature_contract.csv"
+      },
+      "models/ipcch/scope_12m/model_metadata.json": {
+        "generation": "1793456022503470",
+        "sha256": "df8a81aa62c6f8be2226e8f6ba64dfa53786425d5e29e715f17219176da62582",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_12m/model_metadata.json"
+      },
+      "models/ipcch/scope_12m/phase2_worse_model.json": {
+        "generation": "1793456022822036",
+        "sha256": "39e5bed8ca3063fa3004edabcd02838cb873a9c7a384c7aa5fd9867eff6cb41f",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_12m/phase2_worse_model.json"
+      },
+      "models/ipcch/scope_12m/phase3_worse_model.json": {
+        "generation": "1793456023115591",
+        "sha256": "eb97f722d941fa95ca18cbf971492420af55f7eab44df68fddc7ddacc3bb7cb6",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_12m/phase3_worse_model.json"
+      },
+      "models/ipcch/scope_12m/phase4_worse_model.json": {
+        "generation": "1793456023409977",
+        "sha256": "22c8a847317b5eb800c14d4fe6dfef320500741e1cb46830af7859c3c6eed1bf",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_12m/phase4_worse_model.json"
+      },
+      "models/ipcch/scope_12m/phase5_worse_model.json": {
+        "generation": "1793456023694262",
+        "sha256": "17f76bdd82ccad753138029d62fa7e04cf8c40c50c3b3feaf7e7f64f74b370a8",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_12m/phase5_worse_model.json"
+      },
+      "models/ipcch/scope_6m/feature_columns.json": {
+        "generation": "1793456023808618",
+        "sha256": "800e26fdecb019920acfa7835100de7977ff48e71155c874fd1bd16492ad57d6",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_6m/feature_columns.json"
+      },
+      "models/ipcch/scope_6m/feature_contract.csv": {
+        "generation": "1793456023941217",
+        "sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_6m/feature_contract.csv"
+      },
+      "models/ipcch/scope_6m/model_metadata.json": {
+        "generation": "1793456024063150",
+        "sha256": "6dc4600831bf705bb1c6884f4e1925b3e737b2f68bda23d570f3da2ff4598e06",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_6m/model_metadata.json"
+      },
+      "models/ipcch/scope_6m/phase2_worse_model.json": {
+        "generation": "1793456024385159",
+        "sha256": "aafb1f83f6d70b16d782d765b565a55ebcf004d3a5659636f78852da74c5e354",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_6m/phase2_worse_model.json"
+      },
+      "models/ipcch/scope_6m/phase3_worse_model.json": {
+        "generation": "1793456024672515",
+        "sha256": "664c8f57589372c98cef8853f939eaa44ac615a3a85f0c7ed1d6e7311683f753",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_6m/phase3_worse_model.json"
+      },
+      "models/ipcch/scope_6m/phase4_worse_model.json": {
+        "generation": "1793456024961452",
+        "sha256": "7460239dc5c42cbfa008486ab013018d2bb081da4874949ce3365b6f106e2b00",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_6m/phase4_worse_model.json"
+      },
+      "models/ipcch/scope_6m/phase5_worse_model.json": {
+        "generation": "1793456025243928",
+        "sha256": "3959dbb21b7e432430bebb2fc54bc79c63a246cdaa3869b1f22b67857e1e248d",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/scope_6m/phase5_worse_model.json"
+      },
+      "models/ipcch/training_export_summary.json": {
+        "generation": "1793456025367808",
+        "sha256": "f635ed3ed4a58f3b0b220ea939b2094663c0fa872c4d17c42b5269b6262d2f9a",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/models/ipcch/training_export_summary.json"
+      }
+    },
+    "runtime": {
+      "environment_manifest": {
+        "generation": "1793456025486882",
+        "sha256": "35a4890a3ee40fee8bc6cf121ee332fce6a26c8ec7255b446cddf0db2de92b3b",
+        "uri": "gs://food-crisis-test-ipcch-data/environments/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6.json"
+      },
+      "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6"
+    },
+    "sources": {
+      "acled": {
+        "sha256": "2b50fee6834348d2f45c60617955c75c4667e9a26197dff531eb337433029491",
+        "version": "september-h5-raw-converter-v1"
+      },
+      "wfp": {
+        "sha256": "2b50fee6834348d2f45c60617955c75c4667e9a26197dff531eb337433029491",
+        "version": "september-h5-raw-converter-v1"
+      }
+    }
+  },
+  "phase": "submitted",
+  "pinned": {
+    "inherit": {
+      "ipcch": {
+        "archive": {
+          "generation": "1792656963111614",
+          "sha256": "f387091499fbe7ac31a363345cba224de816829e004bbb37f7e10d2187e936d5",
+          "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/webapp_model_bundle.tar.gz"
+        },
+        "manifest": {
+          "generation": "1792656899775363",
+          "sha256": "54dd0f1417f64f5848dea38abe1b77ecd8cfe859f772347a26154f043df65fc0",
+          "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/manifest.json"
+        },
+        "origin_month": "2026-10",
+        "source_delivery_id": "fews-candidate-20261022a"
+      }
+    },
+    "prepared_manifest": {
+      "generation": "1792650679865065",
+      "sha256": "a5db2c8ba11ae075d58096961f4a1131dc030b6c842c88912b9f4cf5bffb2ab9",
+      "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/prepared_manifest.json"
+    }
+  },
+  "pointer_generation": "1792657760445077",
+  "prepare_id": "fewsnet-retrain-20261022a",
+  "prepared_at": "2026-10-31T14:27:32Z",
+  "request_body": {
+    "acled": {
+      "action": "keep",
+      "converter_contract": {
+        "sha256": "2b50fee6834348d2f45c60617955c75c4667e9a26197dff531eb337433029491",
+        "version": "september-h5-raw-converter-v1"
+      },
+      "retained_snapshot": {
+        "generation": "1793455975242443",
+        "sha256": "164be1e5f4744a720335e7f417e9436a4c9ce2df25226f7d2ef8092711e2e1e0",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/retained_acled.csv"
+      }
+    },
+    "assets": {
+      "fewsnet": {
+        "country_reference": {
+          "generation": "1793455745920898",
+          "sha256": "2970798181d21e95caa5a9ee4b04eb2304dc8bd8d0e35df98e683eb878844a90",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/population.csv"
+        },
+        "geometry": {
+          "generation": "1793455656890796",
+          "sha256": "4a491eae5f88f99226f57b93542dcb9f527609787fb81059043a9c8721999386",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/geometry.geojson"
+        },
+        "history_panel": {
+          "generation": "1793455745368340",
+          "sha256": "a83f5f4b5eb33022960e43606f32afaec0cb15c10110ad1b56564790d637b722",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/history_panel.csv"
+        },
+        "population": {
+          "generation": "1793455745920898",
+          "sha256": "2970798181d21e95caa5a9ee4b04eb2304dc8bd8d0e35df98e683eb878844a90",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/population.csv"
+        },
+        "roster": {
+          "generation": "1793455746057744",
+          "sha256": "57c3ffaec68103321bb8da485e86026e1ef0e861db3f6274709fab84bcdfb2ef",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/fewsnet/roster.csv"
+        }
+      },
+      "ipcch": {
+        "country_reference": {
+          "generation": "1793455951450005",
+          "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/population.csv"
+        },
+        "fixed_features": {
+          "generation": "1793455746759322",
+          "sha256": "8596ddb16aae439201b38148660e82981b7d498be1cbb1d2d77ae6dcf282e375",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/fixed_features.csv"
+        },
+        "geometry": {
+          "generation": "1793455759518509",
+          "sha256": "6d0460bbc45292986fdb6da33215e34501e9ad4d8f7b20ff23117c43f1e66268",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/geometry.geojson"
+        },
+        "history_panel": {
+          "generation": "1793455950066137",
+          "sha256": "6ab4e44726666449b9c4c814cd52c89ef73fa83f7e05a480a066853d1e7e8ea3",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/history_panel.csv"
+        },
+        "population": {
+          "generation": "1793455951450005",
+          "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/population.csv"
+        },
+        "roster": {
+          "generation": "1793455951609634",
+          "sha256": "248acd133782d814d55ca24fd0d3040b92356c903b79c8ed7f736981991b15ee",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/ipcch/roster.csv"
+        }
+      }
+    },
+    "contracts": {
+      "diagnostic": {
+        "sha256": "be3f1b44776624b9c37b661e9711ac1d8f51628b80c33e3b60b6a56fea088c9b",
+        "version": "diag-v1"
+      },
+      "feature": {
+        "sha256": "d190c5735d387696e675626236364b8f6eef7ac7eeda3a401933bf32ca03b12c",
+        "version": "feature-v1"
+      },
+      "fill": {
+        "sha256": "dcd32479a72e55b29a03a586d8a483a05be0ce87cc5c25c7bad23079fc0356b3",
+        "version": "area-past-only-carry-forward-v1"
+      },
+      "output": {
+        "sha256": "13fb4caaedd24fbe2295ff05c4e05416ec88163fbaa05c69821d74f47868523a",
+        "version": "september-v3-output-v1"
+      }
+    },
+    "diagnostics": [
+      {
+        "evidence": {
+          "generation": "1793455986133340",
+          "sha256": "be50a58bceea9b10931ba14bec484beb447718d35b877a25c95721571e175d17",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/0m/fewsnet/polygon_confidence.csv"
+        },
+        "evidence_basis": "h0_validation_error_proxy_stage3_fs1_lag4_2021_2024",
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+        "evidence_period": "2021-02..2024-10",
+        "family": "polygon_confidence",
+        "horizon_months": 0,
+        "source_availability": {
+          "generation": "1793455985540126",
+          "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+        },
+        "source_declarations": {
+          "generation": "1793455985713127",
+          "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+        },
+        "source_delivery_id": "oct-confidence-20261009b",
+        "source_evidence": {
+          "generation": "1793455984193408",
+          "sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_0m_stage3_fs1_area.csv"
+        },
+        "status": "frozen_output",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1793455985860329",
+          "sha256": "978e694f1abc17b4f674916a72fbbb2e9b1eb42a6b86d0f21dc20bd20ba00684",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/0m/fewsnet/country_confidence.csv"
+        },
+        "evidence_basis": "h0_validation_error_proxy_stage3_fs1_lag4_2021_2024",
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/0m",
+        "evidence_period": "2021-02..2024-10",
+        "family": "country_confidence",
+        "horizon_months": 0,
+        "source_availability": {
+          "generation": "1793455985540126",
+          "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+        },
+        "source_declarations": {
+          "generation": "1793455985713127",
+          "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+        },
+        "source_delivery_id": "oct-confidence-20261009b",
+        "source_evidence": {
+          "generation": "1793455984193408",
+          "sha256": "ffea2cf90e83ce7129701237ed340b91b55d2e183590c0dc25dfec320bd5571a",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_0m_stage3_fs1_area.csv"
+        },
+        "status": "frozen_output",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1793455986966737",
+          "sha256": "3ba4d9d2dfcf166d115fa54db9531f06e949b1c3f7980cdea790b1dad9870a72",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/6m/fewsnet/polygon_confidence.csv"
+        },
+        "evidence_basis": "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024",
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+        "evidence_period": "2021-02..2024-10",
+        "family": "polygon_confidence",
+        "horizon_months": 6,
+        "source_availability": {
+          "generation": "1793455985540126",
+          "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+        },
+        "source_declarations": {
+          "generation": "1793455985713127",
+          "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+        },
+        "source_delivery_id": "oct-confidence-20261009b",
+        "source_evidence": {
+          "generation": "1793455984660212",
+          "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_6m_stage3_fs2_area.csv"
+        },
+        "status": "frozen_output",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1793455986720549",
+          "sha256": "158eb31d318398a30406d8ab7ed039afa3e43243e292162cedfd73a6088e839f",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/6m/fewsnet/country_confidence.csv"
+        },
+        "evidence_basis": "h6_validation_error_proxy_stage3_fs2_lag8_2021_2024",
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/6m",
+        "evidence_period": "2021-02..2024-10",
+        "family": "country_confidence",
+        "horizon_months": 6,
+        "source_availability": {
+          "generation": "1793455985540126",
+          "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+        },
+        "source_declarations": {
+          "generation": "1793455985713127",
+          "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+        },
+        "source_delivery_id": "oct-confidence-20261009b",
+        "source_evidence": {
+          "generation": "1793455984660212",
+          "sha256": "12384ce7b07ab410f91bfce13cd9135e645ba93a3ef57d1b70c72e27f30dd5e9",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_6m_stage3_fs2_area.csv"
+        },
+        "status": "frozen_output",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1793455986577481",
+          "sha256": "65bbdc35d44a70ea5c2d051d594c8b0cf7a0d036b27b8c40f5268d031d54c07c",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/12m/fewsnet/polygon_confidence.csv"
+        },
+        "evidence_basis": "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024",
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+        "evidence_period": "2021-02..2024-10",
+        "family": "polygon_confidence",
+        "horizon_months": 12,
+        "source_availability": {
+          "generation": "1793455985540126",
+          "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+        },
+        "source_declarations": {
+          "generation": "1793455985713127",
+          "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+        },
+        "source_delivery_id": "oct-confidence-20261009b",
+        "source_evidence": {
+          "generation": "1793455984424462",
+          "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_12m_stage3_fs3_area.csv"
+        },
+        "status": "frozen_output",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1793455986308645",
+          "sha256": "651e0d33f89f27b5f164efca36dc0d67dc7fb311224a11ccc726a1b95131df98",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/scopes/12m/fewsnet/country_confidence.csv"
+        },
+        "evidence_basis": "h12_validation_error_proxy_stage3_fs3_lag12_2021_2024",
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "local-202604-57cb3b981198-510375f58cd8/12m",
+        "evidence_period": "2021-02..2024-10",
+        "family": "country_confidence",
+        "horizon_months": 12,
+        "source_availability": {
+          "generation": "1793455985540126",
+          "sha256": "d401c20291d874990ef544033e892859e300fa44269369ce4dec825145e1c613",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/diagnostic_availability.csv"
+        },
+        "source_declarations": {
+          "generation": "1793455985713127",
+          "sha256": "2e4ed8ba16c87324e12b2dd3d5ad1a69c83a776823fba8b60a7dc815f4169bea",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/frozen/oct-confidence-20261009b/reports/fewsnet_diagnostic_declarations.json"
+        },
+        "source_delivery_id": "oct-confidence-20261009b",
+        "source_evidence": {
+          "generation": "1793455984424462",
+          "sha256": "28adb814483c9192d90c2698277472093e5b293ef599d8bd9e9a24009b05c042",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/fewsnet_12m_stage3_fs3_area.csv"
+        },
+        "status": "frozen_output",
+        "system": "fewsnet"
+      },
+      {
+        "evidence": {
+          "generation": "1793455987175707",
+          "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_0m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_0m",
+        "family": "polygon_training_errors",
+        "horizon_months": 0,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1793455987175707",
+          "sha256": "ad776a0e24a427ceb382bd4d289b6cd5246a5c01fc35576dedbd3cbbe58a860f",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_0m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_0m",
+        "family": "country_confidence",
+        "horizon_months": 0,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1793455988132524",
+          "sha256": "38a0e027f5f551cf1311ffd97a9fa008ef2b87c1f99543a8c0d30b91905279e4",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_0m_resubstitution_residual.csv"
+        },
+        "evidence_horizon_months": 0,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_0m",
+        "family": "maximum_phase",
+        "horizon_months": 0,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1793455989756117",
+          "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_6m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_6m",
+        "family": "polygon_training_errors",
+        "horizon_months": 6,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1793455989756117",
+          "sha256": "63125b076db92488ade2b7fa11ca72c9d1d29dcbb9786786d67e8f230e38b1b5",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_6m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_6m",
+        "family": "country_confidence",
+        "horizon_months": 6,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1793455990741619",
+          "sha256": "97e7791f7a1b29cf47bbe640bb2c46d6303e47a3974af3647f032787dd1a2670",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_6m_resubstitution_residual.csv"
+        },
+        "evidence_horizon_months": 6,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_6m",
+        "family": "maximum_phase",
+        "horizon_months": 6,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1793455988372605",
+          "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_12m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_12m",
+        "family": "polygon_training_errors",
+        "horizon_months": 12,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1793455988372605",
+          "sha256": "35270107bb1393dd04b475e922b50e3bbb74a1d7da29089ff6722562828c5561",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_12m_resubstitution_area.csv"
+        },
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_12m",
+        "family": "country_confidence",
+        "horizon_months": 12,
+        "status": "available",
+        "system": "ipcch"
+      },
+      {
+        "evidence": {
+          "generation": "1793455989491086",
+          "sha256": "f1fc9dd98eef2149bad6220775b16f83bdf0fe21121b4f1ce8c4945a6aeab780",
+          "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/evidence/ipcch_12m_resubstitution_residual.csv"
+        },
+        "evidence_horizon_months": 12,
+        "evidence_model_package_id": "launch_2026_04_production_safe/scope_12m",
+        "family": "maximum_phase",
+        "horizon_months": 12,
+        "status": "available",
+        "system": "ipcch"
+      }
+    ],
+    "execution": {
+      "inference_systems": [
+        "fewsnet"
+      ],
+      "inherit": {
+        "ipcch": {
+          "archive": {
+            "generation": "1792656963111614",
+            "sha256": "f387091499fbe7ac31a363345cba224de816829e004bbb37f7e10d2187e936d5",
+            "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/webapp_model_bundle.tar.gz"
+          },
+          "manifest": {
+            "generation": "1792656899775363",
+            "sha256": "54dd0f1417f64f5848dea38abe1b77ecd8cfe859f772347a26154f043df65fc0",
+            "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-candidate-20261022a/manifest.json"
+          },
+          "origin_month": "2026-10",
+          "source_delivery_id": "fews-candidate-20261022a"
+        }
+      },
+      "prepare_request": null,
+      "publication": "candidate",
+      "remote_update": false
+    },
+    "horizons_months": [
+      0,
+      6,
+      12
+    ],
+    "models": [
+      {
+        "acceptance_report": {
+          "generation": "1793456036002514",
+          "sha256": "88bb42963d79046af3beb7b7ff030e0de9a6b2e44af3bb160f5ccfa9f72cec2e",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/0m/full-202610-ff389b11af93-02caeb861750/0m/acceptance.json"
+        },
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 0,
+        "package_id": "full-202610-ff389b11af93-02caeb861750/0m",
+        "package_manifest": {
+          "generation": "1793456035889210",
+          "sha256": "38ee91f3cce4e4d67c76b01e84daade7902882f6f6cb1648d1e0bb73a70b30e2",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/0m/full-202610-ff389b11af93-02caeb861750/0m/package.json"
+        },
+        "system": "fewsnet"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456047897046",
+          "sha256": "e7247325c2a71ed9bfa5820783c1d50e675c1e52f3e776e4d51fbd0e977a306a",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/6m/full-202610-ff389b11af93-02caeb861750/6m/acceptance.json"
+        },
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 6,
+        "package_id": "full-202610-ff389b11af93-02caeb861750/6m",
+        "package_manifest": {
+          "generation": "1793456047775721",
+          "sha256": "ddfa197e2e926f36fded85b7f826a66160910e32473d705c051834d5c75a7e92",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/6m/full-202610-ff389b11af93-02caeb861750/6m/package.json"
+        },
+        "system": "fewsnet"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456057585959",
+          "sha256": "5ffdf7a593699ae36325ed421d85db5f9c711e3d2b4e457247cc81b5698a0cb8",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/12m/full-202610-ff389b11af93-02caeb861750/12m/acceptance.json"
+        },
+        "feature_schema_sha256": "6e6f0bdc2df7bb40ec37f2d44926d2a24fbb746bc5272ed9b93a7ae4047d891b",
+        "horizon_months": 12,
+        "package_id": "full-202610-ff389b11af93-02caeb861750/12m",
+        "package_manifest": {
+          "generation": "1793456057454027",
+          "sha256": "4473dfd363065650a5785010fd7a2adb1d1614e4718946755ba9b0c8da560ced",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/12m/full-202610-ff389b11af93-02caeb861750/12m/package.json"
+        },
+        "system": "fewsnet"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456059650304",
+          "sha256": "3e71a854691537d349fb5f609083e4dabe2193fae6981aa23da76b1ec2619270",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/0m/launch_2026_04_production_safe/scope_0m/acceptance.json"
+        },
+        "feature_schema_sha256": "ed49866a4bf8b79b474dd15ec95c6f3c55a4ed88ba9141baab3722a10c0c4068",
+        "horizon_months": 0,
+        "package_id": "launch_2026_04_production_safe/scope_0m",
+        "package_manifest": {
+          "generation": "1793456059523497",
+          "sha256": "59d500b9f36e1ebe62900869ca77af4360e162d2509f0c54553ea30077b7fdf6",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/0m/launch_2026_04_production_safe/scope_0m/package.json"
+        },
+        "system": "ipcch"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456061690781",
+          "sha256": "252ce0d0f93b0895965130c00bd7d5eef66f78bcd3bd6aa3d0de16f69dbb029f",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/6m/launch_2026_04_production_safe/scope_6m/acceptance.json"
+        },
+        "feature_schema_sha256": "44ab914de27b95dc837a4fba6b25492247f52ddbcd01a1a62fb6c3a66e9c00b4",
+        "horizon_months": 6,
+        "package_id": "launch_2026_04_production_safe/scope_6m",
+        "package_manifest": {
+          "generation": "1793456061572054",
+          "sha256": "cc016563545d1e5b29b4b6a0f6752a754a44cdeba0b363bb35bc77a5a8ea85a0",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/6m/launch_2026_04_production_safe/scope_6m/package.json"
+        },
+        "system": "ipcch"
+      },
+      {
+        "acceptance_report": {
+          "generation": "1793456063796965",
+          "sha256": "50a646ed72e0fe50929974378644e3ec9e465bfc2d5fafabb963c1a2a6a2ab8e",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/12m/launch_2026_04_production_safe/scope_12m/acceptance.json"
+        },
+        "feature_schema_sha256": "f0cd58011fecbb92a02667b5d251c49efc80232182f26cebaa3ac00daf4f8b06",
+        "horizon_months": 12,
+        "package_id": "launch_2026_04_production_safe/scope_12m",
+        "package_manifest": {
+          "generation": "1793456063678909",
+          "sha256": "240c7c977682ab40d995c8a831896490230024d047d14bc2d8f1f43508a983a9",
+          "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/12m/launch_2026_04_production_safe/scope_12m/package.json"
+        },
+        "system": "ipcch"
+      }
+    ],
+    "operator": "weilun.shi",
+    "origin_month": "2026-10",
+    "prepared_at": "2026-10-31T14:27:32Z",
+    "prepared_snapshot": {
+      "manifest": {
+        "generation": "1792650679865065",
+        "sha256": "a5db2c8ba11ae075d58096961f4a1131dc030b6c842c88912b9f4cf5bffb2ab9",
+        "uri": "gs://food-crisis-test-ipcch-data/prepared/fewsnet-retrain-20261022a/prepared_manifest.json"
+      },
+      "origin_month": "2026-10",
+      "prepare_id": "fewsnet-retrain-20261022a"
+    },
+    "release": {
+      "expected_pointer_generation": "1792657760445077",
+      "namespace": "monthly-staging"
+    },
+    "run_id": "fews-compat-v2rt-20261031a",
+    "runtime": {
+      "environment_manifest": {
+        "generation": "1793456025486882",
+        "sha256": "35a4890a3ee40fee8bc6cf121ee332fce6a26c8ec7255b446cddf0db2de92b3b",
+        "uri": "gs://food-crisis-test-ipcch-data/environments/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6.json"
+      },
+      "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6"
+    },
+    "schema_version": "fewsnet-ipcch-delivery-request-v1",
+    "systems": [
+      "fewsnet",
+      "ipcch"
+    ],
+    "wfp": {
+      "action": "keep",
+      "converter_contract": {
+        "sha256": "2b50fee6834348d2f45c60617955c75c4667e9a26197dff531eb337433029491",
+        "version": "september-h5-raw-converter-v1"
+      },
+      "retained_snapshot": {
+        "generation": "1793455983870246",
+        "sha256": "6c9405960ca7c9641a83562f3ff6682dfc5021a24e7e139aa711fe2eb15f47b6",
+        "uri": "gs://food-crisis-test-ipcch-data/baselines/f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856/assets/retained_wfp.csv"
+      }
+    }
+  },
+  "run_id": "fews-compat-v2rt-20261031a",
+  "preparation": {
+    "cancelled_provider_tasks": [],
+    "failure_reason": null,
+    "message": null,
+    "origin_month": "2026-10",
+    "prepare_id": "fewsnet-retrain-20261022a",
+    "status": "succeeded",
+    "written_at_utc": "2026-10-22T06:31:20.168952Z"
+  },
+  "preparation_mode": "reused fewsnet-retrain-20261022a",
+  "dispatch": {
+    "claim": null,
+    "admission": null,
+    "resolution": null
+  },
+  "delivery": null,
+  "candidate": null,
+  "prepared_snapshot": null,
+  "status": "submitted"
+}

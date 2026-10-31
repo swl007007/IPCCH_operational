@@ -1,0 +1,7 @@
+['scopes/0m/ipcch/polygon_predictions.csv', 'scopes/12m/ipcch/polygon_predictions.csv', 'scopes/6m/ipcch/polygon_predictions.csv']
+scopes/0m/ipcch/polygon_predictions.csv 6226 ['phase2_worse_pred', 'phase3_worse_pred', 'phase4_worse_pred', 'phase5_worse_pred', 'overall_phase_pred']
+   phase2_worse_pred {'0': 201, '1': 6025}
+scopes/12m/ipcch/polygon_predictions.csv 6226 ['phase2_worse_pred', 'phase3_worse_pred', 'phase4_worse_pred', 'phase5_worse_pred', 'overall_phase_pred']
+   phase2_worse_pred {'0': 115, '1': 6111}
+scopes/6m/ipcch/polygon_predictions.csv 6226 ['phase2_worse_pred', 'phase3_worse_pred', 'phase4_worse_pred', 'phase5_worse_pred', 'overall_phase_pred']
+   phase2_worse_pred {'0': 92, '1': 6134}

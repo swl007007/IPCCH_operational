@@ -1,0 +1,46 @@
+{
+ "generation": "1793458988623055",
+ "pointer": {
+  "release_record": "gs://food-crisis-test-ipcch-data/monthly-staging/releases/fews-compat-v2rt-20261031a/release.json",
+  "release_record_generation": "1793458988510572",
+  "run_id": "fews-compat-v2rt-20261031a"
+ },
+ "record": {
+  "archive": {
+   "generation": "1793458365634163",
+   "sha256": "ffbc0b99c08fd0eeb3a50e8f853c72259b891e95524a93b95850a937463757c1",
+   "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-compat-v2rt-20261031a/webapp_model_bundle.tar.gz"
+  },
+  "candidate": {
+   "generation": "1793458366099072",
+   "sha256": "cdbe6629e12e403ee8bb0a64d2a15103b7800185553aeeb58e97381dcde354a9",
+   "uri": "gs://food-crisis-test-ipcch-data/candidates/fews-compat-v2rt-20261031a/candidate.json"
+  },
+  "execution": {
+   "inherited_systems": [
+    "ipcch"
+   ],
+   "scored_systems": [
+    "fewsnet"
+   ]
+  },
+  "manifest": {
+   "generation": "1793458301810702",
+   "sha256": "a7a631f5483e4bcba1d99722cad9226c655df8bbf36b7234c40f8c9ca94ce10a",
+   "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-compat-v2rt-20261031a/manifest.json"
+  },
+  "origin_month": "2026-10",
+  "request": {
+   "generation": "1793456852897022",
+   "sha256": "eb3c4d7fccd65665dfadae0193d8d43eb3f55e52dfad3e029bc5e09ee8accf1a",
+   "uri": "gs://food-crisis-test-ipcch-requests/requests/fews-compat-v2rt-20261031a/run_manifest.json"
+  },
+  "run_id": "fews-compat-v2rt-20261031a",
+  "validation": "passed",
+  "verification_receipt": {
+   "generation": "1793458733116472",
+   "sha256": "8026d65db4e4a2869c6a9988266df32b2bd8010060aa4b5ba63ed9341aac2932",
+   "uri": "gs://food-crisis-test-ipcch-data/candidates/fews-compat-v2rt-20261031a/verification_receipt.json"
+  }
+ }
+}

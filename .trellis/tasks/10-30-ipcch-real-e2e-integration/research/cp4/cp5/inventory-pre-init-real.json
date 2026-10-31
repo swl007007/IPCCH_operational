@@ -1,0 +1,8 @@
+{
+ "orphan_version_tables": [],
+ "read_at_utc": "2026-10-31T14:29:39Z",
+ "root": "gs://food-crisis-test-ipcch-data/ipcch-v2/real",
+ "schema": "ipcch-cp5-store-inventory-v1",
+ "table_count": 0,
+ "tables": {}
+}

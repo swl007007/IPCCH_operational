@@ -1,0 +1,81 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Job",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+      "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+      "run.googleapis.com/operation-id": "cb427746-c85a-4ead-8b69-e5d3ed62b99d"
+    },
+    "creationTimestamp": "2026-10-31T14:37:03.990820Z",
+    "generation": 1,
+    "labels": {
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/lastUpdatedTime": "2026-10-31T14:37:03.990820Z"
+    },
+    "name": "ipcch-v2-init-20261031",
+    "namespace": "968355701450",
+    "resourceVersion": "AAZfI9iyOes",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/jobs/ipcch-v2-init-20261031",
+    "uid": "cf008f6b-969a-452c-8783-c43be78a5640"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "562.0.0",
+          "run.googleapis.com/execution-environment": "gen2"
+        },
+        "labels": {
+          "client.knative.dev/nonce": "miy_wul_kih"
+        }
+      },
+      "spec": {
+        "taskCount": 1,
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "args": [
+                  "-m",
+                  "cloud.ipcch.entrypoint_v2",
+                  "initialise",
+                  "--config",
+                  "/opt/ipcch/deployment.json",
+                  "--mode",
+                  "real"
+                ],
+                "command": [
+                  "python3"
+                ],
+                "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+                "resources": {
+                  "limits": {
+                    "cpu": "4",
+                    "memory": "16Gi"
+                  }
+                }
+              }
+            ],
+            "maxRetries": 0,
+            "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+            "timeoutSeconds": "3600"
+          }
+        }
+      }
+    }
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-10-31T14:37:04.304162Z",
+        "status": "True",
+        "type": "Ready"
+      }
+    ],
+    "observedGeneration": 1
+  }
+}

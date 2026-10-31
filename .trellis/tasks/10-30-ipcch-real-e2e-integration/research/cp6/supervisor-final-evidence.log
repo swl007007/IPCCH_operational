@@ -1,0 +1,150 @@
+# unit=ipcch-cp2-supervisor-final-evidence-1793461826317218113 start=2026-10-31T11:50:26-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/python3 -c import json, hashlib, pathlib
+R=pathlib.Path("/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational")
+T=R/".trellis/tasks/10-30-ipcch-real-e2e-integration"
+C=T/"research/cp4/cp5"
+def read(p): return json.loads(pathlib.Path(p).read_text())
+def sha(p): return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+post=read(C/"post-real.json"); status=read(C/"5e-real-final-status.json")
+assert len(post["checks"])==27 and all(post["checks"].values()) and post["passed"]
+assert post["actual"]["feature_count"]==527 and post["actual"]["roster"]["size"]==6226
+assert post["actual"]["targets"]=={"2":"2026-10","8":"2027-04","14":"2027-10"}
+assert post["post"]["generation"]=="1793461128385732"
+assert post["post"]["pointer"]["release_record_generation"]=="1793461128307577"
+assert post["reservation"]["request"]==status["request"]
+assert status["run_status"]["status"]=="succeeded" and status["run_status"]["lock_release_problems"]==[]
+preinv=read(C/"inventory-pre-cp5-real.json")["tables"]
+postinv=read(C/"inventory-post-cp5-real.json")["tables"]
+assert set(postinv)-set(preinv)=={"acled_agg_weekly","gpp_availability_ledger"}
+changed=[k for k in preinv if preinv[k]!=postinv[k]]
+assert changed==["acceptance_manifest"], changed
+assert len([k for k in preinv if k.startswith("history__climate_")])==26
+prod=post["batch"]["generation"]["climate_production"]
+assert prod["jobs"]==[] and prod["receipts"]==[] and prod["skipped"]
+assert all(v==[] for periods in prod["demand"].values() for v in periods.values())
+assert postinv["acled_agg_weekly"]["rows"]==242341
+assert postinv["gpp_availability_ledger"]["rows"]==8 and postinv["gpp_availability_ledger"]["version"]==8
+normal=pathlib.Path("/home/swl007007/ipcch-operator/food-crisis-test/project.json")
+old=normal.with_name("project.json.bak-5g-20261031T154715Z")
+new=pathlib.Path("/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/project.json")
+assert normal.read_bytes()==new.read_bytes()
+a,b=read(old),read(normal)
+assert "image_uri" not in a["v2"]
+a["v2"]["image_uri"]=b["v2"]["image_uri"]; assert a==b
+assert sha(normal)=="3be606eaaa64cbd819c93d2024662971740316c5b58b7409649ee89f49f26110"
+assert sha(old)=="13b9deb3d71b248e18bb0d04d89fd45e8f3874357c32b551792c001eadbf02a2"
+frozen={}
+for cp in ("cp2","cp3"):
+ matched=[]; allowed_docs=[]
+ for line in (T/f"research/{cp}/final/SHA256SUMS").read_text().splitlines():
+  digest,name=line.split(maxsplit=1); p=R/name
+  if name=="cloud_pipeline/OPERATIONS.md": allowed_docs.append(name); continue
+  assert sha(p)==digest,(cp,name); matched.append(name)
+ frozen[cp]={"unchanged":len(matched),"updated_docs":allowed_docs}
+for path in [C/"readback-real.log",T/"research/cp6/5g/5g-submit-preview.log",T/"research/cp6/5g/5g-status-real.log",T/"research/cp6/5g/5g-load-initialized.log"]:
+ assert "# CHILD-EXIT=0" in path.read_text(),str(path)
+ assert path.with_suffix(".exit").read_text().strip()=="0",str(path)
+print(json.dumps({"status":"passed","readback_checks":27,"roster":6226,"features":527,"unchanged_prior_tables":len(preinv)-1,"new_tables":sorted(set(postinv)-set(preinv)),"config_only_v2_image_changed":True,"config_sha256":sha(normal),"source_continuity":frozen,"post_real_sha256":sha(C/"post-real.json")},indent=2))
+
+Running as unit: ipcch-cp2-supervisor-final-evidence-1793461826317218113.service; invocation ID: 07682c1246eb4b0196019fac06ca6c99
+{
+  "status": "passed",
+  "readback_checks": 27,
+  "roster": 6226,
+  "features": 527,
+  "unchanged_prior_tables": 53,
+  "new_tables": [
+    "acled_agg_weekly",
+    "gpp_availability_ledger"
+  ],
+  "config_only_v2_image_changed": true,
+  "config_sha256": "3be606eaaa64cbd819c93d2024662971740316c5b58b7409649ee89f49f26110",
+  "source_continuity": {
+    "cp2": {
+      "unchanged": 20,
+      "updated_docs": []
+    },
+    "cp3": {
+      "unchanged": 18,
+      "updated_docs": [
+        "cloud_pipeline/OPERATIONS.md"
+      ]
+    }
+  },
+  "post_real_sha256": "e260801c44fb63364ad4cb5744ad05c36631f6a39271541bbe2e57094f4b0418"
+}
+	Command being timed: "/usr/bin/python3 -c import json, hashlib, pathlib
+R=pathlib.Path("/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational")
+T=R/".trellis/tasks/10-30-ipcch-real-e2e-integration"
+C=T/"research/cp4/cp5"
+def read(p): return json.loads(pathlib.Path(p).read_text())
+def sha(p): return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+post=read(C/"post-real.json"); status=read(C/"5e-real-final-status.json")
+assert len(post["checks"])==27 and all(post["checks"].values()) and post["passed"]
+assert post["actual"]["feature_count"]==527 and post["actual"]["roster"]["size"]==6226
+assert post["actual"]["targets"]=={"2":"2026-10","8":"2027-04","14":"2027-10"}
+assert post["post"]["generation"]=="1793461128385732"
+assert post["post"]["pointer"]["release_record_generation"]=="1793461128307577"
+assert post["reservation"]["request"]==status["request"]
+assert status["run_status"]["status"]=="succeeded" and status["run_status"]["lock_release_problems"]==[]
+preinv=read(C/"inventory-pre-cp5-real.json")["tables"]
+postinv=read(C/"inventory-post-cp5-real.json")["tables"]
+assert set(postinv)-set(preinv)=={"acled_agg_weekly","gpp_availability_ledger"}
+changed=[k for k in preinv if preinv[k]!=postinv[k]]
+assert changed==["acceptance_manifest"], changed
+assert len([k for k in preinv if k.startswith("history__climate_")])==26
+prod=post["batch"]["generation"]["climate_production"]
+assert prod["jobs"]==[] and prod["receipts"]==[] and prod["skipped"]
+assert all(v==[] for periods in prod["demand"].values() for v in periods.values())
+assert postinv["acled_agg_weekly"]["rows"]==242341
+assert postinv["gpp_availability_ledger"]["rows"]==8 and postinv["gpp_availability_ledger"]["version"]==8
+normal=pathlib.Path("/home/swl007007/ipcch-operator/food-crisis-test/project.json")
+old=normal.with_name("project.json.bak-5g-20261031T154715Z")
+new=pathlib.Path("/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/project.json")
+assert normal.read_bytes()==new.read_bytes()
+a,b=read(old),read(normal)
+assert "image_uri" not in a["v2"]
+a["v2"]["image_uri"]=b["v2"]["image_uri"]; assert a==b
+assert sha(normal)=="3be606eaaa64cbd819c93d2024662971740316c5b58b7409649ee89f49f26110"
+assert sha(old)=="13b9deb3d71b248e18bb0d04d89fd45e8f3874357c32b551792c001eadbf02a2"
+frozen={}
+for cp in ("cp2","cp3"):
+ matched=[]; allowed_docs=[]
+ for line in (T/f"research/{cp}/final/SHA256SUMS").read_text().splitlines():
+  digest,name=line.split(maxsplit=1); p=R/name
+  if name=="cloud_pipeline/OPERATIONS.md": allowed_docs.append(name); continue
+  assert sha(p)==digest,(cp,name); matched.append(name)
+ frozen[cp]={"unchanged":len(matched),"updated_docs":allowed_docs}
+for path in [C/"readback-real.log",T/"research/cp6/5g/5g-submit-preview.log",T/"research/cp6/5g/5g-status-real.log",T/"research/cp6/5g/5g-load-initialized.log"]:
+ assert "# CHILD-EXIT=0" in path.read_text(),str(path)
+ assert path.with_suffix(".exit").read_text().strip()=="0",str(path)
+print(json.dumps({"status":"passed","readback_checks":27,"roster":6226,"features":527,"unchanged_prior_tables":len(preinv)-1,"new_tables":sorted(set(postinv)-set(preinv)),"config_only_v2_image_changed":True,"config_sha256":sha(normal),"source_continuity":frozen,"post_real_sha256":sha(C/"post-real.json")},indent=2))
+"
+	User time (seconds): 0.01
+	System time (seconds): 0.01
+	Percent of CPU this job got: 23%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.08
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 16524
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1881
+	Voluntary context switches: 901
+	Involuntary context switches: 0
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 128ms
+CPU time consumed: 29ms
+# end=2026-10-31T11:50:26-04:00 launcher_rc=0 child_exit=0

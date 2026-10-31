@@ -1,0 +1,12 @@
+[
+  {
+    "name": "projects/968355701450/locations/us-central1/workflows/oct-delivery-trigger/executions/337d8631-1110-4c8c-ae3d-380707007669",
+    "startTime": "2026-10-31T14:21:01.125185676Z",
+    "state": "FAILED"
+  },
+  {
+    "name": "projects/968355701450/locations/us-central1/workflows/oct-delivery-trigger/executions/e785df4e-df75-45d2-a8cb-34138f0eeb15",
+    "startTime": "2026-10-22T07:51:03.255620953Z",
+    "state": "SUCCEEDED"
+  }
+]

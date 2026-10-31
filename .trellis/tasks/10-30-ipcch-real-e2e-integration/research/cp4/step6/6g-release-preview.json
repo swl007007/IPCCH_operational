@@ -1,0 +1,11 @@
+{
+  "mode": "preview",
+  "release": "activated",
+  "checks": {
+    "shared_runtime": true,
+    "images": true,
+    "pointer_intended": true,
+    "operator_config_intended": true,
+    "fallback_intended": true
+  }
+}

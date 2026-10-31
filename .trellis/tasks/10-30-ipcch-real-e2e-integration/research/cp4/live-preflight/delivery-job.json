@@ -1,0 +1,89 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Job",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+      "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+      "run.googleapis.com/operation-id": "c5a420f5-f5f4-4651-b40b-4325c01c5513"
+    },
+    "creationTimestamp": "2026-10-15T19:31:49.417730Z",
+    "generation": 3,
+    "labels": {
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/lastUpdatedTime": "2026-10-22T07:48:42.382330Z"
+    },
+    "name": "oct-delivery",
+    "namespace": "968355701450",
+    "resourceVersion": "AAZeaXnFhG0",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/jobs/oct-delivery",
+    "uid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "562.0.0",
+          "run.googleapis.com/execution-environment": "gen2"
+        },
+        "labels": {
+          "client.knative.dev/nonce": "van_ziz_pic"
+        }
+      },
+      "spec": {
+        "taskCount": 1,
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "args": [
+                  "-m",
+                  "cloud.orchestrator.delivery_job",
+                  "run",
+                  "--output-root",
+                  "gs://food-crisis-test-ipcch-data",
+                  "--release-namespace",
+                  "monthly-staging",
+                  "--image-uri",
+                  "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae"
+                ],
+                "command": [
+                  "python3"
+                ],
+                "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+                "resources": {
+                  "limits": {
+                    "cpu": "8",
+                    "memory": "32Gi"
+                  }
+                }
+              }
+            ],
+            "maxRetries": 0,
+            "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+            "timeoutSeconds": "14400"
+          }
+        }
+      }
+    }
+  },
+  "status": {
+    "conditions": [
+      {
+        "status": "True",
+        "type": "Ready"
+      }
+    ],
+    "executionCount": 1,
+    "latestCreatedExecution": {
+      "completionStatus": "EXECUTION_SUCCEEDED",
+      "completionTimestamp": "2026-10-22T08:16:07.009337Z",
+      "creationTimestamp": "2026-10-22T07:51:04.345623Z",
+      "name": "oct-delivery-hfddt"
+    },
+    "observedGeneration": 3
+  }
+}

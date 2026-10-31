@@ -1,0 +1,111 @@
+== retained HEAD changes pre-CP5 -> post-CP5 (real store) ==
+CHANGED  acceptance_manifest: v1->v3 rows 57->66 versions 1->3
+NEW      acled_agg_weekly: v1 rows=242341 versions=1
+NEW      gpp_availability_ledger: v8 rows=8 versions=8
+UNCHANGED 53 tables, including climate: ['history__climate_gs_cdd', 'history__climate_gs_edd', 'history__climate_gs_evi_anom'] ... 26 climate tables unchanged
+nightlight unchanged: True | GPP history unchanged: True
+
+== batch manifest generation section keys == ['climate_production', 'coverage_end', 'gaps', 'geometry', 'inputs', 'methods', 'population', 'warnings']
+coverage_end {"GPP_mean": "2025-12", "WFP_Price": "2026-09", "acled": "2026-08", "bbg_global_food": "2026-09", "bbg_oilgas": "2026-09", "bbg_soybean_oil": "2026-07", "bbg_staple_food": "2026-09", "food_price_index_WB": "2026-10", "history_snapshot": "2026-10", "idp_local": "2026-09", "idp_national": "2026-09", "nightlight_mean": "2026-08", "nino34_anom": "2026-09"}
+warnings ["GPP_mean coverage ends 2025-12, before O 2026-08 (optional-missing: features at O are NaN, R65)", "bbg_soybean_oil coverage ends 2026-07, before O 2026-08 (optional-missing: features at O are NaN, R65)"]
+gaps {"GPP_unpublished": ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08"], "climate_monthly": {}, "climate_seasonal": {}, "nightlight": []}
+
+== run status generation report keys == ['batch_id', 'manifest_ref', 'status']
+
+== climate_production (batch manifest) ==
+{
+ "demand": {
+  "monthly": {
+   "evi_anom": [],
+   "spei03": [],
+   "spi03": []
+  },
+  "seasonal": {
+   "evi_anom": [],
+   "spei03": [],
+   "spi03": []
+  }
+ },
+ "jobs": [],
+ "producer_version": "ipcch-table-producers-v1",
+ "receipts": [],
+ "run_id": "ipcch-real-522b30030f944868",
+ "scripts": {
+  "seasonal/01_vi_prcp_et0_update.js": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+  "seasonal/02_et0_patch32_update.js": "841ae7f838c8c7457928e95df860980b28857ec83bf6b9b92cb604fdd3ed7e47"
+ },
+ "skipped": "every evi_anom/spi03/spei03 period through O is already retained; nothing produced",
+ "version": "M202610_ipcch-real-522b30030f944868_581d6f38"
+}
+
+== inputs (batch manifest generation.inputs) ==
+{
+"acled": {
+"action": "refresh",
+"coverage_end": "2026-08",
+"interval": [
+"2016-12-31",
+"2026-10-16"
+],
+"method": "regional-aggregate converter (research build_acled_agg.py conventions; delivered fixed tables)",
+"regions": [
+"Caribbean",
+"Caucasus and Central Asia",
+"Central America",
+"East Asia",
+"Eastern Africa",
+"Europe",
+"Middle Africa",
+"Middle East",
+"Northern Africa",
+"South America",
+"South Asia",
+"Southeast Asia",
+"Southern Africa",
+"Western Africa"
+],
+"source": {
+"generation": "1793460073214458",
+"sha256": "7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6",
+"uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-522b30030f944868/acled/acled_regional_aggregate_f2f3.csv"
+}
+},
+"history_snapshot": {
+"action": "keep",
+"preparation_cutoff": "2026-10"
+},
+"research_inputs": {
+"bbg_global_food": {
+"action": "keep",
+"coverage_end": "2026-09",
+"method": "research-prepared retained input (delivered history / declared-interval refresh)"
+},
+"bbg_oilgas": {
+"action": "keep",
+"coverage_end": "2026-09",
+"method": "research-prepared retained input (delivered history / declared-interval refresh)"
+},
+"bbg_soybean_oil": {
+"action": "keep",
+"coverage_end": "2026-07",
+"method": "research-prepared retained input (delivered history / declared-interval refresh)"
+},
+"bbg_staple_food": {
+"action": "keep",
+"coverage_end": "2026-09",
+"method": "research-prepared retained input (delivered history / declared-interval refresh)"
+},
+"food_price_index_WB": {
+"action": "keep",
+"coverage_end": "2026-10",
+"method": "research-prepared retained input (delivered history / declared-interval refresh)"
+},
+"idp_local": {
+"action": "keep",
+"coverage_end": "2026-09",
+"method": "research-prepared retained input (delivered history / declared-interval refresh)"
+},
+"idp_national": {
+"acti
+
+== retained_inputs keys == ['acled_agg_weekly', 'combination_binding', 'fixed__season_calendar', 'fixed__season_windows', 'gpp_availability_ledger', 'history__GPP_mean', 'history__WFP_Price', 'history__bbg_global_food__composite_mean', 'history__bbg_oilgas__composite_mean', 'history__bbg_soybean_oil__composite_mean', 'history__bbg_staple_food__composite_mean', 'history__climate_gs_cdd', 'history__climate_gs_edd', 'history__climate_gs_evi_anom', 'history__climate_gs_gdd', 'history__climate_gs_hot_days_p95', 'history__climate_gs_prcp_anom', 'history__climate_gs_prcp_z', 'history__climate_gs_rainy_days', 'history__climate_gs_sm_z', 'history__climate_gs_spei03', 'history__climate_gs_spi03', 'history__climate_gs_tmax_anom', 'history__climate_gs_tmean_anom', 'history__climate_month_cdd', 'history__climate_month_edd', 'history__climate_month_evi_anom', 'history__climate_month_gdd', 'history__climate_month_hot_days_p95', 'history__climate_month_prcp_anom', 'history__climate_month_prcp_z', 'history__climate_month_rainy_days', 'history__climate_month_sm_z', 'history__climate_month_spei03', 'history__climate_month_spi03', 'history__climate_month_tmax_anom', 'history__climate_month_tmean_anom', 'history__food_price_index_WB', 'history__history_snapshot', 'history__idp_local', 'history__idp_national', 'history__nightlight_mean', 'history__nino34_anom']

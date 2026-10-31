@@ -1,0 +1,7 @@
+Creating Cloud Run job [[1mipcch-v2-runtime-preflight-20261031[m] in project [[1mfeisty-flames-511718-d4[m] region [[1mus-central1[m]
+Creating job...
+Done.
+Job [[1mipcch-v2-runtime-preflight-20261031[m] has been successfully created.
+
+To execute this job, use:
+gcloud run jobs execute ipcch-v2-runtime-preflight-20261031

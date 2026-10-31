@@ -1,0 +1,27 @@
+{
+  "mode": "preview",
+  "promotion": {
+    "run_id": "fews-compat-v2rt-20261031a",
+    "receipt_sha256": "8026d65db4e4a2869c6a9988266df32b2bd8010060aa4b5ba63ed9341aac2932",
+    "config_backup": "/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/operator-state/operations/ipcch-v2-runtime-20261031/predecessor-normal-config.json",
+    "intended_config_text": "{\n  \"bucket\": \"food-crisis-test-ipcch-data\",\n  \"earth_engine_project\": \"feisty-flames-511718-d4\",\n  \"image_uri\": \"us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6\",\n  \"namespace\": \"monthly-staging\",\n  \"operator\": \"weilun.shi\",\n  \"prepare_job\": \"monthly-prepare\",\n  \"project\": \"feisty-flames-511718-d4\",\n  \"region\": \"us-central1\",\n  \"request_bucket\": \"food-crisis-test-ipcch-requests\",\n  \"service_account\": \"monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com\",\n  \"v2\": {\n    \"country_reference\": {\n      \"real\": \"gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv\",\n      \"smoke\": \"gs://food-crisis-test-ipcch-smoke/inputs/reference/country_reference.csv\"\n    },\n    \"deployment_config\": \"/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/deploy/ipcch_v2_deployment.food-crisis-test.json\",\n    \"envelope\": \"gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json\",\n    \"environment_manifest\": \"gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt\",\n    \"inputs_prefix\": {\n      \"real\": \"gs://food-crisis-test-ipcch-data/inputs/v2\",\n      \"smoke\": \"gs://food-crisis-test-ipcch-smoke/inputs\"\n    },\n    \"pending_live_verification\": [\n      \"the shared envelope / environment manifest / country reference objects are uploaded create-only in the CP4 packet; until then submit --execute stops at pinning\",\n      \"the smoke bucket gs://food-crisis-test-ipcch-smoke is a proposal (see deployment config verification)\",\n      \"v2.image_uri (absent until the CP4 build) carries the v2 runtime digest; the top-level image_uri stays the legacy runtime bound by the legacy operator state and acceptance reports; submit --execute refuses until v2.image_uri is set\"\n    ]\n  },\n  \"work_dir\": \"/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/operator-state\",\n  \"workflow_service_account\": \"monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com\"\n}\n",
+    "fallback": {
+      "active": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/fallback/october_2026",
+      "staged": "/home/swl007007/projects/food-crisis-research/staging/ipcch-v2-runtime-20261031/fallback-staged",
+      "predecessor": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/fallback/october_2026.predecessor-ipcch-v2-runtime-20261031"
+    },
+    "prior": {
+      "pointer_uri": "gs://food-crisis-test-ipcch-data/monthly-staging/current.json",
+      "pointer_generation": "1792657760445077",
+      "pointer_body": "{\n  \"release_record\": \"gs://food-crisis-test-ipcch-data/monthly-staging/releases/fews-candidate-20261022a/release.json\",\n  \"release_record_generation\": \"1792657760321065\",\n  \"run_id\": \"fews-candidate-20261022a\"\n}\n",
+      "config_path": "/home/swl007007/ipcch-operator/food-crisis-test/project.json",
+      "config_sha256": "a078f0e5448e30d745762b18ae22614d3a64b7faea67b32dc5bfe7d39bd353c2",
+      "fallback_manifest_sha256": "54dd0f1417f64f5848dea38abe1b77ecd8cfe859f772347a26154f043df65fc0"
+    },
+    "intended": {
+      "release_record": "gs://food-crisis-test-ipcch-data/monthly-staging/releases/fews-compat-v2rt-20261031a/release.json",
+      "config_sha256": "13b9deb3d71b248e18bb0d04d89fd45e8f3874357c32b551792c001eadbf02a2",
+      "fallback_manifest_sha256": "a7a631f5483e4bcba1d99722cad9226c655df8bbf36b7234c40f8c9ca94ce10a"
+    }
+  }
+}

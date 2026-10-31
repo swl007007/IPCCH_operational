@@ -1,6 +1,13 @@
 # IPCCH real E2E integration and cloud configuration
 
 Status: **D1-D5 approved for execution under the user-provided Supervisor–Executor protocol**.
+Outcome (2026-10-31): **AC1-AC9 accepted**. Real run
+`ipcch-real-522b30030f944868` published to the existing production current;
+27 guarded readback checks passed over 6,226 areas per horizon and 527 features.
+Normal operator configuration is finalized. See `research/cp6/final-report.md`,
+`research/cp6/evidence-matrix.md` and `research/cp4/supervisor-gates.md`.
+DA1-DA2 remain user-deferred; runtime han sharing is a future prerequisite.
+
 Created 2026-10-30 at source HEAD `69aa74a372f40581d6759a5703e7ec331ba4af63`.
 The user authorized creating this task, integration planning, configuration changes,
 and real E2E acceptance, with brainstorm -> written spec -> grilling first.
@@ -90,14 +97,14 @@ cached or fixture-only replay must never be reported as proof of real acquisitio
 | R9 | Submitting complete keep/refresh choices and associated assets immediately triggers the full flow through the request-object event. Routine M is the UTC calendar month at submission, frozen with O=M-2 and targets M/M+6/M+12 for the request. Keep only the agreed manual input channels; no separate start/publication action or timer. Automate v2 request pins, run identity, batch handoff, and publication. Preserve all 11 choices; no inference-only refresh, implicit refresh-to-keep fallback, or reuse of last month's refresh request. | AC9 |
 | R10 | Bind source availability to explicit producer source/month completeness evidence for newly produced tables. A target column or nonempty asset alone does not prove publication; all-area NaN alone does not prove unavailability. Preserve source-unavailable versus legitimate spatial missingness, and persist the reason/producer receipt with any saved result. | AC2, AC8 |
 
-## Current-round acceptance criteria (not execution results)
+## Current-round acceptance criteria
 
 - [x] **AC1:** Focused regressions cover sparse patch rows, missing patch values,
   preserved nonmissing primary ET0, duplicate/nonnumeric failures, and incomplete
   primary tables in both monthly and seasonal routes. Existing numerical fixtures
   still agree; no fitting or feature-formula change is introduced. CP1 Supervisor
   accepted: 86 focused tests pass; seven sparse regressions fail on the old reader.
-- [ ] **AC2:** Source-equivalence and data-contract tests verify output root/version
+- [x] **AC2:** Source-equivalence and data-contract tests verify output root/version
   mapping, preserved old dependencies, the intended 32 PATCH32 IDs, VI scaling,
   schema/numeric validation, and both omitted and all-null incomplete-month fields.
   Prove that an incomplete month with an existing all-null column is not marked
@@ -108,21 +115,21 @@ cached or fixture-only replay must never be reported as proof of real acquisitio
   Verify references/access needed by this round's real run under its runtime
   identity. Newly produced live asset IDs and export/schema measurements belong to
   DA2 when those assets are actually produced; do not invent completion evidence.
-- [ ] **AC3:** A pinned v2 request submitted through the deployed request route
+- [x] **AC3:** A pinned v2 request submitted through the deployed request route
   reaches the v2 entrypoint with the intended config and installed files. Config,
   workflow, and legacy-dispatch tests pass; existing consumers are preserved.
-- [ ] **AC4:** Runtime verification matches the accepted envelope and package
+- [x] **AC4:** Runtime verification matches the accepted envelope and package
   digests; assembled inputs have the bound 527-feature order. Prediction coverage,
   output keys, and three target months match the accepted roster and model contracts.
   Final real coverage is all 6,226 bound areas for each horizon.
-- [ ] **AC5:** The real run uses the original accepted handoff/envelope, records
+- [x] **AC5:** The real run uses the original accepted handoff/envelope, records
   exact retained input versions, and links the submitted choices to generation,
   feature batches, full-roster predictions and current publication. Explicitly
   report climate periods skipped because they are already retained, and actual
   GPP/nightlight/ACLED refresh or reuse under existing contracts. No nonempty climate
   call count is required this round; report DA1 as deferred, never passed. Use an
   admissible execution month without falsifying dates or truncating history.
-- [ ] **AC6:** Production `current` points to the accepted run, and the pointer plus
+- [x] **AC6:** Production `current` points to the accepted run, and the pointer plus
   its referenced delivery/prediction objects can be read back from the configured
   GCS bucket. Exact generations, run/model identity, target months, and existing
   content checks agree. Bucket readback is the user-facing endpoint; no webpage
@@ -132,11 +139,11 @@ cached or fixture-only replay must never be reported as proof of real acquisitio
   new v2 prefix, preserving the current FEWS member byte-for-byte if present and
   the legacy IPCCH activation guard. Verify old/new pointer location equality from
   deployment config; live state/readability is checked before mutation.
-- [ ] **AC7:** Evidence identifies code SHA, image digest, configuration checksum,
+- [x] **AC7:** Evidence identifies code SHA, image digest, configuration checksum,
   model/handoff pins, asset IDs, request generation, cloud execution IDs, source
   updates, warnings, output references, and publication result. Local tests, source
   availability, cloud execution, publication, and independent audit are separate claims.
-- [ ] **AC8:** Complete producer and integration tests exercise unsaved-month
+- [x] **AC8:** Complete producer and integration tests exercise unsaved-month
   planning -> graph construction -> task submission/wait/readback -> resolved IDs
   -> retained append/feature consumption, using controlled EE responses offline.
   The installed runtime includes this real path; no stub or manual-only fallback
@@ -147,7 +154,10 @@ cached or fixture-only replay must never be reported as proof of real acquisitio
   Include tests for an expired run deadline reaching providers, replay of the same
   request identity without repeated work, and exactly one chosen asset per chunk
   so old null columns cannot shadow new values through join ordering.
-- [ ] **AC9:** The operator can express the existing 11 keep/refresh choices and
+  Supervisor evidence: accepted CP2 guarded producer/lifecycle/integration suite
+  and CP4 image `acc3e467…` built from `115798f`, with verified runtime imports.
+  This accepts the offline and installed path; DA1-DA2 remain deferred.
+- [x] **AC9:** The operator can express the existing 11 keep/refresh choices and
   required pinned asset references through the v2 submission surface. Submission
   creates the validated request and triggers generation -> inference -> current
   without a separate start action, timer, or further human action. Preparing an

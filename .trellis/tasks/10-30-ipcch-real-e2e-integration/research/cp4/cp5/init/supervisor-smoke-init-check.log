@@ -1,0 +1,80 @@
+# unit=ipcch-cp2-supervisor-smoke-init-check-1793457995016195277 start=2026-10-31T10:46:35-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -c import csv,hashlib,io,json,sys
+from pathlib import Path
+raw=Path(sys.argv[1]).read_bytes()
+assert hashlib.sha256(raw).hexdigest()==sys.argv[3]
+manifest=json.loads(raw); inv=json.loads(Path(sys.argv[2]).read_text())
+expected={k[:-4].replace("/","__"):(k,v) for k,v in manifest["files"].items() if not k.startswith("audit/") and k.endswith(".csv")}
+assert set(inv["tables"])==set(expected)|{"acceptance_manifest","combination_binding"}
+assert not inv["orphan_version_tables"]
+for table,(rel,entry) in expected.items():
+ a=inv["tables"][table]
+ assert a["record"]["source"]==rel and a["record"]["source_sha256"]==entry["sha256"],table
+ assert a["rows"]==entry["rows"],table
+ assert a["version"]==1 and a["version_objects"]==1,table
+ assert a["content"].startswith(inv["root"]+"/"+table+"/versions/"),table
+pair=list(csv.DictReader(io.StringIO(inv["tables"]["combination_binding"]["content_text"])))
+assert len(pair)==1
+pair=pair[0]
+assert pair["bundle_manifest_sha256"]==sys.argv[3]
+assert pair["package_manifest_sha256"]=="18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22"
+assert pair["feature_order_sha256"]=="0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69"
+assert pair["roster_sha256"]==manifest["roster_sha256"] and int(pair["roster_size"])==int(sys.argv[4])
+print(json.dumps({"passed":True,"runtime_tables":len(expected),"total_heads":inv["table_count"],"binding":pair},sort_keys=True))
+ /home/swl007007/ipcch-operator/food-crisis-test/v2-build/cp4-115798f-20261031T135044Z/tmp.oV5ZoayeBG/ipcch/smoke-fixture/bundle/handoff_manifest.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/cp5/inventory-post-init-smoke.json 044c72f85d6739c54218afb5ec23b16eb9f923fe456dcc676cd792d23349eac3 3
+Running as unit: ipcch-cp2-supervisor-smoke-init-check-1793457995016195277.service; invocation ID: 23a5fbd5757a4453ae78342a135f57b9
+Traceback (most recent call last):
+  File "<string>", line 12, in <module>
+KeyError: 'rows'
+Command exited with non-zero status 1
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -c import csv,hashlib,io,json,sys
+from pathlib import Path
+raw=Path(sys.argv[1]).read_bytes()
+assert hashlib.sha256(raw).hexdigest()==sys.argv[3]
+manifest=json.loads(raw); inv=json.loads(Path(sys.argv[2]).read_text())
+expected={k[:-4].replace("/","__"):(k,v) for k,v in manifest["files"].items() if not k.startswith("audit/") and k.endswith(".csv")}
+assert set(inv["tables"])==set(expected)|{"acceptance_manifest","combination_binding"}
+assert not inv["orphan_version_tables"]
+for table,(rel,entry) in expected.items():
+ a=inv["tables"][table]
+ assert a["record"]["source"]==rel and a["record"]["source_sha256"]==entry["sha256"],table
+ assert a["rows"]==entry["rows"],table
+ assert a["version"]==1 and a["version_objects"]==1,table
+ assert a["content"].startswith(inv["root"]+"/"+table+"/versions/"),table
+pair=list(csv.DictReader(io.StringIO(inv["tables"]["combination_binding"]["content_text"])))
+assert len(pair)==1
+pair=pair[0]
+assert pair["bundle_manifest_sha256"]==sys.argv[3]
+assert pair["package_manifest_sha256"]=="18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22"
+assert pair["feature_order_sha256"]=="0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69"
+assert pair["roster_sha256"]==manifest["roster_sha256"] and int(pair["roster_size"])==int(sys.argv[4])
+print(json.dumps({"passed":True,"runtime_tables":len(expected),"total_heads":inv["table_count"],"binding":pair},sort_keys=True))
+ /home/swl007007/ipcch-operator/food-crisis-test/v2-build/cp4-115798f-20261031T135044Z/tmp.oV5ZoayeBG/ipcch/smoke-fixture/bundle/handoff_manifest.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/cp5/inventory-post-init-smoke.json 044c72f85d6739c54218afb5ec23b16eb9f923fe456dcc676cd792d23349eac3 3"
+	User time (seconds): 0.01
+	System time (seconds): 0.00
+	Percent of CPU this job got: 65%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.02
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 15716
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1676
+	Voluntary context switches: 56
+	Involuntary context switches: 0
+	Swaps: 0
+	File system inputs: 16
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+# CHILD-EXIT=1
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 70ms
+CPU time consumed: 21ms
+# end=2026-10-31T10:46:35-04:00 launcher_rc=0 child_exit=1

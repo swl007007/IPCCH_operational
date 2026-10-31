@@ -1,0 +1,233 @@
+{
+  "artifacts": {
+    "images": [
+      "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f"
+    ]
+  },
+  "createTime": "2026-10-31T13:55:34.975082474Z",
+  "finishTime": "2026-10-31T14:03:06.046319Z",
+  "id": "ea1cbe1c-d3fd-4e32-8a27-5e90c61e852e",
+  "images": [
+    "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f"
+  ],
+  "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/ea1cbe1c-d3fd-4e32-8a27-5e90c61e852e?project=968355701450",
+  "name": "projects/968355701450/locations/us-central1/builds/ea1cbe1c-d3fd-4e32-8a27-5e90c61e852e",
+  "options": {
+    "logging": "CLOUD_LOGGING_ONLY",
+    "pool": {},
+    "workerRelease": "legacy"
+  },
+  "projectId": "feisty-flames-511718-d4",
+  "queueTtl": "3600s",
+  "results": {
+    "buildStepImages": [
+      "sha256:f772ab459889c67835bd959c2b9e9351f2c0752c4f989710ecda20c229f0733e",
+      "sha256:f772ab459889c67835bd959c2b9e9351f2c0752c4f989710ecda20c229f0733e",
+      "sha256:f772ab459889c67835bd959c2b9e9351f2c0752c4f989710ecda20c229f0733e",
+      "sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+      "sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+      "sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6"
+    ],
+    "buildStepOutputs": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "buildStepResults": {
+      "build": {},
+      "digest": {},
+      "install-verify": {},
+      "push": {},
+      "runtime-imports": {},
+      "six-slot-evidence": {}
+    },
+    "images": [
+      {
+        "artifactRegistryPackage": "projects/feisty-flames-511718-d4/locations/us-central1/repositories/monthly-delivery/packages/runtime/versions/sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+        "digest": "sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+        "name": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f",
+        "pushTiming": {
+          "endTime": "2026-10-31T14:03:05.802052978Z",
+          "startTime": "2026-10-31T14:03:04.152509147Z"
+        }
+      }
+    ]
+  },
+  "serviceAccount": "projects/feisty-flames-511718-d4/serviceAccounts/968355701450-compute@developer.gserviceaccount.com",
+  "source": {
+    "storageSource": {
+      "bucket": "feisty-flames-511718-d4_cloudbuild",
+      "generation": "1793454934446422",
+      "object": "source/1793454769.89965-d3c2c186a12a419f89079afdf62a2633.tgz"
+    }
+  },
+  "sourceProvenance": {
+    "fileHashes": {
+      "gs://feisty-flames-511718-d4_cloudbuild/source/1793454769.89965-d3c2c186a12a419f89079afdf62a2633.tgz#1793454934446422": {
+        "fileHash": [
+          {
+            "type": "MD5",
+            "value": "E9-C9MgkyMX7XwZ-xHKF2Q=="
+          },
+          {
+            "type": "SHA256",
+            "value": "JNQNmQRrrCVl5UGiUImFtIiIyBu90u5WCLPo76DyIxw="
+          }
+        ]
+      }
+    },
+    "resolvedStorageSource": {
+      "bucket": "feisty-flames-511718-d4_cloudbuild",
+      "generation": "1793454934446422",
+      "object": "source/1793454769.89965-d3c2c186a12a419f89079afdf62a2633.tgz"
+    }
+  },
+  "startTime": "2026-10-31T13:55:35.596457444Z",
+  "status": "SUCCESS",
+  "steps": [
+    {
+      "args": [
+        "build",
+        "--no-cache",
+        "--build-arg",
+        "IPCCH_ENVELOPE_SHA256=03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+        "-t",
+        "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f",
+        "."
+      ],
+      "id": "build",
+      "name": "gcr.io/cloud-builders/docker",
+      "pullTiming": {
+        "endTime": "2026-10-31T13:56:28.090834460Z",
+        "startTime": "2026-10-31T13:56:28.083442838Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-31T13:59:43.026698054Z",
+        "startTime": "2026-10-31T13:56:28.083442838Z"
+      }
+    },
+    {
+      "args": [
+        "push",
+        "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f"
+      ],
+      "id": "push",
+      "name": "gcr.io/cloud-builders/docker",
+      "pullTiming": {
+        "endTime": "2026-10-31T13:59:43.030580502Z",
+        "startTime": "2026-10-31T13:59:43.026980970Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-31T14:02:26.439368992Z",
+        "startTime": "2026-10-31T13:59:43.026980970Z"
+      }
+    },
+    {
+      "args": [
+        "-c",
+        "docker image inspect --format 'IMAGE_IDENTITY {{.Id}} {{json .RepoDigests}}' us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f"
+      ],
+      "entrypoint": "bash",
+      "id": "digest",
+      "name": "gcr.io/cloud-builders/docker",
+      "pullTiming": {
+        "endTime": "2026-10-31T14:02:26.441014366Z",
+        "startTime": "2026-10-31T14:02:26.439585521Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-31T14:02:27.190718157Z",
+        "startTime": "2026-10-31T14:02:26.439585521Z"
+      }
+    },
+    {
+      "args": [
+        "-m",
+        "cloud.ipcch.install",
+        "verify",
+        "--root",
+        "/opt/ipcch",
+        "--envelope-sha256",
+        "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+        "--against",
+        "/opt/ipcch/INSTALL.json"
+      ],
+      "entrypoint": "python3",
+      "id": "install-verify",
+      "name": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f",
+      "pullTiming": {
+        "endTime": "2026-10-31T14:02:27.192963511Z",
+        "startTime": "2026-10-31T14:02:27.190910265Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-31T14:02:40.477783355Z",
+        "startTime": "2026-10-31T14:02:27.190910265Z"
+      }
+    },
+    {
+      "args": [
+        "-c",
+        "import ee, rasterio, google.cloud.storage, google.cloud.batch, importlib.metadata as m; import cloud.ipcch.entrypoint_v2, cloud.ipcch.climate_ee, cloud.ipcch.table_producers, cloud.ipcch.smoke_providers, cloud.orchestrator.delivery_job, cloud.orchestrator.prepare; print('RUNTIME_IMPORTS', m.version('earthengine-api'), m.version('google-cloud-storage'), m.version('rasterio'))"
+      ],
+      "entrypoint": "python3",
+      "id": "runtime-imports",
+      "name": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f",
+      "pullTiming": {
+        "endTime": "2026-10-31T14:02:40.480422213Z",
+        "startTime": "2026-10-31T14:02:40.478019239Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-31T14:02:43.507240940Z",
+        "startTime": "2026-10-31T14:02:40.478019239Z"
+      }
+    },
+    {
+      "args": [
+        "/workspace/evidence/six_slot_check.py",
+        "/workspace/evidence"
+      ],
+      "entrypoint": "python3",
+      "id": "six-slot-evidence",
+      "name": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f",
+      "pullTiming": {
+        "endTime": "2026-10-31T14:02:43.509845937Z",
+        "startTime": "2026-10-31T14:02:43.507518790Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2026-10-31T14:03:04.103347933Z",
+        "startTime": "2026-10-31T14:02:43.507518790Z"
+      }
+    }
+  ],
+  "substitutions": {
+    "_ENVELOPE_SHA256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+    "_IMAGE": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime:ipcch-v2-115798f"
+  },
+  "timeout": "3600s",
+  "timing": {
+    "BUILD": {
+      "endTime": "2026-10-31T14:03:04.151396413Z",
+      "startTime": "2026-10-31T13:56:27.459928406Z"
+    },
+    "FETCHSOURCE": {
+      "endTime": "2026-10-31T13:56:27.459743477Z",
+      "startTime": "2026-10-31T13:55:40.211413674Z"
+    },
+    "PUSH": {
+      "endTime": "2026-10-31T14:03:05.802913650Z",
+      "startTime": "2026-10-31T14:03:04.151541685Z"
+    },
+    "STORAGE_SOURCE": {
+      "endTime": "2026-10-31T13:56:27.459743477Z",
+      "startTime": "2026-10-31T13:55:40.211413674Z"
+    }
+  }
+}

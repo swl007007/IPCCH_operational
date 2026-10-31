@@ -1,4 +1,4 @@
-# Active: IPCCH automatic E2E integration (2026-10-30)
+# Accepted: IPCCH automatic E2E integration (2026-10-31)
 
 Task: `.trellis/tasks/10-30-ipcch-real-e2e-integration/`.
 Authority: the user's subsequent `/goal` Supervisor–Executor protocol, preserved in
@@ -57,6 +57,42 @@ describe other tasks and do not govern this execution.
   285 passed, all child exits 0, peak RSS 489,972 KiB. Actual staged payload: 276
   files, 2,370,588,224 bytes, all hashes match. Re-stage from final commit for build.
   Image verification, live compatibility and E2E remain pending; see CP3 checkpoint.
+- CP3 committed as `115798f`; GitNexus staged risk HIGH across 11 expected CLI/
+  publication flows. Source/spec whitespace checks passed; raw logs preserved.
+- CP4 read-only live inventory confirms old image 487a2315, Workflow revision
+  000003-22c and correct Eventarc route. Production current generation
+  1792657760445077 points to fews-candidate-20261022a (origin 2026-10). Proposed
+  smoke bucket is absent (404). Local runtime impersonation is denied; validate
+  access from an actual bounded runtime task, without inferring EE denial.
+- Subsequent bounded runtime probe `ipcch-v2-runtime-preflight-20261031-7jq5m`
+  confirms EE initialization/GCS permissions, but both han assets deny reads.
+  Personal EE credentials read metadata but not ACLs. Existing exact retained
+  October/August CP5 has no eager han dependency; continue with actual skip evidence.
+  Future incremental runs need upstream-owner sharing; GPP runtime HTTPS remains pending.
+- CP4 build `ea1cbe1c-d3fd-4e32-8a27-5e90c61e852e` submitted once from 115798f;
+  326 context hashes independently verified. Smoke bucket created in us-central1
+  with UBLA/PAP and runtime-only objectAdmin addition. No production cutover yet.
+- Build accepted: all six steps SUCCESS, exact image `acc3e467…ccf6`; raw in-image
+  FEWS results equal the reference for all three 5,718-area horizons. AC8's installed
+  automatic producer path is accepted with CP2 offline tests; live DA1-DA2 deferred.
+- New legacy-compatible runtime baseline `f0481ca1…` and operator state `e0bb3e7f…`
+  initialized successfully (14:14:24Z). Old state/config rehash unchanged. Step6a-e
+  (maintenance cutover and one FEWS candidate/guarded verification) released;
+  promotion waits for actual evidence. See `research/cp4/supervisor-gates.md`.
+- Full real-store initialization exceeds the guarded local 3 GiB AS cap; failure
+  preserved, no local resource increase. Dedicated bounded cloud initialization
+  is being prepared separately; full IPCCH E2E/current remains pending.
+- CP4 hold probe refused at maintenance admission with no dispatch claim. Apply
+  moved both shared jobs and Workflow to acc3e467 with unchanged resources. One
+  FEWS-only candidate, fews-compat-v2rt-20261031a, submitted at 14:27 UTC; predecessor
+  current generation 1792657760445077 is still bound. Promotion awaits verification.
+- CP5 shared references uploaded create-only and read back with matching hashes.
+  Dedicated real initializer `ipcch-v2-init-20261031-7t4lg` completed at 14:41:50 UTC;
+  Supervisor checked 52 runtime tables plus acceptance/binding against the handoff.
+  Full 6,226-roster pairing matches. Smoke initializer hxz9k completed at 14:45:05 UTC;
+  51 fixture tables plus acceptance/binding and its 3-area pairing also accepted.
+  Compatibility candidate verification and live IPCCH dispatch remain pending;
+  no IPCCH current publication yet.
 - Final FEWS rescoring must remain usable under AC3. A maintenance hold is temporary;
   preserving the FEWS current member alone does not close runtime compatibility.
   Executor is preparing the unchanged-package compatibility/re-initialization path.
@@ -64,6 +100,36 @@ describe other tasks and do not govern this execution.
   restored original 6a490ae1 with `/resume`, confirmed session and CP3 history, and
   dispatched CP4 preparation. This supersedes the older PID 4905 identity claim.
 - Preserve the pre-existing `AGENTS.md` modification. No training/push/merge.
+- CP4 C candidate passed all 121 required byte comparisons and guarded relocated
+  replay (5,718 FEWS rows per horizon, IPCCH inherited; peak RSS 1,758,648 KiB).
+  Receipt 8026d65d accepted. Candidate promoted with matching pointer/config/fallback;
+  maintenance released at 15:05:26 UTC and live hold absent. CP5 smoke released;
+  real 6,226-area submission still awaits successful smoke readback.
+- CP5 live smoke ipcch-smoke-2dd1148b8c274496 succeeded; all 24 guarded readback
+  checks passed, 527 features and 3 fixture areas, production current unchanged.
+  Supervisor accepted smoke and released one real submission/readback at 15:19 UTC.
+  Normal-config v2 finish remains gated on actual full real output acceptance.
+- CP5 real ipcch-real-522b30030f944868 completed at 15:38:53 UTC. Supervisor accepted
+  all 27 guarded readback checks: 6,226 areas per H2/H8/H14, 527 features, October /
+  April / October targets, literal FEWS inheritance, production current generation
+  1793461128385732 and release generation 1793461128307577. Readback CHILD-EXIT 0,
+  peak RSS 992,380 KiB. First ACLED refresh saved; GPP Jan-Aug 2026 is unpublished
+  (actual HTTPS 404 records), climate demand empty and existing histories retained.
+  GPP and soybean-oil optional-missing warnings are preserved. 5g normal-config
+  finish released; CP6 documentation/native closure pending. DA1/DA2 remain deferred.
+- 5g accepted: normal project.json is byte-identical to NEW_CFG (3be606ea); only
+  v2.image_uri changed from the byte-backed-up 13b9deb3 predecessor. Normal submit
+  preview, real status and direct load_initialized each have guarded CHILD-EXIT 0.
+  CP6 final report, AC1-AC9 matrix and operator handoff accepted; native closure next.
+  Final guarded evidence reconciliation confirms all 53 prior non-acceptance tables
+  unchanged, 26 climate tables included, with only ACLED/GPP ledger newly created.
+  CP2 20 frozen files and CP3 18 code/test/config files still match; the nineteenth
+  CP3 file is the intentionally updated OPERATIONS.md. No unchanged tests rerun.
+- Final staged GitNexus scope is LOW with no affected execution processes; source/
+  documentation whitespace checks pass. Raw log bytes are preserved. The first
+  staging attempt found a verified orphan Git lock; Linux/Windows process and file
+  holder checks were clear before removing it. No user content was reset.
+  All AC1-AC9 are accepted; final evidence commit and native archive/journal follow.
 
 ---
 

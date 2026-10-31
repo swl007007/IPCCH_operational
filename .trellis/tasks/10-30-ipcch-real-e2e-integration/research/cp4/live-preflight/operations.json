@@ -1,0 +1,94 @@
+[
+  {
+    "name": "delivery-job",
+    "argv": [
+      "gcloud",
+      "run",
+      "jobs",
+      "describe",
+      "oct-delivery",
+      "--region=us-central1",
+      "--project=feisty-flames-511718-d4",
+      "--format=json",
+      "--quiet"
+    ],
+    "effect": "read-only; no workload or object mutation",
+    "timeout_seconds": 90
+  },
+  {
+    "name": "prepare-job",
+    "argv": [
+      "gcloud",
+      "run",
+      "jobs",
+      "describe",
+      "monthly-prepare",
+      "--region=us-central1",
+      "--project=feisty-flames-511718-d4",
+      "--format=json",
+      "--quiet"
+    ],
+    "effect": "read-only; no workload or object mutation",
+    "timeout_seconds": 90
+  },
+  {
+    "name": "workflow",
+    "argv": [
+      "gcloud",
+      "workflows",
+      "describe",
+      "oct-delivery-trigger",
+      "--location=us-central1",
+      "--project=feisty-flames-511718-d4",
+      "--format=json",
+      "--quiet"
+    ],
+    "effect": "read-only; no workload or object mutation",
+    "timeout_seconds": 90
+  },
+  {
+    "name": "triggers",
+    "argv": [
+      "gcloud",
+      "eventarc",
+      "triggers",
+      "list",
+      "--location=us-central1",
+      "--project=feisty-flames-511718-d4",
+      "--format=json",
+      "--quiet"
+    ],
+    "effect": "read-only; no workload or object mutation",
+    "timeout_seconds": 90
+  },
+  {
+    "name": "current-metadata",
+    "argv": [
+      "gcloud",
+      "storage",
+      "objects",
+      "describe",
+      "gs://food-crisis-test-ipcch-data/monthly-staging/current.json",
+      "--project=feisty-flames-511718-d4",
+      "--format=json",
+      "--quiet"
+    ],
+    "effect": "read-only; no workload or object mutation",
+    "timeout_seconds": 90
+  },
+  {
+    "name": "smoke-bucket",
+    "argv": [
+      "gcloud",
+      "storage",
+      "buckets",
+      "describe",
+      "gs://food-crisis-test-ipcch-smoke",
+      "--project=feisty-flames-511718-d4",
+      "--format=json",
+      "--quiet"
+    ],
+    "effect": "read-only; no workload or object mutation",
+    "timeout_seconds": 90
+  }
+]

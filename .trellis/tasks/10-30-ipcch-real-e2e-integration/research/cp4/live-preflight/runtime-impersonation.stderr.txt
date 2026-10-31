@@ -1,0 +1,9 @@
+WARNING: This command is using service account impersonation. All API calls will be executed as [monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com].
+ERROR: (gcloud.auth.print-access-token) PERMISSION_DENIED: Failed to impersonate [monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com]. Make sure the account that's trying to impersonate it has access to the service account itself and the "roles/iam.serviceAccountTokenCreator" role. Permission 'iam.serviceAccounts.getAccessToken' denied on resource (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWExOTIzNi04ZjcyLTc4ZGMtYWY3YS1kOGJmMTI2YjM0MzUSAA%3D%3D . This command is authenticated as weilun.shi@cgiar.org which is the active account specified by the [core/account] property. Impersonation is used to impersonate monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com. 
+- '@type': type.googleapis.com/google.rpc.ErrorInfo
+  domain: iam.googleapis.com
+  metadata:
+    error_info_id: CiQwMWExOTIzNi04ZjcyLTc4ZGMtYWY3YS1kOGJmMTI2YjM0MzUSAA==
+    permission: iam.serviceAccounts.getAccessToken
+    troubleshooter_url: https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWExOTIzNi04ZjcyLTc4ZGMtYWY3YS1kOGJmMTI2YjM0MzUSAA%3D%3D
+  reason: IAM_PERMISSION_DENIED

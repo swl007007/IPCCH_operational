@@ -1,0 +1,115 @@
+{
+ "initialized": "/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/operator-state/initialized.json",
+ "initialized_sha256": "e0bb3e7faa0973796359c466d8e415241cc020a78251faab3023090fb0e8bd13",
+ "baseline_id": "f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856",
+ "destination": {
+  "bucket": "food-crisis-test-ipcch-data",
+  "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+  "namespace": "monthly-staging",
+  "project": "feisty-flames-511718-d4",
+  "request_bucket": "food-crisis-test-ipcch-requests"
+ },
+ "runtime": {
+  "environment_manifest": {
+   "generation": "1793456025486882",
+   "sha256": "35a4890a3ee40fee8bc6cf121ee332fce6a26c8ec7255b446cddf0db2de92b3b",
+   "uri": "gs://food-crisis-test-ipcch-data/environments/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6.json"
+  },
+  "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6"
+ },
+ "models": [
+  {
+   "system": "fewsnet",
+   "horizon_months": 0,
+   "package_id": "full-202610-ff389b11af93-02caeb861750/0m",
+   "package_manifest": {
+    "generation": "1793456035889210",
+    "sha256": "38ee91f3cce4e4d67c76b01e84daade7902882f6f6cb1648d1e0bb73a70b30e2",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/0m/full-202610-ff389b11af93-02caeb861750/0m/package.json"
+   },
+   "acceptance_report": {
+    "generation": "1793456036002514",
+    "sha256": "88bb42963d79046af3beb7b7ff030e0de9a6b2e44af3bb160f5ccfa9f72cec2e",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/0m/full-202610-ff389b11af93-02caeb861750/0m/acceptance.json"
+   }
+  },
+  {
+   "system": "fewsnet",
+   "horizon_months": 6,
+   "package_id": "full-202610-ff389b11af93-02caeb861750/6m",
+   "package_manifest": {
+    "generation": "1793456047775721",
+    "sha256": "ddfa197e2e926f36fded85b7f826a66160910e32473d705c051834d5c75a7e92",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/6m/full-202610-ff389b11af93-02caeb861750/6m/package.json"
+   },
+   "acceptance_report": {
+    "generation": "1793456047897046",
+    "sha256": "e7247325c2a71ed9bfa5820783c1d50e675c1e52f3e776e4d51fbd0e977a306a",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/6m/full-202610-ff389b11af93-02caeb861750/6m/acceptance.json"
+   }
+  },
+  {
+   "system": "fewsnet",
+   "horizon_months": 12,
+   "package_id": "full-202610-ff389b11af93-02caeb861750/12m",
+   "package_manifest": {
+    "generation": "1793456057454027",
+    "sha256": "4473dfd363065650a5785010fd7a2adb1d1614e4718946755ba9b0c8da560ced",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/12m/full-202610-ff389b11af93-02caeb861750/12m/package.json"
+   },
+   "acceptance_report": {
+    "generation": "1793456057585959",
+    "sha256": "5ffdf7a593699ae36325ed421d85db5f9c711e3d2b4e457247cc81b5698a0cb8",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/fewsnet/12m/full-202610-ff389b11af93-02caeb861750/12m/acceptance.json"
+   }
+  },
+  {
+   "system": "ipcch",
+   "horizon_months": 0,
+   "package_id": "launch_2026_04_production_safe/scope_0m",
+   "package_manifest": {
+    "generation": "1793456059523497",
+    "sha256": "59d500b9f36e1ebe62900869ca77af4360e162d2509f0c54553ea30077b7fdf6",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/0m/launch_2026_04_production_safe/scope_0m/package.json"
+   },
+   "acceptance_report": {
+    "generation": "1793456059650304",
+    "sha256": "3e71a854691537d349fb5f609083e4dabe2193fae6981aa23da76b1ec2619270",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/0m/launch_2026_04_production_safe/scope_0m/acceptance.json"
+   }
+  },
+  {
+   "system": "ipcch",
+   "horizon_months": 6,
+   "package_id": "launch_2026_04_production_safe/scope_6m",
+   "package_manifest": {
+    "generation": "1793456061572054",
+    "sha256": "cc016563545d1e5b29b4b6a0f6752a754a44cdeba0b363bb35bc77a5a8ea85a0",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/6m/launch_2026_04_production_safe/scope_6m/package.json"
+   },
+   "acceptance_report": {
+    "generation": "1793456061690781",
+    "sha256": "252ce0d0f93b0895965130c00bd7d5eef66f78bcd3bd6aa3d0de16f69dbb029f",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/6m/launch_2026_04_production_safe/scope_6m/acceptance.json"
+   }
+  },
+  {
+   "system": "ipcch",
+   "horizon_months": 12,
+   "package_id": "launch_2026_04_production_safe/scope_12m",
+   "package_manifest": {
+    "generation": "1793456063678909",
+    "sha256": "240c7c977682ab40d995c8a831896490230024d047d14bc2d8f1f43508a983a9",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/12m/launch_2026_04_production_safe/scope_12m/package.json"
+   },
+   "acceptance_report": {
+    "generation": "1793456063796965",
+    "sha256": "50a646ed72e0fe50929974378644e3ec9e465bfc2d5fafabb963c1a2a6a2ab8e",
+    "uri": "gs://food-crisis-test-ipcch-data/models/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6/ipcch/12m/launch_2026_04_production_safe/scope_12m/acceptance.json"
+   }
+  }
+ ],
+ "config": "/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/project.json",
+ "config_sha256": "3be606eaaa64cbd819c93d2024662971740316c5b58b7409649ee89f49f26110",
+ "config_v2_image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6"
+}

@@ -1,0 +1,40 @@
+# unit=ipcch-cp2-dump-structures-1793457210933547049 start=2026-10-31T10:33:30-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -q -s -p no:cacheprovider /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/cp5/test_dump_structures.py
+Running as unit: ipcch-cp2-dump-structures-1793457210933547049.service; invocation ID: bfc9529a34a146aeba22a8d15f73856e
+RUNOUT {"run_id": "smoke-run-1", "mode": "smoke", "status": "succeeded", "lock_release_problems": "list[0]", "derived": {"execution_month": "2026-10", "feature_origin": "2026-08", "horizons": "list[3] of dict"}, "verified_references": "list[4] of dict", "systems": {"ipcch": {"status": "succeeded", "reason": null, "step": null, "failed_operation": null, "report": null, "result": {"mode": "smoke", "execution_month": "2026-10", "batch": "dict", "generation": "dict", "publication": "dict", "inference": "dict"}}}, "deadline_utc": "2026-10-31T18:33:34Z", "status_uri": "gs://ops-delivery-smoke/v2/runs/smoke-run-1/v2_run_status.json"}
+STATUS_URI gs://ops-delivery-smoke/v2/runs/smoke-run-1/v2_run_status.json True
+STATUS {"deadline_utc": "2026-10-31T18:33:34Z", "derived": {"execution_month": "2026-10", "feature_origin": "2026-08", "horizons": "list[3] of dict"}, "lock_release_problems": "list[0]", "mode": "smoke", "run_id": "smoke-run-1", "status": "succeeded", "systems": {"ipcch": {"failed_operation": null, "reason": null, "report": null, "result": {"batch": "dict", "execution_month": "2026-10", "generation": "dict", "inference": "dict", "mode": "smoke", "publication": "dict"}, "status": "succeeded", "step": null}}, "verified_references": "list[4] of dict"}
+RECORD {"activation": null, "delivery": {"manifest": {"generation": "1", "sha256": "9bbac22af8f7a0873a8340c2bdaceaffd42e49ae3507ccb3d8d37d54d8d82a7e", "uri": "gs://ops-delivery-smoke/v2/deliveries/smoke-run-1-ipcch/manifest.json"}, "request_run_id": "smoke-run-1"}, "inherited": {}, "mode": "smoke", "previous": {"pointer_generation": "0", "release_record": null}, "publication": "current", "request": {"generation": "1", "uri": "gs://ops-smoke/requests/smoke-run-1/run_manifest.json"}, "run_id": "smoke-run-1-ipcch", "schema": "fewsnet-ipcch-release-v2", "systems": {"ipcch": {"batch": {"batch_id": "ipcch-2026-10-smoke-run-1-0a20f90dd70d", "coverage_end": "dict", "designation": "dummy", "warnings": "list[0]"}, "contract": "ipcch-validity-h2h8h14-v2", "delivery": {"manifest": "dict"}, "execution_month": "2026-10", "feature_origin": "2026-08", "horizons": "list[3] of dict", "mode": "smoke", "model_horizons": "list[3] of int", "package": {"combination_id": "ipcch-test-scoring", "envelope_id": "ipcch-test-scoring/envelope-v1", "envelope_sha256": "f96f7098a66b0dec4108178e9f53b971d8ab01e5513f6dd75bcb8f180ab4e07d", "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69", "package_manifest_sha256": "7a52d18a4c06179b9a33866bac58bda3d2b9b78503505a727966cba58c7aba1d"}, "provenance_files": "list[49] of str", "provenance_sha256": "b6527b750a3abeb9462f81631fcd380889a360812553cac9d809bc6db429fdb1", "public_leads": "list[3] of int", "published_by_run": "smoke-run-1-ipcch"}}}
+CFG_ROOTS {"roots": {"smoke": "gs://ops-delivery-smoke/v2", "real": "gs://ops-delivery/v2"}, "store_roots": {"smoke": "gs://ipcch-store/ipcch-v2/smoke", "real": "gs://ipcch-store/ipcch-v2/real"}, "namespaces": {"production": "prod", "smoke": "smoke"}}
+REQ {"schema_version": "fewsnet-ipcch-delivery-request-v2", "run_id": "smoke-run-1", "mode": "smoke", "execution_month": "2026-10", "operations": {"ipcch_generation": true, "ipcch_inference": true, "fewsnet_generation": false, "fewsnet_inference": false}, "ipcch": {"model_combination": {"combination_id": "ipcch-test-scoring", "envelope": {"uri": "gs://ops-smoke/inputs/envelope.json", "generation": "101", "sha256": "f96f7098a66b0dec4108178e9f53b971d8ab01e5513f6dd75bcb8f180ab4e07d"}}, "country_reference": {"uri": "gs://ops-smoke/inputs/country_reference.csv", "generation": "102", "sha256": "acbd3eace7a2c8bd8dd166a83b069e4195fadf7c320d67bf84da2fbe3a999ddc"}, "acled": {"action": "refresh", "file": {"uri": "gs://ops-smoke/inputs/acled.csv", "generation": "100", "sha256": "5274ff408726aa2da0f92259f36ae8952682681a17cf987a77825b59d29743ea"}, "start": "2025-07-26", "end": "2026-09-04", "regions": "list[2] of str"}, "research_inputs": {"nino34_anom": {"action": "keep"}, "bbg_staple_food": {"action": "keep"}, "bbg_oilgas": {"action": "keep"}, "bbg_soybean_oil": {"action": "keep"}, "bbg_global_food": {"action": "keep"}, "food_price_index_WB": {"action": "keep"}, "idp_national": {"action": "keep"}, "idp_local": {"action": "keep"}}, "history_snapshot": {"action": "keep"}, "wfp": {"action": "keep"}}, "fewsnet": null, "publication": "current", "runtime": {"image_uri": "str", "environment_manifest": {"uri": "gs://ops-smoke/inputs/env", "generation": "103", "sha256": "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea"}}, "release": {"namespace": "smoke", "expected_pointer_generation": "0"}, "operator": "ops@example.org", "prepared_at": "2026-10-30T05:00:00Z"}
+.
+1 passed in 5.43s
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -q -s -p no:cacheprovider /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp4/cp5/test_dump_structures.py"
+	User time (seconds): 4.09
+	System time (seconds): 0.41
+	Percent of CPU this job got: 78%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:05.77
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 396924
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 898
+	Minor (reclaiming a frame) page faults: 67301
+	Voluntary context switches: 9054
+	Involuntary context switches: 262
+	Swaps: 0
+	File system inputs: 165576
+	File system outputs: 9752
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 5.904s
+CPU time consumed: 4.608s
+# end=2026-10-31T10:33:36-04:00 launcher_rc=0 child_exit=0

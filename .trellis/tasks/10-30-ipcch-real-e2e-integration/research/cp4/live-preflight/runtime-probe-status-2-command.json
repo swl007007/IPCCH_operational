@@ -1,0 +1,1 @@
+["gcloud", "run", "jobs", "executions", "describe", "ipcch-v2-runtime-preflight-20261031-7jq5m", "--project=feisty-flames-511718-d4", "--region=us-central1", "--format=json", "--quiet"]

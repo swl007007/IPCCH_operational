@@ -1,0 +1,14 @@
+253 entries; severities Counter({None: 251, 'INFO': 2})
+export: 0 
+getAsset: 0 
+batch.Export: 0 
+earthengine: 0 
+EETransport: 0 
+missing_assets: 0 
+climate_provider: 0 
+produced: 0 
+WARNING: 0 
+Traceback: 0 
+Error: 0 
+first 2026-10-31T15:38:48.564527Z {
+last 2026-10-31T15:38:53.402342Z {}
