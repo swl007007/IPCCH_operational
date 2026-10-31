@@ -1,0 +1,17 @@
+file                                 exit   summary                                        peak_rss_kB
+test_delivery_job                    0      29 passed in 1.82s                             228228
+test_fews_adapter                    0      13 passed, 300 warnings in 19.88s              492772
+test_ipcch_climate                   0      8 passed in 0.80s                              131432
+test_ipcch_climate_ee                0      14 passed in 2.67s                             159356
+test_ipcch_climate_ee_seasonal       0      13 passed in 2.17s                             165496
+test_ipcch_climate_run               0      4 passed in 1.00s                              131288
+test_ipcch_climate_tables            0      9 passed in 3.99s                              151140
+test_ipcch_ee_transport              0      24 passed in 1.05s                             193728
+test_ipcch_entrypoint_v2             0      21 passed in 16.60s                            403708
+test_ipcch_generation                0      11 passed in 14.86s                            419924
+test_ipcch_produced_tables           0      28 passed in 17.93s                            152276
+test_ipcch_production_e2e            0      2 passed in 19.32s                             463048
+test_ipcch_run_v2                    0      13 passed in 24.57s                            405404
+test_ipcch_spi_spei                  0      4 passed in 0.64s                              139588
+test_ipcch_spi_spei_seasonal         0      4 passed in 0.87s                              157740
+test_ipcch_table_producers           0      29 passed in 20.70s                            216728

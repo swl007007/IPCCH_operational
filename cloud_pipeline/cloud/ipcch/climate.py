@@ -189,6 +189,8 @@ def _collect(base: str, temporal: str, period: str, outcomes: list[SourceOutcome
             published[o.source], dropped = roster_values(o, roster, label, known)
             report["published"].append(o.source)
             report["dropped_out_of_roster"][o.source] = dropped
+            if o.extra.get("produced_tables"):            # this run's producer assets behind the saved value (R10)
+                report.setdefault("produced_tables", {})[o.source] = list(o.extra["produced_tables"])
         elif o.status == "unavailable":
             if o.values is not None:
                 raise ClimateProcessingFailure(f"{label}: an unavailable outcome carries values")
@@ -342,6 +344,14 @@ def completed_windows(windows: pd.DataFrame, origin: str) -> pd.DataFrame:
     return w[w["gs_end_date_exclusive"] <= first_day_after(origin)].reset_index(drop=True)
 
 
+def pending_seasons(table: VersionedTable, windows: pd.DataFrame, origin: str) -> pd.DataFrame:
+    """The completed season windows whose (area, season_year, season) is not saved yet (R33/R8)."""
+    done = completed_windows(windows, origin)
+    frame, _ = read_seasonal(table)
+    saved = set(map(tuple, frame[list(GS_KEY)].astype({"season_year": "int64"}).itertuples(index=False)))
+    return done[[(a, int(y), s) not in saved for a, y, s in done[list(GS_KEY)].itertuples(index=False)]]
+
+
 GsFetch = Callable[[str, int, str, pd.DataFrame], SourceOutcome]   # (source, season_year, season, windows) -> outcome
 
 
@@ -352,13 +362,10 @@ def update_seasonal(table: VersionedTable, base: str, *, origin: str, roster: It
     known = sorted(set(roster) | {str(a) for a in declared_extra})
     if table.table != table_name(base, SEASONAL):
         raise StoreError(f"{table.table} is not the {base} seasonal store")
-    done = completed_windows(windows, origin)
-    unknown = sorted(set(done["admin_code"]) - set(roster))
+    unknown = sorted(set(completed_windows(windows, origin)["admin_code"]) - set(roster))
     if unknown:
         raise StoreError(f"season windows for unknown modeled areas {unknown[:5]} (R32)")
-    frame, _ = read_seasonal(table)
-    saved = set(map(tuple, frame[list(GS_KEY)].astype({"season_year": "int64"}).itertuples(index=False)))
-    todo = done[[(a, int(y), s) not in saved for a, y, s in done[list(GS_KEY)].itertuples(index=False)]]
+    todo = pending_seasons(table, windows, origin)
     report: dict[str, Any] = {"base": base, "origin": origin, "method": method_ids(base, SEASONAL), "saved": [], "gaps": {}}
     try:
         _seasonal_loop(table, base, todo, fetch, report, known)

@@ -14,12 +14,12 @@ This directory contains guidelines for backend development. Fill in each file wi
 
 | Guide | Description | Status |
 |-------|-------------|--------|
-| [Monthly Delivery Contracts](./monthly-delivery-contracts.md) | Legacy raw choices and delivery contracts; corrected IPCCH v2 research-prepared WFP boundary | Legacy CP1 verified; v2 WFP contract updated |
+| [Monthly Delivery Contracts](./monthly-delivery-contracts.md) | Legacy delivery; IPCCH v2 WFP, model binding, EE production and reservation | Automatic producer CP2 verified offline |
 | [Local Migration Package](./local-migration-package.md) | Standalone payload, destination references, and compact manual results | Implemented |
 | [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
 | [Database Guidelines](./database-guidelines.md) | ORM patterns, queries, migrations | To fill |
 | [Error Handling](./error-handling.md) | Error types, handling strategies | To fill |
-| [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
+| [Quality Guidelines](./quality-guidelines.md) | Memory-bounded tests and deterministic polling clocks | IPCCH testing rules recorded |
 | [Logging Guidelines](./logging-guidelines.md) | Structured logging, log levels | To fill |
 
 ---

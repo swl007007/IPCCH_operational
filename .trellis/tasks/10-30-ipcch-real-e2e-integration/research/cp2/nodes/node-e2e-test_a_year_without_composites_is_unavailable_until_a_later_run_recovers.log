@@ -1,0 +1,40 @@
+# unit=ipcch-cp2-node-e2e-test_a_year_without_composites_is_unavailable_until_a_later_run_recovers-1793409771262867452 start=2026-10-30T21:22:51-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_production_e2e.py::test_a_year_without_composites_is_unavailable_until_a_later_run_recovers
+Running as unit: ipcch-cp2-node-e2e-test_a_year_without_composites_is_unavailable_until_a_later_run_recovers-1793409771262867452.service; invocation ID: 929cdd1fca784b688a371af16dc5315a
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 1 item
+
+tests/cloud/test_ipcch_production_e2e.py::test_a_year_without_composites_is_unavailable_until_a_later_run_recovers PASSED
+
+============================== 1 passed in 9.87s ===============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_production_e2e.py::test_a_year_without_composites_is_unavailable_until_a_later_run_recovers"
+	User time (seconds): 9.06
+	System time (seconds): 0.29
+	Percent of CPU this job got: 90%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.38
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 458828
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 88
+	Minor (reclaiming a frame) page faults: 113363
+	Voluntary context switches: 9890
+	Involuntary context switches: 39
+	Swaps: 0
+	File system inputs: 18248
+	File system outputs: 5664
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 10.513s
+CPU time consumed: 9.441s
+# end=2026-10-30T21:23:01-04:00 launcher_rc=0 child_exit=0

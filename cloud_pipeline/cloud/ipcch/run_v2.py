@@ -151,13 +151,20 @@ def publish_ipcch(request: Mapping[str, Any], ctx: IpcchContext, result: dict[st
 def run_request(data: Mapping[str, Any], *, admit_kwargs: Mapping[str, Any],
                 ipcch_context: Callable[[Mapping[str, Any]], IpcchContext] | None = None,
                 fewsnet_runner: Callable[[Mapping[str, Any], str], Any] | None = None,
-                deployment: Deployment | None = None) -> dict[str, Any]:
+                deployment: Deployment | None = None,
+                reserve: Callable[[Mapping[str, Any]], Mapping[str, Any] | None] | None = None) -> dict[str, Any]:
     """With a ``deployment``: the executed systems' locks are taken after admission (all or none; a busy system rejects
     the whole request before any work, R50) and held through publication; IPCCH inference publishes candidate/current;
-    a run executing both systems chains the pointer generation it produced itself (never another run's)."""
+    a run executing both systems chains the pointer generation it produced itself (never another run's).
+    ``reserve`` (task 10-30): called once with the admitted request before any lock or mutation; it records the run's
+    identity create-only and returns the durable outcome instead when this identity already completed."""
     from cloud.ipcch import locks
 
     request = v2.admit(data, **admit_kwargs)            # raises before anything executes (R17)
+    if reserve is not None:
+        replayed = reserve(request)
+        if replayed is not None:
+            return dict(replayed)
     ops = request["operations"]
     systems = {"ipcch": ops["ipcch_generation"] or ops["ipcch_inference"],
                "fewsnet": ops["fewsnet_generation"] or ops["fewsnet_inference"]}

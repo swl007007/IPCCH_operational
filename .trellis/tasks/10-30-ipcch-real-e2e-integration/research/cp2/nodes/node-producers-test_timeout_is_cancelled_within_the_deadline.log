@@ -1,0 +1,40 @@
+# unit=ipcch-cp2-node-producers-test_timeout_is_cancelled_within_the_deadline-1793409724709197684 start=2026-10-30T21:22:04-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_table_producers.py::test_timeout_is_cancelled_within_the_deadline
+Running as unit: ipcch-cp2-node-producers-test_timeout_is_cancelled_within_the_deadline-1793409724709197684.service; invocation ID: 71ff959c4dda4b439a2bc6367fafd28b
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 1 item
+
+tests/cloud/test_ipcch_table_producers.py::test_timeout_is_cancelled_within_the_deadline PASSED
+
+============================== 1 passed in 2.48s ===============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_table_producers.py::test_timeout_is_cancelled_within_the_deadline"
+	User time (seconds): 2.14
+	System time (seconds): 0.14
+	Percent of CPU this job got: 82%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.76
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 188940
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 44996
+	Voluntary context switches: 5341
+	Involuntary context switches: 19
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 816
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 2.819s
+CPU time consumed: 2.293s
+# end=2026-10-30T21:22:07-04:00 launcher_rc=0 child_exit=0

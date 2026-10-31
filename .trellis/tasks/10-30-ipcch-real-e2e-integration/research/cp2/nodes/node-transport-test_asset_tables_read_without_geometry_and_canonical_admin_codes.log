@@ -1,0 +1,40 @@
+# unit=ipcch-cp2-node-transport-test_asset_tables_read_without_geometry_and_canonical_admin_codes-1793409545532036638 start=2026-10-30T21:19:05-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_ee_transport.py::test_asset_tables_read_without_geometry_and_canonical_admin_codes
+Running as unit: ipcch-cp2-node-transport-test_asset_tables_read_without_geometry_and_canonical_admin_codes-1793409545532036638.service; invocation ID: 45a564a691114e5dbf18452d8ec58304
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 1 item
+
+tests/cloud/test_ipcch_ee_transport.py::test_asset_tables_read_without_geometry_and_canonical_admin_codes PASSED
+
+============================== 1 passed in 0.93s ===============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_ee_transport.py::test_asset_tables_read_without_geometry_and_canonical_admin_codes"
+	User time (seconds): 0.67
+	System time (seconds): 0.06
+	Percent of CPU this job got: 62%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.18
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 189600
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 30136
+	Voluntary context switches: 5326
+	Involuntary context switches: 13
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 1.234s
+CPU time consumed: 751ms
+# end=2026-10-30T21:19:06-04:00 launcher_rc=0 child_exit=0

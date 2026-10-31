@@ -1,0 +1,52 @@
+# unit=ipcch-cp2-test_ipcch_climate_ee_seasonal-1793410111884549888 start=2026-10-30T21:28:31-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_climate_ee_seasonal.py
+Running as unit: ipcch-cp2-test_ipcch_climate_ee_seasonal-1793410111884549888.service; invocation ID: b7fc197058e04957aac4493b946b8b1e
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 13 items
+
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_rainfall_graph[chirps-gs_rain_anomz] PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_rainfall_graph[chirps-gs_rain_cdd] PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_rainfall_graph[persiann-gs_rain_anomz] PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_rainfall_graph[persiann-gs_rain_cdd] PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_rainfall_graph[era5land-gs_rain_anomz] PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_rainfall_graph[era5land-gs_rain_cdd] PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_temperature_and_soil_graphs[cpc] PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_temperature_and_soil_graphs[era5land] PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_finalize_rules PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_seasonal_availability_is_published_through_the_season_end PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_rainfall_bounds_use_the_full_calendar_and_stop_at_the_data_end PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_provider_and_seasonal_saves PASSED
+tests/cloud/test_ipcch_climate_ee_seasonal.py::test_rain_paints_the_full_calendar_but_emits_only_requested_roster_areas PASSED
+
+============================== 13 passed in 2.17s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_climate_ee_seasonal.py"
+	User time (seconds): 1.84
+	System time (seconds): 0.06
+	Percent of CPU this job got: 77%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.46
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 165496
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 36460
+	Voluntary context switches: 5041
+	Involuntary context switches: 10
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 56
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 2.538s
+CPU time consumed: 1.924s
+# end=2026-10-30T21:28:34-04:00 launcher_rc=0 child_exit=0

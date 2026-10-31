@@ -1,0 +1,8 @@
+# unit=ipcch-cp2-diag-poll-loop-1793409267241587235 start=2026-10-30T21:14:27-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python ../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp2/diag_poll_loop.py
+Running as unit: ipcch-cp2-diag-poll-loop-1793409267241587235.service; invocation ID: d125aee7554f45768e6f47210bf7479d
+Finished with result: success
+Main processes terminated with: code=killed/status=TERM
+Service runtime: 41.359s
+CPU time consumed: 39.580s
+# end=2026-10-30T21:15:07-04:00 exit=0

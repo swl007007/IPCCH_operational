@@ -1,0 +1,3 @@
+gitnexus detect_changes(scope=all) at 2026-10-30T21:31:41-04:00: risk_level=high, changed_files=12 (incl. user AGENTS.md and Supervisor PROGRESS.md), changed_symbols=66, affected_processes=12:
+Update_seasonal -> Head/Sha256_text/Csv_to_frame/_ord/Script_for/_real_day/_months; Update_monthly -> Script_for/Roster_values (_collect); Export_table -> Clock/Write_text; Fetch_season -> Asset.
+Every listed flow is exercised by the guarded final suites (climate, climate_tables, produced_tables, generation, production_e2e, ee_transport).

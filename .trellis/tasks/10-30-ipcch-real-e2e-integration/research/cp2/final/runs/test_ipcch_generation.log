@@ -1,0 +1,50 @@
+# unit=ipcch-cp2-test_ipcch_generation-1793410114451214763 start=2026-10-30T21:28:34-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_generation.py
+Running as unit: ipcch-cp2-test_ipcch_generation-1793410114451214763.service; invocation ID: 5e40e0a1f45d4efb8198f39196daf035
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 11 items
+
+tests/cloud/test_ipcch_generation.py::test_generation_writes_a_complete_batch_and_inference_scores_it PASSED
+tests/cloud/test_ipcch_generation.py::test_request_selection_must_match_the_binding_before_any_write PASSED
+tests/cloud/test_ipcch_generation.py::test_future_completed_seasons_come_from_the_delivered_calendar PASSED
+tests/cloud/test_ipcch_generation.py::test_calendar_that_does_not_reproduce_delivered_windows_is_refused PASSED
+tests/cloud/test_ipcch_generation.py::test_origin_without_climate_source_blocks_after_saved_inputs_with_runtime_records PASSED
+tests/cloud/test_ipcch_generation.py::test_research_family_failure_report_keeps_earlier_committed_refreshes PASSED
+tests/cloud/test_ipcch_generation.py::test_real_keep_without_acled_history_is_refused PASSED
+tests/cloud/test_ipcch_generation.py::test_every_saved_version_gets_its_own_runtime_record_even_when_a_later_base_fails PASSED
+tests/cloud/test_ipcch_generation.py::test_lost_acceptance_write_is_repaired_once_on_retry_without_resaving PASSED
+tests/cloud/test_ipcch_generation.py::test_real_factory_builds_seasonal_providers_from_the_derived_windows PASSED
+tests/cloud/test_ipcch_generation.py::test_reconcile_receipt_failure_is_a_reported_generation_failure PASSED
+
+============================= 11 passed in 14.86s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_generation.py"
+	User time (seconds): 13.90
+	System time (seconds): 0.23
+	Percent of CPU this job got: 97%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:14.48
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 419924
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 88
+	Minor (reclaiming a frame) page faults: 71021
+	Voluntary context switches: 9899
+	Involuntary context switches: 93
+	Swaps: 0
+	File system inputs: 18248
+	File system outputs: 47000
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 15.389s
+CPU time consumed: 14.142s
+# end=2026-10-30T21:28:49-04:00 launcher_rc=0 child_exit=0

@@ -1,7 +1,7 @@
 # IPCCH real E2E integration — execution plan
 
 Status: D1-D5 approved by the subsequent user `/goal` protocol. Native task is
-in progress; CP0 and CP1 accepted, CP2 next in the bound Herdr Executor. Cloud
+in progress; CP0-CP2 accepted, CP3 next in the bound Herdr Executor. Cloud
 execution has not started. This single task keeps the shared runtime/dispatch and
 current-publication changes together; deferred incremental evidence is not a child
 implementation task or a reason to leave this task unfinished after its agreed checks.
@@ -37,18 +37,18 @@ implementation task or a reason to leave this task unfinished after its agreed c
   Run GitNexus impact for each edited symbol; report callers/processes/risk.
 - [x] Add the sparse PATCH32 regression to existing fixtures, implement the shared
   alignment fix, and verify monthly and seasonal primary/patch behavior.
-- [ ] Port the two upstream producer graphs into the pinned Python EE runtime,
+- [x] Port the two upstream producer graphs into the pinned Python EE runtime,
   preserving formulas/QA/scaling, and add the narrow table-to-Asset transport path.
   Reuse task reservation, task IDs, bounded polling/cancel, and durable receipts.
-- [ ] Derive required tables/periods before submission. Automate output IDs/version,
+- [x] Derive required tables/periods before submission. Automate output IDs/version,
   submit/wait/readback, and run-bound asset mapping into consumer providers. Preserve
   old baseline/history addresses; never use a manual monthly mapping file.
-- [ ] Resolve one asset per family/chunk; prevent old all-null columns from shadowing
+- [x] Resolve one asset per family/chunk; prevent old all-null columns from shadowing
   new outputs. Preserve upstream full-chunk formula/input scope and record its vintage.
-- [ ] Persist explicit producer month-completeness evidence and consume it before
+- [x] Persist explicit producer month-completeness evidence and consume it before
   published/unavailable classification. Test incomplete all-null vs complete-but-masked
   data and later missing-month recovery; persist receipt identity beyond SourceOutcome.extra.
-- [ ] Add source-equivalence and lifecycle tests; exercise failed/timed-out exports,
+- [x] Add source-equivalence and lifecycle tests; exercise failed/timed-out exports,
   duplicate events, same-day reruns, and 2027/prior-year VI support in both producers
   and consumers. Do not reconstruct static baselines or automate manual research inputs.
 - [ ] Provide v2 submission for all 11 keep/refresh choices. Validate selections
@@ -61,9 +61,9 @@ implementation task or a reason to leave this task unfinished after its agreed c
   redelivery from a new submission; test local-vs-UTC disagreement and cross-month
   delayed starts/redeliveries. Preserve explicit-M request compatibility, without
   adding routine month or legacy cutoff/deadline prompts.
-- [ ] Reuse existing run reservation patterns for v2 admission/replay protection;
+- [x] Reuse existing run reservation patterns for v2 admission/replay protection;
   test direct-entry and event duplicate paths, not merely the existing Workflow guard.
-- [ ] Persist and thread the configured whole-run deadline to producer/transport/
+- [x] Persist and thread the configured whole-run deadline to producer/transport/
   acquirer calls, including cancellation reserve; test deadline expiry and no reset
   on redelivery. Existing deadline code is not currently wired through v2 context.
 - [ ] Install the accepted model/envelope/handoff and deployment config through
@@ -92,6 +92,11 @@ Example focused check from `cloud_pipeline/`, after changes:
 ```bash
 PYTHONDONTWRITEBYTECODE=1 /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -q -p no:cacheprovider tests/cloud/test_ipcch_climate_tables.py tests/cloud/test_ipcch_climate_run.py tests/cloud/test_ipcch_entrypoint_v2.py tests/cloud/test_workflow_dispatch.py
 ```
+
+All subsequent local tests use the task's `research/cp2/guarded.sh`: independent
+user service outside init.scope, MemoryMax=4G, MemorySwapMax=0, 600 s cap and
+3 GiB address-space cap. Run files sequentially, retain full logs and CHILD-EXIT;
+launcher success alone is not evidence. See CP2 incident/checkpoint records.
 
 Run the related integration suites once the wiring is complete. Earlier 82-test
 offline success predates these changes and did not cover the real sparse patch.
@@ -150,8 +155,8 @@ only until this future live acceptance is performed.
 
 ## Current limitations
 
-CP1 sparse PATCH32 and consumer mapping/completeness are component-complete. CP2
-producer/lifecycle and CP3 submission/deployment work remain. No deployment,
+CP1 sparse PATCH32 and CP2 producer/lifecycle are component-complete with offline
+evidence. CP3 submission/deployment work remains. No deployment,
 exports, retained initialization, or real E2E run have occurred at this checkpoint.
 The `specs/001-cloud-base-input/plan.md` pointer in AGENTS was not found in this
 checkout; use the existing v2 archive/contracts and report this stale pointer

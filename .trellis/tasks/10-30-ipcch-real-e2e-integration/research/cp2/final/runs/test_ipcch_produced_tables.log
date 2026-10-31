@@ -1,0 +1,67 @@
+# unit=ipcch-cp2-test_ipcch_produced_tables-1793410084367186249 start=2026-10-30T21:28:04-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_produced_tables.py
+Running as unit: ipcch-cp2-test_ipcch_produced_tables-1793410084367186249.service; invocation ID: 3b92503515b544de8ebeb7be7fdfff25
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 28 items
+
+tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_monthly_spi_and_spei_fill_only_missing_primary_et0 PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_seasonal_spi_and_spei_on_subset_rosters[codes0] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_seasonal_spi_and_spei_on_subset_rosters[codes1] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_seasonal_spi_and_spei_on_subset_rosters[codes2] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_keeps_primary_coverage_duplicate_and_numeric_strictness[monthly] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_sparse_patch_keeps_primary_coverage_duplicate_and_numeric_strictness[seasonal] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_missing_primary_et0_without_a_patch_value_stays_missing[monthly] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_missing_primary_et0_without_a_patch_value_stays_missing[seasonal] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_chunk_replaces_the_old_chunk_instead_of_joining_it PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_incomplete_month_with_a_null_column_is_unavailable_but_complete_masked_month_is_published PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_contradictory_or_absent_completeness_metadata_fails PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced0-not a producible] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced1-not a producible] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced2-not a new full asset id] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced3-not a new full asset id] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced4-share an asset] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced5-exactly the chunk's months] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced6-no source-calendar completeness] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced7-malformed] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced8-not a published 2026] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_mapping_validation[produced9-not a published 2026] PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_spei_needs_both_produced_et0_families_complete PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_schema_must_carry_the_family_field PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_every_produced_input_month_of_the_window_must_be_complete PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_gaps_outside_the_consumed_inputs_keep_upstream_missingness PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_seasonal_availability_follows_declared_completeness PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_produced_vi_table_contract PASSED
+tests/cloud/test_ipcch_produced_tables.py::test_incomplete_then_published_recovery_saves_no_placeholder PASSED
+
+============================= 28 passed in 17.93s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_produced_tables.py"
+	User time (seconds): 17.25
+	System time (seconds): 0.07
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:17.22
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 152276
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 22697
+	Voluntary context switches: 4903
+	Involuntary context switches: 24
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 56
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 18.168s
+CPU time consumed: 17.335s
+# end=2026-10-30T21:28:21-04:00 launcher_rc=0 child_exit=0

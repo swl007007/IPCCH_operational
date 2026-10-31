@@ -1,0 +1,16 @@
+test_ipcch_table_producers exit=0
+test_ipcch_production_e2e exit=0
+test_ipcch_ee_transport exit=1
+test_ipcch_entrypoint_v2 exit=0
+test_ipcch_run_v2 exit=0
+test_ipcch_produced_tables exit=0
+test_ipcch_climate_tables exit=0
+test_ipcch_climate_run exit=0
+test_ipcch_climate exit=0
+test_ipcch_climate_ee exit=0
+test_ipcch_climate_ee_seasonal exit=0
+test_ipcch_generation exit=0
+test_ipcch_spi_spei exit=0
+test_ipcch_spi_spei_seasonal exit=0
+test_delivery_job exit=0
+test_fews_adapter exit=0

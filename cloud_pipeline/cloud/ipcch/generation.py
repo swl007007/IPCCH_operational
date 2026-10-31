@@ -400,6 +400,7 @@ class Generation:
                              "WFP_Price": steps["wfp"].get("coverage_end"),
                              **{f: v.get("coverage_end") for f, v in steps["research_inputs"].items()},
                              "history_snapshot": steps["history_snapshot"].get("preparation_cutoff")},
+            "climate_production": climate.get("production"),   # table producer receipts / retained skip (R8, R10)
             "gaps": {"climate_monthly": climate.get("gaps"), "climate_seasonal": climate.get("season_gaps"),
                      "GPP_unpublished": steps["gpp"].get("unpublished"), "nightlight": steps["nightlight"].get("gaps")},
             "warnings": list(self.report["warnings"]), "population": self.report.get("population"),

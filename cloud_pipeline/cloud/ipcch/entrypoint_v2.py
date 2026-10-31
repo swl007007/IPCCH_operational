@@ -18,6 +18,15 @@ store initialisation of a mode is ``python -m cloud.ipcch.entrypoint_v2 initiali
 4. a create-only run status is written under ``{mode root}/runs/{run_id}/v2_run_status.json`` carrying each system's
    structured report (saved updates/warnings survive a later failure, R29/R41); the same status is returned.
 
+Replay protection and the run deadline (task 10-30): after admission and before any lock or mutation the run's identity
+(request URI, generation, sha256) is reserved create-only in ``{mode root}/runs/{run_id}/v2_reservation.json`` together
+with the whole-run deadline (entry time + ``run_timeout_seconds``, default the 4 h Cloud Run task timeout). A
+redelivered identical request returns the durable status without executing anything (read before admission, so an
+invalid fresh request still writes nothing, R17); a changed request under the same run ID conflicts; a reserved run
+without a final status (active, interrupted or indeterminate) is never launched again - retry with a new run ID. The
+persisted deadline (never reset by a redelivery) reaches the EE transport, the table producer and the GPP/VIIRS
+acquirer; exports and EE calls stop at the deadline minus the 15-minute cleanup reserve.
+
 Config (JSON, validated): ``roots`` {smoke, real} (deliveries/pointer/locks/runs), ``store_roots`` {smoke, real}
 (retained stores, each ending in its mode), ``namespaces`` {production, smoke}, ``trusted_prefixes`` {smoke, real},
 ``installed`` {mode: {envelope, package_root, bundle_dir[, fixture_root]}}, ``providers`` {mode: "module:function"},
@@ -32,7 +41,8 @@ import hashlib
 import importlib
 import json
 import os
-from datetime import datetime, timezone
+import re
+from datetime import datetime, timedelta, timezone
 from typing import Any, Callable, Mapping
 
 from cloud.ipcch import binding as bd
@@ -44,6 +54,10 @@ from cloud.orchestrator import delivery_request_v2 as v2
 
 CONFIG_KEYS = ("roots", "store_roots", "namespaces", "trusted_prefixes", "installed", "providers",
                "earth_engine_project", "export_root", "work_dir")
+RUN_TIMEOUT_SECONDS = 4 * 3600          # the Cloud Run task timeout (deploy/setup.py --task-timeout 4h, zero retries);
+                                        # a shorter configured budget is allowed, a longer one needs a deployment revision
+CLEANUP_RESERVE_SECONDS = 900           # EETransport / CloudSourceAcquirer cancellation reserve before the deadline
+RESERVATION_SCHEMA = "ipcch-v2-run-reservation-v1"
 
 
 class EntrypointError(RuntimeError):
@@ -67,6 +81,12 @@ def load_config(path: str) -> dict[str, Any]:
     if cfg["providers"]["smoke"] == cfg["providers"]["real"] or "real_providers" in cfg["providers"]["smoke"]:
         raise EntrypointError("smoke must use a fixture provider factory, never the real providers (R48)")
     run_v2.Deployment(store=None, roots=cfg["roots"])             # distinct, not nested
+    timeout = cfg.get("run_timeout_seconds", RUN_TIMEOUT_SECONDS)
+    if not isinstance(timeout, int) or isinstance(timeout, bool) or not CLEANUP_RESERVE_SECONDS < timeout <= RUN_TIMEOUT_SECONDS:
+        raise EntrypointError(f"run_timeout_seconds must be an integer above the {CLEANUP_RESERVE_SECONDS} s cleanup "
+                              f"reserve and at most the {RUN_TIMEOUT_SECONDS} s job timeout")
+    if "producer_asset_root" in cfg and not re.fullmatch(r"projects/[^/]+/assets/(?:[^/]+/)*", cfg["producer_asset_root"]):
+        raise EntrypointError("producer_asset_root must be projects/<project>/assets/[folder/...] ending in /")
     return cfg
 
 
@@ -75,20 +95,35 @@ def resolve_factory(spec: str) -> Callable[..., Mapping[str, Any]]:
     return getattr(importlib.import_module(module), name)
 
 
-def real_providers(*, cfg: Mapping[str, Any], store, client, run_id: str, roster, deadline_utc=None) -> dict[str, Any]:
-    """The real provider route: the concrete EE transport (all climate bases) and the GCS/HTTP acquirer (GPP/VIIRS)."""
+def real_providers(*, cfg: Mapping[str, Any], store, client, run_id: str, roster, root=None, deadline_utc=None,
+                   execution_month: str | None = None) -> dict[str, Any]:
+    """The real provider route: the concrete EE transport (all climate bases), the table producer (this run's unsaved
+    VI/PRCP/ET0/PATCH32 periods, ``table_producers``) and the GCS/HTTP acquirer (GPP/VIIRS), all under the run's
+    persisted deadline."""
     import ee
     import requests
 
+    from cloud.ipcch import climate as cl
     from cloud.ipcch import climate_run
+    from cloud.ipcch.climate_ee import AssetRefs
     from cloud.ipcch.ee_transport import from_environment
+    from cloud.ipcch.stores import VersionedTable
+    from cloud.ipcch.table_producers import TableProducer
     from cloud.orchestrator.prepare import CloudSourceAcquirer
 
+    if deadline_utc is None or root is None or execution_month is None:
+        raise EntrypointError("real providers need the run's persisted deadline, retained store root and execution month")
+    if "producer_asset_root" not in cfg:
+        raise EntrypointError("real generation needs deployment producer_asset_root (the writable EE asset root)")
     transport = from_environment(project=cfg["earth_engine_project"], output_root=cfg["export_root"], run_id=run_id,
                                  deadline_utc=deadline_utc)
     acquirer = CloudSourceAcquirer(ee=ee, client=client, http=requests.Session(), store=store,
                                    output_root=cfg["export_root"], deadline_utc=deadline_utc)
-    return {"climate_providers": climate_run.real_provider_factory(transport, roster=roster),
+    producer = TableProducer(transport, inputs=AssetRefs(), output_root=cfg["producer_asset_root"], run_id=run_id,
+                             execution_month=execution_month)
+    return {"climate_providers": climate_run.real_provider_factory(
+                transport, roster=roster, producer=producer,
+                tables=lambda base, temporal: VersionedTable(store, root, cl.table_name(base, temporal))),
             "gpp_acquirer": acquirer, "nightlight_acquirer": acquirer}
 
 
@@ -140,10 +175,36 @@ def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, st
     pre = v2.validate_request_v2(body, request_uri=request_uri, request_generation=request_generation, now_utc=now,
                                  production_namespace=cfg["namespaces"]["production"],
                                  smoke_namespace=cfg["namespaces"]["smoke"], current_ipcch_execution_month=None)
+    mode_root = cfg["roots"][pre["mode"]].rstrip("/")
+    reservation_uri = f"{mode_root}/runs/{pre['run_id']}/v2_reservation.json"
+    status_uri = f"{mode_root}/runs/{pre['run_id']}/v2_run_status.json"
+    identity = {"uri": request_uri, "generation": str(request_generation), "sha256": hashlib.sha256(data).hexdigest()}
+    # a redelivered identity returns its durable status before any state read or admission (an old month is not
+    # re-admitted against a newer current) and before any provider/context is built
+    replayed = _replay(store, reservation_uri, status_uri, identity, pre["run_id"])
+    if replayed is not None:
+        return replayed
     current_month = None
     if pre["mode"] == "real" and pre["operations"]["ipcch_inference"] and pre["publication"] == "current":
         current = pub.read_current(store, cfg["roots"]["real"], cfg["namespaces"]["production"])
         current_month = pub.ipcch_execution_month(current["record"])
+
+    timeout = int(cfg.get("run_timeout_seconds", RUN_TIMEOUT_SECONDS))
+    state: dict[str, Any] = {}
+
+    def reserve(request):
+        deadline = now + timedelta(seconds=timeout)
+        record = {"schema": RESERVATION_SCHEMA, "run_id": request["run_id"], "mode": request["mode"], "request": identity,
+                  "reserved_at": _iso(now), "deadline_utc": _iso(deadline), "run_timeout_seconds": timeout}
+        try:
+            store.write_text(reservation_uri, json.dumps(record, indent=2, sort_keys=True) + "\n", if_generation_match=0)
+        except Exception as exc:                       # a concurrent duplicate won the reservation
+            again = _replay(store, reservation_uri, status_uri, identity, request["run_id"])
+            if again is not None:
+                return again
+            raise EntrypointError(f"run {request['run_id']} could not be reserved ({exc})") from exc
+        state.update(reserved=True, deadline=deadline)
+        return None
 
     def resolve(uri, generation):
         blob = reader.read_bytes(uri, generation)
@@ -172,7 +233,9 @@ def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, st
         providers = {"climate_providers": None, "gpp_acquirer": None, "nightlight_acquirer": None}
         if request["operations"]["ipcch_generation"]:   # acquisition only when generating (inference never needs EE)
             providers = resolve_factory(cfg["providers"][mode])(cfg=cfg, store=store, client=client,
-                                                                run_id=request["run_id"], roster=roster)
+                                                                run_id=request["run_id"], roster=roster, root=root,
+                                                                deadline_utc=state["deadline"],
+                                                                execution_month=request["execution_month"])
         work = os.path.join(cfg["work_dir"], request["run_id"])
         os.makedirs(work, exist_ok=False)                          # one work dir per run
         return run_v2.IpcchContext(store=store, root=root, binding=binding, package_root=inst["package_root"],
@@ -183,13 +246,44 @@ def run(cfg: Mapping[str, Any], *, request_uri: str, request_generation: str, st
     fews_selected = pre["operations"]["fewsnet_generation"] or pre["operations"]["fewsnet_inference"]
     if fews_selected and fewsnet_runner is None:        # built only when FEWS NET is selected (real only, R38)
         fewsnet_runner = real_fewsnet_runner(cfg, store=store, reader=reader, client=client)
-    outcome = run_v2.run_request(body, admit_kwargs=admit_kwargs, ipcch_context=context, deployment=deployment,
-                                 fewsnet_runner=fewsnet_runner)
+    try:
+        outcome = run_v2.run_request(body, admit_kwargs=admit_kwargs, ipcch_context=context, deployment=deployment,
+                                     fewsnet_runner=fewsnet_runner, reserve=reserve)
+    except Exception as exc:
+        if state.get("reserved"):                      # reserved, then failed: a durable failed status (best effort)
+            failed = {"run_id": pre["run_id"], "mode": pre["mode"], "status": "failed",
+                      "reason": f"{type(exc).__name__}: {exc}", "systems": {}}
+            try:
+                store.write_text(status_uri, json.dumps(failed, indent=2, sort_keys=True) + "\n", if_generation_match=0)
+            except Exception:
+                pass                                   # stays indeterminate: still never relaunched under this ID
+        raise
+    if outcome.get("replayed"):
+        return dict(outcome)
     status = {k: v for k, v in outcome.items() if k != "systems"}
     status["systems"] = {s: _durable(o) for s, o in outcome["systems"].items()}
-    uri = f"{cfg['roots'][outcome['mode']].rstrip('/')}/runs/{outcome['run_id']}/v2_run_status.json"
-    store.write_text(uri, json.dumps(status, indent=2, sort_keys=True, default=str) + "\n", if_generation_match=0)
-    return {**status, "status_uri": uri}
+    status["deadline_utc"] = _iso(state["deadline"])
+    store.write_text(status_uri, json.dumps(status, indent=2, sort_keys=True, default=str) + "\n", if_generation_match=0)
+    return {**status, "status_uri": status_uri}
+
+
+def _iso(t: datetime) -> str:
+    return t.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _replay(store, reservation_uri: str, status_uri: str, identity: Mapping[str, str], run_id: str):
+    """None when the run ID is unreserved; the durable status (``replayed``) for the same completed identity; otherwise
+    an ``EntrypointError`` (changed request, or reserved without a final status - never launched again)."""
+    if store.get_metadata(reservation_uri) is None:
+        return None
+    record = json.loads(store.read_text(reservation_uri))
+    if record.get("request") != dict(identity):
+        raise EntrypointError(f"run {run_id} is reserved for request {record.get('request')}; a changed request "
+                              f"needs a new run ID")
+    if store.get_metadata(status_uri) is None:
+        raise EntrypointError(f"run {run_id} was reserved at {record.get('reserved_at')} and has no final status "
+                              "(active, interrupted or indeterminate); it is not launched again - retry with a new run ID")
+    return {**json.loads(store.read_text(status_uri)), "status_uri": status_uri, "replayed": True}
 
 
 def _durable(outcome: Mapping[str, Any]) -> dict[str, Any]:

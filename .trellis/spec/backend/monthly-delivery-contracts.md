@@ -147,3 +147,55 @@ Assert envelope reference enumeration/hash validation; reject wrong selection be
 
 ### 7. Wrong vs correct
 Wrong: trust a caller-supplied Binding while ignoring the manifest selection. Correct: verify the requested immutable envelope and require identity equality before executing.
+
+## 12. IPCCH automatic EE production and request reservation
+
+### 1. Scope / trigger
+New IPCCH v2 generation produces demanded, unsaved VI/drought inputs automatically.
+The 10-30 real E2E task's CP2 establishes offline behavior; live new-month acceptance
+is deferred. Fully retained months legitimately produce no exports.
+
+### 2. Signatures
+`TableProducer.run(tables, *, origin, windows)` returns produced mappings, validated
+frames and a report. `EETransport.submit_asset_export(collection, asset_id,
+description)` returns an AssetExport; wait/cancel consume that handle.
+`run_request(..., reserve=callback)` reserves after admission and before locks/work.
+
+### 3. Contracts
+Deployment `producer_asset_root` is the writable EE root. Static/history inputs
+keep their own root. One run-bound asset replaces each demanded family/chunk;
+post-2026 chunks are six-year blocks starting 2027. Preserve upstream full-chunk
+formula/QA/scaling, including PATCH32's final monthly float32 cast. Row metadata
+`days_present_YYYYMM` and `composite_dates` is evaluated in the same export graph.
+Saved versions record produced asset IDs; batch manifests retain production receipts.
+
+`v2_reservation.json` binds request URI/generation/SHA256 and deadline. An identical
+completed request returns durable status before current-month re-admission. Reserved
+unfinished/failed work never reexecutes; deliberate retries use a new ID. Configured
+`run_timeout_seconds` is integer 901..14400. EE calls stop at deadline minus 900 s;
+cancel may use the reserve. Each EE RPC is capped at 60 s, SDK retries disabled
+temporarily, settings restored on failure. Page computeFeatures/listAssets explicitly.
+
+### 4. Validation and error matrix
+Missing/inconsistent completeness metadata, nonnumeric/Inf means, wrong PATCH32
+IDs, failed export or completed-without-asset: processing failure. Explicit empty
+VI listing: source unavailable; null is an error. Complete source with masked areas:
+preserve NaN. Incomplete source input window: dependent period unavailable. Unknown
+operation after lost start response: persist request ID/ambiguity, never claim cancel.
+
+### 5. Good / base / bad cases
+Good: January planning includes prior Aqua year and crossing drought chunks. Base:
+retained period skips exports. Bad: concatenate old/new chunks and let old nulls
+shadow new values; reinterpret an unreadable private asset as unpublished.
+
+### 6. Tests required
+Producer equivalence/serialization, failed sibling/timeout/cancel, exact sparse
+PATCH32, explicit-empty/null metadata, paginated deadlines and settings restoration,
+real SDK Task response loss, saved/batch receipt propagation, retained skip, new-year
+recovery and completed replay after current advances. Run under the quality guide's
+memory limits. Offline fixtures never establish runtime identity access or live E2E.
+
+### 7. Wrong vs correct
+Wrong: `fillna("")` on completeness metadata or accepting systemd-run exit 0 alone.
+Correct: validate one non-null metadata value on every row, and require test child
+exit evidence. Never rerun an interrupted test without bounded memory/time.

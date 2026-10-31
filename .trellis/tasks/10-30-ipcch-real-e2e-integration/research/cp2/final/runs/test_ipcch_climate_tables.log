@@ -1,0 +1,48 @@
+# unit=ipcch-cp2-test_ipcch_climate_tables-1793410101660728161 start=2026-10-30T21:28:21-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_climate_tables.py
+Running as unit: ipcch-cp2-test_ipcch_climate_tables-1793410101660728161.service; invocation ID: c28a43a914e342b58e9ce1fe4b5a1935
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 9 items
+
+tests/cloud/test_ipcch_climate_tables.py::test_intervals_and_month_tiling PASSED
+tests/cloud/test_ipcch_climate_tables.py::test_monthly_vi_full_coverage_rule PASSED
+tests/cloud/test_ipcch_climate_tables.py::test_vegetation_provider_outcomes PASSED
+tests/cloud/test_ipcch_climate_tables.py::test_drought_provider_equals_retained_numerics_and_availability PASSED
+tests/cloud/test_ipcch_climate_tables.py::test_seasonal_vegetation_full_support_and_availability PASSED
+tests/cloud/test_ipcch_climate_tables.py::test_seasonal_drought_uses_the_seasonal_fit PASSED
+tests/cloud/test_ipcch_climate_tables.py::test_historical_target_keeps_the_full_baseline_and_patch_counts PASSED
+tests/cloud/test_ipcch_climate_tables.py::test_malformed_values_and_absent_admins_fail PASSED
+tests/cloud/test_ipcch_climate_tables.py::test_current_table_missing_an_admin_fails_before_the_join PASSED
+
+============================== 9 passed in 3.99s ===============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_climate_tables.py"
+	User time (seconds): 3.68
+	System time (seconds): 0.04
+	Percent of CPU this job got: 88%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.19
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 151140
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 21866
+	Voluntary context switches: 4605
+	Involuntary context switches: 13
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 4.242s
+CPU time consumed: 3.735s
+# end=2026-10-30T21:28:25-04:00 launcher_rc=0 child_exit=0

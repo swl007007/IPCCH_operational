@@ -1,0 +1,20 @@
+ M AGENTS.md
+ M PROGRESS.md
+ M cloud_pipeline/cloud/ipcch/climate.py
+ M cloud_pipeline/cloud/ipcch/climate_run.py
+ M cloud_pipeline/cloud/ipcch/climate_tables.py
+ M cloud_pipeline/cloud/ipcch/ee_transport.py
+ M cloud_pipeline/cloud/ipcch/entrypoint_v2.py
+ M cloud_pipeline/cloud/ipcch/generation.py
+ M cloud_pipeline/cloud/ipcch/run_v2.py
+ M cloud_pipeline/tests/cloud/ipcch_smoke_fixture.py
+ M cloud_pipeline/tests/cloud/test_ipcch_ee_transport.py
+ M cloud_pipeline/tests/cloud/test_ipcch_entrypoint_v2.py
+?? .trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp2/
+?? .trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp3-supervisor-seams.md
+?? cloud_pipeline/cloud/ipcch/table_producers.py
+?? cloud_pipeline/tests/cloud/ee_pixel_mock.py
+?? cloud_pipeline/tests/cloud/ipcch_producer_world.py
+?? cloud_pipeline/tests/cloud/test_ipcch_production_e2e.py
+?? cloud_pipeline/tests/cloud/test_ipcch_table_producers.py
+?? cloud_pipeline/tests/fixtures/ipcch_seasonal_producers/

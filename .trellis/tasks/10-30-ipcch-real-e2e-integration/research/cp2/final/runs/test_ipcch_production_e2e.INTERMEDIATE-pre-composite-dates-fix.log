@@ -1,0 +1,41 @@
+# unit=ipcch-cp2-test_ipcch_production_e2e-1793410023757834805 start=2026-10-30T21:27:03-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_production_e2e.py
+Running as unit: ipcch-cp2-test_ipcch_production_e2e-1793410023757834805.service; invocation ID: 4a97791b52314a62a3815a26743d4209
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 2 items
+
+tests/cloud/test_ipcch_production_e2e.py::test_january_2027_production_flows_into_retained_history_and_the_batch PASSED
+tests/cloud/test_ipcch_production_e2e.py::test_a_year_without_composites_is_unavailable_until_a_later_run_recovers PASSED
+
+============================== 2 passed in 17.51s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_production_e2e.py"
+	User time (seconds): 16.20
+	System time (seconds): 0.47
+	Percent of CPU this job got: 92%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:18.01
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 461428
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 88
+	Minor (reclaiming a frame) page faults: 161834
+	Voluntary context switches: 9938
+	Involuntary context switches: 54
+	Swaps: 0
+	File system inputs: 18248
+	File system outputs: 10368
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 18.061s
+CPU time consumed: 16.692s
+# end=2026-10-30T21:27:21-04:00 launcher_rc=0 child_exit=0

@@ -1,0 +1,68 @@
+# unit=ipcch-cp2-file-producers-1793409584885921266 start=2026-10-30T21:19:44-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_table_producers.py
+Running as unit: ipcch-cp2-file-producers-1793409584885921266.service; invocation ID: 87c65fe7fc7740029f83413b036c03f5
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 29 items
+
+tests/cloud/test_ipcch_table_producers.py::test_vendored_scripts_are_the_ported_sources PASSED
+tests/cloud/test_ipcch_table_producers.py::test_daily_fao56_et0_equals_both_upstream_scripts PASSED
+tests/cloud/test_ipcch_table_producers.py::test_monthly_et0_equals_01_and_patch32_cast_equals_02[2026-2] PASSED
+tests/cloud/test_ipcch_table_producers.py::test_monthly_et0_equals_01_and_patch32_cast_equals_02[2026-3] PASSED
+tests/cloud/test_ipcch_table_producers.py::test_monthly_et0_equals_01_and_patch32_cast_equals_02[2026-4] PASSED
+tests/cloud/test_ipcch_table_producers.py::test_monthly_precipitation_equals_01[chirps] PASSED
+tests/cloud/test_ipcch_table_producers.py::test_monthly_precipitation_equals_01[persiann] PASSED
+tests/cloud/test_ipcch_table_producers.py::test_monthly_precipitation_equals_01[era5land] PASSED
+tests/cloud/test_ipcch_table_producers.py::test_vi_quality_mask_equals_01 PASSED
+tests/cloud/test_ipcch_table_producers.py::test_js_reference_regenerates_from_the_vendored_scripts PASSED
+tests/cloud/test_ipcch_table_producers.py::test_graphs_carry_the_scripts_operations PASSED
+tests/cloud/test_ipcch_table_producers.py::test_year_chunks_roll_over_after_2026 PASSED
+tests/cloud/test_ipcch_table_producers.py::test_required_tables_for_a_routine_month_are_the_seven_families PASSED
+tests/cloud/test_ipcch_table_producers.py::test_january_reads_the_prior_year_aqua_and_both_chunks PASSED
+tests/cloud/test_ipcch_table_producers.py::test_seasonal_and_historical_demand PASSED
+tests/cloud/test_ipcch_table_producers.py::test_demand_follows_the_climate_scheduling PASSED
+tests/cloud/test_ipcch_table_producers.py::test_output_ids_are_per_run_and_immutable PASSED
+tests/cloud/test_ipcch_table_producers.py::test_readback_declares_completeness_and_validates_identity PASSED
+tests/cloud/test_ipcch_table_producers.py::test_readback_vi_composites_including_an_explicit_empty_listing PASSED
+tests/cloud/test_ipcch_table_producers.py::test_one_routine_month_produces_seven_tables_submitted_before_any_wait PASSED
+tests/cloud/test_ipcch_table_producers.py::test_retained_periods_produce_nothing PASSED
+tests/cloud/test_ipcch_table_producers.py::test_a_failed_export_cancels_its_siblings_and_exposes_nothing PASSED
+tests/cloud/test_ipcch_table_producers.py::test_an_interrupted_wait_still_cancels_with_a_durable_receipt PASSED
+tests/cloud/test_ipcch_table_producers.py::test_timeout_is_cancelled_within_the_deadline PASSED
+tests/cloud/test_ipcch_table_producers.py::test_an_expired_deadline_stops_before_any_earth_engine_call PASSED
+tests/cloud/test_ipcch_table_producers.py::test_duplicate_run_and_existing_destination_never_resubmit PASSED
+tests/cloud/test_ipcch_table_producers.py::test_patch32_target_check_and_malformed_outputs_block PASSED
+tests/cloud/test_ipcch_table_producers.py::test_completed_task_without_its_asset_is_a_failure PASSED
+tests/cloud/test_ipcch_table_producers.py::test_start_failure_cancels_and_records PASSED
+
+============================= 29 passed in 21.83s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_table_producers.py"
+	User time (seconds): 20.29
+	System time (seconds): 0.81
+	Percent of CPU this job got: 95%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:22.15
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 217300
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 9
+	Minor (reclaiming a frame) page faults: 205073
+	Voluntary context switches: 6138
+	Involuntary context switches: 43
+	Swaps: 0
+	File system inputs: 1000
+	File system outputs: 10888
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 22.298s
+CPU time consumed: 21.217s
+# end=2026-10-30T21:20:07-04:00 launcher_rc=0 child_exit=0

@@ -1,0 +1,66 @@
+# unit=ipcch-cp2-test_fews_adapter-1793410133256580905 start=2026-10-30T21:28:53-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_fews_adapter.py
+Running as unit: ipcch-cp2-test_fews_adapter-1793410133256580905.service; invocation ID: 2cdb52e9d59b4e26a0207be457f8b350
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 13 items
+
+tests/cloud/test_fews_adapter.py::test_combined_generation_and_inference_publishes_a_fews_member_from_its_own_snapshot PASSED
+tests/cloud/test_fews_adapter.py::test_generation_only_then_inference_only_equals_combined[False] PASSED
+tests/cloud/test_fews_adapter.py::test_generation_only_then_inference_only_equals_combined[True] PASSED
+tests/cloud/test_fews_adapter.py::test_inference_only_refuses_a_snapshot_without_its_generation_binding PASSED
+tests/cloud/test_fews_adapter.py::test_keep_checks_the_fews_row_projection_against_the_pinned_history PASSED
+tests/cloud/test_fews_adapter.py::test_v2_member_equals_the_legacy_single_system_route_on_the_same_inputs PASSED
+tests/cloud/test_fews_adapter.py::test_fews_current_inherits_the_new_contract_ipcch_member_and_carries_activation PASSED
+tests/cloud/test_fews_adapter.py::test_fews_candidate_never_moves_the_pointer PASSED
+tests/cloud/test_fews_adapter.py::test_two_system_partial_failure_keeps_the_successful_fews_member PASSED
+tests/cloud/test_fews_adapter.py::test_keep_accepts_the_shared_retained_file_by_its_fews_rows[None-True] PASSED
+tests/cloud/test_fews_adapter.py::test_keep_accepts_the_shared_retained_file_by_its_fews_rows[ipcch-True] PASSED
+tests/cloud/test_fews_adapter.py::test_keep_accepts_the_shared_retained_file_by_its_fews_rows[fewsnet-False] PASSED
+tests/cloud/test_fews_adapter.py::test_keep_accepts_the_shared_retained_file_by_its_fews_rows[fews_only-True] PASSED
+
+=============================== warnings summary ===============================
+tests/cloud/test_fews_adapter.py: 60 warnings
+  /home/swl007007/.venvs/fewsnet-test-lock-20261022/lib/python3.12/site-packages/rasterio/transform.py:178: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    return Affine.translation(west, north) * Affine.scale(xsize, -ysize)
+
+tests/cloud/test_fews_adapter.py: 120 warnings
+  /home/swl007007/.venvs/fewsnet-test-lock-20261022/lib/python3.12/site-packages/rasterio/windows.py:360: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    x, y = transform * (window.col_off or 0.0, window.row_off or 0.0)
+
+tests/cloud/test_fews_adapter.py: 120 warnings
+  /home/swl007007/.venvs/fewsnet-test-lock-20261022/lib/python3.12/site-packages/rasterio/windows.py:361: PendingDeprecationWarning: Use `@` matmul instead of `*` mul operator for matrix multiplication
+    return Affine.translation(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+====================== 13 passed, 300 warnings in 19.88s =======================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_fews_adapter.py"
+	User time (seconds): 17.83
+	System time (seconds): 0.58
+	Percent of CPU this job got: 94%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:19.48
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 492772
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 391
+	Minor (reclaiming a frame) page faults: 78567
+	Voluntary context switches: 14047
+	Involuntary context switches: 2391
+	Swaps: 0
+	File system inputs: 76256
+	File system outputs: 66984
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 20.561s
+CPU time consumed: 18.440s
+# end=2026-10-30T21:29:12-04:00 launcher_rc=0 child_exit=0

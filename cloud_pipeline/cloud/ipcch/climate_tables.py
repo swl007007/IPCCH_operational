@@ -47,6 +47,17 @@ SENSOR_FIRST_DOY = {"terra": 1, "aqua": 9}
 SENSOR_LABELS = {"terra": "TERRA", "aqua": "AQUA"}
 SPI_SOURCES = {"chirps": "CHIRPS", "persiann": "PERSIANN", "era5land": "ERA5LAND"}
 YEAR_CHUNKS = ((1990, 1995), (1996, 2001), (2002, 2007), (2008, 2013), (2014, 2019), (2020, 2026))
+ROLLING_CHUNK_START, ROLLING_CHUNK_YEARS = 2027, 6       # after the 2020-2026 block (task 10-30): 2027-2032, 2033-2038...
+
+
+def year_chunks(through_year: int) -> tuple[tuple[int, int], ...]:
+    """The drought chunk tables a run reads through ``through_year`` (its feature origin's year): the existing blocks,
+    then 6-year blocks from 2027. The producer (``table_producers``) creates exactly these names."""
+    chunks, a = list(YEAR_CHUNKS), ROLLING_CHUNK_START
+    while a <= through_year:
+        chunks.append((a, a + ROLLING_CHUNK_YEARS - 1))
+        a += ROLLING_CHUNK_YEARS
+    return tuple(chunks)
 
 
 class TableBackend(Protocol):
@@ -116,7 +127,7 @@ class TableRefs:
 
 
 def _check_periods(name: str, kind: str, years: tuple[int, int], periods: Any) -> None:
-    if not isinstance(periods, Mapping) or not periods:
+    if not isinstance(periods, Mapping) or (not periods and kind == "month"):     # a VI year may have no composite yet
         raise ClimateProcessingFailure(f"produced {name}: no source-calendar completeness metadata")
     bad = [k for k, v in periods.items() if not isinstance(k, str) or not isinstance(v, bool)]
     if bad:
@@ -168,6 +179,13 @@ def check_produced(frame: pd.DataFrame, name: str, table: ProducedTable, refs: T
 
 
 BASELINE_END = "2020-12"          # every fit axis spans the complete 1991-2020 baseline, whatever the target month
+
+
+def season_span(windows: pd.DataFrame) -> tuple[str, str]:
+    """(first, last) YYYY-MM months of the seasonal indices of one season group: first start month through the month
+    before the latest exclusive end."""
+    end = (pd.to_datetime(windows["gs_end_date_exclusive"]).max() - pd.Timedelta(days=1)).strftime("%Y-%m")
+    return pd.to_datetime(windows["gs_start_date"]).min().strftime("%Y-%m"), end
 
 
 def input_months(first: str, last: str) -> list[str]:
@@ -294,7 +312,8 @@ class VegetationProvider:
             return SourceOutcome(sensor, "unavailable", detail=f"composites not yet in the current tables: {lacking}")
         out = monthly_vi(joined.reset_index(), sensor, self.index, y, m)
         return SourceOutcome(sensor, "published", out[["admin_code", "value"]],
-                             extra={"incomplete_areas": int(out["value"].isna().sum())})
+                             extra={"incomplete_areas": int(out["value"].isna().sum()),
+                                    **_produced_used(self.refs, cur_ids.values())})
 
 
 # --------------------------------------------------------------------------- monthly/spi_monthly.py
@@ -309,6 +328,12 @@ def _read_checked(backend: TableBackend, refs: TableRefs, asset: str, index: str
     if produced is not None:
         check_produced(frame, produced[0], produced[1], refs, index)
     return frame
+
+
+def _produced_used(refs: TableRefs, ids) -> dict[str, Any]:
+    """``produced_tables``: the tables this run produced that a published value was computed from (saved with it)."""
+    used = sorted(i for i in ids if refs.produced_asset(i) is not None)
+    return {"produced_tables": used} if used else {}
 
 
 def _absent_unproduced(backend: TableBackend, refs: TableRefs, ids: list[str]) -> list[str]:
@@ -394,9 +419,9 @@ class DroughtProvider:
     def _compute(self, source, month):
         months = spi_spei.month_axis("1990-01", max(month, BASELINE_END))     # complete baseline even for old targets
         pos = months.get_loc(pd.Timestamp(f"{month}-01"))
-        prcp_frames = self._read_all(self._chunks(self.refs.prcp, label=SPI_SOURCES[source]))
-        et0_frames = self._read_all(self._chunks(self.refs.et0))
-        patch_frames = self._read_all(self._chunks(self.refs.et0_patch))
+        ids = [self._chunks(self.refs.prcp, label=SPI_SOURCES[source]), self._chunks(self.refs.et0),
+               self._chunks(self.refs.et0_patch)]
+        prcp_frames, et0_frames, patch_frames = (self._read_all(i) for i in ids)
         prcp_has, et0_has = self._availability(source, input_months(month, month), prcp_frames, et0_frames, patch_frames)
         prcp = _wide_month_matrix(prcp_frames, "prcp", months, self.admins)
         et0 = _wide_month_matrix(et0_frames, "et0", months, self.admins)
@@ -404,7 +429,9 @@ class DroughtProvider:
                                                                        sparse=True))
         spi = spi_spei.compute_spi03_monthly(prcp, months)[:, pos] if prcp_has else None
         spei = spi_spei.compute_spei03_monthly(prcp, et0, months)[:, pos] if prcp_has and et0_has else None
-        return {"spi03": spi, "spei03": spei, "prcp_has": prcp_has, "et0_has": et0_has, "et0_patch_filled": filled}
+        return {"spi03": spi, "spei03": spei, "prcp_has": prcp_has, "et0_has": et0_has, "et0_patch_filled": filled,
+                "produced": {"spi03": _produced_used(self.refs, ids[0]),
+                             "spei03": _produced_used(self.refs, [i for group in ids for i in group])}}
 
     def fetch(self, base: str, source: str, month: str) -> SourceOutcome:
         if base not in ("spi03", "spei03") or source not in SPI_SOURCES:
@@ -417,7 +444,7 @@ class DroughtProvider:
             why = "precipitation" if not r["prcp_has"] else "ET0"
             return SourceOutcome(source, "unavailable", detail=f"S2C3 {why} table has no published {month}")
         return SourceOutcome(source, "published", pd.DataFrame({"admin_code": self.admins, "value": r[base]}),
-                             extra={"et0_patch_filled": r["et0_patch_filled"]})
+                             extra={"et0_patch_filled": r["et0_patch_filled"], **r["produced"][base]})
 
     def bound(self, base: str) -> Callable[[str, str], SourceOutcome]:
         return lambda source, month: self.fetch(base, source, month)
@@ -494,7 +521,8 @@ class SeasonalVegetationProvider(VegetationProvider):
         rows = rows[rows["admin_code"].astype(str).isin(set(windows["admin_code"].astype(str)))]
         out = season_vi(rows, sensor, self.index, windows, season_year)
         return SourceOutcome(sensor, "published", out[["admin_code", "value"]].reset_index(drop=True),
-                             extra={"incomplete_areas": int(out["value"].isna().sum())})
+                             extra={"incomplete_areas": int(out["value"].isna().sum()),
+                                    **_produced_used(self.refs, cur_ids.values())})
 
     def bound_season(self):
         return lambda sensor, year, season, windows: self.fetch_season(sensor, year, season, windows)
@@ -512,13 +540,12 @@ class SeasonalDroughtProvider(DroughtProvider):
         from cloud.ipcch import spi_spei_seasonal as sss
         if base not in ("spi03", "spei03") or source not in SPI_SOURCES:
             raise ClimateProcessingFailure(f"no seasonal drought provider for {base}/{source}")
-        end = (pd.to_datetime(windows["gs_end_date_exclusive"]).max() - pd.Timedelta(days=1)).strftime("%Y-%m")
-        first = pd.to_datetime(windows["gs_start_date"]).min().strftime("%Y-%m")
+        first, end = season_span(windows)
         all_months = spi_spei.month_axis("1990-01", max(end, BASELINE_END))
         index_months = spi_spei.month_axis(first, end)
-        prcp_frames = self._read_all(self._chunks(self.refs.prcp, label=SPI_SOURCES[source]))
-        et0_frames = self._read_all(self._chunks(self.refs.et0))
-        patch_frames = self._read_all(self._chunks(self.refs.et0_patch))
+        ids = [self._chunks(self.refs.prcp, label=SPI_SOURCES[source]), self._chunks(self.refs.et0),
+               self._chunks(self.refs.et0_patch)]
+        prcp_frames, et0_frames, patch_frames = (self._read_all(i) for i in ids)
         prcp_has, et0_has = self._availability(source, input_months(first, end), prcp_frames, et0_frames, patch_frames)
         if not prcp_has:
             return SourceOutcome(source, "unavailable", detail=f"S2C3 precipitation has no published {end}")
@@ -533,8 +560,10 @@ class SeasonalDroughtProvider(DroughtProvider):
         plan = sss.season_plan(win[["admin_code", "season_year", "season", "gs_calendar_valid", "gs_start_date", "gs_end_date_exclusive"]],
                                index_months, codes)
         agg = sss.aggregate(idx["spi" if base == "spi03" else "spei"], idx["spi_reason" if base == "spi03" else "spei_reason"], plan, "v")
+        used = ids[0] if base == "spi03" else [i for group in ids for i in group]
         return SourceOutcome(source, "published", pd.DataFrame({"admin_code": plan["admin_code"], "value": agg["v"].to_numpy()}),
-                             extra={"status_counts": agg["v_status"].value_counts().to_dict()})
+                             extra={"status_counts": agg["v_status"].value_counts().to_dict(),
+                                    **_produced_used(self.refs, used)})
 
     def bound_season(self, base):
         return lambda source, year, season, windows: self.fetch_season(base, source, year, season, windows)

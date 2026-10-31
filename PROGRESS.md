@@ -6,8 +6,8 @@ the task's `execution-protocol.md` and `research/user-execution-protocol.md`.
 This section is an operational ledger, not an approval source; older sections below
 describe other tasks and do not govern this execution.
 
-- Supervisor: Codex `w1A:p8`, session `01a18e48-f335-7161-bc57-4c6913b92aa5`.
-- Executor: existing Claude Opus 5.5 1M `w1A:p2`, session
+- Supervisor: Codex `w1A:p2`, session `01a18e48-f335-7161-bc57-4c6913b92aa5`.
+- Executor: existing Claude Opus 5.5 1M `w1A:p8`, session
   `6a490ae1-ee00-43f9-bdfc-c887c9816c09`; same checkout identity verified.
 - Branch: `feat/ipcch-real-e2e-integration`; base
   `feat/ipcch-validity-feature-inference` at `69aa74a372f40581d6759a5703e7ec331ba4af63`.
@@ -17,10 +17,33 @@ describe other tasks and do not govern this execution.
   See `research/cp0/supervisor-checkpoint.md`. Model is `claude-opus-5-5[1m]`.
 - CP1 accepted: sparse PATCH32 and consumer table mapping/completeness are
   component-complete. 86 focused tests pass; old reader fails seven sparse cases.
+  Committed as `12b1d68`; precommit GitNexus reports medium risk, three expected
+  seasonal provider flows. Raw pytest/diff evidence retains original whitespace;
+  source/docs whitespace check passed. User AGENTS.md remains unstaged.
   First baseline inconclusive; full-log rerun passes 957 tests with exit 0 but
   overlaps edits and is not a frozen-source baseline.
-- CP2 next: automatic producers, export lifecycle, deadlines, replay protection
-  and receipt-to-retained integration. No cloud calls or deployment yet.
+- CP2 accepted: automatic producers, export lifecycle, deadlines, replay protection
+  and receipt-to-retained integration. Final 16-file guarded suite: 226 passed,
+  zero failures/skips, every child exit 0, peak RSS 492,772 KiB; 20 frozen source
+  hashes match. See `research/cp2/supervisor-checkpoint.md`. No cloud calls yet.
+  CP3 next: submission/UTC month, config/Workflow, artifact install and continuity.
+- Herdr shutdown interrupted CP2 testing at 2026-10-31 00:08 UTC. The same
+  Executor session was verified restored at `w1A:p8`; Supervisor is now `w1A:p2`.
+  Old pane addresses are historical. Interrupted pytest has no accepted result;
+  full-log rerun and the outstanding SDK pagination/deadline correction are required.
+- Interruption investigation confirmed global Python OOM (21.76 GiB RSS, all
+  16 GiB swap used), followed by systemd init.scope termination and repeat distro
+  exits within the same kernel. A fresh kernel is currently stable. Before CP2
+  tests resume, isolate the suspect producer test with a memory limit; its exact
+  PID/test attribution remains unproven. See `research/cp2/wsl-interruption-incident.md`.
+- User accepted the incident report and authorized continuation with memory
+  limits. Verified transient user service outside init.scope: MemoryMax=4 GiB,
+  MemorySwapMax=0. Executor's capped diagnostic reproduced the test-only zero-delay
+  poll/event-list growth and frozen fake clock at 245,564 kB peak RSS. Tests are
+  corrected; final reruns have explicit child exit markers. Guard remains mandatory.
+- Live executor PID 4905 is `claude --resume 6a490ae1...`, Opus 5.5 1M. Herdr's
+  displayed session 8086f8e0 belongs to the claude-mem observer, not a replacement.
+  Current identity evidence: `research/cp2/executor-identity.md`.
 - Recovered a stale zero-byte `.git/index.lock` after verifying no Linux/Windows
   Git process and its age over two hours; original user changes were preserved.
 - AC1-AC9 required; DA1-DA2 real new-month incremental acceptance expressly deferred.

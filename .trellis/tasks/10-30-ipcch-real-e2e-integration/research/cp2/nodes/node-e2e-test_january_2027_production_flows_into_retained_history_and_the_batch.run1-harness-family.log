@@ -1,0 +1,95 @@
+# unit=ipcch-cp2-node-e2e-test_january_2027_production_flows_into_retained_history_and_the_batch-1793409671593543095 start=2026-10-30T21:21:11-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_production_e2e.py::test_january_2027_production_flows_into_retained_history_and_the_batch
+Running as unit: ipcch-cp2-node-e2e-test_january_2027_production_flows_into_retained_history_and_the_batch-1793409671593543095.service; invocation ID: 36ae56b9de8c4b39884852fa4956aa21
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 1 item
+
+tests/cloud/test_ipcch_production_e2e.py::test_january_2027_production_flows_into_retained_history_and_the_batch FAILED
+
+=================================== FAILURES ===================================
+____ test_january_2027_production_flows_into_retained_history_and_the_batch ____
+
+tmp_path = PosixPath('/tmp/pytest-of-swl007007/pytest-5/test_january_2027_production_f0')
+package = PosixPath('/tmp/pytest-of-swl007007/pytest-5/pkg0/package')
+
+    def test_january_2027_production_flows_into_retained_history_and_the_batch(tmp_path, package):  # noqa: F811
+        store, root, b, bundle = setup(tmp_path, package)
+        refs = fx.Refs()
+        req = fx.smoke_request(refs, tmp_path / "env.json", execution_month="2027-03")          # O = 2027-01
+        wee = pw.WorldEE(pw.static_world(CODES), pw.server_for(CODES, through="2027-01", vi_through="2027-01-31"))
+>       out = producing_generation(store, root, b, bundle, refs, req, tmp_path, wee).run()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/cloud/test_ipcch_production_e2e.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+cloud/ipcch/generation.py:200: in run
+    self._step("climate", lambda: climate_run.update_all(
+cloud/ipcch/generation.py:135: in _step
+    out = fn()
+          ^^^^
+cloud/ipcch/generation.py:202: in <lambda>
+    providers=self.climate_providers(windows, O), declared_extra=declared))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/cloud/test_ipcch_production_e2e.py:36: in factory
+    real, fixture = real_factory(windows, origin), fx.climate_providers()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+cloud/ipcch/climate_run.py:135: in build
+    production = producer.run(tables, origin=origin, windows=windows) if producer is not None else None
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+cloud/ipcch/table_producers.py:494: in run
+    receipts = [(job, self.transport.wait_asset_export(handle)) for job, handle in handles]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+cloud/ipcch/ee_transport.py:333: in wait_asset_export
+    self._wait(handle.task, handle.description, handle.record_uri, handle.record, handle.generation)
+cloud/ipcch/ee_transport.py:225: in _wait
+    status = self._bounded("status", task.status)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+cloud/ipcch/ee_transport.py:178: in _bounded
+    return call()
+           ^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.cloud.ipcch_producer_world.WorldEE.__init__.<locals>.Task object at 0x7fc1b05f2c00>
+
+    def status(self):
+        call("status")
+        if self.polls >= MAX_POLLS:
+>           raise RunawayPoll(f"task {self.id} polled {self.polls} times: the scenario never terminates")
+E           tests.cloud.ipcch_producer_world.RunawayPoll: task T8 polled 1000 times: the scenario never terminates
+
+tests/cloud/ipcch_producer_world.py:225: RunawayPoll
+=========================== short test summary info ============================
+FAILED tests/cloud/test_ipcch_production_e2e.py::test_january_2027_production_flows_into_retained_history_and_the_batch - tests.cloud.ipcch_producer_world.RunawayPoll: task T8 polled 1000 times: the scenario never terminates
+============================== 1 failed in 6.72s ===============================
+Command exited with non-zero status 1
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_production_e2e.py::test_january_2027_production_flows_into_retained_history_and_the_batch"
+	User time (seconds): 4.78
+	System time (seconds): 0.42
+	Percent of CPU this job got: 82%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.27
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 442584
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1346
+	Minor (reclaiming a frame) page faults: 125866
+	Voluntary context switches: 14567
+	Involuntary context switches: 27
+	Swaps: 0
+	File system inputs: 278344
+	File system outputs: 4560
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+# CHILD-EXIT=1
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 7.228s
+CPU time consumed: 5.211s
+# end=2026-10-30T21:21:17-04:00 launcher_rc=0 child_exit=1

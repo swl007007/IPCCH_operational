@@ -1,0 +1,1 @@
+INTERRUPTED: stopped by Supervisor (systemctl --user stop of this unit; log shows code=killed/status=TERM). Launcher rc 0 is NOT child success. Cause: Capped(Exception) was swallowed by EETransport._wait as STATUS_ERROR.

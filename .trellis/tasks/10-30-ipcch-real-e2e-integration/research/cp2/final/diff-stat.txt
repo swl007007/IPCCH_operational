@@ -1,0 +1,11 @@
+ cloud_pipeline/cloud/ipcch/climate.py              |  17 +-
+ cloud_pipeline/cloud/ipcch/climate_run.py          |  61 +++--
+ cloud_pipeline/cloud/ipcch/climate_tables.py       |  57 +++--
+ cloud_pipeline/cloud/ipcch/ee_transport.py         | 249 +++++++++++++++++----
+ cloud_pipeline/cloud/ipcch/entrypoint_v2.py        | 114 +++++++++-
+ cloud_pipeline/cloud/ipcch/generation.py           |   1 +
+ cloud_pipeline/cloud/ipcch/run_v2.py               |  11 +-
+ cloud_pipeline/tests/cloud/ipcch_smoke_fixture.py  |   2 +-
+ .../tests/cloud/test_ipcch_ee_transport.py         | 166 +++++++++++++-
+ .../tests/cloud/test_ipcch_entrypoint_v2.py        | 228 +++++++++++++++++++
+ 10 files changed, 809 insertions(+), 97 deletions(-)

@@ -18,9 +18,16 @@
   ``_wait_for_ee_task`` is untouched) bounds every sleep by the remaining budget (timeout and authorization deadline
   minus the cleanup reserve), cancels the task on timeout and records each terminal state; the result is the single
   exported object pinned as ``uri#generation``.
+* ``submit_asset_export`` / ``wait_asset_export`` / ``cancel_asset_export`` (task 10-30): the same reservation, task-id
+  persistence, bounded wait and cancellation for ``Export.table.toAsset`` to a destination that must not exist yet;
+  COMPLETED additionally requires the destination asset to exist; submission and waiting are separate so a run submits
+  all of its tables first. ``evaluate``: one bounded ``getInfo`` (e.g. the PATCH32 target count).
 * ``read_table``: that exact generation (``GcsPinnedReader``), sha256 recorded in ``receipts``.
-* ``read_asset_table``: ``ee.data.computeFeatures`` (PANDAS_DATAFRAME, paged by the client) of the asset's properties
-  without geometry; integral ``admin_code`` values are normalised to canonical integer text; any failure blocks.
+* ``read_asset_table``: ``ee.data.computeFeatures`` of the asset's properties without geometry, paged explicitly
+  (pageSize/pageToken, no SDK fileFormat auto-paging) with the deadline rechecked before every page; integral
+  ``admin_code`` values are normalised to canonical integer text; any failure blocks.
+* Every synchronous request (listing/metadata/read pages, evaluate, task status and cancellation) runs through
+  ``_bounded`` under the run deadline with SDK retries disabled and the previous SDK settings restored.
 
 Every failure is an ``EETransportError`` (a ``ClimateProcessingFailure``): it blocks generation and is never
 reclassified as source unavailability. Live execution needs an Earth Engine project and is deferred (no EE compute is
@@ -44,6 +51,10 @@ from cloud.common.object_store import ObjectStore
 from cloud.ipcch.climate import ClimateProcessingFailure
 
 _AMBIGUOUS = re.compile(r"does not exist or (does not|doesn't) allow", re.IGNORECASE)
+RPC_TIMEOUT_SECONDS = 60       # one Earth Engine request (metadata, listing/read page, evaluate, status, cancel)
+READ_PAGE_SIZE = 1000          # computeFeatures rows per request (the SDK default page)
+LIST_PAGE_SIZE = 1000          # listAssets entries per request
+MAX_PAGES = 1000               # a larger table/folder is a failure, never a silently truncated read or listing
 
 
 class EETransportError(ClimateProcessingFailure):
@@ -92,7 +103,9 @@ class EETransport:
         """``system:time_start`` (ms) of every image of ``collection`` in [start, end) (``band`` is part of the
         provider contract; availability is per image)."""
         try:
-            pairs = list(self._acquirer._list_images(collection, start, end))
+            pairs = list(self._bounded(f"{collection} listing", lambda: self._acquirer._list_images(collection, start, end)))
+        except EETransportError:
+            raise
         except Exception as exc:
             raise EETransportError(f"{collection} availability listing failed: {type(exc).__name__}: {exc}") from exc
         times = []
@@ -108,14 +121,23 @@ class EETransport:
 
     def _listing(self, parent: str) -> set[str]:
         if parent not in self._children:
-            try:
-                listed = self.ee.data.listAssets({"parent": parent})
-            except Exception as exc:
-                raise EETransportError(f"cannot list {parent} to resolve an ambiguous asset lookup "
-                                       f"({type(exc).__name__}: {exc}); not treated as absent") from exc
-            names = set()
-            for a in (listed or {}).get("assets", []):
-                names.update(v for v in (a.get("name"), a.get("id")) if isinstance(v, str))
+            names, token = set(), None
+            for page in range(1, MAX_PAGES + 1):                  # explicit pages: one bounded request each
+                params = {"parent": parent, "pageSize": LIST_PAGE_SIZE, **({"pageToken": token} if token else {})}
+                try:
+                    listed = self._bounded(f"listing {parent} page {page}", lambda: self.ee.data.listAssets(dict(params)))
+                except EETransportError:
+                    raise
+                except Exception as exc:
+                    raise EETransportError(f"cannot list {parent} to resolve an ambiguous asset lookup "
+                                           f"({type(exc).__name__}: {exc}); not treated as absent") from exc
+                for a in (listed or {}).get("assets", []):
+                    names.update(v for v in (a.get("name"), a.get("id")) if isinstance(v, str))
+                token = (listed or {}).get("nextPageToken")
+                if not token:
+                    break
+            else:
+                raise EETransportError(f"listing {parent} exceeded {MAX_PAGES} pages; absence not established")
             self._children[parent] = names
         return self._children[parent]
 
@@ -124,7 +146,9 @@ class EETransport:
         absent = []
         for asset_id in asset_ids:
             try:
-                info = self.ee.data.getAsset(asset_id)
+                info = self._bounded(f"{asset_id} metadata", lambda: self.ee.data.getAsset(asset_id))
+            except EETransportError:
+                raise
             except Exception as exc:
                 if not _AMBIGUOUS.search(str(exc)):
                     raise EETransportError(f"{asset_id}: metadata read failed ({type(exc).__name__}: {exc}); "
@@ -145,14 +169,39 @@ class EETransport:
             return float("inf")
         return (self.deadline_utc - self.clock()).total_seconds() - self.cleanup_reserve_seconds
 
+    def _bounded(self, what: str, call: Callable[[], Any], *, cleanup: bool = False) -> Any:
+        """ONE Earth Engine request under the run deadline. Refused once only the cleanup reserve is left (``cleanup``:
+        cancellation may use the reserve itself, never beyond the deadline); otherwise the request runs with SDK retries
+        disabled (``setMaxRetries(0)`` - retry backoff/jitter could not be bounded) and its timeout set to the smaller of
+        ``RPC_TIMEOUT_SECONDS`` and the remaining budget (``setDeadline``), so no single metadata/status/read request -
+        and no first cancellation - can consume the cleanup reserve that sibling cancellations need; the SDK's previous
+        deadline/retry settings are restored afterwards, also on failure. Callers page explicitly, so every request is
+        one bounded call and the budget is rechecked between pages."""
+        if self.deadline_utc is None:
+            return call()
+        total = (self.deadline_utc - self.clock()).total_seconds()
+        left = total if cleanup else total - self.cleanup_reserve_seconds
+        if left <= 0:
+            raise EETransportError(f"{what}: run deadline {'' if cleanup else 'cleanup reserve '}reached; not started")
+        data = self.ee.data
+        state = data._get_state() if hasattr(data, "_get_state") else None
+        previous = (state.deadline_ms, state.max_retries) if state is not None else (0, 5)    # SDK defaults
+        data.setMaxRetries(0)
+        data.setDeadline(max(1, int(min(left, RPC_TIMEOUT_SECONDS) * 1000)))
+        try:
+            return call()
+        finally:
+            data.setDeadline(previous[0])
+            data.setMaxRetries(previous[1])
+
     def _record(self, uri: str, record: dict, generation) -> str:
         return self.store.write_text(uri, json.dumps(record, sort_keys=True) + "\n",
                                      if_generation_match=generation).generation
 
-    @staticmethod
-    def _cancel(task) -> str:
+    def _cancel(self, task) -> str:
+        """Bounded cancellation (may use the cleanup reserve, never past the deadline); the outcome is recorded."""
         try:
-            task.cancel()
+            self._bounded("cancel", task.cancel, cleanup=True)
             return "cancelled"
         except Exception as exc:
             return f"cancel_failed: {type(exc).__name__}: {exc}"
@@ -171,7 +220,7 @@ class EETransport:
         budget_end = self.monotonic() + min(self.timeout_seconds, max(0.0, self._remaining_seconds()))
         while True:
             try:
-                status = task.status()
+                status = self._bounded("status", task.status)
             except Exception as exc:
                 status = {"state": "STATUS_ERROR", "error": f"{type(exc).__name__}: {exc}"}
             state = status.get("state")
@@ -182,57 +231,56 @@ class EETransport:
                 raise EETransportError(f"export {description} {state}: {status}")
             left = budget_end - self.monotonic()
             if left <= 0:
-                cancel = "cancelled"
-                try:
-                    task.cancel()
-                except Exception as exc:                 # recorded; the task id is persisted for operations cleanup
-                    cancel = f"cancel_failed: {type(exc).__name__}: {exc}"
+                cancel = self._cancel(task)               # recorded; the task id is persisted for operations cleanup
                 self._record(record_uri, {**record, "state": "timeout", "cancel": cancel, "status": status}, generation)
                 raise EETransportError(f"export {description} timed out ({status}); {cancel}")
             self.sleep(min(self.poll_seconds, left))
 
-    def export_table(self, collection: Any, selectors: list[str], description: str) -> str:
-        """Reserve -> submit -> persist id -> bounded wait -> pin the single CSV object (see module docstring)."""
-        from cloud.batch.evi_service import _parse_gcs_uri
-
+    def _reserve(self, description: str, extra: dict) -> tuple[str, dict, str]:
+        """Create-only task record BEFORE any submission (a duplicate is refused without a second task)."""
         if not re.fullmatch(r"[A-Za-z0-9_.-]+", description):
             raise EETransportError(f"export description {description!r} is not a plain identifier")
-        base = f"{self.output_root}/ipcch_exports/{self.run_id}"
-        prefix_uri, record_uri = f"{base}/tables/{description}", f"{base}/tasks/{description}.json"
+        record_uri = f"{self.output_root}/ipcch_exports/{self.run_id}/tasks/{description}.json"
         if self._remaining_seconds() <= 0:
             raise EETransportError("authorization deadline cleanup reserve reached; no new exports")
-        record = {"run_id": self.run_id, "description": description, "prefix": prefix_uri, "selectors": list(selectors),
-                  "task_id": None, "state": "reserved"}
-        try:                                             # create-only reservation BEFORE any submission
+        record = {"run_id": self.run_id, "description": description, **extra, "task_id": None, "state": "reserved"}
+        try:
             generation = self._record(record_uri, record, 0)
         except Exception as exc:
             raise EETransportError(f"export {description} already reserved for run {self.run_id} ({exc}); "
                                    f"not submitted again") from exc
-        if self.store.list(prefix_uri):
-            raise EETransportError(f"export prefix already has objects: {prefix_uri} (exports are never reused)")
-        bucket, blob_prefix = _parse_gcs_uri(prefix_uri)
+        return record_uri, record, generation
+
+    def _submit(self, create: Callable[[], Any], description: str, record_uri: str, record: dict,
+                generation: str) -> tuple[Any, dict, str]:
+        """Deadline re-check -> create -> start -> persist the task id (an untracked task is cancelled)."""
         if self._remaining_seconds() <= 0:               # re-checked immediately before submission
             self._record(record_uri, {**record, "state": "deadline_before_submit"}, generation)
             raise EETransportError("authorization deadline cleanup reserve reached before submission; not submitted")
         try:
-            task = self.ee.batch.Export.table.toCloudStorage(
-                collection=collection, description=f"{self.run_id}_{description}"[:100], bucket=bucket,
-                fileNamePrefix=blob_prefix, fileFormat="CSV", selectors=list(selectors))
+            task = create()
         except Exception as exc:                         # no task object: nothing was submitted
             self._record(record_uri, {**record, "state": "create_failed", "error": f"{type(exc).__name__}: {exc}"}, generation)
             raise EETransportError(f"export {description} could not be created: {type(exc).__name__}: {exc}") from exc
         try:
-            task.start()
-        except Exception as exc:                         # ambiguous: the task may have started (response lost)
-            task_id = getattr(task, "id", None)
-            cancel = self._cancel(task) if task_id else "no task id known"
-            failed = {**record, "task_id": task_id, "state": "start_failed", "cancel": cancel,
+            self._bounded(f"export {description} start", task.start)      # the one export RPC (mutation), bounded
+        except Exception as exc:                         # ambiguous: the export may have started (response lost)
+            ident = _task_identity(task)
+            operation = ident["operation_name"] or ident["task_id"]
+            if operation:
+                cancel = self._cancel(task)
+            elif ident["request_id"]:
+                cancel = (f"not cancellable: no operation known (request id {ident['request_id']}); "
+                          "the export may have started")
+            else:
+                cancel = "not cancellable: no operation known; the start request was not sent"
+            failed = {**record, **ident, "state": "start_failed", "cancel": cancel,
                       "error": f"{type(exc).__name__}: {exc}"}
             self.receipts.append({"kind": "export_start_failed", **failed})
             self._best_effort_record(record_uri, failed, generation)
-            raise EETransportError(f"export {description} start failed (task {task_id}; {cancel}): "
-                                   f"{type(exc).__name__}: {exc}") from exc
-        record = {**record, "task_id": getattr(task, "id", None), "state": "submitted"}
+            raise EETransportError(f"export {description} start failed (request {ident['request_id']}, task "
+                                   f"{ident['task_id']}; {cancel}): {type(exc).__name__}: {exc}") from exc
+        record = {**record, **_task_identity(task), "state": "submitted"}
         try:
             generation = self._record(record_uri, record, generation)
         except Exception as exc:                         # an untracked task must not keep running
@@ -240,6 +288,21 @@ class EETransport:
             self.receipts.append({"kind": "export_untracked", **record, "cancel": cancel, "error": str(exc)})
             raise EETransportError(f"export {description}: task {record['task_id']} id could not be persisted ({exc}); "
                                    f"{cancel}") from exc
+        return task, record, generation
+
+    def export_table(self, collection: Any, selectors: list[str], description: str) -> str:
+        """Reserve -> submit -> persist id -> bounded wait -> pin the single CSV object (see module docstring)."""
+        from cloud.batch.evi_service import _parse_gcs_uri
+
+        prefix_uri = f"{self.output_root}/ipcch_exports/{self.run_id}/tables/{description}"
+        record_uri, record, generation = self._reserve(description, {"prefix": prefix_uri, "selectors": list(selectors)})
+        if self.store.list(prefix_uri):
+            raise EETransportError(f"export prefix already has objects: {prefix_uri} (exports are never reused)")
+        bucket, blob_prefix = _parse_gcs_uri(prefix_uri)
+        task, record, generation = self._submit(lambda: self.ee.batch.Export.table.toCloudStorage(
+            collection=collection, description=f"{self.run_id}_{description}"[:100], bucket=bucket,
+            fileNamePrefix=blob_prefix, fileFormat="CSV", selectors=list(selectors)), description, record_uri, record,
+            generation)
         self._wait(task, description, record_uri, record, generation)
         objects = sorted(self.store.list(prefix_uri))
         if len(objects) != 1 or not objects[0].endswith(".csv"):
@@ -251,6 +314,61 @@ class EETransport:
                      generation)
         self.receipts.append({"kind": "export", **record, "uri": objects[0], "generation": meta.generation})
         return f"{objects[0]}#{meta.generation}"
+
+    # ------------------------------------------------------------------ table-to-Asset exports (task 10-30)
+
+    def submit_asset_export(self, collection: Any, asset_id: str, description: str) -> "AssetExport":
+        """Reserve -> refuse an existing destination -> ``Export.table.toAsset`` -> persist the task id. Waiting is
+        separate (``wait_asset_export``) so a run submits all of its tables before waiting on any."""
+        if not re.fullmatch(r"projects/[^/]+/assets/[A-Za-z0-9_/-]+", asset_id or ""):
+            raise EETransportError(f"asset id {asset_id!r} is not projects/<p>/assets/<name>")
+        record_uri, record, generation = self._reserve(description, {"kind": "table_to_asset", "asset_id": asset_id})
+        if asset_id not in self.missing_assets([asset_id]):
+            self._record(record_uri, {**record, "state": "destination_exists"}, generation)
+            raise EETransportError(f"export {description}: destination {asset_id} already exists (never reused)")
+        task, record, generation = self._submit(lambda: self.ee.batch.Export.table.toAsset(
+            collection=collection, description=f"{self.run_id}_{description}"[:100], assetId=asset_id),
+            description, record_uri, record, generation)
+        return AssetExport(description, asset_id, task, record_uri, record, generation)
+
+    def wait_asset_export(self, handle: "AssetExport") -> dict:
+        """Bounded wait (deadline minus cleanup reserve); COMPLETED must also leave a readable destination asset.
+        EE completion is not data readiness: the caller validates the table before exposing its ID."""
+        try:
+            self._wait(handle.task, handle.description, handle.record_uri, handle.record, handle.generation)
+        except EETransportError:
+            handle.done = True        # _wait recorded a terminal state (FAILED/CANCELLED, or timeout after cancelling)
+            raise
+        handle.done = True            # COMPLETED; any other interruption above leaves the task cancellable
+        if handle.asset_id in self.missing_assets([handle.asset_id]):
+            self._record(handle.record_uri, {**handle.record, "state": "completed_without_asset"}, handle.generation)
+            raise EETransportError(f"export {handle.description} COMPLETED but {handle.asset_id} does not exist")
+        done = {**handle.record, "state": "completed"}
+        handle.generation = self._record(handle.record_uri, done, handle.generation)
+        self.receipts.append({"kind": "asset_export", **done})
+        return done
+
+    def cancel_asset_export(self, handle: "AssetExport") -> dict:
+        """Best-effort cancellation of a still-running sibling after another table failed (recorded, never raises)."""
+        if handle.done:
+            return {"description": handle.description, "state": "finished"}
+        handle.done = True
+        cancel = self._cancel(handle.task)
+        self._best_effort_record(handle.record_uri, {**handle.record, "state": "cancelled_after_failure",
+                                                     "cancel": cancel}, handle.generation)
+        return {"description": handle.description, "task_id": handle.record.get("task_id"), "state": cancel}
+
+    def evaluate(self, value: Any) -> Any:
+        """One small server-side evaluation (``getInfo``), e.g. the PATCH32 target count, under the run deadline
+        (``_bounded``); failure blocks."""
+        try:
+            out = self._bounded("evaluation", value.getInfo)
+        except EETransportError:
+            raise
+        except Exception as exc:
+            raise EETransportError(f"evaluation failed: {type(exc).__name__}: {exc}") from exc
+        self.receipts.append({"kind": "evaluate"})
+        return out
 
     def read_table(self, ref: str) -> pd.DataFrame:
         from cloud.orchestrator.prepare import GcsPinnedReader
@@ -275,18 +393,57 @@ class EETransport:
     # ------------------------------------------------------------------ asset tables
 
     def read_asset_table(self, asset_id: str) -> pd.DataFrame:
+        rows, token = [], None
         try:
             fc = self.ee.FeatureCollection(asset_id).map(lambda f: self.ee.Feature(None, self.ee.Feature(f).toDictionary()))
-            frame = self.ee.data.computeFeatures({"expression": fc, "fileFormat": "PANDAS_DATAFRAME"})
+            for page in range(1, MAX_PAGES + 1):                  # explicit pages (no fileFormat auto-paging)
+                params = {"expression": fc, "pageSize": READ_PAGE_SIZE, **({"pageToken": token} if token else {})}
+                response = self._bounded(f"reading {asset_id} page {page}",
+                                         lambda: self.ee.data.computeFeatures(dict(params)))
+                features = response.get("features") if isinstance(response, dict) else None
+                if not isinstance(features, list):
+                    raise EETransportError(f"reading table {asset_id} page {page}: malformed response")
+                for f in features:
+                    props = f.get("properties") if isinstance(f, dict) else None
+                    if not isinstance(props, dict):
+                        raise EETransportError(f"reading table {asset_id} page {page}: feature without properties")
+                    rows.append(props)
+                token = response.get("nextPageToken")
+                if not token:
+                    break
+            else:
+                raise EETransportError(f"reading table {asset_id} exceeded {MAX_PAGES} pages")
+        except EETransportError:
+            raise
         except Exception as exc:
             raise EETransportError(f"reading table {asset_id} failed: {type(exc).__name__}: {exc}") from exc
-        if not isinstance(frame, pd.DataFrame) or frame.empty or "admin_code" not in frame.columns:
+        frame = pd.DataFrame(rows)
+        if frame.empty or "admin_code" not in frame.columns:
             raise EETransportError(f"table {asset_id} is empty or has no admin_code")
         frame = frame.drop(columns=[c for c in ("geo", "geometry") if c in frame.columns])
         frame["admin_code"] = [_admin_text(v, asset_id) for v in frame["admin_code"]]
         digest = hashlib.sha256(frame.to_csv(index=False).encode("utf-8")).hexdigest()
         self.receipts.append({"kind": "asset_table", "asset": asset_id, "rows": int(len(frame)), "sha256": digest})
         return frame
+
+
+def _task_identity(task) -> dict:
+    """What is known of a submitted export: ``ee.batch.Task`` creates its request id locally before the RPC and learns
+    the task id / operation name only from a successful response (fakes may carry only ``id``)."""
+    return {"task_id": getattr(task, "id", None), "operation_name": getattr(task, "name", None),
+            "request_id": getattr(task, "_request_id", None)}
+
+
+@dataclass
+class AssetExport:
+    """A submitted table-to-Asset export (its task record is durable under the run's export prefix)."""
+    description: str
+    asset_id: str
+    task: Any
+    record_uri: str
+    record: dict
+    generation: str
+    done: bool = False
 
 
 def _admin_text(value: Any, asset_id: str) -> str:

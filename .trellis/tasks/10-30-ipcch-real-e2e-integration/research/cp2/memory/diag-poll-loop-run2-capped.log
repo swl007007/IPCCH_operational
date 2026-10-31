@@ -1,0 +1,37 @@
+# unit=ipcch-cp2-diag-poll-loop-1793409323975997994 start=2026-10-30T21:15:23-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -u ../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp2/diag_poll_loop.py
+Running as unit: ipcch-cp2-diag-poll-loop-1793409323975997994.service; invocation ID: 7acb059c895a4ae7be85f0e21050e9a7
+[failed-sibling] outcome=poll cap 200000 reached
+[failed-sibling] poll_seconds=0 polls_by_task={'T0': 200001} events=200008 fake_clock_advanced_s=0.0 traced_peak_MB=27.7
+[timeout] outcome=poll cap 200000 reached
+[timeout] poll_seconds=0 polls_by_task={'T0': 200001} events=200008 fake_clock_advanced_s=0.0 traced_peak_MB=27.6
+[status-exception-retried] outcome=poll cap 200000 reached
+[status-exception-retried] poll_seconds=0 polls_by_task={'T0': 200001} events=200008 fake_clock_advanced_s=0.0 traced_peak_MB=27.6
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -u ../.trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp2/diag_poll_loop.py"
+	User time (seconds): 28.09
+	System time (seconds): 0.13
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:28.44
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 245564
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 24
+	Minor (reclaiming a frame) page faults: 56750
+	Voluntary context switches: 2138
+	Involuntary context switches: 48
+	Swaps: 0
+	File system inputs: 3240
+	File system outputs: 2384
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 29.335s
+CPU time consumed: 28.236s
+# end=2026-10-30T21:15:52-04:00 exit=0

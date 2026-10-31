@@ -1,6 +1,7 @@
 """Task 10-29: the concrete EE/GCS transport behind the IPCCH climate providers, driven through fakes of only the
 network surfaces (ee.List.getInfo, ee.data, export tasks, storage); graphs are built by the real offline client."""
 
+import json
 from datetime import datetime, timedelta, timezone
 
 import pandas as pd
@@ -24,8 +25,25 @@ class FakeData:
         self.present, self.listed, self.list_error = set(present), listed, list_error
         self.get_error, self.table, self.compute_error = get_error, table, compute_error
         self.list_calls, self.compute_calls = [], []
+        self.deadline_ms, self.max_retries, self.seen = 0, 5, []      # SDK request settings, recorded per request
+        self.on_request = None
+
+    def _get_state(self):
+        return self
+
+    def setDeadline(self, ms):
+        self.deadline_ms = ms
+
+    def setMaxRetries(self, n):
+        self.max_retries = n
+
+    def _request(self, name):
+        self.seen.append((name, self.deadline_ms, self.max_retries))
+        if self.on_request is not None:
+            self.on_request(name)
 
     def getAsset(self, asset_id):
+        self._request("getAsset")
         if self.get_error is not None:
             raise self.get_error
         if asset_id in self.present:
@@ -33,17 +51,25 @@ class FakeData:
         raise Exception(AMBIGUOUS.format(asset_id))
 
     def listAssets(self, params):
+        self._request("listAssets")
         self.list_calls.append(params["parent"])
         if self.list_error is not None:
             raise self.list_error
-        names = self.listed if self.listed is not None else self.present
-        return {"assets": [{"name": n, "id": n} for n in names if n.startswith(params["parent"] + "/")]}
+        names = sorted(n for n in (self.listed if self.listed is not None else self.present)
+                       if n.startswith(params["parent"] + "/"))
+        size, start = int(params["pageSize"]), int(params.get("pageToken") or 0)
+        out = {"assets": [{"name": n, "id": n} for n in names[start:start + size]]}
+        if start + size < len(names):
+            out["nextPageToken"] = str(start + size)
+        return out
 
     def computeFeatures(self, params):
+        from tests.cloud.ipcch_producer_world import feature_page
+        self._request("computeFeatures")
         self.compute_calls.append(params)
         if self.compute_error is not None:
             raise self.compute_error
-        return self.table
+        return feature_page(self.table, params)
 
 
 class ProxyEE:
@@ -202,7 +228,7 @@ def test_asset_tables_read_without_geometry_and_canonical_admin_codes():
     t = transport(gcs, ProxyEE(gcs, data=d))
     frame = t.read_asset_table("projects/p/assets/T")
     assert list(frame.columns) == ["admin_code", "v"] and frame["admin_code"].tolist() == ["1", "2"]
-    assert d.compute_calls[0]["fileFormat"] == "PANDAS_DATAFRAME"
+    assert "fileFormat" not in d.compute_calls[0] and d.compute_calls[0]["pageSize"] == 1000     # explicit pages
     for bad in (FakeData(table=pd.DataFrame({"admin_code": [1.5]})), FakeData(table=pd.DataFrame()),
                 FakeData(compute_error=Exception("User memory limit exceeded"))):
         with pytest.raises(EETransportError):
@@ -306,7 +332,7 @@ def test_start_with_lost_response_keeps_the_known_task_id_and_cancels():
     gcs = FakeGcs()
     ee = ProxyEE(gcs, start_error=ConnectionError("response lost"))
     t = transport(gcs, ee)
-    with pytest.raises(EETransportError, match=r"start failed \(task T0; cancelled\)"):
+    with pytest.raises(EETransportError, match=r"start failed \(request None, task T0; cancelled\)"):
         t.export_table(ee.FeatureCollection("projects/p/assets/A"), ["admin_code"], "d")
     assert getattr(ee.tasks[0], "cancelled", False)
     rec = gcs.json(f"{ROOT}/ipcch_exports/run-2026-10-a/tasks/d.json")
@@ -402,3 +428,135 @@ def test_seasonal_factory_through_the_transport_saves_a_completed_season(tmp_pat
     assert kinds == ["image_times", "missing_assets", "export", "read"]
     assert "Image.reduceRegion" in ee.serializer.toJSON(ee.tasks[0].kw["collection"])        # per-feature temperature graph
     assert ee.tasks[0].kw["description"].startswith("run-2026-10-a_ipcch_gs_temperature_cpc_2026_s1")
+
+
+# --------------------------------------------------------------------------- task 10-30: explicit pages, bounded requests
+
+
+def deadline_transport(gcs, data, seconds, clock):
+    return transport(gcs, ProxyEE(gcs, data=data), deadline_utc=NOW + timedelta(seconds=seconds),
+                     clock=lambda: clock["t"])
+
+
+NOW = datetime(2026, 10, 30, 12, tzinfo=timezone.utc)
+
+
+def test_reads_page_explicitly_with_retries_disabled_and_settings_restored(monkeypatch):
+    import cloud.ipcch.ee_transport as et
+    monkeypatch.setattr(et, "READ_PAGE_SIZE", 2)
+    gcs, clock = FakeGcs(), {"t": NOW}
+    d = FakeData(table=pd.DataFrame({"admin_code": [1, 2, 3, 4, 5], "v": [0.1, None, 0.3, 0.4, 0.5]}))
+    frame = deadline_transport(gcs, d, 3600, clock).read_asset_table("projects/p/assets/T")
+    assert frame["admin_code"].tolist() == ["1", "2", "3", "4", "5"] and frame["v"].isna().tolist() == [False, True] + [False] * 3
+    assert [c.get("pageToken") for c in d.compute_calls] == [None, "2", "4"]
+    assert d.seen == [("computeFeatures", 60000, 0)] * 3              # one capped request each, no SDK retries
+    assert (d.deadline_ms, d.max_retries) == (0, 5)                   # previous SDK settings restored
+
+
+def test_the_deadline_is_rechecked_between_read_pages(monkeypatch):
+    import cloud.ipcch.ee_transport as et
+    monkeypatch.setattr(et, "READ_PAGE_SIZE", 2)
+    gcs, clock = FakeGcs(), {"t": NOW}
+    d = FakeData(table=pd.DataFrame({"admin_code": [1, 2, 3, 4, 5]}))
+    d.on_request = lambda name: clock.__setitem__("t", clock["t"] + timedelta(seconds=60))   # each page takes 60 s
+    t = deadline_transport(gcs, d, 900 + 90, clock)                   # 90 s before the cleanup reserve
+    with pytest.raises(EETransportError, match="page 3: run deadline cleanup reserve reached; not started"):
+        t.read_asset_table("projects/p/assets/T")
+    assert len(d.compute_calls) == 2 and [s[1] for s in d.seen] == [60000, 30000]   # capped, then what was left
+    assert (d.deadline_ms, d.max_retries) == (0, 5)
+
+
+def test_listing_pages_keep_absence_definitive(monkeypatch):
+    import cloud.ipcch.ee_transport as et
+    monkeypatch.setattr(et, "LIST_PAGE_SIZE", 1)
+    gcs = FakeGcs()
+    folder = "projects/p/assets"
+    here, hidden, gone = f"{folder}/A", f"{folder}/Z", f"{folder}/B"
+    d = FakeData(present=[here], listed=[here, hidden])               # Z exists (2nd page) but is unreadable
+    t = transport(gcs, ProxyEE(gcs, data=d))
+    with pytest.raises(EETransportError, match="exists but is not readable"):
+        t.missing_assets([hidden])
+    assert t.missing_assets([gone]) == [gone] and d.list_calls == [folder, folder]   # both pages, listed once
+    monkeypatch.setattr(et, "MAX_PAGES", 1)
+    with pytest.raises(EETransportError, match="exceeded 1 pages; absence not established"):
+        transport(gcs, ProxyEE(gcs, data=FakeData(present=[here], listed=[here, hidden]))).missing_assets([gone])
+
+
+def test_bounded_requests_restore_sdk_settings_when_the_request_fails():
+    gcs, clock = FakeGcs(), {"t": NOW}
+    d = FakeData(get_error=TimeoutError("deadline exceeded"))
+    with pytest.raises(EETransportError, match="not treated as absent"):
+        deadline_transport(gcs, d, 3600, clock).missing_assets(["projects/p/assets/A"])
+    assert d.seen == [("getAsset", 60000, 0)] and (d.deadline_ms, d.max_retries) == (0, 5)
+
+
+class RealTaskEE:
+    """Offline client whose toAsset returns a REAL ee.batch.Task; its single export RPC (ee.data.exportTable) is
+    controlled per test, while metadata calls go to ``data``."""
+
+    def __init__(self, data):
+        real = offline_ee()
+        self._real, self.data, self.created = real, data, []
+        proxy = self
+
+        def to_asset(**kw):
+            task = real.batch.Task(None, real.batch.Task.Type.EXPORT_TABLE, real.batch.Task.State.UNSUBMITTED,
+                                   config=dict(kw))
+            proxy.created.append(task)
+            return task
+        self.batch = type("batch", (), {"Export": type("Export", (), {"table": type("table", (), {
+            "toAsset": staticmethod(to_asset)})})})
+
+    def __getattr__(self, name):
+        return getattr(self._real, name)
+
+
+def test_real_task_start_is_bounded_and_a_lost_response_keeps_its_request_identity(monkeypatch):
+    real = offline_ee()
+    gcs, clock = FakeGcs(), {"t": NOW}
+    d = FakeData()
+    seen = []
+
+    def lost(request_id, config):                    # the export RPC: settings in effect, then the response is lost
+        seen.append((request_id, d.deadline_ms, d.max_retries, config["assetId"]))
+        raise TimeoutError("response lost")
+    monkeypatch.setattr(real.data, "exportTable", lost)
+    ee = RealTaskEE(d)
+    t = transport(gcs, ee, deadline_utc=NOW + timedelta(seconds=3600), clock=lambda: clock["t"])
+    with pytest.raises(EETransportError, match="start failed .*not cancellable: no operation known"):
+        t.submit_asset_export(real.FeatureCollection("projects/p/assets/A"), "projects/p/assets/OUT_1", "d1")
+    (request_id, ms, retries, asset), = seen
+    assert request_id and (ms, retries) == (60000, 0) and asset == "projects/p/assets/OUT_1"   # bounded, no SDK retry
+    assert (d.deadline_ms, d.max_retries) == (0, 5)                                            # restored after failure
+    rec = json.loads(gcs.read_text(f"{ROOT}/ipcch_exports/run-2026-10-a/tasks/d1.json"))
+    assert rec["state"] == "start_failed" and rec["request_id"] == request_id and rec["task_id"] is None
+    assert rec["operation_name"] is None and rec["cancel"].startswith("not cancellable")
+
+    def accepted(request_id, config):
+        return {"name": f"projects/p/operations/{request_id.upper()}"}
+    monkeypatch.setattr(real.data, "exportTable", accepted)
+    handle = t.submit_asset_export(real.FeatureCollection("projects/p/assets/A"), "projects/p/assets/OUT_2", "d2")
+    rec = json.loads(gcs.read_text(f"{ROOT}/ipcch_exports/run-2026-10-a/tasks/d2.json"))
+    assert rec["state"] == "submitted" and rec["operation_name"] == f"projects/p/operations/{rec['request_id'].upper()}"
+    assert rec["task_id"] == rec["request_id"].upper() and handle.record["task_id"] == rec["task_id"]
+
+
+def test_expired_budget_refuses_the_export_start_itself(monkeypatch):
+    real = offline_ee()
+    gcs, clock = FakeGcs(), {"t": NOW}
+    calls = []
+    monkeypatch.setattr(real.data, "exportTable", lambda request_id, config: calls.append(request_id))
+    t = transport(gcs, RealTaskEE(FakeData()), deadline_utc=NOW + timedelta(seconds=960), clock=lambda: clock["t"])
+    real_bounded = t._bounded
+
+    def late(what, call, **kw):                      # the budget runs out between reservation and the start RPC
+        if what.endswith(" start"):
+            clock["t"] = NOW + timedelta(seconds=61)
+        return real_bounded(what, call, **kw)
+    t._bounded = late
+    with pytest.raises(EETransportError, match="start failed"):
+        t.submit_asset_export(real.FeatureCollection("projects/p/assets/A"), "projects/p/assets/OUT_3", "d3")
+    assert calls == []                                                   # no export RPC was made
+    rec = json.loads(gcs.read_text(f"{ROOT}/ipcch_exports/run-2026-10-a/tasks/d3.json"))
+    assert rec["state"] == "start_failed" and "cleanup reserve reached; not started" in rec["error"]
+    assert rec["request_id"] is None and rec["cancel"].endswith("the start request was not sent")
