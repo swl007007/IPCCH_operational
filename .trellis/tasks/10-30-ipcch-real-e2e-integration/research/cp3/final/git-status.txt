@@ -1,0 +1,22 @@
+ M AGENTS.md
+ M PROGRESS.md
+ M cloud_pipeline/OPERATIONS.md
+ M cloud_pipeline/cloud/ipcch/publication.py
+ M cloud_pipeline/deploy/Dockerfile
+ M cloud_pipeline/deploy/build_context.sh
+ M cloud_pipeline/deploy/setup.py
+ M cloud_pipeline/deploy/workflow.yaml
+ M cloud_pipeline/pipeline.py
+ M cloud_pipeline/tests/cloud/test_ipcch_publication.py
+ M cloud_pipeline/tests/cloud/test_ipcch_release_v2.py
+ M cloud_pipeline/tests/cloud/test_workflow_dispatch.py
+ M cloud_pipeline/tests/test_deploy_setup.py
+?? .trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp3/
+?? .trellis/tasks/10-30-ipcch-real-e2e-integration/research/cp5-local-prerequisites.md
+?? cloud_pipeline/cloud/ipcch/install.py
+?? cloud_pipeline/cloud/ipcch/smoke_providers.py
+?? cloud_pipeline/cloud/orchestrator/submit_v2.py
+?? cloud_pipeline/deploy/ipcch_v2_deployment.food-crisis-test.json
+?? cloud_pipeline/tests/cloud/make_smoke_fixture.py
+?? cloud_pipeline/tests/cloud/test_ipcch_install.py
+?? cloud_pipeline/tests/test_operator_submit_v2.py

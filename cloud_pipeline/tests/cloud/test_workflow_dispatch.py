@@ -26,7 +26,8 @@ from tests.cloud import test_delivery_manifest as tm  # noqa: E402
 WORKFLOW = yaml.safe_load((Path(__file__).resolve().parents[2] / "deploy/workflow.yaml").read_text())
 ENV = {"GOOGLE_CLOUD_PROJECT_ID": "dest", "DELIVERY_LOCATION": "us-central1", "DELIVERY_JOB": "oct-delivery",
        "PREPARE_JOB": "monthly-prepare", "DELIVERY_OUTPUT_ROOT": "gs://data", "DELIVERY_RELEASE_NAMESPACE": "dual-system",
-       "DELIVERY_IMAGE_URI": "registry/image@sha256:" + "c" * 64, "EARTH_ENGINE_PROJECT": "ee",
+       "DELIVERY_IMAGE_URI": "registry/image@sha256:" + "c" * 64, "DELIVERY_V2_CONFIG": "/opt/ipcch/deployment.json",
+       "EARTH_ENGINE_PROJECT": "ee",
        "BATCH_PARENT": "projects/dest/locations/us-central1", "BATCH_SERVICE_ACCOUNT": "batch@dest",
        "PREPARE_POLL_SECONDS": "60", "PREPARE_MAX_POLLS": "3"}
 REQUEST_BUCKET, NAME = "ipcch-requests", "requests/oct2026-r1/run_manifest.json"
@@ -191,7 +192,7 @@ class StoreReader:
 class Cloud:
     def __init__(self, store, preparation):
         self.store, self.preparation = store, preparation
-        self.jobs, self.sleeps, self.executed = [], 0, []
+        self.jobs, self.sleeps, self.executed, self.run_flags = [], 0, [], []
         self.prepare_flags, self.locks_during_preparation, self.released = [], [], []
         self.fail_submission = {}                         # job verb -> exception raised by the submission itself
         self.connectors = {"googleapis.storage.v1.objects.get": self.get,
@@ -251,6 +252,7 @@ class Cloud:
                 self.executed.append(resolved_ref)
         else:
             self.executed.append(ref)
+            self.run_flags.append(flags)
         return {"name": "operations/delivery"}
 
 
@@ -421,6 +423,30 @@ def test_legacy_and_remote_off_requests_run_the_delivery_job_directly(tmp_path):
     store, cloud, generation = _world(tmp_path, lambda ref: _intent(None, remote=False))
     _run(cloud, generation)
     assert cloud.jobs == [("oct-delivery", "run")]
+
+
+def test_v2_requests_run_the_delivery_job_with_the_installed_v2_config(tmp_path, monkeypatch):
+    """Task 10-30: a v2 request has no execution block, so it takes run_job; the full argv carries --v2-config (and the
+    legacy flags, which the v1 route keeps using) and the delivery job's own parser hands it to the dispatcher."""
+    body = {"schema_version": "fewsnet-ipcch-delivery-request-v2", "run_id": RUN, "mode": "real"}
+    store, cloud, generation = _world(tmp_path, lambda ref: body)
+    _run(cloud, generation)
+    assert cloud.jobs == [("oct-delivery", "run")]
+    (flags,) = cloud.run_flags
+    assert flags["--v2-config"] == "/opt/ipcch/deployment.json" and flags["--image-uri"] == ENV["DELIVERY_IMAGE_URI"]
+    import google.cloud.storage
+    seen = {}
+    monkeypatch.setattr(google.cloud.storage, "Client", lambda: object())
+    monkeypatch.setattr(dj, "_main", lambda args, *rest: seen.update(args=args) or 0)
+    argv = ["run"] + [x for k, v in flags.items() for x in (k, v)]
+    assert dj.main(argv) == 0 and seen["args"].v2_config == "/opt/ipcch/deployment.json"
+
+
+def test_legacy_requests_also_receive_the_v2_config_flag_unchanged(tmp_path):
+    store, cloud, generation = _world(tmp_path, lambda ref: tm._request())
+    _run(cloud, generation)
+    (flags,) = cloud.run_flags
+    assert flags["--v2-config"] == "/opt/ipcch/deployment.json" and cloud.executed[0]["generation"] == str(generation)
 
 
 def test_a_maintenance_hold_admits_only_its_bound_runs(tmp_path):

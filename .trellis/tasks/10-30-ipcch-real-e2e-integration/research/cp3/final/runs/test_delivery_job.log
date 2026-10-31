@@ -1,0 +1,68 @@
+# unit=ipcch-cp2-test_delivery_job-1793411774938877393 start=2026-10-30T21:56:14-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_delivery_job.py
+Running as unit: ipcch-cp2-test_delivery_job-1793411774938877393.service; invocation ID: f98e83c901dd43ffb1ecb7059e47e545
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 29 items
+
+tests/cloud/test_delivery_job.py::test_request_scores_each_system_from_verified_local_inputs_then_publishes_last PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[image] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[asset_bytes] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[acceptance] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[package_path] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[prepared_status] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[smoke_roster] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[prepared_contract] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[prepared_geometry] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[prepared_family_missing] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[schema_changed] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[acceptance_schema] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[acceptance_manifest] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[acceptance_runtime_missing] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[environment_lock] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[conflicting_member] PASSED
+tests/cloud/test_delivery_job.py::test_acceptance_failures_stop_before_any_scoring_and_leave_no_release[retained_snapshot_differs] PASSED
+tests/cloud/test_delivery_job.py::test_all_four_source_choices_use_exactly_the_named_family[keep-keep] PASSED
+tests/cloud/test_delivery_job.py::test_all_four_source_choices_use_exactly_the_named_family[keep-refresh] PASSED
+tests/cloud/test_delivery_job.py::test_all_four_source_choices_use_exactly_the_named_family[refresh-keep] PASSED
+tests/cloud/test_delivery_job.py::test_all_four_source_choices_use_exactly_the_named_family[refresh-refresh] PASSED
+tests/cloud/test_delivery_job.py::test_configured_namespace_mismatch_is_rejected_before_acquiring_the_run PASSED
+tests/cloud/test_delivery_job.py::test_failed_validation_never_moves_the_pointer PASSED
+tests/cloud/test_delivery_job.py::test_local_reader_serves_only_verified_copies PASSED
+tests/cloud/test_delivery_job.py::test_upload_tree_is_create_only_and_accepts_a_landed_retry_only_on_size_and_crc[none] PASSED
+tests/cloud/test_delivery_job.py::test_upload_tree_is_create_only_and_accepts_a_landed_retry_only_on_size_and_crc[same] PASSED
+tests/cloud/test_delivery_job.py::test_upload_tree_is_create_only_and_accepts_a_landed_retry_only_on_size_and_crc[size] PASSED
+tests/cloud/test_delivery_job.py::test_upload_tree_is_create_only_and_accepts_a_landed_retry_only_on_size_and_crc[crc] PASSED
+tests/cloud/test_delivery_job.py::test_upload_tree_is_create_only_and_accepts_a_landed_retry_only_on_size_and_crc[other_error] PASSED
+
+============================== 29 passed in 1.91s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_delivery_job.py"
+	User time (seconds): 1.33
+	System time (seconds): 0.35
+	Percent of CPU this job got: 74%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.25
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 225884
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 38388
+	Voluntary context switches: 6050
+	Involuntary context switches: 26
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 9632
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 2.303s
+CPU time consumed: 1.693s
+# end=2026-10-30T21:56:17-04:00 launcher_rc=0 child_exit=0

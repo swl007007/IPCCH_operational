@@ -106,6 +106,10 @@ def test_first_real_ipcch_publication_inherits_legacy_fews_byte_for_byte_and_act
     assert out2["status"] == "published"
     rec2 = pub.read_current(store, PROD, "prod")["record"]
     assert rec2["systems"]["fewsnet"]["delivery"] == rec["systems"]["fewsnet"]["delivery"]
+    member = lambda r: json.dumps(r["systems"]["fewsnet"], sort_keys=True)                # noqa: E731
+    legacy = json.loads(store.read_text(f"{PROD}/prod/releases/legacy-fews/release.json"))
+    assert member(rec2) == member(rec) and rec2["inherited"] == {"fewsnet": g2}            # payload literal, unchanged
+    assert rec["inherited"] == {"fewsnet": g} and json.loads(member(rec)) == pub.members(legacy)["fewsnet"]
     assert rec2["activation"]["activated_by_run"] == "ipcch-oct-ipcch"           # activation never re-set or cleared
 
 

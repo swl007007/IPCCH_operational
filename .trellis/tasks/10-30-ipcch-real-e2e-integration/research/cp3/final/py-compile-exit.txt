@@ -1,0 +1,2 @@
+py_compile exit=0
+bash -n exit=0

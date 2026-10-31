@@ -47,6 +47,22 @@ describe other tasks and do not govern this execution.
 - Recovered a stale zero-byte `.git/index.lock` after verifying no Linux/Windows
   Git process and its age over two hours; original user changes were preserved.
 - AC1-AC9 required; DA1-DA2 real new-month incremental acceptance expressly deferred.
+- CP2 committed as `70f9d10`; CP3 is in progress in the same Executor.
+- User confirmed this real acceptance's 11 actions: ACLED refresh, WFP/history
+  snapshot/eight research families keep. Original f2/f3 ACLED inputs rehash to
+  the previous joined-source identity; see `research/cp5-local-prerequisites.md`.
+- 2026-10-31: user preauthorized cloud operations within this goal; no separate
+  user approval is needed. CP4 retains bounded technical review and operation records.
+- CP3 local source/evidence accepted: 19 current hashes match; 18 guarded files,
+  285 passed, all child exits 0, peak RSS 489,972 KiB. Actual staged payload: 276
+  files, 2,370,588,224 bytes, all hashes match. Re-stage from final commit for build.
+  Image verification, live compatibility and E2E remain pending; see CP3 checkpoint.
+- Final FEWS rescoring must remain usable under AC3. A maintenance hold is temporary;
+  preserving the FEWS current member alone does not close runtime compatibility.
+  Executor is preparing the unchanged-package compatibility/re-initialization path.
+- p8 was actually resumed into observer session 8086f8e0 after restart; Supervisor
+  restored original 6a490ae1 with `/resume`, confirmed session and CP3 history, and
+  dispatched CP4 preparation. This supersedes the older PID 4905 identity claim.
 - Preserve the pre-existing `AGENTS.md` modification. No training/push/merge.
 
 ---

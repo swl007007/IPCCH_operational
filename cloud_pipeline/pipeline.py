@@ -153,6 +153,27 @@ class Cloud:
         ).resolve(uri, generation)
         return {"uri": uri, "generation": generation, "sha256": digest}
 
+    def pin_object(self, spec):
+        """v2 submission: gs://bucket/object#generation as given, or gs://bucket/object at its CURRENT generation
+        (read once), each with the SHA-256 of exactly those bytes."""
+        if "#" in spec:
+            return self.pin(spec)
+        blob = self.blob(spec)
+        blob.reload()
+        return self.pin(f"{spec}#{blob.generation}")
+
+    def resolve(self, uri, generation):
+        """SHA-256 of an exact object generation, or None when that generation does not exist (v2 admission)."""
+        from cloud.orchestrator.prepare import GcsPinnedReader
+
+        data = GcsPinnedReader(self.client).read_bytes(uri, generation)
+        return None if data is None else hashlib.sha256(data).hexdigest()
+
+    def read_bytes(self, uri, generation):
+        from cloud.orchestrator.prepare import GcsPinnedReader
+
+        return GcsPinnedReader(self.client).read_bytes(uri, generation)
+
     def delete(self, uri, generation):
         self.blob(uri).delete(if_generation_match=int(generation))
 
@@ -625,6 +646,12 @@ def status(cfg, run_id, cloud):
             )
         ),
     }
+
+
+def is_v2_run(cfg, run_id):
+    """A run submitted through ``submit`` (v2) keeps its state under runs-v2/; legacy runs under runs/."""
+    valid_run_id(run_id)
+    return (Path(cfg["work_dir"]) / "runs-v2" / run_id / "state.json").exists()
 
 
 def run(args, cfg, cloud=None):
@@ -1677,7 +1704,7 @@ def models(args, cfg, cloud=None):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    for name in ("init", "run", "status", "download", "models", "verify", "maintenance", "promote"):
+    for name in ("init", "run", "submit", "status", "download", "models", "verify", "maintenance", "promote"):
         command = commands.add_parser(name)
         command.add_argument("--config", required=True)
         command.add_argument("--execute", action="store_true")
@@ -1708,6 +1735,10 @@ def main(argv=None):
             command.add_argument("--normal-config", required=True)
             command.add_argument("--fallback-staged", required=True)
             command.add_argument("--fallback-active", required=True)
+        if name == "submit":                       # v2 IPCCH monthly submission (cloud.orchestrator.submit_v2)
+            command.add_argument("--selections", required=True,
+                                 help="ipcch-v2-selections-v1 JSON: the 11 explicit keep/refresh choices and files")
+            command.add_argument("--run-id", help="resume this submission (same identity, month and body)")
         if name == "run":
             for field in ("month", "cutoff", "deadline"):
                 command.add_argument("--" + field, required=True)
@@ -1745,6 +1776,15 @@ def main(argv=None):
             result = run(args, cfg)
         elif args.command == "models":
             result = models(args, cfg)
+        elif args.command == "submit":
+            from cloud.orchestrator import submit_v2
+
+            result = submit_v2.submit(cfg, args.selections, execute=args.execute, run_id=args.run_id,
+                                      cloud=Cloud(cfg) if args.execute else None)
+        elif args.command == "status" and is_v2_run(cfg, args.run_id):
+            from cloud.orchestrator import submit_v2
+
+            result = submit_v2.status(cfg, args.run_id, Cloud(cfg))
         elif args.command == "status":
             result = status(cfg, args.run_id, Cloud(cfg))
         elif args.command == "verify":

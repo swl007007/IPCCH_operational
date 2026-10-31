@@ -274,8 +274,10 @@ cached or fixture-only replay must never be reported as proof of real acquisitio
 - The latest user instruction explicitly forbids Trellis Audit/automatic Audit for
   this task, superseding the earlier enrolled-repository wrapper requirement.
   Supervisor diff/checkpoint/final verification remains mandatory.
-- Preserve the pre-existing `AGENTS.md` modification. Before deployment/execution,
-  present concrete bounded cloud operations with scope, effects, and run limits for
-  approval. An approved automatic run must include its declared EE child operations;
-  per-export human gates would contradict D2. This planning draft does not itself
-  authorize deployment or a real run, or add runtime confirmation steps.
+- Preserve the pre-existing `AGENTS.md` modification. On 2026-10-31 the user confirmed:
+  "云权限在goal的范围内提前确认，无需单独审批". Necessary cloud reads, builds,
+  compatibility verification, deployment, initialization, full-roster execution and
+  current publication within this goal are preauthorized; do not request separate
+  user approval. Record concrete operations, effects, resource/cost/time limits and
+  rollback evidence before launch. Supervisor checkpoint verification remains;
+  deferred DA1-DA2, retraining and unrelated operations remain outside this scope.

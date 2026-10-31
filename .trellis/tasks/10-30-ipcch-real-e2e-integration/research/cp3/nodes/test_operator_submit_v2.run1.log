@@ -1,0 +1,148 @@
+# unit=ipcch-cp2-test_operator_submit_v2-1793411151402009093 start=2026-10-30T21:45:51-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/test_operator_submit_v2.py
+Running as unit: ipcch-cp2-test_operator_submit_v2-1793411151402009093.service; invocation ID: 77838ef3536f446b847f458cfecd80f1
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 23 items
+
+tests/test_operator_submit_v2.py::test_preview_makes_no_cloud_call_and_writes_no_state PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad0-refresh needs its file] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad1-Saturday start] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad2-regions] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad3-reversed] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad4-keep carries no other field] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad5-local file not found] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad6-selections.mode] PASSED
+tests/test_operator_submit_v2.py::test_every_one_of_the_eleven_choices_is_explicit FAILED
+tests/test_operator_submit_v2.py::test_inference_preview_admits_the_configured_country_reference_and_refuses_one_outside PASSED
+tests/test_operator_submit_v2.py::test_keep_with_any_extra_field_is_refused_before_any_cloud_call[extra0] PASSED
+tests/test_operator_submit_v2.py::test_keep_with_any_extra_field_is_refused_before_any_cloud_call[extra1] PASSED
+tests/test_operator_submit_v2.py::test_keep_with_any_extra_field_is_refused_before_any_cloud_call[extra2] PASSED
+tests/test_operator_submit_v2.py::test_uploads_outside_the_trusted_namespace_are_refused_before_any_upload PASSED
+tests/test_operator_submit_v2.py::test_month_is_frozen_at_submission_not_at_asset_upload PASSED
+tests/test_operator_submit_v2.py::test_workstation_timezone_never_selects_the_month PASSED
+tests/test_operator_submit_v2.py::test_lost_request_upload_response_resumes_with_the_frozen_bytes_and_instant PASSED
+tests/test_operator_submit_v2.py::test_a_failure_before_freeze_freezes_later_at_its_own_instant PASSED
+tests/test_operator_submit_v2.py::test_admission_failure_at_freeze_triggers_nothing FAILED
+tests/test_operator_submit_v2.py::test_changed_selection_or_file_under_a_run_id_is_refused PASSED
+tests/test_operator_submit_v2.py::test_smoke_submission_stays_in_the_smoke_namespace FAILED
+tests/test_operator_submit_v2.py::test_status_reports_claim_reservation_and_final_status PASSED
+tests/test_operator_submit_v2.py::test_cli_submit_preview_runs_on_the_existing_surface PASSED
+
+=================================== FAILURES ===================================
+_______________ test_every_one_of_the_eleven_choices_is_explicit _______________
+
+world = ({'bucket': 'data-bucket', 'request_bucket': 'req-bucket', 'image_uri': 'us-central1-docker.pkg.dev/feisty-flames-5117...r_submit_v2.FakeCloud object at 0x7ff0b167b3b0>, <cloud.common.object_store.LocalObjectStore object at 0x7ff0b167ac60>)
+tmp_path = PosixPath('/tmp/pytest-of-swl007007/pytest-36/test_every_one_of_the_eleven_c0')
+
+    def test_every_one_of_the_eleven_choices_is_explicit(world, tmp_path):
+        cfg, cloud, _ = world
+        path = selections(tmp_path)
+        body = json.loads(path.read_text())
+        del body["choices"]["idp_local"]
+        path.write_text(json.dumps(body))
+>       with pytest.raises(sv.SubmissionError, match=r"missing \['idp_local'\]; keep is never implied"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: "missing \\['idp_local'\\]; keep is never implied"
+E         Actual message: "selections.choices must declare exactly the 11 inputs ['acled', 'wfp', 'history_snapshot', 'nino34_anom', 'bbg_staple_food', 'bbg_oilgas', 'bbg_soybean_oil', 'bbg_global_food', 'food_price_index_WB', 'idp_national', 'idp_local'] (missing ['idp_local'], unknown []); keep is never implied"
+
+tests/test_operator_submit_v2.py:166: AssertionError
+______________ test_admission_failure_at_freeze_triggers_nothing _______________
+
+world = ({'bucket': 'data-bucket', 'request_bucket': 'req-bucket', 'image_uri': 'us-central1-docker.pkg.dev/feisty-flames-5117...r_submit_v2.FakeCloud object at 0x7ff0b102d7c0>, <cloud.common.object_store.LocalObjectStore object at 0x7ff0b102f7d0>)
+tmp_path = PosixPath('/tmp/pytest-of-swl007007/pytest-36/test_admission_failure_at_free0')
+
+    def test_admission_failure_at_freeze_triggers_nothing(world, tmp_path):
+        cfg, cloud, store = world
+        set_current(store, "2026-11")                       # current already holds a later IPCCH month (R39)
+        with pytest.raises(sv.SubmissionError, match="earlier than the current IPCCH release month"):
+            sv.submit(cfg, selections(tmp_path), execute=True, cloud=cloud, now=Clock(T("2026-10-31T12:00:00Z")))
+        assert not store.list(REQUEST_PREFIX)
+        (run_dir,) = (Path(cfg["work_dir"]) / "runs-v2").iterdir()
+        assert "request_body" not in state_of(cfg, run_dir.name)
+        cfg2, cloud2, store2 = cfg, FakeCloud(store), store
+        replaced = {}
+    
+        def replace_envelope(uri):                          # the pinned envelope changes between pin and admission
+            if "/acled/" in uri and not replaced:
+                replaced["x"] = store2.write_bytes(cfg2["v2"]["envelope"], ENVELOPE + b" ")
+        cloud2.on_put = replace_envelope
+        (tmp_path / "b").mkdir()
+>       with pytest.raises(sv.SubmissionError):
+E       Failed: DID NOT RAISE SubmissionError
+
+tests/test_operator_submit_v2.py:283: Failed
+______________ test_smoke_submission_stays_in_the_smoke_namespace ______________
+
+world = ({'bucket': 'data-bucket', 'request_bucket': 'req-bucket', 'image_uri': 'us-central1-docker.pkg.dev/feisty-flames-5117...r_submit_v2.FakeCloud object at 0x7ff0b167b650>, <cloud.common.object_store.LocalObjectStore object at 0x7ff0b167a090>)
+tmp_path = PosixPath('/tmp/pytest-of-swl007007/pytest-36/test_smoke_submission_stays_in0')
+
+    def test_smoke_submission_stays_in_the_smoke_namespace(world, tmp_path):
+        cfg, cloud, store = world
+>       out = sv.submit(cfg, selections(tmp_path, mode="smoke"), execute=True, cloud=cloud,
+                        now=Clock(T("2026-10-31T12:00:00Z")))
+
+tests/test_operator_submit_v2.py:301: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+cloud/orchestrator/submit_v2.py:254: in submit
+    plan.check(provisional, provisional_fields, plan.request_uri(rid))   # invalid -> nothing uploaded
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <cloud.orchestrator.submit_v2.Plan object at 0x7ff0b167a300>
+body = {'schema_version': 'fewsnet-ipcch-delivery-request-v2', 'run_id': 'ipcch-smoke-06745759b6b74271', 'mode': 'smoke', 'execution_month': '2026-10', ...}
+fields = {'submitted_at': '2026-10-31T12:00:00Z', 'execution_month': '2026-10', 'prepared_at': '2026-10-31T12:00:00Z'}
+request_uri = 'gs://req-bucket/requests/ipcch-smoke-06745759b6b74271/run_manifest.json'
+
+    def check(self, body: Mapping[str, Any], fields: Mapping[str, str], request_uri: str) -> None:
+        """Structure, mode rules and lexical namespace admission (no reference read)."""
+        try:
+            validated = v2.validate_request_v2(
+                body, request_uri=request_uri, request_generation="1",
+                now_utc=datetime.fromisoformat(fields["submitted_at"].replace("Z", "+00:00")),
+                production_namespace=self.deployment["namespaces"]["production"],
+                smoke_namespace=self.deployment["namespaces"]["smoke"], current_ipcch_execution_month=None)
+            v2.admit_namespaces(validated, self.deployment["trusted_prefixes"], self.deployment["store_roots"])
+        except v2.DeliveryRequestV2Error as exc:
+>           raise SubmissionError(f"invalid selection: {exc}") from None
+E           cloud.orchestrator.submit_v2.SubmissionError: invalid selection: ipcch.country_reference gs://data-bucket/inputs/v2/reference/country_reference.csv is outside the trusted smoke namespace; not resolved (R48)
+
+cloud/orchestrator/submit_v2.py:216: SubmissionError
+=========================== short test summary info ============================
+FAILED tests/test_operator_submit_v2.py::test_every_one_of_the_eleven_choices_is_explicit - AssertionError: Regex pattern did not match.
+  Expected regex: "missing \\['idp_local'\\]; keep is never implied"
+  Actual message: "selections.choices must declare exactly the 11 inputs ['acled', 'wfp', 'history_snapshot', 'nino34_anom', 'bbg_staple_food', 'bbg_oilgas', 'bbg_soybean_oil', 'bbg_global_food', 'food_price_index_WB', 'idp_national', 'idp_local'] (missing ['idp_local'], unknown []); keep is never implied"
+FAILED tests/test_operator_submit_v2.py::test_admission_failure_at_freeze_triggers_nothing - Failed: DID NOT RAISE SubmissionError
+FAILED tests/test_operator_submit_v2.py::test_smoke_submission_stays_in_the_smoke_namespace - cloud.orchestrator.submit_v2.SubmissionError: invalid selection: ipcch.country_reference gs://data-bucket/inputs/v2/reference/country_reference.csv is outside the trusted smoke namespace; not resolved (R48)
+========================= 3 failed, 20 passed in 0.77s =========================
+Command exited with non-zero status 1
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/test_operator_submit_v2.py"
+	User time (seconds): 0.45
+	System time (seconds): 0.08
+	Percent of CPU this job got: 55%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.96
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 138288
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 25341
+	Voluntary context switches: 5499
+	Involuntary context switches: 9
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 2176
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+# CHILD-EXIT=1
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 1.087s
+CPU time consumed: 624ms
+# end=2026-10-30T21:45:52-04:00 launcher_rc=0 child_exit=1

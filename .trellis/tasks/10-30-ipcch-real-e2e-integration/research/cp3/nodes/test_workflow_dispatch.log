@@ -1,0 +1,92 @@
+# unit=ipcch-cp2-test_workflow_dispatch-1793411234026862558 start=2026-10-30T21:47:14-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_workflow_dispatch.py
+Running as unit: ipcch-cp2-test_workflow_dispatch-1793411234026862558.service; invocation ID: 5b55c28aaae342a5af92022feaf4a66e
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 45 items
+
+tests/cloud/test_workflow_dispatch.py::test_own_writes_are_ignored_and_never_claimed PASSED
+tests/cloud/test_workflow_dispatch.py::test_inference_intent_is_admitted_prepared_resolved_and_run_once PASSED
+tests/cloud/test_workflow_dispatch.py::test_prepare_only_returns_the_immutable_snapshot_after_the_same_gate PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference0-<lambda>-True-not a succeeded snapshot] PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference0-<lambda>-True-not the succeeded preparation of this intent] PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference0-None-False-has no prepared manifest] PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference0-<lambda>-True-extraction contract] PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference0-<lambda>-True-roster] PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference1-<lambda>-True-not a succeeded snapshot] PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference1-<lambda>-True-not the succeeded preparation of this intent] PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference1-None-False-has no prepared manifest] PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference1-<lambda>-True-extraction contract] PASSED
+tests/cloud/test_workflow_dispatch.py::test_both_branches_stop_on_a_wrong_or_missing_snapshot[inference1-<lambda>-True-roster] PASSED
+tests/cloud/test_workflow_dispatch.py::test_an_inadmissible_intent_never_starts_preparation PASSED
+tests/cloud/test_workflow_dispatch.py::test_failed_or_unfinished_preparation_stops_before_resolution PASSED
+tests/cloud/test_workflow_dispatch.py::test_duplicate_events_dispatch_nothing_and_a_new_generation_conflicts[<lambda>0] PASSED
+tests/cloud/test_workflow_dispatch.py::test_duplicate_events_dispatch_nothing_and_a_new_generation_conflicts[<lambda>1] PASSED
+tests/cloud/test_workflow_dispatch.py::test_legacy_and_remote_off_requests_run_the_delivery_job_directly PASSED
+tests/cloud/test_workflow_dispatch.py::test_v2_requests_run_the_delivery_job_with_the_installed_v2_config PASSED
+tests/cloud/test_workflow_dispatch.py::test_legacy_requests_also_receive_the_v2_config_flag_unchanged PASSED
+tests/cloud/test_workflow_dispatch.py::test_a_maintenance_hold_admits_only_its_bound_runs PASSED
+tests/cloud/test_workflow_dispatch.py::test_resolution_pins_the_exact_initial_intent_and_equal_content_does_not_collapse PASSED
+tests/cloud/test_workflow_dispatch.py::test_a_resolved_request_must_equal_its_initial_intent PASSED
+tests/cloud/test_workflow_dispatch.py::test_resolved_paths_require_the_initial_intent_identity_and_initial_paths_forbid_it PASSED
+tests/cloud/test_workflow_dispatch.py::test_job_argv_parses_with_every_configured_flag usage: __main__.py admit [-h] --request-uri REQUEST_URI --request-generation
+                         REQUEST_GENERATION --output-root OUTPUT_ROOT
+__main__.py admit: error: the following arguments are required: --request-generation, --output-root
+usage: __main__.py resolve [-h] --request-uri REQUEST_URI --request-generation
+                           REQUEST_GENERATION --output-root OUTPUT_ROOT
+                           --release-namespace RELEASE_NAMESPACE --image-uri
+                           IMAGE_URI [--work-dir WORK_DIR]
+__main__.py resolve: error: the following arguments are required: --request-generation, --output-root, --release-namespace, --image-uri
+PASSED
+tests/cloud/test_workflow_dispatch.py::test_remote_run_holds_both_locks_from_admission_and_resolution_hands_them_to_delivery PASSED
+tests/cloud/test_workflow_dispatch.py::test_remote_run_locks_are_released_on_every_failure_and_after_prepare_only[failed_preparation] PASSED
+tests/cloud/test_workflow_dispatch.py::test_remote_run_locks_are_released_on_every_failure_and_after_prepare_only[prepare_only] PASSED
+tests/cloud/test_workflow_dispatch.py::test_remote_run_locks_are_released_on_every_failure_and_after_prepare_only[resolution_rejected] PASSED
+tests/cloud/test_workflow_dispatch.py::test_a_busy_system_rejects_admission_before_preparation PASSED
+tests/cloud/test_workflow_dispatch.py::test_after_activation_a_legacy_fews_only_remote_run_prepares_fews_only PASSED
+tests/cloud/test_workflow_dispatch.py::test_after_activation_legacy_ipcch_remote_intents_are_rejected_before_any_collection[inference0] PASSED
+tests/cloud/test_workflow_dispatch.py::test_after_activation_legacy_ipcch_remote_intents_are_rejected_before_any_collection[inference1] PASSED
+tests/cloud/test_workflow_dispatch.py::test_a_definitively_rejected_job_submission_releases_the_admission_locks[403-True-plan] PASSED
+tests/cloud/test_workflow_dispatch.py::test_a_definitively_rejected_job_submission_releases_the_admission_locks[403-True-resolve] PASSED
+tests/cloud/test_workflow_dispatch.py::test_a_definitively_rejected_job_submission_releases_the_admission_locks[404-True-plan] PASSED
+tests/cloud/test_workflow_dispatch.py::test_a_definitively_rejected_job_submission_releases_the_admission_locks[404-True-resolve] PASSED
+tests/cloud/test_workflow_dispatch.py::test_a_definitively_rejected_job_submission_releases_the_admission_locks[503-False-plan] PASSED
+tests/cloud/test_workflow_dispatch.py::test_a_definitively_rejected_job_submission_releases_the_admission_locks[503-False-resolve] PASSED
+tests/cloud/test_workflow_dispatch.py::test_resolution_read_failure_releases_the_admission_locks PASSED
+tests/cloud/test_workflow_dispatch.py::test_dispatch_record_write_failure_releases_what_the_step_owns[admission.json] PASSED
+tests/cloud/test_workflow_dispatch.py::test_dispatch_record_write_failure_releases_what_the_step_owns[resolution.json] PASSED
+tests/cloud/test_workflow_dispatch.py::test_admission_replay_failure_never_releases_locks_adopted_from_the_first_admission PASSED
+tests/cloud/test_workflow_dispatch.py::test_delivery_rejected_by_a_changed_current_release_releases_the_admission_locks PASSED
+tests/cloud/test_workflow_dispatch.py::test_cli_resolve_releases_the_admission_locks_when_the_request_read_fails PASSED
+
+============================== 45 passed in 1.06s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_workflow_dispatch.py"
+	User time (seconds): 0.68
+	System time (seconds): 0.13
+	Percent of CPU this job got: 64%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.27
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 156828
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 3
+	Minor (reclaiming a frame) page faults: 26347
+	Voluntary context switches: 5715
+	Involuntary context switches: 16
+	Swaps: 0
+	File system inputs: 1360
+	File system outputs: 3888
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 1.393s
+CPU time consumed: 905ms
+# end=2026-10-30T21:47:15-04:00 launcher_rc=0 child_exit=0

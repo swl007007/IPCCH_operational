@@ -53,7 +53,9 @@ def test_first_real_ipcch_current_activates_and_fews_publication_inherits_and_pr
     assert rec["activation"]["activated_by_run"] == "ipcch-run-1"                       # carried forward (R37/R46)
     assert rec["systems"]["ipcch"]["execution_month"] == "2026-10"                       # own months, not relabelled
     assert rec["systems"]["ipcch"]["published_by_run"] == "ipcch-run-1"
-    assert rec["systems"]["ipcch"]["inherited_from_pointer_generation"] == snap["generation"]
+    assert json.dumps(rec["systems"]["ipcch"], sort_keys=True) == json.dumps(snap["record"]["systems"]["ipcch"], sort_keys=True)
+    assert "inherited_from_pointer_generation" not in rec["systems"]["ipcch"]          # the member is never rewritten
+    assert rec["inherited"] == {"ipcch": snap["generation"]}                           # this inheritance, beside it
     assert rec["systems"]["fewsnet"]["origin_month"] == "2026-11" and out2["status"] == "published"
 
 

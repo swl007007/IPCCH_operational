@@ -1,0 +1,60 @@
+# unit=ipcch-cp2-test_ipcch_entrypoint_v2-1793411728494323072 start=2026-10-30T21:55:28-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_entrypoint_v2.py
+Running as unit: ipcch-cp2-test_ipcch_entrypoint_v2-1793411728494323072.service; invocation ID: fba2667063a24fb78cce5c9f7140716c
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 21 items
+
+tests/cloud/test_ipcch_entrypoint_v2.py::test_smoke_request_runs_end_to_end_through_the_route PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_request_envelope_other_than_the_installed_one_executes_nothing_ipcch PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_config_refuses_real_providers_for_smoke_and_nested_roots PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_smoke_route_never_touches_real_state PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_saved_update_then_later_failure_keeps_the_structured_report PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_real_inference_only_never_builds_acquisition_providers PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_smoke_store_initialisation_route_then_a_request_runs PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_real_store_initialisation_route_installs_the_bound_acceptance_entries PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_completed_october_request_redelivered_after_current_advanced_returns_its_durable_status PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_changed_request_or_unfinished_reservation_is_never_relaunched PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_failure_after_the_reservation_leaves_a_durable_failed_status PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_the_persisted_deadline_reaches_the_provider_factory PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_config_caps_the_run_budget_at_the_job_timeout[over0-True] PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_config_caps_the_run_budget_at_the_job_timeout[over1-True] PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_config_caps_the_run_budget_at_the_job_timeout[over2-False] PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_config_caps_the_run_budget_at_the_job_timeout[over3-False] PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_config_caps_the_run_budget_at_the_job_timeout[over4-False] PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_config_caps_the_run_budget_at_the_job_timeout[over5-False] PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_config_caps_the_run_budget_at_the_job_timeout[over6-True] PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_config_caps_the_run_budget_at_the_job_timeout[over7-False] PASSED
+tests/cloud/test_ipcch_entrypoint_v2.py::test_real_providers_wire_the_producer_and_the_persisted_deadline PASSED
+
+============================= 21 passed in 18.87s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_entrypoint_v2.py"
+	User time (seconds): 17.17
+	System time (seconds): 0.60
+	Percent of CPU this job got: 96%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:18.33
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 404352
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 88
+	Minor (reclaiming a frame) page faults: 67858
+	Voluntary context switches: 11115
+	Involuntary context switches: 84
+	Swaps: 0
+	File system inputs: 18256
+	File system outputs: 52856
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 19.318s
+CPU time consumed: 17.781s
+# end=2026-10-30T21:55:46-04:00 launcher_rc=0 child_exit=0

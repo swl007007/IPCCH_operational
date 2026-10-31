@@ -119,23 +119,26 @@ def ipcch_execution_month(record: Mapping[str, Any] | None) -> str | None:
 
 def build_record(*, run_id: str, request_ref: Mapping[str, str], mode: str, snapshot: Mapping[str, Any],
                  new_members: Mapping[str, Mapping[str, Any]], delivery: Mapping[str, Any], now: datetime) -> dict[str, Any]:
-    """The v2 release record: new members for the executed systems, every other member inherited unchanged from the
-    bound snapshot, activation carried forward (set on the first real new-contract IPCCH current publication)."""
+    """The v2 release record: new members for the executed systems, every other member inherited LITERALLY from the
+    bound snapshot (task 10-30 AC6: the inherited member payload is the snapshot's member, byte for byte - including
+    any inheritance marker it already carries), with this publication's inheritance recorded beside the members in
+    ``inherited`` {system: snapshot pointer generation}; activation carried forward (set on the first real
+    new-contract IPCCH current publication)."""
     current = members(snapshot["record"])
-    systems = {}
+    systems, inherited = {}, {}
     for s in SYSTEMS:
         if s in new_members:
             systems[s] = {**new_members[s], "published_by_run": run_id}
-        elif s in current:                                 # unchanged member; the marker records THIS inheritance
-            systems[s] = {**{k: v for k, v in current[s].items() if k != "inherited_from_pointer_generation"},
-                          "inherited_from_pointer_generation": snapshot["generation"]}
+        elif s in current:                                 # unchanged member, never rewritten
+            systems[s] = json.loads(json.dumps(current[s]))
+            inherited[s] = snapshot["generation"]
     act = activation(snapshot["record"])
     new_ipcch = new_members.get("ipcch", {})
     if act is None and mode == "real" and new_ipcch.get("contract") == IPCCH_CONTRACT:
         act = {"contract": IPCCH_CONTRACT, "activated_by_run": run_id,
                "execution_month": new_ipcch.get("execution_month"), "at": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
     return {"schema": RELEASE_SCHEMA, "run_id": run_id, "request": dict(request_ref), "mode": mode, "systems": systems,
-            "activation": act, "delivery": dict(delivery),
+            "inherited": inherited, "activation": act, "delivery": dict(delivery),
             "previous": {"pointer_generation": snapshot["generation"],
                          "release_record": (snapshot["pointer"] or {}).get("release_record")}}
 

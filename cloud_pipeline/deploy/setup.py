@@ -2,6 +2,8 @@
 
 import argparse
 import json
+
+V2_INSTALLED_CONFIG = "/opt/ipcch/deployment.json"
 from pathlib import Path
 import shlex
 import subprocess
@@ -30,6 +32,10 @@ def commands(cfg):
         cfg[k] for k in ("project", "region", "image_uri", "service_account")
     )
     workflow_sa = cfg["workflow_service_account"]
+    # the v2 deployment config installed in the image (cloud.ipcch.install; task 10-30): passed explicitly to the job
+    v2_config = cfg.get("v2_installed_config", V2_INSTALLED_CONFIG)
+    if not v2_config.startswith("/opt/ipcch/"):
+        raise ValueError("v2_installed_config must be the deployment config installed under /opt/ipcch/")
     run = ["--project", p, "--region", region]
     common = [
         "--image",
@@ -78,7 +84,9 @@ def commands(cfg):
         + ",--release-namespace,"
         + cfg["namespace"]
         + ",--image-uri,"
-        + image,
+        + image
+        + ",--v2-config,"
+        + v2_config,
     ]
     yield [
         "gcloud",
@@ -140,6 +148,7 @@ def commands(cfg):
         "DELIVERY_OUTPUT_ROOT": "gs://" + cfg["bucket"],
         "DELIVERY_RELEASE_NAMESPACE": cfg["namespace"],
         "DELIVERY_IMAGE_URI": image,
+        "DELIVERY_V2_CONFIG": v2_config,
         "PREPARE_JOB": cfg["prepare_job"],
         "EARTH_ENGINE_PROJECT": cfg["earth_engine_project"],
         "BATCH_PARENT": "projects/" + p + "/locations/" + region,

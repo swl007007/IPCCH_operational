@@ -26,6 +26,9 @@
 #   preparation runs ``delivery_job release`` before stopping. A timed-out wait leaves them for the explicit
 #   operations clear (the job may still be running).
 # Jobs are configured with --max-retries 0: a failed run is never resumed; retry = new run ID.
+# A v2 request (schema_version fewsnet-ipcch-delivery-request-v2, no ``execution`` block) takes the run_job path; the
+# delivery job dispatches it to cloud.ipcch.entrypoint_v2 with the installed deployment config passed explicitly as
+# --v2-config (DELIVERY_V2_CONFIG; container overrides replace the job's default args, task 10-30). v1 requests ignore it.
 main:
   params: [event]
   steps:
@@ -40,6 +43,7 @@ main:
           - output_root: ${sys.get_env("DELIVERY_OUTPUT_ROOT")}
           - release_namespace: ${sys.get_env("DELIVERY_RELEASE_NAMESPACE")}
           - image_uri: ${sys.get_env("DELIVERY_IMAGE_URI")}
+          - v2_config: ${sys.get_env("DELIVERY_V2_CONFIG")}
           - earth_engine_project: ${sys.get_env("EARTH_ENGINE_PROJECT")}
           - batch_parent: ${sys.get_env("BATCH_PARENT")}
           - batch_service_account: ${sys.get_env("BATCH_SERVICE_ACCOUNT")}
@@ -298,6 +302,8 @@ main:
                     - ${release_namespace}
                     - "--image-uri"
                     - ${image_uri}
+                    - "--v2-config"
+                    - ${v2_config}
           connector_params:
             # Submit only: the run's status object (runs/<run_id>/run_status.json) is the durable outcome.
             # Polling the long-running operation would need project-level run.operations.get.

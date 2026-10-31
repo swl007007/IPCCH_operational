@@ -1,0 +1,89 @@
+# unit=ipcch-cp2-test_ipcch_install-1793411601134219984 start=2026-10-30T21:53:21-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_install.py
+Running as unit: ipcch-cp2-test_ipcch_install-1793411601134219984.service; invocation ID: 25ccd98918af4e25a2569135ca1e8a96
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 11 items
+
+tests/cloud/test_ipcch_install.py::test_concrete_deployment_config_is_valid_and_publishes_to_the_legacy_current PASSED
+tests/cloud/test_ipcch_install.py::test_runtime_smoke_providers_import_no_test_code PASSED
+tests/cloud/test_ipcch_install.py::test_stage_verifies_and_records_every_artifact_and_the_installed_tree_reverifies {
+ "config": {
+  "namespaces": {
+   "production": "monthly-staging",
+   "smoke": "monthly-smoke"
+  },
+  "roots": {
+   "real": "gs://food-crisis-test-ipcch-data",
+   "smoke": "gs://food-crisis-test-ipcch-smoke/v2"
+  },
+  "sha256": "c75b1172b9e841d1fe34f3e5cac1b1718e8615d5e752bd9a38c816afce1d49c8"
+ },
+ "envelope": {
+  "envelope_id": "ipcch-test-scoring/envelope-v1",
+  "sha256": "e80f1d37634b2ef4852357f3cdbfe0c74cb938face819959cc7cf58e1d43c86d",
+  "status": "accepted"
+ },
+ "handoff": {
+  "acceptance_entries_sha256": "8f2aa366d208b426454871fd29b18af00b1cabbc1c199960522b5d1871bbdd25",
+  "bytes": 408175,
+  "manifest_sha256": "37664f53ea98208fcca842df25729ee6c37bbe78bc9f86f883353ff016fa2ddf",
+  "members": 45,
+  "roster_sha256": "569e19bf9dd51c1f1293ee95575c0385274689c9a544e71a44a8f3ff07738dc2",
+  "roster_size": 3
+ },
+ "package": {
+  "combination_id": "ipcch-test-scoring",
+  "feature_count": 527,
+  "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+  "package_manifest_sha256": "7a52d18a4c06179b9a33866bac58bda3d2b9b78503505a727966cba58c7aba1d"
+ },
+ "smoke_fixture": {
+  "bytes": 405457,
+  "manifest_sha256": "044c72f85d6739c54218afb5ec23b16eb9f923fe456dcc676cd792d23349eac3",
+  "members": 56,
+  "roster_sha256": "569e19bf9dd51c1f1293ee95575c0385274689c9a544e71a44a8f3ff07738dc2",
+  "roster_size": 3
+ }
+}
+PASSED
+tests/cloud/test_ipcch_install.py::test_any_altered_missing_or_extra_installed_member_is_refused PASSED
+tests/cloud/test_ipcch_install.py::test_wrong_envelope_pin_is_refused_before_anything_is_copied PASSED
+tests/cloud/test_ipcch_install.py::test_the_real_handoff_can_never_be_installed_as_the_smoke_fixture PASSED
+tests/cloud/test_ipcch_install.py::test_installed_config_must_match_the_layout_and_carry_no_digest[<lambda>-image digest] PASSED
+tests/cloud/test_ipcch_install.py::test_installed_config_must_match_the_layout_and_carry_no_digest[<lambda>-install layout] PASSED
+tests/cloud/test_ipcch_install.py::test_installed_config_must_match_the_layout_and_carry_no_digest[<lambda>-deployment config invalid] PASSED
+tests/cloud/test_ipcch_install.py::test_build_context_requires_every_install_input PASSED
+tests/cloud/test_ipcch_install.py::test_the_runtime_smoke_provider_runs_the_whole_smoke_route PASSED
+
+============================== 11 passed in 7.27s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_install.py"
+	User time (seconds): 6.03
+	System time (seconds): 0.38
+	Percent of CPU this job got: 83%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:07.63
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 402100
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 88
+	Minor (reclaiming a frame) page faults: 78968
+	Voluntary context switches: 11523
+	Involuntary context switches: 54
+	Swaps: 0
+	File system inputs: 18248
+	File system outputs: 60016
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 7.689s
+CPU time consumed: 6.426s
+# end=2026-10-30T21:53:28-04:00 launcher_rc=0 child_exit=0

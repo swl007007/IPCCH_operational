@@ -71,3 +71,18 @@ user-owned scope return to Supervisor; routine implementation choices do not.
   expressly changes them; do not manufacture incremental work or bypass month guards.
 - Persist checkpoint evidence and update `PROGRESS.md`; it is a state ledger,
   never an independent source of authorization. No acceptance claim without readback.
+
+## 2026-10-31 authorization and session recovery
+
+The user confirmed "云权限在goal的范围内提前确认，无需单独审批". Cloud operations
+needed by this goal are preauthorized. CP4's bounded operation packet remains a
+Supervisor technical/evidence checkpoint, not another user permission gate. Keep
+the existing scope/resource constraints and document recoveries; do not repeat
+permission requests for goal-scoped work.
+
+Current Supervisor pane is `w1A:p2`; Executor pane is `w1A:p8`. At 13:38 UTC the
+pane actually hosted `claude --resume 8086f8e0...` (the observer), unlike CP2's
+earlier display-only misattribution. `/resume 6a490ae1-ee00-43f9-bdfc-c887c9816c09`
+restored the original Executor in the same pane; Herdr reported that session and
+its CP3 gate history before further dispatch. The historical PID 4905 is not a
+current identity claim.

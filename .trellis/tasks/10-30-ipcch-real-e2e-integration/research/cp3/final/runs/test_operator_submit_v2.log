@@ -1,0 +1,63 @@
+# unit=ipcch-cp2-test_operator_submit_v2-1793411976438367049 start=2026-10-30T21:59:36-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/test_operator_submit_v2.py
+Running as unit: ipcch-cp2-test_operator_submit_v2-1793411976438367049.service; invocation ID: 906590d5e7864717ac52b1e20e68eae5
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 24 items
+
+tests/test_operator_submit_v2.py::test_preview_makes_no_cloud_call_and_writes_no_state PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad0-refresh needs its file] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad1-Saturday start] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad2-regions] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad3-reversed] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad4-keep carries no other field] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad5-local file not found] PASSED
+tests/test_operator_submit_v2.py::test_invalid_selections_upload_nothing_and_trigger_nothing[bad6-selections.mode] PASSED
+tests/test_operator_submit_v2.py::test_every_one_of_the_eleven_choices_is_explicit PASSED
+tests/test_operator_submit_v2.py::test_inference_preview_admits_the_configured_country_reference_and_refuses_one_outside PASSED
+tests/test_operator_submit_v2.py::test_keep_with_any_extra_field_is_refused_before_any_cloud_call[extra0] PASSED
+tests/test_operator_submit_v2.py::test_keep_with_any_extra_field_is_refused_before_any_cloud_call[extra1] PASSED
+tests/test_operator_submit_v2.py::test_keep_with_any_extra_field_is_refused_before_any_cloud_call[extra2] PASSED
+tests/test_operator_submit_v2.py::test_uploads_outside_the_trusted_namespace_are_refused_before_any_upload PASSED
+tests/test_operator_submit_v2.py::test_month_is_frozen_at_submission_not_at_asset_upload PASSED
+tests/test_operator_submit_v2.py::test_the_v2_runtime_image_is_separate_from_the_legacy_destination_image PASSED
+tests/test_operator_submit_v2.py::test_workstation_timezone_never_selects_the_month PASSED
+tests/test_operator_submit_v2.py::test_lost_request_upload_response_resumes_with_the_frozen_bytes_and_instant PASSED
+tests/test_operator_submit_v2.py::test_a_failure_before_freeze_freezes_later_at_its_own_instant PASSED
+tests/test_operator_submit_v2.py::test_admission_failure_at_freeze_triggers_nothing PASSED
+tests/test_operator_submit_v2.py::test_changed_selection_or_file_under_a_run_id_is_refused PASSED
+tests/test_operator_submit_v2.py::test_smoke_submission_stays_in_the_smoke_namespace PASSED
+tests/test_operator_submit_v2.py::test_status_reports_claim_reservation_and_final_status PASSED
+tests/test_operator_submit_v2.py::test_cli_submit_preview_runs_on_the_existing_surface PASSED
+
+============================== 24 passed in 0.69s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/test_operator_submit_v2.py"
+	User time (seconds): 0.48
+	System time (seconds): 0.08
+	Percent of CPU this job got: 65%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.88
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 132424
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 24605
+	Voluntary context switches: 3591
+	Involuntary context switches: 14
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 2608
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 1.009s
+CPU time consumed: 658ms
+# end=2026-10-30T21:59:37-04:00 launcher_rc=0 child_exit=0

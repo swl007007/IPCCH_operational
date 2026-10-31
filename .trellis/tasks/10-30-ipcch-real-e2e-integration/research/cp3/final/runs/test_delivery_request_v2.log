@@ -1,0 +1,65 @@
+# unit=ipcch-cp2-test_delivery_request_v2-1793411746904113295 start=2026-10-30T21:55:46-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_delivery_request_v2.py
+Running as unit: ipcch-cp2-test_delivery_request_v2-1793411746904113295.service; invocation ID: 73209ef32d004d31aae37c2ef05d68e3
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 26 items
+
+tests/cloud/test_delivery_request_v2.py::test_valid_combined_ipcch_request_and_derived_months PASSED
+tests/cloud/test_delivery_request_v2.py::test_mode_is_required_and_closed PASSED
+tests/cloud/test_delivery_request_v2.py::test_no_operation_and_block_presence PASSED
+tests/cloud/test_delivery_request_v2.py::test_smoke_selects_ipcch_only_and_its_own_namespace PASSED
+tests/cloud/test_delivery_request_v2.py::test_inference_only_needs_exactly_one_batch_and_no_refresh PASSED
+tests/cloud/test_delivery_request_v2.py::test_generation_plus_inference_never_names_a_batch_and_declares_every_input PASSED
+tests/cloud/test_delivery_request_v2.py::test_month_rules_real_and_smoke PASSED
+tests/cloud/test_delivery_request_v2.py::test_acled_refresh_declaration PASSED
+tests/cloud/test_delivery_request_v2.py::test_research_inputs_and_snapshot_shapes PASSED
+tests/cloud/test_delivery_request_v2.py::test_fewsnet_operation_mapping PASSED
+tests/cloud/test_delivery_request_v2.py::test_request_identity_and_reference_verification PASSED
+tests/cloud/test_delivery_request_v2.py::test_is_v2_routes_only_the_new_version PASSED
+tests/cloud/test_delivery_request_v2.py::test_ipcch_wfp_refresh_is_a_research_prepared_interval_file PASSED
+tests/cloud/test_delivery_request_v2.py::test_fews_delivery_block_is_fully_validated[<lambda>-models must cover exactly] PASSED
+tests/cloud/test_delivery_request_v2.py::test_fews_delivery_block_is_fully_validated[<lambda>-distinct packages] PASSED
+tests/cloud/test_delivery_request_v2.py::test_fews_delivery_block_is_fully_validated[<lambda>-assets.fewsnet] PASSED
+tests/cloud/test_delivery_request_v2.py::test_fews_delivery_block_is_fully_validated[<lambda>-diagnostics must declare every] PASSED
+tests/cloud/test_delivery_request_v2.py::test_fews_delivery_block_is_fully_validated[<lambda>-evidence must belong] PASSED
+tests/cloud/test_delivery_request_v2.py::test_fews_delivery_block_is_fully_validated[<lambda>-contracts.fill.version] PASSED
+tests/cloud/test_delivery_request_v2.py::test_fews_delivery_block_is_fully_validated[<lambda>-unsupported system/horizon] PASSED
+tests/cloud/test_delivery_request_v2.py::test_iter_refs_include_every_nested_fews_delivery_reference PASSED
+tests/cloud/test_delivery_request_v2.py::test_integrated_preflight_executes_nothing_when_a_nested_fews_ref_is_invalid PASSED
+tests/cloud/test_delivery_request_v2.py::test_model_combination_references_the_envelope_only PASSED
+tests/cloud/test_delivery_request_v2.py::test_r39_month_rules_apply_to_ipcch_operations_only PASSED
+tests/cloud/test_delivery_request_v2.py::test_country_reference_is_an_inference_input_only PASSED
+tests/cloud/test_delivery_request_v2.py::test_fews_generation_admission_validates_the_prepare_request_and_every_nested_ref PASSED
+
+============================== 26 passed in 0.70s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_delivery_request_v2.py"
+	User time (seconds): 0.43
+	System time (seconds): 0.01
+	Percent of CPU this job got: 50%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.89
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 124132
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 19254
+	Voluntary context switches: 5063
+	Involuntary context switches: 6
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 948ms
+CPU time consumed: 459ms
+# end=2026-10-30T21:55:47-04:00 launcher_rc=0 child_exit=0

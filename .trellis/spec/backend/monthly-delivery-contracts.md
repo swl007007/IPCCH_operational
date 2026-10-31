@@ -199,3 +199,47 @@ memory limits. Offline fixtures never establish runtime identity access or live 
 Wrong: `fillna("")` on completeness metadata or accepting systemd-run exit 0 alone.
 Correct: validate one non-null metadata value on every row, and require test child
 exit evidence. Never rerun an interrupted test without bounded memory/time.
+
+## 13. IPCCH v2 operator submission and runtime installation
+
+### 1. Scope / trigger
+Routine IPCCH choices trigger the full v2 route through the existing request event.
+
+### 2. Signatures
+`pipeline.py submit --config FILE --selections FILE [--execute] [--run-id ID]`;
+`pipeline.py status --config FILE --run-id ID`. Build context requires explicit
+envelope/pin/package/handoff/smoke-fixture/config arguments.
+
+### 3. Contracts
+Declare all 11 keep/refresh choices. Structurally validate before uploads; pin input
+objects, then capture one UTC instant for M and prepared_at, read current fresh,
+admit exact references and persist frozen request bytes. Upload run_manifest.json
+last. Resume preserves those bytes/month. Deployment uses `v2.image_uri`; legacy
+top-level image and initialized destination are separate bindings. Workflow passes
+`DELIVERY_V2_CONFIG` as `--v2-config`, including explicit argv overrides. Install
+verification rehashes package/handoff/smoke files against the accepted envelope.
+Inherited release members remain literal; this publication's inheritance is in
+top-level `inherited`, outside the member payload.
+
+### 4. Validation and error matrix
+Missing choice, keep extras or untrusted input namespace: reject before upload.
+Missing v2 image: execution refused. Changed selection/bytes under a run ID:
+reject. Failed freeze admission: no triggering request. Artifact mismatch: build
+fails. New image digest requires real legacy compatibility/acceptance evidence;
+changing config or disabling guards cannot substitute for it.
+
+### 5. Good / base / bad cases
+Good: uploads cross midnight UTC and freeze selects the new month. Base: a lost
+final-upload response resumes with identical bytes. Bad: deriving M from upload
+start, local timezone, or delayed job start; changing legacy destination in place.
+
+### 6. Tests required
+Submit invalid-input no-write, UTC rollover, changed pointer at freeze, lost
+response identity, separate image binding, Workflow argument propagation,
+installation tamper/isolation and literal FEWS inheritance tests. Offline tests
+do not prove built-image compatibility or live bucket publication.
+
+### 7. Wrong vs correct
+Wrong: deploy a new image and treat old accepted image-bound packages as accepted.
+Correct: verify unchanged package execution in the new image, record genuine
+acceptance and initialize its destination through supported operator commands.

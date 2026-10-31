@@ -37,3 +37,18 @@ def test_workflow_grants_are_scoped_to_its_jobs_reads_and_dispatch_claims():
     creator = next(c for c in grants if "roles/storage.objectCreator" in c)
     assert creator[-1] == ('--condition=expression=resource.name.startsWith("projects/_/buckets/out/objects/dispatch/"),'
                            "title=workflow-dispatch-claims")
+
+
+def test_the_delivery_job_and_workflow_pass_the_installed_v2_config():
+    """Task 10-30: the job default argv and the Workflow env both name the deployment config installed in the image."""
+    commands = list(setup.commands(CFG))
+    job = next(c for c in commands if c[:5] == ["gcloud", "run", "jobs", "deploy", "oct-delivery"])
+    args = next(a for a in job if a.startswith("--args=")).removeprefix("--args=").split(",")
+    assert args[args.index("--v2-config") + 1] == "/opt/ipcch/deployment.json"
+    assert job[job.index("--task-timeout") + 1] == "4h" and job[job.index("--max-retries") + 1] == "0"
+    workflow = next(c for c in commands if c[:3] == ["gcloud", "workflows", "deploy"])
+    env = dict(item.split("=", 1) for item in workflow[-1].split(","))
+    assert env["DELIVERY_V2_CONFIG"] == "/opt/ipcch/deployment.json"
+    import pytest
+    with pytest.raises(ValueError, match="installed under /opt/ipcch/"):
+        list(setup.commands({**CFG, "v2_installed_config": "/home/me/deployment.json"}))

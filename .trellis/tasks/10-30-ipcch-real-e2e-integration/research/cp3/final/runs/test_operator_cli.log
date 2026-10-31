@@ -1,0 +1,50 @@
+# unit=ipcch-cp2-test_operator_cli-1793411590810016017 start=2026-10-30T21:53:10-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/test_operator_cli.py
+Running as unit: ipcch-cp2-test_operator_cli-1793411590810016017.service; invocation ID: 89c4ec403b534330bece3d72d9f13331
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 11 items
+
+tests/test_operator_cli.py::test_init_run_resume_download PASSED
+tests/test_operator_cli.py::test_run_binding_and_destination_checks PASSED
+tests/test_operator_cli.py::test_rejects_unbound_baseline[bytes] PASSED
+tests/test_operator_cli.py::test_rejects_unbound_baseline[manifest] PASSED
+tests/test_operator_cli.py::test_rejects_unbound_baseline[missing] PASSED
+tests/test_operator_cli.py::test_rejects_unbound_baseline[duplicate] PASSED
+tests/test_operator_cli.py::test_rejects_unbound_baseline[environment] PASSED
+tests/test_operator_cli.py::test_preview_no_cloud_and_select_rollback PASSED
+tests/test_operator_cli.py::test_model_diagnostics_and_shared_members_rejected_before_mutation PASSED
+tests/test_operator_cli.py::test_init_missing_assets_stops_before_upload PASSED
+tests/test_operator_cli.py::test_deadline_expires_before_the_intent_is_submitted PASSED
+
+============================== 11 passed in 1.78s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/test_operator_cli.py"
+	User time (seconds): 1.43
+	System time (seconds): 0.21
+	Percent of CPU this job got: 76%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.16
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 262432
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 44801
+	Voluntary context switches: 4770
+	Involuntary context switches: 36
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 10416
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 2.217s
+CPU time consumed: 1.659s
+# end=2026-10-30T21:53:13-04:00 launcher_rc=0 child_exit=0

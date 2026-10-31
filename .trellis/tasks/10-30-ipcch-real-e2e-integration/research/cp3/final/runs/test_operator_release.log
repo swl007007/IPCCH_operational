@@ -1,0 +1,71 @@
+# unit=ipcch-cp2-test_operator_release-1793411593051389179 start=2026-10-30T21:53:13-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/test_operator_release.py
+Running as unit: ipcch-cp2-test_operator_release-1793411593051389179.service; invocation ID: b1d9d8e1550148b4b4acb5e0f66e2d14
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 32 items
+
+tests/test_operator_release.py::test_candidate_intent_reuses_the_snapshot_and_pins_the_inherited_source PASSED
+tests/test_operator_release.py::test_an_inherited_source_must_be_the_named_delivery_run PASSED
+tests/test_operator_release.py::test_inconsistent_selections_are_rejected_before_any_upload[override0-off requires --prepared-manifest] PASSED
+tests/test_operator_release.py::test_inconsistent_selections_are_rejected_before_any_upload[override1-on prepares a new snapshot] PASSED
+tests/test_operator_release.py::test_inconsistent_selections_are_rejected_before_any_upload[override2-needs --inherit-manifest and --inherit-archive] PASSED
+tests/test_operator_release.py::test_operator_runs_respect_the_maintenance_hold PASSED
+tests/test_operator_release.py::test_candidate_download_uses_the_candidate_record_never_a_release PASSED
+tests/test_operator_release.py::test_the_hold_aware_gate_is_installed_and_verified_before_any_job_change PASSED
+tests/test_operator_release.py::test_promotion_is_receipt_bound_and_reconciled PASSED
+tests/test_operator_release.py::test_an_interrupted_promotion_resumes_from_the_actual_state[record_before_pointer] PASSED
+tests/test_operator_release.py::test_an_interrupted_promotion_resumes_from_the_actual_state[after_pointer] PASSED
+tests/test_operator_release.py::test_an_interrupted_promotion_resumes_from_the_actual_state[after_config] PASSED
+tests/test_operator_release.py::test_an_interrupted_promotion_resumes_from_the_actual_state[after_first_rename] PASSED
+tests/test_operator_release.py::test_an_interrupted_promotion_resumes_from_the_actual_state[after_second_rename] PASSED
+tests/test_operator_release.py::test_restore_from_an_interrupted_fallback_switch[after_first_rename] PASSED
+tests/test_operator_release.py::test_restore_from_an_interrupted_fallback_switch[after_second_rename] PASSED
+tests/test_operator_release.py::test_concurrent_config_change_or_pointer_drift_stops_before_local_changes PASSED
+tests/test_operator_release.py::test_a_competing_pointer_is_never_overwritten PASSED
+tests/test_operator_release.py::test_a_present_predecessor_pointer_is_restored_by_cas PASSED
+tests/test_operator_release.py::test_prepare_only_status_ends_at_the_resolved_snapshot PASSED
+tests/test_operator_release.py::test_candidate_receipt_requires_a_bundled_runtime_replay[bundle-True-True] PASSED
+tests/test_operator_release.py::test_candidate_receipt_requires_a_bundled_runtime_replay[worktree-True-False] PASSED
+tests/test_operator_release.py::test_candidate_receipt_requires_a_bundled_runtime_replay[bundle-False-False] PASSED
+tests/test_operator_release.py::test_a_foreign_pointer_after_restore_inspection_is_never_deleted PASSED
+tests/test_operator_release.py::test_a_config_edit_during_cloud_publication_is_never_overwritten PASSED
+tests/test_operator_release.py::test_a_config_edit_during_restore_is_never_overwritten PASSED
+tests/test_operator_release.py::test_rollback_after_release_rehold_restore_release PASSED
+tests/test_operator_release.py::test_post_activation_fews_only_operator_submission_inherits_the_v2_member_by_identity PASSED
+tests/test_operator_release.py::test_post_activation_operator_submissions_are_bound_before_any_request_upload[override0-has no archive] PASSED
+tests/test_operator_release.py::test_post_activation_operator_submissions_are_bound_before_any_request_upload[override1-is run ipcch-new-ipcch, not other-run] PASSED
+tests/test_operator_release.py::test_post_activation_operator_submissions_are_bound_before_any_request_upload[override2-must name exactly the ipcch member] PASSED
+tests/test_operator_release.py::test_post_activation_operator_submissions_are_bound_before_any_request_upload[override3-submit IPCCH through the v2 manifest] PASSED
+
+============================== 32 passed in 2.59s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/test_operator_release.py"
+	User time (seconds): 1.73
+	System time (seconds): 0.26
+	Percent of CPU this job got: 67%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.95
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 265260
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 45691
+	Voluntary context switches: 8015
+	Involuntary context switches: 48
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 23264
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 3.004s
+CPU time consumed: 2.013s
+# end=2026-10-30T21:53:16-04:00 launcher_rc=0 child_exit=0

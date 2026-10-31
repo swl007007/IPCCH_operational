@@ -1,0 +1,73 @@
+# unit=ipcch-cp2-test_delivery_workflow-1793411598159770868 start=2026-10-30T21:53:18-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_delivery_workflow.py
+Running as unit: ipcch-cp2-test_delivery_workflow-1793411598159770868.service; invocation ID: ac2ead4fb25b45a2ad52f61543505495
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 1 item
+
+tests/cloud/test_delivery_workflow.py::test_override_argv_keeps_every_configured_flag_and_parses FAILED
+
+=================================== FAILURES ===================================
+__________ test_override_argv_keeps_every_configured_flag_and_parses ___________
+
+    def test_override_argv_keeps_every_configured_flag_and_parses():
+        steps = yaml.safe_load(WORKFLOW.read_text())["main"]["steps"]
+        run = next(step["run_job"] for step in steps if "run_job" in step)
+        args = run["args"]["body"]["overrides"]["containerOverrides"][0]["args"]
+        env = {"DELIVERY_OUTPUT_ROOT": "gs://b", "DELIVERY_RELEASE_NAMESPACE": "dual-system",
+               "DELIVERY_IMAGE_URI": "r/i@sha256:" + "c" * 64}
+>       argv = [_render(a, env, {"bucket": "b", "name": "requests/r1/run_manifest.json", "generation": "17"}) for a in args]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/cloud/test_delivery_workflow.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = '${v2_config}'
+env = {'DELIVERY_OUTPUT_ROOT': 'gs://b', 'DELIVERY_RELEASE_NAMESPACE': 'dual-system', 'DELIVERY_IMAGE_URI': 'r/i@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc'}
+event = {'bucket': 'b', 'name': 'requests/r1/run_manifest.json', 'generation': '17'}
+
+    def _render(value, env, event):
+        if isinstance(value, str) and value.startswith("${") and value.endswith("}"):
+            expression = value[2:-1]
+            if expression.startswith('sys.get_env("'):
+                return env[expression.split('"')[1]]
+>           return {"generation": event["generation"], "output_root": env["DELIVERY_OUTPUT_ROOT"],
+                    "release_namespace": env["DELIVERY_RELEASE_NAMESPACE"], "image_uri": env["DELIVERY_IMAGE_URI"],
+                    '"gs://" + bucket + "/" + name': f"gs://{event['bucket']}/{event['name']}"}[expression]
+E           KeyError: 'v2_config'
+
+tests/cloud/test_delivery_workflow.py:18: KeyError
+=========================== short test summary info ============================
+FAILED tests/cloud/test_delivery_workflow.py::test_override_argv_keeps_every_configured_flag_and_parses - KeyError: 'v2_config'
+============================== 1 failed in 0.59s ===============================
+Command exited with non-zero status 1
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_delivery_workflow.py"
+	User time (seconds): 0.33
+	System time (seconds): 0.02
+	Percent of CPU this job got: 46%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.78
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 66072
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 12724
+	Voluntary context switches: 4690
+	Involuntary context switches: 5
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+# CHILD-EXIT=1
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 831ms
+CPU time consumed: 371ms
+# end=2026-10-30T21:53:19-04:00 launcher_rc=0 child_exit=1

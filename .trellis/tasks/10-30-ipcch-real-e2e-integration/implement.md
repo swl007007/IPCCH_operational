@@ -1,7 +1,7 @@
 # IPCCH real E2E integration — execution plan
 
 Status: D1-D5 approved by the subsequent user `/goal` protocol. Native task is
-in progress; CP0-CP2 accepted, CP3 next in the bound Herdr Executor. Cloud
+in progress; CP0-CP3 local components accepted; CP4 image/compatibility next. Cloud
 execution has not started. This single task keeps the shared runtime/dispatch and
 current-publication changes together; deferred incremental evidence is not a child
 implementation task or a reason to leave this task unfinished after its agreed checks.
@@ -51,12 +51,12 @@ implementation task or a reason to leave this task unfinished after its agreed c
 - [x] Add source-equivalence and lifecycle tests; exercise failed/timed-out exports,
   duplicate events, same-day reruns, and 2027/prior-year VI support in both producers
   and consumers. Do not reconstruct static baselines or automate manual research inputs.
-- [ ] Provide v2 submission for all 11 keep/refresh choices. Validate selections
+- [x] Provide v2 submission for all 11 keep/refresh choices. Validate selections
   and associated assets before publishing the pinned request object, whose event
   immediately triggers the run. Asset uploads alone must not start it. Chain all
   operations through current automatically, with no timer/separate start action.
   Ensure invalid requests fail before producer mutations and valid runs hold locks.
-- [ ] Derive routine M and prepared_at from one UTC submission instant, freeze O/
+- [x] Derive routine M and prepared_at from one UTC submission instant, freeze O/
   targets in the request, and populate identity/pins automatically. Distinguish
   redelivery from a new submission; test local-vs-UTC disagreement and cross-month
   delayed starts/redeliveries. Preserve explicit-M request compatibility, without
@@ -155,8 +155,11 @@ only until this future live acceptance is performed.
 
 ## Current limitations
 
-CP1 sparse PATCH32 and CP2 producer/lifecycle are component-complete with offline
-evidence. CP3 submission/deployment work remains. No deployment,
+CP1 sparse PATCH32, CP2 producer/lifecycle and CP3 submission/installation wiring
+are component-complete with offline evidence. Real image verification and the FEWS
+compatibility transition remain CP4 gates; fail-closed legacy requests alone are
+not preserved consumer operation. Goal-scoped cloud work is user-preauthorized
+(2026-10-31); record the bounded packet without requesting separate permission. No deployment,
 exports, retained initialization, or real E2E run have occurred at this checkpoint.
 The `specs/001-cloud-base-input/plan.md` pointer in AGENTS was not found in this
 checkout; use the existing v2 archive/contracts and report this stale pointer

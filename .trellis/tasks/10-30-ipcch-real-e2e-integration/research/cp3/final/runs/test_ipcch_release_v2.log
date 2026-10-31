@@ -1,0 +1,50 @@
+# unit=ipcch-cp2-test_ipcch_release_v2-1793411609736998414 start=2026-10-30T21:53:29-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_release_v2.py
+Running as unit: ipcch-cp2-test_ipcch_release_v2-1793411609736998414.service; invocation ID: ecbe04356b3a41fd9a1b73a9ebe13b5a
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline
+collecting ... collected 11 items
+
+tests/cloud/test_ipcch_release_v2.py::test_first_real_ipcch_publication_inherits_legacy_fews_byte_for_byte_and_activates PASSED
+tests/cloud/test_ipcch_release_v2.py::test_tampered_inherited_member_refuses_publication PASSED
+tests/cloud/test_ipcch_release_v2.py::test_moved_pointer_fails_without_rebase_and_candidate_never_moves_it PASSED
+tests/cloud/test_ipcch_release_v2.py::test_smoke_publishes_under_its_own_root_only PASSED
+tests/cloud/test_ipcch_release_v2.py::test_edited_or_incomplete_inherited_member_with_regenerated_inventory_is_refused_by_publication[edited_value-current] PASSED
+tests/cloud/test_ipcch_release_v2.py::test_edited_or_incomplete_inherited_member_with_regenerated_inventory_is_refused_by_publication[edited_value-candidate] PASSED
+tests/cloud/test_ipcch_release_v2.py::test_edited_or_incomplete_inherited_member_with_regenerated_inventory_is_refused_by_publication[missing_supporting_files-current] PASSED
+tests/cloud/test_ipcch_release_v2.py::test_edited_or_incomplete_inherited_member_with_regenerated_inventory_is_refused_by_publication[missing_supporting_files-candidate] PASSED
+tests/cloud/test_ipcch_release_v2.py::test_one_run_publishing_both_systems_uses_unique_artifacts_and_chains_its_own_generation[True] PASSED
+tests/cloud/test_ipcch_release_v2.py::test_one_run_publishing_both_systems_uses_unique_artifacts_and_chains_its_own_generation[False] PASSED
+tests/cloud/test_ipcch_release_v2.py::test_binary_legacy_fews_package_files_are_inherited_byte_for_byte PASSED
+
+============================= 11 passed in 40.90s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -vv -s -p no:cacheprovider tests/cloud/test_ipcch_release_v2.py"
+	User time (seconds): 38.50
+	System time (seconds): 0.54
+	Percent of CPU this job got: 96%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:40.36
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 436720
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 88
+	Minor (reclaiming a frame) page faults: 72865
+	Voluntary context switches: 12449
+	Involuntary context switches: 146
+	Swaps: 0
+	File system inputs: 18248
+	File system outputs: 120200
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 41.366s
+CPU time consumed: 39.055s
+# end=2026-10-30T21:54:10-04:00 launcher_rc=0 child_exit=0

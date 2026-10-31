@@ -1,0 +1,58 @@
+{
+  "earth_engine_project": "feisty-flames-511718-d4",
+  "export_root": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports",
+  "installed": {
+    "real": {
+      "bundle_dir": "/opt/ipcch/handoff-bundle",
+      "envelope": "/opt/ipcch/envelope/ipcch-combination-envelope-v2-accepted.json",
+      "package_root": "/opt/ipcch/package"
+    },
+    "smoke": {
+      "bundle_dir": "/opt/ipcch/smoke-fixture/bundle",
+      "envelope": "/opt/ipcch/envelope/ipcch-combination-envelope-v2-accepted.json",
+      "fixture_root": "/opt/ipcch/smoke-fixture",
+      "package_root": "/opt/ipcch/package"
+    }
+  },
+  "namespaces": {
+    "production": "monthly-staging",
+    "smoke": "monthly-smoke"
+  },
+  "producer_asset_root": "projects/feisty-flames-511718-d4/assets/",
+  "providers": {
+    "real": "cloud.ipcch.entrypoint_v2:real_providers",
+    "smoke": "cloud.ipcch.smoke_providers:entrypoint_providers"
+  },
+  "roots": {
+    "real": "gs://food-crisis-test-ipcch-data",
+    "smoke": "gs://food-crisis-test-ipcch-smoke/v2"
+  },
+  "run_timeout_seconds": 14400,
+  "store_roots": {
+    "real": "gs://food-crisis-test-ipcch-data/ipcch-v2/real",
+    "smoke": "gs://food-crisis-test-ipcch-smoke/ipcch-v2/smoke"
+  },
+  "trusted_prefixes": {
+    "real": [
+      "gs://food-crisis-test-ipcch-data/inputs/v2/"
+    ],
+    "smoke": [
+      "gs://food-crisis-test-ipcch-smoke/inputs/"
+    ]
+  },
+  "verification": {
+    "status": "pending-live-verification",
+    "verified_offline": [
+      "entrypoint_v2.load_config validation; smoke and real roots distinct and not nested",
+      "production current pointer gs://food-crisis-test-ipcch-data/monthly-staging/current.json equals the legacy gs://<bucket>/<namespace>/current.json",
+      "installed paths equal cloud.ipcch.install layout; no image digest in the installed config"
+    ],
+    "pending_live_checks": [
+      "smoke bucket gs://food-crisis-test-ipcch-smoke exists (or an operator-approved existing non-nested smoke location replaces it)",
+      "runtime identity monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com can read/write the real and smoke roots, store roots and export root, and read the trusted input prefixes",
+      "runtime identity can read the han-sandbox-505315 producer/static inputs and create assets under producer_asset_root",
+      "deployed oct-delivery job/Workflow use the image built from this config (CP4 build packet)"
+    ]
+  },
+  "work_dir": "/tmp/ipcch-v2-work"
+}
