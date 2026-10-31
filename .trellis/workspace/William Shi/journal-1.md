@@ -268,3 +268,42 @@ Executor (Claude b9db2dbb, w19:pE) under the Supervisor-Executor protocol: origi
 ### Status
 
 [OK] **Completed**
+
+
+## Session 9: IPCCH automatic E2E published to production current
+<!-- trellis-session: v=2 fp=e6d9224830c90b9e -->
+
+**Date**: 2026-10-31
+**Task**: IPCCH automatic E2E published to production current
+**Branch**: `feat/ipcch-real-e2e-integration`
+
+### Summary
+
+AC1-AC9 accepted: automatic submission through full 6226-area H2/H8/H14 inference and production current, guarded readback 27/27, normal configuration finalized; DA1/DA2 deferred and han runtime sharing still required.
+
+### Main Changes
+
+- Sparse PATCH32, automatic EE producers, UTC-frozen v2 submission, verified image installation and preserved FEWS compatibility.
+- Real run ipcch-real-522b30030f944868; current generation 1793461128385732; release generation 1793461128307577; 527 features, targets 2026-10/2027-04/2027-10.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `12b1d68` | fix(ipcch): align sparse PATCH32 and validate produced table completeness |
+| `70f9d10` | feat(ipcch): automate EE table production and bound execution lifecycle |
+| `115798f` | feat(ipcch): wire v2 submission and verified runtime installation |
+| `d0625b3` | docs(ipcch): accept real E2E publication and operator handoff |
+
+### Testing
+
+- [OK] CP1 86 focused; CP2 226 and CP3 285 guarded passes; smoke 24/24 and real 27/27 readback; final source/config/inventory reconciliation child exit 0.
+- [OK] Native archive 6a17ff1 preserves 470 tracked members; 468 byte-identical, only implementation completion and task lifecycle changed. GitNexus low risk, no affected processes.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- User-deferred incremental DA1/DA2 needs upstream han read sharing to monthly-runtime; no incremental run, scheduler, training, Audit, push or merge performed.

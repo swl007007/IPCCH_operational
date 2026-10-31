@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 8
-- **Last Active**: 2026-10-30
+- **Total Sessions**: 9
+- **Last Active**: 2026-10-31
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~270 | Active |
+| `journal-1.md` | ~309 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 9 | 2026-10-31 | IPCCH automatic E2E published to production current | `12b1d68`, `70f9d10`, `115798f`, `d0625b3` | `feat/ipcch-real-e2e-integration` |
 | 8 | 2026-10-30 | IPCCH validity origin ablation (H0/H6/H12) — executed and accepted | `ad34381`, `61667a3`, `fc64185` | `feat/ipcch-validity-feature-inference` |
 | 7 | 2026-10-30 | IPCCH H2/H8/H14 migration: CP4-CP6 completion, final acceptance and archive | `e48ca51`, `6d8ea08`, `78a2aeb`, `43c6d12`, `32d4eef`, `77cc319`, `0d26d7f`, `b3b5dd2`, `da1ebd0`, `d57a3fb`, `0d484d8`, `7ed26ab`, `53352b3`, `b332141`, `1d2cc47` | `feat/ipcch-validity-feature-inference` |
 | 6 | 2026-10-22 | FEWS fixed-map retrain: all-history fit, manifest dispatch, candidate and promotion | `ff389b1`, `dbfc196`, `38c1ccb`, `1dd5e70`, `82a4a0f`, `f9506bc`, `9e5a375`, `0d60a4e`, `48d3d1e`, `7e458e2`, `53d5f87`, `49ed4bb`, `f545eb0` | `feat/fewsnet-fixed-map-retrain` |
