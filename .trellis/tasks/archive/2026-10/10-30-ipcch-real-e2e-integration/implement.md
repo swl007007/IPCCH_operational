@@ -1,7 +1,7 @@
 # IPCCH real E2E integration — execution plan
 
-Status: D1-D5 approved by the subsequent user `/goal` protocol. Native task is
-in progress until native archive; CP0-CP6 accepted, including the supported legacy
+Status: completed and natively archived on 2026-10-31 under the user `/goal`
+protocol. CP0-CP6 accepted, including the supported legacy
 compatibility cutover, smoke dispatch, full 6,226-area real publication/readback,
 normal-config finish and operator handoff. This single task keeps the shared runtime/dispatch and
 current-publication changes together; deferred incremental evidence is not a child
@@ -148,9 +148,12 @@ Passing offline tests is not real E2E acceptance.
   Final guarded evidence reconciliation passed; frozen code is unchanged. Staged
   GitNexus risk LOW, no affected processes. Git scope also includes raw log evidence
   omitted from indexed counts; AGENTS.md, pycache and fallback are excluded.
-- [ ] Supervisor commits relevant implementation/evidence without unrelated changes,
+- [x] Supervisor commits relevant implementation/evidence without unrelated changes,
   performs final acceptance against AC1-AC9, then closes through native Trellis.
   Do not invoke Trellis Audit or an independent automatic audit stage.
+  Final evidence commit d0625b3; native task.py archive succeeded on 2026-10-31.
+  Archive used --no-commit so GitNexus could inspect the staged move before its
+  bookkeeping commit. AGENTS.md remains outside this task's commits.
 
 ## Deferred follow-up, not work to execute this round
 
@@ -168,7 +171,8 @@ legacy runtime initialization and shared-service deployment are complete. The FE
 compatibility candidate was verified, promoted and released. IPCCH v2 real/smoke
 initialization and both live routes are accepted. Real publication/readback passed
 27 checks over all 6,226 areas per horizon. Normal configuration and CP6 handoff
-are accepted; only the final commit/native archive remain. See research/cp4/supervisor-gates.md.
+are accepted and evidence is committed; native archive is complete. See
+research/cp4/supervisor-gates.md.
 Goal-scoped cloud work is user-preauthorized
 (2026-10-31); record the bounded packet without requesting separate permission.
 Runtime han reads are denied; this round confirms retained-only skips, while

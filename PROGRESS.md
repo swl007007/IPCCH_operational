@@ -1,6 +1,6 @@
-# Accepted: IPCCH automatic E2E integration (2026-10-31)
+# Completed: IPCCH automatic E2E integration (2026-10-31)
 
-Task: `.trellis/tasks/10-30-ipcch-real-e2e-integration/`.
+Task: `.trellis/tasks/archive/2026-10/10-30-ipcch-real-e2e-integration/`.
 Authority: the user's subsequent `/goal` Supervisor–Executor protocol, preserved in
 the task's `execution-protocol.md` and `research/user-execution-protocol.md`.
 This section is an operational ledger, not an approval source; older sections below
@@ -130,6 +130,9 @@ describe other tasks and do not govern this execution.
   staging attempt found a verified orphan Git lock; Linux/Windows process and file
   holder checks were clear before removing it. No user content was reset.
   All AC1-AC9 are accepted; final evidence commit and native archive/journal follow.
+- Final evidence committed as d0625b3. Native archive completed on 2026-10-31;
+  task state is completed and active session pointers are cleared. Archive and
+  journal are bookkeeping commits; no Audit, training, push or merge was run.
 
 ---
 
