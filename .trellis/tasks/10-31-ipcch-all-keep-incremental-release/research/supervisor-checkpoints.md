@@ -87,9 +87,19 @@ An absent/uninitialized root is consistent with evidence; access is not fully
 excluded. Supported root-create documentation and the bounded proposed recovery
 are separate in supervisor-recovery-proposal.md. They are not execution approval.
 
-## CP3 — task remains in_progress; recovery scope decision required
+## Original CP3 boundary — recovery scope decision subsequently granted
 
 Preserve the failed attempt and its reconciled partial work in a scoped evidence
 commit. Do not archive or mark the goal complete. Current PRD R8 authorizes only
 one monthly attempt and excludes deployment repair; an additional attempt or the
-proposed bounded initialization job requires an explicit scope extension.
+proposed bounded initialization job required an explicit scope extension.
+
+## D5 approved — 2026-11-01 UTC
+
+User: "批准上述恢复与一次重跑"; goal resumed active. Same task and verified
+executor w1A:p8 / 6a490ae1 continue. Spec/plan now permit the precise recovery in
+supervisor-recovery-proposal.md: one 1 CPU/512 MiB/300 s diagnostic job on the
+existing image and runtime SA, conditional single project-root create and readback,
+then one additional all-keep monthly request. No third attempt or broader repair.
+CP3 now denotes root recovery, CP4 the additional request, CP5 its acceptance and
+CP6 final closure. CP0-CP2 frozen failure evidence remains unchanged.

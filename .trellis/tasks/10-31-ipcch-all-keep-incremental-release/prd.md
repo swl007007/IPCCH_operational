@@ -1,18 +1,20 @@
 # IPCCH incremental release with ACLED refresh and DA1/DA2 acceptance
 
-Status: **The one approved attempt failed before EE export; partial work and
-unchanged current are reconciled. DA1 failed and DA2 remains unproven. Task is not
-complete; a scope extension is proposed separately and is not yet approved.**
+Status: **First attempt failed and is reconciled. The user approved D5 recovery
+and one additional all-keep attempt on 2026-11-01 UTC. DA1/DA2 remain unaccepted;
+root initialization/verification must pass before the second submission.**
 
 ## Goal
 
-Attempt one real, natural-month IPCCH incremental publication to the existing
-online current with ACLED refresh and the other ten manual choices kept. Establish
+Achieve the approved real, natural-month IPCCH incremental publication to existing
+online current. The first attempt refreshed ACLED and kept ten inputs; D5 permits
+root recovery followed by exactly one additional attempt with all eleven kept. Establish
 the han-sandbox input connection through automatic production, feature generation, full-roster
 inference and bucket publication. Complete the agreed DA1/DA2 acceptance scope.
 
-The initial request called for all keep and used G1/G2. The subsequent accepted
-decisions below correct the names to DA1/DA2 and select one-week ACLED refresh.
+The initial request called for all keep and used G1/G2. D1-D4 correct the names
+and select one-week ACLED refresh. D5 preserves that successful retained refresh
+and restores all-keep choices for the explicitly approved second attempt.
 
 ## Confirmed background
 
@@ -39,26 +41,28 @@ decisions below correct the names to DA1/DA2 and select one-week ACLED refresh.
 
 | ID | Required behavior | Acceptance |
 |---|---|---|
-| R1 | One real CLI/event submission with generation, inference and current publication; explicitly select ACLED refresh and keep for the other ten manual inputs. Pin the supplied export and the agreed complete-week interval/regions; no other refresh or hidden input change. | AC1, AC6 |
+| R1 | Real CLI/event submission with generation, inference and current publication. First attempt: pinned ACLED refresh and ten keep. D5 second attempt: all eleven keep, including retained ACLED v2; no other refresh or hidden input change. | AC1, AC6 |
 | R2 | Freeze actual submission-time UTC M, O=M-2 and M/M+6/M+12 targets. Preserve the accepted ipcch-validity-h2h8h14-final-20261030 envelope/package, 527-feature order and 6,226-area roster. | AC1, AC5 |
 | R3 | Read han static/history inputs under the runtime SA. Automatically export demanded VI/PRCP/ET0/PATCH32 tables under projects/feisty-flames-511718-d4/assets/ with new run-specific IDs mapped to consumers. Preserve automatic climate/GPP/nightlight contracts. | AC2, AC3 |
 | R4 | Require genuinely unsaved, nonempty demand and actual consumption for incremental acceptance. No retained deletion, bundle edits or fabricated month to force work. Compute actual demand; do not assume exactly seven jobs. | AC2, AC3 |
 | R5 | Preserve existing availability behavior: no published source for a climate base at O blocks generation; processing/export/schema errors block dependent publication; optional missing sources and legitimate spatial NaN are disclosed. Keep does not promise every source is current. | AC4, AC7 |
 | R6 | Record task/destination identity, source-calendar completeness, actual PATCH32 IDs/sparse alignment, VI units/scaling and observed omitted/all-null fields against existing contracts. Distinguish incomplete sources from complete sources with masked areas; unobserved cases are not passed observations. | AC4 |
 | R7 | Publish all three horizons to the existing production current and verify referenced objects. Inherit the predecessor FEWS member literally. Bucket visibility and content verification are the endpoint. | AC5 |
-| R8 | One new monthly attempt; no automatic new-ID rerun, resource expansion, deployment repair or scientific change after failure. Reconcile uncertain responses with frozen identity/status; preserve saved retained progress and all failure evidence. | AC7 |
+| R8 | First attempt is terminal failed. D5 authorizes one bounded root initialization/check job and exactly one further new-ID monthly attempt after it passes. No automatic third attempt, monthly resource expansion, other deployment repair or scientific change. Reconcile uncertain responses with frozen identity/status; preserve saved retained progress and all failure evidence. | AC7 |
 | R9 | No product edits or cloud mutations in planning; read-only evidence checks are allowed. Complete grilling and obtain subsequent approval of the latest plan before execution; record concrete operations, live limits and fresh predecessor state before launch. | AC1, AC7 |
 
 The ten keep keys are wfp, history_snapshot, nino34_anom, bbg_staple_food,
 bbg_oilgas, bbg_soybean_oil, bbg_global_food, food_price_index_WB, idp_national and
 idp_local; each carries only action=keep. ACLED carries action=refresh, its pinned
-file, Saturday start/Friday end and declared regions. D4 fixes the approved interval.
+file, Saturday start/Friday end and declared regions for the first attempt. D4 fixes
+that interval. Under D5 the second attempt's ACLED choice is only action=keep.
 
 ## Acceptance criteria
 
-- [x] **AC1 — Bound submission:** frozen request/reservation declares ACLED refresh
-  plus ten keep choices, exact file/interval/regions, real mode, runtime/model
-  references and M/O/targets; one new run admitted.
+- [ ] **AC1 — Bound submission:** preserve the first request/reservation's verified
+  ACLED refresh plus ten keeps. The D5 second request/reservation must declare all
+  eleven keep, real mode, pinned runtime/models and actual M/O/targets; only one
+  additional run admitted after the root check succeeds.
 - [ ] **AC2 — Real production:** nonempty pre-run demand, completed actual exports
   and readable validated run-specific destinations; no manual Tasks-panel action.
 - [ ] **AC3 — Consumption:** produced IDs link to consuming saved climate versions,
@@ -75,8 +79,10 @@ file, Saturday start/Friday end and declared regions. D4 fixes the approved inte
   ACLED appends a version matching the validated refresh and preserves saved rows
   outside the agreed interval/regions. Report accepted/dropped export rows and
   coverage; October-only additions must not enter the August feature cutoff.
+  For D5, verify ACLED v2 and all ten other kept histories remain unchanged from
+  the fresh recovery pre-snapshot; preserve the first attempt's refresh evidence.
   Measure automatic updates/reuse separately, with actual coverage and warnings.
-- [x] **AC7 — Honest bounded outcome:** resource/status/operation records and all
+- [ ] **AC7 — Honest bounded outcome:** resource/status/operation records and all
   intermediate failures are preserved. A failed or blocked attempt is not passed
   acceptance. Reconcile partial progress or uncertain publication before more work.
 
@@ -84,8 +90,9 @@ file, Saturday start/Friday end and declared regions. D4 fixes the approved inte
 
 Retraining; model/feature/availability-policy changes; manual refresh other than ACLED;
 forced history deletion/backfill or store reinitialization; full-catalogue copies;
-public sharing or personal credentials; new images/builds/deployments; broad IAM;
-FEWS rescoring; schedulers/dashboard work; unrelated fixes; automatic fresh retries.
+public sharing or personal credentials; new images/builds or deployments except
+the D5 diagnostic job; broad IAM; FEWS rescoring; schedulers/dashboard work;
+unrelated fixes; automatic fresh retries beyond the one D5 additional attempt.
 
 ## Accepted decisions
 
@@ -124,7 +131,20 @@ with "采用": refresh 2026-10-17..2026-10-23, excluding all 209 overlapping
 2026-10-24 week, so neither declare coverage through 2026-10-30 nor infer an
 event-free missing week. This supersedes the provisional Q4 interval choice.
 
-## Prepared input and validation
+**D5 — Root recovery and one additional all-keep attempt approved.** The user said
+"批准上述恢复与一次重跑" and resumed the goal. The approved recovery plan is
+research/supervisor-recovery-proposal.md. Use the existing acc3e467 image and
+monthly-runtime identity for one short diagnostic job (1 CPU, 512 MiB, 300 s,
+one task, zero task retries). Read the exact feisty project root; if HTTP 404,
+perform at most one supported create-folder operation, never overwrite, then
+verify listing and the pinned transport's absent-child behavior. Other errors
+stop before monthly submission; no IAM/registration/billing change is authorized.
+After successful verification, submit exactly one new monthly run with all eleven
+keep and existing 8 CPU/32 GiB/14400 s/zero-retry limits. Preserve failed run
+ipcch-real-9eee4305db494a35 and retained ACLED v2 (+470 verified rows). No third
+attempt is authorized. D2 and every scientific/publication acceptance rule remain.
+
+## Prepared input and validation (first attempt)
 
 - Submission CSV contains the 617 source rows for week 2026-10-17 with every field
   value unchanged. SHA256: e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a.
@@ -142,10 +162,10 @@ event-free missing week. This supersedes the provisional Q4 interval choice.
 
 ## Final review gate
 
-No unresolved product-choice question remains. The final summary and D1-D4 are
-approved by the subsequent user goal instruction. One monthly attempt is authorized under the existing runtime
-limits; failure preserves partial progress and stops without fresh-ID retries or
-deployment repairs. D2 defines the allowed partial DA2 outcome.
+No unresolved product-choice question remains. D1-D4 governed the first attempt;
+D5 explicitly extends the scope to root recovery and one additional all-keep
+attempt. Failure preserves partial progress and stops without a third attempt or
+further deployment repairs. D2 defines the allowed partial DA2 outcome.
 
 The user's new execution protocol explicitly prohibits Trellis Audit and automatic
 audit workflows (execution-protocol.md:11,44-50), superseding the enrolled-repository
@@ -154,9 +174,10 @@ do not register/start/close an audit run or manipulate existing controller state
 Verify the actual live Opus 5.5 1M executor through Herdr before delegating work.
 
 The user additionally confirmed: "spec范围内的云端操作预授权". Necessary cloud
-preflight reads, the one approved submission, its automatic source/retained writes,
+preflight reads, the approved submissions, their automatic source/retained writes,
 inference/current publication and evidence readback are preauthorized. Do not ask
-again per operation. Record concrete scope, resource limits and effects; expanded
-deployment/IAM/model work or a fresh-ID second attempt remains outside this spec.
+again per operation. Record concrete scope, resource limits and effects. D5's
+diagnostic job/root initialization and second attempt are now included; other
+deployment/IAM/model work and a fresh-ID third attempt remain outside this spec.
 Ordinary preparation/check errors may be repaired and retried; an uncertain live
 submission is reconciled before any resend. Do not invent a successful outcome.

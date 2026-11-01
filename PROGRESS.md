@@ -55,11 +55,13 @@ Authority: the user's subsequent goal `execution-protocol.md`, D1-D4, and explic
   26 climate tables, GPP/ledger and nightlight unchanged. CP1 42 and CP2 41 frozen
   hashes independently verified. AC1/AC7 evidence complete, AC6 manual inputs
   verified, DA1 failed and DA2 unproven. Task/goal remain unfinished.
-- Official EE guide confirms project-root folder creation is supported. A bounded
-  runtime-SA root initialization/check plus ONE additional all-keep run is proposed
-  in research/supervisor-recovery-proposal.md, not approved or executed. Existing
-  spec R8 forbids an automatic second attempt/deployment repair; a scope decision
-  is needed. No new cloud mutation is authorized by this proposal alone.
+- Failed-attempt evidence committed as 7cec729. Official EE guide confirms
+  project-root folder creation is supported. User subsequently approved
+  "上述恢复与一次重跑" and resumed the goal on 2026-11-01 UTC. D5 now permits one
+  runtime-SA root initialization/check job (acc3e467, 1 CPU/512 MiB/300 s/zero
+  retries), then ONE additional all-keep monthly run at unchanged runtime limits.
+  No third attempt is authorized. Same executor/task; CP0-CP2 remain frozen.
+  CP3 root payload/technical check is next, then CP4 retry and CP5 acceptance.
 
 # Completed: IPCCH automatic E2E integration (2026-10-31)
 

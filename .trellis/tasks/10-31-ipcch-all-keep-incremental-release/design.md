@@ -1,12 +1,12 @@
 # Design: one real increment with ACLED refresh
 
 Status: **Approved under execution-protocol.md and the user's cloud preauthorization.
-D1-D4 and single-new-monthly-attempt limits remain binding.**
+D5 extends D1-D4 with bounded root recovery and one additional all-keep attempt.**
 
 ## Route and boundaries
 
 Reuse the normal operator configuration, installed v2 image and accepted models.
-No product or deployment change is proposed. A task-scoped acceptance helper may
+No product change is proposed; D5 adds only the bounded diagnostic job. A task-scoped acceptance helper may
 cross-check existing receipts after approval without changing runtime behavior.
 
     ACLED refresh + ten keep selections -> validation/pins -> one UTC freeze
@@ -95,5 +95,21 @@ There is no supported v2 pointer rollback helper. Do not reuse the earlier C
 maintenance operation, restore image 487a or hand-CAS a pre-activation pointer.
 A bad publication needs a separately reviewed containment/forward-recovery plan.
 The user-authorized Supervisor-Executor loop may resolve ordinary preparation and
-validation errors, but this spec still excludes deployment repair and a second
-new monthly attempt. Native Trellis lifecycle applies; no Trellis Audit workflow.
+validation errors. D5 now authorizes the root diagnostic job and one additional
+all-keep attempt; other deployment repair and a third attempt remain excluded.
+Native Trellis lifecycle applies; no Trellis Audit workflow.
+
+## D5 recovery route (approved 2026-11-01 UTC)
+
+Preserve all CP0-CP2 frozen evidence. The failed attempt wrote only ACLED v2 and
+acceptance v4; no export, feature batch or publication occurred. Use the approved
+runtime-SA job to read/conditionally create the exact project asset root, then
+verify listing and missing_assets for an absent child. No scientific asset is
+created by this check. See research/supervisor-recovery-proposal.md for limits.
+
+After the technical root-readback gate, prepare a new all-keep selection file;
+do not modify the original refresh selection/frozen state. Pin a fresh predecessor
+and retained snapshot, preserve nonempty demand, and submit one new run ID.
+Rebase CP2 manual-input checks to all-eleven-keep equality while retaining the
+first attempt's separately accepted refresh evidence. All DA1/DA2, provenance,
+roster, FEWS inheritance and publication checks are unchanged.

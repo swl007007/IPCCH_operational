@@ -1,9 +1,10 @@
-# Proposed scope extension — not yet approved or executed
+# D5 scope extension — approved; execution pending
 
 The sole authorized attempt ipcch-real-9eee4305db494a35 failed before EE exports
 because listing projects/feisty-flames-511718-d4/assets returned NOT_FOUND.
-Current is unchanged; ACLED v2 already contains the approved new week. This
-proposal does not modify PRD R8 until the user explicitly adopts it.
+Current is unchanged; ACLED v2 already contains the approved new week.
+The user explicitly adopted this proposal on 2026-11-01 UTC:
+"批准上述恢复与一次重跑". PRD D5/R8 now include this bounded extension.
 
 ## Supported operation, remaining uncertainty
 
@@ -20,13 +21,13 @@ This supersedes the SDK-only uncertainty about whether project-root creation is 
 supported operation. It does not prove this root is absent rather than inaccessible.
 No creation command has been executed.
 
-## Recommended bounded recovery
+## Approved bounded recovery
 
 1. Use a dedicated short Cloud Run job, proposed name
    ipcch-ee-root-check-20261101, in feisty-flames-511718-d4/us-central1. Pin the
    existing acc3e467 image and monthly-runtime service account. One task,
    1 CPU, 512 MiB, 300 s, zero task retries. This is a new diagnostic job, explicitly
-   outside the prior no-deployment-change boundary, with no new image/build.
+   extending the prior no-deployment-change boundary, with no new image/build.
 2. Under that confirmed runtime identity, read the root. If listing succeeds,
    skip creation. If it returns HTTP 404, make at most one documented create-folder
    operation for the exact project root, then re-read it. Other errors stop.
@@ -53,10 +54,11 @@ If a different repair becomes necessary, report concrete evidence and revise sco
 
 ## Approval boundary
 
-The user already authorized cloud operations within the existing spec. The new
-decision is required by the user's accepted R8, not a generic cloud approval rule:
-one monthly attempt only, and no automatic deployment repair. The requested
-extension also explicitly adopts ACLED keep because the previous refresh succeeded.
+The original R8 required this scope extension because it allowed one monthly
+attempt only and excluded automatic deployment repair. The user has now approved
+the extension, including ACLED keep because the previous refresh succeeded.
+Do not request cloud permission again for these operations. Supervisor technical
+payload/readback checks still apply before proceeding to the additional attempt.
 
 No Root/DA1/DA2 success is claimed by this proposal. The risk that root creation or
 the next real export fails remains until the respective live operation succeeds.

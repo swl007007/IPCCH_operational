@@ -1,6 +1,10 @@
-# Execution plan: one real increment with ACLED refresh
+# Execution plan: real increment and approved D5 recovery
 
 Status: **Approved by the user's goal execution protocol and cloud preauthorization.**
+
+P0-P2 record the first attempt, which failed before export and was reconciled.
+D5 recovery below is now approved; historical one-attempt instructions do not
+cancel this explicit extension. Preserve CP0-CP2 frozen files.
 
 ## P0 — Converge
 
@@ -66,7 +70,34 @@ Rehash both before execute; preview has not frozen M or any cloud reference.
 - [x] On failure stop the attempt, inventory partial changes, reconcile current
   and report. Do not silently deploy a fix or submit a fresh retry.
 
-## P3 — Acceptance
+## D5 / CP3 — Root initialization and runtime verification
+
+- [x] Record user approval: "批准上述恢复与一次重跑"; keep the same task/executor.
+- [ ] Commit updated approved spec and plan before recovery execution.
+- [ ] Prepare the bounded diagnostic payload and one small guarded offline check
+  for listing-success, HTTP-404/create, already-exists reconciliation and other
+  error/timeout stop branches. No creation on permission errors; no overwrite.
+- [ ] Supervisor inspect payload/resource/identity packet. This is a technical
+  check under existing approval, not another user cloud-permission gate.
+- [ ] Create/execute ipcch-ee-root-check-20261101 on acc3e467, monthly-runtime,
+  1 CPU/512 MiB/300 s/one task/zero retries. Read root; at most one creation on
+  HTTP 404; verify root listing and absent-child semantics via pinned transport.
+  If job already exists, inspect/reconcile instead of overwriting or duplicating.
+- [ ] Save logs/execution/results and accept only actual runtime-identity proof.
+  No further mutation or monthly request if the diagnostic fails.
+
+## D5 / CP4 — Exactly one additional all-keep monthly attempt
+
+- [ ] Prepare a separate all-eleven-keep selection; preserve the first selection.
+- [ ] Revalidate config/image/current/no hold/no active work, retained state and
+  nonempty unsaved climate demand. ACLED v2 and acceptance v4 are the expected
+  prior partial progress; any other change needs reconciliation.
+- [ ] Guarded preview and submit once, using actual UTC freeze and unchanged
+  8 CPU/32 GiB/14400 s/zero-retry limits. Save new frozen request and reservation.
+- [ ] Monitor durable execution and export handles; no automatic third attempt.
+- [ ] On failure reconcile current and partial writes under the existing rules.
+
+## P3 / CP5 — Acceptance of the successful recovery run
 
 - [x] Save final execution/status/logs and post-run inventories.
 - [ ] Reuse parameterized generic readback for actual M/O, 527 features, 6,226
@@ -78,6 +109,8 @@ Rehash both before execute; preview has not frozen M or any cloud reference.
 - [ ] Verify the ACLED interval refresh and outside-interval preservation, then
   the ten kept histories' content/version equality; report each automatic
   source's update/reuse, availability and warnings separately.
+  The first refresh evidence is already accepted. For the D5 run, require all
+  eleven kept histories, including ACLED v2, to equal its fresh pre-snapshot.
 - [ ] Update DA1 and DA2 dispositions separately and only from evidence; apply
   the user-approved D2 boundary to any naturally unobserved field case.
 
