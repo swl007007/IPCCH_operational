@@ -1,0 +1,69 @@
+{
+  "acled": {
+    "action": "refresh",
+    "file": "acled.csv",
+    "start": "2026-10-17",
+    "end": "2026-10-30",
+    "regions": [
+      "Eastern Africa"
+    ]
+  },
+  "wfp": {
+    "action": "refresh",
+    "file": "wfp.csv",
+    "start": "2026-09",
+    "end": "2026-10"
+  },
+  "history_snapshot": {
+    "action": "refresh",
+    "file": "history_snapshot.csv"
+  },
+  "nino34_anom": {
+    "action": "refresh",
+    "file": "nino34_anom.csv",
+    "start": "2026-09",
+    "end": "2026-10"
+  },
+  "bbg_staple_food": {
+    "action": "refresh",
+    "file": "bbg_staple_food.csv",
+    "start": "2026-09",
+    "end": "2026-10"
+  },
+  "bbg_oilgas": {
+    "action": "refresh",
+    "file": "bbg_oilgas.csv",
+    "start": "2026-09",
+    "end": "2026-10"
+  },
+  "bbg_soybean_oil": {
+    "action": "refresh",
+    "file": "bbg_soybean_oil.csv",
+    "start": "2026-09",
+    "end": "2026-10"
+  },
+  "bbg_global_food": {
+    "action": "refresh",
+    "file": "bbg_global_food.csv",
+    "start": "2026-09",
+    "end": "2026-10"
+  },
+  "food_price_index_WB": {
+    "action": "refresh",
+    "file": "food_price_index_WB.csv",
+    "start": "2026-09",
+    "end": "2026-10"
+  },
+  "idp_national": {
+    "action": "refresh",
+    "file": "idp_national.csv",
+    "start": "2026-09",
+    "end": "2026-10"
+  },
+  "idp_local": {
+    "action": "refresh",
+    "file": "idp_local.csv",
+    "start": "2026-09",
+    "end": "2026-10"
+  }
+}

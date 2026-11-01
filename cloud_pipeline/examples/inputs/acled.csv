@@ -1,0 +1,4 @@
+week,region,country,admin1,event_type,sub_event_type,events,fatalities,population_exposure,disorder_type,centroid_latitude,centroid_longitude
+2026-10-17,Eastern Africa,EXAMPLE_COUNTRY,EXAMPLE_ADMIN_1,Battles,Armed clash,2,1,100,Political violence,0.5,36.5
+2026-10-17,Eastern Africa,EXAMPLE_COUNTRY,EXAMPLE_ADMIN_1,Explosions/Remote violence,Shelling/artillery/missile attack,1,0,50,Political violence,0.5,36.5
+2026-10-24,Eastern Africa,EXAMPLE_COUNTRY,EXAMPLE_ADMIN_1,Violence against civilians,Attack,1,0,25,Political violence,0.5,36.5

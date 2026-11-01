@@ -1,5 +1,15 @@
 # Production handover and IFPRI code sync (2026-11-01 UTC)
 
+- Follow-up: user requested one example CSV for every keep/refresh field and
+  publication to IFPRI. Added eleven synthetic CSVs, column meanings and refresh
+  choice fragments under cloud_pipeline/examples/inputs; keep needs no CSV.
+  Linked both operator documents and included examples in the handover members.
+  Guarded checks passed against the existing parsers for all eleven files
+  (synthetic ACLED mapping), date/key checks, snapshot/national-IDP contracts,
+  local composed-request preview, links and packaging membership. No cloud run
+  or real-data validation; receipts live in
+  /home/swl007007/ipcch-operator/ifpri-input-examples-20261101/.
+
 - User authorized direct code-only synchronization to
   `IFPRI/MTID-FSP-FOOD-CRISIS-MODEL-INPUT`, explicitly without a new Trellis task.
   The preceding E2E task is already accepted and archived.

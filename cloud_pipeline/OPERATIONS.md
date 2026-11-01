@@ -40,6 +40,8 @@ The runtime identity needs read access to han-sandbox static admins, calendars, 
 
 ## 2. Prepare the eleven input choices
 
+Download the [eleven example CSVs and field guide](examples/inputs/README.md) for file layouts, column meanings and per-field refresh objects. They contain synthetic rows for illustration; keep needs no file, and production refresh needs complete real data.
+
 [selections.example.json](selections.example.json) is a complete all-keep selection: `mode: real`, `operations: [ipcch_generation, ipcch_inference]`, `publication: current`. Use it unchanged for all-keep, or copy it to a private input directory, edit the refresh choices and set `SELECTIONS` to that copy.
 
 **Keep means the currently retained version**, including refreshes saved by earlier failed runs. It takes only `{"action":"keep"}`, without a file or dates. No choice can be omitted. All-keep still updates automatic sources.

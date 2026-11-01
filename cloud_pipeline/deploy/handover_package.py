@@ -17,6 +17,7 @@ MEMBERS = (
     "requirements.lock.txt",
     "README.md",
     "OPERATIONS.md",
+    "examples",
     "cloud",
     "fewsnet_partitioned_rf_pipeline",
     "model_pipeline",

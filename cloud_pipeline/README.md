@@ -6,6 +6,8 @@ Use [OPERATIONS.md](OPERATIONS.md) for the next incremental run: prepare inputs,
 
 ## Monthly delivery
 
+CSV templates for every manual field, column definitions and refresh choice fragments are in [examples/inputs](examples/inputs/README.md). Keep needs no CSV; replace the synthetic examples with complete real input data before refreshing.
+
 ```text
 11 manual keep/refresh choices
   -> submit uploads/pins inputs and freezes the UTC month
