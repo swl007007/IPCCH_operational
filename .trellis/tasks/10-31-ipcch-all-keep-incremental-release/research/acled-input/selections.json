@@ -1,0 +1,66 @@
+{
+  "choices": {
+    "acled": {
+      "action": "refresh",
+      "end": "2026-10-23",
+      "file": "/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/acled_regional_aggregate_20261017_20261023.csv",
+      "regions": [
+        "Caribbean",
+        "Caucasus and Central Asia",
+        "Central America",
+        "East Asia",
+        "Eastern Africa",
+        "Europe",
+        "International Waters",
+        "Middle Africa",
+        "Middle East",
+        "North America",
+        "Northern Africa",
+        "Oceania",
+        "South America",
+        "South Asia",
+        "Southeast Asia",
+        "Southern Africa",
+        "Western Africa"
+      ],
+      "start": "2026-10-17"
+    },
+    "bbg_global_food": {
+      "action": "keep"
+    },
+    "bbg_oilgas": {
+      "action": "keep"
+    },
+    "bbg_soybean_oil": {
+      "action": "keep"
+    },
+    "bbg_staple_food": {
+      "action": "keep"
+    },
+    "food_price_index_WB": {
+      "action": "keep"
+    },
+    "history_snapshot": {
+      "action": "keep"
+    },
+    "idp_local": {
+      "action": "keep"
+    },
+    "idp_national": {
+      "action": "keep"
+    },
+    "nino34_anom": {
+      "action": "keep"
+    },
+    "wfp": {
+      "action": "keep"
+    }
+  },
+  "mode": "real",
+  "operations": [
+    "ipcch_generation",
+    "ipcch_inference"
+  ],
+  "publication": "current",
+  "schema": "ipcch-v2-selections-v1"
+}

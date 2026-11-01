@@ -1,0 +1,60 @@
+{
+  "checked_utc": "2026-11-01T00:28:48.629928+00:00",
+  "raw_file": "/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/real-20261031/acled_regional_aggregate_f2f3.csv",
+  "sha256": "7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6",
+  "raw_rows": 291240,
+  "week_min": "2016-12-31",
+  "week_max": "2026-10-10",
+  "last_week_end": "2026-10-16",
+  "regions": [
+    "Caribbean",
+    "Caucasus and Central Asia",
+    "Central America",
+    "East Asia",
+    "Eastern Africa",
+    "Europe",
+    "Middle Africa",
+    "Middle East",
+    "Northern Africa",
+    "South America",
+    "South Asia",
+    "Southeast Asia",
+    "Southern Africa",
+    "Western Africa"
+  ],
+  "live_head": {
+    "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/HEAD.json",
+    "generation": "1793460193863710",
+    "version": 1,
+    "rows": 242341,
+    "coverage": [
+      {
+        "end": "2026-10-16",
+        "regions": [
+          "Caribbean",
+          "Caucasus and Central Asia",
+          "Central America",
+          "East Asia",
+          "Eastern Africa",
+          "Europe",
+          "Middle Africa",
+          "Middle East",
+          "Northern Africa",
+          "South America",
+          "South Asia",
+          "Southeast Asia",
+          "Southern Africa",
+          "Western Africa"
+        ],
+        "source": {
+          "generation": "1793460073214458",
+          "sha256": "7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6",
+          "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-522b30030f944868/acled/acled_regional_aggregate_f2f3.csv"
+        },
+        "start": "2016-12-31"
+      }
+    ],
+    "latest_declared_end": "2026-10-16"
+  },
+  "matches_imported_source": true
+}

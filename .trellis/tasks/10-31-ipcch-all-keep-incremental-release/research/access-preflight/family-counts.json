@@ -1,0 +1,38 @@
+{
+  "admins": {
+    "total": 25,
+    "readable": 25
+  },
+  "rain_baseline": {
+    "total": 36,
+    "readable": 36
+  },
+  "et0_history": {
+    "total": 6,
+    "readable": 6
+  },
+  "prcp_history": {
+    "total": 18,
+    "readable": 18
+  },
+  "patch_history": {
+    "total": 6,
+    "readable": 6
+  },
+  "vi_baseline": {
+    "total": 8,
+    "readable": 8
+  },
+  "vi_current_conditional": {
+    "total": 4,
+    "readable": 4
+  },
+  "temp_baseline": {
+    "total": 24,
+    "readable": 24
+  },
+  "soil_baseline": {
+    "total": 24,
+    "readable": 24
+  }
+}

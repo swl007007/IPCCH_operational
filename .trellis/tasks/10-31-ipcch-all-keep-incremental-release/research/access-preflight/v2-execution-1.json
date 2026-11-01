@@ -1,0 +1,100 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Execution",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+      "run.googleapis.com/execution-environment": "gen2",
+      "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+      "run.googleapis.com/operation-id": "fa6e916a-708d-420f-9eba-68b10a9ebe97"
+    },
+    "creationTimestamp": "2026-11-01T00:08:13.182633Z",
+    "generation": 1,
+    "labels": {
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/job": "ipcch-v2-runtime-preflight-20261031",
+      "run.googleapis.com/jobGeneration": "1",
+      "run.googleapis.com/jobResourceVersion": "1793491639779379",
+      "run.googleapis.com/jobUid": "63e0212e-9f3f-43ee-b752-cab3613a4070"
+    },
+    "name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+    "namespace": "968355701450",
+    "ownerReferences": [
+      {
+        "apiVersion": "serving.knative.dev/v1",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "Job",
+        "name": "ipcch-v2-runtime-preflight-20261031",
+        "uid": "63e0212e-9f3f-43ee-b752-cab3613a4070"
+      }
+    ],
+    "resourceVersion": "AAZfK9dkfFE",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/executions/ipcch-v2-runtime-preflight-20261031-rpsqj",
+    "uid": "bea9b89e-77af-43f4-af12-669665e318fb"
+  },
+  "spec": {
+    "parallelism": 1,
+    "taskCount": 1,
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "args": [
+              "-c",
+              "import json,time,datetime,urllib.request,google.auth,ee\nstarted=time.monotonic()\ndef emit(kind,obj): print(kind+' '+json.dumps(obj,sort_keys=True),flush=True)\nexpected='monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com'\nreq=urllib.request.Request('http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email',headers={'Metadata-Flavor':'Google'})\nwith urllib.request.urlopen(req,timeout=5) as r: identity=r.read().decode().strip()\nassert identity==expected,identity\nemit('IPCCH_ACCESS_IDENTITY',{'identity':identity,'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'read_only':True})\ncredentials,_=google.auth.default(scopes=['https://www.googleapis.com/auth/cloud-platform','https://www.googleapis.com/auth/earthengine'])\nee.Initialize(credentials=credentials,project='feisty-flames-511718-d4')\nee.data.setDeadline(15000)\nee.data.setMaxRetries(0)\nroot='projects/han-sandbox-505315/assets/'\nitems=[{'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G01'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G02'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G03'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G04'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G05'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G06'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G07'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G08'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G09'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G10'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G11'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G12'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G13'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G14'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G15'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G16'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G17'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G18'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G19'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G20'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G21'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G22'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G23'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G24'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y1990_1995_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y1996_2001_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2002_2007_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2008_2013_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2014_2019_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y1990_1995_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y1996_2001_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2002_2007_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2008_2013_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2014_2019_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y1990_1995_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y1996_2001_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2002_2007_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2008_2013_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2014_2019_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y1990_1995_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y1996_2001_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2002_2007_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2008_2013_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2014_2019_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y1990_1995_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y1996_2001_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y2002_2007_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y2008_2013_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y2014_2019_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y2020_2026_V2'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P01_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P02_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P03_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P04_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P01_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P02_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P03_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P04_V3'}, {'family': 'vi_current_conditional', 'name': 'S2E3_VI_CURRENT_ADMIN_AQUA_Y2025_CMG_V3'}, {'family': 'vi_current_conditional', 'name': 'S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3'}, {'family': 'vi_current_conditional', 'name': 'S2E3_VI_CURRENT_ADMIN_TERRA_Y2025_CMG_V3'}, {'family': 'vi_current_conditional', 'name': 'S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M02'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M03'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M04'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M05'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M06'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M07'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M08'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M09'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M10'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M11'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M12'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M01'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M02'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M03'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M04'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M05'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M06'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M07'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M08'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M09'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M10'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M11'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M12'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M01'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M02'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M03'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M04'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M05'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M06'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M07'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M08'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M09'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M10'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M11'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M12'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M01'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M02'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M03'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M04'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M05'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M06'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M07'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M08'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M09'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M10'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M11'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M12'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M01'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M02'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M03'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M04'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M05'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M06'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M07'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M08'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M09'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M10'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M11'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M12'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M01'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M02'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M03'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M04'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M05'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M06'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M07'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M08'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M09'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M10'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M11'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M12'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M01'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M02'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M03'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M04'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M05'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M06'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M07'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M08'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M09'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M10'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M11'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M12'}]\nresults=[]\nfor item in items:\n result=dict(item)\n if time.monotonic()-started>225:\n  result.update(ok=False,error='not_attempted_overall_time_budget',attempted=False)\n else:\n  try:\n   asset=ee.data.getAsset(root+item['name'])\n   result.update(ok=True,attempted=True,type=asset.get('type'),sizeBytes=asset.get('sizeBytes'))\n  except Exception as exc: result.update(ok=False,attempted=True,error=type(exc).__name__+': '+str(exc))\n results.append(result)\n emit('IPCCH_ASSET_READ',result)\nchecks={}\nfor name,fn in [('admin_rows',lambda:ee.FeatureCollection(root+'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00').size().getInfo()),('baseline_bands',lambda:ee.Image(root+'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01').bandNames().getInfo())]:\n if time.monotonic()-started>260:\n  checks[name]={'ok':False,'error':'not_attempted_overall_time_budget'}\n else:\n  try: checks[name]={'ok':True,'value':fn()}\n  except Exception as exc: checks[name]={'ok':False,'error':type(exc).__name__+': '+str(exc)}\n emit('IPCCH_ASSET_COMPUTE',{'name':name,**checks[name]})\nsummary={'identity':identity,'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'total':len(results),'readable':sum(x['ok'] for x in results),'unreadable':sum(not x['ok'] and x.get('attempted',False) for x in results),'not_attempted':sum(not x.get('attempted',False) for x in results),'failed':[x for x in results if not x['ok']],'compute':checks,'elapsed_seconds':round(time.monotonic()-started,2)}\nemit('IPCCH_ACCESS_SUMMARY',summary)\nraise SystemExit(0 if all(x['ok'] for x in results) and all(x['ok'] for x in checks.values()) else 2)\n"
+            ],
+            "command": [
+              "python3"
+            ],
+            "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+            "resources": {
+              "limits": {
+                "cpu": "1",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "maxRetries": 0,
+        "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "timeoutSeconds": "300"
+      }
+    }
+  },
+  "status": {
+    "completionTime": "2026-11-01T00:09:21.873503Z",
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-11-01T00:09:21.873503Z",
+        "message": "Execution completed successfully in 1m0.43s.",
+        "status": "True",
+        "type": "Completed"
+      },
+      {
+        "lastTransitionTime": "2026-11-01T00:08:14.197592Z",
+        "message": "Provisioned imported containers.",
+        "status": "True",
+        "type": "ResourcesAvailable"
+      },
+      {
+        "lastTransitionTime": "2026-11-01T00:08:46.499780Z",
+        "message": "Started deployed execution in 32.3s.",
+        "status": "True",
+        "type": "Started"
+      },
+      {
+        "lastTransitionTime": "2026-11-01T00:08:14.071736Z",
+        "message": "Imported container image.",
+        "status": "True",
+        "type": "ContainerReady"
+      }
+    ],
+    "logUri": "https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22ipcch-v2-runtime-preflight-20261031%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22ipcch-v2-runtime-preflight-20261031-rpsqj%22",
+    "observedGeneration": 1,
+    "startTime": "2026-11-01T00:08:21.441970Z",
+    "succeededCount": 1
+  }
+}

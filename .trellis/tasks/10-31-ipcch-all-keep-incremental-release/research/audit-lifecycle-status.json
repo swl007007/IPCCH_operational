@@ -1,0 +1,12 @@
+{
+  "registered_repo": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational",
+  "filesystem_identity_verified": true,
+  "controller_running": true,
+  "registration": {
+    "executor": "{\n  \"agent\": \"claude\",\n  \"agent_session\": {\n    \"agent\": \"claude\",\n    \"kind\": \"id\",\n    \"source\": \"herdr:claude\",\n    \"value\": \"228d9075-d67a-41c9-9f4c-7830cdac3b87\"\n  },\n  \"terminal_id\": \"term_65dee2e4ca9b6a\"\n}",
+    "repo": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational"
+  },
+  "active_runs_for_repository": [],
+  "read_only_check": true,
+  "note": "Registration executor is historical, not a verified current executor. Before start verify/rebind a live Claude session under the enrolled workflow; do not invent identity or enroll a case alias."
+}

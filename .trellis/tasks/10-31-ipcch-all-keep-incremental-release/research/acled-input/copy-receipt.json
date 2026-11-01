@@ -1,0 +1,50 @@
+{
+  "copied_utc": "2026-11-01T00:33:10.866767+00:00",
+  "source": "/mnt/c/Users/swl00/Downloads/ACLED Data_2026-11-01_event_date_from_2026-10-16_event_date_to_2026-10-31.csv",
+  "copy": "/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/raw/ACLED Data_2026-11-01_event_date_from_2026-10-16_event_date_to_2026-10-31.csv",
+  "sha256": "b480d2654f69a5aa27ff50207e3fdcfdaec3b5a5de0ebcf6767ca0020f17ea90",
+  "bytes": 104921,
+  "rows": 826,
+  "columns": [
+    "week",
+    "region",
+    "country",
+    "admin1",
+    "event_type",
+    "sub_event_type",
+    "events",
+    "fatalities",
+    "population_exposure",
+    "disorder_type",
+    "centroid_latitude",
+    "centroid_longitude"
+  ],
+  "week_counts": {
+    "2026-10-10": 209,
+    "2026-10-17": 617
+  },
+  "region_counts": {
+    "Caribbean": 13,
+    "Caucasus and Central Asia": 24,
+    "Central America": 15,
+    "East Asia": 1,
+    "Eastern Africa": 85,
+    "Europe": 116,
+    "International Waters": 5,
+    "Middle Africa": 21,
+    "Middle East": 166,
+    "North America": 47,
+    "Northern Africa": 31,
+    "Oceania": 1,
+    "South America": 131,
+    "South Asia": 39,
+    "Southeast Asia": 64,
+    "Southern Africa": 1,
+    "Western Africa": 66
+  },
+  "source_unchanged": true,
+  "copy_byte_equal": true,
+  "upload_performed": false,
+  "monthly_submission_performed": false,
+  "interval_not_frozen": true
+}

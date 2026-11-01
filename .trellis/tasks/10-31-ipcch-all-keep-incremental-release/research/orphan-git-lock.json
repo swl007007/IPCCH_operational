@@ -1,0 +1,11 @@
+{
+  "checked_utc": "2026-11-01T00:41:36.750176+00:00",
+  "path": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.git/index.lock",
+  "size": 0,
+  "mtime_utc": "2026-11-01T00:13:21.812821+00:00",
+  "linux_git_processes": [],
+  "windows_git_processes": "\u4fe1\u606f: \u6ca1\u6709\u8fd0\u884c\u7684\u4efb\u52a1\u5339\u914d\u6307\u5b9a\u6807\u51c6\u3002",
+  "fuser_exit": 1,
+  "action": "remove verified orphan zero-byte lock",
+  "AGENTS_sha256": "b449b255709fec553214c7bac77e8d1a3cd1e96b0d6f2d7a38215b8cf3100389"
+}

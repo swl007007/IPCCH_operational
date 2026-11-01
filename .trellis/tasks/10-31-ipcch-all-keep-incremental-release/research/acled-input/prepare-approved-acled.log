@@ -1,0 +1,211 @@
+# unit=ipcch-cp2-prepare-approved-acled-1793493323736386660 start=2026-10-31T20:35:23-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: env PYTHONPATH=. /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -c import csv,io,json,hashlib,pathlib,datetime
+from cloud.ipcch import acled,retained,generation
+from cloud.orchestrator import submit_v2 as sv
+import pipeline
+out=pathlib.Path('/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/acled-input')
+receipt=json.loads((out/'copy-receipt.json').read_text())
+raw=pathlib.Path(receipt['copy']).read_bytes()
+assert hashlib.sha256(raw).hexdigest()==receipt['sha256']
+text=raw.decode('utf-8-sig')
+reader=csv.DictReader(io.StringIO(text,newline=''))
+fields=reader.fieldnames
+rows=list(reader)
+selected=[r for r in rows if r['week']=='2026-10-17']
+excluded=[r for r in rows if r['week']!='2026-10-17']
+assert len(selected)==617 and len(excluded)==209
+assert {r['week'] for r in excluded}=={'2026-10-10'}
+assert fields==list(acled.EXPORT_COLUMNS)
+buffer=io.StringIO(newline='')
+writer=csv.DictWriter(buffer,fieldnames=fields,lineterminator='\n')
+writer.writeheader();writer.writerows(selected)
+data=buffer.getvalue().encode('utf-8')
+assert list(csv.DictReader(io.StringIO(data.decode(),newline='')))==selected
+parent=pathlib.Path(receipt['copy']).parent.parent
+prepared=parent/'prepared';prepared.mkdir(exist_ok=True)
+f=prepared/'acled_regional_aggregate_20261017_20261023.csv'
+with f.open('xb') as stream: stream.write(data)
+regions=sorted(receipt['region_counts'])
+bundle=pathlib.Path('/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/handoff-build/out-r5-accepted-v1')
+tables=acled.AcledTables.from_files({k:str(bundle/v) for k,v in generation.ACLED_FILES.items()})
+frame=retained.strict_csv(data.decode(),'approved ACLED refresh export',acled.EXPORT_COLUMNS)
+converted,stats=acled.parse_export(frame,start='2026-10-17',end='2026-10-23',regions=regions,tables=tables)
+assert len(converted)==470 and stats['rows_countries_outside_table']==147
+choices={name:{'action':'keep'} for name in sv.CHOICES}
+choices['acled']={'action':'refresh','file':str(f),'start':'2026-10-17','end':'2026-10-23','regions':regions}
+selections={'schema':sv.SELECTIONS_SCHEMA,'mode':'real','operations':['ipcch_generation','ipcch_inference'],'publication':'current','choices':choices}
+selection=prepared/'selections.json'
+with selection.open('x') as stream: stream.write(json.dumps(selections,indent=2,sort_keys=True)+'\n')
+assert sv.load_selections(selection)['choices']==choices
+cfg='/home/swl007007/ipcch-operator/food-crisis-test/project.json'
+preview=sv.submit(pipeline.config(cfg),selection,execute=False,cloud=None)
+(out/'submit-preview.json').write_text(json.dumps(preview,indent=2,sort_keys=True,default=str)+'\n')
+req=preview['request']
+assert req['ipcch']['acled']['action']=='refresh'
+assert req['ipcch']['acled']['start']=='2026-10-17' and req['ipcch']['acled']['end']=='2026-10-23'
+assert req['publication']=='current'
+assert sum(v['action']=='keep' for v in choices.values())==10
+report={'prepared_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'raw_sha256':receipt['sha256'],'raw_copy':receipt['copy'],'prepared_csv':str(f),'prepared_bytes':len(data),'prepared_sha256':hashlib.sha256(data).hexdigest(),'prepared_rows':len(selected),'excluded_overlap_rows':len(excluded),'raw_values_preserved':True,'start':'2026-10-17','end':'2026-10-23','declared_regions':regions,'parse_export':stats,'converted_rows':len(converted),'selections':str(selection),'selections_sha256':sv.file_sha256(selection),'preview_passed':True,'preview_execution_month':req['execution_month'],'runtime_image':req['runtime']['image_uri'],'cloud_calls':0,'upload_performed':False,'monthly_submission_performed':False,'request_frozen':False,'notes':['UTC month and final refs are provisional until execute freeze.','Region declaration is based on the supplied regional export and accepted scope; no independent provider completeness claim.','An ACLED version append does not by itself establish DA1/DA2.']}
+(out/'prepared-input.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+(out/'selections.json').write_bytes(selection.read_bytes())
+assert hashlib.sha256(pathlib.Path(receipt['source']).read_bytes()).hexdigest()==receipt['sha256']
+assert hashlib.sha256(pathlib.Path(receipt['copy']).read_bytes()).hexdigest()==receipt['sha256']
+print(json.dumps(report,indent=2))
+
+Running as unit: ipcch-cp2-prepare-approved-acled-1793493323736386660.service; invocation ID: fc83751e51d94ba2b2038d58e9c150fc
+{
+  "prepared_utc": "2026-11-01T00:35:24.695087+00:00",
+  "raw_sha256": "b480d2654f69a5aa27ff50207e3fdcfdaec3b5a5de0ebcf6767ca0020f17ea90",
+  "raw_copy": "/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/raw/ACLED Data_2026-11-01_event_date_from_2026-10-16_event_date_to_2026-10-31.csv",
+  "prepared_csv": "/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/acled_regional_aggregate_20261017_20261023.csv",
+  "prepared_bytes": 74134,
+  "prepared_sha256": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+  "prepared_rows": 617,
+  "excluded_overlap_rows": 209,
+  "raw_values_preserved": true,
+  "start": "2026-10-17",
+  "end": "2026-10-23",
+  "declared_regions": [
+    "Caribbean",
+    "Caucasus and Central Asia",
+    "Central America",
+    "East Asia",
+    "Eastern Africa",
+    "Europe",
+    "International Waters",
+    "Middle Africa",
+    "Middle East",
+    "North America",
+    "Northern Africa",
+    "Oceania",
+    "South America",
+    "South Asia",
+    "Southeast Asia",
+    "Southern Africa",
+    "Western Africa"
+  ],
+  "parse_export": {
+    "rows": 617,
+    "rows_kept": 470,
+    "rows_countries_outside_table": 147,
+    "countries_outside_table": [
+      "Australia",
+      "Bolivia",
+      "Bulgaria",
+      "China",
+      "France",
+      "Indian Ocean",
+      "Iraq",
+      "Jamaica",
+      "Mauritius",
+      "Mediterranean Sea",
+      "Mexico",
+      "Moldova",
+      "Philippines",
+      "Puerto Rico",
+      "Romania",
+      "Russia",
+      "Thailand",
+      "Trinidad and Tobago",
+      "Ukraine",
+      "United States",
+      "Venezuela"
+    ]
+  },
+  "converted_rows": 470,
+  "selections": "/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/selections.json",
+  "selections_sha256": "7ab733d8c0e22bc866ae0ddb8cdfce63b3c5621e749b6ec2316f8fdaf58af4a7",
+  "preview_passed": true,
+  "preview_execution_month": "2026-11",
+  "runtime_image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+  "cloud_calls": 0,
+  "upload_performed": false,
+  "monthly_submission_performed": false,
+  "request_frozen": false,
+  "notes": [
+    "UTC month and final refs are provisional until execute freeze.",
+    "Region declaration is based on the supplied regional export and accepted scope; no independent provider completeness claim.",
+    "An ACLED version append does not by itself establish DA1/DA2."
+  ]
+}
+	Command being timed: "env PYTHONPATH=. /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -c import csv,io,json,hashlib,pathlib,datetime
+from cloud.ipcch import acled,retained,generation
+from cloud.orchestrator import submit_v2 as sv
+import pipeline
+out=pathlib.Path('/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/acled-input')
+receipt=json.loads((out/'copy-receipt.json').read_text())
+raw=pathlib.Path(receipt['copy']).read_bytes()
+assert hashlib.sha256(raw).hexdigest()==receipt['sha256']
+text=raw.decode('utf-8-sig')
+reader=csv.DictReader(io.StringIO(text,newline=''))
+fields=reader.fieldnames
+rows=list(reader)
+selected=[r for r in rows if r['week']=='2026-10-17']
+excluded=[r for r in rows if r['week']!='2026-10-17']
+assert len(selected)==617 and len(excluded)==209
+assert {r['week'] for r in excluded}=={'2026-10-10'}
+assert fields==list(acled.EXPORT_COLUMNS)
+buffer=io.StringIO(newline='')
+writer=csv.DictWriter(buffer,fieldnames=fields,lineterminator='\n')
+writer.writeheader();writer.writerows(selected)
+data=buffer.getvalue().encode('utf-8')
+assert list(csv.DictReader(io.StringIO(data.decode(),newline='')))==selected
+parent=pathlib.Path(receipt['copy']).parent.parent
+prepared=parent/'prepared';prepared.mkdir(exist_ok=True)
+f=prepared/'acled_regional_aggregate_20261017_20261023.csv'
+with f.open('xb') as stream: stream.write(data)
+regions=sorted(receipt['region_counts'])
+bundle=pathlib.Path('/home/swl007007/projects/food-crisis-research/scratch/h2h8h14-final/handoff-build/out-r5-accepted-v1')
+tables=acled.AcledTables.from_files({k:str(bundle/v) for k,v in generation.ACLED_FILES.items()})
+frame=retained.strict_csv(data.decode(),'approved ACLED refresh export',acled.EXPORT_COLUMNS)
+converted,stats=acled.parse_export(frame,start='2026-10-17',end='2026-10-23',regions=regions,tables=tables)
+assert len(converted)==470 and stats['rows_countries_outside_table']==147
+choices={name:{'action':'keep'} for name in sv.CHOICES}
+choices['acled']={'action':'refresh','file':str(f),'start':'2026-10-17','end':'2026-10-23','regions':regions}
+selections={'schema':sv.SELECTIONS_SCHEMA,'mode':'real','operations':['ipcch_generation','ipcch_inference'],'publication':'current','choices':choices}
+selection=prepared/'selections.json'
+with selection.open('x') as stream: stream.write(json.dumps(selections,indent=2,sort_keys=True)+'\n')
+assert sv.load_selections(selection)['choices']==choices
+cfg='/home/swl007007/ipcch-operator/food-crisis-test/project.json'
+preview=sv.submit(pipeline.config(cfg),selection,execute=False,cloud=None)
+(out/'submit-preview.json').write_text(json.dumps(preview,indent=2,sort_keys=True,default=str)+'\n')
+req=preview['request']
+assert req['ipcch']['acled']['action']=='refresh'
+assert req['ipcch']['acled']['start']=='2026-10-17' and req['ipcch']['acled']['end']=='2026-10-23'
+assert req['publication']=='current'
+assert sum(v['action']=='keep' for v in choices.values())==10
+report={'prepared_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'raw_sha256':receipt['sha256'],'raw_copy':receipt['copy'],'prepared_csv':str(f),'prepared_bytes':len(data),'prepared_sha256':hashlib.sha256(data).hexdigest(),'prepared_rows':len(selected),'excluded_overlap_rows':len(excluded),'raw_values_preserved':True,'start':'2026-10-17','end':'2026-10-23','declared_regions':regions,'parse_export':stats,'converted_rows':len(converted),'selections':str(selection),'selections_sha256':sv.file_sha256(selection),'preview_passed':True,'preview_execution_month':req['execution_month'],'runtime_image':req['runtime']['image_uri'],'cloud_calls':0,'upload_performed':False,'monthly_submission_performed':False,'request_frozen':False,'notes':['UTC month and final refs are provisional until execute freeze.','Region declaration is based on the supplied regional export and accepted scope; no independent provider completeness claim.','An ACLED version append does not by itself establish DA1/DA2.']}
+(out/'prepared-input.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+(out/'selections.json').write_bytes(selection.read_bytes())
+assert hashlib.sha256(pathlib.Path(receipt['source']).read_bytes()).hexdigest()==receipt['sha256']
+assert hashlib.sha256(pathlib.Path(receipt['copy']).read_bytes()).hexdigest()==receipt['sha256']
+print(json.dumps(report,indent=2))
+"
+	User time (seconds): 0.41
+	System time (seconds): 0.02
+	Percent of CPU this job got: 44%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.98
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 144320
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 694
+	Minor (reclaiming a frame) page faults: 21300
+	Voluntary context switches: 3690
+	Involuntary context switches: 0
+	Swaps: 0
+	File system inputs: 150752
+	File system outputs: 160
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 1.043s
+CPU time consumed: 443ms
+# end=2026-10-31T20:35:24-04:00 launcher_rc=0 child_exit=0

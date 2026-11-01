@@ -1,0 +1,152 @@
+# unit=ipcch-cp2-acled-last-date-1793492927536627393 start=2026-10-31T20:28:47-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: env GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python -c import csv,json,hashlib,datetime,pathlib
+from google.cloud import storage
+out=pathlib.Path('/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/acled-date-check')
+f=pathlib.Path('/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/real-20261031/acled_regional_aggregate_f2f3.csv')
+h=hashlib.sha256()
+with f.open('rb') as stream:
+ for block in iter(lambda:stream.read(1048576),b''): h.update(block)
+assert h.hexdigest()=='7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6'
+minimum=None; maximum=None; count=0; regions=set()
+with f.open(encoding='utf-8-sig',newline='') as stream:
+ for row in csv.DictReader(stream):
+  week=datetime.date.fromisoformat(row['week'])
+  assert week.weekday()==5
+  minimum=week if minimum is None else min(minimum,week)
+  maximum=week if maximum is None else max(maximum,week)
+  regions.add(row['region']);count+=1
+report={'checked_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'raw_file':str(f),'sha256':h.hexdigest(),'raw_rows':count,'week_min':minimum.isoformat(),'week_max':maximum.isoformat(),'last_week_end':(maximum+datetime.timedelta(days=6)).isoformat(),'regions':sorted(regions)}
+client=storage.Client(project='feisty-flames-511718-d4')
+blob=client.bucket('food-crisis-test-ipcch-data').blob('ipcch-v2/real/acled_agg_weekly/HEAD.json')
+blob.reload(timeout=30,retry=None)
+generation=int(blob.generation)
+raw=blob.download_as_bytes(if_generation_match=generation,timeout=30,retry=None)
+head=json.loads(raw)
+(out/'live-head.json').write_bytes(raw)
+coverage=head.get('record',{}).get('coverage',[])
+assert coverage,'No saved coverage records'
+report['live_head']={'uri':'gs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/HEAD.json','generation':str(generation),'version':head['version'],'rows':head.get('rows'),'coverage':coverage,'latest_declared_end':max(r['end'] for r in coverage)}
+report['matches_imported_source']=any(r.get('source',{}).get('sha256')==h.hexdigest() for r in coverage)
+(out/'result.json').write_text(json.dumps(report,indent=2))
+print(json.dumps(report,indent=2))
+
+Running as unit: ipcch-cp2-acled-last-date-1793492927536627393.service
+{
+  "checked_utc": "2026-11-01T00:28:48.629928+00:00",
+  "raw_file": "/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/real-20261031/acled_regional_aggregate_f2f3.csv",
+  "sha256": "7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6",
+  "raw_rows": 291240,
+  "week_min": "2016-12-31",
+  "week_max": "2026-10-10",
+  "last_week_end": "2026-10-16",
+  "regions": [
+    "Caribbean",
+    "Caucasus and Central Asia",
+    "Central America",
+    "East Asia",
+    "Eastern Africa",
+    "Europe",
+    "Middle Africa",
+    "Middle East",
+    "Northern Africa",
+    "South America",
+    "South Asia",
+    "Southeast Asia",
+    "Southern Africa",
+    "Western Africa"
+  ],
+  "live_head": {
+    "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/HEAD.json",
+    "generation": "1793460193863710",
+    "version": 1,
+    "rows": 242341,
+    "coverage": [
+      {
+        "end": "2026-10-16",
+        "regions": [
+          "Caribbean",
+          "Caucasus and Central Asia",
+          "Central America",
+          "East Asia",
+          "Eastern Africa",
+          "Europe",
+          "Middle Africa",
+          "Middle East",
+          "Northern Africa",
+          "South America",
+          "South Asia",
+          "Southeast Asia",
+          "Southern Africa",
+          "Western Africa"
+        ],
+        "source": {
+          "generation": "1793460073214458",
+          "sha256": "7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6",
+          "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-522b30030f944868/acled/acled_regional_aggregate_f2f3.csv"
+        },
+        "start": "2016-12-31"
+      }
+    ],
+    "latest_declared_end": "2026-10-16"
+  },
+  "matches_imported_source": true
+}
+	Command being timed: "env GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python -c import csv,json,hashlib,datetime,pathlib
+from google.cloud import storage
+out=pathlib.Path('/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/acled-date-check')
+f=pathlib.Path('/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/real-20261031/acled_regional_aggregate_f2f3.csv')
+h=hashlib.sha256()
+with f.open('rb') as stream:
+ for block in iter(lambda:stream.read(1048576),b''): h.update(block)
+assert h.hexdigest()=='7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6'
+minimum=None; maximum=None; count=0; regions=set()
+with f.open(encoding='utf-8-sig',newline='') as stream:
+ for row in csv.DictReader(stream):
+  week=datetime.date.fromisoformat(row['week'])
+  assert week.weekday()==5
+  minimum=week if minimum is None else min(minimum,week)
+  maximum=week if maximum is None else max(maximum,week)
+  regions.add(row['region']);count+=1
+report={'checked_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'raw_file':str(f),'sha256':h.hexdigest(),'raw_rows':count,'week_min':minimum.isoformat(),'week_max':maximum.isoformat(),'last_week_end':(maximum+datetime.timedelta(days=6)).isoformat(),'regions':sorted(regions)}
+client=storage.Client(project='feisty-flames-511718-d4')
+blob=client.bucket('food-crisis-test-ipcch-data').blob('ipcch-v2/real/acled_agg_weekly/HEAD.json')
+blob.reload(timeout=30,retry=None)
+generation=int(blob.generation)
+raw=blob.download_as_bytes(if_generation_match=generation,timeout=30,retry=None)
+head=json.loads(raw)
+(out/'live-head.json').write_bytes(raw)
+coverage=head.get('record',{}).get('coverage',[])
+assert coverage,'No saved coverage records'
+report['live_head']={'uri':'gs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/HEAD.json','generation':str(generation),'version':head['version'],'rows':head.get('rows'),'coverage':coverage,'latest_declared_end':max(r['end'] for r in coverage)}
+report['matches_imported_source']=any(r.get('source',{}).get('sha256')==h.hexdigest() for r in coverage)
+(out/'result.json').write_text(json.dumps(report,indent=2))
+print(json.dumps(report,indent=2))
+"
+	User time (seconds): 0.79
+	System time (seconds): 0.06
+	Percent of CPU this job got: 56%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.51
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 62288
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 260
+	Minor (reclaiming a frame) page faults: 9997
+	Voluntary context switches: 1031
+	Involuntary context switches: 6
+	Swaps: 0
+	File system inputs: 140456
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 1.584s
+CPU time consumed: 873ms
+# end=2026-10-31T20:28:49-04:00 launcher_rc=0 child_exit=0

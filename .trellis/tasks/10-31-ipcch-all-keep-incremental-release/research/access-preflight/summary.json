@@ -1,0 +1,55 @@
+{
+  "compute": {
+    "admin_rows": {
+      "ok": true,
+      "value": 250
+    },
+    "baseline_bands": {
+      "ok": true,
+      "value": [
+        "daily_normal_d01",
+        "daily_normal_d02",
+        "daily_normal_d03",
+        "daily_normal_d04",
+        "daily_normal_d05",
+        "daily_normal_d06",
+        "daily_normal_d07",
+        "daily_normal_d08",
+        "daily_normal_d09",
+        "daily_normal_d10",
+        "daily_normal_d11",
+        "daily_normal_d12",
+        "daily_normal_d13",
+        "daily_normal_d14",
+        "daily_normal_d15",
+        "daily_normal_d16",
+        "daily_normal_d17",
+        "daily_normal_d18",
+        "daily_normal_d19",
+        "daily_normal_d20",
+        "daily_normal_d21",
+        "daily_normal_d22",
+        "daily_normal_d23",
+        "daily_normal_d24",
+        "daily_normal_d25",
+        "daily_normal_d26",
+        "daily_normal_d27",
+        "daily_normal_d28",
+        "daily_normal_d29",
+        "daily_normal_d30",
+        "daily_normal_d31",
+        "monthly_total_mean_mm",
+        "monthly_total_sd_mm"
+      ]
+    }
+  },
+  "elapsed_seconds": 28.57,
+  "failed": [],
+  "identity": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+  "not_attempted": 0,
+  "readable": 151,
+  "total": 151,
+  "unreadable": 0,
+  "utc": "2026-11-01T00:09:18.567400+00:00",
+  "execution": "ipcch-v2-runtime-preflight-20261031-rpsqj"
+}

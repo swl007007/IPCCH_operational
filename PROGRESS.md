@@ -1,3 +1,34 @@
+# Active: IPCCH real increment with ACLED refresh (2026-11-01 UTC)
+
+Task: `.trellis/tasks/10-31-ipcch-all-keep-incremental-release/`.
+Authority: the user's subsequent goal `execution-protocol.md`, D1-D4, and explicit
+"spec范围内的云端操作预授权". This is an operational ledger, not approval authority.
+
+- Supervisor: Codex `w1A:p2`, live session `01a192d5-1f68-7641-b61e-ff157a279912`.
+  The thread goal/session context continues the earlier `01a18e48...` conversation.
+- Executor: reused Opus 5.5 1M `w1A:p8`, actual Claude session
+  `6a490ae1-ee00-43f9-bdfc-c887c9816c09`; live PID 4871. Handshake and recent session
+  model metadata agree. No new agent, workspace or worktree was created.
+- Native Trellis lifecycle; the NEW protocol explicitly forbids Trellis Audit.
+  No audit registration/start/close is authorized or needed for this task.
+- Initial Git HEAD: `013a67992a71670b71752972ba15c20384e26fca`, branch
+  `feat/ipcch-real-e2e-integration`; deployed product remains `115798f`/image acc3e467.
+  Pre-existing AGENTS.md modification is excluded (sha256 b449b255...0389).
+- Approved input: ACLED 2026-10-17..23 refresh, ten other manual choices keep.
+  Prepared CSV e660c7e8 (617 source rows, 470 modeled rows); selections 7ab733d8.
+  Original raw b480d265 preserved; 209 overlapping old-week rows excluded.
+- Runtime han reads restored: 151/151 assets and two live EE expressions passed.
+  This is access evidence, not EE-export or DA1/DA2 acceptance.
+- CP0 next: fresh config/current/retained/source-demand/resource preflight and
+  bounded operation packet. One new monthly attempt; UTC freeze currently selects
+  M=2026-11 / O=2026-09, targets 2026-11 / 2027-05 / 2027-11.
+- CP1: one submission and durable status/EE task tracking. CP2: generic and
+  incremental lineage/data-contract readback. CP3: final evidence/operations and
+  native closure. DA1/DA2 remain unaccepted until evidence exists; D2 allows
+  naturally unobserved DA2 field cases to remain explicitly pending.
+- No cloud write or monthly submission has occurred for this task. Preparation
+  checks used the mandatory memory guard and returned CHILD-EXIT 0.
+
 # Completed: IPCCH automatic E2E integration (2026-10-31)
 
 Task: `.trellis/tasks/archive/2026-10/10-30-ipcch-real-e2e-integration/`.

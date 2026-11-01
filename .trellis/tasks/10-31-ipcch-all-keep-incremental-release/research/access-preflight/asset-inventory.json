@@ -1,0 +1,606 @@
+[
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G01"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G02"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G03"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G04"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G05"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G06"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G07"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G08"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G09"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G10"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G11"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G12"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G13"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G14"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G15"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G16"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G17"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G18"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G19"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G20"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G21"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G22"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G23"
+  },
+  {
+    "family": "admins",
+    "name": "IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G24"
+  },
+  {
+    "family": "et0_history",
+    "name": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y1990_1995_V3"
+  },
+  {
+    "family": "et0_history",
+    "name": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y1996_2001_V3"
+  },
+  {
+    "family": "et0_history",
+    "name": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2002_2007_V3"
+  },
+  {
+    "family": "et0_history",
+    "name": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2008_2013_V3"
+  },
+  {
+    "family": "et0_history",
+    "name": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2014_2019_V3"
+  },
+  {
+    "family": "et0_history",
+    "name": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y1990_1995_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y1996_2001_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2002_2007_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2008_2013_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2014_2019_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y1990_1995_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y1996_2001_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2002_2007_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2008_2013_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2014_2019_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y1990_1995_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y1996_2001_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2002_2007_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2008_2013_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2014_2019_V3"
+  },
+  {
+    "family": "prcp_history",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3"
+  },
+  {
+    "family": "patch_history",
+    "name": "S2C3_ET0_PATCH32_Y1990_1995_V2"
+  },
+  {
+    "family": "patch_history",
+    "name": "S2C3_ET0_PATCH32_Y1996_2001_V2"
+  },
+  {
+    "family": "patch_history",
+    "name": "S2C3_ET0_PATCH32_Y2002_2007_V2"
+  },
+  {
+    "family": "patch_history",
+    "name": "S2C3_ET0_PATCH32_Y2008_2013_V2"
+  },
+  {
+    "family": "patch_history",
+    "name": "S2C3_ET0_PATCH32_Y2014_2019_V2"
+  },
+  {
+    "family": "patch_history",
+    "name": "S2C3_ET0_PATCH32_Y2020_2026_V2"
+  },
+  {
+    "family": "vi_baseline",
+    "name": "S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P01_V3"
+  },
+  {
+    "family": "vi_baseline",
+    "name": "S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P02_V3"
+  },
+  {
+    "family": "vi_baseline",
+    "name": "S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P03_V3"
+  },
+  {
+    "family": "vi_baseline",
+    "name": "S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P04_V3"
+  },
+  {
+    "family": "vi_baseline",
+    "name": "S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P01_V3"
+  },
+  {
+    "family": "vi_baseline",
+    "name": "S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P02_V3"
+  },
+  {
+    "family": "vi_baseline",
+    "name": "S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P03_V3"
+  },
+  {
+    "family": "vi_baseline",
+    "name": "S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P04_V3"
+  },
+  {
+    "family": "vi_current_conditional",
+    "name": "S2E3_VI_CURRENT_ADMIN_AQUA_Y2025_CMG_V3"
+  },
+  {
+    "family": "vi_current_conditional",
+    "name": "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3"
+  },
+  {
+    "family": "vi_current_conditional",
+    "name": "S2E3_VI_CURRENT_ADMIN_TERRA_Y2025_CMG_V3"
+  },
+  {
+    "family": "vi_current_conditional",
+    "name": "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M02"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M03"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M04"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M05"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M06"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M07"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M08"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M09"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M10"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M11"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M12"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M01"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M02"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M03"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M04"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M05"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M06"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M07"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M08"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M09"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M10"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M11"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M12"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M01"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M02"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M03"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M04"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M05"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M06"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M07"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M08"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M09"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M10"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M11"
+  },
+  {
+    "family": "rain_baseline",
+    "name": "STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M12"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M01"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M02"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M03"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M04"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M05"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M06"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M07"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M08"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M09"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M10"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M11"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_CPC_M12"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M01"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M02"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M03"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M04"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M05"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M06"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M07"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M08"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M09"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M10"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M11"
+  },
+  {
+    "family": "temp_baseline",
+    "name": "STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M12"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M01"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M02"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M03"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M04"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M05"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M06"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M07"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M08"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M09"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M10"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M11"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M12"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M01"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M02"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M03"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M04"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M05"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M06"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M07"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M08"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M09"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M10"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M11"
+  },
+  {
+    "family": "soil_baseline",
+    "name": "STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M12"
+  }
+]

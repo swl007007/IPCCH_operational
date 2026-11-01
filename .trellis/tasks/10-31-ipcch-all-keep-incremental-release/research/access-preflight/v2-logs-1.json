@@ -1,0 +1,3458 @@
+[
+  {
+    "insertId": "6ae6831200006a079017947e",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:50.034215988Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ACCESS_IDENTITY {\"identity\": \"monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com\", \"read_only\": true, \"utc\": \"2026-11-01T00:08:50.026563+00:00\"}",
+    "timestamp": "2026-11-01T00:08:50.027143Z"
+  },
+  {
+    "insertId": "6ae683120000df7ad5969022",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-11-01T00:08:50.063555085Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.",
+    "timestamp": "2026-11-01T00:08:50.057210Z"
+  },
+  {
+    "insertId": "6ae683120000e5a8d38e8dbc",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-11-01T00:08:50.397989214Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.",
+    "timestamp": "2026-11-01T00:08:50.058792Z"
+  },
+  {
+    "insertId": "6ae68312000c32e43e5f9a61",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:51.033909860Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00\", \"ok\": true, \"sizeBytes\": \"573052\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:50.799460Z"
+  },
+  {
+    "insertId": "6ae683130001566fe62b8bf1",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:51.364500651Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01\", \"ok\": true, \"sizeBytes\": \"116067582\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:08:51.087663Z"
+  },
+  {
+    "insertId": "6ae683130003fb37863b337c",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:51.364500651Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G01\", \"ok\": true, \"sizeBytes\": \"405091\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:51.260919Z"
+  },
+  {
+    "insertId": "6ae683130005e50edee8ddc3",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:51.697893240Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G02\", \"ok\": true, \"sizeBytes\": \"225922\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:51.386318Z"
+  },
+  {
+    "insertId": "6ae68313000884f20e1b4cd0",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:51.697893240Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G03\", \"ok\": true, \"sizeBytes\": \"210359\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:51.558322Z"
+  },
+  {
+    "insertId": "6ae68313000d0eae0a4861c4",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:52.032611684Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G04\", \"ok\": true, \"sizeBytes\": \"1240025\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:51.855726Z"
+  },
+  {
+    "insertId": "6ae68314000222adff7c6623",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:52.364753605Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G05\", \"ok\": true, \"sizeBytes\": \"2241412\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:52.139949Z"
+  },
+  {
+    "insertId": "6ae6831400054aed97c2555f",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:52.364753605Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G06\", \"ok\": true, \"sizeBytes\": \"1379737\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:52.346861Z"
+  },
+  {
+    "insertId": "6ae683140009e79f82834726",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:52.699377653Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G07\", \"ok\": true, \"sizeBytes\": \"2136636\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:52.649119Z"
+  },
+  {
+    "insertId": "6ae68314000d9832b5bb516c",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:53.031773820Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G08\", \"ok\": true, \"sizeBytes\": \"1333708\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:52.890930Z"
+  },
+  {
+    "insertId": "6ae683150002e4696d99d52c",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:53.364090663Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G09\", \"ok\": true, \"sizeBytes\": \"995645\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:53.189545Z"
+  },
+  {
+    "insertId": "6ae683150006faebf94468ab",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:53.697028731Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G10\", \"ok\": true, \"sizeBytes\": \"897332\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:53.457451Z"
+  },
+  {
+    "insertId": "6ae68315000a91f283f1f897",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:54.033585115Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G11\", \"ok\": true, \"sizeBytes\": \"665724\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:53.692722Z"
+  },
+  {
+    "insertId": "6ae68315000cf767ad5cd107",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:54.033585115Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G12\", \"ok\": true, \"sizeBytes\": \"929169\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:53.849767Z"
+  },
+  {
+    "insertId": "6ae683160000c3f2a80275b3",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:54.363942652Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G13\", \"ok\": true, \"sizeBytes\": \"733836\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:54.050162Z"
+  },
+  {
+    "insertId": "6ae68316000354a299bd3895",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:54.363942652Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G14\", \"ok\": true, \"sizeBytes\": \"796141\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:54.218274Z"
+  },
+  {
+    "insertId": "6ae683160005eba1918e3d1e",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:54.696123698Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G15\", \"ok\": true, \"sizeBytes\": \"712443\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:54.388001Z"
+  },
+  {
+    "insertId": "6ae683160008fea81ddcb61a",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:54.696123698Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G16\", \"ok\": true, \"sizeBytes\": \"886603\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:54.589480Z"
+  },
+  {
+    "insertId": "6ae68316000cd8edb458d908",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:55.028419039Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G17\", \"ok\": true, \"sizeBytes\": \"1130513\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:54.841965Z"
+  },
+  {
+    "insertId": "6ae683170001d4628924e44e",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:55.360525919Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G18\", \"ok\": true, \"sizeBytes\": \"924970\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:55.119906Z"
+  },
+  {
+    "insertId": "6ae683170004be8e6b631ee3",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:55.360525919Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G19\", \"ok\": true, \"sizeBytes\": \"792274\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:55.310926Z"
+  },
+  {
+    "insertId": "6ae6831700059033511f6754",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:55.694872716Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G20\", \"ok\": true, \"sizeBytes\": \"1501613\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:55.364595Z"
+  },
+  {
+    "insertId": "6ae6831700085df6bf955b8d",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:55.694872716Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G21\", \"ok\": true, \"sizeBytes\": \"1897999\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:55.548342Z"
+  },
+  {
+    "insertId": "6ae68317000c13e23b7d4c5d",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:56.027998232Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G22\", \"ok\": true, \"sizeBytes\": \"1801848\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:55.791522Z"
+  },
+  {
+    "insertId": "6ae68317000e9f1c93483dcd",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:56.027998232Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G23\", \"ok\": true, \"sizeBytes\": \"2532044\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:55.958236Z"
+  },
+  {
+    "insertId": "6ae68318000223deea9999fe",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:56.361499323Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"admins\", \"name\": \"IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G24\", \"ok\": true, \"sizeBytes\": \"1661994\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:56.140254Z"
+  },
+  {
+    "insertId": "6ae683180005aa8b0c6ba7d7",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:56.695953700Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"et0_history\", \"name\": \"S2C3_DROUGHT_ADMIN_ET0_FAO56_Y1990_1995_V3\", \"ok\": true, \"sizeBytes\": \"6341216\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:56.371339Z"
+  },
+  {
+    "insertId": "6ae68318000813dc83a3fedd",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:56.695953700Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"et0_history\", \"name\": \"S2C3_DROUGHT_ADMIN_ET0_FAO56_Y1996_2001_V3\", \"ok\": true, \"sizeBytes\": \"6341229\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:56.529372Z"
+  },
+  {
+    "insertId": "6ae68318000bd04ed1cccfcb",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:57.027551498Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"et0_history\", \"name\": \"S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2002_2007_V3\", \"ok\": true, \"sizeBytes\": \"6339940\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:56.774222Z"
+  },
+  {
+    "insertId": "6ae68319000071009e7522ad",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:57.361879325Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"et0_history\", \"name\": \"S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2008_2013_V3\", \"ok\": true, \"sizeBytes\": \"6340613\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:57.028928Z"
+  },
+  {
+    "insertId": "6ae68319000305709b13515c",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:57.361879325Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"et0_history\", \"name\": \"S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2014_2019_V3\", \"ok\": true, \"sizeBytes\": \"6340693\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:57.198Z"
+  },
+  {
+    "insertId": "6ae683190005903f3ba4512c",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:57.693167060Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"et0_history\", \"name\": \"S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3\", \"ok\": true, \"sizeBytes\": \"6923521\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:57.364607Z"
+  },
+  {
+    "insertId": "6ae683190009a92c98e8c846",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:57.693167060Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y1990_1995_V3\", \"ok\": true, \"sizeBytes\": \"6513035\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:57.633132Z"
+  },
+  {
+    "insertId": "6ae68319000e0eaebd67bb56",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:58.024828619Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y1996_2001_V3\", \"ok\": true, \"sizeBytes\": \"6509861\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:57.921262Z"
+  },
+  {
+    "insertId": "6ae6831a0001578adc590546",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:58.353798711Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2002_2007_V3\", \"ok\": true, \"sizeBytes\": \"6590334\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:58.087946Z"
+  },
+  {
+    "insertId": "6ae6831a0003d4cae0c6f695",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:58.353798711Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2008_2013_V3\", \"ok\": true, \"sizeBytes\": \"6570805\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:58.251082Z"
+  },
+  {
+    "insertId": "6ae6831a000828194f61eb22",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:58.696446325Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2014_2019_V3\", \"ok\": true, \"sizeBytes\": \"6588979\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:58.534553Z"
+  },
+  {
+    "insertId": "6ae6831a00093512e6437f30",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:58.696446325Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3\", \"ok\": true, \"sizeBytes\": \"7153727\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:58.603410Z"
+  },
+  {
+    "insertId": "6ae6831a000b7ecda854369f",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:59.025960337Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y1990_1995_V3\", \"ok\": true, \"sizeBytes\": \"6260367\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:58.753357Z"
+  },
+  {
+    "insertId": "6ae6831a000c8a1115d6422a",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:59.025960337Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y1996_2001_V3\", \"ok\": true, \"sizeBytes\": \"6195498\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:58.821777Z"
+  },
+  {
+    "insertId": "6ae6831b000082a24fcb004a",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:59.358963248Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2002_2007_V3\", \"ok\": true, \"sizeBytes\": \"6226191\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:59.033442Z"
+  },
+  {
+    "insertId": "6ae6831b00047ab200ba89c8",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:59.358963248Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2008_2013_V3\", \"ok\": true, \"sizeBytes\": \"6214956\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:59.293554Z"
+  },
+  {
+    "insertId": "6ae6831b0008c1de9075d61f",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:08:59.690484701Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2014_2019_V3\", \"ok\": true, \"sizeBytes\": \"6227935\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:59.573918Z"
+  },
+  {
+    "insertId": "6ae6831b000b2b99f32b2cc5",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:00.025849906Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3\", \"ok\": true, \"sizeBytes\": \"6751316\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:59.732057Z"
+  },
+  {
+    "insertId": "6ae6831b000f3fe603b72e97",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:00.025849906Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y1990_1995_V3\", \"ok\": true, \"sizeBytes\": \"5593752\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:08:59.999398Z"
+  },
+  {
+    "insertId": "6ae6831c0002da5c08e8b0a5",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:00.357166621Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y1996_2001_V3\", \"ok\": true, \"sizeBytes\": \"5784839\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:00.186972Z"
+  },
+  {
+    "insertId": "6ae6831c000533b90339fbbf",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:00.357166621Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2002_2007_V3\", \"ok\": true, \"sizeBytes\": \"5835692\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:00.340921Z"
+  },
+  {
+    "insertId": "6ae6831c00093b9d6347e843",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:00.690538355Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2008_2013_V3\", \"ok\": true, \"sizeBytes\": \"5792216\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:00.605085Z"
+  },
+  {
+    "insertId": "6ae6831c000d86a4b3b3be2a",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:01.022550991Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2014_2019_V3\", \"ok\": true, \"sizeBytes\": \"5955952\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:00.886436Z"
+  },
+  {
+    "insertId": "6ae6831d000202bda0af0049",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:01.355803591Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"prcp_history\", \"name\": \"S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3\", \"ok\": true, \"sizeBytes\": \"6048439\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:01.131773Z"
+  },
+  {
+    "insertId": "6ae6831d0002dab4b46c23eb",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:01.355803591Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"patch_history\", \"name\": \"S2C3_ET0_PATCH32_Y1990_1995_V2\", \"ok\": true, \"sizeBytes\": \"77659\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:01.187060Z"
+  },
+  {
+    "insertId": "6ae6831d00065bf68031b205",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:01.688951867Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"patch_history\", \"name\": \"S2C3_ET0_PATCH32_Y1996_2001_V2\", \"ok\": true, \"sizeBytes\": \"77710\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:01.416758Z"
+  },
+  {
+    "insertId": "6ae6831d000cf9ecf17deb0e",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:02.025285434Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"patch_history\", \"name\": \"S2C3_ET0_PATCH32_Y2002_2007_V2\", \"ok\": true, \"sizeBytes\": \"77707\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:01.850412Z"
+  },
+  {
+    "insertId": "6ae6831d000efe94481d9cb9",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:02.025285434Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"patch_history\", \"name\": \"S2C3_ET0_PATCH32_Y2008_2013_V2\", \"ok\": true, \"sizeBytes\": \"77841\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:01.982676Z"
+  },
+  {
+    "insertId": "6ae6831e0002684c2f2f5089",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:02.349617007Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"patch_history\", \"name\": \"S2C3_ET0_PATCH32_Y2014_2019_V2\", \"ok\": true, \"sizeBytes\": \"77703\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:02.157772Z"
+  },
+  {
+    "insertId": "6ae6831e0003f53407c685db",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:02.349617007Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"patch_history\", \"name\": \"S2C3_ET0_PATCH32_Y2020_2026_V2\", \"ok\": true, \"sizeBytes\": \"84857\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:02.259380Z"
+  },
+  {
+    "insertId": "6ae6831e000672646576a99c",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:02.689710131Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_baseline\", \"name\": \"S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P01_V3\", \"ok\": true, \"sizeBytes\": \"1590157\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:02.422500Z"
+  },
+  {
+    "insertId": "6ae6831e000a62034778f62a",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:02.689710131Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_baseline\", \"name\": \"S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P02_V3\", \"ok\": true, \"sizeBytes\": \"1604096\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:02.680451Z"
+  },
+  {
+    "insertId": "6ae6831e000ed54a2915996d",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:03.022784357Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_baseline\", \"name\": \"S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P03_V3\", \"ok\": true, \"sizeBytes\": \"1571418\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:02.972106Z"
+  },
+  {
+    "insertId": "6ae6831f000265f752f98df8",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:03.353092708Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_baseline\", \"name\": \"S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P04_V3\", \"ok\": true, \"sizeBytes\": \"1564837\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:03.157175Z"
+  },
+  {
+    "insertId": "6ae6831f0004ed7f9b70f1d6",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:03.353092708Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_baseline\", \"name\": \"S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P01_V3\", \"ok\": true, \"sizeBytes\": \"1570639\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:03.322943Z"
+  },
+  {
+    "insertId": "6ae6831f0005dc5b26a05068",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:03.686730162Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_baseline\", \"name\": \"S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P02_V3\", \"ok\": true, \"sizeBytes\": \"1586015\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:03.384091Z"
+  },
+  {
+    "insertId": "6ae6831f0009ef036a0c7f8a",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:03.686730162Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_baseline\", \"name\": \"S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P03_V3\", \"ok\": true, \"sizeBytes\": \"1548562\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:03.651011Z"
+  },
+  {
+    "insertId": "6ae6831f000d8fb13a520340",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:04.021878696Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_baseline\", \"name\": \"S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P04_V3\", \"ok\": true, \"sizeBytes\": \"1546329\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:03.888753Z"
+  },
+  {
+    "insertId": "6ae6832000011a6df1cdf036",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:04.354294834Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_current_conditional\", \"name\": \"S2E3_VI_CURRENT_ADMIN_AQUA_Y2025_CMG_V3\", \"ok\": true, \"sizeBytes\": \"6664444\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:04.072301Z"
+  },
+  {
+    "insertId": "6ae6832000038e8afae7d197",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:04.354294834Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_current_conditional\", \"name\": \"S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3\", \"ok\": true, \"sizeBytes\": \"4201656\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:04.233098Z"
+  },
+  {
+    "insertId": "6ae683200007419d82fbb27b",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:04.685847892Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_current_conditional\", \"name\": \"S2E3_VI_CURRENT_ADMIN_TERRA_Y2025_CMG_V3\", \"ok\": true, \"sizeBytes\": \"6257756\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:04.475549Z"
+  },
+  {
+    "insertId": "6ae6832000082da3738c631d",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:04.685847892Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"vi_current_conditional\", \"name\": \"S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3\", \"ok\": true, \"sizeBytes\": \"4362417\", \"type\": \"TABLE\"}",
+    "timestamp": "2026-11-01T00:09:04.535971Z"
+  },
+  {
+    "insertId": "6ae68320000c234205450170",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:05.020954401Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M02\", \"ok\": true, \"sizeBytes\": \"106542678\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:04.795458Z"
+  },
+  {
+    "insertId": "6ae6832100012697f78e413b",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:05.352231855Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M03\", \"ok\": true, \"sizeBytes\": \"111487168\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:05.075415Z"
+  },
+  {
+    "insertId": "6ae683210005a2d6d5d34a96",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:05.684531883Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M04\", \"ok\": true, \"sizeBytes\": \"112091674\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:05.369366Z"
+  },
+  {
+    "insertId": "6ae6832100075fe67fe78667",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:05.684531883Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M05\", \"ok\": true, \"sizeBytes\": \"115339860\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:05.483302Z"
+  },
+  {
+    "insertId": "6ae683210009e61bd1847b7b",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:05.684531883Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M06\", \"ok\": true, \"sizeBytes\": \"108983741\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:05.648731Z"
+  },
+  {
+    "insertId": "6ae68321000ccd88e89dca11",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:06.018919340Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M07\", \"ok\": true, \"sizeBytes\": \"113729811\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:05.839048Z"
+  },
+  {
+    "insertId": "6ae68321000e369d7e08fa46",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:06.018919340Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M08\", \"ok\": true, \"sizeBytes\": \"114480473\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:05.931485Z"
+  },
+  {
+    "insertId": "6ae683220002e34353bd9454",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:06.351029659Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M09\", \"ok\": true, \"sizeBytes\": \"110238264\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:06.189251Z"
+  },
+  {
+    "insertId": "6ae683220004aad605fc3b2e",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:06.351029659Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M10\", \"ok\": true, \"sizeBytes\": \"114177233\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:06.305878Z"
+  },
+  {
+    "insertId": "6ae6832200092a4854c2591d",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:06.683999942Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M11\", \"ok\": true, \"sizeBytes\": \"104665018\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:06.600648Z"
+  },
+  {
+    "insertId": "6ae68322000ccada62304da2",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:07.017016969Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M12\", \"ok\": true, \"sizeBytes\": \"113536462\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:06.838362Z"
+  },
+  {
+    "insertId": "6ae6832300000a62d5c13391",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:07.017016969Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M01\", \"ok\": true, \"sizeBytes\": \"27774066\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:07.002658Z"
+  },
+  {
+    "insertId": "6ae683230002ee4f27cbb634",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:07.351168926Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M02\", \"ok\": true, \"sizeBytes\": \"26590002\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:07.192079Z"
+  },
+  {
+    "insertId": "6ae68323000776de885eae44",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:07.682968607Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M03\", \"ok\": true, \"sizeBytes\": \"30134670\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:07.489182Z"
+  },
+  {
+    "insertId": "6ae683230008670c226b2d3b",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:07.682968607Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M04\", \"ok\": true, \"sizeBytes\": \"29877222\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:07.550668Z"
+  },
+  {
+    "insertId": "6ae68323000afd642a7c0287",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:08.015458231Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M05\", \"ok\": true, \"sizeBytes\": \"31632609\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:07.720228Z"
+  },
+  {
+    "insertId": "6ae68323000e0bde62b28f26",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:08.015458231Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M06\", \"ok\": true, \"sizeBytes\": \"29915942\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:07.920542Z"
+  },
+  {
+    "insertId": "6ae6832400016a68d04511f8",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:08.349537913Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M07\", \"ok\": true, \"sizeBytes\": \"30779855\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:08.092776Z"
+  },
+  {
+    "insertId": "6ae68324000353e2e075cd0b",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:08.349537913Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M08\", \"ok\": true, \"sizeBytes\": \"31012970\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:08.218082Z"
+  },
+  {
+    "insertId": "6ae683240005fc4815bb22e4",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:08.682270589Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M09\", \"ok\": true, \"sizeBytes\": \"30144007\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:08.392264Z"
+  },
+  {
+    "insertId": "6ae68324000713d985cb42cb",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:08.682270589Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M10\", \"ok\": true, \"sizeBytes\": \"30898584\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:08.463833Z"
+  },
+  {
+    "insertId": "6ae6832400098fe54dfb0595",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:08.682270589Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M11\", \"ok\": true, \"sizeBytes\": \"26733492\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:08.626661Z"
+  },
+  {
+    "insertId": "6ae68324000b27fb46682063",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:09.009963702Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M12\", \"ok\": true, \"sizeBytes\": \"26399789\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:08.731131Z"
+  },
+  {
+    "insertId": "6ae68324000ef3ffdeab5e95",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:09.009963702Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M01\", \"ok\": true, \"sizeBytes\": \"6150571\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:08.979967Z"
+  },
+  {
+    "insertId": "6ae683250000d1c65fa4f252",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:09.349686586Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M02\", \"ok\": true, \"sizeBytes\": \"5740557\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:09.053702Z"
+  },
+  {
+    "insertId": "6ae683250004a7f578e9a487",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:09.349686586Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M03\", \"ok\": true, \"sizeBytes\": \"6191874\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:09.305141Z"
+  },
+  {
+    "insertId": "6ae683250007751009ab52ba",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:09.682124436Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M04\", \"ok\": true, \"sizeBytes\": \"6006980\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:09.488720Z"
+  },
+  {
+    "insertId": "6ae68325000862ad7e047e15",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:09.682124436Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M05\", \"ok\": true, \"sizeBytes\": \"6200623\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:09.549549Z"
+  },
+  {
+    "insertId": "6ae683250009ca1bcc66f082",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:09.682124436Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M06\", \"ok\": true, \"sizeBytes\": \"5754193\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:09.641563Z"
+  },
+  {
+    "insertId": "6ae68325000c956e2b86c469",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:10.013072647Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M07\", \"ok\": true, \"sizeBytes\": \"5895722\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:09.824686Z"
+  },
+  {
+    "insertId": "6ae68325000f2628901e5b9c",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:10.013072647Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M08\", \"ok\": true, \"sizeBytes\": \"6003868\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:09.992808Z"
+  },
+  {
+    "insertId": "6ae6832600024e745f6c3c06",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:10.345910362Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M09\", \"ok\": true, \"sizeBytes\": \"5947979\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:10.151156Z"
+  },
+  {
+    "insertId": "6ae6832600067d2dfcc778d0",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:10.680048059Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M10\", \"ok\": true, \"sizeBytes\": \"6169296\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:10.425261Z"
+  },
+  {
+    "insertId": "6ae68326000849798f204053",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:10.680048059Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M11\", \"ok\": true, \"sizeBytes\": \"5925886\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:10.543097Z"
+  },
+  {
+    "insertId": "6ae68326000953b44c7ddbb5",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:10.680048059Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"rain_baseline\", \"name\": \"STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M12\", \"ok\": true, \"sizeBytes\": \"6093311\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:10.611252Z"
+  },
+  {
+    "insertId": "6ae68326000da94fa69f0bb9",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:11.013968580Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M01\", \"ok\": true, \"sizeBytes\": \"4575734\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:10.895311Z"
+  },
+  {
+    "insertId": "6ae683270002f6b30bc2abd1",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:11.347055450Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M02\", \"ok\": true, \"sizeBytes\": \"4271158\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:11.194227Z"
+  },
+  {
+    "insertId": "6ae683270006eb33baec71c6",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:11.679053627Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M03\", \"ok\": true, \"sizeBytes\": \"4555565\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:11.453427Z"
+  },
+  {
+    "insertId": "6ae683270007e8633e446264",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:11.679053627Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M04\", \"ok\": true, \"sizeBytes\": \"4403063\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:11.518243Z"
+  },
+  {
+    "insertId": "6ae68327000976ca0059b7f8",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:11.679053627Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M05\", \"ok\": true, \"sizeBytes\": \"4543875\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:11.620234Z"
+  },
+  {
+    "insertId": "6ae68327000d5399cbeba940",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:12.011125010Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M06\", \"ok\": true, \"sizeBytes\": \"4400040\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:11.873369Z"
+  },
+  {
+    "insertId": "6ae68327000f1d76bd1bfef1",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:12.011125010Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M07\", \"ok\": true, \"sizeBytes\": \"4551715\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:11.990582Z"
+  },
+  {
+    "insertId": "6ae683280003bec2b6c6b7cb",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:12.344832461Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M08\", \"ok\": true, \"sizeBytes\": \"4554900\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:12.245442Z"
+  },
+  {
+    "insertId": "6ae6832800056e4f9e67e75b",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:12.681733799Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M09\", \"ok\": true, \"sizeBytes\": \"4404871\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:12.355919Z"
+  },
+  {
+    "insertId": "6ae683280008ef9896bd133f",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:12.681733799Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M10\", \"ok\": true, \"sizeBytes\": \"4552130\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:12.585624Z"
+  },
+  {
+    "insertId": "6ae68328000b06b15d6a9bbd",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:13.016009458Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M11\", \"ok\": true, \"sizeBytes\": \"4415604\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:12.722609Z"
+  },
+  {
+    "insertId": "6ae68328000eec16abfddf71",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:13.016009458Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_CPC_M12\", \"ok\": true, \"sizeBytes\": \"4574931\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:12.977942Z"
+  },
+  {
+    "insertId": "6ae683290002a1d6201ef224",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:13.344665094Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M01\", \"ok\": true, \"sizeBytes\": \"73888414\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:13.172502Z"
+  },
+  {
+    "insertId": "6ae68329000535d6e64a105a",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:13.671994311Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M02\", \"ok\": true, \"sizeBytes\": \"68910646\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:13.341462Z"
+  },
+  {
+    "insertId": "6ae683290008e56f5dd15aed",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:13.671994311Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M03\", \"ok\": true, \"sizeBytes\": \"73858613\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:13.583023Z"
+  },
+  {
+    "insertId": "6ae68329000a990cd45572ee",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:14.010160372Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M04\", \"ok\": true, \"sizeBytes\": \"71544363\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:13.694540Z"
+  },
+  {
+    "insertId": "6ae68329000c1d24cfde6f9f",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:14.010160372Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M05\", \"ok\": true, \"sizeBytes\": \"73952401\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:13.793892Z"
+  },
+  {
+    "insertId": "6ae68329000ed32d4fbd2f36",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:14.010160372Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M06\", \"ok\": true, \"sizeBytes\": \"71547969\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:13.971565Z"
+  },
+  {
+    "insertId": "6ae6832a0001415e5b370ef2",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:14.345699139Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M07\", \"ok\": true, \"sizeBytes\": \"73968165\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:14.082270Z"
+  },
+  {
+    "insertId": "6ae6832a00055878b88911b6",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:14.676725638Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M08\", \"ok\": true, \"sizeBytes\": \"74009892\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:14.350328Z"
+  },
+  {
+    "insertId": "6ae6832a000823f7914c45ac",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:14.676725638Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M09\", \"ok\": true, \"sizeBytes\": \"71659025\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:14.533495Z"
+  },
+  {
+    "insertId": "6ae6832a00099d45d76e218b",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:14.676725638Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M10\", \"ok\": true, \"sizeBytes\": \"74175632\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:14.630085Z"
+  },
+  {
+    "insertId": "6ae6832a000ad8f86fb602b9",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:15.011282136Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M11\", \"ok\": true, \"sizeBytes\": \"71788838\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:14.710904Z"
+  },
+  {
+    "insertId": "6ae6832a000cb3f1d07cc737",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:15.011282136Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"temp_baseline\", \"name\": \"STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M12\", \"ok\": true, \"sizeBytes\": \"74076251\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:14.832497Z"
+  },
+  {
+    "insertId": "6ae6832a000dba489dac01ee",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:15.011282136Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M01\", \"ok\": true, \"sizeBytes\": \"1927096\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:14.899656Z"
+  },
+  {
+    "insertId": "6ae6832b00000beeae199508",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:15.011282136Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M02\", \"ok\": true, \"sizeBytes\": \"1923420\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:15.003054Z"
+  },
+  {
+    "insertId": "6ae6832b00028d3a96326998",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:15.343885436Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M03\", \"ok\": true, \"sizeBytes\": \"1920488\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:15.167226Z"
+  },
+  {
+    "insertId": "6ae6832b0005484a836c426f",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:15.675483266Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M04\", \"ok\": true, \"sizeBytes\": \"1918139\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:15.346186Z"
+  },
+  {
+    "insertId": "6ae6832b00079d7ddf679e01",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:15.675483266Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M05\", \"ok\": true, \"sizeBytes\": \"1921237\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:15.499069Z"
+  },
+  {
+    "insertId": "6ae6832b00088ff6661a7eb0",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:15.675483266Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M06\", \"ok\": true, \"sizeBytes\": \"1927883\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:15.561142Z"
+  },
+  {
+    "insertId": "6ae6832b000dc460c9817274",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:16.008830907Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M07\", \"ok\": true, \"sizeBytes\": \"1923566\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:15.902240Z"
+  },
+  {
+    "insertId": "6ae6832b000eb369df14927d",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:16.008830907Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M08\", \"ok\": true, \"sizeBytes\": \"1915166\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:15.963433Z"
+  },
+  {
+    "insertId": "6ae6832c0003361a7827b3a5",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:16.342712948Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M09\", \"ok\": true, \"sizeBytes\": \"1918946\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:16.210458Z"
+  },
+  {
+    "insertId": "6ae6832c0007c5fe8597016c",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:16.675723605Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M10\", \"ok\": true, \"sizeBytes\": \"1911875\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:16.509438Z"
+  },
+  {
+    "insertId": "6ae6832c000940c10b93d1c0",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:16.675723605Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M11\", \"ok\": true, \"sizeBytes\": \"1926275\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:16.606401Z"
+  },
+  {
+    "insertId": "6ae6832c000ac5dcaeb7eab7",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:17.006313615Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M12\", \"ok\": true, \"sizeBytes\": \"1928278\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:16.706012Z"
+  },
+  {
+    "insertId": "6ae6832c000c6614c619a7d3",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:17.006313615Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M01\", \"ok\": true, \"sizeBytes\": \"352844\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:16.812564Z"
+  },
+  {
+    "insertId": "6ae6832d000111984961f3fc",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:17.340186190Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M02\", \"ok\": true, \"sizeBytes\": \"352357\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:17.070040Z"
+  },
+  {
+    "insertId": "6ae6832d0003b1b9f78ca5e6",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:17.340186190Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M03\", \"ok\": true, \"sizeBytes\": \"352150\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:17.242105Z"
+  },
+  {
+    "insertId": "6ae6832d00054678ef845f3f",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:17.673652249Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M04\", \"ok\": true, \"sizeBytes\": \"351536\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:17.345720Z"
+  },
+  {
+    "insertId": "6ae6832d00066b4461c66847",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:17.673652249Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M05\", \"ok\": true, \"sizeBytes\": \"353306\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:17.420676Z"
+  },
+  {
+    "insertId": "6ae6832d0009774e5a6516e1",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:17.673652249Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M06\", \"ok\": true, \"sizeBytes\": \"354858\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:17.620366Z"
+  },
+  {
+    "insertId": "6ae6832d000a7817937c2ef1",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:18.006343127Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M07\", \"ok\": true, \"sizeBytes\": \"353750\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:17.686103Z"
+  },
+  {
+    "insertId": "6ae6832d000b654ee8e3fd3d",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:18.006343127Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M08\", \"ok\": true, \"sizeBytes\": \"353318\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:17.746830Z"
+  },
+  {
+    "insertId": "6ae6832d000cc64793fe1925",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:18.006343127Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M09\", \"ok\": true, \"sizeBytes\": \"352783\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:17.837191Z"
+  },
+  {
+    "insertId": "6ae6832e0001a41f94d110e0",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:18.339440138Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M10\", \"ok\": true, \"sizeBytes\": \"352717\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:18.107551Z"
+  },
+  {
+    "insertId": "6ae6832e000366cc755c6ce1",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:18.339440138Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M11\", \"ok\": true, \"sizeBytes\": \"352164\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:18.222924Z"
+  },
+  {
+    "insertId": "6ae6832e0004948ef241a8d7",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:18.339440138Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_READ {\"attempted\": true, \"family\": \"soil_baseline\", \"name\": \"STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M12\", \"ok\": true, \"sizeBytes\": \"351378\", \"type\": \"IMAGE\"}",
+    "timestamp": "2026-11-01T00:09:18.300174Z"
+  },
+  {
+    "insertId": "6ae6832e00072b86c577d2a8",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:18.673193396Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_COMPUTE {\"name\": \"admin_rows\", \"ok\": true, \"value\": 250}",
+    "timestamp": "2026-11-01T00:09:18.469894Z"
+  },
+  {
+    "insertId": "6ae6832e0008a892e5328780",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:18.673193396Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ASSET_COMPUTE {\"name\": \"baseline_bands\", \"ok\": true, \"value\": [\"daily_normal_d01\", \"daily_normal_d02\", \"daily_normal_d03\", \"daily_normal_d04\", \"daily_normal_d05\", \"daily_normal_d06\", \"daily_normal_d07\", \"daily_normal_d08\", \"daily_normal_d09\", \"daily_normal_d10\", \"daily_normal_d11\", \"daily_normal_d12\", \"daily_normal_d13\", \"daily_normal_d14\", \"daily_normal_d15\", \"daily_normal_d16\", \"daily_normal_d17\", \"daily_normal_d18\", \"daily_normal_d19\", \"daily_normal_d20\", \"daily_normal_d21\", \"daily_normal_d22\", \"daily_normal_d23\", \"daily_normal_d24\", \"daily_normal_d25\", \"daily_normal_d26\", \"daily_normal_d27\", \"daily_normal_d28\", \"daily_normal_d29\", \"daily_normal_d30\", \"daily_normal_d31\", \"monthly_total_mean_mm\", \"monthly_total_sd_mm\"]}",
+    "timestamp": "2026-11-01T00:09:18.567442Z"
+  },
+  {
+    "insertId": "6ae6832e0008a8a772d938a5",
+    "labels": {
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T00:09:18.673193396Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ACCESS_SUMMARY {\"compute\": {\"admin_rows\": {\"ok\": true, \"value\": 250}, \"baseline_bands\": {\"ok\": true, \"value\": [\"daily_normal_d01\", \"daily_normal_d02\", \"daily_normal_d03\", \"daily_normal_d04\", \"daily_normal_d05\", \"daily_normal_d06\", \"daily_normal_d07\", \"daily_normal_d08\", \"daily_normal_d09\", \"daily_normal_d10\", \"daily_normal_d11\", \"daily_normal_d12\", \"daily_normal_d13\", \"daily_normal_d14\", \"daily_normal_d15\", \"daily_normal_d16\", \"daily_normal_d17\", \"daily_normal_d18\", \"daily_normal_d19\", \"daily_normal_d20\", \"daily_normal_d21\", \"daily_normal_d22\", \"daily_normal_d23\", \"daily_normal_d24\", \"daily_normal_d25\", \"daily_normal_d26\", \"daily_normal_d27\", \"daily_normal_d28\", \"daily_normal_d29\", \"daily_normal_d30\", \"daily_normal_d31\", \"monthly_total_mean_mm\", \"monthly_total_sd_mm\"]}}, \"elapsed_seconds\": 28.57, \"failed\": [], \"identity\": \"monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com\", \"not_attempted\": 0, \"readable\": 151, \"total\": 151, \"unreadable\": 0, \"utc\": \"2026-11-01T00:09:18.567400+00:00\"}",
+    "timestamp": "2026-11-01T00:09:18.567463Z"
+  },
+  {
+    "insertId": "6ae6832e000a751a86963652",
+    "labels": {
+      "container_name": "worker",
+      "instanceId": "00e8a408bd8480c2a49763f8ac991556c5c7d30cd464e8d6d10b600290514bdc6b6e0b9b63c635809e2b08722f7b6428740a796e0059f96d085385fbd7ae0665197e6e787559e74cb96c255948c79af256c1a343f8de2f6edbd6",
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-01T00:09:18.692207879Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Container called exit(0).",
+    "timestamp": "2026-11-01T00:09:18.685296Z"
+  },
+  {
+    "insertId": "-594vk2d5h76",
+    "labels": {
+      "run.googleapis.com/execution_name": "ipcch-v2-runtime-preflight-20261031-rpsqj"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Jobs.RunJob",
+      "resourceName": "namespaces/feisty-flames-511718-d4/executions/ipcch-v2-runtime-preflight-20261031-rpsqj",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Execution",
+        "apiVersion": "run.googleapis.com/v1",
+        "kind": "Execution",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "562.0.0",
+            "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+            "run.googleapis.com/execution-environment": "gen2",
+            "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+            "run.googleapis.com/operation-id": "fa6e916a-708d-420f-9eba-68b10a9ebe97"
+          },
+          "creationTimestamp": "2026-11-01T00:08:13.182633Z",
+          "generation": 1,
+          "labels": {
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/job": "ipcch-v2-runtime-preflight-20261031",
+            "run.googleapis.com/jobGeneration": "1",
+            "run.googleapis.com/jobResourceVersion": "1793491639779379",
+            "run.googleapis.com/jobUid": "63e0212e-9f3f-43ee-b752-cab3613a4070"
+          },
+          "name": "ipcch-v2-runtime-preflight-20261031-rpsqj",
+          "namespace": "968355701450",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Job",
+              "name": "ipcch-v2-runtime-preflight-20261031",
+              "uid": "63e0212e-9f3f-43ee-b752-cab3613a4070"
+            }
+          ],
+          "resourceVersion": "AAZfK9djd0o",
+          "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/executions/ipcch-v2-runtime-preflight-20261031-rpsqj",
+          "uid": "bea9b89e-77af-43f4-af12-669665e318fb"
+        },
+        "spec": {
+          "parallelism": 1,
+          "taskCount": 1,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "args": [
+                    "-c",
+                    "import json,time,datetime,urllib.request,google.auth,ee\nstarted=time.monotonic()\ndef emit(kind,obj): print(kind+' '+json.dumps(obj,sort_keys=True),flush=True)\nexpected='monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com'\nreq=urllib.request.Request('http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email',headers={'Metadata-Flavor':'Google'})\nwith urllib.request.urlopen(req,timeout=5) as r: identity=r.read().decode().strip()\nassert identity==expected,identity\nemit('IPCCH_ACCESS_IDENTITY',{'identity':identity,'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'read_only':True})\ncredentials,_=google.auth.default(scopes=['https://www.googleapis.com/auth/cloud-platform','https://www.googleapis.com/auth/earthengine'])\nee.Initialize(credentials=credentials,project='feisty-flames-511718-d4')\nee.data.setDeadline(15000)\nee.data.setMaxRetries(0)\nroot='projects/han-sandbox-505315/assets/'\nitems=[{'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G01'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G02'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G03'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G04'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G05'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G06'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G07'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G08'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G09'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G10'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G11'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G12'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G13'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G14'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G15'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G16'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G17'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G18'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G19'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G20'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G21'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G22'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G23'}, {'family': 'admins', 'name': 'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G24'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y1990_1995_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y1996_2001_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2002_2007_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2008_2013_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2014_2019_V3'}, {'family': 'et0_history', 'name': 'S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y1990_1995_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y1996_2001_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2002_2007_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2008_2013_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2014_2019_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y1990_1995_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y1996_2001_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2002_2007_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2008_2013_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2014_2019_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y1990_1995_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y1996_2001_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2002_2007_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2008_2013_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2014_2019_V3'}, {'family': 'prcp_history', 'name': 'S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y1990_1995_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y1996_2001_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y2002_2007_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y2008_2013_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y2014_2019_V2'}, {'family': 'patch_history', 'name': 'S2C3_ET0_PATCH32_Y2020_2026_V2'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P01_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P02_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P03_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_AQUA_CMG_P04_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P01_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P02_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P03_V3'}, {'family': 'vi_baseline', 'name': 'S2E3_VI_BASE_ADMIN_2003_2020_TERRA_CMG_P04_V3'}, {'family': 'vi_current_conditional', 'name': 'S2E3_VI_CURRENT_ADMIN_AQUA_Y2025_CMG_V3'}, {'family': 'vi_current_conditional', 'name': 'S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3'}, {'family': 'vi_current_conditional', 'name': 'S2E3_VI_CURRENT_ADMIN_TERRA_Y2025_CMG_V3'}, {'family': 'vi_current_conditional', 'name': 'S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M02'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M03'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M04'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M05'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M06'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M07'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M08'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M09'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M10'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M11'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M12'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M01'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M02'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M03'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M04'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M05'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M06'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M07'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M08'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M09'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M10'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M11'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_ERA5LAND_M12'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M01'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M02'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M03'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M04'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M05'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M06'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M07'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M08'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M09'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M10'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M11'}, {'family': 'rain_baseline', 'name': 'STAGE2A_PRCP_BASELINE_1991_2020_PERSIANN_M12'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M01'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M02'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M03'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M04'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M05'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M06'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M07'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M08'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M09'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M10'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M11'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_CPC_M12'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M01'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M02'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M03'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M04'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M05'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M06'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M07'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M08'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M09'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M10'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M11'}, {'family': 'temp_baseline', 'name': 'STAGE2B_TEMP_BASELINE_1991_2020_ERA5LAND_M12'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M01'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M02'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M03'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M04'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M05'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M06'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M07'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M08'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M09'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M10'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M11'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_ERA5LAND_M12'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M01'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M02'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M03'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M04'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M05'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M06'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M07'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M08'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M09'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M10'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M11'}, {'family': 'soil_baseline', 'name': 'STAGE2D_SOIL_BASELINE_2001_2020_GLDAS21_M12'}]\nresults=[]\nfor item in items:\n result=dict(item)\n if time.monotonic()-started>225:\n  result.update(ok=False,error='not_attempted_overall_time_budget',attempted=False)\n else:\n  try:\n   asset=ee.data.getAsset(root+item['name'])\n   result.update(ok=True,attempted=True,type=asset.get('type'),sizeBytes=asset.get('sizeBytes'))\n  except Exception as exc: result.update(ok=False,attempted=True,error=type(exc).__name__+': '+str(exc))\n results.append(result)\n emit('IPCCH_ASSET_READ',result)\nchecks={}\nfor name,fn in [('admin_rows',lambda:ee.FeatureCollection(root+'IPCCH_ADMIN_STATIC_CALENDAR_CROPFRAC_V1_G00').size().getInfo()),('baseline_bands',lambda:ee.Image(root+'STAGE2A_PRCP_BASELINE_1991_2020_CHIRPS_M01').bandNames().getInfo())]:\n if time.monotonic()-started>260:\n  checks[name]={'ok':False,'error':'not_attempted_overall_time_budget'}\n else:\n  try: checks[name]={'ok':True,'value':fn()}\n  except Exception as exc: checks[name]={'ok':False,'error':type(exc).__name__+': '+str(exc)}\n emit('IPCCH_ASSET_COMPUTE',{'name':name,**checks[name]})\nsummary={'identity':identity,'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'total':len(results),'readable':sum(x['ok'] for x in results),'unreadable':sum(not x['ok'] and x.get('attempted',False) for x in results),'not_attempted':sum(not x.get('attempted',False) for x in results),'failed':[x for x in results if not x['ok']],'compute':checks,'elapsed_seconds':round(time.monotonic()-started,2)}\nemit('IPCCH_ACCESS_SUMMARY',summary)\nraise SystemExit(0 if all(x['ok'] for x in results) and all(x['ok'] for x in checks.values()) else 2)\n"
+                  ],
+                  "command": [
+                    "python3"
+                  ],
+                  "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae",
+                  "resources": {
+                    "limits": {
+                      "cpu": "1",
+                      "memory": "512Mi"
+                    }
+                  }
+                }
+              ],
+              "maxRetries": 0,
+              "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+              "timeoutSeconds": "300"
+            }
+          }
+        },
+        "status": {
+          "completionTime": "2026-11-01T00:09:21.873503Z",
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-11-01T00:09:21.873503Z",
+              "message": "Execution completed successfully in 1m0.43s.",
+              "status": "True",
+              "type": "Completed"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T00:08:14.197592Z",
+              "message": "Provisioned imported containers.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T00:08:46.499780Z",
+              "message": "Started deployed execution in 32.3s.",
+              "status": "True",
+              "type": "Started"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T00:08:14.071736Z",
+              "message": "Imported container image.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T00:09:22.116426Z",
+              "message": "System will retry after 00:00 from lastTransitionTime for attempt 0.",
+              "reason": "ImmediateRetry",
+              "severity": "Info",
+              "status": "True",
+              "type": "Retry"
+            }
+          ],
+          "logUri": "https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22ipcch-v2-runtime-preflight-20261031%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22ipcch-v2-runtime-preflight-20261031-rpsqj%22",
+          "observedGeneration": 1,
+          "startTime": "2026-11-01T00:08:21.441970Z",
+          "succeededCount": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Execution ipcch-v2-runtime-preflight-20261031-rpsqj has completed successfully."
+      }
+    },
+    "receiveTimestamp": "2026-11-01T00:09:22.838052032Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-v2-runtime-preflight-20261031",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-11-01T00:09:22.132438Z"
+  }
+]
