@@ -1,30 +1,44 @@
-# Cloud pipeline
+# IPCCH monthly production pipeline
 
-This directory is the maintained runtime and operator entrypoint for FEWSNET/IPCCH monthly delivery. It preserves the existing feature, fill, model and event contracts. Start with [QUICKSTART.md](QUICKSTART.md) and the detailed [operator commands](OPERATIONS.md).
+This is the code for the existing IPCCH monthly service in Google Cloud project `feisty-flames-511718-d4`. **`food-crisis-test-ipcch-data` is the production bucket, and `monthly-staging` is its production release namespace.** These historical names do not designate a test environment.
 
-`bootstrap/` contains the frozen assets, full historical baseline, six accepted model scopes and explicit descriptor used for one-time destination initialization. It also binds per-horizon diagnostic evidence in `bootstrap/evidence/`; see [diagnostic evidence](OPERATIONS.md#diagnostic-evidence). Full history is required by lag and normalization semantics. `fallback/october_2026/` preserves the accepted October delivery (cloud rerun with populated confidence diagnostics) and its evidence; no new scoring is implied by relocation.
+Use [OPERATIONS.md](OPERATIONS.md) for the next incremental run: prepare inputs, preview selections, submit once, monitor and read the published release. [selections.example.json](selections.example.json) supplies all eleven keeps for real-mode generation, inference and current publication.
 
-Use a destination-owned project, buckets, service accounts, digest-pinned runtime and Earth Engine registration. No live deployment is performed by obtaining this directory. Keep credentials, filled project configuration and mutable work/state outside the distributable.
+## Monthly delivery
 
-## Runtime and deployment
-
-Install the frozen Python 3.12.3 environment from `requirements.lock.txt`. For bootstrap, copy the accepted image to your registry preserving its digest; no rebuild or October replay is needed. `docker build -f deploy/Dockerfile .` and `bash deploy/build_context.sh` produce a new runtime whose changed digest needs separate actual compatibility evidence before acceptance. The image includes the four runtime packages and package data; baseline/fallback data is uploaded separately.
-
-`deploy/workflow.yaml` retains the Storage-finalized -> Workflows -> Cloud Run delivery path. `bash deploy/setup.sh /private/project.json --execute` provisions preparation, delivery, Workflow and Eventarc resources from the same config; without `--execute` it prints commands. Set `workflow_service_account` in that config. Read OPERATIONS before using it. Successful submission is not successful delivery; inspect durable run status.
-
-## Handover archive
-
-After all bootstrap and fallback members are present:
-
-```bash
-python deploy/handover_package.py build --archive dist/cloud_pipeline.tar.gz
-python deploy/handover_package.py verify --archive dist/cloud_pipeline.tar.gz
+```text
+11 manual keep/refresh choices
+  -> submit uploads/pins inputs and freezes the UTC month
+  -> request upload triggers the existing cloud workflow
+  -> incremental climate / GPP / nightlight + retained inputs
+  -> feature batch -> H2/H8/H14 inference -> production current
 ```
 
-The builder reads only the supported public files and runtime/data directories, writes an internal exact SHA-256/size inventory, verifies archived bytes and writes a checksum beside the archive. The source operational directory remains writable. Archives are create-only; choose a fresh output name for a new release. Developer controls, local config, state, tests and existing dist archives are excluded. Extract to a fresh directory, verify before use, and install the lock there.
+All-keep preserves the eleven manual inputs while automatic sources still update. Earth Engine exports are submitted and consumed automatically when unsaved demand exists. The current FEWS NET member is inherited unchanged; this IPCCH submission does not update FEWS predictions.
 
-## Local checks
+Execution month M is the UTC month at submission freeze; feature origin O=M-2. H2/H8/H14 correspond to public leads 0/6/12 and targets M/M+6/M+12. The next distinct increment after the accepted November run is M=2026-12, O=2026-10.
 
-From this directory, `python -m pytest tests/cloud tests/test_refresh_h5_inputs.py` checks supported contracts. September comparison fixtures are included under `tests/fixtures/september/`; standalone runtime import checks need no original repository. Tests do not repeat accepted model scoring or call live providers.
+## Production references
 
-The archived original migration builders and Final_harmonise wrapper are superseded and their legacy-only tests are omitted. Training/debug CLIs are omitted; internal FEWS helpers still imported by its existing package exports are retained unchanged. Old source paths inside frozen evidence are provenance, not runtime instructions.
+| Item | Location |
+|---|---|
+| Current release pointer | `gs://food-crisis-test-ipcch-data/monthly-staging/current.json` |
+| Retained inputs and feature batches | `gs://food-crisis-test-ipcch-data/ipcch-v2/real/` |
+| Manual refresh uploads | `gs://food-crisis-test-ipcch-data/inputs/v2/` |
+| Triggering requests | `gs://food-crisis-test-ipcch-requests/requests/<run_id>/run_manifest.json` |
+| Published delivery files | `gs://food-crisis-test-ipcch-data/deliveries/<run_id>-ipcch/` |
+| Deployment configuration | [deploy/ipcch_v2_deployment.food-crisis-test.json](deploy/ipcch_v2_deployment.food-crisis-test.json) |
+
+Accepted run `ipcch-real-fe7282ef75e747fd` on 2026-11-01 used M=2026-11/O=2026-09, 527 features and 6,226 areas per horizon, publishing current generation `1793503777656101`. This is a dated reference; read the live pointer for later releases. Runtime digest, input formats and known source gaps are in [OPERATIONS.md](OPERATIONS.md).
+
+## Required operator assets
+
+Use the existing private production `project.json`, its initialized `work_dir`, the locked Python 3.12.3 environment and authorized cloud access. Keep operator state: it binds submissions and supports status/resume. The legacy `project.example.json` lacks v2 configuration and cannot replace this production config.
+
+Histories, models and the accepted combination envelope/package/handoff are already installed or retained in production. They are not repeated monthly uploads. Credentials, filled configuration, mutable state, production data and model binaries are supplied privately and excluded from this code repository. Tests and small fixtures are included.
+
+## Code maintenance
+
+`requirements.lock.txt` fixes the environment. Run checks from this directory with the project's memory limits: 4 GiB memory, no swap, 3 GiB address space, one BLAS/OMP thread and a bounded timeout. Focused checks include `python -m pytest tests/test_operator_submit_v2.py tests/cloud/test_ipcch_install.py`; use the existing guarded runner on the operator workstation.
+
+A code sync does not rebuild or deploy the runtime. A future image build needs the separately supplied accepted envelope, package, handoff and isolated smoke fixture through `deploy/build_context.sh`, followed by compatibility acceptance of the new digest. Routine monthly operation uses the current deployment.

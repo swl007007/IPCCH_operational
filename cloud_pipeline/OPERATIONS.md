@@ -1,285 +1,174 @@
-# Monthly operations and migration
+# IPCCH monthly production operations
 
-All commands below run from `cloud_pipeline/` (or the extracted handover root). Use one private JSON configuration copied from `project.example.json`. `work_dir` resolves relative to that config; preserve it to retain initialized refs, model versions and run attempts. Keep credentials out of JSON. Status reads cloud state; mutation commands preview unless `--execute` is supplied.
+This manual covers incremental generation, inference and publication on the **existing production deployment**. Run commands from this directory: the IFPRI repository root, or `cloud_pipeline/` in the canonical source. Bucket `food-crisis-test-ipcch-data` and namespace `monthly-staging` are production despite their names.
 
-## One-time destination setup
+## 1. Production connection
 
-The operator needs a billed Google Cloud project, Google Cloud CLI, Application Default Credentials, the locked Python environment and permission to create the listed resources and act as their service accounts. Use Linux/WSL or a Linux terminal for shell commands. None of the commands below has been executed for your destination.
-
-Fill configuration with your project, `us-central1` region, two new bucket names, runtime and workflow service-account emails, accepted image URI, Earth Engine project, operator label, release namespace and prepare job. These examples assume both buckets and Eventarc are in `us-central1`; another location needs compatible bucket/Eventarc placement. Use a dedicated runtime identity shared by Run and Batch and a separate workflow identity.
-
-Set shell variables to the same values as the private config (these are examples, not credentials):
-
-```bash
-export PROJECT='YOUR_PROJECT'
-export REGION='us-central1'
-export DATA_BUCKET='YOUR_UNIQUE_DATA_BUCKET'
-export REQUEST_BUCKET='YOUR_UNIQUE_REQUEST_BUCKET'
-export RUNTIME_SA="monthly-runtime@${PROJECT}.iam.gserviceaccount.com"
-export WORKFLOW_SA="monthly-workflow@${PROJECT}.iam.gserviceaccount.com"
-export IMAGE_REPO='monthly-delivery'
-gcloud auth login
-gcloud auth application-default login
-gcloud services enable run.googleapis.com batch.googleapis.com compute.googleapis.com   workflows.googleapis.com workflowexecutions.googleapis.com eventarc.googleapis.com   pubsub.googleapis.com storage.googleapis.com artifactregistry.googleapis.com   earthengine.googleapis.com iam.googleapis.com logging.googleapis.com --project "$PROJECT"
-gcloud iam service-accounts create monthly-runtime --project "$PROJECT"
-gcloud iam service-accounts create monthly-workflow --project "$PROJECT"
-gcloud storage buckets create "gs://${DATA_BUCKET}" --project "$PROJECT" --location "$REGION" --uniform-bucket-level-access
-gcloud storage buckets create "gs://${REQUEST_BUCKET}" --project "$PROJECT" --location "$REGION" --uniform-bucket-level-access
-gcloud storage buckets update "gs://${DATA_BUCKET}" --versioning
-gcloud storage buckets update "gs://${REQUEST_BUCKET}" --versioning
-gcloud artifacts repositories create "$IMAGE_REPO" --project "$PROJECT" --location "$REGION" --repository-format docker
-```
-
-If a resource already exists, inspect it and reuse it instead of running the corresponding create command. Keep object generations: do not apply lifecycle deletion to pinned baselines, selected models or live run inputs.
-
-Grant the runtime the scoped storage/image access and project roles it needs:
-
-```bash
-for bucket in "$DATA_BUCKET" "$REQUEST_BUCKET"; do
-  gcloud storage buckets add-iam-policy-binding "gs://${bucket}" --member "serviceAccount:${RUNTIME_SA}" --role roles/storage.objectAdmin
-done
-for role in roles/batch.jobsEditor roles/batch.agentReporter roles/logging.logWriter roles/serviceusage.serviceUsageConsumer roles/earthengine.resourceViewer; do
-  gcloud projects add-iam-policy-binding "$PROJECT" --member "serviceAccount:${RUNTIME_SA}" --role "$role"
-done
-gcloud iam service-accounts add-iam-policy-binding "$RUNTIME_SA" --project "$PROJECT" --member "serviceAccount:${RUNTIME_SA}" --role roles/iam.serviceAccountUser
-gcloud iam service-accounts add-iam-policy-binding "$RUNTIME_SA" --project "$PROJECT" --member "serviceAccount:${WORKFLOW_SA}" --role roles/iam.serviceAccountUser
-gcloud artifacts repositories add-iam-policy-binding "$IMAGE_REPO" --project "$PROJECT" --location "$REGION" --member "serviceAccount:${RUNTIME_SA}" --role roles/artifactregistry.reader
-for role in roles/eventarc.eventReceiver roles/workflows.invoker; do
-  gcloud projects add-iam-policy-binding "$PROJECT" --member "serviceAccount:${WORKFLOW_SA}" --role "$role"
-done
-STORAGE_AGENT="$(gcloud storage service-agent --project "$PROJECT")"
-gcloud projects add-iam-policy-binding "$PROJECT" --member "serviceAccount:${STORAGE_AGENT}" --role roles/pubsub.publisher
-```
-
-The deployment operator also needs service-account `actAs`, resource deployment rights, data/request bucket read-write rights for initialization and raw upload, and permission to execute the prepare job **with argument overrides** (`roles/run.developer` on that job includes the required override permission). Google-managed Batch/Run/Eventarc service agents must retain their service-agent roles; do not assign service-agent roles to ordinary users. If your organization restricts the default network, arrange Batch VM egress to Earth Engine, GCS and public GOSIF endpoints before running. The current launcher uses the project's default Batch networking.
-
-Register the destination Earth Engine project and complete its eligibility/verification in [Earth Engine configuration](https://console.cloud.google.com/earth-engine/configuration). API enablement alone is insufficient. Set `earth_engine_project` to that registered project; if it differs from `project`, grant the runtime Earth Engine resource access and Service Usage Consumer there too. Planner and Batch use the runtime identity, not your personal Earth Engine credentials.
-
-### Transfer the accepted runtime image
-
-First migration reuses the accepted container digest. It does not require rebuilding or rerunning October scoring. Obtain registry-read access to the current image for this one-time transfer, or obtain an OCI image export from its owner. After transfer, operations use only your destination image and buckets.
-
-With `crane` installed, authenticate to both registries and copy without changing bytes:
-
-```bash
-export SOURCE_IMAGE='us-central1-docker.pkg.dev/manuel-remote-sensing/october-delivery/runtime@sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0'
-export DEST_IMAGE="${REGION}-docker.pkg.dev/${PROJECT}/${IMAGE_REPO}/runtime:accepted-october"
-gcloud auth configure-docker us-central1-docker.pkg.dev,"${REGION}-docker.pkg.dev"
-crane copy "$SOURCE_IMAGE" "$DEST_IMAGE"
-crane digest "$DEST_IMAGE"
-```
-
-The printed digest must equal `sha256:7e6133f32ab0b28d3f29b827d4153975e99f97d440e97a1a8cdacdfa1052f0d0` (source tag `runtime:cp5-confidence-1`). This is the runtime bound by `bootstrap/baseline.json` (the original bootstrap; the production configuration activated on 2026-10-22 uses a newer runtime and baseline, see [FEWS retrain release](#fews-retrain-release-2026-10-22)). Its acceptance evidence is the 2026-10-09 cloud rerun `oct-confidence-20261009b`, whose predictions equal the earlier accepted run exactly and whose bundle replayed offline. The earlier image `sha256:41944ea048c559190b6018f30ad52695cf9bedbb7d5695abef50b1348616d034` rejects the bound FEWSNET proxy evidence, so do not use it with this baseline. Set config `image_uri` to the **destination URI with `@sha256:...`**, not its mutable tag. A rebuilt image is a new runtime and needs actual compatibility acceptance; old acceptance is not automatically valid. Source code and the lock are included for maintenance; the container binary is distributed by registry/OCI transfer, not embedded in the local data archive.
-
-Preview and apply the maintained resource definitions:
-
-```bash
-bash deploy/setup.sh /private/project.json
-bash deploy/setup.sh /private/project.json --execute
-```
-
-Setup deploys the prepare and delivery Run jobs, grants the workflow identity Run overrides (`roles/run.developer`) on both jobs, object read on the request and data buckets (requests, maintenance hold, preparation status and dispatch records) and object create limited to the data bucket's `dispatch/` prefix (run claims and dispatch records), and creates Workflow/Eventarc. It does not create buckets, identities, APIs or Earth Engine registration. Eventarc trigger creation is one-time. Inspect an existing trigger before reapplying. Delivery job/Workflow/trigger names are `oct-delivery`, `oct-delivery-trigger`, `oct-delivery-requests`; `prepare_job` comes from config.
-
-Initialize immutable destination inputs once:
-
-```bash
-python pipeline.py init --config /private/project.json --baseline bootstrap
-python pipeline.py init --config /private/project.json --baseline bootstrap --execute
-```
-
-Initialization verifies all local member hashes and the six previously accepted model scopes, then uploads baseline/model files and records actual GCS generations and SHA-256 references in `work_dir/initialized.json`. It does not run prediction. Full historical panels are needed by lag/normalization calculations; they are not repeated monthly uploads. A different destination or baseline needs a separate work directory.
-
-## Monthly run and recovery
-
-```bash
-python pipeline.py run --config /private/project.json   --month 2026-11 --cutoff 2026-11-08T00:00:00Z   --deadline 2026-11-09T00:00:00Z --run-id nov-2026-a   --acled keep --wfp keep --execute
-python pipeline.py status --config /private/project.json --run-id nov-2026-a
-python pipeline.py download --config /private/project.json   --run-id nov-2026-a --output /private/november-delivery --execute
-```
-
-Since the IPCCH v2 activation of 2026-10-31 (see [IPCCH v2 monthly submission](#ipcch-v2-monthly-submission-2026-10-31)), this legacy `run` route serves FEWS NET only. A request that scores IPCCH, alone or mixed, is rejected before any work (R37). FEWS-only runs (`--infer fewsnet --inherit ipcch=...`) inherit the current v2 IPCCH member. Its `--inherit-archive` repeats that member's delivery manifest ref, because v2 deliveries have no archive.
-
-Choose fresh UTC dates and a unique run ID. Origin O fixes targets O/O+6/O+12. `cutoff` binds discovery eligibility; extraction uses exact selected provider images. Provider delays are filled and marked using the existing contract. `deadline` prevents late intent submission. It is not a cancellation timer for already-submitted preparation or delivery jobs. Delivery has a four-hour task timeout.
-
-`keep` always means the initialized retained ACLED/WFP snapshots. A refresh never silently changes the next run's keep baseline: choose refresh again with the desired complete raw export to reuse it. Fixed variables remain unchanged. Prepared remote outputs are versioned, but this CLI currently starts each run from the initialized remote history; it may re-extract post-baseline periods. It does not upload the entire local baseline monthly.
-
-The CLI publishes the initial workflow intent `requests/<run_id>/run_manifest.json` and returns; it never launches or polls preparation itself. Storage finalization triggers Eventarc -> Workflows, which honours a maintenance hold, claims the run once (`dispatch/<run_id>/claim.json`), admits the intent, runs the prepare job, waits (bounded) for the durable `prepared/<prepare_id>/prepare_status.json`, binds the succeeded snapshot as `resolved_requests/<run_id>/run_manifest.json` and runs delivery -> CSVs and portable bundle. Defaults are remote update on, both systems, publication current. `--remote-update off --prepared-manifest gs://...#GENERATION` reuses a succeeded snapshot; `--infer fewsnet --inherit ipcch=DELIVERY_ID --inherit-manifest gs://...#GEN --inherit-archive gs://...#GEN` scores one system and copies the other from a same-origin accepted delivery; `--infer none` only prepares; `--publication candidate` exports without moving `current.json`. This is the existing automation; this repository does not add a GitHub build pipeline.
-
-`status` shows the preparation (this run's, or the reused snapshot), the dispatch records (`claim`, `admission`, `resolution`), the delivery run status and any candidate record; a prepare-only run ends at `prepared` with its snapshot ref. Repeating the same complete command only resumes an interrupted submission. A duplicate storage event dispatches nothing, and a changed intent for a claimed run ID is rejected: never change dates/models/config for an existing run ID. A failed attempt requires a new ID.
-
-Only durable delivery `succeeded` is success, not workflow submission. Run evidence is under `runs/<run_id>/`, results under `deliveries/<run_id>/`, and the current release pointer under `<namespace>/current.json`. Download requires a new directory and verifies every declared member without numerical replay; `download --candidate` fetches an unpromoted candidate record instead of the release. Missing diagnostic evidence leaves diagnostic values blank with an unavailable reason; it does not suppress predictions.
-
-## Compatible raw formats
-
-Use UTF-8 CSVs with the exact case-sensitive headers below. Extra columns are tolerated. Files stay local until `run --execute`; converters validate before submission, then the CLI uploads immutable raw bytes. There is no ACLED/WFP API fetch in this interface.
-
-**WFP** requires:
-
-```text
-Country,Admin 1,Admin 2,Market Name,Commodity,Price Type,Price Date,Price,Unit,Currency,Trend,Data Type
-```
-
-`Price Date` is `DD/MM/YYYY` (for example `01/10/2026`). `Data Type` is exactly `Aggregated` or `Forecast`; forecast rows are excluded. Price and Trend must be numeric; country names must resolve to ISO3. Do not duplicate a month for the same country/admin/market/commodity/price-type/unit/currency series. Include the preceding calendar month of each series for FEWSNET price changes; IPCCH uses the supplied Trend. Observations after origin O are excluded. Supply the existing compatible export, not a pivoted national summary.
-
-**ACLED** requires:
-
-```text
-event_date,event_type,country,admin1,admin2,admin3,location,latitude,longitude,fatalities
-```
-
-`event_date` is `YYYY-MM-DD`; optional `year` must match it. Latitude, longitude and fatalities must be numeric. The source through O must contain the three supported event families: `Battles`, `Explosions/Remote violence`, `Violence against civilians`. Supply complete event exports for covered months, not just newly added events. Rows with missing location/admin grouping keys follow the retained converter exclusion rule. Events after O are excluded.
-
-Choose either or both independently:
-
-```bash
-python pipeline.py run --config /private/project.json   --month 2026-11 --cutoff 2026-11-08T00:00:00Z   --deadline 2026-11-09T00:00:00Z --run-id nov-2026-refresh-a   --acled refresh --acled-raw /private/acled.csv   --wfp refresh --wfp-raw /private/wfp.csv --execute
-```
-
-### v2 requests: IPCCH `WFP_Price` (task 10-29 contract correction, 2026-10-30)
-
-The IPCCH H2/H8/H14 models were trained on the research HDX `WFP_Price` series: 100 + the year-on-year % change of
-local-currency staple prices from the nearest market with data within 100 km of each area (research
-`staging/ipcch-update-202610/tools/build_wfp_hdx.py`). The raw WFP export and the `Trend` converter above produce a
-different variable and are used for FEWS NET (and the legacy v1 path) only. In a v2 request:
-
-- `"ipcch": {"wfp": {"action": "keep"}}` uses the saved IPCCH history unchanged.
-- `"ipcch": {"wfp": {"action": "refresh", "file": {"uri", "generation", "sha256"}, "start": "YYYY-MM", "end": "YYYY-MM"}}`
-  supplies the research build's processed CSV with exactly `admin_code,month,value`. It replaces exactly the declared
-  months; every row must lie inside them and inside the fixed roster; blanks stay missing (no carry-forward). Declare
-  recent months again only when you intend to take the research build's revised values for them (its outlier filter is
-  centred, so the latest months can change between builds). A malformed file is refused before anything is written;
-  `raw_upload`/`converter_contract` is rejected for IPCCH.
-
-## Replace compatible models
-
-Register a complete **already-trained** package, then explicitly select it for one of FEWSNET/IPCCH x 0/6/12. Weights alone are insufficient: feature schema, thresholds, routing, imputation metadata and acceptance must match. This interface does not train models or create scientific acceptance.
-
-FEWSNET package files: `model.joblib`, `feature_contract.json`, `partition_map.csv`, `threshold_report.json`, `training_report.json`, `local_model_manifest.json`, `checksums.json`.
-
-IPCCH package root: `model_package_manifest.json`, `training_export_summary.json`; selected `scope_0m/`, `scope_6m/` or `scope_12m/` contains `feature_columns.json`, `feature_contract.csv`, `model_metadata.json` and `phase2_worse_model.json` through `phase5_worse_model.json`. IPCCH shared root members must remain byte-identical across selected scopes. Replacements with changed shared root metadata need coordinated six-slot/baseline preparation outside this one-slot selector; do not overwrite existing packages.
-
-Add `operator-model.json` beside those files. Use the corresponding object from `bootstrap/baseline.json`'s `models` array as the **structure**, with genuinely new identities/evidence:
-
-| Field | Required content |
+| Setting | Production value |
 |---|---|
-| `system`, `horizon_months`, `package_id` | Scope and new immutable version identifier |
-| `feature_schema_sha256` | Actual schema hash, equal to the currently selected compatible schema |
-| `manifest` | `delivery-package-manifest-v1` body: scope identity and complete `files` array with relative `path` and actual `sha256` |
-| `environment` | Accepted environment body with `image_uri` and `requirements_lock_sha256` |
-| `acceptance` | Real `delivery-model-acceptance-v1` accepted report, matching scope/package/schema, nonempty package-specific evidence, `package_manifest_sha256` and `runtime` bindings |
-| `diagnostics` | Optional complete slot-specific declarations; omit to mark every diagnostic family unavailable |
+| Project / Earth Engine project | `feisty-flames-511718-d4` |
+| Region | `us-central1` |
+| Current pointer | `gs://food-crisis-test-ipcch-data/monthly-staging/current.json` |
+| Retained store | `gs://food-crisis-test-ipcch-data/ipcch-v2/real` |
+| Refresh upload prefix | `gs://food-crisis-test-ipcch-data/inputs/v2/` |
+| Request bucket | `food-crisis-test-ipcch-requests` |
+| Runtime service account | `monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com` |
+| Delivery job / Workflow | `oct-delivery` / `oct-delivery-trigger` |
+| Writable EE output root | `projects/feisty-flames-511718-d4/assets/` |
 
-Acceptance `runtime` includes `image_uri` and `environment_manifest_sha256`. Manifest and environment hashes use `sha256(json.dumps(body, sort_keys=True).encode())` (standard separators, no newline). They bind original bodies before destination reference rebinding. New available diagnostic evidence needs pinned destination refs and valid model-specific evidence. Diagnostics bound to another package, including the baseline evidence below, cannot be reused as available evidence for a new package. The one explicit exception is a FEWS `frozen_output` declaration: it copies an accepted delivery's diagnostic outputs unchanged, recording that delivery and its evidence package, basis and period, and only current country outcomes are recomputed; it is not new evidence for the new package. The baseline's existing acceptance is only for its original six models.
+The accepted runtime is:
 
-```bash
-python pipeline.py models --config /private/project.json register   --package /private/new-package --system fewsnet --horizon 6
-python pipeline.py models --config /private/project.json --execute register   --package /private/new-package --system fewsnet --horizon 6
-python pipeline.py models --config /private/project.json --execute select   --system fewsnet --horizon 6 --version NEW_PACKAGE_ID
+```text
+us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6
 ```
 
-Registration checks package files and invokes the existing loader; only register trusted model packages. It does not select automatically. Selection preserves all six slots, immutable old versions and their diagnostics. To roll back, run select with the prior package ID. Unsubmitted runs bind their original selection; use a new run ID after changing models.
+It installs combination `ipcch-validity-h2h8h14-final-20261030` and its envelope/package/handoff under `/opt/ipcch`. Last accepted job limits: 8 CPU, 32 GiB, 14,400 seconds, zero task retries. Keep this deployment for monthly runs; bucket creation, history initialization and image builds are not submission steps.
 
-## Diagnostic evidence
-
-`bootstrap/baseline.json` binds per-slot diagnostic evidence files in `bootstrap/evidence/`. `evidence/provenance.json` records the sources, the builders, regression checks against the accepted h5 evidence and the previous baseline hash. Current status:
-
-| System (families) | 0m | 6m | 12m |
-|---|---|---|---|
-| FEWSNET (polygon and country confidence) | Stage3 proxy `h0_validation_error_proxy_stage3_fs1_lag4_2021_2024`, `2021-02..2024-10` | Stage3 proxy `h6_validation_error_proxy_stage3_fs2_lag8_2021_2024`, `2021-02..2024-10` | Stage3 proxy `h12_validation_error_proxy_stage3_fs3_lag12_2021_2024`, `2021-02..2024-10` |
-| IPCCH (polygon training errors, country confidence, maximum phase) | `training_resubstitution`, `2014-01..2026-03` | `training_resubstitution`, `2014-01..2026-04` | `training_resubstitution`, `2014-01..2026-04` |
-
-All 15 declarations are available. The FEWSNET proxies are saved errors from research runs with 4-, 8- and 12-month lags for 0m, 6m and 12m. They are not held-out errors of the delivered packages. The 0m proxy is the 4-month-lag evidence of the accepted h5 delivery, so it is more pessimistic than true 0m error. They are accepted only through the `APPROVED_PROXY_EVIDENCE` allowlist in `cloud/orchestrator/delivery_outputs.py`, which maps each horizon to one exact basis and period. Any other FEWSNET evidence must be `package_validation_split` over the package's recorded validation period. Every other basis, period or horizon is rejected, including the h5 basis and a proxy used at another horizon. IPCCH resubstitution evidence is in-sample and optimistic, and its maximum-phase file holds the four-target training residuals. Its period must end at or before the package training cutoff. Every evidence file carries `model_package_id`, `horizon_months`, `basis` and `period`, and these must match the scored package. Missing evidence still leaves values blank with an unavailable reason.
-
-Changing any evidence file or declaration changes `baseline.json` and therefore the baseline ID. An existing work directory refuses a different baseline, so initialize a fresh `work_dir` with `init`.
-
-## Local artifacts and maintenance
-
-`fallback/october_2026/` contains the accepted October result from cloud run `oct-confidence-20261009b`, with populated confidence diagnostics, and its replay evidence. Its predictions equal the earlier smoke run `oct-final-20261008a`, whose confidence was blank; that copy is kept outside the package in the legacy archive. Do not rerun the fallback merely because files were relocated. Historical source paths inside frozen evidence are provenance only; all current instructions are here.
-
-To build a future container from maintained source, use `context=$(bash deploy/build_context.sh --envelope FILE --envelope-sha256 SHA --package DIR --handoff DIR --smoke-fixture-root DIR --config deploy/ipcch_v2_deployment.<env>.json)` then `docker build --build-arg IPCCH_ENVELOPE_SHA256=SHA -t YOUR_NEW_IMAGE "$context"`; staging and the image build both re-verify every installed IPCCH artifact (`cloud.ipcch.install`). This excludes baseline and fallback data from the build context. A new digest needs actual compatibility evidence; it cannot reuse the accepted image claim.
-
-To produce a portable data/code handover, run the archive commands in [README.md](README.md). The archive contains local baseline, fallback, source and instructions; destination cloud access, Python dependencies and the runtime image transfer above are explicit external prerequisites. Filled configuration, credentials, mutable state and developer files are excluded.
-
-## FEWS retrain release (2026-10-22)
-
-Historical record. As of 2026-10-31, production serves the IPCCH v2 release described in the last section. The text below describes the 2026-10-22 state. Production (`monthly-staging`) then served run `fews-candidate-20261022a`: FEWS NET scored with the all-history packages `full-202610-ff389b11af93-02caeb861750/{0,6,12}m` (fixed 17-partition map, 123 features, thresholds .48/.41/.45, trained on the refreshed v2 FEWS panel; no model evaluation was run), IPCCH copied byte-for-byte from the accepted delivery `oct-confidence-20261009b` (not rescored). FEWS confidence columns are the accepted October Stage3 proxy evidence of the previous packages, copied unchanged (`frozen_output`); they are not error estimates of the new packages. Runtime `runtime@sha256:487a23159b3bb151245530b6cfcef71820c8a716a189e5a2a3bbcc3074c97fae`; baseline `b77cb29bd648c428cce6503bd10a2834bc976290115dd98b331ff67c1dd66c8b` (operator state `food-crisis-test-fews-retrain-20261022/operator-state`, referenced by the normal `project.json`); `fallback/october_2026/` holds this release. Evidence and the operation record are in the task record `10-21-fewsnet-fixed-map-retrain` under `research/p4/` (`.trellis/tasks/10-21-fewsnet-fixed-map-retrain/`, or `.trellis/tasks/archive/2026-10/10-21-fewsnet-fixed-map-retrain/` once archived).
-
-Changing shared runtime settings uses one bounded maintenance operation with the existing jobs:
+On the operator workstation:
 
 ```bash
-python pipeline.py maintenance --config NEW_CONFIG --operation-id OP --execute hold --admit CANDIDATE_RUN_ID
-python pipeline.py maintenance --config NEW_CONFIG --operation-id OP --execute gate     # hold-aware workflow first
-python pipeline.py maintenance --config NEW_CONFIG --operation-id OP --execute apply    # jobs/workflow to the new image
-python pipeline.py run --config NEW_CONFIG ... --publication candidate --execute
-python pipeline.py download --config NEW_CONFIG --run-id CANDIDATE_RUN_ID --candidate --output DIR --execute
-python pipeline.py verify --config NEW_CONFIG --run-id CANDIDATE_RUN_ID --download DIR --python LOCK_ENV_PYTHON --execute
-python pipeline.py promote --config NEW_CONFIG --operation-id OP --run-id CANDIDATE_RUN_ID --receipt RECEIPT \
-  --normal-config /abs/project.json --fallback-staged /abs/staged --fallback-active /abs/fallback/october_2026 --execute
-python pipeline.py maintenance --config NEW_CONFIG --operation-id OP --execute release  # after verified activation
+OPERATOR_PY=/home/swl007007/.venvs/ipcch-cloud-operator/bin/python
+OPERATOR_CONFIG=/home/swl007007/ipcch-operator/food-crisis-test/project.json
+SELECTIONS="$PWD/selections.example.json"
 ```
 
-Stage the fallback beside the active one (`fallback/october_2026.staged-<OP>`). `promote` renames directories after the pointer CAS, and a rename cannot cross filesystems.
+The config's initialized `work_dir` is `/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/operator-state`. Preserve it, including `initialized.json` and `runs-v2/<run_id>/state.json`. On another workstation, obtain the private config and matching operator state through the operator handover and use valid local paths. Credentials stay outside Git. The legacy `project.example.json` lacks the v2 block and cannot replace this config.
 
-The hold admits only the bound runs (operator and Workflow). `hold` records the predecessor job/workflow settings and grants; `promote` records the prior and intended pointer, normal config and fallback identities before changing them, and every resume or restore acts on the inspected state (a concurrent pointer or config change is never overwritten). `release` re-checks pointer, config, fallback and shared runtime before deleting the hold.
+The private `v2` block must retain `deployment_config`, `inputs_prefix`, `image_uri`, `envelope`, `environment_manifest` and `country_reference`. The environment reference pins the raw dependency lock. `v2.image_uri` must match the deployed digest; `deployment_config` must resolve to the local production deployment JSON.
 
-Rollback of the 2026-10-22 release: the operation record (`operations/fews-retrain-20261022/operation.json` in the candidate operator state, copied under the task record's `research/p4/operation/`) holds the predecessor workflow source/env, job images and grants, the previous normal config (`93293916...`, image `sha256:7e6133f3...`, operator state `food-crisis-test/operator-state`) and the absent previous pointer. The previous confidence-bearing fallback is `fallback/october_2026.predecessor-fews-retrain-20261022/`. To roll back, re-pause admission with the same operation (`maintenance --config CANDIDATE_CONFIG --operation-id fews-retrain-20261022 --execute hold --admit fews-candidate-20261022a`), run `... --execute restore` (pointer CAS back to the recorded predecessor first, then normal config, fallback and shared settings), verify, then `... --execute release`. Restore stops without changes if the pointer or config changed outside the operation. This rollback applies only to state that operation still owns. After the 2026-10-31 C transition and the v2 activation, do not use it (see the next section).
+The runtime identity needs read access to han-sandbox static admins, calendars, baselines and historical assets under `projects/han-sandbox-505315/assets/`, and create/read access to the feisty output root. Both were demonstrated in November. Personal EE access is not evidence of runtime-SA access.
 
-## IPCCH v2 monthly submission (updated 2026-11-01 UTC)
+## 2. Prepare the eleven input choices
 
-At the 2026-11-01 readback, production (`monthly-staging/current.json#1793503777656101`) serves `ipcch-real-fe7282ef75e747fd-ipcch`. It carries the original v2 contract activation from 2026-10-31T15:37:56Z; this is not a new activation event.
-- **IPCCH:** the H2/H8/H14 member, model combination `ipcch-validity-h2h8h14-final-20261030`, M 2026-11 / O 2026-09, 6,226 areas, 527 features. Public leads are 0/6/12 months, so targets are 2026-11/2027-05/2027-11.
-- **FEWS NET:** inherited literally from `fews-compat-v2rt-20261031a`. That release re-scored the unchanged packages on the v2 image byte-identically to the previous release.
-- **Runtime:** `runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6`, built from `115798f`. It installs the accepted envelope, package and handoff under `/opt/ipcch`, re-verified at build (`INSTALL.json`).
-- **Legacy destination:** baseline `f0481ca1…` and operator state `food-crisis-test-v2-runtime-20261031/operator-state`.
-- **Evidence:** task `10-31-ipcch-all-keep-incremental-release`, `research/cp5/` (including the superseding result corrections and final acceptance). The preceding integration/cutover is recorded in archived task `10-30-ipcch-real-e2e-integration`, `research/cp4` and `research/cp6`.
+[selections.example.json](selections.example.json) is a complete all-keep selection: `mode: real`, `operations: [ipcch_generation, ipcch_inference]`, `publication: current`. Use it unchanged for all-keep, or copy it to a private input directory, edit the refresh choices and set `SELECTIONS` to that copy.
+
+**Keep means the currently retained version**, including refreshes saved by earlier failed runs. It takes only `{"action":"keep"}`, without a file or dates. No choice can be omitted. All-keep still updates automatic sources.
+
+| Choice | Refresh fields besides `"action":"refresh"` | Exact CSV header, in order |
+|---|---|---|
+| `acled` | `file`, `start`, `end` as days; `regions` | `week,region,country,admin1,event_type,sub_event_type,events,fatalities,population_exposure,disorder_type,centroid_latitude,centroid_longitude` |
+| `wfp` | `file`, `start`, `end` as months | `admin_code,month,value` |
+| `history_snapshot` | `file` only | `area_id,report_month,phase,availability_month,preparation_cutoff` |
+| `nino34_anom` | `file`, `start`, `end` as months | `admin_code,month,value` |
+| `bbg_staple_food` | same | `admin_code,month,value` |
+| `bbg_oilgas` | same | `admin_code,month,value` |
+| `bbg_soybean_oil` | same | `admin_code,month,value` |
+| `bbg_global_food` | same | `admin_code,month,value` |
+| `food_price_index_WB` | same | `admin_code,month,value` |
+| `idp_national` | `file`, `start`, `end` as report months | `iso3,report_month,stock` |
+| `idp_local` | `file`, `start`, `end` as months | `admin_code,month,value` |
+
+Use UTF-8 CSV (BOM accepted), exact case-sensitive columns, dates `YYYY-MM-DD` and months `YYYY-MM`. A `file` is a local path (relative to the selections file), a trusted `gs://...` object or a pinned `gs://...#GENERATION`. Existing real-mode GCS inputs must be under `gs://food-crisis-test-ipcch-data/inputs/v2/`. Local files are uploaded create-only and pinned automatically.
+
+For a monthly series, a refresh choice has this shape:
+
+```json
+{"action":"refresh","file":"inputs/series.csv","start":"2026-10","end":"2026-10"}
+```
+
+Supply the complete intended replacement for the declared interval. Refresh replaces that interval, including removal of old rows absent from the file; outside rows remain unchanged. It is not an append-only delta. Use unique keys and fixed-roster area codes. Blank series values remain missing; infinity and nonnumeric values are rejected. National IDP uses uppercase ISO3, unique `iso3,report_month` and finite nonnegative stock.
+
+### ACLED
+
+Supply the regional weekly aggregate export with the exact header above; the raw event-level `event_date,...` format is not this input. Week labels and `start` are Saturdays; `end` is a Friday. Every whole week must fit inside the declared interval. Provide complete coverage for the interval and declared regions, including all regions required by the fixed mapping. Overlapping saved weeks are replaced deliberately.
+
+The accepted export used 17 region names: Caribbean; Caucasus and Central Asia; Central America; East Asia; Eastern Africa; Europe; International Waters; Middle Africa; Middle East; North America; Northern Africa; Oceania; South America; South Asia; Southeast Asia; Southern Africa; Western Africa. Declare the coverage actually exported; omitting required mapping regions is refused.
+
+At November acceptance, ACLED v2 covered through **2026-10-23** (last weekly label 2026-10-17; 242,811 rows). Inspect the retained HEAD before preparing a later refresh. ACLED features at O use the month-lag-1 cutoff O-1: for December's O=2026-10, the latest allowed feature observation is 2026-09. Saving newer weeks does not move this cutoff.
+
+### WFP and reported-phase history
+
+IPCCH `wfp` is the processed research HDX `WFP_Price`: 100 plus the year-on-year percentage change in local-currency staple prices from the nearest market with data within 100 km. Supply `admin_code,month,value`, not the legacy raw WFP `Trend` export. There is no automatic WFP fetcher. The research build uses a centred outlier filter; refresh recent months explicitly when accepting revised values.
+
+`history_snapshot` is a **complete replacement**, not a monthly append. Use one `preparation_cutoff`, unique `area_id,report_month`, phases 1..5 and no report/availability month after the cutoff. An older-than-O snapshot produces a warning.
+
+## 3. Preview and submit once
 
 ```bash
-python pipeline.py submit --config /private/project.json --selections SELECTIONS.json            # preview
-python pipeline.py submit --config /private/project.json --selections SELECTIONS.json --execute  # uploads, freezes, publishes the request
-python pipeline.py status --config /private/project.json --run-id ipcch-real-<id>
+"$OPERATOR_PY" pipeline.py submit --config "$OPERATOR_CONFIG" --selections "$SELECTIONS"
 ```
 
-**Selections.** `SELECTIONS.json` (`ipcch-v2-selections-v1`) declares `mode` (`real`|`smoke`), `operations` (`[ipcch_generation, ipcch_inference]`), `publication` (`current`) and exactly 11 choices. Each choice is `{"action":"keep"}` or a refresh. Keep is never implied.
-- `acled`: refresh needs `file`, `start`, `end` (days) and `regions`.
-- `wfp` and the eight research families (`nino34_anom`, `bbg_staple_food`, `bbg_oilgas`, `bbg_soybean_oil`, `bbg_global_food`, `food_price_index_WB`, `idp_national`, `idp_local`): refresh needs `file`, `start`, `end` (months).
-- `history_snapshot`: refresh needs `file`.
-- A `file` is a local path (uploaded create-only under `v2.inputs_prefix`) or `gs://…#generation`.
-- The envelope, environment manifest (the raw lock) and country reference come from `project.json` `v2`, and `v2.image_uri` must be the deployed digest.
+Preview validates selection structure, paths and request shape locally, with no cloud calls or uploads. Its references and time are provisional. It does not prove CSV content correctness, source availability or cloud permissions.
 
-**What `--execute` does:**
-1. It uploads each local refresh file create-only under `v2.inputs_prefix`, or pins a `gs://…#generation`, and the shared objects. These uploads and pins happen BEFORE the freeze; their time never selects M.
-2. It freezes the request at one UTC instant. Execution month M and `prepared_at` come from that instant, and O = M-2.
-3. It uploads `requests/<run>/run_manifest.json` last. Eventarc → Workflow → `oct-delivery` (with `--v2-config /opt/ipcch/deployment.json`) then runs generation, inference and current publication. No further action is needed.
+When ready, this command starts production E2E:
 
-**Retries.** `--run-id` only resumes the same submission. A retry is a new submission with a new ID. M depends on the actual freeze month.
+```bash
+"$OPERATOR_PY" pipeline.py submit --config "$OPERATOR_CONFIG" --selections "$SELECTIONS" --execute
+```
 
-**Failures:**
-- A failure in admission, generation or validation before publication leaves current unchanged. Retained writes saved before the failure stay saved.
-- After a crash or lost response, reconcile `status` with `current.json` and its release record before resubmitting.
+Save the returned `run_id` and request reference. One execution:
 
-**Source work** is reported per run in the batch manifest's generation section: `inputs`, `climate_production` (demand, jobs, skipped), `gaps`, `coverage_end` and `warnings`. It is also visible in the retained `HEAD.json` versions under `ipcch-v2/real`.
+1. Uploads/pins refresh inputs and shared references.
+2. Freezes one UTC instant after these operations: M is its UTC month, O=M-2. Upload start time and local timezone do not choose M.
+3. Uploads `requests/<run_id>/run_manifest.json` last, triggering Eventarc -> Workflow -> `oct-delivery`.
+4. Applies manual choices, computes automatic demand, exports/reads required EE tables and rasters, checks GPP/VIIRS, then writes the feature batch.
+5. Scores H2/H8/H14 from that exact batch, verifies the delivery and publishes current. The existing FEWS NET member is inherited unchanged.
 
-For run `ipcch-real-fe7282ef75e747fd` (2026-11-01 UTC):
-- All eleven manual inputs stayed at their pre-run HEAD/version/content, including ACLED v2. The preceding failed attempt had already appended the approved 470 ACLED rows for 2026-10-17..23; the successful recovery kept them. Batch provenance declares the ACLED cutoff at 2026-08, with no later observation; no numerical ACLED replay was performed.
-- Seven run-specific VI/PRCP/ET0/PATCH32 assets and seven raster GCS exports completed. Thirteen monthly climate tables each appended the exact 6,226-area September roster and preserved all old values. Seasonal demand was empty.
-- Six produced assets entered the saved consumers. PERSIANN exported successfully but its September mean was wholly omitted and its source was unavailable; SPI/SPEI used CHIRPS/ERA5LAND. This was not an export failure.
-- Nightlight appended September (v2). Nine GPP probes for 2026-01..09 returned HTTP 404 and were ledgered unpublished; GPP history stayed unchanged.
-- Two optional-missing warnings (R65): GPP_mean ends 2025-12 and bbg_soybean_oil ends 2026-07, both before O. Those features at O are NaN.
+Routine submission has no month flag. A November freeze gives M=2026-11/O=2026-09 and targets 2026-11/2027-05/2027-11. The **next distinct monthly increment** requires a December UTC freeze: M=2026-12/O=2026-10 and targets 2026-12/2027-06/2027-12. Another November submission retains November's M/O.
 
-The preceding October run had no climate demand/jobs. This never established zero Earth Engine calls: `ee.Initialize` runs whenever generation is selected, and total RPC calls were not measured.
+Routine `submit` supports generation-only or generation plus inference. Generation-only writes a batch but does not publish current. Standalone inference on an explicitly pinned batch exists only in the lower-level request contract, not as a routine `submit` shortcut. Do not substitute last month's batch for a new month's generation.
 
-**Rollback and containment.**
-- Do not reuse the C operation `ipcch-v2-runtime-20261031`, restore jobs to `487a…`, or hand-CAS `current.json` to a pre-activation pointer. That would drop activation, and `487a` lacks the v2 guards.
-- No dedicated v2 current-rollback helper exists.
-- Containment is a bounded, reviewed procedure:
-  1. a NEW maintenance operation, `maintenance --config CFG --operation-id NEW --execute hold --admit <explicit run IDs>`, which pauses admission and records the guarded runtime and active work;
-  2. forward recovery by a new request, only AFTER the reviewed maintenance hold is released. While a hold remains, a fresh routine ID cannot be admitted, because `submit` generates a new ID that the hold does not list. The bounded procedure is detailed in the task 10-30 operator handoff.
-- Retained history is never deleted.
+## 4. Monitor and collect results
 
-**Automatic EE outputs.** When a run has unsaved `evi_anom`/`spi03`/`spei03` periods, the table producer exports its tables to the writable root `projects/feisty-flames-511718-d4/assets/` (`producer_asset_root`). Asset IDs are run-specific, `<table name>__<version from run ID and M>`. Existing assets are never reused or overwritten, and consumers map those run-specific IDs. The han-sandbox static inputs and historical chunks are preserved as read-only inputs and are never written. Read sharing to the runtime SA remains a prerequisite.
+```bash
+RUN_ID=ipcch-real-REPLACE_WITH_RETURNED_ID
+"$OPERATOR_PY" pipeline.py status --config "$OPERATOR_CONFIG" --run-id "$RUN_ID"
+```
 
-**Known limits:**
-- DA1's live production-to-current chain is verified for M=2026-11/O=2026-09. DA2 observed exact PATCH32 targets, source-level fill candidates, explicit nulls, wholly omitted PERSIANN fields and a three-area VI recomputation within 1e-9. Per-row omissions within present fields and finite-primary preservation had no natural samples and remain pending under D2.
-- PATCH32 had 93 primary-null/patch-finite code-month candidates. Saved September SPEI across its 32 targets was 21 finite/11 NaN; candidates do not imply finite fitted SPEI. No independent SPEI replay, full-table VI replay or model-accuracy validation was performed.
-- The historical han denial is superseded by the runtime-SA 151/151 access recheck and this run's actual production/consumption. The absent feisty EE root was initialized once under D5 and verified by the runtime SA. Preserve both access and root readiness; an IAM role alone does not establish either.
-- Do not deploy personal credentials.
+Poll at a bounded interval, such as 60 seconds. `submitted`, `claimed` and `running` are intermediate. Success requires the durable final `status: succeeded`, IPCCH `status: succeeded`, publication `status: published`, and no unresolved `lock_release_problems`. The reservation records the deadline. Logs can be quiet while work continues; check durable state instead of resubmitting.
+
+```bash
+gcloud storage cat 'gs://food-crisis-test-ipcch-data/monthly-staging/current.json'
+gcloud storage cat "gs://food-crisis-test-ipcch-data/runs/$RUN_ID/v2_run_status.json"
+```
+
+Follow the pointer's `release_record` at `release_record_generation` using `gcloud storage cat 'gs://...#GENERATION'`. The release must name publication `<run_id>-ipcch` and its pinned request. If another run has since advanced current, distinguish that from this run's own result. Follow the pinned delivery and batch manifests, not file modification times.
+
+| Artifact | Path relative to `gs://food-crisis-test-ipcch-data/` |
+|---|---|
+| Feature batch | `ipcch-v2/real/feature_batches/<batch_id>/`: `manifest.json`, `h02.csv`, `h08.csv`, `h14.csv`, `feature_provenance.csv`, `summary.json` |
+| Delivery manifest | `deliveries/<run_id>-ipcch/manifest.json` |
+| Polygon/country predictions | `deliveries/<run_id>-ipcch/scopes/{0,6,12}m/ipcch/{polygon_predictions,country_predictions}.csv` |
+| Release record | `monthly-staging/releases/<run_id>-ipcch/release.json` |
+| Retained versions | Tables and their `HEAD.json`/version records under `ipcch-v2/real/` |
+| EE task receipts | `ipcch-v2/exports/ipcch_exports/<run_id>/tasks/` |
+
+Download a manifest-pinned file with `gcloud storage cp 'gs://...#GENERATION' LOCAL_FILE` and compare its SHA-256. The legacy `pipeline.py download` route is not the v2 collection procedure. Large provenance/fill-audit files need not be downloaded merely to check bucket visibility.
+
+IPCCH should link the same batch, M/O, 527-feature order and 6,226-area roster at all three horizons. Publication verifies stored members before moving current; downloads should still use exact generations and hashes. The inherited FEWS member retains its own month. Activation records the original v2 cutover and is carried forward, so its older date is expected.
+
+Inspect the batch manifest's generation report: `inputs`, `climate_production` (demand/jobs/skipped), `gaps`, `coverage_end` and `warnings`. Relate retained references to saved versions. Export completion alone does not establish source completeness or consumption.
+
+## 5. Automatic sources and missing data
+
+Unsaved EVI/SPI/SPEI periods trigger VI current, PRCP, ET0 and PATCH32 production under `projects/feisty-flames-511718-d4/assets/`. IDs are run-specific: `<table>__<version from run ID and M>`. Existing output assets are never reused or overwritten; consumers map the new IDs automatically. Job counts and year chunks follow demand; seven jobs in November are not a fixed monthly requirement.
+
+Han-sandbox admin groups G00..G24, static baselines and historical chunks remain read-only. Raster providers, seasonal demand, GPP publication checks and VIIRS discovery are also automatic. No monthly Code Editor task submission, upstream script rerun or asset-address replacement is needed.
+
+Incomplete source calendars can produce missing fields and unavailable consumer periods even when export succeeds. Missing values remain explicit under the feature contract. Keep does not fabricate later values for stale research inputs.
+
+In the accepted November run, GPP 2026-01..09 returned 404 and was ledgered unpublished; history ended 2025-12. Soybean oil ended 2026-07. Their O values were optional-missing NaN. PERSIANN's incomplete September calendar left the mean wholly absent: export succeeded, but that source was unavailable. Review the next report for changes to these dated conditions.
+
+## 6. Failure, resume and containment
+
+After a timeout or lost response, preserve local state and reconcile status, frozen request, reservation, final record and current pointer before considering another submission.
+
+An interrupted submission can then resume the **same frozen bytes** using its original selections and ID:
+
+```bash
+"$OPERATOR_PY" pipeline.py submit --config "$OPERATOR_CONFIG" --selections "$SELECTIONS" --run-id "$RUN_ID" --execute
+```
+
+This resumes submission; it does not rerun a terminal failed job. A new attempt needs a new submission without `--run-id`, after fixing the cause and reviewing retained changes. It freezes the then-current UTC month. Refreshes and other versions committed before failure remain saved and become the next keep baseline. A failure before publication leaves current unchanged; after publication uncertainty, inspect pointer and release before concluding that.
+
+Preserve `work_dir`: without its v2 submission state, CLI status can fall back to legacy lookup. That does not prove the v2 request never existed.
+
+No dedicated v2 current-rollback helper exists. Use a reviewed new maintenance operation if containment is needed. A hold pauses admission; release it before submitting a fresh routine ID, which is not pre-admitted by an existing hold. Preserve retained histories. Do not restore the old C transition, deploy the pre-v2 `487a...` image or manually replace current with a pre-activation pointer.
+
+## 7. Accepted reference and limits
+
+The 2026-11-01 acceptance is `ipcch-real-fe7282ef75e747fd`, execution `oct-delivery-625sk`, current generation `1793503777656101`. Eleven manual inputs stayed unchanged; thirteen climate tables appended September for exactly 6,226 areas, preserving old values. Seven table-to-asset and seven raster exports completed; nightlight appended September. The FEWS NET member from `fews-compat-v2rt-20261031a` was inherited unchanged.
+
+DA1 production-to-current passed. DA2 remains partial under accepted D2: exact PATCH32 targets, natural null fill candidates, explicit nulls, wholly omitted fields and a three-area VI recomputation were observed. Per-row missing keys within present fields and finite-primary preservation had no natural samples. PATCH32's 93 source-level fill candidates accompanied 21 finite/11 NaN saved September SPEI values across 32 targets; this is not an independent fitted SPEI replay. No full SPEI/VI replay or model-accuracy claim follows.
+
+Detailed evidence is in canonical archived tasks `10-31-ipcch-all-keep-incremental-release` and `10-30-ipcch-real-e2e-integration`. These records and production payloads are separate from this code-only delivery.

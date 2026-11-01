@@ -1,0 +1,44 @@
+{
+  "schema": "ipcch-v2-selections-v1",
+  "mode": "real",
+  "operations": [
+    "ipcch_generation",
+    "ipcch_inference"
+  ],
+  "publication": "current",
+  "choices": {
+    "acled": {
+      "action": "keep"
+    },
+    "wfp": {
+      "action": "keep"
+    },
+    "history_snapshot": {
+      "action": "keep"
+    },
+    "nino34_anom": {
+      "action": "keep"
+    },
+    "bbg_staple_food": {
+      "action": "keep"
+    },
+    "bbg_oilgas": {
+      "action": "keep"
+    },
+    "bbg_soybean_oil": {
+      "action": "keep"
+    },
+    "bbg_global_food": {
+      "action": "keep"
+    },
+    "food_price_index_WB": {
+      "action": "keep"
+    },
+    "idp_national": {
+      "action": "keep"
+    },
+    "idp_local": {
+      "action": "keep"
+    }
+  }
+}

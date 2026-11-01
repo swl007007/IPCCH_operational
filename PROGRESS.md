@@ -1,3 +1,26 @@
+# Production handover and IFPRI code sync (2026-11-01 UTC)
+
+- User authorized direct code-only synchronization to
+  `IFPRI/MTID-FSP-FOOD-CRISIS-MODEL-INPUT`, explicitly without a new Trellis task.
+  The preceding E2E task is already accepted and archived.
+- README and OPERATIONS now describe the existing production bucket, next UTC
+  monthly increment, all eleven input formats, automatic EE/source work,
+  generation/inference, current readback and same-submission recovery.
+- Added a valid all-keep selections example. Removed QUICKSTART and obsolete
+  migration instructions; updated the handover member list and root entrypoint.
+  No deployed runtime, private operator config, data or cloud resource changed.
+- Guarded local verification: 41 operator/install/handover tests passed,
+  CHILD-EXIT 0, peak RSS 402352 KiB; schema/member/link checks and the real-config
+  no-cloud submit preview passed. A read-only consistency check found no material
+  mismatch. GitNexus MEMBERS impact LOW; pinned Git diff controls actual scope.
+- Canonical source cleanup backed up generated AGENTS content, restored its
+  committed version and removed regenerable caches. Four ignored cache directories
+  resisted removal on DrvFS and were preserved; all data/evidence/state kept.
+- Fixed-commit export, validation and push receipts are kept outside the repo:
+  `/home/swl007007/ipcch-operator/ifpri-code-sync-20261101/`.
+  IFPRI gets the cloud_pipeline subtree only, retaining its Git controls and a
+  source-snapshot README note; no production artifacts or task evidence.
+
 # Completed: IPCCH real increment with ACLED refresh (2026-11-01 UTC)
 
 Task: `.trellis/tasks/archive/2026-10/10-31-ipcch-all-keep-incremental-release/`.
