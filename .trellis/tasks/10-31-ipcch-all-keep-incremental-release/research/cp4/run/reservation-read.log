@@ -1,0 +1,45 @@
+# unit=ipcch-cp2-reservation-read-1793500314809935847 start=2026-10-31T22:31:54-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PATH=/mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin:/usr/bin:/bin python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/cloudop.py --timeout 120 --purpose CP4 monitor: reservation --scope read --effect none -- /mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin/gcloud --configuration=food-crisis-test storage cat gs://food-crisis-test-ipcch-data/runs/ipcch-real-fe7282ef75e747fd/v2_reservation.json
+Running as unit: ipcch-cp2-reservation-read-1793500314809935847.service; invocation ID: 56dc663e53fd461ea5ee89321d5b4eb5
+{
+  "deadline_utc": "2026-11-01T06:30:34Z",
+  "mode": "real",
+  "request": {
+    "generation": "1793500174046456",
+    "sha256": "b0f8b507e63c25be3b660827ab521ce3d7009f14f8d2d0a522f6003c73547d78",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-fe7282ef75e747fd/run_manifest.json"
+  },
+  "reserved_at": "2026-11-01T02:30:34Z",
+  "run_id": "ipcch-real-fe7282ef75e747fd",
+  "run_timeout_seconds": 14400,
+  "schema": "ipcch-v2-run-reservation-v1"
+}
+	Command being timed: "/usr/bin/env PATH=/mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin:/usr/bin:/bin python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/cloudop.py --timeout 120 --purpose CP4 monitor: reservation --scope read --effect none -- /mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin/gcloud --configuration=food-crisis-test storage cat gs://food-crisis-test-ipcch-data/runs/ipcch-real-fe7282ef75e747fd/v2_reservation.json"
+	User time (seconds): 0.96
+	System time (seconds): 0.55
+	Percent of CPU this job got: 12%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:11.68
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 74972
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 24417
+	Voluntary context switches: 100398
+	Involuntary context switches: 22
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 32
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 11.806s
+CPU time consumed: 1.579s
+# end=2026-10-31T22:32:06-04:00 launcher_rc=0 child_exit=0

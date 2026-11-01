@@ -1,0 +1,32 @@
+{
+ "entries": 253,
+ "audit_entries_skipped": 1,
+ "pattern": "warn|error|exception|traceback|fail|timed? ?out|retry",
+ "hits": [
+  {
+   "ts": "2026-11-01T02:57:31.160542Z",
+   "severity": null,
+   "text": "httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance."
+  },
+  {
+   "ts": "2026-11-01T02:57:31.162584Z",
+   "severity": null,
+   "text": "httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance."
+  },
+  {
+   "ts": "2026-11-01T03:06:31.458270Z",
+   "severity": null,
+   "text": "/app/cloud/ipcch/climate_tables.py:313: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`"
+  },
+  {
+   "ts": "2026-11-01T03:06:43.740447Z",
+   "severity": null,
+   "text": "/app/cloud/ipcch/climate_tables.py:313: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`"
+  },
+  {
+   "ts": "2026-11-01T03:29:37.821687Z",
+   "severity": null,
+   "text": "      \"failed_operation\": null,"
+  }
+ ]
+}

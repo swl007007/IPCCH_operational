@@ -1,0 +1,16 @@
+{
+  "bucket": "food-crisis-test-ipcch-data",
+  "content_type": "text/plain; charset=utf-8",
+  "crc32c_hash": "TgWC+w==",
+  "creation_time": "2026-10-31T15:38:48+0000",
+  "etag": "CMSp56vL5JcDEAE=",
+  "generation": "1793461128385732",
+  "md5_hash": "hYE5KAdz5bYhtiF0EoGldA==",
+  "metageneration": 1,
+  "name": "monthly-staging/current.json",
+  "size": 231,
+  "storage_class": "STANDARD",
+  "storage_class_update_time": "2026-10-31T15:38:48+0000",
+  "storage_url": "gs://food-crisis-test-ipcch-data/monthly-staging/current.json#1793461128385732",
+  "update_time": "2026-10-31T15:38:48+0000"
+}

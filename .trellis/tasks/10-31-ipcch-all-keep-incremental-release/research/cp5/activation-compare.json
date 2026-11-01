@@ -1,0 +1,16 @@
+{
+ "equal": true,
+ "label": "carried contract activation (not a new activation event)",
+ "post_activation": {
+  "activated_by_run": "ipcch-real-522b30030f944868-ipcch",
+  "at": "2026-10-31T15:37:56Z",
+  "contract": "ipcch-validity-h2h8h14-v2",
+  "execution_month": "2026-10"
+ },
+ "pre_activation": {
+  "activated_by_run": "ipcch-real-522b30030f944868-ipcch",
+  "at": "2026-10-31T15:37:56Z",
+  "contract": "ipcch-validity-h2h8h14-v2",
+  "execution_month": "2026-10"
+ }
+}

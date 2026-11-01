@@ -224,14 +224,14 @@ The hold admits only the bound runs (operator and Workflow). `hold` records the 
 
 Rollback of the 2026-10-22 release: the operation record (`operations/fews-retrain-20261022/operation.json` in the candidate operator state, copied under the task record's `research/p4/operation/`) holds the predecessor workflow source/env, job images and grants, the previous normal config (`93293916...`, image `sha256:7e6133f3...`, operator state `food-crisis-test/operator-state`) and the absent previous pointer. The previous confidence-bearing fallback is `fallback/october_2026.predecessor-fews-retrain-20261022/`. To roll back, re-pause admission with the same operation (`maintenance --config CANDIDATE_CONFIG --operation-id fews-retrain-20261022 --execute hold --admit fews-candidate-20261022a`), run `... --execute restore` (pointer CAS back to the recorded predecessor first, then normal config, fallback and shared settings), verify, then `... --execute release`. Restore stops without changes if the pointer or config changed outside the operation. This rollback applies only to state that operation still owns. After the 2026-10-31 C transition and the v2 activation, do not use it (see the next section).
 
-## IPCCH v2 monthly submission (2026-10-31)
+## IPCCH v2 monthly submission (updated 2026-11-01 UTC)
 
-Production (`monthly-staging/current.json`) serves the v2 release `ipcch-real-522b30030f944868-ipcch`, activated 2026-10-31T15:37:56Z:
-- **IPCCH:** the H2/H8/H14 member, model combination `ipcch-validity-h2h8h14-final-20261030`, M 2026-10 / O 2026-08, 6,226 areas, 527 features. Public leads are 0/6/12 months, so targets are 2026-10/2027-04/2027-10.
+At the 2026-11-01 readback, production (`monthly-staging/current.json#1793503777656101`) serves `ipcch-real-fe7282ef75e747fd-ipcch`. It carries the original v2 contract activation from 2026-10-31T15:37:56Z; this is not a new activation event.
+- **IPCCH:** the H2/H8/H14 member, model combination `ipcch-validity-h2h8h14-final-20261030`, M 2026-11 / O 2026-09, 6,226 areas, 527 features. Public leads are 0/6/12 months, so targets are 2026-11/2027-05/2027-11.
 - **FEWS NET:** inherited literally from `fews-compat-v2rt-20261031a`. That release re-scored the unchanged packages on the v2 image byte-identically to the previous release.
 - **Runtime:** `runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6`, built from `115798f`. It installs the accepted envelope, package and handoff under `/opt/ipcch`, re-verified at build (`INSTALL.json`).
 - **Legacy destination:** baseline `f0481ca1…` and operator state `food-crisis-test-v2-runtime-20261031/operator-state`.
-- **Evidence:** task record `10-30-ipcch-real-e2e-integration` under `research/cp4` and `research/cp6`.
+- **Evidence:** task `10-31-ipcch-all-keep-incremental-release`, `research/cp5/` (including the superseding result corrections and final acceptance). The preceding integration/cutover is recorded in archived task `10-30-ipcch-real-e2e-integration`, `research/cp4` and `research/cp6`.
 
 ```bash
 python pipeline.py submit --config /private/project.json --selections SELECTIONS.json            # preview
@@ -259,15 +259,14 @@ python pipeline.py status --config /private/project.json --run-id ipcch-real-<id
 
 **Source work** is reported per run in the batch manifest's generation section: `inputs`, `climate_production` (demand, jobs, skipped), `gaps`, `coverage_end` and `warnings`. It is also visible in the retained `HEAD.json` versions under `ipcch-v2/real`.
 
-For the 2026-10-31 run:
-- ACLED was refreshed and appended.
-- GPP 2026-01..08 got HTTP 404 and was ledgered unpublished.
-- Climate demand was empty, with no producer jobs.
-- The 26 climate tables and nightlight were unchanged.
-- Everything else was kept.
+For run `ipcch-real-fe7282ef75e747fd` (2026-11-01 UTC):
+- All eleven manual inputs stayed at their pre-run HEAD/version/content, including ACLED v2. The preceding failed attempt had already appended the approved 470 ACLED rows for 2026-10-17..23; the successful recovery kept them. Batch provenance declares the ACLED cutoff at 2026-08, with no later observation; no numerical ACLED replay was performed.
+- Seven run-specific VI/PRCP/ET0/PATCH32 assets and seven raster GCS exports completed. Thirteen monthly climate tables each appended the exact 6,226-area September roster and preserved all old values. Seasonal demand was empty.
+- Six produced assets entered the saved consumers. PERSIANN exported successfully but its September mean was wholly omitted and its source was unavailable; SPI/SPEI used CHIRPS/ERA5LAND. This was not an export failure.
+- Nightlight appended September (v2). Nine GPP probes for 2026-01..09 returned HTTP 404 and were ledgered unpublished; GPP history stayed unchanged.
 - Two optional-missing warnings (R65): GPP_mean ends 2025-12 and bbg_soybean_oil ends 2026-07, both before O. Those features at O are NaN.
 
-'No demand and no jobs' is not a measured zero count of Earth Engine calls. `ee.Initialize` runs whenever generation is selected, and there is no RPC telemetry.
+The preceding October run had no climate demand/jobs. This never established zero Earth Engine calls: `ee.Initialize` runs whenever generation is selected, and total RPC calls were not measured.
 
 **Rollback and containment.**
 - Do not reuse the C operation `ipcch-v2-runtime-20261031`, restore jobs to `487a…`, or hand-CAS `current.json` to a pre-activation pointer. That would drop activation, and `487a` lacks the v2 guards.
@@ -280,6 +279,7 @@ For the 2026-10-31 run:
 **Automatic EE outputs.** When a run has unsaved `evi_anom`/`spi03`/`spei03` periods, the table producer exports its tables to the writable root `projects/feisty-flames-511718-d4/assets/` (`producer_asset_root`). Asset IDs are run-specific, `<table name>__<version from run ID and M>`. Existing assets are never reused or overwritten, and consumers map those run-specific IDs. The han-sandbox static inputs and historical chunks are preserved as read-only inputs and are never written. Read sharing to the runtime SA remains a prerequisite.
 
 **Known limits:**
-- Live incremental acquisition (DA1/DA2) is not yet accepted. The first natural case is M=2026-11/O=2026-09.
-- The runtime service account `monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com` is denied read on the han-sandbox producer inputs. Any run with unsaved climate or table periods therefore fails closed before export, until the upstream owner shares read access or an owner-approved copy is configured.
+- DA1's live production-to-current chain is verified for M=2026-11/O=2026-09. DA2 observed exact PATCH32 targets, source-level fill candidates, explicit nulls, wholly omitted PERSIANN fields and a three-area VI recomputation within 1e-9. Per-row omissions within present fields and finite-primary preservation had no natural samples and remain pending under D2.
+- PATCH32 had 93 primary-null/patch-finite code-month candidates. Saved September SPEI across its 32 targets was 21 finite/11 NaN; candidates do not imply finite fitted SPEI. No independent SPEI replay, full-table VI replay or model-accuracy validation was performed.
+- The historical han denial is superseded by the runtime-SA 151/151 access recheck and this run's actual production/consumption. The absent feisty EE root was initialized once under D5 and verified by the runtime SA. Preserve both access and root readiness; an IAM role alone does not establish either.
 - Do not deploy personal credentials.

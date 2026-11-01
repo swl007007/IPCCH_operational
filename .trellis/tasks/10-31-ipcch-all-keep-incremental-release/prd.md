@@ -1,8 +1,9 @@
 # IPCCH incremental release with ACLED refresh and DA1/DA2 acceptance
 
-Status: **First attempt failed and is reconciled. The user approved D5 recovery
-and one additional all-keep attempt on 2026-11-01 UTC. DA1/DA2 remain unaccepted;
-root initialization/verification must pass before the second submission.**
+Status: **Accepted under D2/D5 on 2026-11-01 UTC. Root recovery and the single
+additional all-keep attempt succeeded; current publication and DA1 are verified.
+DA2 has observed results plus explicit unobserved cases, not a full pass.
+First-attempt failure and every superseding evidence correction are retained.**
 
 ## Goal
 
@@ -59,32 +60,41 @@ that interval. Under D5 the second attempt's ACLED choice is only action=keep.
 
 ## Acceptance criteria
 
-- [ ] **AC1 — Bound submission:** preserve the first request/reservation's verified
+- [x] **AC1 — Bound submission:** preserve the first request/reservation's verified
   ACLED refresh plus ten keeps. The D5 second request/reservation must declare all
   eleven keep, real mode, pinned runtime/models and actual M/O/targets; only one
   additional run admitted after the root check succeeds.
-- [ ] **AC2 — Real production:** nonempty pre-run demand, completed actual exports
+- [x] **AC2 — Real production:** nonempty pre-run demand, completed actual exports
   and readable validated run-specific destinations; no manual Tasks-panel action.
-- [ ] **AC3 — Consumption:** produced IDs link to consuming saved climate versions,
+- [x] **AC3 — Consumption:** produced IDs link to consuming saved climate versions,
   this run's batch inputs, inference and current member. Generic readback success
   or retained-only replay does not satisfy this criterion.
-- [ ] **AC4 — Live data contract:** PATCH32 row/ID evidence, VI units, completeness
+- [x] **AC4 — Live data contract (D2 partial-observation disposition):** PATCH32 row/ID evidence, VI units, completeness
   and actual null/omitted shapes have explicit results; unexercised cases remain
   incomplete. Apply D2 to naturally unobserved cases without declaring full DA2
   passed. Availability and processing failures are classified correctly.
-- [ ] **AC5 — Publication:** current/release/delivery/member refs identify this run;
+- [x] **AC5 — Publication:** current/release/delivery/member refs identify this run;
   527-feature order, 6,226 rows per horizon and targets validate; FEWS equals the
   predecessor member in full.
-- [ ] **AC6 — Source actions:** the ten kept histories retain content/version;
+- [x] **AC6 — Source actions:** the ten kept histories retain content/version;
   ACLED appends a version matching the validated refresh and preserves saved rows
   outside the agreed interval/regions. Report accepted/dropped export rows and
   coverage; October-only additions must not enter the August feature cutoff.
   For D5, verify ACLED v2 and all ten other kept histories remain unchanged from
   the fresh recovery pre-snapshot; preserve the first attempt's refresh evidence.
   Measure automatic updates/reuse separately, with actual coverage and warnings.
-- [ ] **AC7 — Honest bounded outcome:** resource/status/operation records and all
+- [x] **AC7 — Honest bounded outcome:** resource/status/operation records and all
   intermediate failures are preserved. A failed or blocked attempt is not passed
   acceptance. Reconcile partial progress or uncertain publication before more work.
+
+Acceptance evidence: `research/cp5/`, with Supervisor disposition in
+`research/supervisor-acceptance.md`. Current generation is 1793503777656101 for
+`ipcch-real-fe7282ef75e747fd-ipcch`; M=2026-11/O=2026-09, 527 features and 6,226
+areas per horizon. DA2 pending: per-row omitted keys in otherwise-present fields,
+finite-primary preservation (zero natural samples), and unseen field shapes.
+PATCH32 candidates do not establish a numerical SPEI replay; saved O values among
+32 targets are 21 finite/11 NaN. The original CP5 report's contrary wording is
+superseded by the recorded correction, while its frozen bytes remain preserved.
 
 ## Out of scope
 

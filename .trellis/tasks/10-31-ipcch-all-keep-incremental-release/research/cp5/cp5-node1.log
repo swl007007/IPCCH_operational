@@ -1,0 +1,34 @@
+# unit=ipcch-cp2-cp5-node1-1793501417978287220 start=2026-10-31T22:50:17-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -q -p no:cacheprovider /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/test_cp5_helpers.py::test_climate_keys_exact_roster_x_O
+Running as unit: ipcch-cp2-cp5-node1-1793501417978287220.service; invocation ID: 723aa52326414f8fa991e276f8a1d0b5
+.                                                                        [100%]
+1 passed in 0.62s
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -q -p no:cacheprovider /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/test_cp5_helpers.py::test_climate_keys_exact_roster_x_O"
+	User time (seconds): 0.49
+	System time (seconds): 0.09
+	Percent of CPU this job got: 70%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.83
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 158296
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 238
+	Minor (reclaiming a frame) page faults: 28019
+	Voluntary context switches: 1977
+	Involuntary context switches: 7
+	Swaps: 0
+	File system inputs: 40688
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 981ms
+CPU time consumed: 696ms
+# end=2026-10-31T22:50:18-04:00 launcher_rc=0 child_exit=0

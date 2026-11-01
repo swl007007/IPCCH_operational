@@ -1,0 +1,387 @@
+# unit=ipcch-cp2-acled-cutoff-1793504299399528515 start=2026-10-31T23:38:19-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/acled_cutoff.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/post-real.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/inventory-post-real.json 2026-09 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/acled-cutoff.json
+Running as unit: ipcch-cp2-acled-cutoff-1793504299399528515.service; invocation ID: a87917b20cbb4e078d6c78eb4b949058
+{
+ "passed": true,
+ "cutoff_A": "2026-08",
+ "bindings": {
+  "batch_id_bound": true,
+  "sidecar_rows_declared": true,
+  "batch_retained_acled_equals_post_head": true,
+  "delivery_manifest_sha_ok": true,
+  "fill_audit_declared_sha_equals_sidecar": true
+ },
+ "per_section": {
+  "acled_agg_events_battles": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_events_erv": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_events_vac": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_exposure_battles": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_exposure_erv": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_exposure_share_battles": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_exposure_share_erv": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_exposure_share_vac": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_exposure_vac": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_fatalities_battles": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_fatalities_erv": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_fatalities_vac": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6226,
+   "latest_blank": 0,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_spill_events_battles": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6210,
+   "latest_blank": 16,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_spill_events_erv": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6210,
+   "latest_blank": 16,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_spill_events_vac": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6210,
+   "latest_blank": 16,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_spill_fatalities_battles": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6210,
+   "latest_blank": 16,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_spill_fatalities_erv": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6210,
+   "latest_blank": 16,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  },
+  "acled_agg_spill_fatalities_vac": {
+   "rows": 6226,
+   "polygons_unique": true,
+   "polygons_equal_roster": true,
+   "observation_kind_month_lag1": true,
+   "feature_month_is_O": true,
+   "dependency_end_is_A": true,
+   "latest_nonblank": 6210,
+   "latest_blank": 16,
+   "latest_max": "2026-08",
+   "latest_all_le_A": true,
+   "source_table_acled": true,
+   "source_version_raw": [
+    "2.0"
+   ],
+   "source_version_equal": true,
+   "source_sha_equal": true,
+   "passed": true
+  }
+ }
+}
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/acled_cutoff.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/post-real.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/inventory-post-real.json 2026-09 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/acled-cutoff.json"
+	User time (seconds): 1.12
+	System time (seconds): 0.21
+	Percent of CPU this job got: 74%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.79
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 517964
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 27424
+	Voluntary context switches: 1869
+	Involuntary context switches: 8
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 1.858s
+CPU time consumed: 1.350s
+# end=2026-10-31T23:38:21-04:00 launcher_rc=0 child_exit=0

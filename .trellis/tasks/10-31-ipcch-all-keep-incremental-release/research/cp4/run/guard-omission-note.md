@@ -1,0 +1,2 @@
+# CP4 guard omission (recorded; not re-run)
+`progress_read.py` sample 1 (`run/progress-1.json`, about 02:31Z; cloudop-logged) ran OUTSIDE guarded.sh. It was a read-only bounded listing of the run's durable objects (3 objects, 0 task records). Per the Supervisor it is not repeated to relabel it. All later progress and readback Python steps run under guarded.sh (4 GiB / 3 GiB AS / no swap / 600 s, CHILD-EXIT).

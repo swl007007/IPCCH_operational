@@ -1,0 +1,33 @@
+# unit=ipcch-cp2-06-exec-prepare-1793504670120488970 start=2026-10-31T23:44:30-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PATH=/mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin:/usr/bin:/bin python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/cloudop.py --timeout 540 --purpose runtime-final: monthly-prepare executions --scope read --effect none -- /mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin/gcloud --configuration=food-crisis-test run jobs executions list --job=monthly-prepare --project=feisty-flames-511718-d4 --region=us-central1 --limit=3 --format=json
+Running as unit: ipcch-cp2-06-exec-prepare-1793504670120488970.service; invocation ID: 2184769426fb409b9399ef36271cd72e
+[]
+	Command being timed: "/usr/bin/env PATH=/mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin:/usr/bin:/bin python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/cloudop.py --timeout 540 --purpose runtime-final: monthly-prepare executions --scope read --effect none -- /mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin/gcloud --configuration=food-crisis-test run jobs executions list --job=monthly-prepare --project=feisty-flames-511718-d4 --region=us-central1 --limit=3 --format=json"
+	User time (seconds): 0.66
+	System time (seconds): 0.48
+	Percent of CPU this job got: 10%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:11.35
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 80572
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 23130
+	Voluntary context switches: 123894
+	Involuntary context switches: 20
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 32
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 11.428s
+CPU time consumed: 1.198s
+# end=2026-10-31T23:44:41-04:00 launcher_rc=0 child_exit=0

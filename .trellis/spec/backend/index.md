@@ -14,7 +14,7 @@ This directory contains guidelines for backend development. Fill in each file wi
 
 | Guide | Description | Status |
 |-------|-------------|--------|
-| [Monthly Delivery Contracts](./monthly-delivery-contracts.md) | Legacy delivery; IPCCH v2 inputs, EE production, submission, installation and recovery boundaries | Real retained-history E2E/current verified; live increment deferred |
+| [Monthly Delivery Contracts](./monthly-delivery-contracts.md) | Legacy delivery; IPCCH v2 inputs, EE production, submission, installation and recovery boundaries | Live increment/current verified; DA2 unobserved cases explicit |
 | [Local Migration Package](./local-migration-package.md) | Standalone payload, destination references, and compact manual results | Implemented |
 | [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
 | [Database Guidelines](./database-guidelines.md) | ORM patterns, queries, migrations | To fill |

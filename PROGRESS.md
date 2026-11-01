@@ -1,4 +1,4 @@
-# Active: IPCCH real increment with ACLED refresh (2026-11-01 UTC)
+# Accepted: IPCCH real increment with ACLED refresh (2026-11-01 UTC)
 
 Task: `.trellis/tasks/10-31-ipcch-all-keep-incremental-release/`.
 Authority: the user's subsequent goal `execution-protocol.md`, D1-D4, and explicit
@@ -77,6 +77,77 @@ Authority: the user's subsequent goal `execution-protocol.md`, D1-D4, and explic
   exact pinned missing_assets result. Monthly jobs and Workflow unchanged.
   CP3 23 top-level and 20 execution hashes verified (execution manifest is relative
   to exec/). CP4 all-keep preparation released; actual export remains unproven.
+- CP3 evidence committed as 3e67076. CP4 preflight accepted: all 30 frozen hashes
+  verified, selections 8092421f has eleven keeps; store matches post-failure
+  snapshot, current remains 1793461128385732, deployment unchanged, no active work.
+  Actual demand remains 13 September monthly bases/seven producer jobs. Guarded
+  preflight/preview passed; 12 helper checks passed. ONE additional submission
+  released after immediate fresh guards; bounded monitoring and CP5 readback follow.
+- CP4 submitted exactly once: ipcch-real-fe7282ef75e747fd, frozen at
+  2026-11-01T02:29:33Z (M November / O September), all eleven keep, expected
+  current 1793461128385732. Request #1793500174046456, SHA b0f8b507; Supervisor
+  verified frozen request bytes and CHILD-EXIT 0. Runtime/export outcome pending.
+- Runtime execution oct-delivery-625sk, claim 02:29:35Z, reservation 02:30:34Z,
+  deadline 06:30:34Z, matching frozen request. First durable sample has no export
+  record yet. That small progress read omitted the guard and is disclosed in
+  cp4/run/guard-omission-note.md; subsequent reads require the guard. A guarded
+  gcloud PATH failure occurred before any cloud call and is preserved separately.
+- CP4 guarded progress-2 confirms seven distinct table_to_asset tasks submitted,
+  each with a task ID and unique feisty destination suffixed with this run and
+  165617d8. This passes the first attempt's failure point. Completion, consumer
+  append, DA1/DA2 and current publication are not yet established.
+- CP4 guarded progress-3: all seven table_to_asset records are completed;
+  first CHIRPS raster export is submitted in the saved record. Guarded local-EE
+  read of the same eight task IDs reports all COMPLETED (caller not established;
+  not runtime telemetry). No retained HEAD moved yet. Full DA1 remains pending.
+- Guarded progress-4 (02:53Z): precipitation histories prcp_anom/prcp_z/rainy_days/
+  cdd HEADs moved. Seven producer tables remain completed; raster records are
+  five completed/one submitted. Corrected CP5 helpers accepted (7 guarded tests);
+  full-roster increment, immutable links and DA2 observations remain to be read.
+  Poll bwb50a6er and sampler bugw76m8f track the same run. Same-session Executor
+  compaction requested after durable HANDOFF; no new execution or request.
+- Same-session Executor compaction completed; session 6a490ae1 was reverified.
+  Guarded progress-6 (03:03:22Z) records seven completed table exports and seven
+  completed raster exports. Ten climate HEADs moved, including sm_z; spi03,
+  spei03 and evi_anom remain pending. Status is still running, not accepted.
+- CP5 ACLED cutoff helper prepared and source-inspected; one guarded self-check
+  passed. It binds the actual batch provenance to retained ACLED v2 and checks
+  O=September/A=August per section and roster. This is provenance/cutoff evidence,
+  not numerical replay; its live readback awaits terminal success.
+- Guarded progress-7 (03:08:24Z) records all thirteen climate HEADs moved, with
+  spi03 at 03:05:38Z, spei03 at 03:06:06Z and evi_anom at 03:06:58Z. Acceptance
+  and GPP availability ledger also moved. Seven table and seven raster records
+  are completed. Batch/publication and exact produced-ID consumption links remain
+  pending final readback; HEAD movement alone is not DA1 acceptance.
+- Guarded progress-9/11 show nightlight v2 and the feature batch
+  ipcch-2026-11-ipcch-real-fe7282ef75e747fd-a02e27ee805d (H2/H8/H14, provenance,
+  manifest), followed by delivery object writes. Latest status at 03:28:29Z is
+  running. These are listing observations; content verification, current and
+  final acceptance remain pending.
+- CP4 terminal status at 03:30:37Z: succeeded (cp5-final-status 537b04df), no lock
+  release problems. Status reports current generation 1793503777656101 and this
+  run's three 6,226-row horizons. Supervisor verified the status bytes. CP5 guarded
+  independent readbacks are running; DA1/DA2 and publication acceptance pending.
+  Source build_record carries existing contract activation forward by design;
+  post/pre activation equality still needs the actual readback.
+- CP5 accepted after frozen-file rehash and Supervisor spotchecks: generic 27/27,
+  lineage 11/11, exact 13-base roster append with old values preserved, 43 batch
+  retained pins and all eleven keeps unchanged. FEWS member is literally equal;
+  the original v2 activation is carried unchanged. ACLED provenance declares
+  O=September/A=August for all 18 sections; no numerical ACLED replay is claimed.
+- DA1 production-to-current verified. DA2 partial under D2: exact PATCH32 targets,
+  93 ET0 fill candidates, explicit nulls, wholly omitted PERSIANN fields and three
+  VI sample matches observed. Per-row omissions and finite-primary preservation
+  remain unobserved. Report correction: 32 PATCH32 targets have 21 finite/11 NaN
+  saved SPEI values; 31 fill-candidate codes do not imply 31 finite outputs, and
+  zero finite-primary samples cannot establish preservation. Original report and
+  raw witness remain frozen, with a superseding correction.
+- Cloud Run oct-delivery-625sk completed at 03:29:41Z (59m57s), succeededCount 1,
+  exit(0) in logs, unchanged image/SA/limits. Final current is 1793503777656101;
+  no live lock/hold/active work observed. Nine new GPP 404s are hash-bound to ledger
+  v17; nightlight v2 covers September. Optional GPP/soybean-oil gaps remain.
+  No third attempt, product/config change or Audit. Native closure follows the
+  scoped evidence/docs commit; pre-existing AGENTS.md is byte-unchanged.
 
 # Completed: IPCCH automatic E2E integration (2026-10-31)
 

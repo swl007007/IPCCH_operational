@@ -1,0 +1,115 @@
+# unit=ipcch-cp2-submit-preview-1793500013119296679 start=2026-10-31T22:26:53-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/pipeline.py submit --config /home/swl007007/ipcch-operator/food-crisis-test/project.json --selections /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/allkeep/selections.json
+Running as unit: ipcch-cp2-submit-preview-1793500013119296679.service; invocation ID: da6066c02b4b4d50a2c3f1f6332b4b77
+{
+  "mode": "preview",
+  "run_id": "ipcch-real-2d95bd191c694c4c",
+  "request": {
+    "schema_version": "fewsnet-ipcch-delivery-request-v2",
+    "run_id": "ipcch-real-2d95bd191c694c4c",
+    "mode": "real",
+    "execution_month": "2026-11",
+    "operations": {
+      "ipcch_generation": true,
+      "ipcch_inference": true,
+      "fewsnet_generation": false,
+      "fewsnet_inference": false
+    },
+    "ipcch": {
+      "model_combination": {
+        "combination_id": "provisional",
+        "envelope": {
+          "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json",
+          "generation": "1",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "acled": {
+        "action": "keep"
+      },
+      "wfp": {
+        "action": "keep"
+      },
+      "history_snapshot": {
+        "action": "keep"
+      },
+      "research_inputs": {
+        "nino34_anom": {
+          "action": "keep"
+        },
+        "bbg_staple_food": {
+          "action": "keep"
+        },
+        "bbg_oilgas": {
+          "action": "keep"
+        },
+        "bbg_soybean_oil": {
+          "action": "keep"
+        },
+        "bbg_global_food": {
+          "action": "keep"
+        },
+        "food_price_index_WB": {
+          "action": "keep"
+        },
+        "idp_national": {
+          "action": "keep"
+        },
+        "idp_local": {
+          "action": "keep"
+        }
+      },
+      "country_reference": {
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv",
+        "generation": "1",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "fewsnet": null,
+    "publication": "current",
+    "runtime": {
+      "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+      "environment_manifest": {
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt",
+        "generation": "1",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "release": {
+      "namespace": "monthly-staging",
+      "expected_pointer_generation": "0"
+    },
+    "operator": "weilun.shi",
+    "prepared_at": "2026-11-01T02:26:53Z"
+  },
+  "note": "provisional references and time; --execute uploads/pins every file, then freezes the request at one UTC submission instant (execution month, prepared_at) and uploads it last"
+}
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/pipeline.py submit --config /home/swl007007/ipcch-operator/food-crisis-test/project.json --selections /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/allkeep/selections.json"
+	User time (seconds): 0.32
+	System time (seconds): 0.06
+	Percent of CPU this job got: 57%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.68
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 129056
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 3
+	Minor (reclaiming a frame) page faults: 19196
+	Voluntary context switches: 2577
+	Involuntary context switches: 5
+	Swaps: 0
+	File system inputs: 272
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 742ms
+CPU time consumed: 407ms
+# end=2026-10-31T22:26:53-04:00 launcher_rc=0 child_exit=0

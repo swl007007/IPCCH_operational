@@ -1,0 +1,103 @@
+{
+ "identity": "local operator EE credentials (caller not established), NOT the runtime SA",
+ "task_ids": [
+  "RFU3ZH3QH7WVPKI7UVRIJQR2",
+  "RGAJ47QERKDVN4TLBKUBK43N",
+  "UQHEJZ3W5LBNVABV34NRLV3X",
+  "NLZVY6DHKHPBFDI7EXEVX4DM",
+  "HQLXJ24XGBOVNZ7MLRWDWZ5U",
+  "2MQ5OHBODGC33E55APK6QAKF",
+  "7ZIQ3CDJK7XFKIYM3LP4F2N3",
+  "OWWCR4VNIDQPCPX77HSLFNOM"
+ ],
+ "status": [
+  {
+   "id": "RFU3ZH3QH7WVPKI7UVRIJQR2",
+   "state": "COMPLETED",
+   "description": "ipcch-real-fe7282ef75e747fd_S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+   "error_message": null,
+   "destination_uris": [
+    "https://code.earthengine.google.com/?asset=projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ],
+   "creation_timestamp_ms": 1793500335238,
+   "update_timestamp_ms": 1793500594893
+  },
+  {
+   "id": "RGAJ47QERKDVN4TLBKUBK43N",
+   "state": "COMPLETED",
+   "description": "ipcch-real-fe7282ef75e747fd_S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+   "error_message": null,
+   "destination_uris": [
+    "https://code.earthengine.google.com/?asset=projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ],
+   "creation_timestamp_ms": 1793500328782,
+   "update_timestamp_ms": 1793500592970
+  },
+  {
+   "id": "UQHEJZ3W5LBNVABV34NRLV3X",
+   "state": "COMPLETED",
+   "description": "ipcch-real-fe7282ef75e747fd_S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+   "error_message": null,
+   "destination_uris": [
+    "https://code.earthengine.google.com/?asset=projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ],
+   "creation_timestamp_ms": 1793500331931,
+   "update_timestamp_ms": 1793500535365
+  },
+  {
+   "id": "NLZVY6DHKHPBFDI7EXEVX4DM",
+   "state": "COMPLETED",
+   "description": "ipcch-real-fe7282ef75e747fd_S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+   "error_message": null,
+   "destination_uris": [
+    "https://code.earthengine.google.com/?asset=projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ],
+   "creation_timestamp_ms": 1793500330156,
+   "update_timestamp_ms": 1793500630100
+  },
+  {
+   "id": "HQLXJ24XGBOVNZ7MLRWDWZ5U",
+   "state": "COMPLETED",
+   "description": "ipcch-real-fe7282ef75e747fd_S2C3_ET0_PATCH32_Y2020_2026_V2",
+   "error_message": null,
+   "destination_uris": [
+    "https://code.earthengine.google.com/?asset=projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ],
+   "creation_timestamp_ms": 1793500338337,
+   "update_timestamp_ms": 1793500851270
+  },
+  {
+   "id": "2MQ5OHBODGC33E55APK6QAKF",
+   "state": "COMPLETED",
+   "description": "ipcch-real-fe7282ef75e747fd_S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+   "error_message": null,
+   "destination_uris": [
+    "https://code.earthengine.google.com/?asset=projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ],
+   "creation_timestamp_ms": 1793500326573,
+   "update_timestamp_ms": 1793500654572
+  },
+  {
+   "id": "7ZIQ3CDJK7XFKIYM3LP4F2N3",
+   "state": "COMPLETED",
+   "description": "ipcch-real-fe7282ef75e747fd_S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+   "error_message": null,
+   "destination_uris": [
+    "https://code.earthengine.google.com/?asset=projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ],
+   "creation_timestamp_ms": 1793500327360,
+   "update_timestamp_ms": 1793500528488
+  },
+  {
+   "id": "OWWCR4VNIDQPCPX77HSLFNOM",
+   "state": "COMPLETED",
+   "description": "ipcch-real-fe7282ef75e747fd_ipcch_rain_anomz_chirps_202609",
+   "error_message": null,
+   "destination_uris": [
+    "https://console.developers.google.com/storage/browser/food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/"
+   ],
+   "creation_timestamp_ms": 1793501015849,
+   "update_timestamp_ms": 1793501045281
+  }
+ ]
+}

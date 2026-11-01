@@ -1,0 +1,2210 @@
+{
+ "acceptance_consumed": [
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/acled/acled_admin1_to_poly.csv",
+   "sha256": "f42c2c2c58659775f1a20f781e83513b6a18728ad3e0ecb4e37e0b54809c093a"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/acled/admin1_neighbours.csv",
+   "sha256": "34d1934a161c2925126add66222c1b5caf6efe71617a5ed4c234245001a4dea3"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/acled/admin1_overrides.csv",
+   "sha256": "916e59997b11d4abab4f2bad83136ca96a61cedb1de5bc5212dfb4aa5a267083"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/acled/admin1_population.csv",
+   "sha256": "5f8d6f96929cc91526ecddecb33e8e6516b996cdb93aa438a0131f756ab94e86"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/acled/coverage_start.csv",
+   "sha256": "a84ec2497b7e8da6badddb8254fd650927e324cdd8cfe9f9592a52e5edce6a3b"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/acled/unit_admin1_weights.csv",
+   "sha256": "127f2fb87b23c12c01edd7b7068edcd0bd94c63e1025242a8c9fd1618a6fac38"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/acled/unit_iso3.csv",
+   "sha256": "29bcf36c015cac89bf7085a5c594202232c20653b8121c3c3be6d8b29eb93658"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/ae_descriptors.csv",
+   "sha256": "61bb895b6e5cddcde95c5a7b5a8da332ad1dc1f95f9a8975228ab876fab5a897"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/area_identity.csv",
+   "sha256": "3dd181f8e7aad88f1c8212b05ee627e6687abc757454b092ede5ccd05700311e"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/geometry/ipcch_admin_geometry_repaired.cpg",
+   "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/geometry/ipcch_admin_geometry_repaired.dbf",
+   "sha256": "964b8030e5d543fd49d112489035ac5e713a068d04076bf75b0f99c3b034a71e"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/geometry/ipcch_admin_geometry_repaired.prj",
+   "sha256": "a02a27b1d1982c8516d83398e85a3c8b1aef1713c13ef4d84d7bde17430c07c4"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/geometry/ipcch_admin_geometry_repaired.shp",
+   "sha256": "9df70f3aa719eaa2458a3ff4a92f058da1f5fe1feeb85432e0dd88e515ccfadb"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/geometry/ipcch_admin_geometry_repaired.shx",
+   "sha256": "424554aec24b86d74609a5fe59a01e498c78269c6e6b4b87765e657a4fe6fc83"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/population_reference.csv",
+   "sha256": "b5af84fc8c4912d161178a32f6bbffac22a78fcd9df9d39ecc950202a2717593"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/roster.csv",
+   "sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/season_calendar.csv",
+   "sha256": "25e89bed6baa237a8079bfd2c8b17c0a5ca5ac39878ce962af4455e9261207da"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/season_windows.csv",
+   "sha256": "5ef68c9592e69e20e1285752b18e0021053c490ee1b82a22e2255cc1e029ac4f"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "fixed/static29.csv",
+   "sha256": "718aaf8dadc99ef5d178feaa1a178bf397daaf015c52a5adfc82199d9771138b"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/GPP_mean.csv",
+   "sha256": "470373ce2057c6206542a659142b6977384db1c69c7020df7067083f0775e67c"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/WFP_Price.csv",
+   "sha256": "662b46af6b954326beef3712d02037f18bf3da35f64f0ff48df47e6796d9f1e0"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/bbg_global_food__composite_mean.csv",
+   "sha256": "1a3248e1be8364882df338463ce0f861c589266293d89496b42795ca0a94692f"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/bbg_oilgas__composite_mean.csv",
+   "sha256": "7a4ccbaa65b4e2efe1e306526bb85e8a015677b93654c78bc17249e30bc3c9d5"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/bbg_soybean_oil__composite_mean.csv",
+   "sha256": "89e80e427682879962fbba1d5c06141a115bcf3e4f946fc9896d496c6e4d3762"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/bbg_staple_food__composite_mean.csv",
+   "sha256": "b7786585b80850289f014a72a1a38859f33282657c14571f38865c8606b9abec"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_cdd.csv",
+   "sha256": "7ce4cd58725b7ea843844aa85447e5e73a9610529aef14df0abbf09f533c16a6"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_edd.csv",
+   "sha256": "4e30d9d448ae5aead4f70eb15d9d71cd4425aa3bfbe5096a41f75b1915444078"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_evi_anom.csv",
+   "sha256": "c3ae627e674394c8085c173f8205a7ea6995d7e777911e5604669935577ab463"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_gdd.csv",
+   "sha256": "4e4df9f20e437dece97fe4146c3e8d8dbc3122b8380e4d145220b98360a5b494"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_hot_days_p95.csv",
+   "sha256": "fe7dcabdd0d87d1ec2c93c8d2614ee23e2465e24022c788d3774819f7abc3beb"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_prcp_anom.csv",
+   "sha256": "ba28ca67b4c4a779ffd3988b48e420c8126db3448c65120d6c6a7d619454c1cd"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_prcp_z.csv",
+   "sha256": "246f5d0a30e19e6bee18916d1779a96d3942e08ea7f668718529fff23f77c193"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_rainy_days.csv",
+   "sha256": "7e5e11ed3b2a4247714c34e69b106d397a8c3baf05d347b5e60fdfb15d1e397a"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_sm_z.csv",
+   "sha256": "3dc62de6f3dd1299785be8d31c304cec541c4fbc07a6a35477ca9c2c612aea88"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_spei03.csv",
+   "sha256": "afe6c43c9ca5fafb9d015b04252713be758fcc500520f5ebbfdc00ed50e6eaa8"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_spi03.csv",
+   "sha256": "bb4a9fac6c2107f38b5f7bcad0f99de4840013c785d9b8fa1eb786760f5b00d0"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_tmax_anom.csv",
+   "sha256": "9c966d665664edd6624ce3ec21c677bb9d8c07b748b1caf9ad437b04de155ede"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_gs_tmean_anom.csv",
+   "sha256": "f68434739eebd78bc31f4a5740292f5d068ba9ad76a74cbd0922ae8d3928ed60"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_cdd.csv",
+   "sha256": "a1047bb8b89b5207330c4494c6d44acaac936cf6adf718ffc3d33262960216a6"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_edd.csv",
+   "sha256": "7c9c2cc0979497ae58964f1d506c0eb4d4324b6af158abfaeb03f6511fc4126c"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_evi_anom.csv",
+   "sha256": "3d58c2938f4ed01808bec394ed553d85475ce846e6682657ac90ccac7bf70746"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_gdd.csv",
+   "sha256": "19a8812332cb30f995ed900ea7ad9d76fde482089f38226e09b5d83c3c6020e1"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_hot_days_p95.csv",
+   "sha256": "ec6066a118c9ccff99384e8cce3441cb96e06f993be7756ea57b39ea762d54f2"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_prcp_anom.csv",
+   "sha256": "6950e477f5d5d72062808212bdf143d9fbbe7b40c7ed7f7ad349232ad0cec6e3"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_prcp_z.csv",
+   "sha256": "7d1fde3ffd6b3e2f9a66422751db5c95baa68b7fbd2648bf0f21b8f7bf14756d"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_rainy_days.csv",
+   "sha256": "a4962cb592493373eb27d03fd1312c7f3d541900196e94c01a79d661a2e76d38"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_sm_z.csv",
+   "sha256": "2de974c6e142c9e903a04bb661c08506d1ab852cf6ba872150f02312fc79247e"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_spei03.csv",
+   "sha256": "7372566c6cb535317e7c1e54cd9acd7319bb5434bad6a619bdde1f614ef68996"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_spi03.csv",
+   "sha256": "063a6c5d61a164952dda2949f200f74a3a38fc21416fa8ede50fc16136530d72"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_tmax_anom.csv",
+   "sha256": "f6e1151a36664392a9dd1b8d4c153f30895b07215da178349a6b17860dffdb0a"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/climate_month_tmean_anom.csv",
+   "sha256": "e8a3eb7df664c68b8f055857c07e7e03a70cb1bd845e438c42cfd5d2c7ed7e68"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/food_price_index_WB.csv",
+   "sha256": "3a0e0f8b653096d1f5df48b9585e5475ba349fb14a817d881392faa42c0c8daa"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/history_snapshot.csv",
+   "sha256": "0380367b15bd78f5f6bb7a4901079b046b4b0075661eb7b59f9309e2cab1e2d8"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/idp_local.csv",
+   "sha256": "dab66e28fb9d20f469dc1c079e32b12622f077d68988d43453da721bbe900836"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/idp_national.csv",
+   "sha256": "dc4bff601f6e20b9f15cef84b46da71698206e744e134c0bc31cb9883705224f"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/nightlight_mean.csv",
+   "sha256": "cc4d3fb0593d03a23ca93e86290d2e78687a4b54c8a305552b3f81e1f937a654"
+  },
+  {
+   "accepted_at": "2026-10-30",
+   "acceptor": "Codex Supervisor",
+   "kind": "delivered",
+   "name": "history/nino34_anom.csv",
+   "sha256": "755cb66a8d25a950b8d9c3b66ef6225a47599bdfc86c56bad27109e9501d22a7"
+  },
+  {
+   "accepted_at": "2026-10-31",
+   "acceptor": "ipcch-runtime:ipcch-real-522b30030f944868",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/versions/000001-550e32c63ad24408b5c1055296c8c64c.csv",
+   "sha256": "f78321be24d45f86a95cb3c82a1da5164ed97b9bcd4ffd23881c99aad1005dc0"
+  },
+  {
+   "accepted_at": "2026-10-31",
+   "acceptor": "ipcch-runtime:ipcch-real-522b30030f944868",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000001-14dd2b6f4f694ac586e12d99dcf84bb3.csv",
+   "sha256": "1b8fb6b0ff95cc408bafa6949dbaed9a47fcebadbb3a0c5b33044085de330599"
+  },
+  {
+   "accepted_at": "2026-10-31",
+   "acceptor": "ipcch-runtime:ipcch-real-522b30030f944868",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000002-9078b3dc3729486eb079fb669b199397.csv",
+   "sha256": "1422a91f01170f0325e1fd129c13f39181890fcc7e1ce136448753c6a1e89235"
+  },
+  {
+   "accepted_at": "2026-10-31",
+   "acceptor": "ipcch-runtime:ipcch-real-522b30030f944868",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000003-a72debc4499641bfafaf337b57c77427.csv",
+   "sha256": "30db07e4b6b7fd2e199928bef0725797c741c92209f56e9ccc812b1865347c28"
+  },
+  {
+   "accepted_at": "2026-10-31",
+   "acceptor": "ipcch-runtime:ipcch-real-522b30030f944868",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000004-b3c296cc03224233978738dbe664566e.csv",
+   "sha256": "107cec8cd6b0f7ee12f0b92bb71c7ff4ff0be9ea55d70924a499be3bbe4eb88e"
+  },
+  {
+   "accepted_at": "2026-10-31",
+   "acceptor": "ipcch-runtime:ipcch-real-522b30030f944868",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000005-128ed2ad683b4ac7bcd3611fddba681d.csv",
+   "sha256": "3c7a54f5455574b50635ce82179b38f2501ea1fd6a834e6f9b37d16a8b06e363"
+  },
+  {
+   "accepted_at": "2026-10-31",
+   "acceptor": "ipcch-runtime:ipcch-real-522b30030f944868",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000006-3ff93af4819c4c04b45deb24218fe96b.csv",
+   "sha256": "503f641f0a15d73fdc17884756be171e4ac2da6d6643977846880ed7226987f1"
+  },
+  {
+   "accepted_at": "2026-10-31",
+   "acceptor": "ipcch-runtime:ipcch-real-522b30030f944868",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000007-421cde684b3d41a58e6c4522cfea6ded.csv",
+   "sha256": "03a38b4f8a071c8ee4628feab1743111113047fe332e8a68d155d752de454e44"
+  },
+  {
+   "accepted_at": "2026-10-31",
+   "acceptor": "ipcch-runtime:ipcch-real-522b30030f944868",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000008-cff610f4a69b4dde96bd2528042c018f.csv",
+   "sha256": "edcf685df9144afcb85061dfb99144976968679b1aafc0437d12087e0feace59"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-9eee4305db494a35",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/versions/000002-2fdcb235ebc04160a7aa463a8367a494.csv",
+   "sha256": "d3fb0a176c3e7d496cdd5e24ed054137b670855c6297b216116cf253f2b2ed2b"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_cdd/versions/000002-facb5f1777b34eda80a5f1b4715dcb3d.csv",
+   "sha256": "5e68cbd5b43e37e7b00d623b70e399922e14ed5fd503cc36de8ce8e5a657cc6f"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_edd/versions/000002-29e482318dc440dc8487b1e9405292f1.csv",
+   "sha256": "53ab8e1e088c76f0395063582b24f585f891756f4777abcdfec7e809b14fc183"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_evi_anom/versions/000002-562fcc009bdf4f2392675cba6ead658d.csv",
+   "sha256": "dd3934ff5b52abcb107475221fe9554c7d2db46924571cec0236e92654ed12dc"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_gdd/versions/000002-ac85c7beee624db3b7a882847b2c10ff.csv",
+   "sha256": "1069fd81cbc326a52d29d1b05b0d9c2283c2b0d117ea5ea90daa27873c21eeae"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_hot_days_p95/versions/000002-7e2d0325897e4201bb1601f904151964.csv",
+   "sha256": "2567c2ceea3a84523966b4fd99dac2d5e4db9461d7379650034bf93238474837"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_prcp_anom/versions/000002-d034500e762240519c9190e9e57eb28b.csv",
+   "sha256": "c0c6d645d67e90444e8232b4ac52fb4cbbd1759162c02f4d1ca3158aafe6bca7"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_prcp_z/versions/000002-177d0fab9b5e4decb39262039fd18f5e.csv",
+   "sha256": "b8fd1eee646de931c7f5935c4a3732ce445eeae71dd28e0d0cad1d4bd09982b8"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_rainy_days/versions/000002-7d488674706741a7a0ef13313463b00c.csv",
+   "sha256": "b7d5f79d3b8029775243981efc7687e8807778c6375a4a079dc8a3f41eaf6e0a"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_sm_z/versions/000002-99f2a97d189c46b29dc1fed871e23c17.csv",
+   "sha256": "b0436a630089abc83bb75de4d32051ea392b4ab7b49396011155c39ccca51783"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_spei03/versions/000002-8c1dd024a3b943bfa451ba4f709231ec.csv",
+   "sha256": "2283fb7a4797625c3b4019faeb1a9314cba83c165a938d970838c2c1c4fd632e"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_spi03/versions/000002-3af716b6a2464b5ea54f86ed7274c542.csv",
+   "sha256": "879fed62078daf10f3c6ce36a52dac4e8727e64aae4d7da9a58749e005350088"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_tmax_anom/versions/000002-0ba6b9e6839046119cb7ee0ec4094227.csv",
+   "sha256": "9d7e32442ab4a486db25eca80b0b71200bd9143c9bba683f041fd71d87829777"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_tmean_anom/versions/000002-ae5c8061d4cc4507b6221be25a79e5a2.csv",
+   "sha256": "cce3d4f40c56430cbfcc2db91cc382a80f6cfe24b3c3a7512eae68d0d3880c4d"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000009-b4a3862e6ccd47f19c57a9e502131c2d.csv",
+   "sha256": "6d49d5e8e98b76dc5ed27ea127a29ecaeed72aec8cc38cdffc48fc78ac2a7590"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000010-8a8ea2a18f2d4b23ba210d9a8bbdd1dd.csv",
+   "sha256": "55f9fee01eedebcfb879fdeb6dd199a1779a76cbb5da082ec59715e9d23ddb7b"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000011-0e8339fd7e344d8283fdcff2f7effd84.csv",
+   "sha256": "7b89002603dbbe9b5bfb437d7ad91f33c95c8a691a8b9a7236012b4a61347a84"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000012-d1b1d01f9de641859370f46ef20f98ce.csv",
+   "sha256": "7335c99028cc4d962590720c9ed5955e882d0b9cfffb82bd1b72de32d4f5e910"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000013-f9c2a39e4c344c38803d493fa0ae99a8.csv",
+   "sha256": "6c1f2cd8831ae1a4a768441963a1c2934fbfc926e248df3fd0c42f2562694aa3"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000014-300860997a994d9a80bd4374b78f145a.csv",
+   "sha256": "9aad59bfbe692bf1ca8abf5b0f328d6746ad681c4209c36d27bac113106d8b2f"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000015-86e0b8192f74409cbbd8f930c8229a28.csv",
+   "sha256": "6efeadb3a562f209de28ab84a3d18021cd8f3c67c595cbba6daa648f6f0673d1"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000016-988ebc312ebf454d9168c4d4cda24000.csv",
+   "sha256": "c707457731fa218df8aca2904d34637d5e8ee4198f75065e1d22e67c956a951a"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000017-84292399cb244985bbb9f3101436dde0.csv",
+   "sha256": "a818e09ca9010d70b00396fcad76de5aca6cbe9c83e9c191dd16382601dffc4b"
+  },
+  {
+   "accepted_at": "2026-11-01",
+   "acceptor": "ipcch-runtime:ipcch-real-fe7282ef75e747fd",
+   "kind": "runtime",
+   "name": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__nightlight_mean/versions/000002-2b813143307b457eae1907c9b057b280.csv",
+   "sha256": "2d548ef8d8167649d4f9b63171a993d3984ef5adf4fd6977c3dddee6948635d4"
+  }
+ ],
+ "batch_id": "ipcch-2026-11-ipcch-real-fe7282ef75e747fd-a02e27ee805d",
+ "combination": {
+  "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+  "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+  "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+  "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+  "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+  "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+  "scopes": {
+   "0": {
+    "feature_schema_sha256": "178223fda9d4079ccff4e9e13b8f55011fe759c5098ec1e31ceff47c5b851484",
+    "model_horizon_months": 2,
+    "public_lead_months": 0,
+    "training_cutoff": "2025-11"
+   },
+   "12": {
+    "feature_schema_sha256": "68eef197c702359a705ef2dc81c25a7b9ef343fe6073f5252516029a6a8641bb",
+    "model_horizon_months": 14,
+    "public_lead_months": 12,
+    "training_cutoff": "2024-11"
+   },
+   "6": {
+    "feature_schema_sha256": "8ed5e50ab11525afeae304199e068fb503d07c634087164ae01d1d8b0ad82552",
+    "model_horizon_months": 8,
+    "public_lead_months": 6,
+    "training_cutoff": "2025-05"
+   }
+  },
+  "status": "accepted"
+ },
+ "designation": "real",
+ "execution_month": "2026-11",
+ "feature_count": 527,
+ "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+ "feature_origin": "2026-09",
+ "feature_provenance": {
+  "file": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/feature_batches/ipcch-2026-11-ipcch-real-fe7282ef75e747fd-a02e27ee805d/feature_provenance.csv",
+  "generation": "1793503525109414",
+  "rows": 373560,
+  "sha256": "e92b1361c64937bf45d4b27f4da7299a72b7ffe2f3d9181a889a35e662e0f66c"
+ },
+ "generated_at": "2026-11-01T03:25:02Z",
+ "generation": {
+  "climate_production": {
+   "demand": {
+    "monthly": {
+     "evi_anom": [
+      "2026-09"
+     ],
+     "spei03": [
+      "2026-09"
+     ],
+     "spi03": [
+      "2026-09"
+     ]
+    },
+    "seasonal": {
+     "evi_anom": [],
+     "spei03": [],
+     "spi03": []
+    }
+   },
+   "jobs": [
+    "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+    "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+    "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+    "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+    "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+    "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+    "S2C3_ET0_PATCH32_Y2020_2026_V2"
+   ],
+   "producer_version": "ipcch-table-producers-v1",
+   "receipts": [
+    {
+     "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+     "complete_periods": 18,
+     "last_complete": "20261008",
+     "rows": 6227,
+     "script": "seasonal/01_vi_prcp_et0_update.js",
+     "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+     "state": "completed",
+     "table": "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+     "task_id": "2MQ5OHBODGC33E55APK6QAKF"
+    },
+    {
+     "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+     "complete_periods": 18,
+     "last_complete": "20260930",
+     "rows": 6227,
+     "script": "seasonal/01_vi_prcp_et0_update.js",
+     "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+     "state": "completed",
+     "table": "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+     "task_id": "7ZIQ3CDJK7XFKIYM3LP4F2N3"
+    },
+    {
+     "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+     "complete_periods": 81,
+     "last_complete": "202609",
+     "rows": 6227,
+     "script": "seasonal/01_vi_prcp_et0_update.js",
+     "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+     "state": "completed",
+     "table": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+     "task_id": "RGAJ47QERKDVN4TLBKUBK43N"
+    },
+    {
+     "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+     "complete_periods": 78,
+     "last_complete": "202607",
+     "rows": 6227,
+     "script": "seasonal/01_vi_prcp_et0_update.js",
+     "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+     "state": "completed",
+     "table": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+     "task_id": "NLZVY6DHKHPBFDI7EXEVX4DM"
+    },
+    {
+     "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+     "complete_periods": 81,
+     "last_complete": "202609",
+     "rows": 6227,
+     "script": "seasonal/01_vi_prcp_et0_update.js",
+     "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+     "state": "completed",
+     "table": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+     "task_id": "UQHEJZ3W5LBNVABV34NRLV3X"
+    },
+    {
+     "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+     "complete_periods": 81,
+     "last_complete": "202609",
+     "rows": 6227,
+     "script": "seasonal/01_vi_prcp_et0_update.js",
+     "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+     "state": "completed",
+     "table": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+     "task_id": "RFU3ZH3QH7WVPKI7UVRIJQR2"
+    },
+    {
+     "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+     "complete_periods": 81,
+     "last_complete": "202609",
+     "rows": 32,
+     "script": "seasonal/02_et0_patch32_update.js",
+     "script_sha256": "841ae7f838c8c7457928e95df860980b28857ec83bf6b9b92cb604fdd3ed7e47",
+     "state": "completed",
+     "table": "S2C3_ET0_PATCH32_Y2020_2026_V2",
+     "task_id": "HQLXJ24XGBOVNZ7MLRWDWZ5U"
+    }
+   ],
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "scripts": {
+    "seasonal/01_vi_prcp_et0_update.js": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+    "seasonal/02_et0_patch32_update.js": "841ae7f838c8c7457928e95df860980b28857ec83bf6b9b92cb604fdd3ed7e47"
+   },
+   "version": "M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+  },
+  "coverage_end": {
+   "GPP_mean": "2025-12",
+   "WFP_Price": "2026-09",
+   "acled": "2026-09",
+   "bbg_global_food": "2026-09",
+   "bbg_oilgas": "2026-09",
+   "bbg_soybean_oil": "2026-07",
+   "bbg_staple_food": "2026-09",
+   "food_price_index_WB": "2026-10",
+   "history_snapshot": "2026-10",
+   "idp_local": "2026-09",
+   "idp_national": "2026-09",
+   "nightlight_mean": "2026-09",
+   "nino34_anom": "2026-09"
+  },
+  "gaps": {
+   "GPP_unpublished": [
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+   ],
+   "climate_monthly": {},
+   "climate_seasonal": {},
+   "nightlight": []
+  },
+  "geometry": {
+   "dropped_declared_extra": [
+    "1315"
+   ],
+   "features": 6226,
+   "source": "fixed/geometry/ipcch_admin_geometry_repaired.shp"
+  },
+  "inputs": {
+   "acled": {
+    "action": "keep",
+    "coverage_end": "2026-09",
+    "method": "regional-aggregate converter (research build_acled_agg.py conventions; delivered fixed tables)"
+   },
+   "history_snapshot": {
+    "action": "keep",
+    "preparation_cutoff": "2026-10"
+   },
+   "research_inputs": {
+    "bbg_global_food": {
+     "action": "keep",
+     "coverage_end": "2026-09",
+     "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+    },
+    "bbg_oilgas": {
+     "action": "keep",
+     "coverage_end": "2026-09",
+     "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+    },
+    "bbg_soybean_oil": {
+     "action": "keep",
+     "coverage_end": "2026-07",
+     "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+    },
+    "bbg_staple_food": {
+     "action": "keep",
+     "coverage_end": "2026-09",
+     "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+    },
+    "food_price_index_WB": {
+     "action": "keep",
+     "coverage_end": "2026-10",
+     "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+    },
+    "idp_local": {
+     "action": "keep",
+     "coverage_end": "2026-09",
+     "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+    },
+    "idp_national": {
+     "action": "keep",
+     "coverage_end": "2026-09"
+    },
+    "nino34_anom": {
+     "action": "keep",
+     "coverage_end": "2026-09",
+     "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+    }
+   },
+   "wfp": {
+    "action": "keep",
+    "coverage_end": "2026-09",
+    "method": "research HDX food prices: 100 + YoY % change of local-currency staple prices (maize, sorghum, rice, wheat, vegetable oil), nearest market with data < 100 km, no fill (build_wfp_hdx.py)"
+   }
+  },
+  "methods": {
+   "GPP_mean": "gosif-gpp-v3-mean|fills65534,65535-masked|sum/n_valid*0.01|cell-centre-unweighted|research-10-27",
+   "WFP_Price": "research HDX food prices: 100 + YoY % change of local-currency staple prices (maize, sorghum, rice, wheat, vegetable oil), nearest market with data < 100 km, no fill (build_wfp_hdx.py)",
+   "acled": "regional-aggregate converter (research build_acled_agg.py conventions; delivered fixed tables)",
+   "climate": {
+    "cdd": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/rainfall.js",
+      "script_sha256": "73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/rainfall.js",
+      "script_sha256": "08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "edd": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/temperature.js",
+      "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/temperature.js",
+      "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "evi_anom": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/ndvi.js",
+      "script_sha256": "4fd5ee58dd5b86b37fc1e85fc194019f684cac29bd25cac46b24cfbd27d494c7",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/ndvi_evi.js",
+      "script_sha256": "d586ac495e3d1779b59362d3af800bf027b7fac492432d87145994a214dd5463",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "gdd": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/temperature.js",
+      "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/temperature.js",
+      "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "hot_days_p95": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/temperature.js",
+      "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/temperature.js",
+      "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "prcp_anom": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/rainfall.js",
+      "script_sha256": "73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/rainfall.js",
+      "script_sha256": "08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "prcp_z": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/rainfall.js",
+      "script_sha256": "73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/rainfall.js",
+      "script_sha256": "08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "rainy_days": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/rainfall.js",
+      "script_sha256": "73ba8ddbfbd62b0b0518bc514b5e3ebbdb07b071ca9c0bac15ecb1dc8c01e0b8",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/rainfall.js",
+      "script_sha256": "08b72faa9c852feea4d0b4b518cd9537d0af0508e804bb4bd2e43002e2938162",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "sm_z": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/soil_moisture.js",
+      "script_sha256": "f701cf2b184299cf53eaa20684bf75d99acef375cf0bd4b776604e651b2ba69b",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/soil_moisture.js",
+      "script_sha256": "58cfd1ca9311115657ea3b3eabf518bcbd58b61e0d5b8b6395e64f4b1de7e819",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "spei03": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/spi&spei.py",
+      "script_sha256": "fbc559792896f5dc251aceb1ad83926c0cbdf2107c713aeb14701359dea690a7",
+      "season_aggregation": "MONTHLY_INDEX_EXACT_OVERLAP_DAY_WEIGHTED_MEAN|FULL_COVERAGE_0.999999|USE_FEB28",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN",
+      "spei_fit": "SPEI_UBPWM_GLO_STRICT_SUPPORT_V3@seasonal/spi&spei.py:fit_glo_ubpwm+glo_probability_strict"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/spi_monthly.py",
+      "script_sha256": "0e29ed359915840825d5d35a0ecf962639d2218c27744af012e367a8b7d854c5",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN",
+      "spei_fit": "SPEI_UBPWM_GLO_STRICT_SUPPORT_V3@monthly/spi_monthly.py:compute_spei03_monthly"
+     }
+    },
+    "spi03": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/spi&spei.py",
+      "script_sha256": "fbc559792896f5dc251aceb1ad83926c0cbdf2107c713aeb14701359dea690a7",
+      "season_aggregation": "MONTHLY_INDEX_EXACT_OVERLAP_DAY_WEIGHTED_MEAN|FULL_COVERAGE_0.999999|USE_FEB28",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/spi_monthly.py",
+      "script_sha256": "0e29ed359915840825d5d35a0ecf962639d2218c27744af012e367a8b7d854c5",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "tmax_anom": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/temperature.js",
+      "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/temperature.js",
+      "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    },
+    "tmean_anom": {
+     "gs": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "seasonal/temperature.js",
+      "script_sha256": "3ff82a634ba92ee52dea9022958abe0cf999640ac200fa1c11a290c02f081a24",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     },
+     "month": {
+      "ensemble": "EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+      "outlier": "ABS_Z_GT6_WARNING_ONLY_VALUE_KEPT",
+      "script": "monthly/temperature.js",
+      "script_sha256": "ed917c0adbc53c1313335ce25c92815e8237696a3e155efc4cecb514c10992b6",
+      "spatial_weighting": "PIXEL_METRIC_THEN_PIXELAREA_WEIGHTED_ADMIN_MEAN"
+     }
+    }
+   },
+   "nightlight_mean": "viirs-dnb-monthly-vcmcfg|current-repo-remote-scripts-v2|avg_rad__sum|cell-centre"
+  },
+  "population": {
+   "future_reference_rows_ignored": 0,
+   "last_observation_carried_forward_rows": 6226,
+   "latest_reference_period": "2026-04",
+   "method_counts": {
+    "last_observation_carried_forward": 6226,
+    "observed_feature_month": 0
+   },
+   "missing_area_count": 0,
+   "observed_feature_month_rows": 0
+  },
+  "warnings": [
+   "GPP_mean coverage ends 2025-12, before O 2026-09 (optional-missing: features at O are NaN, R65)",
+   "bbg_soybean_oil coverage ends 2026-07, before O 2026-09 (optional-missing: features at O are NaN, R65)"
+  ]
+ },
+ "horizons": {
+  "14": {
+   "feature_origin": "2026-09",
+   "file": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/feature_batches/ipcch-2026-11-ipcch-real-fe7282ef75e747fd-a02e27ee805d/h14.csv",
+   "generation": "1793503521019003",
+   "missing_by_column": {
+    "GPP_mean__hist_same_month_z_at_origin": 6226,
+    "GPP_mean__hist_same_month_z_ma12_at_origin": 6226,
+    "GPP_mean__hist_same_month_z_ma3_at_origin": 6226,
+    "GPP_mean__hist_same_month_z_ma6_at_origin": 6226,
+    "GPP_mean__ma12_at_origin": 6226,
+    "GPP_mean__ma3_at_origin": 6226,
+    "GPP_mean__ma6_at_origin": 6226,
+    "GPP_mean__sd12_at_origin": 6226,
+    "GPP_mean__value_at_origin": 6226,
+    "GPP_mean__vegetation_stress__any12_at_origin": 6226,
+    "GPP_mean__vegetation_stress__longest_run12_at_origin": 6226,
+    "GPP_mean__vegetation_stress__months_since_at_origin": 138,
+    "GPP_mean__vegetation_stress__share12_at_origin": 6226,
+    "WFP_Price__hist_same_month_z_at_origin": 4560,
+    "WFP_Price__hist_same_month_z_ma12_at_origin": 3193,
+    "WFP_Price__hist_same_month_z_ma3_at_origin": 3392,
+    "WFP_Price__hist_same_month_z_ma6_at_origin": 3250,
+    "WFP_Price__ma12_at_origin": 3050,
+    "WFP_Price__ma3_at_origin": 3349,
+    "WFP_Price__ma6_at_origin": 3121,
+    "WFP_Price__price_shock_stress__any12_at_origin": 3050,
+    "WFP_Price__price_shock_stress__longest_run12_at_origin": 3050,
+    "WFP_Price__price_shock_stress__months_since_at_origin": 1353,
+    "WFP_Price__price_shock_stress__share12_at_origin": 3050,
+    "WFP_Price__sd12_at_origin": 3050,
+    "WFP_Price__value_at_origin": 4540,
+    "acled_agg_events_battles__nonzero_stress__months_since_at_origin_lag1": 326,
+    "acled_agg_events_erv__nonzero_stress__months_since_at_origin_lag1": 1346,
+    "acled_agg_events_vac__nonzero_stress__months_since_at_origin_lag1": 37,
+    "acled_agg_spill_events_battles__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__nonzero_stress__any12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__nonzero_stress__longest_run12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__nonzero_stress__months_since_at_origin_lag1": 64,
+    "acled_agg_spill_events_battles__nonzero_stress__share12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__value_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__nonzero_stress__any12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__nonzero_stress__longest_run12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__nonzero_stress__months_since_at_origin_lag1": 324,
+    "acled_agg_spill_events_erv__nonzero_stress__share12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__value_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__nonzero_stress__any12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__nonzero_stress__longest_run12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__nonzero_stress__months_since_at_origin_lag1": 28,
+    "acled_agg_spill_events_vac__nonzero_stress__share12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__value_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__value_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__value_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__value_at_origin_lag1": 16,
+    "bbg_global_food__composite_mean__ma12_at_origin": 39,
+    "bbg_global_food__composite_mean__ma3_at_origin": 39,
+    "bbg_global_food__composite_mean__ma6_at_origin": 39,
+    "bbg_global_food__composite_mean__sd12_at_origin": 39,
+    "bbg_global_food__composite_mean__value_at_origin": 39,
+    "bbg_oilgas__composite_mean__ma12_at_origin": 39,
+    "bbg_oilgas__composite_mean__ma3_at_origin": 39,
+    "bbg_oilgas__composite_mean__ma6_at_origin": 39,
+    "bbg_oilgas__composite_mean__sd12_at_origin": 39,
+    "bbg_oilgas__composite_mean__value_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__ma12_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__ma3_at_origin": 6226,
+    "bbg_soybean_oil__composite_mean__ma6_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__sd12_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__value_at_origin": 6226,
+    "bbg_staple_food__composite_mean__ma12_at_origin": 39,
+    "bbg_staple_food__composite_mean__ma3_at_origin": 39,
+    "bbg_staple_food__composite_mean__ma6_at_origin": 39,
+    "bbg_staple_food__composite_mean__sd12_at_origin": 39,
+    "bbg_staple_food__composite_mean__value_at_origin": 39,
+    "cdd_month_ensmean__hist_same_month_z_at_origin": 2,
+    "cdd_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "cdd_month_ensmean__hist_same_month_z_ma3_at_origin": 2,
+    "cdd_month_ensmean__hist_same_month_z_ma6_at_origin": 2,
+    "cdd_month_ensmean__ma12_at_origin": 2,
+    "cdd_month_ensmean__ma3_at_origin": 2,
+    "cdd_month_ensmean__ma6_at_origin": 2,
+    "cdd_month_ensmean__sd12_at_origin": 2,
+    "cdd_month_ensmean__value_at_origin": 2,
+    "edd_month_ensmean__hist_same_month_z_at_origin": 93,
+    "edd_month_ensmean__hist_same_month_z_ma12_at_origin": 69,
+    "edd_month_ensmean__hist_same_month_z_ma3_at_origin": 114,
+    "edd_month_ensmean__hist_same_month_z_ma6_at_origin": 70,
+    "edd_month_ensmean__ma12_at_origin": 18,
+    "edd_month_ensmean__ma3_at_origin": 18,
+    "edd_month_ensmean__ma6_at_origin": 18,
+    "edd_month_ensmean__sd12_at_origin": 18,
+    "edd_month_ensmean__value_at_origin": 18,
+    "evi_anom_month_ensmean__hist_same_month_z_at_origin": 10,
+    "evi_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "evi_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 12,
+    "evi_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 3,
+    "evi_anom_month_ensmean__ma12_at_origin": 2,
+    "evi_anom_month_ensmean__ma3_at_origin": 11,
+    "evi_anom_month_ensmean__ma6_at_origin": 3,
+    "evi_anom_month_ensmean__sd12_at_origin": 2,
+    "evi_anom_month_ensmean__value_at_origin": 9,
+    "evi_anom_month_ensmean__vegetation_stress__any12_at_origin": 2,
+    "evi_anom_month_ensmean__vegetation_stress__longest_run12_at_origin": 2,
+    "evi_anom_month_ensmean__vegetation_stress__months_since_at_origin": 596,
+    "evi_anom_month_ensmean__vegetation_stress__share12_at_origin": 2,
+    "food_price_index_WB__hist_same_month_z_at_origin": 2162,
+    "food_price_index_WB__hist_same_month_z_ma12_at_origin": 1629,
+    "food_price_index_WB__hist_same_month_z_ma3_at_origin": 2162,
+    "food_price_index_WB__hist_same_month_z_ma6_at_origin": 2162,
+    "food_price_index_WB__ma12_at_origin": 1629,
+    "food_price_index_WB__ma3_at_origin": 2162,
+    "food_price_index_WB__ma6_at_origin": 2162,
+    "food_price_index_WB__sd12_at_origin": 1629,
+    "food_price_index_WB__value_at_origin": 2162,
+    "gdd_month_ensmean__hist_same_month_z_at_origin": 18,
+    "gdd_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "gdd_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "gdd_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "gdd_month_ensmean__ma12_at_origin": 18,
+    "gdd_month_ensmean__ma3_at_origin": 18,
+    "gdd_month_ensmean__ma6_at_origin": 18,
+    "gdd_month_ensmean__sd12_at_origin": 18,
+    "gdd_month_ensmean__value_at_origin": 18,
+    "gs_last1__cdd_gs_ensmean__at_origin": 6,
+    "gs_last1__edd_gs_ensmean__at_origin": 18,
+    "gs_last1__evi_anom_gs_ensmean__at_origin": 2,
+    "gs_last1__gdd_gs_ensmean__at_origin": 18,
+    "gs_last1__hot_days_p95_gs_ensmean__at_origin": 18,
+    "gs_last1__is_major_at_origin": 30,
+    "gs_last1__prcp_anom_gs_ensmean__at_origin": 2,
+    "gs_last1__prcp_z_gs_ensmean__at_origin": 16,
+    "gs_last1__rainy_days_gs_ensmean__at_origin": 6,
+    "gs_last1__sm_z_gs_ensmean__at_origin": 23,
+    "gs_last1__spei03_gs_ensmean__at_origin": 17,
+    "gs_last1__spi03_gs_ensmean__at_origin": 16,
+    "gs_last1__tmax_anom_gs_ensmean__at_origin": 18,
+    "gs_last1__tmean_anom_gs_ensmean__at_origin": 18,
+    "gs_last2__cdd_gs_ensmean__at_origin": 2,
+    "gs_last2__edd_gs_ensmean__at_origin": 18,
+    "gs_last2__evi_anom_gs_ensmean__at_origin": 36,
+    "gs_last2__gdd_gs_ensmean__at_origin": 18,
+    "gs_last2__hot_days_p95_gs_ensmean__at_origin": 18,
+    "gs_last2__prcp_anom_gs_ensmean__at_origin": 2,
+    "gs_last2__prcp_z_gs_ensmean__at_origin": 2,
+    "gs_last2__rainy_days_gs_ensmean__at_origin": 2,
+    "gs_last2__sm_z_gs_ensmean__at_origin": 23,
+    "gs_last2__spei03_gs_ensmean__at_origin": 4,
+    "gs_last2__spi03_gs_ensmean__at_origin": 2,
+    "gs_last2__tmax_anom_gs_ensmean__at_origin": 18,
+    "gs_last2__tmean_anom_gs_ensmean__at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "hot_days_p95_month_ensmean__ma12_at_origin": 18,
+    "hot_days_p95_month_ensmean__ma3_at_origin": 18,
+    "hot_days_p95_month_ensmean__ma6_at_origin": 18,
+    "hot_days_p95_month_ensmean__sd12_at_origin": 18,
+    "hot_days_p95_month_ensmean__value_at_origin": 18,
+    "idp_admin0_latest_age_months": 541,
+    "idp_admin0_latest_stock": 541,
+    "idp_ipcch_ffill6_current": 5549,
+    "idp_ipcch_ffill6_ma3": 5814,
+    "idp_ipcch_ffill6_ma6": 5814,
+    "nightlight_mean__hist_same_month_z_at_origin": 59,
+    "nightlight_mean__hist_same_month_z_ma12_at_origin": 39,
+    "nightlight_mean__hist_same_month_z_ma3_at_origin": 40,
+    "nightlight_mean__hist_same_month_z_ma6_at_origin": 40,
+    "nightlight_mean__ma12_at_origin": 39,
+    "nightlight_mean__ma3_at_origin": 40,
+    "nightlight_mean__ma6_at_origin": 40,
+    "nightlight_mean__sd12_at_origin": 39,
+    "nightlight_mean__value_at_origin": 58,
+    "nino34_anom__enso_stress__any12_at_origin": 39,
+    "nino34_anom__enso_stress__longest_run12_at_origin": 39,
+    "nino34_anom__enso_stress__share12_at_origin": 39,
+    "nino34_anom__hist_same_month_z_at_origin": 39,
+    "nino34_anom__hist_same_month_z_ma12_at_origin": 39,
+    "nino34_anom__hist_same_month_z_ma3_at_origin": 39,
+    "nino34_anom__hist_same_month_z_ma6_at_origin": 39,
+    "nino34_anom__ma12_at_origin": 39,
+    "nino34_anom__ma3_at_origin": 39,
+    "nino34_anom__ma6_at_origin": 39,
+    "nino34_anom__sd12_at_origin": 39,
+    "nino34_anom__value_at_origin": 39,
+    "overall_phase_history_1": 2,
+    "overall_phase_history_2": 242,
+    "overall_phase_history_3": 639,
+    "overall_phase_history_change_1_2": 242,
+    "overall_phase_history_change_1_3": 639,
+    "popdensity": 4918,
+    "prcp_anom_month_ensmean__hist_same_month_z_at_origin": 2,
+    "prcp_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "prcp_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 2,
+    "prcp_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 2,
+    "prcp_anom_month_ensmean__ma12_at_origin": 2,
+    "prcp_anom_month_ensmean__ma3_at_origin": 2,
+    "prcp_anom_month_ensmean__ma6_at_origin": 2,
+    "prcp_anom_month_ensmean__sd12_at_origin": 2,
+    "prcp_anom_month_ensmean__value_at_origin": 2,
+    "prcp_z_month_ensmean__ma12_at_origin": 2,
+    "prcp_z_month_ensmean__ma3_at_origin": 2,
+    "prcp_z_month_ensmean__ma6_at_origin": 2,
+    "prcp_z_month_ensmean__sd12_at_origin": 2,
+    "prcp_z_month_ensmean__value_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_ma3_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_ma6_at_origin": 2,
+    "rainy_days_month_ensmean__ma12_at_origin": 2,
+    "rainy_days_month_ensmean__ma3_at_origin": 2,
+    "rainy_days_month_ensmean__ma6_at_origin": 2,
+    "rainy_days_month_ensmean__sd12_at_origin": 2,
+    "rainy_days_month_ensmean__value_at_origin": 2,
+    "sm_z_month_ensmean__ma12_at_origin": 23,
+    "sm_z_month_ensmean__ma3_at_origin": 23,
+    "sm_z_month_ensmean__ma6_at_origin": 23,
+    "sm_z_month_ensmean__sd12_at_origin": 23,
+    "sm_z_month_ensmean__value_at_origin": 33,
+    "spei03_month_ensmean__ma12_at_origin": 4,
+    "spei03_month_ensmean__ma3_at_origin": 668,
+    "spei03_month_ensmean__ma6_at_origin": 39,
+    "spei03_month_ensmean__sd12_at_origin": 4,
+    "spei03_month_ensmean__value_at_origin": 384,
+    "spi03_month_ensmean__deficit_stress__any12_at_origin": 2,
+    "spi03_month_ensmean__deficit_stress__longest_run12_at_origin": 2,
+    "spi03_month_ensmean__deficit_stress__months_since_at_origin": 2,
+    "spi03_month_ensmean__deficit_stress__share12_at_origin": 2,
+    "spi03_month_ensmean__ma12_at_origin": 2,
+    "spi03_month_ensmean__ma3_at_origin": 2,
+    "spi03_month_ensmean__ma6_at_origin": 2,
+    "spi03_month_ensmean__sd12_at_origin": 2,
+    "spi03_month_ensmean__value_at_origin": 2,
+    "tmax_anom_month_ensmean__hist_same_month_z_at_origin": 18,
+    "tmax_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "tmax_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "tmax_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "tmax_anom_month_ensmean__ma12_at_origin": 18,
+    "tmax_anom_month_ensmean__ma3_at_origin": 18,
+    "tmax_anom_month_ensmean__ma6_at_origin": 18,
+    "tmax_anom_month_ensmean__sd12_at_origin": 18,
+    "tmax_anom_month_ensmean__value_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__any12_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__longest_run12_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__months_since_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__share12_at_origin": 18,
+    "tmean_anom_month_ensmean__ma12_at_origin": 18,
+    "tmean_anom_month_ensmean__ma3_at_origin": 18,
+    "tmean_anom_month_ensmean__ma6_at_origin": 18,
+    "tmean_anom_month_ensmean__sd12_at_origin": 18,
+    "tmean_anom_month_ensmean__value_at_origin": 18
+   },
+   "model_horizon_months": 14,
+   "public_lead_months": 12,
+   "rows": 6226,
+   "sha256": "95b350b7fb11935a84f8043f8e4e564287b2941ad422818c6ceb90c01db2113b",
+   "target_month": "2027-11"
+  },
+  "2": {
+   "feature_origin": "2026-09",
+   "file": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/feature_batches/ipcch-2026-11-ipcch-real-fe7282ef75e747fd-a02e27ee805d/h02.csv",
+   "generation": "1793503508573157",
+   "missing_by_column": {
+    "GPP_mean__hist_same_month_z_at_origin": 6226,
+    "GPP_mean__hist_same_month_z_ma12_at_origin": 6226,
+    "GPP_mean__hist_same_month_z_ma3_at_origin": 6226,
+    "GPP_mean__hist_same_month_z_ma6_at_origin": 6226,
+    "GPP_mean__ma12_at_origin": 6226,
+    "GPP_mean__ma3_at_origin": 6226,
+    "GPP_mean__ma6_at_origin": 6226,
+    "GPP_mean__sd12_at_origin": 6226,
+    "GPP_mean__value_at_origin": 6226,
+    "GPP_mean__vegetation_stress__any12_at_origin": 6226,
+    "GPP_mean__vegetation_stress__longest_run12_at_origin": 6226,
+    "GPP_mean__vegetation_stress__months_since_at_origin": 138,
+    "GPP_mean__vegetation_stress__share12_at_origin": 6226,
+    "WFP_Price__hist_same_month_z_at_origin": 4560,
+    "WFP_Price__hist_same_month_z_ma12_at_origin": 3193,
+    "WFP_Price__hist_same_month_z_ma3_at_origin": 3392,
+    "WFP_Price__hist_same_month_z_ma6_at_origin": 3250,
+    "WFP_Price__ma12_at_origin": 3050,
+    "WFP_Price__ma3_at_origin": 3349,
+    "WFP_Price__ma6_at_origin": 3121,
+    "WFP_Price__price_shock_stress__any12_at_origin": 3050,
+    "WFP_Price__price_shock_stress__longest_run12_at_origin": 3050,
+    "WFP_Price__price_shock_stress__months_since_at_origin": 1353,
+    "WFP_Price__price_shock_stress__share12_at_origin": 3050,
+    "WFP_Price__sd12_at_origin": 3050,
+    "WFP_Price__value_at_origin": 4540,
+    "acled_agg_events_battles__nonzero_stress__months_since_at_origin_lag1": 326,
+    "acled_agg_events_erv__nonzero_stress__months_since_at_origin_lag1": 1346,
+    "acled_agg_events_vac__nonzero_stress__months_since_at_origin_lag1": 37,
+    "acled_agg_spill_events_battles__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__nonzero_stress__any12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__nonzero_stress__longest_run12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__nonzero_stress__months_since_at_origin_lag1": 64,
+    "acled_agg_spill_events_battles__nonzero_stress__share12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__value_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__nonzero_stress__any12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__nonzero_stress__longest_run12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__nonzero_stress__months_since_at_origin_lag1": 324,
+    "acled_agg_spill_events_erv__nonzero_stress__share12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__value_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__nonzero_stress__any12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__nonzero_stress__longest_run12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__nonzero_stress__months_since_at_origin_lag1": 28,
+    "acled_agg_spill_events_vac__nonzero_stress__share12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__value_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__value_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__value_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__value_at_origin_lag1": 16,
+    "bbg_global_food__composite_mean__ma12_at_origin": 39,
+    "bbg_global_food__composite_mean__ma3_at_origin": 39,
+    "bbg_global_food__composite_mean__ma6_at_origin": 39,
+    "bbg_global_food__composite_mean__sd12_at_origin": 39,
+    "bbg_global_food__composite_mean__value_at_origin": 39,
+    "bbg_oilgas__composite_mean__ma12_at_origin": 39,
+    "bbg_oilgas__composite_mean__ma3_at_origin": 39,
+    "bbg_oilgas__composite_mean__ma6_at_origin": 39,
+    "bbg_oilgas__composite_mean__sd12_at_origin": 39,
+    "bbg_oilgas__composite_mean__value_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__ma12_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__ma3_at_origin": 6226,
+    "bbg_soybean_oil__composite_mean__ma6_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__sd12_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__value_at_origin": 6226,
+    "bbg_staple_food__composite_mean__ma12_at_origin": 39,
+    "bbg_staple_food__composite_mean__ma3_at_origin": 39,
+    "bbg_staple_food__composite_mean__ma6_at_origin": 39,
+    "bbg_staple_food__composite_mean__sd12_at_origin": 39,
+    "bbg_staple_food__composite_mean__value_at_origin": 39,
+    "cdd_month_ensmean__hist_same_month_z_at_origin": 2,
+    "cdd_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "cdd_month_ensmean__hist_same_month_z_ma3_at_origin": 2,
+    "cdd_month_ensmean__hist_same_month_z_ma6_at_origin": 2,
+    "cdd_month_ensmean__ma12_at_origin": 2,
+    "cdd_month_ensmean__ma3_at_origin": 2,
+    "cdd_month_ensmean__ma6_at_origin": 2,
+    "cdd_month_ensmean__sd12_at_origin": 2,
+    "cdd_month_ensmean__value_at_origin": 2,
+    "edd_month_ensmean__hist_same_month_z_at_origin": 93,
+    "edd_month_ensmean__hist_same_month_z_ma12_at_origin": 69,
+    "edd_month_ensmean__hist_same_month_z_ma3_at_origin": 114,
+    "edd_month_ensmean__hist_same_month_z_ma6_at_origin": 70,
+    "edd_month_ensmean__ma12_at_origin": 18,
+    "edd_month_ensmean__ma3_at_origin": 18,
+    "edd_month_ensmean__ma6_at_origin": 18,
+    "edd_month_ensmean__sd12_at_origin": 18,
+    "edd_month_ensmean__value_at_origin": 18,
+    "evi_anom_month_ensmean__hist_same_month_z_at_origin": 10,
+    "evi_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "evi_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 12,
+    "evi_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 3,
+    "evi_anom_month_ensmean__ma12_at_origin": 2,
+    "evi_anom_month_ensmean__ma3_at_origin": 11,
+    "evi_anom_month_ensmean__ma6_at_origin": 3,
+    "evi_anom_month_ensmean__sd12_at_origin": 2,
+    "evi_anom_month_ensmean__value_at_origin": 9,
+    "evi_anom_month_ensmean__vegetation_stress__any12_at_origin": 2,
+    "evi_anom_month_ensmean__vegetation_stress__longest_run12_at_origin": 2,
+    "evi_anom_month_ensmean__vegetation_stress__months_since_at_origin": 596,
+    "evi_anom_month_ensmean__vegetation_stress__share12_at_origin": 2,
+    "food_price_index_WB__hist_same_month_z_at_origin": 2162,
+    "food_price_index_WB__hist_same_month_z_ma12_at_origin": 1629,
+    "food_price_index_WB__hist_same_month_z_ma3_at_origin": 2162,
+    "food_price_index_WB__hist_same_month_z_ma6_at_origin": 2162,
+    "food_price_index_WB__ma12_at_origin": 1629,
+    "food_price_index_WB__ma3_at_origin": 2162,
+    "food_price_index_WB__ma6_at_origin": 2162,
+    "food_price_index_WB__sd12_at_origin": 1629,
+    "food_price_index_WB__value_at_origin": 2162,
+    "gdd_month_ensmean__hist_same_month_z_at_origin": 18,
+    "gdd_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "gdd_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "gdd_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "gdd_month_ensmean__ma12_at_origin": 18,
+    "gdd_month_ensmean__ma3_at_origin": 18,
+    "gdd_month_ensmean__ma6_at_origin": 18,
+    "gdd_month_ensmean__sd12_at_origin": 18,
+    "gdd_month_ensmean__value_at_origin": 18,
+    "gs_last1__cdd_gs_ensmean__at_origin": 6,
+    "gs_last1__edd_gs_ensmean__at_origin": 18,
+    "gs_last1__evi_anom_gs_ensmean__at_origin": 2,
+    "gs_last1__gdd_gs_ensmean__at_origin": 18,
+    "gs_last1__hot_days_p95_gs_ensmean__at_origin": 18,
+    "gs_last1__is_major_at_origin": 30,
+    "gs_last1__prcp_anom_gs_ensmean__at_origin": 2,
+    "gs_last1__prcp_z_gs_ensmean__at_origin": 16,
+    "gs_last1__rainy_days_gs_ensmean__at_origin": 6,
+    "gs_last1__sm_z_gs_ensmean__at_origin": 23,
+    "gs_last1__spei03_gs_ensmean__at_origin": 17,
+    "gs_last1__spi03_gs_ensmean__at_origin": 16,
+    "gs_last1__tmax_anom_gs_ensmean__at_origin": 18,
+    "gs_last1__tmean_anom_gs_ensmean__at_origin": 18,
+    "gs_last2__cdd_gs_ensmean__at_origin": 2,
+    "gs_last2__edd_gs_ensmean__at_origin": 18,
+    "gs_last2__evi_anom_gs_ensmean__at_origin": 36,
+    "gs_last2__gdd_gs_ensmean__at_origin": 18,
+    "gs_last2__hot_days_p95_gs_ensmean__at_origin": 18,
+    "gs_last2__prcp_anom_gs_ensmean__at_origin": 2,
+    "gs_last2__prcp_z_gs_ensmean__at_origin": 2,
+    "gs_last2__rainy_days_gs_ensmean__at_origin": 2,
+    "gs_last2__sm_z_gs_ensmean__at_origin": 23,
+    "gs_last2__spei03_gs_ensmean__at_origin": 4,
+    "gs_last2__spi03_gs_ensmean__at_origin": 2,
+    "gs_last2__tmax_anom_gs_ensmean__at_origin": 18,
+    "gs_last2__tmean_anom_gs_ensmean__at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "hot_days_p95_month_ensmean__ma12_at_origin": 18,
+    "hot_days_p95_month_ensmean__ma3_at_origin": 18,
+    "hot_days_p95_month_ensmean__ma6_at_origin": 18,
+    "hot_days_p95_month_ensmean__sd12_at_origin": 18,
+    "hot_days_p95_month_ensmean__value_at_origin": 18,
+    "idp_admin0_latest_age_months": 541,
+    "idp_admin0_latest_stock": 541,
+    "idp_ipcch_ffill6_current": 5549,
+    "idp_ipcch_ffill6_ma3": 5814,
+    "idp_ipcch_ffill6_ma6": 5814,
+    "nightlight_mean__hist_same_month_z_at_origin": 59,
+    "nightlight_mean__hist_same_month_z_ma12_at_origin": 39,
+    "nightlight_mean__hist_same_month_z_ma3_at_origin": 40,
+    "nightlight_mean__hist_same_month_z_ma6_at_origin": 40,
+    "nightlight_mean__ma12_at_origin": 39,
+    "nightlight_mean__ma3_at_origin": 40,
+    "nightlight_mean__ma6_at_origin": 40,
+    "nightlight_mean__sd12_at_origin": 39,
+    "nightlight_mean__value_at_origin": 58,
+    "nino34_anom__enso_stress__any12_at_origin": 39,
+    "nino34_anom__enso_stress__longest_run12_at_origin": 39,
+    "nino34_anom__enso_stress__share12_at_origin": 39,
+    "nino34_anom__hist_same_month_z_at_origin": 39,
+    "nino34_anom__hist_same_month_z_ma12_at_origin": 39,
+    "nino34_anom__hist_same_month_z_ma3_at_origin": 39,
+    "nino34_anom__hist_same_month_z_ma6_at_origin": 39,
+    "nino34_anom__ma12_at_origin": 39,
+    "nino34_anom__ma3_at_origin": 39,
+    "nino34_anom__ma6_at_origin": 39,
+    "nino34_anom__sd12_at_origin": 39,
+    "nino34_anom__value_at_origin": 39,
+    "overall_phase_history_1": 2,
+    "overall_phase_history_2": 242,
+    "overall_phase_history_3": 639,
+    "overall_phase_history_change_1_2": 242,
+    "overall_phase_history_change_1_3": 639,
+    "popdensity": 4918,
+    "prcp_anom_month_ensmean__hist_same_month_z_at_origin": 2,
+    "prcp_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "prcp_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 2,
+    "prcp_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 2,
+    "prcp_anom_month_ensmean__ma12_at_origin": 2,
+    "prcp_anom_month_ensmean__ma3_at_origin": 2,
+    "prcp_anom_month_ensmean__ma6_at_origin": 2,
+    "prcp_anom_month_ensmean__sd12_at_origin": 2,
+    "prcp_anom_month_ensmean__value_at_origin": 2,
+    "prcp_z_month_ensmean__ma12_at_origin": 2,
+    "prcp_z_month_ensmean__ma3_at_origin": 2,
+    "prcp_z_month_ensmean__ma6_at_origin": 2,
+    "prcp_z_month_ensmean__sd12_at_origin": 2,
+    "prcp_z_month_ensmean__value_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_ma3_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_ma6_at_origin": 2,
+    "rainy_days_month_ensmean__ma12_at_origin": 2,
+    "rainy_days_month_ensmean__ma3_at_origin": 2,
+    "rainy_days_month_ensmean__ma6_at_origin": 2,
+    "rainy_days_month_ensmean__sd12_at_origin": 2,
+    "rainy_days_month_ensmean__value_at_origin": 2,
+    "sm_z_month_ensmean__ma12_at_origin": 23,
+    "sm_z_month_ensmean__ma3_at_origin": 23,
+    "sm_z_month_ensmean__ma6_at_origin": 23,
+    "sm_z_month_ensmean__sd12_at_origin": 23,
+    "sm_z_month_ensmean__value_at_origin": 33,
+    "spei03_month_ensmean__ma12_at_origin": 4,
+    "spei03_month_ensmean__ma3_at_origin": 668,
+    "spei03_month_ensmean__ma6_at_origin": 39,
+    "spei03_month_ensmean__sd12_at_origin": 4,
+    "spei03_month_ensmean__value_at_origin": 384,
+    "spi03_month_ensmean__deficit_stress__any12_at_origin": 2,
+    "spi03_month_ensmean__deficit_stress__longest_run12_at_origin": 2,
+    "spi03_month_ensmean__deficit_stress__months_since_at_origin": 2,
+    "spi03_month_ensmean__deficit_stress__share12_at_origin": 2,
+    "spi03_month_ensmean__ma12_at_origin": 2,
+    "spi03_month_ensmean__ma3_at_origin": 2,
+    "spi03_month_ensmean__ma6_at_origin": 2,
+    "spi03_month_ensmean__sd12_at_origin": 2,
+    "spi03_month_ensmean__value_at_origin": 2,
+    "tmax_anom_month_ensmean__hist_same_month_z_at_origin": 18,
+    "tmax_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "tmax_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "tmax_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "tmax_anom_month_ensmean__ma12_at_origin": 18,
+    "tmax_anom_month_ensmean__ma3_at_origin": 18,
+    "tmax_anom_month_ensmean__ma6_at_origin": 18,
+    "tmax_anom_month_ensmean__sd12_at_origin": 18,
+    "tmax_anom_month_ensmean__value_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__any12_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__longest_run12_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__months_since_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__share12_at_origin": 18,
+    "tmean_anom_month_ensmean__ma12_at_origin": 18,
+    "tmean_anom_month_ensmean__ma3_at_origin": 18,
+    "tmean_anom_month_ensmean__ma6_at_origin": 18,
+    "tmean_anom_month_ensmean__sd12_at_origin": 18,
+    "tmean_anom_month_ensmean__value_at_origin": 18
+   },
+   "model_horizon_months": 2,
+   "public_lead_months": 0,
+   "rows": 6226,
+   "sha256": "ad50544ec581c72c93ab534a625b8eed02281dc0422f0ed58e34f0cec69f7a3d",
+   "target_month": "2026-11"
+  },
+  "8": {
+   "feature_origin": "2026-09",
+   "file": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/feature_batches/ipcch-2026-11-ipcch-real-fe7282ef75e747fd-a02e27ee805d/h08.csv",
+   "generation": "1793503514854816",
+   "missing_by_column": {
+    "GPP_mean__hist_same_month_z_at_origin": 6226,
+    "GPP_mean__hist_same_month_z_ma12_at_origin": 6226,
+    "GPP_mean__hist_same_month_z_ma3_at_origin": 6226,
+    "GPP_mean__hist_same_month_z_ma6_at_origin": 6226,
+    "GPP_mean__ma12_at_origin": 6226,
+    "GPP_mean__ma3_at_origin": 6226,
+    "GPP_mean__ma6_at_origin": 6226,
+    "GPP_mean__sd12_at_origin": 6226,
+    "GPP_mean__value_at_origin": 6226,
+    "GPP_mean__vegetation_stress__any12_at_origin": 6226,
+    "GPP_mean__vegetation_stress__longest_run12_at_origin": 6226,
+    "GPP_mean__vegetation_stress__months_since_at_origin": 138,
+    "GPP_mean__vegetation_stress__share12_at_origin": 6226,
+    "WFP_Price__hist_same_month_z_at_origin": 4560,
+    "WFP_Price__hist_same_month_z_ma12_at_origin": 3193,
+    "WFP_Price__hist_same_month_z_ma3_at_origin": 3392,
+    "WFP_Price__hist_same_month_z_ma6_at_origin": 3250,
+    "WFP_Price__ma12_at_origin": 3050,
+    "WFP_Price__ma3_at_origin": 3349,
+    "WFP_Price__ma6_at_origin": 3121,
+    "WFP_Price__price_shock_stress__any12_at_origin": 3050,
+    "WFP_Price__price_shock_stress__longest_run12_at_origin": 3050,
+    "WFP_Price__price_shock_stress__months_since_at_origin": 1353,
+    "WFP_Price__price_shock_stress__share12_at_origin": 3050,
+    "WFP_Price__sd12_at_origin": 3050,
+    "WFP_Price__value_at_origin": 4540,
+    "acled_agg_events_battles__nonzero_stress__months_since_at_origin_lag1": 326,
+    "acled_agg_events_erv__nonzero_stress__months_since_at_origin_lag1": 1346,
+    "acled_agg_events_vac__nonzero_stress__months_since_at_origin_lag1": 37,
+    "acled_agg_spill_events_battles__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__nonzero_stress__any12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__nonzero_stress__longest_run12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__nonzero_stress__months_since_at_origin_lag1": 64,
+    "acled_agg_spill_events_battles__nonzero_stress__share12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_events_battles__value_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__nonzero_stress__any12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__nonzero_stress__longest_run12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__nonzero_stress__months_since_at_origin_lag1": 324,
+    "acled_agg_spill_events_erv__nonzero_stress__share12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_events_erv__value_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__nonzero_stress__any12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__nonzero_stress__longest_run12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__nonzero_stress__months_since_at_origin_lag1": 28,
+    "acled_agg_spill_events_vac__nonzero_stress__share12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_events_vac__value_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_battles__value_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_erv__value_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__ma12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__ma3_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__ma6_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__sd12_at_origin_lag1": 16,
+    "acled_agg_spill_fatalities_vac__value_at_origin_lag1": 16,
+    "bbg_global_food__composite_mean__ma12_at_origin": 39,
+    "bbg_global_food__composite_mean__ma3_at_origin": 39,
+    "bbg_global_food__composite_mean__ma6_at_origin": 39,
+    "bbg_global_food__composite_mean__sd12_at_origin": 39,
+    "bbg_global_food__composite_mean__value_at_origin": 39,
+    "bbg_oilgas__composite_mean__ma12_at_origin": 39,
+    "bbg_oilgas__composite_mean__ma3_at_origin": 39,
+    "bbg_oilgas__composite_mean__ma6_at_origin": 39,
+    "bbg_oilgas__composite_mean__sd12_at_origin": 39,
+    "bbg_oilgas__composite_mean__value_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__ma12_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__ma3_at_origin": 6226,
+    "bbg_soybean_oil__composite_mean__ma6_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__sd12_at_origin": 39,
+    "bbg_soybean_oil__composite_mean__value_at_origin": 6226,
+    "bbg_staple_food__composite_mean__ma12_at_origin": 39,
+    "bbg_staple_food__composite_mean__ma3_at_origin": 39,
+    "bbg_staple_food__composite_mean__ma6_at_origin": 39,
+    "bbg_staple_food__composite_mean__sd12_at_origin": 39,
+    "bbg_staple_food__composite_mean__value_at_origin": 39,
+    "cdd_month_ensmean__hist_same_month_z_at_origin": 2,
+    "cdd_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "cdd_month_ensmean__hist_same_month_z_ma3_at_origin": 2,
+    "cdd_month_ensmean__hist_same_month_z_ma6_at_origin": 2,
+    "cdd_month_ensmean__ma12_at_origin": 2,
+    "cdd_month_ensmean__ma3_at_origin": 2,
+    "cdd_month_ensmean__ma6_at_origin": 2,
+    "cdd_month_ensmean__sd12_at_origin": 2,
+    "cdd_month_ensmean__value_at_origin": 2,
+    "edd_month_ensmean__hist_same_month_z_at_origin": 93,
+    "edd_month_ensmean__hist_same_month_z_ma12_at_origin": 69,
+    "edd_month_ensmean__hist_same_month_z_ma3_at_origin": 114,
+    "edd_month_ensmean__hist_same_month_z_ma6_at_origin": 70,
+    "edd_month_ensmean__ma12_at_origin": 18,
+    "edd_month_ensmean__ma3_at_origin": 18,
+    "edd_month_ensmean__ma6_at_origin": 18,
+    "edd_month_ensmean__sd12_at_origin": 18,
+    "edd_month_ensmean__value_at_origin": 18,
+    "evi_anom_month_ensmean__hist_same_month_z_at_origin": 10,
+    "evi_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "evi_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 12,
+    "evi_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 3,
+    "evi_anom_month_ensmean__ma12_at_origin": 2,
+    "evi_anom_month_ensmean__ma3_at_origin": 11,
+    "evi_anom_month_ensmean__ma6_at_origin": 3,
+    "evi_anom_month_ensmean__sd12_at_origin": 2,
+    "evi_anom_month_ensmean__value_at_origin": 9,
+    "evi_anom_month_ensmean__vegetation_stress__any12_at_origin": 2,
+    "evi_anom_month_ensmean__vegetation_stress__longest_run12_at_origin": 2,
+    "evi_anom_month_ensmean__vegetation_stress__months_since_at_origin": 596,
+    "evi_anom_month_ensmean__vegetation_stress__share12_at_origin": 2,
+    "food_price_index_WB__hist_same_month_z_at_origin": 2162,
+    "food_price_index_WB__hist_same_month_z_ma12_at_origin": 1629,
+    "food_price_index_WB__hist_same_month_z_ma3_at_origin": 2162,
+    "food_price_index_WB__hist_same_month_z_ma6_at_origin": 2162,
+    "food_price_index_WB__ma12_at_origin": 1629,
+    "food_price_index_WB__ma3_at_origin": 2162,
+    "food_price_index_WB__ma6_at_origin": 2162,
+    "food_price_index_WB__sd12_at_origin": 1629,
+    "food_price_index_WB__value_at_origin": 2162,
+    "gdd_month_ensmean__hist_same_month_z_at_origin": 18,
+    "gdd_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "gdd_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "gdd_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "gdd_month_ensmean__ma12_at_origin": 18,
+    "gdd_month_ensmean__ma3_at_origin": 18,
+    "gdd_month_ensmean__ma6_at_origin": 18,
+    "gdd_month_ensmean__sd12_at_origin": 18,
+    "gdd_month_ensmean__value_at_origin": 18,
+    "gs_last1__cdd_gs_ensmean__at_origin": 6,
+    "gs_last1__edd_gs_ensmean__at_origin": 18,
+    "gs_last1__evi_anom_gs_ensmean__at_origin": 2,
+    "gs_last1__gdd_gs_ensmean__at_origin": 18,
+    "gs_last1__hot_days_p95_gs_ensmean__at_origin": 18,
+    "gs_last1__is_major_at_origin": 30,
+    "gs_last1__prcp_anom_gs_ensmean__at_origin": 2,
+    "gs_last1__prcp_z_gs_ensmean__at_origin": 16,
+    "gs_last1__rainy_days_gs_ensmean__at_origin": 6,
+    "gs_last1__sm_z_gs_ensmean__at_origin": 23,
+    "gs_last1__spei03_gs_ensmean__at_origin": 17,
+    "gs_last1__spi03_gs_ensmean__at_origin": 16,
+    "gs_last1__tmax_anom_gs_ensmean__at_origin": 18,
+    "gs_last1__tmean_anom_gs_ensmean__at_origin": 18,
+    "gs_last2__cdd_gs_ensmean__at_origin": 2,
+    "gs_last2__edd_gs_ensmean__at_origin": 18,
+    "gs_last2__evi_anom_gs_ensmean__at_origin": 36,
+    "gs_last2__gdd_gs_ensmean__at_origin": 18,
+    "gs_last2__hot_days_p95_gs_ensmean__at_origin": 18,
+    "gs_last2__prcp_anom_gs_ensmean__at_origin": 2,
+    "gs_last2__prcp_z_gs_ensmean__at_origin": 2,
+    "gs_last2__rainy_days_gs_ensmean__at_origin": 2,
+    "gs_last2__sm_z_gs_ensmean__at_origin": 23,
+    "gs_last2__spei03_gs_ensmean__at_origin": 4,
+    "gs_last2__spi03_gs_ensmean__at_origin": 2,
+    "gs_last2__tmax_anom_gs_ensmean__at_origin": 18,
+    "gs_last2__tmean_anom_gs_ensmean__at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "hot_days_p95_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "hot_days_p95_month_ensmean__ma12_at_origin": 18,
+    "hot_days_p95_month_ensmean__ma3_at_origin": 18,
+    "hot_days_p95_month_ensmean__ma6_at_origin": 18,
+    "hot_days_p95_month_ensmean__sd12_at_origin": 18,
+    "hot_days_p95_month_ensmean__value_at_origin": 18,
+    "idp_admin0_latest_age_months": 541,
+    "idp_admin0_latest_stock": 541,
+    "idp_ipcch_ffill6_current": 5549,
+    "idp_ipcch_ffill6_ma3": 5814,
+    "idp_ipcch_ffill6_ma6": 5814,
+    "nightlight_mean__hist_same_month_z_at_origin": 59,
+    "nightlight_mean__hist_same_month_z_ma12_at_origin": 39,
+    "nightlight_mean__hist_same_month_z_ma3_at_origin": 40,
+    "nightlight_mean__hist_same_month_z_ma6_at_origin": 40,
+    "nightlight_mean__ma12_at_origin": 39,
+    "nightlight_mean__ma3_at_origin": 40,
+    "nightlight_mean__ma6_at_origin": 40,
+    "nightlight_mean__sd12_at_origin": 39,
+    "nightlight_mean__value_at_origin": 58,
+    "nino34_anom__enso_stress__any12_at_origin": 39,
+    "nino34_anom__enso_stress__longest_run12_at_origin": 39,
+    "nino34_anom__enso_stress__share12_at_origin": 39,
+    "nino34_anom__hist_same_month_z_at_origin": 39,
+    "nino34_anom__hist_same_month_z_ma12_at_origin": 39,
+    "nino34_anom__hist_same_month_z_ma3_at_origin": 39,
+    "nino34_anom__hist_same_month_z_ma6_at_origin": 39,
+    "nino34_anom__ma12_at_origin": 39,
+    "nino34_anom__ma3_at_origin": 39,
+    "nino34_anom__ma6_at_origin": 39,
+    "nino34_anom__sd12_at_origin": 39,
+    "nino34_anom__value_at_origin": 39,
+    "overall_phase_history_1": 2,
+    "overall_phase_history_2": 242,
+    "overall_phase_history_3": 639,
+    "overall_phase_history_change_1_2": 242,
+    "overall_phase_history_change_1_3": 639,
+    "popdensity": 4918,
+    "prcp_anom_month_ensmean__hist_same_month_z_at_origin": 2,
+    "prcp_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "prcp_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 2,
+    "prcp_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 2,
+    "prcp_anom_month_ensmean__ma12_at_origin": 2,
+    "prcp_anom_month_ensmean__ma3_at_origin": 2,
+    "prcp_anom_month_ensmean__ma6_at_origin": 2,
+    "prcp_anom_month_ensmean__sd12_at_origin": 2,
+    "prcp_anom_month_ensmean__value_at_origin": 2,
+    "prcp_z_month_ensmean__ma12_at_origin": 2,
+    "prcp_z_month_ensmean__ma3_at_origin": 2,
+    "prcp_z_month_ensmean__ma6_at_origin": 2,
+    "prcp_z_month_ensmean__sd12_at_origin": 2,
+    "prcp_z_month_ensmean__value_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_ma12_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_ma3_at_origin": 2,
+    "rainy_days_month_ensmean__hist_same_month_z_ma6_at_origin": 2,
+    "rainy_days_month_ensmean__ma12_at_origin": 2,
+    "rainy_days_month_ensmean__ma3_at_origin": 2,
+    "rainy_days_month_ensmean__ma6_at_origin": 2,
+    "rainy_days_month_ensmean__sd12_at_origin": 2,
+    "rainy_days_month_ensmean__value_at_origin": 2,
+    "sm_z_month_ensmean__ma12_at_origin": 23,
+    "sm_z_month_ensmean__ma3_at_origin": 23,
+    "sm_z_month_ensmean__ma6_at_origin": 23,
+    "sm_z_month_ensmean__sd12_at_origin": 23,
+    "sm_z_month_ensmean__value_at_origin": 33,
+    "spei03_month_ensmean__ma12_at_origin": 4,
+    "spei03_month_ensmean__ma3_at_origin": 668,
+    "spei03_month_ensmean__ma6_at_origin": 39,
+    "spei03_month_ensmean__sd12_at_origin": 4,
+    "spei03_month_ensmean__value_at_origin": 384,
+    "spi03_month_ensmean__deficit_stress__any12_at_origin": 2,
+    "spi03_month_ensmean__deficit_stress__longest_run12_at_origin": 2,
+    "spi03_month_ensmean__deficit_stress__months_since_at_origin": 2,
+    "spi03_month_ensmean__deficit_stress__share12_at_origin": 2,
+    "spi03_month_ensmean__ma12_at_origin": 2,
+    "spi03_month_ensmean__ma3_at_origin": 2,
+    "spi03_month_ensmean__ma6_at_origin": 2,
+    "spi03_month_ensmean__sd12_at_origin": 2,
+    "spi03_month_ensmean__value_at_origin": 2,
+    "tmax_anom_month_ensmean__hist_same_month_z_at_origin": 18,
+    "tmax_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "tmax_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "tmax_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "tmax_anom_month_ensmean__ma12_at_origin": 18,
+    "tmax_anom_month_ensmean__ma3_at_origin": 18,
+    "tmax_anom_month_ensmean__ma6_at_origin": 18,
+    "tmax_anom_month_ensmean__sd12_at_origin": 18,
+    "tmax_anom_month_ensmean__value_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_ma12_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_ma3_at_origin": 18,
+    "tmean_anom_month_ensmean__hist_same_month_z_ma6_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__any12_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__longest_run12_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__months_since_at_origin": 18,
+    "tmean_anom_month_ensmean__hot_stress__share12_at_origin": 18,
+    "tmean_anom_month_ensmean__ma12_at_origin": 18,
+    "tmean_anom_month_ensmean__ma3_at_origin": 18,
+    "tmean_anom_month_ensmean__ma6_at_origin": 18,
+    "tmean_anom_month_ensmean__sd12_at_origin": 18,
+    "tmean_anom_month_ensmean__value_at_origin": 18
+   },
+   "model_horizon_months": 8,
+   "public_lead_months": 6,
+   "rows": 6226,
+   "sha256": "0c81fa3bcf3014b854edc2f5743e5636206b0e91487c064853bc6b16a17a92a2",
+   "target_month": "2027-05"
+  }
+ },
+ "identity_columns": [
+  "admin_code",
+  "area_id",
+  "population_estimate",
+  "population_reference_period",
+  "population_imputation_method"
+ ],
+ "mode": "real",
+ "retained_inputs": {
+  "acled_agg_weekly": {
+   "generation": "1793494944270289",
+   "sha256": "d3fb0a176c3e7d496cdd5e24ed054137b670855c6297b216116cf253f2b2ed2b",
+   "version": 2
+  },
+  "combination_binding": {
+   "generation": "1793457706296714",
+   "sha256": "7ec34d180d8a273f190271e8f860be79ab7a6516b8aa493f5a5a62178540a4f1",
+   "version": 1
+  },
+  "fixed__season_calendar": {
+   "generation": "1793457567996165",
+   "sha256": "25e89bed6baa237a8079bfd2c8b17c0a5ca5ac39878ce962af4455e9261207da",
+   "version": 1
+  },
+  "fixed__season_windows": {
+   "generation": "1793457568492935",
+   "sha256": "5ef68c9592e69e20e1285752b18e0021053c490ee1b82a22e2255cc1e029ac4f",
+   "version": 1
+  },
+  "gpp_availability_ledger": {
+   "generation": "1793502502831531",
+   "sha256": "a818e09ca9010d70b00396fcad76de5aca6cbe9c83e9c191dd16382601dffc4b",
+   "version": 17
+  },
+  "history__GPP_mean": {
+   "generation": "1793457572625616",
+   "sha256": "470373ce2057c6206542a659142b6977384db1c69c7020df7067083f0775e67c",
+   "version": 1
+  },
+  "history__WFP_Price": {
+   "generation": "1793457575074674",
+   "sha256": "662b46af6b954326beef3712d02037f18bf3da35f64f0ff48df47e6796d9f1e0",
+   "version": 1
+  },
+  "history__bbg_global_food__composite_mean": {
+   "generation": "1793457578589706",
+   "sha256": "1a3248e1be8364882df338463ce0f861c589266293d89496b42795ca0a94692f",
+   "version": 1
+  },
+  "history__bbg_oilgas__composite_mean": {
+   "generation": "1793457582347961",
+   "sha256": "7a4ccbaa65b4e2efe1e306526bb85e8a015677b93654c78bc17249e30bc3c9d5",
+   "version": 1
+  },
+  "history__bbg_soybean_oil__composite_mean": {
+   "generation": "1793457604228084",
+   "sha256": "89e80e427682879962fbba1d5c06141a115bcf3e4f946fc9896d496c6e4d3762",
+   "version": 1
+  },
+  "history__bbg_staple_food__composite_mean": {
+   "generation": "1793457607913285",
+   "sha256": "b7786585b80850289f014a72a1a38859f33282657c14571f38865c8606b9abec",
+   "version": 1
+  },
+  "history__climate_gs_cdd": {
+   "generation": "1793457609103822",
+   "sha256": "7ce4cd58725b7ea843844aa85447e5e73a9610529aef14df0abbf09f533c16a6",
+   "version": 1
+  },
+  "history__climate_gs_edd": {
+   "generation": "1793457610731324",
+   "sha256": "4e30d9d448ae5aead4f70eb15d9d71cd4425aa3bfbe5096a41f75b1915444078",
+   "version": 1
+  },
+  "history__climate_gs_evi_anom": {
+   "generation": "1793457611993383",
+   "sha256": "c3ae627e674394c8085c173f8205a7ea6995d7e777911e5604669935577ab463",
+   "version": 1
+  },
+  "history__climate_gs_gdd": {
+   "generation": "1793457613261193",
+   "sha256": "4e4df9f20e437dece97fe4146c3e8d8dbc3122b8380e4d145220b98360a5b494",
+   "version": 1
+  },
+  "history__climate_gs_hot_days_p95": {
+   "generation": "1793457614397445",
+   "sha256": "fe7dcabdd0d87d1ec2c93c8d2614ee23e2465e24022c788d3774819f7abc3beb",
+   "version": 1
+  },
+  "history__climate_gs_prcp_anom": {
+   "generation": "1793457615650941",
+   "sha256": "ba28ca67b4c4a779ffd3988b48e420c8126db3448c65120d6c6a7d619454c1cd",
+   "version": 1
+  },
+  "history__climate_gs_prcp_z": {
+   "generation": "1793457620477471",
+   "sha256": "246f5d0a30e19e6bee18916d1779a96d3942e08ea7f668718529fff23f77c193",
+   "version": 1
+  },
+  "history__climate_gs_rainy_days": {
+   "generation": "1793457621645909",
+   "sha256": "7e5e11ed3b2a4247714c34e69b106d397a8c3baf05d347b5e60fdfb15d1e397a",
+   "version": 1
+  },
+  "history__climate_gs_sm_z": {
+   "generation": "1793457622808190",
+   "sha256": "3dc62de6f3dd1299785be8d31c304cec541c4fbc07a6a35477ca9c2c612aea88",
+   "version": 1
+  },
+  "history__climate_gs_spei03": {
+   "generation": "1793457623927828",
+   "sha256": "afe6c43c9ca5fafb9d015b04252713be758fcc500520f5ebbfdc00ed50e6eaa8",
+   "version": 1
+  },
+  "history__climate_gs_spi03": {
+   "generation": "1793457625139852",
+   "sha256": "bb4a9fac6c2107f38b5f7bcad0f99de4840013c785d9b8fa1eb786760f5b00d0",
+   "version": 1
+  },
+  "history__climate_gs_tmax_anom": {
+   "generation": "1793457626291379",
+   "sha256": "9c966d665664edd6624ce3ec21c677bb9d8c07b748b1caf9ad437b04de155ede",
+   "version": 1
+  },
+  "history__climate_gs_tmean_anom": {
+   "generation": "1793457627512164",
+   "sha256": "f68434739eebd78bc31f4a5740292f5d068ba9ad76a74cbd0922ae8d3928ed60",
+   "version": 1
+  },
+  "history__climate_month_cdd": {
+   "generation": "1793501446206066",
+   "sha256": "5e68cbd5b43e37e7b00d623b70e399922e14ed5fd503cc36de8ce8e5a657cc6f",
+   "version": 2
+  },
+  "history__climate_month_edd": {
+   "generation": "1793501841115781",
+   "sha256": "53ab8e1e088c76f0395063582b24f585f891756f4777abcdfec7e809b14fc183",
+   "version": 2
+  },
+  "history__climate_month_evi_anom": {
+   "generation": "1793502419262751",
+   "sha256": "dd3934ff5b52abcb107475221fe9554c7d2db46924571cec0236e92654ed12dc",
+   "version": 2
+  },
+  "history__climate_month_gdd": {
+   "generation": "1793501816323846",
+   "sha256": "1069fd81cbc326a52d29d1b05b0d9c2283c2b0d117ea5ea90daa27873c21eeae",
+   "version": 2
+  },
+  "history__climate_month_hot_days_p95": {
+   "generation": "1793501789283118",
+   "sha256": "2567c2ceea3a84523966b4fd99dac2d5e4db9461d7379650034bf93238474837",
+   "version": 2
+  },
+  "history__climate_month_prcp_anom": {
+   "generation": "1793501226869034",
+   "sha256": "c0c6d645d67e90444e8232b4ac52fb4cbbd1759162c02f4d1ca3158aafe6bca7",
+   "version": 2
+  },
+  "history__climate_month_prcp_z": {
+   "generation": "1793501252972019",
+   "sha256": "b8fd1eee646de931c7f5935c4a3732ce445eeae71dd28e0d0cad1d4bd09982b8",
+   "version": 2
+  },
+  "history__climate_month_rainy_days": {
+   "generation": "1793501418879434",
+   "sha256": "b7d5f79d3b8029775243981efc7687e8807778c6375a4a079dc8a3f41eaf6e0a",
+   "version": 2
+  },
+  "history__climate_month_sm_z": {
+   "generation": "1793501939792531",
+   "sha256": "b0436a630089abc83bb75de4d32051ea392b4ab7b49396011155c39ccca51783",
+   "version": 2
+  },
+  "history__climate_month_spei03": {
+   "generation": "1793502367052369",
+   "sha256": "2283fb7a4797625c3b4019faeb1a9314cba83c165a938d970838c2c1c4fd632e",
+   "version": 2
+  },
+  "history__climate_month_spi03": {
+   "generation": "1793502339394394",
+   "sha256": "879fed62078daf10f3c6ce36a52dac4e8727e64aae4d7da9a58749e005350088",
+   "version": 2
+  },
+  "history__climate_month_tmax_anom": {
+   "generation": "1793501763318757",
+   "sha256": "9d7e32442ab4a486db25eca80b0b71200bd9143c9bba683f041fd71d87829777",
+   "version": 2
+  },
+  "history__climate_month_tmean_anom": {
+   "generation": "1793501737664859",
+   "sha256": "cce3d4f40c56430cbfcc2db91cc382a80f6cfe24b3c3a7512eae68d0d3880c4d",
+   "version": 2
+  },
+  "history__food_price_index_WB": {
+   "generation": "1793457697411237",
+   "sha256": "3a0e0f8b653096d1f5df48b9585e5475ba349fb14a817d881392faa42c0c8daa",
+   "version": 1
+  },
+  "history__history_snapshot": {
+   "generation": "1793457697925589",
+   "sha256": "0380367b15bd78f5f6bb7a4901079b046b4b0075661eb7b59f9309e2cab1e2d8",
+   "version": 1
+  },
+  "history__idp_local": {
+   "generation": "1793457698746962",
+   "sha256": "dab66e28fb9d20f469dc1c079e32b12622f077d68988d43453da721bbe900836",
+   "version": 1
+  },
+  "history__idp_national": {
+   "generation": "1793457698925765",
+   "sha256": "dc4bff601f6e20b9f15cef84b46da71698206e744e134c0bc31cb9883705224f",
+   "version": 1
+  },
+  "history__nightlight_mean": {
+   "generation": "1793502956077298",
+   "sha256": "2d548ef8d8167649d4f9b63171a993d3984ef5adf4fd6977c3dddee6948635d4",
+   "version": 2
+  },
+  "history__nino34_anom": {
+   "generation": "1793457706114634",
+   "sha256": "755cb66a8d25a950b8d9c3b66ef6225a47599bdfc86c56bad27109e9501d22a7",
+   "version": 1
+  }
+ },
+ "roster": {
+  "file_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+  "kind": "full bound roster",
+  "sha256": "8e3a5c0fe572f09f831248afebfa1e85c243b2e7495f54389506d9c6f0858166",
+  "size": 6226
+ },
+ "run_id": "ipcch-real-fe7282ef75e747fd",
+ "schema": "ipcch-feature-batch-v1"
+}

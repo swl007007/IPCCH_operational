@@ -1,0 +1,238 @@
+{
+ "current": {
+  "crc32c_hash": "pxv20g==",
+  "equals_readback_pinned_generation": true,
+  "generation": "1793503777656101",
+  "md5_hash": "9hKTWU42AwojhqEuzFC2HQ==",
+  "readback_pointer_content": {
+   "release_record": "gs://food-crisis-test-ipcch-data/monthly-staging/releases/ipcch-real-fe7282ef75e747fd-ipcch/release.json",
+   "release_record_generation": "1793503777593004",
+   "run_id": "ipcch-real-fe7282ef75e747fd-ipcch"
+  },
+  "size": 231,
+  "storage_url": "gs://food-crisis-test-ipcch-data/monthly-staging/current.json#1793503777656101",
+  "update_time": "2026-11-01T03:29:37+0000"
+ },
+ "execution": {
+  "args": [
+   "-m",
+   "cloud.orchestrator.delivery_job",
+   "run",
+   "--request-uri",
+   "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-fe7282ef75e747fd/run_manifest.json",
+   "--request-generation",
+   "1793500174046456",
+   "--output-root",
+   "gs://food-crisis-test-ipcch-data",
+   "--release-namespace",
+   "monthly-staging",
+   "--image-uri",
+   "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+   "--v2-config",
+   "/opt/ipcch/deployment.json"
+  ],
+  "cancelled_count": 0,
+  "completion": "2026-11-01T03:29:41.714813Z",
+  "conditions": {
+   "Completed": [
+    "True",
+    "Execution completed successfully in 59m57.44s."
+   ],
+   "ContainerReady": [
+    "True",
+    "Imported container image."
+   ],
+   "ResourcesAvailable": [
+    "True",
+    "Provisioned imported containers."
+   ],
+   "Started": [
+    "True",
+    "Started deployed execution in 46.21s."
+   ]
+  },
+  "creator": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+  "failed_count": 0,
+  "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+  "job": "oct-delivery",
+  "limits": {
+   "cpu": "8",
+   "memory": "32Gi"
+  },
+  "max_retries": 0,
+  "name": "oct-delivery-625sk",
+  "pins_ok": true,
+  "running_count": 0,
+  "service_account": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+  "start": "2026-11-01T02:29:44.273453Z",
+  "succeeded_count": 1,
+  "task_count": 1,
+  "task_exit_code": "not reported by execution describe (success condition + succeededCount only)",
+  "timeout_seconds": "14400"
+ },
+ "gpp_ledger": {
+  "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000017-84292399cb244985bbb9f3101436dde0.csv",
+  "probes_2026_11_01": [
+   [
+    "2026-01",
+    "unpublished",
+    {
+     "http": 404,
+     "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M01_Mean.tif.gz"
+    }
+   ],
+   [
+    "2026-02",
+    "unpublished",
+    {
+     "http": 404,
+     "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M02_Mean.tif.gz"
+    }
+   ],
+   [
+    "2026-03",
+    "unpublished",
+    {
+     "http": 404,
+     "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M03_Mean.tif.gz"
+    }
+   ],
+   [
+    "2026-04",
+    "unpublished",
+    {
+     "http": 404,
+     "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M04_Mean.tif.gz"
+    }
+   ],
+   [
+    "2026-05",
+    "unpublished",
+    {
+     "http": 404,
+     "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M05_Mean.tif.gz"
+    }
+   ],
+   [
+    "2026-06",
+    "unpublished",
+    {
+     "http": 404,
+     "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M06_Mean.tif.gz"
+    }
+   ],
+   [
+    "2026-07",
+    "unpublished",
+    {
+     "http": 404,
+     "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M07_Mean.tif.gz"
+    }
+   ],
+   [
+    "2026-08",
+    "unpublished",
+    {
+     "http": 404,
+     "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M08_Mean.tif.gz"
+    }
+   ],
+   [
+    "2026-09",
+    "unpublished",
+    {
+     "http": 404,
+     "url": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M09_Mean.tif.gz"
+    }
+   ]
+  ],
+  "rows": 17,
+  "sha256": "a818e09ca9010d70b00396fcad76de5aca6cbe9c83e9c191dd16382601dffc4b",
+  "sha_equals_post_inventory": true
+ },
+ "logs": {
+  "entries": 253,
+  "first_ts": "2026-11-01T02:57:31.160542Z",
+  "last": [
+   {
+    "severity": null,
+    "text": "}",
+    "ts": "2026-11-01T03:29:37.830061Z"
+   },
+   {
+    "severity": "INFO",
+    "text": "Container called exit(0).",
+    "ts": "2026-11-01T03:29:38.390198Z"
+   },
+   {
+    "severity": "INFO",
+    "text": "{\"@type\": \"type.googleapis.com/google.cloud.audit.AuditLog\", \"methodName\": \"/Jobs.RunJob\", \"resourceName\": \"namespaces/feisty-flames-511718-d4/executions/oct-delivery-625sk\", \"response\": {\"@type\": \"type.googleapis.com/google.cloud.run.v1.Execution\", \"apiVersion\": \"run.googleapis.com/v1\", \"kind\": \"Ex",
+    "ts": "2026-11-01T03:29:42.761296Z"
+   }
+  ],
+  "severity_counts": {
+   "DEFAULT": 251,
+   "INFO": 2
+  },
+  "warning_or_error": []
+ },
+ "reconciliation": {
+  "batch_active_listed": 0,
+  "batch_stderr": "WARNING: The following filter keys were not present in any resource : status.state",
+  "hold": {
+   "exit": 1,
+   "stderr": "ERROR: (gcloud.storage.objects.describe) gs://food-crisis-test-ipcch-data/maintenance%2Fhold.json not found: 404."
+  },
+  "locks_ls": {
+   "exit": 1,
+   "objects": 0,
+   "stderr": "ERROR: (gcloud.storage.ls) One or more URLs matched no objects."
+  },
+  "monthly_prepare_executions_listed": 0,
+  "oct_delivery_active": [],
+  "oct_delivery_latest": [
+   [
+    "oct-delivery-625sk",
+    "2026-11-01T02:29:36.228630Z",
+    1,
+    null,
+    "2026-11-01T03:29:41.714813Z"
+   ],
+   [
+    "oct-delivery-4jkcj",
+    "2026-11-01T01:00:23.414589Z",
+    null,
+    1,
+    "2026-11-01T01:03:38.497566Z"
+   ],
+   [
+    "oct-delivery-t6vlm",
+    "2026-10-31T15:21:17.711849Z",
+    1,
+    null,
+    "2026-10-31T15:38:53.243300Z"
+   ]
+  ],
+  "workflow_active": [],
+  "workflow_latest": [
+   [
+    "53f02176-109f-4503-a873-ac07d5abcc97",
+    "SUCCEEDED",
+    "2026-11-01T02:29:34.925617568Z",
+    "2026-11-01T02:29:36.363696995Z"
+   ],
+   [
+    "44d4f44e-bf1f-4d14-b611-2fa63201836f",
+    "SUCCEEDED",
+    "2026-11-01T01:00:22.273552560Z",
+    "2026-11-01T01:00:23.550947930Z"
+   ],
+   [
+    "c70d40ea-b917-48a0-a490-95e6cbe9f7aa",
+    "SUCCEEDED",
+    "2026-10-31T15:21:16.695858061Z",
+    "2026-10-31T15:21:17.840956867Z"
+   ]
+  ]
+ }
+}

@@ -1,0 +1,65 @@
+# unit=ipcch-cp2-pins-check-1793500025793996277 start=2026-10-31T22:27:05-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/../cp0/pins_check.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/pins.json
+Running as unit: ipcch-cp2-pins-check-1793500025793996277.service; invocation ID: 38d64b4a6fb045079a4dd0edd53c9f4a
+{
+ "shared": {
+  "envelope": {
+   "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json",
+   "generation": "1793457267476070",
+   "size": 1642,
+   "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596"
+  },
+  "environment_manifest": {
+   "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt",
+   "generation": "1793457280557418",
+   "size": 1373,
+   "sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d"
+  },
+  "country_reference_real": {
+   "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv",
+   "generation": "1793457294730935",
+   "size": 11296,
+   "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b"
+  }
+ },
+ "local": {
+  "selections.json": "7ab733d8c0e22bc866ae0ddb8cdfce63b3c5621e749b6ec2316f8fdaf58af4a7",
+  "acled_regional_aggregate_20261017_20261023.csv": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a"
+ },
+ "match": {
+  "envelope": true,
+  "environment_manifest": true,
+  "country_reference_real": true,
+  "selections.json": true,
+  "acled_regional_aggregate_20261017_20261023.csv": true
+ }
+}
+	Command being timed: "/usr/bin/env GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/../cp0/pins_check.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/pins.json"
+	User time (seconds): 0.23
+	System time (seconds): 0.03
+	Percent of CPU this job got: 25%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.05
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 60448
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 9652
+	Voluntary context switches: 724
+	Involuntary context switches: 5
+	Swaps: 0
+	File system inputs: 152
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 1.103s
+CPU time consumed: 278ms
+# end=2026-10-31T22:27:06-04:00 launcher_rc=0 child_exit=0

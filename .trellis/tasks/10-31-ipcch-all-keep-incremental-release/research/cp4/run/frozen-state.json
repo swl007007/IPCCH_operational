@@ -1,0 +1,154 @@
+{
+  "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+  "current_ipcch_execution_month": "2026-10",
+  "execution_month": "2026-11",
+  "phase": "submitted",
+  "prepared_at": "2026-11-01T02:29:33Z",
+  "refs": {},
+  "request": {
+    "generation": "1793500174046456",
+    "sha256": "b0f8b507e63c25be3b660827ab521ce3d7009f14f8d2d0a522f6003c73547d78",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-fe7282ef75e747fd/run_manifest.json"
+  },
+  "request_body": {
+    "execution_month": "2026-11",
+    "fewsnet": null,
+    "ipcch": {
+      "acled": {
+        "action": "keep"
+      },
+      "country_reference": {
+        "generation": "1793457294730935",
+        "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv"
+      },
+      "history_snapshot": {
+        "action": "keep"
+      },
+      "model_combination": {
+        "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+        "envelope": {
+          "generation": "1793457267476070",
+          "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+          "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json"
+        }
+      },
+      "research_inputs": {
+        "bbg_global_food": {
+          "action": "keep"
+        },
+        "bbg_oilgas": {
+          "action": "keep"
+        },
+        "bbg_soybean_oil": {
+          "action": "keep"
+        },
+        "bbg_staple_food": {
+          "action": "keep"
+        },
+        "food_price_index_WB": {
+          "action": "keep"
+        },
+        "idp_local": {
+          "action": "keep"
+        },
+        "idp_national": {
+          "action": "keep"
+        },
+        "nino34_anom": {
+          "action": "keep"
+        }
+      },
+      "wfp": {
+        "action": "keep"
+      }
+    },
+    "mode": "real",
+    "operations": {
+      "fewsnet_generation": false,
+      "fewsnet_inference": false,
+      "ipcch_generation": true,
+      "ipcch_inference": true
+    },
+    "operator": "weilun.shi",
+    "prepared_at": "2026-11-01T02:29:33Z",
+    "publication": "current",
+    "release": {
+      "expected_pointer_generation": "1793461128385732",
+      "namespace": "monthly-staging"
+    },
+    "run_id": "ipcch-real-fe7282ef75e747fd",
+    "runtime": {
+      "environment_manifest": {
+        "generation": "1793457280557418",
+        "sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt"
+      },
+      "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6"
+    },
+    "schema_version": "fewsnet-ipcch-delivery-request-v2"
+  },
+  "run_id": "ipcch-real-fe7282ef75e747fd",
+  "selections": {
+    "choices": {
+      "acled": {
+        "action": "keep"
+      },
+      "bbg_global_food": {
+        "action": "keep"
+      },
+      "bbg_oilgas": {
+        "action": "keep"
+      },
+      "bbg_soybean_oil": {
+        "action": "keep"
+      },
+      "bbg_staple_food": {
+        "action": "keep"
+      },
+      "food_price_index_WB": {
+        "action": "keep"
+      },
+      "history_snapshot": {
+        "action": "keep"
+      },
+      "idp_local": {
+        "action": "keep"
+      },
+      "idp_national": {
+        "action": "keep"
+      },
+      "nino34_anom": {
+        "action": "keep"
+      },
+      "wfp": {
+        "action": "keep"
+      }
+    },
+    "mode": "real",
+    "operations": [
+      "ipcch_generation",
+      "ipcch_inference"
+    ],
+    "publication": "current"
+  },
+  "selections_sha256": "69a70eee9fb787bd99f6212c327d89fbdb8571159cfe5f7d24f7a98bfb80aaf2",
+  "shared": {
+    "country_reference": {
+      "generation": "1793457294730935",
+      "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv"
+    },
+    "envelope": {
+      "generation": "1793457267476070",
+      "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json"
+    },
+    "environment_manifest": {
+      "generation": "1793457280557418",
+      "sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt"
+    }
+  },
+  "submitted_at": "2026-11-01T02:29:33Z"
+}

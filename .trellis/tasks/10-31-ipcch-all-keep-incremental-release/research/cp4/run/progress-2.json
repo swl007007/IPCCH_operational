@@ -1,0 +1,122 @@
+{
+ "objects": [
+  [
+   "02:29:35",
+   "dispatch/ipcch-real-fe7282ef75e747fd/claim.json",
+   141,
+   "1793500175476410"
+  ],
+  [
+   "02:30:35",
+   "locks/ipcch",
+   100,
+   "1793500235501058"
+  ],
+  [
+   "02:30:35",
+   "runs/ipcch-real-fe7282ef75e747fd/v2_reservation.json",
+   467,
+   "1793500235410735"
+  ],
+  [
+   "02:32:06",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3.json",
+   472,
+   "1793500326727279"
+  ],
+  [
+   "02:32:07",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3.json",
+   474,
+   "1793500327488787"
+  ],
+  [
+   "02:32:08",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3.json",
+   482,
+   "1793500328966282"
+  ],
+  [
+   "02:32:10",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3.json",
+   486,
+   "1793500330302109"
+  ],
+  [
+   "02:32:12",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3.json",
+   486,
+   "1793500332158251"
+  ],
+  [
+   "02:32:15",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3.json",
+   478,
+   "1793500335384912"
+  ],
+  [
+   "02:32:18",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_ET0_PATCH32_Y2020_2026_V2.json",
+   454,
+   "1793500338555605"
+  ]
+ ],
+ "tasks": [
+  {
+   "description": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "state": "submitted",
+   "task_id": "RFU3ZH3QH7WVPKI7UVRIJQR2",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "state": "submitted",
+   "task_id": "RGAJ47QERKDVN4TLBKUBK43N",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "state": "submitted",
+   "task_id": "UQHEJZ3W5LBNVABV34NRLV3X",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "state": "submitted",
+   "task_id": "NLZVY6DHKHPBFDI7EXEVX4DM",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2C3_ET0_PATCH32_Y2020_2026_V2",
+   "kind": "table_to_asset",
+   "state": "submitted",
+   "task_id": "HQLXJ24XGBOVNZ7MLRWDWZ5U",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+   "kind": "table_to_asset",
+   "state": "submitted",
+   "task_id": "2MQ5OHBODGC33E55APK6QAKF",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+   "kind": "table_to_asset",
+   "state": "submitted",
+   "task_id": "7ZIQ3CDJK7XFKIYM3LP4F2N3",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  }
+ ]
+}

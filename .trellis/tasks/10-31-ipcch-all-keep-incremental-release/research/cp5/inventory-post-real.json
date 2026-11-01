@@ -1,0 +1,1587 @@
+{
+ "orphan_version_tables": [],
+ "read_at_utc": "2026-11-01T03:33:59Z",
+ "root": "gs://food-crisis-test-ipcch-data/ipcch-v2/real",
+ "schema": "ipcch-cp5-store-inventory-v1",
+ "table_count": 56,
+ "tables": {
+  "acceptance_manifest": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/acceptance_manifest/versions/000007-1a6d00fbbc5a46df874690dd9a290fe2.csv",
+   "content_sha256": "3a2589760e3dabd1a3f7c63b4e72ae18ef6305b6885b2e550c7d948bcb8f09b2",
+   "content_text": "name,sha256,source,acceptor,accepted_at,kind\nfixed/acled/acled_admin1_to_poly.csv,f42c2c2c58659775f1a20f781e83513b6a18728ad3e0ecb4e37e0b54809c093a,research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/acled/admin1_neighbours.csv,34d1934a161c2925126add66222c1b5caf6efe71617a5ed4c234245001a4dea3,research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/acled/admin1_overrides.csv,916e59997b11d4abab4f2bad83136ca96a61cedb1de5bc5212dfb4aa5a267083,research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/acled/admin1_population.csv,5f8d6f96929cc91526ecddecb33e8e6516b996cdb93aa438a0131f756ab94e86,research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/acled/coverage_start.csv,a84ec2497b7e8da6badddb8254fd650927e324cdd8cfe9f9592a52e5edce6a3b,research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/acled/unit_admin1_weights.csv,127f2fb87b23c12c01edd7b7068edcd0bd94c63e1025242a8c9fd1618a6fac38,research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/acled/unit_iso3.csv,29bcf36c015cac89bf7085a5c594202232c20653b8121c3c3be6d8b29eb93658,research ACLED regional-aggregate work tables (staging/ipcch-update-202610/sources/acled_agg/work); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/ae_descriptors.csv,61bb895b6e5cddcde95c5a7b5a8da332ad1dc1f95f9a8975228ab876fab5a897,training static/identity assets; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/area_identity.csv,3dd181f8e7aad88f1c8212b05ee627e6687abc757454b092ede5ccd05700311e,training static/identity assets; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/geometry/ipcch_admin_geometry_repaired.cpg,3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824,training unit geometry ipcch_admin_geometry_repaired (byte copy); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/geometry/ipcch_admin_geometry_repaired.dbf,964b8030e5d543fd49d112489035ac5e713a068d04076bf75b0f99c3b034a71e,training unit geometry ipcch_admin_geometry_repaired (byte copy); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/geometry/ipcch_admin_geometry_repaired.prj,a02a27b1d1982c8516d83398e85a3c8b1aef1713c13ef4d84d7bde17430c07c4,training unit geometry ipcch_admin_geometry_repaired (byte copy); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/geometry/ipcch_admin_geometry_repaired.shp,9df70f3aa719eaa2458a3ff4a92f058da1f5fe1feeb85432e0dd88e515ccfadb,training unit geometry ipcch_admin_geometry_repaired (byte copy); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/geometry/ipcch_admin_geometry_repaired.shx,424554aec24b86d74609a5fe59a01e498c78269c6e6b4b87765e657a4fe6fc83,training unit geometry ipcch_admin_geometry_repaired (byte copy); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/population_reference.csv,b5af84fc8c4912d161178a32f6bbffac22a78fcd9df9d39ecc950202a2717593,training raw-panel estimated_population observations; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/roster.csv,9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3,training static/identity assets; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/season_calendar.csv,25e89bed6baa237a8079bfd2c8b17c0a5ca5ac39878ce962af4455e9261207da,training static/identity assets; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/season_windows.csv,5ef68c9592e69e20e1285752b18e0021053c490ee1b82a22e2255cc1e029ac4f,training static/identity assets; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nfixed/static29.csv,718aaf8dadc99ef5d178feaa1a178bf397daaf015c52a5adfc82199d9771138b,training static/identity assets; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/GPP_mean.csv,470373ce2057c6206542a659142b6977384db1c69c7020df7067083f0775e67c,training interim panel series; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/WFP_Price.csv,662b46af6b954326beef3712d02037f18bf3da35f64f0ff48df47e6796d9f1e0,training interim panel series; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/bbg_global_food__composite_mean.csv,1a3248e1be8364882df338463ce0f861c589266293d89496b42795ca0a94692f,training interim panel series; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/bbg_oilgas__composite_mean.csv,7a4ccbaa65b4e2efe1e306526bb85e8a015677b93654c78bc17249e30bc3c9d5,training interim panel series; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/bbg_soybean_oil__composite_mean.csv,89e80e427682879962fbba1d5c06141a115bcf3e4f946fc9896d496c6e4d3762,training interim panel series; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/bbg_staple_food__composite_mean.csv,b7786585b80850289f014a72a1a38859f33282657c14571f38865c8606b9abec,training interim panel series; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_cdd.csv,7ce4cd58725b7ea843844aa85447e5e73a9610529aef14df0abbf09f533c16a6,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_edd.csv,4e30d9d448ae5aead4f70eb15d9d71cd4425aa3bfbe5096a41f75b1915444078,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_evi_anom.csv,c3ae627e674394c8085c173f8205a7ea6995d7e777911e5604669935577ab463,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_gdd.csv,4e4df9f20e437dece97fe4146c3e8d8dbc3122b8380e4d145220b98360a5b494,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_hot_days_p95.csv,fe7dcabdd0d87d1ec2c93c8d2614ee23e2465e24022c788d3774819f7abc3beb,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_prcp_anom.csv,ba28ca67b4c4a779ffd3988b48e420c8126db3448c65120d6c6a7d619454c1cd,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_prcp_z.csv,246f5d0a30e19e6bee18916d1779a96d3942e08ea7f668718529fff23f77c193,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_rainy_days.csv,7e5e11ed3b2a4247714c34e69b106d397a8c3baf05d347b5e60fdfb15d1e397a,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_sm_z.csv,3dc62de6f3dd1299785be8d31c304cec541c4fbc07a6a35477ca9c2c612aea88,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_spei03.csv,afe6c43c9ca5fafb9d015b04252713be758fcc500520f5ebbfdc00ed50e6eaa8,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_spi03.csv,bb4a9fac6c2107f38b5f7bcad0f99de4840013c785d9b8fa1eb786760f5b00d0,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_tmax_anom.csv,9c966d665664edd6624ce3ec21c677bb9d8c07b748b1caf9ad437b04de155ede,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_gs_tmean_anom.csv,f68434739eebd78bc31f4a5740292f5d068ba9ad76a74cbd0922ae8d3928ed60,delivered climate_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_cdd.csv,a1047bb8b89b5207330c4494c6d44acaac936cf6adf718ffc3d33262960216a6,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_edd.csv,7c9c2cc0979497ae58964f1d506c0eb4d4324b6af158abfaeb03f6511fc4126c,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_evi_anom.csv,3d58c2938f4ed01808bec394ed553d85475ce846e6682657ac90ccac7bf70746,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_gdd.csv,19a8812332cb30f995ed900ea7ad9d76fde482089f38226e09b5d83c3c6020e1,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_hot_days_p95.csv,ec6066a118c9ccff99384e8cce3441cb96e06f993be7756ea57b39ea762d54f2,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_prcp_anom.csv,6950e477f5d5d72062808212bdf143d9fbbe7b40c7ed7f7ad349232ad0cec6e3,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_prcp_z.csv,7d1fde3ffd6b3e2f9a66422751db5c95baa68b7fbd2648bf0f21b8f7bf14756d,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_rainy_days.csv,a4962cb592493373eb27d03fd1312c7f3d541900196e94c01a79d661a2e76d38,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_sm_z.csv,2de974c6e142c9e903a04bb661c08506d1ab852cf6ba872150f02312fc79247e,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_spei03.csv,7372566c6cb535317e7c1e54cd9acd7319bb5434bad6a619bdde1f614ef68996,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_spi03.csv,063a6c5d61a164952dda2949f200f74a3a38fc21416fa8ede50fc16136530d72,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_tmax_anom.csv,f6e1151a36664392a9dd1b8d4c153f30895b07215da178349a6b17860dffdb0a,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/climate_month_tmean_anom.csv,e8a3eb7df664c68b8f055857c07e7e03a70cb1bd845e438c42cfd5d2c7ed7e68,delivered climate_monthly_2015_2026_MODELING_READY ensembles (training input); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/food_price_index_WB.csv,3a0e0f8b653096d1f5df48b9585e5475ba349fb14a817d881392faa42c0c8daa,training interim panel series; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/history_snapshot.csv,0380367b15bd78f5f6bb7a4901079b046b4b0075661eb7b59f9309e2cab1e2d8,final-arm original reported-phase observations (existing label scripts); task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/idp_local.csv,dab66e28fb9d20f469dc1c079e32b12622f077d68988d43453da721bbe900836,training-panel IDP inputs; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/idp_national.csv,dc4bff601f6e20b9f15cef84b46da71698206e744e134c0bc31cb9883705224f,training-panel IDP inputs; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/nightlight_mean.csv,cc4d3fb0593d03a23ca93e86290d2e78687a4b54c8a305552b3f81e1f937a654,training interim panel series; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\nhistory/nino34_anom.csv,755cb66a8d25a950b8d9c3b66ef6225a47599bdfc86c56bad27109e9501d22a7,training interim panel series; task 10-29 handoff,Codex Supervisor,2026-10-30,delivered\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/versions/000001-550e32c63ad24408b5c1055296c8c64c.csv,f78321be24d45f86a95cb3c82a1da5164ed97b9bcd4ffd23881c99aad1005dc0,runtime ipcch-real-522b30030f944868 acled acled_agg_weekly version 1,ipcch-runtime:ipcch-real-522b30030f944868,2026-10-31,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000001-14dd2b6f4f694ac586e12d99dcf84bb3.csv,1b8fb6b0ff95cc408bafa6949dbaed9a47fcebadbb3a0c5b33044085de330599,runtime ipcch-real-522b30030f944868 gpp gpp_availability_ledger version 1,ipcch-runtime:ipcch-real-522b30030f944868,2026-10-31,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000002-9078b3dc3729486eb079fb669b199397.csv,1422a91f01170f0325e1fd129c13f39181890fcc7e1ce136448753c6a1e89235,runtime ipcch-real-522b30030f944868 gpp gpp_availability_ledger version 2,ipcch-runtime:ipcch-real-522b30030f944868,2026-10-31,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000003-a72debc4499641bfafaf337b57c77427.csv,30db07e4b6b7fd2e199928bef0725797c741c92209f56e9ccc812b1865347c28,runtime ipcch-real-522b30030f944868 gpp gpp_availability_ledger version 3,ipcch-runtime:ipcch-real-522b30030f944868,2026-10-31,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000004-b3c296cc03224233978738dbe664566e.csv,107cec8cd6b0f7ee12f0b92bb71c7ff4ff0be9ea55d70924a499be3bbe4eb88e,runtime ipcch-real-522b30030f944868 gpp gpp_availability_ledger version 4,ipcch-runtime:ipcch-real-522b30030f944868,2026-10-31,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000005-128ed2ad683b4ac7bcd3611fddba681d.csv,3c7a54f5455574b50635ce82179b38f2501ea1fd6a834e6f9b37d16a8b06e363,runtime ipcch-real-522b30030f944868 gpp gpp_availability_ledger version 5,ipcch-runtime:ipcch-real-522b30030f944868,2026-10-31,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000006-3ff93af4819c4c04b45deb24218fe96b.csv,503f641f0a15d73fdc17884756be171e4ac2da6d6643977846880ed7226987f1,runtime ipcch-real-522b30030f944868 gpp gpp_availability_ledger version 6,ipcch-runtime:ipcch-real-522b30030f944868,2026-10-31,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000007-421cde684b3d41a58e6c4522cfea6ded.csv,03a38b4f8a071c8ee4628feab1743111113047fe332e8a68d155d752de454e44,runtime ipcch-real-522b30030f944868 gpp gpp_availability_ledger version 7,ipcch-runtime:ipcch-real-522b30030f944868,2026-10-31,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000008-cff610f4a69b4dde96bd2528042c018f.csv,edcf685df9144afcb85061dfb99144976968679b1aafc0437d12087e0feace59,runtime ipcch-real-522b30030f944868 gpp gpp_availability_ledger version 8,ipcch-runtime:ipcch-real-522b30030f944868,2026-10-31,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/versions/000002-2fdcb235ebc04160a7aa463a8367a494.csv,d3fb0a176c3e7d496cdd5e24ed054137b670855c6297b216116cf253f2b2ed2b,runtime ipcch-real-9eee4305db494a35 acled acled_agg_weekly version 2,ipcch-runtime:ipcch-real-9eee4305db494a35,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_cdd/versions/000002-facb5f1777b34eda80a5f1b4715dcb3d.csv,5e68cbd5b43e37e7b00d623b70e399922e14ed5fd503cc36de8ce8e5a657cc6f,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_cdd version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_edd/versions/000002-29e482318dc440dc8487b1e9405292f1.csv,53ab8e1e088c76f0395063582b24f585f891756f4777abcdfec7e809b14fc183,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_edd version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_evi_anom/versions/000002-562fcc009bdf4f2392675cba6ead658d.csv,dd3934ff5b52abcb107475221fe9554c7d2db46924571cec0236e92654ed12dc,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_evi_anom version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_gdd/versions/000002-ac85c7beee624db3b7a882847b2c10ff.csv,1069fd81cbc326a52d29d1b05b0d9c2283c2b0d117ea5ea90daa27873c21eeae,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_gdd version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_hot_days_p95/versions/000002-7e2d0325897e4201bb1601f904151964.csv,2567c2ceea3a84523966b4fd99dac2d5e4db9461d7379650034bf93238474837,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_hot_days_p95 version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_prcp_anom/versions/000002-d034500e762240519c9190e9e57eb28b.csv,c0c6d645d67e90444e8232b4ac52fb4cbbd1759162c02f4d1ca3158aafe6bca7,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_prcp_anom version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_prcp_z/versions/000002-177d0fab9b5e4decb39262039fd18f5e.csv,b8fd1eee646de931c7f5935c4a3732ce445eeae71dd28e0d0cad1d4bd09982b8,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_prcp_z version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_rainy_days/versions/000002-7d488674706741a7a0ef13313463b00c.csv,b7d5f79d3b8029775243981efc7687e8807778c6375a4a079dc8a3f41eaf6e0a,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_rainy_days version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_sm_z/versions/000002-99f2a97d189c46b29dc1fed871e23c17.csv,b0436a630089abc83bb75de4d32051ea392b4ab7b49396011155c39ccca51783,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_sm_z version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_spei03/versions/000002-8c1dd024a3b943bfa451ba4f709231ec.csv,2283fb7a4797625c3b4019faeb1a9314cba83c165a938d970838c2c1c4fd632e,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_spei03 version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_spi03/versions/000002-3af716b6a2464b5ea54f86ed7274c542.csv,879fed62078daf10f3c6ce36a52dac4e8727e64aae4d7da9a58749e005350088,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_spi03 version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_tmax_anom/versions/000002-0ba6b9e6839046119cb7ee0ec4094227.csv,9d7e32442ab4a486db25eca80b0b71200bd9143c9bba683f041fd71d87829777,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_tmax_anom version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_tmean_anom/versions/000002-ae5c8061d4cc4507b6221be25a79e5a2.csv,cce3d4f40c56430cbfcc2db91cc382a80f6cfe24b3c3a7512eae68d0d3880c4d,runtime ipcch-real-fe7282ef75e747fd climate history__climate_month_tmean_anom version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000009-b4a3862e6ccd47f19c57a9e502131c2d.csv,6d49d5e8e98b76dc5ed27ea127a29ecaeed72aec8cc38cdffc48fc78ac2a7590,runtime ipcch-real-fe7282ef75e747fd gpp gpp_availability_ledger version 9,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000010-8a8ea2a18f2d4b23ba210d9a8bbdd1dd.csv,55f9fee01eedebcfb879fdeb6dd199a1779a76cbb5da082ec59715e9d23ddb7b,runtime ipcch-real-fe7282ef75e747fd gpp gpp_availability_ledger version 10,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000011-0e8339fd7e344d8283fdcff2f7effd84.csv,7b89002603dbbe9b5bfb437d7ad91f33c95c8a691a8b9a7236012b4a61347a84,runtime ipcch-real-fe7282ef75e747fd gpp gpp_availability_ledger version 11,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000012-d1b1d01f9de641859370f46ef20f98ce.csv,7335c99028cc4d962590720c9ed5955e882d0b9cfffb82bd1b72de32d4f5e910,runtime ipcch-real-fe7282ef75e747fd gpp gpp_availability_ledger version 12,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000013-f9c2a39e4c344c38803d493fa0ae99a8.csv,6c1f2cd8831ae1a4a768441963a1c2934fbfc926e248df3fd0c42f2562694aa3,runtime ipcch-real-fe7282ef75e747fd gpp gpp_availability_ledger version 13,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000014-300860997a994d9a80bd4374b78f145a.csv,9aad59bfbe692bf1ca8abf5b0f328d6746ad681c4209c36d27bac113106d8b2f,runtime ipcch-real-fe7282ef75e747fd gpp gpp_availability_ledger version 14,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000015-86e0b8192f74409cbbd8f930c8229a28.csv,6efeadb3a562f209de28ab84a3d18021cd8f3c67c595cbba6daa648f6f0673d1,runtime ipcch-real-fe7282ef75e747fd gpp gpp_availability_ledger version 15,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000016-988ebc312ebf454d9168c4d4cda24000.csv,c707457731fa218df8aca2904d34637d5e8ee4198f75065e1d22e67c956a951a,runtime ipcch-real-fe7282ef75e747fd gpp gpp_availability_ledger version 16,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000017-84292399cb244985bbb9f3101436dde0.csv,a818e09ca9010d70b00396fcad76de5aca6cbe9c83e9c191dd16382601dffc4b,runtime ipcch-real-fe7282ef75e747fd gpp gpp_availability_ledger version 17,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\ngs://food-crisis-test-ipcch-data/ipcch-v2/real/history__nightlight_mean/versions/000002-2b813143307b457eae1907c9b057b280.csv,2d548ef8d8167649d4f9b63171a993d3984ef5adf4fd6977c3dddee6948635d4,runtime ipcch-real-fe7282ef75e747fd nightlight history__nightlight_mean version 2,ipcch-runtime:ipcch-real-fe7282ef75e747fd,2026-11-01,runtime\n",
+   "head_generation": "1793502965587597",
+   "head_sha256": "f727c458aa091da40ea142447651e38e68d5f6ac0ec61518e51fd93f95fe4561",
+   "record": {
+    "appended": 1
+   },
+   "rows": 90,
+   "version": 7,
+   "version_objects": 7
+  },
+  "acled_agg_weekly": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/versions/000002-2fdcb235ebc04160a7aa463a8367a494.csv",
+   "content_sha256": "d3fb0a176c3e7d496cdd5e24ed054137b670855c6297b216116cf253f2b2ed2b",
+   "head_generation": "1793494944270289",
+   "head_sha256": "81e12c1a411736d552ea34dee5df8c7bb89127e811061c64bf897302934d9dcf",
+   "record": {
+    "coverage": [
+     {
+      "end": "2026-10-16",
+      "regions": [
+       "Caribbean",
+       "Caucasus and Central Asia",
+       "Central America",
+       "East Asia",
+       "Eastern Africa",
+       "Europe",
+       "Middle Africa",
+       "Middle East",
+       "Northern Africa",
+       "South America",
+       "South Asia",
+       "Southeast Asia",
+       "Southern Africa",
+       "Western Africa"
+      ],
+      "source": {
+       "generation": "1793460073214458",
+       "sha256": "7bcb051fb3569f09cdec7f840c67d4666e586cbffd77b0d3b4a8feaf95e2fce6",
+       "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-522b30030f944868/acled/acled_regional_aggregate_f2f3.csv"
+      },
+      "start": "2016-12-31"
+     },
+     {
+      "end": "2026-10-23",
+      "regions": [
+       "Caribbean",
+       "Caucasus and Central Asia",
+       "Central America",
+       "East Asia",
+       "Eastern Africa",
+       "Europe",
+       "International Waters",
+       "Middle Africa",
+       "Middle East",
+       "North America",
+       "Northern Africa",
+       "Oceania",
+       "South America",
+       "South Asia",
+       "Southeast Asia",
+       "Southern Africa",
+       "Western Africa"
+      ],
+      "source": {
+       "generation": "1793494819786240",
+       "sha256": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+       "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv"
+      },
+      "start": "2026-10-17"
+     }
+    ],
+    "last_refresh": {
+     "end": "2026-10-23",
+     "regions": [
+      "Caribbean",
+      "Caucasus and Central Asia",
+      "Central America",
+      "East Asia",
+      "Eastern Africa",
+      "Europe",
+      "International Waters",
+      "Middle Africa",
+      "Middle East",
+      "North America",
+      "Northern Africa",
+      "Oceania",
+      "South America",
+      "South Asia",
+      "Southeast Asia",
+      "Southern Africa",
+      "Western Africa"
+     ],
+     "source": {
+      "generation": "1793494819786240",
+      "sha256": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv"
+     },
+     "start": "2026-10-17"
+    },
+    "replaced_rows": 0
+   },
+   "rows": 242811,
+   "version": 2,
+   "version_objects": 2
+  },
+  "combination_binding": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/combination_binding/versions/000001-f368dd1e24ef40fcb20dc9ae5d76001b.csv",
+   "content_sha256": "7ec34d180d8a273f190271e8f860be79ab7a6516b8aa493f5a5a62178540a4f1",
+   "content_text": "mode,combination_id,package_manifest_sha256,feature_order_sha256,bundle_manifest_sha256,roster_sha256,roster_size\nreal,ipcch-validity-h2h8h14-final-20261030,18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22,0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69,e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4,9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3,6226\n",
+   "head_generation": "1793457706296714",
+   "head_sha256": "6c6b8f3f0aefc345489a89711bcf37b6a5fc7b4fad8d10e240f6a875b5fc0d36",
+   "record": {
+    "action": "bind",
+    "envelope": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    }
+   },
+   "rows": 1,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__acled__acled_admin1_to_poly": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__acled__acled_admin1_to_poly/versions/000001-2187c04a6f0542218a30123e263e5b77.csv",
+   "content_sha256": "f42c2c2c58659775f1a20f781e83513b6a18728ad3e0ecb4e37e0b54809c093a",
+   "head_generation": "1793457564648925",
+   "head_sha256": "78425b4dd8cd9010e1336a7e0ef4a10a1de562259c689cceac0c53bb791c2895",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/acled/acled_admin1_to_poly.csv",
+    "source_sha256": "f42c2c2c58659775f1a20f781e83513b6a18728ad3e0ecb4e37e0b54809c093a"
+   },
+   "rows": 1302,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__acled__admin1_neighbours": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__acled__admin1_neighbours/versions/000001-be9cddeea3f8467aa121a67a4755ed4c.csv",
+   "content_sha256": "34d1934a161c2925126add66222c1b5caf6efe71617a5ed4c234245001a4dea3",
+   "head_generation": "1793457564858304",
+   "head_sha256": "7a009d5e40f80153f25e76859b9d4ec9b5851634db4362a9f55d1c10da622c69",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/acled/admin1_neighbours.csv",
+    "source_sha256": "34d1934a161c2925126add66222c1b5caf6efe71617a5ed4c234245001a4dea3"
+   },
+   "rows": 7488,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__acled__admin1_overrides": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__acled__admin1_overrides/versions/000001-f09f2e314bce4e4d9da87749bf26da33.csv",
+   "content_sha256": "916e59997b11d4abab4f2bad83136ca96a61cedb1de5bc5212dfb4aa5a267083",
+   "head_generation": "1793457565041448",
+   "head_sha256": "a5d66337af09738fb359f5ae8abe942bd18db49fa3b046136ae0c1647407ccc9",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/acled/admin1_overrides.csv",
+    "source_sha256": "916e59997b11d4abab4f2bad83136ca96a61cedb1de5bc5212dfb4aa5a267083"
+   },
+   "rows": 13,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__acled__admin1_population": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__acled__admin1_population/versions/000001-362c8989ead2435d9bdf8acb6f9f0a91.csv",
+   "content_sha256": "5f8d6f96929cc91526ecddecb33e8e6516b996cdb93aa438a0131f756ab94e86",
+   "head_generation": "1793457565249557",
+   "head_sha256": "51d02699a2cc2f91d2af7eee3b221d39efa403f8db525955eae976e3a33ece1b",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/acled/admin1_population.csv",
+    "source_sha256": "5f8d6f96929cc91526ecddecb33e8e6516b996cdb93aa438a0131f756ab94e86"
+   },
+   "rows": 1465,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__acled__coverage_start": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__acled__coverage_start/versions/000001-4c7ac43436134cfc9f09d5e06426b115.csv",
+   "content_sha256": "a84ec2497b7e8da6badddb8254fd650927e324cdd8cfe9f9592a52e5edce6a3b",
+   "head_generation": "1793457565426731",
+   "head_sha256": "68b8ccdd0e4abe951f8809a4a6fd7f45bd6507c97df614c2cbedde894435f415",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/acled/coverage_start.csv",
+    "source_sha256": "a84ec2497b7e8da6badddb8254fd650927e324cdd8cfe9f9592a52e5edce6a3b"
+   },
+   "rows": 89,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__acled__unit_admin1_weights": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__acled__unit_admin1_weights/versions/000001-634bc534fbd8480e82631c3e3dc3e1d6.csv",
+   "content_sha256": "127f2fb87b23c12c01edd7b7068edcd0bd94c63e1025242a8c9fd1618a6fac38",
+   "head_generation": "1793457565726826",
+   "head_sha256": "ab49cc1f49a2fb6f5d455a5c8b6e6262f9eb434678df5cabacdf1eca37002c3d",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/acled/unit_admin1_weights.csv",
+    "source_sha256": "127f2fb87b23c12c01edd7b7068edcd0bd94c63e1025242a8c9fd1618a6fac38"
+   },
+   "rows": 12280,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__acled__unit_iso3": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__acled__unit_iso3/versions/000001-d1b1c69b249c49e0857c0525eec0710f.csv",
+   "content_sha256": "29bcf36c015cac89bf7085a5c594202232c20653b8121c3c3be6d8b29eb93658",
+   "head_generation": "1793457565906366",
+   "head_sha256": "28993f2a88fd175d1b239a53503e2409484218b6a6c5224bad9935e6edda4670",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/acled/unit_iso3.csv",
+    "source_sha256": "29bcf36c015cac89bf7085a5c594202232c20653b8121c3c3be6d8b29eb93658"
+   },
+   "rows": 6227,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__ae_descriptors": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__ae_descriptors/versions/000001-418c57f48f904985bb427480a4668466.csv",
+   "content_sha256": "61bb895b6e5cddcde95c5a7b5a8da332ad1dc1f95f9a8975228ab876fab5a897",
+   "head_generation": "1793457567146213",
+   "head_sha256": "819b62b5cb0b58ac7f48dd9dca0f669c307c566a657d0741fee11754ff0cd6b7",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/ae_descriptors.csv",
+    "source_sha256": "61bb895b6e5cddcde95c5a7b5a8da332ad1dc1f95f9a8975228ab876fab5a897"
+   },
+   "rows": 6226,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__area_identity": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__area_identity/versions/000001-c87b8a05cfb64d22a221404b71a26b2f.csv",
+   "content_sha256": "3dd181f8e7aad88f1c8212b05ee627e6687abc757454b092ede5ccd05700311e",
+   "head_generation": "1793457567356912",
+   "head_sha256": "243b549d5fc56675a6ec7edb33fa93d030e2b27f4e626821fea1ec0102314f78",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/area_identity.csv",
+    "source_sha256": "3dd181f8e7aad88f1c8212b05ee627e6687abc757454b092ede5ccd05700311e"
+   },
+   "rows": 6226,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__population_reference": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__population_reference/versions/000001-73482ed441664733b66c7a63925dc693.csv",
+   "content_sha256": "b5af84fc8c4912d161178a32f6bbffac22a78fcd9df9d39ecc950202a2717593",
+   "head_generation": "1793457567598863",
+   "head_sha256": "bceeb2bb414bd12d50b0b6feeba7886e0e0e85d0c896d5c090e66c9eee520820",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/population_reference.csv",
+    "source_sha256": "b5af84fc8c4912d161178a32f6bbffac22a78fcd9df9d39ecc950202a2717593"
+   },
+   "rows": 43889,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__roster": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__roster/versions/000001-4c17144cf30540ef81f8a6ef10745d27.csv",
+   "content_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3",
+   "head_generation": "1793457567791599",
+   "head_sha256": "bb8de089be5863a40b41a4fa8ffd38019bfa1b357ddc04878bf718a6d4b76789",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/roster.csv",
+    "source_sha256": "9ff2c420212bc8ecf812d07f18ecef4f5d3816678a51cff848d8ca51053a56d3"
+   },
+   "rows": 6226,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__season_calendar": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__season_calendar/versions/000001-e33c084a6fe644f2913930bca7e734a5.csv",
+   "content_sha256": "25e89bed6baa237a8079bfd2c8b17c0a5ca5ac39878ce962af4455e9261207da",
+   "head_generation": "1793457567996165",
+   "head_sha256": "f6a050c0c99b6e1f676e13ee6900000df8a09521d7d1f12f95224601d17cbc87",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/season_calendar.csv",
+    "source_sha256": "25e89bed6baa237a8079bfd2c8b17c0a5ca5ac39878ce962af4455e9261207da"
+   },
+   "rows": 6226,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__season_windows": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__season_windows/versions/000001-44bc3ecb4b104360b642037434b1dfa9.csv",
+   "content_sha256": "5ef68c9592e69e20e1285752b18e0021053c490ee1b82a22e2255cc1e029ac4f",
+   "head_generation": "1793457568492935",
+   "head_sha256": "099afbd2fe7db6496fdb1ebda1b4cffc4e1ac7a2289085de98366b91b8288377",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/season_windows.csv",
+    "source_sha256": "5ef68c9592e69e20e1285752b18e0021053c490ee1b82a22e2255cc1e029ac4f"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "fixed__static29": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/fixed__static29/versions/000001-9e74f99b317c4797b384b40c65637b6e.csv",
+   "content_sha256": "718aaf8dadc99ef5d178feaa1a178bf397daaf015c52a5adfc82199d9771138b",
+   "head_generation": "1793457568745549",
+   "head_sha256": "011264079e5d1e651d10347a8e55f2f3015c57763bd40fbbe3c924e5d9fd4769",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "fixed/static29.csv",
+    "source_sha256": "718aaf8dadc99ef5d178feaa1a178bf397daaf015c52a5adfc82199d9771138b"
+   },
+   "rows": 6226,
+   "version": 1,
+   "version_objects": 1
+  },
+  "gpp_availability_ledger": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/gpp_availability_ledger/versions/000017-84292399cb244985bbb9f3101436dde0.csv",
+   "content_sha256": "a818e09ca9010d70b00396fcad76de5aca6cbe9c83e9c191dd16382601dffc4b",
+   "content_text": "month,status,checked_at,evidence\n2026-01,unpublished,2026-10-31,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M01_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-02,unpublished,2026-10-31,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M02_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-03,unpublished,2026-10-31,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M03_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-04,unpublished,2026-10-31,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M04_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-05,unpublished,2026-10-31,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M05_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-06,unpublished,2026-10-31,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M06_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-07,unpublished,2026-10-31,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M07_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-08,unpublished,2026-10-31,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M08_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-01,unpublished,2026-11-01,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M01_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-02,unpublished,2026-11-01,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M02_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-03,unpublished,2026-11-01,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M03_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-04,unpublished,2026-11-01,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M04_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-05,unpublished,2026-11-01,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M05_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-06,unpublished,2026-11-01,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M06_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-07,unpublished,2026-11-01,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M07_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-08,unpublished,2026-11-01,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M08_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n2026-09,unpublished,2026-11-01,\"{\"\"url\"\": \"\"https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_2026.M09_Mean.tif.gz\"\", \"\"http\"\": 404}\"\n",
+   "head_generation": "1793502502831531",
+   "head_sha256": "5b30eade9a405fe4c7dea63486d6c682cedcd9eeeab506f0091e87c9fa2ffa98",
+   "record": {
+    "checks": 1
+   },
+   "rows": 17,
+   "version": 17,
+   "version_objects": 17
+  },
+  "history__GPP_mean": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__GPP_mean/versions/000001-4e556057120f49e395f93625819da814.csv",
+   "content_sha256": "470373ce2057c6206542a659142b6977384db1c69c7020df7067083f0775e67c",
+   "head_generation": "1793457572625616",
+   "head_sha256": "ecff8858795823dae85c0c69fe068c20b6794d45c3f3112ef4674b459f16bc78",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/GPP_mean.csv",
+    "source_sha256": "470373ce2057c6206542a659142b6977384db1c69c7020df7067083f0775e67c"
+   },
+   "rows": 1168776,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__WFP_Price": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__WFP_Price/versions/000001-478170103b124cef9f6b751589f5d7a6.csv",
+   "content_sha256": "662b46af6b954326beef3712d02037f18bf3da35f64f0ff48df47e6796d9f1e0",
+   "head_generation": "1793457575074674",
+   "head_sha256": "a987c7c8ec8159ca66261020ef0f8f343c4a598fe3e94c944d67e723f4c0ff2a",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/WFP_Price.csv",
+    "source_sha256": "662b46af6b954326beef3712d02037f18bf3da35f64f0ff48df47e6796d9f1e0"
+   },
+   "rows": 740256,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__bbg_global_food__composite_mean": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__bbg_global_food__composite_mean/versions/000001-1e57c21f7f9e43c4bc4159fcbd885c98.csv",
+   "content_sha256": "1a3248e1be8364882df338463ce0f861c589266293d89496b42795ca0a94692f",
+   "head_generation": "1793457578589706",
+   "head_sha256": "4fabb9624a68022d173da24f7d6637c8226a8534f652ba3bc42b27b22e310c44",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/bbg_global_food__composite_mean.csv",
+    "source_sha256": "1a3248e1be8364882df338463ce0f861c589266293d89496b42795ca0a94692f"
+   },
+   "rows": 1250607,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__bbg_oilgas__composite_mean": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__bbg_oilgas__composite_mean/versions/000001-0b174769714c4c6caca22932d8cade45.csv",
+   "content_sha256": "7a4ccbaa65b4e2efe1e306526bb85e8a015677b93654c78bc17249e30bc3c9d5",
+   "head_generation": "1793457582347961",
+   "head_sha256": "d4d2cb464a41060218e12ee9b85c13d8c92ee4f140d826f40a4fe5dc4f90f0ba",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/bbg_oilgas__composite_mean.csv",
+    "source_sha256": "7a4ccbaa65b4e2efe1e306526bb85e8a015677b93654c78bc17249e30bc3c9d5"
+   },
+   "rows": 1250607,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__bbg_soybean_oil__composite_mean": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__bbg_soybean_oil__composite_mean/versions/000001-2ba4bf2c5d154ac98e324c77240fb977.csv",
+   "content_sha256": "89e80e427682879962fbba1d5c06141a115bcf3e4f946fc9896d496c6e4d3762",
+   "head_generation": "1793457604228084",
+   "head_sha256": "1d35efd66c3090de1df916aea777c0b5588323aade7d1544a0d85c7532ad5595",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/bbg_soybean_oil__composite_mean.csv",
+    "source_sha256": "89e80e427682879962fbba1d5c06141a115bcf3e4f946fc9896d496c6e4d3762"
+   },
+   "rows": 1238233,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__bbg_staple_food__composite_mean": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__bbg_staple_food__composite_mean/versions/000001-44457c5e6509410fb68273657c322d8e.csv",
+   "content_sha256": "b7786585b80850289f014a72a1a38859f33282657c14571f38865c8606b9abec",
+   "head_generation": "1793457607913285",
+   "head_sha256": "14f900d14e7844ef1055de308b530dcd9c3d37f360b0c056932aeb27c5a14470",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/bbg_staple_food__composite_mean.csv",
+    "source_sha256": "b7786585b80850289f014a72a1a38859f33282657c14571f38865c8606b9abec"
+   },
+   "rows": 1250607,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_cdd": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_cdd/versions/000001-468a80914af94efb8f7caa32db5532c8.csv",
+   "content_sha256": "7ce4cd58725b7ea843844aa85447e5e73a9610529aef14df0abbf09f533c16a6",
+   "head_generation": "1793457609103822",
+   "head_sha256": "a79f9a895e44638922bef8f6f71e7ca9f46236b0a25248c534b1708b97cb6885",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_cdd.csv",
+    "source_sha256": "7ce4cd58725b7ea843844aa85447e5e73a9610529aef14df0abbf09f533c16a6"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_edd": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_edd/versions/000001-b403574f82744887a4378c3423e90f55.csv",
+   "content_sha256": "4e30d9d448ae5aead4f70eb15d9d71cd4425aa3bfbe5096a41f75b1915444078",
+   "head_generation": "1793457610731324",
+   "head_sha256": "fbf088cedbf7ea389b4a15f9f7ecd38184676f8bb2f55262f81383f328f6cee9",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_edd.csv",
+    "source_sha256": "4e30d9d448ae5aead4f70eb15d9d71cd4425aa3bfbe5096a41f75b1915444078"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_evi_anom": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_evi_anom/versions/000001-a4a7f28a8e7f49faa7f2a54130c595f1.csv",
+   "content_sha256": "c3ae627e674394c8085c173f8205a7ea6995d7e777911e5604669935577ab463",
+   "head_generation": "1793457611993383",
+   "head_sha256": "b41a7b721e60b7004e69673854a35a06bbf02c7a8042c7e0a3009265378ad500",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_evi_anom.csv",
+    "source_sha256": "c3ae627e674394c8085c173f8205a7ea6995d7e777911e5604669935577ab463"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_gdd": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_gdd/versions/000001-75ea51a71a4343afb081ac9e5fa020d3.csv",
+   "content_sha256": "4e4df9f20e437dece97fe4146c3e8d8dbc3122b8380e4d145220b98360a5b494",
+   "head_generation": "1793457613261193",
+   "head_sha256": "eb92fb7649b0d612e44fd9cc9d372a8653ccd221ca6876b02f01057dbee650b2",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_gdd.csv",
+    "source_sha256": "4e4df9f20e437dece97fe4146c3e8d8dbc3122b8380e4d145220b98360a5b494"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_hot_days_p95": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_hot_days_p95/versions/000001-4c5fb53dbb5c47ba8930a462cb0ab0ce.csv",
+   "content_sha256": "fe7dcabdd0d87d1ec2c93c8d2614ee23e2465e24022c788d3774819f7abc3beb",
+   "head_generation": "1793457614397445",
+   "head_sha256": "49cb743ce581b323cfa6f810e68c5c8b7810971bb068b3dc42097519b4673292",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_hot_days_p95.csv",
+    "source_sha256": "fe7dcabdd0d87d1ec2c93c8d2614ee23e2465e24022c788d3774819f7abc3beb"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_prcp_anom": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_prcp_anom/versions/000001-05827dcd246d42f3b576167fb617ec05.csv",
+   "content_sha256": "ba28ca67b4c4a779ffd3988b48e420c8126db3448c65120d6c6a7d619454c1cd",
+   "head_generation": "1793457615650941",
+   "head_sha256": "61f112933fddf083253274f9780e6fa0a439403753c3a7aaf27c67f26f7dcb5e",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_prcp_anom.csv",
+    "source_sha256": "ba28ca67b4c4a779ffd3988b48e420c8126db3448c65120d6c6a7d619454c1cd"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_prcp_z": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_prcp_z/versions/000001-4d2f8c81421a4abdb4a007c61fc386f8.csv",
+   "content_sha256": "246f5d0a30e19e6bee18916d1779a96d3942e08ea7f668718529fff23f77c193",
+   "head_generation": "1793457620477471",
+   "head_sha256": "1b586258efb91cb1869213b9ac279f87494b05b58682b572bae4d1860995c96d",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_prcp_z.csv",
+    "source_sha256": "246f5d0a30e19e6bee18916d1779a96d3942e08ea7f668718529fff23f77c193"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_rainy_days": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_rainy_days/versions/000001-d588f15b7d4b439b9949072d82e02f06.csv",
+   "content_sha256": "7e5e11ed3b2a4247714c34e69b106d397a8c3baf05d347b5e60fdfb15d1e397a",
+   "head_generation": "1793457621645909",
+   "head_sha256": "35f59dd8e47ef6901956691c2c32d4e4bd7ae4114ef8146b6e3f5b2e788c9356",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_rainy_days.csv",
+    "source_sha256": "7e5e11ed3b2a4247714c34e69b106d397a8c3baf05d347b5e60fdfb15d1e397a"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_sm_z": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_sm_z/versions/000001-1fe1f7d8aa5945a4a3c2f03f733c8e82.csv",
+   "content_sha256": "3dc62de6f3dd1299785be8d31c304cec541c4fbc07a6a35477ca9c2c612aea88",
+   "head_generation": "1793457622808190",
+   "head_sha256": "14bdde739ad5f1a36aa8b4f1a957d11f85ec36268d7edf3be4111754c916170d",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_sm_z.csv",
+    "source_sha256": "3dc62de6f3dd1299785be8d31c304cec541c4fbc07a6a35477ca9c2c612aea88"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_spei03": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_spei03/versions/000001-3aa6a6a1048247c48761b28d5776c256.csv",
+   "content_sha256": "afe6c43c9ca5fafb9d015b04252713be758fcc500520f5ebbfdc00ed50e6eaa8",
+   "head_generation": "1793457623927828",
+   "head_sha256": "193c591b60d246f238c800ddcb016a8b0bbd5049f0be629a748e372c3ffefde7",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_spei03.csv",
+    "source_sha256": "afe6c43c9ca5fafb9d015b04252713be758fcc500520f5ebbfdc00ed50e6eaa8"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_spi03": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_spi03/versions/000001-9c048da8d37549d9acb819d440cd1246.csv",
+   "content_sha256": "bb4a9fac6c2107f38b5f7bcad0f99de4840013c785d9b8fa1eb786760f5b00d0",
+   "head_generation": "1793457625139852",
+   "head_sha256": "225b9758750ce763ad519225effb6875fc92c8537ac639ca924b25c73e078b1a",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_spi03.csv",
+    "source_sha256": "bb4a9fac6c2107f38b5f7bcad0f99de4840013c785d9b8fa1eb786760f5b00d0"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_tmax_anom": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_tmax_anom/versions/000001-49283c11b77b470c8f8b6447b16a2a87.csv",
+   "content_sha256": "9c966d665664edd6624ce3ec21c677bb9d8c07b748b1caf9ad437b04de155ede",
+   "head_generation": "1793457626291379",
+   "head_sha256": "f8f57c6be197845b59de66421f787f9b54779c38582577e032927bd744c5fbaa",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_tmax_anom.csv",
+    "source_sha256": "9c966d665664edd6624ce3ec21c677bb9d8c07b748b1caf9ad437b04de155ede"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_gs_tmean_anom": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_gs_tmean_anom/versions/000001-4aabf153b40242e086fe3695f35f6393.csv",
+   "content_sha256": "f68434739eebd78bc31f4a5740292f5d068ba9ad76a74cbd0922ae8d3928ed60",
+   "head_generation": "1793457627512164",
+   "head_sha256": "2cab80d7aba9d35f7ce772716c7a36d52e58e576432150419e1539b4d5e03876",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/climate_gs_tmean_anom.csv",
+    "source_sha256": "f68434739eebd78bc31f4a5740292f5d068ba9ad76a74cbd0922ae8d3928ed60"
+   },
+   "rows": 149424,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__climate_month_cdd": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_cdd/versions/000002-facb5f1777b34eda80a5f1b4715dcb3d.csv",
+   "content_sha256": "5e68cbd5b43e37e7b00d623b70e399922e14ed5fd503cc36de8ce8e5a657cc6f",
+   "head_generation": "1793501446206066",
+   "head_sha256": "0d3c7b136fe837db3901d6487d8c7a529067c6196992fc7611e45287643e8e32",
+   "record": {
+    "action": "append",
+    "base": "cdd",
+    "dropped_out_of_roster": {
+     "chirps": 1,
+     "era5land": 1
+    },
+    "method_id": "monthly/rainfall.js@08b72faa9c85|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "chirps",
+     "era5land"
+    ],
+    "unavailable": {
+     "persiann": "NOAA/PERSIANN-CDR: no images for 2026-09"
+    }
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_edd": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_edd/versions/000002-29e482318dc440dc8487b1e9405292f1.csv",
+   "content_sha256": "53ab8e1e088c76f0395063582b24f585f891756f4777abcdfec7e809b14fc183",
+   "head_generation": "1793501841115781",
+   "head_sha256": "29128bdbffbc3b8895d7f942deb20d26938d2ce60b672ddd10344a743d18536d",
+   "record": {
+    "action": "append",
+    "base": "edd",
+    "dropped_out_of_roster": {
+     "cpc": 1,
+     "era5land": 1
+    },
+    "method_id": "monthly/temperature.js@ed917c0adbc5|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "cpc",
+     "era5land"
+    ],
+    "unavailable": {}
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_evi_anom": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_evi_anom/versions/000002-562fcc009bdf4f2392675cba6ead658d.csv",
+   "content_sha256": "dd3934ff5b52abcb107475221fe9554c7d2db46924571cec0236e92654ed12dc",
+   "head_generation": "1793502419262751",
+   "head_sha256": "e86a44d4ea3846c366306df43b5e6499a13262792ff3ee4d976f8df7a56f417e",
+   "record": {
+    "action": "append",
+    "base": "evi_anom",
+    "dropped_out_of_roster": {
+     "aqua": 1,
+     "terra": 1
+    },
+    "method_id": "monthly/ndvi_evi.js@d586ac495e3d|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "produced_tables": {
+     "aqua": [
+      "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+     ],
+     "terra": [
+      "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+     ]
+    },
+    "published": [
+     "terra",
+     "aqua"
+    ],
+    "unavailable": {}
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_gdd": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_gdd/versions/000002-ac85c7beee624db3b7a882847b2c10ff.csv",
+   "content_sha256": "1069fd81cbc326a52d29d1b05b0d9c2283c2b0d117ea5ea90daa27873c21eeae",
+   "head_generation": "1793501816323846",
+   "head_sha256": "e50a8fa3acb7e84d34feaff05fca2323e5f218ecb4e5e944152c3d9cd297e8df",
+   "record": {
+    "action": "append",
+    "base": "gdd",
+    "dropped_out_of_roster": {
+     "cpc": 1,
+     "era5land": 1
+    },
+    "method_id": "monthly/temperature.js@ed917c0adbc5|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "cpc",
+     "era5land"
+    ],
+    "unavailable": {}
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_hot_days_p95": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_hot_days_p95/versions/000002-7e2d0325897e4201bb1601f904151964.csv",
+   "content_sha256": "2567c2ceea3a84523966b4fd99dac2d5e4db9461d7379650034bf93238474837",
+   "head_generation": "1793501789283118",
+   "head_sha256": "e13694cd07bb7dc9ab1865476de12f30aa6fa0aa38ef5ef168d16a59885fa9e5",
+   "record": {
+    "action": "append",
+    "base": "hot_days_p95",
+    "dropped_out_of_roster": {
+     "cpc": 1,
+     "era5land": 1
+    },
+    "method_id": "monthly/temperature.js@ed917c0adbc5|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "cpc",
+     "era5land"
+    ],
+    "unavailable": {}
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_prcp_anom": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_prcp_anom/versions/000002-d034500e762240519c9190e9e57eb28b.csv",
+   "content_sha256": "c0c6d645d67e90444e8232b4ac52fb4cbbd1759162c02f4d1ca3158aafe6bca7",
+   "head_generation": "1793501226869034",
+   "head_sha256": "221d8e6862787c95c04e0710920ee5a92b60337faecbf1253737faa06875ff63",
+   "record": {
+    "action": "append",
+    "base": "prcp_anom",
+    "dropped_out_of_roster": {
+     "chirps": 1,
+     "era5land": 1
+    },
+    "method_id": "monthly/rainfall.js@08b72faa9c85|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "chirps",
+     "era5land"
+    ],
+    "unavailable": {
+     "persiann": "NOAA/PERSIANN-CDR: no images for 2026-09"
+    }
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_prcp_z": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_prcp_z/versions/000002-177d0fab9b5e4decb39262039fd18f5e.csv",
+   "content_sha256": "b8fd1eee646de931c7f5935c4a3732ce445eeae71dd28e0d0cad1d4bd09982b8",
+   "head_generation": "1793501252972019",
+   "head_sha256": "c7734877a6352b1d1c3311749d8395990e2f3277e3d2a26c6abe10a042b91a07",
+   "record": {
+    "action": "append",
+    "base": "prcp_z",
+    "dropped_out_of_roster": {
+     "chirps": 1,
+     "era5land": 1
+    },
+    "method_id": "monthly/rainfall.js@08b72faa9c85|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "chirps",
+     "era5land"
+    ],
+    "unavailable": {
+     "persiann": "NOAA/PERSIANN-CDR: no images for 2026-09"
+    }
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_rainy_days": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_rainy_days/versions/000002-7d488674706741a7a0ef13313463b00c.csv",
+   "content_sha256": "b7d5f79d3b8029775243981efc7687e8807778c6375a4a079dc8a3f41eaf6e0a",
+   "head_generation": "1793501418879434",
+   "head_sha256": "59bfc637862a6c6cba9312d38be69719cb5e29c4848c7e9328ec308df5fecee4",
+   "record": {
+    "action": "append",
+    "base": "rainy_days",
+    "dropped_out_of_roster": {
+     "chirps": 1,
+     "era5land": 1
+    },
+    "method_id": "monthly/rainfall.js@08b72faa9c85|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "chirps",
+     "era5land"
+    ],
+    "unavailable": {
+     "persiann": "NOAA/PERSIANN-CDR: no images for 2026-09"
+    }
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_sm_z": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_sm_z/versions/000002-99f2a97d189c46b29dc1fed871e23c17.csv",
+   "content_sha256": "b0436a630089abc83bb75de4d32051ea392b4ab7b49396011155c39ccca51783",
+   "head_generation": "1793501939792531",
+   "head_sha256": "618e46c210bdc7419466518a91dc781990d479234ae96a2a7c4b3a7d36527219",
+   "record": {
+    "action": "append",
+    "base": "sm_z",
+    "dropped_out_of_roster": {
+     "era5land": 1
+    },
+    "method_id": "monthly/soil_moisture.js@58cfd1ca9311|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "era5land"
+    ],
+    "unavailable": {
+     "gldas21": "NASA/GLDAS/V021/NOAH/G025/T3H: partial publication 225/240 for 2026-09"
+    }
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_spei03": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_spei03/versions/000002-8c1dd024a3b943bfa451ba4f709231ec.csv",
+   "content_sha256": "2283fb7a4797625c3b4019faeb1a9314cba83c165a938d970838c2c1c4fd632e",
+   "head_generation": "1793502367052369",
+   "head_sha256": "37970ab95985d7a58bb3eb92809adc16155733640bd9fdda6785b54441f70bcf",
+   "record": {
+    "action": "append",
+    "base": "spei03",
+    "dropped_out_of_roster": {
+     "chirps": 0,
+     "era5land": 0
+    },
+    "method_id": "monthly/spi_monthly.py@0e29ed359915|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "produced_tables": {
+     "chirps": [
+      "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+      "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+      "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+     ],
+     "era5land": [
+      "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+      "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+      "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+     ]
+    },
+    "published": [
+     "chirps",
+     "era5land"
+    ],
+    "unavailable": {
+     "persiann": "S2C3 precipitation table has no published 2026-09"
+    }
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_spi03": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_spi03/versions/000002-3af716b6a2464b5ea54f86ed7274c542.csv",
+   "content_sha256": "879fed62078daf10f3c6ce36a52dac4e8727e64aae4d7da9a58749e005350088",
+   "head_generation": "1793502339394394",
+   "head_sha256": "fc7695e3741fbc8f5b29c4fe9e0323179c97c6358fe4e8851997d88c7cfd0f9b",
+   "record": {
+    "action": "append",
+    "base": "spi03",
+    "dropped_out_of_roster": {
+     "chirps": 0,
+     "era5land": 0
+    },
+    "method_id": "monthly/spi_monthly.py@0e29ed359915|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "produced_tables": {
+     "chirps": [
+      "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+     ],
+     "era5land": [
+      "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+     ]
+    },
+    "published": [
+     "chirps",
+     "era5land"
+    ],
+    "unavailable": {
+     "persiann": "S2C3 precipitation table has no published 2026-09"
+    }
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_tmax_anom": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_tmax_anom/versions/000002-0ba6b9e6839046119cb7ee0ec4094227.csv",
+   "content_sha256": "9d7e32442ab4a486db25eca80b0b71200bd9143c9bba683f041fd71d87829777",
+   "head_generation": "1793501763318757",
+   "head_sha256": "4a2c0930901c6789cf4817451929b19c525d1deb4a8befdb8c1bcaf6ee222c5d",
+   "record": {
+    "action": "append",
+    "base": "tmax_anom",
+    "dropped_out_of_roster": {
+     "cpc": 1,
+     "era5land": 1
+    },
+    "method_id": "monthly/temperature.js@ed917c0adbc5|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "cpc",
+     "era5land"
+    ],
+    "unavailable": {}
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__climate_month_tmean_anom": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__climate_month_tmean_anom/versions/000002-ae5c8061d4cc4507b6221be25a79e5a2.csv",
+   "content_sha256": "cce3d4f40c56430cbfcc2db91cc382a80f6cfe24b3c3a7512eae68d0d3880c4d",
+   "head_generation": "1793501737664859",
+   "head_sha256": "a9a557130cea82eca4f940e396608115cbe254f08dde374d5a9acb13c5284e8a",
+   "record": {
+    "action": "append",
+    "base": "tmean_anom",
+    "dropped_out_of_roster": {
+     "cpc": 1,
+     "era5land": 1
+    },
+    "method_id": "monthly/temperature.js@ed917c0adbc5|EQUAL_WEIGHT_VALID_SOURCES_POPSD_DDOF0_MIN2_V1",
+    "month": "2026-09",
+    "published": [
+     "cpc",
+     "era5land"
+    ],
+    "unavailable": {}
+   },
+   "rows": 877866,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__food_price_index_WB": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__food_price_index_WB/versions/000001-0a06afe3949f4b8eab11cfed5ce99e25.csv",
+   "content_sha256": "3a0e0f8b653096d1f5df48b9585e5475ba349fb14a817d881392faa42c0c8daa",
+   "head_generation": "1793457697411237",
+   "head_sha256": "0e932d917e1c5119838c5c5ed264261b76489a1f2df77ff5edc2606aeff3b28e",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/food_price_index_WB.csv",
+    "source_sha256": "3a0e0f8b653096d1f5df48b9585e5475ba349fb14a817d881392faa42c0c8daa"
+   },
+   "rows": 928131,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__history_snapshot": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__history_snapshot/versions/000001-b9a11e706a84491c9c27042fe063670e.csv",
+   "content_sha256": "0380367b15bd78f5f6bb7a4901079b046b4b0075661eb7b59f9309e2cab1e2d8",
+   "head_generation": "1793457697925589",
+   "head_sha256": "5506b84c6f2f0debc5d1ce64e897b7bbf484afdbe8913252244e32f1044dacf2",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "preparation_cutoff": "2026-10",
+    "rows": 44969,
+    "source": "history/history_snapshot.csv",
+    "source_sha256": "0380367b15bd78f5f6bb7a4901079b046b4b0075661eb7b59f9309e2cab1e2d8"
+   },
+   "rows": 44969,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__idp_local": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__idp_local/versions/000001-eb06ba04d0b84a97835fb731eebd13d3.csv",
+   "content_sha256": "dab66e28fb9d20f469dc1c079e32b12622f077d68988d43453da721bbe900836",
+   "head_generation": "1793457698746962",
+   "head_sha256": "18690eaff80fccf07fa563b2d66dae33eb258e8c637dd06afe7eaf14e8a44601",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/idp_local.csv",
+    "source_sha256": "dab66e28fb9d20f469dc1c079e32b12622f077d68988d43453da721bbe900836"
+   },
+   "rows": 413157,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__idp_national": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__idp_national/versions/000001-f750caf2f6af4910a884cedb808a95ba.csv",
+   "content_sha256": "dc4bff601f6e20b9f15cef84b46da71698206e744e134c0bc31cb9883705224f",
+   "head_generation": "1793457698925765",
+   "head_sha256": "01d576b28ff5832ea4f94e6bf28bf4080f942f9a17f1a29ada2758e35df47fb5",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/idp_national.csv",
+    "source_sha256": "dc4bff601f6e20b9f15cef84b46da71698206e744e134c0bc31cb9883705224f"
+   },
+   "rows": 1104,
+   "version": 1,
+   "version_objects": 1
+  },
+  "history__nightlight_mean": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__nightlight_mean/versions/000002-2b813143307b457eae1907c9b057b280.csv",
+   "content_sha256": "2d548ef8d8167649d4f9b63171a993d3984ef5adf4fd6977c3dddee6948635d4",
+   "head_generation": "1793502956077298",
+   "head_sha256": "cc4dd9499bd1f10ab88792b4619846e2db9db521cfdfde25b2a2682bdd5aba03",
+   "record": {
+    "filled_unpublished": 0,
+    "method_id": "viirs-dnb-monthly-vcmcfg|current-repo-remote-scripts-v2|avg_rad__sum|cell-centre",
+    "months": [
+     "2026-09"
+    ],
+    "rows_added": 6226
+   },
+   "rows": 1250614,
+   "version": 2,
+   "version_objects": 2
+  },
+  "history__nino34_anom": {
+   "content": "gs://food-crisis-test-ipcch-data/ipcch-v2/real/history__nino34_anom/versions/000001-555cabd9057b43269e97b7e25cb10ad3.csv",
+   "content_sha256": "755cb66a8d25a950b8d9c3b66ef6225a47599bdfc86c56bad27109e9501d22a7",
+   "head_generation": "1793457706114634",
+   "head_sha256": "df1d5dcd07b984babac111d2c91b7de83a27a9931b8fc066177a9f15a0f106f8",
+   "record": {
+    "acceptance": {
+     "accepted_at": "2026-10-30",
+     "acceptor": "Codex Supervisor",
+     "kind": "delivered"
+    },
+    "action": "initialise",
+    "combination": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "handoff_manifest_sha256": "e6e3ebc60ad816bda4580cf3cef65258ba1cb708a4766d9f4d76fbd13f5c97b4",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22",
+     "status": "accepted"
+    },
+    "source": "history/nino34_anom.csv",
+    "source_sha256": "755cb66a8d25a950b8d9c3b66ef6225a47599bdfc86c56bad27109e9501d22a7"
+   },
+   "rows": 1250607,
+   "version": 1,
+   "version_objects": 1
+  }
+ }
+}

@@ -128,3 +128,89 @@ hashes match. The first execution-manifest verification used the wrong cwd and
 reported missing files; verification from exec/ succeeded. No evidence was changed.
 CP4 preflight/preparation released; monthly submission awaits its fresh packet.
 Root recovery does not prove toAsset export, DA1, DA2 or publication.
+
+## CP4 additional submission released
+
+Supervisor verified all 30 preflight hashes, selections 8092421f (11 exact keeps),
+13 nonempty September monthly bases/seven producer jobs, six CHILD-EXIT=0 logs
+and 12 helper checks. Inspected lineage_readback diff: adds ACLED v2 to keep
+identity checks and removes second-refresh requirements, preserving first-refresh
+evidence in CP2. Current 1793461128385732 and retained post-failure state unchanged.
+One D5 monthly submission released after immediate fresh checks; no third attempt.
+Bounded monitoring and CP5 readbacks may proceed without repeated permission.
+CP3 evidence commit: 3e67076. Actual export/DA1/DA2/publication remain pending.
+
+## CP4 submitted once; live execution pending
+
+Run ipcch-real-fe7282ef75e747fd, frozen 2026-11-01T02:29:33Z, M=2026-11,
+all eleven keep. Request #1793500174046456, sha b0f8b507e63c25be3b660827ab521ce3d7009f14f8d2d0a522f6003c73547d78.
+Supervisor rehashed frozen request and checked inputs and submit CHILD-EXIT 0.
+Expected current 1793461128385732. This exhausts D5 new-run submission authority;
+continue monitoring/readback or failure reconciliation, never a third run.
+
+## CP5 witness-helper readiness corrections (cloud run unchanged)
+
+A read-only scout, confirmed by Supervisor source spotchecks, found helper gaps:
+climate new-row checks allowed incomplete rosters/duplicate old keys; links allowed
+vacuous empty retained_inputs; VI empty-sample handling could fail and no explicit
+comparison disposition existed; expected wholly omitted fields were invisible to
+raw union-only counts; PATCH fill candidates admitted nonfinite/bool values and
+did not express selected ET0. Immutable content/delivery references need hash
+checks or explicit dependence on the already verified exact generic readback.
+Executor is assigned minimal corrections plus guarded self-checks in new cp5
+copies, preserving frozen cp4 helpers. No product/deployment/scientific change.
+These corrections enforce existing AC3/AC4/AC6 and D2, not new acceptance scope.
+
+## CP5 helper corrections accepted for live readback
+
+Supervisor inspected the exact revised diffs and required-table mapping to
+generation._write; initial nine frozen hashes verified. Added direct links tests
+cover valid required refs, empty refs, missing required ref and corrupted delivery
+manifest. Final helper suite: 7 passed, CHILD-EXIT 0. Old cp4 copies preserved.
+Source-level PATCH witnesses remain labeled as such, not an independent SPEI replay.
+GitNexus fallback note lacked an actual pre-edit tool query; that process deviation
+is retained and must not be relabeled. No product symbol was changed.
+Live generic/lineage/climate/links/DA2 readback still required after run success.
+
+## CP4 monitoring and AC6 readback readiness (03:05Z)
+
+Same Executor session 6a490ae1 and the existing poll/sampler were reverified after
+compaction. Guarded progress-6 (03:03:22Z, child 0) records all seven table exports
+and seven raster exports completed; ten monthly climate HEADs moved. The three
+producer-table bases spi03/spei03/evi_anom and publication are not yet observed.
+No new submission, process restart or cloud mutation was performed by Supervisor.
+
+ACLED cutoff helper 8f4571b2 was source-inspected; its guarded self-check passed.
+The live check will bind batch/sidecar bytes, retained ACLED v2, all observed ACLED
+sections and the bound roster to O=September and A=August. This is provenance and
+cutoff evidence, not a numerical feature replay. Terminal-success CP5 readbacks
+remain released, including this check; no additional user approval is required.
+
+## CP5 final acceptance
+
+Accepted: current publication and DA1; DA2 partial under D2. The 54 CP5 final
+hashes, supplement and runtime-final manifests verify. Generic 27/27, lineage
+11/11, exact 13-base roster append, all eleven keeps, ACLED cutoff and literal
+FEWS inheritance are supported by inspected artifacts. Final execution/logs
+confirm success/exit(0), current 1793503777656101 and no observed live lock/hold
+or active work. Two targeted read-only scouts compressed evidence checks; the
+Supervisor spotchecked their specific findings. No Audit workflow was used.
+
+Two DA2 overstatements were corrected without changing frozen evidence: 21 of 32
+PATCH32 targets have finite saved SPEI (11 NaN), and finite-primary preservation
+has zero natural samples. PERSIANN missing means follow incomplete calendar
+metadata (September/August 0 days; July 2021 30/31), not failed exports. See
+cp5/cp5-result-corrections.md and supervisor-acceptance.md. The source-level and
+sample-only numerical limitations remain explicit. Original reports are retained.
+
+Scope: evidence/docs/spec updates only. Deployed product 115798f/image acc3e467
+and operator config unchanged. Native archive/journal follows the scoped commit;
+the re-fetchable 77.8 MB cache and pre-existing AGENTS.md change are excluded.
+
+Precommit: GitNexus staged LOW, no affected processes (index symbols are stale;
+direct staged path inspection confirms no product/config changes). The full diff
+whitespace check flags only a trailing tab in raw cp4/run/handles-read.log; original
+log bytes are preserved. An empty index.lock dated 03:04:50Z blocked staging;
+fuser and process inspection found no holder/Git writer. It was moved to the
+Supervisor temporary evidence directory, then staging succeeded. User AGENTS.md
+still hashes to b449b255709fec553214c7bac77e8d1a3cd1e96b0d6f2d7a38215b8cf3100389.

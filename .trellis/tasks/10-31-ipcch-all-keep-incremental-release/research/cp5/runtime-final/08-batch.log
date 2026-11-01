@@ -1,0 +1,34 @@
+# unit=ipcch-cp2-08-batch-1793504693135800889 start=2026-10-31T23:44:53-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PATH=/mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin:/usr/bin:/bin python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/cloudop.py --timeout 540 --purpose runtime-final: active Batch jobs --scope read --effect none -- /mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin/gcloud --configuration=food-crisis-test batch jobs list --project=feisty-flames-511718-d4 --location=us-central1 --filter=status.state=RUNNING OR status.state=QUEUED OR status.state=SCHEDULED --format=json
+Running as unit: ipcch-cp2-08-batch-1793504693135800889.service; invocation ID: b82214ac2f4540d1a847ce196f870f58
+WARNING: The following filter keys were not present in any resource : status.state
+[]
+	Command being timed: "/usr/bin/env PATH=/mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin:/usr/bin:/bin python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/cloudop.py --timeout 540 --purpose runtime-final: active Batch jobs --scope read --effect none -- /mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin/gcloud --configuration=food-crisis-test batch jobs list --project=feisty-flames-511718-d4 --location=us-central1 --filter=status.state=RUNNING OR status.state=QUEUED OR status.state=SCHEDULED --format=json"
+	User time (seconds): 0.43
+	System time (seconds): 0.50
+	Percent of CPU this job got: 9%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.88
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 60876
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 17308
+	Voluntary context switches: 97981
+	Involuntary context switches: 10
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 40
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 9.966s
+CPU time consumed: 965ms
+# end=2026-10-31T23:45:03-04:00 launcher_rc=0 child_exit=0

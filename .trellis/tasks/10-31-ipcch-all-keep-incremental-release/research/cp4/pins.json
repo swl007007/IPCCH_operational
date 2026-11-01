@@ -1,0 +1,33 @@
+{
+ "local": {
+  "acled_regional_aggregate_20261017_20261023.csv": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+  "selections.json": "7ab733d8c0e22bc866ae0ddb8cdfce63b3c5621e749b6ec2316f8fdaf58af4a7"
+ },
+ "match": {
+  "acled_regional_aggregate_20261017_20261023.csv": true,
+  "country_reference_real": true,
+  "envelope": true,
+  "environment_manifest": true,
+  "selections.json": true
+ },
+ "shared": {
+  "country_reference_real": {
+   "generation": "1793457294730935",
+   "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+   "size": 11296,
+   "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv"
+  },
+  "envelope": {
+   "generation": "1793457267476070",
+   "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+   "size": 1642,
+   "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json"
+  },
+  "environment_manifest": {
+   "generation": "1793457280557418",
+   "sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+   "size": 1373,
+   "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt"
+  }
+ }
+}

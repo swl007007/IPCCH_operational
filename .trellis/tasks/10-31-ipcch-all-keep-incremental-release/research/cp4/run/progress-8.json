@@ -1,0 +1,496 @@
+{
+ "objects": [
+  [
+   "02:29:35",
+   "dispatch/ipcch-real-fe7282ef75e747fd/claim.json",
+   141,
+   "1793500175476410"
+  ],
+  [
+   "02:30:35",
+   "locks/ipcch",
+   100,
+   "1793500235501058"
+  ],
+  [
+   "02:30:35",
+   "runs/ipcch-real-fe7282ef75e747fd/v2_reservation.json",
+   467,
+   "1793500235410735"
+  ],
+  [
+   "02:38:21",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3.json",
+   472,
+   "1793500701091512"
+  ],
+  [
+   "02:38:21",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3.json",
+   474,
+   "1793500701915473"
+  ],
+  [
+   "02:38:22",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3.json",
+   482,
+   "1793500702526914"
+  ],
+  [
+   "02:38:23",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3.json",
+   486,
+   "1793500703304383"
+  ],
+  [
+   "02:38:24",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3.json",
+   478,
+   "1793500704644655"
+  ],
+  [
+   "02:38:24",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3.json",
+   486,
+   "1793500704030302"
+  ],
+  [
+   "02:41:26",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_ET0_PATCH32_Y2020_2026_V2.json",
+   454,
+   "1793500886093691"
+  ],
+  [
+   "02:44:05",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_chirps_202609.csv",
+   814402,
+   "1793501045099224"
+  ],
+  [
+   "02:44:36",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_rain_anomz_chirps_202609.json",
+   719,
+   "1793501076801333"
+  ],
+  [
+   "02:46:47",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_era5land_202609.csv",
+   814643,
+   "1793501207824710"
+  ],
+  [
+   "02:46:49",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_rain_anomz_era5land_202609.json",
+   725,
+   "1793501209811764"
+  ],
+  [
+   "02:47:06",
+   "ipcch-v2/real/history__climate_month_prcp_anom/HEAD.json",
+   1151,
+   "1793501226869034"
+  ],
+  [
+   "02:47:06",
+   "ipcch-v2/real/history__climate_month_prcp_anom/versions/000002-d034500e762240519c9190e9e57eb28b.csv",
+   102445804,
+   "1793501226408940"
+  ],
+  [
+   "02:47:32",
+   "ipcch-v2/real/history__climate_month_prcp_z/HEAD.json",
+   1139,
+   "1793501252972019"
+  ],
+  [
+   "02:47:32",
+   "ipcch-v2/real/history__climate_month_prcp_z/versions/000002-177d0fab9b5e4decb39262039fd18f5e.csv",
+   103287450,
+   "1793501252534671"
+  ],
+  [
+   "02:48:50",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_chirps_202609.csv",
+   803732,
+   "1793501329997716"
+  ],
+  [
+   "02:48:52",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_rain_cdd_chirps_202609.json",
+   711,
+   "1793501332557972"
+  ],
+  [
+   "02:49:42",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_era5land_202609.csv",
+   800278,
+   "1793501382843900"
+  ],
+  [
+   "02:50:02",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_rain_cdd_era5land_202609.json",
+   717,
+   "1793501402535577"
+  ],
+  [
+   "02:50:18",
+   "ipcch-v2/real/history__climate_month_rainy_days/HEAD.json",
+   1155,
+   "1793501418879434"
+  ],
+  [
+   "02:50:18",
+   "ipcch-v2/real/history__climate_month_rainy_days/versions/000002-7d488674706741a7a0ef13313463b00c.csv",
+   100229240,
+   "1793501418455430"
+  ],
+  [
+   "02:50:45",
+   "ipcch-v2/real/history__climate_month_cdd/versions/000002-facb5f1777b34eda80a5f1b4715dcb3d.csv",
+   101368543,
+   "1793501445739821"
+  ],
+  [
+   "02:50:46",
+   "ipcch-v2/real/history__climate_month_cdd/HEAD.json",
+   1127,
+   "1793501446206066"
+  ],
+  [
+   "02:52:06",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_cpc_202609.csv",
+   1925525,
+   "1793501526225468"
+  ],
+  [
+   "02:52:09",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_temperature_cpc_202609.json",
+   896,
+   "1793501529956513"
+  ],
+  [
+   "02:54:37",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_era5land_202609.csv",
+   1961751,
+   "1793501677108224"
+  ],
+  [
+   "02:55:23",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_temperature_era5land_202609.json",
+   911,
+   "1793501723063028"
+  ],
+  [
+   "02:55:37",
+   "ipcch-v2/real/history__climate_month_tmean_anom/HEAD.json",
+   1098,
+   "1793501737664859"
+  ],
+  [
+   "02:55:37",
+   "ipcch-v2/real/history__climate_month_tmean_anom/versions/000002-ae5c8061d4cc4507b6221be25a79e5a2.csv",
+   102506010,
+   "1793501737221019"
+  ],
+  [
+   "02:56:02",
+   "ipcch-v2/real/history__climate_month_tmax_anom/versions/000002-0ba6b9e6839046119cb7ee0ec4094227.csv",
+   102453955,
+   "1793501762890651"
+  ],
+  [
+   "02:56:03",
+   "ipcch-v2/real/history__climate_month_tmax_anom/HEAD.json",
+   1094,
+   "1793501763318757"
+  ],
+  [
+   "02:56:28",
+   "ipcch-v2/real/history__climate_month_hot_days_p95/versions/000002-7e2d0325897e4201bb1601f904151964.csv",
+   98878920,
+   "1793501788830234"
+  ],
+  [
+   "02:56:29",
+   "ipcch-v2/real/history__climate_month_hot_days_p95/HEAD.json",
+   1106,
+   "1793501789283118"
+  ],
+  [
+   "02:56:55",
+   "ipcch-v2/real/history__climate_month_gdd/versions/000002-ac85c7beee624db3b7a882847b2c10ff.csv",
+   101198471,
+   "1793501815909967"
+  ],
+  [
+   "02:56:56",
+   "ipcch-v2/real/history__climate_month_gdd/HEAD.json",
+   1070,
+   "1793501816323846"
+  ],
+  [
+   "02:57:20",
+   "ipcch-v2/real/history__climate_month_edd/versions/000002-29e482318dc440dc8487b1e9405292f1.csv",
+   99818158,
+   "1793501840692683"
+  ],
+  [
+   "02:57:21",
+   "ipcch-v2/real/history__climate_month_edd/HEAD.json",
+   1070,
+   "1793501841115781"
+  ],
+  [
+   "02:58:20",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_soil_era5land_202609.csv",
+   548635,
+   "1793501900423723"
+  ],
+  [
+   "02:58:44",
+   "ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_soil_era5land_202609.json",
+   702,
+   "1793501923997085"
+  ],
+  [
+   "02:58:59",
+   "ipcch-v2/real/history__climate_month_sm_z/HEAD.json",
+   1142,
+   "1793501939792531"
+  ],
+  [
+   "02:58:59",
+   "ipcch-v2/real/history__climate_month_sm_z/versions/000002-99f2a97d189c46b29dc1fed871e23c17.csv",
+   102849057,
+   "1793501939345813"
+  ],
+  [
+   "03:05:38",
+   "ipcch-v2/real/history__climate_month_spi03/versions/000002-3af716b6a2464b5ea54f86ed7274c542.csv",
+   102991993,
+   "1793502338947428"
+  ],
+  [
+   "03:05:39",
+   "ipcch-v2/real/history__climate_month_spi03/HEAD.json",
+   1464,
+   "1793502339394394"
+  ],
+  [
+   "03:06:06",
+   "ipcch-v2/real/history__climate_month_spei03/versions/000002-8c1dd024a3b943bfa451ba4f709231ec.csv",
+   99662420,
+   "1793502366571809"
+  ],
+  [
+   "03:06:07",
+   "ipcch-v2/real/history__climate_month_spei03/HEAD.json",
+   1972,
+   "1793502367052369"
+  ],
+  [
+   "03:06:58",
+   "ipcch-v2/real/history__climate_month_evi_anom/versions/000002-562fcc009bdf4f2392675cba6ead658d.csv",
+   102675006,
+   "1793502418779646"
+  ],
+  [
+   "03:06:59",
+   "ipcch-v2/real/history__climate_month_evi_anom/HEAD.json",
+   1384,
+   "1793502419262751"
+  ],
+  [
+   "03:08:08",
+   "ipcch-v2/real/acceptance_manifest/versions/000005-097a134fc167412ca7879075b9cd5efd.csv",
+   20149,
+   "1793502487996613"
+  ],
+  [
+   "03:08:18",
+   "ipcch-v2/real/gpp_availability_ledger/versions/000009-b4a3862e6ccd47f19c57a9e502131c2d.csv",
+   1473,
+   "1793502498779996"
+  ],
+  [
+   "03:08:19",
+   "ipcch-v2/real/gpp_availability_ledger/versions/000010-8a8ea2a18f2d4b23ba210d9a8bbdd1dd.csv",
+   1633,
+   "1793502499298747"
+  ],
+  [
+   "03:08:19",
+   "ipcch-v2/real/gpp_availability_ledger/versions/000011-0e8339fd7e344d8283fdcff2f7effd84.csv",
+   1793,
+   "1793502499787852"
+  ],
+  [
+   "03:08:20",
+   "ipcch-v2/real/gpp_availability_ledger/versions/000012-d1b1d01f9de641859370f46ef20f98ce.csv",
+   1953,
+   "1793502500295136"
+  ],
+  [
+   "03:08:20",
+   "ipcch-v2/real/gpp_availability_ledger/versions/000013-f9c2a39e4c344c38803d493fa0ae99a8.csv",
+   2113,
+   "1793502500766370"
+  ],
+  [
+   "03:08:21",
+   "ipcch-v2/real/gpp_availability_ledger/versions/000014-300860997a994d9a80bd4374b78f145a.csv",
+   2273,
+   "1793502501303161"
+  ],
+  [
+   "03:08:21",
+   "ipcch-v2/real/gpp_availability_ledger/versions/000015-86e0b8192f74409cbbd8f930c8229a28.csv",
+   2433,
+   "1793502501774412"
+  ],
+  [
+   "03:08:22",
+   "ipcch-v2/real/gpp_availability_ledger/HEAD.json",
+   4529,
+   "1793502502831531"
+  ],
+  [
+   "03:08:22",
+   "ipcch-v2/real/gpp_availability_ledger/versions/000016-988ebc312ebf454d9168c4d4cda24000.csv",
+   2593,
+   "1793502502275370"
+  ],
+  [
+   "03:08:22",
+   "ipcch-v2/real/gpp_availability_ledger/versions/000017-84292399cb244985bbb9f3101436dde0.csv",
+   2753,
+   "1793502502756846"
+  ],
+  [
+   "03:08:28",
+   "ipcch-v2/real/acceptance_manifest/HEAD.json",
+   1765,
+   "1793502508585992"
+  ],
+  [
+   "03:08:28",
+   "ipcch-v2/real/acceptance_manifest/versions/000006-0b4e21f20f1b49168d26cea278edf234.csv",
+   23073,
+   "1793502508507634"
+  ]
+ ],
+ "tasks": [
+  {
+   "description": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "state": "completed",
+   "task_id": "RFU3ZH3QH7WVPKI7UVRIJQR2",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "state": "completed",
+   "task_id": "RGAJ47QERKDVN4TLBKUBK43N",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "state": "completed",
+   "task_id": "UQHEJZ3W5LBNVABV34NRLV3X",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "state": "completed",
+   "task_id": "NLZVY6DHKHPBFDI7EXEVX4DM",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2C3_ET0_PATCH32_Y2020_2026_V2",
+   "kind": "table_to_asset",
+   "state": "completed",
+   "task_id": "HQLXJ24XGBOVNZ7MLRWDWZ5U",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+   "kind": "table_to_asset",
+   "state": "completed",
+   "task_id": "2MQ5OHBODGC33E55APK6QAKF",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+   "kind": "table_to_asset",
+   "state": "completed",
+   "task_id": "7ZIQ3CDJK7XFKIYM3LP4F2N3",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "prefix": null
+  },
+  {
+   "description": "ipcch_rain_anomz_chirps_202609",
+   "kind": null,
+   "state": "completed",
+   "task_id": "OWWCR4VNIDQPCPX77HSLFNOM",
+   "asset_id": null,
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_chirps_202609"
+  },
+  {
+   "description": "ipcch_rain_anomz_era5land_202609",
+   "kind": null,
+   "state": "completed",
+   "task_id": "LXGSDAQAF36N5IL63X563ZUR",
+   "asset_id": null,
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_era5land_202609"
+  },
+  {
+   "description": "ipcch_rain_cdd_chirps_202609",
+   "kind": null,
+   "state": "completed",
+   "task_id": "FFL45NUZZRGFECWO47T4K4H3",
+   "asset_id": null,
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_chirps_202609"
+  },
+  {
+   "description": "ipcch_rain_cdd_era5land_202609",
+   "kind": null,
+   "state": "completed",
+   "task_id": "CNKAG276IMAOKPXVXDEHAFN5",
+   "asset_id": null,
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_era5land_202609"
+  },
+  {
+   "description": "ipcch_soil_era5land_202609",
+   "kind": null,
+   "state": "completed",
+   "task_id": "ZQAVZKC6QE4TJEU5L4232S3U",
+   "asset_id": null,
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_soil_era5land_202609"
+  },
+  {
+   "description": "ipcch_temperature_cpc_202609",
+   "kind": null,
+   "state": "completed",
+   "task_id": "E2ENNRB63ZIFZ3J6433A6A37",
+   "asset_id": null,
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_cpc_202609"
+  },
+  {
+   "description": "ipcch_temperature_era5land_202609",
+   "kind": null,
+   "state": "completed",
+   "task_id": "UG3YOZXHQUMZ6KA4IXLW2DSS",
+   "asset_id": null,
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_era5land_202609"
+  }
+ ]
+}

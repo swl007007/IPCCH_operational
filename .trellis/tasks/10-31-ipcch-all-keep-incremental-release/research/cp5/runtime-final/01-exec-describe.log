@@ -1,0 +1,146 @@
+# unit=ipcch-cp2-01-exec-describe-1793504589496825265 start=2026-10-31T23:43:09-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PATH=/mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin:/usr/bin:/bin python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/cloudop.py --timeout 540 --purpose runtime-final: execution describe oct-delivery-625sk --scope read --effect none -- /mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin/gcloud --configuration=food-crisis-test run jobs executions describe oct-delivery-625sk --project=feisty-flames-511718-d4 --region=us-central1 --format=json
+Running as unit: ipcch-cp2-01-exec-describe-1793504589496825265.service; invocation ID: 2d020b1c4e214e54b4ff307b33a25767
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Execution",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/creator": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "run.googleapis.com/execution-environment": "gen2",
+      "run.googleapis.com/lastModifier": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "run.googleapis.com/operation-id": "d6e96769-9a1f-49a6-8f74-412103dbdfa1"
+    },
+    "creationTimestamp": "2026-11-01T02:29:36.228630Z",
+    "generation": 1,
+    "labels": {
+      "client.knative.dev/nonce": "los_dig_suj",
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/job": "oct-delivery",
+      "run.googleapis.com/jobGeneration": "4",
+      "run.googleapis.com/jobResourceVersion": "1793495019597565",
+      "run.googleapis.com/jobUid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+    },
+    "name": "oct-delivery-625sk",
+    "namespace": "968355701450",
+    "ownerReferences": [
+      {
+        "apiVersion": "serving.knative.dev/v1",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "Job",
+        "name": "oct-delivery",
+        "uid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+      }
+    ],
+    "resourceVersion": "AAZfLqPgyO8",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/executions/oct-delivery-625sk",
+    "uid": "9574d3ad-d235-4456-b3ee-aedbeaf1e413"
+  },
+  "spec": {
+    "parallelism": 1,
+    "taskCount": 1,
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "args": [
+              "-m",
+              "cloud.orchestrator.delivery_job",
+              "run",
+              "--request-uri",
+              "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-fe7282ef75e747fd/run_manifest.json",
+              "--request-generation",
+              "1793500174046456",
+              "--output-root",
+              "gs://food-crisis-test-ipcch-data",
+              "--release-namespace",
+              "monthly-staging",
+              "--image-uri",
+              "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+              "--v2-config",
+              "/opt/ipcch/deployment.json"
+            ],
+            "command": [
+              "python3"
+            ],
+            "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+            "resources": {
+              "limits": {
+                "cpu": "8",
+                "memory": "32Gi"
+              }
+            }
+          }
+        ],
+        "maxRetries": 0,
+        "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "timeoutSeconds": "14400"
+      }
+    }
+  },
+  "status": {
+    "completionTime": "2026-11-01T03:29:41.714813Z",
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-11-01T03:29:41.714813Z",
+        "message": "Execution completed successfully in 59m57.44s.",
+        "status": "True",
+        "type": "Completed"
+      },
+      {
+        "lastTransitionTime": "2026-11-01T02:29:37.047282Z",
+        "message": "Provisioned imported containers.",
+        "status": "True",
+        "type": "ResourcesAvailable"
+      },
+      {
+        "lastTransitionTime": "2026-11-01T02:30:23.258414Z",
+        "message": "Started deployed execution in 46.21s.",
+        "status": "True",
+        "type": "Started"
+      },
+      {
+        "lastTransitionTime": "2026-11-01T02:29:36.944483Z",
+        "message": "Imported container image.",
+        "status": "True",
+        "type": "ContainerReady"
+      }
+    ],
+    "logUri": "https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-delivery%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-delivery-625sk%22",
+    "observedGeneration": 1,
+    "startTime": "2026-11-01T02:29:44.273453Z",
+    "succeededCount": 1
+  }
+}
+	Command being timed: "/usr/bin/env PATH=/mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin:/usr/bin:/bin python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/cloudop.py --timeout 540 --purpose runtime-final: execution describe oct-delivery-625sk --scope read --effect none -- /mnt/c/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/bin/gcloud --configuration=food-crisis-test run jobs executions describe oct-delivery-625sk --project=feisty-flames-511718-d4 --region=us-central1 --format=json"
+	User time (seconds): 0.61
+	System time (seconds): 0.66
+	Percent of CPU this job got: 9%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:13.04
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 81548
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 12
+	Minor (reclaiming a frame) page faults: 23230
+	Voluntary context switches: 129993
+	Involuntary context switches: 16
+	Swaps: 0
+	File system inputs: 1096
+	File system outputs: 128
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 13.122s
+CPU time consumed: 1.320s
+# end=2026-10-31T23:43:22-04:00 launcher_rc=0 child_exit=0

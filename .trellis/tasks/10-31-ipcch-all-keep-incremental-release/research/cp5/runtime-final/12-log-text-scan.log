@@ -1,0 +1,38 @@
+# unit=ipcch-cp2-12-log-text-scan-1793504812755542055 start=2026-10-31T23:46:52-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/log_text_scan.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/log-text-scan.json
+Running as unit: ipcch-cp2-12-log-text-scan-1793504812755542055.service; invocation ID: f2754c34c1d24c5f891bec35204e2d1b
+{"entries": 253, "hits": 5}
+2026-11-01T02:57:31.160542Z None httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.
+2026-11-01T02:57:31.162584Z None httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.
+2026-11-01T03:06:31.458270Z None /app/cloud/ipcch/climate_tables.py:313: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+2026-11-01T03:06:43.740447Z None /app/cloud/ipcch/climate_tables.py:313: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+2026-11-01T03:29:37.821687Z None       "failed_operation": null,
+	Command being timed: "/home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/log_text_scan.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/runtime-final/log-text-scan.json"
+	User time (seconds): 0.01
+	System time (seconds): 0.00
+	Percent of CPU this job got: 50%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.02
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 11048
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1409
+	Voluntary context switches: 89
+	Involuntary context switches: 0
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 177ms
+CPU time consumed: 121ms
+# end=2026-10-31T23:46:52-04:00 launcher_rc=0 child_exit=0

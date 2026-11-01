@@ -1,0 +1,673 @@
+{
+ "checks": {
+  "generic_readback_passed": true,
+  "kept_eleven_unchanged": true,
+  "lineage.batch_retained_inputs_equal_post_heads": true,
+  "lineage.bound_to_run": true,
+  "lineage.demand_nonempty": true,
+  "lineage.each_table_base_appends_O_from_this_run": true,
+  "lineage.jobs_nonempty": true,
+  "lineage.no_duplicate_task_or_destination": true,
+  "lineage.receipt_tables_equal_jobs": true,
+  "lineage.receipts_join_completed_task_records": true,
+  "lineage.unconsumed_assets_explained": true
+ },
+ "coverage_end": {
+  "GPP_mean": "2025-12",
+  "WFP_Price": "2026-09",
+  "acled": "2026-09",
+  "bbg_global_food": "2026-09",
+  "bbg_oilgas": "2026-09",
+  "bbg_soybean_oil": "2026-07",
+  "bbg_staple_food": "2026-09",
+  "food_price_index_WB": "2026-10",
+  "history_snapshot": "2026-10",
+  "idp_local": "2026-09",
+  "idp_national": "2026-09",
+  "nightlight_mean": "2026-09",
+  "nino34_anom": "2026-09"
+ },
+ "gaps": {
+  "GPP_unpublished": [
+   "2026-01",
+   "2026-02",
+   "2026-03",
+   "2026-04",
+   "2026-05",
+   "2026-06",
+   "2026-07",
+   "2026-08",
+   "2026-09"
+  ],
+  "climate_monthly": {},
+  "climate_seasonal": {},
+  "nightlight": []
+ },
+ "head_changes": {
+  "acled_agg_weekly": {
+   "month": null,
+   "post": 2,
+   "pre": 2
+  },
+  "gpp_availability_ledger": {
+   "month": null,
+   "post": 17,
+   "pre": 8
+  },
+  "history__GPP_mean": {
+   "month": null,
+   "post": 1,
+   "pre": 1
+  },
+  "history__climate_month_cdd": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_edd": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_evi_anom": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_gdd": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_hot_days_p95": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_prcp_anom": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_prcp_z": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_rainy_days": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_sm_z": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_spei03": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_spi03": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_tmax_anom": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__climate_month_tmean_anom": {
+   "month": "2026-09",
+   "post": 2,
+   "pre": 1
+  },
+  "history__nightlight_mean": {
+   "month": null,
+   "post": 2,
+   "pre": 1
+  }
+ },
+ "inputs": {
+  "acled": {
+   "action": "keep",
+   "coverage_end": "2026-09",
+   "method": "regional-aggregate converter (research build_acled_agg.py conventions; delivered fixed tables)"
+  },
+  "history_snapshot": {
+   "action": "keep",
+   "preparation_cutoff": "2026-10"
+  },
+  "research_inputs": {
+   "bbg_global_food": {
+    "action": "keep",
+    "coverage_end": "2026-09",
+    "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+   },
+   "bbg_oilgas": {
+    "action": "keep",
+    "coverage_end": "2026-09",
+    "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+   },
+   "bbg_soybean_oil": {
+    "action": "keep",
+    "coverage_end": "2026-07",
+    "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+   },
+   "bbg_staple_food": {
+    "action": "keep",
+    "coverage_end": "2026-09",
+    "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+   },
+   "food_price_index_WB": {
+    "action": "keep",
+    "coverage_end": "2026-10",
+    "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+   },
+   "idp_local": {
+    "action": "keep",
+    "coverage_end": "2026-09",
+    "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+   },
+   "idp_national": {
+    "action": "keep",
+    "coverage_end": "2026-09"
+   },
+   "nino34_anom": {
+    "action": "keep",
+    "coverage_end": "2026-09",
+    "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+   }
+  },
+  "wfp": {
+   "action": "keep",
+   "coverage_end": "2026-09",
+   "method": "research HDX food prices: 100 + YoY % change of local-currency staple prices (maize, sorghum, rice, wheat, vegetable oil), nearest market with data < 100 km, no fill (build_wfp_hdx.py)"
+  }
+ },
+ "kept": {
+  "acled_agg_weekly": true,
+  "history__WFP_Price": true,
+  "history__bbg_global_food__composite_mean": true,
+  "history__bbg_oilgas__composite_mean": true,
+  "history__bbg_soybean_oil__composite_mean": true,
+  "history__bbg_staple_food__composite_mean": true,
+  "history__food_price_index_WB": true,
+  "history__history_snapshot": true,
+  "history__idp_local": true,
+  "history__idp_national": true,
+  "history__nino34_anom": true
+ },
+ "lineage": {
+  "all_assets_consumed": false,
+  "asset_task_records": 7,
+  "batch_link": {
+   "history__climate_month_evi_anom": true,
+   "history__climate_month_spei03": true,
+   "history__climate_month_spi03": true
+  },
+  "checks": {
+   "batch_retained_inputs_equal_post_heads": true,
+   "bound_to_run": true,
+   "demand_nonempty": true,
+   "each_table_base_appends_O_from_this_run": true,
+   "jobs_nonempty": true,
+   "no_duplicate_task_or_destination": true,
+   "receipt_tables_equal_jobs": true,
+   "receipts_join_completed_task_records": true,
+   "unconsumed_assets_explained": true
+  },
+  "completed_assets": [
+   "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+  ],
+  "consumed": {
+   "history__climate_month_evi_anom": [
+    "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ],
+   "history__climate_month_spei03": [
+    "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ],
+   "history__climate_month_spi03": [
+    "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+   ]
+  },
+  "other_task_records": {
+   "count": 7,
+   "not_completed": [],
+   "states": [
+    "completed"
+   ]
+  },
+  "passed": true,
+  "receipt_joined": {
+   "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8": true,
+   "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8": true,
+   "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8": true,
+   "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8": true,
+   "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8": true,
+   "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8": true,
+   "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8": true
+  },
+  "saved": {
+   "history__climate_month_evi_anom": {
+    "ids_from_this_run": true,
+    "month_is_origin": true,
+    "published": [
+     "terra",
+     "aqua"
+    ]
+   },
+   "history__climate_month_spei03": {
+    "ids_from_this_run": true,
+    "month_is_origin": true,
+    "published": [
+     "chirps",
+     "era5land"
+    ]
+   },
+   "history__climate_month_spi03": {
+    "ids_from_this_run": true,
+    "month_is_origin": true,
+    "published": [
+     "chirps",
+     "era5land"
+    ]
+   }
+  },
+  "unavailable": {
+   "history__climate_month_evi_anom": {},
+   "history__climate_month_spei03": {
+    "persiann": "S2C3 precipitation table has no published 2026-09"
+   },
+   "history__climate_month_spi03": {
+    "persiann": "S2C3 precipitation table has no published 2026-09"
+   }
+  },
+  "unconsumed_dispositions": {
+   "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8": {
+    "explained": true,
+    "source_key": "persiann",
+    "unavailable_evidence": {
+     "history__climate_month_spei03": "S2C3 precipitation table has no published 2026-09",
+     "history__climate_month_spi03": "S2C3 precipitation table has no published 2026-09"
+    }
+   }
+  }
+ },
+ "passed": true,
+ "production": {
+  "demand": {
+   "monthly": {
+    "evi_anom": [
+     "2026-09"
+    ],
+    "spei03": [
+     "2026-09"
+    ],
+    "spi03": [
+     "2026-09"
+    ]
+   },
+   "seasonal": {
+    "evi_anom": [],
+    "spei03": [],
+    "spi03": []
+   }
+  },
+  "jobs": [
+   "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+   "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+   "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+   "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+   "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+   "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+   "S2C3_ET0_PATCH32_Y2020_2026_V2"
+  ],
+  "producer_version": "ipcch-table-producers-v1",
+  "receipts": [
+   {
+    "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "complete_periods": 18,
+    "last_complete": "20261008",
+    "rows": 6227,
+    "script": "seasonal/01_vi_prcp_et0_update.js",
+    "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+    "state": "completed",
+    "table": "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+    "task_id": "2MQ5OHBODGC33E55APK6QAKF"
+   },
+   {
+    "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "complete_periods": 18,
+    "last_complete": "20260930",
+    "rows": 6227,
+    "script": "seasonal/01_vi_prcp_et0_update.js",
+    "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+    "state": "completed",
+    "table": "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+    "task_id": "7ZIQ3CDJK7XFKIYM3LP4F2N3"
+   },
+   {
+    "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "complete_periods": 81,
+    "last_complete": "202609",
+    "rows": 6227,
+    "script": "seasonal/01_vi_prcp_et0_update.js",
+    "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+    "state": "completed",
+    "table": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+    "task_id": "RGAJ47QERKDVN4TLBKUBK43N"
+   },
+   {
+    "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "complete_periods": 78,
+    "last_complete": "202607",
+    "rows": 6227,
+    "script": "seasonal/01_vi_prcp_et0_update.js",
+    "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+    "state": "completed",
+    "table": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+    "task_id": "NLZVY6DHKHPBFDI7EXEVX4DM"
+   },
+   {
+    "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "complete_periods": 81,
+    "last_complete": "202609",
+    "rows": 6227,
+    "script": "seasonal/01_vi_prcp_et0_update.js",
+    "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+    "state": "completed",
+    "table": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+    "task_id": "UQHEJZ3W5LBNVABV34NRLV3X"
+   },
+   {
+    "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "complete_periods": 81,
+    "last_complete": "202609",
+    "rows": 6227,
+    "script": "seasonal/01_vi_prcp_et0_update.js",
+    "script_sha256": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+    "state": "completed",
+    "table": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+    "task_id": "RFU3ZH3QH7WVPKI7UVRIJQR2"
+   },
+   {
+    "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+    "complete_periods": 81,
+    "last_complete": "202609",
+    "rows": 32,
+    "script": "seasonal/02_et0_patch32_update.js",
+    "script_sha256": "841ae7f838c8c7457928e95df860980b28857ec83bf6b9b92cb604fdd3ed7e47",
+    "state": "completed",
+    "table": "S2C3_ET0_PATCH32_Y2020_2026_V2",
+    "task_id": "HQLXJ24XGBOVNZ7MLRWDWZ5U"
+   }
+  ],
+  "run_id": "ipcch-real-fe7282ef75e747fd",
+  "scripts": {
+   "seasonal/01_vi_prcp_et0_update.js": "b0d64ac063e75d64d1f3ac4e17d79250b890a789f12acdecc0562ba0231c3549",
+   "seasonal/02_et0_patch32_update.js": "841ae7f838c8c7457928e95df860980b28857ec83bf6b9b92cb604fdd3ed7e47"
+  },
+  "version": "M202611_ipcch-real-fe7282ef75e747fd_165617d8"
+ },
+ "run_id": "ipcch-real-fe7282ef75e747fd",
+ "task_records": [
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3.json#1793500704644655",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "description": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/RFU3ZH3QH7WVPKI7UVRIJQR2",
+   "request_id": "d0756ad7-56eb-41fc-b819-8d82c637c1c4",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "state": "completed",
+   "task_id": "RFU3ZH3QH7WVPKI7UVRIJQR2"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3.json#1793500702526914",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "description": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/RGAJ47QERKDVN4TLBKUBK43N",
+   "request_id": "a7e0f269-38d7-414a-9153-7947a5163e49",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "state": "completed",
+   "task_id": "RGAJ47QERKDVN4TLBKUBK43N"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3.json#1793500704030302",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "description": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/UQHEJZ3W5LBNVABV34NRLV3X",
+   "request_id": "653131e6-f47a-42a6-8395-781b135e091a",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "state": "completed",
+   "task_id": "UQHEJZ3W5LBNVABV34NRLV3X"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3.json#1793500703304383",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "description": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+   "kind": "table_to_asset",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/NLZVY6DHKHPBFDI7EXEVX4DM",
+   "request_id": "07a7de92-cdd0-4042-9156-0d3f2340f9e6",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "state": "completed",
+   "task_id": "NLZVY6DHKHPBFDI7EXEVX4DM"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2C3_ET0_PATCH32_Y2020_2026_V2.json#1793500886093691",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2C3_ET0_PATCH32_Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "description": "S2C3_ET0_PATCH32_Y2020_2026_V2",
+   "kind": "table_to_asset",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/HQLXJ24XGBOVNZ7MLRWDWZ5U",
+   "request_id": "d8342923-7f07-45fa-b3ea-2daa1332e3fc",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "state": "completed",
+   "task_id": "HQLXJ24XGBOVNZ7MLRWDWZ5U"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3.json#1793500701091512",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "description": "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+   "kind": "table_to_asset",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/2MQ5OHBODGC33E55APK6QAKF",
+   "request_id": "dd4d6c93-4650-4a03-81cf-b4efc4b53364",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "state": "completed",
+   "task_id": "2MQ5OHBODGC33E55APK6QAKF"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3.json#1793500701915473",
+   "asset_id": "projects/feisty-flames-511718-d4/assets/S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8",
+   "description": "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+   "kind": "table_to_asset",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/7ZIQ3CDJK7XFKIYM3LP4F2N3",
+   "request_id": "50cc6522-830c-45c8-9a9b-3bcf285d45c7",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "state": "completed",
+   "task_id": "7ZIQ3CDJK7XFKIYM3LP4F2N3"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_rain_anomz_chirps_202609.json#1793501076801333",
+   "description": "ipcch_rain_anomz_chirps_202609",
+   "generation": "1793501045099224",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/OWWCR4VNIDQPCPX77HSLFNOM",
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_chirps_202609",
+   "request_id": "56be77f4-d8b1-40ff-bf61-cfbdb866ddac",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "selectors": [
+    "admin_code",
+    "anom_num",
+    "anom_area",
+    "anom_obs_num",
+    "z_num",
+    "z_area",
+    "z_obs_num"
+   ],
+   "state": "completed",
+   "task_id": "OWWCR4VNIDQPCPX77HSLFNOM",
+   "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_chirps_202609.csv"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_rain_anomz_era5land_202609.json#1793501209811764",
+   "description": "ipcch_rain_anomz_era5land_202609",
+   "generation": "1793501207824710",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/LXGSDAQAF36N5IL63X563ZUR",
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_era5land_202609",
+   "request_id": "fe9f90c9-52c9-49fc-958a-6f9b34c1b02a",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "selectors": [
+    "admin_code",
+    "anom_num",
+    "anom_area",
+    "anom_obs_num",
+    "z_num",
+    "z_area",
+    "z_obs_num"
+   ],
+   "state": "completed",
+   "task_id": "LXGSDAQAF36N5IL63X563ZUR",
+   "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_era5land_202609.csv"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_rain_cdd_chirps_202609.json#1793501332557972",
+   "description": "ipcch_rain_cdd_chirps_202609",
+   "generation": "1793501329997716",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/FFL45NUZZRGFECWO47T4K4H3",
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_chirps_202609",
+   "request_id": "1920a902-f870-4583-a238-0c1ceec02165",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "selectors": [
+    "admin_code",
+    "rain_num",
+    "rain_area",
+    "cdd_num",
+    "cdd_area",
+    "obs_num",
+    "obs_area"
+   ],
+   "state": "completed",
+   "task_id": "FFL45NUZZRGFECWO47T4K4H3",
+   "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_chirps_202609.csv"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_rain_cdd_era5land_202609.json#1793501402535577",
+   "description": "ipcch_rain_cdd_era5land_202609",
+   "generation": "1793501382843900",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/CNKAG276IMAOKPXVXDEHAFN5",
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_era5land_202609",
+   "request_id": "d498f247-2f8e-4c43-be98-e43f22ba5fd1",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "selectors": [
+    "admin_code",
+    "rain_num",
+    "rain_area",
+    "cdd_num",
+    "cdd_area",
+    "obs_num",
+    "obs_area"
+   ],
+   "state": "completed",
+   "task_id": "CNKAG276IMAOKPXVXDEHAFN5",
+   "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_era5land_202609.csv"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_soil_era5land_202609.json#1793501923997085",
+   "description": "ipcch_soil_era5land_202609",
+   "generation": "1793501900423723",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/ZQAVZKC6QE4TJEU5L4232S3U",
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_soil_era5land_202609",
+   "request_id": "bb67dc09-e1fc-4392-8348-80a61166781b",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "selectors": [
+    "admin_code",
+    "sm_z_num",
+    "sm_z_area",
+    "sample_count_num",
+    "monthly_sm_mean_num"
+   ],
+   "state": "completed",
+   "task_id": "ZQAVZKC6QE4TJEU5L4232S3U",
+   "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_soil_era5land_202609.csv"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_temperature_cpc_202609.json#1793501529956513",
+   "description": "ipcch_temperature_cpc_202609",
+   "generation": "1793501526225468",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/E2ENNRB63ZIFZ3J6433A6A37",
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_cpc_202609",
+   "request_id": "d3b3141c-a10e-4439-adc2-74812fe9653a",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "selectors": [
+    "admin_code",
+    "tmean_anom_num",
+    "tmean_anom_area",
+    "tmean_anom_obs_num",
+    "tmax_anom_num",
+    "tmax_anom_area",
+    "tmax_anom_obs_num",
+    "hot_days_p95_num",
+    "hot_days_p95_area",
+    "hot_days_p95_obs_num",
+    "gdd_num",
+    "gdd_area",
+    "gdd_obs_num",
+    "edd_num",
+    "edd_area",
+    "edd_obs_num"
+   ],
+   "state": "completed",
+   "task_id": "E2ENNRB63ZIFZ3J6433A6A37",
+   "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_cpc_202609.csv"
+  },
+  {
+   "_object": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tasks/ipcch_temperature_era5land_202609.json#1793501723063028",
+   "description": "ipcch_temperature_era5land_202609",
+   "generation": "1793501677108224",
+   "operation_name": "projects/feisty-flames-511718-d4/operations/UG3YOZXHQUMZ6KA4IXLW2DSS",
+   "prefix": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_era5land_202609",
+   "request_id": "5a64e1eb-a434-40ab-b9f9-03bc3ff91f37",
+   "run_id": "ipcch-real-fe7282ef75e747fd",
+   "selectors": [
+    "admin_code",
+    "tmean_anom_num",
+    "tmean_anom_area",
+    "tmean_anom_obs_num",
+    "tmax_anom_num",
+    "tmax_anom_area",
+    "tmax_anom_obs_num",
+    "hot_days_p95_num",
+    "hot_days_p95_area",
+    "hot_days_p95_obs_num",
+    "gdd_num",
+    "gdd_area",
+    "gdd_obs_num",
+    "edd_num",
+    "edd_area",
+    "edd_obs_num"
+   ],
+   "state": "completed",
+   "task_id": "UG3YOZXHQUMZ6KA4IXLW2DSS",
+   "uri": "gs://food-crisis-test-ipcch-data/ipcch-v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_era5land_202609.csv"
+  }
+ ],
+ "warnings": [
+  "GPP_mean coverage ends 2025-12, before O 2026-09 (optional-missing: features at O are NaN, R65)",
+  "bbg_soybean_oil coverage ends 2026-07, before O 2026-09 (optional-missing: features at O are NaN, R65)"
+ ]
+}

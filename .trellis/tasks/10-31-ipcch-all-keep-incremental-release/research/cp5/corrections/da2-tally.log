@@ -1,0 +1,133 @@
+# unit=ipcch-cp2-da2-tally-1793504812980833673 start=2026-10-31T23:46:52-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/corrections/da2_tally.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/corrections/da2-tally.json
+Running as unit: ipcch-cp2-da2-tally-1793504812980833673.service; invocation ID: 2320cbbd9d3949a3a60f588683471cd1
+{
+ "rows": 96,
+ "codes": 32,
+ "months": [
+  "202607",
+  "202608",
+  "202609"
+ ],
+ "saved_spei03_at_O_finite": [
+  "76",
+  "77",
+  "983",
+  "984",
+  "985",
+  "986",
+  "987",
+  "3422",
+  "3423",
+  "3427",
+  "3428",
+  "3429",
+  "3430",
+  "3431",
+  "3432",
+  "3433",
+  "4073",
+  "4353",
+  "101183",
+  "101191",
+  "101194"
+ ],
+ "saved_spei03_at_O_nan_or_missing": [
+  "2107",
+  "2108",
+  "4267",
+  "4269",
+  "4270",
+  "4783",
+  "4784",
+  "4785",
+  "4786",
+  "4787",
+  "101275"
+ ],
+ "filled_codes": [
+  "76",
+  "77",
+  "983",
+  "984",
+  "985",
+  "986",
+  "987",
+  "2107",
+  "2108",
+  "3422",
+  "3423",
+  "3427",
+  "3428",
+  "3429",
+  "3430",
+  "3431",
+  "3432",
+  "3433",
+  "4073",
+  "4267",
+  "4269",
+  "4270",
+  "4353",
+  "4783",
+  "4784",
+  "4785",
+  "4786",
+  "4787",
+  "101183",
+  "101191",
+  "101194"
+ ],
+ "filled_codes_with_nan_spei03_at_O": [
+  "2107",
+  "2108",
+  "4267",
+  "4269",
+  "4270",
+  "4783",
+  "4784",
+  "4785",
+  "4786",
+  "4787"
+ ],
+ "not_filled_codes": [
+  "101275"
+ ],
+ "primary_finite_rows": 0,
+ "primary_null_rows": 96,
+ "finite_primary_all_preserved_flag": true,
+ "finite_primary_preservation": "vacuous: no sampled row has a finite primary; finite-primary preservation is NOT observed",
+ "saved_spei03_at_O_finite_count": 21,
+ "saved_spei03_at_O_nan_or_missing_count": 11,
+ "filled_codes_count": 31,
+ "filled_codes_with_nan_spei03_at_O_count": 10
+}
+	Command being timed: "/home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/corrections/da2_tally.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp5/corrections/da2-tally.json"
+	User time (seconds): 0.01
+	System time (seconds): 0.00
+	Percent of CPU this job got: 53%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.02
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 11860
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1614
+	Voluntary context switches: 88
+	Involuntary context switches: 0
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 177ms
+CPU time consumed: 120ms
+# end=2026-10-31T23:46:53-04:00 launcher_rc=0 child_exit=0

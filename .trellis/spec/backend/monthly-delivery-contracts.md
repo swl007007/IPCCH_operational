@@ -152,8 +152,9 @@ Wrong: trust a caller-supplied Binding while ignoring the manifest selection. Co
 
 ### 1. Scope / trigger
 New IPCCH v2 generation produces demanded, unsaved VI/drought inputs automatically.
-The 10-30 real E2E task's CP2 establishes offline behavior; live new-month acceptance
-is deferred. Fully retained months legitimately produce no exports.
+The 10-30 real E2E task's CP2 establishes offline behavior; the 10-31 incremental
+task records the live November production/consumption chain. Fully retained months
+legitimately produce no exports. See section 14 for live evidence boundaries.
 
 ### 2. Signatures
 `TableProducer.run(tables, *, origin, windows)` returns produced mappings, validated
@@ -274,3 +275,59 @@ Wrong: interpret `storage ls -a` historical hold versions as a live maintenance
 hold, or use `maintenance status` as evidence that load_initialized passed.
 Correct: inspect the live hold object and explicitly validate load_initialized
 (or use the models selection preview that invokes it).
+
+## 14. EE root readiness and incremental acceptance evidence
+
+### 1. Scope / trigger
+Before the first export to a project, distinguish root readiness from input-asset
+sharing. The 10-31 attempt could read han inputs but failed on an absent feisty
+asset root before submitting exports. The approved recovery initialized only that
+root; no code, IAM, model or monthly runtime change was needed.
+
+### 2. Signatures
+The pinned EE client supports `ee.data.listAssets({"parent": root})` and
+`ee.data.createAsset({"type": "FOLDER"}, root + "/")` for a project asset root.
+After creation, list again and require `EETransport.missing_assets([absent_child])`
+to return exactly that child. Root creation is a separately authorized operation,
+not an automatic monthly fallback.
+
+### 3. Contracts
+Probe the actual runtime service-account identity before EE initialization; stop
+on identity mismatch. In a bounded recovery, a successful list means no creation;
+HTTP 404 permits at most one approved creation, HTTP 409 permits readback, and
+other errors stop. Preserve partial retained writes and the failed request. A
+recovery request keeps already accepted manual inputs unless refresh is selected.
+
+### 4. Validation and error matrix
+An API-enabled project and an earthengine.writer binding do not prove root
+existence or export success. A completed export does not imply that its source is
+available at O: the November PERSIANN export omitted the declared September mean
+field and was explicitly unavailable, while CHIRPS/ERA5LAND supplied SPI/SPEI.
+Compare expected fields to the union of returned keys to detect wholly omitted
+columns; compare individual rows to that union for partial key omissions. Keep
+explicit null, wholly omitted, incomplete calendar and masked spatial values
+separate.
+
+### 5. Good / base / bad cases
+Good: link completed task/destination -> producer receipt -> consumed asset IDs
+in saved versions -> batch retained pins -> published member/current. Base: a
+produced but unconsumed source has a recorded unavailable disposition. Bad: count
+HEAD movement, a zero-length check set or a source-level fill candidate as proof
+of numerical correctness.
+
+### 6. Checks required
+Verify exact roster x O new keys, unique old/new keys, old value preservation,
+kept HEAD/version/content equality, frozen request links and literal FEWS member.
+Pin batch and provenance bytes by generation and SHA. For ACLED, compare numeric
+source versions (`2` and CSV `2.0` denote the same version); require each observed
+section's roster, month_lag1, O, A=O-1 and latest nonblank observation <= A.
+Report missing provenance observations separately; this is not a feature replay.
+
+### 7. Wrong vs correct
+Wrong: 93 primary-null/patch-finite code-month candidates imply 31 finite saved
+SPEI outputs, or `all([])` proves finite-primary preservation. Correct: report
+candidate and saved-output counts separately (this run: 21 finite/11 NaN among
+32 targets) and mark a zero-sample behavior unobserved. Product-function VI sample
+recomputation establishes only the stated sample/tolerance; no independent SPEI
+replay or model-accuracy claim follows. Preserve original reports and issue an
+explicit superseding correction when evidence contradicts their wording.

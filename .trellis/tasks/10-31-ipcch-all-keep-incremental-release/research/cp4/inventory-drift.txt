@@ -1,0 +1,4 @@
+vs reconciled failure inventory: moved [] missing [] tables 56
+vs CP1 pre (first attempt): {'acceptance_manifest': (3, 4), 'acled_agg_weekly': (1, 2)}
+acled 1793494944270289 v 2 rows 242811
+pre-real current 1793461128385732 ipcch-real-522b30030f944868-ipcch fews fews-compat-v2rt-20261031a

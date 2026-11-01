@@ -1,0 +1,345 @@
+[
+  {
+    "apiVersion": "run.googleapis.com/v1",
+    "kind": "Execution",
+    "metadata": {
+      "annotations": {
+        "run.googleapis.com/client-name": "gcloud",
+        "run.googleapis.com/client-version": "562.0.0",
+        "run.googleapis.com/creator": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "run.googleapis.com/execution-environment": "gen2",
+        "run.googleapis.com/lastModifier": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "run.googleapis.com/operation-id": "d6e96769-9a1f-49a6-8f74-412103dbdfa1"
+      },
+      "creationTimestamp": "2026-11-01T02:29:36.228630Z",
+      "generation": 1,
+      "labels": {
+        "client.knative.dev/nonce": "los_dig_suj",
+        "cloud.googleapis.com/location": "us-central1",
+        "run.googleapis.com/job": "oct-delivery",
+        "run.googleapis.com/jobGeneration": "4",
+        "run.googleapis.com/jobResourceVersion": "1793495019597565",
+        "run.googleapis.com/jobUid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+      },
+      "name": "oct-delivery-625sk",
+      "namespace": "968355701450",
+      "ownerReferences": [
+        {
+          "apiVersion": "serving.knative.dev/v1",
+          "blockOwnerDeletion": true,
+          "controller": true,
+          "kind": "Job",
+          "name": "oct-delivery",
+          "uid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+        }
+      ],
+      "resourceVersion": "AAZfLqPgyO8",
+      "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/executions/oct-delivery-625sk",
+      "uid": "9574d3ad-d235-4456-b3ee-aedbeaf1e413"
+    },
+    "spec": {
+      "parallelism": 1,
+      "taskCount": 1,
+      "template": {
+        "spec": {
+          "containers": [
+            {
+              "args": [
+                "-m",
+                "cloud.orchestrator.delivery_job",
+                "run",
+                "--request-uri",
+                "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-fe7282ef75e747fd/run_manifest.json",
+                "--request-generation",
+                "1793500174046456",
+                "--output-root",
+                "gs://food-crisis-test-ipcch-data",
+                "--release-namespace",
+                "monthly-staging",
+                "--image-uri",
+                "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+                "--v2-config",
+                "/opt/ipcch/deployment.json"
+              ],
+              "command": [
+                "python3"
+              ],
+              "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+              "resources": {
+                "limits": {
+                  "cpu": "8",
+                  "memory": "32Gi"
+                }
+              }
+            }
+          ],
+          "maxRetries": 0,
+          "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+          "timeoutSeconds": "14400"
+        }
+      }
+    },
+    "status": {
+      "completionTime": "2026-11-01T03:29:41.714813Z",
+      "conditions": [
+        {
+          "lastTransitionTime": "2026-11-01T03:29:41.714813Z",
+          "message": "Execution completed successfully in 59m57.44s.",
+          "status": "True",
+          "type": "Completed"
+        },
+        {
+          "lastTransitionTime": "2026-11-01T02:29:37.047282Z",
+          "message": "Provisioned imported containers.",
+          "status": "True",
+          "type": "ResourcesAvailable"
+        },
+        {
+          "lastTransitionTime": "2026-11-01T02:30:23.258414Z",
+          "message": "Started deployed execution in 46.21s.",
+          "status": "True",
+          "type": "Started"
+        },
+        {
+          "lastTransitionTime": "2026-11-01T02:29:36.944483Z",
+          "message": "Imported container image.",
+          "status": "True",
+          "type": "ContainerReady"
+        }
+      ],
+      "logUri": "https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-delivery%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-delivery-625sk%22",
+      "observedGeneration": 1,
+      "startTime": "2026-11-01T02:29:44.273453Z",
+      "succeededCount": 1
+    }
+  },
+  {
+    "apiVersion": "run.googleapis.com/v1",
+    "kind": "Execution",
+    "metadata": {
+      "annotations": {
+        "run.googleapis.com/client-name": "gcloud",
+        "run.googleapis.com/client-version": "562.0.0",
+        "run.googleapis.com/creator": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "run.googleapis.com/execution-environment": "gen2",
+        "run.googleapis.com/lastModifier": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "run.googleapis.com/operation-id": "01ae4b36-cc6c-4896-95fa-5ac5ed4e8de9"
+      },
+      "creationTimestamp": "2026-11-01T01:00:23.414589Z",
+      "generation": 1,
+      "labels": {
+        "client.knative.dev/nonce": "los_dig_suj",
+        "cloud.googleapis.com/location": "us-central1",
+        "run.googleapis.com/job": "oct-delivery",
+        "run.googleapis.com/jobGeneration": "4",
+        "run.googleapis.com/jobResourceVersion": "1793461133436888",
+        "run.googleapis.com/jobUid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+      },
+      "name": "oct-delivery-4jkcj",
+      "namespace": "968355701450",
+      "ownerReferences": [
+        {
+          "apiVersion": "serving.knative.dev/v1",
+          "blockOwnerDeletion": true,
+          "controller": true,
+          "kind": "Job",
+          "name": "oct-delivery",
+          "uid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+        }
+      ],
+      "resourceVersion": "AAZfLJmM5n4",
+      "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/executions/oct-delivery-4jkcj",
+      "uid": "0f056a50-e255-445f-8c7d-550be551a132"
+    },
+    "spec": {
+      "parallelism": 1,
+      "taskCount": 1,
+      "template": {
+        "spec": {
+          "containers": [
+            {
+              "args": [
+                "-m",
+                "cloud.orchestrator.delivery_job",
+                "run",
+                "--request-uri",
+                "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-9eee4305db494a35/run_manifest.json",
+                "--request-generation",
+                "1793494821542586",
+                "--output-root",
+                "gs://food-crisis-test-ipcch-data",
+                "--release-namespace",
+                "monthly-staging",
+                "--image-uri",
+                "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+                "--v2-config",
+                "/opt/ipcch/deployment.json"
+              ],
+              "command": [
+                "python3"
+              ],
+              "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+              "resources": {
+                "limits": {
+                  "cpu": "8",
+                  "memory": "32Gi"
+                }
+              }
+            }
+          ],
+          "maxRetries": 0,
+          "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+          "timeoutSeconds": "14400"
+        }
+      }
+    },
+    "status": {
+      "completionTime": "2026-11-01T01:03:38.497566Z",
+      "conditions": [
+        {
+          "lastTransitionTime": "2026-11-01T01:03:38.497566Z",
+          "message": "Task oct-delivery-4jkcj-task0 failed with exit code: 1 and message: The container exited with an error.",
+          "reason": "NonZeroExitCode",
+          "status": "False",
+          "type": "Completed"
+        },
+        {
+          "lastTransitionTime": "2026-11-01T01:00:24.424701Z",
+          "message": "Provisioned imported containers.",
+          "status": "True",
+          "type": "ResourcesAvailable"
+        },
+        {
+          "lastTransitionTime": "2026-11-01T01:01:58.998433Z",
+          "message": "Started deployed execution in 1m34.57s.",
+          "status": "True",
+          "type": "Started"
+        },
+        {
+          "lastTransitionTime": "2026-11-01T01:00:24.297290Z",
+          "message": "Imported container image.",
+          "status": "True",
+          "type": "ContainerReady"
+        }
+      ],
+      "failedCount": 1,
+      "logUri": "https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-delivery%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-delivery-4jkcj%22",
+      "observedGeneration": 1,
+      "startTime": "2026-11-01T01:00:27.898421Z"
+    }
+  },
+  {
+    "apiVersion": "run.googleapis.com/v1",
+    "kind": "Execution",
+    "metadata": {
+      "annotations": {
+        "run.googleapis.com/client-name": "gcloud",
+        "run.googleapis.com/client-version": "562.0.0",
+        "run.googleapis.com/creator": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "run.googleapis.com/execution-environment": "gen2",
+        "run.googleapis.com/lastModifier": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+        "run.googleapis.com/operation-id": "893d0a73-6f9d-4de9-8df4-7f3f156f2463"
+      },
+      "creationTimestamp": "2026-10-31T15:21:17.711849Z",
+      "generation": 1,
+      "labels": {
+        "client.knative.dev/nonce": "los_dig_suj",
+        "cloud.googleapis.com/location": "us-central1",
+        "run.googleapis.com/job": "oct-delivery",
+        "run.googleapis.com/jobGeneration": "4",
+        "run.googleapis.com/jobResourceVersion": "1793459393594849",
+        "run.googleapis.com/jobUid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+      },
+      "name": "oct-delivery-t6vlm",
+      "namespace": "968355701450",
+      "ownerReferences": [
+        {
+          "apiVersion": "serving.knative.dev/v1",
+          "blockOwnerDeletion": true,
+          "controller": true,
+          "kind": "Job",
+          "name": "oct-delivery",
+          "uid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+        }
+      ],
+      "resourceVersion": "AAZfJLXHH3Y",
+      "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/executions/oct-delivery-t6vlm",
+      "uid": "d7d55459-36e8-4ae4-8af3-5064f00cd0b2"
+    },
+    "spec": {
+      "parallelism": 1,
+      "taskCount": 1,
+      "template": {
+        "spec": {
+          "containers": [
+            {
+              "args": [
+                "-m",
+                "cloud.orchestrator.delivery_job",
+                "run",
+                "--request-uri",
+                "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-522b30030f944868/run_manifest.json",
+                "--request-generation",
+                "1793460075820847",
+                "--output-root",
+                "gs://food-crisis-test-ipcch-data",
+                "--release-namespace",
+                "monthly-staging",
+                "--image-uri",
+                "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+                "--v2-config",
+                "/opt/ipcch/deployment.json"
+              ],
+              "command": [
+                "python3"
+              ],
+              "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+              "resources": {
+                "limits": {
+                  "cpu": "8",
+                  "memory": "32Gi"
+                }
+              }
+            }
+          ],
+          "maxRetries": 0,
+          "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+          "timeoutSeconds": "14400"
+        }
+      }
+    },
+    "status": {
+      "completionTime": "2026-10-31T15:38:53.243300Z",
+      "conditions": [
+        {
+          "lastTransitionTime": "2026-10-31T15:38:53.243300Z",
+          "message": "Execution completed successfully in 17m22.96s.",
+          "status": "True",
+          "type": "Completed"
+        },
+        {
+          "lastTransitionTime": "2026-10-31T15:21:18.648326Z",
+          "message": "Provisioned imported containers.",
+          "status": "True",
+          "type": "ResourcesAvailable"
+        },
+        {
+          "lastTransitionTime": "2026-10-31T15:22:46.344188Z",
+          "message": "Started deployed execution in 1m27.69s.",
+          "status": "True",
+          "type": "Started"
+        },
+        {
+          "lastTransitionTime": "2026-10-31T15:21:18.513877Z",
+          "message": "Imported container image.",
+          "status": "True",
+          "type": "ContainerReady"
+        }
+      ],
+      "logUri": "https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-delivery%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-delivery-t6vlm%22",
+      "observedGeneration": 1,
+      "startTime": "2026-10-31T15:21:30.282982Z",
+      "succeededCount": 1
+    }
+  }
+]

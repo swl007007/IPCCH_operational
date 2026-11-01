@@ -1,0 +1,99 @@
+# unit=ipcch-cp2-progress-9-1793503106984511057 start=2026-10-31T23:18:26-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/progress_read.py ipcch-real-fe7282ef75e747fd 2026-11-01T02:29:00+00:00 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/run/progress-9.json
+Running as unit: ipcch-cp2-progress-9-1793503106984511057.service; invocation ID: 821bd150d4bc4a67b1bf1db5008e0fbf
+66 objects; 14 task records
+  completed table_to_asset S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3 _Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8
+  completed table_to_asset S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3 _Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8
+  completed table_to_asset S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3 _Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8
+  completed table_to_asset S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3 _Y2020_2026_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8
+  completed table_to_asset S2C3_ET0_PATCH32_Y2020_2026_V2 _Y2020_2026_V2__M202611_ipcch-real-fe7282ef75e747fd_165617d8
+  completed table_to_asset S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3 A_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8
+  completed table_to_asset S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3 A_Y2026_CMG_V3__M202611_ipcch-real-fe7282ef75e747fd_165617d8
+  completed gcs ipcch_rain_anomz_chirps_202609 -real-fe7282ef75e747fd/tables/ipcch_rain_anomz_chirps_202609
+  completed gcs ipcch_rain_anomz_era5land_202609 eal-fe7282ef75e747fd/tables/ipcch_rain_anomz_era5land_202609
+  completed gcs ipcch_rain_cdd_chirps_202609 ch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_chirps_202609
+  completed gcs ipcch_rain_cdd_era5land_202609 -real-fe7282ef75e747fd/tables/ipcch_rain_cdd_era5land_202609
+  completed gcs ipcch_soil_era5land_202609 pcch-real-fe7282ef75e747fd/tables/ipcch_soil_era5land_202609
+  completed gcs ipcch_temperature_cpc_202609 ch-real-fe7282ef75e747fd/tables/ipcch_temperature_cpc_202609
+  completed gcs ipcch_temperature_era5land_202609 al-fe7282ef75e747fd/tables/ipcch_temperature_era5land_202609
+  02:29:35 dispatch/ipcch-real-fe7282ef75e747fd/claim.json
+  02:30:35 locks/ipcch
+  02:30:35 runs/ipcch-real-fe7282ef75e747fd/v2_reservation.json
+  02:44:05 xports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_chirps_202609.csv
+  02:46:47 orts/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_anomz_era5land_202609.csv
+  02:47:06 STORE/history__climate_month_prcp_anom/HEAD.json
+  02:47:06 TORE/history__climate_month_prcp_anom/versions/000002-d034500e762240519c9190e9e57eb28b.csv
+  02:47:32 STORE/history__climate_month_prcp_z/HEAD.json
+  02:47:32 STORE/history__climate_month_prcp_z/versions/000002-177d0fab9b5e4decb39262039fd18f5e.csv
+  02:48:50 /exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_chirps_202609.csv
+  02:49:42 xports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_rain_cdd_era5land_202609.csv
+  02:50:18 STORE/history__climate_month_rainy_days/HEAD.json
+  02:50:18 ORE/history__climate_month_rainy_days/versions/000002-7d488674706741a7a0ef13313463b00c.csv
+  02:50:45 STORE/history__climate_month_cdd/versions/000002-facb5f1777b34eda80a5f1b4715dcb3d.csv
+  02:50:46 STORE/history__climate_month_cdd/HEAD.json
+  02:52:06 /exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_cpc_202609.csv
+  02:54:37 rts/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_temperature_era5land_202609.csv
+  02:55:37 STORE/history__climate_month_tmean_anom/HEAD.json
+  02:55:37 ORE/history__climate_month_tmean_anom/versions/000002-ae5c8061d4cc4507b6221be25a79e5a2.csv
+  02:56:02 TORE/history__climate_month_tmax_anom/versions/000002-0ba6b9e6839046119cb7ee0ec4094227.csv
+  02:56:03 STORE/history__climate_month_tmax_anom/HEAD.json
+  02:56:28 E/history__climate_month_hot_days_p95/versions/000002-7e2d0325897e4201bb1601f904151964.csv
+  02:56:29 STORE/history__climate_month_hot_days_p95/HEAD.json
+  02:56:55 STORE/history__climate_month_gdd/versions/000002-ac85c7beee624db3b7a882847b2c10ff.csv
+  02:56:56 STORE/history__climate_month_gdd/HEAD.json
+  02:57:20 STORE/history__climate_month_edd/versions/000002-29e482318dc440dc8487b1e9405292f1.csv
+  02:57:21 STORE/history__climate_month_edd/HEAD.json
+  02:58:20 v2/exports/ipcch_exports/ipcch-real-fe7282ef75e747fd/tables/ipcch_soil_era5land_202609.csv
+  02:58:59 STORE/history__climate_month_sm_z/HEAD.json
+  02:58:59 STORE/history__climate_month_sm_z/versions/000002-99f2a97d189c46b29dc1fed871e23c17.csv
+  03:05:38 STORE/history__climate_month_spi03/versions/000002-3af716b6a2464b5ea54f86ed7274c542.csv
+  03:05:39 STORE/history__climate_month_spi03/HEAD.json
+  03:06:06 STORE/history__climate_month_spei03/versions/000002-8c1dd024a3b943bfa451ba4f709231ec.csv
+  03:06:07 STORE/history__climate_month_spei03/HEAD.json
+  03:06:58 STORE/history__climate_month_evi_anom/versions/000002-562fcc009bdf4f2392675cba6ead658d.csv
+  03:06:59 STORE/history__climate_month_evi_anom/HEAD.json
+  03:08:08 STORE/acceptance_manifest/versions/000005-097a134fc167412ca7879075b9cd5efd.csv
+  03:08:18 STORE/gpp_availability_ledger/versions/000009-b4a3862e6ccd47f19c57a9e502131c2d.csv
+  03:08:19 STORE/gpp_availability_ledger/versions/000010-8a8ea2a18f2d4b23ba210d9a8bbdd1dd.csv
+  03:08:19 STORE/gpp_availability_ledger/versions/000011-0e8339fd7e344d8283fdcff2f7effd84.csv
+  03:08:20 STORE/gpp_availability_ledger/versions/000012-d1b1d01f9de641859370f46ef20f98ce.csv
+  03:08:20 STORE/gpp_availability_ledger/versions/000013-f9c2a39e4c344c38803d493fa0ae99a8.csv
+  03:08:21 STORE/gpp_availability_ledger/versions/000014-300860997a994d9a80bd4374b78f145a.csv
+  03:08:21 STORE/gpp_availability_ledger/versions/000015-86e0b8192f74409cbbd8f930c8229a28.csv
+  03:08:22 STORE/gpp_availability_ledger/HEAD.json
+  03:08:22 STORE/gpp_availability_ledger/versions/000016-988ebc312ebf454d9168c4d4cda24000.csv
+  03:08:22 STORE/gpp_availability_ledger/versions/000017-84292399cb244985bbb9f3101436dde0.csv
+  03:08:28 STORE/acceptance_manifest/versions/000006-0b4e21f20f1b49168d26cea278edf234.csv
+  03:15:55 STORE/history__nightlight_mean/versions/000002-2b813143307b457eae1907c9b057b280.csv
+  03:15:56 STORE/history__nightlight_mean/HEAD.json
+  03:16:05 STORE/acceptance_manifest/HEAD.json
+  03:16:05 STORE/acceptance_manifest/versions/000007-1a6d00fbbc5a46df874690dd9a290fe2.csv
+	Command being timed: "/usr/bin/env GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/progress_read.py ipcch-real-fe7282ef75e747fd 2026-11-01T02:29:00+00:00 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp4/run/progress-9.json"
+	User time (seconds): 0.26
+	System time (seconds): 0.00
+	Percent of CPU this job got: 14%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.97
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 62400
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 13
+	Minor (reclaiming a frame) page faults: 9781
+	Voluntary context switches: 349
+	Involuntary context switches: 3
+	Swaps: 0
+	File system inputs: 2080
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 2.040s
+CPU time consumed: 293ms
+# end=2026-10-31T23:18:29-04:00 launcher_rc=0 child_exit=0

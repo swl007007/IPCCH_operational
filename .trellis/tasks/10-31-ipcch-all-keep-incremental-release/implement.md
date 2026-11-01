@@ -88,30 +88,33 @@ Rehash both before execute; preview has not frozen M or any cloud reference.
 
 ## D5 / CP4 — Exactly one additional all-keep monthly attempt
 
-- [ ] Prepare a separate all-eleven-keep selection; preserve the first selection.
-- [ ] Revalidate config/image/current/no hold/no active work, retained state and
+- [x] Prepare a separate all-eleven-keep selection; preserve the first selection.
+- [x] Revalidate config/image/current/no hold/no active work, retained state and
   nonempty unsaved climate demand. ACLED v2 and acceptance v4 are the expected
   prior partial progress; any other change needs reconciliation.
-- [ ] Guarded preview and submit once, using actual UTC freeze and unchanged
+- [x] Guarded preview and submit once, using actual UTC freeze and unchanged
   8 CPU/32 GiB/14400 s/zero-retry limits. Save new frozen request and reservation.
-- [ ] Monitor durable execution and export handles; no automatic third attempt.
-- [ ] On failure reconcile current and partial writes under the existing rules.
+- [x] Monitor durable execution and export handles; no automatic third attempt.
+  The second attempt returned succeeded at the 03:30:37Z poll; CP5 readback pending.
+- [x] On failure reconcile current and partial writes under the existing rules.
+  Not triggered for the D5 attempt (terminal succeeded); first-attempt reconciliation
+  remains preserved in CP2.
 
 ## P3 / CP5 — Acceptance of the successful recovery run
 
-- [ ] Save recovery-run final execution/status/logs and post-run inventories.
-- [ ] Reuse parameterized generic readback for actual M/O, 527 features, 6,226
+- [x] Save recovery-run final execution/status/logs and post-run inventories.
+- [x] Reuse parameterized generic readback for actual M/O, 527 features, 6,226
   areas and all three targets; verify predecessor and full FEWS-member equality.
-- [ ] Cross-check nonempty production and the complete consumed-ID/version/batch/
+- [x] Cross-check nonempty production and the complete consumed-ID/version/batch/
   publication chain. Generic passed=true does not prove incremental acceptance.
-- [ ] Verify actual PATCH32 IDs/rows, VI units, completeness and observed null/
+- [x] Verify actual PATCH32 IDs/rows, VI units, completeness and observed null/
   omitted shapes; retain unexercised cases as incomplete.
-- [ ] Verify the ACLED interval refresh and outside-interval preservation, then
+- [x] Verify the ACLED interval refresh and outside-interval preservation, then
   the ten kept histories' content/version equality; report each automatic
   source's update/reuse, availability and warnings separately.
   The first refresh evidence is already accepted. For the D5 run, require all
   eleven kept histories, including ACLED v2, to equal its fresh pre-snapshot.
-- [ ] Update DA1 and DA2 dispositions separately and only from evidence; apply
+- [x] Update DA1 and DA2 dispositions separately and only from evidence; apply
   the user-approved D2 boundary to any naturally unobserved field case.
 
 Local checks/readbacks use
@@ -123,7 +126,7 @@ No full test rerun is needed for this documentation-only planning change.
 
 ## P4 — Outcome
 
-- [ ] Report run/current refs, source actions, DA1/DA2 results, limitations
+- [x] Report run/current refs, source actions, DA1/DA2 results, limitations
   and any separate recovery decision. Update operational claims only from proof.
 - [ ] Finish the applicable lifecycle only when the agreed outcome is fulfilled;
   D2 permits naturally unobserved DA2 cases to remain explicitly pending after
