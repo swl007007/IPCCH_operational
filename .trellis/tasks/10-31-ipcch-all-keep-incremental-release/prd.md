@@ -1,7 +1,8 @@
 # IPCCH incremental release with ACLED refresh and DA1/DA2 acceptance
 
-Status: **D1-D4 and final planning summary approved for execution under the user's
-Supervisor-Executor goal protocol. All acceptance criteria remain unverified.**
+Status: **The one approved attempt failed before EE export; partial work and
+unchanged current are reconciled. DA1 failed and DA2 remains unproven. Task is not
+complete; a scope extension is proposed separately and is not yet approved.**
 
 ## Goal
 
@@ -55,7 +56,7 @@ file, Saturday start/Friday end and declared regions. D4 fixes the approved inte
 
 ## Acceptance criteria
 
-- [ ] **AC1 — Bound submission:** frozen request/reservation declares ACLED refresh
+- [x] **AC1 — Bound submission:** frozen request/reservation declares ACLED refresh
   plus ten keep choices, exact file/interval/regions, real mode, runtime/model
   references and M/O/targets; one new run admitted.
 - [ ] **AC2 — Real production:** nonempty pre-run demand, completed actual exports
@@ -75,7 +76,7 @@ file, Saturday start/Friday end and declared regions. D4 fixes the approved inte
   outside the agreed interval/regions. Report accepted/dropped export rows and
   coverage; October-only additions must not enter the August feature cutoff.
   Measure automatic updates/reuse separately, with actual coverage and warnings.
-- [ ] **AC7 — Honest bounded outcome:** resource/status/operation records and all
+- [x] **AC7 — Honest bounded outcome:** resource/status/operation records and all
   intermediate failures are preserved. A failed or blocked attempt is not passed
   acceptance. Reconcile partial progress or uncertain publication before more work.
 

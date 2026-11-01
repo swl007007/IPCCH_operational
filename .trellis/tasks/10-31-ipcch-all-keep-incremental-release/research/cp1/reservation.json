@@ -1,0 +1,13 @@
+{
+  "deadline_utc": "2026-11-01T05:02:09Z",
+  "mode": "real",
+  "request": {
+    "generation": "1793494821542586",
+    "sha256": "8b346d35db6294e9785e2c4099d143e96fc62a871ccbb1a36ecbfd5478ae26c2",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-9eee4305db494a35/run_manifest.json"
+  },
+  "reserved_at": "2026-11-01T01:02:09Z",
+  "run_id": "ipcch-real-9eee4305db494a35",
+  "run_timeout_seconds": 14400,
+  "schema": "ipcch-v2-run-reservation-v1"
+}

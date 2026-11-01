@@ -1,0 +1,4 @@
+baseline-pre HEAD gen 1793460193863710 version 1 sha f78321be24d45f86 content 000001-550e32c63ad24408b5c1055296c8c64c.csv
+inventory   HEAD gen 1793460193863710 version 1 sha f78321be24d45f86 content 000001-550e32c63ad24408b5c1055296c8c64c.csv
+PRE SNAPSHOT CONSISTENT: True | coverage records 1 equal to inventory record coverage: True
+note: baseline-pre was computed by the first acled_baseline version (saved_weekly + unpinned HEAD re-read); both reads name the same HEAD generation, version, sha and content as the inventory, and the per-(region,week) fingerprint algorithm is identical to incremental_checks.fingerprint.

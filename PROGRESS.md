@@ -14,20 +14,52 @@ Authority: the user's subsequent goal `execution-protocol.md`, D1-D4, and explic
 - Initial Git HEAD: `013a67992a71670b71752972ba15c20384e26fca`, branch
   `feat/ipcch-real-e2e-integration`; deployed product remains `115798f`/image acc3e467.
   Pre-existing AGENTS.md modification is excluded (sha256 b449b255...0389).
+- Approved spec/protocol/evidence committed as `17fe954`; native task.py start
+  succeeded, status `in_progress`. Seven curated entries per context manifest.
+  Verified orphan empty Git lock was removed before staging; no Git process held it.
 - Approved input: ACLED 2026-10-17..23 refresh, ten other manual choices keep.
   Prepared CSV e660c7e8 (617 source rows, 470 modeled rows); selections 7ab733d8.
   Original raw b480d265 preserved; 209 overlapping old-week rows excluded.
 - Runtime han reads restored: 151/151 assets and two live EE expressions passed.
   This is access evidence, not EE-export or DA1/DA2 acceptance.
-- CP0 next: fresh config/current/retained/source-demand/resource preflight and
-  bounded operation packet. One new monthly attempt; UTC freeze currently selects
-  M=2026-11 / O=2026-09, targets 2026-11 / 2027-05 / 2027-11.
+- CP0 underway: demand-preflight 05f1402d passed under guard (CHILD-EXIT 0,
+  2:40, peak RSS 1,058,488 KiB). All 13 monthly climate bases need September;
+  seasonal demand is empty. Exact producer demand is seven VI/PRCP/ET0/PATCH32
+  tables. GPP has nine probe candidates and nightlight has September pending.
+  Live job still has acc3e467, runtime SA, 8 CPU/32 GiB/14400 s/zero task retries;
+  no live hold. Fresh predecessor/inventory, helper and operation packet pending.
+  One new monthly attempt; UTC freeze currently selects M=2026-11 / O=2026-09,
+  targets 2026-11 / 2027-05 / 2027-11.
+- Supervisor source-only scouts mapped consumption joins and DA2 observations in
+  research/supervisor-readback-notes.md. These are not live acceptance results.
+- Two lightweight CP0 snapshot/inventory readbacks were invoked outside the
+  required guard. Executor was directed to preserve the deviation and guard all
+  subsequent readbacks; completed cloud reads need not be duplicated for logging.
 - CP1: one submission and durable status/EE task tracking. CP2: generic and
   incremental lineage/data-contract readback. CP3: final evidence/operations and
   native closure. DA1/DA2 remain unaccepted until evidence exists; D2 allows
   naturally unobserved DA2 field cases to remain explicitly pending.
-- No cloud write or monthly submission has occurred for this task. Preparation
-  checks used the mandatory memory guard and returned CHILD-EXIT 0.
+- CP0 technical gate accepted: all 38 frozen hashes verified, helper checks 8+3
+  passed, and product/deployment diff versus 115798f is empty. CP1 released for
+  exactly one submission after fresh pre-checks. Further operation evidence goes
+  under CP1/CP2, preserving CP0.
+- CP1 submitted exactly once: ipcch-real-9eee4305db494a35, freeze
+  2026-11-01T01:00:20Z, M=2026-11/O=2026-09. Request #1793494821542586
+  (8b346d35); ACLED upload #1793494819786240 (e660c7e8). Frozen intent inspected.
+  Runtime reservation matches the request; reserved 01:02:09Z, deadline 05:02:09Z.
+  Cloud Run oct-delivery-4jkcj failed at 01:03:38Z before any EE export: the
+  feisty output-root listing returned NOT_FOUND. No second request was submitted.
+- Failure reconciliation accepted: current remains 1793461128385732; no live
+  lock or this-run export/batch/delivery/release. ACLED v1->v2 added exactly 470
+  expected rows (total 242,811), old rows preserved; acceptance v3->v4. Ten keeps,
+  26 climate tables, GPP/ledger and nightlight unchanged. CP1 42 and CP2 41 frozen
+  hashes independently verified. AC1/AC7 evidence complete, AC6 manual inputs
+  verified, DA1 failed and DA2 unproven. Task/goal remain unfinished.
+- Official EE guide confirms project-root folder creation is supported. A bounded
+  runtime-SA root initialization/check plus ONE additional all-keep run is proposed
+  in research/supervisor-recovery-proposal.md, not approved or executed. Existing
+  spec R8 forbids an automatic second attempt/deployment repair; a scope decision
+  is needed. No new cloud mutation is authorized by this proposal alone.
 
 # Completed: IPCCH automatic E2E integration (2026-10-31)
 

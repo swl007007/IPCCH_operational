@@ -1,0 +1,39 @@
+# unit=ipcch-cp2-load-initialized-1793494021488974998 start=2026-10-31T20:47:01-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline /home/swl007007/.venvs/ipcch-cloud-operator/bin/python -c 
+import json,pipeline as p
+c=p.config('/home/swl007007/ipcch-operator/food-crisis-test/project.json'); i=p.load_initialized(c)
+print('LOADOK', json.dumps({'baseline_id':i['baseline_id'],'destination':i['destination'],'runtime_image':i['runtime']['image_uri'],'env_manifest':i['runtime']['environment_manifest'],'work_dir':c['work_dir'],'v2':{k:c['v2'][k] for k in c['v2'] if k!='pending_live_verification'}}))
+Running as unit: ipcch-cp2-load-initialized-1793494021488974998.service; invocation ID: 2b917ee239e748e6a3b2938644f86b0e
+LOADOK {"baseline_id": "f0481ca13610f9903760b0173b77d9e1628e78e4b2adc91e2ee351cf16862856", "destination": {"bucket": "food-crisis-test-ipcch-data", "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6", "namespace": "monthly-staging", "project": "feisty-flames-511718-d4", "request_bucket": "food-crisis-test-ipcch-requests"}, "runtime_image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6", "env_manifest": {"generation": "1793456025486882", "sha256": "35a4890a3ee40fee8bc6cf121ee332fce6a26c8ec7255b446cddf0db2de92b3b", "uri": "gs://food-crisis-test-ipcch-data/environments/acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6.json"}, "work_dir": "/home/swl007007/ipcch-operator/food-crisis-test-v2-runtime-20261031/operator-state", "v2": {"country_reference": {"real": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv", "smoke": "gs://food-crisis-test-ipcch-smoke/inputs/reference/country_reference.csv"}, "deployment_config": "/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/deploy/ipcch_v2_deployment.food-crisis-test.json", "envelope": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json", "environment_manifest": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt", "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6", "inputs_prefix": {"real": "gs://food-crisis-test-ipcch-data/inputs/v2", "smoke": "gs://food-crisis-test-ipcch-smoke/inputs"}}}
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline /home/swl007007/.venvs/ipcch-cloud-operator/bin/python -c 
+import json,pipeline as p
+c=p.config('/home/swl007007/ipcch-operator/food-crisis-test/project.json'); i=p.load_initialized(c)
+print('LOADOK', json.dumps({'baseline_id':i['baseline_id'],'destination':i['destination'],'runtime_image':i['runtime']['image_uri'],'env_manifest':i['runtime']['environment_manifest'],'work_dir':c['work_dir'],'v2':{k:c['v2'][k] for k in c['v2'] if k!='pending_live_verification'}}))"
+	User time (seconds): 0.01
+	System time (seconds): 0.00
+	Percent of CPU this job got: 45%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.04
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 17420
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 2228
+	Voluntary context switches: 166
+	Involuntary context switches: 1
+	Swaps: 0
+	File system inputs: 744
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 104ms
+CPU time consumed: 33ms
+# end=2026-10-31T20:47:01-04:00 launcher_rc=0 child_exit=0

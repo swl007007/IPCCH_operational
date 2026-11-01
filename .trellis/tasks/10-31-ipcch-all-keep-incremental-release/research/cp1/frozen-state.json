@@ -1,0 +1,208 @@
+{
+  "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+  "current_ipcch_execution_month": "2026-10",
+  "execution_month": "2026-11",
+  "phase": "submitted",
+  "prepared_at": "2026-11-01T01:00:20Z",
+  "refs": {
+    "acled": {
+      "generation": "1793494819786240",
+      "sha256": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv"
+    }
+  },
+  "request": {
+    "generation": "1793494821542586",
+    "sha256": "8b346d35db6294e9785e2c4099d143e96fc62a871ccbb1a36ecbfd5478ae26c2",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-9eee4305db494a35/run_manifest.json"
+  },
+  "request_body": {
+    "execution_month": "2026-11",
+    "fewsnet": null,
+    "ipcch": {
+      "acled": {
+        "action": "refresh",
+        "end": "2026-10-23",
+        "file": {
+          "generation": "1793494819786240",
+          "sha256": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+          "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv"
+        },
+        "regions": [
+          "Caribbean",
+          "Caucasus and Central Asia",
+          "Central America",
+          "East Asia",
+          "Eastern Africa",
+          "Europe",
+          "International Waters",
+          "Middle Africa",
+          "Middle East",
+          "North America",
+          "Northern Africa",
+          "Oceania",
+          "South America",
+          "South Asia",
+          "Southeast Asia",
+          "Southern Africa",
+          "Western Africa"
+        ],
+        "start": "2026-10-17"
+      },
+      "country_reference": {
+        "generation": "1793457294730935",
+        "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv"
+      },
+      "history_snapshot": {
+        "action": "keep"
+      },
+      "model_combination": {
+        "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+        "envelope": {
+          "generation": "1793457267476070",
+          "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+          "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json"
+        }
+      },
+      "research_inputs": {
+        "bbg_global_food": {
+          "action": "keep"
+        },
+        "bbg_oilgas": {
+          "action": "keep"
+        },
+        "bbg_soybean_oil": {
+          "action": "keep"
+        },
+        "bbg_staple_food": {
+          "action": "keep"
+        },
+        "food_price_index_WB": {
+          "action": "keep"
+        },
+        "idp_local": {
+          "action": "keep"
+        },
+        "idp_national": {
+          "action": "keep"
+        },
+        "nino34_anom": {
+          "action": "keep"
+        }
+      },
+      "wfp": {
+        "action": "keep"
+      }
+    },
+    "mode": "real",
+    "operations": {
+      "fewsnet_generation": false,
+      "fewsnet_inference": false,
+      "ipcch_generation": true,
+      "ipcch_inference": true
+    },
+    "operator": "weilun.shi",
+    "prepared_at": "2026-11-01T01:00:20Z",
+    "publication": "current",
+    "release": {
+      "expected_pointer_generation": "1793461128385732",
+      "namespace": "monthly-staging"
+    },
+    "run_id": "ipcch-real-9eee4305db494a35",
+    "runtime": {
+      "environment_manifest": {
+        "generation": "1793457280557418",
+        "sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+        "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt"
+      },
+      "image_uri": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6"
+    },
+    "schema_version": "fewsnet-ipcch-delivery-request-v2"
+  },
+  "run_id": "ipcch-real-9eee4305db494a35",
+  "selections": {
+    "choices": {
+      "acled": {
+        "action": "refresh",
+        "end": "2026-10-23",
+        "file": "/home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/acled_regional_aggregate_20261017_20261023.csv",
+        "regions": [
+          "Caribbean",
+          "Caucasus and Central Asia",
+          "Central America",
+          "East Asia",
+          "Eastern Africa",
+          "Europe",
+          "International Waters",
+          "Middle Africa",
+          "Middle East",
+          "North America",
+          "Northern Africa",
+          "Oceania",
+          "South America",
+          "South Asia",
+          "Southeast Asia",
+          "Southern Africa",
+          "Western Africa"
+        ],
+        "start": "2026-10-17"
+      },
+      "bbg_global_food": {
+        "action": "keep"
+      },
+      "bbg_oilgas": {
+        "action": "keep"
+      },
+      "bbg_soybean_oil": {
+        "action": "keep"
+      },
+      "bbg_staple_food": {
+        "action": "keep"
+      },
+      "food_price_index_WB": {
+        "action": "keep"
+      },
+      "history_snapshot": {
+        "action": "keep"
+      },
+      "idp_local": {
+        "action": "keep"
+      },
+      "idp_national": {
+        "action": "keep"
+      },
+      "nino34_anom": {
+        "action": "keep"
+      },
+      "wfp": {
+        "action": "keep"
+      }
+    },
+    "mode": "real",
+    "operations": [
+      "ipcch_generation",
+      "ipcch_inference"
+    ],
+    "publication": "current"
+  },
+  "selections_sha256": "0ea79063099d621e8159d90f6acb2bfe6c6d34ccb571e2816d2443300b97ee4a",
+  "shared": {
+    "country_reference": {
+      "generation": "1793457294730935",
+      "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv"
+    },
+    "envelope": {
+      "generation": "1793457267476070",
+      "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json"
+    },
+    "environment_manifest": {
+      "generation": "1793457280557418",
+      "sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt"
+    }
+  },
+  "submitted_at": "2026-11-01T01:00:20Z"
+}

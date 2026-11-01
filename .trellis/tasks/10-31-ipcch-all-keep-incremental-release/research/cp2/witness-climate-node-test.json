@@ -1,0 +1,17 @@
+{
+ "cdd": {
+  "new_admins": 0,
+  "new_method_ids": [],
+  "new_months": [],
+  "new_rows": 0,
+  "new_value_blank": 0,
+  "old_keys_missing_after": 0,
+  "old_rows": 871640,
+  "old_values_changed": 0,
+  "passed": false,
+  "post_sha_ok": true,
+  "post_version": 1,
+  "pre_sha_ok": true,
+  "pre_version": 1
+ }
+}

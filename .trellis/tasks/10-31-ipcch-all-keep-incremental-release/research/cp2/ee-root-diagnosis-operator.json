@@ -1,0 +1,30 @@
+{
+ "identity": "local operator Earth Engine credentials (read-only), NOT monthly-runtime",
+ "calls": [
+  {
+   "label": "getAsset feisty root",
+   "ok": false,
+   "error": "EEException: Asset 'projects/feisty-flames-511718-d4/assets' does not exist or doesn't allow this operation."
+  },
+  {
+   "label": "listAssets feisty root",
+   "ok": false,
+   "error": "EEException: Asset \"projects/feisty-flames-511718-d4/assets\" not found."
+  },
+  {
+   "label": "getAsset nonexistent feisty child",
+   "ok": false,
+   "error": "EEException: Asset 'projects/feisty-flames-511718-d4/assets/IPCCH_DIAG_NONEXISTENT_CHILD_20261101' does not exist or doesn't allow this operation."
+  },
+  {
+   "label": "listAssets han root",
+   "ok": false,
+   "error": "EEException: Permission 'earthengine.assets.list' denied on resource 'projects/han-sandbox-505315' (or it may not exist)."
+  },
+  {
+   "label": "getAssetRoots",
+   "ok": false,
+   "error": "EEException: Asset \"projects/feisty-flames-511718-d4/assets\" not found."
+  }
+ ]
+}

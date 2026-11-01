@@ -1,0 +1,33 @@
+# unit=ipcch-cp2-expected-acled-interval-1793494545642360262 start=2026-10-31T20:55:45-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp0/expected_acled_interval.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp0/expected-acled-interval.json
+Running as unit: ipcch-cp2-expected-acled-interval-1793494545642360262.service; invocation ID: 6709f237c5da403f9cf15ed966623ae3
+{"rows": 470, "keys": 12, "start": "2026-10-17", "end": "2026-10-23", "weeks": ["2026-10-17"]}
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp0/expected_acled_interval.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp0/expected-acled-interval.json"
+	User time (seconds): 0.36
+	System time (seconds): 0.04
+	Percent of CPU this job got: 64%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.62
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 143140
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 11
+	Minor (reclaiming a frame) page faults: 20453
+	Voluntary context switches: 2005
+	Involuntary context switches: 10
+	Swaps: 0
+	File system inputs: 6464
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 777ms
+CPU time consumed: 510ms
+# end=2026-10-31T20:55:46-04:00 launcher_rc=0 child_exit=0

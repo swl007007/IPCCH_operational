@@ -1,0 +1,48 @@
+# unit=ipcch-cp2-submit-execute-1793494818698869990 start=2026-10-31T21:00:18-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp1/cloudop.py --timeout 540 --purpose CP1: ONE incremental v2 submission (ACLED refresh 2026-10-17..23 + ten keep; generation+inference; current) --scope mutation --effect create-only ACLED upload under inputs/v2/<run>/acled/; freeze at one UTC instant; request uploaded LAST -> Eventarc -> Workflow -> oct-delivery (acc3e467) -- /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/pipeline.py submit --config /home/swl007007/ipcch-operator/food-crisis-test/project.json --selections /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/selections.json --execute
+Running as unit: ipcch-cp2-submit-execute-1793494818698869990.service; invocation ID: d96fa88a729d4ecd8f39d47bacb38617
+{
+  "run_id": "ipcch-real-9eee4305db494a35",
+  "mode": "real",
+  "execution_month": "2026-11",
+  "prepared_at": "2026-11-01T01:00:20Z",
+  "phase": "submitted",
+  "status": "submitted",
+  "request": {
+    "generation": "1793494821542586",
+    "sha256": "8b346d35db6294e9785e2c4099d143e96fc62a871ccbb1a36ecbfd5478ae26c2",
+    "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-9eee4305db494a35/run_manifest.json"
+  },
+  "claim": null,
+  "reservation": null,
+  "run_status": null
+}
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 python3 /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp1/cloudop.py --timeout 540 --purpose CP1: ONE incremental v2 submission (ACLED refresh 2026-10-17..23 + ten keep; generation+inference; current) --scope mutation --effect create-only ACLED upload under inputs/v2/<run>/acled/; freeze at one UTC instant; request uploaded LAST -> Eventarc -> Workflow -> oct-delivery (acc3e467) -- /home/swl007007/.venvs/ipcch-cloud-operator/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline/pipeline.py submit --config /home/swl007007/ipcch-operator/food-crisis-test/project.json --selections /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/selections.json --execute"
+	User time (seconds): 0.54
+	System time (seconds): 0.06
+	Percent of CPU this job got: 19%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.14
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 162752
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 27088
+	Voluntary context switches: 3249
+	Involuntary context switches: 10
+	Swaps: 0
+	File system inputs: 456
+	File system outputs: 136
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 3.221s
+CPU time consumed: 630ms
+# end=2026-10-31T21:00:21-04:00 launcher_rc=0 child_exit=0

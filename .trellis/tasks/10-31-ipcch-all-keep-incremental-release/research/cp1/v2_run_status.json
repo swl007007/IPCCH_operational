@@ -1,0 +1,173 @@
+{
+  "deadline_utc": "2026-11-01T05:02:09Z",
+  "derived": {
+    "execution_month": "2026-11",
+    "feature_origin": "2026-09",
+    "horizons": [
+      {
+        "model_horizon_months": 2,
+        "public_lead_months": 0,
+        "target_month": "2026-11"
+      },
+      {
+        "model_horizon_months": 8,
+        "public_lead_months": 6,
+        "target_month": "2027-05"
+      },
+      {
+        "model_horizon_months": 14,
+        "public_lead_months": 12,
+        "target_month": "2027-11"
+      }
+    ]
+  },
+  "lock_release_problems": [],
+  "mode": "real",
+  "run_id": "ipcch-real-9eee4305db494a35",
+  "status": "failed",
+  "systems": {
+    "ipcch": {
+      "failed_operation": "generation",
+      "reason": "IpcchRunFailure: IPCCH generation failed: GenerationFailure: IPCCH generation stopped at climate: EETransportError: cannot list projects/feisty-flames-511718-d4/assets to resolve an ambiguous asset lookup (EEException: Asset \"projects/feisty-flames-511718-d4/assets\" not found.); not treated as absent",
+      "report": {
+        "execution_month": "2026-11",
+        "failed": {
+          "error": "EETransportError: cannot list projects/feisty-flames-511718-d4/assets to resolve an ambiguous asset lookup (EEException: Asset \"projects/feisty-flames-511718-d4/assets\" not found.); not treated as absent",
+          "step": "climate"
+        },
+        "feature_origin": "2026-09",
+        "mode": "real",
+        "run_id": "ipcch-real-9eee4305db494a35",
+        "runtime_acceptance": [
+          "gs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/versions/000002-2fdcb235ebc04160a7aa463a8367a494.csv"
+        ],
+        "steps": {
+          "acled": {
+            "action": "refresh",
+            "coverage_end": "2026-09",
+            "interval": [
+              "2026-10-17",
+              "2026-10-23"
+            ],
+            "method": "regional-aggregate converter (research build_acled_agg.py conventions; delivered fixed tables)",
+            "regions": [
+              "Caribbean",
+              "Caucasus and Central Asia",
+              "Central America",
+              "East Asia",
+              "Eastern Africa",
+              "Europe",
+              "International Waters",
+              "Middle Africa",
+              "Middle East",
+              "North America",
+              "Northern Africa",
+              "Oceania",
+              "South America",
+              "South Asia",
+              "Southeast Asia",
+              "Southern Africa",
+              "Western Africa"
+            ],
+            "source": {
+              "generation": "1793494819786240",
+              "sha256": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+              "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv"
+            }
+          },
+          "acled_tables": {
+            "mapped_admin1": 1302,
+            "polygons": 1465
+          },
+          "history_snapshot": {
+            "action": "keep",
+            "preparation_cutoff": "2026-10"
+          },
+          "research_inputs": {
+            "bbg_global_food": {
+              "action": "keep",
+              "coverage_end": "2026-09",
+              "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+            },
+            "bbg_oilgas": {
+              "action": "keep",
+              "coverage_end": "2026-09",
+              "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+            },
+            "bbg_soybean_oil": {
+              "action": "keep",
+              "coverage_end": "2026-07",
+              "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+            },
+            "bbg_staple_food": {
+              "action": "keep",
+              "coverage_end": "2026-09",
+              "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+            },
+            "food_price_index_WB": {
+              "action": "keep",
+              "coverage_end": "2026-10",
+              "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+            },
+            "idp_local": {
+              "action": "keep",
+              "coverage_end": "2026-09",
+              "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+            },
+            "idp_national": {
+              "action": "keep",
+              "coverage_end": "2026-09"
+            },
+            "nino34_anom": {
+              "action": "keep",
+              "coverage_end": "2026-09",
+              "method": "research-prepared retained input (delivered history / declared-interval refresh)"
+            }
+          },
+          "season_windows": {
+            "rows": 149424,
+            "through_season_year": 2026
+          },
+          "wfp": {
+            "action": "keep",
+            "coverage_end": "2026-09",
+            "method": "research HDX food prices: 100 + YoY % change of local-currency staple prices (maize, sorghum, rice, wheat, vegetable oil), nearest market with data < 100 km, no fill (build_wfp_hdx.py)"
+          }
+        },
+        "warnings": []
+      },
+      "result": {
+        "execution_month": "2026-11",
+        "mode": "real"
+      },
+      "status": "failed",
+      "step": "climate"
+    }
+  },
+  "verified_references": [
+    {
+      "field": "runtime.environment_manifest",
+      "generation": "1793457280557418",
+      "sha256": "2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt"
+    },
+    {
+      "field": "ipcch.model_combination.envelope",
+      "generation": "1793457267476070",
+      "sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json"
+    },
+    {
+      "field": "ipcch.country_reference",
+      "generation": "1793457294730935",
+      "sha256": "0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv"
+    },
+    {
+      "field": "ipcch.acled.file",
+      "generation": "1793494819786240",
+      "sha256": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+      "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv"
+    }
+  ]
+}

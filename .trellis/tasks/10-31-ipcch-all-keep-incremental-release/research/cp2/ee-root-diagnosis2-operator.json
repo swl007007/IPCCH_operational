@@ -1,0 +1,25 @@
+{
+ "listAssets_feisty_root": {
+  "ok": false,
+  "error": "EEException: Asset \"projects/feisty-flames-511718-d4/assets\" not found.",
+  "http_status": 404,
+  "http_body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Asset \\\"projects/feisty-flames-511718-d4/assets\\\" not found.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n",
+  "context_type": "HttpError"
+ },
+ "getAsset_feisty_root": {
+  "ok": false,
+  "error": "EEException: Asset 'projects/feisty-flames-511718-d4/assets' does not exist or doesn't allow this operation.",
+  "http_status": 404,
+  "http_body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Asset 'projects/feisty-flames-511718-d4/assets' does not exist or doesn't allow this operation.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n",
+  "context_type": "HttpError"
+ },
+ "caller_identity": {
+  "source": "oauth2 tokeninfo of the EE session credentials (token not recorded)",
+  "http_status": 200,
+  "email": null,
+  "email_verified": null,
+  "scope": "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/earthengine",
+  "aud": "764086051850-6qr4p6gpi6hn506pt8ejuq83di341hur.apps.googleusercontent.com",
+  "azp": "764086051850-6qr4p6gpi6hn506pt8ejuq83di341hur.apps.googleusercontent.com"
+ }
+}

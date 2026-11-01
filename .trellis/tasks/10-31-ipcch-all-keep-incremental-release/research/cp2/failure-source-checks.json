@@ -1,0 +1,95 @@
+{
+ "acled": {
+  "checks": {
+   "expected_covers_only_interval": true,
+   "interval_equals_pinned_export": true,
+   "no_new_keys_outside": true,
+   "outside_preserved": true
+  },
+  "interval_keys": [
+   "Caribbean|2026-10-17",
+   "Caucasus and Central Asia|2026-10-17",
+   "Central America|2026-10-17",
+   "Eastern Africa|2026-10-17",
+   "Middle Africa|2026-10-17",
+   "Middle East|2026-10-17",
+   "Northern Africa|2026-10-17",
+   "South America|2026-10-17",
+   "South Asia|2026-10-17",
+   "Southeast Asia|2026-10-17",
+   "Southern Africa|2026-10-17",
+   "Western Africa|2026-10-17"
+  ],
+  "interval_mismatch": [],
+  "interval_rows": 470,
+  "lost_or_changed_outside": [],
+  "new_outside": [],
+  "passed": true
+ },
+ "acled_last_refresh": {
+  "end": "2026-10-23",
+  "regions": [
+   "Caribbean",
+   "Caucasus and Central Asia",
+   "Central America",
+   "East Asia",
+   "Eastern Africa",
+   "Europe",
+   "International Waters",
+   "Middle Africa",
+   "Middle East",
+   "North America",
+   "Northern Africa",
+   "Oceania",
+   "South America",
+   "South Asia",
+   "Southeast Asia",
+   "Southern Africa",
+   "Western Africa"
+  ],
+  "source": {
+   "generation": "1793494819786240",
+   "sha256": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+   "uri": "gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv"
+  },
+  "start": "2026-10-17"
+ },
+ "acled_pin": {
+  "coverage_record_appended": true,
+  "interval": true,
+  "regions": true,
+  "source_sha256": true
+ },
+ "acled_rows": {
+  "post": 242811,
+  "pre": 242341
+ },
+ "head_changes": {
+  "acceptance_manifest": {
+   "post": 4,
+   "post_record_action": null,
+   "pre": 3
+  },
+  "acled_agg_weekly": {
+   "post": 2,
+   "post_record_action": null,
+   "pre": 1
+  }
+ },
+ "kept": {
+  "history__WFP_Price": true,
+  "history__bbg_global_food__composite_mean": true,
+  "history__bbg_oilgas__composite_mean": true,
+  "history__bbg_soybean_oil__composite_mean": true,
+  "history__bbg_staple_food__composite_mean": true,
+  "history__food_price_index_WB": true,
+  "history__history_snapshot": true,
+  "history__idp_local": true,
+  "history__idp_national": true,
+  "history__nino34_anom": true
+ },
+ "kept_ten_unchanged": true,
+ "new_tables": [],
+ "tables_post": 56,
+ "tables_pre": 56
+}

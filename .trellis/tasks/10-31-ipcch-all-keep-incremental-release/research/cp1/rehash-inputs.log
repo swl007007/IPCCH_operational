@@ -1,0 +1,34 @@
+# unit=ipcch-cp2-rehash-inputs-1793494720310718249 start=2026-10-31T20:58:40-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/sha256sum /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/selections.json /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/acled_regional_aggregate_20261017_20261023.csv
+Running as unit: ipcch-cp2-rehash-inputs-1793494720310718249.service; invocation ID: 97d97ce65e3847e39673b068b94ecd25
+7ab733d8c0e22bc866ae0ddb8cdfce63b3c5621e749b6ec2316f8fdaf58af4a7  /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/selections.json
+e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a  /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/acled_regional_aggregate_20261017_20261023.csv
+	Command being timed: "/usr/bin/sha256sum /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/selections.json /home/swl007007/ipcch-operator/food-crisis-test/v2-inputs/incremental-20261101/prepared/acled_regional_aggregate_20261017_20261023.csv"
+	User time (seconds): 0.00
+	System time (seconds): 0.00
+	Percent of CPU this job got: 0%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.00
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 3628
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 222
+	Voluntary context switches: 3
+	Involuntary context switches: 0
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 61ms
+CPU time consumed: 7ms
+# end=2026-10-31T20:58:40-04:00 launcher_rc=0 child_exit=0

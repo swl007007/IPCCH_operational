@@ -1,0 +1,115 @@
+# unit=ipcch-cp2-demand-preflight-1793493838030988644 start=2026-10-31T20:43:58-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp0/demand_preflight.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp0/demand-preflight.json
+Running as unit: ipcch-cp2-demand-preflight-1793493838030988644.service; invocation ID: 9439516df91c44c28d3a5b491f22095a
+{
+ "M": "2026-11",
+ "O": "2026-09",
+ "monthly_to_update": {
+  "prcp_anom": [
+   "2026-09"
+  ],
+  "prcp_z": [
+   "2026-09"
+  ],
+  "rainy_days": [
+   "2026-09"
+  ],
+  "cdd": [
+   "2026-09"
+  ],
+  "tmean_anom": [
+   "2026-09"
+  ],
+  "tmax_anom": [
+   "2026-09"
+  ],
+  "hot_days_p95": [
+   "2026-09"
+  ],
+  "gdd": [
+   "2026-09"
+  ],
+  "edd": [
+   "2026-09"
+  ],
+  "sm_z": [
+   "2026-09"
+  ],
+  "spi03": [
+   "2026-09"
+  ],
+  "spei03": [
+   "2026-09"
+  ],
+  "evi_anom": [
+   "2026-09"
+  ]
+ },
+ "seasonal_pending": {
+  "prcp_anom": 0,
+  "prcp_z": 0,
+  "rainy_days": 0,
+  "cdd": 0,
+  "tmean_anom": 0,
+  "tmax_anom": 0,
+  "hot_days_p95": 0,
+  "gdd": 0,
+  "edd": 0,
+  "sm_z": 0,
+  "spi03": 0,
+  "spei03": 0,
+  "evi_anom": 0
+ },
+ "jobs": [
+  "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+  "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+  "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+  "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+  "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+  "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+  "S2C3_ET0_PATCH32_Y2020_2026_V2"
+ ],
+ "gpp_candidates": [
+  "2026-01",
+  "2026-02",
+  "2026-03",
+  "2026-04",
+  "2026-05",
+  "2026-06",
+  "2026-07",
+  "2026-08",
+  "2026-09"
+ ],
+ "nightlight_candidates": [
+  "2026-09"
+ ]
+}
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp0/demand_preflight.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp0/demand-preflight.json"
+	User time (seconds): 43.65
+	System time (seconds): 5.19
+	Percent of CPU this job got: 30%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:40.44
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1058488
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1063
+	Minor (reclaiming a frame) page faults: 254852
+	Voluntary context switches: 125139
+	Involuntary context switches: 114
+	Swaps: 0
+	File system inputs: 233536
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 2min 40.584s
+CPU time consumed: 48.948s
+# end=2026-10-31T20:46:38-04:00 launcher_rc=0 child_exit=0

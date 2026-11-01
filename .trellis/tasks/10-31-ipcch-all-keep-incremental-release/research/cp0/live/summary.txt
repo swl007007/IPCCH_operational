@@ -1,0 +1,17 @@
+job-oct-delivery 17ae74ce7e14ccf6 ['python3'] ['-m', 'cloud.orchestrator.delivery_job', 'run', '--output-root', 'gs://food-crisis-test-ipcch-data', '--release-namespace', 'monthly-staging', '--image-uri', 'us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6', '--v2-config', '/opt/ipcch/deployment.json'] {'cpu': '8', 'memory': '32Gi'} timeout 14400 retries 0 tasks 1 sa monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com
+job-monthly-prepare 17ae74ce7e14ccf6 ['python3'] ['-m', 'cloud.orchestrator.prepare', '--help'] {'cpu': '2', 'memory': '8Gi'} timeout 14400 retries 0 tasks 1 sa monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com
+workflow rev 000005-e86 state ACTIVE env {'BATCH_PARENT': 'projects/feisty-flames-511718-d4/locations/us-central1', 'BATCH_SERVICE_ACCOUNT': 'monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com', 'DELIVERY_IMAGE_URI': '17ae74ce7e14ccf6', 'DELIVERY_JOB': 'oct-delivery', 'DELIVERY_LOCATION': 'us-central1', 'DELIVERY_OUTPUT_ROOT': 'gs://food-crisis-test-ipcch-data', 'DELIVERY_RELEASE_NAMESPACE': 'monthly-staging', 'DELIVERY_V2_CONFIG': '/opt/ipcch/deployment.json', 'EARTH_ENGINE_PROJECT': 'feisty-flames-511718-d4', 'PREPARE_JOB': 'monthly-prepare', 'PREPARE_MAX_POLLS': '96', 'PREPARE_POLL_SECONDS': '300'}
+workflow source sha 4914412c6f52d6b4 repo 4914412c6f52d6b4
+exec-oct-delivery oct-delivery-t6vlm 2026-10-31T15:21:17.711849Z running None ok 1 fail None
+exec-oct-delivery oct-delivery-vjtmk 2026-10-31T15:07:19.278102Z running None ok 1 fail None
+exec-oct-delivery oct-delivery-pwlgj 2026-10-31T14:27:34.782452Z running None ok 1 fail None
+exec-oct-delivery oct-delivery-hfddt 2026-10-22T07:51:04.345623Z running None ok 1 fail None
+init-job ipcch-v2-init-20261031-hxz9k 2026-10-31T14:43:28.604766Z running None ok 1 fail None
+init-job ipcch-v2-init-20261031-7t4lg 2026-10-31T14:37:33.009105Z running None ok 1 fail None
+wf c70d40ea-b917-48a0-a490-95e6cbe9f7aa SUCCEEDED 2026-10-31T15:21:16.695858061Z
+wf b96f7f37-3b6a-4ecc-bd0e-471a1b248725 SUCCEEDED 2026-10-31T15:07:18.213060203Z
+wf 7d8d3bfc-2d95-4b9e-ac1a-b35ca24bd887 SUCCEEDED 2026-10-31T14:27:33.644118551Z
+wf 337d8631-1110-4c8c-ae3d-380707007669 FAILED 2026-10-31T14:21:01.125185676Z
+wf e785df4e-df75-45d2-a8cb-34138f0eeb15 SUCCEEDED 2026-10-22T07:51:03.255620953Z
+batch active 0
+current gen 1793461128385732 231 2026-10-31T15:38:48+0000

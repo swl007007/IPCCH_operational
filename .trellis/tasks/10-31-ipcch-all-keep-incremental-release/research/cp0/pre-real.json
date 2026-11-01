@@ -1,0 +1,192 @@
+{
+ "generation": "1793461128385732",
+ "pointer": {
+  "release_record": "gs://food-crisis-test-ipcch-data/monthly-staging/releases/ipcch-real-522b30030f944868-ipcch/release.json",
+  "release_record_generation": "1793461128307577",
+  "run_id": "ipcch-real-522b30030f944868-ipcch"
+ },
+ "record": {
+  "activation": {
+   "activated_by_run": "ipcch-real-522b30030f944868-ipcch",
+   "at": "2026-10-31T15:37:56Z",
+   "contract": "ipcch-validity-h2h8h14-v2",
+   "execution_month": "2026-10"
+  },
+  "delivery": {
+   "manifest": {
+    "generation": "1793461076195052",
+    "sha256": "496fa8e561807bedfaa63ed6c580303300c3dd8a24268770140988a7b5c575e1",
+    "uri": "gs://food-crisis-test-ipcch-data/deliveries/ipcch-real-522b30030f944868-ipcch/manifest.json"
+   },
+   "request_run_id": "ipcch-real-522b30030f944868"
+  },
+  "inherited": {
+   "fewsnet": "1793458988623055"
+  },
+  "mode": "real",
+  "previous": {
+   "pointer_generation": "1793458988623055",
+   "release_record": "gs://food-crisis-test-ipcch-data/monthly-staging/releases/fews-compat-v2rt-20261031a/release.json"
+  },
+  "publication": "current",
+  "request": {
+   "generation": "1793460075820847",
+   "uri": "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-522b30030f944868/run_manifest.json"
+  },
+  "run_id": "ipcch-real-522b30030f944868-ipcch",
+  "schema": "fewsnet-ipcch-release-v2",
+  "systems": {
+   "fewsnet": {
+    "archive": {
+     "generation": "1793458365634163",
+     "sha256": "ffbc0b99c08fd0eeb3a50e8f853c72259b891e95524a93b95850a937463757c1",
+     "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-compat-v2rt-20261031a/webapp_model_bundle.tar.gz"
+    },
+    "contract": "legacy-v1",
+    "delivery": {
+     "manifest": {
+      "generation": "1793458301810702",
+      "sha256": "a7a631f5483e4bcba1d99722cad9226c655df8bbf36b7234c40f8c9ca94ce10a",
+      "uri": "gs://food-crisis-test-ipcch-data/deliveries/fews-compat-v2rt-20261031a/manifest.json"
+     }
+    },
+    "inherited_in_legacy_record": false,
+    "origin_month": "2026-10",
+    "source_run_id": "fews-compat-v2rt-20261031a"
+   },
+   "ipcch": {
+    "batch": {
+     "batch_id": "ipcch-2026-10-ipcch-real-522b30030f944868-8b8eb27a61ba",
+     "coverage_end": {
+      "GPP_mean": "2025-12",
+      "WFP_Price": "2026-09",
+      "acled": "2026-08",
+      "bbg_global_food": "2026-09",
+      "bbg_oilgas": "2026-09",
+      "bbg_soybean_oil": "2026-07",
+      "bbg_staple_food": "2026-09",
+      "food_price_index_WB": "2026-10",
+      "history_snapshot": "2026-10",
+      "idp_local": "2026-09",
+      "idp_national": "2026-09",
+      "nightlight_mean": "2026-08",
+      "nino34_anom": "2026-09"
+     },
+     "designation": "real",
+     "warnings": [
+      "GPP_mean coverage ends 2025-12, before O 2026-08 (optional-missing: features at O are NaN, R65)",
+      "bbg_soybean_oil coverage ends 2026-07, before O 2026-08 (optional-missing: features at O are NaN, R65)"
+     ]
+    },
+    "contract": "ipcch-validity-h2h8h14-v2",
+    "delivery": {
+     "manifest": {
+      "generation": "1793461076195052",
+      "sha256": "496fa8e561807bedfaa63ed6c580303300c3dd8a24268770140988a7b5c575e1",
+      "uri": "gs://food-crisis-test-ipcch-data/deliveries/ipcch-real-522b30030f944868-ipcch/manifest.json"
+     }
+    },
+    "execution_month": "2026-10",
+    "feature_origin": "2026-08",
+    "horizons": [
+     {
+      "model_horizon_months": 2,
+      "model_package_id": "ipcch-validity-h2h8h14-final-20261030/scope_0m",
+      "public_lead_months": 0,
+      "rows": 6226,
+      "target_month": "2026-10",
+      "training_cutoff": "2025-11"
+     },
+     {
+      "model_horizon_months": 8,
+      "model_package_id": "ipcch-validity-h2h8h14-final-20261030/scope_6m",
+      "public_lead_months": 6,
+      "rows": 6226,
+      "target_month": "2027-04",
+      "training_cutoff": "2025-05"
+     },
+     {
+      "model_horizon_months": 14,
+      "model_package_id": "ipcch-validity-h2h8h14-final-20261030/scope_12m",
+      "public_lead_months": 12,
+      "rows": 6226,
+      "target_month": "2027-10",
+      "training_cutoff": "2024-11"
+     }
+    ],
+    "mode": "real",
+    "model_horizons": [
+     2,
+     8,
+     14
+    ],
+    "package": {
+     "combination_id": "ipcch-validity-h2h8h14-final-20261030",
+     "envelope_id": "ipcch-validity-h2h8h14-final-20261030/envelope-v2",
+     "envelope_sha256": "03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596",
+     "feature_order_sha256": "0ef1ffeca07542b313c3f28ccf9445231e7b59e2d866cdd3862a7c3feafe3d69",
+     "package_manifest_sha256": "18b91d454163ac9ff9833d8127108e731b2f9d95069fb26fd5e7e8877a115f22"
+    },
+    "provenance_files": [
+     "ipcch/combination_envelope.json",
+     "ipcch/country_population_reference.csv",
+     "ipcch/model_package/evidence/ipcch_0m_resubstitution_area.csv",
+     "ipcch/model_package/evidence/ipcch_0m_resubstitution_residual.csv",
+     "ipcch/model_package/evidence/ipcch_12m_resubstitution_area.csv",
+     "ipcch/model_package/evidence/ipcch_12m_resubstitution_residual.csv",
+     "ipcch/model_package/evidence/ipcch_6m_resubstitution_area.csv",
+     "ipcch/model_package/evidence/ipcch_6m_resubstitution_residual.csv",
+     "ipcch/model_package/model_package_manifest.json",
+     "ipcch/model_package/package_manifest.json",
+     "ipcch/model_package/scope_0m/feature_columns.json",
+     "ipcch/model_package/scope_0m/feature_contract.csv",
+     "ipcch/model_package/scope_0m/model_metadata.json",
+     "ipcch/model_package/scope_0m/phase2_worse_model.json",
+     "ipcch/model_package/scope_0m/phase3_worse_model.json",
+     "ipcch/model_package/scope_0m/phase4_worse_model.json",
+     "ipcch/model_package/scope_0m/phase5_worse_model.json",
+     "ipcch/model_package/scope_12m/feature_columns.json",
+     "ipcch/model_package/scope_12m/feature_contract.csv",
+     "ipcch/model_package/scope_12m/model_metadata.json",
+     "ipcch/model_package/scope_12m/phase2_worse_model.json",
+     "ipcch/model_package/scope_12m/phase3_worse_model.json",
+     "ipcch/model_package/scope_12m/phase4_worse_model.json",
+     "ipcch/model_package/scope_12m/phase5_worse_model.json",
+     "ipcch/model_package/scope_6m/feature_columns.json",
+     "ipcch/model_package/scope_6m/feature_contract.csv",
+     "ipcch/model_package/scope_6m/model_metadata.json",
+     "ipcch/model_package/scope_6m/phase2_worse_model.json",
+     "ipcch/model_package/scope_6m/phase3_worse_model.json",
+     "ipcch/model_package/scope_6m/phase4_worse_model.json",
+     "ipcch/model_package/scope_6m/phase5_worse_model.json",
+     "ipcch/polygons.geojson",
+     "reports/ipcch_diagnostic_availability.csv",
+     "reports/ipcch_diagnostic_declarations.json",
+     "reports/ipcch_feature_fill_audit.csv",
+     "scopes/0m/ipcch/country_confidence.csv",
+     "scopes/0m/ipcch/country_predictions.csv",
+     "scopes/0m/ipcch/polygon_model_mapping.csv",
+     "scopes/0m/ipcch/polygon_predictions.csv",
+     "scopes/0m/ipcch/polygon_training_errors.csv",
+     "scopes/12m/ipcch/country_confidence.csv",
+     "scopes/12m/ipcch/country_predictions.csv",
+     "scopes/12m/ipcch/polygon_model_mapping.csv",
+     "scopes/12m/ipcch/polygon_predictions.csv",
+     "scopes/12m/ipcch/polygon_training_errors.csv",
+     "scopes/6m/ipcch/country_confidence.csv",
+     "scopes/6m/ipcch/country_predictions.csv",
+     "scopes/6m/ipcch/polygon_model_mapping.csv",
+     "scopes/6m/ipcch/polygon_predictions.csv",
+     "scopes/6m/ipcch/polygon_training_errors.csv"
+    ],
+    "provenance_sha256": "9b5bbc6855b26b6ecd7d621ae433638a9e8a5d177a02dabd44077f42f4a58b24",
+    "public_leads": [
+     0,
+     6,
+     12
+    ],
+    "published_by_run": "ipcch-real-522b30030f944868-ipcch"
+   }
+  }
+ }
+}

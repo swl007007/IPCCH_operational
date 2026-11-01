@@ -1,0 +1,43 @@
+# unit=ipcch-cp2-acled-post-1793495251347958680 start=2026-10-31T21:07:31-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/acled_baseline.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/acled-baseline-post.json
+Running as unit: ipcch-cp2-acled-post-1793495251347958680.service; invocation ID: e89223858542498c82e440c45eaf3463
+{
+ "head_generation": "1793494944270289",
+ "head_version": 2,
+ "rows": 242811,
+ "min_week": "2016-12-31",
+ "max_week": "2026-10-17",
+ "rows_inside_interval": 470,
+ "regions": 12,
+ "region_weeks": 5940,
+ "coverage_records": 2
+}
+	Command being timed: "/usr/bin/env PYTHONPATH=/mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/cloud_pipeline GOOGLE_CLOUD_PROJECT=feisty-flames-511718-d4 /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/acled_baseline.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/acled-baseline-post.json"
+	User time (seconds): 3.23
+	System time (seconds): 0.12
+	Percent of CPU this job got: 68%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.92
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 307836
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 38456
+	Voluntary context switches: 3561
+	Involuntary context switches: 11
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 4.996s
+CPU time consumed: 3.373s
+# end=2026-10-31T21:07:36-04:00 launcher_rc=0 child_exit=0

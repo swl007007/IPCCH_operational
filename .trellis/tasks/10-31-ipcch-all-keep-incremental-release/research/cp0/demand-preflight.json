@@ -1,0 +1,316 @@
+{
+ "M": "2026-11",
+ "O": "2026-09",
+ "climate": {
+  "monthly": {
+   "cdd": {
+    "saved_last": "2026-08",
+    "sources": [
+     "chirps",
+     "persiann",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "edd": {
+    "saved_last": "2026-08",
+    "sources": [
+     "cpc",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "evi_anom": {
+    "saved_last": "2026-08",
+    "sources": [
+     "terra",
+     "aqua"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "gdd": {
+    "saved_last": "2026-08",
+    "sources": [
+     "cpc",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "hot_days_p95": {
+    "saved_last": "2026-08",
+    "sources": [
+     "cpc",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "prcp_anom": {
+    "saved_last": "2026-08",
+    "sources": [
+     "chirps",
+     "persiann",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "prcp_z": {
+    "saved_last": "2026-08",
+    "sources": [
+     "chirps",
+     "persiann",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "rainy_days": {
+    "saved_last": "2026-08",
+    "sources": [
+     "chirps",
+     "persiann",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "sm_z": {
+    "saved_last": "2026-08",
+    "sources": [
+     "era5land",
+     "gldas21"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "spei03": {
+    "saved_last": "2026-08",
+    "sources": [
+     "chirps",
+     "persiann",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "spi03": {
+    "saved_last": "2026-08",
+    "sources": [
+     "chirps",
+     "persiann",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "tmax_anom": {
+    "saved_last": "2026-08",
+    "sources": [
+     "cpc",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   },
+   "tmean_anom": {
+    "saved_last": "2026-08",
+    "sources": [
+     "cpc",
+     "era5land"
+    ],
+    "to_update": [
+     "2026-09"
+    ]
+   }
+  },
+  "seasonal": {
+   "cdd": [],
+   "edd": [],
+   "evi_anom": [],
+   "gdd": [],
+   "hot_days_p95": [],
+   "prcp_anom": [],
+   "prcp_z": [],
+   "rainy_days": [],
+   "sm_z": [],
+   "spei03": [],
+   "spi03": [],
+   "tmax_anom": [],
+   "tmean_anom": []
+  }
+ },
+ "gpp": {
+  "candidates": [
+   "2026-01",
+   "2026-02",
+   "2026-03",
+   "2026-04",
+   "2026-05",
+   "2026-06",
+   "2026-07",
+   "2026-08",
+   "2026-09"
+  ],
+  "history_last_month": "2025-12",
+  "ledger_status": {
+   "2026-01": "unpublished",
+   "2026-02": "unpublished",
+   "2026-03": "unpublished",
+   "2026-04": "unpublished",
+   "2026-05": "unpublished",
+   "2026-06": "unpublished",
+   "2026-07": "unpublished",
+   "2026-08": "unpublished"
+  },
+  "url_template": "https://data.globalecology.unh.edu/data/GOSIF-GPP_v3/Monthly/Mean/GOSIF_GPP_{year}.M{month:02d}_Mean.tif.gz"
+ },
+ "nightlight": {
+  "candidates": [
+   "2026-09"
+  ],
+  "history_last_month": "2026-08"
+ },
+ "roster": 6226,
+ "season_windows": {
+  "extension": null,
+  "rows": 149424,
+  "through": 2026
+ },
+ "table_producer": {
+  "demand": {
+   "monthly": {
+    "evi_anom": [
+     "2026-09"
+    ],
+    "spei03": [
+     "2026-09"
+    ],
+    "spi03": [
+     "2026-09"
+    ]
+   },
+   "seasonal": {
+    "evi_anom": [],
+    "spei03": [],
+    "spi03": []
+   }
+  },
+  "destination_pattern": "projects/feisty-flames-511718-d4/assets/<job.name>__M202611_<run_id>_<sha256(run_id)[:8]>",
+  "job_count": 7,
+  "jobs": [
+   {
+    "key": "aqua",
+    "kind": "vi",
+    "name": "S2E3_VI_CURRENT_ADMIN_AQUA_Y2026_CMG_V3",
+    "years": [
+     2026,
+     2026
+    ]
+   },
+   {
+    "key": "terra",
+    "kind": "vi",
+    "name": "S2E3_VI_CURRENT_ADMIN_TERRA_Y2026_CMG_V3",
+    "years": [
+     2026,
+     2026
+    ]
+   },
+   {
+    "key": "chirps",
+    "kind": "prcp",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_CHIRPS_Y2020_2026_V3",
+    "years": [
+     2020,
+     2026
+    ]
+   },
+   {
+    "key": "persiann",
+    "kind": "prcp",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_PERSIANN_Y2020_2026_V3",
+    "years": [
+     2020,
+     2026
+    ]
+   },
+   {
+    "key": "era5land",
+    "kind": "prcp",
+    "name": "S2C3_DROUGHT_ADMIN_PRCP_ERA5LAND_Y2020_2026_V3",
+    "years": [
+     2020,
+     2026
+    ]
+   },
+   {
+    "key": null,
+    "kind": "et0",
+    "name": "S2C3_DROUGHT_ADMIN_ET0_FAO56_Y2020_2026_V3",
+    "years": [
+     2020,
+     2026
+    ]
+   },
+   {
+    "key": null,
+    "kind": "patch32",
+    "name": "S2C3_ET0_PATCH32_Y2020_2026_V2",
+    "years": [
+     2020,
+     2026
+    ]
+   }
+  ],
+  "output_version_example": "M202611_ipcch-real-0000000000000000_8815e01e",
+  "producer_asset_root": "projects/feisty-flames-511718-d4/assets/",
+  "year_chunks": [
+   [
+    1990,
+    1995
+   ],
+   [
+    1996,
+    2001
+   ],
+   [
+    2002,
+    2007
+   ],
+   [
+    2008,
+    2013
+   ],
+   [
+    2014,
+    2019
+   ],
+   [
+    2020,
+    2026
+   ]
+  ]
+ },
+ "targets": [
+  "2026-11",
+  "2027-05",
+  "2027-11"
+ ]
+}

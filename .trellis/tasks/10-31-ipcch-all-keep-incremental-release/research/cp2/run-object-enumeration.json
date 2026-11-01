@@ -1,0 +1,45 @@
+{
+ "food-crisis-test-ipcch-data/ipcch-v2/real/feature_batches/": [],
+ "food-crisis-test-ipcch-data/deliveries/ipcch-real-9eee4305db494a35": [],
+ "food-crisis-test-ipcch-data/monthly-staging/releases/ipcch-real-9eee4305db494a35": [],
+ "food-crisis-test-ipcch-data/ipcch-v2/exports/": [],
+ "food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35": [
+  [
+   "inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv",
+   74134,
+   1793494819786240,
+   "2026-11-01T01:00:19Z"
+  ]
+ ],
+ "food-crisis-test-ipcch-data/runs/ipcch-real-9eee4305db494a35": [
+  [
+   "runs/ipcch-real-9eee4305db494a35/v2_reservation.json",
+   467,
+   1793494929977905,
+   "2026-11-01T01:02:09Z"
+  ],
+  [
+   "runs/ipcch-real-9eee4305db494a35/v2_run_status.json",
+   6640,
+   1793495015392318,
+   "2026-11-01T01:03:35Z"
+  ]
+ ],
+ "food-crisis-test-ipcch-data/dispatch/ipcch-real-9eee4305db494a35": [
+  [
+   "dispatch/ipcch-real-9eee4305db494a35/claim.json",
+   141,
+   1793494822836740,
+   "2026-11-01T01:00:22Z"
+  ]
+ ],
+ "food-crisis-test-ipcch-data/candidates/ipcch-real-9eee4305db494a35": [],
+ "food-crisis-test-ipcch-requests/requests/ipcch-real-9eee4305db494a35": [
+  [
+   "requests/ipcch-real-9eee4305db494a35/run_manifest.json",
+   3047,
+   1793494821542586,
+   "2026-11-01T01:00:21Z"
+  ]
+ ]
+}

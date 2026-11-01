@@ -1,0 +1,11 @@
+{
+  "at_utc": "2026-11-01T01:16:05.170468+00:00",
+  "action": "remove_verified_orphan_index_lock",
+  "path": "/mnt/c/users/swl00/ifpri dropbox/weilun shi/ipcch_monthly_operational/.git/index.lock",
+  "size": 0,
+  "mtime_utc": "2026-11-01T00:44:46.432744+00:00",
+  "age_seconds": 1878.7397837638855,
+  "linux_git_processes": [],
+  "fuser_exit": 1,
+  "windows_git_tasklist": "信息: 没有运行的任务匹配指定标准。"
+}

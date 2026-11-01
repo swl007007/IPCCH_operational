@@ -1,0 +1,65 @@
+# unit=ipcch-cp2-failure-source-checks-1793495270124927735 start=2026-10-31T21:07:50-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/failure_source_checks.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/../cp1/inventory-pre-cp1-real.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/inventory-post-failure-real.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/../cp0/acled-baseline-pre.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/acled-baseline-post.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/../cp0/expected-acled-interval.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/failure-source-checks.json
+Running as unit: ipcch-cp2-failure-source-checks-1793495270124927735.service; invocation ID: a9d0b467f61749cf905bec5acff5f33e
+{
+ "head_changes": {
+  "acceptance_manifest": {
+   "pre": 3,
+   "post": 4,
+   "post_record_action": null
+  },
+  "acled_agg_weekly": {
+   "pre": 1,
+   "post": 2,
+   "post_record_action": null
+  }
+ },
+ "new_tables": [],
+ "kept_ten_unchanged": true,
+ "acled_checks": {
+  "outside_preserved": true,
+  "no_new_keys_outside": true,
+  "expected_covers_only_interval": true,
+  "interval_equals_pinned_export": true
+ },
+ "acled_pin": {
+  "source_sha256": true,
+  "interval": true,
+  "regions": true,
+  "coverage_record_appended": true
+ },
+ "interval_rows": 470,
+ "rows": {
+  "pre": 242341,
+  "post": 242811
+ }
+}
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/failure_source_checks.py /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/../cp1/inventory-pre-cp1-real.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/inventory-post-failure-real.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/../cp0/acled-baseline-pre.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/acled-baseline-post.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/../cp0/expected-acled-interval.json /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp2/failure-source-checks.json"
+	User time (seconds): 0.12
+	System time (seconds): 0.04
+	Percent of CPU this job got: 73%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.22
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 61524
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 10718
+	Voluntary context switches: 441
+	Involuntary context switches: 6
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 371ms
+CPU time consumed: 277ms
+# end=2026-10-31T21:07:50-04:00 launcher_rc=0 child_exit=0

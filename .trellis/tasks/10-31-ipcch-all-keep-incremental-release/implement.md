@@ -20,18 +20,18 @@ Status: **Approved by the user's goal execution protocol and cloud preauthorizat
   session 6a490ae1-ee00-43f9-bdfc-c887c9816c09). The NEW user
   protocol explicitly forbids Trellis Audit for this task, superseding wrappers;
   use native task.py start/archive and do not mutate the controller's old state.
-- [ ] Commit the approved plan through the native workflow, preserve
+- [x] Commit the approved plan through the native workflow (17fe954), preserve
   unrelated changes, then enter execution and maintain the progress ledger.
 
 ## P1 — Execution preflight (read-only)
 
-- [ ] Verify config/initialized state, job/Workflow/image, envelope/package/roster,
+- [x] Verify config/initialized state, job/Workflow/image, envelope/package/roster,
   active holds and active executions; capture fresh current/release/member refs.
-- [ ] Inventory retained state and source coverage; ensure kept histories exist.
-- [ ] Calculate actual M/O and nonempty unsaved demand with existing planning
+- [x] Inventory retained state and source coverage; ensure kept histories exist.
+- [x] Calculate actual M/O and nonempty unsaved demand with existing planning
   helpers. Record exact expected families/jobs and bounded resource/cost scope.
-- [ ] Stop if there is no increment; do not delete history or fabricate a month.
-- [ ] Recheck required runtime access as needed. The prior access probe does not
+- [x] Stop if there is no increment; do not delete history or fabricate a month.
+- [x] Recheck required runtime access as needed. The prior access probe does not
   prove feisty destination creation or live export/readback.
 - [x] Prepare a separately pinned CSV limited to the approved complete-week
   interval; preserve the raw copy, excluded-overlap evidence and selected regions.
@@ -54,21 +54,21 @@ Rehash both before execute; preview has not frozen M or any cloud reference.
 
 ## P2 — One bounded submission
 
-- [ ] Record concrete command/API effects and live limits. Last accepted monthly
+- [x] Record concrete command/API effects and live limits. Last accepted monthly
   limits were 8 CPU / 32 GiB / 14400 s / 0 task retries; verify without expanding.
   Approved execution-scope operations do not require repeated per-call consent.
-- [ ] Add --execute once; persist frozen choices/M/O, run ID, request refs,
+- [x] Add --execute once; persist frozen choices/M/O, run ID, request refs,
   reservation, deadline and cloud execution identity.
-- [ ] Observe durable status within the budget; preserve EE request/operation/task
+- [x] Observe durable status within the budget; preserve EE request/operation/task
   IDs, destinations, completed siblings, failures and cleanup state.
-- [ ] For response loss, inspect durable state before same-ID submission resume.
+- [x] For response loss, inspect durable state before same-ID submission resume.
   Do not create another monthly run automatically.
-- [ ] On failure stop the attempt, inventory partial changes, reconcile current
+- [x] On failure stop the attempt, inventory partial changes, reconcile current
   and report. Do not silently deploy a fix or submit a fresh retry.
 
 ## P3 — Acceptance
 
-- [ ] Save final execution/status/logs and post-run inventories.
+- [x] Save final execution/status/logs and post-run inventories.
 - [ ] Reuse parameterized generic readback for actual M/O, 527 features, 6,226
   areas and all three targets; verify predecessor and full FEWS-member equality.
 - [ ] Cross-check nonempty production and the complete consumed-ID/version/batch/

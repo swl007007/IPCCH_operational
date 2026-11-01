@@ -1,0 +1,3831 @@
+[
+  {
+    "insertId": "6ae68fe7000654765ed325be",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "{",
+    "timestamp": "2026-11-01T01:03:35.414838Z"
+  },
+  {
+    "insertId": "6ae68fe700065497c5a16761",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"deadline_utc\": \"2026-11-01T05:02:09Z\",",
+    "timestamp": "2026-11-01T01:03:35.414871Z"
+  },
+  {
+    "insertId": "6ae68fe7000654a0b1da2b2c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"derived\": {",
+    "timestamp": "2026-11-01T01:03:35.414880Z"
+  },
+  {
+    "insertId": "6ae68fe7000654a84f88d4c5",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    \"execution_month\": \"2026-11\",",
+    "timestamp": "2026-11-01T01:03:35.414888Z"
+  },
+  {
+    "insertId": "6ae68fe7000654af9cfbffbd",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    \"feature_origin\": \"2026-09\",",
+    "timestamp": "2026-11-01T01:03:35.414895Z"
+  },
+  {
+    "insertId": "6ae68fe7000654b56635027e",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    \"horizons\": [",
+    "timestamp": "2026-11-01T01:03:35.414901Z"
+  },
+  {
+    "insertId": "6ae68fe7000654bbd75a2b9c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      {",
+    "timestamp": "2026-11-01T01:03:35.414907Z"
+  },
+  {
+    "insertId": "6ae68fe7000654c23e9869c2",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"model_horizon_months\": 2,",
+    "timestamp": "2026-11-01T01:03:35.414914Z"
+  },
+  {
+    "insertId": "6ae68fe7000654c8d0051d09",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"public_lead_months\": 0,",
+    "timestamp": "2026-11-01T01:03:35.414920Z"
+  },
+  {
+    "insertId": "6ae68fe7000654cf12fde642",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"target_month\": \"2026-11\"",
+    "timestamp": "2026-11-01T01:03:35.414927Z"
+  },
+  {
+    "insertId": "6ae68fe7000654d40f81210b",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      },",
+    "timestamp": "2026-11-01T01:03:35.414932Z"
+  },
+  {
+    "insertId": "6ae68fe7000654d978fe4287",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      {",
+    "timestamp": "2026-11-01T01:03:35.414937Z"
+  },
+  {
+    "insertId": "6ae68fe7000654df2b31d68c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.422382715Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"model_horizon_months\": 8,",
+    "timestamp": "2026-11-01T01:03:35.414943Z"
+  },
+  {
+    "insertId": "6ae68fe7000654e6a0164000",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"public_lead_months\": 6,",
+    "timestamp": "2026-11-01T01:03:35.414950Z"
+  },
+  {
+    "insertId": "6ae68fe7000654ec103c7864",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"target_month\": \"2027-05\"",
+    "timestamp": "2026-11-01T01:03:35.414956Z"
+  },
+  {
+    "insertId": "6ae68fe7000654f288401c0b",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      },",
+    "timestamp": "2026-11-01T01:03:35.414962Z"
+  },
+  {
+    "insertId": "6ae68fe7000654f8b63000d0",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      {",
+    "timestamp": "2026-11-01T01:03:35.414968Z"
+  },
+  {
+    "insertId": "6ae68fe7000654ff86498f9d",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"model_horizon_months\": 14,",
+    "timestamp": "2026-11-01T01:03:35.414975Z"
+  },
+  {
+    "insertId": "6ae68fe70006550565c6fa8c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"public_lead_months\": 12,",
+    "timestamp": "2026-11-01T01:03:35.414981Z"
+  },
+  {
+    "insertId": "6ae68fe70006550b07b630fc",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"target_month\": \"2027-11\"",
+    "timestamp": "2026-11-01T01:03:35.414987Z"
+  },
+  {
+    "insertId": "6ae68fe700065510b049c964",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      }",
+    "timestamp": "2026-11-01T01:03:35.414992Z"
+  },
+  {
+    "insertId": "6ae68fe700065516622820ec",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    ]",
+    "timestamp": "2026-11-01T01:03:35.414998Z"
+  },
+  {
+    "insertId": "6ae68fe70006551c7a8e5e86",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  },",
+    "timestamp": "2026-11-01T01:03:35.415004Z"
+  },
+  {
+    "insertId": "6ae68fe700065522d14f842c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"lock_release_problems\": [],",
+    "timestamp": "2026-11-01T01:03:35.415010Z"
+  },
+  {
+    "insertId": "6ae68fe70006552877b0667d",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"mode\": \"real\",",
+    "timestamp": "2026-11-01T01:03:35.415016Z"
+  },
+  {
+    "insertId": "6ae68fe70006552ef30c9cff",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"run_id\": \"ipcch-real-9eee4305db494a35\",",
+    "timestamp": "2026-11-01T01:03:35.415022Z"
+  },
+  {
+    "insertId": "6ae68fe70006553417ee48a8",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"status\": \"failed\",",
+    "timestamp": "2026-11-01T01:03:35.415028Z"
+  },
+  {
+    "insertId": "6ae68fe700065539ce9ce677",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"status_uri\": \"gs://food-crisis-test-ipcch-data/runs/ipcch-real-9eee4305db494a35/v2_run_status.json\",",
+    "timestamp": "2026-11-01T01:03:35.415033Z"
+  },
+  {
+    "insertId": "6ae68fe70006553eeea1cc7a",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"systems\": {",
+    "timestamp": "2026-11-01T01:03:35.415038Z"
+  },
+  {
+    "insertId": "6ae68fe7000655431a80c77a",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    \"ipcch\": {",
+    "timestamp": "2026-11-01T01:03:35.415043Z"
+  },
+  {
+    "insertId": "6ae68fe70006554908431283",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"failed_operation\": \"generation\",",
+    "timestamp": "2026-11-01T01:03:35.415049Z"
+  },
+  {
+    "insertId": "6ae68fe7000655622f437081",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"reason\": \"IpcchRunFailure: IPCCH generation failed: GenerationFailure: IPCCH generation stopped at climate: EETransportError: cannot list projects/feisty-flames-511718-d4/assets to resolve an ambiguous asset lookup (EEException: Asset \\\"projects/feisty-flames-511718-d4/assets\\\" not found.); not treated as absent\",",
+    "timestamp": "2026-11-01T01:03:35.415074Z"
+  },
+  {
+    "insertId": "6ae68fe700065568d0d5c971",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"report\": {",
+    "timestamp": "2026-11-01T01:03:35.415080Z"
+  },
+  {
+    "insertId": "6ae68fe70006556d8db481aa",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"execution_month\": \"2026-11\",",
+    "timestamp": "2026-11-01T01:03:35.415085Z"
+  },
+  {
+    "insertId": "6ae68fe7000655724c1bd223",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"failed\": {",
+    "timestamp": "2026-11-01T01:03:35.415090Z"
+  },
+  {
+    "insertId": "6ae68fe70006557c928bff44",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          \"error\": \"EETransportError: cannot list projects/feisty-flames-511718-d4/assets to resolve an ambiguous asset lookup (EEException: Asset \\\"projects/feisty-flames-511718-d4/assets\\\" not found.); not treated as absent\",",
+    "timestamp": "2026-11-01T01:03:35.415100Z"
+  },
+  {
+    "insertId": "6ae68fe700065581d3ff864c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          \"step\": \"climate\"",
+    "timestamp": "2026-11-01T01:03:35.415105Z"
+  },
+  {
+    "insertId": "6ae68fe700065586d9194240",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        },",
+    "timestamp": "2026-11-01T01:03:35.415110Z"
+  },
+  {
+    "insertId": "6ae68fe70006558c462e8e81",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"feature_origin\": \"2026-09\",",
+    "timestamp": "2026-11-01T01:03:35.415116Z"
+  },
+  {
+    "insertId": "6ae68fe700065591c5051ad2",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"mode\": \"real\",",
+    "timestamp": "2026-11-01T01:03:35.415121Z"
+  },
+  {
+    "insertId": "6ae68fe7000655967102df2c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"run_id\": \"ipcch-real-9eee4305db494a35\",",
+    "timestamp": "2026-11-01T01:03:35.415126Z"
+  },
+  {
+    "insertId": "6ae68fe70006559bc95a0e92",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"runtime_acceptance\": [",
+    "timestamp": "2026-11-01T01:03:35.415131Z"
+  },
+  {
+    "insertId": "6ae68fe7000655a190e3e20d",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          \"gs://food-crisis-test-ipcch-data/ipcch-v2/real/acled_agg_weekly/versions/000002-2fdcb235ebc04160a7aa463a8367a494.csv\"",
+    "timestamp": "2026-11-01T01:03:35.415137Z"
+  },
+  {
+    "insertId": "6ae68fe7000655a6f96420de",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        ],",
+    "timestamp": "2026-11-01T01:03:35.415142Z"
+  },
+  {
+    "insertId": "6ae68fe7000655ab50164ed7",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"steps\": {",
+    "timestamp": "2026-11-01T01:03:35.415147Z"
+  },
+  {
+    "insertId": "6ae68fe7000655b03242ebf8",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          \"acled\": {",
+    "timestamp": "2026-11-01T01:03:35.415152Z"
+  },
+  {
+    "insertId": "6ae68fe7000655b6a2bc34f7",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"action\": \"refresh\",",
+    "timestamp": "2026-11-01T01:03:35.415158Z"
+  },
+  {
+    "insertId": "6ae68fe7000655bc0ab33b38",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"coverage_end\": \"2026-09\",",
+    "timestamp": "2026-11-01T01:03:35.415164Z"
+  },
+  {
+    "insertId": "6ae68fe7000655c189c4dfdb",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"interval\": [",
+    "timestamp": "2026-11-01T01:03:35.415169Z"
+  },
+  {
+    "insertId": "6ae68fe7000655c5b432bb70",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"2026-10-17\",",
+    "timestamp": "2026-11-01T01:03:35.415173Z"
+  },
+  {
+    "insertId": "6ae68fe7000655cbf6dc9afc",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"2026-10-23\"",
+    "timestamp": "2026-11-01T01:03:35.415179Z"
+  },
+  {
+    "insertId": "6ae68fe7000655cfbcc230f6",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            ],",
+    "timestamp": "2026-11-01T01:03:35.415183Z"
+  },
+  {
+    "insertId": "6ae68fe7000655d5276ca431",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"method\": \"regional-aggregate converter (research build_acled_agg.py conventions; delivered fixed tables)\",",
+    "timestamp": "2026-11-01T01:03:35.415189Z"
+  },
+  {
+    "insertId": "6ae68fe7000655d924c4c030",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"regions\": [",
+    "timestamp": "2026-11-01T01:03:35.415193Z"
+  },
+  {
+    "insertId": "6ae68fe7000655df134cc5d3",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Caribbean\",",
+    "timestamp": "2026-11-01T01:03:35.415199Z"
+  },
+  {
+    "insertId": "6ae68fe7000655e523961a62",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Caucasus and Central Asia\",",
+    "timestamp": "2026-11-01T01:03:35.415205Z"
+  },
+  {
+    "insertId": "6ae68fe7000655ea2890a6b3",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Central America\",",
+    "timestamp": "2026-11-01T01:03:35.415210Z"
+  },
+  {
+    "insertId": "6ae68fe7000655ef7592cb3a",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"East Asia\",",
+    "timestamp": "2026-11-01T01:03:35.415215Z"
+  },
+  {
+    "insertId": "6ae68fe7000655f3521fa00b",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Eastern Africa\",",
+    "timestamp": "2026-11-01T01:03:35.415219Z"
+  },
+  {
+    "insertId": "6ae68fe7000655f8e1f02159",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Europe\",",
+    "timestamp": "2026-11-01T01:03:35.415224Z"
+  },
+  {
+    "insertId": "6ae68fe7000655fe91c72775",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"International Waters\",",
+    "timestamp": "2026-11-01T01:03:35.415230Z"
+  },
+  {
+    "insertId": "6ae68fe700065603c2fbe705",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Middle Africa\",",
+    "timestamp": "2026-11-01T01:03:35.415235Z"
+  },
+  {
+    "insertId": "6ae68fe70006560acad16faf",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Middle East\",",
+    "timestamp": "2026-11-01T01:03:35.415242Z"
+  },
+  {
+    "insertId": "6ae68fe70006560f4f13fe5c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"North America\",",
+    "timestamp": "2026-11-01T01:03:35.415247Z"
+  },
+  {
+    "insertId": "6ae68fe70006561544df2463",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Northern Africa\",",
+    "timestamp": "2026-11-01T01:03:35.415253Z"
+  },
+  {
+    "insertId": "6ae68fe70006561a038c94ea",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Oceania\",",
+    "timestamp": "2026-11-01T01:03:35.415258Z"
+  },
+  {
+    "insertId": "6ae68fe700065621b298945a",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"South America\",",
+    "timestamp": "2026-11-01T01:03:35.415265Z"
+  },
+  {
+    "insertId": "6ae68fe700065626167f65bf",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"South Asia\",",
+    "timestamp": "2026-11-01T01:03:35.415270Z"
+  },
+  {
+    "insertId": "6ae68fe70006562cd0b71074",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Southeast Asia\",",
+    "timestamp": "2026-11-01T01:03:35.415276Z"
+  },
+  {
+    "insertId": "6ae68fe7000656323e02269c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Southern Africa\",",
+    "timestamp": "2026-11-01T01:03:35.415282Z"
+  },
+  {
+    "insertId": "6ae68fe700065637c0aef287",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"Western Africa\"",
+    "timestamp": "2026-11-01T01:03:35.415287Z"
+  },
+  {
+    "insertId": "6ae68fe70006563b2d914cf4",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            ],",
+    "timestamp": "2026-11-01T01:03:35.415291Z"
+  },
+  {
+    "insertId": "6ae68fe700065640ac28641d",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"source\": {",
+    "timestamp": "2026-11-01T01:03:35.415296Z"
+  },
+  {
+    "insertId": "6ae68fe70006564671c9d1a3",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"generation\": \"1793494819786240\",",
+    "timestamp": "2026-11-01T01:03:35.415302Z"
+  },
+  {
+    "insertId": "6ae68fe70006564e7c317eba",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"sha256\": \"e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a\",",
+    "timestamp": "2026-11-01T01:03:35.415310Z"
+  },
+  {
+    "insertId": "6ae68fe700065654956cfe04",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"uri\": \"gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv\"",
+    "timestamp": "2026-11-01T01:03:35.415316Z"
+  },
+  {
+    "insertId": "6ae68fe7000656591a9cbed0",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            }",
+    "timestamp": "2026-11-01T01:03:35.415321Z"
+  },
+  {
+    "insertId": "6ae68fe70006565f5d6f9cf9",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          },",
+    "timestamp": "2026-11-01T01:03:35.415327Z"
+  },
+  {
+    "insertId": "6ae68fe700065665e013262f",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          \"acled_tables\": {",
+    "timestamp": "2026-11-01T01:03:35.415333Z"
+  },
+  {
+    "insertId": "6ae68fe70006566a5ed748f3",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"mapped_admin1\": 1302,",
+    "timestamp": "2026-11-01T01:03:35.415338Z"
+  },
+  {
+    "insertId": "6ae68fe7000656705d16c7b5",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"polygons\": 1465",
+    "timestamp": "2026-11-01T01:03:35.415344Z"
+  },
+  {
+    "insertId": "6ae68fe700065675a85c6b4e",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          },",
+    "timestamp": "2026-11-01T01:03:35.415349Z"
+  },
+  {
+    "insertId": "6ae68fe70006567ac8c4ed0b",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          \"history_snapshot\": {",
+    "timestamp": "2026-11-01T01:03:35.415354Z"
+  },
+  {
+    "insertId": "6ae68fe700065680d1cc8016",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415360Z"
+  },
+  {
+    "insertId": "6ae68fe700065685c086af7b",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"preparation_cutoff\": \"2026-10\"",
+    "timestamp": "2026-11-01T01:03:35.415365Z"
+  },
+  {
+    "insertId": "6ae68fe70006568a623d4bb8",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          },",
+    "timestamp": "2026-11-01T01:03:35.415370Z"
+  },
+  {
+    "insertId": "6ae68fe70006568ed5115720",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          \"research_inputs\": {",
+    "timestamp": "2026-11-01T01:03:35.415374Z"
+  },
+  {
+    "insertId": "6ae68fe7000656957a9c5095",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"bbg_global_food\": {",
+    "timestamp": "2026-11-01T01:03:35.415381Z"
+  },
+  {
+    "insertId": "6ae68fe70006569972b422ad",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415385Z"
+  },
+  {
+    "insertId": "6ae68fe70006569eb558f76a",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"coverage_end\": \"2026-09\",",
+    "timestamp": "2026-11-01T01:03:35.415390Z"
+  },
+  {
+    "insertId": "6ae68fe7000656a401b9c02c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"method\": \"research-prepared retained input (delivered history / declared-interval refresh)\"",
+    "timestamp": "2026-11-01T01:03:35.415396Z"
+  },
+  {
+    "insertId": "6ae68fe7000656a9c66e16e3",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            },",
+    "timestamp": "2026-11-01T01:03:35.415401Z"
+  },
+  {
+    "insertId": "6ae68fe7000656bd920f35f7",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"bbg_oilgas\": {",
+    "timestamp": "2026-11-01T01:03:35.415421Z"
+  },
+  {
+    "insertId": "6ae68fe7000656c30b5e26e7",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415427Z"
+  },
+  {
+    "insertId": "6ae68fe7000656c811ab9c91",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"coverage_end\": \"2026-09\",",
+    "timestamp": "2026-11-01T01:03:35.415432Z"
+  },
+  {
+    "insertId": "6ae68fe7000656ce798209b8",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"method\": \"research-prepared retained input (delivered history / declared-interval refresh)\"",
+    "timestamp": "2026-11-01T01:03:35.415438Z"
+  },
+  {
+    "insertId": "6ae68fe7000656d3afe934d5",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            },",
+    "timestamp": "2026-11-01T01:03:35.415443Z"
+  },
+  {
+    "insertId": "6ae68fe7000656d811a0b84e",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"bbg_soybean_oil\": {",
+    "timestamp": "2026-11-01T01:03:35.415448Z"
+  },
+  {
+    "insertId": "6ae68fe7000656ddb208cb4f",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415453Z"
+  },
+  {
+    "insertId": "6ae68fe7000656e35dd786a0",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"coverage_end\": \"2026-07\",",
+    "timestamp": "2026-11-01T01:03:35.415459Z"
+  },
+  {
+    "insertId": "6ae68fe7000656e868f5362f",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"method\": \"research-prepared retained input (delivered history / declared-interval refresh)\"",
+    "timestamp": "2026-11-01T01:03:35.415464Z"
+  },
+  {
+    "insertId": "6ae68fe7000656ec0476ce22",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            },",
+    "timestamp": "2026-11-01T01:03:35.415468Z"
+  },
+  {
+    "insertId": "6ae68fe7000656f2de66509d",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"bbg_staple_food\": {",
+    "timestamp": "2026-11-01T01:03:35.415474Z"
+  },
+  {
+    "insertId": "6ae68fe7000656f71ea0da5c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415479Z"
+  },
+  {
+    "insertId": "6ae68fe7000656fc5c7f4622",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"coverage_end\": \"2026-09\",",
+    "timestamp": "2026-11-01T01:03:35.415484Z"
+  },
+  {
+    "insertId": "6ae68fe7000657018e7a7b78",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"method\": \"research-prepared retained input (delivered history / declared-interval refresh)\"",
+    "timestamp": "2026-11-01T01:03:35.415489Z"
+  },
+  {
+    "insertId": "6ae68fe7000657065c8d8c07",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            },",
+    "timestamp": "2026-11-01T01:03:35.415494Z"
+  },
+  {
+    "insertId": "6ae68fe70006570a57de271e",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"food_price_index_WB\": {",
+    "timestamp": "2026-11-01T01:03:35.415498Z"
+  },
+  {
+    "insertId": "6ae68fe700065710f08ba058",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415504Z"
+  },
+  {
+    "insertId": "6ae68fe700065716d12dd1e2",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"coverage_end\": \"2026-10\",",
+    "timestamp": "2026-11-01T01:03:35.415510Z"
+  },
+  {
+    "insertId": "6ae68fe70006571cb1a9d0fa",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"method\": \"research-prepared retained input (delivered history / declared-interval refresh)\"",
+    "timestamp": "2026-11-01T01:03:35.415516Z"
+  },
+  {
+    "insertId": "6ae68fe700065721f9ae681f",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            },",
+    "timestamp": "2026-11-01T01:03:35.415521Z"
+  },
+  {
+    "insertId": "6ae68fe7000657254a90c35e",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"idp_local\": {",
+    "timestamp": "2026-11-01T01:03:35.415525Z"
+  },
+  {
+    "insertId": "6ae68fe70006572beb015c4f",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415531Z"
+  },
+  {
+    "insertId": "6ae68fe7000657305b4a63f2",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"coverage_end\": \"2026-09\",",
+    "timestamp": "2026-11-01T01:03:35.415536Z"
+  },
+  {
+    "insertId": "6ae68fe700065735cc8d7a35",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"method\": \"research-prepared retained input (delivered history / declared-interval refresh)\"",
+    "timestamp": "2026-11-01T01:03:35.415541Z"
+  },
+  {
+    "insertId": "6ae68fe70006573aaf679c97",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            },",
+    "timestamp": "2026-11-01T01:03:35.415546Z"
+  },
+  {
+    "insertId": "6ae68fe7000657406d4435f7",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"idp_national\": {",
+    "timestamp": "2026-11-01T01:03:35.415552Z"
+  },
+  {
+    "insertId": "6ae68fe700065745ac569129",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415557Z"
+  },
+  {
+    "insertId": "6ae68fe70006574a60078a36",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"coverage_end\": \"2026-09\"",
+    "timestamp": "2026-11-01T01:03:35.415562Z"
+  },
+  {
+    "insertId": "6ae68fe700065750f3ff0c47",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            },",
+    "timestamp": "2026-11-01T01:03:35.415568Z"
+  },
+  {
+    "insertId": "6ae68fe7000657541fc19f4f",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"nino34_anom\": {",
+    "timestamp": "2026-11-01T01:03:35.415572Z"
+  },
+  {
+    "insertId": "6ae68fe70006575cc2446483",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415580Z"
+  },
+  {
+    "insertId": "6ae68fe700065761cde35277",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"coverage_end\": \"2026-09\",",
+    "timestamp": "2026-11-01T01:03:35.415585Z"
+  },
+  {
+    "insertId": "6ae68fe700065767f6c37373",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "              \"method\": \"research-prepared retained input (delivered history / declared-interval refresh)\"",
+    "timestamp": "2026-11-01T01:03:35.415591Z"
+  },
+  {
+    "insertId": "6ae68fe70006576c2e36bfa7",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            }",
+    "timestamp": "2026-11-01T01:03:35.415596Z"
+  },
+  {
+    "insertId": "6ae68fe7000657703a546a2e",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          },",
+    "timestamp": "2026-11-01T01:03:35.415600Z"
+  },
+  {
+    "insertId": "6ae68fe70006577512fb77e0",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          \"season_windows\": {",
+    "timestamp": "2026-11-01T01:03:35.415605Z"
+  },
+  {
+    "insertId": "6ae68fe70006577a12e2357e",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"rows\": 149424,",
+    "timestamp": "2026-11-01T01:03:35.415610Z"
+  },
+  {
+    "insertId": "6ae68fe70006577f9d357f43",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"through_season_year\": 2026",
+    "timestamp": "2026-11-01T01:03:35.415615Z"
+  },
+  {
+    "insertId": "6ae68fe70006578307cf47e2",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          },",
+    "timestamp": "2026-11-01T01:03:35.415619Z"
+  },
+  {
+    "insertId": "6ae68fe7000657886934dbe6",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          \"wfp\": {",
+    "timestamp": "2026-11-01T01:03:35.415624Z"
+  },
+  {
+    "insertId": "6ae68fe70006578df6630de0",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"action\": \"keep\",",
+    "timestamp": "2026-11-01T01:03:35.415629Z"
+  },
+  {
+    "insertId": "6ae68fe7000657925796bcc4",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"coverage_end\": \"2026-09\",",
+    "timestamp": "2026-11-01T01:03:35.415634Z"
+  },
+  {
+    "insertId": "6ae68fe700065798b0f143b4",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "            \"method\": \"research HDX food prices: 100 + YoY % change of local-currency staple prices (maize, sorghum, rice, wheat, vegetable oil), nearest market with data < 100 km, no fill (build_wfp_hdx.py)\"",
+    "timestamp": "2026-11-01T01:03:35.415640Z"
+  },
+  {
+    "insertId": "6ae68fe70006579c60b08209",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "          }",
+    "timestamp": "2026-11-01T01:03:35.415644Z"
+  },
+  {
+    "insertId": "6ae68fe7000657a1c20e2b0a",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        },",
+    "timestamp": "2026-11-01T01:03:35.415649Z"
+  },
+  {
+    "insertId": "6ae68fe7000657a6bc0b5fac",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"warnings\": []",
+    "timestamp": "2026-11-01T01:03:35.415654Z"
+  },
+  {
+    "insertId": "6ae68fe7000657b3970d54ef",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      },",
+    "timestamp": "2026-11-01T01:03:35.415667Z"
+  },
+  {
+    "insertId": "6ae68fe7000657b75c6385b4",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"result\": {",
+    "timestamp": "2026-11-01T01:03:35.415671Z"
+  },
+  {
+    "insertId": "6ae68fe7000657bc5325fec0",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"execution_month\": \"2026-11\",",
+    "timestamp": "2026-11-01T01:03:35.415676Z"
+  },
+  {
+    "insertId": "6ae68fe7000657c14a6bfb31",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "        \"mode\": \"real\"",
+    "timestamp": "2026-11-01T01:03:35.415681Z"
+  },
+  {
+    "insertId": "6ae68fe7000657c6ee6464e7",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      },",
+    "timestamp": "2026-11-01T01:03:35.415686Z"
+  },
+  {
+    "insertId": "6ae68fe7000657cb84086cf7",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"status\": \"failed\",",
+    "timestamp": "2026-11-01T01:03:35.415691Z"
+  },
+  {
+    "insertId": "6ae68fe7000657d12b40d87f",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"step\": \"climate\"",
+    "timestamp": "2026-11-01T01:03:35.415697Z"
+  },
+  {
+    "insertId": "6ae68fe7000657d52f048d76",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    }",
+    "timestamp": "2026-11-01T01:03:35.415701Z"
+  },
+  {
+    "insertId": "6ae68fe7000657d9fe8de219",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  },",
+    "timestamp": "2026-11-01T01:03:35.415705Z"
+  },
+  {
+    "insertId": "6ae68fe7000657dd7dc8ce65",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  \"verified_references\": [",
+    "timestamp": "2026-11-01T01:03:35.415709Z"
+  },
+  {
+    "insertId": "6ae68fe7000657e2b65c6c2b",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-11-01T01:03:35.415714Z"
+  },
+  {
+    "insertId": "6ae68fe7000657e723f37b5f",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"field\": \"runtime.environment_manifest\",",
+    "timestamp": "2026-11-01T01:03:35.415719Z"
+  },
+  {
+    "insertId": "6ae68fe7000657eccfe4c6e5",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"generation\": \"1793457280557418\",",
+    "timestamp": "2026-11-01T01:03:35.415724Z"
+  },
+  {
+    "insertId": "6ae68fe7000657f1c9c750ac",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"sha256\": \"2f0a7251e0436d900ddb91d0a783421b205094ffdb26ba52ccbdfb7f9bb31e3d\",",
+    "timestamp": "2026-11-01T01:03:35.415729Z"
+  },
+  {
+    "insertId": "6ae68fe7000657f702a2ab1a",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"uri\": \"gs://food-crisis-test-ipcch-data/inputs/v2/shared/requirements.lock.txt\"",
+    "timestamp": "2026-11-01T01:03:35.415735Z"
+  },
+  {
+    "insertId": "6ae68fe7000657fc17496c0d",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-11-01T01:03:35.415740Z"
+  },
+  {
+    "insertId": "6ae68fe70006580069a9cf3b",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-11-01T01:03:35.415744Z"
+  },
+  {
+    "insertId": "6ae68fe700065805ac78a96c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"field\": \"ipcch.model_combination.envelope\",",
+    "timestamp": "2026-11-01T01:03:35.415749Z"
+  },
+  {
+    "insertId": "6ae68fe70006580cf0ff75c5",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"generation\": \"1793457267476070\",",
+    "timestamp": "2026-11-01T01:03:35.415756Z"
+  },
+  {
+    "insertId": "6ae68fe7000658127ccb9b1d",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"sha256\": \"03b938427391aa15d3786377151e922bfdb97cc161f312b72ebed9f596c89596\",",
+    "timestamp": "2026-11-01T01:03:35.415762Z"
+  },
+  {
+    "insertId": "6ae68fe700065817d19d3fc9",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"uri\": \"gs://food-crisis-test-ipcch-data/inputs/v2/shared/ipcch-combination-envelope-v2-accepted.json\"",
+    "timestamp": "2026-11-01T01:03:35.415767Z"
+  },
+  {
+    "insertId": "6ae68fe70006581cead04d33",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-11-01T01:03:35.415772Z"
+  },
+  {
+    "insertId": "6ae68fe700065821eaa0751c",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-11-01T01:03:35.415777Z"
+  },
+  {
+    "insertId": "6ae68fe7000658269955c5ed",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"field\": \"ipcch.country_reference\",",
+    "timestamp": "2026-11-01T01:03:35.415782Z"
+  },
+  {
+    "insertId": "6ae68fe70006582b4c7f24e8",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"generation\": \"1793457294730935\",",
+    "timestamp": "2026-11-01T01:03:35.415787Z"
+  },
+  {
+    "insertId": "6ae68fe7000658303d4f63a4",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"sha256\": \"0823e418f0fe361db00b701f5737033ee860159e9d21ca2f6167cfe2d54e2f0b\",",
+    "timestamp": "2026-11-01T01:03:35.415792Z"
+  },
+  {
+    "insertId": "6ae68fe700065837f04a1fc4",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"uri\": \"gs://food-crisis-test-ipcch-data/inputs/v2/reference/country_reference.csv\"",
+    "timestamp": "2026-11-01T01:03:35.415799Z"
+  },
+  {
+    "insertId": "6ae68fe70006583c19971cf2",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    },",
+    "timestamp": "2026-11-01T01:03:35.415804Z"
+  },
+  {
+    "insertId": "6ae68fe7000658416f087803",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    {",
+    "timestamp": "2026-11-01T01:03:35.415809Z"
+  },
+  {
+    "insertId": "6ae68fe700065846521d8c9a",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"field\": \"ipcch.acled.file\",",
+    "timestamp": "2026-11-01T01:03:35.415814Z"
+  },
+  {
+    "insertId": "6ae68fe7000658529195ef38",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"generation\": \"1793494819786240\",",
+    "timestamp": "2026-11-01T01:03:35.415826Z"
+  },
+  {
+    "insertId": "6ae68fe700065857a61f930d",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"sha256\": \"e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a\",",
+    "timestamp": "2026-11-01T01:03:35.415831Z"
+  },
+  {
+    "insertId": "6ae68fe70006585d8aa355bc",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "      \"uri\": \"gs://food-crisis-test-ipcch-data/inputs/v2/ipcch-real-9eee4305db494a35/acled/acled_regional_aggregate_20261017_20261023.csv\"",
+    "timestamp": "2026-11-01T01:03:35.415837Z"
+  },
+  {
+    "insertId": "6ae68fe700065862355fb7c0",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "    }",
+    "timestamp": "2026-11-01T01:03:35.415842Z"
+  },
+  {
+    "insertId": "6ae68fe70006586602bcaa28",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "  ]",
+    "timestamp": "2026-11-01T01:03:35.415846Z"
+  },
+  {
+    "insertId": "6ae68fe70006586b1b75d6e6",
+    "labels": {
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T01:03:35.753707754Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "}",
+    "timestamp": "2026-11-01T01:03:35.415851Z"
+  },
+  {
+    "insertId": "6ae68fe7000a5c2920ddf45e",
+    "labels": {
+      "container_name": "worker",
+      "instanceId": "00e8a408bd54b2f1ed6d80d6fbbc86ba4766d82e006f0998f26878a71c1b2c1a88ebf7edd8e8d5db5951c4cd7bfd7de98dd966c223d7c84e64486d10adcf0a3f60d9931dd4a4639fc8e78e000a8dd2d71b57d03e08ff2be7dd2d",
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-01T01:03:35.689567012Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "WARNING",
+    "textPayload": "Container called exit(1).",
+    "timestamp": "2026-11-01T01:03:35.678907Z"
+  },
+  {
+    "insertId": "gxer3rd669i",
+    "labels": {
+      "run.googleapis.com/execution_name": "oct-delivery-4jkcj"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Jobs.RunJob",
+      "resourceName": "namespaces/feisty-flames-511718-d4/executions/oct-delivery-4jkcj",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Execution",
+        "apiVersion": "run.googleapis.com/v1",
+        "kind": "Execution",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "562.0.0",
+            "run.googleapis.com/creator": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+            "run.googleapis.com/execution-environment": "gen2",
+            "run.googleapis.com/lastModifier": "monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+            "run.googleapis.com/operation-id": "01ae4b36-cc6c-4896-95fa-5ac5ed4e8de9"
+          },
+          "creationTimestamp": "2026-11-01T01:00:23.414589Z",
+          "generation": 1,
+          "labels": {
+            "client.knative.dev/nonce": "los_dig_suj",
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/job": "oct-delivery",
+            "run.googleapis.com/jobGeneration": "4",
+            "run.googleapis.com/jobResourceVersion": "1793461133436888",
+            "run.googleapis.com/jobUid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+          },
+          "name": "oct-delivery-4jkcj",
+          "namespace": "968355701450",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Job",
+              "name": "oct-delivery",
+              "uid": "d924f6aa-c55d-4adf-8fed-d1137eb18f63"
+            }
+          ],
+          "resourceVersion": "AAZfLJmLyAk",
+          "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/executions/oct-delivery-4jkcj",
+          "uid": "0f056a50-e255-445f-8c7d-550be551a132"
+        },
+        "spec": {
+          "parallelism": 1,
+          "taskCount": 1,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "args": [
+                    "-m",
+                    "cloud.orchestrator.delivery_job",
+                    "run",
+                    "--request-uri",
+                    "gs://food-crisis-test-ipcch-requests/requests/ipcch-real-9eee4305db494a35/run_manifest.json",
+                    "--request-generation",
+                    "1793494821542586",
+                    "--output-root",
+                    "gs://food-crisis-test-ipcch-data",
+                    "--release-namespace",
+                    "monthly-staging",
+                    "--image-uri",
+                    "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+                    "--v2-config",
+                    "/opt/ipcch/deployment.json"
+                  ],
+                  "command": [
+                    "python3"
+                  ],
+                  "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+                  "resources": {
+                    "limits": {
+                      "cpu": "8",
+                      "memory": "32Gi"
+                    }
+                  }
+                }
+              ],
+              "maxRetries": 0,
+              "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+              "timeoutSeconds": "14400"
+            }
+          }
+        },
+        "status": {
+          "completionTime": "2026-11-01T01:03:38.497566Z",
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-11-01T01:03:38.497566Z",
+              "message": "Task oct-delivery-4jkcj-task0 failed with exit code: 1 and message: The container exited with an error.",
+              "reason": "NonZeroExitCode",
+              "status": "False",
+              "type": "Completed"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T01:00:24.424701Z",
+              "message": "Provisioned imported containers.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T01:01:58.998433Z",
+              "message": "Started deployed execution in 1m34.57s.",
+              "status": "True",
+              "type": "Started"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T01:00:24.297290Z",
+              "message": "Imported container image.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T01:03:39.538441Z",
+              "message": "System will retry after 00:00 from lastTransitionTime for attempt 0.",
+              "reason": "ImmediateRetry",
+              "severity": "Info",
+              "status": "True",
+              "type": "Retry"
+            }
+          ],
+          "failedCount": 1,
+          "logUri": "https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22oct-delivery%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22oct-delivery-4jkcj%22",
+          "observedGeneration": 1,
+          "startTime": "2026-11-01T01:00:27.898421Z"
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "code": 10,
+        "message": "Execution oct-delivery-4jkcj has failed to complete, 0/1 tasks were a success."
+      }
+    },
+    "receiveTimestamp": "2026-11-01T01:03:39.685598319Z",
+    "resource": {
+      "labels": {
+        "job_name": "oct-delivery",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "ERROR",
+    "timestamp": "2026-11-01T01:03:39.557628Z"
+  }
+]

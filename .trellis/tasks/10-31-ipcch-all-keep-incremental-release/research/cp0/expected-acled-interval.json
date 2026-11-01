@@ -1,0 +1,104 @@
+{
+ "end": "2026-10-23",
+ "keys": 12,
+ "parse_stats": {
+  "countries_outside_table": [
+   "Australia",
+   "Bolivia",
+   "Bulgaria",
+   "China",
+   "France",
+   "Indian Ocean",
+   "Iraq",
+   "Jamaica",
+   "Mauritius",
+   "Mediterranean Sea",
+   "Mexico",
+   "Moldova",
+   "Philippines",
+   "Puerto Rico",
+   "Romania",
+   "Russia",
+   "Thailand",
+   "Trinidad and Tobago",
+   "Ukraine",
+   "United States",
+   "Venezuela"
+  ],
+  "rows": 617,
+  "rows_countries_outside_table": 147,
+  "rows_kept": 470
+ },
+ "region_week": {
+  "Caribbean|2026-10-17": {
+   "rows": 6,
+   "sha256": "ae51bce4e8e818c33a84ce94ef3da751cc0bd7d38fb9ccfe455ea515a83d7322"
+  },
+  "Caucasus and Central Asia|2026-10-17": {
+   "rows": 23,
+   "sha256": "9cd097e5b79446176bdf9eabd7ea2d0fd2db83f50248537470e69af5811a2750"
+  },
+  "Central America|2026-10-17": {
+   "rows": 13,
+   "sha256": "785a21c92f6ef162683c6ef0a68dc76cdebcd552db23137664f309c74d64211c"
+  },
+  "Eastern Africa|2026-10-17": {
+   "rows": 67,
+   "sha256": "1c22b7a7e163ce758a612f0a2c67b3e7cd3308a4a6975f2a8046e75bd2597b24"
+  },
+  "Middle Africa|2026-10-17": {
+   "rows": 17,
+   "sha256": "8d6b38a5457860e458fb96013d41fac57ab6126589aed472c80ae9d40226b2a2"
+  },
+  "Middle East|2026-10-17": {
+   "rows": 104,
+   "sha256": "86a6090c5d2f86010f99513a0489056d2694c50c286094a7a566c128aa552b0e"
+  },
+  "Northern Africa|2026-10-17": {
+   "rows": 27,
+   "sha256": "4b2c1f06a126863cda2dbe298287a498a93b7d89f7d64aecca9d8be693f75052"
+  },
+  "South America|2026-10-17": {
+   "rows": 97,
+   "sha256": "baa42319dc4413ce2f19639d6cb7cc855c5d645b3a3271516611c2431eaada74"
+  },
+  "South Asia|2026-10-17": {
+   "rows": 33,
+   "sha256": "2b4dc46c526be285230861fefcf130089ec86ab2a3ab4b05df20c553efb07c0a"
+  },
+  "Southeast Asia|2026-10-17": {
+   "rows": 37,
+   "sha256": "e7feb1f7f25f15f02ba9312432abc4825bc5f72d93249b91c6279fa4cba9f077"
+  },
+  "Southern Africa|2026-10-17": {
+   "rows": 1,
+   "sha256": "c3a3aa1d61a603d4ecae6b596310e9866f7231367dd9d69c1a482ae08b56ea00"
+  },
+  "Western Africa|2026-10-17": {
+   "rows": 45,
+   "sha256": "a5a30ae0876b5f5cac402c5a58547b37bd3abfdd183f2200c08c83be98686b41"
+  }
+ },
+ "regions": [
+  "Caribbean",
+  "Caucasus and Central Asia",
+  "Central America",
+  "East Asia",
+  "Eastern Africa",
+  "Europe",
+  "International Waters",
+  "Middle Africa",
+  "Middle East",
+  "North America",
+  "Northern Africa",
+  "Oceania",
+  "South America",
+  "South Asia",
+  "Southeast Asia",
+  "Southern Africa",
+  "Western Africa"
+ ],
+ "rows": 470,
+ "source_sha256": "e660c7e8eb126c102145069441805bf55314914cb6297601bd5a150a87e47e8a",
+ "start": "2026-10-17"
+}

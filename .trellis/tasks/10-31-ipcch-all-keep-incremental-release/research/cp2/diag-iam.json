@@ -1,0 +1,134 @@
+[
+  {
+    "bindings": {
+      "members": "serviceAccount:service-968355701450@gcp-sa-artifactregistry.iam.gserviceaccount.com",
+      "role": "roles/artifactregistry.serviceAgent"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "role": "roles/batch.agentReporter"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "role": "roles/batch.jobsEditor"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:968355701450@cloudbuild.gserviceaccount.com",
+      "role": "roles/cloudbuild.builds.builder"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:service-968355701450@gcp-sa-cloudbuild.iam.gserviceaccount.com",
+      "role": "roles/cloudbuild.serviceAgent"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:968355701450@cloudservices.gserviceaccount.com",
+      "role": "roles/compute.instanceGroupManagerServiceAgent"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:service-968355701450@compute-system.iam.gserviceaccount.com",
+      "role": "roles/compute.serviceAgent"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:service-968355701450@containerregistry.iam.gserviceaccount.com",
+      "role": "roles/containerregistry.ServiceAgent"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "role": "roles/earthengine.writer"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:968355701450-compute@developer.gserviceaccount.com",
+      "role": "roles/editor"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "role": "roles/eventarc.eventReceiver"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:service-968355701450@gcp-sa-eventarc.iam.gserviceaccount.com",
+      "role": "roles/eventarc.serviceAgent"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "role": "roles/logging.logWriter"
+    }
+  },
+  {
+    "bindings": {
+      "members": "user:soonho.kim@cgiar.org",
+      "role": "roles/owner"
+    }
+  },
+  {
+    "bindings": {
+      "members": "user:weilun.shi@cgiar.org",
+      "role": "roles/owner"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:service-968355701450@gs-project-accounts.iam.gserviceaccount.com",
+      "role": "roles/pubsub.publisher"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:service-968355701450@gcp-sa-pubsub.iam.gserviceaccount.com",
+      "role": "roles/pubsub.serviceAgent"
+    }
+  },
+  {
+    "bindings": {
+      "members": "user:s.zaki@cgiar.org",
+      "role": "roles/resourcemanager.projectOwnerInvitee"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:service-968355701450@serverless-robot-prod.iam.gserviceaccount.com",
+      "role": "roles/run.serviceAgent"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "role": "roles/serviceusage.serviceUsageConsumer"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:monthly-workflow@feisty-flames-511718-d4.iam.gserviceaccount.com",
+      "role": "roles/workflows.invoker"
+    }
+  },
+  {
+    "bindings": {
+      "members": "serviceAccount:service-968355701450@gcp-sa-workflows.iam.gserviceaccount.com",
+      "role": "roles/workflows.serviceAgent"
+    }
+  }
+]
