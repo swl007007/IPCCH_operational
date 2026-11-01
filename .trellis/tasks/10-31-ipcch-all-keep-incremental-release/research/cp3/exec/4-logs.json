@@ -1,0 +1,224 @@
+[
+  {
+    "insertId": "6ae6a180000abd8bce537cb6",
+    "labels": {
+      "instanceId": "00e8a408bd77ffb6f1c9db050d6288949165ceba425eb8e7b34fd032e403dd559b2f23e63aef77fc493eaa385cdede5a149ba86f8628a3823c77a2594b5f30ddbf28e32575bf78e7c6709a84ffe30af5ab7314a984099d301ea9f3",
+      "run.googleapis.com/execution_name": "ipcch-ee-root-check-20261101-6z5f2",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-11-01T02:18:40.713596022Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-ee-root-check-20261101",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.",
+    "timestamp": "2026-11-01T02:18:40.703883Z"
+  },
+  {
+    "insertId": "6ae6a180000ac15393be8ad2",
+    "labels": {
+      "instanceId": "00e8a408bd77ffb6f1c9db050d6288949165ceba425eb8e7b34fd032e403dd559b2f23e63aef77fc493eaa385cdede5a149ba86f8628a3823c77a2594b5f30ddbf28e32575bf78e7c6709a84ffe30af5ab7314a984099d301ea9f3",
+      "run.googleapis.com/execution_name": "ipcch-ee-root-check-20261101-6z5f2",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-11-01T02:18:41.044653444Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-ee-root-check-20261101",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "httplib2 transport does not support per-request timeout. Set the timeout when constructing the httplib2.Http instance.",
+    "timestamp": "2026-11-01T02:18:40.704851Z"
+  },
+  {
+    "insertId": "6ae6a18600058d9de7ea9a01",
+    "labels": {
+      "instanceId": "00e8a408bd77ffb6f1c9db050d6288949165ceba425eb8e7b34fd032e403dd559b2f23e63aef77fc493eaa385cdede5a149ba86f8628a3823c77a2594b5f30ddbf28e32575bf78e7c6709a84ffe30af5ab7314a984099d301ea9f3",
+      "run.googleapis.com/execution_name": "ipcch-ee-root-check-20261101-6z5f2",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-01T02:18:46.369152487Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-ee-root-check-20261101",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "IPCCH_ROOT_CHECK {\"branch\": \"created\", \"budget_left_seconds\": 231.0, \"created\": true, \"identity\": {\"adc_service_account_email\": \"default\", \"metadata_server_email\": \"monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com\"}, \"passed\": true, \"root\": \"projects/feisty-flames-511718-d4/assets/\", \"steps\": [{\"error\": \"EEException: Asset \\\"projects/feisty-flames-511718-d4/assets\\\" not found.\", \"http_body\": \"{\\n  \\\"error\\\": {\\n    \\\"code\\\": 404,\\n    \\\"message\\\": \\\"Asset \\\\\\\"projects/feisty-flames-511718-d4/assets\\\\\\\" not found.\\\",\\n    \\\"status\\\": \\\"NOT_FOUND\\\"\\n  }\\n}\\n\", \"http_status\": 404, \"ok\": false, \"started\": \"2026-11-01T02:18:41.111212+00:00\", \"step\": \"list_root\"}, {\"ok\": true, \"result\": {\"id\": \"projects/feisty-flames-511718-d4/assets\", \"name\": \"projects/feisty-flames-511718-d4/assets\", \"quota\": {\"maxAssets\": \"50000\", \"maxSizeBytes\": \"268435456000\"}, \"type\": \"FOLDER\"}, \"started\": \"2026-11-01T02:18:41.324597+00:00\", \"step\": \"create_root_folder\"}, {\"ok\": true, \"result\": {\"assets\": []}, \"started\": \"2026-11-01T02:18:42.071388+00:00\", \"step\": \"relist_root\"}, {\"ok\": true, \"result\": [\"projects/feisty-flames-511718-d4/assets/IPCCH_ROOT_CHECK_ABSENT_20261101\"], \"started\": \"2026-11-01T02:18:42.312354+00:00\", \"step\": \"transport_missing_assets_absent_child\"}]}",
+    "timestamp": "2026-11-01T02:18:46.363933Z"
+  },
+  {
+    "insertId": "6ae6a186000836f6a40bc677",
+    "labels": {
+      "container_name": "worker",
+      "instanceId": "00e8a408bd77ffb6f1c9db050d6288949165ceba425eb8e7b34fd032e403dd559b2f23e63aef77fc493eaa385cdede5a149ba86f8628a3823c77a2594b5f30ddbf28e32575bf78e7c6709a84ffe30af5ab7314a984099d301ea9f3",
+      "run.googleapis.com/execution_name": "ipcch-ee-root-check-20261101-6z5f2",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-01T02:18:46.543907588Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-ee-root-check-20261101",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Container called exit(0).",
+    "timestamp": "2026-11-01T02:18:46.538300Z"
+  },
+  {
+    "insertId": "-58ye8nd4yq2",
+    "labels": {
+      "run.googleapis.com/execution_name": "ipcch-ee-root-check-20261101-6z5f2"
+    },
+    "logName": "projects/feisty-flames-511718-d4/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Jobs.RunJob",
+      "resourceName": "namespaces/feisty-flames-511718-d4/executions/ipcch-ee-root-check-20261101-6z5f2",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Execution",
+        "apiVersion": "run.googleapis.com/v1",
+        "kind": "Execution",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "562.0.0",
+            "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+            "run.googleapis.com/execution-environment": "gen2",
+            "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+            "run.googleapis.com/operation-id": "6a4912b9-41cb-4050-9d0d-25073611e034"
+          },
+          "creationTimestamp": "2026-11-01T02:17:04.796937Z",
+          "generation": 1,
+          "labels": {
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/job": "ipcch-ee-root-check-20261101",
+            "run.googleapis.com/jobGeneration": "1",
+            "run.googleapis.com/jobResourceVersion": "1793499394206865",
+            "run.googleapis.com/jobUid": "3e1bcc96-90d5-4604-9d6c-210259508d00"
+          },
+          "name": "ipcch-ee-root-check-20261101-6z5f2",
+          "namespace": "968355701450",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Job",
+              "name": "ipcch-ee-root-check-20261101",
+              "uid": "3e1bcc96-90d5-4604-9d6c-210259508d00"
+            }
+          ],
+          "resourceVersion": "AAZfLacwFJc",
+          "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/executions/ipcch-ee-root-check-20261101-6z5f2",
+          "uid": "5db64e0c-8e2d-4f14-b84e-85d3a4ac92c4"
+        },
+        "spec": {
+          "parallelism": 1,
+          "taskCount": 1,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "args": [
+                    "-c",
+                    "\"\"\"Task 10-31 D5/CP3 root check, run as `python3 -c <this file>` in image acc3e467 under monthly-runtime.\n\nExact root projects/feisty-flames-511718-d4/assets/. Bounds:\n- ONE absolute deadline is fixed at main entry, 240 s ahead (the job timeout is 300 s).\n- No request starts with less than 5 s left.\n- SDK retries are 0 from BEFORE Initialize (state is preserved by data.initialize, so discovery and getAlgorithms are\n  built with num_retries=0).\n- Every HTTP socket operation, including Initialize's discovery and getAlgorithms, goes through the public\n  Initialize(http_transport=httplib2.Http(timeout=40)).\n0. Identity gate: the metadata-server email must equal monthly-runtime@…; a mismatch or metadata error stops before any\n   Earth Engine call.\n1. listAssets(parent=root, pageSize=1). Success means listable, and nothing is created.\n2. Only if step 1 is HTTP 404: ONE createAsset({\"type\": \"FOLDER\"}, root). This is the documented\n   `earthengine create folder projects/P/assets/` mapping. Success means created; HTTP 409 means already exists, so\n   only readback follows; any other result stops.\n3. After a create or a 409: re-list the root; it must succeed.\n4. Pinned product transport: EETransport.missing_assets([absent child]) must return exactly [child].\nAny other error, permission or timeout stops before further calls (exit 2). Nothing is overwritten, no IAM, billing\nor registration call is made, and no scientific data or export is produced. Runtime identity comes from the metadata\nserver. The result is printed as one line: IPCCH_ROOT_CHECK {json}.\n\"\"\"\n\nimport json\nfrom datetime import datetime, timedelta, timezone\n\nPROJECT = \"feisty-flames-511718-d4\"\nROOT = f\"projects/{PROJECT}/assets/\"\nLIST_PARENT = f\"projects/{PROJECT}/assets\"\nCHILD = ROOT + \"IPCCH_ROOT_CHECK_ABSENT_20261101\"\nEXPORT_ROOT = \"gs://food-crisis-test-ipcch-data/ipcch-v2/exports\"\nEXPECTED_IDENTITY = \"monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com\"\n\n\ndef http_status(exc):\n    \"\"\"HTTP status of an SDK error: the EEException keeps the googleapiclient HttpError as __context__.\"\"\"\n    seen = set()\n    while exc is not None and id(exc) not in seen:\n        seen.add(id(exc))\n        resp = getattr(exc, \"resp\", None)\n        if resp is not None and getattr(resp, \"status\", None) is not None:\n            return int(resp.status)\n        exc = exc.__context__ or exc.__cause__\n    return None\n\n\ndef http_body(exc):\n    seen = set()\n    while exc is not None and id(exc) not in seen:\n        seen.add(id(exc))\n        content = getattr(exc, \"content\", None)\n        if content:\n            return (content.decode(\"utf-8\", \"replace\") if isinstance(content, bytes) else str(content))[:1000]\n        exc = exc.__context__ or exc.__cause__\n    return None\n\n\nBUDGET_SECONDS = 240          # whole check from main entry; the job timeout is 300 s\nCALL_SECONDS = 40             # httplib2 socket timeout for every Earth Engine HTTP operation\nMIN_START_SECONDS = 5\n\n\ndef call(result, name, fn, budget=None):\n    started = datetime.now(timezone.utc).isoformat()\n    left = budget() if budget else None\n    if left is not None and left < MIN_START_SECONDS:      # never start a call that could outlive the job\n        step = {\"step\": name, \"ok\": False, \"started\": started, \"error\": \"budget exhausted; not started\",\n                \"http_status\": None, \"http_body\": None, \"not_started\": True}\n        result[\"steps\"].append(step)\n        return step\n    try:\n        value = fn()\n        step = {\"step\": name, \"ok\": True, \"started\": started, \"result\": value}\n    except Exception as exc:                                   # classified below; never retried\n        step = {\"step\": name, \"ok\": False, \"started\": started, \"error\": f\"{type(exc).__name__}: {str(exc)[:500]}\",\n                \"http_status\": http_status(exc), \"http_body\": http_body(exc)}\n    result[\"steps\"].append(step)\n    return step\n\n\ndef identity_ok(identity):\n    return identity.get(\"metadata_server_email\") == EXPECTED_IDENTITY and \"metadata_server_error\" not in identity\n\n\ndef run(api, transport_absent, identity, budget=None):\n    \"\"\"Decision logic (injectable). Returns (exit_code, result). ``budget()`` -> remaining seconds (None = unbounded).\"\"\"\n    result = {\"identity\": identity, \"root\": ROOT, \"steps\": [], \"created\": False, \"branch\": None, \"passed\": False}\n    if not identity_ok(identity):                              # never act on the root under an unproven identity\n        result[\"branch\"] = \"stop_identity\"\n        return 2, result\n    first = call(result, \"list_root\", api.list_root, budget)\n    if first[\"ok\"]:\n        result[\"branch\"] = \"listable_no_create\"\n    elif first[\"http_status\"] == 404:\n        create = call(result, \"create_root_folder\", api.create_root, budget)  # the ONLY mutation, at most once\n        if create[\"ok\"]:\n            result[\"branch\"], result[\"created\"] = \"created\", True\n        elif create[\"http_status\"] == 409:\n            result[\"branch\"] = \"already_exists_readback_only\"\n        else:\n            result[\"branch\"] = \"stop_create_failed\"\n            return 2, result\n        if not call(result, \"relist_root\", api.list_root, budget)[\"ok\"]:\n            result[\"branch\"] += \"+stop_relist_failed\"\n            return 2, result\n    else:\n        result[\"branch\"] = \"stop_list_failed\"\n        return 2, result\n    absent = call(result, \"transport_missing_assets_absent_child\", lambda: transport_absent([CHILD]), budget)\n    if not absent[\"ok\"] or absent[\"result\"] != [CHILD]:\n        result[\"branch\"] += \"+stop_transport_absent_child\"\n        return 2, result\n    result[\"passed\"] = True\n    return 0, result\n\n\ndef runtime_identity():\n    import requests\n    out = {}\n    try:\n        r = requests.get(\"http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email\",\n                         headers={\"Metadata-Flavor\": \"Google\"}, timeout=5)\n        out[\"metadata_server_email\"] = r.text.strip() if r.status_code == 200 else f\"HTTP {r.status_code}\"\n    except Exception as exc:\n        out[\"metadata_server_error\"] = f\"{type(exc).__name__}: {exc}\"\n    return out\n\n\ndef main():\n    end = datetime.now(timezone.utc) + timedelta(seconds=BUDGET_SECONDS)     # the ONE absolute deadline\n    budget = lambda: (end - datetime.now(timezone.utc)).total_seconds()\n    identity = runtime_identity()\n    if not identity_ok(identity):                              # before importing/initializing Earth Engine\n        print(\"IPCCH_ROOT_CHECK \" + json.dumps({\"identity\": identity, \"branch\": \"stop_identity\", \"passed\": False,\n                                                \"steps\": []}, sort_keys=True), flush=True)\n        raise SystemExit(2)\n    import ee\n    import google.auth\n    import httplib2\n    from google.cloud import storage\n\n    credentials, _ = google.auth.default(scopes=[\"https://www.googleapis.com/auth/cloud-platform\",\n                                                 \"https://www.googleapis.com/auth/earthengine\"])\n    identity[\"adc_service_account_email\"] = getattr(credentials, \"service_account_email\", None)\n    ee.data.setMaxRetries(0)                  # state only (no resource install), kept by data.initialize\n    ee.Initialize(credentials=credentials, project=PROJECT, http_transport=httplib2.Http(timeout=CALL_SECONDS))\n    ee.data.setMaxRetries(0)\n\n    def bounded(fn):                          # retries 0; the socket timeout comes from the http_transport\n        def go():\n            ee.data.setMaxRetries(0)\n            return fn()\n        return go\n\n    class Api:\n        list_root = staticmethod(bounded(lambda: ee.data.listAssets({\"parent\": LIST_PARENT, \"pageSize\": 1})))\n        create_root = staticmethod(bounded(lambda: ee.data.createAsset({\"type\": \"FOLDER\"}, ROOT)))\n\n    def transport_absent(ids):\n        from cloud.common.object_store import GCSObjectStore\n        from cloud.ipcch.ee_transport import EETransport\n        client = storage.Client(project=PROJECT)\n        t = EETransport(ee=ee, client=client, store=GCSObjectStore(client), output_root=EXPORT_ROOT,\n                        run_id=\"ipcch-ee-root-check-20261101\", cleanup_reserve_seconds=1,\n                        deadline_utc=end)            # the SAME absolute deadline fixed at main entry\n        return t.missing_assets(ids)\n\n    code, result = run(Api, transport_absent, identity, budget)\n    result[\"budget_left_seconds\"] = round(budget(), 1)\n    print(\"IPCCH_ROOT_CHECK \" + json.dumps(result, sort_keys=True, default=str), flush=True)\n    raise SystemExit(code)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+                  ],
+                  "command": [
+                    "python3"
+                  ],
+                  "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+                  "resources": {
+                    "limits": {
+                      "cpu": "1",
+                      "memory": "512Mi"
+                    }
+                  }
+                }
+              ],
+              "maxRetries": 0,
+              "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+              "timeoutSeconds": "300"
+            }
+          }
+        },
+        "status": {
+          "completionTime": "2026-11-01T02:18:51.183235Z",
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-11-01T02:18:51.183235Z",
+              "message": "Execution completed successfully in 1m37.42s.",
+              "status": "True",
+              "type": "Completed"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T02:17:05.751421Z",
+              "message": "Provisioned imported containers.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T02:18:36.983573Z",
+              "message": "Started deployed execution in 1m31.23s.",
+              "status": "True",
+              "type": "Started"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T02:17:05.632279Z",
+              "message": "Imported container image.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-11-01T02:19:03.377047Z",
+              "message": "System will retry after 00:00 from lastTransitionTime for attempt 0.",
+              "reason": "ImmediateRetry",
+              "severity": "Info",
+              "status": "True",
+              "type": "Retry"
+            }
+          ],
+          "logUri": "https://console.cloud.google.com/logs/viewer?project=feisty-flames-511718-d4&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22ipcch-ee-root-check-20261101%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22ipcch-ee-root-check-20261101-6z5f2%22",
+          "observedGeneration": 1,
+          "startTime": "2026-11-01T02:17:13.758382Z",
+          "succeededCount": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Execution ipcch-ee-root-check-20261101-6z5f2 has completed successfully."
+      }
+    },
+    "receiveTimestamp": "2026-11-01T02:19:03.817227970Z",
+    "resource": {
+      "labels": {
+        "job_name": "ipcch-ee-root-check-20261101",
+        "location": "us-central1",
+        "project_id": "feisty-flames-511718-d4"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-11-01T02:19:03.396366Z"
+  }
+]

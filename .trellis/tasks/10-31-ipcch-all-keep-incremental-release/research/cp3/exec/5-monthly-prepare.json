@@ -1,0 +1,77 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Job",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+      "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+      "run.googleapis.com/operation-id": "a4e5d75f-4cfc-48ba-b212-134f45306bb0"
+    },
+    "creationTimestamp": "2026-10-15T19:31:26.560400Z",
+    "generation": 4,
+    "labels": {
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/lastUpdatedTime": "2026-10-31T14:24:24.906130Z"
+    },
+    "name": "monthly-prepare",
+    "namespace": "968355701450",
+    "resourceVersion": "AAZfI6t1LBA",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/jobs/monthly-prepare",
+    "uid": "5350c405-41f4-4be8-947b-7a7f9d9940c4"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "562.0.0",
+          "run.googleapis.com/execution-environment": "gen2"
+        },
+        "labels": {
+          "client.knative.dev/nonce": "gir_buj_vud"
+        }
+      },
+      "spec": {
+        "taskCount": 1,
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "args": [
+                  "-m",
+                  "cloud.orchestrator.prepare",
+                  "--help"
+                ],
+                "command": [
+                  "python3"
+                ],
+                "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+                "resources": {
+                  "limits": {
+                    "cpu": "2",
+                    "memory": "8Gi"
+                  }
+                }
+              }
+            ],
+            "maxRetries": 0,
+            "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+            "timeoutSeconds": "14400"
+          }
+        }
+      }
+    }
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-10-15T19:31:28.698699Z",
+        "status": "True",
+        "type": "Ready"
+      }
+    ],
+    "observedGeneration": 4
+  }
+}

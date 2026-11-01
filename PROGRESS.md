@@ -62,6 +62,21 @@ Authority: the user's subsequent goal `execution-protocol.md`, D1-D4, and explic
   retries), then ONE additional all-keep monthly run at unchanged runtime limits.
   No third attempt is authorized. Same executor/task; CP0-CP2 remain frozen.
   CP3 root payload/technical check is next, then CP4 retry and CP5 acceptance.
+- D5 spec committed as 06c38da; staged GitNexus LOW, six documentation files,
+  no affected execution processes. Same executor reverified and delegated CP3
+  payload/offline checks; cloud execution awaits Supervisor technical review.
+- CP3 technical gate accepted: payload f1cf0b28, job spec 3a89b5c1; all 21
+  pre-execution hashes verified, 19 guarded checks passed with CHILD-EXIT 0.
+  Actual metadata identity is required, creation only follows HTTP 404, and
+  pinned absent-child transport is checked. One job creation/execution released;
+  monthly submission remains gated on actual root readback. The 300 s hard job
+  timeout is the execution bound; total SDK RPC count is not measured.
+- CP3 actual root recovery accepted: execution ipcch-ee-root-check-20261101-6z5f2
+  succeeded once (02:17:13-02:18:51Z). Raw log and result 73f3e8fc agree: expected
+  metadata SA, HTTP 404, one successful root-folder creation, successful relist,
+  exact pinned missing_assets result. Monthly jobs and Workflow unchanged.
+  CP3 23 top-level and 20 execution hashes verified (execution manifest is relative
+  to exec/). CP4 all-keep preparation released; actual export remains unproven.
 
 # Completed: IPCCH automatic E2E integration (2026-10-31)
 

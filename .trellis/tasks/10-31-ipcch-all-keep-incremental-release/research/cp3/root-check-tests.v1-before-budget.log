@@ -1,0 +1,52 @@
+# unit=ipcch-cp2-root-check-tests-1793499116337535537 start=2026-10-31T22:11:56-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -v -p no:cacheprovider /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py
+Running as unit: ipcch-cp2-root-check-tests-1793499116337535537.service; invocation ID: d455d8ca1e124c769d70cd51a389bd4e
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational
+collecting ... collected 13 items
+
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_listable_root_never_creates PASSED [  7%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_404_creates_exactly_once_then_relists PASSED [ 15%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_409_already_exists_is_readback_only PASSED [ 23%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_create_failure_stops_without_relist_or_transport[err0] PASSED [ 30%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_create_failure_stops_without_relist_or_transport[err1] PASSED [ 38%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_create_failure_stops_without_relist_or_transport[err2] PASSED [ 46%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_list_permission_timeout_or_error_stops_without_create[err0] PASSED [ 53%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_list_permission_timeout_or_error_stops_without_create[err1] PASSED [ 61%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_list_permission_timeout_or_error_stops_without_create[err2] PASSED [ 69%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_relist_failure_after_create_stops PASSED [ 76%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_transport_absent_child_must_be_reported_absent PASSED [ 84%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_http_status_and_body_from_context PASSED [ 92%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_pinned_sdk_request_mapping PASSED [100%]
+
+============================== 13 passed in 0.27s ==============================
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -v -p no:cacheprovider /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py"
+	User time (seconds): 0.28
+	System time (seconds): 0.01
+	Percent of CPU this job got: 67%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.44
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 57320
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 11356
+	Voluntary context switches: 1419
+	Involuntary context switches: 6
+	Swaps: 0
+	File system inputs: 8
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+# CHILD-EXIT=0
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 592ms
+CPU time consumed: 413ms
+# end=2026-10-31T22:11:56-04:00 launcher_rc=0 child_exit=0

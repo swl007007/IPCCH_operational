@@ -1,0 +1,51 @@
+{
+ "branch": "created",
+ "budget_left_seconds": 231.0,
+ "created": true,
+ "identity": {
+  "adc_service_account_email": "default",
+  "metadata_server_email": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com"
+ },
+ "passed": true,
+ "root": "projects/feisty-flames-511718-d4/assets/",
+ "steps": [
+  {
+   "error": "EEException: Asset \"projects/feisty-flames-511718-d4/assets\" not found.",
+   "http_body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Asset \\\"projects/feisty-flames-511718-d4/assets\\\" not found.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n",
+   "http_status": 404,
+   "ok": false,
+   "started": "2026-11-01T02:18:41.111212+00:00",
+   "step": "list_root"
+  },
+  {
+   "ok": true,
+   "result": {
+    "id": "projects/feisty-flames-511718-d4/assets",
+    "name": "projects/feisty-flames-511718-d4/assets",
+    "quota": {
+     "maxAssets": "50000",
+     "maxSizeBytes": "268435456000"
+    },
+    "type": "FOLDER"
+   },
+   "started": "2026-11-01T02:18:41.324597+00:00",
+   "step": "create_root_folder"
+  },
+  {
+   "ok": true,
+   "result": {
+    "assets": []
+   },
+   "started": "2026-11-01T02:18:42.071388+00:00",
+   "step": "relist_root"
+  },
+  {
+   "ok": true,
+   "result": [
+    "projects/feisty-flames-511718-d4/assets/IPCCH_ROOT_CHECK_ABSENT_20261101"
+   ],
+   "started": "2026-11-01T02:18:42.312354+00:00",
+   "step": "transport_missing_assets_absent_child"
+  }
+ ]
+}

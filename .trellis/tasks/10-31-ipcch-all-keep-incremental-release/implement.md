@@ -73,17 +73,17 @@ Rehash both before execute; preview has not frozen M or any cloud reference.
 ## D5 / CP3 — Root initialization and runtime verification
 
 - [x] Record user approval: "批准上述恢复与一次重跑"; keep the same task/executor.
-- [ ] Commit updated approved spec and plan before recovery execution.
-- [ ] Prepare the bounded diagnostic payload and one small guarded offline check
+- [x] Commit updated approved spec and plan before recovery execution (06c38da).
+- [x] Prepare the bounded diagnostic payload and one small guarded offline check
   for listing-success, HTTP-404/create, already-exists reconciliation and other
   error/timeout stop branches. No creation on permission errors; no overwrite.
-- [ ] Supervisor inspect payload/resource/identity packet. This is a technical
+- [x] Supervisor inspect payload/resource/identity packet. This is a technical
   check under existing approval, not another user cloud-permission gate.
-- [ ] Create/execute ipcch-ee-root-check-20261101 on acc3e467, monthly-runtime,
+- [x] Create/execute ipcch-ee-root-check-20261101 on acc3e467, monthly-runtime,
   1 CPU/512 MiB/300 s/one task/zero retries. Read root; at most one creation on
   HTTP 404; verify root listing and absent-child semantics via pinned transport.
   If job already exists, inspect/reconcile instead of overwriting or duplicating.
-- [ ] Save logs/execution/results and accept only actual runtime-identity proof.
+- [x] Save logs/execution/results and accept only actual runtime-identity proof.
   No further mutation or monthly request if the diagnostic fails.
 
 ## D5 / CP4 — Exactly one additional all-keep monthly attempt
@@ -99,7 +99,7 @@ Rehash both before execute; preview has not frozen M or any cloud reference.
 
 ## P3 / CP5 — Acceptance of the successful recovery run
 
-- [x] Save final execution/status/logs and post-run inventories.
+- [ ] Save recovery-run final execution/status/logs and post-run inventories.
 - [ ] Reuse parameterized generic readback for actual M/O, 527 features, 6,226
   areas and all three targets; verify predecessor and full FEWS-member equality.
 - [ ] Cross-check nonempty production and the complete consumed-ID/version/batch/

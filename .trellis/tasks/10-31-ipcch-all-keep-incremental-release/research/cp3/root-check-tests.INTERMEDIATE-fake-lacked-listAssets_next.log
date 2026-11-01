@@ -1,0 +1,142 @@
+# unit=ipcch-cp2-root-check-tests-1793499099281816951 start=2026-10-31T22:11:39-04:00 limits: MemoryMax=4G MemorySwapMax=0 RuntimeMaxSec=600 prlimit-as=3221225472
+# command: /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -v -p no:cacheprovider /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py
+Running as unit: ipcch-cp2-root-check-tests-1793499099281816951.service; invocation ID: b66db310a4a54ac682d259a4ebcb95e9
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python
+rootdir: /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational
+collecting ... collected 13 items
+
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_listable_root_never_creates PASSED [  7%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_404_creates_exactly_once_then_relists PASSED [ 15%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_409_already_exists_is_readback_only PASSED [ 23%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_create_failure_stops_without_relist_or_transport[err0] PASSED [ 30%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_create_failure_stops_without_relist_or_transport[err1] PASSED [ 38%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_create_failure_stops_without_relist_or_transport[err2] PASSED [ 46%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_list_permission_timeout_or_error_stops_without_create[err0] PASSED [ 53%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_list_permission_timeout_or_error_stops_without_create[err1] PASSED [ 61%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_list_permission_timeout_or_error_stops_without_create[err2] PASSED [ 69%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_relist_failure_after_create_stops PASSED [ 76%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_transport_absent_child_must_be_reported_absent PASSED [ 84%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_http_status_and_body_from_context PASSED [ 92%]
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_pinned_sdk_request_mapping FAILED [100%]
+
+=================================== FAILURES ===================================
+_______________________ test_pinned_sdk_request_mapping ________________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4b865c7470>
+
+    def test_pinned_sdk_request_mapping(monkeypatch):
+        """ee 1.7.36: createAsset({'type':'FOLDER'}, 'projects/P/assets/') -> assets.create(parent='projects/P', assetId='',
+        body={'type':'FOLDER'}); listAssets({'parent':'projects/P/assets'}) -> projects.listAssets(parent='projects/P')."""
+        import ee
+        from ee import data
+        assert ee.__version__ == "1.7.36"
+        seen = {}
+    
+        class Assets:
+            def create(self, **kw):
+                seen["create"] = kw
+                return "CREATE_CALL"
+    
+        class Projects:
+            def assets(self):
+                return Assets()
+    
+            def listAssets(self, **kw):
+                seen["list"] = kw
+                return "LIST_CALL"
+    
+        monkeypatch.setattr(data, "_get_cloud_projects", lambda: Projects())
+        monkeypatch.setattr(data, "_execute_cloud_call", lambda call, num_retries=None: {"called": call})
+        assert data.createAsset({"type": "FOLDER"}, rc.ROOT) == {"called": "CREATE_CALL"}
+        assert seen["create"]["parent"] == "projects/feisty-flames-511718-d4" and seen["create"]["assetId"] == ""
+        assert seen["create"]["body"]["type"] == "FOLDER"
+>       data.listAssets({"parent": rc.LIST_PARENT, "pageSize": 1})
+
+../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = {'parent': 'projects/feisty-flames-511718-d4', 'pageSize': 1}
+
+    def listAssets(params: str | dict[str, Any]) -> dict[str, list[Any]]:
+      """Returns the assets in a folder.
+    
+      Args:
+        params: Either a string representing the ID of the collection or folder to
+          list, or an object containing request parameters with the following
+          possible values, all but 'parent` are optional:
+          parent - (string) The ID of the collection or folder to list, required.
+          pageSize - (string) The number of results to return. If not specified, all
+            results are returned.
+          pageToken - (string) The token page of results to return.
+          filter - (string) An additional filter query to apply. Example query:
+            '''properties.my_property>=1 AND properties.my_property<2 AND
+               startTime >= "2019-01-01T00:00:00.000Z" AND
+               endTime < "2020-01-01T00:00:00.000Z" AND
+               intersects("{'type':'Point','coordinates':[0,0]}")'''
+            See https://google.aip.dev/160 for how to construct a query.
+          view - (string) Specifies how much detail is returned in the list. Either
+            "FULL" (default) for all image properties or "BASIC".
+      """
+      # Allow the user to pass a single string, interpreted as 'parent'
+      if isinstance(params, str):
+        params = {'parent': params}
+      if 'parent' in params:
+        params['parent'] = _cloud_api_utils.convert_asset_id_to_asset_name(
+            params['parent'])
+      if 'parent' in params and _cloud_api_utils.is_asset_root(params['parent']):
+        # If the asset name is 'projects/my-project/assets' we assume a user
+        # wants to list their cloud assets, to do this we call the alternative
+        # listAssets method and remove the trailing '/assets/?'
+        params['parent'] = re.sub('/assets/?$', '', params['parent'])
+        cloud_resource_root = _get_cloud_projects()
+      else:
+        cloud_resource_root = _get_cloud_projects().assets()
+      request = cloud_resource_root.listAssets(**params)
+      response = None
+      assets = {'assets': []}
+      while request is not None:
+        response = _execute_cloud_call(request)
+        if isinstance(response, str):
+          raise ee_exception.EEException(
+              f'Unexpected response type of str: "{response}"'
+          )
+        assets['assets'].extend(response.get('assets', []))
+>       request = cloud_resource_root.listAssets_next(request, response)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'Projects' object has no attribute 'listAssets_next'
+
+/home/swl007007/.venvs/fewsnet-test-lock-20261022/lib/python3.12/site-packages/ee/data.py:607: AttributeError
+=========================== short test summary info ============================
+FAILED ../.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py::test_pinned_sdk_request_mapping
+========================= 1 failed, 12 passed in 0.47s =========================
+Command exited with non-zero status 1
+	Command being timed: "/home/swl007007/.venvs/fewsnet-test-lock-20261022/bin/python -m pytest -v -p no:cacheprovider /mnt/c/Users/swl00/IFPRI Dropbox/Weilun Shi/IPCCH_monthly_operational/.trellis/tasks/10-31-ipcch-all-keep-incremental-release/research/cp3/test_root_check_payload.py"
+	User time (seconds): 0.27
+	System time (seconds): 0.08
+	Percent of CPU this job got: 56%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.64
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 62676
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 126
+	Minor (reclaiming a frame) page faults: 12671
+	Voluntary context switches: 1966
+	Involuntary context switches: 4
+	Swaps: 0
+	File system inputs: 32656
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+# CHILD-EXIT=1
+Finished with result: success
+Main processes terminated with: code=exited/status=0
+Service runtime: 713ms
+CPU time consumed: 377ms
+# end=2026-10-31T22:11:40-04:00 launcher_rc=0 child_exit=1

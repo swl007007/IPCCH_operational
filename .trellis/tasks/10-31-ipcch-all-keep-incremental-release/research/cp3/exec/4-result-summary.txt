@@ -1,0 +1,9 @@
+5 log entries [None, None, None, 'INFO', 'INFO']
+result lines: 1
+identity {'adc_service_account_email': 'default', 'metadata_server_email': 'monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com'}
+branch created created True passed True budget_left 231.0
+  list_root FAIL 404 EEException: Asset "projects/feisty-flames-511718-d4/assets" not found.
+  create_root_folder ok None {'id': 'projects/feisty-flames-511718-d4/assets', 'name': 'projects/feisty-flames-511718-d4/assets', 'quota': {'maxAssets': '50000', 'maxSizeBytes': '268435456000'}, 'type': 'FOLDER'}
+  relist_root ok None {'assets': []}
+  transport_missing_assets_absent_child ok None ['projects/feisty-flames-511718-d4/assets/IPCCH_ROOT_CHECK_ABSENT_20261101']
+exec 1 ['Completed:True', 'ResourcesAvailable:True', 'Started:True', 'ContainerReady:True']

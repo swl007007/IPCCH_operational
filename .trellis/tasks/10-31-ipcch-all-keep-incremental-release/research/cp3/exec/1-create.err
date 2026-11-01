@@ -1,0 +1,7 @@
+Creating Cloud Run job [[1mipcch-ee-root-check-20261101[m] in project [[1mfeisty-flames-511718-d4[m] region [[1mus-central1[m]
+Creating job...
+Done.
+Job [[1mipcch-ee-root-check-20261101[m] has been successfully created.
+
+To execute this job, use:
+gcloud run jobs execute ipcch-ee-root-check-20261101

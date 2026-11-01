@@ -103,3 +103,28 @@ existing image and runtime SA, conditional single project-root create and readba
 then one additional all-keep monthly request. No third attempt or broader repair.
 CP3 now denotes root recovery, CP4 the additional request, CP5 its acceptance and
 CP6 final closure. CP0-CP2 frozen failure evidence remains unchanged.
+
+## CP3 technical packet accepted; runtime result pending
+
+D5 spec committed as 06c38da. Supervisor inspected payload f1cf0b28 and job
+spec 3a89b5c1, checked exact embedded args/image/SA/resources, and independently
+verified all 21 pre-execution SHA256SUMS entries. Guarded tests: 19 passed,
+CHILD-EXIT 0, peak RSS 57,388 KiB. Early identity/deadline/optional-RPC findings
+were corrected. One diagnostic job creation/execution released under D5.
+The actual 300-second Cloud Run timeout bounds execution; initialize/paging
+means neither total RPC count nor a guaranteed 280-second bound was proven.
+Executor must correct those packet claims and retain the prior packet snapshot.
+No monthly submission is released before actual root/identity/absence readback.
+
+## CP3 runtime root readback accepted
+
+Execution ipcch-ee-root-check-20261101-6z5f2 succeeded once, 02:17:13.758382
+to 02:18:51.183235Z. Supervisor joined the raw IPCCH_ROOT_CHECK line to result
+73f3e8fc and checked execution succeededCount=1. Expected metadata SA; initial
+HTTP 404; exactly one successful FOLDER create; relist assets=[]; the pinned
+transport returned the deliberately absent child. Monthly job/runtime settings
+and Workflow revision/source/env are unchanged. All 23 top-level and 20 execution
+hashes match. The first execution-manifest verification used the wrong cwd and
+reported missing files; verification from exec/ succeeded. No evidence was changed.
+CP4 preflight/preparation released; monthly submission awaits its fresh packet.
+Root recovery does not prove toAsset export, DA1, DA2 or publication.

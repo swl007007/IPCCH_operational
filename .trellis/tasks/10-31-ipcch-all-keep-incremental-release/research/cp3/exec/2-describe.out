@@ -1,0 +1,76 @@
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Job",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "562.0.0",
+      "run.googleapis.com/creator": "weilun.shi@cgiar.org",
+      "run.googleapis.com/lastModifier": "weilun.shi@cgiar.org",
+      "run.googleapis.com/operation-id": "20ea6975-b1b9-461d-8dc3-f417c6479e93"
+    },
+    "creationTimestamp": "2026-11-01T02:16:33.640301Z",
+    "generation": 1,
+    "labels": {
+      "cloud.googleapis.com/location": "us-central1",
+      "purpose": "ipcch-ee-root-check",
+      "run.googleapis.com/lastUpdatedTime": "2026-11-01T02:16:33.640301Z",
+      "task": "10-31-ipcch-all-keep-incremental-release"
+    },
+    "name": "ipcch-ee-root-check-20261101",
+    "namespace": "968355701450",
+    "resourceVersion": "AAZfLZ5L7JE",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/968355701450/jobs/ipcch-ee-root-check-20261101",
+    "uid": "3e1bcc96-90d5-4604-9d6c-210259508d00"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "562.0.0",
+          "run.googleapis.com/execution-environment": "gen2"
+        }
+      },
+      "spec": {
+        "parallelism": 1,
+        "taskCount": 1,
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "args": [
+                  "-c",
+                  "\"\"\"Task 10-31 D5/CP3 root check, run as `python3 -c <this file>` in image acc3e467 under monthly-runtime.\n\nExact root projects/feisty-flames-511718-d4/assets/. Bounds:\n- ONE absolute deadline is fixed at main entry, 240 s ahead (the job timeout is 300 s).\n- No request starts with less than 5 s left.\n- SDK retries are 0 from BEFORE Initialize (state is preserved by data.initialize, so discovery and getAlgorithms are\n  built with num_retries=0).\n- Every HTTP socket operation, including Initialize's discovery and getAlgorithms, goes through the public\n  Initialize(http_transport=httplib2.Http(timeout=40)).\n0. Identity gate: the metadata-server email must equal monthly-runtime@…; a mismatch or metadata error stops before any\n   Earth Engine call.\n1. listAssets(parent=root, pageSize=1). Success means listable, and nothing is created.\n2. Only if step 1 is HTTP 404: ONE createAsset({\"type\": \"FOLDER\"}, root). This is the documented\n   `earthengine create folder projects/P/assets/` mapping. Success means created; HTTP 409 means already exists, so\n   only readback follows; any other result stops.\n3. After a create or a 409: re-list the root; it must succeed.\n4. Pinned product transport: EETransport.missing_assets([absent child]) must return exactly [child].\nAny other error, permission or timeout stops before further calls (exit 2). Nothing is overwritten, no IAM, billing\nor registration call is made, and no scientific data or export is produced. Runtime identity comes from the metadata\nserver. The result is printed as one line: IPCCH_ROOT_CHECK {json}.\n\"\"\"\n\nimport json\nfrom datetime import datetime, timedelta, timezone\n\nPROJECT = \"feisty-flames-511718-d4\"\nROOT = f\"projects/{PROJECT}/assets/\"\nLIST_PARENT = f\"projects/{PROJECT}/assets\"\nCHILD = ROOT + \"IPCCH_ROOT_CHECK_ABSENT_20261101\"\nEXPORT_ROOT = \"gs://food-crisis-test-ipcch-data/ipcch-v2/exports\"\nEXPECTED_IDENTITY = \"monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com\"\n\n\ndef http_status(exc):\n    \"\"\"HTTP status of an SDK error: the EEException keeps the googleapiclient HttpError as __context__.\"\"\"\n    seen = set()\n    while exc is not None and id(exc) not in seen:\n        seen.add(id(exc))\n        resp = getattr(exc, \"resp\", None)\n        if resp is not None and getattr(resp, \"status\", None) is not None:\n            return int(resp.status)\n        exc = exc.__context__ or exc.__cause__\n    return None\n\n\ndef http_body(exc):\n    seen = set()\n    while exc is not None and id(exc) not in seen:\n        seen.add(id(exc))\n        content = getattr(exc, \"content\", None)\n        if content:\n            return (content.decode(\"utf-8\", \"replace\") if isinstance(content, bytes) else str(content))[:1000]\n        exc = exc.__context__ or exc.__cause__\n    return None\n\n\nBUDGET_SECONDS = 240          # whole check from main entry; the job timeout is 300 s\nCALL_SECONDS = 40             # httplib2 socket timeout for every Earth Engine HTTP operation\nMIN_START_SECONDS = 5\n\n\ndef call(result, name, fn, budget=None):\n    started = datetime.now(timezone.utc).isoformat()\n    left = budget() if budget else None\n    if left is not None and left < MIN_START_SECONDS:      # never start a call that could outlive the job\n        step = {\"step\": name, \"ok\": False, \"started\": started, \"error\": \"budget exhausted; not started\",\n                \"http_status\": None, \"http_body\": None, \"not_started\": True}\n        result[\"steps\"].append(step)\n        return step\n    try:\n        value = fn()\n        step = {\"step\": name, \"ok\": True, \"started\": started, \"result\": value}\n    except Exception as exc:                                   # classified below; never retried\n        step = {\"step\": name, \"ok\": False, \"started\": started, \"error\": f\"{type(exc).__name__}: {str(exc)[:500]}\",\n                \"http_status\": http_status(exc), \"http_body\": http_body(exc)}\n    result[\"steps\"].append(step)\n    return step\n\n\ndef identity_ok(identity):\n    return identity.get(\"metadata_server_email\") == EXPECTED_IDENTITY and \"metadata_server_error\" not in identity\n\n\ndef run(api, transport_absent, identity, budget=None):\n    \"\"\"Decision logic (injectable). Returns (exit_code, result). ``budget()`` -> remaining seconds (None = unbounded).\"\"\"\n    result = {\"identity\": identity, \"root\": ROOT, \"steps\": [], \"created\": False, \"branch\": None, \"passed\": False}\n    if not identity_ok(identity):                              # never act on the root under an unproven identity\n        result[\"branch\"] = \"stop_identity\"\n        return 2, result\n    first = call(result, \"list_root\", api.list_root, budget)\n    if first[\"ok\"]:\n        result[\"branch\"] = \"listable_no_create\"\n    elif first[\"http_status\"] == 404:\n        create = call(result, \"create_root_folder\", api.create_root, budget)  # the ONLY mutation, at most once\n        if create[\"ok\"]:\n            result[\"branch\"], result[\"created\"] = \"created\", True\n        elif create[\"http_status\"] == 409:\n            result[\"branch\"] = \"already_exists_readback_only\"\n        else:\n            result[\"branch\"] = \"stop_create_failed\"\n            return 2, result\n        if not call(result, \"relist_root\", api.list_root, budget)[\"ok\"]:\n            result[\"branch\"] += \"+stop_relist_failed\"\n            return 2, result\n    else:\n        result[\"branch\"] = \"stop_list_failed\"\n        return 2, result\n    absent = call(result, \"transport_missing_assets_absent_child\", lambda: transport_absent([CHILD]), budget)\n    if not absent[\"ok\"] or absent[\"result\"] != [CHILD]:\n        result[\"branch\"] += \"+stop_transport_absent_child\"\n        return 2, result\n    result[\"passed\"] = True\n    return 0, result\n\n\ndef runtime_identity():\n    import requests\n    out = {}\n    try:\n        r = requests.get(\"http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email\",\n                         headers={\"Metadata-Flavor\": \"Google\"}, timeout=5)\n        out[\"metadata_server_email\"] = r.text.strip() if r.status_code == 200 else f\"HTTP {r.status_code}\"\n    except Exception as exc:\n        out[\"metadata_server_error\"] = f\"{type(exc).__name__}: {exc}\"\n    return out\n\n\ndef main():\n    end = datetime.now(timezone.utc) + timedelta(seconds=BUDGET_SECONDS)     # the ONE absolute deadline\n    budget = lambda: (end - datetime.now(timezone.utc)).total_seconds()\n    identity = runtime_identity()\n    if not identity_ok(identity):                              # before importing/initializing Earth Engine\n        print(\"IPCCH_ROOT_CHECK \" + json.dumps({\"identity\": identity, \"branch\": \"stop_identity\", \"passed\": False,\n                                                \"steps\": []}, sort_keys=True), flush=True)\n        raise SystemExit(2)\n    import ee\n    import google.auth\n    import httplib2\n    from google.cloud import storage\n\n    credentials, _ = google.auth.default(scopes=[\"https://www.googleapis.com/auth/cloud-platform\",\n                                                 \"https://www.googleapis.com/auth/earthengine\"])\n    identity[\"adc_service_account_email\"] = getattr(credentials, \"service_account_email\", None)\n    ee.data.setMaxRetries(0)                  # state only (no resource install), kept by data.initialize\n    ee.Initialize(credentials=credentials, project=PROJECT, http_transport=httplib2.Http(timeout=CALL_SECONDS))\n    ee.data.setMaxRetries(0)\n\n    def bounded(fn):                          # retries 0; the socket timeout comes from the http_transport\n        def go():\n            ee.data.setMaxRetries(0)\n            return fn()\n        return go\n\n    class Api:\n        list_root = staticmethod(bounded(lambda: ee.data.listAssets({\"parent\": LIST_PARENT, \"pageSize\": 1})))\n        create_root = staticmethod(bounded(lambda: ee.data.createAsset({\"type\": \"FOLDER\"}, ROOT)))\n\n    def transport_absent(ids):\n        from cloud.common.object_store import GCSObjectStore\n        from cloud.ipcch.ee_transport import EETransport\n        client = storage.Client(project=PROJECT)\n        t = EETransport(ee=ee, client=client, store=GCSObjectStore(client), output_root=EXPORT_ROOT,\n                        run_id=\"ipcch-ee-root-check-20261101\", cleanup_reserve_seconds=1,\n                        deadline_utc=end)            # the SAME absolute deadline fixed at main entry\n        return t.missing_assets(ids)\n\n    code, result = run(Api, transport_absent, identity, budget)\n    result[\"budget_left_seconds\"] = round(budget(), 1)\n    print(\"IPCCH_ROOT_CHECK \" + json.dumps(result, sort_keys=True, default=str), flush=True)\n    raise SystemExit(code)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+                ],
+                "command": [
+                  "python3"
+                ],
+                "image": "us-central1-docker.pkg.dev/feisty-flames-511718-d4/monthly-delivery/runtime@sha256:acc3e4673fa7c133eade6e5c74b998706788e0d1af0f92b217ae74ce7e14ccf6",
+                "resources": {
+                  "limits": {
+                    "cpu": "1",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ],
+            "maxRetries": 0,
+            "serviceAccountName": "monthly-runtime@feisty-flames-511718-d4.iam.gserviceaccount.com",
+            "timeoutSeconds": "300"
+          }
+        }
+      }
+    }
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-11-01T02:16:34.195098Z",
+        "status": "True",
+        "type": "Ready"
+      }
+    ],
+    "observedGeneration": 1
+  }
+}
