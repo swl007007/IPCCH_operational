@@ -128,6 +128,8 @@ No full test rerun is needed for this documentation-only planning change.
 
 - [x] Report run/current refs, source actions, DA1/DA2 results, limitations
   and any separate recovery decision. Update operational claims only from proof.
-- [ ] Finish the applicable lifecycle only when the agreed outcome is fulfilled;
+- [x] Finish the applicable lifecycle only when the agreed outcome is fulfilled;
   D2 permits naturally unobserved DA2 cases to remain explicitly pending after
   successful DA1/publication. Failed checks cannot be relabeled successful.
+  Native task.py archive completed with CHILD-EXIT 0 after acceptance commit
+  e9b5f87; no Audit. Archived in local month 2026-10 (UTC evidence 2026-11-01).

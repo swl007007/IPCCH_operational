@@ -1,0 +1,19 @@
+{
+  "baseline": "e9b5f87",
+  "source": ".trellis/tasks/10-31-ipcch-all-keep-incremental-release/",
+  "destination": ".trellis/tasks/archive/2026-10/10-31-ipcch-all-keep-incremental-release/",
+  "tracked_files_before": 476,
+  "preserved_equal": 473,
+  "missing": [],
+  "changed": [
+    "implement.md",
+    "research/supervisor-checkpoints.md",
+    "task.json"
+  ],
+  "allowed_metadata_changes": [
+    "implement.md",
+    "research/supervisor-checkpoints.md",
+    "task.json"
+  ],
+  "passed": true
+}

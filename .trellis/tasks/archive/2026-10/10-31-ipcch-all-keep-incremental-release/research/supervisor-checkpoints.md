@@ -214,3 +214,13 @@ log bytes are preserved. An empty index.lock dated 03:04:50Z blocked staging;
 fuser and process inspection found no holder/Git writer. It was moved to the
 Supervisor temporary evidence directory, then staging succeeded. User AGENTS.md
 still hashes to b449b255709fec553214c7bac77e8d1a3cd1e96b0d6f2d7a38215b8cf3100389.
+
+## Native closure
+
+Acceptance commit e9b5f87 succeeded. Its automatic Git maintenance failed on old
+ipcch-handover branch locks; no ref cleanup or repository config change was made.
+Native task.py archive --no-commit then completed with CHILD-EXIT 0, setting
+completed and clearing session task pointers. Archive destination is 2026-10
+(local October 31; operational evidence is UTC November 1). Deferred commit lets
+Supervisor inspect the exact rename and preserve all tracked raw logs excluded
+by general ignore rules. No Audit registration/start/close was invoked.

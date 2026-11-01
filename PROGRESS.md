@@ -1,6 +1,6 @@
-# Accepted: IPCCH real increment with ACLED refresh (2026-11-01 UTC)
+# Completed: IPCCH real increment with ACLED refresh (2026-11-01 UTC)
 
-Task: `.trellis/tasks/10-31-ipcch-all-keep-incremental-release/`.
+Task: `.trellis/tasks/archive/2026-10/10-31-ipcch-all-keep-incremental-release/`.
 Authority: the user's subsequent goal `execution-protocol.md`, D1-D4, and explicit
 "spec范围内的云端操作预授权". This is an operational ledger, not approval authority.
 
@@ -148,6 +148,13 @@ Authority: the user's subsequent goal `execution-protocol.md`, D1-D4, and explic
   v17; nightlight v2 covers September. Optional GPP/soybean-oil gaps remain.
   No third attempt, product/config change or Audit. Native closure follows the
   scoped evidence/docs commit; pre-existing AGENTS.md is byte-unchanged.
+- Accepted evidence/docs committed as e9b5f87. Native task.py archive succeeded
+  with CHILD-EXIT 0; task status is completed and active pointers were cleared.
+  Archive is under 2026-10 because the local timezone was still October 31.
+  Used --no-commit to inspect/stage the exact move and preserve tracked raw logs
+  before the archive commit. Commit-triggered Git maintenance reported old branch
+  lock failures; the work commit succeeded, and those unrelated locks were left
+  untouched. Subsequent commits disable auto-maintenance for that command only.
 
 # Completed: IPCCH automatic E2E integration (2026-10-31)
 
