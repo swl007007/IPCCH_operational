@@ -307,3 +307,27 @@ AC1-AC9 accepted: automatic submission through full 6226-area H2/H8/H14 inferenc
 ### Next Steps
 
 - User-deferred incremental DA1/DA2 needs upstream han read sharing to monthly-runtime; no incremental run, scheduler, training, Audit, push or merge performed.
+
+
+## Session 10: IPCCH November increment: DA1/current accepted, DA2 partial
+<!-- trellis-session: v=2 fp=9ff3e91ba9273958 -->
+
+**Date**: 2026-10-31
+**Task**: IPCCH November increment: DA1/current accepted, DA2 partial
+**Branch**: `feat/ipcch-real-e2e-integration`
+
+### Summary
+
+Approved runtime-SA EE root recovery and exactly one all-keep retry published current generation 1793503777656101. DA1 verified through seven producer exports, retained append, 527-feature full-roster inference and literal FEWS inheritance. DA2 partial under D2; corrected PATCH32 output counts and zero-sample preservation claim. All eleven keeps unchanged; optional GPP/soybean gaps and log warnings retained. No product/config changes, third attempt or Audit. Native archive completed; user AGENTS.md preserved.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `06c38da` | docs: authorize bounded EE root recovery and one keep retry |
+| `3e67076` | docs: record verified runtime EE asset root recovery |
+| `e9b5f87` | docs(ipcch): accept live incremental current and bounded DA2 evidence |
+
+### Status
+
+[OK] **Completed**
